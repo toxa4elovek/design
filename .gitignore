@@ -1,2 +1,5 @@
 .idea
 .DS_STORE
+.buildpath
+.project
+app/resources/tmp/*
