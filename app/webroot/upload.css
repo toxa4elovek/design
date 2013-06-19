@@ -1,0 +1,50 @@
+/*upload.css*/
+.largeHeading {
+	color: #cccccc;
+	font: bold 28px/1 "RodeoC", sans-serif;
+	text-shadow: 0 1px 1px #F1F1F1;
+	text-transform: uppercase;
+}
+.upload-form {
+	margin-top: 30px;
+}
+.upload-textarea {
+	height:75px;
+}
+input[type="radio"], input[type="checkbox"] {
+  font-size: 12px;
+  margin-right:5px;
+  width: 16px;
+  vertical-align: middle;
+}
+.tos-container {
+	margin-bottom:20px;
+	color:#666666;
+}
+.tos-container a {
+	text-decoration: none;
+}
+.plusbutton {
+	float:left;
+	display:block;
+	padding-left:20px;
+	padding-right:20px;
+	font-size:20px;
+}
+
+.notransform {
+	color: #999999;
+	line-height: 48px;
+	text-transform: none;
+}
+.label-switch {
+    float:left;
+    width: 100%
+}
+
+.exceeded {
+    color: #D40D00;
+}
+.warning {
+    color: #5C0002;
+}

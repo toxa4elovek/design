@@ -1,0 +1,258 @@
+/* Main
+-----------------------------------------------------------------------------*/
+
+.main {
+	background: #e1e1e1;
+	position: relative;
+	border: 1px solid #d2d3d3;
+	border-bottom: none;
+	margin: auto;
+}
+.main:after {
+	position: absolute;
+	content: "";
+	height: 7px;
+	bottom: -7px;
+	left: 14px;
+	right: 14px;
+	border: solid #717275;
+	border-width: 0 1px;
+	background: #909090;
+	-webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
+	   -moz-box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
+	        box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
+}
+.auth .main {
+	width: 953px;
+}
+
+
+.menu {
+	margin: 65px 60px 36px 63px;
+	width: 828px;
+	height: 34px;
+	background: #eaeaea;
+	border: #bebebe 1px solid;
+	border-right: none;
+	border-bottom: none;
+}
+.menu ul li {	
+	display: inline-block;
+	width: 138px;
+	height: 34px;
+	margin-left: -3px;	
+	vertical-align: middle;
+}
+.menu ul li a {
+	display: inline-block;
+	width: 138px;
+	font: normal 12px/1 "RodeoC", sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #b9b9b9;
+	text-align: center;
+	line-height: 34px;
+}
+.menu ul li a:hover {
+	color: #fff;
+	background: url("img/menu-hover-bg.png") no-repeat;
+	height: 43px;
+}
+.first_li {
+	margin-left: 0 !important;
+}
+.profile {
+	background: url("img/profile-bg.png") repeat-y;
+	width: 623px;
+	margin: 20px 39px 42px 0px;
+	display: inline-block;
+}
+.send_message {
+	display: inline;
+}
+.info_profile {
+	width: 623px;
+	margin: 23px 0 0 32px;
+}
+.main section .profile img {
+	margin: 0 0 0 26px;
+}
+.info_profile_photo {
+	height: 196px;
+	width: 196px;
+	background: #fff;
+    border-radius: 2px 2px 2px 2px;
+	margin: 0 0 28px 0;
+	float: left;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+.info_profile_photo img {
+	margin: auto;
+    padding: 8px;
+}
+.info_profile_about {
+	float: left;
+	margin: 0 0 0 18px;
+	color: #b1b1b1;
+	font: normal 11px/1 "HelveticaCE35", sans-serif;
+	text-transform: uppercase;
+}
+.info_profile_about .nickname {
+	font: normal 17px/1 "RodeoC", sans-serif;
+	color: #666666;
+	text-transform: none;
+}
+.info_profile_about .pitches, .likes {
+	font: bold 11px/1 "HelveticaCE35", sans-serif;
+	text-transform: uppercase;
+	float: left;
+    margin-top: 25px;
+}
+.info_profile_about .likes {
+	margin: 25px 0 0 43px;
+}
+.info_profile_about .pitches span, .info_profile_about .likes span {
+	color: #ff585d;
+}
+.about_profile {
+	margin: 0 39px 0 32px;
+}
+.about_profile dl dt {
+	float: left;
+}
+.about_profile dl dd {
+	float: left;
+	width: 450px;
+	margin: 0 0 0 16px;
+}
+.about_profile .separate {
+	height: 69px;
+	width: 1px;
+	clear: both;
+}
+
+
+.auth h2 {
+	text-transform: uppercase;
+	text-align: center;
+	font-weight: normal;
+	margin-bottom: 5px;
+}
+.auth .main .button {
+	width: 244px;
+	padding: 0;
+	display: block;
+	margin: auto;
+}
+.auth section {
+
+}
+.auth .or {
+	width: 50px;
+	margin: -32px auto 19px;
+	background: #e1e1e1;
+}
+.auth form p {
+	margin-bottom: 12px;
+	position: relative;
+}
+.auth input[type="text"],
+.auth input[type="password"] {
+	padding-right: 40px;
+	width: 344px;
+}
+.auth .main input.button {
+	width: 252px;
+}
+.auth .name {
+	background: #fff url("img/form-ico-name.png") 366px 11px no-repeat;
+}
+.auth .email {
+	background: #fff url("img/form-ico-email.png") 366px 9px no-repeat;
+}
+.auth .password {
+	background: #fff url("img/form-ico-password.png") 366px 10px no-repeat;
+}
+.auth .submit {
+	padding-top: 19px;
+}
+.auth .submit .button {
+	margin-bottom: 7px;
+}
+.auth .submit small {
+	text-transform: uppercase;
+	font-size: 10px;
+	line-height: 13px;
+	display: block;
+	text-align: center;
+	padding-bottom: 10px;
+}
+.auth .submit small a {
+	white-space: nowrap;
+}
+.auth .error {
+	display: none;
+	text-transform: uppercase;
+	line-height: 54px;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+	color: #fff;
+	height: 52px;
+	width: 182px;
+	padding-left: 38px;
+	background: #ff585d;
+	position: absolute;
+	top: -4px;
+	left: -261px;
+}
+.auth .error:before {
+	content: "";
+	position: absolute;
+	right: -15px;
+	top: 14px;
+	width: 15px;
+	height: 22px;
+	background: url("img/form-error-arrow.png");
+/*	width: 0;
+	height: 0;
+	border: solid #e1e1e1;
+	border-width: 12px 15px;
+	border-left-color: #ff585d;*/
+}
+.login .submit {
+	padding-top: 4px;
+}
+.login .submit .button {
+	margin-bottom: 9px;
+}
+.login .submit small {
+	padding: 0;
+}
+.login .dont-logout {
+	display: block;
+	vertical-align: middle;
+	font-size: 10px;
+	line-height: 13px;
+	margin-bottom: 5px;
+	text-align: center;
+	text-transform: uppercase;
+}
+.login .dont-logout input {
+	margin-right: 5px;
+}
+
+.profile-list {
+    margin-top: 5px;
+}
+
+.profile-list li {
+    margin-bottom: 5px;
+}
+.profile-list-info {
+    margin-top: 10px;
+}
+
+.profile-list-info li {
+    margin-bottom: 4px;
+}

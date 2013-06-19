@@ -1,0 +1,106 @@
+@charset "utf-8";
+/* CSS Document */
+/*
+.block{
+	font-family:'RodeoC';
+	font-size:13px;}
+.block a{
+	font-family:'RodeoC';
+	font-size:13px;}
+*/
+.portfolio{
+	width:837px;
+	margin:0 auto;
+	padding-top:8px;
+	text-transform:none;
+	line-height:1.2em;}
+.portfolio ul.list_portfolio{
+	list-style-type:none;
+	margin-left:-13px;}
+.portfolio ul.list_portfolio li{
+	width:197px;
+	margin-left:13px;
+	vertical-align:top;
+	margin-top:12px;
+	margin-bottom:5px;}
+.portfolio ul.list_portfolio li a{
+	text-decoration:none;
+	color:#b9b9b9;
+	font-weight:bold;
+	font-size:13px;}
+.portfolio ul.list_portfolio li a:hover{
+	color:#666666;}
+.portfolio ul.list_portfolio li, .portfolio .rating_block, .portfolio .like_view, .portfolio .bottom_arrow, .portfolio a.add_pdf_link{
+	display:-moz-inline-stack; /* для FF2 */
+	display:inline-block; /* для других */
+	zoom:1; /* для ие */
+	*display:inline; /* для ие */
+	_overflow:hidden; /* для ие6, чтобы не умещающиеся в нем элементы не раздвигали блок */}
+.portfolio .photo_block{
+	background:#fff;
+    width:180px;
+	padding:9px 10px 6px 10px;
+	position:relative;
+	border-bottom:1px solid #d2d2d2;
+	min-height:162px;}
+.portfolio .photo_opt{
+	padding-top:8px;}
+.portfolio .rating_block{
+	padding-top:5px;
+	vertical-align:top;}
+.portfolio .like_view{
+	margin-left:7px;}
+.portfolio .like_view span{
+	color:#cdcccc;
+	font-size:10px;
+	vertical-align:middle;
+	margin-right:8px;}
+.portfolio .like_view img{
+	margin-right:4px;}
+.portfolio .like_view img.icon_looked{
+	vertical-align:middle;}
+.portfolio .bottom_arrow{
+	float:right;
+	padding-top:1px;}
+.portfolio .medal{
+	background:url(img/icon-2.png) no-repeat;
+	width:28px;
+	height:61px;
+	position:absolute;
+	top:9px; right:18px;}
+.portfolio .selecting_numb{
+	overflow:hidden;
+	clear:both;
+	padding-top:6px;
+	padding-bottom:8px;}
+.portfolio input.select_checkbox{
+	float:left;
+	width:15px;
+	height:15px;
+	margin:0px;
+	padding:0px;}
+.portfolio .number_img{
+	float:right;
+	font-weight:bold;
+	font-size:13px;}
+.portfolio .link_block{
+	display:block;
+	text-align:center;
+	padding-top:7px;}
+.portfolio a.add_pdf_link{
+	font-size:17px;
+	text-transform:uppercase;
+	text-decoration:none;
+	color:#bababa;
+	font-family: 'RodeoC';
+	text-shadow:0px 1px 0px #fff;
+	line-height:1em;}
+.portfolio .red_arrow{
+	display:block;
+	background:url(img/add_pdf_arrow.png) no-repeat center 3px;
+	width:57px;
+	height:74px;
+	margin:0 auto;
+	margin-bottom:8px;}
+.portfolio a.add_pdf_link:hover .red_arrow{
+	background-position:center bottom;}

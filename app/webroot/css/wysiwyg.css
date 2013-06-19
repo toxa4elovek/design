@@ -1,0 +1,86 @@
+html {
+    /*background: none repeat scroll 0 0 #282A34;*/
+}
+
+body {
+    background: url('/img/main_bg.jpg') repeat scroll 0 0 transparent;
+    width: 607px;
+}
+
+p, div, span {
+    font: 14px/20px "Arial", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+
+/*Дополнение*/
+.supplement {
+    font:13px/17px "Arial", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+
+.graysupplement {
+    font:13px/17px "Arial", sans-serif;
+    color: #999999;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+/*Дополнение 2*/
+.supplement2 {
+    font:11px/14px "Arial", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+/*Дополнение 3*/
+.supplement3 {
+    font:11px/14px "Arial", sans-serif;
+    color: #999999;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+/*Заголовок 3 bold*/
+.greyboldheader {
+    font:bold 17px/20px "RodeoC", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+/*Заголовок 3 синий*/
+.blueboldheader {
+    font:bold 17px/20px "RodeoC", sans-serif;
+    color: #658;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+.checkboxtext {
+    font:11px "Arial", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+/*Основной текст*/
+.regular {
+    font: 14px/20px "Arial", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+.regular-small-grey {
+    font: 11px "Arial", sans-serif;
+    color: #B1B1B1;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+/* Заголовок 1*/
+.largest-header{
+    font: normal 28px/34px "RodeoC", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+/* Заголовок 1-крассная ссылка*/
+.largest-header a{
+    color: #ff585d;
+    text-decoration: none;
+}
+/* Заголовок 1-крассная ссылка*/
+.largest-header a:hover{
+    color: #ff7377;
+    text-decoration: none;
+}
+a:active {
+    color: #658FA5;
+}

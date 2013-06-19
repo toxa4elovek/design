@@ -1,0 +1,51 @@
+div.fileinputs {
+    height: 30px;
+
+}
+
+div.fakefile {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+input.file {
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+}
+
+#tooltip {
+    padding: 4px 0 4px 0 !important;
+    background: url(img/tooltip-bg-top-stripe.png) top center no-repeat !important;
+    /*padding: 4px 0 0 0 !important;
+    background: url(img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important; */
+}
+
+.tooltip-wrap {
+    font-size: 14px;
+    padding: 16px 10px 39px 16px;
+    background: url(img/tooltip-bottom-bg.png) 100% 100% no-repeat !important;
+    /*padding: 39px 10px 22px 16px;
+    background: url(img/tooltip-top-bg.png) no-repeat;*/
+}
+
+#tooltip.tooltip-pos-bottom {
+    padding: 4px 0 0 0 !important;
+    background: url(img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;
+}
+.tooltip-pos-bottom .tooltip-wrap {
+    padding: 16px 10px 39px 16px;
+    background: url(img/tooltip-bottom-bg.png) 100% 100% no-repeat !important;
+}
+
+#tooltipContent ul{
+    list-style-type: disc;
+}
+#tooltipContent li{
+    margin-left: 20px;
+}

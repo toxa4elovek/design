@@ -1,0 +1,151 @@
+.proceed {
+	height: 64px;
+	width: 159px;
+	margin: 20px -12ηχ 0 0;
+	float: right;
+}
+.proceed a {
+	text-decoration: none;
+}
+.proceed a span {
+	font: bold 18px/1 "RodeoC", sans-serif;
+	color: #bababa;
+	text-decoration: none;
+	padding-left: 7px;
+	display: inline-block;
+	margin: 10px 0 0 0;
+	text-transform: uppercase;
+}
+.completed {
+	width: 538px;
+	height: 52px;
+	margin: 61px 0 0 0;
+}
+.completed span {
+	text-decoration: none;
+	color: #9a9a9a;
+	font: bold 13px/1 "HelveticaNeue", sans-serif;
+	text-transform: none;
+}
+.common {
+	height: 12px;
+	width: 354px;
+	margin: 49px 0 0 0;
+}
+.common span {
+	font: bold 15px/1 "Myriad Pro", sans-serif;
+	color: #666666;
+	text-transform: none;
+}
+.four {
+	height: 43px;
+	width: 338px;
+	margin: 0 0 0 0;
+}
+.four span {
+	color: #999999;
+	font: bold 10px/1 "Arial", sans-serif;
+	padding: 0 0 0 60px;
+}
+.four span.zero {
+	padding-left:0 !important;
+}
+.four img {
+	margin: 11px 0 0 0;
+}
+.red {
+	display: inline-block;
+	margin-top: -15px;
+}
+.four a.red img {
+	margin: -7px 0 0 256px ;
+}
+.two {
+	display: inline-block;
+	margin-top: -15px;
+}
+.four a.two img {
+	margin: -7px 0 0 121px ;
+}
+.five {
+	display: inline-block;
+	margin-top: -15px;
+}
+.four a.five img {
+	margin: -7px 0 0 318px ;
+}
+
+
+.right {
+	margin: 59px 0 0 32px;
+	float: left;
+}
+.user_photo {
+	width: 187px;
+	height: 164px;
+	background: #ffffff;
+	padding: 7px 0 0 10px;
+}
+.photo-png {
+	width: 179px;
+	height: 135px;
+	background: url('img/user-photo.png') no-repeat;
+}
+.photo-png img {
+	margin-left: 144px;
+}
+.user_photo span {
+	font: normal 10px/1 "HelveticaCE35", sans-serif;
+	display: inline-block;
+	margin-top: 10px;
+	margin-left: 3px;
+}
+.user_text {
+	width: 187px;
+}
+.user_text span {
+	font: normal 13px/1 "RodeoC", sans-serif;
+	color: #b9b9b9;
+	text-transform: none;
+	display: block;
+	margin-top: 5px;
+}
+.user_text span.tager {
+	font: bold 13px/1 "RodeoC", sans-serif;
+}
+.user_text span a {
+	color: #6891a2;
+	text-decoration: none;
+	font: bold 13px/1 "RodeoC", sans-serif;
+}
+.right_block {
+	margin: 45px 0 0 32px !important;
+	float: left;
+}
+.comm {
+	margin: 40px 0 0 0;
+}
+.comm h4 {
+	color: #666666;
+	font: bold 14px/1 "RodeoC", sans-serif;
+	text-transform: none;
+}
+.comm textarea {
+	width: 596px;
+	height: 99px;
+	margin-top: 10px;
+}
+.center_block {
+	margin-top: 0 !important;
+}
+.center_block span {
+	line-height: 20px;
+	font: bold 11px/1 "HelveticaCE35", sans-serif;
+}
+
+
+
+.clr {
+	clear: both;
+}
+

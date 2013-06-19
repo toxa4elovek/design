@@ -1,0 +1,48 @@
+.blueheading {
+    font: bold 16px/1 "RodeoC", sans-serif;
+    display: block;
+    color:#658fa5;
+    text-shadow: 0 1px 1px #f1f1f1;
+    padding-left: 2px;
+    margin-bottom: 8px;
+    cursor: default;
+}
+.details p {
+    font-size:15px;
+    margin-bottom:25px;
+}
+
+.details-cont {
+    margin:auto;
+    position:relative;
+    border:none;
+}
+
+.Center {width:650px;}
+
+.SideBarRight {width:200px; position:absolute; right:0px; top:85px; z-index:1000;margin-right: 20px;}
+/*.SideBarRight div { margin-top:50px;}*/
+.SideBarRight .zagol {font-size:18px; padding:10px;}
+.SideBarRight .batton { background: url('img/pointerBatton.png')  no-repeat top; height:50px; padding-top:44px;}
+.SideBarRight .batton:hover {background: url('img/pointerBattonRed.png') no-repeat top; font-weight:bold;}
+
+.SideBarRight .pitchs {width:170px; height:72px; margin:0; padding-left:7px;}
+.SideBarRight .pitchs.hover { background-color:#6b92a2 !important; }
+.SideBarRight .pitchs.hover p {color:#FFF !important;}
+.SideBarRight .pitchs.grey {background-color:#45464f;}
+.SideBarRight .pitchs.black {background-color:#2f313a;}
+.SideBarRight .pitchs p.data,p.info { color:#999999;}
+.SideBarRight .pitchs p.cost { color:#658fa5;}
+
+
+
+
+.SideBarRight div.files { width:170px; height:150px; background: url('img/files.png') no-repeat top; padding-top:80px; font-size:18px; text-align:center}
+.SideBarRight div.files p:hover {  font-weight:bold;}
+
+.gogo { width:424px; height:91px; background:url(img/gogo.png) no-repeat; position: relative ; left:485px; clear:both; text-align:center; padding-top:10px;}
+.gogo p { margin-bottom:10px;}
+.gogo a {text-decoration: none;}
+.gogo a.idea { font-size:17px; color:#444756;}
+.gogo a.go { font:32px RodeoC; color:#FFF; text-shadow: -1px -1px 0 #444756;}
+.gogo a.go:hover { text-decoration: underline}

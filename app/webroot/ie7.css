@@ -1,0 +1,90 @@
+/*
+Author:     Aleks Hudochenkov
+Release:    3.11.2011
+-----------------------------------------------------------------------------*/
+
+/*legend {
+	margin-left: -7px;
+}
+a span {
+	cursor: pointer;
+}
+input[type="checkbox"] {
+	vertical-align: baseline;
+}*/
+
+.wrapper .button {
+	display: inline;
+}
+.wrapper input.button {
+	filter:chroma(color=#000000);
+}
+.wrapper .button.facebook {
+	zoom: expression(
+		runtimeStyle.zoom = 0,
+		insertBefore(createElement("m"), firstChild)
+	);
+}
+.wrapper .button.facebook m {
+	width: 30px;
+	height: 30px;
+	background: url("img/button-facebook-ico.png");
+	display: block;
+	float: left;
+	margin: 6px 14px 0 8px;
+}
+.auth .error,
+.coming-soon .error {
+	zoom: expression(
+		runtimeStyle.zoom = 0,
+		insertBefore(createElement("m"), firstChild)
+	);
+}
+.auth .error m,
+.coming-soon .error m {
+	position: absolute;
+	right: -15px;
+	top: 14px;
+	width: 15px;
+	height: 22px;
+	background: url("img/form-error-arrow.png");
+}
+.main {
+	zoom: expression(
+		runtimeStyle.zoom = 1,
+		insertBefore(createElement("mainbefore"), firstChild)
+	);
+}
+.auth .main mainbefore {
+	position: absolute;
+	height: 7px;
+	bottom: -7px;
+	left: 14px;
+	right: 14px;
+	border: solid #717275;
+	border-width: 0 1px;
+	background: #909090;
+	width: 452px;
+}
+.auth .or {
+	top: -32px;
+	position: relative;
+	margin-bottom: -10px;
+}
+.login .dont-logout input {
+	margin-top: -5px;
+	top: 0;
+}
+.coming-soon em {
+	font-style: normal;
+}
+.coming-soon em small {
+	top: 146px;
+}
+
+
+
+
+
+
+

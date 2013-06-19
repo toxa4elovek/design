@@ -1,0 +1,103 @@
+
+.show-panel .header {
+	margin-bottom: 0;
+}
+
+.show-panel .logo a {
+	background-image: url(img/panel/logo-on-panel.png);
+}
+
+.show-panel #slides {
+	margin-top: 30px;
+}
+
+.show-panel .pagination {
+	top: 0;
+}
+
+
+.show-panel .panel {
+	position: relative;
+	background: url(img/panel/panel-bg.jpg) no-repeat 0 0;
+	height: 290px;
+	width: 958px;
+	margin: 0 auto;
+}
+
+.pitchpanel .panel {
+    position: relative;
+    background: url(img/panel/panel-bg.jpg) no-repeat 0 0;
+    height: 290px;
+    width: 958px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+
+.middle_inner {
+/*	margin-top: 13px;  */
+}
+
+.show-panel .middle .panel {
+	width: 954px;
+}
+
+
+.panel .close {
+	display: block;
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	background: url(img/panel/close-btn.png);
+	width: 22px; 
+	height: 22px;
+}
+
+.panel .winner {
+	background: url(img/panel/winner-icon.png) no-repeat 50% 0;
+}
+
+.panel .waiting {
+    background: url(img/waiting_for_winner.png) no-repeat 50% 0;
+}
+
+.panel .msg {
+	width: 60%;
+	margin: 0 auto;
+	padding: 110px 0 0;
+	color: #666;
+}
+
+.panel p {
+	font: 14px/20px "Arial", sans-serif;
+	vertical-align: none;
+}
+
+.panel p.titlepanel {
+    background: none;
+	text-align: center;
+	margin: 0 0 20px;
+}
+
+.panel a {
+	text-decoration: none;
+}
+
+.panel a:hover {
+	text-decoration: underline;
+	color: #6F9CB4;
+}
+
+.panel ul {
+	list-style-type: disc;
+	margin: 0 0 0 50px;
+	font: 8px/20px "Arial", sans-serif;
+}
+
+.panel li p {
+	margin: 0 0 0 25px;
+}
+
+
+
+
+

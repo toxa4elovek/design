@@ -1,0 +1,110 @@
+ul.marsh {
+	margin: 20px 0 0;	
+}
+
+ul.score {
+	margin: 0;	
+}
+
+ul.score li.fst {
+	float: left;
+	width: 31%;
+	}
+
+ul.score#img li {
+	float: left;
+	width: 33.0%;
+	}
+
+ul.score li.fst div {
+	padding: 0 0 0 40px;
+	}
+
+ul.score li div {
+	font: bold 131px/131px "RodeoC", serif;
+	color: #6b92a2;
+	text-shadow: 1px 1px 0 #ededed;
+	text-align: center;
+	padding: 0 0 0 60px;
+	background: url("img/to_designers/arrow-big.gif") no-repeat 0 50%;
+	}
+
+ul.score#img li div {
+	background: url("img/images/arrow.gif") no-repeat 0 50%;
+	padding: 0;
+	}
+
+ul.score#img li.fst div {
+	background: none;
+	}
+
+ul.score h2 {
+	text-align: center !important;
+	margin-bottom: 0 !important;   
+	padding: 0 0 3px 60px !important;
+} 
+
+ul.score li.fst h2 {
+	padding: 0 0 0 40px !important;
+	}
+
+ul.marsh h2 {
+	height: 45px;
+}
+
+
+ul.marsh li {
+	float: left;
+	width: 33.3%;
+	height: 230px;
+	padding: 0;
+	background: url("img/images/tick.gif") no-repeat 8px 3px;
+	}
+
+.flag-gray {
+	background: url(img/to_designers/flag-gray.gif) no-repeat 50% 0;
+	height: 95px;
+	text-align: center;
+}
+
+.flag-gray p {
+	padding: 20px 0 0 0;
+}
+
+.flag-gray a {
+	font: 32px/32px "RodeoC", serif;
+	color: #fff;
+	text-shadow: 2px 2px 2px #567684;
+	text-transform: uppercase;
+}
+
+
+.flag-gray a:link, 
+.flag-gray a:visited {
+	text-decoration: none;
+}
+
+.flag-gray a:hover {
+	text-decoration: underline;
+}
+
+.flag-gray i {            
+	font: italic 17px/17px "Georgia", serif;
+	color: #415e6a;
+}
+
+#more_button {
+	width: 100px;
+	margin: 5px 0 10px 30px;
+	text-align: left;
+}
+
+#more_button a {
+	display: block;
+	font: 11px/40px Helvetica, sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #999;
+	background: url(img/bottom_arrow.png) no-repeat 100% 50%;
+}
+
