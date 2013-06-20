@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2013, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -121,5 +121,11 @@ Libraries::add('app', array('default' => true));
  * Add some plugins:
  */
 // Libraries::add('li3_docs');
-
+Libraries::add('li3_fixtures');
+Libraries::add('li3_mailer');
+Libraries::add('li3_flash_message');
+Libraries::add('li3_oauth');
+Libraries::add('slicedup_behaviors');
+Libraries::add('image_manipulation');
+Libraries::add('tmhOAuth');
 ?>
