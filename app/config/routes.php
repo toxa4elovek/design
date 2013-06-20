@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2013, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -20,19 +20,6 @@ use lithium\net\http\Router;
 use lithium\core\Environment;
 
 /**
- * With globalization enabled a localized route is configured by connecting a
- * continuation route. Once the route has been connected, all the other
- * application routes become localized and may now carry a locale.
- *
- * Requests to routes like `/en/posts/edit/1138` or `/fr/posts/edit/1138` will
- * carry a locale, while `/posts/edit/1138` keeps on working as it did before.
- */
-if ($locales = Environment::get('locales')) {
-	$template = '/{:locale:' . join('|', array_keys($locales)) . '}/{:args}';
-	Router::connect($template, array(), array('continue' => true));
-}
-
-/**
  * Here, we are connecting `'/'` (the base path) to controller called `'Pages'`,
  * its action called `view()`, and we pass a param to select the view file
  * to use (in this case, `/views/pages/home.html.php`; see `app\controllers\PagesController`
@@ -40,7 +27,32 @@ if ($locales = Environment::get('locales')) {
  *
  * @see app\controllers\PagesController
  */
-Router::connect('/', 'Pages::view');
+Router::connect('/', 'Pages::view', array('home'));
+
+Router::connect('/pages/contacts', 'Pages::contacts');
+Router::connect('/stats', 'Pages::stats');
+Router::connect('/events/updates.{:type}', 'Events::updates');
+Router::connect('/users/checkform.{:type}', 'Users::checkform');
+Router::connect('/pitches.{:type}', 'Pitches::index');
+Router::connect('/pitches/add.{:type}', 'Pitches::add');
+Router::connect('/pitches/agreement/{:id}.txt', 'Pitches::agreement');
+Router::connect('/urls/{:short}', 'Urls::view');
+Router::connect('/pitches/{:category:\d+}', array('controller' => 'Pitches', 'action' => 'index', 'category' => 'all'));
+Router::connect('/pitches/getpdf/godesigner-pitch-{:id}.pdf', array('Pitches::getpdf'));
+Router::connect('/addons/getpdf/godesigner-pitch-{:id}.pdf', array('Addons::getpdf'));
+Router::connect('/callback', 'Pitches::callback');
+Router::connect('/pitchfiles/add.{:type}', 'Pitchfiles::add');
+Router::connect('/register.{:type}', 'Users::registration');
+Router::connect('/register', 'Users::registration');
+Router::connect('/login', 'Users::login');
+Router::connect('/viewmail/{:id}', 'Users::viewmail');
+Router::connect('/pitches/brief/{:category:\d+}', array('controller' => 'Pitches', 'action' => 'brief', 'category' => null));
+Router::connect('/users/step3/{:id:\d+}/{:confirm}', array('controller' => 'users', 'action' => 'step3'));
+Router::connect('/users/step3/{:id:\d+}', array('controller' => 'users', 'action' => 'step3', 'confirm' => null));
+Router::connect('/users/step4/{:id:\d+}/{:confirm}', array('controller' => 'users', 'action' => 'step4'));
+Router::connect('/users/step4/{:id:\d+}', array('controller' => 'users', 'action' => 'step4', 'confirm' => null));
+
+//Router::connect('/users/nominated', array('controller' => 'Users', 'action' => 'solutions', 'filterType' => 'nominating'));
 
 /**
  * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to
@@ -70,8 +82,8 @@ if (!Environment::is('production')) {
  * is an integer, uncomment the routes below to enable URLs like `/posts/edit/1138`,
  * `/posts/view/1138.json`, etc.
  */
-// Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', array('id' => null));
-// Router::connect('/{:controller}/{:action}/{:id:\d+}');
+ Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', array('id' => null));
+ Router::connect('/{:controller}/{:action}/{:id:\d+}');
 
 /**
  * If you're using a document-oriented database, such as CouchDB or MongoDB, or another type of

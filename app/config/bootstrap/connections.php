@@ -68,5 +68,4 @@ Connections::add('default', array(
 	'database' => 'gdev',
 	'encoding' => 'UTF-8'
 ));
-
 ?>
