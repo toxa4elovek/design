@@ -396,15 +396,16 @@ $(document).ready(function() {
     }
 
     var fileIds = [];
-    var uploader = $("#fileupload").damnUploader({
+        var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
         onSelect: function(file) {
+            var description = ($('#fileupload-description').val() == $('#fileupload-description').attr('placeholder')) ? '' : $('#fileupload-description').val();
             if($('#filename').html() != 'Файл не выбран') {
                 //$('#filename').html($('#filename').html() + '; ' + file.name);
                 console.log('adding file')
-                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p id="description_' + file.name.hashCode() + '" style="font-size:15px;text-decoration: none;">' + $('#fileupload-description').val() + '</p></li>')
+                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p id="description_' + file.name.hashCode() + '" style="font-size:15px;text-decoration: none;">' + description + '</p></li>')
             }else {
-                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p id="description_' + file.name.hashCode() + '" style="font-size:15px;text-decoration: none;">' + $('#fileupload-description').val() + '</p></li>');
+                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p id="description_' + file.name.hashCode() + '" style="font-size:15px;text-decoration: none;">' + description + '</p></li>');
             }
             $('#fileupload-description').val('')
             var self = this;
@@ -427,9 +428,8 @@ $(document).ready(function() {
                             var dataObj = $.parseJSON(data);
                             fileIds.push(dataObj.id);
                             if ((successfully) && (data.match(/(\d*)/))) {
-                                var description = $('#description_' + file.name.hashCode()).text();
                                 data = {
-                                    'description': (description == $('#fileupload-description').attr('placeholder')) ? '' : description,
+                                    'description': description,
                                     'id': dataObj.id
                                 }
                                 descriptionUpload(data);
