@@ -370,6 +370,31 @@ $(document).ready(function() {
         }
     });*/
 
+    /*
+     * String hashing helper function
+     */
+    String.prototype.hashCode = function(){
+        var hash = 0, i, char;
+        if (this.length == 0) return hash;
+        for (i = 0, l = this.length; i < l; i++) {
+            char  = this.charCodeAt(i);
+            hash  = ((hash<<5)-hash)+char;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    };
+
+    /*
+     * Upload pitchfile description
+     */
+    function descriptionUpload(data) {
+        $.ajax({
+            url: '/pitchfiles/addDescription',
+            type: 'POST',
+            data: data
+        });
+    }
+
     var fileIds = [];
     var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
@@ -377,9 +402,9 @@ $(document).ready(function() {
             if($('#filename').html() != 'Файл не выбран') {
                 //$('#filename').html($('#filename').html() + '; ' + file.name);
                 console.log('adding file')
-                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + $('#fileupload-description').val() + '</p></li>')
+                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p id="description_' + file.name.hashCode() + '" style="font-size:15px;text-decoration: none;">' + $('#fileupload-description').val() + '</p></li>')
             }else {
-                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + $('#fileupload-description').val() + '</p></li>');
+                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p id="description_' + file.name.hashCode() + '" style="font-size:15px;text-decoration: none;">' + $('#fileupload-description').val() + '</p></li>');
             }
             $('#fileupload-description').val('')
             var self = this;
@@ -402,10 +427,16 @@ $(document).ready(function() {
                             var dataObj = $.parseJSON(data);
                             fileIds.push(dataObj.id);
                             if ((successfully) && (data.match(/(\d*)/))) {
-                                    //alert('Файл '+file.name+' загружен, полученные данные: '+data);
-                                } else {
-                                    alert('Ошибка при загрузке. Код ошибки: '+errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
+                                var description = $('#description_' + file.name.hashCode()).text();
+                                data = {
+                                    'description': (description == $('#fileupload-description').attr('placeholder')) ? '' : description,
+                                    'id': dataObj.id
                                 }
+                                descriptionUpload(data);
+                                //alert('Файл '+file.name+' загружен, полученные данные: '+data);
+                            } else {
+                                alert('Ошибка при загрузке. Код ошибки: '+errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
+                            }
                             if(self.damnUploader('itemsCount') == 0) {
                                 Cart.fileIds = fileIds;
                                 Cart.saveData();

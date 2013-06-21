@@ -8,12 +8,12 @@ use \lithium\storage\Session;
 class PitchfilesController extends \app\controllers\AppController {
 
 	public $publicActions = array(
-		'index', 'add', 'testdelete', 'delete'
+		'index', 'add', 'addDescription', 'testdelete', 'delete'
 	);
 
 
 	public function index() {
-		
+
 	}
 
 	public function add() {
@@ -24,6 +24,15 @@ class PitchfilesController extends \app\controllers\AppController {
 		$file->save($this->request->data);
         $file = Pitchfile::first($file->id);
 		return json_encode($file->data());
+	}
+
+	public function addDescription() {
+	    if (true == $this->request->data['description']) {
+            $file = Pitchfile::first((int)$this->request->data['id']);
+            $file->{'file-description'} = $this->request->data['description'];
+            $file->save();
+	    }
+	    $this->render(array('head' => true));
 	}
 
     public function delete() {
