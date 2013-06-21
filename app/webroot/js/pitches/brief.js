@@ -445,7 +445,8 @@ $(document).ready(function() {
                         }
                 });
                 var lastChild = $('#filezone').children(':last');
-                var link = $('.filezone-delete-link', lastChild).data('delete-id', uploadId)
+                var link = $('.filezone-delete-link', lastChild).attr('data-delete-id', uploadId);
+
             return false; // отменить стандартную обработку выбора файла
         }
     });
@@ -456,13 +457,19 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.filezone-delete-link', function() {
-        $.get($(this).attr('href'), function(response) {
-            if(response != 'true') {
-                alert('При удалении файла произошла ошибка');
-            }
-        });
-        $(this).parent().remove();
-        return false;
+        if (Cart.Id) {
+            $.get($(this).attr('href'), function(response) {
+                if(response != 'true') {
+                    alert('При удалении файла произошла ошибка');
+                }
+            });
+            $(this).parent().remove();
+            return false;
+        } else {
+            uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
+            $(this).parent().remove();
+            return false;
+        }
     })
 
     $('#uploadButton').click(function() {
