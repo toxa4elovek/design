@@ -2,22 +2,20 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2013, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 /**
  * This configures your session storage. The Cookie storage adapter must be connected first, since
  * it intercepts any writes where the `'expires'` key is set in the options array.
- * The default name is based on the lithium app path. Remember, if your app is numeric or has
- * special characters you might want to use Inflector::slug() or set this manually.
  */
 use lithium\storage\Session;
 
-$name = basename(LITHIUM_APP_PATH);
 Session::config(array(
-	// 'cookie' => array('adapter' => 'Cookie', 'name' => $name),
-	'default' => array('adapter' => 'Php', 'session.name' => $name)
+	
+	'default' => array('adapter' => 'Php'),
+	/*'cookie' => array('adapter' => 'Cookie', 'expire' => '+1 month'),*/
 ));
 
 /**
@@ -38,14 +36,18 @@ Session::config(array(
  * @see lithium\action\Request::$data
  * @see lithium\security\Auth
  */
-// use lithium\security\Auth;
+use lithium\security\Auth;
 
-// Auth::config(array(
-// 	'default' => array(
-// 		'adapter' => 'Form',
-// 		'model' => 'Users',
-// 		'fields' => array('username', 'password')
-// 	)
-// ));
+Auth::config(array(
+	'user' => array(
+ 		'adapter' => 'Form',
+ 		'model' => 'User',
+ 		'fields' => array('email', 'password'),
+        'scope' => array(
+        	'User.password' => array('!=' => 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'),
+        	'User.active' => 1
+        )
+ 	)
+));
 
 ?>

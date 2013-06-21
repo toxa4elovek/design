@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2013, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -18,8 +18,12 @@
  */
 
 use lithium\core\Libraries;
+use lithium\net\http\Router;
 use lithium\core\Environment;
 use lithium\action\Dispatcher;
+use lithium\action\Response;
+use lithium\security\Auth;
+use \lithium\storage\Session;
 
 /**
  * This filter intercepts the `run()` method of the `Dispatcher`, and first passes the `'request'`
@@ -46,9 +50,35 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 			continue;
 		}
 		$file = "{$config['path']}/config/routes.php";
-		file_exists($file) ? call_user_func(function() use ($file) { include $file; }) : null;
+		file_exists($file) ? include $file : null;
 	}
 	return $chain->next($self, $params, $chain);
+});
+
+
+/**
+* This filters checks user's session and denies access to non-public urls
+*/
+Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+
+    $ctrl = $chain->next($self, $params, $chain);
+    if (Auth::check('user')) {
+        return $ctrl;
+    }
+	if(($params['params']['controller'] == 'lithium\test\Controller')) {
+		return $ctrl;
+	}
+
+    if (isset($ctrl->publicActions) && in_array($params['params']['action'], $ctrl->publicActions)) {
+        return $ctrl;
+    }
+    return function() use ($params) {
+        if($params['request']->type != 'json') {
+    	    Session::write('redirect', $params['request']->url);
+        }
+        return new Response(compact('request') + array('location' => '/users/login'));
+        //return new Response(compact('request') + array('location' => '/invites.html'));
+    };
 });
 
 ?>

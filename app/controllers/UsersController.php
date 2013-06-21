@@ -1,0 +1,1328 @@
+<?php
+
+namespace app\controllers;
+
+use \app\models\User;
+use \app\models\Sendemail;
+use \app\models\Category;
+use \app\models\Solution;
+use \app\models\Wincomment;
+use \app\models\Grade;
+use \app\models\Pitch;
+use \app\models\Event;
+use \app\models\Invite;
+use \app\models\Avatar;
+use \app\extensions\mailers\UserMailer;
+use \app\extensions\mailers\SpamMailer;
+use \app\extensions\mailers\ContactMailer;
+use \lithium\storage\Session;
+use \lithium\security\Auth;
+use \li3_flash_message\extensions\storage\FlashMessage;
+use \lithium\util\String;
+use \lithium\analysis\Logger;
+use \lithium\storage\Cache;
+use \tmhOAuth\tmhOAuth;
+use \tmhOAuth\tmhUtilities;
+
+class UsersController extends \app\controllers\AppController {
+
+    /**
+     * Методы, доступные без аутентификации
+     *
+     * @var array
+     */
+	public $publicActions = array(
+		'vklogin', 'unsubscribe', 'registration', 'login', /*'info', 'sendmail', */'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail'
+	);
+
+    public $nominatedCount = false;
+
+    public function _init() {
+        parent::_init();
+        //var_dump($_COOKIE);
+        $withMenu = array(
+            'office',
+            'solutions',
+            'awarded',
+            'nominated',
+            'step1',
+            'step2',
+            'step3',
+            'step4',
+            'mypitches'
+        );
+        if(in_array($this->request->action, $withMenu)) {
+            $myPitches = Pitch::all(array(
+                'conditions' => array('user_id' => Session::read('user.id')),
+
+            ));
+            $pitchIds = array();
+            foreach($myPitches as $pitch) {
+                $pitchIds[] = $pitch->id;
+            }
+            $solutionsFromMyPitches = array();
+            if(!empty($pitchIds)) {
+                $solutionsFromMyPitches = Solution::all(array('conditions' => array('pitch_id' => $pitchIds, 'nominated' => '1')));
+            }
+
+            $conditions = array('Solution.user_id' => Session::read('user.id'), 'nominated' => '1', 'status' => array('<' => 2));
+            $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+
+            if(count($solutionsFromMyPitches) > 0) {
+                $solutions = array_merge($solutions->data(), $solutionsFromMyPitches->data());
+            }else {
+                $solutions = $solutions->data();
+            }
+            $this->nominatedCount = count($solutions);
+        }
+    }
+
+    public function avatar() {
+
+        $allowedExtensions = array('png', 'gif', 'jpeg', 'jpg');
+        // max file size in bytes
+        $sizeLimit = 100 * 1024 * 1024;
+        if($this->request->env('REQUEST_METHOD') == 'GET') {
+            $id = $this->request->query['id'];
+            $userpic = file_get_contents('http://graph.facebook.com/' . $id . '/picture?type=large');
+            $tmp=array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()]=tmpfile())));
+
+            file_put_contents($tmp, $userpic);
+            $imageData = getimagesize($tmp);
+            switch ($imageData['mime']) {
+                    case 'image/gif':
+                        $filename = uniqid() . '.gif';
+                        break;
+                    case 'image/jpeg':
+                        $filename = uniqid() . '.jpg';
+                        break;
+                    case 'image/png':
+                        $filename = uniqid() . '.png';
+                        break;
+                    default:
+                        return array('error' => 'nouserpic set');
+                        break;
+                }
+            if($user = User::first(array('conditions' => array('facebook_uid' => $this->request->query['id'])))) {
+                Avatar::clearOldAvatars(Session::read('user.id'));
+                $user->set(array('avatar' => array('name' => $filename, 'tmp_name' => $tmp, 'error' => 0)));
+                $user->save();
+            }
+            return array('result' => 'true');
+        }
+        else {
+            $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+            $result = $uploader->handleUpload(LITHIUM_APP_PATH . '/webroot/avatars/');
+            if($result['success']) {
+                //Avatar::remove(array('model_id' => Session::read('user.id')));
+                Avatar::clearOldAvatars(Session::read('user.id'));
+                $user = User::first(Session::read('user.id'));
+                $user->set(array('avatar' => array('name' => $result['name'], 'tmp_name' => $result['tmpname'], 'error' => 0)));
+                $user->save();
+                $user = User::first(Session::read('user.id'));
+                unlink($result['tmpname']);
+                return array('result' => 'true', 'data' => $user->data());
+            }
+        }
+    }
+
+    public function sendmail() {
+        $data = array('user' => User::first(Session::read('user.id')), 'pitch' => Pitch::first());
+        $res = SpamMailer::newpitch($data);
+        $mail = Sendemail::first(array('conditions' => array('id' => $this->request->id), 'order' => array('id' => 'desc')));
+
+            echo $mail->text;
+
+        die();
+
+
+        /*if(Session::read('user.email') == $mail->email) {
+            echo $mail->text;
+            die();
+        }else {
+            return $this->redirect('Users::office');
+        }*/
+    }
+
+
+    /**
+     * Кабинет
+     *
+     */
+	public function office() {
+        $date = date('Y-m-d H:i:s');
+        if((Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
+            $date = Session::read('user.events.date');
+            Session::delete('user.events');
+        }
+        $gallery = Solution::getUserSolutionGallery(Session::read('user.id'));
+        $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
+        $winners = array();
+        foreach($winnersData as $winner) {
+            if($winner->pitch->category_id != 7) {
+                $winners[] = $winner;
+            }
+        }
+        $winners = array();
+        $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
+        if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return compact('gallery', 'winners', 'date', 'updates');
+        }else {
+            return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates')));
+        }
+	}
+
+    public function solutions() {
+        $conditions = array('Solution.user_id' => Session::read('user.id'));
+        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+        $nominatedCount = $this->nominatedCount;
+        $myPitches = Pitch::all(array('conditions' => array('user_id' => Session::read('user.id'), 'published' => 1, 'billed' => 1)));
+
+        if($myPitches->data()) {
+            $idList = array();
+            foreach($myPitches as $pitch) {
+                $idList[] = $pitch->id;
+            }
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $idList), 'order' => array('Solution.id' => 'desc'), 'with' => array('Pitch')));
+        }
+        $filterType = 'solutions';
+        if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return compact('solutions', 'filterType', 'nominatedCount');
+        }else{
+            return $this->render(array('layout' => false, 'data' => compact('solutions', 'filterType', 'nominatedCount')));
+        }
+    }
+
+    public function awarded() {
+        $myPitches = Pitch::all(array(
+            'conditions' => array('user_id' => Session::read('user.id')),
+
+        ));
+        $pitchIds = array();
+        foreach($myPitches as $pitch) {
+            $pitchIds[] = $pitch->id;
+        }
+        $solutionsFromMyPitches = array();
+        if(!empty($pitchIds)) {
+            $solutionsFromMyPitches = Solution::all(array('conditions' => array('pitch_id' => $pitchIds, 'Solution.awarded' => '1'), 'with' => array('Pitch')));
+        }
+
+        $conditions = array('Solution.user_id' => Session::read('user.id'), 'Solution.awarded' => 1, 'Solution.nominated' => 0);
+        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+
+        if(count($solutionsFromMyPitches) > 0) {
+            $solutions = array_merge($solutions->data(), $solutionsFromMyPitches->data());
+        }else {
+            $solutions = $solutions->data();
+        }
+
+        $filterType = 'awarded';
+
+        if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return compact('solutions', 'filterType');
+        }else {
+            return $this->render(array('layout' => false, 'data' => compact('solutions', 'filterType')));
+        }
+    }
+
+    public function nominated() {
+        $myPitches = Pitch::all(array(
+            'conditions' => array('user_id' => Session::read('user.id')),
+
+        ));
+        $pitchIds = array();
+        foreach($myPitches as $pitch) {
+            $pitchIds[] = $pitch->id;
+        }
+        $solutionsFromMyPitches = array();
+        if(!empty($pitchIds)) {
+            $solutionsFromMyPitches = Solution::all(array('conditions' => array('pitch_id' => $pitchIds, 'nominated' => '1', 'Solution.awarded' => '0'), 'with' => array('Pitch')));
+        }
+
+        $conditions = array('Solution.user_id' => Session::read('user.id'), 'Solution.nominated' => '1');
+        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+
+        if(count($solutionsFromMyPitches) > 0) {
+            $solutions = array_merge($solutions->data(), $solutionsFromMyPitches->data());
+        }else {
+            $solutions = $solutions->data();
+        }
+        $filterType = 'nominated';
+        if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return compact('solutions', 'filterType');
+        }else {
+            return $this->render(array('layout' => false, 'data' => compact('solutions', 'filterType')));
+        }
+    }
+
+    public function testemail () {
+        $email = Sendemail::all(array('fields' => array('count(id)', 'created'), 'conditions' =>  array('created' => array('>=' => '2013-02-20 00:00:00')), 'group' => array('created')));
+        echo '<pre>';
+        var_dump($email->data());
+        echo '</pre>';
+        die();
+    }
+
+    public function step1() {
+        if(($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
+            if((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+                return $this->redirect('Users::office');
+            }
+            if(Session::read('user.id') == $solution->pitch->user_id) {
+                if($solution->pitch->category_id != 7) {
+                    return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id));
+                }else {
+                    //return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
+                    return $this->redirect('/users/step4/' .  $solution->id . '/confirm');
+                }
+            }
+            $solution->pitch->category = Category::first($solution->pitch->category_id);
+            if($solution->user_id == Session::read('user.id')) {
+                $type = 'designer';
+            }else {
+                $type = 'client';
+            }
+            if(Session::read('user.isAdmin') == 1) {
+                $type = 'admin';
+            }
+            $step = 1;
+            return compact('type', 'solution', 'step');
+        }
+    }
+
+    public function step2() {
+        if(($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
+            if((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+                return $this->redirect('Users::office');
+            }
+            $solution->pitch->category = Category::first($solution->pitch->category_id);
+            if($solution->user_id == Session::read('user.id')) {
+                $type = 'designer';
+            }else {
+                $type = 'client';
+            }
+            if(Session::read('user.isAdmin') == 1) {
+                $type = 'admin';
+            }
+            if(($solution->pitch->category_id == 7) && ($solution->step < 4)) {
+                return $this->redirect('/users/step1/' . $solution->id);
+            }elseif(($solution->pitch->category_id == 7) && ($solution->step == 4)) {
+                return $this->redirect('/users/step4/' . $solution->id);
+            }
+            if($this->request->data) {
+                $newComment = Wincomment::create();
+                if(count($this->request->data['file']) > 0) {
+                    foreach($this->request->data['file'] as $index => &$file) {
+                        if($file['error'] > 0) {
+                            unset($this->request->data['file'][$index]);
+                        }
+                    }
+                }
+                if(empty($this->request->data['file'])) {
+                    unset($this->request->data['file']);
+                }
+                $newComment->set($this->request->data);
+                $newComment->user_id = Session::read('user.id');
+                $newComment->solution_id =$solution->id;
+                $newComment->created = date('Y-m-d H:i:s');
+                $newComment->step = 2;
+                $newComment->save();
+                if($type == 'designer') {
+                    $recipient = User::first($solution->pitch->user_id);
+                }else{
+                    $recipient = User::first($solution->user_id);
+                }
+                User::sendSpamWincomment($newComment, $recipient);
+            }
+            $files = array();
+            $comments = Wincomment::all(array('conditions' => array('step' => 2, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
+            foreach($comments as $comment) {
+                if($comment->user_id == $solution->user_id) {
+                    $comment->type = 'designer';
+                    if(!empty($comment->images)) {
+                        $files[] = $comment->images;
+                    }
+                }else {
+                    $comment->type = 'client';
+                }
+            }
+            $step = 2;
+            if(empty($files)) {
+                $nofiles = true;
+            }else {
+                $nofiles = false;
+            }
+            return compact('type', 'solution', 'comments', 'step', 'nofiles');
+        }
+    }
+
+    public function step3() {
+        if(($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
+            if(($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
+                (Session::read('user.id') == $solution->pitch->user_id) && ($solution->step < 3)) {
+                $user = User::first($solution->user_id);
+                User::sendSpamWinstep($user, $solution, '3');
+                $solution->step = 3;
+                $solution->save();
+                return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id));
+            }
+
+            if((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+                return $this->redirect('Users::office');
+            }
+            if($solution->step < 3) {
+                return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $this->request->id));
+            }
+            $solution->pitch->category = Category::first($solution->pitch->category_id);
+            if($solution->user_id == Session::read('user.id')) {
+                $type = 'designer';
+            }else {
+                $type = 'client';
+            }
+            if(Session::read('user.isAdmin') == 1) {
+                $type = 'admin';
+            }
+            if($this->request->data) {
+                $newComment = Wincomment::create();
+                if(count($this->request->data['file']) > 0) {
+                    foreach($this->request->data['file'] as $index => &$file) {
+                        if($file['error'] > 0) {
+                            unset($this->request->data['file'][$index]);
+                        }
+                    }
+                }
+                if(empty($this->request->data['file'])) {
+                    unset($this->request->data['file']);
+                }
+                $newComment->set($this->request->data);
+                $newComment->user_id = Session::read('user.id');
+                $newComment->solution_id =$solution->id;
+                $newComment->created = date('Y-m-d H:i:s');
+                $newComment->step = 3;
+                $newComment->save();
+                if($type == 'designer') {
+                    $recipient = User::first($solution->pitch->user_id);
+                }else{
+                    $recipient = User::first($solution->user_id);
+                }
+                User::sendSpamWincomment($newComment, $recipient);
+            }
+            $comments = Wincomment::all(array('conditions' => array('step' => 3, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
+            $files = array();
+            foreach($comments as $comment) {
+
+                if($comment->user_id == $solution->user_id) {
+                    $comment->type = 'designer';
+                    if(!empty($comment->images)) {
+                        $files[] = $comment->images;
+                    }
+                }else {
+                    $comment->type = 'client';
+                }
+            }
+            $step = 3;
+            if(empty($files)) {
+                $nofiles = true;
+            }else {
+                $nofiles = false;
+            }
+            return compact('type', 'solution', 'comments', 'step', 'nofiles');
+        }
+    }
+
+    public function step4() {
+        if(($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User'))))) {
+            if(($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
+                (Session::read('user.id') == $solution->pitch->user_id) && ($solution->step == 3)) {
+                $user = User::first($solution->user_id);
+                User::sendSpamWinstep($user, $solution, '4');
+                $solution->step = 4;
+                $solution->save();
+                Pitch::finishPitch($solution->pitch_id);
+                return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
+            }
+
+            if(($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
+                (Session::read('user.id') == $solution->pitch->user_id) && ($solution->pitch->category_id == 7)) {
+                $user = User::first($solution->user_id);
+                User::sendSpamWinstep($user, $solution, '4');
+                $solution->step = 4;
+                $solution->save();
+                Pitch::finishPitch($solution->pitch_id);
+                return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
+            }
+
+            if((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+                return $this->redirect('Users::office');
+            }
+            if($solution->step < 4) {
+                return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $this->request->id));
+            }
+            $solution->pitch->category = Category::first($solution->pitch->category_id);
+            if($solution->user_id == Session::read('user.id')) {
+                $type = 'designer';
+                $gradeByOtherParty = Grade::first(array('conditions' => array('user_id' => $solution->pitch->user_id, 'pitch_id' => $solution->pitch->id)));
+            }else {
+                $type = 'client';
+                $gradeByOtherParty = Grade::first(array('conditions' => array('user_id' => $solution->user_id, 'pitch_id' => $solution->pitch->id)));
+            }
+            if(Session::read('user.isAdmin') == 1) {
+                $type = 'admin';
+            }
+            $grade = Grade::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $solution->pitch->id, 'type' => $type)));
+            if($this->request->data) {
+                $grade = Grade::create();
+                $grade->set($this->request->data);
+                $grade->pitch_id = $solution->pitch->id;
+                $grade->user_id = Session::read('user.id');
+                $grade->type = $type;
+                $grade->save();
+                if($gradeByOtherParty) {
+                    $solution->nominated = 0;
+                    $solution->awarded = 1;
+                    $solution->save();
+                }
+            }
+
+            $step = 4;
+            return compact('type', 'solution', 'comments', 'step', 'grade');
+        }
+    }
+
+    public function mypitches() {
+        if(!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return $this->render(array('layout' => false));
+        }
+    }
+
+    public function viewmail() {
+        $mail = Sendemail::findByHash($this->request->id);
+        if(Session::read('user.email') == $mail->email) {
+            echo $mail->text;
+            die();
+        }else {
+            return $this->redirect('Users::office');
+        }
+    }
+
+    public function suicide() {
+        $id = Session::read('user.id');
+        User::remove($id);
+        Auth::clear('user');
+        return $this->redirect('/');
+    }
+
+    public function unsubscribe() {
+        if(($this->request->data) && (isset($this->request->data['token']))) {
+            $id = base64_decode($this->request->data['token']);
+            if($user = User::first($id)) {
+                $user->email_newpitch = 0;
+                $user->email_newcomments = 0;
+                $user->email_newpitchonce = 0;
+                $user->email_newsolonce = 0;
+                $user->email_newsol = 0;
+                $user->email_digest = 0;
+                $user->save(null, array('validate' => false));
+                Auth::set('user', $user->data());
+                return $this->redirect('/users/profile');
+            }
+        }
+        return $this->render(array('layout' => 'default', 'data' => false));
+    }
+
+    /**
+     * Метод регистрации
+     *
+     *
+     * @return array|\lithium\action\Returns|object
+     */
+	public function registration() {
+        if(Session::read('user')) {
+            return $this->redirect('/');
+        }
+        /*if(((!isset($this->request->query['invite'])) && (!isset($this->request->data['id']))) || ((isset($this->request->query['invite'])) && (!$isValid = Invite::isValidInvite($this->request->query['invite'])))) {
+            return $this->redirect('Invites::index');
+        }  */
+        $user = User::create();
+		if($this->request->data) {
+            // фейсбук регисстрация
+            if((isset($this->request->data['id'])) && (isset($this->request->data['name']))) {
+                // регился ли пользователей через обычную регистрацию?
+                if($isUserExists = $user->isUserExistsByEmail($this->request->data['email'])) {
+                    // если он уже регился обычным способом, сохраняем его фейсбук айди
+                    $userToLog = User::first(array('conditions' => array('email' => $this->request->data['email'])));
+                    $userToLog->facebook_uid = $this->request->data['id'];
+                    $userToLog->save();
+                }else{
+                    // регился ли пользователей через фейсбук?
+                    $this->request->data['facebook_uid'] = $this->request->data['id'];
+                    unset($this->request->data['id']);
+                    $isFBUserExists = $user->checkFacebookUser($this->request->data);
+                    if(!$isFBUserExists) {
+                        // если пользователей фейсбука у нас отсутствует, то сохраняем его в базу
+
+                        if($user->saveFacebookUser($this->request->data)) {
+                            $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                            //$userToLog->invited = 1;
+                            $userToLog->lastActionTime = date('Y-m-d H:i:s');
+                            $userToLog->save(null, array('validate' => false));
+                            //Invite::activateInvite($this->request->query['invite'], $userToLog->id);
+                            UserMailer::hi_mail($userToLog);
+                            $newuser = true;
+                        }else {
+                            return $this->redirect('Users::login');
+                        }
+
+                    }else {
+                        // если он уже у нас есть, то вытаскиваем все его данные по айди
+                        $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                        $newuser = false;
+                    }
+                }
+                if($userToLog->banned) {
+                    Auth::clear('user');
+                    return array('data' => true, 'redirect' => '/users/banned');
+                }
+                if($userToLog->active == 0) {
+                    Auth::clear('user');
+                    return array('data' => true, 'redirect' => '/users/login');
+                }
+                $userToLog->token = User::generateToken();
+                setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->token), time() + strtotime('+1 month'), '/');
+                $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
+                $userToLog->save(null, array('validate' => false));
+                // производим аутентификацию
+                Auth::set('user', $userToLog->data());
+                // отдаем тру для того, чтобы джаваскрипт сделал редирект
+                $redirect = false;
+
+                $pitchId = Session::read('temppitch');
+                if(!is_null($pitchId)) {
+                    if($pitch = Pitch::first($pitchId)) {
+                        $pitch->user_id = $userToLog->id;
+                        $pitch->save();
+                    }
+                    Session::delete('temppitch');
+                    $redirect = '/pitches/edit/' . $pitchId . '#step3';
+                }
+                if(!is_null(Session::read('redirect'))) {
+                    $redirect = '/' . Session::read('redirect');
+                    Session::delete('redirect');
+                }
+                return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
+            }else {
+                // обычная регистрация
+                $user->token = User::generateToken();
+                $user->created = date('Y-m-d H:i:s');
+
+                $user->set($this->request->data) ;
+			    if(($user->validates()) && ($user->save($this->request->data))) {
+                    $userToLog = User::first(array('conditions' => array('id' => $user->id)));
+                    $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
+                    $userToLog->lastActionTime = date('Y-m-d H:i:s');
+                    //$userToLog->invited = 1;
+                    $userToLog->save(null, array('validate' => false));
+                    //Invite::activateInvite($this->request->query['invite'], $userToLog->id);
+                    $res = UserMailer::verification_mail($userToLog);
+                    // производим аутентификацию
+                    Auth::set('user', $userToLog->data());
+
+                    $pitchId = Session::read('temppitch');
+                    if(!is_null($pitchId)) {
+                        if($pitch = Pitch::first($pitchId)) {
+                           $pitch->user_id = $userToLog->id;
+                           $pitch->save();
+                        }
+                        Session::delete('temppitch');
+                        return $this->redirect('/pitches/edit/' . $pitchId . '#step3');
+                    }
+                    return $this->redirect('/');
+			    }
+
+            }
+		}
+        /*$invite = false;
+        if(isset($this->request->query['invite'])) {
+            $invite = $this->request->query['invite'];
+        }*/
+        $url = 'http://oauth.vk.com/authorize';
+
+        $client_id = '2950889'; // ID приложения
+        $client_secret = 'j1bFzKfXP4lIa0wA7vaV'; // Защищённый ключ
+        $redirect_uri = 'http://www.godesigner.ru/users/vklogin'; // Адрес сайта
+
+
+        $params = array(
+            'client_id'     => $client_id,
+            'redirect_uri'  => $redirect_uri,
+            'scope' => 'friends',
+            'response_type' => 'code'
+        );
+
+		return compact('user', 'invite', 'params', 'url');
+	}
+
+
+    /**
+     *  Метод входа, устанавлививет сессию и делает редирект в рабочий кабинет
+     *
+     *
+     * @return \lithium\action\Returns|object*
+     */
+	public function login() {
+        $user = User::create();
+		if($this->request->data) {
+			$this->request->data['password'] = String::hash($this->request->data['password']);
+	        if (Auth::check('user', $this->request, array('checkSession' => true))) {
+
+                $userToLog = User::first(Session::read('user.id'));
+                /*if(!$userToLog->invited) {
+                    Session::clear();
+                    return $this->redirect("Users::login");
+                } */
+                if($userToLog->banned) {
+                    Auth::clear('user');
+                    return $this->redirect('/users/banned');
+                }
+                if($userToLog->active == 0) {
+                    Auth::clear('user');
+                    return array('data' => true, 'redirect' => '/users/login');
+                }
+                $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
+                if((isset($this->request->data['remember'])) && ($this->request->data['remember'] == 'on')) {
+                    $userToLog->token = User::generateToken();
+                    setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->token), time() + strtotime('+1 month'), '/');
+                }
+                $userToLog->save(null, array('validate' => false));
+                //var_dump(Session::read('redirect'));die();
+                if(!is_null(Session::read('redirect'))) {
+                    $red = Session::read('redirect');
+                    Session::delete('redirect');
+                    return $this->redirect($red);
+                }else {
+	                return $this->redirect('Users::office');
+                }
+	        }else{
+				//FlashMessage::write('Неверный адрес почты или пароль.');
+				return $this->redirect("Users::login");
+	        }
+        }
+        if(!is_null(Session::read('user.id'))) {
+            return $this->redirect('Users::office');
+        }
+        return compact('user');
+	}
+
+    public function banned() {
+
+    }
+
+    public function need_activation() {
+
+    }
+
+    public function resend() {
+        $user = User::first(Session::read('user.id'));
+        $user->token = User::generateToken();
+        $user->save(null, array('validate' => false));
+        UserMailer::verification_mail($user);
+        return true;
+    }
+
+    /**
+     *  Метод выхода, удаляем сессию и делаем редирект на главную страницу
+     *
+     *
+     * */
+	public function logout() {
+        setcookie("autologindata", "", time()-3600000, '/');
+        Auth::clear('user');
+        return $this->redirect('/');
+    }
+
+    /**
+     * Метод подтверждения почтового адреса пользователя
+     *
+     * @return array|\lithium\action\Returns|object
+     */
+    public function confirm() {
+        if(isset($this->request->query['token'])) {
+            $user = User::first(array('conditions' => array('token' => $this->request->query['token'])));
+            if($user) {
+                $user->activateUser();
+                UserMailer::hi_mail($user);
+                Auth::clear('user');
+                Auth::set('user', $user->data());
+                return $this->redirect('Users::office');
+            }else {
+                return $this->redirect('Users::registration');
+            }
+        }else {
+            return $this->redirect('Users::registration');
+        }
+    }
+
+    /**
+     * Метод проверки существования имейла
+     *
+     * @TODO Cooldown timer
+     */
+    public function checkform() {
+        if(isset($this->request->data['email'])) {
+            if($user = User::find('first', array('conditions' => array('email' => $this->request->data['email'])))) {
+                return array('data' => true);
+            }
+        }
+        return array('data' => false);
+    }
+
+    public function setnewpassword() {
+        $token = $this->request->query['token'];
+        if(isset($token)) {
+            $user = User::first(array('conditions' => array('token' => $token)));
+            if($user) {
+                Auth::set('user', $user->data());
+                if($this->request->data) {
+                    $errors = array();
+                    if(empty($this->request->data['password'])) {
+                        $errors['password'] = 'Пароль пустой';
+                    }
+                    if(($this->request->data['password']) != ($this->request->data['confirm_password'])) {
+                        $errors['password'] = 'Пароли не совпадают';
+                    }
+                    if(empty($errors)) {
+                        $user->password = String::hash($this->request->data['password']);
+                        $user->token = '';
+                        $user->success = true;
+                        $user->save(null, array('validate' => false));
+                    }
+                }
+                return compact('token', 'user', 'errors');
+            }else {
+                return $this->redirect('Users::registration');
+            }
+        }else {
+            return $this->redirect('Users::registration');
+        }
+    }
+
+    public function second() {
+
+    }
+
+    public function recover() {
+        if(Session::read('user.id')) {
+            return $this->redirect('/users/profile');
+        }
+        $errors = array();
+        $success = false;
+        if($this->request->data)  {
+            if($user = User::findByEmail($this->request->data['email'])) {
+                $user->token = User::generateToken();
+                $user->save(null, array('validate' => false));
+                UserMailer::forgotpassword_mail($user);
+                $success = true;
+            }else {
+                $errors[] = 'Пользователь с таким Email не найден.';
+            }
+        }
+        return compact('errors', 'success');
+    }
+
+    public function profile() {
+        $user = User::first(Session::read('user.id'));
+        $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
+        $winners = array();
+        foreach($winnersData as $winner) {
+            if($winner->pitch->category_id != 7) {
+                $winners[] = $winner;
+            }
+        }
+
+
+        $passwordInfo = false;
+        if($this->request->data) {
+
+            if(($this->request->data['newpassword'] != '') && ($this->request->data['confirmpassword'] != '')) {
+                $hashedCurrentPassword = String::hash($this->request->data['currentpassword']);
+                if($hashedCurrentPassword != $user->password) {
+                    $passwordInfo = 'Старый пароль не верен!';
+                }elseif(($this->request->data['newpassword']) != ($this->request->data['confirmpassword'])) {
+                    $passwordInfo = 'Пароли не совпадают!';
+                }else {
+                    $user->password = String::hash($this->request->data['newpassword']);
+                    $passwordInfo = 'Пароль изменен!';
+                }
+            }
+            $user->userdata = serialize(array(
+                'birthdate' => $this->request->data['birthdate'],
+                'city' => $this->request->data['city'],
+                'profession' => $this->request->data['profession'],
+                'about' => $this->request->data['about'],
+            ));
+            $user->isClient = $this->request->data['isClient'];
+            $user->isDesigner = $this->request->data['isDesigner'];
+            $user->isCopy = $this->request->data['isCopy'];
+            if(isset($this->request->data['email_newpitch'])) {
+                $user->email_newpitch = 1;
+            }else{
+                $user->email_newpitch = 0;
+            }
+            if(isset($this->request->data['email_newcomments'])) {
+                $user->email_newcomments = 1;
+            }else{
+                $user->email_newcomments = 0;
+            }
+            if(isset($this->request->data['email_newpitchonce'])) {
+                $user->email_newpitchonce = 1;
+            }else{
+                $user->email_newpitchonce = 0;
+            }
+            if(isset($this->request->data['email_newsolonce'])) {
+                $user->email_newsolonce = 1;
+            }else{
+                $user->email_newsolonce = 0;
+            }
+            if(isset($this->request->data['email_newsol'])) {
+                $user->email_newsol = 1;
+            }else{
+                $user->email_newsol = 0;
+            }
+            if(isset($this->request->data['email_digest'])) {
+                $user->email_digest = 1;
+            }else{
+                $user->email_digest = 0;
+            }
+            $user->email = $this->request->data['email'];
+
+            $user->save(null, array('validate' => false));
+        }
+        return compact('user', 'winners', 'passwordInfo');
+    }
+
+    public function preview() {
+        if($user = User::first(Session::read('user.id'))) {
+            $pitchCount = User::getPitchCount(Session::read('user.id'));
+            $averageGrade = User::getAverageGrade(Session::read('user.id'));
+            if(!$averageGrade) {
+                $averageGrade = 0;
+            }
+            $totalViews = (int) User::getTotalViews(Session::read('user.id'));
+            $totalLikes = (int) User::getTotalLikes(Session::read('user.id'));
+            $awardedSolutionNum = (int) User::getAwardedSolutionNum(Session::read('user.id'));
+            $totalSolutionNum = (int) User::getTotalSolutionNum(Session::read('user.id'));
+            $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+            $isClient = false;
+            $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
+            if(count($userPitches) > 0) {
+                $isClient = true;
+            }
+            return compact('user', 'pitchCount', 'averageGrade', 'totalViews', 'totalLikes' ,'awardedSolutionNum' , 'totalSolutionNum', 'selectedSolutions', 'isClient');
+        }
+    }
+
+    public function view() {
+        if($user = User::first($this->request->id)) {
+            if(($user->active == 0) && (!in_array(Session::read('user.id'), array(32, 4, 5, 108, 81)))):
+                return $this->redirect('/');
+            endif;
+
+            $pitchCount = User::getPitchCount($this->request->id);
+            $averageGrade = User::getAverageGrade($this->request->id);
+            if(!$averageGrade) {
+                $averageGrade = 0;
+            }
+            $totalViews = (int) User::getTotalViews($this->request->id);
+            $totalLikes = (int) User::getTotalLikes($this->request->id);
+            $awardedSolutionNum = (int) User::getAwardedSolutionNum($this->request->id);
+            $totalSolutionNum = (int) User::getTotalSolutionNum($this->request->id);
+            $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+            $isClient = false;
+            $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
+            if(count($userPitches) > 0) {
+                $isClient = true;
+                $ids = array();
+                foreach($userPitches as $pitch){
+                    $ids[] = $pitch->id;
+                }
+                $selectedSolutions = Solution::all(array('conditions' => array(
+                    'pitch_id' => $ids,
+                    'OR' => array(array('rating = 4'), array('rating = 5'), array('Solution.awarded = 1'), array('Solution.nominated = 1'))
+                ),
+                    'with' => array('Pitch')
+                ));
+            }
+            return compact('user', 'pitchCount', 'averageGrade', 'totalViews', 'totalLikes' ,'awardedSolutionNum' , 'totalSolutionNum', 'selectedSolutions', 'isClient');
+        }
+    }
+
+    public function savePaymentData() {
+        $user = User::first(Session::read('user.id'));
+        $user->paymentOptions = serialize(array($this->request->data));
+        $user->save(null, array('validate' => false));
+        return $user->paymentOptions;
+    }
+
+
+    public function spblist() {
+        $list = User::all(array('conditions' => array(
+            'userdata' => array('LIKE' => '%Санкт-Петербург%')
+        )));
+        $list2 = User::all(array('conditions' => array(
+            'userdata' => array('LIKE' => '%Petersburg%')
+        )));
+        $list3 = User::all(array('conditions' => array(
+            'userdata' => array('LIKE' => '%спб%')
+        )));
+        $list4 = User::all(array('conditions' => array(
+            'userdata' => array('LIKE' => '%Петербург%')
+        )));
+        header('Content-Type: text/html; charset=UTF-8');
+        $counter = 0;
+        foreach($list as $user) {
+            echo $user->email .  '</br>';
+            $counter++;
+        }
+        foreach($list2 as $user) {
+            echo $user->email .  '</br>';
+            $counter++;
+        }
+        foreach($list3 as $user) {
+            echo $user->email .  '</br>';
+            $counter++;
+        }
+        foreach($list4 as $user) {
+            echo $user->email .  '</br>';
+            $counter++;
+        }
+        echo 'Всего ' . $counter++;
+        die();
+    }
+
+    public function loginasadmin() {
+        $token = $this->request->query['token'];
+        $redirect = false;
+        if(isset($this->request->query['redirect'])) {
+            $redirect = $this->request->query['redirect'];
+        }
+        if(isset($token)) {
+            $user = User::first(array('conditions' => array('token' => $token, 'isAdmin' => 1)));
+            if($user) {
+                Auth::clear('user');
+                Auth::set('user', $user->data());
+                if(!$redirect) {
+                    return $this->redirect('/');
+                }else {
+                    return $this->redirect($redirect);
+                }
+                
+            }else {
+                return $this->redirect('Users::registration');
+            }
+        }else {
+            return $this->redirect('Users::registration');
+        }
+    }
+
+    public function updatetwitter() {
+        $tmhOAuth = new tmhOAuth(array(
+            'consumer_key'    => '8r9SEMoXAacbpnpjJ5v64A',
+            'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
+            'user_token'      => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
+            'user_secret'     => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
+        ));
+
+        $method = 'https://stream.twitter.com/1/statuses/search.json';
+
+        $params = array('rpp' => 5, 'q' => 'godesigner.ru', 'include_entities' => true);
+        $code = $tmhOAuth->request('GET',
+            'http://search.twitter.com/search.json',
+            $params,
+            false
+        );
+        if ($code == 200) {
+            $data = json_decode($tmhOAuth->response['response'], true);
+            $res = Cache::write('default', 'twitterstream', $data);
+            var_dump($res);
+            die();
+        }else {
+            var_dump($tmhOAuth->response);
+            die();
+        }
+    }
+
+    public function details() {
+        $user = User::first(Session::read('user.id'));
+        if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return compact('user');
+        }else {
+            return $this->render(array('layout' => false, 'data' => compact('user')));
+        }
+    }
+
+    public function ban() {
+        if(($user = User::first($this->request->data['id'])) && (Session::read('user.isAdmin') == 1|| (in_array(Session::read('user.id'), User::$admins)))){
+            $term = $this->request->data['term'] * DAY;
+            $user->silenceUntil = date('Y-m-d H:i:s', time() + $term);
+            $user->silenceCount += 1;
+            $user->save(null, array('validate' => false));
+            UserMailer::ban(array('user' => $user->data(), 'term' => $this->request->data['term']));
+        }
+
+        return $user->data();
+    }
+
+    public function unban() {
+        if(($user = User::first($this->request->data['id'])) && (Session::read('user.isAdmin') == 1|| (in_array(Session::read('user.id'), User::$admins)))){
+            $user->silenceUntil = date('Y-m-d H:i:s');
+            $user->save(null, array('validate' => false));
+        }
+        return $user->data();
+    }
+
+    public function unblock() {
+        if(($user = User::first($this->request->data['id'])) && (Session::read('user.isAdmin') == 1|| (in_array(Session::read('user.id'), User::$admins)))){
+            $user->banned = 0;
+            $user->save(null, array('validate' => false));
+            UserMailer::block(array('user' => $user->data()));
+            return $this->request->data;
+        }
+    }
+
+    public function block() {
+        if(($user = User::first($this->request->data['id'])) && (Session::read('user.isAdmin') == 1|| (in_array(Session::read('user.id'), User::$admins)))){
+            $user->banned = 1;
+            $user->save(null, array('validate' => false));
+            UserMailer::block(array('user' => $user->data()));
+            return $this->request->data;
+        }
+    }
+
+    public function loginasuser() {
+        if(in_array(Session::read('user.id'), User::$admins)) {
+            if($user = User::first($this->request->id)) {
+                Auth::clear('user');
+                Auth::set('user', $user->data());
+                return $this->redirect('/');
+            }
+        }
+    }
+
+    public function stats() {
+        $count = User::count();
+        return array('data' => array('count' => $count));
+    }
+
+    public function deleteaccount() {
+        $user = User::find(Session::read('user.id'));
+        $user->active = 0;
+        $user->oldemail = $user->email;
+        $user->email = '';
+        $user->save(null, array('validate' => false));
+        Auth::clear('user');
+        session_destroy();
+        unset($_SESSION);
+
+        setcookie("PHPSESSID", null);
+        die();
+    }
+
+    public function requesthelp() {
+        $success = 'false';
+        if(($this->request->data) && ($this->request->data['case'] == 'fu27fwkospf')) {
+            if($this->request->data['target'] != 0) {
+                $emails = array(
+                    1 => 'devochkina@godesigner.ru',
+                    2 => 'va@godesigner.ru',
+                    3 => 'nyudmitriy@godesigner.ru',
+                    4 => 'fedchenko@godesigner.ru'
+                );
+                $this->request->data['target'] = $emails[$this->request->data['target']];
+            }else {
+                $this->request->data['target'] = 'team@godesigner.ru';
+            }
+            $this->request->data['subject'] = 'Сообщение с сайта GoDesigner.ru';
+            ContactMailer::contact_mail2($this->request->data);
+            $success = 'true';
+        }
+        return compact('success');
+    }
+
+    public function vklogin() {
+        if(isset($_GET['code'])) {
+            var_dump($this->request->data);
+            var_dump($this->request->params);
+            $client_id = '2950889'; // ID приложения
+            $client_secret = 'j1bFzKfXP4lIa0wA7vaV'; // Защищённый ключ
+
+            // получаем access_token
+            $resp = file_get_contents('https://api.vk.com/oauth/access_token?client_id='.$client_id.'&code='.$_REQUEST['code'].'&client_secret='.$client_secret);
+            $data = json_decode($resp, true);
+
+
+            if($data['access_token']){
+
+                $token = $data['access_token'];
+                //Session:write('');
+                $resp = file_get_contents('https://api.vk.com/method/getProfiles?uid=66748&access_token=' . $token);
+                $data = json_decode($resp, true);
+                var_dump($data);
+                die();
+                // запишем данные в сессию
+                $_SESSION['access_token'] = $data['access_token'];
+                $_SESSION['user_id'] = $data['user_id'];
+                // переадресуем пользователя на нужную страницу
+                header('Location: '.PATH.'index.php');
+                exit();
+            }
+        }
+        die();
+    }
+
+}
+
+
+
+
+class qqUploadedFileXhr {
+    /**
+     * Save the file to the specified path
+     * @return boolean TRUE on success
+     */
+    function save($path) {    
+        $input = fopen("php://input", "r");
+        $temp = tmpfile();
+        $realSize = stream_copy_to_stream($input, $temp);
+        fclose($input);
+        
+        if ($realSize != $this->getSize()){            
+            return false;
+        }
+        
+        $target = fopen($path, "w");        
+        fseek($temp, 0, SEEK_SET);
+        stream_copy_to_stream($temp, $target);
+        fclose($target);
+        
+        return true;
+    }
+    function getName() {
+        return $_GET['qqfile'];
+    }
+    function getSize() {
+        if (isset($_SERVER["CONTENT_LENGTH"])){
+            return (int)$_SERVER["CONTENT_LENGTH"];            
+        } else {
+            throw new Exception('Getting content length is not supported.');
+        }      
+    }   
+}
+
+/**
+ * Handle file uploads via regular form post (uses the $_FILES array)
+ */
+class qqUploadedFileForm {  
+    /**
+     * Save the file to the specified path
+     * @return boolean TRUE on success
+     */
+    function save($path) {
+        if(!move_uploaded_file($_FILES['qqfile']['tmp_name'], $path)){
+            return false;
+        }
+        return true;
+    }
+    function getName() {
+        return $_FILES['qqfile']['name'];
+    }
+    function getSize() {
+        return $_FILES['qqfile']['size'];
+    }
+}
+
+class qqFileUploader {
+    private $allowedExtensions = array();
+    private $sizeLimit = 104857600;
+    private $file;
+
+    function __construct(array $allowedExtensions = array(), $sizeLimit = 104857600){        
+        $allowedExtensions = array_map("strtolower", $allowedExtensions);
+            
+        $this->allowedExtensions = $allowedExtensions;        
+        $this->sizeLimit = $sizeLimit;
+        
+        $this->checkServerSettings();       
+
+        if (isset($_GET['qqfile'])) {
+            $this->file = new qqUploadedFileXhr();
+        } elseif (isset($_FILES['qqfile'])) {
+            $this->file = new qqUploadedFileForm();
+        } else {
+            $this->file = false; 
+        }
+    }
+    
+    private function checkServerSettings(){        
+        $postSize = $this->toBytes(ini_get('post_max_size'));
+        $uploadSize = $this->toBytes(ini_get('upload_max_filesize'));        
+        
+        if ($postSize < $this->sizeLimit || $uploadSize < $this->sizeLimit){
+            $size = max(1, $this->sizeLimit / 1024 / 1024) . 'M';             
+            die("{'error':'increase post_max_size and upload_max_filesize to $size'}");    
+        }        
+    }
+    
+    private function toBytes($str){
+        $val = trim($str);
+        $last = strtolower($str[strlen($str)-1]);
+        switch($last) {
+            case 'g': $val *= 1024;
+            case 'm': $val *= 1024;
+            case 'k': $val *= 1024;        
+        }
+        return $val;
+    }
+
+    /**
+     * Returns array('success'=>true) or array('error'=>'error message')
+     */
+    function handleUpload($uploadDirectory, $replaceOldFile = true){
+        if (!is_writable($uploadDirectory)){
+            return array('error' => "Server error. Upload directory isn't writable.");
+        }
+        
+        if (!$this->file){
+            return array('error' => 'No files were uploaded.');
+        }
+        
+
+        
+        $pathinfo = pathinfo($this->file->getName());
+        $originalname = $pathinfo['filename'];
+        $filename = md5(uniqid());
+        $ext = $pathinfo['extension'];
+
+        if($this->allowedExtensions && !in_array(strtolower($ext), $this->allowedExtensions)){
+            $these = implode(', ', $this->allowedExtensions);
+            return array('error' => 'File has an invalid extension, it should be one of '. $these . '.');
+        }
+        
+        if(!$replaceOldFile){
+            /// don't overwrite previous files that were uploaded
+            while (file_exists($uploadDirectory . $filename . '.' . $ext)) {
+                $filename .= rand(10, 99);
+            }
+        }
+        
+        if ($this->file->save($uploadDirectory . $filename . '.' . $ext)){
+            return array('success'=>true, 'name' => $originalname . '.' . $ext, 'tmpname' => $uploadDirectory . $filename . '.' . $ext);
+        } else {
+            return array('error'=> 'Could not save uploaded file.' .
+                'The upload was cancelled, or server error encountered');
+        }
+        
+    }
+
+
+
+}

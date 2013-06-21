@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2013, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -36,14 +36,7 @@ require __DIR__ . '/bootstrap/libraries.php';
  * rules of the `ErrorHandler` class to provide a high level of control over managing exceptions in
  * your application, with no impact on framework or application code.
  */
-// require __DIR__ . '/bootstrap/errors.php';
-
-/**
- * This file defines bindings between classes which are triggered during the request cycle, and
- * allow the framework to automatically configure its environmental settings. You can add your own
- * behavior and modify the dispatch cycle to suit your needs.
- */
-require __DIR__ . '/bootstrap/action.php';
+require __DIR__ . '/bootstrap/errors.php';
 
 /**
  * This file contains configurations for connecting to external caching resources, as well as
@@ -57,29 +50,66 @@ require __DIR__ . '/bootstrap/cache.php';
 require __DIR__ . '/bootstrap/connections.php';
 
 /**
+ * This file defines bindings between classes which are triggered during the request cycle, and
+ * allow the framework to automatically configure its environmental settings. You can add your own
+ * behavior and modify the dispatch cycle to suit your needs.
+ */
+require __DIR__ . '/bootstrap/action.php';
+
+/**
  * This file contains configuration for session (and/or cookie) storage, and user or web service
  * authentication.
  */
-// require __DIR__ . '/bootstrap/session.php';
+ require __DIR__ . '/bootstrap/session.php';
 
 /**
  * This file contains your application's globalization rules, including inflections,
  * transliterations, localized validation, and how localized text should be loaded. Uncomment this
  * line if you plan to globalize your site.
  */
-// require __DIR__ . '/bootstrap/g11n.php';
+require __DIR__ . '/bootstrap/g11n.php';
 
 /**
  * This file contains configurations for handling different content types within the framework,
  * including converting data to and from different formats, and handling static media assets.
  */
-// require __DIR__ . '/bootstrap/media.php';
+require __DIR__ . '/bootstrap/media.php';
 
 /**
  * This file configures console filters and settings, specifically output behavior and coloring.
  */
-if (PHP_SAPI === 'cli') {
-	require __DIR__ . '/bootstrap/console.php';
-}
+// require __DIR__ . '/bootstrap/console.php';
 
-?>
+/**
+ * This file contains custom validation rules for models
+ */
+require __DIR__ . '/bootstrap/validation.php';
+
+	define('SECOND', 1);
+	define('MINUTE', 60);
+	define('HOUR', 3600);
+	define('DAY', 86400);
+	define('WEEK', 604800);
+	define('MONTH', 2592000);
+	define('YEAR', 31536000);
+
+date_default_timezone_set('Europe/Moscow');
+
+/*
+use lithium\action\Dispatcher;
+use lithium\analysis\Logger;
+
+Logger::config(array(
+    'default' => array('adapter' => 'FirePhp')
+));*/
+
+require __DIR__ . '/bootstrap/logs.php';
+
+/*
+Dispatcher::applyFilter('_call', function($self, $params, $chain) {
+	var_dump($params);
+    if (isset($params['callable']->response)) {
+        Logger::adapter('default')->bind($params['callable']->response);
+    }
+    return $chain->next($self, $params, $chain);
+});*/

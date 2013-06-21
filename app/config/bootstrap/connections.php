@@ -60,12 +60,12 @@ use lithium\data\Connections;
  * Uncomment this configuration to use MySQL as your default database.
  */
 Connections::add('default', array(
-	'type' => 'database',
-	'adapter' => 'MySql',
-	'host' => 'localhost',
-	'login' => 'gdev',
-	'password' => 'gdev',
-	'database' => 'gdev',
-	'encoding' => 'UTF-8'
+    'type' => 'database',
+    'adapter' => 'MySql',
+    'host' => 'localhost',
+    'login' => 'gdev',
+    'password' => 'gdev',
+    'database' => 'gdev',
+    'encoding' => 'UTF-8'
 ));
 ?>
