@@ -371,20 +371,6 @@ $(document).ready(function() {
     });*/
 
     /*
-     * String hashing helper function
-     */
-    String.prototype.hashCode = function(){
-        var hash = 0, i, char;
-        if (this.length == 0) return hash;
-        for (i = 0, l = this.length; i < l; i++) {
-            char  = this.charCodeAt(i);
-            hash  = ((hash<<5)-hash)+char;
-            hash |= 0; // Convert to 32bit integer
-        }
-        return hash;
-    };
-
-    /*
      * Upload pitchfile description
      */
     function descriptionUpload(data) {
@@ -396,56 +382,60 @@ $(document).ready(function() {
     }
 
     var fileIds = [];
+    var placeholder = $('#fileupload-description').attr('placeholder');
         var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
         onSelect: function(file) {
-            var description = ($('#fileupload-description').val() == $('#fileupload-description').attr('placeholder')) ? '' : $('#fileupload-description').val();
+            var description = ($('#fileupload-description').val() == placeholder) ? '' : $('#fileupload-description').val();
             if($('#filename').html() != 'Файл не выбран') {
                 //$('#filename').html($('#filename').html() + '; ' + file.name);
                 console.log('adding file')
-                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p id="description_' + file.name.hashCode() + '" style="font-size:15px;text-decoration: none;">' + description + '</p></li>')
+                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + description + '</p></li>')
             }else {
-                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p id="description_' + file.name.hashCode() + '" style="font-size:15px;text-decoration: none;">' + description + '</p></li>');
+                $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + description + '</p></li>');
             }
-            $('#fileupload-description').val('')
+            $('#fileupload-description').val('');
+            $('#fileupload-description').trigger('blur');
+            
             var self = this;
-                var uploadId = this.damnUploader('addItem', {
-                    file: file,
-                        onProgress: function(percents) {
-                            $('#progressbar').text(percents + '%');
-                            var progresspx = Math.round(3.4 * percents);
-                            if(progresspx > 330) {
-                                progresspx == 330;
-                            }
-                            $('#filler').css('width', progresspx);
-                            if(percents > 95) {
-                                $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
-                            }else {
-                                $('#progressbarimage').css('background', 'url(/img/indicator_empty.png)');
-                            }
-                        },
-                        onComplete: function(successfully, data, errorCode) {
-                            var dataObj = $.parseJSON(data);
-                            fileIds.push(dataObj.id);
-                            if ((successfully) && (data.match(/(\d*)/))) {
-                                data = {
-                                    'description': description,
-                                    'id': dataObj.id
-                                }
-                                descriptionUpload(data);
-                                //alert('Файл '+file.name+' загружен, полученные данные: '+data);
-                            } else {
-                                alert('Ошибка при загрузке. Код ошибки: '+errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
-                            }
-                            if(self.damnUploader('itemsCount') == 0) {
-                                Cart.fileIds = fileIds;
-                                Cart.saveData();
-                                $.modal.close();
-                            }
+            var uploadId = this.damnUploader('addItem', {
+                file: file,
+                    onProgress: function(percents) {
+                        $('#progressbar').text(percents + '%');
+                        var progresspx = Math.round(3.4 * percents);
+                        if(progresspx > 330) {
+                            progresspx == 330;
                         }
-                });
-                var lastChild = $('#filezone').children(':last');
-                var link = $('.filezone-delete-link', lastChild).attr('data-delete-id', uploadId);
+                        $('#filler').css('width', progresspx);
+                        if(percents > 95) {
+                            $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
+                        }else {
+                            $('#progressbarimage').css('background', 'url(/img/indicator_empty.png)');
+                        }
+                    },
+                    onComplete: function(successfully, data, errorCode) {
+                        var dataObj = $.parseJSON(data);
+                        fileIds.push(dataObj.id);
+                        if ((successfully) && (data.match(/(\d*)/))) {
+                            data = {
+                                'description': description,
+                                'id': dataObj.id
+                            }
+                            descriptionUpload(data);
+                            //alert('Файл '+file.name+' загружен, полученные данные: '+data);
+                        } else {
+                            alert('Ошибка при загрузке. Код ошибки: '+errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
+                        }
+                        if(self.damnUploader('itemsCount') == 0) {
+                            $.merge(Cart.fileIds, fileIds);
+                            Cart.saveData();
+                            $.modal.close();
+                        }
+                    }
+            });
+            
+            var lastChild = $('#filezone').children(':last');            
+            var link = $('.filezone-delete-link', lastChild).attr('data-delete-id', uploadId);
 
             return false; // отменить стандартную обработку выбора файла
         }
@@ -457,12 +447,20 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.filezone-delete-link', function() {
-        if (Cart.Id) {
-            $.get($(this).attr('href'), function(response) {
-                if(response != 'true') {
-                    alert('При удалении файла произошла ошибка');
-                }
-            });
+        if (Cart.id) {
+            var givenId = +$(this).parent().attr('data-id'); 
+            if (givenId) { // File came from database
+                $.post('/pitchfiles/delete', {'id': givenId}, function(response) {
+                    if(response != 'true') {
+                        alert('При удалении файла произошла ошибка');
+                    }
+                    var position = $.inArray(givenId, Cart.fileIds); 
+                    Cart.fileIds.splice(position, 1);
+                    Cart.saveFileIds();
+                });
+            } else {
+                uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
+            }
             $(this).parent().remove();
             return false;
         } else {
@@ -473,8 +471,6 @@ $(document).ready(function() {
     })
 
     $('#uploadButton').click(function() {
-
-
         //$('#fileuploadform').fileupload('uploadByClick');
         return false;
     });
@@ -634,7 +630,6 @@ $(document).ready(function() {
     /**/
     var Cart = new FeatureCart;
     Cart.init();
-
 });
 //$('input[name=category_id]').val()
 
@@ -812,11 +807,7 @@ function FeatureCart() {
                 }
                 self.id = response;
                 $('#pitch-id').val(self.id);
-                if(self.fileIds.length != 0) {
-                    $.post('/pitches/updatefiles.json', {"fileids": self.fileIds, "id": self.id}, function() {
-
-                    });
-                }
+                
                 pitchid = self.id;
 
                 $.get('/transactions/getsigndata/' + self.id + '.json', function(response) {
@@ -831,6 +822,13 @@ function FeatureCart() {
             });
         }
     }
+    
+    this.saveFileIds = function() {
+            $.post('/pitches/updatefiles.json', {"fileids": self.fileIds, "id": self.id}, function() {
+
+            });
+    }
+    
     this.getSpecificData = function() {
         var specificPitchData = {};
         $('input.specific-prop, textarea.specific-prop').each(function(index, object){

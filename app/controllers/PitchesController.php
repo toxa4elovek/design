@@ -118,10 +118,13 @@ class PitchesController extends \app\controllers\AppController {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
         if($pitch = Pitch::first($this->request->data['id'])) {
-            $existingArray = unserialize($pitch->filesId);
-            foreach($this->request->data['fileids'] as $key => $item) {
-                if(!in_array($item, $existingArray)) {
-                    $existingArray[] = $item;
+            $existingArray = array();
+            //$existingArray = unserialize($pitch->filesId);
+            if (isset($this->request->data['fileids'])) {
+                foreach($this->request->data['fileids'] as $key => $item) {
+    //                if(!in_array($item, $existingArray)) {
+                        $existingArray[] = $item;
+      //              }
                 }
             }
             $fileIds = serialize($existingArray);
@@ -327,7 +330,7 @@ class PitchesController extends \app\controllers\AppController {
                     Comment::createComment($data);
                 }
 
-                if($code) {
+                if(isset($code)) {
                     $code->pitch_id = $pitch->id;
                     $code->save();
                 }
@@ -348,7 +351,7 @@ class PitchesController extends \app\controllers\AppController {
             }
 			Session::write('unpublished.pitch', $pitch->id);
 			return $pitch->id;
-		}		
+		}
 	}
 
     public function edit() {

@@ -19,7 +19,7 @@ $specifics = unserialize($pitch->specifics);
 <?php if(isset($specifics["audience"])):?>
 <script type="text/javascript">var slidersValue = <?php echo json_encode($specifics["audience"])?>;</script>
 <?php else:?>
-<script type="text/javascript">var slidersValue = <?php echo json_encode($specifics["logo-properties"])?>;</script>    
+<script type="text/javascript">var slidersValue = <?php echo json_encode($specifics["logo-properties"])?>;</script>
 <?php endif;?>
 <div class="wrapper">
 
@@ -247,7 +247,7 @@ endif?>
                 <p><input type="text" <?=$disabled?>  id="promocode" name="promocode" class="phone" value="<?=$codeValue?>"></p>
             </div>
 
-        
+
         </div><!-- .group -->
 
         <p class="submit">
@@ -381,7 +381,7 @@ endif?>
             <a href="#">+ добавить файл</a></p--><!-- .add-another-file -->
             <ul id="filezone">
                 <?php foreach($files as $file):?>
-                <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><p><?=$file->{'file-description'}?></p><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="/pitchfiles/delete/<?=$file->id?>.json">удалить</a><div style="clear:both;"></div></li>
+                <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
                 <?php endforeach;?>
             </ul>
             <div style="clear:both"></div>
