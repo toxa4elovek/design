@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use \app\models\Post;
 use \lithium\storage\Session;
+use app\models\User;
+use lithium\analysis\Logger;
 
 class PostsController extends \app\controllers\AppController {
 
@@ -29,7 +31,7 @@ class PostsController extends \app\controllers\AppController {
             Session::delete('user.blogpost');
         }
 
-        if(in_array(Session::read('user.id'), array(32, 4, 5, 108, 81, 1773, 3049, 1))) {
+        if(User::checkRole('editor')) {
             $posts = Post::all(array('conditions' => $conditions, 'page' => $page, 'limit' => $limit,'order' => array('created' => 'desc'), 'with' => array('User')));
         }else {
             $posts = Post::all(array('conditions' => array('published' => 1, 'Post.created' => array('<=' => date('Y-m-d H:i:s'))) + $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
@@ -43,7 +45,7 @@ class PostsController extends \app\controllers\AppController {
     }
 
     public function save() {
-        if(in_array(Session::read('user.id'), array(32, 4, 5, 108, 81, 1773, 3049, 1))) {
+        if(User::checkRole('editor')) {
             if((!empty($this->request->data['id'])) && ($this->request->data['id'])) {
                 $post = Post::first($this->request->data['id']);
             }else {
@@ -54,7 +56,7 @@ class PostsController extends \app\controllers\AppController {
             }
             $post->set($this->request->data);
             $tagsArray = array();
-            foreach(explode(',', $this->request->data['tags']) as $tag) {
+            foreach(explode(',', preg_replace('/[\[\]@\"]/', '', $this->request->data['tags'])) as $tag) {
                 $tagsArray[] = trim($tag);
             }
             $tagsString = implode('|', $tagsArray);
@@ -75,7 +77,7 @@ class PostsController extends \app\controllers\AppController {
     }
 
     public function view() {
-        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81, 1773, 3049))))) {
+        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || User::checkRole('editor'))) {
             if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
                 Session::delete('user.blogpost');
                 setcookie('counterdata', '', time() - 3600, '/');
@@ -112,15 +114,15 @@ class PostsController extends \app\controllers\AppController {
     }
 
     public function add() {
-        if(in_array(Session::read('user.id'), array(32, 4, 5, 108, 81, 1773, 3049, 1))) {
-
-        }else {
+        if(false === User::checkRole('editor')) {
             return $this->redirect('/posts');
         }
+        $commonTags = Post::getCommonTags();
+        return compact('commonTags');
     }
 
     public function edit() {
-        if(in_array(Session::read('user.id'), array(32, 4, 5, 108, 81, 1773, 3049, 1))) {
+        if(User::checkRole('editor')) {
             if($post = Post::first($this->request->id)) {
                 return compact('post');
             }else {

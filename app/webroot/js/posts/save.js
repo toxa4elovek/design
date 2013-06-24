@@ -63,5 +63,25 @@ $(document).ready(function() {
         });
         return false;
     });
+    
+    $('#typeahead').textext({
+        plugins : 'tags arrow suggestions autocomplete prompt',
+        prompt : 'Выберите из списка',
+        tagsItems : existingTags,
+        suggestions: commonTags,
+        autocomplete: {
+            dropdownPosition: 'below'
+        }
+    }).bind('isTagAllowed', function(e, data){
+        var formData = $(e.target).textext()[0].tags()._formData,
+        list = eval(formData);
+
+    // duplicate checking
+    if (formData.length && list.indexOf(data.tag) >= 0) {
+           var message = [ 'Такой тег уже добавлен.' ].join(' ');
+           alert(message);
+
+           data.result = false;
+    }});
 
 });

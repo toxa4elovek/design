@@ -16,11 +16,24 @@ use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 
 class User extends \app\models\AppModel {
-	
+
 	public $hasOne = array();
 	public $hasMany = array('Pitch');
+
+	/**
+	 * Fill Admin role user's ids here
+	 *
+	 * @var array
+	 */
     public static $admins = array(32, 4, 5, 108, 81);
     public static $experts = array();
+
+    /**
+     * Fill Editor role user's ids here
+     *
+     * @var array
+     */
+    private static $editors = array(32, 4, 5, 108, 81, 1773, 3049, 1);
 
 
     protected static $_behaviors = array(
@@ -44,7 +57,7 @@ class User extends \app\models\AppModel {
 		parent::__init();
 		self::applyFilter('save', function($self, $params, $chain){
 		    $record = $params['entity'];
-		    if (!$record->id) { 
+		    if (!$record->id) {
 		    	if(empty($record->password)) {
 		    		if(!isset($params['data']['password'])) {
 		    			$params['data']['password'] = $password = $comfirmPassword = '';
@@ -131,19 +144,19 @@ class User extends \app\models\AppModel {
 	public function generateToken() {
 		return uniqid();
 	}
-	
+
 	public function generatePassword() {
 		return substr(md5(rand().rand()), 0, 14);
 	}
-	
+
 	public function activateUser($entity) {
 		$entity->token = '';
-		$entity->confirmed_email = 1; 
+		$entity->confirmed_email = 1;
 		$res = $entity->save(null, array('validate' => false));
 	}
 
     public static function getSubscribedPitches($userId) {
-        $pitches = Pitch::find('all', array('conditions' => 
+        $pitches = Pitch::find('all', array('conditions' =>
         	array('user_id' => $userId),
         	 ));
         $pitchesIds = array();
@@ -163,6 +176,28 @@ class User extends \app\models\AppModel {
         }
         ksort($pitchesIds);
         return $pitchesIds;
+    }
+
+    /**
+     * Checks if the User is in specified Role
+     *
+     * @return boolean
+     */
+    public static function checkRole($role) {
+        $res = false;
+        switch ($role) {
+            case 'admin':
+                $res = in_array(Session::read('user.id'), self::$admins);;
+                break;
+            case 'editor':
+                $res = in_array(Session::read('user.id'), self::$editors);
+                break;
+            default:
+                $res = false;
+                break;
+        }
+
+        return $res;
     }
 
     public static function getParticipatePitches($userId) {
@@ -435,10 +470,10 @@ class User extends \app\models\AppModel {
             $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $params);
             SpamMailer::newadmincomment($data);
         }
-        return true;    
+        return true;
     }
 
-    //public static function 
+    //public static function
 
     public static function sendSpamFirstSolutionForPitch($pitchId) {
         $pitch = Pitch::first($pitchId);
@@ -521,7 +556,7 @@ class User extends \app\models\AppModel {
         }
         $data = array('user' => $user, 'blocks' => $blocks);
         SpamMailer::dailydigest($data);
-        return true;    
+        return true;
     }
 
     public static function sendSpamToLostClients() {
@@ -655,7 +690,7 @@ class User extends \app\models\AppModel {
         $code = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
             'status' => $tweet,
         ));
-               
+
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
             return true;

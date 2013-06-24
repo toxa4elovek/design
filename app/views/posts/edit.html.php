@@ -48,8 +48,8 @@
 
                             <div class="groupc">
                                 <p>
-                                    <label>Теги (через запятую)</label>
-                                    <input type="text" name="tags"  value="<?=implode(', ', explode('|',$post->tags))?>"/>
+                                    <label>Теги</label>
+                                    <input type="text" name="tags" id="typeahead" />
                                 </p>
                             </div>
 
@@ -72,5 +72,9 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
+<script>
+var commonTags = [ <?php echo implode(',', app\models\Post::getCommonTags()); ?> ];
+var existingTags = [ <?php echo implode(',', app\models\Post::parseExistingTags($post->tags)); ?> ];
+</script>
 <?=$this->html->style(array('/help', '/brief', '/css/ui-lightness/jquery-ui-1.8.23.custom.css', '/css/datetimepicker.css'), array('inline' => false))?>
-<?php $this->html->script(array('/js/tiny_mce/jquery.tinymce.js', '/js/jquery-ui-1.8.23.custom.min.js', '/js/datetimepicker.js','/js/posts/save.js'), array('inline' => false));?>
+<?php $this->html->script(array('/js/tiny_mce/jquery.tinymce.js', '/js/jquery-ui-1.8.23.custom.min.js', '/js/datetimepicker.js', '/js/posts/textext.min.js', '/js/posts/save.js'), array('inline' => false));?>
