@@ -1025,28 +1025,39 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function updatetwitter() {
+        $string = base64_encode('8r9SEMoXAacbpnpjJ5v64A:I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk');
         $tmhOAuth = new tmhOAuth(array(
             'consumer_key'    => '8r9SEMoXAacbpnpjJ5v64A',
             'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
             'user_token'      => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
             'user_secret'     => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
         ));
-
-        $method = 'https://stream.twitter.com/1/statuses/search.json';
+        $tmhOAuth->headers['Authorization'] = 'Basic ' . $string;
+        $params = array('grant_type' => 'client_credentials');
+        $response = $tmhOAuth->request('POST',
+            'https://api.twitter.com/oauth2/token',
+            $params,
+            false
+        );
+        $data = json_decode($tmhOAuth->response['response'], true);
+        $bearerToken = $data['access_token'];
+        $tmhOAuth->headers['Authorization'] = 'Bearer ' . $bearerToken;
 
         $params = array('rpp' => 5, 'q' => 'godesigner.ru', 'include_entities' => true);
         $code = $tmhOAuth->request('GET',
-            'http://search.twitter.com/search.json',
+            'https://api.twitter.com/1.1/search/tweets.json',
             $params,
             false
         );
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
             $res = Cache::write('default', 'twitterstream', $data);
-            var_dump($res);
+            var_dump($data);
             die();
         }else {
+            echo '<pre>';
             var_dump($tmhOAuth->response);
+            echo '</pre>';
             die();
         }
     }
