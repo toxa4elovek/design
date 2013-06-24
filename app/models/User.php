@@ -652,7 +652,7 @@ class User extends \app\models\AppModel {
               'user_token'      => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
               'user_secret'     => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
             ));
-        $code = $tmhOAuth->request('POST', $tmhOAuth->url('1/statuses/update'), array(
+        $code = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
             'status' => $tweet,
         ));
                
@@ -660,8 +660,9 @@ class User extends \app\models\AppModel {
             $data = json_decode($tmhOAuth->response['response'], true);
             return true;
         }else {
+            echo '<pre>';
             var_dump($tmhOAuth->response);
-            die();
+            echo '</pre>';
             return false;
         }
     }
