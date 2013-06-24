@@ -136,50 +136,10 @@ $(document).ready(function() {
     });*/
 
     var fileIds = [];
+    var placeholder = $('#fileupload-description').attr('placeholder');
     var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
-        onSelect: function(file) {
-            if($('#filename').html() != 'Файл не выбран') {
-                $('#filename').html($('#filename').html() + '; ' + file.name);
-            }else {
-                $('#filename').html(file.name);
-
-            }
-            var self = this;
-            var uploadId = this.damnUploader('addItem', {
-                file: file,
-                onProgress: function(percents) {
-                    $('#progressbar').text(percents + '%');
-                    var progresspx = Math.round(3.4 * percents);
-                    if(progresspx > 330) {
-                        progresspx == 330;
-                    }
-                    $('#filler').css('width', progresspx);
-                    if(percents > 95) {
-                        $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
-                    }else {
-                        $('#progressbarimage').css('background', 'url(/img/indicator_empty.png)');
-                    }
-                },
-                onComplete: function(successfully, data, errorCode) {
-                    var dataObj = $.parseJSON(data);
-                    fileIds.push(dataObj.id);
-                    //console.log(successfully);
-                    //console.log(data.match(/(\d*)/));
-                    if ((successfully) && (data.match(/(\d*)/))) {
-                        //alert('Файл '+file.name+' загружен, полученные данные: '+data);
-                    } else {
-                        alert('Ошибка при загрузке. Код ошибки: '+errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
-                    }
-                    if(self.damnUploader('itemsCount') == 0) {
-                        Cart.fileIds = fileIds;
-                        Cart.saveData();
-                        $.modal.close();
-                    }
-                }
-            });
-            return false; // отменить стандартную обработку выбора файла
-        }
+        onSelect: function(file) { onSelectHandler.call(this, file, placeholder, fileIds, Cart); } // See app.js
     });
 
     $('input[name="phone-brief"]').change(function() {
@@ -188,13 +148,27 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.filezone-delete-link', function() {
-        $.get($(this).attr('href'), function(response) {
-            if(response != 'true') {
-                alert('При удалении файла произошла ошибка');
+        if (Cart.id) {
+            var givenId = +$(this).parent().attr('data-id'); 
+            if (givenId) { // File came from database
+                $.post('/pitchfiles/delete', {'id': givenId}, function(response) {
+                    if(response != 'true') {
+                        alert('При удалении файла произошла ошибка');
+                    }
+                    var position = $.inArray(givenId, Cart.fileIds); 
+                    Cart.fileIds.splice(position, 1);
+                    Cart.saveFileIds();
+                });
+            } else {
+                uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
             }
-        });
-        $(this).parent().remove();
-        return false;
+            $(this).parent().remove();
+            return false;
+        } else {
+            uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
+            $(this).parent().remove();
+            return false;
+        }
     })
 
     $('#uploadButton').click(function() {
@@ -402,16 +376,17 @@ function FeatureCart() {
                     return false;
                 }
                 self.id = response;
-                if(self.fileIds.length != 0) {
-                    $.post('/pitches/updatefiles.json', {"fileids": self.fileIds, "id": self.id}, function() {
-                        window.location = '/pitches/details/' + self.id;
-                    });
-                }else {
-                    window.location = '/pitches/details/' + self.id;
-                }
+                window.location = '/pitches/details/' + self.id;
             });
         }
     }
+    
+    this.saveFileIds = function() {
+        $.post('/pitches/updatefiles.json', {"fileids": self.fileIds, "id": self.id}, function() {
+
+        });
+    }
+    
     this.getSpecificData = function() {
         var specificPitchData = {};
         $('input.specific-prop, textarea.specific-prop').each(function(index, object){

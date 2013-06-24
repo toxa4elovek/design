@@ -150,5 +150,4 @@ class AppController extends \lithium\action\Controller {
     protected function popularQuestions() {
         return Answer::all(array('limit' => 5, 'order' => array('hits' => 'desc')));
     }
-	
 }

@@ -434,3 +434,72 @@ window.fbAsyncInit = function() {
     d.getElementsByTagName('head')[0].appendChild(js);
 }(document));
 //}
+
+/*
+ * Upload pitchfile description
+ */
+function descriptionUpload(data) {
+    $.ajax({
+        url: '/pitchfiles/addDescription',
+        type: 'POST',
+        data: data
+    });
+}
+
+/*
+ * Pitch files upload/delete handler
+ */
+function onSelectHandler(file, placeholder, fileIds, Cart) {
+    var description = ($('#fileupload-description').val() == placeholder) ? '' : $('#fileupload-description').val();
+    if($('#filename').html() != 'Файл не выбран') {
+        //$('#filename').html($('#filename').html() + '; ' + file.name);
+        console.log('adding file')
+        $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + description + '</p></li>')
+    }else {
+        $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + description + '</p></li>');
+    }
+    $('#fileupload-description').val('');
+    $('#fileupload-description').trigger('blur');
+    
+    var self = this;
+    var uploadId = this.damnUploader('addItem', {
+        file: file,
+            onProgress: function(percents) {
+                $('#progressbar').text(percents + '%');
+                var progresspx = Math.round(3.4 * percents);
+                if(progresspx > 330) {
+                    progresspx == 330;
+                }
+                $('#filler').css('width', progresspx);
+                if(percents > 95) {
+                    $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
+                }else {
+                    $('#progressbarimage').css('background', 'url(/img/indicator_empty.png)');
+                }
+            },
+            onComplete: function(successfully, data, errorCode) {
+                var dataObj = $.parseJSON(data);
+                fileIds.push(dataObj.id);
+                if ((successfully) && (data.match(/(\d*)/))) {
+                    data = {
+                        'description': description,
+                        'id': dataObj.id
+                    }
+                    descriptionUpload(data);
+                    //alert('Файл '+file.name+' загружен, полученные данные: '+data);
+                } else {
+                    alert('Ошибка при загрузке. Код ошибки: '+errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
+                }
+                if(self.damnUploader('itemsCount') == 0) {
+                    $.merge(Cart.fileIds, fileIds);
+                    Cart.saveData();
+                    $.modal.close();
+                }
+            }
+    })
+    
+    var lastChild = $('#filezone').children(':last');            
+    var link = $('.filezone-delete-link', lastChild).attr('data-delete-id', uploadId);
+
+    return false; // отменить стандартную обработку выбора файла
+}
