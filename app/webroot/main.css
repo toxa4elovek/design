@@ -2821,10 +2821,17 @@ ul.social li#rss {
     padding-top:21px;
 }
 .requestli a {
-    font-size:11px;color:#8c949f;text-transform: uppercase;
+	font-size: 14px;
+	color: #8c949f;
+	text-transform: uppercase;
+	width: 95%;
+	display: inline-block;
+	padding: .4em;
+	margin-right: -2em;
 }
 .requestli a:hover {
     color: #ff585d;
+	background: #eeeeef;
 }
 #requesthelplink:hover {
     text-decoration: underline;

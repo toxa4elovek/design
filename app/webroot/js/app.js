@@ -112,11 +112,6 @@ $(document).ready(function() {
         return false;
     })
 
-    $('#reqto').on('click', function() {
-        $('#contactlist').show();
-        return false;
-    })
-
     $('#reqto').on('keyup', function() {
 
         $('#contactlist').show();
@@ -142,11 +137,16 @@ $(document).ready(function() {
         return false;
     })
 
-    $('#requesthelpselector').on('click', function() {
-        $('#contactlist').toggle();
+    $('#requesthelpselector, .requestli, #reqto').on('mouseover', function() {
+        $('#contactlist').show();
         return false;
     })
 
+    $('#requesthelpselector, .requestli, #reqto').on('mouseout', function() {
+        $('#contactlist').hide();
+        return false;
+    })
+    
 	$('.facebook-logon').click(function() {
 		FB.login(function(response) {
 	    	if (response.authResponse) {
