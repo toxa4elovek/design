@@ -454,7 +454,7 @@ function onSelectHandler(file, placeholder, fileIds, Cart) {
     if($('#filename').html() != 'Файл не выбран') {
         //$('#filename').html($('#filename').html() + '; ' + file.name);
         console.log('adding file')
-        $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + description + '</p></li>')
+        $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p style="">' + description + '</p></li>')
     }else {
         $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + description + '</p></li>');
     }
