@@ -63,8 +63,8 @@ Connections::add('default', array(
     'type' => 'database',
     'adapter' => 'MySql',
     'host' => 'localhost',
-    'login' => 'root',
-    'password' => '',
+    'login' => 'gdev',
+    'password' => 'gdev',
     'database' => 'gdev',
     'encoding' => 'UTF-8'
 ));
