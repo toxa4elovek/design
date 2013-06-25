@@ -169,6 +169,9 @@ echo '<!--' . $this->session->read('user.blogpost.date') . '-->';
             <a href="#" style="color: rgb(100, 143, 164); font-size: 12px; padding-right: 20px; background: url('/img/closerequestform.png') no-repeat scroll 50px 0px transparent; margin-top: 0px; margin-left: 405px;" class="close-request">закрыть</a>
             <img style="margin-left:45px;margin-top:0px" src="/img/reqthank.png" alt="">
         </div>
+        <div id="fbimg" style="display:none;">
+            <img src="/img/share-image.jpg" alt="" />
+        </div>
      </div>
 </div>
 <script type="text/javascript">
