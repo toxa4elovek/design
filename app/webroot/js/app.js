@@ -503,3 +503,21 @@ function onSelectHandler(file, placeholder, fileIds, Cart) {
 
     return false; // отменить стандартную обработку выбора файла
 }
+
+/*
+ * New Comment field validation. Check if real text in field.
+ */
+function isCommentValid(text) {
+    var regex = '#\\d+,'; // #15,
+    regex += '|#\\d+\\s{1},', // #15 ,
+    regex += '|#\\d+', // #15
+    regex += '|@\\S+\\s{1}\\S{1}\\.,', // @Дмитрий Н.,
+    regex += '|@\\S+\\s\\S{1}\\. ,', // @Дмитрий Н. ,
+    regex += '|@\\S+\\s\\S{1}', // @Дмитрий Н
+    re = new RegExp(regex, 'g');
+    var newString = text.replace(re, '');
+    if (newString.match(/\S/)) {
+        return true;
+    }
+    return false;
+}

@@ -212,12 +212,12 @@ class Comment extends \app\models\AppModel {
      */
     public static function checkComment($text) {
         $patterns = array(
-            '/#\d*,/', // #15,
-            '/#\d* ,/', // #15 ,
-            '/#\d*/', // #15
-            '/@[\p{L}]* [\p{L}]{1}\.,/', // @Дмитрий Н.,
-            '/@[\p{L}]* [\p{L}]{1}\. ,/', // @Дмитрий Н. ,
-            '/@[\p{L}]* [\p{L}]{1}/', // @Дмитрий Н
+            '/#\d+,/', // #15,
+            '/#\d+ ,/', // #15 ,
+            '/#\d+/', // #15
+            '/@[\p{L}]+ [\p{L}]{1}\.,/', // @Дмитрий Н.,
+            '/@[\p{L}]+ [\p{L}]{1}\. ,/', // @Дмитрий Н. ,
+            '/@[\p{L}]+ [\p{L}]{1}/', // @Дмитрий Н
         );
         $res = preg_replace($patterns, '', $text);
         $res = preg_match('/[\p{L}]+/', $res);
