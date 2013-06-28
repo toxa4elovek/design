@@ -6,7 +6,7 @@ use \app\models\Solution;
 use \app\models\Historycomment;
 
 class Comment extends \app\models\AppModel {
-	
+
 	public $belongsTo = array('Pitch', 'User');
 
 	public static function __init() {
@@ -44,6 +44,10 @@ class Comment extends \app\models\AppModel {
                 if(($repliedComment) && ($repliedComment->solution_id > 0)) {
                     $params['solution_id'] = $repliedComment->solution_id;
                 }
+            }
+
+            if(false == $self::checkComment($params['text'])) {
+                return $params;
             }
 
             $params = $chain->next($self, $params, $chain);
@@ -161,7 +165,7 @@ class Comment extends \app\models\AppModel {
                         $foundItem = $addHyperlink($foundItem);
 
                     }
-                }               
+                }
             }
             return $result;
         });
@@ -179,6 +183,7 @@ class Comment extends \app\models\AppModel {
 
 	public static function createComment($data) {
 		return static::_filter(__FUNCTION__, $data, function($self, $params) {
+		    \lithium\analysis\Logger::write('debug', 'function');
             $comment = $self::create();
             if((isset($params['comment_id'])) && ($mentionedComment = $self::first($params['comment_id']))) {
                 $params['reply_to'] = $mentionedComment->user_id;
@@ -197,6 +202,27 @@ class Comment extends \app\models\AppModel {
             return $matches[1];
         }else {
             return 0;
+        }
+    }
+
+    /**
+     * Check if the Comment includes real text
+     *
+     * return boolean
+     */
+    public static function checkComment($text) {
+        $patterns = array(
+            '/#\d+,/', // #15,
+            '/#\d+ ,/', // #15 ,
+            '/#\d+/', // #15
+            '/@[\p{L}]+ [\p{L}]{1}\.,/', // @Дмитрий Н.,
+            '/@[\p{L}]+ [\p{L}]{1}\. ,/', // @Дмитрий Н. ,
+            '/@[\p{L}]+ [\p{L}]{1}/', // @Дмитрий Н
+        );
+        $res = preg_replace($patterns, '', $text);
+        $res = preg_match('/[\p{L}]+/', $res);
+        if ($res == 1) {
+            return true;
         }
     }
 

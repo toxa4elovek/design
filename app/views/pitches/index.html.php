@@ -8,7 +8,7 @@
                 <table><tr><td>
                 <div id="filterContainer" style="border-radius:4px 4px 4px 4px;border:4px solid #F3F3F3; height:41px;padding-top:10px;background-color:white;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset; width:618px;margin-left:25px">
                     <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
-                    <input type="text" id="searchTerm" placeholder="НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 7px;margin-left:4px;">
+                    <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 7px;margin-left:4px;">
                     <a href="#" id="filterToggle" data-dir="up" style=""><img style="padding-top:4px" src="/img/filter-arrow-down.png" alt=""></a>
                 </div></td><td>
                 <a style="margin-left:15px;margin-top:4px" href="#" id="goSearch" class="button second">Поиск</a>

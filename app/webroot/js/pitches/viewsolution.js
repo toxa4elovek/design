@@ -246,6 +246,14 @@ $(document).ready(function() {
         }
         return false;
     });
+    
+    $('#createComment').click(function() {
+        if (isCommentValid($('#newComment').val())) { // See app.js
+            return true;
+        }
+        alert('Введите текст комментария!');
+        return false;
+    });
 
     $(document).on('click', '.select-winner', function() {
         $('#confirmWinner').data('url', $(this).attr('href'));

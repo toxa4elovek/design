@@ -279,13 +279,13 @@ $(document).ready(function(){
     }
 
     $('#createComment').click(function() {
-        if(($('#newComment').val() == '') || ($('#newComment').val().match(/#(\d)+,(\s)+?$/))) {
-            alert('Введите текст комментария!');
-            return false;
+        if (isCommentValid($('#newComment').val())) { // See app.js
+            return true;
         }
-        return true;
-    })
-
+        alert('Введите текст комментария!');
+        return false;
+    });
+    
 /*
 	$('#createComment').click(function() {
 		$.post('/comments/add.json', $('#createCommentForm').serialize(), function(response) {
