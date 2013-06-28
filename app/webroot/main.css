@@ -125,6 +125,7 @@ input.placeholder {
 	color: #ccc;
 	line-height: 48px;
 	text-transform: uppercase; /* !important was here and I don't remember why */
+	font-size: 11px;
 }
 #requesthelp input.placeholder {
     font-size: 11px;
