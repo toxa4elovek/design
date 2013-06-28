@@ -138,11 +138,13 @@ $(document).ready(function() {
     })
 
     $('#requesthelpselector, .requestli, #reqto').on('mouseover', function() {
+        $('img', '#requesthelpselector').attr('src', '/img/request_help_menu_button_hover.png')
         $('#contactlist').show();
         return false;
     })
 
     $('#requesthelpselector, .requestli, #reqto').on('mouseout', function() {
+        $('img', '#requesthelpselector').attr('src', '/img/requestselector.png')
         $('#contactlist').hide();
         return false;
     })

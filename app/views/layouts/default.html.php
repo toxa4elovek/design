@@ -113,7 +113,7 @@ $timeoutNotice = $this->session->read('user.timeoutpitch');
 $showPanel = ((count($clientNotice) > 0) || (count($designerNotice) > 0) || (!is_null($timeoutNotice)));
 ?>
 <body>
-<a target="_blank" id="feedback-link" href="http://godesigner.copiny.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
+<a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
 <?php echo $this->content() ?>
 
 <?=$this->view()->render(array('element' => 'footer'))?>
@@ -156,7 +156,7 @@ echo '<!--' . $this->session->read('user.blogpost.date') . '-->';
                     <input type="submit" id="reqsend" class="reqbutton" value="Отправить" style="margin-bottom: 20px; width: 184px; margin-top:19px; margin-right: 18px; color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);height:48px">
                 </center>
             </form>
-            <div id="contactlist" style="background:url('/img/requestback.png');display:none;top:-537px;margin-left:42px;width:399px;height:140px;position:relative;z-index:15">
+            <div id="contactlist" style="background:url('/img/requestback.png');display:none;top:-541px;margin-left:42px;width:399px;height:140px;position:relative;z-index:15">
                 <ul>
                     <li class="requestli"><a href="#" class="reqlink" data-id="1">дизайн консультация (Оксана Девочкина)</a></li>
                     <li class="requestli" style="padding-top:16px"><a href="#" class="reqlink" data-id="2">бухгалтерия (Слава Афанасьев)</a></li>

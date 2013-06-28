@@ -1408,6 +1408,9 @@ p.full_pitch a {
 .ribbon .description .second:hover {
 	color: #658fa5;
 }
+.description a:hover {
+    text-decoration: underline;
+}
 .ribbon .label {
 	position: absolute;
 	height: 68px;
@@ -2821,13 +2824,7 @@ ul.social li#rss {
     padding-top:21px;
 }
 .requestli a {
-	font-size: 11px;
-	color: #8c949f;
-	text-transform: uppercase;
-	width: 95%;
-	display: inline-block;
-	padding: .4em;
-	margin-right: -2em;
+    font-size:11px;color:#8c949f;text-transform: uppercase;
 }
 .requestli a:hover {
     color: #ff585d;
@@ -2890,4 +2887,7 @@ ul.social li#rss {
 
 #sub-prolong {
     color: #4F5159;
+}
+.underline-link a:hover{
+    text-decoration: underline;
 }
