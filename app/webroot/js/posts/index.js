@@ -16,7 +16,12 @@ $(document).ready(function() {
                     if (result.posts.length == 0) { // No more posts
                         return false;
                     }
-                    $.each(result.posts, function(i, field) {
+                    var keys = [];
+                    for (i in result.posts) { keys.push(i); }
+                    keys.sort().reverse();
+                    var postsObj = result.posts;
+                    $.each(keys, function(idx, key) {
+                        var field = postsObj[key];
                         //Title
                         if (field.published == 1) { // && (strtotime($post->created) < time()))
                             var title = '<a style="text-transform:uppercase;" href="/posts/view/' + field.id + '">' + field.title + '</a>';
