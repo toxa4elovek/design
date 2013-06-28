@@ -33,6 +33,7 @@ class PostsController extends \app\controllers\AppController {
 
         if(User::checkRole('editor')) {
             $posts = Post::all(array('conditions' => $conditions, 'page' => $page, 'limit' => $limit,'order' => array('created' => 'desc'), 'with' => array('User')));
+            $editor = 1;
         }else {
             $posts = Post::all(array('conditions' => array('published' => 1, 'Post.created' => array('<=' => date('Y-m-d H:i:s'))) + $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
         }
@@ -41,7 +42,7 @@ class PostsController extends \app\controllers\AppController {
         $total = ceil($total / $limit);
         $currenttag = $tag;
 
-        return compact('posts', 'total', 'page', 'currenttag');
+        return compact('posts', 'total', 'page', 'currenttag', 'editor');
     }
 
     public function save() {
