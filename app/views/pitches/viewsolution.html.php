@@ -89,7 +89,7 @@
                 </div>
                 <?php endif?><?php endif?>
         </div>
-        
+
 
 		<div class="main_carous clear" style="margin-top: 0">
 			<!--div>
@@ -101,7 +101,7 @@
                         	<li><?=$this->html->link('<img width="99" height="75" src="' . $gallerySolution->images['solution_galleryLargeSize']['weburl'] . '" alt="">', array('controller' => 'pitches', 'action' => 'viewsolution', 'id' => $gallerySolution->id), array('escape' => false))?></li>
                         	<?php endforeach;?>
                         </ul>
-                    </div>	
+                    </div>
 			</div-->
             <a id="prevsol" style="position: relative; left: -10px; margin-bottom: 0px; top: 150px; bottom: 0px;" href="/pitches/viewsolution/<?=$prev?>?sorting=<?=$sort?>"><img src="/img/arrow_solution_left.png"></a>
             <a id="nextsol" style="position: relative; right: 0px; left: 757px; margin-top: 0px; top: 150px;" href="/pitches/viewsolution/<?=$next?>?sorting=<?=$sort?>"><img src="/img/arrow_solution_right.png"></a>
@@ -280,7 +280,7 @@
                         <div style="margin-top: 40px">
                         <?php
                         if((($pitch->private == 1) || $pitch->category_id == 7) && (($solution->user_id != $this->session->read('user.id')) && ($pitch->user_id != $this->session->read('user.id')) && (!in_array($this->session->read('user.id'), $expertsIds)) && (!in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))))):?>
-                        
+
                         <?php else:?>
                         <span style="font:14px/20px 'Arial',sans-serif;text-shadow:-1px 0 0 #FFFFFF;color:#666666"><?=$this->brief->e($solution->description)?></span>
                             <?php if($pitch->category_id == 7):?>
@@ -377,7 +377,7 @@
                                 </div>
                             </div>
                             <div class="new-comment-send">
-                            	<input type="submit" value="Отправить" class="button" name="new-comment-send">
+                            	<input type="submit" value="Отправить" class="button" name="new-comment-send" id="createComment">
                             </div>
                         </form>
                         <span class="clear"></span>
@@ -488,7 +488,7 @@
                 <?php endforeach?></div>
             </div>
                 </div><!-- /solution -->
-             
+
              <nav class="other_nav clear" style="padding-top:5px;">
             <?=$this->html->link('<img src="/img/other-nav-left.png" width="184" height="35" alt="" /><br /><span>Вернуться в галерею</span>', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'other-nav-left', 'escape' => false))?>
 
@@ -509,7 +509,7 @@
 
 
 			</div>
-            <div id="under_middle_inner"></div><!-- /under_middle_inner -->     
+            <div id="under_middle_inner"></div><!-- /under_middle_inner -->
 		</div><!-- /middle_inner -->
 
 
