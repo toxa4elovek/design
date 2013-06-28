@@ -48,3 +48,47 @@
 .viewpost strong {
     font-weight:bold;
 }
+.onTop {
+    position: fixed;
+    bottom: -105px;
+    right: 90px;
+    width: 102px;
+    height: 105px; 
+    background-image: url(img/blog-onTop.png);
+    background-position: bottom;
+}
+.onTop:hover {
+	cursor: pointer;
+	background-position: top;
+}
+.onTopMiddle {
+	display: none;
+    position: absolute;
+    bottom: 0;
+    right: 90px;
+    width: 102px;
+    height: 105px; 
+    background-image: url(img/blog-onTop.png);
+    background-position: bottom;
+}
+.onTopMiddle:hover {
+    cursor: pointer;
+    background-position: top;
+}
+#blog-ajax-wrapper {
+	position: relative;
+	display: block;
+	width: 837px;
+	height: 32px;
+	clear: both;
+	background: url(/img/sep.png) repeat-x scroll 0 50% transparent;
+	margin-bottom: 20px;
+}
+#blog-ajax-loader {
+	position: absolute;
+	left: 386px;
+	top: 0;
+	width: 60px;
+	height: 32px;
+	background: url(img/blog-ajax-loader.gif) #e3e3e3 top center no-repeat;
+}

@@ -43,6 +43,8 @@
                             </div>
                             <div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>
                         <?php endforeach?>
+
+                    <?php if(false): ?>
                                         <div class="page-nambe-nav">
                     <?php if($total > 1):
                         $url = '';
@@ -102,6 +104,7 @@
                     <?php endif?>
                     <!--a href="#">&#60;</a><a href="#" class="this-page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a> ... <a href="#">7</a><a href="#">&#62;</a-->
                 </div>
+                <?php endif ?>
                     </section>
                 </div>
                 <div id="right_sidebar_help" style="width:200px;">
@@ -117,10 +120,15 @@
                     </div>
                 </div>
             </div><!-- /content -->
+            <div id="blog-ajax-wrapper">
+                <div id="blog-ajax-loader">&nbsp;</div>
+            </div>
+            <div class="onTopMiddle">&nbsp;</div>
         </div><!-- /middle_inner -->
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
+<div class="onTop">&nbsp;</div>
 <?=$this->html->script(array('jquery.timeago', 'posts/index'), array('inline' => false))?>
 <?=$this->html->style(array('/help', '/blog'), array('inline' => false))?>
