@@ -83,11 +83,11 @@
 				<thead>
 					<tr>
 						<td class="icons"></td>
-						<td class="pitches-name"><a href="#" id="sort-title" rel="asc" style="font-size:11px;color:#666666;">название питча</a></td>
-						<td class="pitches-cat"><a href="#" id="sort-category" rel="asc" style="font-size:11px;color:#666666;">Категории</a></td>
-						<td class="idea"><a href="#" id="sort-ideas_count" rel="desc" style="font-size:11px;color:#666666;">Идеи</a></td>
-						<td class="pitches-time"><a href="#" id="sort-finishDate" rel="asc" style="font-size:11px;color:#666666;">Срок</a></td>
-						<td class="price"><a href="#" id="sort-price" rel="desc" style="font-size:11px;color:#666666;">Цена</a></td>
+						<td class="pitches-name"><a href="#" id="sort-title" class="sort-link" rel="asc">название питча</a></td>
+						<td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" rel="asc">Категории</a></td>
+						<td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" rel="desc">Идеи</a></td>
+						<td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" rel="asc">Срок</a></td>
+						<td class="price"><a href="#" id="sort-price" class="sort-link" rel="desc">Цена</a></td>
 					</tr>
 				</thead>
 				<tbody id="table-content">

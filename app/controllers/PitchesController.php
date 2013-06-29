@@ -153,7 +153,7 @@ ini_set('display_errors', '1');
 				break;
 			}
 			if((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))  {
-				if($field == 'category') $field = 'category_id';
+				if($field == 'category') $field = 'Category.title';
                 if($field == 'finishDate') {
                     $order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
                 }else {

@@ -2893,3 +2893,25 @@ ul.social li#rss {
 .underline-link a:hover{
     text-decoration: underline;
 }
+thead td .sort-link {
+    padding-right: 16px;
+    font-size: 11px;
+    color: #666666;
+    background-image: url('/img/sort-arrow.png');
+    background-repeat: no-repeat;
+}
+thead td .sort-link:hover {
+    color: #969696;
+}
+.sort-link[rel="desc"] {
+    background-position: 100% -8px;
+}
+.sort-link[rel="asc"] {
+    background-position: 100% -30px;
+}
+.sort-link[rel="desc"]:hover {
+    background-position: 100% 3px;
+}
+.sort-link[rel="asc"]:hover {
+    background-position: 100% -19px;
+}
