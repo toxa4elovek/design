@@ -644,9 +644,14 @@ function ParticipateTableLoader() {
                     editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/edit_icon_white.png" class="pitches-name-td-img" width="18" height="18"></a>';
                 }
             }
+            
+            var pitchPath = 'view';
+            if (object.ideas_count == 0) {
+                pitchPath = 'details';
+            }
 
             if(object.status != 2) {
-                var link = '/pitches/view/' + object.id;
+                var link = '/pitches/' + pitchPath + '/' + object.id;
                 if((object.status == 1) && (object.awarded == 0)) {
                     var status = 'Выбор победителя';
                 }
@@ -658,7 +663,7 @@ function ParticipateTableLoader() {
                 if(object.winlink == true) {
                     var link = '/users/step2/' + object.awarded;
                 }else {
-                    var link = '/pitches/view/' + object.id;
+                    var link = '/pitches/' + pitchPath + '/' + object.id;
                 }
             }
             var shortIndustry = object.industry;
@@ -685,7 +690,7 @@ function ParticipateTableLoader() {
                 '<tr class="pitch-collapsed">' +
                 '<td class="icons"></td>' +
                 '<td colspan="3" class="al-info-pitch"><p>' + object.description +
-                '</p><a href="/pitches/view/' + object.id + '" class="go-pitch">Перейти к питчу</a>' +
+                '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к питчу</a>' +
                 '</td>' +
                 '<td></td>' +
                 '<td></td>' +
@@ -877,12 +882,16 @@ function FavesTableLoader() {
             if(shortIndustry.length > 80) {
                 shortIndustry = shortIndustry.substr(0, 75) + '...';
             }
+            var pitchPath = 'view';
+            if (object.ideas_count == 0) {
+                pitchPath = 'details';
+            }
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
                 '<td class="pitches-name">' +
                 '<a href="#" class="unfav mypitch_delete_link" data-pitchId="' + object.id + '" style="position: relative; top: 21px; left: 14px;"><img style="margin:0;padding:0" src="/img/delete_icon_white.png" width="12" height="12"></a>' +
                 '<div style="background:none;padding-top:0px">' +
-                '<a href="/pitches/view/' + object.id + '" class="expand-link">' + object.title + '</a>' +
+                '<a href="/pitches/' + pitchPath + '/' + object.id + '" class="expand-link">' + object.title + '</a>' +
                 '<span style="font-size: 11px;">' + shortIndustry + '</span>' +
                 '</div>' +
                 '</td>' +
@@ -896,7 +905,7 @@ function FavesTableLoader() {
                 '<tr class="pitch-collapsed">' +
                 '<td class="icons"></td>' +
                 '<td colspan="3" class="al-info-pitch"><p>' + object.description +
-                '</p><a href="/pitches/view/' + object.id + '" class="go-pitch">Перейти к питчу</a>' +
+                '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к питчу</a>' +
                 '</td>' +
                 '<td></td>' +
                 '<td></td>' +
