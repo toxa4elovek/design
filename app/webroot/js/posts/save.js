@@ -3,9 +3,11 @@ $(document).ready(function() {
     window.onbeforeunload = confirmExit;
     function confirmExit()
     {
-        return "Вы собираетесь уйти с этой страницы, все несохранённые данные будут потеряны. Точно уходим?";
+        if (tinyMCE.activeEditor.isDirty() || isUndo) {
+            return "Вы собираетесь уйти с этой страницы, все несохранённые данные будут потеряны. Точно уходим?";
+        }
     }
-
+    
     $('textarea').tinymce({
         // Location of TinyMCE script
         script_url : '/js/tiny_mce/tiny_mce.js',
@@ -42,13 +44,14 @@ $(document).ready(function() {
              {title : 'Example 2', inline : 'span', classes : 'example2'},
              {title : 'Table styles'},
              {title : 'Table row 1', selector : 'tr', classes : 'tablerow1'} */
-        ]
-
-
+        ],
+        
+        onchange_callback : function(editor) {
+            isUndo = true;
+        }
 
         // Example content CSS (should be your site CSS)
         //content_css : "css/content.css",
-
     });
 
     $( ".datepicker" ).datetimepicker({ dateFormat: "yy-mm-dd", timeFormat: 'hh:mm:ss', showSecond: true});
