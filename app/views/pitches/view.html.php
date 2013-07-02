@@ -712,7 +712,167 @@
     <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА" style="border:0; width:540px; margin-top: 10px; height: 100px;"></textarea>
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
+<!-- start: Solution overlay -->
+<div class="solution-overlay">
+    <div class="solution-container">
+        <div class="solution-right-panel">
+            <div class="solution-info solution-summary slice">
+                <div class="solution-number">{{#44}}</div>
+                <div class="solution-rating">{{***** рейтинг заказчика}}</div>
+            </div>
+            <div class="solution-info solution-author chapter">
+                <h2>АВТОР</h2>
+                {{картинка}}
+                {{Oxana D.}}
+                {{Санкт-Петербург}}
+            </div>
+            <div class="solution-info solution-about chapter">
+                <h2>О РЕШЕНИИ</h2>
+                {{Очень хотелось видеть в логотипе больше ярких цветов и не один, но почему все копируют логотип у сайта DRIVE.RU? Почти все предложения смотрятся очень дешево и нет ни капли креатива и мысли... Подробнее}}
+            </div>
+            <div class="solution-info solution-about slice">
+                Просмотров    {30} <br />
+                Лайков    {{20}} <br />
+                Комментарии  {{34}}
+            </div>
+            <div class="solution-info solution-share chapter slice">
+                <h2>ПОДЕЛИТЬСЯ</h2>
+            </div>
+            <div class="solution-info solution-abuse slice">
+                Пожаловаться <br />
+                С глаз долой
+            </div>
 
+        </div>
+        <!-- start: Solution Left Panel -->
+        <div class="solution-left-panel">
+            <div class="solution-title">
+                <h1>{{Логотип для онлайн-магазина мебели и товаров для дома "FUNFUR"}}</h1>
+                <h6>{{Логотип}}</h6>
+            </div>
+            <!-- start: Soluton Images -->
+            <section>
+                <img src="" class="solution-image" />
+                <img src="" class="solution-image" />
+                <img src="" class="solution-image" />
+            </section>
+            <!-- end: Solution Images -->
+            <!-- start: Comments -->
+            <section>
+                <section>
+                    <div class="all_messages">
+                        <div class="clr"></div>
+                    </div>
+                    <div class="separator"></div>
+                    <input type="hidden" value="1" name="category_id" id="category_id">
+                    <form id="createCommentForm" method="post" action="/comments/add">
+                        <div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
+                            <div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
+                                <div style="" id="tooltipContent" class="supplement3">
+                                    <p>Укажите номер комментируемого варианта, используя хештег #. Например:
+                                    #2, нравится!<br>
+                                    Обратитесь к автору решения, используя @. Например:<br>
+                                    @username, спасибо!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <textarea id="newComment" name="text"></textarea>
+                        <input type="hidden" value="" name="solution_id">
+                        <input type="hidden" value="" name="comment_id">
+                        <input type="hidden" value="1" name="pitch_id">
+                        <input type="submit" id="createComment" class="button" value="Отправить комментарий">
+                        <div class="clr"></div>
+                    </form>
+                    <div class="separator"></div>
+                </section>
+
+                <div style="clear:both;"></div>
+
+                <section data-id="45" data-type="designer">
+                    <div class="message_info2">
+                        <a href="/users/view/2">
+                            <img src="/img/default_small_avatar.png" alt="Портрет пользователя" width="41" height="41">
+                        </a>
+                        <a href="#" data-comment-id="45" data-comment-to="Тестер2 Т." class="replyto">
+                            <span>Тестер2 Т.</span><br />
+                            <span style="font-weight: normal;">28.06.13 17:08</span>
+                        </a>
+                        <div class="clr"></div>
+                    </div>
+                    <div data-id="45" class="message_text">
+                        <span class="regular comment-container">
+                            <a href="http://#" class="mention-link" data-comment-to="Никита А.">@Никита А.</a><a href="#" class="mention-link" data-comment-to="Мила Д.">@Мила Д.</a> Спасибо всем за работу, хотя мы и ожидали большего!<br>
+                            Наибольший интерес и доверие вызвали у нас работы <a href="http://#" class="mention-link" data-comment-to="Мила Д.">@Мила Д.</a> <a href="#" class="mention-link" data-comment-to="Марк М.">@Марк М.</a> <a href="#" class="mention-link" data-comment-to="Daria K.">@Daria K.</a> <a href="#" class="mention-link" data-comment-to="Никита А.">@Никита А.</a><br>
+                            С победителем мы практически определились, одна проведём общее голосование <a href="http://#" class="mention-link" data-comment-to="Никита А.">@Никита А.</a> внутри коллектива и вынесем результат. <br>
+                            Спасибо авторам и спасибо разработчикам портала <a href="http://godesigner.ru" target="_blank">godesigner.ru</a>!
+                        </span>
+                    </div>
+                    <div style="float: right; margin-top: 6px; margin-right: 95px; padding-bottom: 2px; height: 18px;">
+                        <div class="toolbar">
+                            <a href="#" data-comment-id="45" data-comment-to="Тестер2 Т." class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
+                            <a href="#" data-comment-id="45" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>
+                        </div>
+                    </div>
+                    <div class="clr"></div>
+                    <div class="hiddenform" style="display:none">
+                        <section><form style="margin-bottom: 25px;" action="/comments/edit/45" method="post">
+                            <textarea name="text" data-id="45"></textarea>
+                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br>
+                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span>
+                            <div class="clr"></div>
+                        </form>
+                        </section>
+                    </div>
+                </section>
+
+                <div class="separator"></div>
+                <section data-id="44" data-type="designer">
+                    <div class="message_info1">
+                        <a href="/users/view/2">
+                            <img src="/img/default_small_avatar.png" alt="Портрет пользователя" width="41" height="41">
+                        </a>
+                        <a href="#" data-comment-id="44" data-comment-to="Тестер2 Т." class="replyto">
+                            <span>Тестер2 Т.</span><br />
+                            <span style="font-weight: normal;">28.06.13 16:18</span>
+                        </a>
+                        <div class="clr"></div>
+                    </div>
+                    <div data-id="44" class="message_text" style="margin-top:15px;">
+                        <span class="regular comment-container">
+                            <a href="http://#" class="mention-link" data-comment-to="Мила Д.">@Мила Д.</a> Спасибо всем за работу, хотя мы и ожидали большего!<br>
+                            Наибольший интерес и доверие вызвали у нас работы <a href="http://#" class="mention-link" data-comment-to="Мила Д.">@Мила Д.</a> <a href="#" class="mention-link" data-comment-to="Марк М.">@Марк М.</a> <a href="#" class="mention-link" data-comment-to="Daria K.">@Daria K.</a> <a href="#" class="mention-link" data-comment-to="Никита А.">@Никита А.</a><br>
+                            С победителем мы практически определились, одна проведём общее голосование внутри коллектива и вынесем результат. <br>
+                            Спасибо авторам и спасибо разработчикам портала <a href="http://godesigner.ru" target="_blank">godesigner.ru</a>!
+                        </span>
+                    </div>
+                    <div style="float:right; margin-top: 6px; margin-right: 95px; padding-bottom: 2px; height: 18px;">
+                        <div class="toolbar">
+                            <a href="#" data-comment-id="44" data-comment-to="Тестер2 Т." class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
+                            <a href="#" data-comment-id="44" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>
+                        </div>
+                    </div>
+                    <div class="clr"></div>
+                    <div class="hiddenform" style="display:none">
+                        <section><form style="margin-bottom: 25px;" action="/comments/edit/44" method="post">
+                            <textarea name="text" data-id="44"></textarea>
+                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br>
+                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span>
+                            <div class="clr"></div>
+                        </form>
+                        </section>
+                    </div>
+                </section>
+                <div class="separator"></div>
+            <!-- end: Comments -->
+            </section>
+        <!-- end: Solution Left Panel -->
+        </div>
+        <div style="clear:both;"></div>
+    <!-- end: Solution Container -->
+    </div>
+<!-- end: Solution overlay -->
+</div>
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
 <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'kinetic-v4.3.1.min.js', 'pitches/plot.js'), array('inline' => false))?>

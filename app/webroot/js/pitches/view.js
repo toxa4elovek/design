@@ -573,5 +573,24 @@ $(document).ready(function(){
         return false;
     })*/
 
+    /*
+     * View Solution Overlay
+     */
+    $('.imagecontainer').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('#pitch-panel').hide();
+        $('.wrapper').addClass('wrapper-frozen');
+        $('.solution-overlay').show();
+        return false;
+    });
+    $('.solution-overlay').on('click', function(e) {
+        e.stopPropagation();
+        if (!$(e.target).is('.solution-overlay')) return;
+        $('#pitch-panel').show();
+        $('.wrapper').removeClass('wrapper-frozen');
+        $(this).hide();
+        return false;
+    });
 
 });

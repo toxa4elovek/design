@@ -540,3 +540,176 @@ a.this-page{
 .mention-link {
 	text-decoration:none;
 }
+/*------------------ View Solution Overlay --------------------
+ *
+ * @todo check em-size text
+ */
+.wrapper-frozen {
+    position: fixed;
+	height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+.solution-overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 50;
+	width: 100%;
+	height: auto;
+	min-height: 100%;
+	overflow: hidden;
+	background: rgba(9, 10, 14, 0.81);
+}
+.solution-container {
+	position: relative;
+	margin: 100px auto 100px auto;
+	width: 958px;
+	border-radius: 9px;
+	background: #f8f8f8;
+	box-shadow: inset 0 3px 9px rgba(0, 0, 0, .3);
+}
+.solution-left-panel {
+	position: relative;
+	top: 0;
+	float: left;
+	width: 600px;
+	height: 100%;
+	border-radius: 9px 0 0 8px;
+	padding-left: 46px;
+	padding-right: 46px;
+	padding: 0 46px 30px 46px;
+	background: #eeeeee; /* @todo Add background */
+	box-shadow: 2px 0 7px rgba(0, 0, 0, .2);
+}
+.solution-left-panel .separator {
+	width: 600px;
+}
+.solution-left-panel div.message_info1, .solution-left-panel div.message_info2 {
+	margin: 20px 0 0 0;
+}
+.solution-left-panel div.message_text {
+	float: right;
+    width: 382px;
+    margin: 20px auto;
+}
+.solution-left-panel div.toolbar {
+	display: block; /* @todo Change to none */
+}
+.solution-left-panel .button {
+    display: inline-block;
+    padding: 0 30px;
+    height: 49px;
+    margin: 14px 183px 20px 183px;
+    border: 4px solid #cecece;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+    background: #5d8397;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#658fa5), to(#537587));
+    background: -webkit-linear-gradient(#658fa5, #537587);
+    background:    -moz-linear-gradient(#658fa5, #537587);
+    background:     -ms-linear-gradient(#658fa5, #537587);
+    background:      -o-linear-gradient(#658fa5, #537587);
+    background:         linear-gradient(#658fa5, #537587);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    line-height: 41px;
+    font-size: 12px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+}
+.solution-left-panel .button:hover {
+    background: #6690a6;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#6f9db5), to(#5c8296));
+    background: -webkit-linear-gradient(#6f9db5, #5c8296);
+    background:    -moz-linear-gradient(#6f9db5, #5c8296);
+    background:     -ms-linear-gradient(#6f9db5, #5c8296);
+    background:      -o-linear-gradient(#6f9db5, #5c8296);
+    background:         linear-gradient(#6f9db5, #5c8296);
+}
+.solution-left-panel textarea {
+    width: 600px;
+    height: 150px;
+    margin: 18px 0 0 0;
+    padding: 0;
+    border-left: 1px solid #e1e1e1;
+    border-top: 1px solid #e1e1e1;
+}
+.solution-right-panel {
+    position: relative;
+    top: 0;
+    float: right;
+    width: 266px;
+    height: 100%;
+}
+.solution-title {
+	position: relative;
+	left: 0px;
+	width: 634px; /* ¿padding? */
+	height: 40px;
+	background-color: #648fa4;
+	border-bottom: 1px solid #f6f6f4;
+	border-right: 1px solid #f6f6f4;
+	border-radius: 8px 0 0 0;
+	padding: 20px 10px 10px 50px;
+	color: #ffffff;
+	margin-left: -46px;
+}
+.solution-title h1 {
+	font-size: 17px;
+	font-weight: bold;
+	font-family: Arial, sans-serif;
+}
+.solution-title h6 {
+    font-size: 13px;
+}
+.solution-info {
+	margin-left: 22px;
+	margin-right: 2px;
+	padding: 20px 20px 20px 0px;
+	color: #666666;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	border-bottom: 1px solid #d3d3d3;
+}
+.slice {
+	border-bottom: 1px solid #d3d3d3;
+	margin-left: 0;
+	padding-left: 22px;
+}
+.chapter {
+	padding-top: 0;
+}
+.chapter h2 {
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+	font-size: 11px;
+	color: #a6a6a6;
+	width: 128px;
+	border-top: 1px solid #fafafa;
+	border-right: 1px solid #d3d3d3;
+    border-bottom: 1px solid #d3d3d3;
+    border-left: 1px solid #d3d3d3;
+    border-radius: 0 0 6px 6px;
+    margin: 0 112px 20px 0;
+    padding-left: 10px;
+}
+.solution-number {
+	font-size: 17px;
+	font-weight: bold;
+	color: #666666;
+}
+.solution-rating {
+	font-family: Georgia, sans-serif;
+	font-style: italic;
+	font-size: 11px;
+}
+.solution-image {
+	width: 600px;
+	height: 400px; /* @todo develop only */
+	box-shadow: 1px 1px 2px #d3d3d3;
+	margin: 30px 0;
+}
