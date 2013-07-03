@@ -564,11 +564,45 @@ a.this-page{
 }
 .solution-container {
 	position: relative;
-	margin: 100px auto 100px auto;
+	margin: 100px auto 200px auto;
 	width: 958px;
 	border-radius: 9px;
 	background: #f8f8f8;
-	box-shadow: inset 0 3px 9px rgba(0, 0, 0, .3);
+	box-shadow: inset 3px 3px 9px rgba(0, 0, 0, .2);
+}
+.solution-prev-area, .solution-next-area {
+	position: absolute;
+	width: 60px;
+	height: 100%;
+	cursor: pointer;
+}
+.solution-prev-area {
+    left: 0;
+    margin-left: -60px;
+}
+.solution-next-area {
+	right: 0;
+    margin-right: -60px;
+}
+.solution-prev, .solution-next {
+	position: fixed;
+	top: 275px;
+	width: 60px;
+	height: 30px;
+	background-image: url('img/arrows-solution.png');
+	backrtound-repeat: no-repeat
+}
+.solution-prev {
+    background-position: 0 0;
+}
+.solution-prev.active {
+	background-position: 0 -60px;
+}
+.solution-next {
+    background-position: 0 -30px;
+}
+.solution-next.active {
+	background-position: 0 -90px;
 }
 .solution-left-panel {
 	position: relative;
@@ -580,11 +614,49 @@ a.this-page{
 	padding-left: 46px;
 	padding-right: 46px;
 	padding: 0 46px 30px 46px;
-	background: #eeeeee; /* @todo Add background */
+	background: url('img/solution-paper.png') left top #eeeeee;
 	box-shadow: 2px 0 7px rgba(0, 0, 0, .2);
 }
 .solution-left-panel .separator {
 	width: 600px;
+	height: 4px;
+	background: url('img/sep-solution.png');
+}
+.solution-left-panel .separator.full {
+    width: 692px;
+    margin-left: -46px;
+}
+.solution-left-panel .separator-left, .solution-left-panel .separator-right {
+    height: 24px;
+    background: url('img/sep.png') 0 11px no-repeat;
+}
+.solution-left-panel .separator-left {
+	float: left;
+	width: 120px;
+}
+.solution-left-panel .separator-right {
+    float: right;
+    width: 150px;
+}
+.solution-left-panel .rating-widget {
+	float: left;
+	width: 304px;
+	height: 24px;
+	margin: 0 12px;
+	background: url('img/3-rating-solution-large.png') 96px 0 no-repeat;
+}
+.solution-left-panel .rating-widget span.left, .solution-left-panel .rating-widget span.right {
+	color: #999999;
+	font-family: Georgia, sans-serif;
+	font-style: italic;
+	font-size: 14px;
+	text-shadow: 0 1px #ffffff;
+}
+.solution-left-panel .rating-widget span.left {
+	float: left;
+}
+.solution-left-panel .rating-widget span.right {
+	float: right;
 }
 .solution-left-panel div.message_info1, .solution-left-panel div.message_info2 {
 	margin: 20px 0 0 0;
@@ -592,10 +664,14 @@ a.this-page{
 .solution-left-panel div.message_text {
 	float: right;
     width: 382px;
-    margin: 20px auto;
+    margin: 20px auto 10px auto;
 }
 .solution-left-panel div.toolbar {
-	display: block; /* @todo Change to none */
+	display: none;
+	clear: both;
+    float: right;
+    margin: 0 0 8px 0;
+    height: 18px;
 }
 .solution-left-panel .button {
     display: inline-block;
@@ -650,7 +726,13 @@ a.this-page{
 	left: 0px;
 	width: 634px; /* ¿padding? */
 	height: 40px;
-	background-color: #648fa4;
+	background: #648fa4;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#658fa5), to(#537587));
+    background: -webkit-linear-gradient(#658fa5, #537587);
+    background:    -moz-linear-gradient(#658fa5, #537587);
+    background:     -ms-linear-gradient(#658fa5, #537587);
+    background:      -o-linear-gradient(#658fa5, #537587);
+    background:         linear-gradient(#658fa5, #537587);
 	border-bottom: 1px solid #f6f6f4;
 	border-right: 1px solid #f6f6f4;
 	border-radius: 8px 0 0 0;
@@ -669,11 +751,25 @@ a.this-page{
 .solution-info {
 	margin-left: 22px;
 	margin-right: 2px;
-	padding: 20px 20px 20px 0px;
+	padding: 16px 20px 16px 0px;
 	color: #666666;
 	font-family: Arial, sans-serif;
 	font-size: 12px;
 	border-bottom: 1px solid #d3d3d3;
+}
+.solution-info img.author-avatar {
+	float: left;
+	width: 41px;
+	height: 41px;
+	margin-right: 9px;
+}
+.solution-info .author-name {
+	font-size: 14px;
+	font-weight: bold;
+	color: #648ea4;
+}
+.solution-info .author-from {
+    font-size: 13px;
 }
 .slice {
 	border-bottom: 1px solid #d3d3d3;
@@ -697,19 +793,78 @@ a.this-page{
     margin: 0 112px 20px 0;
     padding-left: 10px;
 }
+.solution-summary {
+	padding-bottom: 10px;
+	padding-top: 14px;
+}
 .solution-number {
 	font-size: 17px;
 	font-weight: bold;
 	color: #666666;
+	margin-bottom: 8px;
 }
 .solution-rating {
+	color: #999999;
 	font-family: Georgia, sans-serif;
 	font-style: italic;
 	font-size: 11px;
+}
+.solution-rating img {
+	margin: 0 10px 0 0;
 }
 .solution-image {
 	width: 600px;
 	height: 400px; /* @todo develop only */
 	box-shadow: 1px 1px 2px #d3d3d3;
 	margin: 30px 0;
+}
+table.solution-stat {
+	width: 100%;
+}
+table.solution-stat td {
+    padding: 5px 5px;
+}
+table.solution-stat col.icon {
+    width: 24px;
+}
+table.solution-stat col.description {
+    width: 168px;
+}
+table.solution-stat col.value {
+    width: 24px;
+}
+table.solution-stat td.icon {
+    background-image: url('img/icons-solution.png');
+    backrground-repeat: no-repeat;
+}
+table.solution-stat td.value {
+    font-weight: bold;
+    font-size: 14px;
+}
+table.solution-stat td.icon-eye {
+	background-position: 0 0;
+}
+table.solution-stat td.icon-thumb {
+    background-position: 0 -27px;
+}
+table.solution-stat td.icon-comments {
+    background-position: 0 -54px;
+}
+.solution-abuse a {
+	display: block;
+	height: 27px;
+	padding-left: 30px;
+	color: #648fa4;
+	background-image: url('img/icons-solution.png');
+    background-repeat: no-repeat;
+	font-size: 12px;
+}
+.solution-abuse a:hover {
+	text-decoration: underline;
+}
+.solution-abuse a.abuse {
+	background-position: 0 -81px;
+}
+.solution-abuse a.hide {
+    background-position: 0 -108px;
 }
