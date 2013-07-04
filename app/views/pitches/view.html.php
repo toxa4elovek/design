@@ -724,22 +724,25 @@
         </div>
         <!-- start: Solution Right Panel -->
         <div class="solution-right-panel">
-            <div class="solution-info solution-summary slice">
+            <div class="solution-info solution-summary">
                 <div class="solution-number">#44</div>
                 <div class="solution-rating"><img src="/img/4-rating-solution.png" /> рейтинг заказчика</div>
             </div>
+            <div class="separator"></div>
             <div class="solution-info solution-author chapter">
                 <h2>АВТОР</h2>
                 <img class="author-avatar" src="/img/default_small_avatar.png" alt="Портрет автора">
-                <div class="author-name">Oxana D.</div>
+                <a class="author-name" href="#">Oxana D.</a>
                 <div class="author-from">Санкт-Петербург</div>
                 <div class="clr"></div>
             </div>
+            <div class="separator"></div>
             <div class="solution-info solution-about chapter">
                 <h2>О РЕШЕНИИ</h2>
                 Очень хотелось видеть в логотипе больше ярких цветов и не один, но почему все копируют логотип у сайта DRIVE.RU? Почти все предложения смотрятся очень дешево и нет ни капли креатива и мысли... <a href="#">Подробнее</a>
             </div>
-            <div class="solution-info solution-about slice">
+            <div class="separator"></div>
+            <div class="solution-info solution-about">
                 <table class="solution-stat">
                     <col class="icon">
                     <col class="description">
@@ -761,7 +764,8 @@
                     </tr>
                 </table>
             </div>
-            <div class="solution-info solution-share chapter slice">
+            <div class="separator"></div>
+            <div class="solution-info solution-share chapter">
                 <h2>ПОДЕЛИТЬСЯ</h2>
                 <div class="body" style="display: block;">
                     <table width="100%">
@@ -800,17 +804,18 @@
                     </table>
                 </div>
             </div>
-            <div class="solution-info solution-abuse slice">
+            <div class="separator"></div>
+            <div class="solution-info solution-abuse">
                 <a class="abuse" href="">Пожаловаться</a>
-                <a class="hide" href="">С глаз долой</a>
+                <a class="hide" href="">Удалить</a>
             </div>
+            <div class="separator"></div>
         <!-- end: Solution Right Panel -->
         </div>
         <!-- start: Solution Left Panel -->
         <div class="solution-left-panel">
             <div class="solution-title">
                 <h1>Логотип для онлайн-магазина мебели и товаров для дома "FUNFUR"</h1>
-                <h6>Логотип</h6>
             </div>
             <!-- start: Soluton Images -->
             <section>

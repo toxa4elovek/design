@@ -540,7 +540,7 @@ a.this-page{
 .mention-link {
 	text-decoration:none;
 }
-/*------------------ View Solution Overlay --------------------
+/* ------------------ View Solution Overlay --------------------
  *
  * @todo check em-size text
  */
@@ -567,9 +567,11 @@ a.this-page{
 	margin: 100px auto 200px auto;
 	width: 958px;
 	border-radius: 9px;
-	background: #f8f8f8;
-	box-shadow: inset 3px 3px 9px rgba(0, 0, 0, .2);
+	background: url('img/solution-paper.png') left top #eeeeee;
 }
+/*
+ * ----- Navigation areas -----
+ */
 .solution-prev-area, .solution-next-area {
 	position: absolute;
 	width: 60px;
@@ -604,30 +606,67 @@ a.this-page{
 .solution-next.active {
 	background-position: 0 -90px;
 }
+/*
+ * ----- Left Panel -----
+ */
 .solution-left-panel {
 	position: relative;
 	top: 0;
-	float: left;
-	width: 600px;
-	height: 100%;
+	width: 599px;
 	border-radius: 9px 0 0 8px;
 	padding-left: 46px;
 	padding-right: 46px;
 	padding: 0 46px 30px 46px;
-	background: url('img/solution-paper.png') left top #eeeeee;
-	box-shadow: 2px 0 7px rgba(0, 0, 0, .2);
+	border-right: 1px solid #cecece;
+}
+.solution-left-panel .solution-title {
+    position: relative;
+    left: 0px;
+    width: 631px; /* ¿padding? */
+    height: 40px;
+    background: #648fa4;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#658fa5), to(#537587));
+    background: -webkit-linear-gradient(#658fa5, #537587);
+    background:    -moz-linear-gradient(#658fa5, #537587);
+    background:     -ms-linear-gradient(#658fa5, #537587);
+    background:      -o-linear-gradient(#658fa5, #537587);
+    background:         linear-gradient(#658fa5, #537587);
+    border-bottom: 1px solid #f6f6f4;
+    border-right: 1px solid #f6f6f4;
+    border-radius: 8px 0 0 0;
+    padding: 20px 10px 10px 50px;
+    color: #ffffff;
+    margin: 0 0 10px -46px;
+}
+.solution-left-panel .solution-title:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+.solution-left-panel .solution-title h1 {
+    font-size: 17px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+.solution-left-panel .solution-image {
+    width: 600px;
+    box-shadow: 1px 1px 2px #d3d3d3;
+    margin: 10px 0;
 }
 .solution-left-panel .separator {
 	width: 600px;
-	height: 4px;
+	height: 3px;
 	background: url('img/sep-solution.png');
 }
 .solution-left-panel .separator.full {
     width: 692px;
     margin-left: -46px;
 }
-.solution-left-panel .separator-left, .solution-left-panel .separator-right {
+.solution-left-panel .separator-rating {
     height: 24px;
+	margin: 10px 0 10px 0;
+}
+.solution-left-panel .separator-left, .solution-left-panel .separator-right {
+	height: 24px;
     background: url('img/sep.png') 0 11px no-repeat;
 }
 .solution-left-panel .separator-left {
@@ -709,83 +748,66 @@ a.this-page{
 .solution-left-panel textarea {
     width: 600px;
     height: 150px;
-    margin: 18px 0 0 0;
+    margin: 20px 0 0 0;
     padding: 0;
-    border-left: 1px solid #e1e1e1;
-    border-top: 1px solid #e1e1e1;
+    border-left: 2px solid #d9dadc;
+    border-top: 1px solid #d9dadc;
 }
+/*
+ * ----- Right Panel -----
+ */
 .solution-right-panel {
-    position: relative;
+    position: absolute;
     top: 0;
-    float: right;
-    width: 266px;
+    right: 0;
+    width: 265px;
     height: 100%;
+    border-left: 1px solid #ededed;
 }
-.solution-title {
-	position: relative;
-	left: 0px;
-	width: 634px; /* ¿padding? */
-	height: 40px;
-	background: #648fa4;
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#658fa5), to(#537587));
-    background: -webkit-linear-gradient(#658fa5, #537587);
-    background:    -moz-linear-gradient(#658fa5, #537587);
-    background:     -ms-linear-gradient(#658fa5, #537587);
-    background:      -o-linear-gradient(#658fa5, #537587);
-    background:         linear-gradient(#658fa5, #537587);
-	border-bottom: 1px solid #f6f6f4;
-	border-right: 1px solid #f6f6f4;
-	border-radius: 8px 0 0 0;
-	padding: 20px 10px 10px 50px;
-	color: #ffffff;
-	margin-left: -46px;
-}
-.solution-title h1 {
-	font-size: 17px;
-	font-weight: bold;
-	font-family: Arial, sans-serif;
-}
-.solution-title h6 {
-    font-size: 13px;
-}
-.solution-info {
+.solution-right-panel .solution-info {
 	margin-left: 22px;
 	margin-right: 2px;
 	padding: 16px 20px 16px 0px;
 	color: #666666;
 	font-family: Arial, sans-serif;
 	font-size: 12px;
-	border-bottom: 1px solid #d3d3d3;
 }
-.solution-info img.author-avatar {
+.solution-right-panel .solution-info img.author-avatar {
 	float: left;
 	width: 41px;
 	height: 41px;
 	margin-right: 9px;
 }
-.solution-info .author-name {
+.solution-right-panel .solution-info .author-name {
+	display: block;
 	font-size: 14px;
 	font-weight: bold;
 	color: #648ea4;
 }
-.solution-info .author-from {
+.solution-right-panel .solution-info .author-name:hover {
+	text-decoration: underline;
+}
+.solution-right-panel .solution-info .author-from {
     font-size: 13px;
 }
-.slice {
-	border-bottom: 1px solid #d3d3d3;
-	margin-left: 0;
-	padding-left: 22px;
+.solution-right-panel .separator {
+	float: right;
+	width: 259px;
+	height: 3px;
+	margin: 0 1px 0 0;
+	padding: 0;
+	background: url('img/sep-solution.png');
 }
-.chapter {
-	padding-top: 0;
+.solution-right-panel .chapter {
+	margin-top: -16px;
 }
-.chapter h2 {
+.solution-right-panel .chapter h2 {
 	font-family: Arial, sans-serif;
 	font-weight: bold;
 	font-size: 11px;
-	color: #a6a6a6;
+	color: #878787;
+	text-shadow: 0 1px #eeeeee;
 	width: 128px;
-	border-top: 1px solid #fafafa;
 	border-right: 1px solid #d3d3d3;
     border-bottom: 1px solid #d3d3d3;
     border-left: 1px solid #d3d3d3;
@@ -793,78 +815,74 @@ a.this-page{
     margin: 0 112px 20px 0;
     padding-left: 10px;
 }
-.solution-summary {
+.solution-right-panel .solution-summary {
 	padding-bottom: 10px;
 	padding-top: 14px;
 }
-.solution-number {
+.solution-right-panel .solution-summary .solution-number {
 	font-size: 17px;
 	font-weight: bold;
 	color: #666666;
 	margin-bottom: 8px;
 }
-.solution-rating {
-	color: #999999;
+.solution-right-panel .solution-summary .solution-rating {
+	color: #878787;
 	font-family: Georgia, sans-serif;
 	font-style: italic;
 	font-size: 11px;
+	text-shadow: 0 1px #ffffff;
 }
-.solution-rating img {
+.solution-right-panel .solution-summary .solution-rating img {
 	margin: 0 10px 0 0;
 }
-.solution-image {
-	width: 600px;
-	height: 400px; /* @todo develop only */
-	box-shadow: 1px 1px 2px #d3d3d3;
-	margin: 30px 0;
-}
-table.solution-stat {
+.solution-right-panel table.solution-stat {
 	width: 100%;
 }
-table.solution-stat td {
+.solution-right-panel table.solution-stat td {
     padding: 5px 5px;
 }
-table.solution-stat col.icon {
+.solution-right-panel table.solution-stat col.icon {
     width: 24px;
 }
-table.solution-stat col.description {
+.solution-right-panel table.solution-stat col.description {
     width: 168px;
 }
-table.solution-stat col.value {
+.solution-right-panel table.solution-stat col.value {
     width: 24px;
 }
-table.solution-stat td.icon {
+.solution-right-panel table.solution-stat td.icon {
     background-image: url('img/icons-solution.png');
     backrground-repeat: no-repeat;
 }
-table.solution-stat td.value {
+.solution-right-panel table.solution-stat td.value {
     font-weight: bold;
     font-size: 14px;
 }
-table.solution-stat td.icon-eye {
+.solution-right-panel table.solution-stat td.icon-eye {
 	background-position: 0 0;
 }
-table.solution-stat td.icon-thumb {
+.solution-right-panel table.solution-stat td.icon-thumb {
     background-position: 0 -27px;
 }
-table.solution-stat td.icon-comments {
+.solution-right-panel table.solution-stat td.icon-comments {
     background-position: 0 -54px;
 }
-.solution-abuse a {
+.solution-right-panel .solution-abuse a {
 	display: block;
 	height: 27px;
+	margin: 0;
 	padding-left: 30px;
 	color: #648fa4;
 	background-image: url('img/icons-solution.png');
     background-repeat: no-repeat;
 	font-size: 12px;
 }
-.solution-abuse a:hover {
+.solution-right-panel .solution-abuse a:hover {
 	text-decoration: underline;
 }
-.solution-abuse a.abuse {
+.solution-right-panel .solution-abuse a.abuse {
 	background-position: 0 -81px;
 }
-.solution-abuse a.hide {
+.solution-right-panel .solution-abuse a.hide {
     background-position: 0 -108px;
 }
