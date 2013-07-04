@@ -573,6 +573,7 @@ a.this-page{
  * ----- Navigation areas -----
  */
 .solution-prev-area, .solution-next-area {
+	display: block;
 	position: absolute;
 	width: 60px;
 	height: 100%;
@@ -854,7 +855,9 @@ a.this-page{
     background-image: url('img/icons-solution.png');
     backrground-repeat: no-repeat;
 }
-.solution-right-panel table.solution-stat td.value {
+.solution-right-panel table.solution-stat td.value-views,
+.solution-right-panel table.solution-stat td.value-likes,
+.solution-right-panel table.solution-stat td.value-comments {
     font-weight: bold;
     font-size: 14px;
 }

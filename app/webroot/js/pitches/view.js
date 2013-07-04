@@ -579,38 +579,82 @@ $(document).ready(function(){
     $('.imagecontainer').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        window.history.pushState('object or string', 'Title', this.href); // @todo Check params
         $('#pitch-panel').hide();
         $('.wrapper').addClass('wrapper-frozen');
         $('.solution-overlay').show();
+        var urlJSON = window.location.pathname + '.json'; // @todo Query String
+        fetchSolution(urlJSON);
         return false;
     });
     $('.solution-overlay').on('click', function(e) {
         e.stopPropagation();
         if (!$(e.target).is('.solution-overlay')) return;
+        window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
         $('#pitch-panel').show();
         $('.wrapper').removeClass('wrapper-frozen');
         $(this).hide();
         return false;
     });
     
-    $('.solution-prev-area').on('mouseover', function() {
-        $('.solution-prev').addClass('active');
+    $('.solution-prev-area, .solution-next-area').on('mouseover', function(e) {
+        $(this).children().addClass('active');
     });
-    $('.solution-prev-area').on('mouseout', function() {
-        $('.solution-prev').removeClass('active');
+    $('.solution-prev-area, .solution-next-area').on('mouseout', function(e) {
+        $(this).children().removeClass('active');
     });
-    $('.solution-next-area').on('mouseover', function() {
-        $('.solution-next').addClass('active');
+    $('.solution-prev-area, .solution-next-area').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.history.pushState('object or string', 'Title', this.href); // @todo Check params
+        var urlJSON = this.href + '.json';
+        fetchSolution(urlJSON);
     });
-    $('.solution-next-area').on('mouseout', function() {
-        $('.solution-next').removeClass('active');
-    });
-    
     $('.message_text', '.solution-left-panel').parent().on('mouseover', function() {
         $('.toolbar', this).show();
     });
     $('.message_text', '.solution-left-panel').parent().on('mouseout', function() {
         $('.toolbar', this).hide();
     });
+    
+    /*
+     * Fetch solution via JSON and populate layout
+     */
+    function fetchSolution(urlJSON) {
+        $('.isField').text('');
+        $.getJSON(urlJSON, function(result) {
+            // Navigation
+            $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
+            $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
+            // Left Panel
+            if (result.pitch.title) {
+                $('h1', '.solution-title').text(result.pitch.title);
+            }
+            if (result.solution.images.solution) {
+                $.each(result.solution.images.solution, function(idx, field) {
+                    $('.solution-images').append('<img src="' + field.weburl + '" class="solution-image" />');
+                });
+            }
+            
+            // Right Panel
+            if (result.solution.id) {
+                $('.number', '.solution-number').text(result.solution.id);
+            }
+            $('.author-name').attr('href', '/users/view/' + result.solution.user_id).text(result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '.');
+            $('.author-from').text(result.solution.user.userdata.city);
+            if (result.solution.description) {
+                $('.solution-description').text(result.solution.description);
+            }
+            if (result.solution.views) {
+                $('.value-views', '.solution-stat').text(result.solution.views);
+            }
+            if (result.solution.likes) {
+                $('.value-likes', '.solution-stat').text(result.solution.likes);
+            }
+            if (result.comments.length) {
+                $('.value-comments', '.solution-stat').text(result.comments.length);
+            }
+        });
+    }
 
 });
