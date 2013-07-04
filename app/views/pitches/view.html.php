@@ -731,12 +731,12 @@ var pitchNumber = <?php echo $pitch->id; ?>;
         <div class="solution-right-panel">
             <div class="solution-info solution-summary">
                 <div class="solution-number">#<span class="number isField"><!--  --></span></div>
-                <div class="solution-rating"><img src="/img/4-rating-solution.png" /> рейтинг заказчика</div>
+                <div class="solution-rating"><div class="rating-image star0"></div> рейтинг заказчика</div>
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-author chapter">
                 <h2>АВТОР</h2>
-                <img class="author-avatar" src="/img/default_small_avatar.png" alt="Портрет автора">
+                <img class="author-avatar" src="/img/default_small_avatar.png" alt="Портрет автора" />
                 <a class="author-name isField" href="#"><!--  --></a>
                 <div class="author-from isField"><!--  --></div>
                 <div class="clr"></div>

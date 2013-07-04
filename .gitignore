@@ -4,3 +4,4 @@
 .project
 app/resources/tmp/*
 session/*
+app/webroot/avatars/*
