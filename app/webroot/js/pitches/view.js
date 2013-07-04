@@ -279,13 +279,13 @@ $(document).ready(function(){
     }
 
     $('#createComment').click(function() {
-        if(($('#newComment').val() == '') || ($('#newComment').val().match(/#(\d)+,(\s)+?$/))) {
-            alert('Введите текст комментария!');
-            return false;
+        if (isCommentValid($('#newComment').val())) { // See app.js
+            return true;
         }
-        return true;
-    })
-
+        alert('Введите текст комментария!');
+        return false;
+    });
+    
 /*
 	$('#createComment').click(function() {
 		$.post('/comments/add.json', $('#createCommentForm').serialize(), function(response) {
@@ -573,5 +573,44 @@ $(document).ready(function(){
         return false;
     })*/
 
+    /*
+     * View Solution Overlay
+     */
+    $('.imagecontainer').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('#pitch-panel').hide();
+        $('.wrapper').addClass('wrapper-frozen');
+        $('.solution-overlay').show();
+        return false;
+    });
+    $('.solution-overlay').on('click', function(e) {
+        e.stopPropagation();
+        if (!$(e.target).is('.solution-overlay')) return;
+        $('#pitch-panel').show();
+        $('.wrapper').removeClass('wrapper-frozen');
+        $(this).hide();
+        return false;
+    });
+    
+    $('.solution-prev-area').on('mouseover', function() {
+        $('.solution-prev').addClass('active');
+    });
+    $('.solution-prev-area').on('mouseout', function() {
+        $('.solution-prev').removeClass('active');
+    });
+    $('.solution-next-area').on('mouseover', function() {
+        $('.solution-next').addClass('active');
+    });
+    $('.solution-next-area').on('mouseout', function() {
+        $('.solution-next').removeClass('active');
+    });
+    
+    $('.message_text', '.solution-left-panel').parent().on('mouseover', function() {
+        $('.toolbar', this).show();
+    });
+    $('.message_text', '.solution-left-panel').parent().on('mouseout', function() {
+        $('.toolbar', this).hide();
+    });
 
 });

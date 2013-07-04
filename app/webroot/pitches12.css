@@ -540,3 +540,349 @@ a.this-page{
 .mention-link {
 	text-decoration:none;
 }
+/* ------------------ View Solution Overlay --------------------
+ *
+ * @todo check em-size text
+ */
+.wrapper-frozen {
+    position: fixed;
+	height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+.solution-overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 50;
+	width: 100%;
+	height: auto;
+	min-height: 100%;
+	overflow: hidden;
+	background: rgba(9, 10, 14, 0.81);
+}
+.solution-container {
+	position: relative;
+	margin: 100px auto 200px auto;
+	width: 958px;
+	border-radius: 9px;
+	background: url('img/solution-paper.png') left top #eeeeee;
+}
+/*
+ * ----- Navigation areas -----
+ */
+.solution-prev-area, .solution-next-area {
+	position: absolute;
+	width: 60px;
+	height: 100%;
+	cursor: pointer;
+}
+.solution-prev-area {
+    left: 0;
+    margin-left: -60px;
+}
+.solution-next-area {
+	right: 0;
+    margin-right: -60px;
+}
+.solution-prev, .solution-next {
+	position: fixed;
+	top: 275px;
+	width: 60px;
+	height: 30px;
+	background-image: url('img/arrows-solution.png');
+	backrtound-repeat: no-repeat
+}
+.solution-prev {
+    background-position: 0 0;
+}
+.solution-prev.active {
+	background-position: 0 -60px;
+}
+.solution-next {
+    background-position: 0 -30px;
+}
+.solution-next.active {
+	background-position: 0 -90px;
+}
+/*
+ * ----- Left Panel -----
+ */
+.solution-left-panel {
+	position: relative;
+	top: 0;
+	width: 599px;
+	border-radius: 9px 0 0 8px;
+	padding-left: 46px;
+	padding-right: 46px;
+	padding: 0 46px 30px 46px;
+	border-right: 1px solid #cecece;
+}
+.solution-left-panel .solution-title {
+    position: relative;
+    left: 0px;
+    width: 631px; /* ¿padding? */
+    height: 40px;
+    background: #648fa4;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#658fa5), to(#537587));
+    background: -webkit-linear-gradient(#658fa5, #537587);
+    background:    -moz-linear-gradient(#658fa5, #537587);
+    background:     -ms-linear-gradient(#658fa5, #537587);
+    background:      -o-linear-gradient(#658fa5, #537587);
+    background:         linear-gradient(#658fa5, #537587);
+    border-bottom: 1px solid #f6f6f4;
+    border-right: 1px solid #f6f6f4;
+    border-radius: 8px 0 0 0;
+    padding: 20px 10px 10px 50px;
+    color: #ffffff;
+    margin: 0 0 10px -46px;
+}
+.solution-left-panel .solution-title:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+.solution-left-panel .solution-title h1 {
+    font-size: 17px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+.solution-left-panel .solution-image {
+    width: 600px;
+    box-shadow: 1px 1px 2px #d3d3d3;
+    margin: 10px 0;
+}
+.solution-left-panel .separator {
+	width: 600px;
+	height: 3px;
+	background: url('img/sep-solution.png');
+}
+.solution-left-panel .separator.full {
+    width: 692px;
+    margin-left: -46px;
+}
+.solution-left-panel .separator-rating {
+    height: 24px;
+	margin: 10px 0 10px 0;
+}
+.solution-left-panel .separator-left, .solution-left-panel .separator-right {
+	height: 24px;
+    background: url('img/sep.png') 0 11px no-repeat;
+}
+.solution-left-panel .separator-left {
+	float: left;
+	width: 120px;
+}
+.solution-left-panel .separator-right {
+    float: right;
+    width: 150px;
+}
+.solution-left-panel .rating-widget {
+	float: left;
+	width: 304px;
+	height: 24px;
+	margin: 0 12px;
+	background: url('img/3-rating-solution-large.png') 96px 0 no-repeat;
+}
+.solution-left-panel .rating-widget span.left, .solution-left-panel .rating-widget span.right {
+	color: #999999;
+	font-family: Georgia, sans-serif;
+	font-style: italic;
+	font-size: 14px;
+	text-shadow: 0 1px #ffffff;
+}
+.solution-left-panel .rating-widget span.left {
+	float: left;
+}
+.solution-left-panel .rating-widget span.right {
+	float: right;
+}
+.solution-left-panel div.message_info1, .solution-left-panel div.message_info2 {
+	margin: 20px 0 0 0;
+}
+.solution-left-panel div.message_text {
+	float: right;
+    width: 382px;
+    margin: 20px auto 10px auto;
+}
+.solution-left-panel div.toolbar {
+	display: none;
+	clear: both;
+    float: right;
+    margin: 0 0 8px 0;
+    height: 18px;
+}
+.solution-left-panel .button {
+    display: inline-block;
+    padding: 0 30px;
+    height: 49px;
+    margin: 14px 183px 20px 183px;
+    border: 4px solid #cecece;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+    background: #5d8397;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#658fa5), to(#537587));
+    background: -webkit-linear-gradient(#658fa5, #537587);
+    background:    -moz-linear-gradient(#658fa5, #537587);
+    background:     -ms-linear-gradient(#658fa5, #537587);
+    background:      -o-linear-gradient(#658fa5, #537587);
+    background:         linear-gradient(#658fa5, #537587);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    line-height: 41px;
+    font-size: 12px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+}
+.solution-left-panel .button:hover {
+    background: #6690a6;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#6f9db5), to(#5c8296));
+    background: -webkit-linear-gradient(#6f9db5, #5c8296);
+    background:    -moz-linear-gradient(#6f9db5, #5c8296);
+    background:     -ms-linear-gradient(#6f9db5, #5c8296);
+    background:      -o-linear-gradient(#6f9db5, #5c8296);
+    background:         linear-gradient(#6f9db5, #5c8296);
+}
+.solution-left-panel textarea {
+    width: 600px;
+    height: 150px;
+    margin: 20px 0 0 0;
+    padding: 0;
+    border-left: 2px solid #d9dadc;
+    border-top: 1px solid #d9dadc;
+}
+/*
+ * ----- Right Panel -----
+ */
+.solution-right-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 265px;
+    height: 100%;
+    border-left: 1px solid #ededed;
+}
+.solution-right-panel .solution-info {
+	margin-left: 22px;
+	margin-right: 2px;
+	padding: 16px 20px 16px 0px;
+	color: #666666;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+}
+.solution-right-panel .solution-info img.author-avatar {
+	float: left;
+	width: 41px;
+	height: 41px;
+	margin-right: 9px;
+}
+.solution-right-panel .solution-info .author-name {
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	color: #648ea4;
+}
+.solution-right-panel .solution-info .author-name:hover {
+	text-decoration: underline;
+}
+.solution-right-panel .solution-info .author-from {
+    font-size: 13px;
+}
+.solution-right-panel .separator {
+	float: right;
+	width: 259px;
+	height: 3px;
+	margin: 0 1px 0 0;
+	padding: 0;
+	background: url('img/sep-solution.png');
+}
+.solution-right-panel .chapter {
+	margin-top: -16px;
+}
+.solution-right-panel .chapter h2 {
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+	font-size: 11px;
+	color: #878787;
+	text-shadow: 0 1px #eeeeee;
+	width: 128px;
+	border-right: 1px solid #d3d3d3;
+    border-bottom: 1px solid #d3d3d3;
+    border-left: 1px solid #d3d3d3;
+    border-radius: 0 0 6px 6px;
+    margin: 0 112px 20px 0;
+    padding-left: 10px;
+}
+.solution-right-panel .solution-summary {
+	padding-bottom: 10px;
+	padding-top: 14px;
+}
+.solution-right-panel .solution-summary .solution-number {
+	font-size: 17px;
+	font-weight: bold;
+	color: #666666;
+	margin-bottom: 8px;
+}
+.solution-right-panel .solution-summary .solution-rating {
+	color: #878787;
+	font-family: Georgia, sans-serif;
+	font-style: italic;
+	font-size: 11px;
+	text-shadow: 0 1px #ffffff;
+}
+.solution-right-panel .solution-summary .solution-rating img {
+	margin: 0 10px 0 0;
+}
+.solution-right-panel table.solution-stat {
+	width: 100%;
+}
+.solution-right-panel table.solution-stat td {
+    padding: 5px 5px;
+}
+.solution-right-panel table.solution-stat col.icon {
+    width: 24px;
+}
+.solution-right-panel table.solution-stat col.description {
+    width: 168px;
+}
+.solution-right-panel table.solution-stat col.value {
+    width: 24px;
+}
+.solution-right-panel table.solution-stat td.icon {
+    background-image: url('img/icons-solution.png');
+    backrground-repeat: no-repeat;
+}
+.solution-right-panel table.solution-stat td.value {
+    font-weight: bold;
+    font-size: 14px;
+}
+.solution-right-panel table.solution-stat td.icon-eye {
+	background-position: 0 0;
+}
+.solution-right-panel table.solution-stat td.icon-thumb {
+    background-position: 0 -27px;
+}
+.solution-right-panel table.solution-stat td.icon-comments {
+    background-position: 0 -54px;
+}
+.solution-right-panel .solution-abuse a {
+	display: block;
+	height: 27px;
+	margin: 0;
+	padding-left: 30px;
+	color: #648fa4;
+	background-image: url('img/icons-solution.png');
+    background-repeat: no-repeat;
+	font-size: 12px;
+}
+.solution-right-panel .solution-abuse a:hover {
+	text-decoration: underline;
+}
+.solution-right-panel .solution-abuse a.abuse {
+	background-position: 0 -81px;
+}
+.solution-right-panel .solution-abuse a.hide {
+    background-position: 0 -108px;
+}

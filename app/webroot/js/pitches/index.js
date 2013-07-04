@@ -1,4 +1,25 @@
 $(document).ready(function() {
+    
+    /* Init placeholder */
+    var placeholder = 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ';
+    function checkPlaceholder() {
+        var el = $('#searchTerm');
+        var value = el.val()
+        if ($('#filterbox li').length == 0) {
+            if (el.val() == '') {
+                el.addClass('placeholder');
+                var value = placeholder;
+            }
+        } else {
+            if (el.val() == placeholder) {
+                var value = '';
+            }
+            el.removeClass('placeholder');
+        }
+        el.val(value);
+    }
+    
+    checkPlaceholder();
 
 	/* Filters */
 
@@ -26,7 +47,10 @@ $(document).ready(function() {
         }
     })
 
-    $(document).on('focus', '#searchTerm', function() {
+    $('#searchTerm').on('focus', function() {
+        if ($(this).val() == placeholder) {
+            $(this).val('').removeClass('placeholder');
+        }
         $('#filterContainer').css('border', '4px solid rgb(231, 231, 231)');
         $('#filterContainer').css('box-shadow', '');
         //$('#filterContainer').css('height', '37px')
@@ -35,6 +59,7 @@ $(document).ready(function() {
     })
 
     $(document).on('blur', '#searchTerm', function() {
+        checkPlaceholder();
         $('#filterContainer').css('box-shadow', '0 1px 2px rgba(0, 0, 0, 0.2) inset');
         $('#filterContainer').css('border', '4px solid #F3F3F3');
         //$('#filterContainer').css('height', '41px')
@@ -69,6 +94,7 @@ $(document).ready(function() {
 
     $(document).on('click', '.removeTag', function() {
         $(this).parent().remove();
+        checkPlaceholder();
         recalculateBox();
         Table.setFilter($(this).data('group'), 'all');
         if($('li[data-group]').length == 0) {
@@ -216,10 +242,11 @@ $(document).ready(function() {
 		return false;
 	});
 
-    $('.filterlist a').on('click', function() {
+    $('.filterlist a').on('click', function() { // Add tag
         $('li[data-group=' + $(this).data('group') + ']', '#filterbox').remove();
         var box = '<li style="margin-left:6px;" data-group="' + $(this).data('group') + '">' + $(this).text() + '<a class="removeTag" href="#" data-group="' + $(this).data('group') + '" data-value="' + $(this).data('value') + '"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
         $(box).appendTo('#filterbox');
+        checkPlaceholder();
         recalculateBox();
         Table.setFilter($(this).data('group'), $(this).data('value'));
         if($(this).data('group') != 'type') {
