@@ -431,6 +431,7 @@
 
                 && ($this->session->read('user.id'))
                 ):?>
+                <script>var allowComments = true;</script>
                 <section>
                     <div class="all_messages">
                         <div class="clr"></div>
@@ -463,6 +464,7 @@
                     <?php endif;?>
                 </section>
                 <?php else:?>
+                <script>var allowComments = false;</script>
                 <div style="width: 810px; margin-left: 30px; " id="t1" class="separator">
                 </div>
                 <?php endif?>
@@ -716,6 +718,7 @@
 <!-- Solution Popup -->
 <script>
 var pitchNumber = <?php echo $pitch->id; ?>;
+var currentUserId = <?php echo $this->session->read('user.id'); ?>;
 </script>
 <!-- start: Solution overlay -->
 <div class="solution-overlay">
@@ -744,7 +747,7 @@ var pitchNumber = <?php echo $pitch->id; ?>;
             <div class="separator"></div>
             <div class="solution-info solution-about chapter">
                 <h2>О РЕШЕНИИ</h2>
-                <span class="solution-description isField"><!--  --></span>... <a href="#">Подробнее</a>
+                <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-about">
@@ -819,9 +822,11 @@ var pitchNumber = <?php echo $pitch->id; ?>;
         </div>
         <!-- start: Solution Left Panel -->
         <div class="solution-left-panel">
-            <div class="solution-title">
-                <h1 class="isField"><!--  --></h1>
-            </div>
+            <a class="solution-title" href="/pitches/view/<?=$pitch->id?>">
+                <h1>
+                    <?=$pitch->title?>
+                </h1>
+            </a>
             <!-- start: Soluton Images -->
             <section class="solution-images isField">
                 <div class="separator-rating">
@@ -831,114 +836,40 @@ var pitchNumber = <?php echo $pitch->id; ?>;
                 </div>
             <!-- end: Solution Images -->
             </section>
+            <section class="allow-comments">
+                <div class="all_messages">
+                	<div class="clr"></div>
+                </div>
+                <div class="separator full"></div>
+                <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
+                <form id="createCommentForm" method="post" action="/comments/add">
+                	<div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
+                		<div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
+                			<div style="" id="tooltipContent" class="supplement3">
+                				<p>Укажите номер комментируемого варианта, используя хештег #. Например:
+                				#2, нравится!<br>
+                				Обратитесь к автору решения, используя @. Например:<br>
+                				@username, спасибо!
+                				</p>
+                			</div>
+                		</div>
+                	</div>
+                	<textarea id="newComment" name="text"></textarea>
+                	<input type="hidden" value="" name="solution_id">
+                	<input type="hidden" value="" name="comment_id">
+                	<input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
+                	<input type="submit" id="createComment" class="button" value="Отправить комментарий">
+                	<div class="clr"></div>
+                </form>
+            </section>
             <!-- start: Comments -->
-            <section>
-                <section>
-                    <div class="all_messages">
-                        <div class="clr"></div>
-                    </div>
-                    <div class="separator full"></div>
-                    <input type="hidden" value="1" name="category_id" id="category_id">
-                    <form id="createCommentForm" method="post" action="/comments/add">
-                        <div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
-                            <div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
-                                <div style="" id="tooltipContent" class="supplement3">
-                                    <p>Укажите номер комментируемого варианта, используя хештег #. Например:
-                                    #2, нравится!<br>
-                                    Обратитесь к автору решения, используя @. Например:<br>
-                                    @username, спасибо!
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <textarea id="newComment" name="text"></textarea>
-                        <input type="hidden" value="" name="solution_id">
-                        <input type="hidden" value="" name="comment_id">
-                        <input type="hidden" value="1" name="pitch_id">
-                        <input type="submit" id="createComment" class="button" value="Отправить комментарий">
-                        <div class="clr"></div>
-                    </form>
-                    <div class="separator"></div>
-                </section>
+            <section class="solution-comments isField">
 
-                <div style="clear:both;"></div>
-
-                <section data-id="45" data-type="designer">
-                    <div class="message_info2">
-                        <a href="/users/view/2">
-                            <img src="/img/default_small_avatar.png" alt="Портрет пользователя" width="41" height="41">
-                        </a>
-                        <a href="#" data-comment-id="45" data-comment-to="Тестер2 Т." class="replyto">
-                            <span>Тестер2 Т.</span><br />
-                            <span style="font-weight: normal;">28.06.13 17:08</span>
-                        </a>
-                        <div class="clr"></div>
-                    </div>
-                    <div data-id="45" class="message_text">
-                        <span class="regular comment-container">
-                            <a href="http://#" class="mention-link" data-comment-to="Никита А.">@Никита А.</a><a href="#" class="mention-link" data-comment-to="Мила Д.">@Мила Д.</a> Спасибо всем за работу, хотя мы и ожидали большего!<br>
-                            Наибольший интерес и доверие вызвали у нас работы <a href="http://#" class="mention-link" data-comment-to="Мила Д.">@Мила Д.</a> <a href="#" class="mention-link" data-comment-to="Марк М.">@Марк М.</a> <a href="#" class="mention-link" data-comment-to="Daria K.">@Daria K.</a> <a href="#" class="mention-link" data-comment-to="Никита А.">@Никита А.</a><br>
-                            С победителем мы практически определились, одна проведём общее голосование <a href="http://#" class="mention-link" data-comment-to="Никита А.">@Никита А.</a> внутри коллектива и вынесем результат. <br>
-                            Спасибо авторам и спасибо разработчикам портала <a href="http://godesigner.ru" target="_blank">godesigner.ru</a>!
-                        </span>
-                    </div>
-                    <div class="toolbar">
-                        <a href="#" data-comment-id="45" data-comment-to="Тестер2 Т." class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
-                        <a href="#" data-comment-id="45" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>
-                    </div>
-                    <div class="clr"></div>
-                    <div class="hiddenform" style="display:none">
-                        <section><form style="margin-bottom: 25px;" action="/comments/edit/45" method="post">
-                            <textarea name="text" data-id="45"></textarea>
-                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br>
-                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span>
-                            <div class="clr"></div>
-                        </form>
-                        </section>
-                    </div>
-                </section>
-
-                <div class="separator"></div>
-                <section data-id="44" data-type="designer">
-                    <div class="message_info1">
-                        <a href="/users/view/2">
-                            <img src="/img/default_small_avatar.png" alt="Портрет пользователя" width="41" height="41">
-                        </a>
-                        <a href="#" data-comment-id="44" data-comment-to="Тестер2 Т." class="replyto">
-                            <span>Тестер2 Т.</span><br />
-                            <span style="font-weight: normal;">28.06.13 16:18</span>
-                        </a>
-                        <div class="clr"></div>
-                    </div>
-                    <div data-id="44" class="message_text" style="margin-top:15px;">
-                        <span class="regular comment-container">
-                            <a href="http://#" class="mention-link" data-comment-to="Мила Д.">@Мила Д.</a> Спасибо всем за работу, хотя мы и ожидали большего!<br>
-                            Наибольший интерес и доверие вызвали у нас работы <a href="http://#" class="mention-link" data-comment-to="Мила Д.">@Мила Д.</a> <a href="#" class="mention-link" data-comment-to="Марк М.">@Марк М.</a> <a href="#" class="mention-link" data-comment-to="Daria K.">@Daria K.</a> <a href="#" class="mention-link" data-comment-to="Никита А.">@Никита А.</a><br>
-                            С победителем мы практически определились, одна проведём общее голосование внутри коллектива и вынесем результат. <br>
-                            Спасибо авторам и спасибо разработчикам портала <a href="http://godesigner.ru" target="_blank">godesigner.ru</a>!
-                        </span>
-                    </div>
-                    <div class="toolbar">
-                        <a href="#" data-comment-id="44" data-comment-to="Тестер2 Т." class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
-                        <a href="#" data-comment-id="44" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>
-                    </div>
-                    <div class="clr"></div>
-                    <div class="hiddenform" style="display:none">
-                        <section><form style="margin-bottom: 25px;" action="/comments/edit/44" method="post">
-                            <textarea name="text" data-id="44"></textarea>
-                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br>
-                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span>
-                            <div class="clr"></div>
-                        </form>
-                        </section>
-                    </div>
-                </section>
-                <div class="separator"></div>
             <!-- end: Comments -->
             </section>
         <!-- end: Solution Left Panel -->
         </div>
-        <div style="clear:both;"></div>
+        <div class="clr"></div>
     <!-- end: Solution Container -->
     </div>
 <!-- end: Solution overlay -->

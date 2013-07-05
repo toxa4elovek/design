@@ -8,6 +8,7 @@ use \app\models\User;
 use \app\models\Solution;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\helper\Brief;
+use \app\models\Avatar;
 
 class CommentsController extends \lithium\action\Controller {
 
@@ -22,6 +23,11 @@ class CommentsController extends \lithium\action\Controller {
         $user = User::first($this->request->data['user_id']);
         if(strtotime($user->silenceUntil) < time()) {
             $result = Comment::createComment($this->request->data);
+            if (isset($this->request->data['fromAjax'])) {
+                $comment = Comment::first(array('conditions' => array('Comment.id' => $result['id']), 'with' => array('User', 'Pitch')));
+                $userAvatar = Avatar::first(array('conditions' => array('model_id' => $user->id)));
+                return compact('result', 'comment', 'userAvatar');
+            }
         }else {
             $result = array('solution_id' => $this->request->data['solution_id']);
         }

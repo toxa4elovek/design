@@ -172,10 +172,10 @@ class Comment extends \app\models\AppModel {
 	}
 
     public static function filterComments($currentNum, $allcomments) {
-        $solutionComments = array();
+        $solutionComments = new \lithium\util\Collection();
         foreach($allcomments as $comment) {
             if(preg_match('@#' . $currentNum . '\D@', $comment->text)) {
-                $solutionComments[] = $comment;
+                $solutionComments->append($comment);
             }
         }
         return $solutionComments;
@@ -183,7 +183,6 @@ class Comment extends \app\models\AppModel {
 
 	public static function createComment($data) {
 		return static::_filter(__FUNCTION__, $data, function($self, $params) {
-		    \lithium\analysis\Logger::write('debug', 'function');
             $comment = $self::create();
             if((isset($params['comment_id'])) && ($mentionedComment = $self::first($params['comment_id']))) {
                 $params['reply_to'] = $mentionedComment->user_id;
