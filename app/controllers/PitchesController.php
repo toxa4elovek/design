@@ -18,6 +18,7 @@ use \app\models\Expert;
 use \app\models\Promocode;
 use \app\models\Promoted;
 use app\models\Ratingchange;
+use \app\models\Avatar;
 
 use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
@@ -991,7 +992,7 @@ ini_set('display_errors', '1');
             }
 			Session::write('unpublished.pitch', $pitch->id);
 			return $pitch->id;
-		}		
+		}
 	}
 
     public function edit() {
@@ -1260,10 +1261,10 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
 			    }
 			    if(!isset($previous)) {
-			    	$previous = array_pop(array_keys($array));	
+			    	$previous = array_pop(array_keys($array));
 			    }
 			    if(!isset($next)) {
-			    	$next = array_shift(array_keys($array));	
+			    	$next = array_shift(array_keys($array));
 			    }
 
 			   return array(
@@ -1306,8 +1307,10 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if($nominatedSolutionOfThisPitch) {
                 $selectedsolution = true;
             }
+            $userData = unserialize($solution->user->{'userdata'});
+            $userAvatar = Avatar::first(array('conditions' => array('model_id' => $solution->user_id)));
 			//if($pitch->category_id != 7){
-                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts');
+                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar');
             //}else{
                 //return $this->render(array('template' => '/viewsolution-copy', 'data' => compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution')));
             //}
@@ -1341,7 +1344,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     return 'nofile';
                 }
             }
-            if($pitch->category_id != 7){ 
+            if($pitch->category_id != 7){
                 return compact('pitch');
             }else{
                 return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
@@ -1381,14 +1384,14 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
                 }*/
             }
-            if($pitch->category_id != 7){ 
+            if($pitch->category_id != 7){
                 return compact('pitch');
             }else{
                 return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
             }
         }else {
 
-        }    
+        }
     }
 
     public function getlatestsolution() {

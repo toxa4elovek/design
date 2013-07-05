@@ -579,38 +579,88 @@ $(document).ready(function(){
     $('.imagecontainer').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        window.history.pushState('object or string', 'Title', this.href); // @todo Check params
         $('#pitch-panel').hide();
         $('.wrapper').addClass('wrapper-frozen');
         $('.solution-overlay').show();
+        var urlJSON = window.location.pathname + '.json'; // @todo Query String
+        fetchSolution(urlJSON);
         return false;
     });
     $('.solution-overlay').on('click', function(e) {
         e.stopPropagation();
         if (!$(e.target).is('.solution-overlay')) return;
+        window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
         $('#pitch-panel').show();
         $('.wrapper').removeClass('wrapper-frozen');
         $(this).hide();
         return false;
     });
     
-    $('.solution-prev-area').on('mouseover', function() {
-        $('.solution-prev').addClass('active');
+    $('.solution-prev-area, .solution-next-area').on('mouseover', function(e) {
+        $(this).children().addClass('active');
     });
-    $('.solution-prev-area').on('mouseout', function() {
-        $('.solution-prev').removeClass('active');
+    $('.solution-prev-area, .solution-next-area').on('mouseout', function(e) {
+        $(this).children().removeClass('active');
     });
-    $('.solution-next-area').on('mouseover', function() {
-        $('.solution-next').addClass('active');
+    $('.solution-prev-area, .solution-next-area').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.history.pushState('object or string', 'Title', this.href); // @todo Check params
+        var urlJSON = this.href + '.json';
+        fetchSolution(urlJSON);
     });
-    $('.solution-next-area').on('mouseout', function() {
-        $('.solution-next').removeClass('active');
-    });
-    
     $('.message_text', '.solution-left-panel').parent().on('mouseover', function() {
         $('.toolbar', this).show();
     });
     $('.message_text', '.solution-left-panel').parent().on('mouseout', function() {
         $('.toolbar', this).hide();
     });
+    
+    /*
+     * Fetch solution via JSON and populate layout
+     */
+    function fetchSolution(urlJSON) {
+        // Reset layout
+        $(window).scrollTop(0);
+        $('.isField').text('');
+        $('.author-avatar').attr('src', '/img/default_small_avatar.png');
+        /*$('.rating-image', '.solution-rating').removeClass(function (index, css) {
+            alert(css);
+            return (css.match(/\dstar/g));
+        });*/
+        $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
+        
+        $.getJSON(urlJSON, function(result) {
+            // Navigation
+            $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
+            $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
+            // Left Panel
+            $('h1', '.solution-title').text(result.pitch.title || 'Без заголовка');
+            if (result.solution.images.solution) {
+                $.each(result.solution.images.solution, function(idx, field) {
+                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                });
+            }
+            // Right Panel
+            $('.number', '.solution-number').text(result.solution.id || '');
+            $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
+            if (result.userAvatar) {
+                $('.author-avatar').attr('src', result.userAvatar.filename);
+            } else {
+                $('.author-avatar').attr('src', '/img/default_small_avatar.png');
+            }
+            $('.author-name').attr('href', '/users/view/' + result.solution.user_id).text(result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '.');
+            if (result.userData && result.userData.city) {
+                $('.author-from').text(result.userData.city); // @todo Try to unserialize userdata on Clientside
+            } else {
+                $('.author-from').text('');
+            }
+            $('.solution-description').text(result.solution.description || '');
+            $('.value-views', '.solution-stat').text(result.solution.views || '');
+            $('.value-likes', '.solution-stat').text(result.solution.likes || '');
+            $('.value-comments', '.solution-stat').text(result.comments.length || '');
+        });
+    }
 
 });

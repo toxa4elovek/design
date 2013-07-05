@@ -712,34 +712,39 @@
     <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА" style="border:0; width:540px; margin-top: 10px; height: 100px;"></textarea>
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
+
+<!-- Solution Popup -->
+<script>
+var pitchNumber = <?php echo $pitch->id; ?>;
+</script>
 <!-- start: Solution overlay -->
 <div class="solution-overlay">
     <!-- start: Solution Container -->
     <div class="solution-container">
-        <div class="solution-prev-area">
+        <a class="solution-prev-area" href="#">
             <div class="solution-prev"></div>
-        </div>
-        <div class="solution-next-area">
+        </a>
+        <a class="solution-next-area" href="#">
             <div class="solution-next"></div>
-        </div>
+        </a>
         <!-- start: Solution Right Panel -->
         <div class="solution-right-panel">
             <div class="solution-info solution-summary">
-                <div class="solution-number">#44</div>
-                <div class="solution-rating"><img src="/img/4-rating-solution.png" /> рейтинг заказчика</div>
+                <div class="solution-number">#<span class="number isField"><!--  --></span></div>
+                <div class="solution-rating"><div class="rating-image star0"></div> рейтинг заказчика</div>
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-author chapter">
                 <h2>АВТОР</h2>
-                <img class="author-avatar" src="/img/default_small_avatar.png" alt="Портрет автора">
-                <a class="author-name" href="#">Oxana D.</a>
-                <div class="author-from">Санкт-Петербург</div>
+                <img class="author-avatar" src="/img/default_small_avatar.png" alt="Портрет автора" />
+                <a class="author-name isField" href="#"><!--  --></a>
+                <div class="author-from isField"><!--  --></div>
                 <div class="clr"></div>
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-about chapter">
                 <h2>О РЕШЕНИИ</h2>
-                Очень хотелось видеть в логотипе больше ярких цветов и не один, но почему все копируют логотип у сайта DRIVE.RU? Почти все предложения смотрятся очень дешево и нет ни капли креатива и мысли... <a href="#">Подробнее</a>
+                <span class="solution-description isField"><!--  --></span>... <a href="#">Подробнее</a>
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-about">
@@ -750,17 +755,17 @@
                     <tr>
                         <td class="icon icon-eye"></td>
                         <td>Просмотров</td>
-                        <td class="value">30</td>
+                        <td class="value-views isField"><!--  --></td>
                     </tr>
                     <tr>
                         <td class="icon icon-thumb"></td>
                         <td>Лайков</td>
-                        <td class="value">20</td>
+                        <td class="value-likes isField"><!--  --></td>
                     </tr>
                     <tr>
                         <td class="icon icon-comments"></td>
                         <td>Комментарии</td>
-                        <td class="value">34</td>
+                        <td class="value-comments isField"><!--  --></td>
                     </tr>
                 </table>
             </div>
@@ -815,18 +820,15 @@
         <!-- start: Solution Left Panel -->
         <div class="solution-left-panel">
             <div class="solution-title">
-                <h1>Логотип для онлайн-магазина мебели и товаров для дома "FUNFUR"</h1>
+                <h1 class="isField"><!--  --></h1>
             </div>
             <!-- start: Soluton Images -->
-            <section>
-                <img src="/img/tmp-1.png" class="solution-image" />
+            <section class="solution-images isField">
                 <div class="separator-rating">
                     <div class="separator-left"></div>
                     <div class="rating-widget"><span class="left">выставьте</span> <span class="right">рейтинг</span></div>
                     <div class="separator-right"></div>
                 </div>
-                <img src="/img/tmp-2.png" class="solution-image" />
-                <img src="/img/tmp-1.png" class="solution-image" />
             <!-- end: Solution Images -->
             </section>
             <!-- start: Comments -->

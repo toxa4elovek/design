@@ -573,6 +573,7 @@ a.this-page{
  * ----- Navigation areas -----
  */
 .solution-prev-area, .solution-next-area {
+	display: block;
 	position: absolute;
 	width: 60px;
 	height: 100%;
@@ -832,8 +833,30 @@ a.this-page{
 	font-size: 11px;
 	text-shadow: 0 1px #ffffff;
 }
-.solution-right-panel .solution-summary .solution-rating img {
-	margin: 0 10px 0 0;
+.solution-right-panel .solution-summary .solution-rating .rating-image {
+	display: inline-block;
+	width: 91px;
+	height: 16px;
+	margin: 0 10px -4px 0;
+	background: url('img/rating-solution.png') 0 -80px no-repeat;
+}
+.solution-right-panel .solution-summary .solution-rating .rating-image.star0 {
+    background-position: 0 -80px;
+}
+.solution-right-panel .solution-summary .solution-rating .rating-image.star1 {
+	background-position: 0 -64px;
+}
+.solution-right-panel .solution-summary .solution-rating .rating-image.star2 {
+    background-position: 0 -48px;
+}
+.solution-right-panel .solution-summary .solution-rating .rating-image.star3 {
+    background-position: 0 -32px;
+}
+.solution-right-panel .solution-summary .solution-rating .rating-image.star4 {
+    background-position: 0 -16px;
+}
+.solution-right-panel .solution-summary .solution-rating .rating-image.star5 {
+    background-position: 0 0;
 }
 .solution-right-panel table.solution-stat {
 	width: 100%;
@@ -854,7 +877,9 @@ a.this-page{
     background-image: url('img/icons-solution.png');
     backrground-repeat: no-repeat;
 }
-.solution-right-panel table.solution-stat td.value {
+.solution-right-panel table.solution-stat td.value-views,
+.solution-right-panel table.solution-stat td.value-likes,
+.solution-right-panel table.solution-stat td.value-comments {
     font-weight: bold;
     font-size: 14px;
 }
