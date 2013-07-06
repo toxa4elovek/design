@@ -686,7 +686,10 @@ a.this-page{
 	width: 304px;
 	height: 24px;
 	margin: 0 12px;
-	background: url('img/3-rating-solution-large.png') 96px 0 no-repeat;
+	/* background: url('img/3-rating-solution-large.png') 96px 0 no-repeat; */
+}
+.solution-left-panel .rating-widget #star-widget {
+	margin-left: 20px;
 }
 .solution-left-panel .rating-widget span.left, .solution-left-panel .rating-widget span.right {
 	color: #999999;

@@ -440,7 +440,7 @@
 
                                                                     <div class="comment" id="comment-anchor">ОСТАВИТЬ КОММЕНТАРИЙ</div>
                     <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
-                    <form id="createCommentForm" method="post" action="/comments/add">
+                    <form class="createCommentForm" method="post" action="/comments/add">
                         <div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
                             <div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
                                 <div style="" id="tooltipContent" class="supplement3">
@@ -813,10 +813,7 @@ var currentUserId = <?php echo $this->session->read('user.id'); ?>;
                 </div>
             </div>
             <div class="separator"></div>
-            <div class="solution-info solution-abuse">
-                <a class="abuse" href="">Пожаловаться</a>
-                <a class="hide" href="">Удалить</a>
-            </div>
+            <div class="solution-info solution-abuse isField"><!--  --></div>
             <div class="separator"></div>
         <!-- end: Solution Right Panel -->
         </div>
@@ -829,11 +826,6 @@ var currentUserId = <?php echo $this->session->read('user.id'); ?>;
             </a>
             <!-- start: Soluton Images -->
             <section class="solution-images isField">
-                <div class="separator-rating">
-                    <div class="separator-left"></div>
-                    <div class="rating-widget"><span class="left">выставьте</span> <span class="right">рейтинг</span></div>
-                    <div class="separator-right"></div>
-                </div>
             <!-- end: Solution Images -->
             </section>
             <section class="allow-comments">
@@ -842,7 +834,7 @@ var currentUserId = <?php echo $this->session->read('user.id'); ?>;
                 </div>
                 <div class="separator full"></div>
                 <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
-                <form id="createCommentForm" method="post" action="/comments/add">
+                <form class="createCommentForm" method="post" action="/comments/add">
                 	<div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
                 		<div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
                 			<div style="" id="tooltipContent" class="supplement3">
@@ -876,7 +868,7 @@ var currentUserId = <?php echo $this->session->read('user.id'); ?>;
 </div>
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'kinetic-v4.3.1.min.js', 'pitches/plot.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'kinetic-v4.3.1.min.js', 'pitches/plot.js', 'jquery.raty.min.js'), array('inline' => false))?>
     <?php else:?>
     <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'kinetic-v4.3.1.min.js'), array('inline' => false))?>
     <?php endif?>

@@ -58,6 +58,9 @@ class CommentsController extends \lithium\action\Controller {
         ini_set('display_errors', '1');
         if((((Session::read('user.isAdmin') == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81)))) && ($comment = Comment::first($this->request->id))) || (($comment = Comment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
             $comment->delete();
+            if ($this->request->is('json')) {
+                return 'true';
+            }
             if($comment->solution_id != 0) {
                 if($solution = Solution::first($comment->solution_id)) {
                     return $this->redirect(array('controller' => 'pitches', 'action' => 'view', 'id' => $comment->pitch_id));
