@@ -445,4 +445,225 @@ $(document).ready(function() {
         })
 
     }
+    
+    /*
+     * View solution via json
+     */
+    if (document.URL.indexOf('?') != -1) {
+        var queryParam = document.URL.slice(document.URL.indexOf('?'));
+    } else {
+        var queryParam = '';
+    }
+    var urlJSON = window.location.pathname + '.json' + queryParam;
+    fetchSolution(urlJSON);
+    /*
+     * Fetch solution via JSON and populate layout
+     */
+    function fetchSolution(urlJSON) {
+        // Reset layout
+        $(window).scrollTop(0);
+        $('.isField').text('');
+        $('.author-avatar').attr('src', '/img/default_small_avatar.png');
+        $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
+        $('.description-more').hide();
+        $('#newComment', '.solution-left-panel').val('');
+        $.getJSON(urlJSON, function(result) {
+            expertsObj = result.experts;
+            // Navigation
+            $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
+            $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
+            
+            // Left Panel
+            if (result.solution.images.solution) {
+                $.each(result.solution.images.solution, function(idx, field) {
+                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                });
+            }
+            
+            if (currentUserId == result.pitch.user_id) { // isClient
+                var firstImage = $('.solution-image').first().parent();
+                $('<div class="separator-rating"> \
+                <div class="separator-left"></div> \
+                <div class="rating-widget"><span class="left">выставьте</span> \
+                        <span id="star-widget"></span> \
+                <span class="right">рейтинг</span></div> \
+                <div class="separator-right"></div> \
+                </div>').insertAfter(firstImage);
+                $("#star-widget").raty({
+                    path: '/img',
+                    starOff: 'solution-star-off.png',
+                    starOn : 'solution-star-on.png',
+                    start: result.solution.rating,
+                    click: function(score, evt) {
+                        $.post('/solutions/rating/' + $('input[name=solution_id]').val() + '.json', 
+                        {"id": result.solution.id, "rating": score}, function(response) {
+                            $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
+                            $('.rating-image', '.solution-rating').addClass('star' + score);
+                        });
+                    }
+                });
+            }
+            
+            $('#newComment', '.solution-left-panel').val('#' + result.solution.id + ', ');
+            solutionId = result.solution.id;
+            
+            if (result.comments) {
+                var solutionComments = '';
+                $.each(result.comments, function(idx, comment) {
+                    var commentData = {};
+                    commentData.commentId = comment.id;
+                    commentData.commentUserId = comment.user.id;
+                    commentData.commentText = comment.text;
+                    commentData.commentPlainText = comment.originalText;
+                    commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
+                    commentData.isExpert = isExpert(comment.user_id);
+                    
+                    if (result.pitch.user_id == comment.user_id) {
+                        commentData.messageInfo = 'message_info2';
+                    } else if (comment.user.isAdmin == "1") {
+                        commentData.messageInfo = 'message_info4';
+                    } else if (commentData.isExpert) {
+                        commentData.messageInfo = 'message_info5';
+                    }else {
+                        commentData.messageInfo = 'message_info1';
+                    }
+                    
+                    commentData.userAvatar = '/img/default_small_avatar.png'; // @todo fix this
+                    
+                    commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
+                    commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
+                    
+                    // Date Time
+                    var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
+                    var postDateObj = new Date(dateCreated);
+                    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+                    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+                     
+                    solutionComments += populateComment(commentData); 
+                });
+                $('.solution-comments').html(solutionComments);
+                
+                enableToolbar();
+
+                $('.delete-link-in-comment.ajax').on('click', function(e) {
+                e.preventDefault();
+                var section = $(this).parent().parent();
+                $.post($(this).attr('href') + '.json', function(result) {
+                    if (result == 'true') {
+                        section.remove();
+                    }
+                });
+             });
+                
+            }
+            
+            // Right Panel
+            $('.number', '.solution-number').text(result.solution.id || '');
+            $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
+            if (result.userAvatar) {
+                $('.author-avatar').attr('src', result.userAvatar.filename);
+            } else {
+                $('.author-avatar').attr('src', '/img/default_small_avatar.png');
+            }
+            $('.author-name').attr('href', '/users/view/' + result.solution.user_id).text(result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '.');
+            if (result.userData && result.userData.city) {
+                $('.author-from').text(result.userData.city); // @todo Try to unserialize userdata on Clientside
+            } else {
+                $('.author-from').text('');
+            }
+            if (desc = result.solution.description) {
+                var viewLength = 100; // Description string cut length parameter
+                if (desc.length > viewLength) {
+                    var descBefore = desc.slice(0, viewLength - 1);
+                    descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
+                    var descAfter = desc.slice(descBefore.length);
+                    $('.solution-description').text(descBefore);
+                    $('.description-more').show(500);
+                    $('.description-more').on('click', function() {
+                        $('.solution-description').append(descAfter);
+                        $('.description-more').hide();
+                    });
+                } else {
+                    $('.solution-description').text(result.solution.description);
+                }
+            }
+            $('.value-views', '.solution-stat').text(result.solution.views || '');
+            $('.value-likes', '.solution-stat').text(result.solution.likes || '');
+            $('.value-comments', '.solution-stat').text(result.comments.length || '');
+            
+            $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
+                    <a class="hide" href="">Удалить</a>');
+            
+            inlineActions();
+        });
+    }
+    
+    function populateComment(data) {
+        if (data.isCommentAuthor) {
+            var toolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
+                           <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
+        } else {
+            var toolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
+                           <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+        }
+        
+        return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+                    <div class="separator"></div> \
+                    <div class="' + data.messageInfo + '"> \
+                    <a href="/users/view/' + data.commentUserId + '"> \
+                        <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                    </a> \
+                    <a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
+                        <span>' + data.commentAuthor + '</span><br /> \
+                        <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
+                    </a> \
+                    <div class="clr"></div> \
+                    </div> \
+                    <div data-id="' + data.commentId + '" class="message_text"> \
+                        <span class="regular comment-container">'
+                            + data.commentText +
+                        '</span> \
+                    </div> \
+                    <div class="toolbar">'
+                        + toolbar +
+                    '</div> \
+                    <div class="clr"></div> \
+                    <div class="hiddenform" style="display:none"> \
+                        <section> \
+                            <form style="margin-bottom: 25px;" action="/comments/edit/' + data.commentId + '" method="post"> \
+                                <textarea name="text" data-id="' + data.commentId + '"></textarea> \
+                                <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br> \
+                                <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span> \
+                                <div class="clr"></div> \
+                            </form> \
+                        </section> \
+                    </div> \
+                </section>';
+    }
+    
+    function isExpert(user) {
+        var res = false;
+        for (i = 0; i < expertsObj.length; i++) {
+            if (expertsObj[i].user_id == user) {
+                res = true;
+                break;
+            }
+        }
+        return res;
+    }
+    
+    function enableToolbar() {
+        $('.message_text', '.solution-left-panel').parent().on('mouseover', function() {
+            $('.toolbar', this).show();
+        });
+        $('.message_text', '.solution-left-panel').parent().on('mouseout', function() {
+            $('.toolbar', this).hide();
+        });
+    }
+    
+    function disableToolbar() {
+        $('.message_text', '.solution-left-panel').parent().off('mouseover');
+        $('.message_text', '.solution-left-panel').parent().off('mouseout');
+    }
+    
 })
