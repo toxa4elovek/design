@@ -576,11 +576,11 @@ a.this-page{
 }
 .solution-container.page .pitch-info {
 	position: relative;
+	right: 0;
 	width: 560px;
-    height:70px;
-    margin: 0 auto 10px 280px;
+    /* height:70px; */
+    margin: 0 0 10px 320px;
     padding-top: 25px;
-    clear: both;
 }
 /*
  * ----- Navigation areas -----

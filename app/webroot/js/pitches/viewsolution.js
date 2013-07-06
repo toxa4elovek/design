@@ -449,6 +449,9 @@ $(document).ready(function() {
     /*
      * View solution via json
      */
+    if (allowComments) {
+        $('.allow-comments', '.solution-left-panel').show();
+    }
     if (document.URL.indexOf('?') != -1) {
         var queryParam = document.URL.slice(document.URL.indexOf('?'));
     } else {
