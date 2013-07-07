@@ -83,11 +83,11 @@
 				<thead>
 					<tr>
 						<td class="icons"></td>
-						<td class="pitches-name"><a href="#" id="sort-title" class="sort-link" rel="asc">название питча</a></td>
+						<td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" rel="asc">название питча</a></td>
 						<td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" rel="asc">Категории</a></td>
 						<td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" rel="desc">Идеи</a></td>
 						<td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" rel="asc">Срок</a></td>
-						<td class="price"><a href="#" id="sort-price" class="sort-link" rel="desc">Цена</a></td>
+						<td style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-price" class="sort-link" rel="desc">Цена</a></td>
 					</tr>
 				</thead>
 				<tbody id="table-content">
@@ -184,7 +184,7 @@
                     $shortIndustry = iconv('Windows-1251', 'UTF-8', $shortIndustry);
                     $textGuarantee = '';
                     if($pitch['guaranteed'] == 1) {
-                        $textGuarantee = '<br><span style="font-size: 11px; font-family: Arial;">гарантированы</span>';
+                        $textGuarantee = '<br><span style="font-size: 11px; font-weight: normal; font-family: Arial;text-transform:uppercase">гарантированы</span>';
                     }
                     $pitchPath = 'view';
                     if($pitch['ideas_count'] == 0) {
@@ -194,17 +194,17 @@
                         '<td class="icons">' . $icons . '</td>' .
                         '<td class="pitches-name">' .
                         $userString .
-                        '<div>' .
-                        '<a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="">' . $pitch['title'] . '</a>' .
-                        '<span style="font-size:11px;">' . $shortIndustry . '</span>' .
+                        '<div style="padding-left: 34px; padding-right: 12px;">' .
+                        '<a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="newpitchfont" >' . $this->PitchTitleFormatter->renderTitle($pitch['title']) . '</a>' .
+                        '<!--span style="font-size:11px;">' . $shortIndustry . '</span-->' .
                         '</div>' .
                         '</td>' .
-                        '<td class="pitches-cat">' .
+                        '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' .
                         '<a href="#" style="font-size:11px;">' . $pitch['category']['title'] . '</a>' .
                         '</td>' .
                         '<td class="idea"  style="font-size:11px;">' . $pitch['ideas_count'] . '</td>' .
                         '<td class="pitches-time"  style="font-size:11px;">' . $timeleft . '</td>' .
-                        '<td class="price">' . $this->moneyFormatter->formatMoney($pitch['price']) . ' р.-'.
+                        '<td class="price">' . $this->moneyFormatter->formatMoney($pitch['price'], array('suffix' => ' Р.-')) .
                         $textGuarantee
                         .'</td>' .
                         '</tr>' .

@@ -172,10 +172,10 @@ class Comment extends \app\models\AppModel {
 	}
 
     public static function filterComments($currentNum, $allcomments) {
-        $solutionComments = array();
+        $solutionComments = new \lithium\util\Collection();
         foreach($allcomments as $comment) {
             if(preg_match('@#' . $currentNum . '\D@', $comment->text)) {
-                $solutionComments[] = $comment;
+                $solutionComments->append($comment);
             }
         }
         return $solutionComments;

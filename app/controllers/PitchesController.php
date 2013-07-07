@@ -23,6 +23,7 @@ use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
 use \lithium\analysis\Logger;
 use \app\extensions\helper\MoneyFormatter;
+use \app\extensions\helper\PitchTitleFormatter;
 
 class PitchesController extends \app\controllers\AppController {
 
@@ -198,8 +199,10 @@ ini_set('display_errors', '1');
             }
         }
 		$pitchList = array();
+        $pitchTitleFormatter = new PitchTitleFormatter();
 		foreach($tempPitchList as &$pitch) {
 			$pitch['sort'] = $i;
+            $pitch['title'] = $pitchTitleFormatter->renderTitle($pitch['title']);
 			$pitchList[] = $pitch;
 			$i++;
 		}

@@ -157,27 +157,28 @@ function TableLoader() {
             }
             var textGuarantee = '';
             if(object.guaranteed == 1) {
-                textGuarantee = '<br><span style="font-size: 11px; font-family: Arial;">гарантированы</span>';
+                textGuarantee = '<br><span style="font-size: 11px; font-family: Arial; font-weight: normal;  text-transform: uppercase">гарантированы</span>';
             }
             var pitchPath = 'view';
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
             }
+
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons">' + icons + '</td>' +
                 '<td class="pitches-name">' +
                 userString +
-                '<div>' +
+                '<div style="padding-left: 34px; padding-right: 12px;">' +
                 '<a href="/pitches/' + pitchPath + '/' + object.id + '" class="">' + object.title + '</a>' +
-                '<span style="font-size: 11px;">' + shortIndustry + '</span>' +
+                '<!--span style="font-size: 11px;">' + shortIndustry + '</span-->' +
                 '</div>' +
                 '</td>' +
-                '<td class="pitches-cat">' +
+                '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' +
                 '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + timeleft + '</td>' +
-                '<td class="price">' + self._priceDecorator(object.price) + ' р.-' + textGuarantee + '</td>' +
+                '<td class="price">' + self._priceDecorator(object.price) + ' Р.-' + textGuarantee + '</td>' +
                 '</tr>' +
                 '<tr class="pitch-collapsed">' +
                 '<td class="icons"></td>' +
