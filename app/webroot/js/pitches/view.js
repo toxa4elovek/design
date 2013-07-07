@@ -608,8 +608,12 @@ $(document).ready(function(){
         if (allowComments) {
             $('.allow-comments', '.solution-left-panel').show();
         }
-        var queryParam = document.URL.slice(document.URL.indexOf('?'));
-        var urlJSON = window.location.pathname + '.json' + queryParam; // @todo Query String
+        if (document.URL.indexOf('?') != -1) {
+            var queryParam = document.URL.slice(document.URL.indexOf('?'));
+        } else {
+            var queryParam = '';
+        }
+        var urlJSON = window.location.pathname + '.json' + queryParam;
         fetchSolution(urlJSON);
         return false;
     });
