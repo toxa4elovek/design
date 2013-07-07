@@ -8,6 +8,7 @@ use \app\models\User;
 use \app\models\Solution;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\helper\Brief;
+use \app\models\Avatar;
 
 class CommentsController extends \lithium\action\Controller {
 
@@ -22,6 +23,11 @@ class CommentsController extends \lithium\action\Controller {
         $user = User::first($this->request->data['user_id']);
         if(strtotime($user->silenceUntil) < time()) {
             $result = Comment::createComment($this->request->data);
+            if (isset($this->request->data['fromAjax'])) {
+                $comment = Comment::first(array('conditions' => array('Comment.id' => $result['id']), 'with' => array('User', 'Pitch')));
+                $userAvatar = Avatar::first(array('conditions' => array('model_id' => $user->id)));
+                return compact('result', 'comment', 'userAvatar');
+            }
         }else {
             $result = array('solution_id' => $this->request->data['solution_id']);
         }
@@ -52,6 +58,9 @@ class CommentsController extends \lithium\action\Controller {
         ini_set('display_errors', '1');
         if((((Session::read('user.isAdmin') == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81)))) && ($comment = Comment::first($this->request->id))) || (($comment = Comment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
             $comment->delete();
+            if ($this->request->is('json')) {
+                return 'true';
+            }
             if($comment->solution_id != 0) {
                 if($solution = Solution::first($comment->solution_id)) {
                     return $this->redirect(array('controller' => 'pitches', 'action' => 'view', 'id' => $comment->pitch_id));

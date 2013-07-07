@@ -104,31 +104,6 @@ $(document).ready(function(){
 	 $(this).css({backgroundPosition: 'left top'}); 
   });
 
-    $('#createCommentForm').click(function() {
-        var position = $(this).offset();
-        position.top -= 115;
-        $('#tooltip-bubble').css(position).fadeIn(200);
-    });
-
-    $('textarea').blur(function() {
-        $('#tooltip-bubble').fadeOut(200);
-    });
-
-    $('textarea').keydown(function() {
-        $('#tooltip-bubble').fadeOut(200);
-    });
-
-    $('.hoverimage[data-comment-to]').tooltip({
-        tooltipID: 'tooltip',
-        tooltipSource: 'rel',
-        width: '200px',
-        correctPosX: 40,
-        //positionTop: 0,
-        borderSize: '0px',
-        tooltipPadding: 0,
-        tooltipBGColor: 'transparent'
-    })
-  
   //Большая карусель
 	$('#big_carousel').jCarouselLite({
 		auto: 5000,
@@ -200,16 +175,6 @@ $(document).ready(function(){
        });
     });
 
-    $(document).on('click', '.warning', function() {
-        $('#sendWarn').data('url', $(this).attr('href'));
-        $('#popup-warning').modal({
-            containerId: 'final-step',
-            opacity: 80,
-            closeClass: 'popup-close'
-        });
-        return false;
-    });
-
     $(document).on('click', '#sendWarn', function() {
         var url = $(this).data('url');
         if(($('#warn-solution').val().length > 0) && ($('#warn-comment').val() != 'ВАША ЖАЛОБА')) {
@@ -225,17 +190,6 @@ $(document).ready(function(){
         $('.toolbar', this).fadeIn(150);
     }, function() {
         $('.toolbar', this).fadeOut(150);
-    });
-
-    $(document).on('click', '.warning-comment', function() {
-        $('#sendWarnComment').data('url', $(this).data('url'));
-        $('#sendWarnComment').data('commentId', $(this).data('commentId'));
-        $('#popup-warning-comment').modal({
-            containerId: 'final-step',
-            opacity: 80,
-            closeClass: 'popup-close'
-        });
-        return false;
     });
 
     $(document).on('click', '#sendWarnComment', function() {
@@ -302,31 +256,117 @@ $(document).ready(function(){
 
     var editcommentflag = false;
 
-    $('.edit-link-in-comment').click(function(){
-        var section = $(this).parent().parent().parent();
-        section.children().hide();
-        var hiddenform = $('.hiddenform', section);
-        hiddenform.show();
-        var text = $(this).data('text');
-        $('textarea', hiddenform).val(text);
-        editcommentflag = true;
-        return false;
-    })
-
-    $('.editcomment').click(function() {
-        var textarea = $(this).prev();
-        var newcomment = textarea.val();
-        var id = textarea.data('id');
-        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
-            var newText = response;
-            var section = textarea.parent().parent().parent().parent();
-            $('.edit-link-in-comment', section).data('text', newcomment);
-            $('.comment-container', section).html(newText);
-            section.children().show();
-            $('.hiddenform', section).hide();
+    function inlineActions() {
+        $('.edit-link-in-comment').click(function(e){
+            e.preventDefault();
+            if ($('.allow-comments').is(':visible')) {
+                var section = $(this).parent().parent();
+                disableToolbar();
+            } else {
+                var section = $(this).parent().parent().parent();
+            }
+            section.children().hide();
+            var hiddenform = $('.hiddenform', section);
+            hiddenform.show();
+            var text = $(this).data('text');
+            $('textarea', hiddenform).val(text);
+            editcommentflag = true;
+            return false;
+        });
+        
+        $('.editcomment').click(function() {
+            var textarea = $(this).prev();
+            var newcomment = textarea.val();
+            var id = textarea.data('id');
+            $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
+                var newText = response;
+                var section = textarea.parent().parent().parent().parent();
+                $('.edit-link-in-comment', section).data('text', newcomment);
+                $('.comment-container', section).html(newText);
+                section.children().show();
+                $('.hiddenform', section).hide();
+                enableToolbar();
+            })
+            return false;
+        });
+        
+        $('.replyto').click(function() {
+            if ($('.allow-comments').is(':visible')) {
+                var el = $('#newComment', '.allow-comments');
+                var anchor = $('.allow-comments');
+            } else {
+                var el = $('#newComment');
+                var anchor = $('#comment-anchor');
+            }
+            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
+                $('input[name=comment_id]').val($(this).data('commentId'))
+                var prepend = '@' + $(this).data('commentTo') + ', ';
+                var newText = prepend + el.val();
+                el.val(newText);
+                $.scrollTo(anchor, {duration:250});
+            }
+            return false;
         })
-        return false;
-    })
+
+        $('.mention-link').click(function() {
+            if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
+                $('input[name=comment_id]').val('');
+                var prepend = '@' + $(this).data('commentTo') + ', ';
+                var newText = prepend + $('#newComment').val();
+                $('#newComment').val(newText);
+            }
+            return false;
+        });
+        
+        $('.warning-comment').click(function() {
+            $('#sendWarnComment').data('url', $(this).data('url'));
+            $('#sendWarnComment').data('commentId', $(this).data('commentId'));
+            $('#popup-warning-comment').modal({
+                containerId: 'final-step',
+                opacity: 80,
+                closeClass: 'popup-close'
+            });
+            return false;
+        });
+        
+        $('.createCommentForm').click(function() {
+            var position = $(this).offset();
+            position.top -= 115;
+            $('#tooltip-bubble', $(this)).css(position).fadeIn(200);
+        });
+
+        $('textarea').blur(function() {
+            $($(this).prev('#tooltip-bubble')).fadeOut(200);
+        });
+
+        $('textarea').keydown(function() {
+            $($(this).prev('#tooltip-bubble')).fadeOut(200);
+        });
+
+        $('.hoverimage[data-comment-to]').tooltip({
+            tooltipID: 'tooltip',
+            tooltipSource: 'rel',
+            width: '200px',
+            correctPosX: 40,
+            //positionTop: 0,
+            borderSize: '0px',
+            tooltipPadding: 0,
+            tooltipBGColor: 'transparent'
+        });
+        
+        $('.warning').on('click', function(e) {
+            e.preventDefault();
+            $('#sendWarn').data('url', $(this).attr('href'));
+            $('#popup-warning').modal({
+                containerId: 'final-step',
+                opacity: 80,
+                closeClass: 'popup-close'
+            });
+            return false;
+        });
+    }
+    inlineActions();
+
 
     $(document).keyup(function(e) {
 
@@ -337,6 +377,7 @@ $(document).ready(function(){
                 section.children().show();
                 $(object).hide();
             })
+            enableToolbar();
         }
     });
 
@@ -472,27 +513,6 @@ $(document).ready(function(){
         return false;
     })
 
-    $('.replyto').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-            $('input[name=comment_id]').val($(this).data('commentId'))
-            var prepend = '@' + $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $('#newComment').val(newText);
-            $.scrollTo($('#comment-anchor'), {duration:250});
-        }
-        return false;
-    })
-
-    $('.mention-link').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-            $('input[name=comment_id]').val('');
-            var prepend = '@' + $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $('#newComment').val(newText);
-        }
-        return false;
-    });
-
     $('#sort-by-rating').hover(function() {
         $('img', this).attr('src', '/img/star_press.png');
     }, function() {
@@ -576,24 +596,32 @@ $(document).ready(function(){
     /*
      * View Solution Overlay
      */
+    var expertsObj = {};
+    var solutionId = '';
     $('.imagecontainer').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         window.history.pushState('object or string', 'Title', this.href); // @todo Check params
         $('#pitch-panel').hide();
-        $('.wrapper').addClass('wrapper-frozen');
+        $('.wrapper', 'body').first().addClass('wrapper-frozen');
         $('.solution-overlay').show();
-        var urlJSON = window.location.pathname + '.json'; // @todo Query String
+        if (allowComments) {
+            $('.allow-comments', '.solution-left-panel').show();
+        }
+        var queryParam = document.URL.slice(document.URL.indexOf('?'));
+        var urlJSON = window.location.pathname + '.json' + queryParam; // @todo Query String
         fetchSolution(urlJSON);
         return false;
     });
     $('.solution-overlay').on('click', function(e) {
         e.stopPropagation();
         if (!$(e.target).is('.solution-overlay')) return;
-        window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
-        $('#pitch-panel').show();
-        $('.wrapper').removeClass('wrapper-frozen');
-        $(this).hide();
+        hideSolutionPopup();
+        return false;
+    });
+    $('.solution-title').on('click', function(e) {
+        e.preventDefault();
+        hideSolutionPopup();
         return false;
     });
     
@@ -610,12 +638,65 @@ $(document).ready(function(){
         var urlJSON = this.href + '.json';
         fetchSolution(urlJSON);
     });
-    $('.message_text', '.solution-left-panel').parent().on('mouseover', function() {
-        $('.toolbar', this).show();
+    
+    $('#createComment', '.solution-left-panel').on('click', function(e) {
+        e.preventDefault();
+        if (isCommentValid($('#newComment', '.solution-left-panel').val())) { // See app.js
+            $.post('/comments/add.json', {
+                'text': $('#newComment', '.solution-left-panel').val(),
+                'solution_id': solutionId,
+                'comment_id': '',
+                'pitch_id': pitchNumber,
+                'fromAjax': 1
+            }, function(result) {
+                var commentData = {};
+                commentData.commentId = result.comment.id;
+                commentData.commentUserId = result.comment.user_id;
+                commentData.commentText = result.comment.text;
+                commentData.commentPlainText = result.comment.originalText;
+                commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
+                commentData.isExpert = isExpert(result.comment.user_id); 
+                    
+                if (result.comment.pitch.user_id == result.comment.user_id) {
+                    commentData.messageInfo = 'message_info2';
+                } else if (result.comment.user.isAdmin == "1") {
+                    commentData.messageInfo = 'message_info4';
+                } else if (commentData.isExpert) {
+                    commentData.messageInfo = 'message_info5';
+                }else {
+                    commentData.messageInfo = 'message_info1';
+                }
+                
+                if (result.userAvatar) {
+                    commentData.userAvatar = result.userAvatar.filename;
+                } else {
+                    commentData.userAvatar = '/img/default_small_avatar.png';
+                }
+                
+                commentData.commentAuthor = result.comment.user.first_name + ' ' + result.comment.user.last_name.substring(0, 1) + '.';
+                commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
+                
+                // Date Time
+                var dateCreated = result.comment.created.replace(' ', 'T'); // FF & IE date string parsing
+                var postDateObj = new Date(dateCreated);
+                commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+                commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+                
+                $('.solution-comments').prepend(populateComment(commentData));
+                $('#newComment', '.solution-left-panel').val('#' + result.comment.solution_id + ', ');
+            });
+        } else {
+            alert('Введите текст комментария!');
+            return false;
+        }
     });
-    $('.message_text', '.solution-left-panel').parent().on('mouseout', function() {
-        $('.toolbar', this).hide();
-    });
+    
+    function hideSolutionPopup() {
+        window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
+        $('#pitch-panel').show();
+        $('.wrapper', 'body').first().removeClass('wrapper-frozen');
+        $('.solution-overlay').hide();
+    }
     
     /*
      * Fetch solution via JSON and populate layout
@@ -625,23 +706,100 @@ $(document).ready(function(){
         $(window).scrollTop(0);
         $('.isField').text('');
         $('.author-avatar').attr('src', '/img/default_small_avatar.png');
-        /*$('.rating-image', '.solution-rating').removeClass(function (index, css) {
-            alert(css);
-            return (css.match(/\dstar/g));
-        });*/
         $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
+        $('.description-more').hide();
+        $('#newComment', '.solution-left-panel').val('');
         
         $.getJSON(urlJSON, function(result) {
+            expertsObj = result.experts;
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
+            
             // Left Panel
-            $('h1', '.solution-title').text(result.pitch.title || 'Без заголовка');
             if (result.solution.images.solution) {
                 $.each(result.solution.images.solution, function(idx, field) {
                     $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
                 });
             }
+            
+            if (currentUserId == result.pitch.user_id) { // isClient
+                var firstImage = $('.solution-image').first().parent();
+                $('<div class="separator-rating"> \
+                <div class="separator-left"></div> \
+                <div class="rating-widget"><span class="left">выставьте</span> \
+                        <span id="star-widget"></span> \
+                <span class="right">рейтинг</span></div> \
+                <div class="separator-right"></div> \
+                </div>').insertAfter(firstImage);
+                $("#star-widget").raty({
+                    path: '/img',
+                    starOff: 'solution-star-off.png',
+                    starOn : 'solution-star-on.png',
+                    start: result.solution.rating,
+                    click: function(score, evt) {
+                        $.post('/solutions/rating/' + $('input[name=solution_id]').val() + '.json', 
+                        {"id": result.solution.id, "rating": score}, function(response) {
+                            $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
+                            $('.rating-image', '.solution-rating').addClass('star' + score);
+                        });
+                    }
+                });
+            }
+            
+            $('#newComment', '.solution-left-panel').val('#' + result.solution.id + ', ');
+            solutionId = result.solution.id;
+            
+            if (result.comments) {
+                var solutionComments = '';
+                $.each(result.comments, function(idx, comment) {
+                    var commentData = {};
+                    commentData.commentId = comment.id;
+                    commentData.commentUserId = comment.user.id;
+                    commentData.commentText = comment.text;
+                    commentData.commentPlainText = comment.originalText;
+                    commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
+                    commentData.isExpert = isExpert(comment.user_id);
+                    
+                    if (result.pitch.user_id == comment.user_id) {
+                        commentData.messageInfo = 'message_info2';
+                    } else if (comment.user.isAdmin == "1") {
+                        commentData.messageInfo = 'message_info4';
+                    } else if (commentData.isExpert) {
+                        commentData.messageInfo = 'message_info5';
+                    }else {
+                        commentData.messageInfo = 'message_info1';
+                    }
+                    
+                    commentData.userAvatar = '/img/default_small_avatar.png'; // @todo fix this
+                    
+                    commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
+                    commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
+                    
+                    // Date Time
+                    var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
+                    var postDateObj = new Date(dateCreated);
+                    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+                    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+                     
+                    solutionComments += populateComment(commentData); 
+                });
+                $('.solution-comments').html(solutionComments);
+                
+                enableToolbar();
+
+                $('.delete-link-in-comment.ajax').on('click', function(e) {
+                e.preventDefault();
+                var section = $(this).parent().parent();
+                $.post($(this).attr('href') + '.json', function(result) {
+                    if (result == 'true') {
+                        section.remove();
+                    }
+                });
+             });
+                
+            }
+            
             // Right Panel
             $('.number', '.solution-number').text(result.solution.id || '');
             $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
@@ -656,11 +814,98 @@ $(document).ready(function(){
             } else {
                 $('.author-from').text('');
             }
-            $('.solution-description').text(result.solution.description || '');
+            if (desc = result.solution.description) {
+                var viewLength = 100; // Description string cut length parameter
+                if (desc.length > viewLength) {
+                    var descBefore = desc.slice(0, viewLength - 1);
+                    descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
+                    var descAfter = desc.slice(descBefore.length);
+                    $('.solution-description').text(descBefore);
+                    $('.description-more').show(500);
+                    $('.description-more').on('click', function() {
+                        $('.solution-description').append(descAfter);
+                        $('.description-more').hide();
+                    });
+                } else {
+                    $('.solution-description').text(result.solution.description);
+                }
+            }
             $('.value-views', '.solution-stat').text(result.solution.views || '');
             $('.value-likes', '.solution-stat').text(result.solution.likes || '');
             $('.value-comments', '.solution-stat').text(result.comments.length || '');
+            
+            $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
+                    <a class="hide" href="">Удалить</a>');
+            
+            inlineActions();
         });
     }
-
+    
+    function populateComment(data) {
+        if (data.isCommentAuthor) {
+            var toolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
+                           <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
+        } else {
+            var toolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
+                           <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+        }
+        
+        return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+                    <div class="separator"></div> \
+                    <div class="' + data.messageInfo + '"> \
+                    <a href="/users/view/' + data.commentUserId + '"> \
+                        <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                    </a> \
+                    <a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
+                        <span>' + data.commentAuthor + '</span><br /> \
+                        <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
+                    </a> \
+                    <div class="clr"></div> \
+                    </div> \
+                    <div data-id="' + data.commentId + '" class="message_text"> \
+                        <span class="regular comment-container">'
+                            + data.commentText +
+                        '</span> \
+                    </div> \
+                    <div class="toolbar">'
+                        + toolbar +
+                    '</div> \
+                    <div class="clr"></div> \
+                    <div class="hiddenform" style="display:none"> \
+                        <section> \
+                            <form style="margin-bottom: 25px;" action="/comments/edit/' + data.commentId + '" method="post"> \
+                                <textarea name="text" data-id="' + data.commentId + '"></textarea> \
+                                <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br> \
+                                <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span> \
+                                <div class="clr"></div> \
+                            </form> \
+                        </section> \
+                    </div> \
+                </section>';
+    }
+    
+    function isExpert(user) {
+        var res = false;
+        for (i = 0; i < expertsObj.length; i++) {
+            if (expertsObj[i].user_id == user) {
+                res = true;
+                break;
+            }
+        }
+        return res;
+    }
+    
+    function enableToolbar() {
+        $('.message_text', '.solution-left-panel').parent().on('mouseover', function() {
+            $('.toolbar', this).show();
+        });
+        $('.message_text', '.solution-left-panel').parent().on('mouseout', function() {
+            $('.toolbar', this).hide();
+        });
+    }
+    
+    function disableToolbar() {
+        $('.message_text', '.solution-left-panel').parent().off('mouseover');
+        $('.message_text', '.solution-left-panel').parent().off('mouseout');
+    }
 });

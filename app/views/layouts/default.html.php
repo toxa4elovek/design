@@ -13,9 +13,9 @@
     if((strtolower($this->_request->params['controller']) == 'pages') && ($this->_request->params['action'] == 'view') && ($this->_request->params['args'][0] == 'howitworks')):
         $title = 'Как это работает';
     endif;
-    echo '<!-- ' . ($this->_request->params['controller']) . ' -->';
+    /* echo '<!-- ' . ($this->_request->params['controller']) . ' -->';
     echo '<!-- ' . ($this->_request->params['action']) . ' -->';
-    echo '<!-- ' . ($this->_request->params['args'][0]) . ' -->';
+    echo '<!-- ' . ($this->_request->params['args'][0]) . ' -->'; */
     if(($this->_request->params['controller'] == 'pages') && ($this->_request->params['action'] == 'view') && ($this->_request->params['args'][0] == 'to_designers')):
         $title = 'Дизайнерам';
     endif;

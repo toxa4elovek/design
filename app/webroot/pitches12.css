@@ -566,6 +566,7 @@ a.this-page{
 	position: relative;
 	margin: 100px auto 200px auto;
 	width: 958px;
+	min-height: 700px;
 	border-radius: 9px;
 	background: url('img/solution-paper.png') left top #eeeeee;
 }
@@ -622,6 +623,7 @@ a.this-page{
 }
 .solution-left-panel .solution-title {
     position: relative;
+    display: inline-block;
     left: 0px;
     width: 631px; /* ¿padding? */
     height: 40px;
@@ -644,6 +646,7 @@ a.this-page{
 	text-decoration: underline;
 }
 .solution-left-panel .solution-title h1 {
+	color: #ffffff;
     font-size: 17px;
     font-weight: bold;
     font-family: Arial, sans-serif;
@@ -683,7 +686,10 @@ a.this-page{
 	width: 304px;
 	height: 24px;
 	margin: 0 12px;
-	background: url('img/3-rating-solution-large.png') 96px 0 no-repeat;
+	/* background: url('img/3-rating-solution-large.png') 96px 0 no-repeat; */
+}
+.solution-left-panel .rating-widget #star-widget {
+	margin-left: 20px;
 }
 .solution-left-panel .rating-widget span.left, .solution-left-panel .rating-widget span.right {
 	color: #999999;
@@ -698,13 +704,20 @@ a.this-page{
 .solution-left-panel .rating-widget span.right {
 	float: right;
 }
-.solution-left-panel div.message_info1, .solution-left-panel div.message_info2 {
-	margin: 20px 0 0 0;
+.solution-left-panel .allow-comments {
+	display: none;
+}
+.solution-left-panel div.message_info1,
+.solution-left-panel div.message_info2,
+.solution-left-panel div.message_info3,
+.solution-left-panel div.message_info4,
+.solution-left-panel div.message_info5 {
+	margin: 20px 0 20px 0;
 }
 .solution-left-panel div.message_text {
 	float: right;
     width: 382px;
-    margin: 20px auto 10px auto;
+    margin: 20px auto 20px auto;
 }
 .solution-left-panel div.toolbar {
 	display: none;
@@ -857,6 +870,10 @@ a.this-page{
 }
 .solution-right-panel .solution-summary .solution-rating .rating-image.star5 {
     background-position: 0 0;
+}
+.solution-right-panel .description-more {
+	display: none;
+	cursor: pointer;
 }
 .solution-right-panel table.solution-stat {
 	width: 100%;
