@@ -1,3 +1,20 @@
+
+
+<?php if((int)$this->session->read('user.id') == $pitch->user_id):?>
+<div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0px; opacity:0.5; right: 150px;">
+    <div style="width:150px;height:190px;text-align;center">
+        <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
+            <canvas id="canFloat" height="132" width="132" style="">
+            </canvas></div>
+        <div style="background: url('/img/krug-small.png') no-repeat scroll 32px 30px transparent;height: 82px; width: 87px; position: relative; top: -132px; bottom: 0px; z-index: 15; padding-top: 50px; padding-left: 45px;">
+            <h2 id="avgPointsFloat" style="font-size:28px;color:#666666;text-shadow: -1px 0 0 #FFFFFF;width:40px;text-align:center"></h2>
+            <h2 id="avgPointsStringFloat" style="color: rgb(102, 102, 102); text-align: center; text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 0px; margin-top: 4px; font-size: 9px; width: 44px;">БАЛЛА</h2>
+        </div>
+    </div>
+<?php endif?>
+
+
+</div>
 <div class="wrapper pitchpanel login">
 
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
@@ -7,6 +24,7 @@
 	<div class="middle">
         <?php //$this->view()->render(array('element' => 'pitchinfo'), array('pitch' => $pitch))?>
 	<div class="middle_inner_gallery" style="padding-top:25px">
+
     <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
                 <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
                     <?php if($pitch->user_id != $this->session->read('user.id') || $pitch->status > 0): ?>

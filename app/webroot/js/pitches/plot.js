@@ -27,6 +27,7 @@ $(window).scroll(function() {
 function renderFloatingBlock() {
 
 $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val()}, function(response){
+
     var updateBackgroundPos = function() {
         var x = -1 * (hscroll.getPosition().x - 10);
         $('.kineticjs-content', '#container').css('left', x);
@@ -53,8 +54,8 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     }
     $('li[data-points='+ lowestGrade +']').css('font-weight', 'bold');
     $('li[data-points='+ lowestGrade +']').css('color', colorGrades);
-    $('#avgPoints').text(response.avgNum).css('color', colorBigNum);
-    $('#avgPointsString').css('color', colorBigNum);
+    $('#avgPoints, #avgPointsFloat').text(response.avgNum).css('color', colorBigNum);
+    $('#avgPointsString, #avgPointsStringFloat').css('color', colorBigNum);
     if(response.dates.length > 5) {
         var canvasWidth = ((response.dates.length-1) * 106) + (28 * 2);
     }else{
@@ -259,6 +260,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
 
     var q1Value = [ response.percentages.money, response.percentages.rating, response.percentages.comment, response.percentages.empty ];
     var fillColor = ["#629f6d", "#464750", "#6990a1", "rgba(70,71,80,0)" ];
+
     init();
 
     function init() {
@@ -268,6 +270,10 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
         quarter = document.getElementById("quarter");
         ctx = can.getContext("2d");
         drawPie();
+        can = document.getElementById("canFloat");
+        quarter = document.getElementById("quarter");
+        ctx = can.getContext("2d");
+        drawPieFloat();
     }
 
     function drawPie() {
@@ -325,6 +331,64 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
             // update beginning angle for next wedge
             oldAngle += wedge;
         }
+    }
+
+    function drawPieFloat() {
+        radius = can.height / 2.4;
+        var midX = can.width / 2;
+        var midY = can.height / 2;
+        ctx.strokeStyle = "black";
+        ctx.font = "9px Helvetica";
+        ctx.fontStyle = "bold";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        // get data set
+        var dataValue = q1Value;
+        // calculate total value of pie
+        var total = 0;
+        for (var i = 0; i < numSamples; i++) {
+            total += dataValue[i];
+        }
+        // get ready to draw
+        ctx.clearRect(0, 0, can.width, can.height);
+        var oldAngle = 90;
+
+        // for each sample
+        for (var i = 0; i < numSamples; i++) {
+            // draw wedge
+            var portion = dataValue[i] / total;
+            var wedge = 2 * Math.PI * portion;
+            ctx.beginPath();
+            var angle = oldAngle + wedge;
+            ctx.arc(midX, midY, radius, oldAngle, angle);
+            ctx.lineTo(midX, midY);
+            ctx.closePath();
+            ctx.fillStyle = fillColor[i];
+            ctx.fill();    // fill with wedge color
+            //ctx.stroke();  // outline in black
+
+            // print label
+            // set angle to middle of wedge
+            var labAngle = oldAngle + wedge / 2;
+            // set x, y for label outside center of wedge
+            // adjust for fact text is wider than it is tall
+            var labX = midX + Math.cos(labAngle) * radius * 0.8;
+            var labY = midY + Math.sin(labAngle) * radius * 0.8;
+            // print name and value with black shadow
+            ctx.save();
+            //ctx.shadowColor = "black";
+            //ctx.shadowOffsetX = 1;
+            //ctx.shadowOffsetY = -1;
+            if((fillColor[i] != 'rgba(70,71,80,0)') && (dataValue[i] > 0)) {
+
+                ctx.fillStyle = 'white';
+                ctx.fillText(dataValue[i] + '%', labX, labY);
+            }
+            ctx.restore();
+            // update beginning angle for next wedge
+            oldAngle += wedge;
+        }
+        $('#dinamic').fadeIn(150);
     }
 });
 }
@@ -411,3 +475,18 @@ $( "#scroller" ).draggable({ drag: function() {
     var mod = ($('.kineticjs-content', '#container').width() - 476) / 350;
     $('.kineticjs-content', '#container').css('right', Math.round(x * mod) + 'px');
 }, axis: "x", containment: "parent"});
+
+window.onscroll = function () {
+    var height = $(window).height();
+    var scrollTop = $(window).scrollTop();
+    var obj = $('#floatingblock')
+    var pos = obj.position();
+    if (height + scrollTop > pos.top) {
+        console.log('negative')
+        $('#dinamic').fadeOut(150);
+    }
+    else {
+        $('#dinamic').fadeIn(150);
+        console.log('positive')
+    }
+}

@@ -509,7 +509,6 @@ ini_set('display_errors', '1');
         $interval = \DateInterval::createFromDateString('1 day');
         $period = new \DatePeriod($begin, $interval, $end);
 
-
         $ratingArray = array();
         $moneyArray = array();
         $commentArray = array();
