@@ -8,7 +8,10 @@
                 <div id="content_help" style="width:620px;">
                     <section class="howitworks">
                         <h1 style="margin-bottom: 30px;">Наш блог</h1>
-                        <?php foreach($posts as $post):?>
+                        <?php
+                        $currentIndex = 1;
+                        $count = count($posts);
+                        foreach($posts as $post):?>
                             <div>
                                 <div style="float:left;width:249px;height:185px;background-image: url(/img/frame.png);margin-top:15px;">
                                     <img style="margin-top:4px;margin-left:4px;" width="240" height="175" src="<?=$post->imageurl?>" alt=""/>
@@ -41,7 +44,11 @@
                                 </div>
                                 <div style="float:left;width:500px;margin-bottom: 20px; height:1px;"></div>
                             </div>
+                            <?php if($currentIndex != $count):
+                                $currentIndex += 1;
+                                ?>
                             <div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>
+                            <?php endif?>
                         <?php endforeach?>
 
                     <?php if(false): ?>
