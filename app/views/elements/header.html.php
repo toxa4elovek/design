@@ -56,7 +56,7 @@
                                     <a class="" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>"><?=$mypitch->title?></a>
 
                                     <?php endif?>
-                                    <span style="font-size: 11px;"><?=$mypitch->industry?></span></div></td>
+                                    <!--span style="font-size: 11px;"><?=$mypitch->industry?></span--></div></td>
                                 <td class="pitches-cat"><a href="#" style="font-size: 11px;"><?=$mypitch->category->title?></a></td>
                                 <td class="idea" style="font-size: 11px;"><?=$mypitch->ideas_count?></td>
                                 <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
@@ -133,7 +133,7 @@
                                 ?>
                                 <a href="/users/step<?=$step?>/<?=$mypitch->awarded?>"><?=$mypitch->title?></a>
                                 <?php endif?>
-                                <span><?=$mypitch->industry?></span>
+                                <!--span><?=$mypitch->industry?></span-->
                             </div></td>
                         <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                         <td class="idea"><?=$mypitch->ideas_count?></td>

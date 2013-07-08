@@ -773,12 +773,12 @@ var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
                     <col class="value">
                     <tr>
                         <td class="icon icon-eye"></td>
-                        <td>Просмотров</td>
+                        <td>Просмотры</td>
                         <td class="value-views isField"><!--  --></td>
                     </tr>
                     <tr>
                         <td class="icon icon-thumb"></td>
-                        <td>Лайков</td>
+                        <td>Лайки</td>
                         <td class="value-likes isField"><!--  --></td>
                     </tr>
                     <tr>

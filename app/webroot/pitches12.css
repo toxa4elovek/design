@@ -341,7 +341,12 @@ table.all-pitches{
 td.pitches-name{
 	vertical-align:top;
 	text-align:left;
-	font: normal 12px/1 "RodeoC", sans-serif;
+    text-decoration:none;
+    font:15px "Arial", sans-serif;
+    font-weight: bold;
+    text-transform: none;
+    color: #e2e2e2;
+    line-height: 19px;
 }
 thead td{
 	background:#2f313a;
@@ -400,7 +405,6 @@ td.pitches-name{
 .pitches-name a{
 	color:#e3e3e3;
 	text-decoration:none;
-	font:15px "RodeoC", sans-serif;
 }
 .pitches-name span{
 	display: block;
@@ -419,8 +423,11 @@ td.pitches-time{
 td.price{
 	width:127px;
 	border-right:none;
-	font:bold 15px "RodeoC", sans-serif;
-	color:#e3e3e3;
+    font:15px "Arial", sans-serif;
+    font-weight: bold;
+    text-transform: none;
+    color: #e2e2e2;
+    line-height: 19px;
 }
 .al-info-pitch{
  width:547px;
