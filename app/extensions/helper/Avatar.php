@@ -6,7 +6,7 @@ use app\models\User;
 class Avatar extends \lithium\template\Helper {
 
 
-    function show($data = array(), $large = false) {
+    function show($data = array(), $large = false, $srcOnly = false) {
         if(isset($data['id'])) {
             $user = User::first($data['id']);
             $data = $user->data();
@@ -91,13 +91,17 @@ class Avatar extends \lithium\template\Helper {
             }
         }
 
-        if(empty($extra)) {
-            $string = '<img src="' . $src . '" alt="Портрет пользователя" width="41" height="41"/>';
-            if($large) {
-               $string = '<img src="' . $src . '" alt="Портрет пользователя" width="180" height="180" id="photoselectpic"/>'; 
+        if($srcOnly == false) {
+            if(empty($extra)) {
+                $string = '<img src="' . $src . '" alt="Портрет пользователя" width="41" height="41"/>';
+                if($large) {
+                   $string = '<img src="' . $src . '" alt="Портрет пользователя" width="180" height="180" id="photoselectpic"/>';
+                }
+            }else {
+                $string = '<img src="' . $src . '" alt="Портрет пользователя" width="180" id="photoselectpic"/>';
             }
         }else {
-            $string = '<img src="' . $src . '" alt="Портрет пользователя" width="180" id="photoselectpic"/>';
+            $string = $src;
         }
         return $string;
     }

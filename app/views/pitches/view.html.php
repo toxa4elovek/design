@@ -209,7 +209,6 @@
 
                                 <?php if(isset($solution->images['solution_galleryLargeSize'][0])):?>
                                 <script type="text/javascript">
-                                    console.log('first block')
                                     extraimages[<?= $solution->id?>] = <?php echo json_encode($extra)?>;</script>
                                 <?php endif?>
                             <?php endif?>
@@ -264,7 +263,6 @@
                                     </a><?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?></div><?php endif?>
                                         <?php if(isset($solution->images['solution_galleryLargeSize'][0])):?>
                                         <script type="text/javascript">
-                                            console.log('second block')
                                             extraimages[<?= $solution->id?>] = <?php echo json_encode($extra)?>;</script>
                                         <?php endif?>
                                     <?php else:?>
@@ -718,7 +716,7 @@
 <!-- Solution Popup -->
 <script>
 var pitchNumber = <?php echo $pitch->id; ?>;
-var currentUserId = <?php echo $this->session->read('user.id'); ?>;
+var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
 </script>
 <!-- start: Solution overlay -->
 <div class="solution-overlay">

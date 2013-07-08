@@ -24,6 +24,7 @@ use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
 use \lithium\analysis\Logger;
 use \app\extensions\helper\MoneyFormatter;
+use \app\extensions\helper\Avatar as AvatarHelper;
 
 class PitchesController extends \app\controllers\AppController {
 
@@ -1197,6 +1198,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
 
 	public function viewsolution() {
+        #error_reporting(E_ALL);
+        #ini_set('display_errors', '1');
 		Solution::increaseView($this->request->id);
 		if($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch')))) {
             $validSorts = array('rating', 'created', 'likes');
@@ -1279,6 +1282,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
 			$prev = $results['prev'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
             $comments = Comment::filterComments($solution->num, $comments);
+            $comments = Comment::addAvatars($comments);
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             if(($pitch->private == 1) || ($pitch->category_id == 7)) {
@@ -1308,7 +1312,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $selectedsolution = true;
             }
             $userData = unserialize($solution->user->{'userdata'});
-            $userAvatar = Avatar::first(array('conditions' => array('model_id' => $solution->user_id)));
+            $avatarHelper = new AvatarHelper;
+            $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
 			//if($pitch->category_id != 7){
                 return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar');
             //}else{

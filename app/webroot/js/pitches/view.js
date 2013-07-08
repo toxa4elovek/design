@@ -332,7 +332,7 @@ $(document).ready(function(){
         $('.createCommentForm').click(function() {
             var position = $(this).offset();
             position.top -= 115;
-            $('#tooltip-bubble', $(this)).css(position).fadeIn(200);
+            //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
         });
 
         $('textarea').blur(function() {
@@ -342,7 +342,7 @@ $(document).ready(function(){
         $('textarea').keydown(function() {
             $($(this).prev('#tooltip-bubble')).fadeOut(200);
         });
-
+/*
         $('.hoverimage[data-comment-to]').tooltip({
             tooltipID: 'tooltip',
             tooltipSource: 'rel',
@@ -353,7 +353,7 @@ $(document).ready(function(){
             tooltipPadding: 0,
             tooltipBGColor: 'transparent'
         });
-        
+*/
         $('.warning').on('click', function(e) {
             e.preventDefault();
             $('#sendWarn').data('url', $(this).attr('href'));
@@ -488,6 +488,22 @@ $(document).ready(function(){
             $('.imagecontainer', block).css('opacity', 0.1)
             link.replaceWith('<a data-to="' + num + '" class="unhide-item" href="/solutions/unhide/' + num + '.json">Сделать видимой</a>');
             listofitems.append(block);
+        })
+        return false;
+    })
+
+    $(document).on('click', '.client-hide', function() {
+        var link = $(this)
+        $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
+            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Показать</a>')
+        })
+        return false;
+    })
+
+    $(document).on('click', '.client-show', function() {
+        var link = $(this)
+        $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
+            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">Скрыть</a>')
         })
         return false;
     })
@@ -722,9 +738,13 @@ $(document).ready(function(){
             
             // Left Panel
             if (result.solution.images.solution) {
-                $.each(result.solution.images.solution, function(idx, field) {
-                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
-                });
+                if ($.isArray(result.solution.images.solution)) {
+                    $.each(result.solution.images.solution_gallerySiteSize, function(idx, field) {
+                        $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                    });
+                }else {
+                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution_gallerySiteSize.weburl + '" class="solution-image" /></a>');
+                }
             }
             
             if (currentUserId == result.pitch.user_id) { // isClient
@@ -774,8 +794,7 @@ $(document).ready(function(){
                     }else {
                         commentData.messageInfo = 'message_info1';
                     }
-                    
-                    commentData.userAvatar = '/img/default_small_avatar.png'; // @todo fix this
+                    commentData.userAvatar = comment.avatar;
                     
                     commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
                     commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
@@ -837,10 +856,20 @@ $(document).ready(function(){
             $('.value-views', '.solution-stat').text(result.solution.views || '');
             $('.value-likes', '.solution-stat').text(result.solution.likes || '');
             $('.value-comments', '.solution-stat').text(result.comments.length || '');
-            
-            $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
+            if (currentUserId == result.pitch.user_id) {
+                var html = '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
+                if (result.solution.hidden == 1) {
+                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
+                }else {
+                    html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Показать</a>';
+                }
+                $('.solution-abuse').html(html);
+            }else if(currentUserId == result.solution.user_id) {
+                $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
                     <a class="hide" href="">Удалить</a>');
-            
+            }else {
+                $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
+            }
             inlineActions();
         });
     }
@@ -871,9 +900,9 @@ $(document).ready(function(){
                             + data.commentText +
                         '</span> \
                     </div> \
-                    <div class="toolbar">'
+                    <div class="toolbar-wrapper"><div class="toolbar">'
                         + toolbar +
-                    '</div> \
+                    '</div></div> \
                     <div class="clr"></div> \
                     <div class="hiddenform" style="display:none"> \
                         <section> \
@@ -898,13 +927,13 @@ $(document).ready(function(){
         }
         return res;
     }
-    
+
     function enableToolbar() {
-        $('.message_text', '.solution-left-panel').parent().on('mouseover', function() {
-            $('.toolbar', this).show();
+        $('section', '.solution-comments').on('mouseenter', function() {
+            $('.toolbar', this).fadeIn(200);
         });
-        $('.message_text', '.solution-left-panel').parent().on('mouseout', function() {
-            $('.toolbar', this).hide();
+        $('section', '.solution-comments').on('mouseleave', function() {
+            $('.toolbar', this).fadeOut(200);
         });
     }
     

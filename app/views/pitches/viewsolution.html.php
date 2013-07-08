@@ -11,7 +11,7 @@
 	<div class="middle">
         <script>
         var pitchNumber = <?php echo $pitch->id; ?>;
-        var currentUserId = <?php echo $this->session->read('user.id'); ?>;
+        var currentUserId = <?php echo (int) $this->session->read('user.id'); ?>;
         </script>
         <!-- start: Solution Container -->
         <div class="solution-container page">
@@ -82,11 +82,17 @@
         </table>
         <?php endif ?>
             </div>
-            <a class="solution-title page" href="/pitches/view/<?=$pitch->id?>">
-                    <h1>
-                        Что это? / <?=$pitch->title?>
+            <a class="solution-title page" href="/pitches">
+                <h1 style="float:left">
+                        Все питчи /
                     </h1>
             </a>
+            <a class="solution-title page" href="/pitches/view/<?=$pitch->id?>">
+                <h1 style="float:left; margin-left: 5px;">
+                    <?=$pitch->title?>
+                </h1>
+            </a>
+            <div style="height:1px; clear:both;"></div>
             <!-- start: Solution Right Panel -->
             <div class="solution-right-panel page">
                 <div class="solution-info solution-summary">
@@ -181,9 +187,6 @@
                 <!-- end: Solution Images -->
                 </section>
                 <section class="allow-comments">
-                    <div class="all_messages">
-                    	<div class="clr"></div>
-                    </div>
                     <div class="separator full"></div>
                     <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
                     <form class="createCommentForm" method="post" action="/comments/add">
@@ -199,8 +202,9 @@
                     		</div>
                     	</div>
                     	<textarea id="newComment" name="text"></textarea>
-                    	<input type="hidden" value="" name="solution_id">
+                    	<input type="hidden" value="<?=$solution->id?>" name="solution_id">
                     	<input type="hidden" value="" name="comment_id">
+                        <input type="hidden" value="/pitches/viewsolution/<?=$solution->id?>" name="from">
                     	<input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
                     	<input type="submit" id="createComment" class="button" value="Отправить комментарий">
                     	<div class="clr"></div>

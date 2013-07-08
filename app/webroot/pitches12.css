@@ -748,7 +748,17 @@ a.this-page{
     float: right;
     margin: 0 0 8px 0;
     height: 18px;
+
 }
+
+.solution-left-panel div.toolbar-wrapper {
+    height: 18px;
+    float: right;
+    width:810px;
+    padding-bottom: 2px;
+    margin-top:6px;
+}
+
 .solution-left-panel .button {
     display: inline-block;
     padding: 0 30px;
@@ -786,7 +796,7 @@ a.this-page{
     width: 600px;
     height: 150px;
     margin: 20px 0 0 0;
-    padding: 0;
+    padding: 10px 16px;
     border-left: 2px solid #d9dadc;
     border-top: 1px solid #d9dadc;
 }
@@ -954,4 +964,10 @@ a.this-page{
 }
 .solution-right-panel .solution-abuse a.hide {
     background-position: 0 -108px;
+}
+.solution-right-panel .solution-abuse a.client-hide {
+    background-position: 0 -139px;
+}
+.solution-right-panel .solution-abuse a.client-show {
+    background-position: 0 -139px;
 }

@@ -65,6 +65,116 @@ $(document).ready(function() {
         return false;
     })
 
+    function inlineActions() {
+        $('.edit-link-in-comment').click(function(e){
+            e.preventDefault();
+            if ($('.allow-comments').is(':visible')) {
+                var section = $(this).parent().parent();
+                disableToolbar();
+            } else {
+                var section = $(this).parent().parent().parent();
+            }
+            section.children().hide();
+            var hiddenform = $('.hiddenform', section);
+            hiddenform.show();
+            var text = $(this).data('text');
+            $('textarea', hiddenform).val(text);
+            editcommentflag = true;
+            return false;
+        });
+
+        $('.editcomment').click(function() {
+            var textarea = $(this).prev();
+            var newcomment = textarea.val();
+            var id = textarea.data('id');
+            $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
+                var newText = response;
+                var section = textarea.parent().parent().parent().parent();
+                $('.edit-link-in-comment', section).data('text', newcomment);
+                $('.comment-container', section).html(newText);
+                section.children().show();
+                $('.hiddenform', section).hide();
+                enableToolbar();
+            })
+            return false;
+        });
+
+        $('.replyto').click(function() {
+            if ($('.allow-comments').is(':visible')) {
+                var el = $('#newComment', '.allow-comments');
+                var anchor = $('.allow-comments');
+            } else {
+                var el = $('#newComment');
+                var anchor = $('#comment-anchor');
+            }
+            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
+                $('input[name=comment_id]').val($(this).data('commentId'))
+                var prepend = '@' + $(this).data('commentTo') + ', ';
+                var newText = prepend + el.val();
+                el.val(newText);
+                $.scrollTo(anchor, {duration:250});
+            }
+            return false;
+        })
+
+        $('.mention-link').click(function() {
+            if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
+                $('input[name=comment_id]').val('');
+                var prepend = '@' + $(this).data('commentTo') + ', ';
+                var newText = prepend + $('#newComment').val();
+                $('#newComment').val(newText);
+            }
+            return false;
+        });
+
+        $('.warning-comment').click(function() {
+            $('#sendWarnComment').data('url', $(this).data('url'));
+            $('#sendWarnComment').data('commentId', $(this).data('commentId'));
+            $('#popup-warning-comment').modal({
+                containerId: 'final-step',
+                opacity: 80,
+                closeClass: 'popup-close'
+            });
+            return false;
+        });
+
+        $('.createCommentForm').click(function() {
+            var position = $(this).offset();
+            position.top -= 115;
+            //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
+        });
+
+        $('textarea').blur(function() {
+            $($(this).prev('#tooltip-bubble')).fadeOut(200);
+        });
+
+        $('textarea').keydown(function() {
+            $($(this).prev('#tooltip-bubble')).fadeOut(200);
+        });
+/*
+        $('.hoverimage[data-comment-to]').tooltip({
+            tooltipID: 'tooltip',
+            tooltipSource: 'rel',
+            width: '200px',
+            correctPosX: 40,
+            //positionTop: 0,
+            borderSize: '0px',
+            tooltipPadding: 0,
+            tooltipBGColor: 'transparent'
+        });
+*/
+        $('.warning').on('click', function(e) {
+            e.preventDefault();
+            $('#sendWarn').data('url', $(this).attr('href'));
+            $('#popup-warning').modal({
+                containerId: 'final-step',
+                opacity: 80,
+                closeClass: 'popup-close'
+            });
+            return false;
+        });
+    }
+
     $(document).keyup(function(e) {
 
         if ((e.keyCode == 27) && (editcommentflag == true)) {
@@ -340,7 +450,7 @@ $(document).ready(function() {
     });
 
 
-    $(document).on('click', '.delete-solution', function() {
+    $(document).on('click', '.hide', function() {
         var link = $(this);
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
         var word = formatString(newSolutionCount, {'string':'решен', 'first':'ие', 'second':'ия', 'third':'ий'});
@@ -445,6 +555,22 @@ $(document).ready(function() {
         })
 
     }
+
+    $(document).on('click', '.client-hide', function() {
+        var link = $(this)
+        $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
+            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Показать</a>')
+        })
+        return false;
+    })
+
+    $(document).on('click', '.client-show', function() {
+        var link = $(this)
+        $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
+            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">Скрыть</a>')
+        })
+        return false;
+    })
     
     /*
      * View solution via json
@@ -478,9 +604,13 @@ $(document).ready(function() {
             
             // Left Panel
             if (result.solution.images.solution) {
-                $.each(result.solution.images.solution, function(idx, field) {
-                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
-                });
+                if ($.isArray(result.solution.images.solution)) {
+                    $.each(result.solution.images.solution, function(idx, field) {
+                        $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                    });
+                }else {
+                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution.weburl + '" class="solution-image" /></a>');
+                }
             }
             
             if (currentUserId == result.pitch.user_id) { // isClient
@@ -530,9 +660,9 @@ $(document).ready(function() {
                     }else {
                         commentData.messageInfo = 'message_info1';
                     }
-                    
-                    commentData.userAvatar = '/img/default_small_avatar.png'; // @todo fix this
-                    
+
+                    commentData.userAvatar = comment.avatar;
+
                     commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
                     commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
                     
@@ -564,7 +694,7 @@ $(document).ready(function() {
             $('.number', '.solution-number').text(result.solution.id || '');
             $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
             if (result.userAvatar) {
-                $('.author-avatar').attr('src', result.userAvatar.filename);
+                $('.author-avatar').attr('src', result.userAvatar);
             } else {
                 $('.author-avatar').attr('src', '/img/default_small_avatar.png');
             }
@@ -593,9 +723,21 @@ $(document).ready(function() {
             $('.value-views', '.solution-stat').text(result.solution.views || '');
             $('.value-likes', '.solution-stat').text(result.solution.likes || '');
             $('.value-comments', '.solution-stat').text(result.comments.length || '');
-            
-            $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
-                    <a class="hide" href="">Удалить</a>');
+
+            if (currentUserId == result.pitch.user_id) {
+                var html = '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
+                if (result.solution.hidden == 1) {
+                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
+                }else {
+                    html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Показать</a>';
+                }
+                $('.solution-abuse').html(html);
+            }else if(currentUserId == result.solution.user_id) {
+                $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
+                    <a class="hide" href="/solutions/delete/' + result.solution.id + '">Удалить</a>');
+            }else {
+                $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
+            }
             
             inlineActions();
         });
@@ -627,9 +769,9 @@ $(document).ready(function() {
                             + data.commentText +
                         '</span> \
                     </div> \
-                    <div class="toolbar">'
+                    <div class="toolbar-wrapper"><div class="toolbar">'
                         + toolbar +
-                    '</div> \
+                    '</div></div> \
                     <div class="clr"></div> \
                     <div class="hiddenform" style="display:none"> \
                         <section> \
@@ -656,11 +798,11 @@ $(document).ready(function() {
     }
     
     function enableToolbar() {
-        $('.message_text', '.solution-left-panel').parent().on('mouseover', function() {
-            $('.toolbar', this).show();
+        $('section', '.solution-comments').on('mouseenter', function() {
+            $('.toolbar', this).fadeIn(200);
         });
-        $('.message_text', '.solution-left-panel').parent().on('mouseout', function() {
-            $('.toolbar', this).hide();
+        $('section', '.solution-comments').on('mouseleave', function() {
+            $('.toolbar', this).fadeOut(200);
         });
     }
     
