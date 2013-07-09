@@ -35,6 +35,10 @@ class Comment extends \app\models\AppModel {
             if(in_array($params['user_id'], $change)) {
                 $params['user_id'] = $admin;
             }
+            if(false == $self::isCommentRepeat($params['user_id'], $params['pitch_id'], $params['text'])) {
+                $params['error'] = 'repeated';
+                return $params;
+            }
             if($num = $self::parseComment($params['text'])) {
                 if($solutionId = Solution::getSolutionIdFromOrder($params['pitch_id'], $num)) {
                     $params['solution_id'] = $solutionId;
@@ -48,6 +52,7 @@ class Comment extends \app\models\AppModel {
             }
 
             if(false == $self::checkComment($params['text'])) {
+                $params['error'] = 'empty';
                 return $params;
             }
 
@@ -234,6 +239,22 @@ class Comment extends \app\models\AppModel {
         if ($res == 1) {
             return true;
         }
+    }
+
+    public static function isCommentRepeat($user_id, $pitch_id, $currentText) {
+        $previousComment = Comment::first(array(
+            'conditions' => array(
+                'user_id' => $user_id,
+                'pitch_id' => $pitch_id,
+            ),
+            'order' => array(
+                'created' => 'DESC',
+            ),
+        ));
+        if ($previousComment && $previousComment->originalText == $currentText) {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -688,7 +688,7 @@ $(document).ready(function(){
                 }
                 
                 if (result.userAvatar) {
-                    commentData.userAvatar = result.userAvatar.filename;
+                    commentData.userAvatar = result.userAvatar;
                 } else {
                     commentData.userAvatar = '/img/default_small_avatar.png';
                 }
@@ -827,7 +827,7 @@ $(document).ready(function(){
             $('.number', '.solution-number').text(result.solution.id || '');
             $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
             if (result.userAvatar) {
-                $('.author-avatar').attr('src', result.userAvatar.filename);
+                $('.author-avatar').attr('src', result.userAvatar);
             } else {
                 $('.author-avatar').attr('src', '/img/default_small_avatar.png');
             }
