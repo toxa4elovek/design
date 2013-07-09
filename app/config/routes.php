@@ -27,7 +27,7 @@ use lithium\core\Environment;
  *
  * @see app\controllers\PagesController
  */
-Router::connect('/', 'Pages::view', array('home'));
+Router::connect('/', 'Pages::home');
 
 Router::connect('/pages/contacts', 'Pages::contacts');
 Router::connect('/stats', 'Pages::stats');

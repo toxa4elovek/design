@@ -27,6 +27,10 @@
                         );
                         $types = array();
                         foreach($this->session->read('user.currentpitches') as $mypitch):?>
+                            <?php $pitchPath = 'view';
+                            if($mypitch->ideas_count == 0) {
+                                $pitchPath = 'details';
+                            } ?>
                         <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                             <td class="pitches-name">
                                     <?php if($mypitch->billed == 0):?>
@@ -49,15 +53,15 @@
                                     <?php elseif($mypitch->published == 0):?>
                                     <a class="" href="/pitches/edit/<?=$mypitch->id?>"><?=$mypitch->title?></a>
                                     <?php else:?>
-                                    <a class="" href="/pitches/view/<?=$mypitch->id?>"><?=$mypitch->title?></a>
+                                    <a class="" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>"><?=$mypitch->title?></a>
 
                                     <?php endif?>
-                                    <span style="font-size: 11px;"><?=$mypitch->industry?></span></div></td>
-                                <td class="pitches-cat"><a href="#" style="font-size: 11px;"><?=$mypitch->category->title?></a></td>
+                                    <!--span style="font-size: 11px;"><?=$mypitch->industry?></span--></div></td>
+                                <td class="pitches-cat" style="padding-left:5px;padding-right:5px"><a href="#" style="font-size: 11px;"><?=$mypitch->category->title?></a></td>
                                 <td class="idea" style="font-size: 11px;"><?=$mypitch->ideas_count?></td>
                                 <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
                                     $types['current'] += 1?>
-                                <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/view/<?=$mypitch->id?>">Текущий питч</a></td>
+                                <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a></td>
                                 <?php endif;?>
                                 <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0)):
                                     $types['needpay'] += 1?>
@@ -73,7 +77,7 @@
                                 <?php endif?>
                                 <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0)):
                                     $types['winner'] += 1?>
-                                <td class="pitches-time"><a style="color:#639F6D;font-size: 11px;" href="/pitches/view/<?=$mypitch->id?>">Выбор победителя</a></td>
+                                <td class="pitches-time"><a style="color:#639F6D;font-size: 11px;" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Выбор победителя</a></td>
                                 <?php endif?>
                                 <td class="price"><?=$this->moneyFormatter->formatMoney($mypitch->price)?></td></tr>
                     <?php
@@ -129,7 +133,7 @@
                                 ?>
                                 <a href="/users/step<?=$step?>/<?=$mypitch->awarded?>"><?=$mypitch->title?></a>
                                 <?php endif?>
-                                <span><?=$mypitch->industry?></span>
+                                <!--span><?=$mypitch->industry?></span-->
                             </div></td>
                         <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                         <td class="idea"><?=$mypitch->ideas_count?></td>

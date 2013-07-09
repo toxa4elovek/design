@@ -3,13 +3,17 @@
 
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 	<div class="conteiner">
+	    <div id="pitches-ajax-wrapper">
+            <div id="pitches-ajax-loader">&nbsp;</div>
+        </div>
 		<section>
             <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 788px; margin-left: 77px;">
                 <table><tr><td>
                 <div id="filterContainer" style="border-radius:4px 4px 4px 4px;border:4px solid #F3F3F3; height:41px;padding-top:10px;background-color:white;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset; width:618px;margin-left:25px">
                     <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
                     <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 7px;margin-left:4px;">
-                    <a href="#" id="filterToggle" data-dir="up" style=""><img style="padding-top:4px" src="/img/filter-arrow-down.png" alt=""></a>
+                    <a href="#" id="filterToggle" data-dir="up" style="float:right;"><img style="padding-top:4px;margin-right:1px;" src="/img/filter-arrow-down.png" alt=""></a>
+                    <a href="#" id="filterClear"></a>
                 </div></td><td>
                 <a style="margin-left:15px;margin-top:4px" href="#" id="goSearch" class="button second">Поиск</a>
                 </td></tr></table>
@@ -83,11 +87,11 @@
 				<thead>
 					<tr>
 						<td class="icons"></td>
-						<td class="pitches-name"><a href="#" id="sort-title" rel="asc" style="font-size:11px;color:#666666;">название питча</a></td>
-						<td class="pitches-cat"><a href="#" id="sort-category" rel="asc" style="font-size:11px;color:#666666;">Категории</a></td>
-						<td class="idea"><a href="#" id="sort-ideas_count" rel="desc" style="font-size:11px;color:#666666;">Идеи</a></td>
-						<td class="pitches-time"><a href="#" id="sort-finishDate" rel="asc" style="font-size:11px;color:#666666;">Срок</a></td>
-						<td class="price"><a href="#" id="sort-price" rel="desc" style="font-size:11px;color:#666666;">Цена</a></td>
+						<td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" rel="asc">название питча</a></td>
+						<td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" rel="asc">Категории</a></td>
+						<td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" rel="desc">Идеи</a></td>
+						<td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" rel="asc">Срок</a></td>
+						<td style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-price" class="sort-link" rel="desc">Цена</a></td>
 					</tr>
 				</thead>
 				<tbody id="table-content">
@@ -184,30 +188,34 @@
                     $shortIndustry = iconv('Windows-1251', 'UTF-8', $shortIndustry);
                     $textGuarantee = '';
                     if($pitch['guaranteed'] == 1) {
-                        $textGuarantee = '<br><span style="font-size: 11px; font-family: Arial;">гарантированы</span>';
+                        $textGuarantee = '<br><span style="font-size: 11px; font-weight: normal; font-family: Arial;text-transform:uppercase">гарантированы</span>';
+                    }
+                    $pitchPath = 'view';
+                    if($pitch['ideas_count'] == 0) {
+                        $pitchPath = 'details';
                     }
                     $html = '<tr data-id="' . $pitch['id'] . '" class="' . $rowClass . '">' .
                         '<td class="icons">' . $icons . '</td>' .
                         '<td class="pitches-name">' .
                         $userString .
-                        '<div>' .
-                        '<a href="/pitches/view/' . $pitch['id'] . '" class="">' . $pitch['title'] . '</a>' .
-                        '<span style="font-size:11px;">' . $shortIndustry . '</span>' .
+                        '<div style="padding-left: 34px; padding-right: 12px;">' .
+                        '<a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="newpitchfont" >' . $this->PitchTitleFormatter->renderTitle($pitch['title']) . '</a>' .
+                        '<!--span style="font-size:11px;">' . $shortIndustry . '</span-->' .
                         '</div>' .
                         '</td>' .
-                        '<td class="pitches-cat">' .
+                        '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' .
                         '<a href="#" style="font-size:11px;">' . $pitch['category']['title'] . '</a>' .
                         '</td>' .
                         '<td class="idea"  style="font-size:11px;">' . $pitch['ideas_count'] . '</td>' .
                         '<td class="pitches-time"  style="font-size:11px;">' . $timeleft . '</td>' .
-                        '<td class="price">' . $this->moneyFormatter->formatMoney($pitch['price']) . ' р.-'.
+                        '<td class="price">' . $this->moneyFormatter->formatMoney($pitch['price'], array('suffix' => ' Р.-')) .
                         $textGuarantee
                         .'</td>' .
                         '</tr>' .
                         '<tr class="pitch-collapsed">' .
                         '<td class="icons"></td>' .
                         '<td colspan="3" class="al-info-pitch"><p>' . $pitch['editedDescription'] .
-                        '</p><a href="/pitches/view/' . $pitch['id'] . '" class="go-pitch">Перейти к питчу</a>' .
+                        '</p><a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="go-pitch">Перейти к питчу</a>' .
                         '</td>' .
                         '<td></td>' .
                         '<td></td>' .
@@ -294,6 +302,12 @@
                 <div style="margin-top:20px;height:40px;margin-right: 128px;" class="you-profile supplement3">
                     Хотите узнать о добавлении новых питчей?<br>Измените <a href="/users/profile">настройки своего профиля</a>
                 </div>
+			</div>
+			<div class="no-result">
+                <h1>Упс, мы ничего не нашли!</h1>
+                <h6>Попробуйте ввести другое слово, или используйте<br /> стрелку в поле, повторив поиск с выбранным<br /> фильтром. <a href="/answers/view/85">Подробнее…</a></h6>
+                <p><img src="http://www.godesigner.ru/img/help/d3fa990a965b8ebf1cf8691586140165.jpg" alt="" width="610" height="292"></p>
+
 			</div>
 		</section>
 	</div>

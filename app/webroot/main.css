@@ -2389,9 +2389,12 @@ td.pitches-name{
 }
 
 .pitches-name a{
-	color:#e3e3e3;
 	text-decoration:none;
-	font:15px "RodeoC", sans-serif;
+	font:15px "Arial", sans-serif;
+    font-weight: bold;
+    text-transform: none;
+    color: #e2e2e2;
+    line-height: 19px;
 }
 .pitches-name span{
 	display:block;
@@ -2410,8 +2413,11 @@ td.pitches-time{
 td.price{
 	width:127px;
 	border-right:none;
-	font: 15px "RodeoC", sans-serif;
-	color:#e3e3e3;
+    font:15px "Arial", sans-serif;
+    font-weight: bold;
+    text-transform: none;
+    color: #e2e2e2;
+    line-height: 19px;
 }
 .al-info-pitch{
  width:547px;
@@ -2892,4 +2898,77 @@ ul.social li#rss {
 }
 .underline-link a:hover{
     text-decoration: underline;
+}
+thead td .sort-link {
+    padding-right: 16px;
+    font-size: 11px;
+    color: #666666;
+    background-image: url('/img/sort-arrow.png');
+    background-repeat: no-repeat;
+}
+thead td .sort-link:hover {
+    color: #969696;
+}
+.sort-link[rel="desc"] {
+    background-position: 100% -8px;
+}
+.sort-link[rel="asc"] {
+    background-position: 100% -30px;
+}
+.sort-link[rel="desc"]:hover {
+    background-position: 100% 3px;
+}
+.sort-link[rel="asc"]:hover {
+    background-position: 100% -19px;
+}
+#pitches-ajax-wrapper {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: 300px;
+    width: 360px;
+    height: 32px;
+    background: url(/img/sep.png) repeat-x scroll 0 50% transparent;
+}
+#pitches-ajax-loader {
+    position: absolute;
+    left: 150px;
+    top: 0;
+    width: 60px;
+    height: 32px;
+    background: url(img/blog-ajax-loader.gif) #e3e3e3 top center no-repeat;
+}
+input::-ms-clear {
+    display: none;
+}
+a#filterClear {
+	display: none;
+	float: right;
+	width: 21px;
+	height: 23px;
+	margin-top: 4px;
+	background: url('img/filter-clear.png') no-repeat;
+}
+div.no-result {
+	display: none;
+	position: relative;
+	margin: 30px auto 50px;
+	text-align: center;
+}
+div.no-result h1 {
+    font-family: RodeoC, serif;
+    font-size: 28px;
+    font-weight: normal;
+    color: #666;
+    text-shadow: #FFF -1px 0 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+    margin: 20px auto 10px auto;
+}
+div.no-result h6 {
+	font-size: 14px;
+	font-weight: normal;
+	color: #666;
+	text-transform: none;
+	margin: 10px auto 20px;
 }

@@ -342,7 +342,7 @@ $(document).ready(function(){
         $('textarea').keydown(function() {
             $($(this).prev('#tooltip-bubble')).fadeOut(200);
         });
-/*
+
         $('.hoverimage[data-comment-to]').tooltip({
             tooltipID: 'tooltip',
             tooltipSource: 'rel',
@@ -353,7 +353,7 @@ $(document).ready(function(){
             tooltipPadding: 0,
             tooltipBGColor: 'transparent'
         });
-*/
+
         $('.warning').on('click', function(e) {
             e.preventDefault();
             $('#sendWarn').data('url', $(this).attr('href'));
@@ -717,6 +717,14 @@ $(document).ready(function(){
         $('.wrapper', 'body').first().removeClass('wrapper-frozen');
         $('.solution-overlay').hide();
     }
+
+    $(document).keyup(function(e) {
+
+        if (e.keyCode == 27) {
+            e.preventDefault();
+            hideSolutionPopup();
+        }
+    });
     
     /*
      * Fetch solution via JSON and populate layout
@@ -724,12 +732,12 @@ $(document).ready(function(){
     function fetchSolution(urlJSON) {
         // Reset layout
         $(window).scrollTop(0);
-        $('.isField').text('');
+        $('.isField').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         $('.author-avatar').attr('src', '/img/default_small_avatar.png');
         $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
         $('.description-more').hide();
         $('#newComment', '.solution-left-panel').val('');
-        
+        $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         $.getJSON(urlJSON, function(result) {
             expertsObj = result.experts;
             // Navigation
@@ -737,6 +745,7 @@ $(document).ready(function(){
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
             
             // Left Panel
+            $('.solution-images').html('');
             if (result.solution.images.solution) {
                 if ($.isArray(result.solution.images.solution)) {
                     $.each(result.solution.images.solution_gallerySiteSize, function(idx, field) {
@@ -771,7 +780,7 @@ $(document).ready(function(){
                 });
             }
             
-            $('#newComment', '.solution-left-panel').val('#' + result.solution.id + ', ');
+            $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
             solutionId = result.solution.id;
             
             if (result.comments) {
@@ -824,7 +833,7 @@ $(document).ready(function(){
             }
             
             // Right Panel
-            $('.number', '.solution-number').text(result.solution.id || '');
+            $('.number', '.solution-number').text(result.solution.num || '');
             $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
             if (result.userAvatar) {
                 $('.author-avatar').attr('src', result.userAvatar);
@@ -837,25 +846,77 @@ $(document).ready(function(){
             } else {
                 $('.author-from').text('');
             }
-            if (desc = result.solution.description) {
-                var viewLength = 100; // Description string cut length parameter
-                if (desc.length > viewLength) {
-                    var descBefore = desc.slice(0, viewLength - 1);
-                    descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
-                    var descAfter = desc.slice(descBefore.length);
-                    $('.solution-description').text(descBefore);
-                    $('.description-more').show(500);
-                    $('.description-more').on('click', function() {
-                        $('.solution-description').append(descAfter);
-                        $('.description-more').hide();
-                    });
-                } else {
-                    $('.solution-description').text(result.solution.description);
-                }
+            var desc = result.solution.description;
+            var viewLength = 100; // Description string cut length parameter
+            if (desc.length > viewLength) {
+                var descBefore = desc.slice(0, viewLength - 1);
+                descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
+                var descAfter = desc.slice(descBefore.length);
+                $('.solution-description').text(descBefore);
+                $('.description-more').show(500);
+                $('.description-more').on('click', function() {
+                    $('.solution-description').append(descAfter);
+                    $('.description-more').hide();
+                });
+            } else {
+                $('.solution-description').text(result.solution.description);
             }
+            if(result.solution.description == '') {
+                $('.solution-about').next().hide();
+                $('.solution-about').hide();
+            }else {
+                $('.solution-about').next().show();
+                $('.solution-about').show();
+            }
+
             $('.value-views', '.solution-stat').text(result.solution.views || '');
             $('.value-likes', '.solution-stat').text(result.solution.likes || '');
             $('.value-comments', '.solution-stat').text(result.comments.length || '');
+
+            var media = '';
+            if ($.isArray(result.solution.images.solution_solutionView)) {
+                media = result.solution.images.solution_solutionView[0].weburl
+            }else {
+                media = result.solution.images.solution_solutionView.weburl
+            }
+            $('.solution-share').html('<h2>ПОДЕЛИТЬСЯ</h2> \
+                <div class="body" style="display: block;"> \
+                <table width="100%"> \
+                    <tbody> \
+                        <tr height="35"> \
+                            <td width="137" valign="middle">\
+                                <div class="fb-like fb_edge_widget_with_comment fb_iframe_widget" data-href="http://www.godesigner.ru/pitches/v' + result.solution.id + 'lution/' + result.solution.id + '" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" data-font="arial" fb-xfbml-state="rendered"><span style="height: 20px; width: 101px;"><iframe id="f118e3d74" name="f2fe74942c" scrolling="no" title="Like this content on Facebook." class="fb_ltr" src="http://www.facebook.com/plugins/like.php?api_key=202765613136579&amp;locale=ru_RU&amp;sdk=joey&amp;channel_url=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D25%23cb%3Df2ba7cf118%26origin%3Dhttp%253A%252F%252Fwww.godesigner.ru%252Ff1f54c1288%26domain%3Dwww.godesigner.ru%26relation%3Dparent.parent&amp;href=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '&amp;node_type=link&amp;width=90&amp;font=arial&amp;layout=button_count&amp;colorscheme=light&amp;show_faces=false&amp;send=false&amp;extended_social_context=false" style="border: none; overflow: hidden; height: 20px; width: 101px;"></iframe></span></div></td> \
+                            <td width="137" valign="middle"> \
+                                <script id="twitter-wjs" src="//platform.twitter.com/widgets.js"></script><script type="text/javascript"> \
+                            </script> \
+                                <div id="vk_like" style="height: 22px; width: 100px; background-image: none; position: relative; clear: both; background-position: initial initial; background-repeat: initial initial;"><iframe name="fXD5a766" frameborder="0" src="http://vk.com/widget_like.php?app=2950889&amp;width=100%&amp;_ver=1&amp;page=0&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;type=mini&amp;verb=0&amp;title=%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%22%D0%9F%D1%80%D0%BE%D1%84%D0%B5%D1%81%D1%81%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B0%22%20%7C%20GoDesigner&amp;description=&amp;image=http%3A%2F%2Fwww.godesigner.ru%2Fsolutions%2Fd8e8955043c662a8f8144674efa995f6_galleryLargeSize.jpg&amp;text=&amp;h=22&amp;13fa381efb0" width="100%" height="22" scrolling="no" id="vkwidget1" style="overflow: hidden; height: 22px; width: 100px; z-index: 150;"></iframe></div> \
+                                <script type="text/javascript"> \
+                                </script> \
+                            </td> \
+                        </tr> \
+                        <tr height="35"> \
+                            <td valign="middle"> \
+                                <iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.1372833608.html#_=1372837769082&amp;count=horizontal&amp;hashtags=Go_Deer&amp;id=twitter-widget-0&amp;lang=ru&amp;original_referer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;size=m&amp;text=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru%3A&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Futm_source%3Dtwitter%26utm_medium%3Dtweet%26utm_content%3Dlike-tweet%26utm_campaign%3Dsharing" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 138px; height: 20px;"></iframe> \
+                                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> \
+                            </td> \
+                            <td valign="middle"> \
+                                <a href="//pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '&amp;media=http%3A%2F%2Fwww.godesigner.ru%2F' + media + '&amp;description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="PIN_1372837768967_pin_it_button PIN_1372837768967_pin_it_button_inline PIN_1372837768967_pin_it_beside" target="_blank" data-pin-log="button_pinit" data-pin-config="beside"><span class="PIN_1372837768967_hidden" id="PIN_1372837768967_pin_count_0"><i></i></span></a> \
+                            </td> \
+                        </tr> \
+                        <tr height="35"> \
+                            <td valign="middle"><iframe frameborder="0" scrolling="no" class="surfinbird__like_iframe" src="//surfingbird.ru/button?layout=common&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;caption=%D0%A1%D0%B5%D1%80%D1%84&amp;referrer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fview%2F101057&amp;current_url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated" style="width: 120px; height: 20px;"></iframe><a target="_blank" class="surfinbird__like_button __sb_parsed__" data-surf-config="{layout: "common", width: "120", height: 20}" href="http://surfingbird.ru/share"></a></td> \
+                            <td valign="middle"><div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 106px; height: 24px; background-position: initial initial; background-repeat: initial initial;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 106px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 24px;" tabindex="0" vspace="0" width="100%" id="I0_1372837769255" name="I0_1372837769255" src="https://apis.google.com/_/+1/fastbutton?bsv&amp;hl=ru&amp;origin=http%3A%2F%2Fwww.godesigner.ru&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;ic=1&amp;jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.ru.fjfk_NiG5Js.O%2Fm%3D__features__%2Fam%3DEQ%2Frt%3Dj%2Fd%3D1%2Frs%3DAItRSTPAdsSDioxjaY0NLzoPJdX-TT1dfg#_methods=onPlusOne%2C_ready%2C_close%2C_open%2C_resizeMe%2C_renderstart%2Concircled%2Conload&amp;id=I0_1372837769255&amp;parent=http%3A%2F%2Fwww.godesigner.ru&amp;pfname=&amp;rpctoken=95865586" allowtransparency="true" data-gapiattached="true" title="+1"></iframe></div></td> \
+                        </tr> \
+                        <tr height="35"> \
+                            <!--td valign="middle"><script src="//platform.linkedin.com/in.js" type="text/javascript"></script> \
+                                <span class="IN-widget" style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1372837769632_0"><a id="li_ui_li_gen_1372837769632_0-link" href="javascript:void(0);"><span id="li_ui_li_gen_1372837769632_0-logo">in</span><span id="li_ui_li_gen_1372837769632_0-title"><span id="li_ui_li_gen_1372837769632_0-mark"></span><span id="li_ui_li_gen_1372837769632_0-title-text">Share</span></span></a></span></span><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1372837769647_1-container" class="IN-right IN-hidden"><span id="li_ui_li_gen_1372837769647_1" class="IN-right"><span id="li_ui_li_gen_1372837769647_1-inner" class="IN-right"><span id="li_ui_li_gen_1372837769647_1-content" class="IN-right">0</span></span></span></span></span></span><script type="IN/Share+init" data-counter="right"></script></td--> \
+                            <td valign="middle"><a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url(http://platform.tumblr.com/v1/share_1.png) top left no-repeat transparent;">Share on Tumblr</a></td><td></td> \
+                        </tr> \
+                    </tbody> \
+                </table> \
+                </div>');
+
+
             if (currentUserId == result.pitch.user_id) {
                 var html = '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
                 if (result.solution.hidden == 1) {
@@ -882,14 +943,13 @@ $(document).ready(function(){
             var toolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
                            <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
         }
-        
         return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                     <div class="separator"></div> \
                     <div class="' + data.messageInfo + '"> \
                     <a href="/users/view/' + data.commentUserId + '"> \
                         <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
                     </a> \
-                    <a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
+                    <a href="#" rel="" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
                         <span>' + data.commentAuthor + '</span><br /> \
                         <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
                     </a> \

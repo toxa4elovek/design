@@ -197,6 +197,16 @@ class Comment extends \app\models\AppModel {
         return $comments;
     }
 
+    public static function addSolutionUrl($comments) {
+        foreach($comments as $comment) {
+            if($comment->solution_id != 0) {
+                $solution = Solution::first($comment->solution_id);
+                $comment->solution_url = $solution->images;
+            }
+        }
+        return $comments;
+    }
+
 	public static function createComment($data) {
 		return static::_filter(__FUNCTION__, $data, function($self, $params) {
             $comment = $self::create();
