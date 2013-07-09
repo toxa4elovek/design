@@ -2,41 +2,100 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2013, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace app\controllers;
 
-/**
- * This controller is used for serving static pages by name, which are located in the `/views/pages`
- * folder.
- *
- * A Lithium application's default routing provides for automatically routing and rendering
- * static pages using this controller. The default route (`/`) will render the `home` template, as
- * specified in the `view()` action.
- *
- * Additionally, any other static templates in `/views/pages` can be called by name in the URL. For
- * example, browsing to `/pages/about` will render `/views/pages/about.html.php`, if it exists.
- *
- * Templates can be nested within directories as well, which will automatically be accounted for.
- * For example, browsing to `/pages/about/company` will render
- * `/views/pages/about/company.html.php`.
- */
-class PagesController extends \lithium\action\Controller {
+use \app\models\Pitch;
+use \app\models\Answer;
+use \app\models\Expert;
+use \app\models\Promo;
+use \app\models\User;
+use \app\models\Grade;
+use \app\extensions\mailers\ContactMailer;
+
+class PagesController extends \app\controllers\AppController {
+
+	public $publicActions = array(
+		'view', 'home', 'contacts', 'howitworks', 'experts'
+	);
 
 	public function view() {
-		$options = array();
-		$path = func_get_args();
-
-		if (!$path || $path === array('home')) {
-			$path = array('home');
-			$options['compiler'] = array('fallback' => true);
-		}
-
-		$options['template'] = join('/', $path);
-		return $this->render($options);
+		$path = func_get_args() ?: array('home');
+        if(preg_match('/experts/', $path[0])) {
+            return $this->redirect('/experts');
+        }
+        $questions = $this->popularQuestions();
+		return $this->render(array('template' => join('/', $path), 'data' => array('questions' => $questions)));
 	}
+
+    public function stats() {
+        return $this->render(array('layout' => 'stats'));
+    }
+
+    public function home() {
+    	$numOfSolutionsPerProject = Pitch::getNumOfSolutionsPerProject();
+    	$numOfCurrentPitches = Pitch::getNumOfCurrentPitches();
+    	$totalAwards = Pitch::getTotalAwards();
+    	$totalWaitingForClaim = Pitch::getTotalWaitingForClaim();
+    	$totalAwardsValue = Pitch::getTotalAwardsValue();
+    	$pitches = Pitch::all(array(
+			'order' => array(
+				/*'pinned' => 'desc',
+				'started' => 'desc'*/
+                'pinned' => 'desc',
+                'ideas_count' => 'desc',
+                'price' => 'desc'
+			),
+            'conditions' => array('status' => array('<' => 1), 'published' => 1),
+			'limit' => 3,
+			'page' => 1,
+		));
+
+        $promos = Promo::all(array(
+            'limit' => 2,
+            'conditions' => array('enabled' => 1),
+            'with' => array('Solution'),
+            'order' => array('RAND()')
+        ));
+        foreach($promos as $promo) {
+            if($promo->solution->pitch_id == null) {
+                $promos = array();
+                break;
+            }
+            $promo->solution->pitch = Pitch::first($promo->solution->pitch_id);
+            $promo->solution->pitch->days = ceil((strtotime($promo->solution->pitch->finishDate) - strtotime($promo->solution->pitch->started)) / DAY);
+        }
+        $grades = Grade::all(array('limit' => 2, 'conditions' => array('enabled' => 1) ,'order' => array('RAND()'), 'with' => array('Pitch')));
+        foreach($grades as $grade) {
+            $grade->user = User::first(array('conditions' => array('id' => $grade->user_id)));
+        }
+        $experts = Expert::all(array('limit' => 3, 'order' => array('RAND()')));
+        return compact('numOfSolutionsPerProject', 'numOfCurrentPitches', 'totalAwards', 'totalWaitingForClaim', 'totalAwardsValue', 'pitches', 'promos', 'experts', 'grades');
+    }
+
+    public function cross() {
+        $url = $this->request->query['url'];
+
+        var_dump($url);
+        die();
+    }
+
+    public function contacts() {
+        $success = false;
+        if($this->request->data) {
+            ContactMailer::contact_mail($this->request->data);
+            $success = true;
+        }
+        $questions = $this->popularQuestions();
+        return compact('success', 'questions');
+    }
+
+    public function howitworks() {
+    	
+    }
 }
 
 ?>
