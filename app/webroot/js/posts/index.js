@@ -20,6 +20,7 @@ $(document).ready(function() {
                     for (i in result.posts) { keys.push(i); }
                     keys.sort().reverse();
                     var postsObj = result.posts;
+                    var currentIndex = 1;
                     $.each(keys, function(idx, key) {
                         var field = postsObj[key];
                         //Title
@@ -70,9 +71,15 @@ $(document).ready(function() {
                                     + editor +
                                 '</div> \
                                 <div style="float:left;width:500px;margin-bottom: 20px; height:1px;"></div> \
-                            </div> \
-                            <div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>'
+                            </div>'
                         );
+                        if(currentIndex == keys.length) {
+
+                        }else {
+                            currentIndex += 1;
+                            $(".howitworks").append('<div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>');
+                        }
+
                     });
                     Tip.visibility();
                     scrollInit();
