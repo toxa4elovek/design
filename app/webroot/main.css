@@ -2921,4 +2921,54 @@ thead td .sort-link:hover {
 .sort-link[rel="asc"]:hover {
     background-position: 100% -19px;
 }
-
+#pitches-ajax-wrapper {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: 300px;
+    width: 360px;
+    height: 32px;
+    background: url(/img/sep.png) repeat-x scroll 0 50% transparent;
+}
+#pitches-ajax-loader {
+    position: absolute;
+    left: 150px;
+    top: 0;
+    width: 60px;
+    height: 32px;
+    background: url(img/blog-ajax-loader.gif) #e3e3e3 top center no-repeat;
+}
+input::-ms-clear {
+    display: none;
+}
+a#filterClear {
+	display: none;
+	float: right;
+	width: 21px;
+	height: 23px;
+	margin-top: 4px;
+	background: url('img/filter-clear.png') no-repeat;
+}
+div.no-result {
+	display: none;
+	position: relative;
+	margin: 30px auto 50px;
+	text-align: center;
+}
+div.no-result h1 {
+    font-family: RodeoC, serif;
+    font-size: 28px;
+    font-weight: normal;
+    color: #666;
+    text-shadow: #FFF -1px 0 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+    margin: 20px auto 10px auto;
+}
+div.no-result h6 {
+	font-size: 14px;
+	font-weight: normal;
+	color: #666;
+	text-transform: none;
+	margin: 10px auto 20px;
+}

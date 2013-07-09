@@ -52,11 +52,24 @@ function TableLoader() {
         }
     };
     this.fetchTable = function(options) {
+        $('#pitches-ajax-wrapper').fadeIn(100);
         $.get('/pitches.json', options, function(response) {
             self.page = response.data.info.page;
             self.total = response.data.info.total;
             self.renderTable(response);
             self.renderNav(response);
+            $('#pitches-ajax-wrapper').fadeOut(50);
+            if (response.data.pitches.length == 0) {
+                $('.all-pitches, .foot-content').hide();
+                var image = '/img/filter-arrow-down.png';
+                $('#filterToggle').data('dir', 'up');
+                $('img', '#filterToggle').attr('src', image);
+                $('#filtertab').hide();
+                $('.no-result').show();
+            } else {
+                $('.no-result').hide();
+                $('.all-pitches, .foot-content').show();
+            }
         });
     };
     this.renderTable = function(response) {
