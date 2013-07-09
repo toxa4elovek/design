@@ -7,7 +7,6 @@
         (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true)) && ($this->session->read('user.id'))):?>
         <script>allowComments = true;</script>
     <?php endif?>
-
 	<div class="middle">
         <script>
         var pitchNumber = <?php echo $pitch->id; ?>;
@@ -147,7 +146,7 @@
                                         <script id="twitter-wjs" src="//platform.twitter.com/widgets.js"></script><script type="text/javascript">
 
                                         </script>
-                                        <div id="vk_like" style="height: 22px; width: 100px; background-image: none; position: relative; clear: both; background-position: initial initial; background-repeat: initial initial;"><iframe name="fXD5a766" frameborder="0" src="http://vk.com/widget_like.php?app=2950889&amp;width=100%&amp;_ver=1&amp;page=0&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F<?= $solution->id ?>&amp;type=mini&amp;verb=0&amp;title=%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%22%D0%9F%D1%80%D0%BE%D1%84%D0%B5%D1%81%D1%81%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B0%22%20%7C%20GoDesigner&amp;description=&amp;image=http%3A%2F%2Fwww.godesigner.ru%2Fsolutions%2Fd8e8955043c662a8f8144674efa995f6_galleryLargeSize.jpg&amp;text=&amp;h=22&amp;13fa381efb0" width="100%" height="22" scrolling="no" id="vkwidget1" style="overflow: hidden; height: 22px; width: 100px; z-index: 150;"></iframe></div>
+                                        <div id="vk_like" style="height: 22px; width: 100px; background-image: none; position: relative; clear: both; background-position: initial initial; background-repeat: initial initial;"></div>
                                         <script type="text/javascript">
 
                                         </script>
@@ -159,7 +158,7 @@
                                         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                                     </td>
                                     <td valign="middle">
-                                        <a href="//pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F<?= $solution->id ?>&amp;media=http%3A%2F%2Fwww.godesigner.ru%2Fsolutions%2Fd8e8955043c662a8f8144674efa995f6_solutionView.jpg&amp;description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="PIN_1372837768967_pin_it_button PIN_1372837768967_pin_it_button_inline PIN_1372837768967_pin_it_beside" target="_blank" data-pin-log="button_pinit" data-pin-config="beside"><span class="PIN_1372837768967_hidden" id="PIN_1372837768967_pin_count_0"><i></i></span></a>
+                                        <a href="//pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F<?= $solution->id ?>&amp;media=http%3A%2F%2Fwww.godesigner.ru%2F<?=$this->solution->renderImageUrl($solution->images['solution_solutionView'])?>&amp;description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="PIN_1372837768967_pin_it_button PIN_1372837768967_pin_it_button_inline PIN_1372837768967_pin_it_beside" target="_blank" data-pin-log="button_pinit" data-pin-config="beside"><span class="PIN_1372837768967_hidden" id="PIN_1372837768967_pin_count_0"><i></i></span></a>
                                     </td>
                                 </tr>
                                 <tr height="35">
@@ -167,9 +166,10 @@
                                     <td valign="middle"><div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 106px; height: 24px; background-position: initial initial; background-repeat: initial initial;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 106px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 24px;" tabindex="0" vspace="0" width="100%" id="I0_1372837769255" name="I0_1372837769255" src="https://apis.google.com/_/+1/fastbutton?bsv&amp;hl=ru&amp;origin=http%3A%2F%2Fwww.godesigner.ru&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F<?= $solution->id ?>%3Fsorting%3Dcreated&amp;ic=1&amp;jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.ru.fjfk_NiG5Js.O%2Fm%3D__features__%2Fam%3DEQ%2Frt%3Dj%2Fd%3D1%2Frs%3DAItRSTPAdsSDioxjaY0NLzoPJdX-TT1dfg#_methods=onPlusOne%2C_ready%2C_close%2C_open%2C_resizeMe%2C_renderstart%2Concircled%2Conload&amp;id=I0_1372837769255&amp;parent=http%3A%2F%2Fwww.godesigner.ru&amp;pfname=&amp;rpctoken=95865586" allowtransparency="true" data-gapiattached="true" title="+1"></iframe></div></td>
                                 </tr>
                                 <tr height="35">
-                                    <td valign="middle"><script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
-                                        <span class="IN-widget" style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1372837769632_0"><a id="li_ui_li_gen_1372837769632_0-link" href="javascript:void(0);"><span id="li_ui_li_gen_1372837769632_0-logo">in</span><span id="li_ui_li_gen_1372837769632_0-title"><span id="li_ui_li_gen_1372837769632_0-mark"></span><span id="li_ui_li_gen_1372837769632_0-title-text">Share</span></span></a></span></span><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1372837769647_1-container" class="IN-right IN-hidden"><span id="li_ui_li_gen_1372837769647_1" class="IN-right"><span id="li_ui_li_gen_1372837769647_1-inner" class="IN-right"><span id="li_ui_li_gen_1372837769647_1-content" class="IN-right">0</span></span></span></span></span></span><script type="IN/Share+init" data-counter="right"></script></td>
+                                    <!--td valign="middle"><script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+                                        <span class="IN-widget" style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1372837769632_0"><a id="li_ui_li_gen_1372837769632_0-link" href="javascript:void(0);"><span id="li_ui_li_gen_1372837769632_0-logo">in</span><span id="li_ui_li_gen_1372837769632_0-title"><span id="li_ui_li_gen_1372837769632_0-mark"></span><span id="li_ui_li_gen_1372837769632_0-title-text">Share</span></span></a></span></span><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1372837769647_1-container" class="IN-right IN-hidden"><span id="li_ui_li_gen_1372837769647_1" class="IN-right"><span id="li_ui_li_gen_1372837769647_1-inner" class="IN-right"><span id="li_ui_li_gen_1372837769647_1-content" class="IN-right">0</span></span></span></span></span></span><script type="IN/Share+init" data-counter="right"></script></td-->
                                     <td valign="middle"><a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent;">Share on Tumblr</a></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -183,7 +183,8 @@
             <!-- start: Solution Left Panel -->
             <div class="solution-left-panel">
                 <!-- start: Soluton Images -->
-                <section class="solution-images isField">
+                <section class="solution-images isField bla">
+                    <div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>
                 <!-- end: Solution Images -->
                 </section>
                 <section class="allow-comments">

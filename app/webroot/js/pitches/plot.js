@@ -482,11 +482,24 @@ window.onscroll = function () {
     var obj = $('#floatingblock')
     var pos = obj.position();
     if (height + scrollTop > pos.top) {
-        console.log('negative')
         $('#dinamic').fadeOut(150);
     }
     else {
         $('#dinamic').fadeIn(150);
-        console.log('positive')
     }
 }
+
+$('#dinamic').on('mouseover', function() {
+    $(this).animate({
+        opacity: 1
+    }, 100)
+})
+$('#dinamic').on('mouseleave', function() {
+    $(this).animate({
+        opacity:0.6
+    }, 100)
+})
+$('#dinamic').on('click', function() {
+    console.log('click')
+    $.scrollTo($('#floatingblock'), {duration:500});
+})

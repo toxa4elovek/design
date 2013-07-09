@@ -591,7 +591,7 @@ $(document).ready(function() {
     function fetchSolution(urlJSON) {
         // Reset layout
         $(window).scrollTop(0);
-        $('.isField').text('');
+        $('.isField').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         $('.author-avatar').attr('src', '/img/default_small_avatar.png');
         $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
         $('.description-more').hide();
@@ -601,7 +601,7 @@ $(document).ready(function() {
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
-            
+            $('.solution-images').html('');
             // Left Panel
             if (result.solution.images.solution) {
                 if ($.isArray(result.solution.images.solution)) {
@@ -671,7 +671,11 @@ $(document).ready(function() {
                     var postDateObj = new Date(dateCreated);
                     commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
                     commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-                     
+                    commentData.relImageUrl = '';
+                    if (comment.solution_url) {
+                        commentData.relImageUrl = comment.solution_url.solution_solutionView.weburl;
+                    }
+
                     solutionComments += populateComment(commentData); 
                 });
                 $('.solution-comments').html(solutionComments);
@@ -746,6 +750,7 @@ $(document).ready(function() {
             }
             
             inlineActions();
+
         });
     }
     
@@ -757,7 +762,7 @@ $(document).ready(function() {
             var toolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
                            <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
         }
-        
+        console.log(data);
         return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                     <div class="separator"></div> \
                     <div class="' + data.messageInfo + '"> \

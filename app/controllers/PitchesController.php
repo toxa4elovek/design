@@ -156,7 +156,7 @@ ini_set('display_errors', '1');
 				break;
 			}
 			if((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))  {
-				if($field == 'category') $field = 'Category.title';
+				if($field == 'category') $field = 'category_id';
                 if($field == 'finishDate') {
                     $order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
                 }else {
@@ -218,6 +218,166 @@ ini_set('display_errors', '1');
 		$query = $this->request->query;
 		return compact('data', 'categories', 'query', 'selectedCategory');
 	}
+
+    public function finished() {
+        $categories = Category::all();
+        $allowedCategories = array();
+        $allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
+        $allowedSortDirections = array('asc', 'desc');
+        $allowedTimeframe = array(1,2,3,4,'all');
+        $hasOwnHiddenPitches = false;
+        foreach($categories as $catI) {
+            $allowedCategories[] = $catI->id;
+        }
+        if(Session::read('user.id')) {
+            $usersPitches = Pitch::all(array('conditions' => array(
+                'user_id' => Session::read('user.id'),
+                'published' => 0,
+                'status' => 0
+            ), 'with' => array('Category')));
+            if($usersPitches) {
+                $hasOwnHiddenPitches = true;
+            }
+            $totalOwn = count($usersPitches);
+        }
+
+        $limit = 10;
+        $page = 1;
+        $types = array(
+            'finished' => array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)'))),
+            'current' => array('status' => array('<' => 2), 'awarded' => 0)
+        );
+        $priceFilter = array(
+            'all' => array(),
+            '1' => array('price' => array('>' => 1000, '<=' => 3000)),
+            '2' => array('price' => array('>' => 3000, '<=' => 6000)),
+            '3' => array('price' => array('>' => 6000))
+        );
+        $timeleftFilter = array(
+            '1' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3)))),
+            '2' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7)))),
+            '3' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10)))),
+            '4' => array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14)))),
+            'all' => array()
+        );
+        $search = array();
+        if((isset($this->request->query['searchTerm'])) && ($this->request->query['searchTerm'] != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ' && $this->request->query['searchTerm'] != '')){
+            $hasTag = true;
+            $word = urldecode(filter_var($this->request->query['searchTerm'], FILTER_SANITIZE_STRING));
+            $firstLetter = mb_substr($word, 0, 1, 'utf-8');
+            $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
+            $firstLower = (mb_strtolower($firstLetter, 'utf-8'));
+            $string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8');
+            $search =  array('Pitch.title' => array('REGEXP' => $string));
+        }
+
+        $order = array(
+            'price' => 'desc',
+            'started' => 'desc'
+        );
+        $type = 'current';
+        $category = array();
+        $conditions = array('published' => 1);
+        if(isset($this->request->query['page'])) {
+            $page = abs(intval($this->request->query['page']));
+        }
+        if((isset($this->request->query['type'])) && (in_array($this->request->query['type'], array_keys($types)))) {
+            $type = $this->request->query['type'];
+        }
+        if((isset($this->request->query['priceFilter'])) && (isset($priceFilter[$this->request->query['priceFilter']]))) {
+            $priceFilter = $priceFilter[$this->request->query['priceFilter']];
+        }else {
+            $priceFilter = $priceFilter['all'];
+        }
+        if((isset($this->request->query['category'])) && (($this->request->query['category'] == 'all') || (in_array($this->request->query['category'], $allowedCategories)))){
+            $category = $this->request->query['category'];
+            if($category != 'all') {
+                $category = array('category_id' => $category);
+            }else {
+                $category = array();
+            }
+        }
+        $timeframe = array();
+        if((isset($this->request->query['timeframe'])) && (($this->request->query['timeframe'] == 'all') || (in_array($this->request->query['timeframe'], $allowedTimeframe)))){
+            $timeframe = $timeleftFilter[$this->request->query['timeframe']];
+        }
+        if((isset($this->request->category)) && (($this->request->category == 'all') || (in_array($this->request->category, $allowedCategories)))){
+            if($this->request->category != 'all') {
+                $selectedCategory = $this->request->category;
+            }else {
+                $selectedCategory = 'all';
+            }
+        }else {
+            $selectedCategory = 'all';
+        }
+        if((isset($this->request->query['order']))) {
+            $newOrder = $this->request->query['order'];
+            foreach($newOrder as $key => $direction) {
+                $field = $key;
+                $dir = $direction;
+                break;
+            }
+            if((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))  {
+                if($field == 'category') $field = 'category_id';
+                if($field == 'finishDate') {
+                    $order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
+                }else {
+                    $order = array(
+                        $field => $dir,
+                        'started' => 'desc'
+                    );
+                }
+            }
+        }
+
+        $conditions += $types[$type];
+        $conditions += $category;
+        $conditions += $priceFilter;
+        $conditions += $timeframe;
+        $conditions += $search;
+
+        /*******/
+        $total = ceil(Pitch::count(array(
+            'with' => 'Category',
+            'conditions' => $conditions,
+            'order' => $order,
+        )) / $limit);
+        $pitches = Pitch::all(array(
+            'with' => 'Category',
+            'conditions' => $conditions,
+            'order' => $order,
+            'limit' => $limit,
+            'page' => $page,
+        ));
+
+        $i = 1;
+        $tempPitchList = array();
+        if($pitches) {
+            if(($hasOwnHiddenPitches) && ($page == 1)){
+                foreach($usersPitches as $pitch) {
+                    $tempPitchList[] = $pitch->data();
+                }
+            }
+            foreach($pitches as $pitch) {
+                $tempPitchList[] = $pitch->data();
+            }
+        }
+        $pitchList = array();
+        foreach($tempPitchList as &$pitch) {
+            $pitch['sort'] = $i;
+            $pitchList[] = $pitch;
+            $i++;
+        }
+        $data = array(
+            'pitches' => $pitchList,
+            'info' => array(
+                'page' => $page,
+                'total' => $total
+            ),
+        );
+        $query = $this->request->query;
+        return compact('data', 'categories', 'query', 'selectedCategory');
+    }
 
     public function agreement() {
         if(isset($this->request->params['id'])) {
@@ -508,6 +668,7 @@ ini_set('display_errors', '1');
         }
         $interval = \DateInterval::createFromDateString('1 day');
         $period = new \DatePeriod($begin, $interval, $end);
+
 
         $ratingArray = array();
         $moneyArray = array();

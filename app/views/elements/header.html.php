@@ -57,7 +57,7 @@
 
                                     <?php endif?>
                                     <!--span style="font-size: 11px;"><?=$mypitch->industry?></span--></div></td>
-                                <td class="pitches-cat"><a href="#" style="font-size: 11px;"><?=$mypitch->category->title?></a></td>
+                                <td class="pitches-cat" style="padding-left:5px;padding-right:5px"><a href="#" style="font-size: 11px;"><?=$mypitch->category->title?></a></td>
                                 <td class="idea" style="font-size: 11px;"><?=$mypitch->ideas_count?></td>
                                 <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
                                     $types['current'] += 1?>

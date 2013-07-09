@@ -113,7 +113,7 @@
                     </div>
                 </div>
                 <div style="float:left; width: 180px;margin-right:20px; margin-bottom: 20px;"><p class="supplement">
-                Пожалуйста, ознакомьтесь с правилами участия в <a href="http://www.godesigner.ru/answers/view/37">питче</a>. Прикрепляемые за раз файлы должны соответствовать одной концепции, быть в формате JPEG/RGB, не больше 5 Мбт, 800*600px, или уменьшенный по ширине до 800px эскиз сайта, подробнее <a href="http://www.godesigner.ru/answers/view/40">тут</a>. Если ваше решение победит в питче, вы загрузите 100% макеты и запрашиваемые в брифе файлы.
+                Пожалуйста, ознакомьтесь с правилами участия в <a href="http://www.godesigner.ru/answers/view/37">питче</a>. Прикрепляемые за раз файлы должны соответствовать одной концепции, быть в формате JPEG/RGB, не больше 5 Мбт, 600*400px, или уменьшенный по ширине до 800px эскиз сайта, подробнее <a href="http://www.godesigner.ru/answers/view/40">тут</a>. Если ваше решение победит в питче, вы загрузите 100% макеты и запрашиваемые в брифе файлы.
                 </div>
                 <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
 
