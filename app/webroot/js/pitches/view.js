@@ -681,6 +681,7 @@ $(document).ready(function(){
                     commentData.messageInfo = 'message_info2';
                 } else if (result.comment.user.isAdmin == "1") {
                     commentData.messageInfo = 'message_info4';
+                    commentData.isAdmin = result.comment.user.isAdmin;
                 } else if (commentData.isExpert) {
                     commentData.messageInfo = 'message_info5';
                 }else {
@@ -798,6 +799,7 @@ $(document).ready(function(){
                         commentData.messageInfo = 'message_info2';
                     } else if (comment.user.isAdmin == "1") {
                         commentData.messageInfo = 'message_info4';
+                        commentData.isAdmin = comment.user.isAdmin;
                     } else if (commentData.isExpert) {
                         commentData.messageInfo = 'message_info5';
                     }else {
@@ -943,13 +945,17 @@ $(document).ready(function(){
             var toolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
                            <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
         }
+        var avatarElement = '';
+        if (!data.isAdmin) {
+            avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
+                            <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                            </a>'; 
+        }
         return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                     <div class="separator"></div> \
-                    <div class="' + data.messageInfo + '"> \
-                    <a href="/users/view/' + data.commentUserId + '"> \
-                        <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
-                    </a> \
-                    <a href="#" rel="" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
+                    <div class="' + data.messageInfo + '">'
+                    + avatarElement +
+                    '<a href="#" rel="" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
                         <span>' + data.commentAuthor + '</span><br /> \
                         <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
                     </a> \
