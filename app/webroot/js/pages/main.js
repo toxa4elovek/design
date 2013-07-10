@@ -142,9 +142,14 @@ $(function(){
 
 
 
-    $('.front_catalog li').children('img').on('mouseover', function() {
-        $(this).parent().children('.more_info').fadeIn(300);
-    })
+    $('.front_catalog li').hover(function() {
+        $('.more_info', $(this)).fadeIn(300);
+    },
+    function() {
+        $('.more_info', $(this)).fadeOut(300, function() {
+                $(this).hide();
+            });
+    });
 
     $('#special_banner').on('mouseenter', function() {
         $('#special_link').fadeIn(300); 
@@ -152,10 +157,6 @@ $(function(){
 
     $('#brief_banner').on('mouseenter', function() {
         $('#brief_link').fadeIn(300); 
-    })
-
-    $('.more_info').on('mouseout', function() {
-        $(this).fadeOut(300);
     })
 
     $('#video').click(function() {
