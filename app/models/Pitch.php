@@ -20,14 +20,17 @@ use \app\extensions\mailers\SpamMailer;
 
 
 class Pitch extends \app\models\AppModel {
-	
+
 	public $belongsTo = array('Category', 'User');
 	public $hasMany = array('Solution');//, 'Pitchfile' => array('key' => array('id' => 'model_id')));
 
     public static $attaches = array('files' => array(
         /*'validate' => array('uploadedOnly' => true),*/
+        'validateFile' => array(
+            'extensionForbid' => array('php', 'exe', 'sh', 'js'),
+        ),
         'moveFile' => array('preserveFileName' => true, 'path' => '/webroot/pitchfiles/'),
-        'setPermission' => array('mode' => 0766),
+        'setPermission' => array('mode' => 0600),
     ));
 
 	public static function __init() {
@@ -39,7 +42,7 @@ class Pitch extends \app\models\AppModel {
 			return $result;
 		});
 		self::applyFilter('activate', function($self, $params, $chain){
-			$result = $chain->next($self, $params, $chain); 
+			$result = $chain->next($self, $params, $chain);
 			if($result) {
                 $params['pitch'] = Pitch::first($params['id']);
                 if(($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
@@ -128,7 +131,7 @@ class Pitch extends \app\models\AppModel {
 		$numInflector = new NumInflector();
 		if($hours > 0) {
 			$hours = floor($hours / HOUR);
-			$hoursString = ' ' . $hours; 
+			$hoursString = ' ' . $hours;
 			$hourWord = $numInflector->formatString($hours, array(
 				'string' => "час",
 				'first' => '',
@@ -153,10 +156,10 @@ class Pitch extends \app\models\AppModel {
 
 
 		$string = $dayString . $hoursString . $minutesString;
-		return trim($string);	
+		return trim($string);
 	}
 
-	public static function getNumOfSolutionsPerProject() { 
+	public static function getNumOfSolutionsPerProject() {
 		$result = self::find('all', array(
 			'fields' => array('AVG(ideas_count) as averageCount'),
 			'conditions' => array('published' => 1)
@@ -165,14 +168,14 @@ class Pitch extends \app\models\AppModel {
 		return ceil($result->first()->averageCount);
 	}
 
-	public static function getNumOfCurrentPitches() { 
+	public static function getNumOfCurrentPitches() {
 		$result = self::find('count', array(
 			'conditions' => array('published' => 1, 'status' => array('<' => 2))
 		));
 		return $result;
 	}
 
-	public static function getTotalAwards() { 
+	public static function getTotalAwards() {
 		$result = self::find('all', array(
 			'fields' => array('SUM(price) as total'),
 			'conditions' => array('published' => 1, 'status' => 2))
@@ -180,7 +183,7 @@ class Pitch extends \app\models\AppModel {
 		return round($result->first()->total);
 	}
 
-	public static function getTotalWaitingForClaim() { 
+	public static function getTotalWaitingForClaim() {
 		$result = self::find('all', array(
 			'fields' => array('SUM(price) as total'),
 			'conditions' => array('published' => 1, 'status' => array('<' => 2)))
@@ -189,7 +192,7 @@ class Pitch extends \app\models\AppModel {
 		return round($result->first()->total);
 	}
 
-	public static function getTotalAwardsValue() { 
+	public static function getTotalAwardsValue() {
 		$result = self::find('all', array(
 			'fields' => array('SUM(price) as total'),
 			'conditions' => array('published' => 1))
