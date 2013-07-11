@@ -239,12 +239,20 @@ endif?>
                 $text = 'Промкод активирован!';
                 $disabled = 'disabled="disabled"';
             }
+            if($pitch->promocode) {
+                $codeValue = $pitch->promocode;
+                $text = 'Промкод активирован!';
+                $disabled = 'disabled="disabled"';
+                $fieldHidden = '<input type="hidden" value="700" name="discount" id="discount">';
+            }
             ?>
 
             <div class="ribbon complete-brief">
                 <p class="option"><label>Промокод</label></p>
                 <p class="description" id="hint"><?=$text?></p>
-                <p><input type="text" <?=$disabled?>  id="promocode" name="promocode" class="phone" value="<?=$codeValue?>"></p>
+                <p>
+                    <?php if(isset($fieldHidden)) echo $fieldHidden; ?>
+                    <input type="text" <?=$disabled?>  id="promocode" name="promocode" class="phone" value="<?=$codeValue?>"></p>
             </div>
 
 
