@@ -281,16 +281,6 @@ $(document).ready(function(){
             return false;
         })
 
-        $('.mention-link').click(function() {
-            if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val('');
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + $('#newComment').val();
-                $('#newComment').val(newText);
-            }
-            return false;
-        });
-        
         $('.createCommentForm').click(function() {
             var position = $(this).offset();
             position.top -= 115;
@@ -324,6 +314,7 @@ $(document).ready(function(){
             }
         });
         
+        mentionLinks();
         solutionShowHide();
         warningModal();
     }
@@ -346,6 +337,24 @@ $(document).ready(function(){
             }
         }
     });
+    
+    function mentionLinks() {
+        $('.mention-link').click(function(e) {
+            e.preventDefault();
+            if ($('.allow-comments').is(':visible')) {
+                var el = $('#newComment', '.allow-comments');
+            } else {
+                var el = $('#newComment');
+            }
+            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
+                $('input[name=comment_id]').val('');
+                var prepend = '@' + $(this).data('commentTo') + ', ';
+                var newText = prepend + el.val();
+                el.val(newText);
+            }
+            return false;
+        });
+    }
 
     $('.like-small-icon').click(function(){
 
@@ -655,6 +664,7 @@ $(document).ready(function(){
                 
                 $('.solution-comments').prepend(populateComment(commentData));
                 $('#newComment', '.solution-left-panel').val('#' + result.comment.solution_id + ', ');
+                mentionLinks(); // Enable new mentions
             });
         } else {
             alert('Введите текст комментария!');

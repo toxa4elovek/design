@@ -126,7 +126,7 @@ class Comment extends \app\models\AppModel {
                         }else {
                             $record->text = preg_replace('/(#\d*)/', '<a href="#" target="_blank" class="solution-link hoverimage" data-comment-to="$1">$1</a>$2', $record->text);
                         }
-                        $record->text = preg_replace('/@([^@]* [^@]\.),?/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1</a>', strip_tags($record->text, '<br><a>'));
+                        $record->text = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', strip_tags($record->text, '<br><a>'));
 
                     }
                     return $record;
