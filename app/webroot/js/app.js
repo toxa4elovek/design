@@ -587,6 +587,84 @@ function warningModal() {
             alert('Введите текст жалобы!');
         }
     });
+}
+
+/*
+ * Solution Popup and ViewSolution comments
+ */
+function populateComment(data) {
+    var toolbar = '';
+    var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
+                        <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
+    var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
+                      <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+    if (data.isCommentAuthor) {
+        toolbar = manageToolbar;
+    } else {
+        toolbar = userToolbar;
+    }
+    if (isCurrentAdmin == 1) {
+        toolbar = manageToolbar + userToolbar;
+    }
+    var avatarElement = '';
+    if (!data.isAdmin) {
+        avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
+                        <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                        </a>'; 
+    }
+    return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+                <div class="separator"></div> \
+                <div class="' + data.messageInfo + '">'
+                + avatarElement +
+                '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
+                    <span>' + data.commentAuthor + '</span><br /> \
+                    <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
+                </a> \
+                <div class="clr"></div> \
+                </div> \
+                <div data-id="' + data.commentId + '" class="message_text"> \
+                    <span class="regular comment-container">'
+                        + data.commentText +
+                    '</span> \
+                </div> \
+                <div class="toolbar-wrapper"><div class="toolbar">'
+                    + toolbar +
+                '</div></div> \
+                <div class="clr"></div> \
+                <div class="hiddenform" style="display:none"> \
+                    <section> \
+                        <form style="margin-bottom: 25px;" action="/comments/edit/' + data.commentId + '" method="post"> \
+                            <textarea name="text" data-id="' + data.commentId + '"></textarea> \
+                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br> \
+                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span> \
+                            <div class="clr"></div> \
+                        </form> \
+                    </section> \
+                </div> \
+            </section>';
+}
+
+/*
+ * Solution Actions for Pitch owner
+ */
+function solutionShowHide() {
+    $('.client-hide').on('click', function(e) {
+        e.preventDefault();
+        var link = $(this)
+        $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
+            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Показать</a>');
+            solutionShowHide();
+        })
+        return false;
+    });
     
-    
+    $('.client-show').on('click', function(e) {
+        e.preventDefault();
+        var link = $(this)
+        $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
+            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">Скрыть</a>');
+            solutionShowHide();
+        })
+        return false;
+    });
 }
