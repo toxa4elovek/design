@@ -127,17 +127,6 @@ $(document).ready(function() {
             return false;
         });
 
-        $('.warning-comment').click(function() {
-            $('#sendWarnComment').data('url', $(this).data('url'));
-            $('#sendWarnComment').data('commentId', $(this).data('commentId'));
-            $('#popup-warning-comment').modal({
-                containerId: 'final-step',
-                opacity: 80,
-                closeClass: 'popup-close'
-            });
-            return false;
-        });
-
         $('.createCommentForm').click(function() {
             var position = $(this).offset();
             position.top -= 115;
@@ -163,16 +152,7 @@ $(document).ready(function() {
             tooltipBGColor: 'transparent'
         });
 */
-        $('.warning').on('click', function(e) {
-            e.preventDefault();
-            $('#sendWarn').data('url', $(this).attr('href'));
-            $('#popup-warning').modal({
-                containerId: 'final-step',
-                opacity: 80,
-                closeClass: 'popup-close'
-            });
-            return false;
-        });
+        warningModal();
     }
 
     $(document).keyup(function(e) {
@@ -400,47 +380,6 @@ $(document).ready(function() {
                 }
             }
         });
-    });
-
-    $(document).on('click', '.warning', function() {
-        $('#sendWarn').data('url', $(this).attr('href'));
-        $('#popup-warning').modal({
-            containerId: 'final-step',
-            opacity: 80,
-            closeClass: 'popup-close'
-        });
-        return false;
-    });
-
-    $(document).on('click', '#sendWarn', function() {
-        var url = $(this).data('url');
-        if($('#warn-solution').val().length > 0) {
-            $.post(url, {"text": $('#warn-solution').val()}, function(response) {
-                $('.popup-close').click()
-            });
-        }
-    });
-
-
-    $(document).on('click', '.warning-comment', function() {
-        $('#sendWarnComment').data('url', $(this).data('url'));
-        $('#sendWarnComment').data('commentId', $(this).data('commentId'));
-        $('#popup-warning-comment').modal({
-            containerId: 'final-step',
-            opacity: 80,
-            closeClass: 'popup-close'
-        });
-        return false;
-    });
-
-    $(document).on('click', '#sendWarnComment', function() {
-        var url = $(this).data('url');
-        var id = $(this).data('commentId');
-        if($('#warn-comment').val().length > 0) {
-            $.post(url, {"text": $('#warn-comment').val(), "id": id}, function(response) {
-                $('.popup-close').click()
-            });
-        }
     });
 
     $('section', '.messages_gallery').hover(function() {

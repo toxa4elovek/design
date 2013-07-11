@@ -547,6 +547,14 @@ a.this-page{
 .mention-link {
 	text-decoration:none;
 }
+.popup-warn textarea {
+	border: 0;
+	width: 540px;
+	margin-top: 10px;
+	height: 100px;
+	color: #666;
+}
+
 /* ------------------ View Solution Overlay --------------------
  *
  * @todo check em-size text

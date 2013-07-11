@@ -257,14 +257,14 @@
 <div id="popup-warning" class="popup-warn generic-window" style="display:none">
     <p style="margin-top:120px;">Вы можете пожаловаться, если обнаружены грубые высказывания, реклама, спам, контент для взрослых, ссылки на работы, сделки вне Go Designer, копирование чужой работы или плагиат. В последнем случае важно предоставить ссылку на оригинал. Важно однако учитывать, что в питче с одним брифом некоторая степень похожести работ допускается. Подробнее <a href="http://www.godesigner.ru/answers/view/38" target="_blank">тут</a>.</p>
     <p>Пожалуйста, прокомментируйте суть жалобы:</p>
-    <textarea id="warn-solution" class="placeholder" placeholder="ВАША ЖАЛОБА" style="border:0; width:540px; margin-top: 10px; height: 100px;"></textarea>
+    <textarea id="warn-solution" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarn" value="Да, подтвердить"></div>
 </div>
 
 <div id="popup-warning-comment" class="popup-warn generic-window" style="display:none">
     <p style="margin-top:120px;">Вы можете пожаловаться, если обнаружены грубые высказывания, реклама, спам, контент для взрослых, ссылки на работы, сделки вне Go Designer, копирование чужой работы или плагиат. В последнем случае важно предоставить ссылку на оригинал. Важно однако учитывать, что в питче с одним брифом некоторая степень похожести работ допускается. Подробнее <a href="http://www.godesigner.ru/answers/view/38" target="_blank">тут</a></p>
     <p>Пожалуйста, прокомментируйте суть жалобы:</p>
-    <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА" style="border:0; width:540px; margin-top: 10px; height: 100px;"></textarea>
+    <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
 
