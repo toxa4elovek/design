@@ -90,10 +90,16 @@ class Receipt extends \app\models\AppModel {
             $total += $row['value'];
 
         }
+        $comission = round($data['features']['award'] * self::$fee);
+        if($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'])) {
+            if($promocode['type'] == 'discount') {
+                $comission -= 700;
+            }
+        }
         $receiptData[] = array(
             'pitch_id' => $data['commonPitchData']['id'],
             'name' => self::$dict['fee'],
-            'value' => round($data['features']['award'] * self::$fee)
+            'value' => $comission
         );
         self::remove(array('pitch_id' => $data['commonPitchData']['id']));
         foreach($receiptData as $row) {
@@ -116,6 +122,4 @@ class Receipt extends \app\models\AppModel {
         }
         return $total;
     }
-
-
 }

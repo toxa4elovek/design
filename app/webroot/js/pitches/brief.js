@@ -109,6 +109,10 @@ $(document).ready(function() {
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
                     $('input[type=checkbox]', '#pinned-block').data('optionValue', '0');
                     $('.label', '#pinned-block').text('+0.-').addClass('unfold');
+                }else if(response.type == 'discount') {
+                    Cart.transferFeeDiscount = 700;
+                    Cart.updateFees();
+                    Cart._renderCheck();
                 }
             }
         });
@@ -201,7 +205,6 @@ $(document).ready(function() {
 
     // multi options
     $('.multi-check').change(function() {
-        console.log(1)
         $(this).parent().parent().parent().children('.label').toggleClass('unfold');
         $('.experts').show();
         var firstExpert = $('.experts').children().first();
@@ -218,7 +221,6 @@ $(document).ready(function() {
     })
 
     $('.expert-check', '.experts').change(function() {
-        console.log(2)
         if($(this).is(':checked')) {
             if(!$('#expert-label').hasClass('unfold')) {
                 $('#expert-label').addClass('unfold');
@@ -585,11 +587,11 @@ function FeatureCart() {
     this.specificTemplates = [];
     this.validatetype = 1;
     this.transferFee = 0.145;
+    this.transferFeeDiscount = 0;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
     this.mode = 'add';
     this.init = function() {
-        console.log('test')
         if(typeof($('#pitch_id').val()) != 'undefined') {
             self.id = $('#pitch_id').val();
             this.mode = 'edit';
@@ -602,6 +604,9 @@ function FeatureCart() {
             self.addOption('Награда Дизайнеру', initVal);
         }else {
             //self.updateOption('Заполнение брифа', 0);
+        }
+        if($('#discount').length > 0) {
+            self.transferFeeDiscount = 700;
         }
         if(self.mode == 'edit') {
             if(window.location.hash != '#step3') {
@@ -639,7 +644,7 @@ function FeatureCart() {
             if((object.value != 0)) {
                 self.updateOption(object.name, parseInt(object.value));
             }else if((object.name == 'Заполнение брифа')) {
-                self.updateOption(object.name, parseInt(object.value));
+                //self.updateOption(object.name, parseInt(object.value));
             }
         })
     };
@@ -662,7 +667,11 @@ function FeatureCart() {
     this.updateFees = function() {
         var total = self._calculateOptionsWithoutFee();
         var award = self.getOption(self.awardKey);
-        self.content[self.transferFeeKey] = Math.round(award * this.transferFee);
+        var commision = Math.round(award * this.transferFee) - this.transferFeeDiscount;
+        if(commision < 0) {
+            commision = 0;
+        }
+        self.content[self.transferFeeKey] = commision;
     }
     this.getOption = function(key) {
         if(typeof(self.content[key]) != "undefined"){

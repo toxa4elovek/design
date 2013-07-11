@@ -832,10 +832,14 @@ ini_set('display_errors', '1');
 			$specificPitchData = $this->request->data['specificPitchData'];
 			$pinned = $private = $social = $email = $brief = $timelimit = 0;
             $freePinned = false;
+            $promocode = '';
             if((isset($commonPitchData['promocode'])) && (!empty($commonPitchData['promocode']))) {
                 $code = Promocode::first(array('conditions' => array('code' => $commonPitchData['promocode'])));
                 if($code->type == 'pinned') {
                     $freePinned = true;
+                }
+                if($code) {
+                    $promocode = $commonPitchData['promocode'];
                 }
             }
 
@@ -923,6 +927,7 @@ ini_set('display_errors', '1');
                         'fileFormatDesc' => $commonPitchData['fileFormatDesc'],
                         'filesId' => serialize($commonPitchData['filesId']),
                         'specifics' => serialize($specificPitchData),
+                        'promocode' => $promocode
                     );
                 }
 			}else {
@@ -961,6 +966,7 @@ ini_set('display_errors', '1');
 					'fileFormatDesc' => $commonPitchData['fileFormatDesc'],
 					'filesId' => serialize($commonPitchData['filesId']),
 					'specifics' => serialize($specificPitchData),
+                    'promocode' => $promocode
 				);
 			}
 			if(!$pitch = Pitch::first(array('conditions' => array('id' => $commonPitchData['id'])))) {
@@ -984,6 +990,9 @@ ini_set('display_errors', '1');
             $this->request->data['commonPitchData']['id'] = $pitch->id;
             // Receipt here
             if($pitch->billed == 0) {
+                if($pitch->promocode != '') {
+                    $this->request->data['commonPitchData']['promocode'] = $pitch->promocode;
+                }
 			    Receipt::createReceipt($this->request->data);
 			    $total = Receipt::findTotal($pitch->id);
 			    $pitch->total = $total;

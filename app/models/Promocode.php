@@ -55,4 +55,26 @@ class Promocode extends \app\models\AppModel {
         return $newCode->code;
     }
 
+    public static function checkPromocode($codeString) {
+        $result = 'false';
+        if($code = Promocode::first(array('conditions' => array(
+            'code' => $codeString
+
+        )))) {
+            if(($code->pitch_id != null) && ($code->type != 'discount')) {
+                return $result;
+            }
+            if($code->type != 'discount') {
+                $code->user_id = Session::read('user.id');
+                $code->save();
+            }else {
+                if(time() > strtotime($code->expires)) {
+                    return $result;
+                }
+            }
+            $result = $code->data();
+        }
+        return $result;
+    }
+
 }
