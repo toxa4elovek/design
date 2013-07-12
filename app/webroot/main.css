@@ -2959,16 +2959,12 @@ div.no-result h1 {
     font-family: RodeoC, serif;
     font-size: 28px;
     font-weight: normal;
-    color: #666;
-    text-shadow: #FFF -1px 0 0;
-    line-height: 1.2;
-    text-transform: uppercase;
+    text-shadow: -1px 0 0 #FFFFFF;
+    line-height: 34px;
+    color: #666666;
     margin: 20px auto 10px auto;
 }
-div.no-result h6 {
-	font-size: 14px;
-	font-weight: normal;
-	color: #666;
+div.no-result p {
 	text-transform: none;
 	margin: 10px auto 20px;
 }
