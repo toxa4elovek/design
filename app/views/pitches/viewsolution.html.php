@@ -11,6 +11,7 @@
         <script>
         var pitchNumber = <?php echo $pitch->id; ?>;
         var currentUserId = <?php echo (int) $this->session->read('user.id'); ?>;
+        var isCurrentAdmin = <?php echo (int)$this->session->read('user.isAdmin'); ?>;
         </script>
         <!-- start: Solution Container -->
         <div class="solution-container page">

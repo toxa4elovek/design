@@ -281,16 +281,6 @@ $(document).ready(function(){
             return false;
         })
 
-        $('.mention-link').click(function() {
-            if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val('');
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + $('#newComment').val();
-                $('#newComment').val(newText);
-            }
-            return false;
-        });
-        
         $('.createCommentForm').click(function() {
             var position = $(this).offset();
             position.top -= 115;
@@ -315,11 +305,20 @@ $(document).ready(function(){
             tooltipPadding: 0,
             tooltipBGColor: 'transparent'
         });
-
+        
+        $('.delete-solution-popup').on('click', function(e) {
+            e.preventDefault();
+            if (confirm('Действительно удалить решение?')) {
+                hideSolutionPopup();
+                $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
+            }
+        });
+        
+        mentionLinks();
+        solutionShowHide();
         warningModal();
     }
     inlineActions();
-
 
     $(document).keyup(function(e) {
         if (e.keyCode == 27) { 
@@ -338,6 +337,24 @@ $(document).ready(function(){
             }
         }
     });
+    
+    function mentionLinks() {
+        $('.mention-link').click(function(e) {
+            e.preventDefault();
+            if ($('.allow-comments').is(':visible')) {
+                var el = $('#newComment', '.allow-comments');
+            } else {
+                var el = $('#newComment');
+            }
+            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
+                $('input[name=comment_id]').val('');
+                var prepend = '@' + $(this).data('commentTo') + ', ';
+                var newText = prepend + el.val();
+                el.val(newText);
+            }
+            return false;
+        });
+    }
 
     $('.like-small-icon').click(function(){
 
@@ -446,22 +463,6 @@ $(document).ready(function(){
             $('.imagecontainer', block).css('opacity', 0.1)
             link.replaceWith('<a data-to="' + num + '" class="unhide-item" href="/solutions/unhide/' + num + '.json">Сделать видимой</a>');
             listofitems.append(block);
-        })
-        return false;
-    })
-
-    $(document).on('click', '.client-hide', function() {
-        var link = $(this)
-        $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Показать</a>')
-        })
-        return false;
-    })
-
-    $(document).on('click', '.client-show', function() {
-        var link = $(this)
-        $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">Скрыть</a>')
         })
         return false;
     })
@@ -663,6 +664,7 @@ $(document).ready(function(){
                 
                 $('.solution-comments').prepend(populateComment(commentData));
                 $('#newComment', '.solution-left-panel').val('#' + result.comment.solution_id + ', ');
+                mentionLinks(); // Enable new mentions
             });
         } else {
             alert('Введите текст комментария!');
@@ -810,6 +812,7 @@ $(document).ready(function(){
                 $('.description-more').show(500);
                 $('.description-more').on('click', function() {
                     $('.solution-description').append(descAfter);
+                    descAfter = '';
                     $('.description-more').hide();
                 });
             } else {
@@ -874,65 +877,19 @@ $(document).ready(function(){
             if (currentUserId == result.pitch.user_id) {
                 var html = '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
                 if (result.solution.hidden == 1) {
-                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
-                }else {
                     html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Показать</a>';
+                }else {
+                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
                 }
                 $('.solution-abuse').html(html);
-            }else if(currentUserId == result.solution.user_id) {
+            }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
-                    <a class="hide" href="">Удалить</a>');
+                    <a class="delete-solution-popup hide" data-solution="' + result.solution.id + '" href="/solutions/delete/' + result.solution.id + '.json">Удалить</a>');
             }else {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
             }
             inlineActions();
         });
-    }
-    
-    function populateComment(data) {
-        if (data.isCommentAuthor) {
-            var toolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
-                           <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
-        } else {
-            var toolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
-                           <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
-        }
-        var avatarElement = '';
-        if (!data.isAdmin) {
-            avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
-                            <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
-                            </a>'; 
-        }
-        return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
-                    <div class="separator"></div> \
-                    <div class="' + data.messageInfo + '">'
-                    + avatarElement +
-                    '<a href="#" rel="" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
-                        <span>' + data.commentAuthor + '</span><br /> \
-                        <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
-                    </a> \
-                    <div class="clr"></div> \
-                    </div> \
-                    <div data-id="' + data.commentId + '" class="message_text"> \
-                        <span class="regular comment-container">'
-                            + data.commentText +
-                        '</span> \
-                    </div> \
-                    <div class="toolbar-wrapper"><div class="toolbar">'
-                        + toolbar +
-                    '</div></div> \
-                    <div class="clr"></div> \
-                    <div class="hiddenform" style="display:none"> \
-                        <section> \
-                            <form style="margin-bottom: 25px;" action="/comments/edit/' + data.commentId + '" method="post"> \
-                                <textarea name="text" data-id="' + data.commentId + '"></textarea> \
-                                <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br> \
-                                <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span> \
-                                <div class="clr"></div> \
-                            </form> \
-                        </section> \
-                    </div> \
-                </section>';
     }
     
     function isExpert(user) {

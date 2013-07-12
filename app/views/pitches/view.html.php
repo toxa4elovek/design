@@ -405,7 +405,7 @@
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
                             <?php endif;?>
                             <?php if(($this->session->read('user.id') == $solution->user_id) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($this->session->read('user.isAdmin') == 1)):?>
-                            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
+                            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?=$solution->id?>" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
                             <?php endif;?>
 
                         </ul>
@@ -732,6 +732,7 @@
 <script>
 var pitchNumber = <?php echo $pitch->id; ?>;
 var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
+var isCurrentAdmin = <?php echo (int)$this->session->read('user.isAdmin'); ?>;
 </script>
 <!-- start: Solution overlay -->
 <div class="solution-overlay">
