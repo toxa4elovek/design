@@ -11,7 +11,7 @@
         <script>
         var pitchNumber = <?php echo $pitch->id; ?>;
         var currentUserId = <?php echo (int) $this->session->read('user.id'); ?>;
-        var isCurrentAdmin = <?php echo (int)$this->session->read('user.isAdmin'); ?>;
+        var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')) ? 1 : 0 ?>;
         </script>
         <!-- start: Solution Container -->
         <div class="solution-container page">
