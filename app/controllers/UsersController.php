@@ -78,39 +78,10 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function avatar() {
-
         $allowedExtensions = array('png', 'gif', 'jpeg', 'jpg');
         // max file size in bytes
         $sizeLimit = 100 * 1024 * 1024;
-        if($this->request->env('REQUEST_METHOD') == 'GET') {
-            $id = $this->request->query['id'];
-            $userpic = file_get_contents('http://graph.facebook.com/' . $id . '/picture?type=large');
-            $tmp=array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()]=tmpfile())));
-
-            file_put_contents($tmp, $userpic);
-            $imageData = getimagesize($tmp);
-            switch ($imageData['mime']) {
-                    case 'image/gif':
-                        $filename = uniqid() . '.gif';
-                        break;
-                    case 'image/jpeg':
-                        $filename = uniqid() . '.jpg';
-                        break;
-                    case 'image/png':
-                        $filename = uniqid() . '.png';
-                        break;
-                    default:
-                        return array('error' => 'nouserpic set');
-                        break;
-                }
-            if($user = User::first(array('conditions' => array('facebook_uid' => $this->request->query['id'])))) {
-                Avatar::clearOldAvatars(Session::read('user.id'));
-                $user->set(array('avatar' => array('name' => $filename, 'tmp_name' => $tmp, 'error' => 0)));
-                $user->save();
-            }
-            return array('result' => 'true');
-        }
-        else {
+        if($this->request->env('REQUEST_METHOD') == 'POST') {
             $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
             $result = $uploader->handleUpload(LITHIUM_APP_PATH . '/webroot/avatars/');
             if($result['success']) {
@@ -552,6 +523,9 @@ class UsersController extends \app\controllers\AppController {
                     // если он уже регился обычным способом, сохраняем его фейсбук айди
                     $userToLog = User::first(array('conditions' => array('email' => $this->request->data['email'])));
                     $userToLog->facebook_uid = $this->request->data['id'];
+                    if (!Avatar::first(array('conditions' => array('model_id' => $userToLog->id)))) {
+                        $userToLog->getFbAvatar();
+                    }
                     $userToLog->save();
                 }else{
                     // регился ли пользователей через фейсбук?
@@ -567,6 +541,7 @@ class UsersController extends \app\controllers\AppController {
                             $userToLog->lastActionTime = date('Y-m-d H:i:s');
                             $userToLog->save(null, array('validate' => false));
                             //Invite::activateInvite($this->request->query['invite'], $userToLog->id);
+                            $userToLog->getFbAvatar();
                             UserMailer::hi_mail($userToLog);
                             $newuser = true;
                         }else {
@@ -588,6 +563,9 @@ class UsersController extends \app\controllers\AppController {
                     return array('data' => true, 'redirect' => '/users/login');
                 }
                 $userToLog->token = User::generateToken();
+                if (isset($this->request->data['accessToken'])) {
+                    $userToLog->accessToken = $this->request->data['accessToken'];
+                }
                 setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->token), time() + strtotime('+1 month'), '/');
                 $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                 $userToLog->save(null, array('validate' => false));
@@ -1015,7 +993,7 @@ class UsersController extends \app\controllers\AppController {
                 }else {
                     return $this->redirect($redirect);
                 }
-                
+
             }else {
                 return $this->redirect('Users::registration');
             }
@@ -1200,21 +1178,21 @@ class qqUploadedFileXhr {
      * Save the file to the specified path
      * @return boolean TRUE on success
      */
-    function save($path) {    
+    function save($path) {
         $input = fopen("php://input", "r");
         $temp = tmpfile();
         $realSize = stream_copy_to_stream($input, $temp);
         fclose($input);
-        
-        if ($realSize != $this->getSize()){            
+
+        if ($realSize != $this->getSize()){
             return false;
         }
-        
-        $target = fopen($path, "w");        
+
+        $target = fopen($path, "w");
         fseek($temp, 0, SEEK_SET);
         stream_copy_to_stream($temp, $target);
         fclose($target);
-        
+
         return true;
     }
     function getName() {
@@ -1222,17 +1200,17 @@ class qqUploadedFileXhr {
     }
     function getSize() {
         if (isset($_SERVER["CONTENT_LENGTH"])){
-            return (int)$_SERVER["CONTENT_LENGTH"];            
+            return (int)$_SERVER["CONTENT_LENGTH"];
         } else {
             throw new Exception('Getting content length is not supported.');
-        }      
-    }   
+        }
+    }
 }
 
 /**
  * Handle file uploads via regular form post (uses the $_FILES array)
  */
-class qqUploadedFileForm {  
+class qqUploadedFileForm {
     /**
      * Save the file to the specified path
      * @return boolean TRUE on success
@@ -1256,40 +1234,40 @@ class qqFileUploader {
     private $sizeLimit = 104857600;
     private $file;
 
-    function __construct(array $allowedExtensions = array(), $sizeLimit = 104857600){        
+    function __construct(array $allowedExtensions = array(), $sizeLimit = 104857600){
         $allowedExtensions = array_map("strtolower", $allowedExtensions);
-            
-        $this->allowedExtensions = $allowedExtensions;        
+
+        $this->allowedExtensions = $allowedExtensions;
         $this->sizeLimit = $sizeLimit;
-        
-        $this->checkServerSettings();       
+
+        $this->checkServerSettings();
 
         if (isset($_GET['qqfile'])) {
             $this->file = new qqUploadedFileXhr();
         } elseif (isset($_FILES['qqfile'])) {
             $this->file = new qqUploadedFileForm();
         } else {
-            $this->file = false; 
+            $this->file = false;
         }
     }
-    
-    private function checkServerSettings(){        
+
+    private function checkServerSettings(){
         $postSize = $this->toBytes(ini_get('post_max_size'));
-        $uploadSize = $this->toBytes(ini_get('upload_max_filesize'));        
-        
+        $uploadSize = $this->toBytes(ini_get('upload_max_filesize'));
+
         if ($postSize < $this->sizeLimit || $uploadSize < $this->sizeLimit){
-            $size = max(1, $this->sizeLimit / 1024 / 1024) . 'M';             
-            die("{'error':'increase post_max_size and upload_max_filesize to $size'}");    
-        }        
+            $size = max(1, $this->sizeLimit / 1024 / 1024) . 'M';
+            die("{'error':'increase post_max_size and upload_max_filesize to $size'}");
+        }
     }
-    
+
     private function toBytes($str){
         $val = trim($str);
         $last = strtolower($str[strlen($str)-1]);
         switch($last) {
             case 'g': $val *= 1024;
             case 'm': $val *= 1024;
-            case 'k': $val *= 1024;        
+            case 'k': $val *= 1024;
         }
         return $val;
     }
@@ -1301,13 +1279,13 @@ class qqFileUploader {
         if (!is_writable($uploadDirectory)){
             return array('error' => "Server error. Upload directory isn't writable.");
         }
-        
+
         if (!$this->file){
             return array('error' => 'No files were uploaded.');
         }
-        
 
-        
+
+
         $pathinfo = pathinfo($this->file->getName());
         $originalname = $pathinfo['filename'];
         $filename = md5(uniqid());
@@ -1317,21 +1295,21 @@ class qqFileUploader {
             $these = implode(', ', $this->allowedExtensions);
             return array('error' => 'File has an invalid extension, it should be one of '. $these . '.');
         }
-        
+
         if(!$replaceOldFile){
             /// don't overwrite previous files that were uploaded
             while (file_exists($uploadDirectory . $filename . '.' . $ext)) {
                 $filename .= rand(10, 99);
             }
         }
-        
+
         if ($this->file->save($uploadDirectory . $filename . '.' . $ext)){
             return array('success'=>true, 'name' => $originalname . '.' . $ext, 'tmpname' => $uploadDirectory . $filename . '.' . $ext);
         } else {
             return array('error'=> 'Could not save uploaded file.' .
                 'The upload was cancelled, or server error encountered');
         }
-        
+
     }
 
 

@@ -152,10 +152,11 @@ $(document).ready(function() {
 	$('.facebook-logon').click(function() {
 		FB.login(function(response) {
 	    	if (response.authResponse) {
+	    	    var accessToken = response.authResponse.accessToken; 
 	     		FB.api('/me', function(response) {
                     var fbResponse = response;
                     var registerUrl = '/register.json';
-
+                    response.accessToken = accessToken;
                     if(($('#invite').length == 1) && ($('#invite').val() != '')) {
                         registerUrl += '?invite=' + $('#invite').val();
                     }
@@ -179,18 +180,10 @@ $(document).ready(function() {
                                 }
                             });
                         }*/
-                        if((ourResponse.redirect != false) && (ourResponse.redirect == '/users/banned')){
+                        if (ourResponse.redirect != false) {
                             window.location = ourResponse.redirect;
-                        }else{
-                            $.get('/users/avatar.json', fbResponse, function(response){
-                                if(ourResponse.redirect != false) {
-                                    window.location = ourResponse.redirect;
-                                }else {
-                                    window.location = '/';
-                                }
-
-                                //
-                            })
+                        } else {
+                            window.location = '/';
                         }
                     });
 	       			/*FB.logout(function(response) {
