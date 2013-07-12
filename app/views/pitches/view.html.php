@@ -404,7 +404,7 @@
                             <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 1) && ($this->session->read('user.id') == $pitch->user_id)): ?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
                             <?php endif;?>
-                            <?php if(($this->session->read('user.id') == $solution->user_id) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($this->session->read('user.isAdmin') == 1)):?>
+                            <?php if(($this->session->read('user.id') == $solution->user_id) || \app\models\User::checkRole('admin') || ($this->session->read('user.isAdmin') == 1)):?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?=$solution->id?>" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
                             <?php endif;?>
 
@@ -575,7 +575,7 @@
                          <?= $this->html->link('Удалить', array('controller' => 'comments', 'action' => 'delete', 'id' => $comment->id), array('style' => "float:right;", "class" => "delete-link-in-comment"));?>
                          <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
                     <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
-                        <?php if (($this->session->read('user.isAdmin') == 1) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)))):?>
+                        <?php if (($this->session->read('user.isAdmin') == 1) || \app\models\User::checkRole('admin')):?>
                             <?= $this->html->link('Удалить', array('controller' => 'comments', 'action' => 'delete', 'id' => $comment->id), array('style' => "float:right;", "class" => "delete-link-in-comment"));?>
                              <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
 
@@ -732,7 +732,7 @@
 <script>
 var pitchNumber = <?php echo $pitch->id; ?>;
 var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
-var isCurrentAdmin = <?php echo (int)$this->session->read('user.isAdmin'); ?>;
+var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')) ? 1 : 0 ?>;
 </script>
 <!-- start: Solution overlay -->
 <div class="solution-overlay">
