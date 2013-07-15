@@ -15,9 +15,10 @@ class Stream extends \lithium\storage\Cache {
         $header = '<h2 style="font:20px \'RodeoC\',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-bottom:10px">Твиттер лента</h2><ul id="sidebar-content" style="background-color:#E7E7E7;">';
 
         $data = $this->read('default', 'twitterstream');
-        $tweets = $data['results'];
+        $tweets = $data['statuses'];
         $content = '';
         $count = 1;
+        #var_dump($data);
         foreach($tweets as $tweet):
 
             $text = $tweet['text'];
@@ -33,7 +34,7 @@ class Stream extends \lithium\storage\Cache {
 
                  $text = str_replace('@' . $user['screen_name'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name']  . '</a>', $text);
             }
-            $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/'. $tweet['from_user'] . '">@' . $tweet['from_user']  . '</a>';
+            $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/'. $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name']  . '</a>';
             if($count == 1):
                 $content .= '<li style=" background: #e7e7e7 url(/img/up.png) repeat-x 196px -2px;padding-left:5px;padding-right:5px;padding-top:10px;">';
             else:

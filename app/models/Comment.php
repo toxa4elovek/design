@@ -66,7 +66,7 @@ class Comment extends \app\models\AppModel {
             foreach($matches[1] as $hashtag){
                 $nums[] = substr($hashtag, 1);
             }
-            /*
+
             if(!empty($num)) {
                 $solutions = Solution::all(array('with' => array('User'), 'conditions' => array('pitch_id' => $params['pitch_id'], 'num' => $nums)));
                 $emails = array();
@@ -78,10 +78,10 @@ class Comment extends \app\models\AppModel {
                     $data['solution_id'] = $solution->id;
                     User::sendSpamNewcomment($data);
                 }
-            }*/
+            }
             $sender = User::first($params['user_id']);
             $pitch = Pitch::first($params['pitch_id']);
-            /*if($pitch->status > 0) {
+            if($pitch->status > 0) {
                 // notify admin
                 User::sendAdminNotification($params);
             }
@@ -91,7 +91,6 @@ class Comment extends \app\models\AppModel {
             if((isset($params['reply_to'])) && ($params['reply_to'] != 0)) {
                 User::sendPersonalComment($params);
             }
-            */
             if($pitch->user_id == $sender->id) {
                 $historyComment = Historycomment::create();
                 $historyComment->set($params);
