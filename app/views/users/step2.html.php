@@ -37,7 +37,7 @@
                     <h4>Комментарии</h4>
                     <?php if(($solution->step < 3) && ($solution->pitch->status < 2)):?>
                     <form method="post" action="/users/step2/<?=$solution->id?>" enctype="multipart/form-data">
-                        <textarea name="text" style="margin:10px 0 0 0;"></textarea>
+                        <textarea id="newComment" name="text" style="margin:10px 0 0 0;"></textarea>
                         <div>
                             <input type="file" name="file[]" class="wincommentfileupload"/>
                             <input type="submit" class="button" value="Отправить" style="width:185px;height:49px;margin:0;padding:0;float:right">
@@ -111,11 +111,12 @@
                     <div style="width:810px;float:right;margin-top: 6px;margin-right: 5px;padding-bottom: 2px;">
                         <?php
                         if(($this->session->read('user.id') == $comment->user_id) && (($solution->step <= 2) && ($solution->pitch->status < 2))):?>
-                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">удалить</a>
+                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
                             <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
-                            <?php if ($this->session->read('user.isAdmin') == 1):?>
-                                <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">удалить</a>
+                                <?php if ($this->session->read('user.isAdmin') == 1):?>
+                                <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
                                 <?php endif?>
+                            <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
                             <?php endif;?>
                     </div>
 

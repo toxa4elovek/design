@@ -38,7 +38,7 @@
                     <?php //if(($solution->step == 3) && ($solution->pitch->status < 2)):?>
                     <?php if($solution->step >= 3):?>
                     <form method="post" action="/users/step3/<?=$solution->id?>" enctype="multipart/form-data">
-                        <textarea name="text" style="margin:10px 0 0 0;"></textarea>
+                        <textarea id="newComment" name="text" style="margin:10px 0 0 0;"></textarea>
                         <div>
                             <input type="file" name="file[]" class="wincommentfileupload"/>
                             <input type="submit" class="button" value="Отправить" style="width:185px;height:49px;margin:0;padding:0;float:right">
@@ -112,11 +112,12 @@
                     <div style="width:810px;float:right;margin-top: 6px;margin-right: 5px;padding-bottom: 2px;">
                         <?php
                         if(($this->session->read('user.id') == $comment->user_id) && (($solution->step == 3) && ($solution->pitch->status < 2))):?>
-                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">удалить</a>
+                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
                             <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
-                            <?php if ($this->session->read('user.isAdmin') == 1):?>
-                                <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">удалить</a>
+                                <?php if ($this->session->read('user.isAdmin') == 1):?>
+                                <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
                                 <?php endif?>
+                            <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
                             <?php endif;?>
                     </div>
 
@@ -143,16 +144,16 @@
                         <?php endif?>
                     </div>
                 </div>
-                <?php //elseif(($type == 'client') &&  ($solution->step < 4)): 
+                <?php //elseif(($type == 'client') &&  ($solution->step < 4)):
                 elseif(($solution->step < 4)):?>
                 <div class="buttons">
                     <div class="verify spanned" style="margin-right: 0px;">
                         <?php if($nofiles == false):?>
                             <?=$this->html->link('<img src="/img/proceed.png" /><br />
-                                <span>Одобрить макеты</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
+                                <span>Одобрить исходники</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
                         <?php else:?>
                             <a href="#" id="nofile"><img src="/img/proceed.png"><br>
-                            <span>Одобрить макеты</span></a>
+                            <span>Одобрить исходники</span></a>
                         <?php endif;?>
                     </div>
                 </div>

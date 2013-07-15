@@ -20,6 +20,7 @@
         <span class="supplement"><a href="/pitches/view/<?=$solution->pitch->id?>" target="_blank"><?=$solution->pitch->title?></a></span>
         <!--span class="bold supplement">Победил</span>
         <span class="supplement"><?=date('d.m.Y', strtotime($solution->change))?></span-->
+        <span class="supplement">Дата окончания питча <?=date('d.m.y', strtotime($solution->pitch->finishDate))?>. в <?=date('H:i', strtotime($solution->pitch->finishDate))?></span>
         <span class="supplement">Ознакомьтесь с
             <?php if($type == 'designer'):?>
                 <a href="/answers/view/54">инструкциями</a>

@@ -5,3 +5,4 @@
 app/resources/tmp/*
 session/*
 app/webroot/avatars/*
+app/webroot/files/*

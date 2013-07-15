@@ -27,6 +27,16 @@ $(document).ready(function() {
 
     $('#confirmWinner').click(function() {
         window.location = ($('#confirm').attr('href'));
-    })
+    });
+    
+    $('.replyto').click(function() {
+        var el = $('#newComment');
+        if(el.val().match(/@\W*\s\W\.,/) == null) {
+            var prepend = '@' + $(this).data('commentTo') + ', ';
+            var newText = prepend + el.val();
+            el.focus().val(newText);
+        }
+        return false;
+    });
 
 })
