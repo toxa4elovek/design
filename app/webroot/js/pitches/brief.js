@@ -97,7 +97,7 @@ $(document).ready(function() {
         })
     });
 
-    $('#promocode').live('keyup', function() {
+    function checkPromocode() {
         var value = $('#promocode').val();
         $.post('/promocodes/check.json', {"code": value}, function(response){
             if(response == 'false') {
@@ -116,7 +116,14 @@ $(document).ready(function() {
                 }
             }
         });
-    })
+    }
+    checkPromocode();
+    
+    $('#promocode').live('keyup', function() {
+        checkPromocode();
+    });
+    
+    
 
     $('#sliderset').show();
 
