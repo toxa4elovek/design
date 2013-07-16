@@ -34,6 +34,13 @@ $(document).ready(function() {
         return false;
     });
     
+    $('section', '.center_block').on('mouseenter', function() {
+        $('.toolbar', this).fadeIn(200);
+    });
+    $('section', '.center_block').on('mouseleave', function() {
+        $('.toolbar', this).fadeOut(200);
+    });
+    
     function replyTo(target) {
         var el = $('#newComment');
         if (el.val().match(/@\W*\s\W\.,/) == null) {

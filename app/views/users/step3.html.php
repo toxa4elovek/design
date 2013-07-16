@@ -109,16 +109,18 @@
                     endif;
                     ?>
 
-                    <div style="width:810px;float:right;margin-top: 6px;margin-right: 5px;padding-bottom: 2px;">
+                    <div style="width:810px;float:right;margin-top:6px;margin-right:5px;padding-bottom:2px;height:18px;">
+                        <div class="toolbar">
                         <?php
                         if(($this->session->read('user.id') == $comment->user_id) && (($solution->step == 3) && ($solution->pitch->status < 2))):?>
                             <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
-                            <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
-                                <?php if ($this->session->read('user.isAdmin') == 1):?>
-                                <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
-                                <?php endif?>
+                        <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
+                            <?php if ($this->session->read('user.isAdmin') == 1):?>
+                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
+                            <?php endif?>
                             <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
-                            <?php endif;?>
+                        <?php endif;?>
+                        </div>
                     </div>
 
                     <div class="clr"></div>
