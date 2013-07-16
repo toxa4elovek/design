@@ -79,7 +79,7 @@
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
                         <div class="message_text2">
-                            <span class="regular"><?=$this->brief->ee($comment->text)?></span>
+                            <span class="regular"><?php echo $this->brief->stripemail($comment->text); ?></span>
                         </div>
                     </div>
 

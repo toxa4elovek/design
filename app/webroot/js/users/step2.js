@@ -29,14 +29,17 @@ $(document).ready(function() {
         window.location = ($('#confirm').attr('href'));
     });
     
-    $('.replyto').click(function() {
+    $('.replyto, .mention-link').click(function() {
+        replyTo($(this));
+        return false;
+    });
+    
+    function replyTo(target) {
         var el = $('#newComment');
-        if(el.val().match(/@\W*\s\W\.,/) == null) {
-            var prepend = '@' + $(this).data('commentTo') + ', ';
+        if (el.val().match(/@\W*\s\W\.,/) == null) {
+            var prepend = '@' + target.data('commentTo') + ', ';
             var newText = prepend + el.val();
             el.focus().val(newText);
         }
-        return false;
-    });
-
-})
+    }
+});
