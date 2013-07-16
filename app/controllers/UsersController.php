@@ -484,18 +484,20 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function unsubscribe() {
-        if(($this->request->data) && (isset($this->request->data['token']))) {
-            $id = base64_decode($this->request->data['token']);
-            if($user = User::first($id)) {
-                $user->email_newpitch = 0;
-                $user->email_newcomments = 0;
-                $user->email_newpitchonce = 0;
-                $user->email_newsolonce = 0;
-                $user->email_newsol = 0;
-                $user->email_digest = 0;
-                $user->save(null, array('validate' => false));
-                Auth::set('user', $user->data());
-                return $this->redirect('/users/profile');
+        if (($this->request->query) && (isset($this->request->query['token'])) && (isset($this->request->query['from']))) {
+            $email = base64_decode($this->request->query['from']);
+            if ($user = User::first(array('conditions' => array('email' => $email)))) {
+                if (sha1($user->id . $user->created) == base64_decode($this->request->query['token'])) {
+                    $user->email_newpitch = 0;
+                    $user->email_newcomments = 0;
+                    $user->email_newpitchonce = 0;
+                    $user->email_newsolonce = 0;
+                    $user->email_newsol = 0;
+                    $user->email_digest = 0;
+                    $user->save(null, array('validate' => false));
+                    Auth::set('user', $user->data());
+                    return $this->redirect('/users/profile');
+                }
             }
         }
         return $this->render(array('layout' => 'default', 'data' => false));
