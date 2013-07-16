@@ -836,6 +836,12 @@ $(document).ready(function(){
             }else {
                 media = result.solution.images.solution_solutionView.weburl
             }
+            // Twitter like solution message
+            if (Math.floor((Math.random() * 100) + 1) <= 50) {
+                var tweetLike = encodeURIComponent('Отличное решение на сайте GoDesigner.ru:');
+            } else {
+                var tweetLike = encodeURIComponent('Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн');
+            }
             $('.solution-share').html('<h2>ПОДЕЛИТЬСЯ</h2> \
                 <div class="body" style="display: block;"> \
                 <table width="100%"> \
@@ -853,7 +859,7 @@ $(document).ready(function(){
                         </tr> \
                         <tr height="35"> \
                             <td valign="middle"> \
-                                <iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.1372833608.html#_=1372837769082&amp;count=horizontal&amp;hashtags=Go_Deer&amp;id=twitter-widget-0&amp;lang=ru&amp;original_referer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;size=m&amp;text=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru%3A&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Futm_source%3Dtwitter%26utm_medium%3Dtweet%26utm_content%3Dlike-tweet%26utm_campaign%3Dsharing" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 138px; height: 20px;"></iframe> \
+                                <iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.1372833608.html#_=1372837769082&amp;count=horizontal&amp;hashtags=Go_Deer&amp;id=twitter-widget-0&amp;lang=ru&amp;original_referer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;size=m&amp;text=' + tweetLike + '&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Futm_source%3Dtwitter%26utm_medium%3Dtweet%26utm_content%3Dlike-tweet%26utm_campaign%3Dsharing" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 138px; height: 20px;"></iframe> \
                                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> \
                             </td> \
                             <td valign="middle"> \
