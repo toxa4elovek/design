@@ -28,6 +28,6 @@
                 <a href="/answers/view/63">инструкциями</a>
             <?php endif?>
     заключительного этапа.</span>
-        <span class="supplement">Со дня определения победителя, у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты (3 поправки) и загрузить исходники.</span>
+        <span class="supplement">Со дня определения победителя, у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты (3 поправки) и исходники.</span>
     </div>
 </div>
