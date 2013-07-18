@@ -27,6 +27,26 @@ $(document).ready(function() {
 
     $('#confirmWinner').click(function() {
         window.location = ($('#confirm').attr('href'));
-    })
-
-})
+    });
+    
+    $('.replyto, .mention-link').click(function() {
+        replyTo($(this));
+        return false;
+    });
+    
+    $('section', '.center_block').on('mouseenter', function() {
+        $('.toolbar', this).fadeIn(200);
+    });
+    $('section', '.center_block').on('mouseleave', function() {
+        $('.toolbar', this).fadeOut(200);
+    });
+    
+    function replyTo(target) {
+        var el = $('#newComment');
+        if (el.val().match(/@\W*\s\W\.,/) == null) {
+            var prepend = '@' + target.data('commentTo') + ', ';
+            var newText = prepend + el.val();
+            el.focus().val(newText);
+        }
+    }
+});

@@ -29,4 +29,30 @@ class Wincomment extends \app\models\AppModel {
         });
     }
 
+    public static function __init() {
+        parent::__init();
+
+        self::applyFilter('find', function($self, $params, $chain) {
+            $result = $chain->next($self, $params, $chain);
+            if(is_object($result)) {
+                $addMentionLink = function($record) {
+                    if(isset($record->text)) {
+                        $record->text = nl2br($record->text);
+                        $solutionId = $record->solution_id;
+                        $record->text = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', strip_tags($record->text, '<br><a>'));
+                    }
+                    return $record;
+                };
+
+                if (get_class($result) == 'lithium\data\entity\Record') {
+                    $result = $addMentionLink($result);
+                } else {
+                    foreach ($result as $foundItem) {
+                        $foundItem = $addMentionLink($foundItem);
+                    }
+                }
+            }
+            return $result;
+        });
+    }
 }

@@ -30,11 +30,11 @@ $(document).ready(function(){
         '/img/order1_hover.png',
         '/img/order2_hover.png'
     ]);
-    
+
   //Переключение активной страницы в Главном меню
   $('.main_nav a').click(function(){
 	 $('.main_nav a').removeClass('active');
-	 $(this).addClass('active');	 
+	 $(this).addClass('active');
   });
 
     VK.init({apiId: 2950889, onlyWidgets: true});
@@ -69,8 +69,8 @@ $(document).ready(function(){
     $('.order2').on('mouseout', function() {
         $('img', this).attr('src', '/img/order2.png');
     })
-  
-  //Цвет фона для текущих питчей 
+
+  //Цвет фона для текущих питчей
   $('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 
     $('.ratingchange').on('mouseenter', function(){
@@ -99,33 +99,33 @@ $(document).ready(function(){
 
   //Добавление оценки(звездочки)
   $('.global_info ul li a').toggle(function(){
-	 $(this).css({backgroundPosition: '0 -9px'}); 
+	 $(this).css({backgroundPosition: '0 -9px'});
   },function(){
-	 $(this).css({backgroundPosition: 'left top'}); 
+	 $(this).css({backgroundPosition: 'left top'});
   });
 
   //Большая карусель
 	$('#big_carousel').jCarouselLite({
 		auto: 5000,
 		speed: 1500,
-		btnPrev: "#prev",	
+		btnPrev: "#prev",
 		btnNext: "#next"
 	});
-  
+
   //Маленькая карусель
 	$('#carousel_small').jCarouselLite({
 		auto: 5000,
 		speed: 1500,
-		btnPrev: "#prev2",	
+		btnPrev: "#prev2",
 		btnNext: "#next2",
 		visible: 1
 	});
-	
+
   // Появление блока с инфой, при наведении на элементы главной карусели
   $('.main_carou ul li').hover(function(){
-  	$(this).html('<div class="info_block"></div>')	  
+  	$(this).html('<div class="info_block"></div>')
   },function(){
-	  
+
   });
 
    $(document).on('click', '.solution-menu-toggle', function() {
@@ -216,7 +216,7 @@ $(document).ready(function(){
         alert('Введите текст комментария!');
         return false;
     });
-    
+
 /*
 	$('#createComment').click(function() {
 		$.post('/comments/add.json', $('#createCommentForm').serialize(), function(response) {
@@ -245,7 +245,7 @@ $(document).ready(function(){
             editcommentflag = true;
             return false;
         });
-        
+
         $('.editcomment').click(function() {
             var textarea = $(this).prev();
             var newcomment = textarea.val();
@@ -262,7 +262,7 @@ $(document).ready(function(){
             })
             return false;
         });
-        
+
         $('.replyto').click(function() {
             if ($('.allow-comments').is(':visible')) {
                 var el = $('#newComment', '.allow-comments');
@@ -305,7 +305,7 @@ $(document).ready(function(){
             tooltipPadding: 0,
             tooltipBGColor: 'transparent'
         });
-        
+
         $('.delete-solution-popup').on('click', function(e) {
             e.preventDefault();
             if (confirm('Действительно удалить решение?')) {
@@ -313,7 +313,7 @@ $(document).ready(function(){
                 $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
             }
         });
-        
+
         mentionLinks();
         solutionShowHide();
         warningModal();
@@ -321,7 +321,7 @@ $(document).ready(function(){
     inlineActions();
 
     $(document).keyup(function(e) {
-        if (e.keyCode == 27) { 
+        if (e.keyCode == 27) {
             if (editcommentflag == true) {
                 e.stopPropagation();
                 editcommentflag = false;
@@ -337,7 +337,7 @@ $(document).ready(function(){
             }
         }
     });
-    
+
     function mentionLinks() {
         $('.mention-link').click(function(e) {
             e.preventDefault();
@@ -603,7 +603,7 @@ $(document).ready(function(){
         hideSolutionPopup();
         return false;
     });
-    
+
     $('.solution-prev-area, .solution-next-area').on('mouseover', function(e) {
         $(this).children().addClass('active');
     });
@@ -617,7 +617,7 @@ $(document).ready(function(){
         var urlJSON = this.href + '.json';
         fetchSolution(urlJSON);
     });
-    
+
     $('#createComment', '.solution-left-panel').on('click', function(e) {
         e.preventDefault();
         if (isCommentValid($('#newComment', '.solution-left-panel').val())) { // See app.js
@@ -634,8 +634,8 @@ $(document).ready(function(){
                 commentData.commentText = result.comment.text;
                 commentData.commentPlainText = result.comment.originalText;
                 commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
-                commentData.isExpert = isExpert(result.comment.user_id); 
-                    
+                commentData.isExpert = isExpert(result.comment.user_id);
+
                 if (result.comment.pitch.user_id == result.comment.user_id) {
                     commentData.messageInfo = 'message_info2';
                 } else if (result.comment.user.isAdmin == "1") {
@@ -646,22 +646,22 @@ $(document).ready(function(){
                 }else {
                     commentData.messageInfo = 'message_info1';
                 }
-                
+
                 if (result.userAvatar) {
                     commentData.userAvatar = result.userAvatar;
                 } else {
                     commentData.userAvatar = '/img/default_small_avatar.png';
                 }
-                
+
                 commentData.commentAuthor = result.comment.user.first_name + ' ' + result.comment.user.last_name.substring(0, 1) + '.';
                 commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
-                
+
                 // Date Time
                 var dateCreated = result.comment.created.replace(' ', 'T'); // FF & IE date string parsing
                 var postDateObj = new Date(dateCreated);
                 commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
                 commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-                
+
                 $('.solution-comments').prepend(populateComment(commentData));
                 $('#newComment', '.solution-left-panel').val('#' + result.comment.solution_id + ', ');
                 mentionLinks(); // Enable new mentions
@@ -671,7 +671,7 @@ $(document).ready(function(){
             return false;
         }
     });
-    
+
     function hideSolutionPopup() {
         if ($('.solution-overlay').is(':visible')) {
             window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
@@ -698,7 +698,7 @@ $(document).ready(function(){
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
-            
+
             // Left Panel
             $('.solution-images').html('');
             if (result.solution.images.solution) {
@@ -710,7 +710,7 @@ $(document).ready(function(){
                     $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution_gallerySiteSize.weburl + '" class="solution-image" /></a>');
                 }
             }
-            
+
             if (currentUserId == result.pitch.user_id) { // isClient
                 var firstImage = $('.solution-image').first().parent();
                 $('<div class="separator-rating"> \
@@ -726,7 +726,7 @@ $(document).ready(function(){
                     starOn : 'solution-star-on.png',
                     start: result.solution.rating,
                     click: function(score, evt) {
-                        $.post('/solutions/rating/' + $('input[name=solution_id]').val() + '.json', 
+                        $.post('/solutions/rating/' + $('input[name=solution_id]').val() + '.json',
                         {"id": result.solution.id, "rating": score}, function(response) {
                             $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
                             $('.rating-image', '.solution-rating').addClass('star' + score);
@@ -734,10 +734,10 @@ $(document).ready(function(){
                     }
                 });
             }
-            
+
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
             solutionId = result.solution.id;
-            
+
             if (result.comments) {
                 var solutionComments = '';
                 $.each(result.comments, function(idx, comment) {
@@ -748,7 +748,7 @@ $(document).ready(function(){
                     commentData.commentPlainText = comment.originalText;
                     commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
                     commentData.isExpert = isExpert(comment.user_id);
-                    
+
                     if (result.pitch.user_id == comment.user_id) {
                         commentData.messageInfo = 'message_info2';
                     } else if (comment.user.isAdmin == "1") {
@@ -760,20 +760,20 @@ $(document).ready(function(){
                         commentData.messageInfo = 'message_info1';
                     }
                     commentData.userAvatar = comment.avatar;
-                    
+
                     commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
                     commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
-                    
+
                     // Date Time
                     var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
                     var postDateObj = new Date(dateCreated);
                     commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
                     commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-                     
-                    solutionComments += populateComment(commentData); 
+
+                    solutionComments += populateComment(commentData);
                 });
                 $('.solution-comments').html(solutionComments);
-                
+
                 enableToolbar();
 
                 $('.delete-link-in-comment.ajax').on('click', function(e) {
@@ -785,9 +785,9 @@ $(document).ready(function(){
                     }
                 });
              });
-                
+
             }
-            
+
             // Right Panel
             $('.number', '.solution-number').text(result.solution.num || '');
             $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
@@ -836,6 +836,12 @@ $(document).ready(function(){
             }else {
                 media = result.solution.images.solution_solutionView.weburl
             }
+            // Twitter like solution message
+            if (Math.floor((Math.random() * 100) + 1) <= 50) {
+                var tweetLike = encodeURIComponent('Отличное решение на сайте GoDesigner.ru:');
+            } else {
+                var tweetLike = encodeURIComponent('Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн');
+            }
             $('.solution-share').html('<h2>ПОДЕЛИТЬСЯ</h2> \
                 <div class="body" style="display: block;"> \
                 <table width="100%"> \
@@ -853,7 +859,7 @@ $(document).ready(function(){
                         </tr> \
                         <tr height="35"> \
                             <td valign="middle"> \
-                                <iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.1372833608.html#_=1372837769082&amp;count=horizontal&amp;hashtags=Go_Deer&amp;id=twitter-widget-0&amp;lang=ru&amp;original_referer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;size=m&amp;text=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru%3A&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Futm_source%3Dtwitter%26utm_medium%3Dtweet%26utm_content%3Dlike-tweet%26utm_campaign%3Dsharing" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 138px; height: 20px;"></iframe> \
+                                <iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.1372833608.html#_=1372837769082&amp;count=horizontal&amp;hashtags=Go_Deer&amp;id=twitter-widget-0&amp;lang=ru&amp;original_referer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;size=m&amp;text=' + tweetLike + '&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Futm_source%3Dtwitter%26utm_medium%3Dtweet%26utm_content%3Dlike-tweet%26utm_campaign%3Dsharing" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 138px; height: 20px;"></iframe> \
                                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> \
                             </td> \
                             <td valign="middle"> \
@@ -891,7 +897,7 @@ $(document).ready(function(){
             inlineActions();
         });
     }
-    
+
     function isExpert(user) {
         var res = false;
         for (i = 0; i < expertsObj.length; i++) {
@@ -911,7 +917,7 @@ $(document).ready(function(){
             $('.toolbar', this).fadeOut(200);
         });
     }
-    
+
     function disableToolbar() {
         $('.message_text', '.solution-left-panel').parent().off('mouseover');
         $('.message_text', '.solution-left-panel').parent().off('mouseout');
