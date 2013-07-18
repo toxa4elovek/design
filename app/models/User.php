@@ -173,6 +173,12 @@ class User extends \app\models\AppModel {
         return array('result' => 'true');
     }
 
+    public function unsubscribeToken($entity) {
+        $from = 'from=' . base64_encode($entity->email);
+        $token = base64_encode(sha1($entity->id . $entity->created));
+        return '?token=' . $token . '&' . $from;
+    }
+
 	public function generateToken() {
 		return uniqid();
 	}
