@@ -68,7 +68,6 @@ class AnswersController extends \lithium\action\Controller {
         }
         return $this->redirect('Answers::index');
     }
-
 }
 
 ?>
