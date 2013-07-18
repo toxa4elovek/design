@@ -92,19 +92,16 @@ class Answer extends \app\models\AppModel {
                 $res['error'] = 'alreadyTop';
                 return $res;
             }
-            $data = array(
-                'display_order' => 'display_order +1',
-            );
-            $conditions = array(
-                'questioncategory_id' => $answer->questioncategory_id,
-                'display_order' => 1,
-            );
-            self::update(array(
-                'display_order' => 'display_order +1',
-            ), array(
-                'questioncategory_id' => $answer->questioncategory_id,
-                'display_order' => 1,
+            $answersBefore = self::find('all', array(
+                'conditions' => array(
+                    'questioncategory_id' => $answer->questioncategory_id,
+                    'display_order' => array('<' => $currentOrder),
+                ),
             ));
+            foreach ($answersBefore as $updatable) {
+                $updatable->display_order++;
+                $updatable->save();
+            }
             $answer->display_order = 1;
             $answer->save();
             $res['position'] = 1;
@@ -131,14 +128,16 @@ class Answer extends \app\models\AppModel {
                 $res['error'] = 'alreadyBottom';
                 return $res;
             }
-            $data = array(
-                'display_order' => '-1',
-            );
-            $conditions = array(
-                'questioncategory_id' => $answer->questioncategory_id,
-                'display_order' => '> ' . $currentOrder,
-            );
-            self::update($data, $conditions);
+            $answersAfter = self::find('all', array(
+                'conditions' => array(
+                    'questioncategory_id' => $answer->questioncategory_id,
+                    'display_order' => array('>' => $currentOrder),
+                ),
+            ));
+            foreach ($answersAfter as $updatable) {
+                $updatable->display_order--;
+                $updatable->save();
+            }
             $answer->display_order = $countInCategory;
             $answer->save();
             $res['position'] = $countInCategory;

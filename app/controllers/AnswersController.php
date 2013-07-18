@@ -68,34 +68,6 @@ class AnswersController extends \lithium\action\Controller {
         }
         return $this->redirect('Answers::index');
     }
-
-    public function moveUp() {
-        if (isset($this->request->query['id']) && !empty($this->request->query['id']) && $this->request->is('json')) {
-            return Answer::moveUp((int)$this->request->query['id']);
-        }
-        return $this->redirect('Answers::index');
-    }
-
-    public function moveDown() {
-        if (isset($this->request->query['id']) && !empty($this->request->query['id']) && $this->request->is('json')) {
-            return Answer::moveDown((int)$this->request->query['id']);
-        }
-        return $this->redirect('Answers::index');
-    }
-
-    public function moveTop() {
-        if (isset($this->request->query['id']) && !empty($this->request->query['id']) && $this->request->is('json')) {
-            return Answer::moveTop((int)$this->request->query['id']);
-        }
-        return $this->redirect('Answers::index');
-    }
-
-    public function moveBottom() {
-        if (isset($this->request->query['id']) && !empty($this->request->query['id']) && $this->request->is('json')) {
-            return Answer::moveBottom((int)$this->request->query['id']);
-        }
-        return $this->redirect('Answers::index');
-    }
 }
 
 ?>
