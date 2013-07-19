@@ -324,7 +324,14 @@
 
                                                         </div--></td>
                                                     <td width="137" valign="middle">
-                                                        <a id="twitter<?=$solution->id?>" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-text="Отличное решение на сайте GoDesigner.ru:" data-lang="ru" data-hashtags="Go_Deer">
+                                                        <?php
+                                                        if (rand(1, 100) <= 50) {
+                                                            $tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
+                                                        } else {
+                                                            $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
+                                                        }
+                                                        ?>
+                                                        <a id="twitter<?=$solution->id?>" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="<?php echo $tweetLike; ?>" data-lang="ru" data-hashtags="Go_Deer">
                                                             Share on Twitter
                                                         </a>
                                                         <!--div id="vk_like<?=$solution->id?>"></div>
