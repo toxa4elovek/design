@@ -651,6 +651,10 @@ $(document).ready(function() {
             }
             
             inlineActions();
+            Socialite.load($('.solution-share'), [
+                                                  $('#facebook' + result.solution.id)[0],
+                                                  $('#twitter' + result.solution.id)[0]
+                                              ]);
 
         });
     }
