@@ -838,9 +838,9 @@ $(document).ready(function(){
             }
             // Twitter like solution message
             if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                var tweetLike = encodeURIComponent('Отличное решение на сайте GoDesigner.ru:');
+                var tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
             } else {
-                var tweetLike = encodeURIComponent('Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн');
+                var tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
             }
             $('.solution-share').html('<h2>ПОДЕЛИТЬСЯ</h2> \
                 <div class="body" style="display: block;"> \
@@ -848,19 +848,19 @@ $(document).ready(function(){
                     <tbody> \
                         <tr height="35"> \
                             <td width="137" valign="middle">\
-                                <div class="fb-like fb_edge_widget_with_comment fb_iframe_widget" data-href="http://www.godesigner.ru/pitches/v' + result.solution.id + 'lution/' + result.solution.id + '" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" data-font="arial" fb-xfbml-state="rendered"><span style="height: 20px; width: 101px;"><iframe id="f118e3d74" name="f2fe74942c" scrolling="no" title="Like this content on Facebook." class="fb_ltr" src="http://www.facebook.com/plugins/like.php?api_key=202765613136579&amp;locale=ru_RU&amp;sdk=joey&amp;channel_url=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D25%23cb%3Df2ba7cf118%26origin%3Dhttp%253A%252F%252Fwww.godesigner.ru%252Ff1f54c1288%26domain%3Dwww.godesigner.ru%26relation%3Dparent.parent&amp;href=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '&amp;node_type=link&amp;width=90&amp;font=arial&amp;layout=button_count&amp;colorscheme=light&amp;show_faces=false&amp;send=false&amp;extended_social_context=false" style="border: none; overflow: hidden; height: 20px; width: 101px;"></iframe></span></div></td> \
+                                <a id="facebook_pop' + result.solution.id + '" class="socialite facebook-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '" data-href="http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '" data-send="false" data-layout="button_count"> \
+                                    Share on Facebook \
+                                </a> \
+                            </td> \
                             <td width="137" valign="middle"> \
-                                <script id="twitter-wjs" src="//platform.twitter.com/widgets.js"></script><script type="text/javascript"> \
-                            </script> \
                                 <div id="vk_like" style="height: 22px; width: 100px; background-image: none; position: relative; clear: both; background-position: initial initial; background-repeat: initial initial;"><iframe name="fXD5a766" frameborder="0" src="http://vk.com/widget_like.php?app=2950889&amp;width=100%&amp;_ver=1&amp;page=0&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;type=mini&amp;verb=0&amp;title=%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%22%D0%9F%D1%80%D0%BE%D1%84%D0%B5%D1%81%D1%81%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B0%22%20%7C%20GoDesigner&amp;description=&amp;image=http%3A%2F%2Fwww.godesigner.ru%2Fsolutions%2Fd8e8955043c662a8f8144674efa995f6_galleryLargeSize.jpg&amp;text=&amp;h=22&amp;13fa381efb0" width="100%" height="22" scrolling="no" id="vkwidget1" style="overflow: hidden; height: 22px; width: 100px; z-index: 150;"></iframe></div> \
-                                <script type="text/javascript"> \
-                                </script> \
                             </td> \
                         </tr> \
                         <tr height="35"> \
                             <td valign="middle"> \
-                                <iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.1372833608.html#_=1372837769082&amp;count=horizontal&amp;hashtags=Go_Deer&amp;id=twitter-widget-0&amp;lang=ru&amp;original_referer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;size=m&amp;text=' + tweetLike + '&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Futm_source%3Dtwitter%26utm_medium%3Dtweet%26utm_content%3Dlike-tweet%26utm_campaign%3Dsharing" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 138px; height: 20px;"></iframe> \
-                                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> \
+                                <a id="twitter_pop' + result.solution.id + '" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="' + tweetLike + '" data-lang="ru" data-hashtags="Go_Deer"> \
+                                    Share on Twitter \
+                                </a> \
                             </td> \
                             <td valign="middle"> \
                                 <a href="//pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '&amp;media=http%3A%2F%2Fwww.godesigner.ru%2F' + media + '&amp;description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" target="_blank" data-pin-log="button_pinit" data-pin-config="beside"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a> \
@@ -895,6 +895,10 @@ $(document).ready(function(){
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
             }
             inlineActions();
+            Socialite.load($('.solution-share'), [
+                                                  $('#facebook_pop' + result.solution.id)[0],
+                                                  $('#twitter_pop' + result.solution.id)[0]
+                                              ]);
         });
     }
 
