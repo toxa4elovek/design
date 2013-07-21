@@ -452,13 +452,14 @@ $(document).ready(function() {
             $('.popup-close').click();
         })
 
-    })
+    });
+    
+    var initOptions = $.deparam(window.location.search.substr(1));
 
     //if(window.location.hash == '#finished') {
     var Table = new TableLoader;
-    Table.init();
+    Table.init(initOptions);
     //}
 
 
 });
-

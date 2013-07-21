@@ -20,7 +20,17 @@ function TableLoader() {
     this.type = 'current';
     this.magePage = null;
     // initialisation method
-    this.init = function() {
+    this.init = function(options) {
+        if (options != null) {
+            this.options.page = options.page || this.options.page;
+            this.page = options.page || this.page;
+            this.options.type = options.type || this.options.type;
+            this.type = options.type || this.type;
+            this.options.category = options.category || this.options.category;
+            this.options.order = options.order || this.options.order;
+            this.options.priceFilter = options.priceFilter || this.options.priceFilter;
+            this.options.searchTerm = options.searchTerm || this.options.searchTerm;
+        }
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
         $(document).on('click', '.nav-page', function() {
             var page = $(this).attr('rel');
@@ -52,6 +62,9 @@ function TableLoader() {
         }
     };
     this.fetchTable = function(options) {
+        var pathname = window.location.pathname;
+        var queryParams = $.param(options);
+        window.history.pushState('object or string', 'Title', pathname + '?' + queryParams); // @todo Check params
         $('#pitches-ajax-wrapper').fadeIn(100);
         $.get('/pitches.json', options, function(response) {
             self.page = response.data.info.page;
