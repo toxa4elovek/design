@@ -745,12 +745,12 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
 <div class="solution-overlay">
     <!-- start: Solution Container -->
     <div class="solution-container">
-        <a class="solution-prev-area" href="#">
-            <!--div class="solution-prev"></div-->
-        </a>
-        <a class="solution-next-area" href="#">
-            <!--div class="solution-next"></div-->
-        </a>
+        <div class="solution-nav-wrapper">
+            <div class="solution-prev"></div>
+            <a class="solution-prev-area" href="#"></a>
+            <div class="solution-next"></div>
+            <a class="solution-next-area" href="#"></a>
+        </div>
         <!-- start: Solution Right Panel -->
         <div class="solution-right-panel">
             <div class="solution-info solution-summary">

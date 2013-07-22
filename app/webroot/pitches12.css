@@ -600,6 +600,12 @@ a.this-page{
 /*
  * ----- Navigation areas -----
  */
+.solution-nav-wrapper {
+	position: fixed;
+	width: 1078px;
+	min-height: 100%;
+	margin-left: -60px;
+}
 .solution-prev-area, .solution-next-area {
 	display: block;
 	position: absolute;
@@ -607,16 +613,17 @@ a.this-page{
 	height: 100%;
 	cursor: pointer;
 }
+.solution-prev-area:active, .solution-next-area:active {
+    background-color: transparent;
+}
 .solution-prev-area {
     left: 0;
-    margin-left: -60px;
 }
 .solution-next-area {
 	right: 0;
-    margin-right: -60px;
 }
 .solution-prev, .solution-next {
-	position: fixed;
+	position: absolute;
 	top: 275px;
 	width: 60px;
 	height: 30px;
@@ -624,12 +631,14 @@ a.this-page{
 	backrtound-repeat: no-repeat
 }
 .solution-prev {
+	left: 0;
     background-position: 0 0;
 }
 .solution-prev.active {
 	background-position: 0 -60px;
 }
 .solution-next {
+	right: 0;
     background-position: 0 -30px;
 }
 .solution-next.active {

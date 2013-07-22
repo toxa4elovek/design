@@ -605,10 +605,10 @@ $(document).ready(function(){
     });
 
     $('.solution-prev-area, .solution-next-area').on('mouseover', function(e) {
-        $(this).children().addClass('active');
+        $(this).prev().addClass('active');
     });
     $('.solution-prev-area, .solution-next-area').on('mouseout', function(e) {
-        $(this).children().removeClass('active');
+        $(this).prev().removeClass('active');
     });
     $('.solution-prev-area, .solution-next-area').on('click', function(e) {
         e.preventDefault();
