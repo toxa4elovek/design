@@ -58,6 +58,8 @@ function TableLoader() {
         if (!options.fromQuery) {
             var queryParams = $.param(options);
             window.history.pushState('object or string', 'Title', pathname + '?' + queryParams); // @todo Check params
+        } else {
+            queryToSearchField(options);
         }
         $('#pitches-ajax-wrapper').fadeIn(100);
         $.get('/pitches.json', options, function(response) {
