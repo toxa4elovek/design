@@ -324,7 +324,14 @@
 
                                                         </div--></td>
                                                     <td width="137" valign="middle">
-                                                        <a id="twitter<?=$solution->id?>" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-text="Отличное решение на сайте GoDesigner.ru:" data-lang="ru" data-hashtags="Go_Deer">
+                                                        <?php
+                                                        if (rand(1, 100) <= 50) {
+                                                            $tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
+                                                        } else {
+                                                            $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
+                                                        }
+                                                        ?>
+                                                        <a id="twitter<?=$solution->id?>" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="<?php echo $tweetLike; ?>" data-lang="ru" data-hashtags="Go_Deer">
                                                             Share on Twitter
                                                         </a>
                                                         <!--div id="vk_like<?=$solution->id?>"></div>
@@ -847,7 +854,7 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
 </div>
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'kinetic-v4.3.1.min.js', 'pitches/plot.js', 'jquery.raty.min.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'kinetic-v4.5.4.min.js', 'pitches/plot.js', 'jquery.raty.min.js'), array('inline' => false))?>
     <?php else:?>
     <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'kinetic-v4.5.4.min.js'), array('inline' => false))?>
     <?php endif?>

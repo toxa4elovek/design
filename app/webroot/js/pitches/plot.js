@@ -270,10 +270,12 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
         quarter = document.getElementById("quarter");
         ctx = can.getContext("2d");
         drawPie();
-        can = document.getElementById("canFloat");
-        quarter = document.getElementById("quarter");
-        ctx = can.getContext("2d");
-        drawPieFloat();
+        if($('#canFloat').lenght > 0) {
+            can = document.getElementById("canFloat");
+            quarter = document.getElementById("quarter");
+            ctx = can.getContext("2d");
+            drawPieFloat();
+        }
     }
 
     function drawPie() {

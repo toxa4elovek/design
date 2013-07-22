@@ -173,6 +173,12 @@ class User extends \app\models\AppModel {
         return array('result' => 'true');
     }
 
+    public function unsubscribeToken($entity) {
+        $from = 'from=' . base64_encode($entity->email);
+        $token = base64_encode(sha1($entity->id . $entity->created));
+        return '?token=' . $token . '&' . $from;
+    }
+
 	public function generateToken() {
 		return uniqid();
 	}
@@ -321,20 +327,27 @@ class User extends \app\models\AppModel {
         return $pitches + $participatedPitches;
     }
 
-    public static function getDesignersForSpam() {
-        $users1 = self::all(array(
-            'fields' => array('id'),
-            'conditions' => array(
-                array('isDesigner' => 1, 'email_newpitch' => 1)
-            )
-        ));
-        $result1 = $users1->data();
+    public static function getDesignersForSpam($category) {
+        // Designers
+        $result1 = array();
+        if ($category != 7) {
+            $users1 = self::all(array(
+                'fields' => array('id'),
+                'conditions' => array(
+                    array('isDesigner' => 1, 'email_newpitch' => 1)
+                )
+            ));
+            $result1 = $users1->data();
+        }
+
+        // All but pitches owners
         $users2 = self::all(array(
             'conditions' => array(
                 array('isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1)
             ),
             'with' => array('Pitch')
         ));
+
         $ids = array();
         foreach($users2 as $user) {
             if(count($user->pitches) > 0) {
@@ -343,6 +356,7 @@ class User extends \app\models\AppModel {
                 }
             }
         }
+        $result2 = array();
         if(!empty($ids)) {
             $users2 = self::all(array(
                 'conditions' => array(
@@ -350,13 +364,25 @@ class User extends \app\models\AppModel {
                 ),
             ));
             $result2 = $users2->data();
-        }else{
-            $result2 = array();
         }
-        if((!empty($result1)) || (!empty($result2))) {
+
+        // Copywriters
+        $result3 = array();
+        if ($category == 7) {
+            $users3 = self::all(array(
+                'fields' => array('id'),
+                'conditions' => array(
+                    array('isCopy' => 1, 'email_newpitch' => 1)
+                )
+            ));
+            $result3 = $users3->data();
+        }
+
+        if((!empty($result1)) || (!empty($result2)) || (!empty($result3))) {
             $temp1 = array_keys($result1);
             $temp2 = array_keys($result2);
-            return array_merge($temp1, $temp2);
+            $temp3 = array_keys($result3);
+            return array_merge($temp1, $temp2, $temp3);
         }else {
             return array();
         }
@@ -364,13 +390,12 @@ class User extends \app\models\AppModel {
 
     /// !!!!
     public static function sendSpamNewPitch($params) {
-        $recipientsIds = self::getDesignersForSpam();
+        $recipientsIds = self::getDesignersForSpam($params['pitch']->category_id);
+        $recipientsIds = array_unique($recipientsIds);
         foreach($recipientsIds as $person){
             $user = self::first($person);
-            if($user->email_newpitch == 1) {
-                $data = array('user' => $user, 'pitch' => $params['pitch']);
-                SpamMailer::newpitch($data);
-            }
+            $data = array('user' => $user, 'pitch' => $params['pitch']);
+            SpamMailer::newpitch($data);
         }
         $user = new \stdClass();
         $user->email = 'team@godesigner.ru';

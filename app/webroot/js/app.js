@@ -425,7 +425,7 @@ window.fbAsyncInit = function() {
 (function(d){
     var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
     js = d.createElement('script'); js.id = id; js.async = true;
-    js.src = "//connect.facebook.net/ru_RU/all.js";
+    js.src = "//connect.facebook.net/en_US/all.js";
     d.getElementsByTagName('head')[0].appendChild(js);
 }(document));
 //}
@@ -530,7 +530,8 @@ function warningModal() {
         $(this).attr('placeholder', warnPlaceholder); 
     });
     
-    $('.warning-comment').click(function() {
+    $('.warning-comment').off('click');
+    $('.warning-comment').on('click', function() {
         $('#sendWarnComment').data('url', $(this).data('url'));
         $('#sendWarnComment').data('commentId', $(this).data('commentId'));
         $('#popup-warning-comment').modal({
@@ -544,6 +545,7 @@ function warningModal() {
         return false;
     });
     
+    $('.warning').off('click');
     $('.warning').on('click', function(e) {
         e.preventDefault();
         $('#sendWarn').data('url', $(this).attr('href'));
@@ -558,7 +560,8 @@ function warningModal() {
         return false;
     });
     
-    $(document).on('click', '#sendWarnComment', function() {
+    $('#sendWarnComment').off('click');
+    $('#sendWarnComment').on('click', function() {
         var url = $(this).data('url');
         var id = $(this).data('commentId');
         if(($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
@@ -570,7 +573,8 @@ function warningModal() {
         }
     });
     
-    $(document).on('click', '#sendWarn', function() {
+    $('#sendWarn').off('click');
+    $('#sendWarn').on('click', function() {
         var url = $(this).data('url');
         if(($('#warn-solution').val().length > 0) && ($('#warn-solution').val() != warnPlaceholder)) {
             $.post(url, {"text": $('#warn-solution').val()}, function(response) {
