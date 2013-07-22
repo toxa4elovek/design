@@ -2,6 +2,7 @@
 .DS_STORE
 .buildpath
 .project
+.settings
 app/resources/tmp/*
 session/*
 app/webroot/avatars/*

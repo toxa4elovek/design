@@ -1,33 +1,6 @@
 $(document).ready(function() {
     
-    /* Init placeholder */
-    var placeholder = 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ';
-    function checkPlaceholder() {
-        var el = $('#searchTerm');
-        var value = el.val()
-        if ($('#filterbox li').length == 0) {
-            if ((el.val() == '') || (el.val() == placeholder)) {
-                el.addClass('placeholder');
-                var value = placeholder;
-            }
-        } else {
-            if (el.val() == placeholder) {
-                var value = '';
-            }
-            el.removeClass('placeholder');
-        }
-        el.val(value);
-        checkFilterClear();
-    }
     checkPlaceholder();
-    
-    function checkFilterClear() {
-        if ((($('#searchTerm').val() == '') || ($('#searchTerm').val() == placeholder)) && ($('#filterbox li').length == 0)) {
-            $('#filterClear').fadeOut(50);
-        } else {
-            $('#filterClear').fadeIn(100);
-        }
-    }
     
     function goSearch() {
         var searchTerm = $('#searchTerm').val();
@@ -302,13 +275,6 @@ $(document).ready(function() {
         return ($('li[data-group=type]').length);
     }
 
-    var recalculateBox = function () {
-        var baseWidth = 524;
-        $.each($('#filterbox').children(), function(index, object) {
-            baseWidth -= $(object).width() + 50;
-        })
-        $('#searchTerm').width(baseWidth);
-    }
     recalculateBox();
 
 	// started
@@ -450,15 +416,86 @@ $(document).ready(function() {
         $.post('/pitches/delete/' + id + '.json', function() {
             $('tr[data-id="' + id + '"]').hide();
             $('.popup-close').click();
-        })
+        });
 
-    })
+    });
 
-    //if(window.location.hash == '#finished') {
+    // Apply filters from query string
+    $(window).on('popstate', function() {
+        var options = window.location.search.substr(1); 
+        queryToSearchField(options);
+        fetchOptions = $.deparam(options);
+        fetchOptions.fromQuery = true;
+        Table.fetchTable(fetchOptions); 
+    });
+    
     var Table = new TableLoader;
     Table.init();
-    //}
-
-
 });
 
+/* Init placeholder */
+var placeholder = 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ';
+function checkPlaceholder() {
+    var el = $('#searchTerm');
+    var value = el.val();
+    if ($('#filterbox li').length == 0) {
+        if ((el.val() == '') || (el.val() == placeholder)) {
+            el.addClass('placeholder');
+            var value = placeholder;
+        }
+    } else {
+        if (el.val() == placeholder) {
+            var value = '';
+        }
+        el.removeClass('placeholder');
+    }
+    el.val(value);
+    checkFilterClear();
+}
+
+function checkFilterClear() {
+    if ((($('#searchTerm').val() == '') || ($('#searchTerm').val() == placeholder)) && ($('#filterbox li').length == 0)) {
+        $('#filterClear').fadeOut(50);
+    } else {
+        $('#filterClear').fadeIn(100);
+    }
+}
+
+var recalculateBox = function () {
+    var baseWidth = 524;
+    $.each($('#filterbox').children(), function(index, object) {
+        baseWidth -= $(object).width() + 50;
+    });
+    $('#searchTerm').width(baseWidth);
+};
+
+function queryToSearchField(options) {
+    if ($('#filterClear').is(':visible')) {
+        $.each($('.removeTag', '#filterbox'), function(index, object) {
+            $(this).parent().remove();
+        });
+    }
+    $('#searchTerm').val('');
+    checkPlaceholder();
+    recalculateBox();
+    if (options.type && options.type != 'all') {
+        var box = '<li style="margin-left:6px;" data-group="type">' + $('a[data-group=type][data-value=' + options.type + ']').text() + '<a class="removeTag" href="#" data-group="type" data-value="' + options.type + '"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+        $(box).appendTo('#filterbox');
+    }
+    if (options.category && options.category != 'all') {
+        var box = '<li style="margin-left:6px;" data-group="category">' + $('a[data-group=category][data-value=' + options.category + ']').text() + '<a class="removeTag" href="#" data-group="category" data-value="' + options.category + '"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+        $(box).appendTo('#filterbox');
+    }
+    if (options.priceFilter && options.priceFilter != 'all') {
+        var box = '<li style="margin-left:6px;" data-group="priceFilter">' + $('a[data-group=priceFilter][data-value=' + options.priceFilter + ']').text() + '<a class="removeTag" href="#" data-group="priceFilter" data-value="' + options.priceFilter + '"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+        $(box).appendTo('#filterbox');
+    }
+    if (options.searchTerm) {
+        $('#searchTerm').val(options.searchTerm);
+    }
+    if (options.order) {
+        $('#sort-' + Object.keys(options.order)[0]).attr('rel', (options.order[Object.keys(options.order)[0]] == 'asc') ? 'desc' : 'asc');
+    }
+    checkPlaceholder();
+    recalculateBox();
+}

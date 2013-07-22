@@ -323,4 +323,4 @@
     <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить свое решение. Нажав "Да, одобряю", вы подтверждаете, что хотите удалить его из списка. Убедитесь, что это черновой вариант и не ждет поступления оплаты на наш счет. За справкой <a href="/pages/contacts">обратитесь к нам</a>.</p>
     <div class="final-step-nav wrapper" style="margin-top: 180px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="confirmDelete" value="Да, одобряю"></div>
 </div>
-<?=$this->html->script(array('tableloader.js',  'jquery.simplemodal-1.4.2.js', 'jquery.keyboard.js', 'pitches/index.js'), array('inline' => false))?>
+<?=$this->html->script(array('jquery-deparam.js', 'tableloader.js',  'jquery.simplemodal-1.4.2.js', 'jquery.keyboard.js', 'pitches/index.js'), array('inline' => false))?>
