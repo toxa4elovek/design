@@ -450,16 +450,17 @@ $(document).ready(function() {
         $.post('/pitches/delete/' + id + '.json', function() {
             $('tr[data-id="' + id + '"]').hide();
             $('.popup-close').click();
-        })
+        });
 
     });
+
+    // Apply filters from query string
+    $(window).on('popstate', function() {
+        fetchOptions = $.deparam(window.location.search.substr(1));
+        fetchOptions.fromQuery = true;
+        Table.fetchTable(fetchOptions); 
+    });
     
-    var initOptions = $.deparam(window.location.search.substr(1));
-
-    //if(window.location.hash == '#finished') {
     var Table = new TableLoader;
-    Table.init(initOptions);
-    //}
-
-
+    Table.init();
 });
