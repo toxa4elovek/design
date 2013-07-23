@@ -181,4 +181,13 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function openletter($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => '5 рекомендаций для улучшения вашего брифа',
+            'data' => $data,
+            'reply-to' => 'devochkina@godesigner.ru',
+        ));
+    }
+
 }

@@ -450,4 +450,26 @@ class Pitch extends \app\models\AppModel {
         return count($users);
     }
 
+    public static function openLetter() {
+        $pitches = Pitch::all(array(
+            'conditions' => array(
+                'published' => 1,
+                'started' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - DAY - HOUR),
+                    '<=' => date('Y-m-d H:i:s', time() - DAY),
+                ),
+            ),
+            'with' => array('User'),
+        ));
+
+        if (count($pitches) > 0) {
+            foreach ($pitches as $pitch) {
+                User::sendOpenLetter($pitch);
+            }
+            return count($pitches);
+        }
+
+        return 0;
+    }
+
 }
