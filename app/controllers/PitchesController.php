@@ -796,6 +796,10 @@ ini_set('display_errors', '1');
 		}
 		if($category = Category::first($this->request->category)) {
             $experts = Expert::all(array('order' => array('id' => 'asc')));
+            $promocode = Session::read('promocode');
+            if (!is_null($promocode)) {
+    			return compact('category', 'experts', 'promocode');
+            }
 			return compact('category', 'experts');
 		}
 		return $this->redirect('Pitches::create');
@@ -984,6 +988,7 @@ ini_set('display_errors', '1');
                 if(isset($code)) {
                     $code->pitch_id = $pitch->id;
                     $code->save();
+                    Session::delete('promocode');
                 }
             }
 

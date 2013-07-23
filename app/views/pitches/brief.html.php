@@ -271,7 +271,7 @@ endswitch;
                     <div class="ribbon complete-brief">
                         <p class="option"><label>Промокод</label></p>
                         <p class="description" id="hint">Промокод не введён</p>
-                        <p><input style="height:44px; width:125px;padding-left:16px;padding-right:16px; background: none repeat scroll 0 0 #FFFFFF;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;font-size:12px;" type="text" id="promocode" name="promocode" class="phone" value=""></p>
+                        <p><input style="height:44px; width:125px;padding-left:16px;padding-right:16px; background: none repeat scroll 0 0 #FFFFFF;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;font-size:12px;" type="text" id="promocode" name="promocode" class="phone" value="<?php echo (isset($promocode)) ? $promocode : ''; ?>"></p>
                     </div>
 
                 </div>
