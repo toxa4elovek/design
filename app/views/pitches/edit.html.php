@@ -282,12 +282,12 @@ endif?>
         <?php endif?>
         <div class="groupc">
             <p>
-                <label class="required">Название питча <a href="#" class="second tooltip2" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
+                <label class="required">Название питча <a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
                 <input type="text" name="title" placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
                 <input type="hidden" name="category_id" value="<?=$category->id?>">
             </p>
             <p>
-                <label class="required">Вид деятельности <a href="#" class="second tooltip2" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
+                <label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
                 <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" required>
             </p>
 
@@ -317,7 +317,7 @@ endif?>
 
         <div class="groupc">
             <p>
-                <label>Описание бизнеса/деятельности <a href="#" class="second tooltip2" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
+                <label>Описание бизнеса/деятельности <a href="#" class="second tooltip" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
                 <?php if($category->id == 7):?>
                 <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"><?=$pitch->{'business-description'}?></textarea>
                 <?php else:?>
@@ -370,7 +370,7 @@ endif?>
 
         <div class="groupc">
 
-            <p><label>Дополнительные материалы <a href="#" class="second tooltip2" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
+            <p><label>Дополнительные материалы <a href="#" class="second tooltip" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
 
             <p class="add-file">
             <form action="/pitchfiles/add.json" method="post" id="fileuploadform">
@@ -398,7 +398,7 @@ endif?>
         <div class="groupc">
             <p class="brief-example"><a href="/docs/<?=$briefExamples[$category->id]?>" target="_blank"></a></p><!-- .brief-example -->
             <p>
-                <label class="required">Формат файла <a href="#" class="second tooltip2" title="Необходимо указать формат, который на выходе предоставит вам дизайнер. Мы советуем обратиться в типографию или веб-мастеру и уточнить технические требования.">(?)</a></label>
+                <label class="required">Формат файла <a href="#" class="second tooltip" title="Необходимо указать формат, который на выходе предоставит вам дизайнер. Мы советуем обратиться в типографию или веб-мастеру и уточнить технические требования.">(?)</a></label>
             </p>
 
             <?php if($category->id != 7):?>
