@@ -4,21 +4,21 @@ namespace li3_mailer\extensions;
 use \app\models\Sendemail;
 
 class Mailer extends \lithium\core\StaticObject {
-	
+
 	protected $_config = array();
 	protected static $_classes = array(
 		'view' => 'lithium\template\View',
 	);
 	protected static $_instances = array();
-	
+
 	public static function __init() {
 		static::config();
 	}
 
 	public static function config(array $options = array()) {
 		$self = static::_object();
-	}	
-	
+	}
+
 	protected static function _mail(array $options = array()) {
 		$backtrace = debug_backtrace();
 		$prevMethod = $backtrace[1];
@@ -27,7 +27,7 @@ class Mailer extends \lithium\core\StaticObject {
 		$defaults['from'] = 'robot@godesigner.ru';
 		$defaults['template'] = $prevMethod['function'];
 		$defaults['data'] = array();
-		$options += $defaults; 
+		$options += $defaults;
 		$from = $options['from'];
 		$to = $options['to'];
 		$subject = '=?UTF-8?B?'.base64_encode($options['subject']).'?=';
@@ -41,6 +41,9 @@ class Mailer extends \lithium\core\StaticObject {
 		$headerString .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 		$headerString .= 'To: ' . $to . "\r\n";
 		$headerString .= 'From: Go Designer <' . $from . '>' . "\r\n";
+		if (isset($options['reply-to']) && !empty($options['reply-to'])) {
+            $headerString .= 'Reply-To: ' . $options['reply-to'] . "\r\n";
+		}
 
 		self::logemail(array(
     		'email' => $to,
@@ -77,7 +80,7 @@ class Mailer extends \lithium\core\StaticObject {
 		}
 		return static::$_instances[$class];
 	}
-	
+
 	public static function render(array $options = array()) {
 		$view = new static::$_classes['view'](array(
 		    'paths' => array(
@@ -88,7 +91,7 @@ class Mailer extends \lithium\core\StaticObject {
 	}
 
 
-	
+
 }
 
 ?>

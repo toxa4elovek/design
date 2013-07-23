@@ -9,7 +9,8 @@ class ContactMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
             'to' => 'team@godesigner.ru',
             'subject' => $data['subject'],
-            'data' => $data
+            'data' => $data,
+            'reply-to' => $data['email'],
         ));
     }
 
@@ -17,7 +18,8 @@ class ContactMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
             'to' => $data['target'],
             'subject' => $data['subject'],
-            'data' => $data
+            'data' => $data,
+            'reply-to' => $data['email'],
         ));
     }
 
