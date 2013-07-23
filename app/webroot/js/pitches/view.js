@@ -579,6 +579,10 @@ $(document).ready(function(){
         window.history.pushState('object or string', 'Title', this.href); // @todo Check params
         $('#pitch-panel').hide();
         $('.wrapper', 'body').first().addClass('wrapper-frozen');
+        $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+        if(!$.browser.chrome){
+            $('.solution-overlay').css('z-index', '50');
+        }
         $('.solution-overlay').show();
         if (allowComments) {
             $('.allow-comments', '.solution-left-panel').show();
