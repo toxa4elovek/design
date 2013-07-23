@@ -8,7 +8,7 @@
 Здравствуйте!<br><br>
 
 Спасибо, что разместили бриф на нашем сайте:<br>
-<a href="http://www.godesigner.ru/pitches/details/101088">Dress Affair - онлайн магазин женской одежды</a><br><br>
+<a href="http://www.godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br><br>
 
 Для более эффективной работы наша команда считает своим долгом помочь вам в составлении грамотного технического задания. Ведь бриф — это один из ключевых факторов получения большого количества креативных решений. Ниже у нас есть 5основных рекомендаций того, как сделать бриф лучше:<br><br>
 
@@ -39,7 +39,7 @@
 Творческих успехов и на связи!<br><br><br><br><br>
 
 
-￼
+
 <img src="http://www.godesigner.ru/img/logo_email.png" ><br>
 
 <span style="font-family: Arial, sans-serif; font-size:13px; color: rgb(181, 181, 181); font-style: italic">Оксана Девочкина</span><br>
