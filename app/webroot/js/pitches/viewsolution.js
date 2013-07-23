@@ -491,7 +491,7 @@ $(document).ready(function() {
     function fetchSolution(urlJSON) {
         // Reset layout
         $(window).scrollTop(0);
-        $('.isField').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
+        $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         $('.author-avatar').attr('src', '/img/default_small_avatar.png');
         $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
         $('.description-more').hide();
