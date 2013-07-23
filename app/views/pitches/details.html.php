@@ -151,10 +151,17 @@ function mb_basename($file)
 
                     <div class="separator" style="width:620px"></div>
 
-                    <?php if($pitch->category_id != 7):?>
-                        <h2 class="blueheading">Можно ли использовать материал из банков с изображениями</h2>
+                    <?php if(($pitch->category_id != 7) && ($pitch->category_id != 1)):?>
+                        <h2 class="blueheading">Можно ли дополнительно использовать материал из банков с изображениями или шрифтами?</h2>
                         <?php if($pitch->materials):?>
                         <p class="regular">да, допустимая стоимость одного изображения — <?=$pitch->{'materials-limit'}?> Р.-</p>
+                        <?php else:?>
+                        <p class="regular">нет</p>
+                        <?php endif;?>
+                    <?php elseif($pitch->category_id == 1):?>
+                        <h2 class="blueheading">Можно ли дополнительно использовать платные шрифты?</h2>
+                        <?php if($pitch->materials):?>
+                        <p class="regular">да, допустимая стоимость — <?=$pitch->{'materials-limit'}?> Р.-</p>
                         <?php else:?>
                         <p class="regular">нет</p>
                         <?php endif;?>
