@@ -187,6 +187,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
             'subject' => '5 рекомендаций для улучшения вашего брифа',
             'data' => $data,
             'reply-to' => 'devochkina@godesigner.ru',
+            'use-smtp' => true,
         ));
     }
 
