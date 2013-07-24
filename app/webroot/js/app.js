@@ -665,3 +665,22 @@ function solutionShowHide() {
         return false;
     });
 }
+
+/**
+ * Solution Copyrighted Materials Info
+ */
+function copyrightedInfo(data) {
+    var res = '';
+    $.each(data.filename, function(idx, filename) {
+        res += '<p>' + filename + '<br />';
+        res += (data.source[idx]) ? '<a href="/urls/' + data.source[idx] + '">http://godesigner.ru/urls/' + data.source[idx] + '</a><br />' : '';
+        res += (data.needtobuy[idx] == 'on') ? '<span class="alert">нужно покупать</span>' : 'не нужно покупать';
+        res += '</p>';
+    });
+    res = '<div class="solution-info solution-copyrighted chapter"> \
+               <h2>ДОП. МАТЕРИАЛЫ</h2>'
+               + res +
+               '<div class="separator"></div> \
+          </div>';
+    return res;
+}

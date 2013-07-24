@@ -581,7 +581,7 @@ a.this-page{
 	position: relative;
 	margin: 26px auto 200px auto;
 	width: 958px;
-	min-height: 700px;
+	min-height: 1000px;
 	border-radius: 9px;
 	background: url('img/solution-paper.png') left top #eeeeee;
 }
@@ -935,6 +935,21 @@ a.this-page{
 .solution-right-panel .description-more {
 	display: none;
 	cursor: pointer;
+}
+.solution-right-panel .solution-copyrighted {
+	padding-bottom: 0;
+}
+.solution-right-panel .solution-copyrighted .separator {
+	float: none;
+	margin: 22px 0 0 -17px;
+}
+.solution-right-panel .solution-copyrighted p {
+	margin: 16px 0;
+	font-size: 12px;
+	line-height: 20px;
+}
+.solution-right-panel .solution-copyrighted p .alert {
+    color: #ff585d;
 }
 .solution-right-panel table.solution-stat {
 	width: 100%;

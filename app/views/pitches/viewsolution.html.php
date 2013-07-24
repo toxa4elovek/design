@@ -113,6 +113,7 @@
                     <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
                 </div>
                 <div class="separator"></div>
+                <div class="solution-copyrighted"><!--  --></div>
                 <div class="solution-info solution-about">
                     <table class="solution-stat">
                         <col class="icon">
