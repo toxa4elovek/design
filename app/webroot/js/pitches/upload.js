@@ -11,6 +11,10 @@ $(document).ready(function() {
 
     $(document).on('click', '#plusbutton', function() {
         var parent = $(this).parent();
+        if (($(this).prev().prev('input').val() == '') || ($(this).prev().prev('input').val() == 'http://')) {
+            alert('Укажите адрес используемых допольнительных материалов!');
+            return false;
+        }
         $(this).remove();
         var counter = $('#works').children().length + 1;
         parent.after('<div style="height:1px;clear:both"></div><div style="margin-top:10px;">'+
@@ -100,6 +104,12 @@ $(document).ready(function() {
     });
 
     $('#uploadSolution').click(function() {
+        // Check if copyrighted material not empty
+        if (($('input[name=licensed_work][value=1]').prop('checked')) && isAddressEmpty()) {
+            alert('Укажите адрес используемых допольнительных материалов!');
+            return false;
+        }
+
         if(($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length
             == 0) && ($('#filename').html() != 'Файл не выбран')) {
             //alert('Не все поля заполнены! (соглашение)');
@@ -111,6 +121,7 @@ $(document).ready(function() {
         }
         return false;
     });
+
     if(($('#panel').length > 0) && ($('#uploadtype').length == 0)) {
         $('.fileinput-button').css('top', '525px');
     }
@@ -133,4 +144,15 @@ $(document).ready(function() {
         "warning": 50
     });
 
-})
+});
+
+function isAddressEmpty() {
+    var res = false;
+    $('input[name^=source]').each(function() {
+        if ($(this).val() == '' || $(this).val() == 'http://') {
+            res = true;
+            return false;
+        }
+    });
+    return res;
+}
