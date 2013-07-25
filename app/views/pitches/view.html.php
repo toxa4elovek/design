@@ -493,6 +493,7 @@
                 <div class="comment" style="width:35%;float:left;">КОММЕНТАРИИ</div>
                 <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div>
                     <?php endif?>
+                <div class="new-comment-here"></div>
                 <?php
                 if(isset($comments)):?>
                 <div style="clear:both;"></div>

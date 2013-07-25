@@ -448,8 +448,7 @@ function onSelectHandler(file, placeholder, fileIds, Cart) {
     var description = ($('#fileupload-description').val() == placeholder) ? '' : $('#fileupload-description').val();
     if($('#filename').html() != 'Файл не выбран') {
         //$('#filename').html($('#filename').html() + '; ' + file.name);
-        console.log('adding file')
-        $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p style="">' + description + '</p></li>')
+        $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px"  class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div><p style="">' + description + '</p></li>');
     }else {
         $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div><p style="font-size:15px;text-decoration: none;">' + description + '</p></li>');
     }
@@ -479,7 +478,7 @@ function onSelectHandler(file, placeholder, fileIds, Cart) {
                     data = {
                         'description': description,
                         'id': dataObj.id
-                    }
+                    };
                     descriptionUpload(data);
                     //alert('Файл '+file.name+' загружен, полученные данные: '+data);
                 } else {
@@ -491,7 +490,7 @@ function onSelectHandler(file, placeholder, fileIds, Cart) {
                     $.modal.close();
                 }
             }
-    })
+    });
     
     var lastChild = $('#filezone').children(':last');            
     var link = $('.filezone-delete-link', lastChild).attr('data-delete-id', uploadId);
@@ -566,7 +565,7 @@ function warningModal() {
         var id = $(this).data('commentId');
         if(($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
             $.post(url, {"text": $('#warn-comment').val(), "id": id}, function(response) {
-                $('.popup-close').click()
+                $('.popup-close').click();
             });
         }else {
             alert('Введите текст жалобы!');
@@ -578,7 +577,7 @@ function warningModal() {
         var url = $(this).data('url');
         if(($('#warn-solution').val().length > 0) && ($('#warn-solution').val() != warnPlaceholder)) {
             $.post(url, {"text": $('#warn-solution').val()}, function(response) {
-                $('.popup-close').click()
+                $('.popup-close').click();
             });
         }else {
             alert('Введите текст жалобы!');
@@ -647,21 +646,21 @@ function populateComment(data) {
 function solutionShowHide() {
     $('.client-hide').on('click', function(e) {
         e.preventDefault();
-        var link = $(this)
+        var link = $(this);
         $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
             link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Показать</a>');
             solutionShowHide();
-        })
+        });
         return false;
     });
     
     $('.client-show').on('click', function(e) {
         e.preventDefault();
-        var link = $(this)
+        var link = $(this);
         $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
             link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">Скрыть</a>');
             solutionShowHide();
-        })
+        });
         return false;
     });
 }

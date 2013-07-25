@@ -175,12 +175,6 @@ $(document).ready(function(){
        });
     });
 
-    $('section', '.messages_gallery').hover(function() {
-        $('.toolbar', this).fadeIn(150);
-    }, function() {
-        $('.toolbar', this).fadeOut(150);
-    });
-
     $(document).on('click', '.delete-solution', function() {
         var link = $(this);
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
@@ -234,6 +228,12 @@ $(document).ready(function(){
     var editcommentflag = false;
 
     function inlineActions() {
+        $('section', '.messages_gallery').hover(function() {
+            $('.toolbar', $(this)).fadeIn(150);
+        }, function() {
+            $('.toolbar', $(this)).fadeOut(150);
+        });
+
         $('.edit-link-in-comment').click(function(e) {
             e.preventDefault();
             var section = $(this).parent().parent().parent();
@@ -253,33 +253,32 @@ $(document).ready(function(){
             $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
                 var newText = response;
                 var section = textarea.parent().parent().parent().parent();
-                $('.edit-link-in-comment', section).data('text', newcomment);
-                $('.comment-container', section).html(newText);
+                $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
+                $('.comment-container', 'section[data-id=' + id + ']').html(newText);
                 section.children().show();
                 $('.hiddenform', section).hide();
                 editcommentflag = false;
-                enableToolbar();
-            })
+                inlineActions();
+            });
             return false;
         });
 
         $('.replyto').click(function() {
+            var el = $('#newComment');
+            var anchor = $('#comment-anchor');
             if ($('.allow-comments').is(':visible')) {
-                var el = $('#newComment', '.allow-comments');
-                var anchor = $('.allow-comments');
-            } else {
-                var el = $('#newComment');
-                var anchor = $('#comment-anchor');
+                el = $('#newComment', '.allow-comments');
+                anchor = $('.allow-comments');
             }
             if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val($(this).data('commentId'))
+                $('input[name=comment_id]').val($(this).data('commentId'));
                 var prepend = '@' + $(this).data('commentTo') + ', ';
                 var newText = prepend + el.val();
                 el.val(newText);
                 $.scrollTo(anchor, {duration:250});
             }
             return false;
-        })
+        });
 
         $('.createCommentForm').click(function() {
             var position = $(this).offset();
@@ -314,6 +313,22 @@ $(document).ready(function(){
             }
         });
 
+        enableToolbar();
+
+        $('.delete-link-in-comment.ajax').on('click', function(e) {
+            e.preventDefault();
+            var section = $(this).parent().parent().parent();
+            var id = $(section).attr('data-id');
+            var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+            $.post($(this).attr('href') + '.json', function(result) {
+                if (result == 'true') {
+                    section.remove();
+                    sectionPitch.next('.separator').remove();
+                    sectionPitch.remove();
+                }
+            });
+        });
+
         mentionLinks();
         solutionShowHide();
         warningModal();
@@ -341,10 +356,9 @@ $(document).ready(function(){
     function mentionLinks() {
         $('.mention-link').click(function(e) {
             e.preventDefault();
+            var el = $('#newComment');
             if ($('.allow-comments').is(':visible')) {
-                var el = $('#newComment', '.allow-comments');
-            } else {
-                var el = $('#newComment');
+                el = $('#newComment', '.allow-comments');
             }
             if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
                 $('input[name=comment_id]').val('');
@@ -587,10 +601,9 @@ $(document).ready(function(){
         if (allowComments) {
             $('.allow-comments', '.solution-left-panel').show();
         }
+        var queryParam = '';
         if (document.URL.indexOf('?') != -1) {
-            var queryParam = document.URL.slice(document.URL.indexOf('?'));
-        } else {
-            var queryParam = '';
+            queryParam = document.URL.slice(document.URL.indexOf('?'));
         }
         var urlJSON = window.location.pathname + '.json' + queryParam;
         fetchSolution(urlJSON);
@@ -667,8 +680,9 @@ $(document).ready(function(){
                 commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
 
                 $('.solution-comments').prepend(populateComment(commentData));
+                $('.new-comment-here').replaceWith(populatePitchComment(commentData));
                 $('#newComment', '.solution-left-panel').val('#' + result.comment.solution_id + ', ');
-                mentionLinks(); // Enable new mentions
+                inlineActions();
             });
         } else {
             alert('Введите текст комментария!');
@@ -777,19 +791,6 @@ $(document).ready(function(){
                     solutionComments += populateComment(commentData);
                 });
                 $('.solution-comments').html(solutionComments);
-
-                enableToolbar();
-
-                $('.delete-link-in-comment.ajax').on('click', function(e) {
-                e.preventDefault();
-                var section = $(this).parent().parent().parent();
-                $.post($(this).attr('href') + '.json', function(result) {
-                    if (result == 'true') {
-                        section.remove();
-                    }
-                });
-             });
-
             }
 
             // Right Panel
@@ -810,7 +811,7 @@ $(document).ready(function(){
             var viewLength = 100; // Description string cut length parameter
             if (desc.length > viewLength) {
                 var descBefore = desc.slice(0, viewLength - 1);
-                descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
+                descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
                 var descAfter = desc.slice(descBefore.length);
                 $('.solution-description').text(descBefore);
                 $('.description-more').show(500);
@@ -938,3 +939,61 @@ $(document).ready(function(){
         $('.message_text', '.solution-left-panel').parent().off('mouseout');
     }
 });
+
+/*
+ * Comments In Pitch View
+ */
+function populatePitchComment(data) {
+    var toolbar = '';
+    var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
+                        <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
+    var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
+                      <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+    if (data.isCommentAuthor) {
+        toolbar = manageToolbar;
+    } else {
+        toolbar = userToolbar;
+    }
+    if (isCurrentAdmin == 1) {
+        toolbar = manageToolbar + userToolbar;
+    }
+    var avatarElement = '';
+    if (!data.isAdmin) {
+        avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
+                        <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                        </a>';
+    }
+    return '<div class="new-comment-here"></div> \
+            <div style="clear:both;"></div> \
+            <section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+                <div class="' + data.messageInfo + '" style="margin-top:20px;">'
+                + avatarElement +
+                '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
+                    <span>' + data.commentAuthor + '</span><br /> \
+                    <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
+                </a> \
+                <div class="clr"></div> \
+                </div> \
+                <div data-id="' + data.commentId + '" class="message_text" style="margin-top:15px;"> \
+                    <span class="regular comment-container">'
+                        + data.commentText +
+                    '</span> \
+                </div> \
+                <div style="width:810px;float:right;margin-top: 6px;margin-right: 95px;padding-bottom: 2px;height:18px;"> \
+                    <div class="toolbar" style="display: none;">'
+                    + toolbar +
+                '</div></div> \
+                <div class="clr"></div> \
+                <div class="hiddenform" style="display:none"> \
+                    <section> \
+                        <form style="margin-bottom: 25px;" action="/comments/edit/' + data.commentId + '" method="post"> \
+                            <textarea name="text" data-id="' + data.commentId + '"></textarea> \
+                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br> \
+                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span> \
+                            <div class="clr"></div> \
+                        </form> \
+                    </section> \
+                </div> \
+            </section> \
+            <div class="separator" style="width: 810px; margin-left: 30px;"></div>';
+}
