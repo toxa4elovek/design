@@ -830,6 +830,13 @@ $(document).ready(function(){
                 $('.solution-about').show();
             }
 
+            // Copyrighted Materials
+            var copyrightedHtml = '<div class="solution-copyrighted"><!--  --></div>';
+            if ((result.solution.copyrightedMaterial == 1) && ((currentUserId == result.pitch.user_id) || (isCurrentAdmin))) {
+                copyrightedHtml = copyrightedInfo(result.copyrightedInfo);
+            }
+            $('.solution-copyrighted').replaceWith(copyrightedHtml);
+
             $('.value-views', '.solution-stat').text(result.solution.views || '');
             $('.value-likes', '.solution-stat').text(result.solution.likes || '');
             $('.value-comments', '.solution-stat').text(result.comments.length || '');

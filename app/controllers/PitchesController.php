@@ -19,6 +19,7 @@ use \app\models\Promocode;
 use \app\models\Promoted;
 use app\models\Ratingchange;
 use \app\models\Avatar;
+use \app\models\Url;
 
 use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
@@ -1329,10 +1330,14 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $selectedsolution = true;
             }
             $userData = unserialize($solution->user->{'userdata'});
+            $copyrightedInfo = unserialize($solution->copyrightedInfo);
+            for ($i = 1; $i <= count($copyrightedInfo['source']); $i++) {
+                $copyrightedInfo['source'][$i] = Url::view($copyrightedInfo['source'][$i]);
+            }
             $avatarHelper = new AvatarHelper;
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
 			//if($pitch->category_id != 7){
-                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar');
+                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo');
             //}else{
                 //return $this->render(array('template' => '/viewsolution-copy', 'data' => compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution')));
             //}
