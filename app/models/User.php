@@ -532,8 +532,7 @@ class User extends \app\models\AppModel {
 
     public static function sendOpenLetter($pitch) {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
-        SpamMailer::openletter($data);
-        return true;
+        return SpamMailer::openletter($data);
     }
 
     public static function sendSpamFirstSolutionForPitch($pitchId) {
