@@ -100,13 +100,6 @@ class Mailer extends \lithium\core\StaticObject {
 		}
 
 		return mail($to, $subject, $html, $headerString);
-        die();
-        //return mail($to, $subject, $mime->get(), $mime->headers($headers));
-		if (\PEAR::isError($mail)) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	protected static function logemail($data) {
