@@ -818,7 +818,6 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
             </section>
             <section class="allow-comments">
                 <div class="all_messages">
-                	<div class="clr"></div>
                 </div>
                 <div class="separator full"></div>
                 <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
