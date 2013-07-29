@@ -48,3 +48,6 @@ input[type="radio"], input[type="checkbox"] {
 .warning {
     color: #5C0002;
 }
+#filler {
+	transition: width .5s;
+}
