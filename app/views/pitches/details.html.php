@@ -316,13 +316,14 @@ function mb_basename($file)
                         <input type="submit" style="margin-left:16px; width: 200px;" id="createComment" class="button" value="Отправить" src="/img/message_button.png" />
                         <div class="clr"></div>
                     </form>
-                    <?php   if(isset($comments)):?>
-                    <div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>
+                    <?php   if(isset($comments) && count($comments) > 0):?>
+                        <div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>
                     <?php endif;?>
                 </section>
                 <?php else:?>
-                <div style="width: 810px; margin-left: 30px; " id="t1" class="separator">
-                </div>
+                    <?php   if(isset($comments) && count($comments) > 0):?>
+                        <div style="width: 810px; margin-left: 30px; " id="t1" class="separator"></div>
+                    <?php endif;?>
                 <?php endif?>
             <?php
             if(isset($comments) && count($comments) > 0):?>
