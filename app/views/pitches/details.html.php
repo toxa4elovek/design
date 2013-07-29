@@ -175,7 +175,7 @@ function mb_basename($file)
                     <?php endif;?>
                     <p class="regular"><?=$this->brief->e($pitch->fileFormatDesc)?></p>
 
-                    
+
 
                     <?php if((!empty($files)) && (count($files) > 0)):?>
                     <div class="separator" style="width:620px"></div>
@@ -324,13 +324,10 @@ function mb_basename($file)
                 <div style="width: 810px; margin-left: 30px; " id="t1" class="separator">
                 </div>
                 <?php endif?>
-
-            <?php if(($this->session->read('user.id')) || (count($comments) > 0)):?>
-            <div class="comment" style="width:35%;float:left;"><h2 class="blueheading">Комментарии</h2></div>
-            <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div>
-            <?php endif?>
             <?php
-            if(isset($comments)):?>
+            if(isset($comments) && count($comments) > 0):?>
+                <div class="comment" style="width:35%;float:left;"><h2 class="blueheading">Комментарии</h2></div>
+                <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div>
                 <div style="clear:both;"></div>
 
                 <?php
