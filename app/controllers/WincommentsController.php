@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Wincomment;
 use \lithium\storage\Session;
+use \app\extensions\helper\Brief;
 
 class WincommentsController extends \lithium\action\Controller {
 
@@ -31,6 +32,16 @@ class WincommentsController extends \lithium\action\Controller {
         if(((Session::read('user.isAdmin') == 1) && ($comment = Wincomment::first($this->request->id))) || (($comment = Wincomment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
             $comment->delete();
             return $this->redirect('/users/step' . $step . '/' . $comment->solution_id);
+        }
+    }
+
+    public function edit() {
+        if (Session::read('user.isAdmin') == 1 && ($comment = Wincomment::first($this->request->id))) {
+            $comment->text = $this->request->data['text'];
+            $comment->save();
+            $comment = Wincomment::first($this->request->id);
+            $brief = new Brief();
+            return $brief->stripemail($comment->text);
         }
     }
 }

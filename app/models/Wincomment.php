@@ -44,10 +44,19 @@ class Wincomment extends \app\models\AppModel {
                     return $record;
                 };
 
+                $addOriginalText = function($record){
+                    if(isset($record->text)) {
+                        $record->originalText = $record->text;
+                    }
+                    return $record;
+                };
+
                 if (get_class($result) == 'lithium\data\entity\Record') {
+                    $result = $addOriginalText($result);
                     $result = $addMentionLink($result);
                 } else {
                     foreach ($result as $foundItem) {
+                        $foundItem = $addOriginalText($foundItem);
                         $foundItem = $addMentionLink($foundItem);
                     }
                 }
