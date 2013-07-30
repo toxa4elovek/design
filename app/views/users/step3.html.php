@@ -26,7 +26,7 @@
             <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
         </section>
         <section>
-            <div class="center_block"  style="margin:35px 0 0 63px !important">
+            <div class="center_block messages_gallery"  style="margin:35px 0 0 63px !important">
                 <?php if($type == 'designer'):?>
                 <span class="regular">Поздравляем, заказчик утвердил окончательные макеты! Осталось предоставить исходные файлы в форматах, запрошенных в брифе. Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на проверку окончательных файлов. Если для корректировки понадобится более 24 часов, пожалуйста, сообщите об этом заказчику в комментариях.</span>
                 <?php elseif($type == 'client') :?>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
                         <div class="message_text2">
-                            <span class="regular"><?=$this->brief->ee($comment->text)?></span>
+                            <span class="regular comment-container"><?=$this->brief->stripemail($comment->text)?></span>
                         </div>
                     </div>
 
@@ -120,10 +120,24 @@
                             <?php endif?>
                             <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
                         <?php endif;?>
+                        <?php if ($this->session->read('user.isAdmin') == 1):?>
+                            <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
+                        <?php endif?>
                         </div>
                     </div>
 
                     <div class="clr"></div>
+
+                    <div class="hiddenform" style="display:none">
+                        <section><form style="margin-bottom: 25px;" action="/comments/edit/<?=$comment->id?>" method="post">
+                            <textarea name="text" data-id="<?=$comment->id?>"></textarea>
+                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin:15px 15px 5px 16px; width: 200px;"><br>
+                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span>
+                            <div class="clr"></div>
+                        </form>
+                        </section>
+                    </div>
+
                     <div class="separator" style="margin-top: 0px;"></div>
                 </section>
                 <?php endforeach;?>
