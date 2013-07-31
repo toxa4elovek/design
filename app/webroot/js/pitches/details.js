@@ -110,9 +110,9 @@ $(document).ready(function() {
     ]);
 */
 
-    $('#createCommentForm').click(function() {
-        var position = $(this).offset();
-        position.top -= 115;
+    $('#newComment').focus(function() {
+        var position = $(this).position();
+        position.top -= 135;
         $('#tooltip-bubble').css(position).fadeIn(200);
     });
 
@@ -133,7 +133,7 @@ $(document).ready(function() {
         borderSize: '0px',
         tooltipPadding: 0,
         tooltipBGColor: 'transparent'
-    })
+    });
 
     $('section', '.messages_gallery').hover(function() {
         $('.toolbar', this).fadeIn(150);
@@ -141,16 +141,7 @@ $(document).ready(function() {
         $('.toolbar', this).fadeOut(150);
     });
 
-    $(document).on('click', '.warning-comment', function() {
-        $('#sendWarnComment').data('url', $(this).data('url'));
-        $('#sendWarnComment').data('commentId', $(this).data('commentId'));
-        $('#popup-warning-comment').modal({
-            containerId: 'final-step',
-            opacity: 80,
-            closeClass: 'popup-close'
-        });
-        return false;
-    });
+    warningModal(); // See app.js
 
     $('#createComment').click(function() {
         if (isCommentValid($('#newComment').val())) { // See app.js
