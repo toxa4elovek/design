@@ -14,8 +14,8 @@ use \app\extensions\helper\Avatar as AvatarHelper;
 class CommentsController extends \lithium\action\Controller {
 
 	public function add() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
+        //error_reporting(E_ALL);
+        //ini_set('display_errors', 1);
         $allowedAction = array('view', 'viewsolution');
         if((!isset($this->request->data['action'])) || (!in_array($this->request->data['action'], $allowedAction))) {
             $this->request->redirectAction = 'view';
@@ -60,8 +60,8 @@ class CommentsController extends \lithium\action\Controller {
     }
 
     public function delete() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
+        //error_reporting(E_ALL);
+        //ini_set('display_errors', '1');
         if((((Session::read('user.isAdmin') == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81)))) && ($comment = Comment::first($this->request->id))) || (($comment = Comment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
             $comment->delete();
             if ($this->request->is('json')) {

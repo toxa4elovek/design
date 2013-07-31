@@ -107,8 +107,6 @@ http://godesigner.ru/answers/view/73');
                 //}
                 $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message);
                 Comment::createComment($data);
-                User::sendSpamSolutionSelected($result);
-
                 $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
                 $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
                 $winner = User::first($solution->user_id);
@@ -122,6 +120,7 @@ http://godesigner.ru/answers/view/73');
                     $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
                 }
                 User::sendTweet($tweet);
+                User::sendSpamSolutionSelected($result);
             }
             return $result;
         });

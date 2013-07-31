@@ -532,8 +532,7 @@ class User extends \app\models\AppModel {
 
     public static function sendOpenLetter($pitch) {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
-        SpamMailer::openletter($data);
-        return true;
+        return SpamMailer::openletter($data);
     }
 
     public static function sendSpamFirstSolutionForPitch($pitchId) {
@@ -756,9 +755,6 @@ class User extends \app\models\AppModel {
             $data = json_decode($tmhOAuth->response['response'], true);
             return true;
         }else {
-            echo '<pre>';
-            var_dump($tmhOAuth->response);
-            echo '</pre>';
             return false;
         }
     }

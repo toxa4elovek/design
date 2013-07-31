@@ -145,6 +145,20 @@ class AppController extends \lithium\action\Controller {
                 }
             }
         }
+
+        // Get Promocode Length
+        $r = new \ReflectionMethod('\app\models\Promocode', 'generateToken');
+        $params = $r->getParameters();
+        foreach ($params as $param) {
+            if ($param->getName() == 'length' && $param->isOptional() == 1) {
+                $promocodeLength = $param->getDefaultValue();
+                break;
+            }
+        }
+
+        if (isset($_GET['promocode']) && !empty($_GET['promocode']) && (strlen($_GET['promocode']) == $promocodeLength)) {
+            Session::write('promocode', $_GET['promocode']);
+        }
     }
 
     protected function popularQuestions() {

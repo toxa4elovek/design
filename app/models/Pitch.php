@@ -461,15 +461,19 @@ class Pitch extends \app\models\AppModel {
             ),
             'with' => array('User'),
         ));
-
-        if (count($pitches) > 0) {
+        $res = array(
+            'all' => count($pitches),
+            'sent' => 0,
+        );
+        if ($res['all'] > 0) {
             foreach ($pitches as $pitch) {
-                User::sendOpenLetter($pitch);
+                if (User::sendOpenLetter($pitch)) {
+                    $res['sent'] ++;
+                }
             }
-            return count($pitches);
         }
 
-        return 0;
+        return $res;
     }
 
 }

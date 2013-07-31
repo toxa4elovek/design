@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                </div>        
+                </div>
                 <div style="float:left; width: 180px;margin-right:20px;">
                 <p class="supplement">Если вы использовали чужие изображения или фотографии из банков, пожалуйста, заявите об этом.</p>
                 </div>

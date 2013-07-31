@@ -4,6 +4,8 @@ namespace app\models;
 use \app\models\User;
 use \app\models\Pitch;
 
+use \lithium\storage\Session;
+
 class Promocode extends \app\models\AppModel {
 
     public $belongsTo = array('User', 'Pitch');

@@ -493,6 +493,7 @@
                 <div class="comment" style="width:35%;float:left;">КОММЕНТАРИИ</div>
                 <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div>
                     <?php endif?>
+                <div class="new-comment-here"></div>
                 <?php
                 if(isset($comments)):?>
                 <div style="clear:both;"></div>
@@ -771,6 +772,7 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
                 <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
+            <div class="solution-copyrighted"><!--  --></div>
             <div class="solution-info solution-about">
                 <table class="solution-stat">
                     <col class="icon">
@@ -816,7 +818,6 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
             </section>
             <section class="allow-comments">
                 <div class="all_messages">
-                	<div class="clr"></div>
                 </div>
                 <div class="separator full"></div>
                 <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">

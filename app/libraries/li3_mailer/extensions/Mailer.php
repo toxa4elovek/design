@@ -2,6 +2,7 @@
 namespace li3_mailer\extensions;
 
 use \app\models\Sendemail;
+use \Mail;
 
 class Mailer extends \lithium\core\StaticObject {
 
@@ -10,6 +11,28 @@ class Mailer extends \lithium\core\StaticObject {
 		'view' => 'lithium\template\View',
 	);
 	protected static $_instances = array();
+
+	/**
+	 * @var array Google SMTP server access details
+	 */
+	protected static $smtpGoogle = array(
+	    'host' => 'ssl://smtp.gmail.com',
+	    'port' => '465',
+	    'auth' => true,
+	    'username' => '',
+	    'password' => '',
+	);
+
+	/**
+	 * @var array MailJet SMTP server access details
+	 */
+	protected static $smtpMailJet = array(
+	    'host' => 'ssl://in.mailjet.com',
+	    'port' => '465',
+	    'auth' => true,
+	    'username' => 'c6ab29424f78c91ab2e52ed29e43f3c8',
+	    'password' => '1407d95eb0992a1d1e84e50e3333d4ee',
+	);
 
 	public static function __init() {
 		static::config();
@@ -37,6 +60,37 @@ class Mailer extends \lithium\core\StaticObject {
 		$html = $body;
         echo $html; die();
 		$crlf = "\n";
+
+		self::logemail(array(
+		    'email' => $to,
+		    'subject' => $options['subject'],
+		    'text' => $html,
+		    'hash' => $hash
+		));
+
+		if (true == $options['use-smtp']) {
+		    require_once "Mail.php";
+            $headers = array(
+                'Content-type' => 'text/html; charset=utf-8',
+                'From'    => 'Go Designer <' . $from . '>',
+                'To'      => $to,
+                'Subject' => $subject,
+                'Reply-To' => (isset($options['reply-to']) && !empty($options['reply-to'])) ? $options['reply-to'] : '',
+            );
+
+            $smtp = Mail::factory('smtp', self::$smtpMailJet);
+
+            $mail = $smtp->send($to, $headers, $body);
+
+            if (\PEAR::isError($mail)) {
+                echo("<p>" . $mail->getMessage() . "</p>");
+                return false;
+            } else {
+                return true;
+            }
+		}
+
+
         $headerString  = 'MIME-Version: 1.0' . "\r\n";
 		$headerString .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 		$headerString .= 'To: ' . $to . "\r\n";
@@ -45,20 +99,7 @@ class Mailer extends \lithium\core\StaticObject {
             $headerString .= 'Reply-To: ' . $options['reply-to'] . "\r\n";
 		}
 
-		self::logemail(array(
-    		'email' => $to,
-    		'subject' => $options['subject'],
-    		'text' => $html,
-    		'hash' => $hash
-	    ));
-        return mail($to, $subject, $html, $headerString);
-        die();
-        //return mail($to, $subject, $mime->get(), $mime->headers($headers));
-		if (\PEAR::isError($mail)) {
-			return true;
-		} else {
-			return false;
-		}
+		return mail($to, $subject, $html, $headerString);
 	}
 
 	protected static function logemail($data) {
