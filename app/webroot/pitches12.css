@@ -1008,3 +1008,48 @@ a.this-page{
 .solution-right-panel .solution-abuse a.client-show {
     background-position: 0 -139px;
 }
+/*
+ * Pitch Comments
+ */
+.pitch-comments div.message_info1,
+.pitch-comments div.message_info2,
+.pitch-comments div.message_info3,
+.pitch-comments div.message_info4,
+.pitch-comments div.message_info5 {
+    margin: 20px 0 0px 38px;
+}
+.pitch-comments div.separator {
+	width: 810px;
+	margin-left: 30px;
+}
+.pitch-comments div.ajax-loader {
+    width: 100%;
+    height: 100px;
+    background: url('img/blog-ajax-loader.gif') center no-repeat;
+}
+.pitch-comments div.message_text {
+    margin: 15px 0 0 26px;
+    float: left;
+    width: 520px;
+    text-transform: none;
+    color: #8f8f8f;
+    font: normal 13px/1 "Arial", sans-serif;
+    line-height: 17px;
+    word-wrap:break-word;
+}
+.pitch-comments div.toolbar-wrapper {
+    width: 810px;
+    float: right;
+    margin-top: 6px;
+    margin-right: 95px;
+    padding-bottom: 2px;
+    height: 18px;
+}
+.pitch-comments div.toolbar {
+    display: none;
+    clear: both;
+    float: right;
+    margin: 0 0 8px 0;
+    height: 18px;
+
+}

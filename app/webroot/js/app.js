@@ -747,10 +747,10 @@ function isExpert(user, expertsObj) {
  * Comments Toolbar
  */
 function enableToolbar() {
-    $('section', '.solution-comments').on('mouseenter', function() {
+    $('section', '.solution-comments, .pitch-comments').on('mouseenter', function() {
         $('.toolbar', this).fadeIn(200);
     });
-    $('section', '.solution-comments').on('mouseleave', function() {
+    $('section', '.solution-comments, .pitch-comments').on('mouseleave', function() {
         $('.toolbar', this).fadeOut(200);
     });
 }

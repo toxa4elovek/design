@@ -1140,9 +1140,9 @@ ini_set('display_errors', '1');
 	    }
 	    if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
 
-    	    $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
-    	    $comments = Comment::addAvatars($comments);
-    	    $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+            $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.id' => 'desc'), 'with' => array('User')));
+            $comments = Comment::addAvatars($comments);
+            $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
 
             return compact('comments', 'experts', 'pitch');
 	    } else {

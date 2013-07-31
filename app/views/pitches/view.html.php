@@ -500,7 +500,7 @@
                 <?php endif;?>
                 <!-- start: Pitch Comments -->
                 <section class="pitch-comments isField">
-                    <div style="text-align:center;height:100px;padding-top:60px"><img alt="" src="/img/blog-ajax-loader.gif"></div>
+                    <div class="ajax-loader"></div>
                 <!-- end: Pitch Comments -->
                 </section>
             </div>

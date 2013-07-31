@@ -211,132 +211,10 @@ $(document).ready(function(){
         return false;
     });
 
-/*
-	$('#createComment').click(function() {
-		$.post('/comments/add.json', $('#createCommentForm').serialize(), function(response) {
-			//console.log(response);
-		})
-    });
-
-    $('.delete-comment').click(function() {
-    	$.post('/comments/delete/' + $(this).data('id') + '.json', function(response) {
-    		//console.log(response);
-    	})
-    })
-  */
-
     fetchPitchComments();
-    
-    var editcommentflag = false;
-
-    function inlineActions() {
-        $('section', '.messages_gallery').hover(function() {
-            $('.toolbar', $(this)).fadeIn(150);
-        }, function() {
-            $('.toolbar', $(this)).fadeOut(150);
-        });
-
-        $('.edit-link-in-comment').click(function(e) {
-            e.preventDefault();
-            var section = $(this).parent().parent().parent();
-            section.children().not('.separator').hide();
-            var hiddenform = $('.hiddenform', section);
-            hiddenform.show();
-            var text = $(this).data('text');
-            $('textarea', hiddenform).val(text);
-            editcommentflag = true;
-            return false;
-        });
-
-        $('.editcomment').click(function() {
-            var textarea = $(this).prev();
-            var newcomment = textarea.val();
-            var id = textarea.data('id');
-            $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
-                var newText = response;
-                var section = textarea.parent().parent().parent().parent();
-                $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
-                $('.comment-container', 'section[data-id=' + id + ']').html(newText);
-                section.children().show();
-                $('.hiddenform', section).hide();
-                editcommentflag = false;
-                inlineActions();
-            });
-            return false;
-        });
-
-        $('.replyto').click(function() {
-            var el = $('#newComment');
-            var anchor = $('#comment-anchor');
-            if ($('.allow-comments').is(':visible')) {
-                el = $('#newComment', '.allow-comments');
-                anchor = $('.allow-comments');
-            }
-            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val($(this).data('commentId'));
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + el.val();
-                el.val(newText);
-                $.scrollTo(anchor, {duration:250});
-            }
-            return false;
-        });
-
-        $('.createCommentForm').click(function() {
-            var position = $(this).offset();
-            position.top -= 115;
-            //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
-        });
-
-        $('textarea').blur(function() {
-            $($(this).prev('#tooltip-bubble')).fadeOut(200);
-        });
-
-        $('textarea').keydown(function() {
-            $($(this).prev('#tooltip-bubble')).fadeOut(200);
-        });
-
-        $('.hoverimage[data-comment-to]').tooltip({
-            tooltipID: 'tooltip',
-            tooltipSource: 'rel',
-            width: '200px',
-            correctPosX: 40,
-            //positionTop: 0,
-            borderSize: '0px',
-            tooltipPadding: 0,
-            tooltipBGColor: 'transparent'
-        });
-
-        $('.delete-solution-popup').on('click', function(e) {
-            e.preventDefault();
-            if (confirm('Действительно удалить решение?')) {
-                hideSolutionPopup();
-                $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
-            }
-        });
-
-        enableToolbar();
-
-        $('.delete-link-in-comment.ajax').on('click', function(e) {
-            e.preventDefault();
-            var section = $(this).parent().parent().parent();
-            var id = $(section).attr('data-id');
-            var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
-            $.post($(this).attr('href') + '.json', function(result) {
-                if (result == 'true') {
-                    section.remove();
-                    sectionPitch.next('.separator').remove();
-                    sectionPitch.remove();
-                }
-            });
-        });
-
-        mentionLinks();
-        solutionShowHide();
-        warningModal();
-    }
     inlineActions();
 
+    editcommentflag = false;
     $(document).keyup(function(e) {
         if (e.keyCode == 27) {
             if (editcommentflag == true) {
@@ -346,7 +224,7 @@ $(document).ready(function(){
                     var section = $(object).parent();
                     section.children().show();
                     $(object).hide();
-                })
+                });
                 enableToolbar();
             } else {
                 e.preventDefault();
@@ -354,23 +232,6 @@ $(document).ready(function(){
             }
         }
     });
-
-    function mentionLinks() {
-        $('.mention-link').click(function(e) {
-            e.preventDefault();
-            var el = $('#newComment');
-            if ($('.allow-comments').is(':visible')) {
-                el = $('#newComment', '.allow-comments');
-            }
-            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
-                $('input[name=comment_id]').val('');
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + el.val();
-                el.val(newText);
-            }
-            return false;
-        });
-    }
 
     $('.like-small-icon').click(function(){
 
@@ -573,16 +434,6 @@ $(document).ready(function(){
             })
         }
     })
-
-
-
-    /*$('a', '.menu').live('click', function(){
-        console.log($(this).data('page'));
-        $.get('/pitches/details/100515', function(response) {
-            $('.wrapper').replaceWith(response);
-        })
-        return false;
-    })*/
 
     /*
      * View Solution Overlay
@@ -895,12 +746,16 @@ $(document).ready(function(){
     }
 });
 
+/*
+ * Fetch and populate Comments via AJAX on the pitch solutions gallery page
+ */
 function fetchPitchComments() {
     $.getJSON('/pitches/getcomments/' + pitchNumber + '.json', function(result) {
         if (result.comments) {
             $('.pitch-comments').html(fetchComments(result));
+            $('.separator', '.pitch-comments section:first').remove();
 
-            enableToolbar();
+            inlineActions();
             
             $('.delete-link-in-comment.ajax').on('click', function(e) {
                 e.preventDefault();
@@ -971,4 +826,128 @@ function populatePitchComment(data) {
                 </div> \
             </section> \
             <div class="separator" style="width: 810px; margin-left: 30px;"></div>';
+}
+
+/*
+ * Various actions running after DOM rebuild
+ */
+function inlineActions() {
+    $('.edit-link-in-comment').click(function(e) {
+        e.preventDefault();
+        var section = $(this).parent().parent().parent();
+        section.children().not('.separator').hide();
+        var hiddenform = $('.hiddenform', section);
+        hiddenform.show();
+        var text = $(this).data('text');
+        $('textarea', hiddenform).val(text);
+        editcommentflag = true;
+        return false;
+    });
+
+    $('.editcomment').click(function() {
+        var textarea = $(this).prev();
+        var newcomment = textarea.val();
+        var id = textarea.data('id');
+        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
+            var newText = response;
+            var section = textarea.parent().parent().parent().parent();
+            $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
+            $('.comment-container', 'section[data-id=' + id + ']').html(newText);
+            section.children().show();
+            $('.hiddenform', section).hide();
+            editcommentflag = false;
+            inlineActions();
+        });
+        return false;
+    });
+
+    $('.replyto').click(function() {
+        var el = $('#newComment');
+        var anchor = $('#comment-anchor');
+        if ($('.allow-comments').is(':visible')) {
+            el = $('#newComment', '.allow-comments');
+            anchor = $('.allow-comments');
+        }
+        if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
+            $('input[name=comment_id]').val($(this).data('commentId'));
+            var prepend = '@' + $(this).data('commentTo') + ', ';
+            var newText = prepend + el.val();
+            el.val(newText);
+            $.scrollTo(anchor, {duration:250});
+        }
+        return false;
+    });
+
+    $('.createCommentForm').click(function() {
+        var position = $(this).offset();
+        position.top -= 115;
+        //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
+    });
+
+    $('textarea').blur(function() {
+        $($(this).prev('#tooltip-bubble')).fadeOut(200);
+    });
+
+    $('textarea').keydown(function() {
+        $($(this).prev('#tooltip-bubble')).fadeOut(200);
+    });
+
+    $('.hoverimage[data-comment-to]').tooltip({
+        tooltipID: 'tooltip',
+        tooltipSource: 'rel',
+        width: '200px',
+        correctPosX: 40,
+        //positionTop: 0,
+        borderSize: '0px',
+        tooltipPadding: 0,
+        tooltipBGColor: 'transparent'
+    });
+
+    $('.delete-solution-popup').on('click', function(e) {
+        e.preventDefault();
+        if (confirm('Действительно удалить решение?')) {
+            hideSolutionPopup();
+            $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
+        }
+    });
+
+    enableToolbar();
+
+    $('.delete-link-in-comment.ajax').on('click', function(e) {
+        e.preventDefault();
+        var section = $(this).parent().parent().parent();
+        var id = $(section).attr('data-id');
+        var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+        $.post($(this).attr('href') + '.json', function(result) {
+            if (result == 'true') {
+                section.remove();
+                sectionPitch.next('.separator').remove();
+                sectionPitch.remove();
+            }
+        });
+    });
+
+    mentionLinks();
+    solutionShowHide();
+    warningModal();
+}
+
+/*
+ * Enable Comment-to Action
+ */
+function mentionLinks() {
+    $('.mention-link').click(function(e) {
+        e.preventDefault();
+        var el = $('#newComment');
+        if ($('.allow-comments').is(':visible')) {
+            el = $('#newComment', '.allow-comments');
+        }
+        if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
+            $('input[name=comment_id]').val('');
+            var prepend = '@' + $(this).data('commentTo') + ', ';
+            var newText = prepend + el.val();
+            el.val(newText);
+        }
+        return false;
+    });
 }
