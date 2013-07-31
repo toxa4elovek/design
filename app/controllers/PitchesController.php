@@ -1134,6 +1134,22 @@ ini_set('display_errors', '1');
 		}
 	}
 
+	public function getComments() {
+	    if (!$this->request->is('json')) {
+	        return $this->redirect('/pitches');
+	    }
+	    if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
+
+    	    $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
+    	    $comments = Comment::addAvatars($comments);
+    	    $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+
+            return compact('comments', 'experts', 'pitch');
+	    } else {
+	        return $this->redirect('/pitches');
+	    }
+	}
+
     public function robots() {
         $pitches = Pitch::all(array('conditions' => array('private' => 1)));
         $text = 'User-agent: *';

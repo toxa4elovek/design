@@ -225,6 +225,8 @@ $(document).ready(function(){
     })
   */
 
+    fetchPitchComments();
+    
     var editcommentflag = false;
 
     function inlineActions() {
@@ -585,7 +587,6 @@ $(document).ready(function(){
     /*
      * View Solution Overlay
      */
-    var expertsObj = {};
     var solutionId = '';
     $('.imagecontainer').on('click', function(e) {
         e.preventDefault();
@@ -646,12 +647,13 @@ $(document).ready(function(){
                 'fromAjax': 1
             }, function(result) {
                 var commentData = {};
+                var expertsObj = result.experts || {};
                 commentData.commentId = result.comment.id;
                 commentData.commentUserId = result.comment.user_id;
                 commentData.commentText = result.comment.text;
                 commentData.commentPlainText = result.comment.originalText;
                 commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
-                commentData.isExpert = isExpert(result.comment.user_id);
+                commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
 
                 if (result.comment.pitch.user_id == result.comment.user_id) {
                     commentData.messageInfo = 'message_info2';
@@ -712,7 +714,7 @@ $(document).ready(function(){
         $('#newComment', '.solution-left-panel').val('');
         $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         $.getJSON(urlJSON, function(result) {
-            expertsObj = result.experts;
+
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
@@ -757,40 +759,19 @@ $(document).ready(function(){
             solutionId = result.solution.id;
 
             if (result.comments) {
-                var solutionComments = '';
-                $.each(result.comments, function(idx, comment) {
-                    var commentData = {};
-                    commentData.commentId = comment.id;
-                    commentData.commentUserId = comment.user.id;
-                    commentData.commentText = comment.text;
-                    commentData.commentPlainText = comment.originalText;
-                    commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
-                    commentData.isExpert = isExpert(comment.user_id);
+                $('.solution-comments').html(fetchComments(result));
 
-                    if (result.pitch.user_id == comment.user_id) {
-                        commentData.messageInfo = 'message_info2';
-                    } else if (comment.user.isAdmin == "1") {
-                        commentData.messageInfo = 'message_info4';
-                        commentData.isAdmin = comment.user.isAdmin;
-                    } else if (commentData.isExpert) {
-                        commentData.messageInfo = 'message_info5';
-                    }else {
-                        commentData.messageInfo = 'message_info1';
-                    }
-                    commentData.userAvatar = comment.avatar;
+                enableToolbar();
 
-                    commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
-                    commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
-
-                    // Date Time
-                    var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
-                    var postDateObj = new Date(dateCreated);
-                    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-                    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-
-                    solutionComments += populateComment(commentData);
+                $('.delete-link-in-comment.ajax').on('click', function(e) {
+                    e.preventDefault();
+                    var section = $(this).parent().parent().parent();
+                    $.post($(this).attr('href') + '.json', function(result) {
+                        if (result == 'true') {
+                            section.remove();
+                        }
+                    });
                 });
-                $('.solution-comments').html(solutionComments);
             }
 
             // Right Panel
@@ -849,10 +830,9 @@ $(document).ready(function(){
                 media = result.solution.images.solution_solutionView.weburl
             }
             // Twitter like solution message
+            var tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
             if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                var tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
-            } else {
-                var tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
+                tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
             }
             $('.solution-share').html('<h2>ПОДЕЛИТЬСЯ</h2> \
                 <div class="body" style="display: block;"> \
@@ -913,32 +893,27 @@ $(document).ready(function(){
                                               ]);
         });
     }
-
-    function isExpert(user) {
-        var res = false;
-        for (i = 0; i < expertsObj.length; i++) {
-            if (expertsObj[i].user_id == user) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-
-    function enableToolbar() {
-        $('section', '.solution-comments').on('mouseenter', function() {
-            $('.toolbar', this).fadeIn(200);
-        });
-        $('section', '.solution-comments').on('mouseleave', function() {
-            $('.toolbar', this).fadeOut(200);
-        });
-    }
-
-    function disableToolbar() {
-        $('.message_text', '.solution-left-panel').parent().off('mouseover');
-        $('.message_text', '.solution-left-panel').parent().off('mouseout');
-    }
 });
+
+function fetchPitchComments() {
+    $.getJSON('/pitches/getcomments/' + pitchNumber + '.json', function(result) {
+        if (result.comments) {
+            $('.pitch-comments').html(fetchComments(result));
+
+            enableToolbar();
+            
+            $('.delete-link-in-comment.ajax').on('click', function(e) {
+                e.preventDefault();
+                var section = $(this).parent().parent().parent();
+                $.post($(this).attr('href') + '.json', function(result) {
+                    if (result == 'true') {
+                        section.remove();
+                    }
+                });
+            });
+        }
+    });
+}
 
 /*
  * Comments In Pitch View
