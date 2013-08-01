@@ -79,8 +79,14 @@ ini_set('display_errors', '1');
 		$types = array(
 			'finished' => array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)'))),
 			'current' => array('status' => array('<' => 2), 'awarded' => 0),
-            'all' => array()
-		);
+            'all' => array(),
+            'index' => array(
+                'OR' => array(
+                    array('status = 2 AND totalFinishDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+                    array('status < 2 AND awarded = 0'),
+                ),
+            ),
+        );
 		$priceFilter = array(
 			'all' => array(),
 			'1' => array('price' => array('>' => 3000, '<=' => 10000)),
@@ -98,7 +104,7 @@ ini_set('display_errors', '1');
             '4' => array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14)))),
             'all' => array()
         );
-        $type = 'current';
+        $type = 'index';
 		$category = array();
 		$conditions = array('published' => 1);
         $hasTag = false;
