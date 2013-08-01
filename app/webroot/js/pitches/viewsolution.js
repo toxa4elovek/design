@@ -497,7 +497,7 @@ $(document).ready(function() {
         $('.description-more').hide();
         $('#newComment', '.solution-left-panel').val('');
         $.getJSON(urlJSON, function(result) {
-            expertsObj = result.experts;
+
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
@@ -541,58 +541,19 @@ $(document).ready(function() {
             solutionId = result.solution.id;
             
             if (result.comments) {
-                var solutionComments = '';
-                $.each(result.comments, function(idx, comment) {
-                    var commentData = {};
-                    commentData.commentId = comment.id;
-                    commentData.commentUserId = comment.user.id;
-                    commentData.commentText = comment.text;
-                    commentData.commentPlainText = comment.originalText;
-                    commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
-                    commentData.isExpert = isExpert(comment.user_id);
-                    
-                    if (result.pitch.user_id == comment.user_id) {
-                        commentData.messageInfo = 'message_info2';
-                    } else if (comment.user.isAdmin == "1") {
-                        commentData.messageInfo = 'message_info4';
-                        commentData.isAdmin = comment.user.isAdmin;
-                    } else if (commentData.isExpert) {
-                        commentData.messageInfo = 'message_info5';
-                    }else {
-                        commentData.messageInfo = 'message_info1';
-                    }
-
-                    commentData.userAvatar = comment.avatar;
-
-                    commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
-                    commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
-                    
-                    // Date Time
-                    var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
-                    var postDateObj = new Date(dateCreated);
-                    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-                    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-                    commentData.relImageUrl = '';
-                    if (comment.solution_url) {
-                        commentData.relImageUrl = comment.solution_url.solution_solutionView.weburl;
-                    }
-
-                    solutionComments += populateComment(commentData); 
-                });
-                $('.solution-comments').html(solutionComments);
+                $('.solution-comments').html(fetchComments(result));
                 
                 enableToolbar();
 
                 $('.delete-link-in-comment.ajax').on('click', function(e) {
-                e.preventDefault();
-                var section = $(this).parent().parent().parent();
-                $.post($(this).attr('href') + '.json', function(result) {
-                    if (result == 'true') {
-                        section.remove();
-                    }
+                    e.preventDefault();
+                    var section = $(this).parent().parent().parent();
+                    $.post($(this).attr('href') + '.json', function(result) {
+                        if (result == 'true') {
+                            section.remove();
+                        }
+                    });
                 });
-             });
-                
             }
             
             // Right Panel
@@ -666,30 +627,4 @@ $(document).ready(function() {
 
         });
     }
-    
-    function isExpert(user) {
-        var res = false;
-        for (i = 0; i < expertsObj.length; i++) {
-            if (expertsObj[i].user_id == user) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-    
-    function enableToolbar() {
-        $('section', '.solution-comments').on('mouseenter', function() {
-            $('.toolbar', this).fadeIn(200);
-        });
-        $('section', '.solution-comments').on('mouseleave', function() {
-            $('.toolbar', this).fadeOut(200);
-        });
-    }
-    
-    function disableToolbar() {
-        $('.message_text', '.solution-left-panel').parent().off('mouseover');
-        $('.message_text', '.solution-left-panel').parent().off('mouseout');
-    }
-    
-})
+});

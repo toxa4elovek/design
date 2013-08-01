@@ -586,7 +586,55 @@ function warningModal() {
 }
 
 /*
- * Solution Popup and ViewSolution comments
+ * Fetch Comments data from response
+ */
+function fetchComments(result) {
+    var fetchedComments = '';
+    var expertsObj = result.experts || {};
+    $.each(result.comments, function(idx, comment) {
+        var commentData = {};
+        commentData.commentId = comment.id;
+        commentData.commentUserId = comment.user.id;
+        commentData.commentText = comment.text;
+        commentData.commentPlainText = comment.originalText;
+        commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
+        commentData.isExpert = isExpert(comment.user_id, expertsObj);
+        
+        if (result.pitch.user_id == comment.user_id) {
+            commentData.messageInfo = 'message_info2';
+        } else if (comment.user.isAdmin == "1") {
+            commentData.messageInfo = 'message_info4';
+            commentData.isAdmin = comment.user.isAdmin;
+        } else if (commentData.isExpert) {
+            commentData.messageInfo = 'message_info5';
+        }else {
+            commentData.messageInfo = 'message_info1';
+        }
+    
+        commentData.userAvatar = comment.avatar;
+    
+        commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
+        commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
+        
+        // Date Time
+        var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
+        var postDateObj = new Date(dateCreated);
+        commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+        commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+        commentData.relImageUrl = '';
+        if (comment.solution_url) {
+            commentData.relImageUrl = comment.solution_url.solution_solutionView.weburl;
+        }
+        
+        fetchedComments += populateComment(commentData);
+        
+    });
+    
+    return fetchedComments;
+}
+
+/*
+ * Populate each comment layout
  */
 function populateComment(data) {
     var toolbar = '';
@@ -596,7 +644,7 @@ function populateComment(data) {
                       <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
-    } else {
+    } else if (currentUserId) {
         toolbar = userToolbar;
     }
     if (isCurrentAdmin == 1) {
@@ -682,4 +730,43 @@ function copyrightedInfo(data) {
                '<div class="separator"></div> \
           </div>';
     return res;
+}
+
+function isExpert(user, expertsObj) {
+    var res = false;
+    for (var i = 0; i < expertsObj.length; i++) {
+        if (expertsObj[i].user_id == user) {
+            res = true;
+            break;
+        }
+    }
+    return res;
+}
+
+/*
+ * Comments Toolbar
+ */
+function enableToolbar() {
+    $('section', '.solution-comments, .pitch-comments').on('mouseenter', function() {
+        $('.toolbar', this).fadeIn(200);
+    });
+    $('section', '.solution-comments, .pitch-comments').on('mouseleave', function() {
+        $('.toolbar', this).fadeOut(200);
+    });
+
+    $('.delete-link-in-comment.ajax').on('click', function(e) {
+        e.preventDefault();
+        var section = $(this).parent().parent().parent();
+        var id = $(section).attr('data-id');
+        var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+        $.post($(this).attr('href') + '.json', function(result) {
+            if (result == 'true') {
+                sectionPitch.remove();
+                $('.separator', '.pitch-comments section:first').remove();
+                if ($('.solution-overlay').is(':visible')) {
+                    section.remove();
+                }
+            }
+        });
+    });
 }

@@ -479,162 +479,17 @@
                         <input type="submit" style="margin-left:16; width: 200px;" id="createComment" class="button" value="Отправить" src="/img/message_button.png" />
                         <div class="clr"></div>
                     </form>
-                    <?php   if(isset($comments)):?>
-                    <div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>
-                    <?php endif;?>
                 </section>
                 <?php else:?>
                 <script>var allowComments = false;</script>
-                <div style="width: 810px; margin-left: 30px; " id="t1" class="separator">
-                </div>
                 <?php endif?>
-
-                    <?php if(($this->session->read('user.id')) || (count($comments) > 0)):?>
-                <div class="comment" style="width:35%;float:left;">КОММЕНТАРИИ</div>
-                <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div>
-                    <?php endif?>
-                <div class="new-comment-here"></div>
-                <?php
-                if(isset($comments)):?>
-                <div style="clear:both;"></div>
-
-                <?php
-                    $totalComments = count($comments);
-                    $i = 0;
-                    foreach($comments as $comment):
-                        if(($pitch->category_id == 7) || ($pitch->private)):
-                            if(($pitch->user_id != $this->session->read('user.id')) && ($comment->user_id != $this->session->read('user.id')) && (!in_array($this->session->read('user.id'), $expertsIds))) {
-                                echo '<!-- ' . $comment->id . '-->';
-                                if((!in_array($comment->solution_id, $mySolutionList) && $comment->user_id == $pitch->user_id) && ($comment->solution_id != 0) && (!in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)))) {
-                                    continue;
-                                }
-                                if(($comment->user_id != $pitch->user_id) && (!$comment->user->isAdmin) && ($comment->user_id != $this->session->read('user.id')) && (!in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)))) {
-                                    continue;
-                                }
-                                if(($comment->reply_to != $this->session->read('user.id')) && ($comment->reply_to != 0) && (!in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)))) {
-                                    continue;
-                                }
-                                $matches = array();
-                                if((preg_match_all('@(#\d+)\D@', $comment->text, $matches, PREG_PATTERN_ORDER)) && (!in_array($this->session->read('user.id'), $expertsIds))) {
-                                    //echo '<!-- ex' . var_dump($expertsIds) . '-->';
-                                    $array = array();
-                                    foreach($matches[1] as $match):
-                                        $array[] = $match;
-                                    endforeach;
-                                    //echo '<!-- ar' . var_dump($array) . '-->';
-
-                                    $noSolutions = true;
-                                    foreach($mySolutionNumList as $mySolutionNum):
-                                        if(in_array($mySolutionNum, $array)) :
-                                            $noSolutions = false;
-                                            break;
-                                        endif;
-                                    endforeach;
-                                    if(($noSolutions) && (!in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)))):
-                                        continue;
-                                    endif;
-
-                                }else {
-                                    //echo '<!--' . var_dump($comment->text) . '-->';
-                                }
-                            }else {
-                                echo '<!-- ' . $comment->id . '-->';
-                            }
-                        endif;
-
-                        $i += 1;
-                if($pitch->user_id == $comment->user->id) {
-                    $class = 'message_info2';
-                }elseif ($comment->user->isAdmin) {
-                    $class = 'message_info4';
-                }elseif((in_array($comment->user->id, $expertsIds))) {
-                    $class = 'message_info5';
-                }else {
-                    $class = 'message_info1';
-                }
-?>
-<section data-id="<?=$comment->id?>" <?php if($comment->user_id == $pitch->user_id) echo 'data-type="client"'?> <?php if($comment->user_id != $pitch->user_id) echo 'data-type="designer"'?>>
-                    <div class="<?=$class?>" style="margin-top:20px;">
-                        <?php if ($comment->user->isAdmin):?>
-                        <?php //$this->avatar->show($comment->user->data());?>
-                        <?php else:?>
-                        <a href="/users/view/<?=$comment->user->id?>">
-                            <?=$this->avatar->show($comment->user->data());?>
-                        </a>
-                        <?php endif;?>
-                        <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto">
-                            <?php if(!$comment->user->isAdmin):?>
-                            <span><?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?></span><br/>
-                            <?php else:?>
-                            <span>GoDesigner</span><br/>
-                            <?php endif;?>
-                            <span style="font-weight: normal;"><?=date('d.m.y H:i', strtotime($comment->created))?></span></a>
-                        <div class="clr"></div>
-                    </div>
-                    <div data-id="<?=$comment->id?>" class="message_text" style="margin-top:15px;">
-
-                        <span class="regular comment-container"><?php echo $this->brief->stripemail($comment->text)?></span>
-                    </div>
-                    <div style="width:810px;float:right;margin-top: 6px;margin-right: 95px;padding-bottom: 2px;height:18px;">
-                        <div class="toolbar">
-                    <?php
-                     if($this->session->read('user.id') == $comment->user_id):?>
-
-                         <?= $this->html->link('Удалить', array('controller' => 'comments', 'action' => 'delete', 'id' => $comment->id), array('style' => "float:right;", "class" => "delete-link-in-comment"));?>
-                         <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
-                    <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
-                        <?php if (($this->session->read('user.isAdmin') == 1) || \app\models\User::checkRole('admin')):?>
-                            <?= $this->html->link('Удалить', array('controller' => 'comments', 'action' => 'delete', 'id' => $comment->id), array('style' => "float:right;", "class" => "delete-link-in-comment"));?>
-                             <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
-
-                        <?php endif?>
-                         <?php
-                         if(
-
-                             (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || (in_array($this->session->read('user.id'), $expertsIds)) || ($this->session->read('user.isAdmin')))) ||
-                             (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true))
-
-                             && ($this->session->read('user.id'))
-                         ):?>
-                         <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
-                         <?php if(!$comment->user->isAdmin):?>
-                         <?php endif?>
-                         <a href="#" data-comment-id="<?=$comment->id?>" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>
-                         <?php endif;?>
-                    <?php endif;?>
-                    </div></div>
-                    <div class="clr"></div>
-                    <div class="hiddenform" style="display:none">
-                        <section><form style="margin-bottom: 25px;" action="/comments/edit/<?=$comment->id?>" method="post">
-                            <!--div id="tooltip-bubble" style="background: url(&quot;/img/tooltip-bg-top-stripe.png&quot;) no-repeat scroll 0px 0px transparent ! important; padding: 4px 0px 0px ! important; height: auto; width: 205px; position: absolute; z-index: 2147483647; top: 799.6px; left: 220.5px; display: none;">
-                                <div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
-                                    <div class="supplement3" id="tooltipContent" style="">
-                                        <p>Укажите номер комментируемого варианта, используя хештег #. Например:
-                                            #2, нравится!<br>
-                                            Обратитесь к автору решения, используя @. Например:<br>
-                                            @username, спасибо!
-                                        </p>
-                                    </div>
-                                </div>
-                            </div-->
-                            <textarea name="text" data-id="<?=$comment->id?>"></textarea>
-                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br>
-                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span>
-                            <div class="clr"></div>
-                        </form>
-                        </section>
-                    </div>
-
+                <!-- start: Pitch Comments -->
+                <section class="pitch-comments isField">
+                    <div class="ajax-loader"></div>
+                <!-- end: Pitch Comments -->
                 </section>
-
-                <?php if($i != $totalComments): ?>
-                <div class="separator" style="width: 810px; margin-left: 30px;"></div>
-                <?php endif;?>
-<?php endforeach;
-
-                endif?>
             </div>
-</section>
+        </section>
                 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
     <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
     <div style="display:none;" id="floatingblock" class="floatingblock">
@@ -772,7 +627,6 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
                 <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
-            <div class="solution-copyrighted"><!--  --></div>
             <div class="solution-info solution-about">
                 <table class="solution-stat">
                     <col class="icon">
@@ -818,6 +672,7 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
             </section>
             <section class="allow-comments">
                 <div class="all_messages">
+                	<div class="clr"></div>
                 </div>
                 <div class="separator full"></div>
                 <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">

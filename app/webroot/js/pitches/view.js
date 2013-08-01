@@ -211,130 +211,10 @@ $(document).ready(function(){
         return false;
     });
 
-/*
-	$('#createComment').click(function() {
-		$.post('/comments/add.json', $('#createCommentForm').serialize(), function(response) {
-			//console.log(response);
-		})
-    });
-
-    $('.delete-comment').click(function() {
-    	$.post('/comments/delete/' + $(this).data('id') + '.json', function(response) {
-    		//console.log(response);
-    	})
-    })
-  */
-
-    var editcommentflag = false;
-
-    function inlineActions() {
-        $('section', '.messages_gallery').hover(function() {
-            $('.toolbar', $(this)).fadeIn(150);
-        }, function() {
-            $('.toolbar', $(this)).fadeOut(150);
-        });
-
-        $('.edit-link-in-comment').click(function(e) {
-            e.preventDefault();
-            var section = $(this).parent().parent().parent();
-            section.children().not('.separator').hide();
-            var hiddenform = $('.hiddenform', section);
-            hiddenform.show();
-            var text = $(this).data('text');
-            $('textarea', hiddenform).val(text);
-            editcommentflag = true;
-            return false;
-        });
-
-        $('.editcomment').click(function() {
-            var textarea = $(this).prev();
-            var newcomment = textarea.val();
-            var id = textarea.data('id');
-            $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
-                var newText = response;
-                var section = textarea.parent().parent().parent().parent();
-                $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
-                $('.comment-container', 'section[data-id=' + id + ']').html(newText);
-                section.children().show();
-                $('.hiddenform', section).hide();
-                editcommentflag = false;
-                inlineActions();
-            });
-            return false;
-        });
-
-        $('.replyto').click(function() {
-            var el = $('#newComment');
-            var anchor = $('#comment-anchor');
-            if ($('.allow-comments').is(':visible')) {
-                el = $('#newComment', '.allow-comments');
-                anchor = $('.allow-comments');
-            }
-            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val($(this).data('commentId'));
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + el.val();
-                el.val(newText);
-                $.scrollTo(anchor, {duration:250});
-            }
-            return false;
-        });
-
-        $('.createCommentForm').click(function() {
-            var position = $(this).offset();
-            position.top -= 115;
-            //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
-        });
-
-        $('textarea').blur(function() {
-            $($(this).prev('#tooltip-bubble')).fadeOut(200);
-        });
-
-        $('textarea').keydown(function() {
-            $($(this).prev('#tooltip-bubble')).fadeOut(200);
-        });
-
-        $('.hoverimage[data-comment-to]').tooltip({
-            tooltipID: 'tooltip',
-            tooltipSource: 'rel',
-            width: '200px',
-            correctPosX: 40,
-            //positionTop: 0,
-            borderSize: '0px',
-            tooltipPadding: 0,
-            tooltipBGColor: 'transparent'
-        });
-
-        $('.delete-solution-popup').on('click', function(e) {
-            e.preventDefault();
-            if (confirm('Действительно удалить решение?')) {
-                hideSolutionPopup();
-                $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
-            }
-        });
-
-        enableToolbar();
-
-        $('.delete-link-in-comment.ajax').on('click', function(e) {
-            e.preventDefault();
-            var section = $(this).parent().parent().parent();
-            var id = $(section).attr('data-id');
-            var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
-            $.post($(this).attr('href') + '.json', function(result) {
-                if (result == 'true') {
-                    section.remove();
-                    sectionPitch.next('.separator').remove();
-                    sectionPitch.remove();
-                }
-            });
-        });
-
-        mentionLinks();
-        solutionShowHide();
-        warningModal();
-    }
+    fetchPitchComments();
     inlineActions();
 
+    editcommentflag = false;
     $(document).keyup(function(e) {
         if (e.keyCode == 27) {
             if (editcommentflag == true) {
@@ -344,7 +224,7 @@ $(document).ready(function(){
                     var section = $(object).parent();
                     section.children().show();
                     $(object).hide();
-                })
+                });
                 enableToolbar();
             } else {
                 e.preventDefault();
@@ -352,23 +232,6 @@ $(document).ready(function(){
             }
         }
     });
-
-    function mentionLinks() {
-        $('.mention-link').click(function(e) {
-            e.preventDefault();
-            var el = $('#newComment');
-            if ($('.allow-comments').is(':visible')) {
-                el = $('#newComment', '.allow-comments');
-            }
-            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
-                $('input[name=comment_id]').val('');
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + el.val();
-                el.val(newText);
-            }
-            return false;
-        });
-    }
 
     $('.like-small-icon').click(function(){
 
@@ -572,20 +435,9 @@ $(document).ready(function(){
         }
     })
 
-
-
-    /*$('a', '.menu').live('click', function(){
-        console.log($(this).data('page'));
-        $.get('/pitches/details/100515', function(response) {
-            $('.wrapper').replaceWith(response);
-        })
-        return false;
-    })*/
-
     /*
      * View Solution Overlay
      */
-    var expertsObj = {};
     var solutionId = '';
     $('.imagecontainer').on('click', function(e) {
         e.preventDefault();
@@ -646,12 +498,13 @@ $(document).ready(function(){
                 'fromAjax': 1
             }, function(result) {
                 var commentData = {};
+                var expertsObj = result.experts || {};
                 commentData.commentId = result.comment.id;
                 commentData.commentUserId = result.comment.user_id;
                 commentData.commentText = result.comment.text;
                 commentData.commentPlainText = result.comment.originalText;
                 commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
-                commentData.isExpert = isExpert(result.comment.user_id);
+                commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
 
                 if (result.comment.pitch.user_id == result.comment.user_id) {
                     commentData.messageInfo = 'message_info2';
@@ -680,8 +533,10 @@ $(document).ready(function(){
                 commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
 
                 $('.solution-comments').prepend(populateComment(commentData));
+                $('.pitch-comments section:first').prepend('<div class="separator"></div>');
                 $('.new-comment-here').replaceWith(populatePitchComment(commentData));
-                $('#newComment', '.solution-left-panel').val('#' + result.comment.solution_id + ', ');
+                $('.separator', '.pitch-comments section:first').remove();
+                $('#newComment', '.solution-left-panel').val('#' + result.result.solution_num + ', ');
                 inlineActions();
             });
         } else {
@@ -712,7 +567,7 @@ $(document).ready(function(){
         $('#newComment', '.solution-left-panel').val('');
         $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         $.getJSON(urlJSON, function(result) {
-            expertsObj = result.experts;
+
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
@@ -757,40 +612,7 @@ $(document).ready(function(){
             solutionId = result.solution.id;
 
             if (result.comments) {
-                var solutionComments = '';
-                $.each(result.comments, function(idx, comment) {
-                    var commentData = {};
-                    commentData.commentId = comment.id;
-                    commentData.commentUserId = comment.user.id;
-                    commentData.commentText = comment.text;
-                    commentData.commentPlainText = comment.originalText;
-                    commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
-                    commentData.isExpert = isExpert(comment.user_id);
-
-                    if (result.pitch.user_id == comment.user_id) {
-                        commentData.messageInfo = 'message_info2';
-                    } else if (comment.user.isAdmin == "1") {
-                        commentData.messageInfo = 'message_info4';
-                        commentData.isAdmin = comment.user.isAdmin;
-                    } else if (commentData.isExpert) {
-                        commentData.messageInfo = 'message_info5';
-                    }else {
-                        commentData.messageInfo = 'message_info1';
-                    }
-                    commentData.userAvatar = comment.avatar;
-
-                    commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
-                    commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
-
-                    // Date Time
-                    var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
-                    var postDateObj = new Date(dateCreated);
-                    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-                    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-
-                    solutionComments += populateComment(commentData);
-                });
-                $('.solution-comments').html(solutionComments);
+                $('.solution-comments').html(fetchComments(result));
             }
 
             // Right Panel
@@ -849,10 +671,9 @@ $(document).ready(function(){
                 media = result.solution.images.solution_solutionView.weburl
             }
             // Twitter like solution message
+            var tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
             if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                var tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
-            } else {
-                var tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
+                tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
             }
             $('.solution-share').html('<h2>ПОДЕЛИТЬСЯ</h2> \
                 <div class="body" style="display: block;"> \
@@ -913,32 +734,29 @@ $(document).ready(function(){
                                               ]);
         });
     }
-
-    function isExpert(user) {
-        var res = false;
-        for (i = 0; i < expertsObj.length; i++) {
-            if (expertsObj[i].user_id == user) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-
-    function enableToolbar() {
-        $('section', '.solution-comments').on('mouseenter', function() {
-            $('.toolbar', this).fadeIn(200);
-        });
-        $('section', '.solution-comments').on('mouseleave', function() {
-            $('.toolbar', this).fadeOut(200);
-        });
-    }
-
-    function disableToolbar() {
-        $('.message_text', '.solution-left-panel').parent().off('mouseover');
-        $('.message_text', '.solution-left-panel').parent().off('mouseout');
-    }
 });
+
+/*
+ * Fetch and populate Comments via AJAX on the pitch solutions gallery page
+ */
+function fetchPitchComments() {
+    $.getJSON('/pitches/getcomments/' + pitchNumber + '.json', function(result) {
+        if (result.comments) {
+            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div> \
+                                <div class="comment" style="width:35%;float:left;">КОММЕНТАРИИ</div> \
+                                <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div> \
+                                <div style="clear:both;"></div> \
+                                <div class="new-comment-here"></div>';
+            $('.pitch-comments').html(fetchComments(result));
+            $('.pitch-comments').prepend(commentsTitle);
+            $('.separator', '.pitch-comments section:first').remove();
+
+            inlineActions();
+        } else {
+            $('.ajax-loader', '.pitch-comments').remove();
+        }
+    });
+}
 
 /*
  * Comments In Pitch View
@@ -951,7 +769,7 @@ function populatePitchComment(data) {
                       <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
-    } else {
+    } else if (currentUserId) {
         toolbar = userToolbar;
     }
     if (isCurrentAdmin == 1) {
@@ -964,8 +782,8 @@ function populatePitchComment(data) {
                         </a>';
     }
     return '<div class="new-comment-here"></div> \
-            <div style="clear:both;"></div> \
             <section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+                <div class="separator"></div> \
                 <div class="' + data.messageInfo + '" style="margin-top:20px;">'
                 + avatarElement +
                 '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
@@ -994,6 +812,114 @@ function populatePitchComment(data) {
                         </form> \
                     </section> \
                 </div> \
-            </section> \
-            <div class="separator" style="width: 810px; margin-left: 30px;"></div>';
+            </section>';
+}
+
+/*
+ * Various actions running after DOM rebuild
+ */
+function inlineActions() {
+    $('.edit-link-in-comment').click(function(e) {
+        e.preventDefault();
+        var section = $(this).parent().parent().parent();
+        section.children().not('.separator').hide();
+        var hiddenform = $('.hiddenform', section);
+        hiddenform.show();
+        var text = $(this).data('text');
+        $('textarea', hiddenform).val(text);
+        editcommentflag = true;
+        return false;
+    });
+
+    $('.editcomment').click(function() {
+        var textarea = $(this).prev();
+        var newcomment = textarea.val();
+        var id = textarea.data('id');
+        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
+            var newText = response;
+            var section = textarea.parent().parent().parent().parent();
+            $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
+            $('.comment-container', 'section[data-id=' + id + ']').html(newText);
+            section.children().show();
+            $('.hiddenform', section).hide();
+            editcommentflag = false;
+            inlineActions();
+        });
+        return false;
+    });
+
+    $('.replyto').click(function() {
+        var el = $('#newComment');
+        var anchor = $('#comment-anchor');
+        if ($('.allow-comments').is(':visible')) {
+            el = $('#newComment', '.allow-comments');
+            anchor = $('.allow-comments');
+        }
+        if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
+            $('input[name=comment_id]').val($(this).data('commentId'));
+            var prepend = '@' + $(this).data('commentTo') + ', ';
+            var newText = prepend + el.val();
+            el.val(newText);
+            $.scrollTo(anchor, {duration:250});
+        }
+        return false;
+    });
+
+    $('.createCommentForm').click(function() {
+        var position = $(this).offset();
+        position.top -= 115;
+        //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
+    });
+
+    $('textarea').blur(function() {
+        $($(this).prev('#tooltip-bubble')).fadeOut(200);
+    });
+
+    $('textarea').keydown(function() {
+        $($(this).prev('#tooltip-bubble')).fadeOut(200);
+    });
+
+    $('.hoverimage[data-comment-to]').tooltip({
+        tooltipID: 'tooltip',
+        tooltipSource: 'rel',
+        width: '200px',
+        correctPosX: 40,
+        //positionTop: 0,
+        borderSize: '0px',
+        tooltipPadding: 0,
+        tooltipBGColor: 'transparent'
+    });
+
+    $('.delete-solution-popup').on('click', function(e) {
+        e.preventDefault();
+        if (confirm('Действительно удалить решение?')) {
+            hideSolutionPopup();
+            $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
+        }
+    });
+
+    enableToolbar();
+    mentionLinks();
+    solutionShowHide();
+    warningModal();
+}
+
+/*
+ * Enable Comment-to Action
+ */
+function mentionLinks() {
+    $('.mention-link').click(function(e) {
+        e.preventDefault();
+        var el = $('#newComment');
+        if ($('.allow-comments').is(':visible')) {
+            el = $('#newComment', '.allow-comments');
+        }
+        if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
+            $('input[name=comment_id]').val('');
+            var prepend = '@' + $(this).data('commentTo') + ', ';
+            var newText = prepend + el.val();
+            el.val(newText);
+        }
+        return false;
+    });
 }
