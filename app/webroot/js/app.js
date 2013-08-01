@@ -644,7 +644,7 @@ function populateComment(data) {
                       <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
-    } else {
+    } else if (currentUserId) {
         toolbar = userToolbar;
     }
     if (isCurrentAdmin == 1) {
@@ -752,5 +752,21 @@ function enableToolbar() {
     });
     $('section', '.solution-comments, .pitch-comments').on('mouseleave', function() {
         $('.toolbar', this).fadeOut(200);
+    });
+
+    $('.delete-link-in-comment.ajax').on('click', function(e) {
+        e.preventDefault();
+        var section = $(this).parent().parent().parent();
+        var id = $(section).attr('data-id');
+        var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+        $.post($(this).attr('href') + '.json', function(result) {
+            if (result == 'true') {
+                sectionPitch.remove();
+                $('.separator', '.pitch-comments section:first').remove();
+                if ($('.solution-overlay').is(':visible')) {
+                    section.remove();
+                }
+            }
+        });
     });
 }

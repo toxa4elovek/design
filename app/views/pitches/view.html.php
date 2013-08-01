@@ -479,25 +479,10 @@
                         <input type="submit" style="margin-left:16; width: 200px;" id="createComment" class="button" value="Отправить" src="/img/message_button.png" />
                         <div class="clr"></div>
                     </form>
-                    <?php   if(isset($comments)):?>
-                    <div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>
-                    <?php endif;?>
                 </section>
                 <?php else:?>
                 <script>var allowComments = false;</script>
-                <div style="width: 810px; margin-left: 30px; " id="t1" class="separator">
-                </div>
                 <?php endif?>
-
-                <?php if(($this->session->read('user.id')) || (count($comments) > 0)):?>
-                    <div class="comment" style="width:35%;float:left;">КОММЕНТАРИИ</div>
-                    <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div>
-                <?php endif?>
-                <div class="new-comment-here"></div>
-                <?php
-                if(isset($comments)):?>
-                <div style="clear:both;"></div>
-                <?php endif;?>
                 <!-- start: Pitch Comments -->
                 <section class="pitch-comments isField">
                     <div class="ajax-loader"></div>

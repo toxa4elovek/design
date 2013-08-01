@@ -36,7 +36,8 @@ class PitchesController extends \app\controllers\AppController {
      * @var array
      */
 	public $publicActions = array(
-        'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create', 'brief', 'activate', 'view', 'details', 'callback', 'viewsolution', 'getlatestsolution', 'getpitchdata'
+        'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
+	    'brief', 'activate', 'view', 'details', 'callback', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
 	);
 
     public function blank() {
@@ -1054,12 +1055,12 @@ ini_set('display_errors', '1');
 
 	public function view() {
 		if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
-            $currentUser = Session::read('user.id');
-            if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
+            $currentUser = Session::read('user');
+            if(($pitch->published == 0) && (($currentUser['id'] != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
                 return $this->redirect('/pitches');
             }
             if($pitch->private == 1) {
-                if(($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
+                if(($pitch->user_id != $currentUser['id']) && (!in_array($currentUser['id'], User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => $currentUser['id'], 'pitch_id' => $pitch->id))))) {
                     return $this->redirect('/requests/sign/' . $pitch->id);
                 }
             }
@@ -1111,8 +1112,6 @@ ini_set('display_errors', '1');
             }
 
 			$solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order));
-
-            $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
             $selectedsolution = false;
             $nominatedSolutionOfThisPitch = Solution::first(array(
                 'conditions' => array('nominated' => 1, 'pitch_id' => $pitch->id)
@@ -1120,16 +1119,11 @@ ini_set('display_errors', '1');
             if($nominatedSolutionOfThisPitch) {
                 $selectedsolution = true;
             }
-            //$expertIds = unserialize($pitch->{'expert-ids'});
-            //$experts = array();
-            //if(!empty($expertIds)) {
-            //    $experts = Expert::all(array('conditions' => array('id' => $expertIds)));
-            //}
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-			    return compact('pitch', 'solutions', 'comments', 'selectedsolution', 'sort', 'experts');
+			    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts');
             }else {
-                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'comments', 'selectedsolution', 'sort', 'experts'));
+                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts'));
             }
 		}
 	}
@@ -1139,14 +1133,27 @@ ini_set('display_errors', '1');
 	        return $this->redirect('/pitches');
 	    }
 	    if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
+	        $currentUser = Session::read('user');
+	        if (($pitch->published == 0) && (($currentUser['id'] != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!User::checkRole('admin')))) {
+	            return false;
+	        }
+	        if ($pitch->private == 1) {
+	            if (($pitch->user_id != $currentUser['id']) && (!User::checkRole('admin')) && (!$isExists = Request::first(array('conditions' => array('user_id' => $currentUser['id'], 'pitch_id' => $pitch->id))))) {
+	                return false;
+	            }
+	        }
 
-            $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.id' => 'desc'), 'with' => array('User')));
-            $comments = Comment::addAvatars($comments);
+            $commentsRaw = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.id' => 'desc'), 'with' => array('User')));
+            $commentsRaw = Comment::addAvatars($commentsRaw);
+            $comments = new \lithium\util\Collection();
+            foreach ($commentsRaw as $comment) {
+                $comments->append($comment);
+            }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
 
             return compact('comments', 'experts', 'pitch');
 	    } else {
-	        return $this->redirect('/pitches');
+	        return false;
 	    }
 	}
 

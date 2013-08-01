@@ -533,8 +533,10 @@ $(document).ready(function(){
                 commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
 
                 $('.solution-comments').prepend(populateComment(commentData));
+                $('.pitch-comments section:first').prepend('<div class="separator"></div>');
                 $('.new-comment-here').replaceWith(populatePitchComment(commentData));
-                $('#newComment', '.solution-left-panel').val('#' + result.comment.solution_id + ', ');
+                $('.separator', '.pitch-comments section:first').remove();
+                $('#newComment', '.solution-left-panel').val('#' + result.result.solution_num + ', ');
                 inlineActions();
             });
         } else {
@@ -611,18 +613,6 @@ $(document).ready(function(){
 
             if (result.comments) {
                 $('.solution-comments').html(fetchComments(result));
-
-                enableToolbar();
-
-                $('.delete-link-in-comment.ajax').on('click', function(e) {
-                    e.preventDefault();
-                    var section = $(this).parent().parent().parent();
-                    $.post($(this).attr('href') + '.json', function(result) {
-                        if (result == 'true') {
-                            section.remove();
-                        }
-                    });
-                });
             }
 
             // Right Panel
@@ -752,20 +742,18 @@ $(document).ready(function(){
 function fetchPitchComments() {
     $.getJSON('/pitches/getcomments/' + pitchNumber + '.json', function(result) {
         if (result.comments) {
+            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div> \
+                                <div class="comment" style="width:35%;float:left;">КОММЕНТАРИИ</div> \
+                                <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div> \
+                                <div style="clear:both;"></div> \
+                                <div class="new-comment-here"></div>';
             $('.pitch-comments').html(fetchComments(result));
+            $('.pitch-comments').prepend(commentsTitle);
             $('.separator', '.pitch-comments section:first').remove();
 
             inlineActions();
-            
-            $('.delete-link-in-comment.ajax').on('click', function(e) {
-                e.preventDefault();
-                var section = $(this).parent().parent().parent();
-                $.post($(this).attr('href') + '.json', function(result) {
-                    if (result == 'true') {
-                        section.remove();
-                    }
-                });
-            });
+        } else {
+            $('.ajax-loader', '.pitch-comments').remove();
         }
     });
 }
@@ -781,7 +769,7 @@ function populatePitchComment(data) {
                       <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
-    } else {
+    } else if (currentUserId) {
         toolbar = userToolbar;
     }
     if (isCurrentAdmin == 1) {
@@ -794,8 +782,8 @@ function populatePitchComment(data) {
                         </a>';
     }
     return '<div class="new-comment-here"></div> \
-            <div style="clear:both;"></div> \
             <section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+                <div class="separator"></div> \
                 <div class="' + data.messageInfo + '" style="margin-top:20px;">'
                 + avatarElement +
                 '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
@@ -824,8 +812,7 @@ function populatePitchComment(data) {
                         </form> \
                     </section> \
                 </div> \
-            </section> \
-            <div class="separator" style="width: 810px; margin-left: 30px;"></div>';
+            </section>';
 }
 
 /*
@@ -912,21 +899,6 @@ function inlineActions() {
     });
 
     enableToolbar();
-
-    $('.delete-link-in-comment.ajax').on('click', function(e) {
-        e.preventDefault();
-        var section = $(this).parent().parent().parent();
-        var id = $(section).attr('data-id');
-        var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
-        $.post($(this).attr('href') + '.json', function(result) {
-            if (result == 'true') {
-                section.remove();
-                sectionPitch.next('.separator').remove();
-                sectionPitch.remove();
-            }
-        });
-    });
-
     mentionLinks();
     solutionShowHide();
     warningModal();
