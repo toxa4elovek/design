@@ -755,9 +755,6 @@ class User extends \app\models\AppModel {
             $data = json_decode($tmhOAuth->response['response'], true);
             return true;
         }else {
-            echo '<pre>';
-            var_dump($tmhOAuth->response);
-            echo '</pre>';
             return false;
         }
     }

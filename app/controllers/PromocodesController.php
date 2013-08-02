@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\Promocode;
-use \lithium\storage\Session;
 
 class PromocodesController extends \lithium\action\Controller {
 

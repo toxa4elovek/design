@@ -581,7 +581,6 @@ a.this-page{
 	position: relative;
 	margin: 26px auto 200px auto;
 	width: 958px;
-	min-height: 1000px;
 	border-radius: 9px;
 	background: url('img/solution-paper.png') left top #eeeeee;
 }
@@ -828,12 +827,11 @@ a.this-page{
  * ----- Right Panel -----
  */
 .solution-right-panel {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: relative;
+    float: right;
     width: 265px;
-    height: 100%;
     border-left: 1px solid #ededed;
+    margin-bottom: 10px;
 }
 .solution-right-panel.page {
 	position: relative;
