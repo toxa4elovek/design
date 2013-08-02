@@ -42,7 +42,7 @@ $(document).ready(function() {
 
     var loadPercentage = 30; // Progressbar percentage for loading files.
     $('#solution').fileupload({
-        dataType: 'json',
+        dataType: 'html',
         autoUpload: false,
         singleFileUploads: false,
         add: function(e, data) {
@@ -58,10 +58,12 @@ $(document).ready(function() {
             }
         },
         done: function (e, data) {
-            if ((data.result != false) && data.result.solution && data.result.solution.length > 0) {
-                var progressPerEach = Math.round((100 - loadPercentage) / data.result.solution.length);
+            var result = data.result;
+            result = $.parseJSON(result);
+            if ((result != false) && result.solution && result.solution.length > 0) {
+                var progressPerEach = Math.round((100 - loadPercentage) / result.solution.length);
                 var i = 0;
-                uploadCallback(data, i, loadPercentage, progressPerEach);
+                uploadCallback(result, i, loadPercentage, progressPerEach);
             }
         },
         progressall: function(e, data) {
@@ -165,7 +167,9 @@ function fillProgress(completed) {
     }
     $('#filler').css('width', progresspx);
     if(completed > 95) {
-        $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
+        setTimeout(function() {
+            $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
+        }, 500);
     }
 }
 
@@ -173,11 +177,11 @@ function fillProgress(completed) {
  * Asynchronous callback for image resize
  * Synchronous is not working in Chrome (see http://bugs.jquery.com/ticket/7464)
  */
-function uploadCallback(data, i, completed, progressPerEach) {
-    if (i < data.result.solution.length) {
+function uploadCallback(result, i, completed, progressPerEach) {
+    if (i < result.solution.length) {
         var query = {
-            id: data.result.id,
-            name: data.result.solution[i].name
+            id: result.id,
+            name: result.solution[i].name
         };
         $.ajax({
             url: '/solutionfiles/resize.json/',
@@ -189,12 +193,12 @@ function uploadCallback(data, i, completed, progressPerEach) {
             completed += progressPerEach;
             fillProgress(completed);
             i++;
-            uploadCallback(data, i, completed, progressPerEach);
+            uploadCallback(result, i, completed, progressPerEach);
         });
     } else {
         setTimeout(function() {
             $('#filename').html('Файл не выбран');
             window.location = $('#redirect-value').val();
-        }, 500);
+        }, 800);
     }
 }
