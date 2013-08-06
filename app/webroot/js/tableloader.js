@@ -61,13 +61,14 @@ function TableLoader() {
         } else {
             queryToSearchField(options);
         }
-        $('#pitches-ajax-wrapper').fadeIn(100);
+        $('.pitches-ajax-wrapper').fadeIn(100);
         $.get('/pitches.json', options, function(response) {
             self.page = response.data.info.page;
             self.total = response.data.info.total;
             self.renderTable(response);
             self.renderNav(response);
-            $('#pitches-ajax-wrapper').fadeOut(50);
+            $('.pitches-ajax-wrapper').fadeOut(50);
+            $('html, body').animate({ scrollTop: 0 }, 600 );
             if (response.data.pitches.length == 0) {
                 $('.all-pitches, .foot-content').hide();
                 var image = '/img/filter-arrow-down.png';

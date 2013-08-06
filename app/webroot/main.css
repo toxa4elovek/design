@@ -2467,14 +2467,12 @@ a.go-pitch{
 .pitch-collapsed{
 	display:none;
 }
-
 .foot-content{
-	height:175px;
 	position:relative;
 }
 .icons-infomation{
 	width:410px;
-	padding: 15px 0 25px 55px;
+	padding: 65px 0 30px 55px;
 	float:left;
 }
 .icons-infomation li{
@@ -2921,7 +2919,7 @@ thead td .sort-link:hover {
 .sort-link[rel="asc"]:hover {
     background-position: 100% -19px;
 }
-#pitches-ajax-wrapper {
+.pitches-ajax-wrapper {
     display: none;
     position: absolute;
     top: 20px;
@@ -2930,7 +2928,10 @@ thead td .sort-link:hover {
     height: 32px;
     background: url(/img/sep.png) repeat-x scroll 0 50% transparent;
 }
-#pitches-ajax-loader {
+.pitches-ajax-wrapper.no-separator {
+    background: transparent;
+}
+.pitches-ajax-loader {
     position: absolute;
     left: 150px;
     top: 0;
@@ -2967,4 +2968,7 @@ div.no-result h1 {
 div.no-result p {
 	text-transform: none;
 	margin: 10px auto 20px;
+}
+.clr {
+    clear: both;
 }
