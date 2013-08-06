@@ -24,13 +24,14 @@ class Solution extends \app\models\AppModel {
         'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/solutions/'),
         'setPermission' => array('mode' => 0644),
         'processImage' => array(
-            //'largest' => array('image_resize' => true, 'image_ratio_crop' => true, 'image_x' => 960, 'image_y' => 740, 'file_overwrite' => true),
-            'solutionView' => array('image_resize' => true, 'image_ratio_fill' => true, 'image_x' => 488, 'image_background_color' => '#dddddd',  'image_y' => 366, 'file_overwrite' => true),
-            //'gallerySmallSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 99, 'image_y' => 75, 'file_overwrite' => true),
-            'galleryLargeSize' => array('image_resize' => true, 'image_ratio_fill' => true, 'image_x' => 180, 'image_background_color' => '#ffffff', 'image_y' => 135, 'file_overwrite' => true),
-            'gallerySiteSize' => array('image_resize' => true, 'image_x' => 800, 'image_ratio_y' => true),
-            /*'galleryLargeSize' => array('image_resize' => true, 'image_ratio_crop' => 'TB', 'image_x' => 179, 'image_y' => 135, 'file_overwrite' => true),*/
-            //'promoSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 259, 'image_y' => 258, 'file_overwrite' => true),
+// This param is disabled for resizing image separately
+//              //'largest' => array('image_resize' => true, 'image_ratio_crop' => true, 'image_x' => 960, 'image_y' => 740, 'file_overwrite' => true),
+//            'solutionView' => array('image_resize' => true, 'image_ratio_fill' => true, 'image_x' => 488, 'image_background_color' => '#dddddd',  'image_y' => 366, 'file_overwrite' => true),
+//            //'gallerySmallSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 99, 'image_y' => 75, 'file_overwrite' => true),
+//            'galleryLargeSize' => array('image_resize' => true, 'image_ratio_fill' => true, 'image_x' => 180, 'image_background_color' => '#ffffff', 'image_y' => 135, 'file_overwrite' => true),
+//            'gallerySiteSize' => array('image_resize' => true, 'image_x' => 800, 'image_ratio_y' => true),
+//            /*'galleryLargeSize' => array('image_resize' => true, 'image_ratio_crop' => 'TB', 'image_x' => 179, 'image_y' => 135, 'file_overwrite' => true),*/
+//            //'promoSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 259, 'image_y' => 258, 'file_overwrite' => true),
         ),
     ));
 
@@ -107,7 +108,6 @@ http://godesigner.ru/answers/view/73');
                 $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message);
                 Comment::createComment($data);
                 User::sendSpamSolutionSelected($result);
-
                 $tweet = 'Победа присуждена в питче «' . $pitch->title . '» http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing #Go_Deer';
                 User::sendTweet($tweet);
             }
