@@ -1376,6 +1376,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
 	}
 
     public function upload() {
+        \lithium\net\http\Media::type('json', array('text/html'));
         if(($this->request->id > 0) && ($pitch =  Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             if(($pitch->status != 0) || ($pitch->published != 1)) {
                 $this->redirect(array('Pitches::view', 'id' => $pitch->id));
@@ -1391,7 +1392,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                         $this->request->data['user_id'] = Session::read('user.id');
                         $result = Solution::uploadSolution($this->request->data);
                         if($result) {
-                            return $result->data();
+                            return $this->render(array('data' => array('json' => $result->data())));
                         }else {
                             return false;
                         }

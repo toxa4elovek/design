@@ -509,7 +509,7 @@ $(document).ready(function() {
                         $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
                     });
                 }else {
-                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution.weburl + '" class="solution-image" /></a>');
+                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution_gallerySiteSize.weburl + '" class="solution-image" /></a>');
                 }
             }
             

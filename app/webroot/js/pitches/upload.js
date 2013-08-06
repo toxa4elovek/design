@@ -40,8 +40,9 @@ $(document).ready(function() {
         $('img', this).attr('src', '/img/order2.png');
     })
 
+    var loadPercentage = 30; // Progressbar percentage for loading files.
     $('#solution').fileupload({
-        dataType: 'json',
+        dataType: 'html',
         autoUpload: false,
         singleFileUploads: false,
         add: function(e, data) {
@@ -50,29 +51,26 @@ $(document).ready(function() {
                 var html = '';
                 $.each(data.files, function(index, object) {
                     html += '<li class="fakeinput" style="background: url(/img/attach_icon.png) no-repeat scroll 0px 0px transparent; padding-top: 1px; margin-left: 0px; height:20px; padding-left: 20px;">' + object.name + '</li>';
-                })
+                });
                 $('#filelist').html(html);
             }else {
                 return false;
             }
         },
         done: function (e, data) {
-            $('#filename').html('Файл не выбран');
-            window.location = $('#redirect-value').val();
+            var result = data.result;
+            result = $.parseJSON(result);
+            if ((result != false) && result.solution && result.solution.length > 0) {
+                var progressPerEach = Math.round((100 - loadPercentage) / result.solution.length);
+                var i = 0;
+                uploadCallback(result, i, loadPercentage, progressPerEach);
+            }
         },
         progressall: function(e, data) {
             if(data.total > 0) {
-                var percent = data.total / 100;
+                var percent = data.total / loadPercentage;
                 var completed = Math.round(data.loaded / percent);
-                $('#progressbar').text(completed + '%');
-                var progresspx = Math.round(3.4 * completed);
-                if(progresspx > 330) {
-                    progresspx == 330;
-                }
-                $('#filler').css('width', progresspx);
-                if(completed > 95) {
-                    $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
-                }
+                fillProgress(completed);
             }
         },
         send: function (e, data) {
@@ -155,4 +153,52 @@ function isAddressEmpty() {
         }
     });
     return res;
+}
+
+/*
+ * Filling progressbar with completed value
+ */
+function fillProgress(completed) {
+    completed = (completed > 95) ? 100 : completed;
+    $('#progressbar').text(completed + '%');
+    var progresspx = Math.round(3.4 * completed);
+    if(progresspx > 330) {
+        progresspx == 330;
+    }
+    $('#filler').css('width', progresspx);
+    if(completed > 95) {
+        setTimeout(function() {
+            $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
+        }, 500);
+    }
+}
+
+/*
+ * Asynchronous callback for image resize
+ * Synchronous is not working in Chrome (see http://bugs.jquery.com/ticket/7464)
+ */
+function uploadCallback(result, i, completed, progressPerEach) {
+    if (i < result.solution.length) {
+        var query = {
+            id: result.id,
+            name: result.solution[i].name
+        };
+        $.ajax({
+            url: '/solutionfiles/resize.json/',
+            type: 'POST',
+            data: query,
+            global: false,
+            dataType: 'json'
+        }).done(function() {
+            completed += progressPerEach;
+            fillProgress(completed);
+            i++;
+            uploadCallback(result, i, completed, progressPerEach);
+        });
+    } else {
+        setTimeout(function() {
+            $('#filename').html('Файл не выбран');
+            window.location = $('#redirect-value').val();
+        }, 800);
+    }
 }
