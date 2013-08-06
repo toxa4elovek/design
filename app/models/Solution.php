@@ -295,6 +295,7 @@ http://godesigner.ru/answers/view/73');
             $solution->save();
             $pitch->awarded = $solution->id;
             $pitch->status = 1;
+            $pitch->awardedDate = date('Y-m-d H:i:s');
             $pitch->save();
             $result = $solution->data();
             return compact('result');

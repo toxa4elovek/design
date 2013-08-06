@@ -6,6 +6,7 @@ use \app\models\Pitch;
 use \app\models\Pitchfile;
 use \app\models\Category;
 use \app\models\Grade;
+use \app\models\Addon;
 use \app\models\Solution;
 use \app\models\Comment;
 use \app\models\User;
@@ -82,7 +83,7 @@ ini_set('display_errors', '1');
             'all' => array(),
             'index' => array(
                 'OR' => array(
-                    array('status = 2 AND finishDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+                    array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
                     array('status < 2 AND awarded = 0'),
                 ),
             ),
@@ -537,17 +538,18 @@ ini_set('display_errors', '1');
             if (0 == $this->request->data["RESULT"]) {
                 switch ($this->request->data["TRTYPE"]) {
                     case 0:
+                        //Авторизован (пользователь оплатил. данные на его карте заблокированы, но не списаны)
+                        /*
+                          если требуется моментальное закрытие (автозакрытие),
+                          то отсюда же шлём метобом POST (через socket, curl или file_get_contents или....)
+                          пришедшие данные на закрытие на ссылу из документации https://pay.masterbank.ru/acquiring/close
+                          */
                         $status = 2;
                         if ($status) {
                             $webgate = new Webgate();
                             $result = $webgate->close($this->request->data);
                         }
-                        //Авторизован (пользователь оплатил. данные на его карте заблокированы, но не списаны)
-                        /*
-                      если требуется моментальное закрытие (автозакрытие),
-                      то отсюда же шлём метобом POST (через socket, curl или file_get_contents или....)
-                      пришедшие данные на закрытие на ссылу из документации https://pay.masterbank.ru/acquiring/close
-                      */
+
                         break;
                     case 21:
                         $status = 3; 	//Оплачен
