@@ -233,6 +233,22 @@ $(document).ready(function(){
         }
     });
 
+    // Keys navigation
+    $(document).keydown(function(e) {
+        if ($('.solution-overlay').is(':hidden')) {
+            return true;
+        }
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+            return true;
+        }
+        if (e.keyCode == 37) { // left
+            $('.solution-prev-area').click();
+        }
+        if (e.keyCode == 39) { // right
+            $('.solution-next-area').click();
+        }
+    });
+
     $('.like-small-icon').click(function(){
 
         var likesNum = $(this).next();
