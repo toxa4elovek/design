@@ -108,7 +108,6 @@ http://godesigner.ru/answers/view/73');
                 $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message);
                 Comment::createComment($data);
                 User::sendSpamSolutionSelected($result);
-
                 $tweet = 'Победа присуждена в питче «' . $pitch->title . '» http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing #Go_Deer';
                 User::sendTweet($tweet);
             }
