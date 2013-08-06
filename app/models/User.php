@@ -454,6 +454,14 @@ class User extends \app\models\AppModel {
         }
     }
 
+    public static function sendAdminModeratedPitch($pitch) {
+        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        foreach($users as $user) {
+            $data = array('user' => $user, 'pitch' => $pitch);
+            SpamMailer::newmoderatedpitch($data);
+        }
+    }
+
     public static function sendSpamWincomment($comment, $recipient) {
         $solution = Solution::first($comment->solution_id);
         $pitch = Pitch::first($solution->pitch_id);
