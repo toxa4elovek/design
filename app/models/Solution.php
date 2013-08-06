@@ -307,9 +307,7 @@ http://godesigner.ru/answers/view/73');
 
             $pitch->awarded = $solution->id;
             $pitch->status = 1;
-            if (strtotime($pitch->finishDate) > time()) {
-                $pitch->finishDate = date('Y-m-d H:i:s');
-            }
+            $pitch->awardedDate = date('Y-m-d H:i:s');
             $pitch->save();
             $result = $solution->data();
             return compact('result');

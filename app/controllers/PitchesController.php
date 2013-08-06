@@ -82,7 +82,7 @@ ini_set('display_errors', '1');
             'all' => array(),
             'index' => array(
                 'OR' => array(
-                    array('status = 2 AND totalFinishDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+                    array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
                     array('status < 2 AND awarded = 0'),
                 ),
             ),
