@@ -7,37 +7,31 @@ use \image_manipulation\processor\Upload;
 class Solutionfile extends \app\models\AppModel {
 
     protected static $processImage = array(
-                'solutionView' => array(
-                    'image_resize' => true,
-                    'image_ratio_fill' => true,
-                    'image_x' => 488,
-                    'image_background_color' => '#dddddd',
-                    'image_y' => 366,
-                    'file_overwrite' => true,
-                ),
-                'galleryLargeSize' => array(
-                    'image_resize' => true,
-                    'image_ratio_fill' => true,
-                    'image_x' => 180,
-                    'image_background_color' => '#ffffff',
-                    'image_y' => 135,
-                    'file_overwrite' => true,
-                ),
-                'gallerySiteSize' => array(
-                    'image_resize' => true,
-                    'image_x' => 800,
-                    'image_ratio_y' => true,
-                ),
-            );
+        'solutionView' => array(
+            'image_resize' => true,
+            'image_x' => 600,
+            'image_ratio_y' => true,
+        ),
+        'galleryLargeSize' => array(
+            'image_resize' => true,
+            'image_ratio_fill' => true,
+            'image_x' => 180,
+            'image_background_color' => '#ffffff',
+            'image_y' => 135,
+            'file_overwrite' => true,
+        ),
+        'gallerySiteSize' => array(
+            'image_resize' => true,
+            'image_x' => 800,
+            'image_ratio_y' => true,
+        ),
+    );
 
     protected static $processImageWatermark = array(
         'solutionView' => array(
             'image_resize' => true,
-            'image_ratio_fill' => true,
-            'image_x' => 488,
-            'image_background_color' => '#dddddd',
-            'image_y' => 366,
-            'file_overwrite' => true,
+            'image_x' => 600,
+            'image_ratio_y' => true,
             'image_watermark' => 'img/closed_pitch_watermark.png',
             'image_watermark_position' => 'TR',
         ),
@@ -60,7 +54,7 @@ class Solutionfile extends \app\models\AppModel {
 
     public static function resize($params) {
         $options = self::$processImage;
-        if ($params['solution']->pitch->private > 0) {
+        if ($params['solution']->pitch->private > 0 && false) { // false turns off the watermarking
             $options = self::$processImageWatermark;
         }
         foreach ($options as $option => $imageParams) {
