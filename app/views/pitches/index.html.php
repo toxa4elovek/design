@@ -3,8 +3,8 @@
 
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 	<div class="conteiner">
-	    <div id="pitches-ajax-wrapper">
-            <div id="pitches-ajax-loader">&nbsp;</div>
+        <div class="pitches-ajax-wrapper">
+            <div class="pitches-ajax-loader">&nbsp;</div>
         </div>
 		<section>
             <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 788px; margin-left: 77px;">
@@ -229,12 +229,9 @@
 				</tbody>
 			</table>
 			<div class="foot-content">
-				<ul class="icons-infomation">
-					<li class="icons-infomation-one supplement3">Мнение экспертов<br> важно для этого клиента</li>
-					<li class="icons-infomation-two supplement3">Закрытый питч</li>
-					<li class="icons-infomation-three supplement3">Идеи больше не принимаются, идет выбор победителя</li>
-					<li class="icons-infomation-four supplement3">Питч завершен,<br> победитель выбран</li>
-				</ul>
+                <div class="pitches-ajax-wrapper no-separator">
+                    <div class="pitches-ajax-loader">&nbsp;</div>
+                </div>
 				<div class="page-nambe-nav">
                     <?php
                     if($data['info']['total'] > 1):
@@ -296,7 +293,13 @@
                     endif ?>
 					<!--a href="#">&#60;</a><a href="#" class="this-page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a> ... <a href="#">7</a><a href="#">&#62;</a-->
 				</div>
-				<div style="margin-top:20px;height:40px;background: url('/img/guarantee2.png') no-repeat scroll 0 0 transparent" class="you-profile supplement3">
+				<ul class="icons-infomation">
+					<li class="icons-infomation-one supplement3">Мнение экспертов<br> важно для этого клиента</li>
+					<li class="icons-infomation-two supplement3">Закрытый питч</li>
+					<li class="icons-infomation-three supplement3">Идеи больше не принимаются, идет выбор победителя</li>
+					<li class="icons-infomation-four supplement3">Питч завершен,<br> победитель выбран</li>
+				</ul>
+				<div style="margin-top:70px;height:40px;background: url('/img/guarantee2.png') no-repeat scroll 0 0 transparent" class="you-profile supplement3">
 					Гарантированный питч,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
 				</div>
                 <div style="margin-top:20px;height:40px;margin-right: 128px;" class="you-profile supplement3">
@@ -309,6 +312,7 @@
                 <p><img src="http://www.godesigner.ru/img/help/d3fa990a965b8ebf1cf8691586140165.jpg" alt="" width="610" height="292"></p>
 
 			</div>
+			<div class="clr"></div>
 		</section>
 	</div>
 	<div class="conteiner-bottom">
@@ -323,4 +327,4 @@
     <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить свое решение. Нажав "Да, одобряю", вы подтверждаете, что хотите удалить его из списка. Убедитесь, что это черновой вариант и не ждет поступления оплаты на наш счет. За справкой <a href="/pages/contacts">обратитесь к нам</a>.</p>
     <div class="final-step-nav wrapper" style="margin-top: 180px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="confirmDelete" value="Да, одобряю"></div>
 </div>
-<?=$this->html->script(array('jquery-deparam.js', 'tableloader.js',  'jquery.simplemodal-1.4.2.js', 'jquery.keyboard.js', 'pitches/index.js'), array('inline' => false))?>
+<?=$this->html->script(array('jquery-deparam.js', 'tableloader.js', 'jquery.simplemodal-1.4.2.js', 'jquery.keyboard.js', 'pitches/index.js'), array('inline' => false))?>
