@@ -45,8 +45,9 @@ $(document).ready(function() {
         dataType: 'html',
         autoUpload: false,
         singleFileUploads: false,
+        dropZone: $('.uploadblock'),
         add: function(e, data) {
-            if(data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i)) {
+            if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
                 e.data.fileupload.myData = data;
                 var html = '';
                 $.each(data.files, function(index, object) {
