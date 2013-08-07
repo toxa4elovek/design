@@ -45,6 +45,14 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function newmoderatedpitch($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Новый питч на модерацию!',
+            'data' => $data
+        ));
+    }
+
     public static function dailydigest($data) {
         return self::_mail(array(
             'to' => $data['user']->email,

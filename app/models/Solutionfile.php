@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use \image_manipulation\processor\Upload;
+use \image_manipulation\processor_032\Upload;
 
 class Solutionfile extends \app\models\AppModel {
 
@@ -54,7 +54,7 @@ class Solutionfile extends \app\models\AppModel {
 
     public static function resize($params) {
         $options = self::$processImage;
-        if ($params['solution']->pitch->private > 0 && false) { // false turns off the watermarking
+        if ($params['solution']->pitch->private > 0) {
             $options = self::$processImageWatermark;
         }
         foreach ($options as $option => $imageParams) {
@@ -67,8 +67,7 @@ class Solutionfile extends \app\models\AppModel {
             ));
             $newfiledata = pathinfo($newname->filename);
             $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
-            $imageProcessor = new Upload();
-            $imageProcessor->uploadandinit($newname->filename);
+            $imageProcessor = new Upload($newname->filename);
             $imageProcessor->uploaded = true;
             $imageProcessor->no_upload_check = true;
             $imageProcessor->file_src_pathname = $newname->filename;

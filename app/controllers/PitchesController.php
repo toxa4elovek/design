@@ -544,10 +544,15 @@ ini_set('display_errors', '1');
                           то отсюда же шлём метобом POST (через socket, curl или file_get_contents или....)
                           пришедшие данные на закрытие на ссылу из документации https://pay.masterbank.ru/acquiring/close
                           */
-                        $status = 2;
-                        if ($status) {
-                            $webgate = new Webgate();
-                            $result = $webgate->close($this->request->data);
+                        if ($pitch = Pitch::first($this->request->data['ORDER'])) {
+                            if ($pitch->category_id == 10) {
+                                $pitch->moderated = 1;
+                                $pitch->save();
+                                User::sendAdminModeratedPitch($pitch);
+                            } else {
+                                $webgate = new Webgate();
+                                $result = $webgate->close($this->request->data);
+                            }
                         }
 
                         break;
