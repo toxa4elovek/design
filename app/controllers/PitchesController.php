@@ -546,6 +546,8 @@ ini_set('display_errors', '1');
                           */
                         if ($pitch = Pitch::first($this->request->data['ORDER'])) {
                             if ($pitch->category_id == 10) {
+                                $pitch->moderated = 1;
+                                $pitch->save();
                                 User::sendAdminModeratedPitch($pitch);
                             } else {
                                 $webgate = new Webgate();
