@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use \lithium\storage\Session;
 use \app\models\Solutionfile;
+use \app\models\Solution;
 
 class SolutionfilesController extends \app\controllers\AppController {
 
@@ -25,4 +26,32 @@ class SolutionfilesController extends \app\controllers\AppController {
         die();
     }
 
+    public function resize() {
+        $res = array(
+            'error' => false,
+        );
+        $params = array();
+        if (!isset($this->request->data['id']) || empty($this->request->data['id']) || !isset($this->request->data['name']) || empty($this->request->data['name'])) {
+            $res['error'] = 'Wrong request';
+            return compact('res');
+        }
+        $params['name'] = $this->request->data['name'];
+        $params['solution'] = Solution::first(array(
+            'conditions' => array(
+                'Solution.id' => $this->request->data['id'],
+            ),
+            'with' => array(
+                'Pitch',
+            ),
+        ));
+
+        if ($params['solution']->user_id != Session::read('user.id')) {
+            $res['error'] = 'Wrong user';
+            return compact('res');
+        }
+        if (Solutionfile::resize($params)) {
+            $res['result'] = true;
+        }
+        return compact('res');
+    }
 }

@@ -544,10 +544,15 @@ ini_set('display_errors', '1');
                           то отсюда же шлём метобом POST (через socket, curl или file_get_contents или....)
                           пришедшие данные на закрытие на ссылу из документации https://pay.masterbank.ru/acquiring/close
                           */
-                        $status = 2;
-                        if ($status) {
-                            $webgate = new Webgate();
-                            $result = $webgate->close($this->request->data);
+                        if ($pitch = Pitch::first($this->request->data['ORDER'])) {
+                            if ($pitch->category_id == 10) {
+                                $pitch->moderated = 1;
+                                $pitch->save();
+                                User::sendAdminModeratedPitch($pitch);
+                            } else {
+                                $webgate = new Webgate();
+                                $result = $webgate->close($this->request->data);
+                            }
                         }
 
                         break;
@@ -1378,6 +1383,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
 	}
 
     public function upload() {
+        \lithium\net\http\Media::type('json', array('text/html'));
         if(($this->request->id > 0) && ($pitch =  Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             if(($pitch->status != 0) || ($pitch->published != 1)) {
                 $this->redirect(array('Pitches::view', 'id' => $pitch->id));
@@ -1393,7 +1399,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                         $this->request->data['user_id'] = Session::read('user.id');
                         $result = Solution::uploadSolution($this->request->data);
                         if($result) {
-                            return $result->data();
+                            return $this->render(array('data' => array('json' => $result->data())));
                         }else {
                             return false;
                         }
