@@ -43,10 +43,11 @@ class PitchesController extends \app\controllers\AppController {
 
     public function blank() {
         error_reporting(E_ALL);
-ini_set('display_errors', '1');
-        #$pitch = Pitch::first(array('conditions' => array('id' => $this->request->id), 'with' => array('User')));
-        $pitch = Pitch::first(array('with' => array('User'), 'order' => array('id' => 'desc')));
-        return compact('pitch');
+        ini_set('display_errors', '1');
+        $pitch = Pitch::first('101157');
+        var_dump($pitch);
+        User::sendAdminModeratedPitch($pitch);
+        die();
     }
 
     public function blank2() {
