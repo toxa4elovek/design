@@ -63,9 +63,13 @@
                                     $types['current'] += 1?>
                                 <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a></td>
                                 <?php endif;?>
-                                <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0)):
+                                <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
                                     $types['needpay'] += 1?>
                                 <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/edit/<?=$mypitch->id?>" >Ожидание оплаты</a></td>
+                                <?php endif;?>
+                                <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
+                                    $types['needpay'] += 1?>
+                                <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/edit/<?=$mypitch->id?>" >Ожидание модерации</a></td>
                                 <?php endif;?>
                                 <?php if(($mypitch->published == 0) &&($mypitch->brief == 1) && ($mypitch->billed == 1) && ($mypitch->published == 0)):
                                     $types['needpay'] += 1?>

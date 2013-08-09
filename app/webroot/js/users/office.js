@@ -628,7 +628,7 @@ function ParticipateTableLoader() {
             var editLink = '';
             var total = object.price;
             if((object.billed == 0) && (object.status == 0)) {
-                var status = 'Ожидание оплаты';
+                var status = (object.moderated == 1) ? 'Ожидание<br />модерации' : 'Ожидание оплаты';
                 if($('#user_id').val() == object.user_id) {
                     total = object.total;
                     editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/edit_icon_white.png" class="pitches-name-td-img" width="18" height="18"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'"  class="mypitch_delete_link" title="Удалить"><img src="/img/delete_icon_white.png" class="pitches-name-td-img" width="12" height="12"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/buy_icon_white.png" class="pitches-name-td2-img"  width="18" height="18"></a>';

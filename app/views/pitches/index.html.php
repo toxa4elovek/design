@@ -131,40 +131,32 @@
                                     $rowClass .= ' close-and-expert';
                                     $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-3.png" title="Закрытый питч. Важно мнение эксперта." alt="Закрытый питч. Важно мнение эксперта.">';
                                 }
-                        if($pitch['status'] == 2) {
+                        if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] != 1)) {
+                            $timeleft = 'Ожидание оплаты';
+                        } else if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] == 1)) {
+                            $timeleft = 'Ожидание<br />модерации';
+                        } else if (($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
+                            $timeleft = 'Ожидайте звонка';
+                        } else {
+                            $timeleft = $pitch['startedHuman'];
+                        }
+                    } else if (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
+                        $rowClass .= ' selection';
+                        $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-1.png" title="Идёт выбор победителя." alt="Идёт выбор победителя.">';
+                        $timeleft = 'Выбор победителя';
+                    } else if (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))) {
+                        $rowClass .= ' pitch-end';
+                        $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
+                        if ($pitch['status'] == 2) {
                             $timeleft = 'Питч завершен';
                         }else if(($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
                             $timeleft = 'Победитель выбран';
                         }else if(($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
                             $timeleft = 'Выбор победителя';
-                        }else if(($pitch['status'] == 0) && ($pitch['published'] == 0) && ($pitch['billed'] == 0)) {
-                            $timeleft = 'Ожидание оплаты';
-                        }else if(($pitch['status'] == 0) && ($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
-                            $timeleft = 'Ожидайте звонка';
                         }else {
                             $timeleft = $pitch['startedHuman'];
                         }
-                    }else if (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
-                                $rowClass .= ' selection';
-                                $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-1.png" title="Идёт выбор победителя." alt="Идёт выбор победителя.">';
-                                $timeleft = 'Выбор победителя';
-                            }else if (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))){
-                                $rowClass .= ' pitch-end';
-                                $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
-                                if($pitch['status'] == 2) {
-                                    $timeleft = 'Питч завершен';
-                                }else if(($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
-                                    $timeleft = 'Победитель выбран';
-                                }else if(($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
-                                    $timeleft = 'Выбор победителя';
-                                }else if(($pitch['status'] == 0) && ($pitch['published'] == 0) && ($pitch['billed'] == 0)) {
-                                    $timeleft = 'Ожидание оплаты';
-                                }else if(($pitch['status'] == 0) && ($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
-                                    $timeleft = 'Ожидайте звонка';
-                                }else {
-                                    $timeleft = $pitch['startedHuman'];
-                                }
-                            }
+                    }
 
                     if($pitch['user_id'] == $this->session->read('user.id')){
                         if($pitch['billed'] == 1) {

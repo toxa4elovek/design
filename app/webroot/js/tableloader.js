@@ -126,24 +126,20 @@ function TableLoader() {
                     rowClass += ' close-and-expert';
                     icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-3.png" title="Закрытый питч. Важно мнение эксперта." alt="Закрытый питч. Важно мнение эксперта.">';
                 }
-                if(object.status == 2) {
-                    timeleft = 'Питч завершен';
-                }else if((object.status == 1) && (object.awarded > 0)) {
-                    timeleft = 'Победитель выбран';
-                }else if((object.status == 1) && (object.awarded == 0)) {
-                    timeleft = 'Выбор победителя';
-                }else if((object.status == 0) && (object.published == 0) && (object.billed == 0)) {
+                if ((object.published == 0) && (object.billed == 0) && (object.moderated != 1)) {
                     timeleft = 'Ожидание оплаты';
-                }else if((object.status == 0) && (object.published == 0) && (object.billed == 1) && (object.brief == 1)) {
+                } else if ((object.published == 0) && (object.billed == 0) && (object.moderated == 1)) {
+                    timeleft = 'Ожидание<br />модерации';
+                } else if((object.published == 0) && (object.billed == 1) && (object.brief == 1)) {
                     timeleft = 'Ожидайте звонка';
-                }else {
+                } else {
                     timeleft = object.startedHuman;
                 }
-            }else if ((object.status == 1) && (object.awarded == 0)) {
+            } else if ((object.status == 1) && (object.awarded == 0)) {
                 rowClass += ' selection';
                 icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-1.png" title="Идёт выбор победителя." alt="Идёт выбор победителя.">';
                 timeleft = 'Выбор победителя';
-            }else if ((object.status == 2) || ((object.status == 1) && (object.awarded > 0))){
+            } else if ((object.status == 2) || ((object.status == 1) && (object.awarded > 0))){
                 rowClass += ' pitch-end';
                 icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
                 if(object.status == 2) {
@@ -152,10 +148,6 @@ function TableLoader() {
                     timeleft = 'Победитель выбран';
                 }else if((object.status == 1) && (object.awarded == 0)) {
                     timeleft = 'Выбор победителя';
-                }else if((object.status == 0) && (object.published == 0) && (object.billed == 0)) {
-                    timeleft = 'Ожидание оплаты';
-                }else if((object.status == 0) && (object.published == 0) && (object.billed == 1) && (object.brief == 1)) {
-                    timeleft = 'Ожидайте звонка';
                 }else {
                     timeleft = object.startedHuman;
                 }
