@@ -6,6 +6,7 @@ use \lithium\util\String;
 use \lithium\storage\Session;
 
 use \app\models\Promocode;
+use \app\models\Pitch;
 use \app\models\Favourite;
 use \app\models\Solution;
 use \app\models\Wincomment;
@@ -459,6 +460,15 @@ class User extends \app\models\AppModel {
         foreach($users as $user) {
             $data = array('user' => $user, 'pitch' => $pitch);
             SpamMailer::newmoderatedpitch($data);
+        }
+    }
+
+    public static function sendAdminNewAddon($addon) {
+        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $pitch = Pitch::first($addon->pitch_id);
+        foreach($users as $user) {
+            $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
+            SpamMailer::newaddon($data);
         }
     }
 

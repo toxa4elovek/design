@@ -564,6 +564,7 @@ ini_set('display_errors', '1');
                             Logger::write('debug', 'addon');
                             $addon->billed = 1;
                             $addon->save();
+                            User::sendAdminNewAddon($addon);
                         }
                         break;
                     case 24:

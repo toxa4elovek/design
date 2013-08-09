@@ -1,8 +1,6 @@
 <?php
 namespace app\extensions\mailers;
 
-
-
 class SpamMailer extends \li3_mailer\extensions\Mailer {
 
     public static function newpitch($data) {
@@ -49,6 +47,35 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
             'to' => $data['user']->email,
             'subject' => 'Новый питч на модерацию!',
+            'data' => $data
+        ));
+    }
+
+    public static function newaddon($data) {
+        $addonsCount = 0;
+        $addonsList = '<br />';
+        if ($data['addon']->experts == 1) {
+            $addonsCount++;
+            $addonsList .= 'экспертное мнение<br />';
+        }
+        if ($data['addon']->prolong == 1) {
+            $addonsCount++;
+            $addonsList .= 'продление<br />';
+        }
+        if ($data['addon']->brief == 1) {
+            $addonsCount++;
+            $addonsList .= 'заполнение брифа<br />';
+        }
+        $stringSubject = 'Новая доп. опция!';
+        $data['stringAddons'] = 'КУПЛЕНА ДОПОЛНИТЕЛЬНАЯ ОПЦИЯ:' . $addonsList;
+        if ($addonsCount > 1) {
+            $stringSubject = 'Новые доп. опции!';
+            $data['stringAddons'] = 'КУПЛЕНЫ ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ:' . $addonsList;
+        }
+
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => $stringSubject,
             'data' => $data
         ));
     }
