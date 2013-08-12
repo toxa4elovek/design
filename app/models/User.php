@@ -472,6 +472,15 @@ class User extends \app\models\AppModel {
         }
     }
 
+    public static function sendAdminNewAddonBrief($addon) {
+        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $pitch = Pitch::first($addon->pitch_id);
+        foreach($users as $user) {
+            $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
+            SpamMailer::newaddonbrief($data);
+        }
+    }
+
     public static function sendSpamWincomment($comment, $recipient) {
         $solution = Solution::first($comment->solution_id);
         $pitch = Pitch::first($solution->pitch_id);

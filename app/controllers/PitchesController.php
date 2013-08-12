@@ -556,19 +556,14 @@ ini_set('display_errors', '1');
                         }
 
                         break;
-                    case 21:
-                        $status = 3; 	//Оплачен
+                    case 21: //Оплачен
                         if($pitch = Pitch::first($this->request->data['ORDER'])) {
                             Pitch::activate($this->request->data['ORDER']);
-                        }elseif($addon = Addon::first($this->request->data['ORDER'])) {
-                            Logger::write('debug', 'addon');
-                            $addon->billed = 1;
-                            $addon->save();
-                            User::sendAdminNewAddon($addon);
+                        } elseif ($addon = Addon::first($this->request->data['ORDER'])) {
+                            Addon::activate($addon);
                         }
                         break;
-                    case 24:
-                        $status = 4; 	//Отменен
+                    case 24: //Отменен
                         break;
                 }
                 //обновляем статус заказа

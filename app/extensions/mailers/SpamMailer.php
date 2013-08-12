@@ -80,6 +80,14 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function newaddonbrief($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Новая доп. опция "заполнить бриф"!',
+            'data' => $data
+        ));
+    }
+
     public static function dailydigest($data) {
         return self::_mail(array(
             'to' => $data['user']->email,
