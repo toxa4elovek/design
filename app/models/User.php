@@ -5,6 +5,7 @@ use \lithium\util\Validator;
 use \lithium\util\String;
 use \lithium\storage\Session;
 
+use \app\models\Expert;
 use \app\models\Promocode;
 use \app\models\Pitch;
 use \app\models\Favourite;
@@ -560,6 +561,22 @@ class User extends \app\models\AppModel {
     public static function sendOpenLetter($pitch) {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
         return SpamMailer::openletter($data);
+    }
+
+    public static function sendExpertMail($addon) {
+        $data = array('pitch' => Pitch::first($addon->pitch_id));
+        $experts = unserialize($addon->{'expert-ids'});
+        foreach ($experts as $expert) {
+            $expert = Expert::first(array(
+                'conditions' => array(
+                    'Expert.id' => $expert,
+                ),
+                'with' => array('User'),
+            ));
+            $data['user'] = $expert->user;
+            SpamMailer::expertselected($data);
+        }
+        return true;
     }
 
     public static function sendSpamFirstSolutionForPitch($pitchId) {

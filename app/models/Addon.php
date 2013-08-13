@@ -17,6 +17,9 @@ class Addon extends \app\models\AppModel {
                 if ($params['addon']->brief == 1) {
                     User::sendAdminNewAddonBrief($params['addon']);
                 }
+                if ($params['addon']->experts == 1) {
+                    User::sendExpertMail($params['addon']);
+                }
             }
             return $result;
         });
