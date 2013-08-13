@@ -320,7 +320,14 @@ class Pitch extends \app\models\AppModel {
             $pitch->price += $sumProlong;
             $timeProlong = strtotime($pitch->finishDate) + ($addon->{'prolong-days'} * DAY);
             $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
-            return $pitch->save();
+            if ($pitch->save()) {
+                Comment::createComment(array(
+                    'pitch_id' => $pitch->id,
+                    'user_id' => User::getAdmin(),
+                    'text' => 'Дорогие друзья! Обратите внимание, что срок питча продлен до ' . date('d.m.Y', strtotime($pitch->finishDate)) . ', а размер вознаграждения увеличен.',
+                ));
+               return true;
+            }
         }
 
         return false;
