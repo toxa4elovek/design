@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use \app\models\Pitch;
 use \app\models\User;
 
 class Addon extends \app\models\AppModel {
@@ -19,6 +20,9 @@ class Addon extends \app\models\AppModel {
                 }
                 if ($params['addon']->experts == 1) {
                     User::sendExpertMail($params['addon']);
+                }
+                if ($params['addon']->prolong == 1 && $params['addon']->{'prolong-days'} > 0) {
+                    Pitch::addProlong($params['addon']);
                 }
             }
             return $result;

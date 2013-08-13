@@ -314,6 +314,18 @@ class Pitch extends \app\models\AppModel {
         return $result;
     }
 
+    public static function addProlong($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $sumProlong = 1000 * $addon->{'prolong-days'};
+            $pitch->price += $sumProlong;
+            $timeProlong = strtotime($pitch->finishDate) + ($addon->{'prolong-days'} * DAY);
+            $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
+            return $pitch->save();
+        }
+
+        return false;
+    }
+
     public static function finishPitch($pitchId) {
         $solutions = Solution::all(array(
             'conditions' => array('pitch_id' => $pitchId, 'nominated' => 1, 'awarded' => 0),
