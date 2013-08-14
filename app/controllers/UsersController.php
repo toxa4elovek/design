@@ -592,6 +592,9 @@ class UsersController extends \app\controllers\AppController {
                 return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
             }else {
                 // обычная регистрация
+                if (!isset($this->request->data['case']) || $this->request->data['case'] != 'fu27fwkospf') { // Check for bots
+                    return $this->redirect('/');
+                }
                 $user->token = User::generateToken();
                 $user->created = date('Y-m-d H:i:s');
 

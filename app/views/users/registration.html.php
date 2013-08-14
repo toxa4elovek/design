@@ -73,6 +73,7 @@
                 <?php endif; */
                 ?>
                 <!--input type="hidden" value="" id="invite"/-->
+                <input type="hidden" name="case" value="h4820g838f">
 				<p>
 					<?=$this->form->text('first_name', array('value' => $user->first_name, 'placeholder' => 'Имя', 'class' => 'name', 'required' => 'required')) ?>
 					<?php if(isset($errors['first_name'])):?>
