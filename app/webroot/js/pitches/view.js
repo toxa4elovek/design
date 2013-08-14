@@ -574,7 +574,7 @@ $(document).ready(function(){
 
             // Left Panel
             $('.solution-images').html('');
-            if (result.solution.images.solution) {
+            if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
                 if ($.isArray(result.solution.images.solution)) {
                     $.each(result.solution.images.solution_solutionView, function(idx, field) {
                         $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
@@ -582,6 +582,10 @@ $(document).ready(function(){
                 }else {
                     $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution_solutionView.weburl + '" class="solution-image" /></a>');
                 }
+            }else {
+                $('.solution-images').append('<div class="preview" style="width:520px;padding:40px; margin: 10px 0; height:286px;background-color:#efefef;"> \
+                    <span style="color:#666;font-size:34px;line-height:45px;">' + result.solution.description + '</span> \
+                </div>');
             }
 
             if (currentUserId == result.pitch.user_id) { // isClient
@@ -629,28 +633,42 @@ $(document).ready(function(){
             } else {
                 $('.author-from').text('');
             }
-            var desc = result.solution.description;
-            var viewLength = 100; // Description string cut length parameter
-            if (desc.length > viewLength) {
-                var descBefore = desc.slice(0, viewLength - 1);
-                descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
-                var descAfter = desc.slice(descBefore.length);
-                $('.solution-description').text(descBefore);
-                $('.description-more').show(500);
-                $('.description-more').on('click', function() {
-                    $('.solution-description').append(descAfter);
-                    descAfter = '';
-                    $('.description-more').hide();
-                });
-            } else {
-                $('.solution-description').text(result.solution.description);
-            }
-            if(result.solution.description == '') {
-                $('.solution-about').next().hide();
-                $('.solution-about').hide();
+
+            if (result.pitch.category_id != 7) {
+                var desc = result.solution.description;
+                var viewLength = 100; // Description string cut length parameter
+                if (desc.length > viewLength) {
+                    var descBefore = desc.slice(0, viewLength - 1);
+                    descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
+                    var descAfter = desc.slice(descBefore.length);
+                    $('.solution-description').text(descBefore);
+                    $('.description-more').show(500);
+                    $('.description-more').on('click', function() {
+                        $('.solution-description').append(descAfter);
+                        descAfter = '';
+                        $('.description-more').hide();
+                    });
+                } else {
+                    $('.solution-description').text(result.solution.description);
+                }
+                if(result.solution.description == '') {
+                    $('.solution-about').next().hide();
+                    $('.solution-about').hide();
+                }else {
+                    $('.solution-about').next().show();
+                    $('.solution-about').show();
+                }
             }else {
-                $('.solution-about').next().show();
-                $('.solution-about').show();
+                var html = '';
+                if ($.isArray(result.solution.images.solution)) {
+                    $.each(result.solution.images.solution, function(index, object) {
+                        html += '<a target="_blank" href="' + object.weburl + '">' + object.originalbasename + '</a><br>'
+                    })
+                }else {
+                    html = '<a href="' + result.solution.images.solution.weburl + '">' + result.solution.images.solution.originalbasename + '</a>'
+                }
+                $('.solution-description').prev().html('ФАЙЛЫ')
+                $('.solution-description').html(html);
             }
 
             // Copyrighted Materials
@@ -663,6 +681,8 @@ $(document).ready(function(){
             $('.value-views', '.solution-stat').text(result.solution.views || '');
             $('.value-likes', '.solution-stat').text(result.solution.likes || '');
             $('.value-comments', '.solution-stat').text(result.comments.length || '');
+
+            if (result.pitch.category_id != 7) {
 
             var media = '';
             if ($.isArray(result.solution.images.solution_solutionView)) {
@@ -711,7 +731,7 @@ $(document).ready(function(){
                     </tbody> \
                 </table> \
                 </div>');
-
+            }
 
             if (currentUserId == result.pitch.user_id) {
                 var html = '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';

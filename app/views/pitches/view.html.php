@@ -184,7 +184,7 @@
                             if($pitch->category_id == 7):
                                 if(($this->session->read('user.id') != null) && (($pitch->user_id == $this->session->read('user.id')) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == $this->session->read('user.id')))):
                                     $visible = true;?>
-                                    <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
+                                    <a class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
                                         <?php if(mb_strlen(trim($solution->description)) > 100):?>
                                         <?=mb_substr(trim($solution->description), 0, 100, 'UTF-8')?>
                                         <?php else:?>
