@@ -33,7 +33,7 @@ class AddonsController extends \app\controllers\AppController {
             if(($featuresData['brief'] > 0) && $pitch->brief == 0) {
                 $brief = 1;
                 $phonebrief = $this->request->data['commonPitchData']['phone-brief'];
-                $total += 750;
+                $total += 1000;
             }
             $data = array(
                 'pitch_id' => $this->request->data['commonPitchData']['id'],

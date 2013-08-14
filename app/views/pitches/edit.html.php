@@ -161,10 +161,10 @@ endif?>
 
 
             <div class="ribbon complete-brief">
-                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="750" id="phonebrief">Заполнить бриф</label></p>
+                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="1000" id="phonebrief">Заполнить бриф</label></p>
                 <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
                 <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" value="<?=$pitch->{'phone-brief'}?>" class="phone"></p>
-                <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">750.-</p>
+                <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">1000.-</p>
             </div>
 
         <div class="ribbon">
