@@ -68,7 +68,9 @@ function TableLoader() {
             self.renderTable(response);
             self.renderNav(response);
             $('.pitches-ajax-wrapper').fadeOut(50);
-            $('html, body').animate({ scrollTop: 0 }, 600 );
+            if (!options.fromQuery) { // Came Back - No Scroll
+                $('html, body').animate({ scrollTop: 0 }, 600 );
+            }
             if (response.data.pitches.length == 0) {
                 $('.all-pitches, .foot-content').hide();
                 var image = '/img/filter-arrow-down.png';
