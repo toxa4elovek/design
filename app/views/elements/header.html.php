@@ -9,6 +9,19 @@
 			$logo = "logo";
 		}
 	}
+
+	$templateView = $this;
+	$this->helper('html')->applyFilter('script', function($self, $params, $chain) use ($templateView) {
+	    $templateView->compressor->check($params);
+	    $result = $chain->next($self, $params, $chain);
+	    return $result;
+	});
+	$this->helper('html')->applyFilter('style', function($self, $params, $chain) use ($templateView) {
+	    $templateView->compressor->check($params);
+	    $result = $chain->next($self, $params, $chain);
+	    return $result;
+	});
+
 ?>
 <?php if(count($this->session->read('user.currentpitches')) > 0):?>
 <div id="pitch-panel">
