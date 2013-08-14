@@ -19,6 +19,7 @@
 		     
 		        <?php $errors = $user->errors();?>
 				<?=$this->form->create($user, array('action' => 'registration', 'id' => 'registration')) ?>
+                <input type="hidden" name="case" value="h4820g838f">
 				<p>
 					<?=$this->form->text('first_name', array('value' => $user->first_name, 'placeholder' => 'Имя', 'class' => 'name', 'required' => 'required')) ?>
 					<?php if(isset($errors['first_name'])):?>
