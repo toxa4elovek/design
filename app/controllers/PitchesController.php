@@ -1136,28 +1136,90 @@ ini_set('display_errors', '1');
 		}
 	}
 
-	public function getComments() {
-	    if (!$this->request->is('json')) {
-	        return $this->redirect('/pitches');
-	    }
-	    if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
-	        $currentUser = Session::read('user');
-	        if (($pitch->published == 0) && (($currentUser['id'] != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!User::checkRole('admin')))) {
-	            return false;
+    public function getComments() {
+        if (!$this->request->is('json')) {
+            return $this->redirect('/pitches');
+        }
+        if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
+            $currentUser = Session::read('user');
+            if (
+               $pitch->published == 0 &&
+               $currentUser['id'] != $pitch->user_id &&
+               $currentUser['isAdmin'] != 1 &&
+               !User::checkRole('admin')
+               ) {
+                return false;
 	        }
-	        if ($pitch->private == 1) {
-	            if (($pitch->user_id != $currentUser['id']) && (!User::checkRole('admin')) && (!$isExists = Request::first(array('conditions' => array('user_id' => $currentUser['id'], 'pitch_id' => $pitch->id))))) {
-	                return false;
-	            }
+	        if (
+	           $pitch->private == 1 &&
+	           $currentUser['id'] != $pitch->user_id &&
+	           !User::checkRole('admin') &&
+	           !$isExists = Request::first(array(
+	               'conditions' => array(
+	                   'user_id' => $currentUser['id'],
+	                   'pitch_id' => $pitch->id,
+	               ),
+	           ))
+	           ) {
+	           return false;
 	        }
 
-            $commentsRaw = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.id' => 'desc'), 'with' => array('User')));
-            $commentsRaw = Comment::addAvatars($commentsRaw);
-            $comments = new \lithium\util\Collection();
-            foreach ($commentsRaw as $comment) {
+	        $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+	        $expertsIds = array();
+	        foreach ($experts as $expert) {
+	           $expertsIds[] = $expert->user_id;
+	        }
+
+	        $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id), 'with' => array('User')));
+	        $mySolutionList = array();
+	        $mySolutionNumList = array();
+	        if (count($solutions) > 0 && $pitch->published == 1) {
+                foreach ($solutions as $solution) {
+                    if ($currentUser['id'] == $solution->user_id) {
+                        $mySolutionList[] = $solution->id;
+                        $mySolutionNumList[] = '#' . $solution->num;
+                    }
+                }
+	        }
+
+	        $commentsRaw = Comment::all(array(
+	            'conditions' => array('pitch_id' => $this->request->id),
+	            'order' => array('Comment.id' => 'desc'),
+	            'with' => array('User')));
+
+	        $commentsRaw = Comment::addAvatars($commentsRaw);
+	        $comments = new \lithium\util\Collection();
+
+	        foreach ($commentsRaw as $comment) {
+                if ($pitch->category_id == 7 || $pitch->private == 1) {
+                    if ($pitch->user_id != $currentUser['id'] && $comment->user_id != $currentUser['id'] && !in_array($currentUser['id'], $expertsIds) && !User::checkRole('admin')) {
+                        if (!in_array($comment->solution_id, $mySolutionList) && $comment->user_id == $pitch->user_id && $comment->solution_id != 0 && $comment->reply_to != $currentUser['id']) {
+                            continue;
+                        }
+                        if ($comment->user_id != $pitch->user_id && !$comment->user->isAdmin) {
+                            continue;
+                        }
+                        if ((preg_match_all('/^(#\d+)\D/', $comment->originalText, $matches, PREG_PATTERN_ORDER)) && !in_array($currentUser['id'], $expertsIds)) {
+                            $array = array();
+                            foreach ($matches[1] as $match) {
+                                $array[] = $match;
+                            }
+
+                            $noSolutions = true;
+                            foreach ($mySolutionNumList as $mySolutionNum) {
+                                if (in_array($mySolutionNum, $array)) {
+                                    $noSolutions = false;
+                                    break;
+                                }
+                            }
+                            if ($noSolutions) {
+                                continue;
+                            }
+                        }
+                    }
+                }
                 $comments->append($comment);
             }
-            $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
 
             return compact('comments', 'experts', 'pitch');
 	    } else {

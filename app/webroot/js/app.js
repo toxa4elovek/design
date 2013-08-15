@@ -596,7 +596,7 @@ function fetchComments(result) {
         commentData.commentId = comment.id;
         commentData.commentUserId = comment.user.id;
         commentData.commentText = comment.text;
-        commentData.commentPlainText = comment.originalText;
+        commentData.commentPlainText = comment.originalText.replace(/"/g, "\'");
         commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
         commentData.isExpert = isExpert(comment.user_id, expertsObj);
         
