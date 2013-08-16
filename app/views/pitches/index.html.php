@@ -158,19 +158,15 @@
                         }
                     }
 
-                    $imgEditSrc = '/img/edit_icon_white.png';
-                    $imgDeleteSrc = '/img/delete_icon_white.png';
-                    $imgBuySrc = '/img/buy_icon_white.png';
+                    $imgForDraft = '';
                     if ($pitch['published'] == 1) {
-                        $imgEditSrc = '/img/pencil.png';
-                        $imgDeleteSrc = '/img/kreuz.png';
-                        $imgBuySrc = '/img/buy.png';
+                        $imgForDraft = ' not-draft';
                     }
                     if($pitch['user_id'] == $this->session->read('user.id')){
                         if($pitch['billed'] == 1) {
-                            $userString = '<a title="Редактировать" href="/pitches/edit/' . $pitch['id'] . '"><img width="18" height="18" class="pitches-name-td-img" src="' . $imgEditSrc . '"></a>';
+                            $userString = '<a title="Редактировать" href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link' . $imgForDraft . '"><img class="pitches-name-td-img" src="/img/1.gif"></a>';
                         }else {
-                            $userString = '<a href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link" title="Редактировать"><img src="' . $imgEditSrc . '" class="pitches-name-td-img" width="18" height="18"></a><a href="/pitches/delete/'  . $pitch['id'] .  '" rel="' . $pitch['id']  .'" class="mypitch_delete_link" title="Удалить"><img src="' . $imgDeleteSrc . '" class="pitches-name-td-img" width="12" height="12"></a><a href="/pitches/edit/' . $pitch['id'] . '#step3" class="mypitch_pay_link" title="Оплатить"><img src="' . $imgBuySrc . '" class="pitches-name-td2-img"  width="18" height="18"></a>';
+                            $userString = '<a href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/'  . $pitch['id'] .  '" rel="' . $pitch['id']  .'" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' . $pitch['id'] . '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                         }
                     }else {
                         $userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';

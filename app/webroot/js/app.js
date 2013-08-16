@@ -348,31 +348,6 @@ $(document).ready(function() {
         $(this).css('left', '-5px');
     })
 
-    $('.mypitch_edit_link', '#header-table').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/pencil_red.png');
-    });
-
-    $('.mypitch_edit_link', '#header-table').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/edit_icon_white.png');
-    });
-
-    $('.mypitch_delete_link', '#header-table').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/kreuz_red.png');
-    });
-
-    $('.mypitch_delete_link', '#header-table').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/delete_icon_white.png');
-    });
-
-    $('.mypitch_pay_link', '#header-table').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/buy_red.png');
-    });
-
-    $('.mypitch_pay_link', '#header-table').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/buy_icon_white.png');
-    })
-
-
     //Цвет фона для текущих питчей
     //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 

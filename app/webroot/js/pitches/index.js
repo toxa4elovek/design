@@ -377,30 +377,6 @@ $(document).ready(function() {
 		return false;
 	});
 
-    $('.mypitch_edit_link', '#primary').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/pencil_red.png');
-    });
-
-    $('.mypitch_edit_link', '#primary').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/pencil.png');
-    });
-
-    $('.mypitch_delete_link', '#primary').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/kreuz_red.png');
-    });
-
-    $('.mypitch_delete_link', '#primary').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/kreuz.png');
-    });
-
-    $('.mypitch_pay_link', '#primary').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/buy_red.png');
-    });
-
-    $('.mypitch_pay_link', '#primary').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/buy.png');
-    })
-
     $(document).on('click', '.mypitch_delete_link', function() {
         $('#confirmDelete').data('id', $(this).attr('rel'));
         $('#popup-final-step').modal({
