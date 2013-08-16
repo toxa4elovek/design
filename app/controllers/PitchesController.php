@@ -1199,7 +1199,7 @@ ini_set('display_errors', '1');
                         if ($comment->user_id != $pitch->user_id && !$comment->user->isAdmin) {
                             continue;
                         }
-                        if ((preg_match_all('/^(#\d+)\D/', $comment->originalText, $matches, PREG_PATTERN_ORDER)) && !in_array($currentUser['id'], $expertsIds)) {
+                        if (preg_match_all('/^(#\d+)\D/', $comment->originalText, $matches, PREG_PATTERN_ORDER)) {
                             $array = array();
                             foreach ($matches[1] as $match) {
                                 $array[] = $match;
