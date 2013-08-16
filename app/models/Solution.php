@@ -11,7 +11,7 @@ use \app\models\Historysolution;
 use \app\extensions\helper\NameInflector;
 
 class Solution extends \app\models\AppModel {
-	
+
 	public $belongsTo = array('Pitch', 'User');
     public $hasMany = array('Like');
 
@@ -38,11 +38,11 @@ class Solution extends \app\models\AppModel {
     public static function __init() {
         parent::__init();
         self::applyFilter('find', function($self, $params, $chain){
-            $result = $chain->next($self, $params, $chain); 
+            $result = $chain->next($self, $params, $chain);
             /*if(is_object($result)) {
                 $addCopyrightedText = function($record) {
                     if($record->copyrightedMaterial == 1){
-                        
+
                     }
                 };
                 if(get_class($result) == 'lithium\data\entity\Record') {
@@ -67,7 +67,7 @@ class Solution extends \app\models\AppModel {
         });
 
         self::applyFilter('uploadSolution', function($self, $params, $chain){
-            $result = $chain->next($self, $params, $chain); 
+            $result = $chain->next($self, $params, $chain);
             if($result) {
                 Event::createEvent($result->pitch_id, 'SolutionAdded', $result->user_id, $result->id);
                 Pitch::increaseIdeasCountOne($result->pitch_id);
@@ -99,7 +99,7 @@ http://godesigner.ru/answers/view/73');
                 $solution = $params['solution'];
                 $pitch = Pitch::first($solution->pitch_id);
                 //if($pitch->split === 0) {
-                $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $params['solution']->id . '">Им стал #' . $params['solution']->num . '</a>.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше - все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
+                $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $params['solution']->id . '">Им стал</a> #' . $params['solution']->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше - все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
 Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
                 //}elseif($pitch->split === 1) {
                 /*$message = 'Друзья, заказчик не выбрал победителя и не отказался от предложенных решений вовремя. По регламенту проведения питча мы удерживаем 30% от суммы вознаграждения в пользу самого популярного решения, определённого с помощью 1–лайков, 2–просмотров. Оставшаяся сумма возвращается заказчику.  Мы благодарим всех за участие, и хотим напомнить, что права на свои идеи сохраняются за авторами, и вы можете адаптировать их для участия в другом питче!<br/>
@@ -233,7 +233,7 @@ http://godesigner.ru/answers/view/73');
             if($pitch->user_id == $userId) {
                 $solution->rating = $rating;
                 $solution->save();
-            } 
+            }
             return $solution;
         });
     }

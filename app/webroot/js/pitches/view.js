@@ -518,7 +518,7 @@ $(document).ready(function(){
                 commentData.commentId = result.comment.id;
                 commentData.commentUserId = result.comment.user_id;
                 commentData.commentText = result.comment.text;
-                commentData.commentPlainText = result.comment.originalText;
+                commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
                 commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
                 commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
 
