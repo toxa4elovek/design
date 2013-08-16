@@ -155,11 +155,19 @@ function TableLoader() {
                 }
             }
 
+            var imgEditSrc = '/img/edit_icon_white.png';
+            var imgDeleteSrc = '/img/delete_icon_white.png';
+            var imgBuySrc = '/img/buy_icon_white.png';
             if(object.user_id == $('#user_id').val()){
+                if (object.published == 1) {
+                    imgEditSrc = '/img/pencil.png';
+                    imgDeleteSrc = '/img/kreuz.png';
+                    imgBuySrc = '/img/buy.png';
+                }
                 if(object.billed == 1) {
-                    var userString = '<a title="Редактировать" href="/pitches/edit/' + object.id + '"><img width="18" height="18" class="pitches-name-td-img" src="/img/pencil.png"></a>';
+                    var userString = '<a title="Редактировать" href="/pitches/edit/' + object.id + '"><img width="18" height="18" class="pitches-name-td-img" src="' + imgEditSrc + '"></a>';
                 }else {
-                    var userString = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/pencil.png" class="pitches-name-td-img" width="18" height="18"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'" class="mypitch_delete_link" title="Удалить"><img src="/img/kreuz.png" class="pitches-name-td-img" width="12" height="12"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/buy.png" class="pitches-name-td2-img"  width="18" height="18"></a>';
+                    var userString = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="' + imgEditSrc + '" class="pitches-name-td-img" width="18" height="18"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'" class="mypitch_delete_link" title="Удалить"><img src="' + imgDeleteSrc + '" class="pitches-name-td-img" width="12" height="12"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="' + imgBuySrc + '" class="pitches-name-td2-img"  width="18" height="18"></a>';
                 }
             }else {
                 var userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';
