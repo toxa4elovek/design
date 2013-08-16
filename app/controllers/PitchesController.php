@@ -43,10 +43,11 @@ class PitchesController extends \app\controllers\AppController {
 
     public function blank() {
         error_reporting(E_ALL);
-ini_set('display_errors', '1');
-        #$pitch = Pitch::first(array('conditions' => array('id' => $this->request->id), 'with' => array('User')));
-        $pitch = Pitch::first(array('with' => array('User'), 'order' => array('id' => 'desc')));
-        return compact('pitch');
+        ini_set('display_errors', '1');
+        $pitch = Pitch::first('101157');
+        var_dump($pitch);
+        User::sendAdminModeratedPitch($pitch);
+        die();
     }
 
     public function blank2() {
@@ -556,18 +557,14 @@ ini_set('display_errors', '1');
                         }
 
                         break;
-                    case 21:
-                        $status = 3; 	//Оплачен
+                    case 21: //Оплачен
                         if($pitch = Pitch::first($this->request->data['ORDER'])) {
                             Pitch::activate($this->request->data['ORDER']);
-                        }elseif($addon = Addon::first($this->request->data['ORDER'])) {
-                            Logger::write('debug', 'addon');
-                            $addon->billed = 1;
-                            $addon->save();
+                        } elseif ($addon = Addon::first($this->request->data['ORDER'])) {
+                            Addon::activate($addon);
                         }
                         break;
-                    case 24:
-                        $status = 4; 	//Отменен
+                    case 24: //Отменен
                         break;
                 }
                 //обновляем статус заказа

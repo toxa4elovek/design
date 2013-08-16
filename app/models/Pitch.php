@@ -314,6 +314,25 @@ class Pitch extends \app\models\AppModel {
         return $result;
     }
 
+    public static function addProlong($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $sumProlong = 1000 * $addon->{'prolong-days'};
+            $pitch->price += $sumProlong;
+            $timeProlong = strtotime($pitch->finishDate) + ($addon->{'prolong-days'} * DAY);
+            $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
+            if ($pitch->save()) {
+                Comment::createComment(array(
+                    'pitch_id' => $pitch->id,
+                    'user_id' => User::getAdmin(),
+                    'text' => 'Дорогие друзья! Обратите внимание, что срок питча продлен до ' . date('d.m.Y', strtotime($pitch->finishDate)) . ', а размер вознаграждения увеличен.',
+                ));
+               return true;
+            }
+        }
+
+        return false;
+    }
+
     public static function finishPitch($pitchId) {
         $solutions = Solution::all(array(
             'conditions' => array('pitch_id' => $pitchId, 'nominated' => 1, 'awarded' => 0),

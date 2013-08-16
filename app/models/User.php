@@ -5,7 +5,9 @@ use \lithium\util\Validator;
 use \lithium\util\String;
 use \lithium\storage\Session;
 
+use \app\models\Expert;
 use \app\models\Promocode;
+use \app\models\Pitch;
 use \app\models\Favourite;
 use \app\models\Solution;
 use \app\models\Wincomment;
@@ -462,6 +464,24 @@ class User extends \app\models\AppModel {
         }
     }
 
+    public static function sendAdminNewAddon($addon) {
+        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $pitch = Pitch::first($addon->pitch_id);
+        foreach($users as $user) {
+            $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
+            SpamMailer::newaddon($data);
+        }
+    }
+
+    public static function sendAdminNewAddonBrief($addon) {
+        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $pitch = Pitch::first($addon->pitch_id);
+        foreach($users as $user) {
+            $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
+            SpamMailer::newaddonbrief($data);
+        }
+    }
+
     public static function sendSpamWincomment($comment, $recipient) {
         $solution = Solution::first($comment->solution_id);
         $pitch = Pitch::first($solution->pitch_id);
@@ -541,6 +561,22 @@ class User extends \app\models\AppModel {
     public static function sendOpenLetter($pitch) {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
         return SpamMailer::openletter($data);
+    }
+
+    public static function sendExpertMail($addon) {
+        $data = array('pitch' => Pitch::first($addon->pitch_id));
+        $experts = unserialize($addon->{'expert-ids'});
+        foreach ($experts as $expert) {
+            $expert = Expert::first(array(
+                'conditions' => array(
+                    'Expert.id' => $expert,
+                ),
+                'with' => array('User'),
+            ));
+            $data['user'] = $expert->user;
+            SpamMailer::expertselected($data);
+        }
+        return true;
     }
 
     public static function sendSpamFirstSolutionForPitch($pitchId) {

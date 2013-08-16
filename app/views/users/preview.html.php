@@ -82,7 +82,7 @@
                                 <?php endif?>
                             </a>
                             <?php else:?>
-                            <a href="/pitches/viewsolution/<?=$solution->id?>"><img src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt=""></a>
+                            <a href="/pitches/viewsolution/<?=$solution->id?>"><img width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt=""></a>
                             <?php endif?>
                             <?php if($solution->awarded == 1):?>
                             <span class="medal"></span>
