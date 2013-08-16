@@ -1,6 +1,11 @@
 $(document).ready(function() {
     $('.time').timeago();
     
+    var currentTag = getParameterByName('tag');
+    var tagQueryString = '';
+    if (currentTag) {
+        tagQueryString = '&tag=' + currentTag;
+    }
     var currentPage = 1;
     /*
      * Initialize endless scroll
@@ -11,7 +16,7 @@ $(document).ready(function() {
                 $(window).off('scroll');
                 Tip.scrollHandler();
                 $('#blog-ajax-wrapper').show();
-                $.getJSON('/posts.json?page=' + ++currentPage, function(result) {
+                $.getJSON('/posts.json?page=' + ++currentPage + tagQueryString, function(result) {
                     $('#blog-ajax-wrapper').hide();
                     if (result.posts.length == 0) { // No more posts
                         return false;
@@ -137,4 +142,11 @@ function TopTip() {
             self.hide();
         }
     }
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
