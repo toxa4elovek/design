@@ -823,6 +823,21 @@ h1.solution-title-page  {
     border-left: 2px solid #d9dadc;
     border-top: 1px solid #d9dadc;
 }
+.solution-left-panel .preview {
+    width: 600px;
+    min-height: 365px;
+    margin: 10px 0;
+    background-color: #efefef;
+    box-shadow: 1px 1px 2px #d3d3d3;
+}
+.solution-left-panel .preview span {
+	display: inline-block;
+	margin: 20px 30px 50px 30px;
+    color: #666;
+    font-size: 20px;
+    line-height: 30px;
+    font-family: "RodeoC", sans-serif; 
+}
 /*
  * ----- Right Panel -----
  */
@@ -1008,6 +1023,15 @@ h1.solution-title-page  {
 .solution-right-panel .solution-abuse a.client-show {
     background-position: 0 -139px;
 }
+.solution-right-panel .attach-wrapper {
+	width: 210px;
+	overflow: hidden;
+}
+.solution-right-panel a.attach {
+	background: url('img/attach_icon.png') no-repeat;
+	padding-left: 20px;
+}
+
 /*
  * Pitch Comments
  */

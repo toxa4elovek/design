@@ -512,8 +512,8 @@ $(document).ready(function() {
                     $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution_solutionView.weburl + '" class="solution-image" /></a>');
                 }
             }else {
-                $('.solution-images').append('<div class="preview" style="width:520px;padding:40px; margin: 10px 0; height:286px;background-color:#efefef;"> \
-                    <span style="color:#666;font-size:34px;line-height:45px;">' + result.solution.description + '</span> \
+                $('.solution-images').append('<div class="preview"> \
+                    <span>' + result.solution.description + '</span> \
                 </div>');
             }
             
@@ -599,16 +599,20 @@ $(document).ready(function() {
                     $('.solution-about').show();
                 }
             } else {
-                var html = '';
-                if ($.isArray(result.solution.images.solution)) {
-                    $.each(result.solution.images.solution, function(index, object) {
-                        html += '<a target="_blank" href="' + object.weburl + '">' + object.originalbasename + '</a><br>'
-                    })
-                }else {
-                    html = '<a href="' + result.solution.images.solution.weburl + '">' + result.solution.images.solution.originalbasename + '</a>'
+                $('.solution-description').html('');
+                var html = '<div class="attach-wrapper">';
+                if (result.solution.images.solution) {
+                    if ($.isArray(result.solution.images.solution)) {
+                        $.each(result.solution.images.solution, function(index, object) {
+                            html += '<a target="_blank" href="' + object.weburl + '" class="attach">' + object.originalbasename + '</a><br>'
+                        })
+                    }else {
+                        html = '<a href="' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
+                    }
+                    html += '</div>';
+                    $('.solution-description').prev().html('ФАЙЛЫ')
+                    $('.solution-description').html(html);
                 }
-                $('.solution-description').prev().html('ФАЙЛЫ')
-                $('.solution-description').html(html);
             }
             // Copyrighted Materials
             var copyrightedHtml = '<div class="solution-copyrighted"><!--  --></div>';

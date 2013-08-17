@@ -1337,6 +1337,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $order = array('nominated' => 'desc', 'created' => 'desc');
             }
 
+            $solution->description = nl2br($solution->description);
+
             $solutions = Solution::all(array('conditions' => array('pitch_id' => $solution->pitch_id), 'order' => $order));
             /*foreach($solutions->data() as $setSolution){
                 if($solution->id == $setSolution['id']) {
