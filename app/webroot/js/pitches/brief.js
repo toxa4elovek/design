@@ -575,6 +575,9 @@ $(document).ready(function() {
     /**/
     var Cart = new FeatureCart;
     Cart.init();
+    if (fillBrief) {
+        $('#phonebrief').click();
+    }
 });
 //$('input[name=category_id]').val()
 
@@ -599,7 +602,7 @@ function FeatureCart() {
     this.transferFeeFlag = 0;
     this.mode = 'add';
     this.init = function() {
-        if(typeof($('#pitch_id').val()) != 'undefined') {
+        if(($('#pitch_id').length > 0) && (typeof($('#pitch_id').val()) != 'undefined')) {
             self.id = $('#pitch_id').val();
             this.mode = 'edit';
         }
