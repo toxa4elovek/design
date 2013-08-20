@@ -9,6 +9,7 @@ use \app\models\Comment;
 use \app\models\Ratingchange;
 use \app\models\Historysolution;
 use \app\extensions\helper\NameInflector;
+use \app\extensions\helper\MoneyFormatter;
 
 class Solution extends \app\models\AppModel {
 
@@ -107,9 +108,20 @@ http://godesigner.ru/answers/view/73');
                 //}
                 $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message);
                 Comment::createComment($data);
-                User::sendSpamSolutionSelected($result);
-                $tweet = 'Победа присуждена в питче «' . $pitch->title . '» http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing #Go_Deer';
+                $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
+                $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
+                $winner = User::first($solution->user_id);
+                $nameInflector = new nameInflector();
+                $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
+                $moneyFormatter = new MoneyFormatter();
+                $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
+                if (rand(1, 100) <= 50) {
+                    $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
+                } else {
+                    $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
+                }
                 User::sendTweet($tweet);
+                User::sendSpamSolutionSelected($result);
             }
             return $result;
         });
