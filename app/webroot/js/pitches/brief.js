@@ -572,6 +572,16 @@ $(document).ready(function() {
         }
     });
 
+    $('.rb-face', '#s3_kv').change(function() {
+    if ($(this).data('pay') == 'offline-fiz') {
+        $('.pay-fiz').show();
+        $('.pay-yur').hide();
+    } else {
+        $('.pay-fiz').hide();
+        $('.pay-yur').show();
+    }
+    });
+
     /**/
     var Cart = new FeatureCart;
     Cart.init();
