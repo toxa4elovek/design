@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use \app\models\Bill;
 use \app\models\Pitch;
 use \app\models\Pitchfile;
 use \app\models\Category;
@@ -1529,15 +1530,21 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
     public function getpdf() {
 
-        if($pitch = Pitch::first($this->request->id)) {
+        if(($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
             require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
             $money = new MoneyFormatter();
+            $billPayer = $bill->name;
+            if ($bill->individual == 0) {
+                $billPayer .= ',<br />' . $bill->address . ',<br />ИНН: ' . $bill->inn . ', КПП: ' . $bill->kpp;
+            }
 			$mpdf = new \mPDF();
-
+			if (Session::read('user.id') != $pitch->user_id) {
+			    die();
+			} else {
 			$mpdf->WriteHTML('
 <table style="" width="550" cellspacing="0" border="0" cellpadding="1">
 	<tr ><td width="275"><img src="' . LITHIUM_APP_PATH . '/webroot/img/logo-01.png' . '" width="180"></td>
-	<td>ООО "КРАУД МЕДИА"<br/>Юридический адрес: 199397, г. Санкт-Петербург<br>ул. Беринга, дом 27</td></tr>
+	<td>ООО "КРАУД МЕДИА"<br/>г. Санкт-Петербург, ул. Галерная, д. 55, оф. 63<br />ИНН: 7801563047<br />Телефон: +7(812) 648 24 12</td></tr>
 	<tr ><td colspan="2" style="text-align:center"><br><br>Образец заполнения платежного поручения</td></tr>
 </table>
 <br/>
@@ -1569,6 +1576,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
 	</tr>
 </table>
 <H2 style="margin-top:50px">СЧЕТ № ' . $pitch->id . ' от ' . date('d.m.Y', strtotime($pitch->started)) . '</H2>
+<table cellpadding="10">
+    <tr>
+        <td valign="top"><h3>Плательщик:</h3></td>
+		<td valign="top">' . $billPayer . '</td>
+	</tr>
+</table>
+<br />
 <table style="" width="550" cellspacing="0" cellpadding="1">
 	<tr height="25">
 		<td style="border-left:1px solid;border-top:1px solid; text-align:center;" width="25">№</td>
@@ -1600,9 +1614,28 @@ godesigner.ru, за питч № ' . $pitch->id . '. НДС не предусм�
 		<td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;"><b>' . $money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</b></td>
 	</tr>
 </table>
-<p style="font-weight:bold; margin-top:20px; font-size: 20px; color:red">Внимание!<br/><span style="font-weight:bold;font-size:13px; color: black;">В назначении платежа указывайте точную фразу из столбца название услуги.</span> <p>
-<p style="">Всего наименований 1, на сумму ' . $money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true)) . '.<p>
-<p style="">' . $money->num2str($pitch->total) . '<p>');
+<p style="font-weight:bold; margin-top:20px; font-size: 20px; color:red">Внимание!<br/><span style="font-weight:bold;font-size:13px; color: black;">В назначении платежа указывайте точную фразу из столбца название услуги.</span></p>
+<p style="">Всего наименований 1, на сумму ' . $money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true)) . '.</p>
+<p style="">' . $money->num2str($pitch->total) . '</p>
+<br /><br /><br />
+<table>
+    <tr>
+        <td>Генеральный директор</td>
+        <td style="padding:0 5em;"></td>
+        <td style="border-bottom:1px solid;text-align:center;padding:0 6em;"></td>
+        <td style="padding:0 2em;"></td>
+        <td style="border-bottom:1px solid;text-align:center;padding:0 1em;">/Федченко М. Ю./</td>
+	</tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td style="text-align:center;"><sup>подпись</sup></td>
+        <td></td>
+        <td style="text-align:center;"><sup>расшифровка подписи</sup></td>
+    </tr>
+</table>
+			    ');
+			}
 $mpdf->Output('godesigner-pitch-' . $pitch->id . '.pdf', 'd');
 exit;
         }

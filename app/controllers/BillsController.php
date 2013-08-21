@@ -11,6 +11,9 @@ use lithium\analysis\Logger;
 class BillsController extends \app\controllers\AppController {
 
     public function save() {
+        $res = array(
+            'error' => false,
+        );
         if (!$this->request->is('json')
          || !($currentUser = Session::read('user.id'))
          || !isset($this->request->data['id'])
@@ -20,7 +23,8 @@ class BillsController extends \app\controllers\AppController {
         }
 
         if ($pitch->user_id != $currentUser) {
-            return array('error' => 'wrongUser');
+            $res['error'] = 'wrongUser';
+            return $res;
         }
 
         if (!($bill = Bill::first($pitch->id))) {
@@ -30,6 +34,7 @@ class BillsController extends \app\controllers\AppController {
             $bill->user_id = $currentUser;
             $bill->set($this->request->data);
             $bill->save();
-            return $bill->data();
+            $res['result'] = $bill->data();
+            return $res;
     }
 }

@@ -595,7 +595,9 @@ $(document).ready(function() {
                 'kpp': 0,
                 'address': 0
             }, function(result) {
-
+                if (result.error == false) {
+                    window.location = '/pitches/getpdf/godesigner-pitch-' + $('#fiz-id').val() + '.pdf';
+                }
             });
         }
     });
@@ -613,7 +615,9 @@ $(document).ready(function() {
                 'kpp': $('#yur-kpp').val(),
                 'address': $('#yur-address').val()
             }, function(result) {
-
+                if (result.error == false) {
+                    window.location = '/pitches/getpdf/godesigner-pitch-' + $('#yur-id').val() + '.pdf';
+                }
             });
         }
     });
