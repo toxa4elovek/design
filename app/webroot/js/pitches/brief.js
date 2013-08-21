@@ -582,6 +582,42 @@ $(document).ready(function() {
     }
     });
 
+    $('#bill-fiz').submit(function(e) {
+        e.preventDefault();
+        if (checkRequired($(this))) {
+            alert('Заполните пожалуйста необходимые поля');
+        } else {
+            $.post($(this).attr('action') + '.json', {
+                'id': $('#fiz-id').val(),
+                'name': $('#fiz-name').val(),
+                'individual': $('#fiz-individual').val(),
+                'inn': 0,
+                'kpp': 0,
+                'address': 0
+            }, function(result) {
+
+            });
+        }
+    });
+
+    $('#bill-yur').submit(function(e) {
+        e.preventDefault();
+        if (checkRequired($(this))) {
+            alert('Заполните пожалуйста необходимые поля');
+        } else {
+            $.post($(this).attr('action') + '.json', {
+                'id': $('#yur-id').val(),
+                'name': $('#yur-name').val(),
+                'individual': $('#yur-individual').val(),
+                'inn': $('#yur-inn').val(),
+                'kpp': $('#yur-kpp').val(),
+                'address': $('#yur-address').val()
+            }, function(result) {
+
+            });
+        }
+    });
+
     /**/
     var Cart = new FeatureCart;
     Cart.init();
@@ -589,6 +625,18 @@ $(document).ready(function() {
         $('#phonebrief').click();
     }
 });
+
+function checkRequired(form) {
+    var required = false;
+    $.each($('[required]', form), function(index, object) {
+        if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {
+            required = true;
+            return false;
+        }
+    });
+    return required;
+}
+
 //$('input[name=category_id]').val()
 
 /* Class */
