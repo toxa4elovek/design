@@ -80,7 +80,7 @@
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
                         <div class="message_text2">
-                            <span class="regular comment-container"><?=$this->brief->stripemail($comment->text)?></span>
+                            <span class="regular comment-container"><?=$this->brief->eee($comment->originalText)?></span>
                         </div>
                     </div>
 
