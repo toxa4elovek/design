@@ -106,7 +106,7 @@
         <div id="special_banner" style="position: absolute; <?php if($specialShow == false) echo 'display:none;'?>">
        <img src="/img/vernem_dengi_feb-02.png" alt="" />
        <a id="special_link" class="more_info" href="/pages/special" style="background: url(/img/banner_onpress.png) repeat scroll left top transparent">
-        
+
        </a></div>
        <div id="brief_banner" style="position: absolute; <?php if($briefShow == false) echo 'display:none;'?>">
        <img src="/img/brief.png" alt="" />
@@ -192,7 +192,7 @@
     <div class="experts-main">
       <ul id="experts-zone">
         <?php foreach($experts->data() as $expert):?>
-        <li>
+        <li class="expert-<?=$expert['id']?>" style="display:none;">
             <?=$this->html->link('<img style="width: 174px; height: 174px;" src="'. $imageArray[$expert['id']] .'" alt="" />', array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id'], 'escape' => false))?>
             <p><?=$this->html->link($expert['name'], array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id']))?></p>
             <span><?php echo strip_tags($expert['title'])?></span>
@@ -233,7 +233,7 @@
                 <p class="regular" style="font-style:italic;font-size:14px;"><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade1->pitch->title?></a></p>
                 <p class="regular" style="font-size:14px;color:#666666;margin-top:4px;">«<?php if($grade1->short != ''): echo $grade1->short; else: echo $grade1->text; endif?>»</p>
             </div>
-            
+
           </div>
           <div class="talkhoverzone" style="float:left;height:144px;width:398px;padding-left:22px;padding-top:22px">
             <div  style="float:left;width:50px;height:142px;padding-top: 2px;">
@@ -250,7 +250,7 @@
     </div>
     <div class="clear" style="clear:both; height:3px; background:url('/img/sep.png') no-repeat scroll 62px bottom transparent;margin-bottom:12px;"></div>
     <?php endif?>
-    
+
     <div class="statistika">
       <dl class="dl_1">
         <dt><?=$numOfSolutionsPerProject?></dt>
@@ -286,7 +286,7 @@
         <li style="width:99px;">
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100075" data-off="/img/partners/play.png" data-on="/img/partners/play_on.png"><img class="yota" src="/img/partners/play.png" alt="" /></a>
           <a target="_blank" style="opacity:0;position:relative;bottom:50px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100075" data-off="/img/partners/play.png" data-on="/img/partners/play_on.png"><img class="yota" src="/img/partners/play_on.png" alt="" /></a></li>
-        
+
         <li style="width:253px;">
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker.png" alt="" /></a>
           <a target="_blank" style="opacity:0;position:relative;bottom:59px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker_on.png" alt="" /></a>
