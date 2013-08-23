@@ -648,6 +648,9 @@ function ParticipateTableLoader() {
             if(shortIndustry.length > 80) {
                 shortIndustry = shortIndustry.substr(0, 75) + '...';
             }
+            shortIndustry = '<span style="font-size: 11px;">' + shortIndustry + '</span>';
+            // Disabling Industry in Table
+            shortIndustry = '';
 
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
@@ -655,7 +658,7 @@ function ParticipateTableLoader() {
                 editLink +
                 '<div style="background: none;">' +
                 '<a href="' + link + '" class="expand-link">' + object.title + '</a>' +
-                '<span style="font-size: 11px;">' + shortIndustry + '</span>' +
+                shortIndustry +
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
@@ -860,6 +863,9 @@ function FavesTableLoader() {
             if(shortIndustry.length > 80) {
                 shortIndustry = shortIndustry.substr(0, 75) + '...';
             }
+            shortIndustry = '<span style="font-size: 11px;">' + shortIndustry + '</span>';
+            // Disabling Industry in Table
+            shortIndustry = '';
             var pitchPath = 'view';
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
@@ -870,7 +876,7 @@ function FavesTableLoader() {
                 '<a href="#" class="unfav mypitch_delete_link" data-pitchId="' + object.id + '" style="position: relative; top: 21px; left: 14px;"><img style="margin:0;padding:0" src="/img/1.gif"></a>' +
                 '<div style="background:none;padding-top:0px">' +
                 '<a href="/pitches/' + pitchPath + '/' + object.id + '" class="expand-link">' + object.title + '</a>' +
-                '<span style="font-size: 11px;">' + shortIndustry + '</span>' +
+                shortIndustry +
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
