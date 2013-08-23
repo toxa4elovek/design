@@ -543,8 +543,7 @@ $(document).ready(function(){
                 commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
 
                 // Date Time
-                var dateCreated = result.comment.created.replace(' ', 'T'); // FF & IE date string parsing
-                var postDateObj = new Date(dateCreated);
+                var postDateObj = getProperDate(result.comment.created);
                 commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
                 commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
 
