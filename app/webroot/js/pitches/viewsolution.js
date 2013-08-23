@@ -504,12 +504,20 @@ $(document).ready(function() {
             $('.solution-images').html('');
             // Left Panel
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
+                if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
+                    viewsize = result.solution.images.solution_gallerySiteSize;
+                    work = result.solution.images.solution_solutionView
+                }else {
+                    // case when we don't have gallerySiteSize image size
+                    viewsize = result.solution.images.solution;
+                    work = result.solution.images.solution
+                }
                 if ($.isArray(result.solution.images.solution)) {
-                    $.each(result.solution.images.solution_solutionView, function(idx, field) {
-                        $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                    $.each(work, function(idx, field) {
+                        $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
                     });
                 }else {
-                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution_solutionView.weburl + '" class="solution-image" /></a>');
+                    $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
                 }
             }else {
                 $('.solution-images').append('<div class="preview"> \
