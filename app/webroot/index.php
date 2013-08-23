@@ -19,7 +19,6 @@
  * `config/bootstrap.php`, which is loaded below:
  */
 require dirname(__DIR__) . '/config/bootstrap.php';
-ini_set('include_path', 'C:\wamp\pear');
 /**
  * The following will instantiate a new `Request` object and pass it off to the `Dispatcher` class.
  * By default, the `Request` will automatically aggregate all the server / environment settings, URL
