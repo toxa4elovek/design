@@ -572,6 +572,56 @@ $(document).ready(function() {
         }
     });
 
+    $('.rb-face', '#s3_kv').change(function() {
+    if ($(this).data('pay') == 'offline-fiz') {
+        $('.pay-fiz').show();
+        $('.pay-yur').hide();
+    } else {
+        $('.pay-fiz').hide();
+        $('.pay-yur').show();
+    }
+    });
+
+    $('#bill-fiz').submit(function(e) {
+        e.preventDefault();
+        if (checkRequired($(this))) {
+            alert('Заполните пожалуйста необходимые поля');
+        } else {
+            $.post($(this).attr('action') + '.json', {
+                'id': $('#fiz-id').val(),
+                'name': $('#fiz-name').val(),
+                'individual': $('#fiz-individual').val(),
+                'inn': 0,
+                'kpp': 0,
+                'address': 0
+            }, function(result) {
+                if (result.error == false) {
+                    window.location = '/pitches/getpdf/godesigner-pitch-' + $('#fiz-id').val() + '.pdf';
+                }
+            });
+        }
+    });
+
+    $('#bill-yur').submit(function(e) {
+        e.preventDefault();
+        if (checkRequired($(this))) {
+            alert('Заполните пожалуйста необходимые поля');
+        } else {
+            $.post($(this).attr('action') + '.json', {
+                'id': $('#yur-id').val(),
+                'name': $('#yur-name').val(),
+                'individual': $('#yur-individual').val(),
+                'inn': $('#yur-inn').val(),
+                'kpp': $('#yur-kpp').val(),
+                'address': $('#yur-address').val()
+            }, function(result) {
+                if (result.error == false) {
+                    window.location = '/pitches/getpdf/godesigner-pitch-' + $('#yur-id').val() + '.pdf';
+                }
+            });
+        }
+    });
+
     /**/
     var Cart = new FeatureCart;
     Cart.init();
@@ -579,6 +629,18 @@ $(document).ready(function() {
         $('#phonebrief').click();
     }
 });
+
+function checkRequired(form) {
+    var required = false;
+    $.each($('[required]', form), function(index, object) {
+        if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {
+            required = true;
+            return false;
+        }
+    });
+    return required;
+}
+
 //$('input[name=category_id]').val()
 
 /* Class */
