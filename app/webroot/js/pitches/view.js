@@ -945,6 +945,15 @@ function inlineActions() {
         }
     });
 
+    function hideSolutionPopup() {
+        if ($('.solution-overlay').is(':visible')) {
+            window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
+            $('#pitch-panel').show();
+            $('.wrapper', 'body').first().removeClass('wrapper-frozen');
+            $('.solution-overlay').hide();
+        }
+    }
+
     enableToolbar();
     mentionLinks();
     solutionShowHide();
