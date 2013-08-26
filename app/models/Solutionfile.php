@@ -25,6 +25,14 @@ class Solutionfile extends \app\models\AppModel {
             'image_x' => 800,
             'image_ratio_y' => true,
         ),
+        'tutdesign' => array(
+            'image_resize' => true,
+            'image_ratio_fill' => true,
+            'image_x' => 267,
+            'image_background_color' => '#dddddd',
+            'image_y' => 200,
+            'file_overwrite' => true
+        ),
     );
 
     protected static $processImageWatermark = array(
