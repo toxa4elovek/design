@@ -586,7 +586,7 @@ class UsersController extends \app\controllers\AppController {
                     $redirect = '/pitches/edit/' . $pitchId . '#step3';
                 }
                 if(!is_null(Session::read('redirect'))) {
-                    $redirect = '/' . Session::read('redirect');
+                    $redirect = Session::read('redirect');
                     Session::delete('redirect');
                 }
                 return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
@@ -689,6 +689,9 @@ class UsersController extends \app\controllers\AppController {
 				//FlashMessage::write('Неверный адрес почты или пароль.');
 				return $this->redirect("Users::login");
 	        }
+        }
+        if (is_null(Session::read('redirect')) && !is_null($_SERVER['HTTP_REFERER'])) {
+            Session::write('redirect', $_SERVER['HTTP_REFERER']);
         }
         if(!is_null(Session::read('user.id'))) {
             return $this->redirect('Users::office');
