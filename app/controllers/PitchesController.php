@@ -730,6 +730,8 @@ class PitchesController extends \app\controllers\AppController {
                 $rating = 3;
             }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
                 $rating = 2;
+            }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
+                $rating = 5;
             }
 
             $ratingArray[] = $rating;
@@ -766,7 +768,8 @@ class PitchesController extends \app\controllers\AppController {
                 $comments = 3;
             }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
                 $comments = 4;
-
+            }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
+                $comments = 5;
             }
             $commentArray[] = $comments;
         }
