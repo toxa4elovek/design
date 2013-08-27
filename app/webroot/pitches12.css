@@ -1028,8 +1028,9 @@ h1.solution-title-page  {
 	overflow: hidden;
 }
 .solution-right-panel a.attach {
+	display: inline-block;
 	background: url('img/attach_icon.png') no-repeat;
-	padding-left: 20px;
+	padding: 0 0 5px 20px;
 }
 
 /*

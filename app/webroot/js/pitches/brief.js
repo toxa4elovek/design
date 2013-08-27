@@ -625,8 +625,28 @@ $(document).ready(function() {
     /**/
     var Cart = new FeatureCart;
     Cart.init();
-    if (fillBrief) {
+    if ((typeof(fillBrief) != 'undefined') && (fillBrief)) {
         $('#phonebrief').click();
+    }
+
+    if($('#sub-site').val() > 1) {
+        var award = $('#award');
+        var defLow = award.data('lowDef');
+        var defNormal = award.data('normalDef');
+        var defHigh = award.data('highDef');
+        var mult = $('#sub-site').data('mult');
+        if((typeof(mult) == undefined) || (!mult)) {
+            mult = parseInt(award.data('lowDef')) / 2;
+        }
+        var extraNormal = (defNormal - defLow);
+        var extraHigh = (defHigh - defLow);
+
+        var minValue = (($('#sub-site').val() - 1) * mult) + defLow;
+        award.data('minimalAward', minValue);
+        award.data('low', minValue);
+        award.data('normal', minValue + extraNormal);
+        award.data('high', minValue + extraHigh);
+        award.blur();
     }
 });
 

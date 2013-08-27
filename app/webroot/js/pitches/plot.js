@@ -270,7 +270,8 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
         quarter = document.getElementById("quarter");
         ctx = can.getContext("2d");
         drawPie();
-        if($('#canFloat').lenght > 0) {
+        if($('#canFloat').length > 0) {
+            numSamples = 4;
             can = document.getElementById("canFloat");
             quarter = document.getElementById("quarter");
             ctx = can.getContext("2d");
@@ -502,6 +503,5 @@ $('#dinamic').on('mouseleave', function() {
     }, 100)
 })
 $('#dinamic').on('click', function() {
-    console.log('click')
     $.scrollTo($('#floatingblock'), {duration:500});
 })
