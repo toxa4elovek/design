@@ -1562,6 +1562,20 @@ Disallow: /pitches/upload/' . $pitch['id'];
         die();
     }
 
+    public function getPdfReportFiz() {
+        if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+            if (Session::read('user.id') != $pitch->user_id && !User::checkRole('admin')) {
+                die();
+            }
+            require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
+            $options = compact('pitch', 'bill');
+            $mpdf = new \mPDF();
+            $mpdf->WriteHTML(PdfGetter::get('Report-fiz', $options));
+            $mpdf->Output('godesigner-report-' . $pitch->id . '.pdf', 'd');
+        }
+        die();
+    }
+
     public function addon() {
         $pitch = Pitch::first($this->request->id);
         $experts = Expert::all(array('order' => array('id' => 'asc')));
