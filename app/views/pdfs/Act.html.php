@@ -4,7 +4,13 @@
 <tr><td style="padding-bottom:1em;"></td></tr>
 <tr><td valign="top" style="padding-right:1em;"><b>Исполнитель:</b></td><td valign="top">ООО "КРАУД&nbsp;МЕДИА", 199397, г.&nbsp;Санкт-Петербург, ул.&nbsp;Беринга, д.&nbsp;27, ИНН&nbsp;7801563047, КПП&nbsp;780101001</td></tr>
 <tr><td height="30"></td></tr>
-<tr><td valign="top" style="padding-right:1em;"><b>Заказчик:</b></td><td valign="top"><?=$bill->name?>, <?=$bill->address?>, ИНН:&nbsp;<?=$bill->inn?>, КПП:&nbsp;<?=$bill->kpp?></td></tr>
+<tr><td valign="top" style="padding-right:1em;"><b>Заказчик:</b></td>
+    <?php if($bill->individual == 0) :?>
+        <td valign="top"><?=$bill->name?>, <?=$bill->address?>, ИНН:&nbsp;<?=$bill->inn?>, КПП:&nbsp;<?=$bill->kpp?></td>
+    <?php else: ?>
+        <td valign="top"><?=$bill->name?></td>
+    <?php endif; ?>
+</tr>
 <tr><td height="30"></td></tr>
 <tr><td valign="top" style="padding-right:1em;"><b>По счету:</b></td><td valign="top">№ <?=$pitch->id?></td></tr>
 </table>
@@ -65,7 +71,7 @@ godesigner.ru, за питч № <?=$pitch->id?>. НДС не предусмот
 </tr>
 <tr><td height="40"></td></tr>
 <tr>
-<td width="150" height="50" style="border-bottom:1px solid;text-align:center;padding:0 5em;background:url('<?=LITHIUM_APP_PATH?>/extensions/helper/sign.png') no-repeat;"></td>
+<td width="150" height="50" style="border-bottom:1px solid;text-align:center;padding:0 5em;) no-repeat;"></td>
 <td width="25" style="padding:0 2em;"></td>
 <td width="150" valign="bottom" style="border-bottom:1px solid;text-align:center;padding:0 1em;">/Федченко М. Ю./</td>
 <td width="25"></td>
@@ -83,7 +89,7 @@ godesigner.ru, за питч № <?=$pitch->id?>. НДС не предусмот
 <td style="text-align:center;"><sup>расшифровка подписи</sup></td>
 </tr>
 <tr>
-<td width="180" height="180" style="background:url('<?=LITHIUM_APP_PATH?>/extensions/helper/seal.png') no-repeat;">М.П.</td>
+<td width="180" height="180" style="">М.П.</td>
 <td colspan="2"></td>
 <td style="padding:0 2em;"></td>
 <td colspan="3">М.П.</td>

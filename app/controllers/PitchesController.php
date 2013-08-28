@@ -1556,7 +1556,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $options = compact('pitch', 'bill');
             $mpdf = new \mPDF();
             $mpdf->WriteHTML(PdfGetter::get('Act', $options));
-            $mpdf->Output('godesigner-pitch-' . $pitch->id . '.pdf', 'd');
+            $mpdf->Output('godesigner-act-' . $pitch->id . '.pdf', 'd');
             exit;
         }
         die();
