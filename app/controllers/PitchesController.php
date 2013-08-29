@@ -1564,15 +1564,46 @@ Disallow: /pitches/upload/' . $pitch['id'];
         die();
     }
 
-    public function getPdfReportFiz() {
+    public function getPdfReport() {
         if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
             if (Session::read('user.id') != $pitch->user_id && !User::checkRole('admin')) {
                 die();
             }
+            $layout = ($bill->individual == 1) ? 'Report-fiz' : 'Report-yur';
+            $transaction = Transaction::first(array(
+                'conditions' => array(
+                    'ORDER' => $pitch->id,
+                    'TRTYPE' => 21,
+                ),
+            ));
+            $receipt = Receipt::all(array(
+                'conditions' => array(
+                    'pitch_id' => $pitch->id,
+                ),
+            ));
+            $totalfees = 0;
+            $prolongfees = 0;
+            if ($addon = Addon::first(array(
+                'conditions' => array(
+                    'pitch_id' => $pitch->id,
+                    'billed' => 1,
+                ),
+            ))) {
+                    $totalfees = $addon->total;
+                    $prolongfees = ($addon->prolong == 1) ? $addon->{'prolong-days'} * 1000 : $prolongfees;
+                }
+            foreach ($receipt as $option) {
+                if ($option->name == 'Сбор GoDesigner') {
+                    $commission = $option->value;
+                }
+                if (($option->name != 'Награда Дизайнеру') && ($option->name != 'Сбор GoDesigner')) {
+                    $totalfees += $option->value;
+                }
+            }
             require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
-            $options = compact('pitch', 'bill');
+            $options = compact('pitch', 'bill', 'transaction', 'commission', 'totalfees', 'prolongfees');
             $mpdf = new \mPDF();
-            $mpdf->WriteHTML(PdfGetter::get('Report-fiz', $options));
+            $mpdf->WriteHTML(PdfGetter::get($layout, $options));
             $mpdf->Output('godesigner-report-' . $pitch->id . '.pdf', 'd');
         }
         die();
