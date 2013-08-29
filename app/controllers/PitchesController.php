@@ -46,9 +46,6 @@ class PitchesController extends \app\controllers\AppController {
     public function blank() {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
-        $pitch = Pitch::first('101157');
-        var_dump($pitch);
-        User::sendAdminModeratedPitch($pitch);
         die();
     }
 
@@ -556,6 +553,9 @@ class PitchesController extends \app\controllers\AppController {
                                 $webgate = new Webgate();
                                 $result = $webgate->close($this->request->data);
                             }
+                        } elseif ($addon = Addon::first($this->request->data['ORDER'])) {
+                            $webgate = new Webgate();
+                            $result = $webgate->close($this->request->data);
                         }
 
                         break;
@@ -1316,8 +1316,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
 
 	public function viewsolution() {
-        #error_reporting(E_ALL);
-        #ini_set('display_errors', '1');
+        //error_reporting(E_ALL);
+        //ini_set('display_errors', '1');
 		Solution::increaseView($this->request->id);
 		if($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch')))) {
             $validSorts = array('rating', 'created', 'likes');
@@ -1434,7 +1434,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $userData = unserialize($solution->user->{'userdata'});
             $copyrightedInfo = unserialize($solution->copyrightedInfo);
             for ($i = 1; $i <= count($copyrightedInfo['source']); $i++) {
-                $copyrightedInfo['source'][$i] = Url::view($copyrightedInfo['source'][$i]);
+                if (isset($copyrightedInfo['source'][$i])) {
+                    $copyrightedInfo['source'][$i] = Url::view($copyrightedInfo['source'][$i]);
+                }
             }
             $avatarHelper = new AvatarHelper;
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
