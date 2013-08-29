@@ -104,7 +104,7 @@
                 </div>
                 <div class="separator"></div>
                 <div class="solution-copyrighted"><!--  --></div>
-                <div class="solution-info solution-about">
+                <div class="solution-info">
                     <table class="solution-stat">
                         <col class="icon">
                         <col class="description">
