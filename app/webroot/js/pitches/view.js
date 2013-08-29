@@ -705,9 +705,9 @@ $(document).ready(function(){
             }
             $('.solution-copyrighted').replaceWith(copyrightedHtml);
 
-            $('.value-views', '.solution-stat').text(result.solution.views || '');
-            $('.value-likes', '.solution-stat').text(result.solution.likes || '');
-            $('.value-comments', '.solution-stat').text(result.comments.length || '');
+            $('.value-views', '.solution-stat').text(result.solution.views || 0);
+            $('.value-likes', '.solution-stat').text(result.solution.likes || 0);
+            $('.value-comments', '.solution-stat').text(result.comments.length || 0);
 
             if (result.pitch.category_id != 7) {
 
