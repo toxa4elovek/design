@@ -12,6 +12,10 @@ class AddonsController extends \app\controllers\AppController {
     public function add() {
         if(isset($this->request->data)) {
             $pitch = Pitch::first($this->request->data['commonPitchData']['id']);
+            $expertsPitch = array();
+            if ($pitch->expert == 1) {
+                $expertsPitch = unserialize($pitch->{'expert-ids'});
+            }
             $featuresData = $this->request->data['features'];
             $total = 0;
             if(!isset($featuresData['experts'])) {
@@ -19,6 +23,14 @@ class AddonsController extends \app\controllers\AppController {
                 $expertId = serialize(array());
             }else {
                 $expert = 1;
+                // Add experts to Pitch
+                $pitch->expert = 1;
+                foreach ($featuresData['experts'] as $expertId) {
+                    if (!in_array($expertId, $expertsPitch)) {
+                        $expertsPitch[] = (int) $expertId;
+                    }
+                }
+                $pitch->{'expert-ids'} = serialize($expertsPitch);
                 $expertId = serialize($featuresData['experts']);
                 $total += count($featuresData['experts']) * 1000;
             }
@@ -54,6 +66,7 @@ class AddonsController extends \app\controllers\AppController {
             }
             $addon->set($data);
             $addon->save();
+            $pitch->save();
             return $addon->id;
         }
         return false;

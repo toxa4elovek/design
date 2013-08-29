@@ -72,7 +72,7 @@ class PagesController extends \app\controllers\AppController {
         foreach($grades as $grade) {
             $grade->user = User::first(array('conditions' => array('id' => $grade->user_id)));
         }
-        $experts = Expert::all(array('limit' => 3, 'order' => array('RAND()')));
+        $experts = Expert::all();
         return compact('numOfSolutionsPerProject', 'numOfCurrentPitches', 'totalAwards', 'totalWaitingForClaim', 'totalAwardsValue', 'pitches', 'promos', 'experts', 'grades');
     }
 
@@ -94,7 +94,7 @@ class PagesController extends \app\controllers\AppController {
     }
 
     public function howitworks() {
-    	
+
     }
 }
 

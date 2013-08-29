@@ -46,9 +46,6 @@ class PitchesController extends \app\controllers\AppController {
     public function blank() {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
-        $pitch = Pitch::first('101157');
-        var_dump($pitch);
-        User::sendAdminModeratedPitch($pitch);
         die();
     }
 
@@ -556,6 +553,9 @@ class PitchesController extends \app\controllers\AppController {
                                 $webgate = new Webgate();
                                 $result = $webgate->close($this->request->data);
                             }
+                        } elseif ($addon = Addon::first($this->request->data['ORDER'])) {
+                            $webgate = new Webgate();
+                            $result = $webgate->close($this->request->data);
                         }
 
                         break;
@@ -732,6 +732,8 @@ class PitchesController extends \app\controllers\AppController {
                 $rating = 3;
             }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
                 $rating = 2;
+            }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
+                $rating = 5;
             }
 
             $ratingArray[] = $rating;
@@ -768,7 +770,8 @@ class PitchesController extends \app\controllers\AppController {
                 $comments = 3;
             }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
                 $comments = 4;
-
+            }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
+                $comments = 5;
             }
             $commentArray[] = $comments;
         }
@@ -1313,8 +1316,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
 
 	public function viewsolution() {
-        #error_reporting(E_ALL);
-        #ini_set('display_errors', '1');
+        //error_reporting(E_ALL);
+        //ini_set('display_errors', '1');
 		Solution::increaseView($this->request->id);
 		if($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch')))) {
             $validSorts = array('rating', 'created', 'likes');
@@ -1431,7 +1434,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $userData = unserialize($solution->user->{'userdata'});
             $copyrightedInfo = unserialize($solution->copyrightedInfo);
             for ($i = 1; $i <= count($copyrightedInfo['source']); $i++) {
-                $copyrightedInfo['source'][$i] = Url::view($copyrightedInfo['source'][$i]);
+                if (isset($copyrightedInfo['source'][$i])) {
+                    $copyrightedInfo['source'][$i] = Url::view($copyrightedInfo['source'][$i]);
+                }
             }
             $avatarHelper = new AvatarHelper;
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
@@ -1540,6 +1545,35 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $mpdf->WriteHTML(PdfGetter::get('Bill', $options));
             $mpdf->Output('godesigner-pitch-' . $pitch->id . '.pdf', 'd');
             exit;
+        }
+        die();
+    }
+
+    public function getPdfAct() {
+        if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+            if (Session::read('user.id') != $pitch->user_id && !User::checkRole('admin')) {
+                die();
+            }
+            require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
+            $options = compact('pitch', 'bill');
+            $mpdf = new \mPDF();
+            $mpdf->WriteHTML(PdfGetter::get('Act', $options));
+            $mpdf->Output('godesigner-act-' . $pitch->id . '.pdf', 'd');
+            exit;
+        }
+        die();
+    }
+
+    public function getPdfReportFiz() {
+        if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+            if (Session::read('user.id') != $pitch->user_id && !User::checkRole('admin')) {
+                die();
+            }
+            require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
+            $options = compact('pitch', 'bill');
+            $mpdf = new \mPDF();
+            $mpdf->WriteHTML(PdfGetter::get('Report-fiz', $options));
+            $mpdf->Output('godesigner-report-' . $pitch->id . '.pdf', 'd');
         }
         die();
     }
