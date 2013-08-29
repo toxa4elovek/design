@@ -15,11 +15,11 @@
 </p>
 
 <p style="margin: 20px 0;">1. C помощью средств сайта godesigner.ru Агентом проведён питч (конкурс) № <?=$pitch->id?> от <?=date('d.m.Y', strtotime($pitch->started));?>,
-на сумму <?=$money->formatMoney($pitch->price, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.
+на сумму <?=$money->formatMoney($pitch->price + $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.
 </p>
 
-<p style="margin: 20px 0;">2. Агентское вознаграждение ООО «КРАУД МЕДИА» составляет <?=$money->formatMoney($commission + $totalfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?>,
-в том числе <?=$money->formatMoney($totalfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> за услуги с предоставлением дополнительных опций.
+<p style="margin: 20px 0;">2. Агентское вознаграждение ООО «КРАУД МЕДИА» составляет <?=$money->formatMoney($commission + $totalfees - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?>,
+в том числе <?=$money->formatMoney($totalfees - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> за услуги с предоставлением дополнительных опций.
 Агент не является плательщиком НДС в соответствии с главой 26.2 Налогового кодекса РФ согласно уведомлению налогового органа.
 </p>
 

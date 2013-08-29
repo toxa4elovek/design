@@ -1579,13 +1579,17 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     'pitch_id' => $pitch->id,
                 ),
             ));
-            $addon = Addon::first(array(
+            $totalfees = 0;
+            $prolongfees = 0;
+            if ($addon = Addon::first(array(
                 'conditions' => array(
                     'pitch_id' => $pitch->id,
                     'billed' => 1,
                 ),
-            ));
-            $totalfees = $addon->total;
+            ))) {
+                    $totalfees = $addon->total;
+                    $prolongfees = ($addon->prolong == 1) ? $addon->{'prolong-days'} * 1000 : $prolongfees;
+                }
             foreach ($receipt as $option) {
                 if ($option->name == 'Сбор GoDesigner') {
                     $commission = $option->value;
@@ -1595,7 +1599,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 }
             }
             require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
-            $options = compact('pitch', 'bill', 'transaction', 'commission', 'totalfees');
+            $options = compact('pitch', 'bill', 'transaction', 'commission', 'totalfees', 'prolongfees');
             $mpdf = new \mPDF();
             $mpdf->WriteHTML(PdfGetter::get($layout, $options));
             $mpdf->Output('godesigner-report-' . $pitch->id . '.pdf', 'd');
