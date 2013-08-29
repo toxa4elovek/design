@@ -1431,8 +1431,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
             $userData = unserialize($solution->user->{'userdata'});
             $copyrightedInfo = unserialize($solution->copyrightedInfo);
-            for ($i = 1; $i <= count($copyrightedInfo['source']); $i++) {
-                $copyrightedInfo['source'][$i] = Url::view($copyrightedInfo['source'][$i]);
+            foreach ($copyrightedInfo['source'] as $key => $value) {
+                $copyrightedInfo['source'][$key] = Url::view($value);
             }
             $avatarHelper = new AvatarHelper;
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
