@@ -6,6 +6,7 @@ namespace app\models;
 use \lithium\util\Validator;
 use \lithium\util\String;
 */
+use \app\models\Addon;
 use \app\models\Category;
 use \app\models\Event;
 use \app\models\Expert;
@@ -14,10 +15,13 @@ use \app\models\Task;
 use \app\models\Promoted;
 use \app\models\Promocode;
 use \app\models\Grade;
+use \app\models\Transaction;
+use \app\models\Receipt;
 use \app\extensions\helper\NumInflector;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
 use \app\extensions\mailers\SpamMailer;
+use \app\extensions\helper\PdfGetter;
 
 
 class Pitch extends \app\models\AppModel {
@@ -492,6 +496,103 @@ class Pitch extends \app\models\AppModel {
             }
         }
 
+        return $res;
+    }
+
+    public static function generatePdfAct($options) {
+        $destination = self::findPdfDestination($options['destination']);
+        require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
+        $mpdf = new \mPDF();
+        $mpdf->WriteHTML(PdfGetter::get('Act', $options));
+        return $mpdf->Output('godesigner-act-' . $options['pitch']->id . '.pdf', $destination);
+    }
+
+    public static function generatePdfReport($options) {
+        $destination = self::findPdfDestination($options['destination']);
+        $layout = ($options['bill']->individual == 1) ? 'Report-fiz' : 'Report-yur';
+        $options['transaction'] = Transaction::first(array(
+            'conditions' => array(
+                'ORDER' => $options['pitch']->id,
+                'TRTYPE' => 21,
+            ),
+        ));
+        $receipt = Receipt::all(array(
+            'conditions' => array(
+                'pitch_id' => $options['pitch']->id,
+            ),
+        ));
+        $totalfees = 0;
+        $prolongfees = 0;
+        if ($addon = Addon::first(array(
+            'conditions' => array(
+                'pitch_id' => $options['pitch']->id,
+                'billed' => 1,
+            ),
+        ))) {
+                $totalfees = $addon->total;
+                $prolongfees = ($addon->prolong == 1) ? $addon->{'prolong-days'} * 1000 : $prolongfees;
+            }
+            foreach ($receipt as $option) {
+                if ($option->name == 'Сбор GoDesigner') {
+                    $options['commission'] = $option->value;
+                }
+                if (($option->name != 'Награда Дизайнеру') && ($option->name != 'Сбор GoDesigner')) {
+                    $totalfees += $option->value;
+                }
+            }
+            $options['totalfees'] = $totalfees;
+            $options['prolongfees'] = $prolongfees;
+            require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
+            $mpdf = new \mPDF();
+            $mpdf->WriteHTML(PdfGetter::get($layout, $options));
+            $mpdf->Output('godesigner-report-' . $options['pitch']->id . '.pdf', $destination);
+    }
+
+    protected static function findPdfDestination($dest) {
+        switch (strtolower($dest)) {
+            case 'download':
+                $destination = 'd';
+                break;
+            case 'file':
+                $destination = 'f';
+                break;
+            case 'stdout':
+                $destination = 'i';
+                break;
+            case 'string':
+                $destination = 's';
+                break;
+            default:
+                $destination = 'd';
+        }
+        return $destination;
+    }
+
+    public static function sendReports() {
+        $query = array(
+            'conditions' => array(
+                'status' => 2,
+                'totalFinishDate' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - 5 * MINUTE),
+                ),
+            ),
+        );
+        $res = 0;
+        if ($pitches = Pitch::all($query)) {
+            foreach ($pitches as $pitch) {
+                if ($bill = Bill::first($pitch->id)) {
+                    $destination = 'File';
+                    $options = compact('pitch', 'bill', 'destination');
+                    self::generatePdfReport($options);
+                    if ($bill->individual != 1) {
+                        self::generatePdfAct($options);
+                    }
+                } else {
+                    // No bill data
+                }
+            }
+            $res = count($pitches);
+        }
         return $res;
     }
 

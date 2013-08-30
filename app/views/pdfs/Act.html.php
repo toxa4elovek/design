@@ -65,7 +65,7 @@ godesigner.ru, за питч № <?=$pitch->id?>. НДС не предусмот
 </tr>
 <tr><td height="40"></td></tr>
 <tr>
-<td width="150" height="50" style="border-bottom:1px solid;text-align:center;padding:0 5em;background:url('<?=LITHIUM_APP_PATH?>/extensions/helper/sign.png') no-repeat;"></td>
+<td width="150" height="50" style="border-bottom:1px solid;text-align:center;padding:0 5em;"></td>
 <td width="25" style="padding:0 2em;"></td>
 <td width="150" valign="bottom" style="border-bottom:1px solid;text-align:center;padding:0 1em;">/Федченко М. Ю./</td>
 <td width="25"></td>
@@ -83,7 +83,7 @@ godesigner.ru, за питч № <?=$pitch->id?>. НДС не предусмот
 <td style="text-align:center;"><sup>расшифровка подписи</sup></td>
 </tr>
 <tr>
-<td width="180" height="180" style="background:url('<?=LITHIUM_APP_PATH?>/extensions/helper/seal.png') no-repeat;">М.П.</td>
+<td width="180" height="180">М.П.</td>
 <td colspan="2"></td>
 <td style="padding:0 2em;"></td>
 <td colspan="3">М.П.</td>
