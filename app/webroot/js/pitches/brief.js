@@ -17,7 +17,7 @@ $(document).ready(function() {
                 if(Cart.prepareData()) {
                     Cart.saveData();
                 }else {
-                    alert('Не все обязательные поля заполнены');
+                    $.scrollTo($('.wrong-input').parent(), {duration: 600});
                 }
                 return false;
             }
@@ -30,7 +30,7 @@ $(document).ready(function() {
                     if(Cart.prepareData()) {
                         Cart.saveData();
                     }else {
-                        alert('Не все обязательные поля заполнены');
+                        $.scrollTo($('.wrong-input').parent(), {duration: 600});
                     }
                     return false;
                 }
@@ -44,6 +44,7 @@ $(document).ready(function() {
         }else{
             $('.middle').not('#step' + stepNum).hide();
             $('#step' + stepNum).show();
+            $.scrollTo($('#header-bg'), {duration: 600});
             if(stepNum == 2) {
                 //console.log($('#sliderset').length);
                 /*sliders*/
@@ -123,7 +124,13 @@ $(document).ready(function() {
         checkPromocode();
     });
     
-    
+    /**/
+    $('input[name=title], input[name=industry], textarea[name=description]').focus(function() {
+        $(this).removeClass('wrong-input');
+    });
+    $('input', '.extensions').change(function() {
+        $('.extensions').removeClass('wrong-input');
+    });
 
     $('#sliderset').show();
 
@@ -339,7 +346,7 @@ $(document).ready(function() {
                     Cart.saveData();
                 }
             }else {
-                alert('Не все обязательные поля заполнены');
+                $.scrollTo($('.wrong-input').parent(), {duration: 600});
             }
         }
         return false;
@@ -814,22 +821,29 @@ function FeatureCart() {
             "specificPitchData" : self.getSpecificData()
         };
         return self.validateData();
-    }
+    };
     this.validateData = function() {
         var result = true;
         if(self.validatetype == 1) {
-            if((self.data.commonPitchData.title == '') || ($('input[name=title]').attr('placeholder') == self.data.commonPitchData.title)) {
+            if((self.data.commonPitchData.title == '') || ($('input[name=title]').data('placeholder') == self.data.commonPitchData.title)) {
+                $('input[name=title]').addClass('wrong-input');
                 result = false;
             }
-            if((self.data.commonPitchData.industry == '') || ($('input[name=industry]').attr('placeholder') == self.data.commonPitchData.industry)) {
+            if((self.data.commonPitchData.industry == '') || ($('input[name=industry]').data('placeholder') == self.data.commonPitchData.industry)) {
+                $('input[name=industry]').addClass('wrong-input');
+                result = false;
+            }
+            if((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
+                $('textarea[name=description]').addClass('wrong-input');
                 result = false;
             }
             if(self.data.commonPitchData.fileFormats.length == 0) {
+                $('.extensions').addClass('wrong-input');
                 result = false;
             }
         }
         return result;
-    }
+    };
     this.saveData = function() {
         if(self.data.features.award == 0) {
             alert('Укажите награду для дизайнера!');
@@ -850,6 +864,7 @@ function FeatureCart() {
                 $.get('/transactions/getsigndata/' + self.id + '.json', function(response) {
                     $('.middle').not('#step3').hide();
                     $('#step3').show();
+                    $.scrollTo($('#header-bg'), {duration: 600});
                     $('#order-id').val(response.id);
                     $('#order-total').val(response.total);
                     $('#order-timestamp').val(response.timestamp);
