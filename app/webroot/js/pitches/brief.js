@@ -123,7 +123,9 @@ $(document).ready(function() {
         checkPromocode();
     });
     
-    
+    $(document).on('focus', '.wrong-input', function() {
+        $(this).removeClass('wrong-input');
+    });
 
     $('#sliderset').show();
 
@@ -585,7 +587,7 @@ $(document).ready(function() {
     $('#bill-fiz').submit(function(e) {
         e.preventDefault();
         if (checkRequired($(this))) {
-            alert('Заполните пожалуйста необходимые поля');
+            $.scrollTo($('.wrong-input', $(this)).parent(), {duration: 600});
         } else {
             $.post($(this).attr('action') + '.json', {
                 'id': $('#fiz-id').val(),
@@ -605,7 +607,7 @@ $(document).ready(function() {
     $('#bill-yur').submit(function(e) {
         e.preventDefault();
         if (checkRequired($(this))) {
-            alert('Заполните пожалуйста необходимые поля');
+            $.scrollTo($('.wrong-input', $(this)).parent(), {duration: 600});
         } else {
             $.post($(this).attr('action') + '.json', {
                 'id': $('#yur-id').val(),
@@ -654,8 +656,8 @@ function checkRequired(form) {
     var required = false;
     $.each($('[required]', form), function(index, object) {
         if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {
+            $(this).addClass('wrong-input');
             required = true;
-            return false;
         }
     });
     return required;
