@@ -764,6 +764,7 @@ h1.solution-title-page  {
 	float: right;
     width: 382px;
     margin: 20px auto 20px auto;
+    word-wrap: break-word;
 }
 .solution-left-panel div.toolbar {
 	display: none;
