@@ -300,15 +300,15 @@ endswitch;
 					<p>
 						<label class="required">Название питча <a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
 						<?php if($category->id != 7):?>
-                        <input type="text" name="title" placeholder="<?=$word1?> для Star Lift" required>
+                        <input type="text" name="title" placeholder="<?=$word1?> для Star Lift" data-placeholder="<?=$word1?> для Star Lift" required>
                         <?php else:?>
-                        <input type="text" name="title" placeholder="Название для строительной фирмы" required>
+                        <input type="text" name="title" placeholder="Название для строительной фирмы" data-placeholder="Название для строительной фирмы" required>
                         <?php endif?>
 						<input type="hidden" name="category_id" value="<?=$category->id?>">
 					</p>
 					<p>
 						<label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-						<input type="text" name="industry" placeholder="Подъемники для строительства в аренду и продажу" required>
+						<input type="text" name="industry" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
 					</p>
 
 					<div class="ribbon term" style="height: 80px;">
@@ -342,9 +342,9 @@ endswitch;
                         <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
                         <?php endif?>
                         <?php if($category->id == 7):?>
-						<textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-low="70" data-normal="140" data-high="280" ></textarea>
+						<textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-low="70" data-normal="140" data-high="280" ></textarea>
 						<?php else:?>
-						<textarea id="full-description" name="description" cols="30" rows="10" required placeholder="<?=$word2?>" data-low="70" data-normal="140" data-high="280" ></textarea>
+						<textarea id="full-description" name="description" cols="30" rows="10" required placeholder="<?=$word2?>" data-placeholder="<?=$word2?>" data-low="70" data-normal="140" data-high="280" ></textarea>
 						<?php endif?>
 					</p>
 
@@ -355,7 +355,7 @@ endswitch;
 							<div class="shadow-b"></div>
 						</div><!-- .bar -->
 						<ul>
-							<li>недостаточно подбробно…</li>
+							<li>недостаточно подробно…</li>
 							<li>вполне понятно</li>
 							<li>самое то!</li>
 						</ul>
@@ -550,5 +550,5 @@ endswitch;
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?=$this->html->style(array('/brief', '/step3'), array('inline' => false))?>
