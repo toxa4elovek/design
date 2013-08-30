@@ -114,16 +114,14 @@ class Comment extends \app\models\AppModel {
                     if(isset($record->text)) {
                         $record->text = nl2br($record->text);
                         $pitchId = $record->pitch_id;
-                        if(preg_match('/(#\d*)/', $record->text, $matches)) {
+                        if(preg_match('/(#\d+)/', $record->text, $matches)) {
                             $num = substr($matches[1], 1);
                             $solution = Solution::first(array('conditions' => array('pitch_id' => $pitchId, 'num' => $num)));
                             if(isset($solution)) {
-                                $record->text = preg_replace('/(#\d*)/', '<a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1">$1</a>$2', $record->text);
+                                $record->text = preg_replace('/(#\d+)/', '<a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1">$1</a>$2', $record->text);
                             }else {
-                                $record->text = preg_replace('/(#\d*)/', '<a href="#" target="_blank" class="solution-link hoverimage">$1</a>$2', $record->text);
+                                $record->text = preg_replace('/(#\d+)/', '<a href="#" target="_blank" class="solution-link hoverimage">$1</a>$2', $record->text);
                             }
-                        }else {
-                            $record->text = preg_replace('/(#\d*)/', '<a href="#" target="_blank" class="solution-link hoverimage" data-comment-to="$1">$1</a>$2', $record->text);
                         }
                         $record->text = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', strip_tags($record->text, '<br><a>'));
 
