@@ -17,7 +17,7 @@ $(document).ready(function() {
                 if(Cart.prepareData()) {
                     Cart.saveData();
                 }else {
-                    alert('Не все обязательные поля заполнены');
+                    $.scrollTo($('.wrong-input').parent(), {duration: 600});
                 }
                 return false;
             }
@@ -30,7 +30,7 @@ $(document).ready(function() {
                     if(Cart.prepareData()) {
                         Cart.saveData();
                     }else {
-                        alert('Не все обязательные поля заполнены');
+                        $.scrollTo($('.wrong-input').parent(), {duration: 600});
                     }
                     return false;
                 }
@@ -124,6 +124,7 @@ $(document).ready(function() {
         checkPromocode();
     });
     
+    /**/
     $('input[name=title], input[name=industry], textarea[name=description]').focus(function() {
         $(this).removeClass('wrong-input');
     });
