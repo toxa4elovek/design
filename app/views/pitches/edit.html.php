@@ -283,12 +283,12 @@ endif?>
         <div class="groupc">
             <p>
                 <label class="required">Название питча <a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
-                <input type="text" name="title" placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
+                <input type="text" name="title" placeholder="Логотип для Star Lift" data-placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
                 <input type="hidden" name="category_id" value="<?=$category->id?>">
             </p>
             <p>
                 <label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-                <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" required>
+                <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
             </p>
 
             <?php if(!$onlyText):?>
@@ -329,6 +329,9 @@ endif?>
                 <textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
 Что должно быть прописано в логотипе?
 Кто ваши клиенты/потребители/покупатели?
+Где будет это размещаться?" data-placeholder="Что вы хотите получить на выходе от дизайнера?
+Что должно быть прописано в логотипе?
+Кто ваши клиенты/потребители/покупатели?
 Где будет это размещаться?" data-low="70" data-normal="140" data-high="280" ><?=$pitch->description?></textarea>
             </p>
 
@@ -339,7 +342,7 @@ endif?>
                     <div class="shadow-b"></div>
                 </div><!-- .bar -->
                 <ul>
-                    <li>недостаточно подбробно…</li>
+                    <li>недостаточно подробно…</li>
                     <li>вполне понятно</li>
                     <li>самое то!</li>
                 </ul>
@@ -561,8 +564,8 @@ endif?>
 
 
 <?php if(!$onlyText):?>
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php else:?>
-    <?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+    <?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php endif?>
 <?=$this->html->style(array('/brief', '/step3'), array('inline' => false))?>
