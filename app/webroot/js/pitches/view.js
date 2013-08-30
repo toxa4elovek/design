@@ -543,8 +543,7 @@ $(document).ready(function(){
                 commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
 
                 // Date Time
-                var dateCreated = result.comment.created.replace(' ', 'T'); // FF & IE date string parsing
-                var postDateObj = new Date(dateCreated);
+                var postDateObj = getProperDate(result.comment.created);
                 commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
                 commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
 
@@ -591,12 +590,20 @@ $(document).ready(function(){
             // Left Panel
             $('.solution-images').html('');
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
+                if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
+                    viewsize = result.solution.images.solution_gallerySiteSize;
+                    work = result.solution.images.solution_solutionView
+                }else {
+                    // case when we don't have gallerySiteSize image size
+                    viewsize = result.solution.images.solution;
+                    work = result.solution.images.solution
+                }
                 if ($.isArray(result.solution.images.solution)) {
-                    $.each(result.solution.images.solution_solutionView, function(idx, field) {
-                        $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                    $.each(work, function(idx, field) {
+                        $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
                     });
                 }else {
-                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution_solutionView.weburl + '" class="solution-image" /></a>');
+                    $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
                 }
             }else {
                 $('.solution-images').append('<div class="preview"> \
@@ -937,6 +944,15 @@ function inlineActions() {
             $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
         }
     });
+
+    function hideSolutionPopup() {
+        if ($('.solution-overlay').is(':visible')) {
+            window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
+            $('#pitch-panel').show();
+            $('.wrapper', 'body').first().removeClass('wrapper-frozen');
+            $('.solution-overlay').hide();
+        }
+    }
 
     enableToolbar();
     mentionLinks();

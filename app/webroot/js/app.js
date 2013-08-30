@@ -592,8 +592,7 @@ function fetchComments(result) {
         commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
         
         // Date Time
-        var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
-        var postDateObj = new Date(dateCreated);
+        var postDateObj = getProperDate(comment.created);
         commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
         commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
         commentData.relImageUrl = '';
@@ -744,4 +743,14 @@ function enableToolbar() {
             }
         });
     });
+}
+
+/*
+ * Get Proper Date object from MySQL datetime string
+ */
+function getProperDate(dateStr) {
+    var a = dateStr.split(' ');
+    var d = a[0].split('-');
+    var t = a[1].split(':');
+    return new Date(d[0], (d[1]-1), d[2], t[0], t[1], t[2]);
 }
