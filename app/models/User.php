@@ -803,5 +803,12 @@ class User extends \app\models\AppModel {
         }
     }
 
+    public static function sendFinishedReports($pitch) {
+        $user = self::first($pitch->user_id);
+        $data = array('user' => $user, 'pitch' => $pitch, 'files' => array('/home/ubuntu/www/gdev/app/libraries/MPDF54/MPDF54/tmp/godesigner-act-100004.pdf', '/home/ubuntu/www/gdev/app/libraries/MPDF54/MPDF54/tmp/godesigner-report-100004.pdf'));
+        SpamMailer::sendfinishedreports($data);
+        return true;
+    }
+
 }
 ?>

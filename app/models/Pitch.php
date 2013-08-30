@@ -573,7 +573,7 @@ class Pitch extends \app\models\AppModel {
             'conditions' => array(
                 'status' => 2,
                 'totalFinishDate' => array(
-                    '>=' => date('Y-m-d H:i:s', time() - 5 * MINUTE),
+                    '>=' => date('Y-m-d H:i:s', time() - 5 * DAY), // !!!!!!!!!!!!!!!!!!!!!!!!
                 ),
             ),
         );
@@ -590,6 +590,7 @@ class Pitch extends \app\models\AppModel {
                 } else {
                     // No bill data
                 }
+                User::sendFinishedReports($pitch);
             }
             $res = count($pitches);
         }
