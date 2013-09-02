@@ -469,72 +469,106 @@ endswitch;
 	<div class="middle add-pitch" style="display:none;" id="step3">
 
 		<div class="main">
-		<form action="https://pay.masterbank.ru/acquiring" method="post">
+		    <form action="https://pay.masterbank.ru/acquiring" method="post">
 				<input type="hidden" id="pitch-id" name="id" value=""/>
 				<ol class="steps">
 					<li><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
 					<li class=""><a href="#" class="steps-link" data-step="2">2. Бриф</a></li>
 					<li class="last current"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
 				</ol><!-- .steps -->
-                </form>
-				<div style="height:800px"><p>
-                		<h1>выберите способ оплаты</h1>
-                        <div class="g_line"></div>
-                        <div id="P_card">
-                        	<table>
-                                <tr>
-                                    <td>
-                                        <input type="radio" name="1" class="rb1" data-pay="online" checked>
-                                    </td>
-                                    <td>
-                                        <img src="/img/s3_card.png" alt="">
-                                    </td>
-                                    <td class="s3_text">
-                                    	Пластиковая карта ВИЗА, МАСТЕРКАРД<br/>(VISA, MASTERCARD)
-                                    </td>
-                                    <td>
-                                    	<form action="https://pay.masterbank.ru/acquiring" method="post">
-	                                    	<input type="HIDDEN" value="" name="ORDER" id="order-id">
-											<input type="HIDDEN" value="" name="AMOUNT" id="order-total">
-											<input type="HIDDEN" value="" name="TIMESTAMP" id="order-timestamp">
-											<input type="HIDDEN" value="" NAME="SIGN" id="order-sign">
-											<input type="HIDDEN" value="http://godesigner.ru/users/mypitches" name="MERCH_URL">
-											<input type="HIDDEN" value="71846655" name="TERMINAL">
-	                                    	<input type="submit" id="paybutton" value="продолжить оплату" class="button" >
-                                    	</form>
-                                    </td>
-                                </tr>
-								<tr>
-                            		<td colspan="4"><div class="g_line"><i>или</i></div></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="radio" name="1" class="rb1" data-pay="offline">
-                                    </td>
-                                    <td class="s3_h">
-                                        <img src="/img/s3_rsh.png" alt="">
-                                    </td>
-                                    <td class="s3_text">
-                                    	Перевод на расчетный счёт<br/>(Безналичный платеж через банк)
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                </table>
-                                <div id="s3_kv" style="display:none;">
-                                    <table>
-                                    <tr>
-                                        <td width="25px;"><img src="/img/s3_hz.png" alt=""></td>
-                                        <td colspan="3">
-                                        <p class="regular"><a id="pdf-link" href="#">Скачайте счёт на оплату</a> и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p><br/>
-                                        <p class="regular">Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>. Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+            </form>
+			<div style="padding-bottom: 50px;">
+                <h1>выберите способ оплаты</h1>
+                <div class="g_line"></div>
+                <div id="P_card">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="radio" name="1" class="rb1" data-pay="online" checked>
+                            </td>
+                            <td>
+                                <img src="/img/s3_card.png" alt="">
+                            </td>
+                            <td class="s3_text">
+                                Пластиковая карта ВИЗА, МАСТЕРКАРД<br/>(VISA, MASTERCARD)
+                            </td>
+                            <td>
+                                <form action="https://pay.masterbank.ru/acquiring" method="post">
+                                    <input type="HIDDEN" value="" name="ORDER" id="order-id">
+									<input type="HIDDEN" value="" name="AMOUNT" id="order-total">
+									<input type="HIDDEN" value="" name="TIMESTAMP" id="order-timestamp">
+									<input type="HIDDEN" value="" NAME="SIGN" id="order-sign">
+									<input type="HIDDEN" value="http://godesigner.ru/users/mypitches" name="MERCH_URL">
+									<input type="HIDDEN" value="71846655" name="TERMINAL">
+                                    <input type="submit" id="paybutton" value="продолжить оплату" class="button" >
+                                </form>
+                            </td>
+                        </tr>
+						<tr>
+                            <td colspan="4"><div class="g_line"><i>или</i></div></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="1" class="rb1" data-pay="offline">
+                            </td>
+                            <td class="s3_h">
+                                <img src="/img/s3_rsh.png" alt="">
+                            </td>
+                            <td class="s3_text">
+                                Перевод на расчетный счёт<br/>(Безналичный платеж через банк)
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div id="s3_kv">
+                        <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-fiz"> ФИЗИЧЕСКОЕ ЛИЦО</label>
+                        <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-yur"> ЮРИДИЧЕСКОЕ ЛИЦО</label>
+                        <div class="pay-fiz">
+                            <p>Скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
+                            <form action="/bills/save" method="post" id="bill-fiz">
+                                <input type="hidden" name="fiz-id" id="fiz-id" value="<?=$pitch->id?>">
+                                <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
+                                <input type="text" name="fiz-name" id="fiz-name" placeholder="Федченко Максим Юрьевич" data-placeholder="Федченко Максим Юрьевич" required="" data-content="symbolic">
+                                <img src="/img/arrow-bill-download.png" class="arrow-bill-download" />
+                                <input type="submit" id="button-fiz" value="Скачать счёт" class="button third" style="width:420px;">
+                                <div class="clr"></div>
+                            </form>
+                            <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
+                               Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
                         </div>
-                        <div class="g_line"></div>
-                </p></div>
-		</form>
+                        <div class="pay-yur">
+                            <p>Скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
+                            <form action="/bills/save" method="post" id="bill-yur">
+                                <input type="hidden" name="yur-id" id="yur-id" value="<?=$pitch->id?>">
+                                <input type="hidden" name="yur-individual" id="yur-individual" value="0">
+
+                                <label class="required">Наименование организации</label>
+                                <input type="text" name="yur-name" id="yur-name" placeholder="OOO «КРАУД МЕДИА»" data-placeholder="OOO «КРАУД МЕДИА»" required="" data-content="mixed">
+
+                                <label class="required">ИНН</label>
+                                <input type="text" name="yur-inn" id="yur-inn" placeholder="123456789012" data-placeholder="123456789012" required="" data-content="numeric" data-length="[10,12]">
+
+                                <label class="required">КПП</label>
+                                <input type="text" name="yur-kpp" id="yur-kpp" placeholder="123456789" data-placeholder="123456789" required="" data-content="numeric" data-length="[9]">
+
+                                <label class="required">Юридический адрес</label>
+                                <input type="text" name="yur-address" id="yur-address" placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" required="" data-content="mixed">
+
+                                <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
+                                Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
+                                <p>Закрывающие документы вы получите на email сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать.
+                                Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27).
+                                В ответном письме вы получите оригиналы документов с нашей печатью.</p>
+                                <input type="submit" id="button-yur" value="Скачать счёт" class="button third" style="width:420px;">
+                                <div class="clr"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="g_line"></div>
+                <input type="button" id="backbutton" value="Вернуться к шагу 2" class="button steps-link" data-step="2" style="width:260px;float:left;">
+                <a href="/pitches" class="button" style="width:192px;float:right;">На страницу всех питчей</a>
+            </div>
 
 		</div><!-- .main -->
 

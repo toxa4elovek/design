@@ -123,13 +123,9 @@ $(document).ready(function() {
     $('#promocode').live('keyup', function() {
         checkPromocode();
     });
-    
-    /**/
-    $('input[name=title], input[name=industry], textarea[name=description]').focus(function() {
+
+    $(document).on('focus', '.wrong-input', function() {
         $(this).removeClass('wrong-input');
-    });
-    $('input', '.extensions').change(function() {
-        $('.extensions').removeClass('wrong-input');
     });
 
     $('#sliderset').show();
@@ -592,7 +588,7 @@ $(document).ready(function() {
     $('#bill-fiz').submit(function(e) {
         e.preventDefault();
         if (checkRequired($(this))) {
-            alert('Заполните пожалуйста необходимые поля');
+            $.scrollTo($('.wrong-input', $(this)).parent(), {duration: 600});
         } else {
             $.post($(this).attr('action') + '.json', {
                 'id': $('#fiz-id').val(),
@@ -612,7 +608,7 @@ $(document).ready(function() {
     $('#bill-yur').submit(function(e) {
         e.preventDefault();
         if (checkRequired($(this))) {
-            alert('Заполните пожалуйста необходимые поля');
+            $.scrollTo($('.wrong-input', $(this)).parent(), {duration: 600});
         } else {
             $.post($(this).attr('action') + '.json', {
                 'id': $('#yur-id').val(),
@@ -661,8 +657,43 @@ function checkRequired(form) {
     var required = false;
     $.each($('[required]', form), function(index, object) {
         if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {
+            $(this).addClass('wrong-input');
             required = true;
-            return false;
+            return true; // Continue next element
+        }
+        if (($(this).data('length')) && ($(this).data('length').length > 0)) {
+            var arrayLength = $(this).data('length');
+            if (-1 == $.inArray($(this).val().length, arrayLength)) {
+                $(this).addClass('wrong-input');
+                required = true;
+                return true;
+            }
+        }
+        if (($(this).data('content')) && ($(this).data('content').length > 0)) {
+            if ($(this).data('content') == 'numeric') {
+                // Numbers only
+                if (/\D+/.test($(this).val())) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
+            if ($(this).data('content') == 'symbolic') {
+                // Symbols only
+                if (/[^a-zа-я]/i.test($(this).val())) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
+            if ($(this).data('content') == 'mixed') {
+                // Symbols and Numbers
+                if (!(/[a-zа-я0-9]/i.test($(this).val()))) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
         }
     });
     return required;
@@ -858,6 +889,8 @@ function FeatureCart() {
                 }
                 self.id = response;
                 $('#pitch-id').val(self.id);
+                $('#fiz-id').val(self.id);
+                $('#yur-id').val(self.id);
                 
                 pitchid = self.id;
 

@@ -504,7 +504,7 @@ endif?>
                         <form action="/bills/save" method="post" id="bill-fiz">
                             <input type="hidden" name="fiz-id" id="fiz-id" value="<?=$pitch->id?>">
                             <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
-                            <input type="text" name="fiz-name" id="fiz-name" placeholder="Федченко Максим Юрьевич" data-placeholder="Федченко Максим Юрьевич" required="">
+                            <input type="text" name="fiz-name" id="fiz-name" placeholder="Федченко Максим Юрьевич" data-placeholder="Федченко Максим Юрьевич" required="" data-content="symbolic">
                             <img src="/img/arrow-bill-download.png" class="arrow-bill-download" />
                             <input type="submit" id="button-fiz" value="Скачать счёт" class="button third" style="width:420px;">
                             <div class="clr"></div>
@@ -519,16 +519,16 @@ endif?>
                             <input type="hidden" name="yur-individual" id="yur-individual" value="0">
 
                             <label class="required">Наименование организации</label>
-                            <input type="text" name="yur-name" id="yur-name" placeholder="OOO «КРАУД МЕДИА»" data-placeholder="OOO «КРАУД МЕДИА»" required="">
+                            <input type="text" name="yur-name" id="yur-name" placeholder="OOO «КРАУД МЕДИА»" data-placeholder="OOO «КРАУД МЕДИА»" required="" data-content="mixed">
 
                             <label class="required">ИНН</label>
-                            <input type="text" name="yur-inn" id="yur-inn" placeholder="123456789012" data-placeholder="123456789012" required="">
+                            <input type="text" name="yur-inn" id="yur-inn" placeholder="123456789012" data-placeholder="123456789012" required="" data-content="numeric" data-length="[10,12]">
 
                             <label class="required">КПП</label>
-                            <input type="text" name="yur-kpp" id="yur-kpp" placeholder="123456789" data-placeholder="123456789" required="">
+                            <input type="text" name="yur-kpp" id="yur-kpp" placeholder="123456789" data-placeholder="123456789" required="" data-content="numeric" data-length="[9]">
 
                             <label class="required">Юридический адрес</label>
-                            <input type="text" name="yur-address" id="yur-address" placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" required="">
+                            <input type="text" name="yur-address" id="yur-address" placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" required="" data-content="mixed">
 
                             <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
                             Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
