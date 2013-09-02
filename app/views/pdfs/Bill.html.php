@@ -56,8 +56,7 @@
 	</tr>
 	<tr  valign="top">
 		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">Оказание услуг на условиях агентского соглашения, размещённого на сайте
-godesigner.ru, за питч № <?=$pitch->id?>. НДС не предусмотрен.</td>
+		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">Услуги дизайна на условиях агентского соглашения, размещённого на сайте godesigner.ru, за питч (конкурс) № <?=$pitch->id?> . НДС не предусмотрен.</td>
 		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">шт.</td>
 		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
 		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;"><?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?></td>

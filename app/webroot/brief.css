@@ -50,5 +50,5 @@ input.file {
     margin-left: 20px;
 }
 input.wrong-input, textarea.wrong-input, ul.wrong-input {
-	border: 1px solid #FF585D;
+    border: 1px solid #FF585D;
 }

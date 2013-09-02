@@ -16,4 +16,24 @@ class PdfGetter extends \lithium\template\Helper {
 		));
         return $view->render('template', $options, array('template' => $layout));
     }
+
+    public static function findPdfDestination($dest) {
+        switch (strtolower($dest)) {
+            case 'download':
+                $destination = 'd';
+                break;
+            case 'file':
+                $destination = 'f';
+                break;
+            case 'stdout':
+                $destination = 'i';
+                break;
+            case 'string':
+                $destination = 's';
+                break;
+            default:
+                $destination = 'd';
+        }
+        return $destination;
+    }
 }
