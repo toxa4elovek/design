@@ -74,7 +74,7 @@ $(document).ready(function() {
     });
 
     /**/
-    $('input[name=title], input[name=industry], textarea[name=description]').focus(function() {
+    $(document).on('focus', '.wrong-input', function() {
         $(this).removeClass('wrong-input');
     });
     $('input', '.extensions').change(function() {

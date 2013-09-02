@@ -9,7 +9,10 @@ $(document).ready(function() {
         var existsNotPublshed = (Cart.id != 0) && (isBilled == 0);
         var notExists = (Cart.id == 0);
         if($('input[name="isGuaranteed"]:checked').length == 0) {
-            alert('Необходимо уточнить, оставляете ли вы питч без гарантий или создаете гарантированный питч.');
+            $.scrollTo($('#award'), {duration: 600, onAfter: function() {
+                alert('Необходимо уточнить, оставляете ли вы питч без гарантий или создаете гарантированный питч.');
+            }
+            });
             return false;
         }
         if(Cart.validatetype == 1) {
@@ -126,6 +129,9 @@ $(document).ready(function() {
 
     $(document).on('focus', '.wrong-input', function() {
         $(this).removeClass('wrong-input');
+    });
+    $('input', '.extensions').change(function() {
+        $('.extensions').removeClass('wrong-input');
     });
 
     $('#sliderset').show();
