@@ -500,15 +500,17 @@ class Pitch extends \app\models\AppModel {
     }
 
     public static function generatePdfAct($options) {
-        $destination = self::findPdfDestination($options['destination']);
+        $destination = PdfGetter::findPdfDestination($options['destination']);
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
         require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
         $mpdf = new \mPDF();
         $mpdf->WriteHTML(PdfGetter::get('Act', $options));
-        return $mpdf->Output('godesigner-act-' . $options['pitch']->id . '.pdf', $destination);
+        return $mpdf->Output($path . 'godesigner-act-' . $options['pitch']->id . '.pdf', $destination);
     }
 
     public static function generatePdfReport($options) {
-        $destination = self::findPdfDestination($options['destination']);
+        $destination = PdfGetter::findPdfDestination($options['destination']);
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
         $layout = ($options['bill']->individual == 1) ? 'Report-fiz' : 'Report-yur';
         $options['transaction'] = Transaction::first(array(
             'conditions' => array(
@@ -545,27 +547,7 @@ class Pitch extends \app\models\AppModel {
             require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
             $mpdf = new \mPDF();
             $mpdf->WriteHTML(PdfGetter::get($layout, $options));
-            $mpdf->Output('godesigner-report-' . $options['pitch']->id . '.pdf', $destination);
-    }
-
-    protected static function findPdfDestination($dest) {
-        switch (strtolower($dest)) {
-            case 'download':
-                $destination = 'd';
-                break;
-            case 'file':
-                $destination = 'f';
-                break;
-            case 'stdout':
-                $destination = 'i';
-                break;
-            case 'string':
-                $destination = 's';
-                break;
-            default:
-                $destination = 'd';
-        }
-        return $destination;
+            $mpdf->Output($path . 'godesigner-report-' . $options['pitch']->id . '.pdf', $destination);
     }
 
     public static function sendReports() {
@@ -587,14 +569,13 @@ class Pitch extends \app\models\AppModel {
                     if ($bill->individual != 1) {
                         self::generatePdfAct($options);
                     }
+                    User::sendFinishReports($pitch);
+                    $res++;
                 } else {
-                    // No bill data
+                    echo 'No Bill Data for Pitch ' . $pitch->id . PHP_EOL;
                 }
-                User::sendFinishedReports($pitch);
             }
-            $res = count($pitches);
         }
         return $res;
     }
-
 }

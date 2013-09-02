@@ -17,6 +17,8 @@ use \app\extensions\helper\NameInflector;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 
+use \DirectoryIterator;
+
 class User extends \app\models\AppModel {
 
 	public $hasOne = array();
@@ -803,10 +805,16 @@ class User extends \app\models\AppModel {
         }
     }
 
-    public static function sendFinishedReports($pitch) {
+    public static function sendFinishReports($pitch) {
         $user = self::first($pitch->user_id);
-        $data = array('user' => $user, 'pitch' => $pitch, 'files' => array('/home/ubuntu/www/gdev/app/libraries/MPDF54/MPDF54/tmp/godesigner-act-100004.pdf', '/home/ubuntu/www/gdev/app/libraries/MPDF54/MPDF54/tmp/godesigner-report-100004.pdf'));
-        SpamMailer::sendfinishedreports($data);
+        $path = LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/';
+        $files = array();
+        foreach (new DirectoryIterator($path) as $fileInfo) {
+            if ($fileInfo->isDot() || !$fileInfo->isFile() || (false == strpos($fileInfo->getFilename(), $pitch->id))) continue;
+            $files[] = $path . $fileInfo->getFilename();
+        }
+        $data = array('user' => $user, 'pitch' => $pitch, 'files' => $files);
+        SpamMailer::sendfinishreports($data);
         return true;
     }
 
