@@ -560,6 +560,12 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	border-width: 12px 15px;
 	border-left-color: #ff585d;*/
 }
+.auth .wrong-login {
+	text-transform: uppercase;
+	font-size: 10px;
+	color: #F37575;
+	text-align: center;
+}
 .login .submit {
 	padding-top: 4px;
 }
