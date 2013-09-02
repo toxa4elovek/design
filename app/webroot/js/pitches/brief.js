@@ -659,6 +659,41 @@ function checkRequired(form) {
         if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {
             $(this).addClass('wrong-input');
             required = true;
+            return true; // Continue next element
+        }
+        if (($(this).data('length')) && ($(this).data('length').length > 0)) {
+            var arrayLength = $(this).data('length');
+            if (-1 == $.inArray($(this).val().length, arrayLength)) {
+                $(this).addClass('wrong-input');
+                required = true;
+                return true;
+            }
+        }
+        if (($(this).data('content')) && ($(this).data('content').length > 0)) {
+            if ($(this).data('content') == 'numeric') {
+                // Numbers only
+                if (/\D+/.test($(this).val())) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
+            if ($(this).data('content') == 'symbolic') {
+                // Symbols only
+                if (/[^a-zа-я]/i.test($(this).val())) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
+            if ($(this).data('content') == 'mixed') {
+                // Symbols and Numbers
+                if (!(/[a-zа-я0-9]/i.test($(this).val()))) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
         }
     });
     return required;
@@ -854,6 +889,8 @@ function FeatureCart() {
                 }
                 self.id = response;
                 $('#pitch-id').val(self.id);
+                $('#fiz-id').val(self.id);
+                $('#yur-id').val(self.id);
                 
                 pitchid = self.id;
 
