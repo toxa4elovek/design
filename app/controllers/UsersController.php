@@ -686,7 +686,7 @@ class UsersController extends \app\controllers\AppController {
 	                return $this->redirect('Users::office');
                 }
 	        }else{
-				//FlashMessage::write('Неверный адрес почты или пароль.');
+				Session::write('flash.login', 'Неверный адрес почты или пароль.');
 				return $this->redirect("Users::login");
 	        }
         }
