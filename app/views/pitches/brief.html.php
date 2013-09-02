@@ -550,5 +550,5 @@ endswitch;
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'jquery-deparam.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?=$this->html->style(array('/brief', '/step3'), array('inline' => false))?>
