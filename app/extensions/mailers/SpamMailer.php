@@ -233,10 +233,10 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
-    public static function sendfinishreports($data) {
+    public static function finishreports($data) {
         return self::_mail(array(
             'to' => $data['user']->email,
-            'subject' => 'Отчеты',
+            'subject' => 'Закрывающие документы для вашего питча',
             'data' => $data,
             'reply-to' => 'va@godesigner.ru',
         ));

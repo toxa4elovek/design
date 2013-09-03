@@ -555,7 +555,7 @@ class Pitch extends \app\models\AppModel {
             'conditions' => array(
                 'status' => 2,
                 'totalFinishDate' => array(
-                    '>=' => date('Y-m-d H:i:s', time() - 5 * DAY), // !!!!!!!!!!!!!!!!!!!!!!!!
+                    '>=' => date('Y-m-d H:i:s', time() - 5 * MINUTE),
                 ),
             ),
         );
