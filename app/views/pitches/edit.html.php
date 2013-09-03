@@ -500,11 +500,11 @@ endif?>
                     <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-fiz"> ФИЗИЧЕСКОЕ ЛИЦО</label>
                     <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-yur"> ЮРИДИЧЕСКОЕ ЛИЦО</label>
                     <div class="pay-fiz">
-                        <p>Скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
+                        <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
                         <form action="/bills/save" method="post" id="bill-fiz">
                             <input type="hidden" name="fiz-id" id="fiz-id" value="<?=$pitch->id?>">
                             <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
-                            <input type="text" name="fiz-name" id="fiz-name" placeholder="Федченко Максим Юрьевич" data-placeholder="Федченко Максим Юрьевич" required="" data-content="symbolic">
+                            <input type="text" name="fiz-name" id="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Федченко Максим Юрьевич" required="" data-content="symbolic">
                             <img src="/img/arrow-bill-download.png" class="arrow-bill-download" />
                             <input type="submit" id="button-fiz" value="Скачать счёт" class="button third" style="width:420px;">
                             <div class="clr"></div>
@@ -513,7 +513,7 @@ endif?>
                            Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
                     </div>
                     <div class="pay-yur">
-                        <p>Скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
+                        <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
                         <form action="/bills/save" method="post" id="bill-yur">
                             <input type="hidden" name="yur-id" id="yur-id" value="<?=$pitch->id?>">
                             <input type="hidden" name="yur-individual" id="yur-individual" value="0">
@@ -532,7 +532,7 @@ endif?>
 
                             <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
                             Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
-                            <p>Закрывающие документы вы получите на email сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать.
+                            <p>Закрывающие документы вы получите на e-mail сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать.
                             Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27).
                             В ответном письме вы получите оригиналы документов с нашей печатью.</p>
                             <input type="submit" id="button-yur" value="Скачать счёт" class="button third" style="width:420px;">
