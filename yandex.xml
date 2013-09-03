@@ -14,7 +14,7 @@
      по умолчанию используется протокол HTTP.-->
     <protocol>HTTP</protocol>
 
-    <description>Лого, сайт и дизайн от всего креативного интернет сообщества</description>
+    <description>Лого, сайт и дизайн от всего креативного интернет-сообщества</description>
 
     <requestMethod>GET</requestMethod>
 
