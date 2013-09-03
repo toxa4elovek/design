@@ -39,7 +39,7 @@
         <textBox type="NoFilling">
 
             <!--Подпись к текстовому полю задана атрибутом caption.-->
-            <description caption="Название питча">
+            <description caption="Название логотипа">
 
                 <!--Имя CGI-параметра для передачи содержимого текстового поля задано атрибутом name.-->
                 <setParameter name="name" />
@@ -47,14 +47,14 @@
             </textBox>
 
         <textBox type="NoFilling">
-            <description caption="Награда дизайнера">
+            <description caption="Сколько готовы заплатить?">
 
                 <!--Имя CGI-параметра для передачи содержимого текстового поля задано атрибутом name.-->
                 <setParameter name="award" />
             </description>
         </textBox>
             <checkBox>
-                <description caption="Заполнить бриф">
+                <description caption="Заполнить бриф по телефону">
                     <setParameter name="fillBrief"/>
                 </description>
                 <checked key="true" default="true"/>
