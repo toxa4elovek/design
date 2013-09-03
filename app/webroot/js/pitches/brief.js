@@ -588,7 +588,7 @@ $(document).ready(function() {
     }
     var pitchInitOptions = $.deparam(window.location.search.substr(1));
     if (pitchInitOptions.award) {
-        $('#award').focus().val(pitchInitOptions.award);
+        $('#award').focus().val(pitchInitOptions.award).blur();
     }
     if (pitchInitOptions.name) {
         $('input[name=title]').focus().val(pitchInitOptions.name);
