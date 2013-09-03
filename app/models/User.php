@@ -814,7 +814,7 @@ class User extends \app\models\AppModel {
             $files[] = $path . $fileInfo->getFilename();
         }
         $data = array('user' => $user, 'pitch' => $pitch, 'files' => $files);
-        SpamMailer::sendfinishreports($data);
+        SpamMailer::finishreports($data);
         return true;
     }
 
