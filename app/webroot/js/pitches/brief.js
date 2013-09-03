@@ -593,7 +593,7 @@ $(document).ready(function() {
     if (pitchInitOptions.name) {
         $('input[name=title]').focus().val(pitchInitOptions.name);
     }
-    if ((pitchInitOptions.fillBrief == 1) && ($('#phonebrief').attr('checked') != 'checked')) {
+    if ((pitchInitOptions.fillBrief == "true") && ($('#phonebrief').attr('checked') != 'checked')) {
         $('#phonebrief').click();
     }
 
