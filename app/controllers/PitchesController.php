@@ -658,6 +658,9 @@ class PitchesController extends \app\controllers\AppController {
 		foreach($temp as $cat) {
 			$categories[$cat->id] = $cat;
 		}
+		if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && !is_null($this->request->query['ref'])) {
+            setcookie('ref', $this->request->query['ref'], strtotime('+1 month'), '/');
+		}
 		return compact('categories');
 	}
 
@@ -808,6 +811,9 @@ class PitchesController extends \app\controllers\AppController {
     }
 
 	public function brief() {
+	    if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && !is_null($this->request->query['ref'])) {
+	        setcookie('ref', $this->request->query['ref'], strtotime('+1 month'), '/');
+	    }
 		if(!$this->request->category) {
 			return $this->redirect('Pitches::create');
 		}
@@ -959,7 +965,6 @@ class PitchesController extends \app\controllers\AppController {
                     $redirect = true;
                 }
 
-
 				$data = array(
 	                'user_id' => $userId,
 					'category_id' => $commonPitchData['category_id'],
@@ -989,6 +994,12 @@ class PitchesController extends \app\controllers\AppController {
 					'specifics' => serialize($specificPitchData),
                     'promocode' => $promocode
 				);
+
+				if (isset($_COOKIE['ref']) || ($_COOKIE['ref']) != '') {
+				    $data['referal'] = (int) $_COOKIE['ref'];
+				    setcookie('ref', '', time() - 3600, '/');
+				}
+
 			}
 			if(!$pitch = Pitch::first(array('conditions' => array('id' => $commonPitchData['id'])))) {
 				$pitch = Pitch::create();

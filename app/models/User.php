@@ -818,5 +818,13 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function fillBalance($userId, $sum) {
+        if ($user = self::first($userId)) {
+            $user->balance += (int) $sum;
+            $user->save(null, array('validate' => false,));
+        }
+        return true;
+    }
+
 }
 ?>

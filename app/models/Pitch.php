@@ -50,6 +50,9 @@ class Pitch extends \app\models\AppModel {
 			$result = $chain->next($self, $params, $chain);
 			if($result) {
                 $params['pitch'] = Pitch::first($params['id']);
+                if($params['pitch']->referal > 0) {
+                    User::fillBalance((int) $params['pitch']->referal, 500);
+                }
                 if(($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
                     $queryString = '?utm_source=twitter&utm_medium=tweet&utm_content=new-pitch-tweet&utm_campaign=sharing';
