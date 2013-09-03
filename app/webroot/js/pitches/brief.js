@@ -634,7 +634,19 @@ $(document).ready(function() {
     /**/
     var Cart = new FeatureCart;
     Cart.init();
-    if ((typeof(fillBrief) != 'undefined') && (fillBrief)) {
+
+    /* Pitch Init from various options */
+    if ((typeof(fillBrief) != 'undefined') && (fillBrief) && ($('#phonebrief').attr('checked') != 'checked')) {
+        $('#phonebrief').click();
+    }
+    var pitchInitOptions = $.deparam(window.location.search.substr(1));
+    if (pitchInitOptions.award) {
+        $('#award').focus().val(pitchInitOptions.award);
+    }
+    if (pitchInitOptions.name) {
+        $('input[name=title]').focus().val(pitchInitOptions.name);
+    }
+    if ((pitchInitOptions.fillBrief == "true") && ($('#phonebrief').attr('checked') != 'checked')) {
         $('#phonebrief').click();
     }
 
