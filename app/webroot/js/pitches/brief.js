@@ -594,6 +594,7 @@ $(document).ready(function() {
     $('#bill-fiz').submit(function(e) {
         e.preventDefault();
         if (checkRequired($(this))) {
+            console.log(checkRequired($(this)));
             $.scrollTo($('.wrong-input', $(this)).parent(), {duration: 600});
         } else {
             $.post($(this).attr('action') + '.json', {
@@ -698,7 +699,7 @@ function checkRequired(form) {
             }
             if ($(this).data('content') == 'symbolic') {
                 // Symbols only
-                if (/[^a-zа-я]/i.test($(this).val())) {
+                if (/[^a-zа-я\s]/i.test($(this).val())) {
                     $(this).addClass('wrong-input');
                     required = true;
                     return true;
