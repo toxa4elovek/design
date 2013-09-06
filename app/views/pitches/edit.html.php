@@ -374,7 +374,7 @@ endif?>
         <div class="groupc">
 
             <p><label>Дополнительные материалы <a href="#" class="second tooltip" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
-
+            <div id="new-download" style="display:none;">
             <p class="add-file">
             <form action="/pitchfiles/add.json" method="post" id="fileuploadform">
                 <div class="fileinputs">
@@ -387,6 +387,9 @@ endif?>
                 <!--input type="button" class="button" value="Загрузить" id="uploadButton"/-->
             </form>
             </p>
+            </div>
+
+            <iframe id="old-download" src="/pitchfiles/index" seamless style="display:none;width:570px;height:100px;"></iframe>
 
             <!--p class="add-another-file">
             <a href="#">+ добавить файл</a></p--><!-- .add-another-file -->
