@@ -550,7 +550,7 @@ $(document).ready(function() {
             } else { // Any User
                 $('<div class="like-wrapper"><div class="left">поддержи</div> \
                    <div class="like-widget already"></div> \
-                   <div class="right">автора</div></div>').insertAfter(firstImage);
+                   <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
             }
             
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');

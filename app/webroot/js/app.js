@@ -352,7 +352,15 @@ $(document).ready(function() {
     //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 
     $(document).on('click', '.like-widget', function() {
-        $(this).toggleClass('already');
+        if($(this).hasClass('already')) {
+            /*$.post('/solutions/like/' + solutionId + '.json', {"uid": uid}, function(response) {
+                $(this).toggleClass('already');
+                var counter = $('.value-likes')
+                counter.html(parseInt(counter.html()) + 1);
+            });*/
+        }else {
+
+        }
     });
 
 })
