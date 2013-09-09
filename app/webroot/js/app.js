@@ -351,31 +351,7 @@ $(document).ready(function() {
     //Цвет фона для текущих питчей
     //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 
-    $(document).on('click', '.like-widget', function() {
-        $(this).toggleClass('already');
-        if($(this).hasClass('already')) {
-            console.log('already')
-            console.log(currentUserId);
-            console.log($(this).data('id'));
-            var counter = $('.value-likes')
-            var solutionId = $(this).data('id')
-            counter.html(parseInt(counter.html()) + 1);
-            $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
-            });
-        }else {
-            console.log('not already')
-            console.log(currentUserId);
-            console.log($(this).data('id'));
-            var counter = $('.value-likes')
-            var solutionId = $(this).data('id')
-            counter.html(parseInt(counter.html()) - 1);
-            $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
-            });
-        }
-    });
-
 })
-
 
 window.fbAsyncInit = function() {
     FB.init({
