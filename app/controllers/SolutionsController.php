@@ -9,7 +9,7 @@ use \app\extensions\mailers\UserMailer;
 
 class SolutionsController extends \app\controllers\AppController {
 
-    public $publicActions = array('like');
+    public $publicActions = array('like', 'unlike');
 
     public function hide() {
         $result = $this->request;
