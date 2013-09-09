@@ -191,7 +191,7 @@ http://godesigner.ru/answers/view/73');
     public static function increaseLike($solutionId, $userId) {
         $solution = self::first($solutionId);
         $pitch = Pitch::first(array('conditions' => array('id' => $solution->pitch_id)));
-
+        $userId = (int)$userId;
         if((!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) && ($userId) && ($pitch->status == 0)) {
             $solution->likes += 1;
             $solution->save();
@@ -224,6 +224,7 @@ http://godesigner.ru/answers/view/73');
 
     public static function decreaseLike($solutionId, $userId) {
         $solution = self::first($solutionId);
+        $userId = (int)$userId;
         if($like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) {
             $solution->likes -= 1;
             $solution->save();

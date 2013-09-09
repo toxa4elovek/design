@@ -548,8 +548,13 @@ $(document).ready(function() {
                     }
                 });
             } else { // Any User
+                var already = ''
+                if(result.likes == true) {
+                    already = ' already'
+                }
+
                 $('<div class="like-wrapper"><div class="left">поддержи</div> \
-                   <div class="like-widget already"></div> \
+                   <div class="like-widget' + already + '" data-id="' + result.solution.id + '"></div> \
                    <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
             }
             
