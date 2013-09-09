@@ -22,6 +22,7 @@ use \app\models\Promoted;
 use app\models\Ratingchange;
 use \app\models\Avatar;
 use \app\models\Url;
+use \app\models\Like;
 
 use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
@@ -1438,8 +1439,17 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
             $avatarHelper = new AvatarHelper;
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
+            $likes = false;
+            if(Session::read('user')) {
+
+                $like = Like::find('first', array('conditions' => array('solution_id' => $solution->id, 'user_id' => Session::read('user.id'))));
+                if ($like) {
+                    $likes = true;
+                }
+            }
+
 			//if($pitch->category_id != 7){
-                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo');
+                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
             //}else{
                 //return $this->render(array('template' => '/viewsolution-copy', 'data' => compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution')));
             //}
