@@ -351,6 +351,10 @@ $(document).ready(function() {
     //Цвет фона для текущих питчей
     //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 
+    $(document).on('click', '.like-widget', function() {
+        $(this).toggleClass('already');
+    });
+
 })
 
 

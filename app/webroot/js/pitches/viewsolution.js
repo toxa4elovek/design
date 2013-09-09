@@ -525,8 +525,8 @@ $(document).ready(function() {
                 </div>');
             }
             
+            var firstImage = $('.solution-image').first().parent();
             if (currentUserId == result.pitch.user_id) { // isClient
-                var firstImage = $('.solution-image').first().parent();
                 $('<div class="separator-rating"> \
                 <div class="separator-left"></div> \
                 <div class="rating-widget"><span class="left">выставьте</span> \
@@ -547,6 +547,10 @@ $(document).ready(function() {
                         });
                     }
                 });
+            } else { // Any User
+                $('<div class="like-wrapper"><div class="left">поддержи</div> \
+                   <div class="like-widget already"></div> \
+                   <div class="right">автора</div></div>').insertAfter(firstImage);
             }
             
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
