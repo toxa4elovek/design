@@ -80,6 +80,14 @@ $(document).ready(function() {
         return false;
     })
 
+    /* Social networks widgets modal*/
+    $('#socials-modal').modal({
+        containerId: 'spinner',
+        opacity: 80,
+        close: false
+    });
+    $('.simplemodal-wrap').css('overflow', 'visible');
+
     $('input[name=case]').val('fu27fwkospf');
 
     $('#reqsend').on('click', function() {
