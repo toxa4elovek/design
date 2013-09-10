@@ -818,5 +818,20 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function sendAddonProlong($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::duration($data);
+    }
+
+    public static function sendAddonExpert($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::expertaddon($data);
+    }
+
+    public static function sendAddonBrief($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::briefaddon($data);
+    }
+
 }
 ?>

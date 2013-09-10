@@ -499,6 +499,84 @@ class Pitch extends \app\models\AppModel {
         return $res;
     }
 
+    public static function addonBriefLetter($time) {
+        $pitches = self::getAddonPitches($time);
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (User::sendAddonBrief($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public static function addonProlongLetter($time) {
+        $pitches = self::getAddonPitches($time);
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (User::sendAddonProlong($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public static function addonExpertLetter($time) {
+        $pitches = self::getAddonPitches($time);
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (User::sendAddonExpert($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    protected static function getAddonPitches($time) {
+        if ((0 < $time) && ($time < 1)) {
+            $timeCond = array(
+                'TIMESTAMPADD(SECOND,(TIMESTAMPDIFF(SECOND,started,finishDate) * ' . $time . '),started)' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - HOUR),
+                    '<' => date('Y-m-d H:i:s', time()),
+                ),
+            );
+        }
+
+        if ($time >= 1) {
+            $timeCond = array(
+                'started' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - DAY * $time - HOUR),
+                    '<' => date('Y-m-d H:i:s', time() - DAY * $time),
+                ),
+            );
+        }
+
+        if ($time < 0) {
+            $timeCond = array(
+                'finishDate' => array(
+                    '>=' => date('Y-m-d H:i:s', time() + DAY * abs($time) - HOUR),
+                    '<' => date('Y-m-d H:i:s', time() + DAY * abs($time)),
+                ),
+            );
+        }
+
+        $conditions = array(
+            'published' => 1,
+            'status' => 0,
+        );
+        $conditions += $timeCond;
+        return self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
+    }
+
     public static function generatePdfAct($options) {
         $destination = PdfGetter::findPdfDestination($options['destination']);
         $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';

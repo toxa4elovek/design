@@ -95,18 +95,6 @@
             </table>
         </td>
     </tr>
-    <tr>
-        <td>
-            <table width="100%" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="12" width="25"></td>
-                    <td><img src="http://godesigner.ru/img/main_bottom_block.jpg" width="100%" height="15""></td>
-                    <td width="1"></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-
     <tr><td height="30"></td></tr>
 </table>
 </body>
