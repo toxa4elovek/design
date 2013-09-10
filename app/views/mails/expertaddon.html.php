@@ -12,7 +12,7 @@
     <tr><td height="30"></td></tr>
 
     <tr>
-        <td height="33" align="center" style="text-align: center;"><div style="line-height: 0;"><img src="http://godesigner.ru/img/needmoretime.png" alt="Не хватает времени?" width="362" height="35" valign="top" /></div></td>
+        <td height="33" align="center" style="text-align: center;"><div style="line-height: 0;"><img src="http://godesigner.ru/img/needexpert.png" alt="Нужна помощь в выборе?" width="438" height="37" valign="top" /></div></td>
     </tr>
     <tr><td height="24"></td></tr>
 
@@ -25,25 +25,25 @@
                         <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
                             <tr><td height="38"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Хотите продлить срок питча, чтобы получить больше решений? Или увеличить размер вознаграждения? Воспользуйтесь нашей дополнительной опцией «Продлить срок».</td>
+                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Наш <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/experts">эксперт</a> с опытом работы в ведущих рекламных агентствах поможет вам с выбором варианта. Он укажет и прокомментирует три лучших решения, которые максимально отвечают на вашу задачу. Вы можете выбрать несколько экспертов и заручиться надёжной поддержкой.</td>
                             </tr>
                             <tr><td height="20"></td></tr>
                             <tr><td align="center">
-                                <a href="http://godesigner.ru/pitches/addon/<?=$pitch->id;?>?click=prolong">
-                                <img src="http://godesigner.ru/img/duration-button.png" alt="">
+                                <a href="http://godesigner.ru/pitches/addon/<?=$pitch->id;?>?click=experts-checkbox">
+                                <img src="http://godesigner.ru/img/expert-button.png" alt="">
                                 </a>
                             </td></tr>
                             <tr><td height="20"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Стоимость дополнительного дня 1950р., из которых 1000р. идет в сумму гонорара для победителя. Опция доступна только до окончания срока питча. <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/88">Подробнее на сайте</a>.</td>
+                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Стоимость одного эксперта 1000р.-. Опция доступна только до окончания срока питча. <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/66">Подробнее на сайте</a>.</td>
                             </tr>
-                            <tr><td height="40"></td></tr>
+                            <tr><td height="25"></td></tr>
                             <tr>
                                 <td align="center"><img src="http://godesigner.ru/img/mail/authors-photo.png" width="214" height="68"></td>
                             </tr>
                             <tr><td height="20"></td></tr>
                             <tr>
-                                <td align="center"><img src="http://godesigner.ru/img/mail/authors-team.png" width="181" height="54"></td>
+                                <td align="center"><img src="http://godesigner.ru/img/mail/authors-names.png" width="217" height="52"></td>
                             </tr>
 
                             <tr><td height="10"></td></tr>

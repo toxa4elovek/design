@@ -12,7 +12,7 @@
     <tr><td height="30"></td></tr>
 
     <tr>
-        <td height="33" align="center" style="text-align: center;"><div style="line-height: 0;"><img src="http://godesigner.ru/img/needmoretime.png" alt="Не хватает времени?" width="362" height="35" valign="top" /></div></td>
+        <td height="33" align="center" style="text-align: center;"><div style="line-height: 0;"><img src="http://godesigner.ru/img/need-brief-help.png" alt="Помочь заполнить бриф?" width="434" height="37" valign="top" /></div></td>
     </tr>
     <tr><td height="24"></td></tr>
 
@@ -20,33 +20,37 @@
         <td>
             <table cellpadding="0" cellspacing="0" width="570" align="left" style="border-collapse: collapse;" bgcolor="#e1e1e1">
                 <tr>
-                    <td width="30"></td>
-                    <td width="530">
+                    <td width="29"></td>
+                    <td width="521">
                         <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
-                            <tr><td height="38"></td></tr>
+                            <tr><td height="30"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Хотите продлить срок питча, чтобы получить больше решений? Или увеличить размер вознаграждения? Воспользуйтесь нашей дополнительной опцией «Продлить срок».</td>
+                                <td align="center"><img src="http://godesigner.ru/img/mail/oxana-photo.png" width="73" height="82"></td>
                             </tr>
+                            <tr><td height="5"></td></tr>
+                            <tr>
+                                <td align="center"><img src="http://godesigner.ru/img/mail/oxana-name.png" width="187" height="47"></td>
+                            </tr>
+
                             <tr><td height="20"></td></tr>
+
+                            <tr>
+                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Появились сомнения в правильности заполнения брифа? Я знаю, как правильно сформулировать ваши ожидания и помогу верно определить задачу для дизайнеров.</td>
+                            </tr>
+
+                            <tr><td height="30"></td></tr>
+
                             <tr><td align="center">
-                                <a href="http://godesigner.ru/pitches/addon/<?=$pitch->id;?>?click=prolong">
-                                <img src="http://godesigner.ru/img/duration-button.png" alt="">
+                                <a href="http://godesigner.ru/pitches/addon/<?=$pitch->id;?>?click=phonebrief">
+                                <img src="http://godesigner.ru/img/fill-brief-button.png" alt="">
                                 </a>
                             </td></tr>
                             <tr><td height="20"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Стоимость дополнительного дня 1950р., из которых 1000р. идет в сумму гонорара для победителя. Опция доступна только до окончания срока питча. <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/88">Подробнее на сайте</a>.</td>
-                            </tr>
-                            <tr><td height="40"></td></tr>
-                            <tr>
-                                <td align="center"><img src="http://godesigner.ru/img/mail/authors-photo.png" width="214" height="68"></td>
-                            </tr>
-                            <tr><td height="20"></td></tr>
-                            <tr>
-                                <td align="center"><img src="http://godesigner.ru/img/mail/authors-team.png" width="181" height="54"></td>
+                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Чтобы заказать дополнительную опцию «Заполнить бриф», оставьте заявку и свой телефон, и я свяжусь с вами в течение рабочего дня с момента оплаты. На основе нашего интервью, я создам грамотное тех. задание для дизайнеров. Подробнее <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/68">об опции на сайте</a>.</td>
                             </tr>
 
-                            <tr><td height="10"></td></tr>
+                            <tr><td height="15"></td></tr>
 
                             <tr><td height="1" bgcolor="#dddddd"></td></tr>
                             <tr><td height="1" bgcolor="#d4d4d4"></td></tr>
@@ -90,7 +94,7 @@
 
                         </table>
                     </td>
-                    <td width="10"></td>
+                    <td width="20"></td>
                 </tr>
             </table>
         </td>
