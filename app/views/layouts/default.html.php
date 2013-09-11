@@ -105,6 +105,31 @@
         echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
     <?php endif;?>
+    <script>
+        var showSocialPopup = false;
+        var needSocialWrite = false;
+        <?php if ($this->session->read('user.id')):?>
+            <?php if ($this->session->read('user.social') != 1):?>
+                <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
+                    showSocialPopup = true;
+                    needSocialWrite = true;
+                    <?php setcookie('scl', 'true', strtotime('+6 month'), '/');?>
+                <?php else:?>
+                    needSocialWrite = true;
+                <?php endif;?>
+            <?php else:
+                setcookie('scl', 'true', strtotime('+6 month'), '/');
+            endif?>
+
+        <?php else:?>
+
+            <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
+                showSocialPopup = true;
+                <?php setcookie('scl', 'true', strtotime('+6 month'), '/');?>
+            <?php endif;?>
+        <?php endif?>
+    </script>
+    <?php echo $this->html->script('http://vk.com/js/api/openapi.js');?>
 </head>
 <?php
 $clientNotice = $this->session->read('user.attentionpitch');
@@ -174,6 +199,23 @@ echo '<!--' . $this->session->read('user.blogpost.date') . '-->';
         </div>
      </div>
 </div>
+<!-- Start: Socials Popup -->
+<div id="socials-modal" style="overflow: visible; display: none; width: 700px; background: #282A34;">
+    <div style="position: absolute; top: 460px; left: 25px; width: 652px; height: 10px; background: #454650; box-shadow: 0 5px 5px rgba(0,0,0,.4);"></div>
+    <div style="position: relative; height: 70px; width: 100%; background: url('/img/go-social-header.png') no-repeat top left #282a34; box-shadow: inset 0 -1px 0 rgba(39,41,50,1);">
+        <a class="close-request" style="float: right; color: rgb(100, 143, 164); font-size: 12px; padding-right: 20px; background: url('/img/closerequest.png') no-repeat 50px center; margin-top: 30px; margin-right: 20px;" href="#">закрыть</a>
+    </div>
+    <div style="position: relative; height: 390px; background: url('/img/404_bg.png') top center no-repeat; background-size: cover; box-shadow: inset 0 1px 0 rgba(45,47,56,1), 0 5px 5px rgba(0,0,0,.4);">
+        <!-- Start: VK -->
+        <div id="vk_groups" style="float: left; margin: 40px 30px 0 20px;"></div>
+        <!-- End: VK -->
+
+        <!-- Start: FB -->
+        <div class="fb-like-box" style="float: left; margin: 40px 20px 0 30px; background: white;" data-href="https://www.facebook.com/pages/Go-Designer/160482360714084" data-width="300" data-height="290" data-show-faces="true" data-header="false" data-stream="false" data-show-border="false"></div>
+        <!-- End: FB -->
+    </div>
+</div>
+<!-- End: Socials Popup -->
 <script type="text/javascript">
     /*
     var proto = (document.location.protocol=='https:')?'https:':'http:';

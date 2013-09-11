@@ -1178,6 +1178,14 @@ class UsersController extends \app\controllers\AppController {
         die();
     }
 
+    public function addSocial() {
+        if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
+            $user->social = 1;
+            return $user->save(null, array('validate' => false));
+        }
+        $this->redirect('/');
+    }
+
 }
 
 
