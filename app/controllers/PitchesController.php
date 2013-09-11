@@ -1274,6 +1274,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $i ++;
             }
 
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order));
+            $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+
             $currentUser = Session::read('user.id');
             if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
                 return $this->redirect('/pitches');
@@ -1293,7 +1296,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $files = Pitchfile::all(array('conditions' => array('id' => $fileIds)));
             }
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-                return compact('pitch', 'files', 'comments', 'prevpitch');
+                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts');
             }else {
                 //return compact('pitch', 'files');
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments')));
