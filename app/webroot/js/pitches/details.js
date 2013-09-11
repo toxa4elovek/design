@@ -126,7 +126,7 @@ $(document).ready(function() {
 
     $('.hoverimage[data-comment-to]').tooltip({
         tooltipID: 'tooltip',
-        tooltipSource: 'rel',
+        tooltipSource: 'hidden',
         width: '200px',
         correctPosX: 40,
         //positionTop: 0,

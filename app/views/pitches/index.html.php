@@ -290,13 +290,13 @@
 					<!--a href="#">&#60;</a><a href="#" class="this-page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a> ... <a href="#">7</a><a href="#">&#62;</a-->
 				</div>
 				<ul class="icons-infomation">
-					<li class="icons-infomation-one supplement3">Мнение экспертов<br> важно для этого клиента</li>
-					<li class="icons-infomation-two supplement3">Закрытый питч</li>
+					<li class="icons-infomation-one supplement3"><a href="/answers/view/66" target="_blank">Мнение экспертов</a><br> важно для этого клиента</li>
+					<li class="icons-infomation-two supplement3"><a href="/answers/view/64" target="_blank">Закрытый питч</a></li>
 					<li class="icons-infomation-three supplement3">Идеи больше не принимаются, идет выбор победителя</li>
 					<li class="icons-infomation-four supplement3">Питч завершен,<br> победитель выбран</li>
 				</ul>
 				<div style="margin-top:70px;height:40px;background: url('/img/guarantee2.png') no-repeat scroll 0 0 transparent" class="you-profile supplement3">
-					Гарантированный питч,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
+                    <a href="/answers/view/80" target="_blank">Гарантированный питч</a>,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
 				</div>
                 <div style="margin-top:20px;height:40px;margin-right: 128px;" class="you-profile supplement3">
                     Хотите узнать о добавлении новых питчей?<br>Измените <a href="/users/profile">настройки своего профиля</a>

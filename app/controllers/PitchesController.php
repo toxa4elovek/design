@@ -22,6 +22,7 @@ use \app\models\Promoted;
 use app\models\Ratingchange;
 use \app\models\Avatar;
 use \app\models\Url;
+use \app\models\Like;
 
 use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
@@ -30,6 +31,8 @@ use \app\extensions\helper\MoneyFormatter;
 use \app\extensions\helper\PitchTitleFormatter;
 use \app\extensions\helper\PdfGetter;
 use \app\extensions\helper\Avatar as AvatarHelper;
+
+use \Exception;
 
 class PitchesController extends \app\controllers\AppController {
 
@@ -1141,6 +1144,7 @@ class PitchesController extends \app\controllers\AppController {
                 return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts'));
             }
 		}
+		throw new Exception('Public:Такого питча не существует.', 404);
 	}
 
     public function getComments() {
@@ -1273,6 +1277,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $i ++;
             }
 
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order));
+            $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+
             $currentUser = Session::read('user.id');
             if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
                 return $this->redirect('/pitches');
@@ -1292,12 +1299,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $files = Pitchfile::all(array('conditions' => array('id' => $fileIds)));
             }
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-                return compact('pitch', 'files', 'comments', 'prevpitch');
+                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts');
             }else {
                 //return compact('pitch', 'files');
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments')));
             }
         }
+        throw new Exception('Public:Такого питча не существует.', 404);
     }
 
     public function crowdsourcing() {
@@ -1438,13 +1446,22 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
             $avatarHelper = new AvatarHelper;
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
+            $likes = false;
+            if(Session::read('user')) {
+
+                $like = Like::find('first', array('conditions' => array('solution_id' => $solution->id, 'user_id' => Session::read('user.id'))));
+                if ($like) {
+                    $likes = true;
+                }
+            }
+
 			//if($pitch->category_id != 7){
-                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo');
+                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
             //}else{
                 //return $this->render(array('template' => '/viewsolution-copy', 'data' => compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution')));
             //}
 		}else {
-            return $this->redirect('/pitches');
+		    throw new Exception('Public:Такого решения не существует.', 404);
         }
 	}
 
@@ -1479,9 +1496,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }else{
                 return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
             }
-        }else {
-
         }
+        throw new Exception('Public:Такого питча не существует.', 404);
     }
 
     public function uploadcopy() {

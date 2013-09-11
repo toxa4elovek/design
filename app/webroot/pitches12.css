@@ -727,12 +727,12 @@ h1.solution-title-page  {
     float: right;
     width: 150px;
 }
+/* Star Widget */
 .solution-left-panel .rating-widget {
 	float: left;
 	width: 304px;
 	height: 24px;
 	margin: 0 12px;
-	/* background: url('img/3-rating-solution-large.png') 96px 0 no-repeat; */
 }
 .solution-left-panel .rating-widget #star-widget {
 	margin-left: 20px;
@@ -750,6 +750,42 @@ h1.solution-title-page  {
 .solution-left-panel .rating-widget span.right {
 	float: right;
 }
+/* Like Widget */
+.solution-left-panel .like-wrapper {
+    width: 304px;
+    height: 115px;
+    margin: 10px 140px;
+}
+.solution-left-panel .like-wrapper div.left, .solution-left-panel .like-wrapper div.right {
+    color: #666;
+    font-family: Georgia, sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    text-shadow: 0 1px #ffffff;
+    margin-top: 50px;
+}
+.solution-left-panel .like-wrapper div.left {
+    float: left;
+}
+.solution-left-panel .like-wrapper div.right {
+    float: left;
+}
+.solution-left-panel .like-wrapper .like-widget {
+	float: left;
+    margin: 0 20px;
+    width: 106px;
+    height: 115px;
+    background: url('img/appreciate_button_sprite.png') 0 0 no-repeat;
+	cursor: pointer;
+}
+.solution-left-panel .like-wrapper .like-widget:hover {
+	background-position: 0 -115px;
+}
+.solution-left-panel .like-wrapper .like-widget.already {
+	background-position: 0 -231px;
+	cursor: default;
+}
+
 .solution-left-panel .allow-comments {
 	display: none;
 }

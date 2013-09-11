@@ -525,8 +525,8 @@ $(document).ready(function() {
                 </div>');
             }
             
+            var firstImage = $('.solution-image').first().parent();
             if (currentUserId == result.pitch.user_id) { // isClient
-                var firstImage = $('.solution-image').first().parent();
                 $('<div class="separator-rating"> \
                 <div class="separator-left"></div> \
                 <div class="rating-widget"><span class="left">выставьте</span> \
@@ -547,6 +547,34 @@ $(document).ready(function() {
                         });
                     }
                 });
+            } else { // Any User
+                var already = ''
+                if(result.likes == true) {
+                    already = ' already'
+                }
+
+                $('<div class="like-wrapper"><div class="left">поддержи</div> \
+                   <div class="like-widget' + already + '" data-id="' + result.solution.id + '"></div> \
+                   <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
+
+                $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
+                    $(this).toggleClass('already');
+                    if($(this).hasClass('already')) {
+                        var counter = $('.value-likes')
+                        var solutionId = $(this).data('id')
+                        counter.html(parseInt(counter.html()) + 1);
+                        $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                        });
+                    }else {
+                        var counter = $('.value-likes')
+                        var solutionId = $(this).data('id')
+                        counter.html(parseInt(counter.html()) - 1);
+                        $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                        });
+                    }
+                    return false
+                });
+
             }
             
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
