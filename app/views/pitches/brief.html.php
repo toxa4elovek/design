@@ -386,7 +386,7 @@ endswitch;
                 <div class="groupc">
 
 					<p><label>Дополнительные материалы <a href="#" class="second tooltip" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
-
+                    <div id="new-download" style="display:none;">
 					<p class="add-file">
                         <form action="/pitchfiles/add.json" method="post" id="fileuploadform">
                             <div class="fileinputs">
@@ -397,17 +397,19 @@ endswitch;
                             <div clas="clr"></div>
 						    <input type="text" id="fileupload-description" name="file-description" style="width:370px;margin-right: 20px;" placeholder="Пояснение"/>
                             <!--input type="button" class="button" value="Загрузить" id="uploadButton"/-->
-                    <div class="span5 fileupload-progress fade">
-                        <!-- The global progress bar -->
-                        <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                            <div class="bar" style="width:0%;"></div>
-                        </div>
-                        <!-- The extended global progress information -->
-                        <div class="progress-extended">&nbsp;</div>
-                    </div>
+                            <div class="span5 fileupload-progress fade">
+                                <!-- The global progress bar -->
+                                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="bar" style="width:0%;"></div>
+                                </div>
+                                <!-- The extended global progress information -->
+                                <div class="progress-extended">&nbsp;</div>
+                            </div>
                         </form>
-
 					</p>
+					</div>
+
+					<iframe id="old-download" src="/pitchfiles/index" seamless style="display:none;width:570px;height:100px;"></iframe>
 
 					<!--p class="add-another-file"><a href="#">+ добавить файл</a></p--><!-- .add-another-file -->
                     <ul id="filezone">

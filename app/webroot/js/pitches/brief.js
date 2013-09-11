@@ -2,6 +2,13 @@ $(document).ready(function() {
 
     var pitchid = '';
 
+    /* Download Form Select */
+    if ((window.File != null) && (window.FileList != null)) {
+        $('#new-download').show();
+    } else {
+        $('#old-download').show();
+    }
+
     // steps menu
     $('.steps-link').click(function() {
         var stepNum = $(this).data('step');
@@ -401,8 +408,8 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.filezone-delete-link', function() {
+        var givenId = +$(this).parent().attr('data-id');
         if (Cart.id) {
-            var givenId = +$(this).parent().attr('data-id'); 
             if (givenId) { // File came from database
                 $.post('/pitchfiles/delete', {'id': givenId}, function(response) {
                     if(response != 'true') {
@@ -417,12 +424,22 @@ $(document).ready(function() {
             }
             $(this).parent().remove();
             return false;
+        } else if ($(this).data('imfromiframe') == true) {
+            $.post('/pitchfiles/delete', {'id': givenId}, function(response) {
+                if(response != 'true') {
+                    alert('При удалении файла произошла ошибка');
+                }
+                var position = $.inArray(givenId, Cart.fileIds);
+                Cart.fileIds.splice(position, 1);
+            });
+            $(this).parent().remove();
+            return false;
         } else {
             uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
             $(this).parent().remove();
             return false;
         }
-    })
+    });
 
     $('#uploadButton').click(function() {
         //$('#fileuploadform').fileupload('uploadByClick');
@@ -633,22 +650,24 @@ $(document).ready(function() {
     });
 
     /**/
-    var Cart = new FeatureCart;
+    Cart = new FeatureCart;
     Cart.init();
 
     /* Pitch Init from various options */
-    if ((typeof(fillBrief) != 'undefined') && (fillBrief) && ($('#phonebrief').attr('checked') != 'checked')) {
-        $('#phonebrief').click();
-    }
-    var pitchInitOptions = $.deparam(window.location.search.substr(1));
-    if (pitchInitOptions.award) {
-        $('#award').focus().val(pitchInitOptions.award).blur();
-    }
-    if (pitchInitOptions.name) {
-        $('input[name=title]').focus().val(pitchInitOptions.name);
-    }
-    if ((pitchInitOptions.fillBrief == "true") && ($('#phonebrief').attr('checked') != 'checked')) {
-        $('#phonebrief').click();
+    if (window.location.pathname.indexOf('brief') != -1) { // Pitch create only
+        if ((typeof(fillBrief) != 'undefined') && (fillBrief) && ($('#phonebrief').attr('checked') != 'checked')) {
+            $('#phonebrief').click();
+        }
+        var pitchInitOptions = $.deparam(window.location.search.substr(1));
+        if (pitchInitOptions.award) {
+            $('#award').focus().val(pitchInitOptions.award).blur();
+        }
+        if (pitchInitOptions.name) {
+            $('input[name=title]').focus().val(pitchInitOptions.name);
+        }
+        if ((pitchInitOptions.fillBrief == "true") && ($('#phonebrief').attr('checked') != 'checked')) {
+            $('#phonebrief').click();
+        }
     }
 
     if($('#sub-site').val() > 1) {

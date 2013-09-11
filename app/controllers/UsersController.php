@@ -23,6 +23,7 @@ use \lithium\analysis\Logger;
 use \lithium\storage\Cache;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
+use \Exception;
 
 class UsersController extends \app\controllers\AppController {
 
@@ -940,6 +941,7 @@ class UsersController extends \app\controllers\AppController {
             }
             return compact('user', 'pitchCount', 'averageGrade', 'totalViews', 'totalLikes' ,'awardedSolutionNum' , 'totalSolutionNum', 'selectedSolutions', 'isClient');
         }
+        throw new Exception('Public:Такого пользователя не существует.', 404);
     }
 
     public function savePaymentData() {

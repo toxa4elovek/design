@@ -1,6 +1,11 @@
 $(document).ready(function() {
 
-
+    /* Download Form Select */
+    if ((window.File != null) && (window.FileList != null)) {
+        $('#new-download').show();
+    } else {
+        $('#old-download').show();
+    }
 
     /**/
 
@@ -221,7 +226,7 @@ $(document).ready(function() {
     });
 
     /**/
-    var Cart = new FeatureCart;
+    Cart = new FeatureCart;
     Cart.init();
 
 });

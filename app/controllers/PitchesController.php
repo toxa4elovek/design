@@ -32,6 +32,8 @@ use \app\extensions\helper\PitchTitleFormatter;
 use \app\extensions\helper\PdfGetter;
 use \app\extensions\helper\Avatar as AvatarHelper;
 
+use \Exception;
+
 class PitchesController extends \app\controllers\AppController {
 
 	/**
@@ -1142,6 +1144,7 @@ class PitchesController extends \app\controllers\AppController {
                 return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts'));
             }
 		}
+		throw new Exception('Public:Такого питча не существует.', 404);
 	}
 
     public function getComments() {
@@ -1302,6 +1305,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments')));
             }
         }
+        throw new Exception('Public:Такого питча не существует.', 404);
     }
 
     public function crowdsourcing() {
@@ -1457,7 +1461,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 //return $this->render(array('template' => '/viewsolution-copy', 'data' => compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution')));
             //}
 		}else {
-            return $this->redirect('/pitches');
+		    throw new Exception('Public:Такого решения не существует.', 404);
         }
 	}
 
@@ -1492,9 +1496,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }else{
                 return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
             }
-        }else {
-
         }
+        throw new Exception('Public:Такого питча не существует.', 404);
     }
 
     public function uploadcopy() {
