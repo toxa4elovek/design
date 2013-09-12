@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html itemscope itemtype="http://schema.org/LocalBusiness">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# godesigner: http://ogp.me/ns/fb/godesigner#">
-	<?= $this->html->charset();?>
+    <?= $this->html->charset();?>
     <?php
     $title = 'Лого, сайт и дизайн от всего креативного интернет сообщества';
     if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView'])) && (is_object($solution->pitch)) && (is_object($solution->user))):
@@ -54,55 +54,55 @@
     endif;
     $title .= ' | GoDesigner'
     ?>
-	<title><?=$title?></title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?=$title?></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="apple-touch-icon" href="/img/icon_57.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="/img/icon_72.png" />
     <link rel="apple-touch-icon" sizes="114x114" href="/img/icon_114.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="/img/icon_144.png" />
-	<?= $this->html->link('Icon', 'favicon.png', array('type' => 'icon')); ?>
-	<!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
-	<?= $this->html->style(array('/global', '/main', '/fonts', '/panel', '/contact2')); ?>
-	<?= $this->styles() ?>
-	<!--[if lte IE 9]><?= $this->html->style(array('/ie.css')); ?><![endif]-->
-	<!--[if lte IE 8]><?= $this->html->style(array('/ie8.css')); ?><![endif]-->
-	<!--[if lte IE 7]><?= $this->html->style(array('/ie7.css')); ?><![endif]-->
+    <?= $this->html->link('Icon', 'favicon.png', array('type' => 'icon')); ?>
+    <!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
+    <?= $this->html->style(array('/global', '/main', '/fonts', '/panel', '/contact2')); ?>
+    <?= $this->styles() ?>
+    <!--[if lte IE 9]><?= $this->html->style(array('/ie.css')); ?><![endif]-->
+    <!--[if lte IE 8]><?= $this->html->style(array('/ie8.css')); ?><![endif]-->
+    <!--[if lte IE 7]><?= $this->html->style(array('/ie7.css')); ?><![endif]-->
     <?php if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView']))):
-        if(!isset($solution->images['solution_galleryLargeSize'][0])):
-            $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
-        else:
-            $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
-        endif;
-        $description = '';
+    if(!isset($solution->images['solution_galleryLargeSize'][0])):
+        $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
+    else:
+        $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
+    endif;
+    $description = '';
     ?>
     <meta property="og:image" content="<?=$url?>"/>
     <meta property="og:description" content="<?=$description?>"/>
     <?php endif;?>
     <?php if(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
-        /*if(!isset($solution->images['solution_galleryLargeSize'][0])):
-            $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
-        else:
-            $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
-        endif;
-        $description = '';*/
-        echo '<meta content="article" property="og:type"/>';
-        echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
-        echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
-        echo '<meta property="og:title" content="' . $post->title . '"/>';
-        echo '<meta property="og:image" content="' . $post->imageurl . '"/>';
-        echo '<meta property="fb:admins" content="nyudmitriy"/>';
-        echo '<meta property="fb:app_id" content="202765613136579"/>';
+    /*if(!isset($solution->images['solution_galleryLargeSize'][0])):
+        $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
+    else:
+        $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
+    endif;
+    $description = '';*/
+    echo '<meta content="article" property="og:type"/>';
+    echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
+    echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
+    echo '<meta property="og:title" content="' . $post->title . '"/>';
+    echo '<meta property="og:image" content="' . $post->imageurl . '"/>';
+    echo '<meta property="fb:admins" content="nyudmitriy"/>';
+    echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
     <?php endif;?>
     <?php if(preg_match('@/pitches/details@', $_SERVER['REQUEST_URI'])):
-        echo '<meta content="godesigner:pitch" property="og:type"/>';
-        echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
-        echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
-        echo '<meta property="og:title" content="' . htmlspecialchars($pitch->title) . '"/>';
-        echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
-        echo '<meta property="fb:admins" content="nyudmitriy"/>';
-        echo '<meta property="fb:app_id" content="202765613136579"/>';
+    echo '<meta content="godesigner:pitch" property="og:type"/>';
+    echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
+    echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
+    echo '<meta property="og:title" content="' . htmlspecialchars($pitch->title) . '"/>';
+    echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
+    echo '<meta property="fb:admins" content="nyudmitriy"/>';
+    echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
     <?php endif;?>
     <script>
@@ -111,23 +111,23 @@
         <?php if ($this->session->read('user.id')):?>
             <?php if ($this->session->read('user.social') != 1):?>
                 <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
-                    showSocialPopup = true;
-                    needSocialWrite = true;
+                showSocialPopup = true;
+                needSocialWrite = true;
                     <?php setcookie('scl', 'true', strtotime('+6 month'), '/');?>
-                <?php else:?>
-                    needSocialWrite = true;
-                <?php endif;?>
-            <?php else:
+                    <?php else:?>
+                needSocialWrite = true;
+                    <?php endif;?>
+                <?php else:
                 setcookie('scl', 'true', strtotime('+6 month'), '/');
             endif?>
 
-        <?php else:?>
+            <?php else:?>
 
             <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
-                showSocialPopup = true;
+            showSocialPopup = true;
                 <?php setcookie('scl', 'true', strtotime('+6 month'), '/');?>
-            <?php endif;?>
-        <?php endif?>
+                <?php endif;?>
+            <?php endif?>
     </script>
     <?php echo $this->html->script('http://vk.com/js/api/openapi.js');?>
 </head>
@@ -197,7 +197,7 @@ echo '<!--' . $this->session->read('user.blogpost.date') . '-->';
         <div id="fbimg" style="display:none;">
             <img src="/img/share-image.jpg" alt="" />
         </div>
-     </div>
+    </div>
 </div>
 <!-- Start: Socials Popup -->
 <div id="socials-modal" style="overflow: visible; display: none; width: 700px; background: #282A34;">
@@ -230,11 +230,11 @@ echo '<!--' . $this->session->read('user.blogpost.date') . '-->';
         hostcommunity:'http://godesigner.copiny.com',
         newwindow: '0',
         type: 'question',
-        color:       '#526c7d',
-        border:   '#526c7d',
-        round:    '1',
-        title:      "\u043e\u0442\u0437\u044b\u0432\u044b - \u0441\u043e\u0432\u0435\u0442\u044b",
-        cache:   "af442c92e4d3aaf6ee76a84b8c66d8fb\/af442c92e4d3aaf6ee76a84b8c66d8fb\/ejOwVXUxUHVyVXUxVLUwArPNwWwnMNsIwtbW1QYzDGGKIVJA0hSmEaQMAA--",
+        color:       '#526c7d',
+        border:   '#526c7d',
+        round:    '1',
+        title:      "\u043e\u0442\u0437\u044b\u0432\u044b - \u0441\u043e\u0432\u0435\u0442\u044b",
+        cache:   "af442c92e4d3aaf6ee76a84b8c66d8fb\/af442c92e4d3aaf6ee76a84b8c66d8fb\/ejOwVXUxUHVyVXUxVLUwArPNwWwnMNsIwtbW1QYzDGGKIVJA0hSmEaQMAA--",
         community:4109
     };
     initCopinyWidget(copinyWidgetOptions);
