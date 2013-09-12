@@ -500,10 +500,20 @@ class Pitch extends \app\models\AppModel {
     }
 
     public static function addonBriefLetter($time) {
-        $pitches = self::getAddonPitches($time);
+        $conditions = array(
+            'brief' => 0,
+        );
+        $conditions += self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
         $res = 0;
         if (count($pitches)) {
             foreach ($pitches as $pitch) {
+                if (Addon::first(array('conditions' => array('pitch_id' => $pitch->id, 'brief' => 1)))) {
+                    continue;
+                }
                 if (User::sendAddonBrief($pitch)) {
                     $res++;
                 }
@@ -513,7 +523,11 @@ class Pitch extends \app\models\AppModel {
     }
 
     public static function addonProlongLetter($time) {
-        $pitches = self::getAddonPitches($time);
+        $conditions = self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
         $res = 0;
         if (count($pitches)) {
             foreach ($pitches as $pitch) {
@@ -526,10 +540,20 @@ class Pitch extends \app\models\AppModel {
     }
 
     public static function addonExpertLetter($time) {
-        $pitches = self::getAddonPitches($time);
+        $conditions = array(
+            'expert' => 0,
+        );
+        $conditions += self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
         $res = 0;
         if (count($pitches)) {
             foreach ($pitches as $pitch) {
+                if (Addon::first(array('conditions' => array('pitch_id' => $pitch->id, 'experts' => 1)))) {
+                    continue;
+                }
                 if (User::sendAddonExpert($pitch)) {
                     $res++;
                 }
@@ -538,7 +562,7 @@ class Pitch extends \app\models\AppModel {
         return $res;
     }
 
-    protected static function getAddonPitches($time) {
+    protected static function getAddonConditions($time) {
         if ((0 < $time) && ($time < 1)) {
             $timeCond = array(
                 'TIMESTAMPADD(SECOND,(TIMESTAMPDIFF(SECOND,started,finishDate) * ' . $time . '),started)' => array(
@@ -571,10 +595,7 @@ class Pitch extends \app\models\AppModel {
             'status' => 0,
         );
         $conditions += $timeCond;
-        return self::all(array(
-            'conditions' => $conditions,
-            'with' => array('User'),
-        ));
+        return $conditions;
     }
 
     public static function generatePdfAct($options) {
