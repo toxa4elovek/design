@@ -188,15 +188,24 @@ http://godesigner.ru/answers/view/73');
         return false;
     }
 
-    public static function increaseLike($solutionId, $userId) {
+    public static function increaseLike($solutionId, $userId = 0) {
         $solution = self::first($solutionId);
         $pitch = Pitch::first(array('conditions' => array('id' => $solution->pitch_id)));
         $userId = (int)$userId;
-        if((!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) && ($userId) && ($pitch->status == 0)) {
+        $allowAnon = false;
+        if (!$userId && (!isset($_COOKIE['bmx_' . $solutionId]) || ($_COOKIE['bmx_' . $solutionId] == 'false'))) {
+            $allowAnon = true;
+            setcookie('bmx_' . $solutionId, 'true', strtotime('+3 month'), '/');
+        }
+        $allowUser = false;
+        if ($userId && (!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId))))) {
+            $allowUser = true;
+        }
+        if (($allowUser || $allowAnon) && ($pitch->status == 0)) {
             $solution->likes += 1;
             $solution->save();
             $like = Like::create();
-            $like->set(array('solution_id' => $solutionId, 'user_id' => $userId));
+            $like->set(array('solution_id' => $solutionId, 'user_id' => $userId, 'created' => date('Y-m-d H:i:s')));
             $like->save();
         }
         return $solution->likes;
@@ -222,10 +231,15 @@ http://godesigner.ru/answers/view/73');
         return $solution->hidden;
     }
 
-    public static function decreaseLike($solutionId, $userId) {
+    public static function decreaseLike($solutionId, $userId = 0) {
         $solution = self::first($solutionId);
         $userId = (int)$userId;
-        if($like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) {
+        $allowAnon = false;
+        if (!$userId && (isset($_COOKIE['bmx_' . $solutionId]) && ($_COOKIE['bmx_' . $solutionId] == 'true'))) {
+            $allowAnon = true;
+            setcookie('bmx_' . $solutionId, 'false', strtotime('+3 month'), '/');
+        }
+        if(($like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) && ($userId || ($allowAnon))) {
             $solution->likes -= 1;
             $solution->save();
             $like->delete();

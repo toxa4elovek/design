@@ -1448,13 +1448,15 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
             $likes = false;
             if(Session::read('user')) {
-
                 $like = Like::find('first', array('conditions' => array('solution_id' => $solution->id, 'user_id' => Session::read('user.id'))));
                 if ($like) {
                     $likes = true;
                 }
+            } else {
+                if (isset($_COOKIE['bmx_' . $solution->id]) && ($_COOKIE['bmx_' . $solution->id] == 'true')) {
+                    $likes = true;
+                }
             }
-
 			//if($pitch->category_id != 7){
                 return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
             //}else{
