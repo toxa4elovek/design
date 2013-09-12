@@ -956,9 +956,9 @@ function inlineActions() {
     });
 
     $('.hoverimage[data-comment-to]').tooltip({
-        tooltipID: 'tooltip',
+        tooltipID: 'tooltip2',
         tooltipSource: 'rel',
-        width: '200px',
+        width: '205px',
         correctPosX: 40,
         //positionTop: 0,
         borderSize: '0px',
