@@ -818,5 +818,42 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function fillBalance($userId, $sum) {
+        if ($user = self::first($userId)) {
+            $user->balance += (int) $sum;
+            $user->save(null, array('validate' => false,));
+        }
+        return true;
+    }
+
+    public static function phoneValidationStart($userId) {
+        if (($user = self::first($userId)) && !empty($user->phone)) {
+            $user->phone_code = self::generatePhoneCode();
+            $user->save(null, array('validate' => false));
+            return self::sendPhoneCode($user->phone, $user->phone_code);
+        }
+        return false;
+    }
+
+    public static function phoneValidationFinish($userId, $code) {
+        if (($user = self::first($userId)) && !empty($user->phone) && !empty($user->phone_code)) {
+            if ($code == $user->phone_code) {
+                $user->phone_valid = 1;
+                $user->phone_code = 0;
+                $user->save(null, array('validate' => false));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected static function generatePhoneCode($count = 5, $string = '0123456789') {
+        return substr(str_shuffle($string), 0, $count);
+    }
+
+    protected static function sendPhoneCode($phone, $code) {
+        // Send code
+        return true;
+    }
 }
 ?>
