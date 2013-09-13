@@ -671,7 +671,7 @@ $(document).ready(function() {
                 $('.solution-abuse').html(html);
             }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
-                    <a class="hide" href="/solutions/delete/' + result.solution.id + '">Удалить</a>');
+                    <a class="hide" href="/solutions/delete/' + result.solution.id + '.json">Удалить</a>');
             }else {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
             }
