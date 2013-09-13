@@ -74,10 +74,9 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     }
     return function() use ($params) {
         if($params['request']->type != 'json') {
-    	    Session::write('redirect', $params['request']->url);
+    	    Session::write('redirect', '/'. $params['request']->url);
         }
         return new Response(compact('request') + array('location' => '/users/login'));
-        //return new Response(compact('request') + array('location' => '/invites.html'));
     };
 });
 

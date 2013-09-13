@@ -13,7 +13,7 @@
 
 				<p><a class="button facebook facebook-logon" style="cursor: pointer;">Связаться через Facebook</a></p>
 
-                <script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
+                <!--script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
 
 
                 <div id="vk_api_transport"></div>
@@ -59,7 +59,7 @@
                     }
                     VK.Auth.getLoginStatus(authInfo);
                     VK.UI.button('login_button');
-                </script>
+                </script-->
 
 			</section>
 
@@ -73,6 +73,7 @@
                 <?php endif; */
                 ?>
                 <!--input type="hidden" value="" id="invite"/-->
+                <input type="hidden" name="case" value="h4820g838f">
 				<p>
 					<?=$this->form->text('first_name', array('value' => $user->first_name, 'placeholder' => 'Имя', 'class' => 'name', 'required' => 'required')) ?>
 					<?php if(isset($errors['first_name'])):?>

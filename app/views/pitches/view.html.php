@@ -184,7 +184,7 @@
                             if($pitch->category_id == 7):
                                 if(($this->session->read('user.id') != null) && (($pitch->user_id == $this->session->read('user.id')) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == $this->session->read('user.id')))):
                                     $visible = true;?>
-                                    <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
+                                    <a class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
                                         <?php if(mb_strlen(trim($solution->description)) > 100):?>
                                         <?=mb_substr(trim($solution->description), 0, 100, 'UTF-8')?>
                                         <?php else:?>
@@ -202,7 +202,7 @@
                             <?php if(($solution->hidden == 1) && ($pitch->user_id == $this->session->read('user.id'))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                                 <a style="<?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
                                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                                    <img rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="">
+                                    <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="">
                                     <?php else:?>
                                         <?php
                                         $picCounter = 0;
@@ -256,7 +256,7 @@
 
 
                                         <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                                        <img rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="">
+                                        <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="">
                                         <?php else:?>
                                         <?php
                                         $picCounter = 0;
@@ -627,7 +627,8 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
                 <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
-            <div class="solution-info solution-about">
+            <div class="solution-copyrighted"><!--  --></div>
+            <div class="solution-info">
                 <table class="solution-stat">
                     <col class="icon">
                     <col class="description">

@@ -159,12 +159,12 @@ endif?>
             text-align: center;
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
 
-
+            <script>var fillBrief = 0;</script>
             <div class="ribbon complete-brief">
-                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="750" id="phonebrief">Заполнить бриф</label></p>
+                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
                 <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
                 <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" value="<?=$pitch->{'phone-brief'}?>" class="phone"></p>
-                <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">750.-</p>
+                <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">1750.-</p>
             </div>
 
         <div class="ribbon">
@@ -283,12 +283,12 @@ endif?>
         <div class="groupc">
             <p>
                 <label class="required">Название питча <a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
-                <input type="text" name="title" placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
+                <input type="text" name="title" placeholder="Логотип для Star Lift" data-placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
                 <input type="hidden" name="category_id" value="<?=$category->id?>">
             </p>
             <p>
                 <label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-                <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" required>
+                <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
             </p>
 
             <?php if(!$onlyText):?>
@@ -329,6 +329,9 @@ endif?>
                 <textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
 Что должно быть прописано в логотипе?
 Кто ваши клиенты/потребители/покупатели?
+Где будет это размещаться?" data-placeholder="Что вы хотите получить на выходе от дизайнера?
+Что должно быть прописано в логотипе?
+Кто ваши клиенты/потребители/покупатели?
 Где будет это размещаться?" data-low="70" data-normal="140" data-high="280" ><?=$pitch->description?></textarea>
             </p>
 
@@ -339,7 +342,7 @@ endif?>
                     <div class="shadow-b"></div>
                 </div><!-- .bar -->
                 <ul>
-                    <li>недостаточно подбробно…</li>
+                    <li>недостаточно подробно…</li>
                     <li>вполне понятно</li>
                     <li>самое то!</li>
                 </ul>
@@ -371,7 +374,7 @@ endif?>
         <div class="groupc">
 
             <p><label>Дополнительные материалы <a href="#" class="second tooltip" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
-
+            <div id="new-download" style="display:none;">
             <p class="add-file">
             <form action="/pitchfiles/add.json" method="post" id="fileuploadform">
                 <div class="fileinputs">
@@ -384,6 +387,9 @@ endif?>
                 <!--input type="button" class="button" value="Загрузить" id="uploadButton"/-->
             </form>
             </p>
+            </div>
+
+            <iframe id="old-download" src="/pitchfiles/index" seamless style="display:none;width:570px;height:100px;"></iframe>
 
             <!--p class="add-another-file">
             <a href="#">+ добавить файл</a></p--><!-- .add-another-file -->
@@ -450,7 +456,7 @@ endif?>
                 <li class="last current"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
             </ol><!-- .steps -->
         </form>
-        <div style="height:800px"><p>
+        <div style="padding-bottom: 50px;">
             <h1>выберите способ оплаты</h1>
             <div class="g_line"></div>
             <div id="P_card">
@@ -493,21 +499,55 @@ endif?>
                         <td></td>
                     </tr>
                 </table>
-                <div id="s3_kv" style="display:none;">
-                    <table>
-                        <tr>
-                            <td width="25px;"><img src="/img/s3_hz.png" alt=""></td>
-                            <td colspan="3">
-                                <p><a id="pdf-link" href="#" target="_blank">Скачайте счёт на оплату</a> и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p><br/>
-                                <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>. Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
-                            </td>
-                        </tr>
-                    </table>
+                <div id="s3_kv">
+                    <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-fiz"> ФИЗИЧЕСКОЕ ЛИЦО</label>
+                    <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-yur"> ЮРИДИЧЕСКОЕ ЛИЦО</label>
+                    <div class="pay-fiz">
+                        <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
+                        <form action="/bills/save" method="post" id="bill-fiz">
+                            <input type="hidden" name="fiz-id" id="fiz-id" value="<?=$pitch->id?>">
+                            <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
+                            <input type="text" name="fiz-name" id="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Федченко Максим Юрьевич" required="" data-content="symbolic">
+                            <img src="/img/arrow-bill-download.png" class="arrow-bill-download" />
+                            <input type="submit" id="button-fiz" value="Скачать счёт" class="button third" style="width:420px;">
+                            <div class="clr"></div>
+                        </form>
+                        <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
+                           Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
+                    </div>
+                    <div class="pay-yur">
+                        <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
+                        <form action="/bills/save" method="post" id="bill-yur">
+                            <input type="hidden" name="yur-id" id="yur-id" value="<?=$pitch->id?>">
+                            <input type="hidden" name="yur-individual" id="yur-individual" value="0">
+
+                            <label class="required">Наименование организации</label>
+                            <input type="text" name="yur-name" id="yur-name" placeholder="OOO «КРАУД МЕДИА»" data-placeholder="OOO «КРАУД МЕДИА»" required="" data-content="mixed">
+
+                            <label class="required">ИНН</label>
+                            <input type="text" name="yur-inn" id="yur-inn" placeholder="123456789012" data-placeholder="123456789012" required="" data-content="numeric" data-length="[10,12]">
+
+                            <label class="required">КПП</label>
+                            <input type="text" name="yur-kpp" id="yur-kpp" placeholder="123456789" data-placeholder="123456789" required="" data-content="numeric" data-length="[9]">
+
+                            <label class="required">Юридический адрес</label>
+                            <input type="text" name="yur-address" id="yur-address" placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" required="" data-content="mixed">
+
+                            <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
+                            Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
+                            <p>Закрывающие документы вы получите на e-mail сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать.
+                            Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27).
+                            В ответном письме вы получите оригиналы документов с нашей печатью.</p>
+                            <input type="submit" id="button-yur" value="Скачать счёт" class="button third" style="width:420px;">
+                            <div class="clr"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="g_line"></div>
-            </p></div>
-        </form>
+            <input type="button" id="backbutton" value="Вернуться к шагу 2" class="button steps-link" data-step="2" style="width:260px;float:left;">
+            <a href="/pitches" class="button" style="width:192px;float:right;">На страницу всех питчей</a>
+            </div>
 
     </div><!-- .main -->
 
@@ -527,8 +567,8 @@ endif?>
 
 
 <?php if(!$onlyText):?>
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php else:?>
-    <?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+    <?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php endif?>
 <?=$this->html->style(array('/brief', '/step3'), array('inline' => false))?>

@@ -68,7 +68,9 @@ function TableLoader() {
             self.renderTable(response);
             self.renderNav(response);
             $('.pitches-ajax-wrapper').fadeOut(50);
-            $('html, body').animate({ scrollTop: 0 }, 600 );
+            if (!options.fromQuery) { // Came Back - No Scroll
+                $('html, body').animate({ scrollTop: 0 }, 600 );
+            }
             if (response.data.pitches.length == 0) {
                 $('.all-pitches, .foot-content').hide();
                 var image = '/img/filter-arrow-down.png';
@@ -126,24 +128,20 @@ function TableLoader() {
                     rowClass += ' close-and-expert';
                     icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-3.png" title="Закрытый питч. Важно мнение эксперта." alt="Закрытый питч. Важно мнение эксперта.">';
                 }
-                if(object.status == 2) {
-                    timeleft = 'Питч завершен';
-                }else if((object.status == 1) && (object.awarded > 0)) {
-                    timeleft = 'Победитель выбран';
-                }else if((object.status == 1) && (object.awarded == 0)) {
-                    timeleft = 'Выбор победителя';
-                }else if((object.status == 0) && (object.published == 0) && (object.billed == 0)) {
+                if ((object.published == 0) && (object.billed == 0) && (object.moderated != 1)) {
                     timeleft = 'Ожидание оплаты';
-                }else if((object.status == 0) && (object.published == 0) && (object.billed == 1) && (object.brief == 1)) {
+                } else if ((object.published == 0) && (object.billed == 0) && (object.moderated == 1)) {
+                    timeleft = 'Ожидание<br />модерации';
+                } else if((object.published == 0) && (object.billed == 1) && (object.brief == 1)) {
                     timeleft = 'Ожидайте звонка';
-                }else {
+                } else {
                     timeleft = object.startedHuman;
                 }
-            }else if ((object.status == 1) && (object.awarded == 0)) {
+            } else if ((object.status == 1) && (object.awarded == 0)) {
                 rowClass += ' selection';
                 icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-1.png" title="Идёт выбор победителя." alt="Идёт выбор победителя.">';
                 timeleft = 'Выбор победителя';
-            }else if ((object.status == 2) || ((object.status == 1) && (object.awarded > 0))){
+            } else if ((object.status == 2) || ((object.status == 1) && (object.awarded > 0))){
                 rowClass += ' pitch-end';
                 icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
                 if(object.status == 2) {
@@ -152,20 +150,20 @@ function TableLoader() {
                     timeleft = 'Победитель выбран';
                 }else if((object.status == 1) && (object.awarded == 0)) {
                     timeleft = 'Выбор победителя';
-                }else if((object.status == 0) && (object.published == 0) && (object.billed == 0)) {
-                    timeleft = 'Ожидание оплаты';
-                }else if((object.status == 0) && (object.published == 0) && (object.billed == 1) && (object.brief == 1)) {
-                    timeleft = 'Ожидайте звонка';
                 }else {
                     timeleft = object.startedHuman;
                 }
             }
 
+            var imgForDraft = '';
             if(object.user_id == $('#user_id').val()){
+                if (object.published == 1) {
+                    imgForDraft = ' not-draft';
+                }
                 if(object.billed == 1) {
-                    var userString = '<a title="Редактировать" href="/pitches/edit/' + object.id + '"><img width="18" height="18" class="pitches-name-td-img" src="/img/pencil.png"></a>';
+                    var userString = '<a title="Редактировать" href="/pitches/edit/' + object.id + '" class="mypitch_edit_link' + imgForDraft + '"><img class="pitches-name-td-img" src="/img/1.gif"></a>';
                 }else {
-                    var userString = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/pencil.png" class="pitches-name-td-img" width="18" height="18"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'" class="mypitch_delete_link" title="Удалить"><img src="/img/kreuz.png" class="pitches-name-td-img" width="12" height="12"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/buy.png" class="pitches-name-td2-img"  width="18" height="18"></a>';
+                    var userString = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                 }
             }else {
                 var userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';

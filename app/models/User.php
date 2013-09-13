@@ -5,7 +5,9 @@ use \lithium\util\Validator;
 use \lithium\util\String;
 use \lithium\storage\Session;
 
+use \app\models\Expert;
 use \app\models\Promocode;
+use \app\models\Pitch;
 use \app\models\Favourite;
 use \app\models\Solution;
 use \app\models\Wincomment;
@@ -14,6 +16,8 @@ use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
+
+use \DirectoryIterator;
 
 class User extends \app\models\AppModel {
 
@@ -462,6 +466,24 @@ class User extends \app\models\AppModel {
         }
     }
 
+    public static function sendAdminNewAddon($addon) {
+        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $pitch = Pitch::first($addon->pitch_id);
+        foreach($users as $user) {
+            $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
+            SpamMailer::newaddon($data);
+        }
+    }
+
+    public static function sendAdminNewAddonBrief($addon) {
+        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $pitch = Pitch::first($addon->pitch_id);
+        foreach($users as $user) {
+            $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
+            SpamMailer::newaddonbrief($data);
+        }
+    }
+
     public static function sendSpamWincomment($comment, $recipient) {
         $solution = Solution::first($comment->solution_id);
         $pitch = Pitch::first($solution->pitch_id);
@@ -541,6 +563,22 @@ class User extends \app\models\AppModel {
     public static function sendOpenLetter($pitch) {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
         return SpamMailer::openletter($data);
+    }
+
+    public static function sendExpertMail($addon) {
+        $data = array('pitch' => Pitch::first($addon->pitch_id));
+        $experts = unserialize($addon->{'expert-ids'});
+        foreach ($experts as $expert) {
+            $expert = Expert::first(array(
+                'conditions' => array(
+                    'Expert.id' => $expert,
+                ),
+                'with' => array('User'),
+            ));
+            $data['user'] = $expert->user;
+            SpamMailer::expertselected($data);
+        }
+        return true;
     }
 
     public static function sendSpamFirstSolutionForPitch($pitchId) {
@@ -765,6 +803,72 @@ class User extends \app\models\AppModel {
         }else {
             return false;
         }
+    }
+
+    public static function sendFinishReports($pitch) {
+        $user = self::first($pitch->user_id);
+        $path = LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/';
+        $files = array();
+        foreach (new DirectoryIterator($path) as $fileInfo) {
+            if ($fileInfo->isDot() || !$fileInfo->isFile() || (false == strpos($fileInfo->getFilename(), $pitch->id))) continue;
+            $files[] = $path . $fileInfo->getFilename();
+        }
+        $data = array('user' => $user, 'pitch' => $pitch, 'files' => $files);
+        SpamMailer::finishreports($data);
+        return true;
+    }
+
+    public static function fillBalance($userId, $sum) {
+        if ($user = self::first($userId)) {
+            $user->balance += (int) $sum;
+            $user->save(null, array('validate' => false,));
+        }
+        return true;
+    }
+
+    public static function phoneValidationStart($userId) {
+        if (($user = self::first($userId)) && !empty($user->phone)) {
+            $user->phone_code = self::generatePhoneCode();
+            $user->save(null, array('validate' => false));
+            return self::sendPhoneCode($user->phone, $user->phone_code);
+        }
+        return false;
+    }
+
+    public static function phoneValidationFinish($userId, $code) {
+        if (($user = self::first($userId)) && !empty($user->phone) && !empty($user->phone_code)) {
+            if ($code == $user->phone_code) {
+                $user->phone_valid = 1;
+                $user->phone_code = 0;
+                $user->save(null, array('validate' => false));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected static function generatePhoneCode($count = 5, $string = '0123456789') {
+        return substr(str_shuffle($string), 0, $count);
+    }
+
+    protected static function sendPhoneCode($phone, $code) {
+        // Send code
+        return true;
+    }
+
+    public static function sendAddonProlong($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::duration($data);
+    }
+
+    public static function sendAddonExpert($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::expertaddon($data);
+    }
+
+    public static function sendAddonBrief($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::briefaddon($data);
     }
 
 }

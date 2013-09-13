@@ -210,7 +210,7 @@ function FeatureCart() {
                     self.fillCheck(response, true);
                     self._renderCheck(true);
                     if($('#phonebrief').attr('checked')) {
-                        self.addOption('Заполнение брифа', 750)
+                        self.addOption('Заполнение брифа', 1750)
                     }
                     if($('#prolong-checkbox').attr('checked')) {
                         self.addOption('продлить срок', 1950)
@@ -221,7 +221,7 @@ function FeatureCart() {
                 });
                 */
                 if($('#phonebrief').attr('checked')) {
-                    self.addOption('Заполнение брифа', 750)
+                    self.addOption('Заполнение брифа', 1750)
                 }
                 if($('#prolong-checkbox').attr('checked')) {
                     self.addOption('продлить срок', 1950)

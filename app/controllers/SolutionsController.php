@@ -9,7 +9,7 @@ use \app\extensions\mailers\UserMailer;
 
 class SolutionsController extends \app\controllers\AppController {
 
-    public $publicActions = array('like');
+    public $publicActions = array('like', 'unlike');
 
     public function hide() {
         $result = $this->request;
@@ -30,7 +30,7 @@ class SolutionsController extends \app\controllers\AppController {
 	}
 
     public function unlike() {
-        $likes = Solution::decreaseLike($this->request->id, $this->request->data['uid']);
+        $likes = Solution::decreaseLike($this->request->id, Session::read('user.id'));
         return compact('likes');
     }
 

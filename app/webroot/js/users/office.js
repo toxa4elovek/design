@@ -449,33 +449,6 @@ $(document).ready(function() {
         return false;
     });
 
-    $(document).on('mouseover', '.mypitch_edit_link', function() {
-        $('img', $(this)).attr('src', '/img/pencil_red.png');
-    });
-
-    $(document).on('mouseout', '.mypitch_edit_link', function() {
-        $('img', $(this)).attr('src', '/img/edit_icon_white.png');
-    });
-
-    $(document).on('mouseover', '.mypitch_delete_link', function() {
-        $('img', $(this)).attr('src', '/img/kreuz_red.png');
-        $('img', $(this)).attr('width', '12px');
-        $('img', $(this)).attr('height', '12px');
-    });
-
-    $(document).on('mouseout', '.mypitch_delete_link', function() {
-        $('img', $(this)).attr('src', '/img/delete_icon_white.png');
-    });
-
-    $(document).on('mouseover', '.mypitch_pay_link', function() {
-        $('img', $(this)).attr('src', '/img/buy_red.png');
-    });
-
-    $(document).on('mouseout', '.mypitch_pay_link', function() {
-        $('img', $(this)).attr('src', '/img/buy_icon_white.png');
-    })
-
-
     $(document).on('click', '.mypitch_delete_link', function() {
         if($(this).hasClass('unfav')) {
             return true;
@@ -627,11 +600,17 @@ function ParticipateTableLoader() {
             }
             var editLink = '';
             var total = object.price;
+            var imgForDraft = '';
+            if (object.published == 1) {
+                imgForDraft = ' not-draft';
+            }
             if((object.billed == 0) && (object.status == 0)) {
-                var status = 'Ожидание оплаты';
+                var status = (object.moderated == 1) ? 'Ожидание<br />модерации' : 'Ожидание оплаты';
                 if($('#user_id').val() == object.user_id) {
                     total = object.total;
-                    editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/edit_icon_white.png" class="pitches-name-td-img" width="18" height="18"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'"  class="mypitch_delete_link" title="Удалить"><img src="/img/delete_icon_white.png" class="pitches-name-td-img" width="12" height="12"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/buy_icon_white.png" class="pitches-name-td2-img"  width="18" height="18"></a>';
+                    editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link' + imgForDraft + '" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a> \
+                    <a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'"  class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a> \
+                    <a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                 }
             }else {
                 if((object.published == 0) && (object.brief == 1)) {
@@ -640,8 +619,7 @@ function ParticipateTableLoader() {
                     var status = object.startedHuman;
                 }
                 if(($('#user_id').val() == object.user_id) && (object.status == 0)) {
-
-                    editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/edit_icon_white.png" class="pitches-name-td-img" width="18" height="18"></a>';
+                    editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link' + imgForDraft + '" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a>';
                 }
             }
             
@@ -670,6 +648,9 @@ function ParticipateTableLoader() {
             if(shortIndustry.length > 80) {
                 shortIndustry = shortIndustry.substr(0, 75) + '...';
             }
+            shortIndustry = '<span style="font-size: 11px;">' + shortIndustry + '</span>';
+            // Disabling Industry in Table
+            shortIndustry = '';
 
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
@@ -677,7 +658,7 @@ function ParticipateTableLoader() {
                 editLink +
                 '<div style="background: none;">' +
                 '<a href="' + link + '" class="expand-link">' + object.title + '</a>' +
-                '<span style="font-size: 11px;">' + shortIndustry + '</span>' +
+                shortIndustry +
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
@@ -882,6 +863,9 @@ function FavesTableLoader() {
             if(shortIndustry.length > 80) {
                 shortIndustry = shortIndustry.substr(0, 75) + '...';
             }
+            shortIndustry = '<span style="font-size: 11px;">' + shortIndustry + '</span>';
+            // Disabling Industry in Table
+            shortIndustry = '';
             var pitchPath = 'view';
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
@@ -889,10 +873,10 @@ function FavesTableLoader() {
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
                 '<td class="pitches-name">' +
-                '<a href="#" class="unfav mypitch_delete_link" data-pitchId="' + object.id + '" style="position: relative; top: 21px; left: 14px;"><img style="margin:0;padding:0" src="/img/delete_icon_white.png" width="12" height="12"></a>' +
+                '<a href="#" class="unfav mypitch_delete_link" data-pitchId="' + object.id + '" style="position: relative; top: 21px; left: 14px;"><img style="margin:0;padding:0" src="/img/1.gif"></a>' +
                 '<div style="background:none;padding-top:0px">' +
                 '<a href="/pitches/' + pitchPath + '/' + object.id + '" class="expand-link">' + object.title + '</a>' +
-                '<span style="font-size: 11px;">' + shortIndustry + '</span>' +
+                shortIndustry +
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +

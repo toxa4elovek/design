@@ -25,13 +25,6 @@
     <tr>
         <td colspan="3" height="100"></td>
     </tr>
-    <tr>
-        <td width="5"></td><td valign="top"></td>
-        <td height="40">
-            <a href="http://www.godesigner.ru/users/unsubscribe<?php echo $user->unsubscribeToken(); ?>" style="color: #7ea0ac; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;">ОТПИСАТЬСЯ ОТ РАССЫЛКИ.</a><br/>
-            <span style="color: #AEAEAE; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;">ОТПРАВЛЕНО ИЗ ГОЛОВНОГО ОФИСА GODESIGNER.RU. САНКТ-ПЕТЕРБУРГ, РОССИЯ</span>
-        </td>
-    </tr>
 </table>
 
 </body></html>

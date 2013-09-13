@@ -16,9 +16,10 @@
 
 			<section>
 				<h2 class="or">или</h2>
-		     
+
 		        <?php $errors = $user->errors();?>
 				<?=$this->form->create($user, array('action' => 'registration', 'id' => 'registration')) ?>
+                <input type="hidden" name="case" value="h4820g838f">
 				<p>
 					<?=$this->form->text('first_name', array('value' => $user->first_name, 'placeholder' => 'Имя', 'class' => 'name', 'required' => 'required')) ?>
 					<?php if(isset($errors['first_name'])):?>
@@ -79,7 +80,11 @@
 
 			<section>
 				<h2 class="or">или</h2>
-
+				<?php if ($this->session->read('flash.login')):?>
+                    <p class="wrong-login"><?=$this->session->read('flash.login');?></p>
+                <?php $this->session->delete('flash.login');
+                endif;
+                ?>
 				<?=$this->form->create(null, array('action' => 'login')) ?>
 					<p>
                         <input type="text" name="email" value="" placeholder="email" class="email" id="Email" />

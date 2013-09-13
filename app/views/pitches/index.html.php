@@ -131,46 +131,42 @@
                                     $rowClass .= ' close-and-expert';
                                     $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-3.png" title="Закрытый питч. Важно мнение эксперта." alt="Закрытый питч. Важно мнение эксперта.">';
                                 }
-                        if($pitch['status'] == 2) {
+                        if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] != 1)) {
+                            $timeleft = 'Ожидание оплаты';
+                        } else if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] == 1)) {
+                            $timeleft = 'Ожидание<br />модерации';
+                        } else if (($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
+                            $timeleft = 'Ожидайте звонка';
+                        } else {
+                            $timeleft = $pitch['startedHuman'];
+                        }
+                    } else if (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
+                        $rowClass .= ' selection';
+                        $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-1.png" title="Идёт выбор победителя." alt="Идёт выбор победителя.">';
+                        $timeleft = 'Выбор победителя';
+                    } else if (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))) {
+                        $rowClass .= ' pitch-end';
+                        $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
+                        if ($pitch['status'] == 2) {
                             $timeleft = 'Питч завершен';
                         }else if(($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
                             $timeleft = 'Победитель выбран';
                         }else if(($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
                             $timeleft = 'Выбор победителя';
-                        }else if(($pitch['status'] == 0) && ($pitch['published'] == 0) && ($pitch['billed'] == 0)) {
-                            $timeleft = 'Ожидание оплаты';
-                        }else if(($pitch['status'] == 0) && ($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
-                            $timeleft = 'Ожидайте звонка';
                         }else {
                             $timeleft = $pitch['startedHuman'];
                         }
-                    }else if (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
-                                $rowClass .= ' selection';
-                                $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-1.png" title="Идёт выбор победителя." alt="Идёт выбор победителя.">';
-                                $timeleft = 'Выбор победителя';
-                            }else if (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))){
-                                $rowClass .= ' pitch-end';
-                                $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
-                                if($pitch['status'] == 2) {
-                                    $timeleft = 'Питч завершен';
-                                }else if(($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
-                                    $timeleft = 'Победитель выбран';
-                                }else if(($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
-                                    $timeleft = 'Выбор победителя';
-                                }else if(($pitch['status'] == 0) && ($pitch['published'] == 0) && ($pitch['billed'] == 0)) {
-                                    $timeleft = 'Ожидание оплаты';
-                                }else if(($pitch['status'] == 0) && ($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
-                                    $timeleft = 'Ожидайте звонка';
-                                }else {
-                                    $timeleft = $pitch['startedHuman'];
-                                }
-                            }
+                    }
 
+                    $imgForDraft = '';
+                    if ($pitch['published'] == 1) {
+                        $imgForDraft = ' not-draft';
+                    }
                     if($pitch['user_id'] == $this->session->read('user.id')){
                         if($pitch['billed'] == 1) {
-                            $userString = '<a title="Редактировать" href="/pitches/edit/' . $pitch['id'] . '"><img width="18" height="18" class="pitches-name-td-img" src="/img/pencil.png"></a>';
+                            $userString = '<a title="Редактировать" href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link' . $imgForDraft . '"><img class="pitches-name-td-img" src="/img/1.gif"></a>';
                         }else {
-                            $userString = '<a href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link" title="Редактировать"><img src="/img/pencil.png" class="pitches-name-td-img" width="18" height="18"></a><a href="/pitches/delete/'  . $pitch['id'] .  '" rel="' . $pitch['id']  .'" class="mypitch_delete_link" title="Удалить"><img src="/img/kreuz.png" class="pitches-name-td-img" width="12" height="12"></a><a href="/pitches/edit/' . $pitch['id'] . '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/buy.png" class="pitches-name-td2-img"  width="18" height="18"></a>';
+                            $userString = '<a href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/'  . $pitch['id'] .  '" rel="' . $pitch['id']  .'" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' . $pitch['id'] . '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                         }
                     }else {
                         $userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';
@@ -294,13 +290,13 @@
 					<!--a href="#">&#60;</a><a href="#" class="this-page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a> ... <a href="#">7</a><a href="#">&#62;</a-->
 				</div>
 				<ul class="icons-infomation">
-					<li class="icons-infomation-one supplement3">Мнение экспертов<br> важно для этого клиента</li>
-					<li class="icons-infomation-two supplement3">Закрытый питч</li>
+					<li class="icons-infomation-one supplement3"><a href="/answers/view/66" target="_blank">Мнение экспертов</a><br> важно для этого клиента</li>
+					<li class="icons-infomation-two supplement3"><a href="/answers/view/64" target="_blank">Закрытый питч</a></li>
 					<li class="icons-infomation-three supplement3">Идеи больше не принимаются, идет выбор победителя</li>
 					<li class="icons-infomation-four supplement3">Питч завершен,<br> победитель выбран</li>
 				</ul>
 				<div style="margin-top:70px;height:40px;background: url('/img/guarantee2.png') no-repeat scroll 0 0 transparent" class="you-profile supplement3">
-					Гарантированный питч,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
+                    <a href="/answers/view/80" target="_blank">Гарантированный питч</a>,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
 				</div>
                 <div style="margin-top:20px;height:40px;margin-right: 128px;" class="you-profile supplement3">
                     Хотите узнать о добавлении новых питчей?<br>Измените <a href="/users/profile">настройки своего профиля</a>

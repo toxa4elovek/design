@@ -3,6 +3,7 @@ namespace li3_mailer\extensions;
 
 use \app\models\Sendemail;
 use \Mail;
+use \Mail_mime;
 
 class Mailer extends \lithium\core\StaticObject {
 
@@ -68,38 +69,41 @@ class Mailer extends \lithium\core\StaticObject {
 		    'hash' => $hash
 		));
 
-		if (true == $options['use-smtp']) {
-		    require_once "Mail.php";
-            $headers = array(
-                'Content-type' => 'text/html; charset=utf-8',
-                'From'    => 'Go Designer <' . $from . '>',
-                'To'      => $to,
-                'Subject' => $subject,
-                'Reply-To' => (isset($options['reply-to']) && !empty($options['reply-to'])) ? $options['reply-to'] : '',
-            );
-
-            $smtp = Mail::factory('smtp', self::$smtpMailJet);
-
-            $mail = $smtp->send($to, $headers, $body);
-
-            if (\PEAR::isError($mail)) {
-                echo("<p>" . $mail->getMessage() . "</p>");
-                return false;
-            } else {
-                return true;
+	    require_once 'Mail.php';
+	    require_once 'Mail/mime.php';
+        $headers = array(
+            'From'    => 'Go Designer <' . $from . '>',
+            'To'      => $to,
+            'Subject' => $subject,
+            'Reply-To' => (isset($options['reply-to']) && !empty($options['reply-to'])) ? $options['reply-to'] : '',
+        );
+        $message = new Mail_mime();
+        $message->setHTMLBody($html);
+        if (isset($options['data']['files']) && count($options['data']['files']) > 0) {
+            foreach ($options['data']['files'] as $file) {
+                $message->addAttachment($file);
             }
-		}
+        }
+        $mimeparams = array(
+            'text_charset' => "UTF-8",
+            'html_charset' => "UTF-8",
+        );
+        $body = $message->get($mimeparams);
+        $headers = $message->headers($headers);
 
+        if (isset($options['use-smpt']) && true == $options['use-smtp']) {
+            $mail = Mail::factory('smtp', self::$smtpMailJet);
+        } else {
+            $mail = Mail::factory("mail");
+        }
+        $mail->send($to, $headers, $body);
 
-        $headerString  = 'MIME-Version: 1.0' . "\r\n";
-		$headerString .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-		$headerString .= 'To: ' . $to . "\r\n";
-		$headerString .= 'From: Go Designer <' . $from . '>' . "\r\n";
-		if (isset($options['reply-to']) && !empty($options['reply-to'])) {
-            $headerString .= 'Reply-To: ' . $options['reply-to'] . "\r\n";
-		}
-
-		return mail($to, $subject, $html, $headerString);
+        if (\PEAR::isError($mail)) {
+            echo("<p>" . $mail->getMessage() . "</p>");
+            return false;
+        } else {
+            return true;
+        }
 	}
 
 	protected static function logemail($data) {

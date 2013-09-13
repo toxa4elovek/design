@@ -66,13 +66,12 @@ class Promocode extends \app\models\AppModel {
             if(($code->pitch_id != null) && ($code->type != 'discount')) {
                 return $result;
             }
+            if(time() > strtotime($code->expires)) {
+                return $result;
+            }
             if($code->type != 'discount') {
                 $code->user_id = Session::read('user.id');
                 $code->save();
-            }else {
-                if(time() > strtotime($code->expires)) {
-                    return $result;
-                }
             }
             $result = $code->data();
         }

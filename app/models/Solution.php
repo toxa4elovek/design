@@ -9,9 +9,10 @@ use \app\models\Comment;
 use \app\models\Ratingchange;
 use \app\models\Historysolution;
 use \app\extensions\helper\NameInflector;
+use \app\extensions\helper\MoneyFormatter;
 
 class Solution extends \app\models\AppModel {
-	
+
 	public $belongsTo = array('Pitch', 'User');
     public $hasMany = array('Like');
 
@@ -38,11 +39,11 @@ class Solution extends \app\models\AppModel {
     public static function __init() {
         parent::__init();
         self::applyFilter('find', function($self, $params, $chain){
-            $result = $chain->next($self, $params, $chain); 
+            $result = $chain->next($self, $params, $chain);
             /*if(is_object($result)) {
                 $addCopyrightedText = function($record) {
                     if($record->copyrightedMaterial == 1){
-                        
+
                     }
                 };
                 if(get_class($result) == 'lithium\data\entity\Record') {
@@ -67,7 +68,7 @@ class Solution extends \app\models\AppModel {
         });
 
         self::applyFilter('uploadSolution', function($self, $params, $chain){
-            $result = $chain->next($self, $params, $chain); 
+            $result = $chain->next($self, $params, $chain);
             if($result) {
                 Event::createEvent($result->pitch_id, 'SolutionAdded', $result->user_id, $result->id);
                 Pitch::increaseIdeasCountOne($result->pitch_id);
@@ -99,7 +100,7 @@ http://godesigner.ru/answers/view/73');
                 $solution = $params['solution'];
                 $pitch = Pitch::first($solution->pitch_id);
                 //if($pitch->split === 0) {
-                $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $params['solution']->id . '">Им стал #' . $params['solution']->num . '</a>.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше - все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
+                $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $params['solution']->id . '">Им стал</a> #' . $params['solution']->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше - все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
 Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
                 //}elseif($pitch->split === 1) {
                 /*$message = 'Друзья, заказчик не выбрал победителя и не отказался от предложенных решений вовремя. По регламенту проведения питча мы удерживаем 30% от суммы вознаграждения в пользу самого популярного решения, определённого с помощью 1–лайков, 2–просмотров. Оставшаяся сумма возвращается заказчику.  Мы благодарим всех за участие, и хотим напомнить, что права на свои идеи сохраняются за авторами, и вы можете адаптировать их для участия в другом питче!<br/>
@@ -107,9 +108,20 @@ http://godesigner.ru/answers/view/73');
                 //}
                 $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message);
                 Comment::createComment($data);
-                User::sendSpamSolutionSelected($result);
-                $tweet = 'Победа присуждена в питче «' . $pitch->title . '» http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing #Go_Deer';
+                $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
+                $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
+                $winner = User::first($solution->user_id);
+                $nameInflector = new nameInflector();
+                $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
+                $moneyFormatter = new MoneyFormatter();
+                $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
+                if (rand(1, 100) <= 50) {
+                    $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
+                } else {
+                    $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
+                }
                 User::sendTweet($tweet);
+                User::sendSpamSolutionSelected($result);
             }
             return $result;
         });
@@ -176,15 +188,24 @@ http://godesigner.ru/answers/view/73');
         return false;
     }
 
-    public static function increaseLike($solutionId, $userId) {
+    public static function increaseLike($solutionId, $userId = 0) {
         $solution = self::first($solutionId);
         $pitch = Pitch::first(array('conditions' => array('id' => $solution->pitch_id)));
-
-        if((!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) && ($userId) && ($pitch->status == 0)) {
+        $userId = (int)$userId;
+        $allowAnon = false;
+        if (!$userId && (!isset($_COOKIE['bmx_' . $solutionId]) || ($_COOKIE['bmx_' . $solutionId] == 'false'))) {
+            $allowAnon = true;
+            setcookie('bmx_' . $solutionId, 'true', strtotime('+3 month'), '/');
+        }
+        $allowUser = false;
+        if ($userId && (!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId))))) {
+            $allowUser = true;
+        }
+        if (($allowUser || $allowAnon) && ($pitch->status == 0)) {
             $solution->likes += 1;
             $solution->save();
             $like = Like::create();
-            $like->set(array('solution_id' => $solutionId, 'user_id' => $userId));
+            $like->set(array('solution_id' => $solutionId, 'user_id' => $userId, 'created' => date('Y-m-d H:i:s')));
             $like->save();
         }
         return $solution->likes;
@@ -210,9 +231,15 @@ http://godesigner.ru/answers/view/73');
         return $solution->hidden;
     }
 
-    public static function decreaseLike($solutionId, $userId) {
+    public static function decreaseLike($solutionId, $userId = 0) {
         $solution = self::first($solutionId);
-        if($like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) {
+        $userId = (int)$userId;
+        $allowAnon = false;
+        if (!$userId && (isset($_COOKIE['bmx_' . $solutionId]) && ($_COOKIE['bmx_' . $solutionId] == 'true'))) {
+            $allowAnon = true;
+            setcookie('bmx_' . $solutionId, 'false', strtotime('+3 month'), '/');
+        }
+        if(($like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) && ($userId || ($allowAnon))) {
             $solution->likes -= 1;
             $solution->save();
             $like->delete();
@@ -233,7 +260,7 @@ http://godesigner.ru/answers/view/73');
             if($pitch->user_id == $userId) {
                 $solution->rating = $rating;
                 $solution->save();
-            } 
+            }
             return $solution;
         });
     }

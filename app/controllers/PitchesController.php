@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use \app\models\Bill;
 use \app\models\Pitch;
 use \app\models\Pitchfile;
 use \app\models\Category;
@@ -21,13 +22,17 @@ use \app\models\Promoted;
 use app\models\Ratingchange;
 use \app\models\Avatar;
 use \app\models\Url;
+use \app\models\Like;
 
 use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
 use \lithium\analysis\Logger;
 use \app\extensions\helper\MoneyFormatter;
 use \app\extensions\helper\PitchTitleFormatter;
+use \app\extensions\helper\PdfGetter;
 use \app\extensions\helper\Avatar as AvatarHelper;
+
+use \Exception;
 
 class PitchesController extends \app\controllers\AppController {
 
@@ -43,10 +48,8 @@ class PitchesController extends \app\controllers\AppController {
 
     public function blank() {
         error_reporting(E_ALL);
-ini_set('display_errors', '1');
-        #$pitch = Pitch::first(array('conditions' => array('id' => $this->request->id), 'with' => array('User')));
-        $pitch = Pitch::first(array('with' => array('User'), 'order' => array('id' => 'desc')));
-        return compact('pitch');
+        ini_set('display_errors', '1');
+        die();
     }
 
     public function blank2() {
@@ -553,21 +556,20 @@ ini_set('display_errors', '1');
                                 $webgate = new Webgate();
                                 $result = $webgate->close($this->request->data);
                             }
+                        } elseif ($addon = Addon::first($this->request->data['ORDER'])) {
+                            $webgate = new Webgate();
+                            $result = $webgate->close($this->request->data);
                         }
 
                         break;
-                    case 21:
-                        $status = 3; 	//Оплачен
+                    case 21: //Оплачен
                         if($pitch = Pitch::first($this->request->data['ORDER'])) {
                             Pitch::activate($this->request->data['ORDER']);
-                        }elseif($addon = Addon::first($this->request->data['ORDER'])) {
-                            Logger::write('debug', 'addon');
-                            $addon->billed = 1;
-                            $addon->save();
+                        } elseif ($addon = Addon::first($this->request->data['ORDER'])) {
+                            Addon::activate($addon);
                         }
                         break;
-                    case 24:
-                        $status = 4; 	//Отменен
+                    case 24: //Отменен
                         break;
                 }
                 //обновляем статус заказа
@@ -659,6 +661,9 @@ ini_set('display_errors', '1');
 		foreach($temp as $cat) {
 			$categories[$cat->id] = $cat;
 		}
+		if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && !is_null($this->request->query['ref'])) {
+            setcookie('ref', $this->request->query['ref'], strtotime('+1 month'), '/');
+		}
 		return compact('categories');
 	}
 
@@ -733,6 +738,8 @@ ini_set('display_errors', '1');
                 $rating = 3;
             }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
                 $rating = 2;
+            }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
+                $rating = 5;
             }
 
             $ratingArray[] = $rating;
@@ -769,7 +776,8 @@ ini_set('display_errors', '1');
                 $comments = 3;
             }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
                 $comments = 4;
-
+            }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
+                $comments = 5;
             }
             $commentArray[] = $comments;
         }
@@ -806,6 +814,9 @@ ini_set('display_errors', '1');
     }
 
 	public function brief() {
+	    if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && !is_null($this->request->query['ref'])) {
+	        setcookie('ref', $this->request->query['ref'], strtotime('+1 month'), '/');
+	    }
 		if(!$this->request->category) {
 			return $this->redirect('Pitches::create');
 		}
@@ -957,7 +968,6 @@ ini_set('display_errors', '1');
                     $redirect = true;
                 }
 
-
 				$data = array(
 	                'user_id' => $userId,
 					'category_id' => $commonPitchData['category_id'],
@@ -987,6 +997,12 @@ ini_set('display_errors', '1');
 					'specifics' => serialize($specificPitchData),
                     'promocode' => $promocode
 				);
+
+				if (isset($_COOKIE['ref']) || ($_COOKIE['ref']) != '') {
+				    $data['referal'] = (int) $_COOKIE['ref'];
+				    setcookie('ref', '', time() - 3600, '/');
+				}
+
 			}
 			if(!$pitch = Pitch::first(array('conditions' => array('id' => $commonPitchData['id'])))) {
 				$pitch = Pitch::create();
@@ -1139,30 +1155,93 @@ ini_set('display_errors', '1');
                 return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts'));
             }
 		}
+		throw new Exception('Public:Такого питча не существует.', 404);
 	}
 
-	public function getComments() {
-	    if (!$this->request->is('json')) {
-	        return $this->redirect('/pitches');
-	    }
-	    if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
-	        $currentUser = Session::read('user');
-	        if (($pitch->published == 0) && (($currentUser['id'] != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!User::checkRole('admin')))) {
-	            return false;
+    public function getComments() {
+        if (!$this->request->is('json')) {
+            return $this->redirect('/pitches');
+        }
+        if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
+            $currentUser = Session::read('user');
+            if (
+               $pitch->published == 0 &&
+               $currentUser['id'] != $pitch->user_id &&
+               $currentUser['isAdmin'] != 1 &&
+               !User::checkRole('admin')
+               ) {
+                return false;
 	        }
-	        if ($pitch->private == 1) {
-	            if (($pitch->user_id != $currentUser['id']) && (!User::checkRole('admin')) && (!$isExists = Request::first(array('conditions' => array('user_id' => $currentUser['id'], 'pitch_id' => $pitch->id))))) {
-	                return false;
-	            }
+	        if (
+	           $pitch->private == 1 &&
+	           $currentUser['id'] != $pitch->user_id &&
+	           !User::checkRole('admin') &&
+	           !$isExists = Request::first(array(
+	               'conditions' => array(
+	                   'user_id' => $currentUser['id'],
+	                   'pitch_id' => $pitch->id,
+	               ),
+	           ))
+	           ) {
+	           return false;
 	        }
 
-            $commentsRaw = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.id' => 'desc'), 'with' => array('User')));
-            $commentsRaw = Comment::addAvatars($commentsRaw);
-            $comments = new \lithium\util\Collection();
-            foreach ($commentsRaw as $comment) {
+	        $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+	        $expertsIds = array();
+	        foreach ($experts as $expert) {
+	           $expertsIds[] = $expert->user_id;
+	        }
+
+	        $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id), 'with' => array('User')));
+	        $mySolutionList = array();
+	        $mySolutionNumList = array();
+	        if (count($solutions) > 0 && $pitch->published == 1) {
+                foreach ($solutions as $solution) {
+                    if ($currentUser['id'] == $solution->user_id) {
+                        $mySolutionList[] = $solution->id;
+                        $mySolutionNumList[] = '#' . $solution->num;
+                    }
+                }
+	        }
+
+	        $commentsRaw = Comment::all(array(
+	            'conditions' => array('pitch_id' => $this->request->id),
+	            'order' => array('Comment.id' => 'desc'),
+	            'with' => array('User')));
+
+	        $commentsRaw = Comment::addAvatars($commentsRaw);
+	        $comments = new \lithium\util\Collection();
+
+	        foreach ($commentsRaw as $comment) {
+                if ($pitch->category_id == 7 || $pitch->private == 1) {
+                    if ($pitch->user_id != $currentUser['id'] && $comment->user_id != $currentUser['id'] && !in_array($currentUser['id'], $expertsIds) && !User::checkRole('admin')) {
+                        if (!in_array($comment->solution_id, $mySolutionList) && $comment->user_id == $pitch->user_id && $comment->solution_id != 0 && $comment->reply_to != $currentUser['id']) {
+                            continue;
+                        }
+                        if ($comment->user_id != $pitch->user_id && !$comment->user->isAdmin) {
+                            continue;
+                        }
+                        if (preg_match_all('/^(#\d+)\D/', $comment->originalText, $matches, PREG_PATTERN_ORDER)) {
+                            $array = array();
+                            foreach ($matches[1] as $match) {
+                                $array[] = $match;
+                            }
+
+                            $noSolutions = true;
+                            foreach ($mySolutionNumList as $mySolutionNum) {
+                                if (in_array($mySolutionNum, $array)) {
+                                    $noSolutions = false;
+                                    break;
+                                }
+                            }
+                            if ($noSolutions) {
+                                continue;
+                            }
+                        }
+                    }
+                }
                 $comments->append($comment);
             }
-            $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
 
             return compact('comments', 'experts', 'pitch');
 	    } else {
@@ -1209,6 +1288,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $i ++;
             }
 
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order));
+            $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+
             $currentUser = Session::read('user.id');
             if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
                 return $this->redirect('/pitches');
@@ -1228,12 +1310,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $files = Pitchfile::all(array('conditions' => array('id' => $fileIds)));
             }
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-                return compact('pitch', 'files', 'comments', 'prevpitch');
+                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts');
             }else {
                 //return compact('pitch', 'files');
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments')));
             }
         }
+        throw new Exception('Public:Такого питча не существует.', 404);
     }
 
     public function crowdsourcing() {
@@ -1252,8 +1335,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
 
 	public function viewsolution() {
-        #error_reporting(E_ALL);
-        #ini_set('display_errors', '1');
+        //error_reporting(E_ALL);
+        //ini_set('display_errors', '1');
 		Solution::increaseView($this->request->id);
 		if($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch')))) {
             $validSorts = array('rating', 'created', 'likes');
@@ -1277,6 +1360,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $sort = 'created';
                 $order = array('nominated' => 'desc', 'created' => 'desc');
             }
+
+            $solution->description = nl2br($solution->description);
 
             $solutions = Solution::all(array('conditions' => array('pitch_id' => $solution->pitch_id), 'order' => $order));
             /*foreach($solutions->data() as $setSolution){
@@ -1367,18 +1452,29 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
             $userData = unserialize($solution->user->{'userdata'});
             $copyrightedInfo = unserialize($solution->copyrightedInfo);
-            for ($i = 1; $i <= count($copyrightedInfo['source']); $i++) {
-                $copyrightedInfo['source'][$i] = Url::view($copyrightedInfo['source'][$i]);
+            foreach ($copyrightedInfo['source'] as $key => $value) {
+                $copyrightedInfo['source'][$key] = Url::view($value);
             }
             $avatarHelper = new AvatarHelper;
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
+            $likes = false;
+            if(Session::read('user')) {
+                $like = Like::find('first', array('conditions' => array('solution_id' => $solution->id, 'user_id' => Session::read('user.id'))));
+                if ($like) {
+                    $likes = true;
+                }
+            } else {
+                if (isset($_COOKIE['bmx_' . $solution->id]) && ($_COOKIE['bmx_' . $solution->id] == 'true')) {
+                    $likes = true;
+                }
+            }
 			//if($pitch->category_id != 7){
-                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo');
+                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
             //}else{
                 //return $this->render(array('template' => '/viewsolution-copy', 'data' => compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution')));
             //}
 		}else {
-            return $this->redirect('/pitches');
+		    throw new Exception('Public:Такого решения не существует.', 404);
         }
 	}
 
@@ -1413,9 +1509,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }else{
                 return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
             }
-        }else {
-
         }
+        throw new Exception('Public:Такого питча не существует.', 404);
     }
 
     public function uploadcopy() {
@@ -1467,85 +1562,43 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
 
     public function getpdf() {
-
-        if($pitch = Pitch::first($this->request->id)) {
+        if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+            if (Session::read('user.id') != $pitch->user_id) {
+                die();
+            }
             require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
-            $money = new MoneyFormatter();
-			$mpdf = new \mPDF();
-
-			$mpdf->WriteHTML('
-<table style="" width="550" cellspacing="0" border="0" cellpadding="1">
-	<tr ><td width="275"><img src="' . LITHIUM_APP_PATH . '/webroot/img/logo-01.png' . '" width="180"></td>
-	<td>ООО "КРАУД МЕДИА"<br/>Юридический адрес: 199397, г. Санкт-Петербург<br>ул. Беринга, дом 27</td></tr>
-	<tr ><td colspan="2" style="text-align:center"><br><br>Образец заполнения платежного поручения</td></tr>
-</table>
-<br/>
-<br/>
-<br/>
-<table style="" width="550" cellspacing="0" cellpadding="1">
-	<tr height="25">
-		<td style="border-left:1px solid;border-top:1px solid;" width="180">ИНН 7801563047</td>
-		<td style="border-left:1px solid;border-top:1px solid;" width="180">КПП 780101001</td>
-		<td style="border-left:1px solid;border-top:1px solid;" width="40">&nbsp;</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-right:1px solid;" width="100">&nbsp;</td>
-	</tr>
-
-	<tr height="100">
-		<td height="25" colspan="2" style="border-left:1px solid;border-top:1px solid;">Получатель:<br>ООО "КРАУД МЕДИА"</td>
-		<td height="25" style="border-left:1px solid;">Сч. №</td>
-		<td height="25" style="border-left:1px solid;border-right:1px solid;text-align:center;">40702810107375005023</td>
-	</tr>
-
-	<tr>
-		<td height="25" rowspan="2"  height="50" colspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;">Банк получателя:<br>ФКБ "САНКТ-ПЕТЕРБУРГ" "МАСТЕР-БАНК"(ОАО) г. САНКТ-ПЕТЕРБУРГ</td>
-		<td height="25" style="border-left:1px solid;border-top:1px solid;">БИК</td>
-		<td height="25" style="border-left:1px solid;border-top:1px solid;border-right:1px solid;text-align:center;">044030737</td>
-	</tr>
-
-	<tr>
-		<td height="25" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;">Сч. №</td>
-		<td height="25" rowspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid;text-align:center;">30101810400000000737</td>
-	</tr>
-</table>
-<H2 style="margin-top:50px">СЧЕТ № ' . $pitch->id . ' от ' . date('d.m.Y', strtotime($pitch->started)) . '</H2>
-<table style="" width="550" cellspacing="0" cellpadding="1">
-	<tr height="25">
-		<td style="border-left:1px solid;border-top:1px solid; text-align:center;" width="25">№</td>
-		<td style="border-left:1px solid;border-top:1px solid; text-align:center;">Название товара, работ, услуг</td>
-		<td style="border-left:1px solid;border-top:1px solid; text-align:center;" width="40">Ед. изм.</td>
-		<td style="border-left:1px solid;border-top:1px solid; text-align:center;" width="40">Кол-во</td>
-		<td style="border-left:1px solid;border-top:1px solid; text-align:center;" width="70">Цена</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-right:1px solid; text-align:center;" width="70">Сумма</td>
-	</tr>
-	<tr  valign="top">
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">Оказание услуг на условиях агентского соглашения, размещённого на сайте
-godesigner.ru, за питч № ' . $pitch->id . '. НДС не предусмотрен.</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">шт.</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">' . $money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">' . $money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</td>
-	</tr>
-	<tr height="25">
-		<td height="25" colspan="5" style="text-align:right;"><b>Итого:&nbsp;&nbsp;</b></td>
-		<td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">' . $money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</td>
-	</tr>
-	<tr height="25">
-		<td height="25" colspan="5" style="text-align:right;"><b>Без НДС:&nbsp;&nbsp;</b></td>
-		<td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">---</td>
-	</tr>
-	<tr height="25">
-		<td height="25" colspan="5" style="text-align:right;"><b>Всего к оплате:&nbsp;&nbsp;</b></td>
-		<td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;"><b>' . $money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</b></td>
-	</tr>
-</table>
-<p style="font-weight:bold; margin-top:20px; font-size: 20px; color:red">Внимание!<br/><span style="font-weight:bold;font-size:13px; color: black;">В назначении платежа указывайте точную фразу из столбца название услуги.</span> <p>
-<p style="">Всего наименований 1, на сумму ' . $money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true)) . '.<p>
-<p style="">' . $money->num2str($pitch->total) . '<p>');
-$mpdf->Output('godesigner-pitch-' . $pitch->id . '.pdf', 'd');
-exit;
+            $options = compact('pitch', 'bill');
+            $mpdf = new \mPDF();
+            $mpdf->WriteHTML(PdfGetter::get('Bill', $options));
+            $mpdf->Output('godesigner-pitch-' . $pitch->id . '.pdf', 'd');
+            exit;
         }
+        die();
+    }
 
+    public function getPdfAct() {
+        if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+            if (Session::read('user.id') != $pitch->user_id && !User::checkRole('admin')) {
+                die();
+            }
+            $destination = 'Download';
+            $options = compact('pitch', 'bill', 'destination');
+            Pitch::generatePdfAct($options);
+            exit;
+        }
+        die();
+    }
+
+    public function getPdfReport() {
+        if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+            if (Session::read('user.id') != $pitch->user_id && !User::checkRole('admin')) {
+                die();
+            }
+            $destination = 'Download';
+            $options = compact('pitch', 'bill', 'destination');
+            Pitch::generatePdfReport($options);
+            exit;
+        }
         die();
     }
 
