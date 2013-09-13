@@ -34,6 +34,8 @@
         </section>
         <section>
             <div class="center_block"  style="margin:35px 0 0 63px !important">
+            <h1 class="greyboldheader">Помогите Go Designer стать лучше, оставьте свой отзыв:</h1>
+            <br />
                 <?php if($grade):?>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px;margin-top:10px">та-дам!</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #FF584D;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">поздравляем, питч завершен!</p>
