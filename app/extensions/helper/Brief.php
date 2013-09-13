@@ -9,7 +9,7 @@ class Brief extends \lithium\template\Helper {
         $string = strip_tags(nl2br($string), '<br>');
         $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?^';
 
-        $regex2 = '!(^|\s)([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?)!';
+        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?)!';
         if(preg_match($regex, $string)) {
             $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
         }
@@ -23,7 +23,7 @@ class Brief extends \lithium\template\Helper {
         $string = strip_tags(nl2br($string), '<br>');
         $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?^';
 
-        $regex2 = '!(^|\s)([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?)!';
+        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?)!';
         if(preg_match($regex, $string)) {
             $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
         }
@@ -43,7 +43,7 @@ class Brief extends \lithium\template\Helper {
         $string = strip_tags(nl2br($string), '<br>');
         $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?^';
 
-        $regex2 = '!(^|\s)([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?)!';
+        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9\(\)@:;%_\+.~#?&//=]*)?)!';
         if(preg_match($regex, $string)) {
             $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
         }
