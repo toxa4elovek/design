@@ -106,8 +106,7 @@
                     </ul>
                     <div class="group" style="margin-top: 10px;background:none;margin-bottom:0;">
                         <p>
-                            <label class="greyboldheader">Описание, концепция или примечание</label> <a class="second" href="">(?)</a>
-                            <span id="charcounter" class="greyboldheader" style="display: block; float: right; margin-right: 40px;">375</span>
+                            <label class="greyboldheader">Описание, концепция или примечание</label>
                             <textarea id="charzone" class="upload-textarea" style="height:130px; width: 557px;margin-top: 8px;" name="description"></textarea>
                         </p>
                     </div>
@@ -189,5 +188,5 @@
 </div>
 
 
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'jquery.damnUploader.js', 'jquery.charcount', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'jquery.damnUploader.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/upload','/jquery.fancybox-1.3.4.css'), array('inline' => false))?>
