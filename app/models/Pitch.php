@@ -502,6 +502,105 @@ class Pitch extends \app\models\AppModel {
         return $res;
     }
 
+    public static function addonBriefLetter($time) {
+        $conditions = array(
+            'brief' => 0,
+        );
+        $conditions += self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (Addon::first(array('conditions' => array('pitch_id' => $pitch->id, 'brief' => 1)))) {
+                    continue;
+                }
+                if (User::sendAddonBrief($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public static function addonProlongLetter($time) {
+        $conditions = self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (User::sendAddonProlong($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public static function addonExpertLetter($time) {
+        $conditions = array(
+            'expert' => 0,
+        );
+        $conditions += self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (Addon::first(array('conditions' => array('pitch_id' => $pitch->id, 'experts' => 1)))) {
+                    continue;
+                }
+                if (User::sendAddonExpert($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    protected static function getAddonConditions($time) {
+        if ((0 < $time) && ($time < 1)) {
+            $timeCond = array(
+                'TIMESTAMPADD(SECOND,(TIMESTAMPDIFF(SECOND,started,finishDate) * ' . $time . '),started)' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - HOUR),
+                    '<' => date('Y-m-d H:i:s', time()),
+                ),
+            );
+        }
+
+        if ($time >= 1) {
+            $timeCond = array(
+                'started' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - DAY * $time - HOUR),
+                    '<' => date('Y-m-d H:i:s', time() - DAY * $time),
+                ),
+            );
+        }
+
+        if ($time < 0) {
+            $timeCond = array(
+                'finishDate' => array(
+                    '>=' => date('Y-m-d H:i:s', time() + DAY * abs($time) - HOUR),
+                    '<' => date('Y-m-d H:i:s', time() + DAY * abs($time)),
+                ),
+            );
+        }
+
+        $conditions = array(
+            'published' => 1,
+            'status' => 0,
+        );
+        $conditions += $timeCond;
+        return $conditions;
+    }
+
     public static function generatePdfAct($options) {
         $destination = PdfGetter::findPdfDestination($options['destination']);
         $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';

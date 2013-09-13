@@ -241,4 +241,31 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
             'reply-to' => 'va@godesigner.ru',
         ));
     }
+
+    public static function duration($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Хотите продлить питч и увеличить бюджет?',
+            'data' => $data,
+            'reply-to' => 'team@godesigner.ru',
+        ));
+    }
+
+    public static function expertaddon($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Нужна помощь в выборе?',
+            'data' => $data,
+            'reply-to' => 'team@godesigner.ru',
+        ));
+    }
+
+    public static function briefaddon($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Появились сомнения в правильности заполнения брифа?',
+            'data' => $data,
+            'reply-to' => 'devochkina@godesigner.ru',
+        ));
+    }
 }
