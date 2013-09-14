@@ -63,7 +63,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/img/icon_144.png" />
     <?= $this->html->link('Icon', 'favicon.png', array('type' => 'icon')); ?>
     <!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
-    <?= $this->html->style(array('/global', '/main', '/fonts', '/panel', '/contact2'), array('inline' => false)); ?>
+    <?= $this->html->style(array('/global', '/main', '/fonts', '/panel', '/contact2'), array('inline' => false, 'weight' => 10)); ?>
     <?php echo $this->optimize->styles();?>
     <!--[if lte IE 9]><?= $this->html->style(array('/ie.css')); ?><![endif]-->
     <!--[if lte IE 8]><?= $this->html->style(array('/ie8.css')); ?><![endif]-->
@@ -145,9 +145,14 @@ $showPanel = ((count($clientNotice) > 0) || (count($designerNotice) > 0) || (!is
 
 <?php
 //echo $this->html->script(array('http://code.jquery.com/jquery-1.7.1.min.js', 'jquery.validate.min', 'plugins', 'scripts', 'app'))
-echo  $this->html->script(array('jquery-1.7.1.min.js', 'jquery.validate.min', 'jquery.simplemodal-1.4.2.js', 'plugins', 'scripts', 'app'))
+echo  $this->html->script('jquery-1.7.1.min.js', array('inline' => false, 'weight' => 10));
+echo  $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 11));
+echo  $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));
+echo  $this->html->script('plugins', array('inline' => false, 'weight' => 13));
+echo  $this->html->script('scripts', array('inline' => false, 'weight' => 14));
+echo  $this->html->script('app', array('inline' => false, 'weight' => 15));
 ?>
-<?= $this->scripts() ?>
+<?= $this->optimize->scripts() ?>
 <?php
 echo '<!--' . $this->session->read('user.events.date') . '-->';
 echo '<!--' . $this->session->read('user.blogpost.date') . '-->';

@@ -13,6 +13,22 @@ class Optimize extends \lithium\template\Helper {
         // Before any compression and combination is done, order the scripts.
         // Sort them all by a "weight" key set like: $this->html->script('myscript.js', array('weight' => 1))
         $ordered_scripts = $this->_context->scripts;
+
+        // Sorting view's scripts
+        $fileWeight = 100;
+        foreach ($ordered_scripts as $key => $value) {
+            if (!preg_match('/weight="([0-9].*)"/', $value, $matches)) {
+                $value .= ' weight="' . $fileWeight . '"';
+            }
+            $ordered_scripts[$key] = $value;
+            $fileWeight++;
+        }
+
+        // Removing script random part
+        foreach ($ordered_scripts as $key => $value) {
+            $ordered_scripts[$key] = preg_replace('/\?[0-9]*/', '', $value);
+        }
+
         usort($ordered_scripts, function($a, $b) {
             $a = (preg_match('/weight="([0-9].*)"/', $a, $matches)) ? $matches[1]:999;
             $b = (preg_match('/weight="([0-9].*)"/', $b, $matches)) ? $matches[1]:999;
@@ -95,6 +111,21 @@ class Optimize extends \lithium\template\Helper {
                                 $script_contents = file_get_contents($script);
                                 $packer = new \li3_assets\packer\JavaScriptPacker($script_contents, $library['config']['js']['packer_encoding'], $script, $library['config']['js']['packer_fast_decode'], $script, $library['config']['js']['packer_special_chars']);
                                 $js .= $packer->pack();
+                            }
+                        }
+                    }
+                // Just link files
+                } elseif($library['config']['js']['compression'] == 'link') {
+                    foreach($this->_context->scripts as $file) {
+                        if(preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
+                            $js .= file_get_contents($matches[1]);
+                            continue;
+                        }
+                        if(preg_match('/src="([^"]*)"/', $file, $matches)) {
+                            $script = $webroot . Media::asset($matches[1], 'js');
+                            // It is possible that a reference to a file that does not exist was passed
+                            if(file_exists($script)) {
+                                $js .= file_get_contents($script);
                             }
                         }
                     }

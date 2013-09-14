@@ -547,6 +547,8 @@ $(document).ready(function() {
                         });
                     }
                 });
+            } else if (currentUserId == result.solution.user_id) {
+                // Solution Author views nothing
             } else { // Any User
                 var already = ''
                 if(result.likes == true) {
