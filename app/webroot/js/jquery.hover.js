@@ -157,6 +157,11 @@
                         var imageTag = $('img[rel=' + num + ']');
                         $ttContent.html('<img src="' + imageTag.attr('src') + '">');
                         break;
+                    case 'hidden':
+                        var num = $(e.currentTarget).data('commentTo');
+                        var srcTag = $('input[rel=' + num + ']');
+                        $ttContent.html('<img src="' + srcTag.data('src') + '">');
+                        break;
                     case 'attribute':/*/////////////////////////////// attribute //////////////////////////////////////////*/
                         $ttContent.text(s.titleAttributeContent);
                         showTooltip();

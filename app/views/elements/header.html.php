@@ -47,11 +47,11 @@
                         <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                             <td class="pitches-name">
                                     <?php if($mypitch->billed == 0):?>
-                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/2" class="delete deleteheader mypitch_delete_link" title="удалить"><img width="12px" height="12px" class="pitches-name-td-img" src="/img/delete_icon_white.png"></a>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать"><img width="18" height="18" class="pitches-name-td-img" src="/img/edit_icon_white.png"></a>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить"><img width="18" height="18" class="pitches-name-td2-img" src="/img/buy_icon_white.png"></a>
+                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/2" class="delete deleteheader mypitch_delete_link" title="удалить"><img class="pitches-name-td-img" src="/img/1.gif"></a>
+                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать"><img class="pitches-name-td-img" src="/img/1.gif"></a>
+                                    <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить"><img class="pitches-name-td2-img" src="/img/1.gif"></a>
                                     <?php elseif($mypitch->status < 1):?>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать"><img width="18" height="18" class="pitches-name-td-img" src="/img/edit_icon_white.png"></a>
+                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать"><img class="pitches-name-td-img" src="/img/1.gif"></a>
                                     <?php endif?>
 
                                 <div style="background-image: none;padding: 15px 0 17px 40px">

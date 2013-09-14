@@ -2,6 +2,13 @@ $(document).ready(function() {
 
     var pitchid = '';
 
+    /* Download Form Select */
+    if ((window.File != null) && (window.FileList != null)) {
+        $('#new-download').show();
+    } else {
+        $('#old-download').show();
+    }
+
     // steps menu
     $('.steps-link').click(function() {
         var stepNum = $(this).data('step');
@@ -9,7 +16,10 @@ $(document).ready(function() {
         var existsNotPublshed = (Cart.id != 0) && (isBilled == 0);
         var notExists = (Cart.id == 0);
         if($('input[name="isGuaranteed"]:checked').length == 0) {
-            alert('Необходимо уточнить, оставляете ли вы питч без гарантий или создаете гарантированный питч.');
+            $.scrollTo($('#award'), {duration: 600, onAfter: function() {
+                alert('Необходимо уточнить, оставляете ли вы питч без гарантий или создаете гарантированный питч.');
+            }
+            });
             return false;
         }
         if(Cart.validatetype == 1) {
@@ -17,7 +27,7 @@ $(document).ready(function() {
                 if(Cart.prepareData()) {
                     Cart.saveData();
                 }else {
-                    alert('Не все обязательные поля заполнены');
+                    $.scrollTo($('.wrong-input').parent(), {duration: 600});
                 }
                 return false;
             }
@@ -30,7 +40,7 @@ $(document).ready(function() {
                     if(Cart.prepareData()) {
                         Cart.saveData();
                     }else {
-                        alert('Не все обязательные поля заполнены');
+                        $.scrollTo($('.wrong-input').parent(), {duration: 600});
                     }
                     return false;
                 }
@@ -44,6 +54,7 @@ $(document).ready(function() {
         }else{
             $('.middle').not('#step' + stepNum).hide();
             $('#step' + stepNum).show();
+            $.scrollTo($('#header-bg'), {duration: 600});
             if(stepNum == 2) {
                 //console.log($('#sliderset').length);
                 /*sliders*/
@@ -122,8 +133,13 @@ $(document).ready(function() {
     $('#promocode').live('keyup', function() {
         checkPromocode();
     });
-    
-    
+
+    $(document).on('focus', '.wrong-input', function() {
+        $(this).removeClass('wrong-input');
+    });
+    $('input', '.extensions').change(function() {
+        $('.extensions').removeClass('wrong-input');
+    });
 
     $('#sliderset').show();
 
@@ -339,7 +355,7 @@ $(document).ready(function() {
                     Cart.saveData();
                 }
             }else {
-                alert('Не все обязательные поля заполнены');
+                $.scrollTo($('.wrong-input').parent(), {duration: 600});
             }
         }
         return false;
@@ -392,8 +408,8 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.filezone-delete-link', function() {
+        var givenId = +$(this).parent().attr('data-id');
         if (Cart.id) {
-            var givenId = +$(this).parent().attr('data-id'); 
             if (givenId) { // File came from database
                 $.post('/pitchfiles/delete', {'id': givenId}, function(response) {
                     if(response != 'true') {
@@ -408,12 +424,22 @@ $(document).ready(function() {
             }
             $(this).parent().remove();
             return false;
+        } else if ($(this).data('imfromiframe') == true) {
+            $.post('/pitchfiles/delete', {'id': givenId}, function(response) {
+                if(response != 'true') {
+                    alert('При удалении файла произошла ошибка');
+                }
+                var position = $.inArray(givenId, Cart.fileIds);
+                Cart.fileIds.splice(position, 1);
+            });
+            $(this).parent().remove();
+            return false;
         } else {
             uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
             $(this).parent().remove();
             return false;
         }
-    })
+    });
 
     $('#uploadButton').click(function() {
         //$('#fileuploadform').fileupload('uploadByClick');
@@ -572,10 +598,145 @@ $(document).ready(function() {
         }
     });
 
+    $('.rb-face', '#s3_kv').change(function() {
+    if ($(this).data('pay') == 'offline-fiz') {
+        $('.pay-fiz').show();
+        $('.pay-yur').hide();
+    } else {
+        $('.pay-fiz').hide();
+        $('.pay-yur').show();
+    }
+    });
+
+    $('#bill-fiz').submit(function(e) {
+        e.preventDefault();
+        if (checkRequired($(this))) {
+            console.log(checkRequired($(this)));
+            $.scrollTo($('.wrong-input', $(this)).parent(), {duration: 600});
+        } else {
+            $.post($(this).attr('action') + '.json', {
+                'id': $('#fiz-id').val(),
+                'name': $('#fiz-name').val(),
+                'individual': $('#fiz-individual').val(),
+                'inn': 0,
+                'kpp': 0,
+                'address': 0
+            }, function(result) {
+                if (result.error == false) {
+                    window.location = '/pitches/getpdf/godesigner-pitch-' + $('#fiz-id').val() + '.pdf';
+                }
+            });
+        }
+    });
+
+    $('#bill-yur').submit(function(e) {
+        e.preventDefault();
+        if (checkRequired($(this))) {
+            $.scrollTo($('.wrong-input', $(this)).parent(), {duration: 600});
+        } else {
+            $.post($(this).attr('action') + '.json', {
+                'id': $('#yur-id').val(),
+                'name': $('#yur-name').val(),
+                'individual': $('#yur-individual').val(),
+                'inn': $('#yur-inn').val(),
+                'kpp': $('#yur-kpp').val(),
+                'address': $('#yur-address').val()
+            }, function(result) {
+                if (result.error == false) {
+                    window.location = '/pitches/getpdf/godesigner-pitch-' + $('#yur-id').val() + '.pdf';
+                }
+            });
+        }
+    });
+
     /**/
-    var Cart = new FeatureCart;
+    Cart = new FeatureCart;
     Cart.init();
+
+    /* Pitch Init from various options */
+    if (window.location.pathname.indexOf('brief') != -1) { // Pitch create only
+        if ((typeof(fillBrief) != 'undefined') && (fillBrief) && ($('#phonebrief').attr('checked') != 'checked')) {
+            $('#phonebrief').click();
+        }
+        var pitchInitOptions = $.deparam(window.location.search.substr(1));
+        if (pitchInitOptions.award) {
+            $('#award').focus().val(pitchInitOptions.award).blur();
+        }
+        if (pitchInitOptions.name) {
+            $('input[name=title]').focus().val(pitchInitOptions.name);
+        }
+        if ((pitchInitOptions.fillBrief == "true") && ($('#phonebrief').attr('checked') != 'checked')) {
+            $('#phonebrief').click();
+        }
+    }
+
+    if($('#sub-site').val() > 1) {
+        var award = $('#award');
+        var defLow = award.data('lowDef');
+        var defNormal = award.data('normalDef');
+        var defHigh = award.data('highDef');
+        var mult = $('#sub-site').data('mult');
+        if((typeof(mult) == undefined) || (!mult)) {
+            mult = parseInt(award.data('lowDef')) / 2;
+        }
+        var extraNormal = (defNormal - defLow);
+        var extraHigh = (defHigh - defLow);
+
+        var minValue = (($('#sub-site').val() - 1) * mult) + defLow;
+        award.data('minimalAward', minValue);
+        award.data('low', minValue);
+        award.data('normal', minValue + extraNormal);
+        award.data('high', minValue + extraHigh);
+        award.blur();
+    }
 });
+
+function checkRequired(form) {
+    var required = false;
+    $.each($('[required]', form), function(index, object) {
+        if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {
+            $(this).addClass('wrong-input');
+            required = true;
+            return true; // Continue next element
+        }
+        if (($(this).data('length')) && ($(this).data('length').length > 0)) {
+            var arrayLength = $(this).data('length');
+            if (-1 == $.inArray($(this).val().length, arrayLength)) {
+                $(this).addClass('wrong-input');
+                required = true;
+                return true;
+            }
+        }
+        if (($(this).data('content')) && ($(this).data('content').length > 0)) {
+            if ($(this).data('content') == 'numeric') {
+                // Numbers only
+                if (/\D+/.test($(this).val())) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
+            if ($(this).data('content') == 'symbolic') {
+                // Symbols only
+                if (/[^a-zа-я\s]/i.test($(this).val())) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
+            if ($(this).data('content') == 'mixed') {
+                // Symbols and Numbers
+                if (!(/[a-zа-я0-9]/i.test($(this).val()))) {
+                    $(this).addClass('wrong-input');
+                    required = true;
+                    return true;
+                }
+            }
+        }
+    });
+    return required;
+}
+
 //$('input[name=category_id]').val()
 
 /* Class */
@@ -599,7 +760,7 @@ function FeatureCart() {
     this.transferFeeFlag = 0;
     this.mode = 'add';
     this.init = function() {
-        if(typeof($('#pitch_id').val()) != 'undefined') {
+        if(($('#pitch_id').length > 0) && (typeof($('#pitch_id').val()) != 'undefined')) {
             self.id = $('#pitch_id').val();
             this.mode = 'edit';
         }
@@ -729,22 +890,29 @@ function FeatureCart() {
             "specificPitchData" : self.getSpecificData()
         };
         return self.validateData();
-    }
+    };
     this.validateData = function() {
         var result = true;
         if(self.validatetype == 1) {
-            if((self.data.commonPitchData.title == '') || ($('input[name=title]').attr('placeholder') == self.data.commonPitchData.title)) {
+            if((self.data.commonPitchData.title == '') || ($('input[name=title]').data('placeholder') == self.data.commonPitchData.title)) {
+                $('input[name=title]').addClass('wrong-input');
                 result = false;
             }
-            if((self.data.commonPitchData.industry == '') || ($('input[name=industry]').attr('placeholder') == self.data.commonPitchData.industry)) {
+            if((self.data.commonPitchData.industry == '') || ($('input[name=industry]').data('placeholder') == self.data.commonPitchData.industry)) {
+                $('input[name=industry]').addClass('wrong-input');
+                result = false;
+            }
+            if((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
+                $('textarea[name=description]').addClass('wrong-input');
                 result = false;
             }
             if(self.data.commonPitchData.fileFormats.length == 0) {
+                $('.extensions').addClass('wrong-input');
                 result = false;
             }
         }
         return result;
-    }
+    };
     this.saveData = function() {
         if(self.data.features.award == 0) {
             alert('Укажите награду для дизайнера!');
@@ -759,12 +927,15 @@ function FeatureCart() {
                 }
                 self.id = response;
                 $('#pitch-id').val(self.id);
+                $('#fiz-id').val(self.id);
+                $('#yur-id').val(self.id);
                 
                 pitchid = self.id;
 
                 $.get('/transactions/getsigndata/' + self.id + '.json', function(response) {
                     $('.middle').not('#step3').hide();
                     $('#step3').show();
+                    $.scrollTo($('#header-bg'), {duration: 600});
                     $('#order-id').val(response.id);
                     $('#order-total').val(response.total);
                     $('#order-timestamp').val(response.timestamp);

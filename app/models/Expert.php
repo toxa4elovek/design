@@ -10,6 +10,6 @@ use \lithium\util\String;
 
 class Expert extends \app\models\AppModel {
 
-
+    public $belongsTo = array('User');
 
 }

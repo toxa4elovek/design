@@ -111,10 +111,7 @@ $(document).ready(function() {
 
         if(($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length
             == 0) && ($('#filename').html() != 'Файл не выбран')) {
-            //alert('Не все поля заполнены! (соглашение)');
             $('a[href="#invalid"]').click();
-        }else if($('#charzone').val().length > 375) {
-            alert('Вы ввели слишком длинный комментарий!');
         }else {
             $('#solution').fileupload('uploadByClick');
         }
@@ -136,13 +133,6 @@ $(document).ready(function() {
     $('.uploadblock').on('mouseout', function() {
         $('#fakebutton').removeClass('buttonhover');
     });
-
-    $('#charzone').charCount({
-        "counterElement": $('#charcounter'),
-        "allowed": 375,
-        "warning": 50
-    });
-
 });
 
 function isAddressEmpty() {

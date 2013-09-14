@@ -496,7 +496,6 @@ a.number_img_gallery {
     padding: 4px 0 0 0 !important;
     background: url(img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;
 }
-
 .tooltip-wrap {
     font-size: 14px;
     /*padding: 16px 10px 39px 16px;*/
@@ -507,6 +506,19 @@ a.number_img_gallery {
 #tooltipContent {
     width:200px;
     height:145px;
+}
+#tooltip2 {
+    padding: 4px 0 0 0 !important;
+    background: url(img/tooltip-bg2-top-stripe.png) 0 0 no-repeat !important;
+}
+#tooltip2 .tooltip-wrap {
+	padding: 10px 10px 22px 10px;
+    background: url(img/tooltip-bottom-bg2.png) 0 100% no-repeat !important;
+}
+#tooltip2 .tooltip-wrap #tooltipContent {
+	width: 180px;
+	height: 145px;
+	padding-left: 4px;
 }
 /*#tooltip.tooltip-pos-bottom {
     padding: 4px 0 0 0 !important;

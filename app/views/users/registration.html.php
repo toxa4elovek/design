@@ -13,7 +13,7 @@
 
 				<p><a class="button facebook facebook-logon" style="cursor: pointer;">Связаться через Facebook</a></p>
 
-                <script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
+                <!--script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
 
 
                 <div id="vk_api_transport"></div>
@@ -59,7 +59,7 @@
                     }
                     VK.Auth.getLoginStatus(authInfo);
                     VK.UI.button('login_button');
-                </script>
+                </script-->
 
 			</section>
 

@@ -23,6 +23,7 @@ use \lithium\analysis\Logger;
 use \lithium\storage\Cache;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
+use \Exception;
 
 class UsersController extends \app\controllers\AppController {
 
@@ -586,7 +587,7 @@ class UsersController extends \app\controllers\AppController {
                     $redirect = '/pitches/edit/' . $pitchId . '#step3';
                 }
                 if(!is_null(Session::read('redirect'))) {
-                    $redirect = '/' . Session::read('redirect');
+                    $redirect = Session::read('redirect');
                     Session::delete('redirect');
                 }
                 return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
@@ -686,9 +687,12 @@ class UsersController extends \app\controllers\AppController {
 	                return $this->redirect('Users::office');
                 }
 	        }else{
-				//FlashMessage::write('Неверный адрес почты или пароль.');
+				Session::write('flash.login', 'Неверный адрес почты или пароль.');
 				return $this->redirect("Users::login");
 	        }
+        }
+        if (is_null(Session::read('redirect')) && !is_null($_SERVER['HTTP_REFERER'])) {
+            Session::write('redirect', $_SERVER['HTTP_REFERER']);
         }
         if(!is_null(Session::read('user.id'))) {
             return $this->redirect('Users::office');
@@ -937,6 +941,7 @@ class UsersController extends \app\controllers\AppController {
             }
             return compact('user', 'pitchCount', 'averageGrade', 'totalViews', 'totalLikes' ,'awardedSolutionNum' , 'totalSolutionNum', 'selectedSolutions', 'isClient');
         }
+        throw new Exception('Public:Такого пользователя не существует.', 404);
     }
 
     public function savePaymentData() {
@@ -1171,6 +1176,14 @@ class UsersController extends \app\controllers\AppController {
             }
         }
         die();
+    }
+
+    public function addSocial() {
+        if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
+            $user->social = 1;
+            return $user->save(null, array('validate' => false));
+        }
+        $this->redirect('/');
     }
 
 }

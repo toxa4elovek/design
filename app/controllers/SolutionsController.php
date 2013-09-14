@@ -9,7 +9,7 @@ use \app\extensions\mailers\UserMailer;
 
 class SolutionsController extends \app\controllers\AppController {
 
-    public $publicActions = array('like');
+    public $publicActions = array('like', 'unlike');
 
     public function hide() {
         $result = $this->request;
@@ -30,7 +30,7 @@ class SolutionsController extends \app\controllers\AppController {
 	}
 
     public function unlike() {
-        $likes = Solution::decreaseLike($this->request->id, $this->request->data['uid']);
+        $likes = Solution::decreaseLike($this->request->id, Session::read('user.id'));
         return compact('likes');
     }
 
@@ -54,6 +54,8 @@ class SolutionsController extends \app\controllers\AppController {
     }
 
     public function delete() {
+        //error_reporting(E_ALL);
+        //ini_set('display_errors', '1');
         $result = false;
         $isAdmin = Session::read('user.isAdmin');
         if(($solution = Solution::first($this->request->id)) && (($isAdmin == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == Session::read('user.id')))) {

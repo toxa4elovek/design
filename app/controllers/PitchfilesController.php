@@ -13,7 +13,7 @@ class PitchfilesController extends \app\controllers\AppController {
 
 
 	public function index() {
-
+	    $this->render(array('layout' => null, 'data' => null));
 	}
 
 	public function add() {
@@ -23,7 +23,12 @@ class PitchfilesController extends \app\controllers\AppController {
         }
 		$file->save($this->request->data);
         $file = Pitchfile::first($file->id);
-		return json_encode($file->data());
+        $res = json_encode($file->data());
+        if ($this->request->is('json')) {
+		  return $res;
+        } else {
+            $this->render(array('layout' => null, 'template' => 'index', 'data' => array('res' => $res)));
+        }
 	}
 
 	public function addDescription() {

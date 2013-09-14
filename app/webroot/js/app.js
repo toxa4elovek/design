@@ -80,6 +80,21 @@ $(document).ready(function() {
         return false;
     })
 
+    /* Social networks widgets modal*/
+    if (showSocialPopup) {
+        $('#socials-modal').modal({
+            containerId: 'spinner',
+            opacity: 80,
+            close: false,
+            onShow: function() {
+                VK.Widgets.Group("vk_groups", {mode: 0, width: '300', height: '290', color1: 'FFFFFF', color2: '2B587A', color3: '5B7FA6'}, 36153921);
+            }
+        });
+    }
+    if (needSocialWrite) {
+        $.post('/users/addsocial.json');
+    }
+
     $('input[name=case]').val('fu27fwkospf');
 
     $('#reqsend').on('click', function() {
@@ -348,36 +363,10 @@ $(document).ready(function() {
         $(this).css('left', '-5px');
     })
 
-    $('.mypitch_edit_link', '#header-table').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/pencil_red.png');
-    });
-
-    $('.mypitch_edit_link', '#header-table').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/edit_icon_white.png');
-    });
-
-    $('.mypitch_delete_link', '#header-table').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/kreuz_red.png');
-    });
-
-    $('.mypitch_delete_link', '#header-table').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/delete_icon_white.png');
-    });
-
-    $('.mypitch_pay_link', '#header-table').on('mouseover', function() {
-        $('img', $(this)).attr('src', '/img/buy_red.png');
-    });
-
-    $('.mypitch_pay_link', '#header-table').on('mouseout', function() {
-        $('img', $(this)).attr('src', '/img/buy_icon_white.png');
-    })
-
-
     //Цвет фона для текущих питчей
     //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 
 })
-
 
 window.fbAsyncInit = function() {
     FB.init({
@@ -596,7 +585,7 @@ function fetchComments(result) {
         commentData.commentId = comment.id;
         commentData.commentUserId = comment.user.id;
         commentData.commentText = comment.text;
-        commentData.commentPlainText = comment.originalText;
+        commentData.commentPlainText = comment.originalText.replace(/"/g, "\'");
         commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
         commentData.isExpert = isExpert(comment.user_id, expertsObj);
         
@@ -617,8 +606,7 @@ function fetchComments(result) {
         commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
         
         // Date Time
-        var dateCreated = comment.created.replace(' ', 'T'); // FF & IE date string parsing
-        var postDateObj = new Date(dateCreated);
+        var postDateObj = getProperDate(comment.created);
         commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
         commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
         commentData.relImageUrl = '';
@@ -769,4 +757,14 @@ function enableToolbar() {
             }
         });
     });
+}
+
+/*
+ * Get Proper Date object from MySQL datetime string
+ */
+function getProperDate(dateStr) {
+    var a = dateStr.split(' ');
+    var d = a[0].split('-');
+    var t = a[1].split(':');
+    return new Date(d[0], (d[1]-1), d[2], t[0], t[1], t[2]);
 }

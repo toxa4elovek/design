@@ -125,9 +125,9 @@ $(document).ready(function() {
     });
 
     $('.hoverimage[data-comment-to]').tooltip({
-        tooltipID: 'tooltip',
-        tooltipSource: 'rel',
-        width: '200px',
+        tooltipID: 'tooltip2',
+        tooltipSource: 'hidden',
+        width: '205px',
         correctPosX: 40,
         //positionTop: 0,
         borderSize: '0px',

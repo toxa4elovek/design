@@ -80,6 +80,14 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function newaddonbrief($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Новая доп. опция "заполнить бриф"!',
+            'data' => $data
+        ));
+    }
+
     public static function dailydigest($data) {
         return self::_mail(array(
             'to' => $data['user']->email,
@@ -225,4 +233,39 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function finishreports($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Закрывающие документы для вашего питча',
+            'data' => $data,
+            'reply-to' => 'va@godesigner.ru',
+        ));
+    }
+
+    public static function duration($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Хотите продлить питч и увеличить бюджет?',
+            'data' => $data,
+            'reply-to' => 'team@godesigner.ru',
+        ));
+    }
+
+    public static function expertaddon($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Нужна помощь в выборе?',
+            'data' => $data,
+            'reply-to' => 'team@godesigner.ru',
+        ));
+    }
+
+    public static function briefaddon($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Появились сомнения в правильности заполнения брифа?',
+            'data' => $data,
+            'reply-to' => 'devochkina@godesigner.ru',
+        ));
+    }
 }

@@ -6,6 +6,7 @@ namespace app\models;
 use \lithium\util\Validator;
 use \lithium\util\String;
 */
+use \app\models\Addon;
 use \app\models\Category;
 use \app\models\Event;
 use \app\models\Expert;
@@ -14,10 +15,13 @@ use \app\models\Task;
 use \app\models\Promoted;
 use \app\models\Promocode;
 use \app\models\Grade;
+use \app\models\Transaction;
+use \app\models\Receipt;
 use \app\extensions\helper\NumInflector;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
 use \app\extensions\mailers\SpamMailer;
+use \app\extensions\helper\PdfGetter;
 
 
 class Pitch extends \app\models\AppModel {
@@ -46,6 +50,9 @@ class Pitch extends \app\models\AppModel {
 			$result = $chain->next($self, $params, $chain);
 			if($result) {
                 $params['pitch'] = Pitch::first($params['id']);
+                if($params['pitch']->referal > 0) {
+                    User::fillBalance((int) $params['pitch']->referal, 500);
+                }
                 if(($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
                     $queryString = '?utm_source=twitter&utm_medium=tweet&utm_content=new-pitch-tweet&utm_campaign=sharing';
@@ -314,6 +321,25 @@ class Pitch extends \app\models\AppModel {
         return $result;
     }
 
+    public static function addProlong($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $sumProlong = 1000 * $addon->{'prolong-days'};
+            $pitch->price += $sumProlong;
+            $timeProlong = strtotime($pitch->finishDate) + ($addon->{'prolong-days'} * DAY);
+            $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
+            if ($pitch->save()) {
+                Comment::createComment(array(
+                    'pitch_id' => $pitch->id,
+                    'user_id' => User::getAdmin(),
+                    'text' => 'Дорогие друзья! Обратите внимание, что срок питча продлен до ' . date('d.m.Y', strtotime($pitch->finishDate)) . ', а размер вознаграждения увеличен.',
+                ));
+               return true;
+            }
+        }
+
+        return false;
+    }
+
     public static function finishPitch($pitchId) {
         $solutions = Solution::all(array(
             'conditions' => array('pitch_id' => $pitchId, 'nominated' => 1, 'awarded' => 0),
@@ -476,4 +502,182 @@ class Pitch extends \app\models\AppModel {
         return $res;
     }
 
+    public static function addonBriefLetter($time) {
+        $conditions = array(
+            'brief' => 0,
+        );
+        $conditions += self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (Addon::first(array('conditions' => array('pitch_id' => $pitch->id, 'brief' => 1)))) {
+                    continue;
+                }
+                if (User::sendAddonBrief($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public static function addonProlongLetter($time) {
+        $conditions = self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (User::sendAddonProlong($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public static function addonExpertLetter($time) {
+        $conditions = array(
+            'expert' => 0,
+        );
+        $conditions += self::getAddonConditions($time);
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+            'with' => array('User'),
+        ));
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (Addon::first(array('conditions' => array('pitch_id' => $pitch->id, 'experts' => 1)))) {
+                    continue;
+                }
+                if (User::sendAddonExpert($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    protected static function getAddonConditions($time) {
+        if ((0 < $time) && ($time < 1)) {
+            $timeCond = array(
+                'TIMESTAMPADD(SECOND,(TIMESTAMPDIFF(SECOND,started,finishDate) * ' . $time . '),started)' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - HOUR),
+                    '<' => date('Y-m-d H:i:s', time()),
+                ),
+            );
+        }
+
+        if ($time >= 1) {
+            $timeCond = array(
+                'started' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - DAY * $time - HOUR),
+                    '<' => date('Y-m-d H:i:s', time() - DAY * $time),
+                ),
+            );
+        }
+
+        if ($time < 0) {
+            $timeCond = array(
+                'finishDate' => array(
+                    '>=' => date('Y-m-d H:i:s', time() + DAY * abs($time) - HOUR),
+                    '<' => date('Y-m-d H:i:s', time() + DAY * abs($time)),
+                ),
+            );
+        }
+
+        $conditions = array(
+            'published' => 1,
+            'status' => 0,
+        );
+        $conditions += $timeCond;
+        return $conditions;
+    }
+
+    public static function generatePdfAct($options) {
+        $destination = PdfGetter::findPdfDestination($options['destination']);
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
+        $mpdf = new \mPDF();
+        $mpdf->WriteHTML(PdfGetter::get('Act', $options));
+        return $mpdf->Output($path . 'godesigner-act-' . $options['pitch']->id . '.pdf', $destination);
+    }
+
+    public static function generatePdfReport($options) {
+        $destination = PdfGetter::findPdfDestination($options['destination']);
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        $layout = ($options['bill']->individual == 1) ? 'Report-fiz' : 'Report-yur';
+        $options['transaction'] = Transaction::first(array(
+            'conditions' => array(
+                'ORDER' => $options['pitch']->id,
+                'TRTYPE' => 21,
+            ),
+        ));
+        $receipt = Receipt::all(array(
+            'conditions' => array(
+                'pitch_id' => $options['pitch']->id,
+            ),
+        ));
+        $totalfees = 0;
+        $prolongfees = 0;
+        if ($addon = Addon::first(array(
+            'conditions' => array(
+                'pitch_id' => $options['pitch']->id,
+                'billed' => 1,
+            ),
+        ))) {
+                $totalfees = $addon->total;
+                $prolongfees = ($addon->prolong == 1) ? $addon->{'prolong-days'} * 1000 : $prolongfees;
+            }
+            foreach ($receipt as $option) {
+                if ($option->name == 'Сбор GoDesigner') {
+                    $options['commission'] = $option->value;
+                }
+                if (($option->name != 'Награда Дизайнеру') && ($option->name != 'Сбор GoDesigner')) {
+                    $totalfees += $option->value;
+                }
+            }
+            $options['totalfees'] = $totalfees;
+            $options['prolongfees'] = $prolongfees;
+            require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
+            $mpdf = new \mPDF();
+            $mpdf->WriteHTML(PdfGetter::get($layout, $options));
+            $mpdf->Output($path . 'godesigner-report-' . $options['pitch']->id . '.pdf', $destination);
+    }
+
+    public static function sendReports() {
+        $query = array(
+            'conditions' => array(
+                'status' => 2,
+                'totalFinishDate' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - 5 * MINUTE),
+                ),
+            ),
+        );
+        $res = 0;
+        if ($pitches = Pitch::all($query)) {
+            foreach ($pitches as $pitch) {
+                if ($bill = Bill::first($pitch->id)) {
+                    $destination = 'File';
+                    $options = compact('pitch', 'bill', 'destination');
+                    self::generatePdfReport($options);
+                    if ($bill->individual != 1) {
+                        self::generatePdfAct($options);
+                    }
+                    User::sendFinishReports($pitch);
+                    $res++;
+                } else {
+                    echo 'No Bill Data for Pitch ' . $pitch->id . PHP_EOL;
+                }
+            }
+        }
+        return $res;
+    }
 }

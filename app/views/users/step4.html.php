@@ -95,7 +95,8 @@
                         <div class="clr"></div>
                     </li>
                 </ul>
-
+                <h1 class="greyboldheader">Помогите Go Designer стать лучше, оставьте свой отзыв:</h1>
+                <br />
                 <form method="post" action="/users/step4/<?=$solution->id?>" id="afterPitchCommentForm">
                     <div class="comment" style="margin-left:0px;margin-top:50px">
                         <h4>Откуда вы о нас узнали?</h4>

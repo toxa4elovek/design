@@ -233,6 +233,22 @@ $(document).ready(function(){
         }
     });
 
+    // Keys navigation
+    $(document).keydown(function(e) {
+        if ($('.solution-overlay').is(':hidden')) {
+            return true;
+        }
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+            return true;
+        }
+        if (e.keyCode == 37) { // left
+            $('.solution-prev-area').click();
+        }
+        if (e.keyCode == 39) { // right
+            $('.solution-next-area').click();
+        }
+    });
+
     $('.like-small-icon').click(function(){
 
         var likesNum = $(this).next();
@@ -502,7 +518,7 @@ $(document).ready(function(){
                 commentData.commentId = result.comment.id;
                 commentData.commentUserId = result.comment.user_id;
                 commentData.commentText = result.comment.text;
-                commentData.commentPlainText = result.comment.originalText;
+                commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
                 commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
                 commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
 
@@ -527,8 +543,7 @@ $(document).ready(function(){
                 commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
 
                 // Date Time
-                var dateCreated = result.comment.created.replace(' ', 'T'); // FF & IE date string parsing
-                var postDateObj = new Date(dateCreated);
+                var postDateObj = getProperDate(result.comment.created);
                 commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
                 commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
 
@@ -575,21 +590,29 @@ $(document).ready(function(){
             // Left Panel
             $('.solution-images').html('');
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
+                if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
+                    viewsize = result.solution.images.solution_gallerySiteSize;
+                    work = result.solution.images.solution_solutionView
+                }else {
+                    // case when we don't have gallerySiteSize image size
+                    viewsize = result.solution.images.solution;
+                    work = result.solution.images.solution
+                }
                 if ($.isArray(result.solution.images.solution)) {
-                    $.each(result.solution.images.solution_solutionView, function(idx, field) {
-                        $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                    $.each(work, function(idx, field) {
+                        $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
                     });
                 }else {
-                    $('.solution-images').append('<a href="' + result.solution.images.solution_gallerySiteSize.weburl + '" target="_blank"><img src="' + result.solution.images.solution_solutionView.weburl + '" class="solution-image" /></a>');
+                    $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
                 }
             }else {
-                $('.solution-images').append('<div class="preview" style="width:520px;padding:40px; margin: 10px 0; height:286px;background-color:#efefef;"> \
-                    <span style="color:#666;font-size:34px;line-height:45px;">' + result.solution.description + '</span> \
+                $('.solution-images').append('<div class="preview"> \
+                    <span>' + result.solution.description + '</span> \
                 </div>');
             }
 
+            var firstImage = $('.solution-image').first().parent();
             if (currentUserId == result.pitch.user_id) { // isClient
-                var firstImage = $('.solution-image').first().parent();
                 $('<div class="separator-rating"> \
                 <div class="separator-left"></div> \
                 <div class="rating-widget"><span class="left">выставьте</span> \
@@ -609,6 +632,33 @@ $(document).ready(function(){
                             $('.rating-image', '.solution-rating').addClass('star' + score);
                         });
                     }
+                });
+            } else { // Any User
+                var already = ''
+                if(result.likes == true) {
+                    already = ' already'
+                }
+                $('<div class="like-wrapper"><div class="left">поддержи</div> \
+                   <a class="like-widget'+ already + '" data-id="' + result.solution.id + '"></a> \
+                   <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
+
+
+                $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
+                    $(this).toggleClass('already');
+                    if($(this).hasClass('already')) {
+                        var counter = $('.value-likes')
+                        var solutionId = $(this).data('id')
+                        counter.html(parseInt(counter.html()) + 1);
+                        $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                        });
+                    }else {
+                        var counter = $('.value-likes')
+                        var solutionId = $(this).data('id')
+                        counter.html(parseInt(counter.html()) - 1);
+                        $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                        });
+                    }
+                    return false
                 });
             }
 
@@ -659,28 +709,32 @@ $(document).ready(function(){
                     $('.solution-about').show();
                 }
             }else {
-                var html = '';
-                if ($.isArray(result.solution.images.solution)) {
-                    $.each(result.solution.images.solution, function(index, object) {
-                        html += '<a target="_blank" href="' + object.weburl + '">' + object.originalbasename + '</a><br>'
-                    })
-                }else {
-                    html = '<a href="' + result.solution.images.solution.weburl + '">' + result.solution.images.solution.originalbasename + '</a>'
+                $('.solution-description').html('');
+                var html = '<div class="attach-wrapper">';
+                if (result.solution.images.solution) {
+                    if ($.isArray(result.solution.images.solution)) {
+                        $.each(result.solution.images.solution, function(index, object) {
+                            html += '<a target="_blank" href="' + object.weburl + '" class="attach">' + object.originalbasename + '</a><br>'
+                        })
+                    }else {
+                        html += '<a href="' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
+                    }
+                    html += '</div>';
+                    $('.solution-description').prev().html('ФАЙЛЫ')
+                    $('.solution-description').html(html);
                 }
-                $('.solution-description').prev().html('ФАЙЛЫ')
-                $('.solution-description').html(html);
             }
 
             // Copyrighted Materials
             var copyrightedHtml = '<div class="solution-copyrighted"><!--  --></div>';
-            if ((result.solution.copyrightedMaterial == 1) && ((currentUserId == result.pitch.user_id) || (isCurrentAdmin))) {
+            if ((result.solution.copyrightedMaterial == 1) && ((currentUserId == result.pitch.user_id) || (currentUserId == result.solution.user_id) || (isCurrentAdmin))) {
                 copyrightedHtml = copyrightedInfo(result.copyrightedInfo);
             }
             $('.solution-copyrighted').replaceWith(copyrightedHtml);
 
-            $('.value-views', '.solution-stat').text(result.solution.views || '');
-            $('.value-likes', '.solution-stat').text(result.solution.likes || '');
-            $('.value-comments', '.solution-stat').text(result.comments.length || '');
+            $('.value-views', '.solution-stat').text(result.solution.views || 0);
+            $('.value-likes', '.solution-stat').text(result.solution.likes || 0);
+            $('.value-comments', '.solution-stat').text(result.comments.length || 0);
 
             if (result.pitch.category_id != 7) {
 
@@ -839,6 +893,8 @@ function populatePitchComment(data) {
  * Various actions running after DOM rebuild
  */
 function inlineActions() {
+
+
     $('.edit-link-in-comment').click(function(e) {
         e.preventDefault();
         var section = $(this).parent().parent().parent();
@@ -900,9 +956,9 @@ function inlineActions() {
     });
 
     $('.hoverimage[data-comment-to]').tooltip({
-        tooltipID: 'tooltip',
+        tooltipID: 'tooltip2',
         tooltipSource: 'rel',
-        width: '200px',
+        width: '205px',
         correctPosX: 40,
         //positionTop: 0,
         borderSize: '0px',
@@ -917,6 +973,15 @@ function inlineActions() {
             $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
         }
     });
+
+    function hideSolutionPopup() {
+        if ($('.solution-overlay').is(':visible')) {
+            window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
+            $('#pitch-panel').show();
+            $('.wrapper', 'body').first().removeClass('wrapper-frozen');
+            $('.solution-overlay').hide();
+        }
+    }
 
     enableToolbar();
     mentionLinks();
