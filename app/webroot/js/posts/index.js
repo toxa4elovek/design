@@ -16,7 +16,8 @@ $(document).ready(function() {
                 $(window).off('scroll');
                 Tip.scrollHandler();
                 $('#blog-ajax-wrapper').show();
-                $.getJSON('/posts.json?page=' + ++currentPage + tagQueryString, function(result) {
+                ++currentPage;
+                $.getJSON('/posts.json?page=' + currentPage + tagQueryString, function(result) {
                     $('#blog-ajax-wrapper').hide();
                     if (result.posts.length == 0) { // No more posts
                         return false;

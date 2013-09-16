@@ -8,4 +8,5 @@ session/*
 app/webroot/avatars/*
 app/webroot/files/*
 app/webroot/solutions/*
+app/webroot/js/minified/*
 app/libraries/MPDF54/MPDF54/tmp/*

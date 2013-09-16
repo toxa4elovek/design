@@ -507,7 +507,7 @@ endif?>
                         <form action="/bills/save" method="post" id="bill-fiz">
                             <input type="hidden" name="fiz-id" id="fiz-id" value="<?=$pitch->id?>">
                             <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
-                            <input type="text" name="fiz-name" id="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Федченко Максим Юрьевич" required="" data-content="symbolic">
+                            <input type="text" name="fiz-name" id="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Иванов Иван Иванович" required="" data-content="symbolic">
                             <img src="/img/arrow-bill-download.png" class="arrow-bill-download" />
                             <input type="submit" id="button-fiz" value="Скачать счёт" class="button third" style="width:420px;">
                             <div class="clr"></div>
