@@ -141,7 +141,7 @@ Libraries::add('li3_assets', array(
             'compression' => true, // possible values: true, 'tidy', false
             'tidy_template' => 'highest_compression',
             'less_debug' => false, // debugs lessphp writing messages to a log file, possible values: true, false
-            'output_directory' => '' // directory is from webroot/css if full path is not defined
+            'output_directory' => '/' // directory is from webroot/css if full path is not defined
         ),
         'image' => array(
             'compression' => false, // uses base64/data uri, possible values: true, false
