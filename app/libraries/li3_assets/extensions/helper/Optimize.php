@@ -10,6 +10,8 @@ class Optimize extends \lithium\template\Helper {
      *
     */
     public function scripts() {
+        $webroot = Media::webroot(true);
+        $output_hash = array();
         // Before any compression and combination is done, order the scripts.
         // Sort them all by a "weight" key set like: $this->html->script('myscript.js', array('weight' => 1))
         $ordered_scripts = $this->_context->scripts;
@@ -19,6 +21,12 @@ class Optimize extends \lithium\template\Helper {
         foreach ($ordered_scripts as $key => $value) {
             if (!preg_match('/weight="([0-9].*)"/', $value, $matches)) {
                 $value .= ' weight="' . $fileWeight . '"';
+            }
+            if(preg_match('/src="([^"]*)"/', $value, $matches)) {
+                $script = $webroot . Media::asset($matches[1], 'js');
+                if(file_exists($script)) {
+                    $output_hash[] = filemtime($script);
+                }
             }
             $ordered_scripts[$key] = $value;
             $fileWeight++;
@@ -61,8 +69,7 @@ class Optimize extends \lithium\template\Helper {
         }
 
         // Set the output path
-        $webroot = Media::webroot(true);
-        $output_hash = md5(serialize($this->_context->scripts));
+        $output_hash = md5(serialize($output_hash));
         $output_file = Media::asset($library['config']['js']['output_directory'] . DIRECTORY_SEPARATOR . $output_hash, 'js');
         $output_folder = $webroot . strstr($output_file, $output_hash, true);
 
@@ -149,9 +156,21 @@ class Optimize extends \lithium\template\Helper {
      *
     */
     public function styles() {
+        $webroot = Media::webroot(true);
+        $output_hash = array();
         // Before any compression and combination is done, order the styles.
         // Sort them all by a "weight" key set like: $this->html->style('mystyle.css', array('weight' => 1))
         $ordered_styles = $this->_context->styles;
+
+        foreach ($ordered_styles as $key => $value) {
+            if(preg_match('/href="(\/.*)\.css"/', $value, $matches)) {
+                $sheet = $webroot . Media::asset($matches[1], 'css');
+                if(file_exists($sheet)) {
+                    $output_hash[] = filemtime($sheet);
+                }
+            }
+        }
+
         usort($ordered_styles, function($a, $b) {
             $a = (preg_match('/weight="([0-9].*)"/', $a, $matches)) ? $matches[1]:999;
             $b = (preg_match('/weight="([0-9].*)"/', $b, $matches)) ? $matches[1]:999;
@@ -175,16 +194,15 @@ class Optimize extends \lithium\template\Helper {
 
         // Ensure output directory is formatted properly, first remove any beginning slashes
         if($library['config']['css']['output_directory'][0] == DIRECTORY_SEPARATOR) {
-            $library['config']['css']['output_directory'] = substr($library['config']['js']['output_directory'], 1);
+            $library['config']['css']['output_directory'] = substr($library['config']['css']['output_directory'], 1);
         }
         // ...then any trailing slashes
         if(substr($library['config']['css']['output_directory'], -1, 1) == DIRECTORY_SEPARATOR) {
-            $library['config']['css']['output_directory'] = substr($library['config']['js']['output_directory'], 0, -1);
+            $library['config']['css']['output_directory'] = substr($library['config']['css']['output_directory'], 0, -1);
         }
 
         // Set the output path
-        $webroot = Media::webroot(true);
-        $output_hash = md5(serialize($this->_context->styles));
+        $output_hash = md5(serialize($output_hash));
         $output_file = Media::asset($library['config']['css']['output_directory'] . DIRECTORY_SEPARATOR . $output_hash, 'css');
         $output_folder = $webroot . strstr($output_file, $output_hash, true);
 
