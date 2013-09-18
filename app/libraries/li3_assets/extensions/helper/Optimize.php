@@ -25,7 +25,7 @@ class Optimize extends \lithium\template\Helper {
             if(preg_match('/src="([^"]*)"/', $value, $matches)) {
                 $script = $webroot . Media::asset($matches[1], 'js');
                 if(file_exists($script)) {
-                    $output_hash[] = filemtime($script);
+                    $output_hash[] = $script . filemtime($script);
                 }
             }
             $ordered_scripts[$key] = $value;
@@ -166,7 +166,7 @@ class Optimize extends \lithium\template\Helper {
             if(preg_match('/href="(\/.*)\.css"/', $value, $matches)) {
                 $sheet = $webroot . Media::asset($matches[1], 'css');
                 if(file_exists($sheet)) {
-                    $output_hash[] = filemtime($sheet);
+                    $output_hash[] = $sheet . filemtime($sheet);
                 }
             }
         }
