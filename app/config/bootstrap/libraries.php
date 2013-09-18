@@ -128,4 +128,26 @@ Libraries::add('li3_oauth');
 Libraries::add('slicedup_behaviors');
 Libraries::add('image_manipulation');
 Libraries::add('tmhOAuth');
+Libraries::add('li3_assets', array(
+    'config' => array(
+        'js' => array(
+            'compression' => 'link', // possible values: 'jsmin', 'packer', false (true uses jsmin), 'link' - just link
+            'output_directory' => 'minified', // directory is from webroot/css if full path is not defined
+            'packer_encoding' => 'Normal', // level of encoding (only used for packer), possible values: 0,10,62,95 or 'None', 'Numeric', 'Normal', 'High ASCII'
+            'packer_fast_decode' => true, // default: true
+            'packer_special_chars' => false // default: false
+        ),
+        'css' => array(
+            'compression' => true, // possible values: true, 'tidy', false
+            'tidy_template' => 'highest_compression',
+            'less_debug' => false, // debugs lessphp writing messages to a log file, possible values: true, false
+            'output_directory' => '/' // directory is from webroot/css if full path is not defined
+        ),
+        'image' => array(
+            'compression' => false, // uses base64/data uri, possible values: true, false
+            'allowed_formats' => array('jpeg', 'jpg', 'jpe', 'png', 'gif') // which images to base64 encode
+        ),
+    ),
+));
+
 ?>
