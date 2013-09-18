@@ -82,14 +82,7 @@ $(document).ready(function() {
 
     /* Social networks widgets modal*/
     if (showSocialPopup) {
-        $('#socials-modal').modal({
-            containerId: 'spinner',
-            opacity: 80,
-            close: false,
-            onShow: function() {
-                VK.Widgets.Group("vk_groups", {mode: 0, width: '300', height: '290', color1: 'FFFFFF', color2: '2B587A', color3: '5B7FA6'}, 36153921);
-            }
-        });
+        setTimeout(function() { appendSocials(); }, 5000);
     }
     if (needSocialWrite) {
         $.post('/users/addsocial.json');
@@ -767,4 +760,25 @@ function getProperDate(dateStr) {
     var d = a[0].split('-');
     var t = a[1].split(':');
     return new Date(d[0], (d[1]-1), d[2], t[0], t[1], t[2]);
+}
+
+/*
+ * Append Socials Modal
+ */
+function appendSocials() {
+    $('#socials-modal').modal({
+        containerId: 'spinner',
+        opacity: 80,
+        close: false,
+        onShow: function() {
+            $('#socials-modal').fadeTo(600, 1);
+            VK.Widgets.Group("vk_groups", {mode: 0, width: '300', height: '290', color1: 'FFFFFF', color2: '2B587A', color3: '5B7FA6'}, 36153921);
+        },
+        onClose: function() {
+            $('.simplemodal-container').fadeOut(800, function() { $(this).remove(); });
+            $('#simplemodal-overlay').fadeOut(800, function() { $(this).remove(); });
+            $('#socials-modal').removeClass('simplemodal-data');
+            $.modal.impl.d = {};
+        }
+    });
 }
