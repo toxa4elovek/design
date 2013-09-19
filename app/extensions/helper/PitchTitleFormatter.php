@@ -22,8 +22,8 @@ class PitchTitleFormatter extends \lithium\template\Helper {
 
     function renderTitle($title) {
         $title = mb_ucfirst($title);
-        $title = preg_replace('@"(.+)"@', '«$1»', $title);
-        preg_match('@«(.+)»@', $title, $matches);
+        $title = preg_replace('@"(.+?)"@', '«$1»', $title);
+        preg_match('@«(.+?)»@', $title, $matches);
         if($matches) {
             $title = preg_replace('@' . $matches[1] . '@', mb_ucfirst($matches[1]), $title);
         }
