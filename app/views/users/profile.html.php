@@ -99,7 +99,7 @@
                         <h1 class="separator-flag">ОТКРЫТАЯ ИНФОРМАЦИЯ</h1>
                         <input type="hidden" name="userpic" value="">
                         <div class="photoselectbox qq-uploader" style="height:196px;width:196px;">
-  
+
 
                             <?=$this->avatar->show($user->data(), 'true')?>
 
@@ -173,6 +173,84 @@
 
                     <div id="sendbuttonbox"><input type="submit" class="button" style="width: 140px" value="Сохранить"></div>
                 </form>
+
+                <section class="referal-section">
+                    <h1 class="separator-flag">ПРИГЛАШАЙ ДРУЗЕЙ</h1>
+                    <span class="referal-title">Вы получите 500 рублей на телефон,<br /> когда ваши друзья создадут питч на GoDesigner</span>
+                    <a href="#">Правила и условия</a>
+                    <br />
+                    <br />
+                    <br />
+                    <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут питч на GoDesigner" />
+                    <form id="referal-1" action="" method="post" style="margin-top: 35px;">
+                        <input type="text" name="" placeholder="" data-placeholder="" style="width: 270px; float: left; margin-top: 2px;">
+                        <a href="#" class="button" style="width: 230px; float: right;">Получить код</a>
+                        <div class="clr"></div>
+                        <a href="#" style="padding-left: 20px; float: right; margin-right: 70px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a>
+                        <div class="clr"></div>
+                    </form>
+
+                    <form id="referal-2" action="" method="post" style="margin-top: 35px;">
+                        <span class="referal-title">Ваш телефон +79052279349</span>
+                        <a href="#" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a><br />
+                        <a href="#" style="padding-left: 20px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a><br />
+                        <p class="regular" style="margin: 20px 0;">Подтвердите свой номер телефона, на счёт которого будет поступать вознаграждение,<br /> для получения личной ссылки.</p>
+                        <input type="text" name="" placeholder="Введите код" data-placeholder="Введите код" style="width: 270px; float: left; margin-top: 2px;">
+                        <a href="#" class="button" style="width: 230px; float: right;">Подтвердить код</a>
+                        <div class="clr"></div>
+                    </form>
+
+                    <form id="referal-3" action="" method="post" style="margin-top: 35px;">
+                        <span class="referal-title">Ваш телефон +79052279349</span>
+                        <a href="#" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
+                        <div class="clr" style="margin: 30px 0;"></div>
+                        <input type="text" name="" placeholder="https://www.airbnb.ru/referrals" data-placeholder="https://www.airbnb.ru/referrals" style="width: 270px; float: left; margin-top: 2px;">
+                        <a href="#" class="button" style="width: 230px; float: right;">Отправить по почте</a><br /><br /><br />
+                        <div class="clr" style="margin: 20px 0;"></div>
+                        <a href="#" class="button facebook small" style="width: 176px;">Поделиться в facebook</a>
+                        <a href="#" class="button vkontakte small" style="width: 176px;">Поделиться vkontakte</a>
+                        <a href="#" class="button twitter small" style="width: 176px;">Поделиться в twitter</a>
+                    </form>
+
+                    <div class="separator-flag-empty">
+                        <img src="/img/text-druzya.png" alt="Друзья на GoDesigner" />
+                    </div>
+                    <table class="referal-table">
+                        <tr>
+                            <td width="313"><img src="/img/text-drug.png" /></td>
+                            <td width="100"><img src="/img/text-status.png" /></td>
+                            <td width="150"><img src="/img/text-balans.png" /></td>
+                        </tr>
+                        <tr>
+                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">irenfrid@gmail.com</span></td>
+                            <td width="100">приглашена</td>
+                            <td width="150">—</td>
+                        </tr>
+                        <tr>
+                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
+                            <td width="100">присоедин.</td>
+                            <td width="150">—</td>
+                        </tr>
+                        <tr class="active">
+                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">George Kronberg</span></td>
+                            <td width="100">создал питч</td>
+                            <td width="150">+500р.-</td>
+                        </tr>
+                        <tr>
+                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
+                            <td width="100">присоедин.</td>
+                            <td width="150">—</td>
+                        </tr>
+                        <tr>
+                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
+                            <td width="100">присоедин.</td>
+                            <td width="150">—</td>
+                        </tr>
+                    </table>
+
+
+                </section>
+
                 <div id="popup-final-step" class="popup-final-step" style="display:none;">
                     <h3 style="text-transform:uppercase;font-family: RodeoC; margin-top: 140px;margin-left: 110px;font-size:28px;text-shadow: -1px 1px 2px white;margin-bottom: 30px;">Хотите удалить аккаунт?</h3>
                     <div style="margin-bottom: 30px;">• Если вам надоела рассылка, пожалуйста, просто отпишитесь<br> от нее в один клик <a href="/users/unsubscribe?token=<?=base64_encode($this->session->read('user.id'))?>">здесь.</a><br></div>
