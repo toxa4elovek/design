@@ -318,13 +318,13 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	font-size: 10px;
 	padding: 0 8px;
 	margin: 0 2px;
+	text-decoration: none;
 }
 .wrapper .button.twitter.small:before, .wrapper .button.facebook.small:before, .wrapper .button.vkontakte.small:before {
     content: "";
     width: 25px;
     height: 20px;
     display: block;
-    float: left;
     margin: 11px 8px 0 0;
 }
 .wrapper .button.facebook.small:before {

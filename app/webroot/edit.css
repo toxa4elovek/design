@@ -441,25 +441,44 @@ textarea.placeholder {
 	display: block;
 	border-top: 1px solid #ececec;
 }
-.referal-table tr:first-child {
-	border-top: none;
-}
 .referal-table tr.active {
+	color: #7ea563;
 	background: url('/img/referal-table-active.png') 6px center no-repeat;
 }
 .referal-table td {
 	display: inline-block;
 	border-left: 1px solid #ececec;
 	height: 50px;
+	line-height: 3em;
 }
 .referal-table td:first-child {
 	float: left;
-	width: 313px;
 	border-left: none;
 }
 .referal-table td:last-child {
 	float: right;
-	width: 150px;
+}
+.referal-table td.ref-status {
+	color: #ccc;
+}
+.referal-table tr.active td.ref-status {
+    color: #7ea563;
+}
+.referal-table th {
+    display: inline-block;
+    border-left: 1px solid #ececec;
+    height: 60px;
+    line-height: 3em;
+}
+.referal-table th:first-child {
+    float: left;
+    border-left: none;
+}
+.referal-table th:last-child {
+    float: right;
+}
+.referal-table th img {
+    margin-top: 20px;
 }
 .referal-table img.referal-avatar {
 	float: left;

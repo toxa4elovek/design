@@ -184,7 +184,7 @@
                     <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут питч на GoDesigner" />
                     <form id="referal-1" action="" method="post" style="margin-top: 35px;">
                         <input type="text" name="" placeholder="" data-placeholder="" style="width: 270px; float: left; margin-top: 2px;">
-                        <a href="#" class="button" style="width: 230px; float: right;">Получить код</a>
+                        <input type="submit" class="button" style="width: 300px; float: right;" value="Получить код">
                         <div class="clr"></div>
                         <a href="#" style="padding-left: 20px; float: right; margin-right: 70px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a>
                         <div class="clr"></div>
@@ -196,56 +196,60 @@
                         <a href="#" style="padding-left: 20px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a><br />
                         <p class="regular" style="margin: 20px 0;">Подтвердите свой номер телефона, на счёт которого будет поступать вознаграждение,<br /> для получения личной ссылки.</p>
                         <input type="text" name="" placeholder="Введите код" data-placeholder="Введите код" style="width: 270px; float: left; margin-top: 2px;">
-                        <a href="#" class="button" style="width: 230px; float: right;">Подтвердить код</a>
+                        <input type="submit" class="button" style="width: 300px; float: right;" value="Подтвердить код">
                         <div class="clr"></div>
                     </form>
 
-                    <form id="referal-3" action="" method="post" style="margin-top: 35px;">
+                    <form id="referal-3" action="" method="post" style="margin: 35px 0 30px 0;">
                         <span class="referal-title">Ваш телефон +79052279349</span>
                         <a href="#" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
                         <div class="clr" style="margin: 30px 0;"></div>
                         <input type="text" name="" placeholder="https://www.airbnb.ru/referrals" data-placeholder="https://www.airbnb.ru/referrals" style="width: 270px; float: left; margin-top: 2px;">
-                        <a href="#" class="button" style="width: 230px; float: right;">Отправить по почте</a><br /><br /><br />
-                        <div class="clr" style="margin: 20px 0;"></div>
-                        <a href="#" class="button facebook small" style="width: 176px;">Поделиться в facebook</a>
-                        <a href="#" class="button vkontakte small" style="width: 176px;">Поделиться vkontakte</a>
-                        <a href="#" class="button twitter small" style="width: 176px;">Поделиться в twitter</a>
+                        <input type="submit" class="button" style="width: 300px; float: right;" value="Отправить по почте">
+                        <div class="clr"></div>
                     </form>
+                    <a href="#" class="button facebook small" style="width: 176px;">Поделиться в facebook</a>
+                    <a href="#" class="button vkontakte small" style="width: 176px;">Поделиться vkontakte</a>
+                    <a href="#" class="button twitter small" style="width: 176px;">Поделиться в twitter</a>
 
                     <div class="separator-flag-empty">
                         <img src="/img/text-druzya.png" alt="Друзья на GoDesigner" />
                     </div>
                     <table class="referal-table">
-                        <tr>
-                            <td width="313"><img src="/img/text-drug.png" /></td>
-                            <td width="100"><img src="/img/text-status.png" /></td>
-                            <td width="150"><img src="/img/text-balans.png" /></td>
-                        </tr>
-                        <tr>
-                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">irenfrid@gmail.com</span></td>
-                            <td width="100">приглашена</td>
-                            <td width="150">—</td>
-                        </tr>
-                        <tr>
-                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
-                            <td width="100">присоедин.</td>
-                            <td width="150">—</td>
-                        </tr>
-                        <tr class="active">
-                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">George Kronberg</span></td>
-                            <td width="100">создал питч</td>
-                            <td width="150">+500р.-</td>
-                        </tr>
-                        <tr>
-                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
-                            <td width="100">присоедин.</td>
-                            <td width="150">—</td>
-                        </tr>
-                        <tr>
-                            <td width="313"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
-                            <td width="100">присоедин.</td>
-                            <td width="150">—</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th width="308"><img src="/img/text-drug.png" style="margin-right: 90px;" alt="друг" /></th>
+                                <th width="100"><img src="/img/text-status.png" alt="статус" /></th>
+                                <th width="198"><img src="/img/text-balans.png" alt="баланс телефона" /></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">irenfrid@gmail.com</span></td>
+                                <td width="100" class="ref-status">приглашена</td>
+                                <td width="198">—</td>
+                            </tr>
+                            <tr>
+                                <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
+                                <td width="100" class="ref-status">присоедин.</td>
+                                <td width="198">—</td>
+                            </tr>
+                            <tr class="active">
+                                <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">George Kronberg</span></td>
+                                <td width="100" class="ref-status">создал питч</td>
+                                <td width="198">+500р.-</td>
+                            </tr>
+                            <tr>
+                                <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
+                                <td width="100" class="ref-status">присоедин.</td>
+                                <td width="198">—</td>
+                            </tr>
+                            <tr>
+                                <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
+                                <td width="100" class="ref-status">присоедин.</td>
+                                <td width="198">—</td>
+                            </tr>
+                        </tbody>
                     </table>
 
 
