@@ -149,7 +149,7 @@ $showPanel = ((count($clientNotice) > 0) || (count($designerNotice) > 0) || (!is
 
 <?php
 //echo $this->html->script(array('http://code.jquery.com/jquery-1.7.1.min.js', 'jquery.validate.min', 'plugins', 'scripts', 'app'))
-echo  $this->html->script('jquery-1.7.1.min.js', array('inline' => false, 'weight' => 10));
+echo  $this->html->script('jquery-1.7.2.min.js', array('inline' => false, 'weight' => 10));
 echo  $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 11));
 echo  $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));
 echo  $this->html->script('plugins', array('inline' => false, 'weight' => 13));
