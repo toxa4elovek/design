@@ -458,7 +458,12 @@ $(document).ready(function(){
     $('.imagecontainer').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        window.history.pushState('object or string', 'Title', this.href); // @todo Check params
+        if (window.history.pushState) {
+            window.history.pushState('object or string', 'Title', this.href); // @todo Check params
+        } else {
+            window.location = $(this).attr('href');
+            return false;
+        }
         $('#pitch-panel').hide();
         $('.wrapper', 'body').first().addClass('wrapper-frozen');
         $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
