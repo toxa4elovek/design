@@ -249,6 +249,9 @@ class Comment extends \app\models\AppModel {
     }
 
     public static function isCommentRepeat($user_id, $pitch_id, $currentText) {
+        if (User::first(array('conditions' => array('id' => $user_id, 'isAdmin' => 1)))) {
+            return true;
+        }
         $previousComment = Comment::first(array(
             'conditions' => array(
                 'user_id' => $user_id,
