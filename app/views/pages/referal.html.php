@@ -17,12 +17,9 @@
             <div class="mainblock">
                 <section class="referal-section">
                     <h1 class="separator-flag">ПРИГЛАШАЙ ДРУЗЕЙ</h1>
-                    <span class="referal-title">Вы получите 500 рублей на телефон,<br /> когда ваши друзья создадут питч на GoDesigner</span>
+                    <span class="referal-title">Вы получите 500 рублей на телефон<span style="color: #FF585D;">*</span>,<br /> когда ваши друзья создадут питч на GoDesigner</span>
                     <a href="#">Правила и условия</a>
-                    <br />
-                    <br />
-                    <br />
-                    <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут питч на GoDesigner" />
+                    <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут питч на GoDesigner" style="margin: 30px 0;" />
                     <span class="referal-title">Зарегистрируйтесь,<br /> чтобы  принять участие в акции!</span>
                     <a href="#" class="button third" style="width: 180px; text-decoration: none; margin: 20px 0 10px 0;">Зарегистрироваться</a>
                     <div class="separator-flag-empty">
@@ -31,7 +28,10 @@
                     <span class="referal-title">получите ссылку в личном кабинете!</span>
                     <a href="#" class="button" style="width: 180px; text-decoration: none; margin: 20px 0 30px 0;">На страницу партнерки</a>
                     <br />
-                     <span>— В акции могут принять участие владельцы номеров любых стран бывшего СССР.</span>
+                    <div class="remark">
+                        <hr align="left">
+                        <span>— В акции могут принять участие владельцы номеров любых стран бывшего СССР.</span>
+                    </div>
                 </section>
             </div>
 
