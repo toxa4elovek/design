@@ -45,6 +45,25 @@ $(document).ready(function(){
     }
     /*var SidebarUpdater = new SidebarStatusUpdater();
     SidebarUpdater.init();*/
+
+    /*
+     * Send SMS Code
+     */
+    $('#referal-1').submit(function(e) {
+        e.preventDefault();
+        $.post($(this).attr('action') + '.json', {
+            'userPhone': $('#userPhone').val(),
+        }, function(result) {
+            if (result == 'false') {
+                // Tooltip
+                var position = $('#userPhone').position();
+                position.top += 55;
+                $('#tooltip-phone').css(position).fadeIn(200);
+                setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+            }
+        });
+    });
+
 });
 
 function SidebarStatusUpdater() {

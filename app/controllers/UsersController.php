@@ -15,6 +15,7 @@ use \app\models\Avatar;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\mailers\ContactMailer;
+use \app\extensions\smsfeedback\SmsFeedback;
 use \lithium\storage\Session;
 use \lithium\security\Auth;
 use \li3_flash_message\extensions\storage\FlashMessage;
@@ -1182,6 +1183,30 @@ class UsersController extends \app\controllers\AppController {
         if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
             $user->social = 1;
             return $user->save(null, array('validate' => false));
+        }
+        $this->redirect('/');
+    }
+
+    public function checkPhone() {
+        if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
+            if (!preg_match("/^[0-9]{10,10}+$/", $_POST['userPhone'])) {
+                return json_encode(false);
+            }
+
+            // Добавляем семерку к номеру телефону, если мы рассылаем по России.
+
+            $_POST['userPhone'] = "7" . $_POST['userPhone'];
+
+            // Иногда возникает небходимость проверить первую цифру номера, например если он
+            // 11-ти значный то для корректной отправки через наш API необходимо,
+            // чтобы номер начинался с 7, проверим это
+
+            $first = substr($_POST['userPhone'], "0", 1);
+            if ($first != 7) {
+                echo ("Ваш номер телефон начинается не на семерку");
+            }
+
+            return SmsFeedback::test();
         }
         $this->redirect('/');
     }

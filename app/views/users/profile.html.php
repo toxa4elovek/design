@@ -182,8 +182,15 @@
                     <br />
                     <br />
                     <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут питч на GoDesigner" />
-                    <form id="referal-1" action="" method="post" style="margin-top: 35px;">
-                        <input type="text" name="" placeholder="" data-placeholder="" style="width: 270px; float: left; margin-top: 2px;">
+                    <form id="referal-1" action="/users/checkphone" method="post" style="margin-top: 35px;">
+                        <div style="display: none; background: url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important; padding: 4px 0 0 !important; height: auto; width: 282px; position: absolute; z-index: 2147483647; margin-bottom: 4px;" id="tooltip-phone">
+                            <div style="background:url(/img/tooltip-top-bg.png) no-repeat scroll 100% 0 transparent; padding: 30px 10px 10px 16px; height: auto;">
+                                <div>
+                                    <p class="regular" style="color: #999;">К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="text" id="userPhone" name="userPhone" placeholder="" data-placeholder="" style="width: 270px; float: left; margin-top: 12px;">
                         <input type="submit" class="button" style="width: 300px; float: right;" value="Получить код">
                         <div class="clr"></div>
                         <a href="#" style="padding-left: 20px; float: right; margin-right: 70px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a>
@@ -195,7 +202,7 @@
                         <a href="#" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a><br />
                         <a href="#" style="padding-left: 20px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a><br />
                         <p class="regular" style="margin: 20px 0;">Подтвердите свой номер телефона, на счёт которого будет поступать вознаграждение,<br /> для получения личной ссылки.</p>
-                        <input type="text" name="" placeholder="Введите код" data-placeholder="Введите код" style="width: 270px; float: left; margin-top: 2px;">
+                        <input type="text" name="" placeholder="Введите код" data-placeholder="Введите код" style="width: 270px; float: left; margin-top: 12px;">
                         <input type="submit" class="button" style="width: 300px; float: right;" value="Подтвердить код">
                         <div class="clr"></div>
                     </form>
@@ -204,7 +211,7 @@
                         <span class="referal-title">Ваш телефон +79052279349</span>
                         <a href="#" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
                         <div class="clr" style="margin: 30px 0;"></div>
-                        <input type="text" name="" placeholder="https://www.airbnb.ru/referrals" data-placeholder="https://www.airbnb.ru/referrals" style="width: 270px; float: left; margin-top: 2px;">
+                        <input type="text" name="" placeholder="https://www.airbnb.ru/referrals" data-placeholder="https://www.airbnb.ru/referrals" style="width: 270px; float: left; margin-top: 12px;">
                         <input type="submit" class="button" style="width: 300px; float: right;" value="Отправить по почте">
                         <div class="clr"></div>
                     </form>
