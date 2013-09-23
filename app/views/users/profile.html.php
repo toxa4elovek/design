@@ -198,7 +198,7 @@
                     </form>
 
                     <form id="referal-2" action="" method="post" style="margin-top: 35px;">
-                        <span class="referal-title">Ваш телефон +79052279349</span>
+                        <span class="referal-title">Ваш телефон +<span class="phone-number"></span></span>
                         <a href="#" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a><br />
                         <a href="#" style="padding-left: 20px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a><br />
                         <p class="regular" style="margin: 20px 0;">Подтвердите свой номер телефона, на счёт которого будет поступать вознаграждение,<br /> для получения личной ссылки.</p>
@@ -208,7 +208,7 @@
                     </form>
 
                     <form id="referal-3" action="" method="post" style="margin: 35px 0 30px 0;">
-                        <span class="referal-title">Ваш телефон +79052279349</span>
+                        <span class="referal-title">Ваш телефон +<span class="phone-number"></span></span>
                         <a href="#" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
                         <div class="clr" style="margin: 30px 0;"></div>
                         <input type="text" name="" placeholder="https://www.airbnb.ru/referrals" data-placeholder="https://www.airbnb.ru/referrals" style="width: 270px; float: left; margin-top: 12px;">

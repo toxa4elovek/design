@@ -3,31 +3,33 @@ namespace app\extensions\smsfeedback;
 
 class SmsFeedback {
 
-    protected $host = '';
-    protected $port = '';
-    protected $login = '';
-    protected $password = '';
-    protected $phone = '';
-    protected $text = '';
-    protected $sender = '';
-    protected $wapurl = '';
+    protected static $defaults = array(
+        'host' => 'api.smsfeedback.ru',
+        'port' => 80,
+        'login' => '',
+        'password' => '',
+        'sender' => 'GoDesigner',
+        'wapurl' => '',
+    );
 
-    public static function send($host, $port, $login, $password, $phone, $text, $sender = false, $wapurl = false )
-    {
-        $fp = fsockopen($host, $port, $errno, $errstr);
+    public static function send($phone, $text, $options = array()) {
+        if (is_array($options)) {
+            $options += static::$defaults;
+        }
+        $fp = fsockopen($options['host'], $options['port'], $errno, $errstr);
         if (!$fp) {
             return "errno: $errno \nerrstr: $errstr\n";
         }
         fwrite($fp, "GET /messages/v2/send/" .
             "?phone=" . rawurlencode($phone) .
             "&text=" . rawurlencode($text) .
-            ($sender ? "&sender=" . rawurlencode($sender) : "") .
-            ($wapurl ? "&wapurl=" . rawurlencode($wapurl) : "") .
+            ($options['sender'] ? "&sender=" . rawurlencode($options['sender']) : "") .
+            ($options['wapurl'] ? "&wapurl=" . rawurlencode($options['wapurl']) : "") .
             "  HTTP/1.0\n");
-        fwrite($fp, "Host: " . $host . "\r\n");
-        if ($login != "") {
+        fwrite($fp, "Host: " . $options['host'] . "\r\n");
+        if ($options['login'] != "") {
             fwrite($fp, "Authorization: Basic " .
-                base64_encode($login. ":" . $password) . "\n");
+                base64_encode($options['login'] . ":" . $options['password']) . "\n");
         }
         fwrite($fp, "\n");
         $response = "";

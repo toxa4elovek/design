@@ -15,7 +15,6 @@ use \app\models\Avatar;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\mailers\ContactMailer;
-use \app\extensions\smsfeedback\SmsFeedback;
 use \lithium\storage\Session;
 use \lithium\security\Auth;
 use \li3_flash_message\extensions\storage\FlashMessage;
@@ -1206,7 +1205,7 @@ class UsersController extends \app\controllers\AppController {
                 echo ("Ваш номер телефон начинается не на семерку");
             }
 
-            return SmsFeedback::test();
+            return User::phoneValidationStart($user->id, $_POST['userPhone']);
         }
         $this->redirect('/');
     }

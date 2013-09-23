@@ -60,6 +60,8 @@ $(document).ready(function(){
                 position.top += 55;
                 $('#tooltip-phone').css(position).fadeIn(200);
                 setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+            } else {
+                $('.phone-number', '.referal-title').text(result.phone);
             }
         });
     });
