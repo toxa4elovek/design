@@ -144,6 +144,14 @@ class UsersController extends \app\controllers\AppController {
         }
 	}
 
+	public function referal() {
+	    if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+	        return true;
+	    } else {
+	        return $this->render(array('layout' => false));
+	    }
+	}
+
     public function solutions() {
         $conditions = array('Solution.user_id' => Session::read('user.id'));
         $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
