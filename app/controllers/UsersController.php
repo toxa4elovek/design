@@ -1188,28 +1188,34 @@ class UsersController extends \app\controllers\AppController {
 
     public function checkPhone() {
         if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
-            if (!preg_match("/^[0-9]{10,10}+$/", $_POST['userPhone'])) {
+            if (!preg_match("/^[0-9]{10,10}+$/", $this->request->data['userPhone'])) {
                 return json_encode(false);
             }
 
             // Добавляем семерку к номеру телефону, если мы рассылаем по России.
 
-            $_POST['userPhone'] = "7" . $_POST['userPhone'];
+            $this->request->data['userPhone'] = "7" . $this->request->data['userPhone'];
 
             // Иногда возникает небходимость проверить первую цифру номера, например если он
             // 11-ти значный то для корректной отправки через наш API необходимо,
             // чтобы номер начинался с 7, проверим это
 
-            $first = substr($_POST['userPhone'], "0", 1);
+            $first = substr($this->request->data['userPhone'], "0", 1);
             if ($first != 7) {
                 echo ("Ваш номер телефон начинается не на семерку");
             }
 
-            return User::phoneValidationStart($user->id, $_POST['userPhone']);
+            return User::phoneValidationStart($user->id, $this->request->data['userPhone']);
         }
         $this->redirect('/');
     }
 
+    public function validateCode() {
+        if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id'))) && $this->request->data['verifyCode']) {
+            return json_encode(User::phoneValidationFinish($user->id, (int) $this->request->data['verifyCode']));
+        }
+        $this->redirect('/');
+    }
 }
 
 

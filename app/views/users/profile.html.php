@@ -197,12 +197,19 @@
                         <div class="clr"></div>
                     </form>
 
-                    <form id="referal-2" action="" method="post" style="margin-top: 35px;">
+                    <form id="referal-2" action="/users/validatecode" method="post" style="margin-top: 35px;">
+                        <div style="display: none; background: url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important; padding: 4px 0 0 !important; height: auto; width: 282px; position: absolute; z-index: 2147483647; margin-bottom: 4px;" id="tooltip-code">
+                            <div style="background:url(/img/tooltip-top-bg.png) no-repeat scroll 100% 0 transparent; padding: 30px 10px 10px 16px; height: auto;">
+                                <div>
+                                    <p class="regular" style="color: #999;">Введен неверный код.</p>
+                                </div>
+                            </div>
+                        </div>
                         <span class="referal-title">Ваш телефон +<span class="phone-number"></span></span>
                         <a href="#" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a><br />
                         <a href="#" style="padding-left: 20px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a><br />
                         <p class="regular" style="margin: 20px 0;">Подтвердите свой номер телефона, на счёт которого будет поступать вознаграждение,<br /> для получения личной ссылки.</p>
-                        <input type="text" name="" placeholder="Введите код" data-placeholder="Введите код" style="width: 270px; float: left; margin-top: 12px;">
+                        <input type="text" id="verifyCode" name="verifyCode" placeholder="Введите код" data-placeholder="Введите код" style="width: 270px; float: left; margin-top: 12px;">
                         <input type="submit" class="button" style="width: 300px; float: right;" value="Подтвердить код">
                         <div class="clr"></div>
                     </form>
