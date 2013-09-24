@@ -1138,3 +1138,56 @@ $('.rb1').live('change', function() {
      })
      return false;
  })
+
+/*
+ * Referal Tab
+ */
+$(document).ready(function() {
+    /*
+     * Send SMS Code
+     */
+    $(document).on('submit', '#referal-1', function(e) {
+        e.preventDefault();
+        $.post($(this).attr('action') + '.json', {
+            'userPhone': $('#userPhone').val(),
+        }, function(result) {
+            if (result == 'false') {
+                // Tooltip
+                var position = $('#userPhone').position();
+                position.top += 55;
+                $('p', '#tooltip-phone').text('К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.');
+                $('#tooltip-phone').css(position).fadeIn(200);
+                setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+            } else {
+                if (result.respond.indexOf('error') != -1) {
+                    // Tooltip
+                    var position = $('#userPhone').position();
+                    position.top += 55;
+                    $('p', '#tooltip-phone').text('Произошел сбой доставки SMS-сообщения. Попробуйте позже.');
+                    $('#tooltip-phone').css(position).fadeIn(200);
+                    setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+                }
+                $('.phone-number', '.referal-title').text(result.phone);
+            }
+        });
+    });
+
+    /*
+     * Verify SMS Code
+     */
+    $(document).on('submit', '#referal-2', function(e) {
+        e.preventDefault();
+        $.post($(this).attr('action') + '.json', {
+            'verifyCode': $('#verifyCode').val(),
+        }, function(result) {
+            if (result == 'false') {
+                // Tooltip
+                var position = $('#verifyCode').position();
+                position.top += 55;
+                $('#tooltip-code').css(position).fadeIn(200);
+                setTimeout(function() { $('#tooltip-code').fadeOut(200); }, 5000);
+            }
+        });
+    });
+
+});

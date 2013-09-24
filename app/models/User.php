@@ -14,6 +14,7 @@ use \app\models\Wincomment;
 use \app\models\Comment;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
+use \app\extensions\smsfeedback\SmsFeedback;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 
@@ -826,11 +827,13 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function phoneValidationStart($userId) {
-        if (($user = self::first($userId)) && !empty($user->phone)) {
+    public static function phoneValidationStart($userId, $phone) {
+        if (($user = self::first($userId)) && !empty($phone)) {
+            $user->phone = $phone;
             $user->phone_code = self::generatePhoneCode();
             $user->save(null, array('validate' => false));
-            return self::sendPhoneCode($user->phone, $user->phone_code);
+            $respond = SmsFeedback::send($user->phone, 'Код для проверки: ' . $user->phone_code);
+            return compact('respond', 'phone');
         }
         return false;
     }
@@ -849,11 +852,6 @@ class User extends \app\models\AppModel {
 
     protected static function generatePhoneCode($count = 5, $string = '0123456789') {
         return substr(str_shuffle($string), 0, $count);
-    }
-
-    protected static function sendPhoneCode($phone, $code) {
-        // Send code
-        return true;
     }
 
     public static function sendAddonProlong($pitch) {
