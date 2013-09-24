@@ -1151,20 +1151,24 @@ $('.rb1').live('change', function() {
  * Referal Tab Object
  */
 function Referal() {
-    var self = this;
     this.reset = function(data) {
         $('.referal-block').hide();
         $('#userPhone').val('');
         if (data.phone == 0) {
-            $('.block-1').fadeIn(200);
+            $('.block-1').fadeIn(600);
         } else if (data.phone_valid == 0) {
-            $('.block-2').fadeIn(200);
+            $('.block-2').fadeIn(600);
         } else {
-            $('.block-3').fadeIn(200);
+            $('.block-3').fadeIn(600);
         }
-    }
+    };
 }
 $(document).ready(function() {
+    if (window.location.pathname.match(/users\/referal/)) {
+        Ref = new Referal;
+        Ref.reset({phone:$('#prop-phone').val(), phone_valid:$('#prop-phone_valid').val()});
+    }
+
     /*
      * Send SMS Code
      */
@@ -1190,7 +1194,28 @@ $(document).ready(function() {
                     setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
                 } else {
                     $('.phone-number', '.referal-title').text(result.phone);
+                    $('.code-resend').data('phone', result.phone);
                     Ref.reset(result);
+                }
+            }
+        });
+    });
+
+    /*
+     * ReSend SMS Code
+     */
+    $(document).on('click', '.code-resend', function(e) {
+        e.preventDefault();
+        $.post($(this).attr('href') + '.json', {
+            'userPhone': $(this).data('phone'),
+        }, function(result) {
+            if (result == 'false') {
+                // False
+            } else {
+                if (result.respond.indexOf('error') != -1) {
+                    // Error
+                } else {
+                    // Good
                 }
             }
         });
