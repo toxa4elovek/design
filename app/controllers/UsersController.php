@@ -145,11 +145,28 @@ class UsersController extends \app\controllers\AppController {
 	}
 
 	public function referal() {
+	    $user = User::first(Session::read('user.id'));
 	    if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-	        return true;
+	        return compact('user');
 	    } else {
-	        return $this->render(array('layout' => false));
+	        return $this->render(array('layout' => false, 'data' => compact('user')));
 	    }
+	}
+
+	public function deletePhone() {
+	    if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
+	        $user->phone = 0;
+	        $user->phone_code = 0;
+	        $user->phone_valid = 0;
+	        $user->save(null, array('validate' => false));
+	        $result = array(
+	            'code' => true,
+	            'phone' => 0,
+	            'phone_valid' => 0,
+	        );
+	        return $result;
+	    }
+	    $this->redirect('/');
 	}
 
     public function solutions() {
@@ -1196,13 +1213,13 @@ class UsersController extends \app\controllers\AppController {
 
     public function checkPhone() {
         if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
-            if (!preg_match("/^[0-9]{10,10}+$/", $this->request->data['userPhone'])) {
+            if (!preg_match("/^[0-9]{11,11}+$/", $this->request->data['userPhone'])) {
                 return json_encode(false);
             }
 
             // Добавляем семерку к номеру телефону, если мы рассылаем по России.
 
-            $this->request->data['userPhone'] = "7" . $this->request->data['userPhone'];
+            //$this->request->data['userPhone'] = "7" . $this->request->data['userPhone'];
 
             // Иногда возникает небходимость проверить первую цифру номера, например если он
             // 11-ти значный то для корректной отправки через наш API необходимо,
@@ -1210,7 +1227,7 @@ class UsersController extends \app\controllers\AppController {
 
             $first = substr($this->request->data['userPhone'], "0", 1);
             if ($first != 7) {
-                echo ("Ваш номер телефон начинается не на семерку");
+                return json_encode(false);
             }
 
             return User::phoneValidationStart($user->id, $this->request->data['userPhone']);

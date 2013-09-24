@@ -1132,6 +1132,10 @@ $('.rb1').live('change', function() {
          }else if(url.match(/users\/mypitches/)) {
              $('.middle', '.wrapper').html($('.middle', response).html());
              mypitchesInit();
+         }else if(url.match(/users\/referal/)) {
+             $('.middle', '.wrapper').html($('.middle', response).html());
+             Ref = new Referal;
+             Ref.reset({phone:$('#prop-phone').val(), phone_valid:$('#prop-phone_valid').val()});
          }else{
              $('.middle', '.wrapper').html($('.middle', response).html());
          }
@@ -1142,7 +1146,29 @@ $('.rb1').live('change', function() {
 /*
  * Referal Tab
  */
+
+/*
+ * Referal Tab Object
+ */
+function Referal() {
+    this.reset = function(data) {
+        $('.referal-block').hide();
+        $('#userPhone').val('');
+        if (data.phone == 0) {
+            $('.block-1').fadeIn(600);
+        } else if (data.phone_valid == 0) {
+            $('.block-2').fadeIn(600);
+        } else {
+            $('.block-3').fadeIn(600);
+        }
+    };
+}
 $(document).ready(function() {
+    if (window.location.pathname.match(/users\/referal/)) {
+        Ref = new Referal;
+        Ref.reset({phone:$('#prop-phone').val(), phone_valid:$('#prop-phone_valid').val()});
+    }
+
     /*
      * Send SMS Code
      */
@@ -1166,8 +1192,31 @@ $(document).ready(function() {
                     $('p', '#tooltip-phone').text('Произошел сбой доставки SMS-сообщения. Попробуйте позже.');
                     $('#tooltip-phone').css(position).fadeIn(200);
                     setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+                } else {
+                    $('.phone-number', '.referal-title').text(result.phone);
+                    $('.code-resend').data('phone', result.phone);
+                    Ref.reset(result);
                 }
-                $('.phone-number', '.referal-title').text(result.phone);
+            }
+        });
+    });
+
+    /*
+     * ReSend SMS Code
+     */
+    $(document).on('click', '.code-resend', function(e) {
+        e.preventDefault();
+        $.post($(this).attr('href') + '.json', {
+            'userPhone': $(this).data('phone'),
+        }, function(result) {
+            if (result == 'false') {
+                // False
+            } else {
+                if (result.respond.indexOf('error') != -1) {
+                    // Error
+                } else {
+                    // Good
+                }
             }
         });
     });
@@ -1186,8 +1235,23 @@ $(document).ready(function() {
                 position.top += 55;
                 $('#tooltip-code').css(position).fadeIn(200);
                 setTimeout(function() { $('#tooltip-code').fadeOut(200); }, 5000);
+            } else {
+                Ref.reset(result);
             }
         });
     });
 
+    /*
+     * Delete Phone
+     */
+    $(document).on('click', '.phone-delete', function(e) {
+        e.preventDefault();
+        $.post($(this).attr('href') + '.json', {
+
+        }, function(result) {
+            if (result.code == true) {
+                Ref.reset(result);
+            }
+        });
+    });
 });

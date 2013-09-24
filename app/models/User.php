@@ -831,9 +831,11 @@ class User extends \app\models\AppModel {
         if (($user = self::first($userId)) && !empty($phone)) {
             $user->phone = $phone;
             $user->phone_code = self::generatePhoneCode();
+            $user->phone_valid = 0;
             $user->save(null, array('validate' => false));
             $respond = SmsFeedback::send($user->phone, 'Код для проверки: ' . $user->phone_code);
-            return compact('respond', 'phone');
+            $phone_valid = 0;
+            return compact('respond', 'phone', 'phone_valid');
         }
         return false;
     }
@@ -844,7 +846,9 @@ class User extends \app\models\AppModel {
                 $user->phone_valid = 1;
                 $user->phone_code = 0;
                 $user->save(null, array('validate' => false));
-                return true;
+                $phone = $user->phone;
+                $phone_valid = 1;
+                return compact('phone', 'phone_valid');
             }
         }
         return false;
