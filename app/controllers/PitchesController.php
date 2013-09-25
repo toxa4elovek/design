@@ -661,9 +661,9 @@ class PitchesController extends \app\controllers\AppController {
 		foreach($temp as $cat) {
 			$categories[$cat->id] = $cat;
 		}
-		if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && !is_null($this->request->query['ref'])) {
-            setcookie('ref', $this->request->query['ref'], strtotime('+1 month'), '/');
-		}
+        if (!is_null($this->request->query['ref'])) {
+            User::setReferalCookie($this->request->query['ref']);
+        }
 		return compact('categories');
 	}
 
@@ -814,8 +814,12 @@ class PitchesController extends \app\controllers\AppController {
     }
 
 	public function brief() {
-	    if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && !is_null($this->request->query['ref'])) {
-	        setcookie('ref', $this->request->query['ref'], strtotime('+1 month'), '/');
+	    $referal = 0;
+	    if (!is_null($this->request->query['ref'])) {
+	        User::setReferalCookie($this->request->query['ref']);
+	    }
+	    if (isset($_COOKIE['ref']) && ($_COOKIE['ref'] != '')) {
+            $referal = REFERAL_DISCOUNT;
 	    }
 		if(!$this->request->category) {
 			return $this->redirect('Pitches::create');
@@ -824,9 +828,9 @@ class PitchesController extends \app\controllers\AppController {
             $experts = Expert::all(array('order' => array('id' => 'asc')));
             $promocode = Session::read('promocode');
             if (!is_null($promocode)) {
-    			return compact('category', 'experts', 'promocode');
+                return compact('category', 'experts', 'promocode', 'referal');
             }
-			return compact('category', 'experts');
+			return compact('category', 'experts', 'referal');
 		}
 		return $this->redirect('Pitches::create');
 	}
@@ -998,8 +1002,8 @@ class PitchesController extends \app\controllers\AppController {
                     'promocode' => $promocode
 				);
 
-				if (isset($_COOKIE['ref']) || ($_COOKIE['ref']) != '') {
-				    $data['referal'] = (int) $_COOKIE['ref'];
+				if (isset($_COOKIE['ref']) && ($_COOKIE['ref']) != '') {
+				    $data['referal'] = (int) base64_decode($_COOKIE['ref']);
 				    setcookie('ref', '', time() - 3600, '/');
 				}
 
@@ -1053,7 +1057,12 @@ class PitchesController extends \app\controllers\AppController {
             }
             $code = Promocode::first(array('conditions' => array('pitch_id' => $pitch->id)));
             $experts = Expert::all(array('order' => array('id' => 'asc')));
-            return compact('pitch', 'category', 'files', 'experts', 'code');
+            $referal = 0;
+            if ((User::isReferalAllowed($pitch->user_id) == 1) && Pitch::isReferalAllowed($pitch)) {
+                $referal = REFERAL_DISCOUNT;
+            }
+
+            return compact('pitch', 'category', 'files', 'experts', 'code', 'referal');
         }
     }
 

@@ -873,5 +873,38 @@ class User extends \app\models\AppModel {
         return SpamMailer::briefaddon($data);
     }
 
+    public static function isReferalAllowed($userId) {
+        $query = array(
+            'conditions' => array(
+                'id' => $userId,
+                'created' => array(
+                    '>' => '2013-09-25 23:59:59',
+                ),
+            ),
+        );
+        if ($user = self::first($query)) {
+            $pitches = Pitch::count(array('conditions' => array('user_id' => $user->id)));
+            return $pitches;
+        }
+        return false;
+    }
+
+    public static function setReferalCookie($ref) {
+        $userId = Session::read('user.id');
+        if (is_null($userId)) { // User not registered
+            if (!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) {
+                setcookie('ref', $ref, strtotime('+1 month'), '/');
+                $_COOKIE['ref'] = $ref;
+            }
+        } else { // User registered
+            if (self::isReferalAllowed($userId) == 0) { // User good and no pitches
+                if (!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) {
+                    setcookie('ref', $ref, strtotime('+1 month'), '/');
+                    $_COOKIE['ref'] = $ref;
+                }
+            }
+        }
+    }
+
 }
 ?>

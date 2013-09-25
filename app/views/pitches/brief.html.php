@@ -76,7 +76,7 @@ endswitch;
 <div class="wrapper">
 
 	<?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
-
+    <input type="hidden" id="referal" value="<?=$referal;?>">
 	<aside class="summary-price expanded">
 		<h3>Итого:</h3>
 		<p class="summary"><strong id="total-tag">0.-</strong></p><!-- .summary -->

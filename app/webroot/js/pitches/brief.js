@@ -129,7 +129,7 @@ $(document).ready(function() {
         });
     }
     checkPromocode();
-    
+
     $('#promocode').live('keyup', function() {
         checkPromocode();
     });
@@ -689,7 +689,17 @@ $(document).ready(function() {
         award.data('high', minValue + extraHigh);
         award.blur();
     }
+
+    checkReferal();
+
 });
+
+function checkReferal() {
+    if ($('#referal').val() > 0) {
+        Cart.referalDiscount = $('#referal').val();
+        Cart.addOption("Скидка", -$('#referal').val());
+    }
+}
 
 function checkRequired(form) {
     var required = false;
@@ -758,6 +768,7 @@ function FeatureCart() {
     this.transferFeeDiscount = 0;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
+    this.referalDiscount = 0;
     this.mode = 'add';
     this.init = function() {
         if(($('#pitch_id').length > 0) && (typeof($('#pitch_id').val()) != 'undefined')) {
@@ -1051,6 +1062,9 @@ function FeatureCart() {
     };
     this._calculateTotal = function() {
         self.total = self._calculateOptions();
+        if (self.total < 0) {
+            self.total = 0;
+        }
         return self.total;
     };
 

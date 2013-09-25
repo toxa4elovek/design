@@ -680,4 +680,11 @@ class Pitch extends \app\models\AppModel {
         }
         return $res;
     }
+
+    public static function isReferalAllowed($pitch) {
+        if ((strtotime($pitch->started) + 60 * DAY) >= time()) {
+            return true;
+        }
+        return false;
+    }
 }
