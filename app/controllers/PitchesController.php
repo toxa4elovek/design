@@ -984,7 +984,7 @@ class PitchesController extends \app\controllers\AppController {
 
                 $referalId = 0;
                 if (isset($commonPitchData['referalId']) && !empty($commonPitchData['referalId']) && !empty($referalSum)) {
-                    $referalId = (int) base64_decode($commonPitchData['referalId']);
+                    $referalId = (int) base64_decode(urldecode($commonPitchData['referalId']));
                     setcookie('ref', '', time() - 3600, '/');
                 } else {
                     $referalSum = 0;
