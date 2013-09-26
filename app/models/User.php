@@ -897,7 +897,7 @@ class User extends \app\models\AppModel {
                 $_COOKIE['ref'] = $ref;
             }
         } else { // User registered
-            if (self::isReferalAllowed($userId) == 0) { // User good and no pitches
+            if (self::isReferalAllowed($userId) === 0) { // User good and no pitches. === is important!
                 if (!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) {
                     setcookie('ref', $ref, strtotime('+1 month'), '/');
                     $_COOKIE['ref'] = $ref;
