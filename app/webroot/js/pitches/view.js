@@ -128,15 +128,6 @@ $(document).ready(function(){
 
   });
 
-   $(document).on('click', '.solution-menu-toggle', function() {
-       $('body').one('click',function() {
-           $('.solution_menu').hide();
-       });
-       var menu = $(this).parent().parent().parent().parent().parent().next().next();
-       menu.toggle();
-       return false;
-   });
-
    $(document).on('click', '.select-winner', function() {
        var item = $(this).parent().parent().parent().prev().prev().clone();
        $('#winner-num').text('#' + $(this).data('num'));
@@ -311,6 +302,17 @@ $(document).ready(function(){
 
     $('.solution-menu-toggle').mouseover(function(){
         $('img', $(this)).attr('src', '/img/marker5_2_hover.png');
+        $('body').one('click',function() {
+            $('.solution_menu').fadeOut(200);
+        });
+        var menu = $(this).parent().parent().parent().parent().parent().next().next();
+        menu.fadeIn(200);
+        $(menu).on('mouseleave', function() {
+            $(this).fadeOut(200);
+        });
+        $('.photo_block').on('mouseenter', function() {
+            $('.solution_menu').fadeOut(200);
+        });
     });
 
     $('.solution-menu-toggle').mouseleave( function() {
