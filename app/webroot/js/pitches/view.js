@@ -752,7 +752,7 @@ $(document).ready(function(){
                 media = result.solution.images.solution_solutionView.weburl
             }
             // Twitter like solution message
-            var tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
+            var tweetLike = 'Мне нравится этот дизайн! А вам?';
             if (Math.floor((Math.random() * 100) + 1) <= 50) {
                 tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
             }

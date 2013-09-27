@@ -326,7 +326,7 @@
                                                     <td width="137" valign="middle">
                                                         <?php
                                                         if (rand(1, 100) <= 50) {
-                                                            $tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
+                                                            $tweetLike = 'Мне нравится этот дизайн! А вам?';
                                                         } else {
                                                             $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
                                                         }
