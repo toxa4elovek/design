@@ -1,6 +1,6 @@
 <?php
 $details = unserialize($pitch->specifics);
-$cms = array('не уверен', 'Wordpress', 'Joomla', 'DLE');
+$cms = array('не уверен', 'Wordpress', 'Joomla', 'DLE', '1С-Битрикс');
 if((strtotime("2012-10-10 16:00:00") >= strtotime($pitch->started))):
     $subValues = array('главная и одна внутренная', 'главная и 3 внутренних', 'главная и 2 внутренних', '= /> 5 страниц');
 else:
@@ -57,7 +57,7 @@ endif;
 <h2 class="blueheading">Какие сайты вам нравятся? Откуда дизайнерам черпать вдохновение</h2>
 <p class="regular"><?=$this->brief->e($details['site-inspiration'])?></p>
 <?php endif;?>
-    
+
 <?php if(!empty($details['qualities'])):?>
 <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
 <p class="regular"><?=$details['qualities']?></p>
