@@ -14,6 +14,7 @@ use \app\models\Wincomment;
 use \app\models\Comment;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
+use \app\extensions\smsfeedback\SmsFeedback;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 
@@ -826,11 +827,15 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function phoneValidationStart($userId) {
-        if (($user = self::first($userId)) && !empty($user->phone)) {
+    public static function phoneValidationStart($userId, $phone) {
+        if (($user = self::first($userId)) && !empty($phone)) {
+            $user->phone = $phone;
             $user->phone_code = self::generatePhoneCode();
+            $user->phone_valid = 0;
             $user->save(null, array('validate' => false));
-            return self::sendPhoneCode($user->phone, $user->phone_code);
+            $respond = SmsFeedback::send($user->phone, 'Код для проверки: ' . $user->phone_code);
+            $phone_valid = 0;
+            return compact('respond', 'phone', 'phone_valid');
         }
         return false;
     }
@@ -841,7 +846,9 @@ class User extends \app\models\AppModel {
                 $user->phone_valid = 1;
                 $user->phone_code = 0;
                 $user->save(null, array('validate' => false));
-                return true;
+                $phone = $user->phone;
+                $phone_valid = 1;
+                return compact('phone', 'phone_valid');
             }
         }
         return false;
@@ -849,11 +856,6 @@ class User extends \app\models\AppModel {
 
     protected static function generatePhoneCode($count = 5, $string = '0123456789') {
         return substr(str_shuffle($string), 0, $count);
-    }
-
-    protected static function sendPhoneCode($phone, $code) {
-        // Send code
-        return true;
     }
 
     public static function sendAddonProlong($pitch) {
@@ -869,6 +871,39 @@ class User extends \app\models\AppModel {
     public static function sendAddonBrief($pitch) {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
         return SpamMailer::briefaddon($data);
+    }
+
+    public static function isReferalAllowed($userId) {
+        $query = array(
+            'conditions' => array(
+                'id' => $userId,
+                'created' => array(
+                    '>' => '2013-09-25 23:59:59',
+                ),
+            ),
+        );
+        if ($user = self::first($query)) {
+            $pitches = Pitch::count(array('conditions' => array('user_id' => $user->id)));
+            return $pitches;
+        }
+        return false;
+    }
+
+    public static function setReferalCookie($ref) {
+        $userId = Session::read('user.id');
+        if (is_null($userId)) { // User not registered
+            if (!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) {
+                setcookie('ref', $ref, strtotime('+1 month'), '/');
+                $_COOKIE['ref'] = $ref;
+            }
+        } else { // User registered
+            if (self::isReferalAllowed($userId) === 0) { // User good and no pitches. === is important!
+                if (!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) {
+                    setcookie('ref', $ref, strtotime('+1 month'), '/');
+                    $_COOKIE['ref'] = $ref;
+                }
+            }
+        }
     }
 
 }

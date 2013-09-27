@@ -207,12 +207,13 @@
                 <a href="/posts">Блог</a>
                 <?php endif?>
             </div>
-            <ul class="header-menu" style="display:none;position:relative;margin-top:39px;height:211px;width:180px;background-image:url(/img/menu.png);z-index: 120;">
+            <ul class="header-menu" style="display:none;position:relative;margin-top:39px;height:244px;width:180px;background:url(/img/menu.png) top no-repeat;z-index: 120;">
                 <li class="header-menu-item"><a style="display:block;width:165px;height:25px;text-decoration:none;" href="/users/office">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Обновления</a></li>
                 <li class="header-menu-item"><a style="display:block;width:165px;height:25px;text-decoration:none;" href="/users/mypitches">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Мои питчи</a></li>
                 <li class="header-menu-item"><a style="display:block;width:165px;height:25px;text-decoration:none;" href="/users/profile">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Профиль</a></li>
                 <li class="header-menu-item"><a style="display:block;width:165px;height:25px;text-decoration:none;" href="/users/solutions">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Решения</a></li>
                 <li class="header-menu-item"><a style="display:block;width:165px;height:25px;text-decoration:none;" href="/users/details">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Реквизиты</a></li>
+                <li class="header-menu-item"><a style="display:block;width:165px;height:25px;text-decoration:none;" href="/users/referal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Партнерка</a></li>
                 <li class="header-menu-item"><a style="display:block;width:165px;height:25px;text-decoration:none;" href="/users/logout">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Выйти</a></li>
             </ul>
 	</nav><!-- .nav -->

@@ -16,6 +16,11 @@ class Optimize extends \lithium\template\Helper {
         // Sort them all by a "weight" key set like: $this->html->script('myscript.js', array('weight' => 1))
         $ordered_scripts = $this->_context->scripts;
 
+        // Removing script random part
+        foreach ($ordered_scripts as $key => $value) {
+            $ordered_scripts[$key] = preg_replace('/\?[0-9]*/', '', $value);
+        }
+
         // Sorting view's scripts
         $fileWeight = 100;
         foreach ($ordered_scripts as $key => $value) {
@@ -30,11 +35,6 @@ class Optimize extends \lithium\template\Helper {
             }
             $ordered_scripts[$key] = $value;
             $fileWeight++;
-        }
-
-        // Removing script random part
-        foreach ($ordered_scripts as $key => $value) {
-            $ordered_scripts[$key] = preg_replace('/\?[0-9]*/', '', $value);
         }
 
         usort($ordered_scripts, function($a, $b) {

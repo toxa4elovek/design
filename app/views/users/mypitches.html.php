@@ -8,12 +8,7 @@
         <section>
             <div class="menu" style="background:none;border:none;width:857px;margin-left:63px;margin-top:0;">
             <nav class="main_nav clear" style="width:832px;">
-                <?=$this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Мои питчи</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false, 'class' => 'active')) ?>
-                <!--a href="#"><span>Сообщения</span></a-->
-                <?=$this->html->link('<span>Профиль</span>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Реквизиты</span>', array('controller' => 'users', 'action' => 'details'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
+                <?=$this->view()->render(array('element' => 'office/nav'));?>
             </nav>
             </div>
         </section>

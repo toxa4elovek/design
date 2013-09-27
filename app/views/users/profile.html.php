@@ -7,12 +7,7 @@
     <div class="middle">
         <div class="main">
             <nav class="main_nav clear" style="width:832px;margin-left:2px;">
-                <?=$this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Мои питчи</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <!--a href="#"><span>Сообщения</span></a-->
-                <?=$this->html->link('<span>Профиль</span>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'active')) ?>
-                <?=$this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Реквизиты</span>', array('controller' => 'users', 'action' => 'details'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
+                <?=$this->view()->render(array('element' => 'office/nav'));?>
             </nav>
 
             <div class="sideblock">
@@ -99,7 +94,7 @@
                         <h1 class="separator-flag">ОТКРЫТАЯ ИНФОРМАЦИЯ</h1>
                         <input type="hidden" name="userpic" value="">
                         <div class="photoselectbox qq-uploader" style="height:196px;width:196px;">
-  
+
 
                             <?=$this->avatar->show($user->data(), 'true')?>
 

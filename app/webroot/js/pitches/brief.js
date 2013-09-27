@@ -129,7 +129,7 @@ $(document).ready(function() {
         });
     }
     checkPromocode();
-    
+
     $('#promocode').live('keyup', function() {
         checkPromocode();
     });
@@ -689,7 +689,18 @@ $(document).ready(function() {
         award.data('high', minValue + extraHigh);
         award.blur();
     }
+
+    checkReferal();
+
 });
+
+function checkReferal() {
+    if (($('#referal').val() > 0) && ($('#referalId').val() != 0)) {
+        Cart.referalDiscount = $('#referal').val();
+        Cart.referalId = $('#referalId').val();
+        Cart.addOption("Скидка", -$('#referal').val());
+    }
+}
 
 function checkRequired(form) {
     var required = false;
@@ -758,6 +769,8 @@ function FeatureCart() {
     this.transferFeeDiscount = 0;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
+    this.referalDiscount = 0;
+    this.referalId = 0;
     this.mode = 'add';
     this.init = function() {
         if(($('#pitch_id').length > 0) && (typeof($('#pitch_id').val()) != 'undefined')) {
@@ -779,6 +792,10 @@ function FeatureCart() {
         if(self.mode == 'edit') {
             if(window.location.hash != '#step3') {
                 $.get('/receipts/view/' + self.id + '.json', function(response) {
+                    if ($('#referal').val() > 0) {
+                        this.referalDiscount = $('#referal').val();
+                        response.Discount = {name:"Скидка",value:-this.referalDiscount};
+                    }
                     self.fillCheck(response);
                     self._renderCheck();
                 });
@@ -795,6 +812,10 @@ function FeatureCart() {
 
         if(window.location.hash == '#step3') {
             $.get('/receipts/view/' + self.id + '.json', function(response) {
+                if ($('#referal').val() > 0) {
+                    this.referalDiscount = $('#referal').val();
+                    response.Discount = {name:"Скидка",value:-this.referalDiscount};
+                }
                 self.fillCheck(response);
                 self._renderCheck();
                 if(self.prepareData()) {
@@ -882,7 +903,9 @@ function FeatureCart() {
             'phone-brief': $('input[name=phone-brief]').val(),
             'materials': $('input[name=materials]:checked').val(),
             'materials-limit': $('input[name=materials-limit]').val(),
-            'promocode': $('#promocode').val()
+            'promocode': $('#promocode').val(),
+            'referalDiscount':this.referalDiscount,
+            'referalId':this.referalId
         };
         self.data = {
             "features": features,
@@ -1051,6 +1074,9 @@ function FeatureCart() {
     };
     this._calculateTotal = function() {
         self.total = self._calculateOptions();
+        if (self.total < 0) {
+            self.total = 0;
+        }
         return self.total;
     };
 

@@ -115,6 +115,15 @@ textarea.placeholder {
 	text-align: center;
 	margin: 25px 0px 25px 0px;
 }
+.separator-flag-empty {
+	height: 38px;
+	background: url("img/userpage-separator-empty.png") no-repeat;
+	text-align: center;
+	margin: 25px 0px 25px 0px;
+}
+.separator-flag-empty img {
+	margin: 6px 0 0 0;
+}
 .photoselectbox {
 	background: #ffffff;
 	float: left;
@@ -403,4 +412,98 @@ textarea.placeholder {
 }
 #deleteaccount:hover {
     text-decoration: underline;
+}
+.referal-section {
+	text-align: center;
+}
+.referal-section a {
+	font: 14px/19px "Arial", sans-serif;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+.referal-section a:hover {
+    text-decoration: underline;
+}
+.referal-section input.placeholder {
+	font: 18px/20px "Arial", sans-serif;
+    color: #ccc;
+    text-transform: none;
+}
+.referal-section .remark {
+	margin: 0 0 30px 0;
+	text-align: left;
+	color: #666;
+}
+.referal-section .remark span:before {
+    content: "\002A";
+    color: #FF585D;
+}
+.referal-section .remark hr {
+	width: 75px;
+	margin: 20px 0;
+}
+.referal-table {
+	border-collapse: collapse;
+	width: 613px;
+	background: url('/img/referal-table-bg.jpg') repeat-y #fff;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, .25);
+	color: #999;
+	font: 14px/17px "Arial", sans-serif;
+}
+.referal-table tr {
+	display: block;
+	border-top: 1px solid #ececec;
+}
+.referal-table tr.active {
+	color: #7ea563;
+	background: url('/img/referal-table-active.png') 6px center no-repeat;
+}
+.referal-table td {
+	display: inline-block;
+	border-left: 1px solid #ececec;
+	height: 50px;
+	line-height: 3em;
+}
+.referal-table td:first-child {
+	float: left;
+	border-left: none;
+}
+.referal-table td:last-child {
+	float: right;
+}
+.referal-table td.ref-status {
+	color: #ccc;
+}
+.referal-table tr.active td.ref-status {
+    color: #7ea563;
+}
+.referal-table th {
+    display: inline-block;
+    border-left: 1px solid #ececec;
+    height: 60px;
+    line-height: 3em;
+}
+.referal-table th:first-child {
+    float: left;
+    border-left: none;
+}
+.referal-table th:last-child {
+    float: right;
+}
+.referal-table th img {
+    margin-top: 20px;
+}
+.referal-table img.referal-avatar {
+	float: left;
+	width: 33px;
+	height: 33px;
+	margin: 8px 20px;
+}
+.referal-title {
+	display: block;
+	font: 24px/30px "Arial", sans-serif;
+    letter-spacing: -1px;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+    margin: 0 0 5px 0;
 }
