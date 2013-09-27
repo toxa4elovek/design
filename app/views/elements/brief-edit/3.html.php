@@ -28,6 +28,9 @@
     <div class="radiodiv">
         <input type="radio" name="cms" value="3" <?php if($specifics['cms'] == '3'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">DLE</span>
     </div>
+    <div class="radiodiv">
+        <input type="radio" name="cms" value="4" <?php if($specifics['cms'] == '4'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">1С-Битрикс</span>
+    </div>
     </p>
 
     <p><label>Опишите целевую аудиторию</label></p>
