@@ -1048,6 +1048,9 @@ h1.solution-title-page  {
     background-repeat: no-repeat;
 	font-size: 12px;
 }
+.solution-right-panel .solution-abuse a.select-winner-popup, .solution-right-panel .solution-abuse a.client-comment {
+	background: none;
+}
 .solution-right-panel .solution-abuse a:hover {
 	text-decoration: underline;
 }
