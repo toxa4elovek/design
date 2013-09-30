@@ -115,7 +115,8 @@ class Comment extends \app\models\AppModel {
                         $record->text = nl2br($record->text);
                         $pitchId = $record->pitch_id;
                         if (preg_match_all('/(#\d+)/', $record->text, $matches)) {
-                            foreach ($matches[1] as $solutionNum) {
+                            $solutionsHere = array_unique($matches[1]);
+                            foreach ($solutionsHere as $solutionNum) {
                                 $num = substr($solutionNum, 1);
                                 $solution = Solution::first(array('conditions' => array('pitch_id' => $pitchId, 'num' => $num)));
                                 if (isset($solution)) {
