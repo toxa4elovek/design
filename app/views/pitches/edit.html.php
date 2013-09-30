@@ -461,16 +461,40 @@ endif?>
             <h1>выберите способ оплаты</h1>
             <div class="g_line"></div>
             <div id="P_card">
-                <table>
+                <table border="1">
                     <tr>
                         <td>
-                            <input type="radio" name="1" class="rb1" data-pay="online" checked>
+                            <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
+                        </td>
+                        <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                            Оплата пластиковыми картами и эл. деньгами <br>через PayMaster
                         </td>
                         <td>
-                            <img src="/img/s3_card.png" alt="">
+                            <form action="" method="post">
+                                <input type="submit" id="paybutton-paymaster" value="продолжить оплату" class="button" style="background: #a2b2bb;">
+                            </form>
                         </td>
-                        <td class="s3_text">
-                            Пластиковая карта ВИЗА, МАСТЕРКАРД<br/>(VISA, MASTERCARD)
+                    </tr>
+                    <tr id="paymaster-images">
+                        <td colspan="4" class="s3_text" style="padding: 20px 0 0 40px; text-transform: uppercase;">
+                            <img src="/img/s3_paymaster.png" alt="">
+                            <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
+                        </td>
+                    </tr>
+                    <tr id="paymaster-select" style="display: none;">
+                        <td colspan="4">
+                            <img src="/img/s3_widget_need_delete.png" alt="" style="padding: 20px 0 0 40px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><div class="g_line"><i>или</i></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="1" class="rb1" data-pay="online">
+                        </td>
+                        <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                            Оплата пластиковыми картами <br>через Мастер-Банк
                         </td>
                         <td>
                             <form action="https://pay.masterbank.ru/acquiring" method="post">
@@ -480,8 +504,13 @@ endif?>
                                 <input type="HIDDEN" value="" NAME="SIGN" id="order-sign">
                                 <input type="HIDDEN" value="http://godesigner.ru/users/mypitches" name="MERCH_URL">
                                 <input type="HIDDEN" value="71846655" name="TERMINAL">
-                                <input type="submit" id="paybutton" value="продолжить оплату" class="button" >
+                                <input type="submit" id="paybutton-online" value="продолжить оплату" class="button" style="background: #a2b2bb;">
                             </form>
+                        </td>
+                    </tr>
+                    <tr id="online-images">
+                        <td colspan="4" style="padding: 20px 0 0 40px;">
+                            <img src="/img/s3_master.png" alt="">
                         </td>
                     </tr>
                     <tr>
