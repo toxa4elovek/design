@@ -85,7 +85,26 @@ $(document).ready(function() {
                 $.scrollTo(anchor, {duration:250});
             }
             return false;
-        })
+        });
+
+        $('.client-comment').click(function() {
+            $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
+            return false;
+        });
+
+        $('.select-winner-popup').click(function() {
+            $('#winner-num').text('#' + $(this).data('num'));
+            $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+            $('#winner-user-link').text($(this).data('user'));
+            $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
+            $('#confirmWinner').data('url', $(this).attr('href'));
+            $('#popup-final-step').modal({
+                containerId: 'final-step',
+                opacity: 80,
+                closeClass: 'popup-close'
+            });
+            return false;
+        });
 
         $('.mention-link').click(function() {
             if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
@@ -306,38 +325,12 @@ $(document).ready(function() {
         return false;
     });
 
-    $(document).on('click', '.select-winner', function() {
-        $('#confirmWinner').data('url', $(this).attr('href'));
-        $('#winner-num').text('#' + $(this).data('num'));
-        $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
-        $('#winner-user-link').text($(this).data('user'));
-        $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
-        $('#confirmWinner').data('url', $(this).attr('href'));
-        $('#popup-final-step').modal({
-            containerId: 'final-step',
-            opacity: 80,
-            closeClass: 'popup-close'
-        });
-
-        /*
-         $.get($(this).attr('href'), function(response) {
-         if(response.result != false) {
-         if(response.result.nominated) {
-         window.location = '/users/nominated';
-         $('.select-winner-li').remove();
-         }
-         }
-         });*/
-        return false;
-    });
-
     $(document).on('click', '#confirmWinner', function() {
         var url = $(this).data('url');
         $.get(url, function(response) {
             if(response.result != false) {
                 if(response.result.nominated) {
                     window.location = '/users/nominated';
-                    $('.select-winner-li').remove();
                 }
             }
         });
@@ -670,6 +663,10 @@ $(document).ready(function() {
                 }else {
                     html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
                 }
+                if (result.selectedsolution != true) {
+                    html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>';
+                }
+                html += '<a class="client-comment" href="#">Комментировать</a>';
                 $('.solution-abuse').html(html);
             }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
