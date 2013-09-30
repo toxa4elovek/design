@@ -461,7 +461,7 @@ endif?>
             <h1>выберите способ оплаты</h1>
             <div class="g_line"></div>
             <div id="P_card">
-                <table border="1">
+                <table>
                     <tr>
                         <td>
                             <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
