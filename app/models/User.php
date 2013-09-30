@@ -192,6 +192,17 @@ class User extends \app\models\AppModel {
 		return substr(md5(rand().rand()), 0, 14);
 	}
 
+    public static function generateReferalToken($length = 4) {
+        $exists = true;
+        while ($exists == true) {
+            $token = substr(md5(rand().rand()), 0, $length);
+            if (!self::first(array('conditions' => array('referal_token' => $token)))) {
+                $exists = false;
+            }
+        }
+        return $token;
+    }
+
 	public function activateUser($entity) {
 		$entity->token = '';
 		$entity->confirmed_email = 1;
@@ -898,7 +909,13 @@ class User extends \app\models\AppModel {
             }
         } else { // User registered
             if (self::isReferalAllowed($userId) === 0) { // User good and no pitches. === is important!
-                if (!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) {
+                if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && (self::first(array(
+                        'conditions' => array(
+                            'id' => array(
+                                '!=' => $userId,
+                            ),
+                            'referal_token' => $ref,
+                        ))))) {
                     setcookie('ref', $ref, strtotime('+1 month'), '/');
                     $_COOKIE['ref'] = $ref;
                 }

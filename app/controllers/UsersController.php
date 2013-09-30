@@ -146,6 +146,10 @@ class UsersController extends \app\controllers\AppController {
 
 	public function referal() {
 	    $user = User::first(Session::read('user.id'));
+	    if (empty($user->referal_token)) {
+	        $user->referal_token = User::generateReferalToken();
+	        $user->save(null, array('validate' => false));
+	    }
 	    if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
 	        return compact('user');
 	    } else {
