@@ -273,8 +273,41 @@
     <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
-
-
+<!-- Start: Tooltips -->
+<div style="display:none;">
+<?php if((count($solutions) > 0) && ($pitch->published == 1)):?>
+    <?php foreach($solutions as $solution):	?>
+        <?php if($pitch->private != 1):
+            if($pitch->category_id == 7):
+                //
+            ?>
+            <?php else:?>
+                <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
+                    <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
+                <?php else:?>
+                    <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
+                <?php endif?>
+            <?php endif?>
+        <?php else:?>
+            <?php if($pitch->category_id == 7):
+                //
+            ?>
+            <?php else:?>
+                <?php if(($pitch->user_id == $this->session->read('user.id')) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == $this->session->read('user.id'))):?>
+                    <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
+                        <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
+                    <?php else:?>
+                        <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
+                    <?php endif?>
+                <?php else:?>
+                    <input type="hidden" rel="#<?=$solution->num?>" data-src="/img/copy-inv.png">
+                <?php endif?>
+            <?php endif?>
+        <?php endif?>
+    <?php endforeach;?>
+<?php endif;?>
+</div>
+<!-- End: Tooltips -->
 <div id="bridge" style="display:none;"></div>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery.scrollto.min.js', 'jquery.damnUploader.js', 'socialite.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/jquery.fancybox-1.3.4.css'), array('inline' => false))?>

@@ -129,18 +129,18 @@ $(document).ready(function() {
         $('textarea').keydown(function() {
             $($(this).prev('#tooltip-bubble')).fadeOut(200);
         });
-/*
+
         $('.hoverimage[data-comment-to]').tooltip({
-            tooltipID: 'tooltip',
-            tooltipSource: 'rel',
-            width: '200px',
+            tooltipID: 'tooltip2',
+            tooltipSource: 'hidden',
+            width: '205px',
             correctPosX: 40,
             //positionTop: 0,
             borderSize: '0px',
             tooltipPadding: 0,
             tooltipBGColor: 'transparent'
         });
-*/
+
         solutionShowHide();
         warningModal();
     }
