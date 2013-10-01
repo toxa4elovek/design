@@ -96,6 +96,9 @@ class Receipt extends \app\models\AppModel {
                 $comission -= 700;
             }
         }
+        if (isset($data['commonPitchData']['referalDiscount']) && !empty($data['commonPitchData']['referalDiscount'])) {
+            $comission -= $data['commonPitchData']['referalDiscount'];
+        }
         $receiptData[] = array(
             'pitch_id' => $data['commonPitchData']['id'],
             'name' => self::$dict['fee'],

@@ -93,6 +93,9 @@ require __DIR__ . '/bootstrap/validation.php';
 	define('MONTH', 2592000);
 	define('YEAR', 31536000);
 
+	define('REFERAL_DISCOUNT', 300);
+	define('REFERAL_AWARD', 500);
+
 date_default_timezone_set('Europe/Moscow');
 
 /*

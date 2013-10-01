@@ -128,15 +128,6 @@ $(document).ready(function(){
 
   });
 
-   $(document).on('click', '.solution-menu-toggle', function() {
-       $('body').one('click',function() {
-           $('.solution_menu').hide();
-       });
-       var menu = $(this).parent().parent().parent().parent().parent().next().next();
-       menu.toggle();
-       return false;
-   });
-
    $(document).on('click', '.select-winner', function() {
        var item = $(this).parent().parent().parent().prev().prev().clone();
        $('#winner-num').text('#' + $(this).data('num'));
@@ -311,6 +302,17 @@ $(document).ready(function(){
 
     $('.solution-menu-toggle').mouseover(function(){
         $('img', $(this)).attr('src', '/img/marker5_2_hover.png');
+        $('body').one('click',function() {
+            $('.solution_menu').fadeOut(200);
+        });
+        var menu = $(this).parent().parent().parent().parent().parent().next().next();
+        menu.fadeIn(200);
+        $(menu).on('mouseleave', function() {
+            $(this).fadeOut(200);
+        });
+        $('.photo_block').on('mouseenter', function() {
+            $('.solution_menu').fadeOut(200);
+        });
     });
 
     $('.solution-menu-toggle').mouseleave( function() {
@@ -752,7 +754,7 @@ $(document).ready(function(){
                 media = result.solution.images.solution_solutionView.weburl
             }
             // Twitter like solution message
-            var tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
+            var tweetLike = 'Мне нравится этот дизайн! А вам?';
             if (Math.floor((Math.random() * 100) + 1) <= 50) {
                 tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
             }
@@ -801,6 +803,10 @@ $(document).ready(function(){
                 }else {
                     html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
                 }
+                if (result.selectedsolution != true) {
+                    html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>';
+                }
+                html += '<a class="client-comment" href="#">Комментировать</a>';
                 $('.solution-abuse').html(html);
             }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
@@ -948,6 +954,11 @@ function inlineActions() {
         return false;
     });
 
+    $('.client-comment').click(function() {
+        $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
+        return false;
+    });
+
     $('.createCommentForm').click(function() {
         var position = $(this).offset();
         position.top -= 115;
@@ -979,6 +990,22 @@ function inlineActions() {
             hideSolutionPopup();
             $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
         }
+    });
+
+    $('.select-winner-popup').click(function() {
+        var item = $('.select-winner[data-solutionid=' + $(this).data('solutionid') + ']').parent().parent().parent().prev().prev().clone();
+        $('#winner-num').text('#' + $(this).data('num'));
+        $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+        $('#winner-user-link').text($(this).data('user'));
+        $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
+        $('#confirmWinner').data('url', $(this).attr('href'));
+        $('#replacingblock').replaceWith(item);
+        $('#popup-final-step').modal({
+            containerId: 'final-step',
+            opacity: 80,
+            closeClass: 'popup-close'
+        });
+        return false;
     });
 
     function hideSolutionPopup() {
