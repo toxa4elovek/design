@@ -589,12 +589,28 @@ $(document).ready(function() {
 
 
     $('.rb1').change(function() {
-        if($(this).data('pay') == 'online') {
-            $("#paybutton").removeAttr('style');
-            $('#s3_kv').hide();
-        }else {
-            $("#paybutton").css('background', '#a2b2bb');
-            $('#s3_kv').show();
+        switch ($(this).data('pay')) {
+            case 'paymaster':
+                $("#paybutton-paymaster").removeAttr('style');
+                $("#paybutton-online").css('background', '#a2b2bb');
+                $("#paymaster-images").hide();
+                $("#paymaster-select").show();
+                $('#s3_kv').hide();
+                break;
+            case 'online':
+                $("#paybutton-online").removeAttr('style');
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').hide();
+                break;
+            case 'offline':
+                $("#paybutton-online").css('background', '#a2b2bb');
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').show();
+                break;
         }
     });
 
