@@ -7,12 +7,14 @@
     $second = 0;
     $third = 0;
     $fourth = 0;
+    $fifth = 0;
     foreach($answers as $fanswer):
         switch($fanswer['questioncategory_id']):
             case 1: $first++;break;
             case 2: $second++;break;
             case 3: $third++;break;
             case 4: $fourth++;break;
+            case 5: $fifth++;break;
         endswitch;
     endforeach;
 
@@ -125,12 +127,12 @@
                                         <td><img src="/img/cont_help_data_4.gif"></td>
                                         <td><h2>Оплата и денежные вопросы</h2>
                                             <div class="answer-expand" style="overflow:hidden;height:107px;">
-                                            <?php foreach($answers as $answer):
+                                                <?php foreach($answers as $answer):
                                                 if($answer['questioncategory_id'] != 4) continue;
                                                 ?>
                                                 <div style="background:url(img/sep.png) repeat-x;height:4px;"></div>
                                                 <p class="regular" style="height: 26px; padding-top:6px;width:530px;"><?=$this->html->link(highlight($answer['title'], $search), array('Answers::view', 'id' => $answer['id']), array('escape' => false));?></p>
-                                            <?php endforeach;?>
+                                                <?php endforeach;?>
                                             </div>
                                             <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
 
@@ -138,6 +140,28 @@
                                     </tr>
                                 </table>
                             </div>
+                            <div class="content_help_line"></div>
+                            <?php endif?>
+                            <?php if($fifth > 0):?>
+                                <div class="vp_one">
+                                    <table>
+                                        <tr>
+                                            <td><img src="/img/cont_help_data_4.gif"></td>
+                                            <td><h2>Для юридических лиц</h2>
+                                                <div class="answer-expand" style="overflow:hidden;height:107px;">
+                                                    <?php foreach($answers as $answer):
+                                                        if($answer['questioncategory_id'] != 5) continue;
+                                                        ?>
+                                                        <div style="background:url(img/sep.png) repeat-x;height:4px;"></div>
+                                                        <p class="regular" style="height: 26px; padding-top:6px;width:530px;"><?=$this->html->link(highlight($answer['title'], $search), array('Answers::view', 'id' => $answer['id']), array('escape' => false));?></p>
+                                                    <?php endforeach;?>
+                                                </div>
+                                                <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             <?php endif?>
                         </div>
                     </div>
