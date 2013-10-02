@@ -26,6 +26,7 @@ $specifics = unserialize($pitch->specifics);
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 <input type="hidden" id="referal" value="<?=$pitch->referal_sum;?>">
 <input type="hidden" id="referalId" value="<?=$pitch->referal;?>">
+<script>var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};</script>
 <aside class="summary-price expanded">
     <h3>Итого:</h3>
     <p class="summary"><strong id="total-tag">0.-</strong></p><!-- .summary -->
@@ -89,14 +90,13 @@ endif?>
         <div class="groupc">
             <p>
                 <label>Выберите вид копирайтинга</label>
-
-            <ul class="radiooptionssite">
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 0): echo 'checked'; endif;?> value="0" class="sub-radio specific-group" data-min-value="5000" checked="checked"><span class="radiospan">Название / слоган (от 5 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 1): echo 'checked'; endif;?> value="1" class="sub-radio specific-group" data-min-value="8000"><span class="radiospan">Идея для рекламы (от 8 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 2): echo 'checked'; endif;?> value="2" class="sub-radio specific-group" data-min-value="1200"><span class="radiospan">Наполнение сайта (от 12 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 3): echo 'checked'; endif;?> value="3" class="sub-radio specific-group" data-min-value="14000"><span class="radiospan">Тексты, другое (от 14 000)</span></label></li>
-            </ul>
+                <input type="hidden" id="copybaseminprice" value="<?php echo COPY_BASE_PRICE;?>"/>
             </p>
+            <ul class="radiooptionssite">
+                <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" <?php if (isset($specifics['first-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Имя / название</span></label></li>
+                <li><label><input type="checkbox" name="second-option" value="1" class="sub-check specific-group" <?php if (isset($specifics['second-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Адрес сайта</span></label></li>
+                <li><label><input type="checkbox" name="third-option" value="2" class="sub-check specific-group" <?php if (isset($specifics['third-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Слоган / лозунг</span></label></li>
+            </ul>
         </div>
         <?php endif;?>
 

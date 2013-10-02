@@ -145,7 +145,10 @@ class Receipt extends \app\models\AppModel {
                 $minValue = (($quantity - 1) * $mult) + $minAward;
             }
             if ($category->id == 7) {
-                /* $mods = 0;
+                /*
+                 * Needed for another behavior
+
+                $mods = 0;
                 $mods += (!empty($data['specificPitchData']['first-option'])) ? 1 : 0;
                 $mods += (!empty($data['specificPitchData']['second-option'])) ? 1 : 0;
                 $mods += (!empty($data['specificPitchData']['third-option'])) ? 1 : 0;
@@ -155,14 +158,16 @@ class Receipt extends \app\models\AppModel {
                     case 3: $mod = 1.75; break;
                     default: $mod = 1; break;
                 }
-                $minValue = COPY_BASE_PRICE * $mod; */
+                $minValue = COPY_BASE_PRICE * $mod;
+                 */
+
                 $minValue = $minAward;
             }
             if ($category->id == 11) {
-                /* if (!empty($data['specificPitchData']['package-type'])) {
-                 $quantity = $data['specificPitchData']['site-sub'];
-
-                } */
+                /*
+                 * Nothing needed
+                 *
+                 */
                 $minValue = $minAward;
             }
             $extraNormal = $normalAward - $minAward;

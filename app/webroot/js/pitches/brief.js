@@ -837,6 +837,16 @@ function FeatureCart() {
             if(object.name == 'Экспертное мнение') {
                 $('#expert-label').html('+' + object.value + '.-');
             }
+            var feeOption = object.name.indexOf(self.transferFeeKey);
+            if (feeOption != -1) {
+                var percent = object.name.substr(self.transferFeeKey.length + 1, 4);
+                if (percent.length > 0) {
+                    self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
+                } else { // For older pitches
+                    self.transferFee = feeRates.good;
+                }
+                object.name = self.transferFeeKey;
+            }
             if((object.value != 0)) {
                 self.updateOption(object.name, parseInt(object.value));
             }else if((object.name == 'Заполнение брифа')) {
@@ -1052,7 +1062,7 @@ function FeatureCart() {
         var html = '';
         $.each(self.content, function(key, value) {
             if (key == self.transferFeeKey) {
-                html += '<li><span>' + key +'</span><div>' + (self.transferFee * 100).toFixed(1) + '%</div><small>' + value + '.-</small></li>';
+                html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>';
             } else {
                 html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
             }

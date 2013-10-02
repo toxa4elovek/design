@@ -1643,7 +1643,8 @@ p.full_pitch a {
 	font-size: 12px;
 }
 .summary-price ul div {
-	margin: -10px 0 0 60px;
+	display: inline;
+	margin: 0;
 }
 .summary-price.expanded {
 
