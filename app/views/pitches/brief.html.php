@@ -134,7 +134,7 @@ endswitch;
                 <div class="groupc">
                 <p>
                     <label>Выберите вид копирайтинга</label>
-                    <input type="hidden" id="copybaseminprice" value="5000"/>
+                    <input type="hidden" id="copybaseminprice" value="<?php echo COPY_BASE_PRICE;?>"/>
                 </p>
                 <ul class="radiooptionssite">
                     <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" checked="checked" style="vertical-align: middle;"><span class="radiospan">Имя / название</span></label></li>
@@ -202,7 +202,10 @@ endswitch;
             line-height: 41px;
             text-align: center;
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
-            <script>var fillBrief = <?php echo ($this->session->read('fillbrief')) ? 1 : 0; ?>;</script>
+            <script>
+            var fillBrief = <?php echo ($this->session->read('fillbrief')) ? 1 : 0; ?>;
+            var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
+            </script>
                     <div class="ribbon complete-brief">
                         <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
                         <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
