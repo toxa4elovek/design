@@ -1642,6 +1642,9 @@ p.full_pitch a {
 	display: block;
 	font-size: 12px;
 }
+.summary-price ul div {
+	margin: -10px 0 0 60px;
+}
 .summary-price.expanded {
 
 }

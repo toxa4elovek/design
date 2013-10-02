@@ -159,14 +159,18 @@ $(document).ready(function() {
             input.val(minAward);
             input.addClass('initial-price');
             $('#indicator').addClass('low');
+            Cart.transferFee = feeRates.low;
         }else {
             input.removeClass('initial-price');
             if(input.val() < input.data('normal')) {
                 $('#indicator').addClass('low');
+                Cart.transferFee = feeRates.low;
             }else if (input.val() < input.data('high')){
                 $('#indicator').addClass('normal');
+                Cart.transferFee = feeRates.normal;
             }else {
                 $('#indicator').addClass('good');
+                Cart.transferFee = feeRates.good;
             }
         }
     });
@@ -187,10 +191,13 @@ $(document).ready(function() {
         }
         if(value < input.data('normal')) {
             $('#indicator').addClass('low');
+            Cart.transferFee = feeRates.low;
         }else if (value < input.data('high')){
             $('#indicator').addClass('normal');
+            Cart.transferFee = feeRates.normal;
         }else {
             $('#indicator').addClass('good');
+            Cart.transferFee = feeRates.good;
         }
         Cart.updateOption($(this).data('optionTitle'), value);
     })
@@ -765,7 +772,7 @@ function FeatureCart() {
     this.fileIds = [];
     this.specificTemplates = [];
     this.validatetype = 1;
-    this.transferFee = 0.145;
+    this.transferFee = feeRates.low;
     this.transferFeeDiscount = 0;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
@@ -1044,7 +1051,11 @@ function FeatureCart() {
     this._renderOptions = function() {
         var html = '';
         $.each(self.content, function(key, value) {
-            html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            if (key == self.transferFeeKey) {
+                html += '<li><span>' + key +'</span><div>' + (self.transferFee * 100).toFixed(1) + '%</div><small>' + value + '.-</small></li>';
+            } else {
+                html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            }
         });
         self.container.html(html);
     };
