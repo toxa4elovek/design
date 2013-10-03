@@ -154,7 +154,6 @@ $(document).ready(function() {
         var input = $('#award');
         var minAward = input.data('minimalAward');
         $('#indicator').removeClass('low normal good');
-        //console.log('award numeric ' + minAward);
         if(minAward > input.val()) {
             input.val(minAward);
             input.addClass('initial-price');
@@ -162,23 +161,12 @@ $(document).ready(function() {
             Cart.transferFee = feeRates.low;
         }else {
             input.removeClass('initial-price');
-            if(input.val() < input.data('normal')) {
-                $('#indicator').addClass('low');
-                Cart.transferFee = feeRates.low;
-            }else if (input.val() < input.data('high')){
-                $('#indicator').addClass('normal');
-                Cart.transferFee = feeRates.normal;
-            }else {
-                $('#indicator').addClass('good');
-                Cart.transferFee = feeRates.good;
-            }
+            drawIndicator(input, input.val());
         }
     });
 
     $('#award').keyup(function() {
         var input = $(this);
-        var minAward = input.data('minimalAward');
-        $('#indicator').removeClass('low normal good');
 
         input.removeClass('initial-price');
         if((input.val() == '') && (!input.is(':focus'))) {
@@ -189,16 +177,7 @@ $(document).ready(function() {
         }else {
             var value = input.val();
         }
-        if(value < input.data('normal')) {
-            $('#indicator').addClass('low');
-            Cart.transferFee = feeRates.low;
-        }else if (value < input.data('high')){
-            $('#indicator').addClass('normal');
-            Cart.transferFee = feeRates.normal;
-        }else {
-            $('#indicator').addClass('good');
-            Cart.transferFee = feeRates.good;
-        }
+        drawIndicator(input, value);
         Cart.updateOption($(this).data('optionTitle'), value);
     })
 
@@ -698,6 +677,7 @@ $(document).ready(function() {
     }
 
     checkReferal();
+    drawIndicator($('#award'), $('#award').val());
 
 });
 
@@ -753,6 +733,38 @@ function checkRequired(form) {
         }
     });
     return required;
+}
+
+function drawIndicator(input, value) {
+    $('#indicator').removeClass('low normal good');
+    var fullPx = $('#indicator').width();
+    var normalPx = $('#indicator').data('normal');
+    var highPx = $('#indicator').data('high');
+    var line = $('.line', '#indicator');
+    if (value < input.data('normal')) {
+        var ratio = (input.data('normal') - input.data('low')) / (value - input.data('low'));
+        $('#indicator').addClass('low');
+        Cart.transferFee = feeRates.low;
+        var width = normalPx / ratio;
+        if (width < 10) {
+            width = 10;
+        }
+        line.width(width);
+    } else if (value < input.data('high')) {
+        var ratio = (input.data('high') - input.data('normal')) / (value - input.data('normal'));
+        $('#indicator').addClass('normal');
+        Cart.transferFee = feeRates.normal;
+        line.width(normalPx + ((highPx - normalPx) / ratio));
+    } else {
+        var ratio = (input.data('high') * 3 - input.data('high')) / (value - input.data('high'));
+        $('#indicator').addClass('good');
+        Cart.transferFee = feeRates.good;
+        var width = highPx + ((fullPx - highPx) / ratio);
+        if (width > (fullPx - 10)) {
+            width = fullPx - 10;
+        }
+        line.width(width);
+    }
 }
 
 //$('input[name=category_id]').val()
