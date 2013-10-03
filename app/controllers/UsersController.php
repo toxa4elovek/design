@@ -927,7 +927,11 @@ class UsersController extends \app\controllers\AppController {
             $totalLikes = (int) User::getTotalLikes(Session::read('user.id'));
             $awardedSolutionNum = (int) User::getAwardedSolutionNum(Session::read('user.id'));
             $totalSolutionNum = (int) User::getTotalSolutionNum(Session::read('user.id'));
-            $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+            if(User::checkRole('admin')) {
+                $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+            }else {
+                $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+            }
             $isClient = false;
             $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
             if(count($userPitches) > 0) {
@@ -952,7 +956,11 @@ class UsersController extends \app\controllers\AppController {
             $totalLikes = (int) User::getTotalLikes($this->request->id);
             $awardedSolutionNum = (int) User::getAwardedSolutionNum($this->request->id);
             $totalSolutionNum = (int) User::getTotalSolutionNum($this->request->id);
-            $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+            if(User::checkRole('admin')) {
+                $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+            }else {
+                $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+            }
             $isClient = false;
             $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
             if(count($userPitches) > 0) {
