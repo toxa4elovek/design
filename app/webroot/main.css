@@ -1376,10 +1376,48 @@ p.full_pitch a {
 	color: #eee;
 }
 .set-price .indicator {
-	margin-left: 14px;
-	margin-top: 10px;
-	float: left;
+	margin-top: 32px;
+	width: 549px;
 }
+.set-price .indicator li {
+	width: 173px;
+	height: 28px;
+	padding: 26px 2px 0 6px;
+	color: #7e7e7e;
+	font-size: 12px;
+	text-shadow: 0 1px #f9f9f9;
+}
+.set-price .indicator .bar {
+    height: 38px;
+    background: #d2d2d2;
+}
+.set-price .indicator .line {
+    height: 38px;
+}
+.set-price .indicator .shadow-b {
+    height: 38px;
+    margin-top: -38px;
+}
+.set-price .indicator.low .line {
+	transition: width .5s;
+    width: 183px;
+    background: #ff585d;
+}
+.set-price .indicator.normal .line {
+	transition: width .5s;
+    width: 366px;
+    background: #648fa4;
+}
+.set-price .indicator.good .line {
+	transition: width .5s, border-radius .5s;
+    width: 100%;
+    background: #5f9d6b;
+    -webkit-border-radius: 11px;
+       -moz-border-radius: 11px;
+            border-radius: 11px;
+}
+
+
 .indicator {
 	width: 270px;
 }
