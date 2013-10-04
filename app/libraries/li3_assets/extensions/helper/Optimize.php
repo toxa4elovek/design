@@ -125,7 +125,15 @@ class Optimize extends \lithium\template\Helper {
                 } elseif($library['config']['js']['compression'] == 'link') {
                     foreach($this->_context->scripts as $file) {
                         if(preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
-                            $js .= file_get_contents($matches[1]);
+                            $context = stream_context_create(array(
+                                'http' => array(
+                                    'method' => 'GET',
+                                    'header' => implode("\r\n", array(
+                                        'Accept-Charset: utf-8',
+                                    )),
+                                )
+                            ));
+                            $js .= file_get_contents($matches[1], $context);
                             continue;
                         }
                         if(preg_match('/src="([^"]*)"/', $file, $matches)) {
