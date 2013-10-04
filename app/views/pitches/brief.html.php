@@ -121,7 +121,7 @@ endswitch;
 
                     $html = '<div class="set-price"><p>
                         <label style="width:260px;">' . $text . '</label>
-                        <input type="text" ' . $mult . ' name="site-sub" id="sub-site" placeholder="1" class="initial-price specific-prop" style="width:242px;"/>
+                        <input type="text" ' . $mult . ' name="site-sub" id="sub-site" value="1" class="initial-price specific-prop" style="width:242px;"/>
                     </p></div>';
                     return $html;
                 }?>
@@ -150,7 +150,8 @@ endswitch;
 						<input type="text" name="" id="award" data-low="<?=$category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=$category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=$category->minAward?>" class="initial-price placeholder" placeholder="<?=$category->minAward?>" value="<?=$category->minAward?>">
 					</p>
                     <div class="clr"></div>
-					<div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите.">
+					<!-- <div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
+					<div id="indicator" class="indicator low" data-normal="183" data-high="366">
 						<div class="bar">
 							<div class="line"></div>
 							<div class="shadow-b"></div>

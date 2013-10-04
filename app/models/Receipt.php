@@ -132,7 +132,7 @@ class Receipt extends \app\models\AppModel {
         $fee = self::$fee;
         $award = $data['features']['award'];
         if ($category = Category::first($data['commonPitchData']['category_id'])) {
-            $minAward = $category->minAward;
+            $minAward = $minValue = $category->minAward;
             $normalAward = $normal = $category->normalAward;
             $goodAward = $high = $category->goodAward;
             if (!empty($data['specificPitchData']['site-sub'])) { // Multi Items Pitch

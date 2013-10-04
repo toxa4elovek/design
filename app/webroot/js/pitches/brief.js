@@ -440,22 +440,9 @@ $(document).ready(function() {
     })*/
 
     $('#sub-site').keyup(function() {
-        var input = $(this);
-        var award = $('#award')
-        var defLow = award.data('lowDef');
-        var defNormal = award.data('normalDef');
-        var defHigh = award.data('highDef');
-        var mult = $(this).data('mult');
-        if((typeof(mult) == undefined) || (!mult)) {
-            mult = parseInt(award.data('lowDef')) / 2;
-        }
-        var extraNormal = (defNormal - defLow);
-        var extraHigh = (defHigh - defLow);
-
-        var minValue = (($(this).val() - 1) * mult) + defLow;
-        $('#award').data('minimalAward', minValue);
-        $('#award').blur();
-    })
+        $(this).addClass('freeze');
+        $(this).change();
+    });
 
     $('input[name=package-type]').on('change', function() {
         var newMinValue = $(this).data('minValue');
@@ -485,8 +472,17 @@ $(document).ready(function() {
     });
 
     $('#sub-site').change(function() {
-        if(($(this).val() == '') || ($(this).val() == 0)) {
-            $(this).val('1');
+        var value = $(this).val();
+        if ($(this).hasClass('freeze')) {
+            $(this).removeClass('freeze');
+            if(($(this).val() == '') || ($(this).val() == 0)) {
+                value = 1;
+            }
+        } else {
+            if(($(this).val() == '') || ($(this).val() == 0)) {
+                $(this).val('1');
+                value = 1;
+            }
         }
         var award = $('#award');
         var defLow = award.data('lowDef');
@@ -499,7 +495,7 @@ $(document).ready(function() {
         var extraNormal = (defNormal - defLow);
         var extraHigh = (defHigh - defLow);
 
-        var minValue = (($(this).val() - 1) * mult) + defLow;
+        var minValue = ((value - 1) * mult) + defLow;
         award.data('minimalAward', minValue);
         award.data('low', minValue);
         award.data('normal', minValue + extraNormal);
@@ -508,13 +504,12 @@ $(document).ready(function() {
         //$('#award').data('highDef', minValue + 18000);
         //$('#award').data('normalDef', minValue + 8000);
         award.blur();
-
     })
 
     $('#sub-site').focus(function(){
         $(this).removeClass('initial-price');
-    })
-
+        $(this).removeClass('freeze');
+    });
 
     $('input[name=isGuaranteed]').on('change', function() {
         var radioButton = $(this);
