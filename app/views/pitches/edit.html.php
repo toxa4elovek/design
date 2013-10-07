@@ -464,7 +464,7 @@ endif?>
             <div class="g_line"></div>
             <div id="P_card">
                 <table>
-                    <tr>
+                    <!--tr>
                         <td>
                             <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                         </td>
@@ -490,7 +490,7 @@ endif?>
                     </tr>
                     <tr>
                         <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                    </tr>
+                    </tr-->
                     <tr>
                         <td>
                             <input type="radio" name="1" class="rb1" data-pay="online">
