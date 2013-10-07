@@ -82,7 +82,7 @@
                             <div class="vp_one">
                                 <table>
                                     <tr>
-                                        <td><img src="/img/cont_help_data_2.gif"></td>
+                                        <td><img src="/img/cont_help_data_2.png" style="margin-left: 14px;"></td>
                                         <td><h2>Помощь заказчикам</h2>
                                             <div class="answer-expand" style="overflow:hidden;height:107px;">
                                             <?php foreach($answers as $answer):
@@ -103,7 +103,7 @@
                             <div class="vp_one">
                                 <table>
                                     <tr>
-                                        <td><img src="/img/cont_help_data_3.gif"></td>
+                                        <td><img src="/img/designers.png" style=""></td>
                                         <td><h2>Помощь дизайнерам</h2>
                                             <div class="answer-expand" style="overflow:hidden;height:107px;">
                                             <?php foreach($answers as $answer):
@@ -146,7 +146,7 @@
                                 <div class="vp_one">
                                     <table>
                                         <tr>
-                                            <td><img src="/img/cont_help_data_4.gif"></td>
+                                            <td><img src="/img/jur.png"></td>
                                             <td><h2>Для юридических лиц</h2>
                                                 <div class="answer-expand" style="overflow:hidden;height:107px;">
                                                     <?php foreach($answers as $answer):
