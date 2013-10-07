@@ -68,9 +68,14 @@
                             <input type="submit" class="button" style="width: 300px; float: right;" value="Отправить по почте">
                             <div class="clr"></div>
                         </form>
-                        <a href="#" class="button facebook small" style="width: 176px;">Поделиться в facebook</a>
-                        <a href="#" class="button vkontakte small" style="width: 176px;">Поделиться vkontakte</a>
-                        <a href="#" class="button twitter small" style="width: 176px;">Поделиться в twitter</a>
+                        <?php
+                            $shareTextFacebook = 'GoDesigner, пожалуй, самый современный способ создания дизайна. Создайте питч на разработку лого или сайта по этой ссылке и получите скидку в 300 руб.';
+                            $shareTitleFacebook = 'GoDesigner.ru';
+                            $shareTextTwitter = 'GoDesigner — самый современный способ создания дизайна. Оформите заказ по этой ссылке и получите скидку в 300 руб.';
+                        ?>
+                        <a href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&p[title]=<?php echo urlencode($shareTitleFacebook);?>&p[summary]=<?php echo urlencode($shareTextFacebook);?>" class="button facebook small social-popup" style="width: 176px;">Поделиться в facebook</a>
+                        <a href="http://www.vkontakte.ru/share.php?url=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&title=<?php echo urlencode($shareTitleFacebook);?>&description=<?php echo urlencode($shareTextFacebook);?>&noparse=1" class="button vkontakte small social-popup" style="width: 176px;">Поделиться vkontakte</a>
+                        <a href="https://twitter.com/share?url=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&text=<?php echo urlencode($shareTextTwitter);?>" class="button twitter small social-popup" style="width: 176px;">Поделиться в twitter</a>
                         <?php if (!empty($user->friends)):?>
                             <div class="separator-flag-empty">
                                 <img src="/img/text-druzya.png" alt="Друзья на GoDesigner" />
