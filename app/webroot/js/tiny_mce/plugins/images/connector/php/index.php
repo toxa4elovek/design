@@ -239,7 +239,7 @@ class TinyImageManager {
 			}
 			$ret = '';
 			if($innerDirs == false) return 'Неверно задана корневая директория ('.DIR_IMAGES.')';
-			/*foreach ($innerDirs as $v) {
+			foreach ($innerDirs as $v) {
 				$ret = '<div class="folder'.ucfirst($type).' '.$firstAct.'" path="" pathtype="'.$type.'">'.($type=='images'?'Изображения':'Файлы').($v['count']>0?' ('.$v['count'].')':'').'</div><div class="folderOpenSection" style="display:block;">';
 				if(isset($v['childs'])) {
 					$ret .= $this->DirStructure($type, $v['childs'], $currentDir, $level);
@@ -247,7 +247,7 @@ class TinyImageManager {
 				break;
 			}
 			$ret .= '</div>';
-			return $ret;*/
+			return $ret;
 		}
 		
 		if(sizeof($innerDirs)==0) return false;
