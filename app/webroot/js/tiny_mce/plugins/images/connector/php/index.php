@@ -23,7 +23,7 @@ class TinyImageManager {
 		
 		if(isset($_POST['SID'])) session_id($_POST['SID']);
 		if(!isset($_SESSION)) {
-            session_name('app');
+            session_name('godesigner');
             session_start();
         }
 		$this->SID = session_id();
