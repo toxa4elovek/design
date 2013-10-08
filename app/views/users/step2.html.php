@@ -88,13 +88,13 @@
                         if(isset($comment->images['file'][0])) :
                             foreach($comment->images['file'] as $file):?>
                                 <div class="file_link">
-                                    <a class="file-link-attach" href="<?=$file['weburl']?>"><?=$file['basename']?></a>
+                                    <a class="file-link-attach" href="/files/<?=$file['basename']?>"><?=$file['basename']?></a>
                                     <!--a href="" class="marker"><img src="/img/marker10.png" /></a-->
                                 </div>
                                 <?php endforeach;
                         else :?>
                             <div class="file_link">
-                                <a class="file-link-attach" href="<?=$comment->images['file']['weburl']?>"><?=$comment->images['file']['basename']?></a>
+                                <a class="file-link-attach" href="/files/<?=$comment->images['file']['basename']?>"><?=$comment->images['file']['basename']?></a>
                                 <!--a href="" class="marker"><img src="/img/marker10.png" /></a-->
                             </div>
                             <?php endif;

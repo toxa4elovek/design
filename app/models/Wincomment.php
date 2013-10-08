@@ -14,7 +14,7 @@ class Wincomment extends \app\models\AppModel {
 
     public static $attaches = array('file' => array(
         /*'validate' => array('uploadedOnly' => true),*/
-        'moveFile' => array('preserveFileName' => true, 'path' => '/webroot/files/'),
+        'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/files/'),
         /*'setPermission' => array('mode' => 0766),*/
     ));
 

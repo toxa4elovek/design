@@ -51,6 +51,7 @@ Router::connect('/users/step3/{:id:\d+}/{:confirm}', array('controller' => 'user
 Router::connect('/users/step3/{:id:\d+}', array('controller' => 'users', 'action' => 'step3', 'confirm' => null));
 Router::connect('/users/step4/{:id:\d+}/{:confirm}', array('controller' => 'users', 'action' => 'step4'));
 Router::connect('/users/step4/{:id:\d+}', array('controller' => 'users', 'action' => 'step4', 'confirm' => null));
+Router::connect('/files/{:filename}', array('Files::download'));
 
 //Router::connect('/users/nominated', array('controller' => 'Users', 'action' => 'solutions', 'filterType' => 'nominating'));
 
