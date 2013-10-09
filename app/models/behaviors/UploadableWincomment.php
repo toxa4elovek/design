@@ -113,7 +113,11 @@ class UploadableWincomment extends \slicedup_behaviors\models\behaviors\ModelBeh
             $first = true;
             foreach ($images as $value) {
                 $value->weburl = $getWebUrl($value->filename);
-                $value->basename = $getBasename($value->originalbasename);
+                if (empty($value->originalbasename)) { // Older files fallback
+                    $value->basename = $getBasename($value->filename);
+                } else {
+                    $value->basename = $getBasename($value->originalbasename);
+                }
                 if(!isset($record->images[$value->filekey])) {
                     $record->images[$value->filekey] = $value->data();
                 }else {

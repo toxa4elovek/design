@@ -46,7 +46,11 @@ class Pitchfile extends \app\models\AppModel {
             };
             $attachRecord = function($record) use ($getWebUrl, $getBasename) {
                 $record->weburl = $getWebUrl($record->filename);
-                $record->basename = $getBasename($record->originalbasename);
+                if (empty($record->originalbasename)) { // Older files fallback
+                    $record->basename = $getBasename($record->filename);
+                } else {
+                    $record->basename = $getBasename($record->originalbasename);
+                }
                 return $record;
             };
             if(get_class($result) == 'lithium\data\entity\Record') {

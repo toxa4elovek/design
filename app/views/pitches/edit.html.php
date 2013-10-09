@@ -398,7 +398,11 @@ endif?>
             <a href="#">+ добавить файл</a></p--><!-- .add-another-file -->
             <ul id="filezone">
                 <?php foreach($files as $file):?>
-                <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=str_replace('pitchfiles/', 'pitchfiles/1', $file->weburl);?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php if (empty($file->originalbasename)):?>
+                        <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php else:?>
+                        <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=str_replace('pitchfiles/', 'pitchfiles/1', $file->weburl);?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php endif;?>
                 <?php endforeach;?>
             </ul>
             <div style="clear:both"></div>
