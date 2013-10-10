@@ -464,7 +464,7 @@ endif?>
             <div class="g_line"></div>
             <div id="P_card">
                 <table>
-                    <!--tr>
+                    <tr>
                         <td>
                             <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                         </td>
@@ -485,12 +485,13 @@ endif?>
                     </tr>
                     <tr id="paymaster-select" style="display: none;">
                         <td colspan="4">
-                            <img src="/img/s3_widget_need_delete.png" alt="" style="padding: 20px 0 0 40px;">
+                            <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
+                            <script type='text/javascript' src='https://paymaster.ru/widget/Basic/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=100&LMI_PAYMENT_DESC=Test+payment&LMI_CURRENCY=RUB'></script>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                    </tr-->
+                    </tr>
                     <tr>
                         <td>
                             <input type="radio" name="1" class="rb1" data-pay="online">
