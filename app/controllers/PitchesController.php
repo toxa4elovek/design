@@ -537,7 +537,7 @@ class PitchesController extends \app\controllers\AppController {
         //проверяем что пришли правильные данные
         if((isset($this->request->data["SIGN_CALLBACK"])) && (trim($this->request->data["SIGN_CALLBACK"]) == md5($this->request->data["TERMINAL"].$this->request->data["TIMESTAMP"].$this->request->data["ORDER"].$this->request->data["AMOUNT"].$this->request->data["RESULT"].$this->request->data["RC"].$this->request->data["RRN"].$this->request->data["INT_REF"].$this->request->data["TRTYPE"].$this->request->data["AUTHCODE"].$secretword))) {
             //проверяем что операция прошла успешно
-            Logger::write('debug', serialize($this->request->data));
+            Logger::write('info', serialize($this->request->data), array('name' => 'masterbank'));
             if (0 == $this->request->data["RESULT"]) {
                 switch ($this->request->data["TRTYPE"]) {
                     case 0:
@@ -596,6 +596,11 @@ class PitchesController extends \app\controllers\AppController {
         echo '<pre>';
         var_dump(unserialize('a:19:{s:8:"FUNCTION";s:13:"TransResponse";s:6:"RESULT";s:1:"3";s:2:"RC";s:2:"-2";s:6:"AMOUNT";s:7:"3500.00";s:8:"CURRENCY";s:3:"RUB";s:5:"ORDER";s:2:"47";s:3:"RRN";s:0:"";s:8:"AUTHCODE";s:0:"";s:3:"PAN";s:16:"4XXXXXXXXXXX1896";s:8:"TERMINAL";s:8:"10000059";s:6:"TRTYPE";s:1:"0";s:11:"TEXTMESSAGE";s:15:"Bad CGI request";s:14:"CARDHOLDERNAME";s:4:"Test";s:3:"ACS";s:0:"";s:7:"INT_REF";s:0:"";s:9:"TIMESTAMP";s:14:"20120227154456";s:7:"USER_IP";s:14:"192.168.200.35";s:4:"SIGN";s:32:"346ac406b6f44ad743ae446294efe154";s:13:"SIGN_CALLBACK";s:32:"0cd09d1829025aacfca6b8a98c18c2a0";}'));
         echo '</pre>';
+        die();
+    }
+
+    function paymaster() {
+        Logger::write('info', serialize($this->request->data), array('name' => 'paymaster'));
         die();
     }
 
