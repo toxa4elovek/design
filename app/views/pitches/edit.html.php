@@ -478,7 +478,7 @@ endif?>
                         </td>
                     </tr>
                     <tr id="paymaster-images">
-                        <td colspan="4" class="s3_text" style="padding: 20px 0 0 40px; text-transform: uppercase;">
+                        <td colspan="4" style="padding: 20px 0 0 40px; text-transform: uppercase;">
                             <img src="/img/s3_paymaster.png" alt="">
                             <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
                         </td>
