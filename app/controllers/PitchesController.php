@@ -49,6 +49,9 @@ class PitchesController extends \app\controllers\AppController {
     public function blank() {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
+        Logger::write('info', serialize('init'), array('name' => 'masterbank'));
+        Logger::write('info', serialize('init'), array('name' => 'paymaster'));
+        Logger::write('debug', serialize('init'));
         die();
     }
 
