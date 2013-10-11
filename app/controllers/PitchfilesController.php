@@ -58,6 +58,16 @@ class PitchfilesController extends \app\controllers\AppController {
         die();
     }
 
+    public function download() {
+        if (!empty($this->request->filename) && $file = Pitchfile::first(array('conditions' => array('filename' => array('LIKE' => '%' . substr($this->request->filename, 1)))))) {
+            if (file_exists($file->filename)) {
+                header('Content-Type: application/download');
+                header('Content-Disposition: attachment; filename="' . $file->originalbasename . '"');
+                readfile($file->filename);
+            }
+        }
+        exit;
+    }
 }
 
 ?>

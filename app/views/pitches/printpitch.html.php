@@ -58,7 +58,11 @@ $details = unserialize($pitch->specifics);
                         <ul>
                             <?php foreach($files as $file):?>
                             <li class="regular">
-                                <a style="font:10pt/16pt 'Arial',sans-serif" href="<?=$file->weburl?>"><?=mb_basename($file->filename)?></a><br>
+                                <?php if (empty($file->originalbasename)):?>
+                                    <a style="font:10pt/16pt 'Arial',sans-serif" href="<?=$file->weburl?>"><?=mb_basename($file->filename)?></a><br>
+                                <?php else:?>
+                                    <a style="font:10pt/16pt 'Arial',sans-serif" href="/pitchfiles/1<?=mb_basename($file->filename);?>"><?=$file->originalbasename;?></a><br>
+                                <?php endif;?>
                                 <?php if(!empty($file->{'file-description'})):?>
                                 <p style="font:10pt/16pt 'Arial',sans-serif"><?=$file->{'file-description'}?></p>
                                 <?php endif;?>

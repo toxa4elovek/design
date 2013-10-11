@@ -189,7 +189,11 @@ foreach($experts as $expert) {
                     <ul>
                         <?php foreach($files as $file):?>
                         <li class="regular">
-                        <a style="font-size:15px;text-decoration: none;" href="<?=$file->weburl?>"><?=mb_basename($file->filename)?></a><br>
+                        <?php if (empty($file->originalbasename)):?>
+                            <a style="font-size:15px;text-decoration: none;" href="<?=$file->weburl?>"><?=mb_basename($file->filename)?></a><br>
+                        <?php else:?>
+                            <a style="font-size:15px;text-decoration: none;" href="/pitchfiles/1<?=mb_basename($file->filename);?>"><?=$file->originalbasename;?></a><br>
+                        <?php endif;?>
                         <?php if(!empty($file->{'file-description'})):?>
                         <p style="font-size:15px;text-decoration: none;"><?=$file->{'file-description'}?></p>
                         <?php endif;?>
