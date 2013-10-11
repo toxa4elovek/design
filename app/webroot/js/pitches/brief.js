@@ -568,6 +568,9 @@ $(document).ready(function() {
         tooltipBGColor: 'transparent'
     })
 
+    $(document).on('click', 'td.s3_text, td.s3_h', function() {
+        $('.rb1', $(this).prevAll(':last')).click();
+    });
 
     $('.rb1').change(function() {
         switch ($(this).data('pay')) {

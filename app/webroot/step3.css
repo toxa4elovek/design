@@ -35,8 +35,11 @@ td.s3_text{
 	color: #666;
 	font-size: 11px;
 	text-shadow: -1px 0 0 #FFFFFF;
+	cursor: pointer;
 }
-
+td.s3_h {
+	cursor: pointer;
+}
 #s3_kv {
 	display: none;
 	font-size: 13px;
