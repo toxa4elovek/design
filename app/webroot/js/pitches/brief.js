@@ -999,10 +999,20 @@ function FeatureCart() {
                     $('.middle').not('#step3').hide();
                     $('#step3').show();
                     $.scrollTo($('#header-bg'), {duration: 600});
+                    // Paymaster
+                    $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
+                    if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
+                        $('input[name=LMI_PAYMENT_NO]').val(response.id);
+                    } else {
+                        $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
+                    }
+                    $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
+                    // Masterbank
                     $('#order-id').val(response.id);
                     $('#order-total').val(response.total);
                     $('#order-timestamp').val(response.timestamp);
                     $('#order-sign').val(response.sign);
+                    // Bill
                     $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');
                 })
             });
