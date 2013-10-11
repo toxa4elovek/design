@@ -1,5 +1,9 @@
 <div class="groupc">
 
+    <?php if($pitch->billed == 1):?>
+    <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+    <?php endif?>
+
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">
@@ -29,7 +33,7 @@
             <span class="label-b">Пассивный</span>
         </li>
     </ul><!-- .logo-properties -->
-    
+
     <p>
         <label>Предпочтения</label>
         <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="<?php if(empty($specifics['site-inspiration'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-inspiration']?></textarea>

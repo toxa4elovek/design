@@ -1,5 +1,9 @@
 <div class="groupc">
 
+    <?php if($pitch->billed == 1):?>
+    <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+    <?php endif?>
+
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">
