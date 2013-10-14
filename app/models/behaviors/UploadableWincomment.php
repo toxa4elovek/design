@@ -113,7 +113,11 @@ class UploadableWincomment extends \slicedup_behaviors\models\behaviors\ModelBeh
             $first = true;
             foreach ($images as $value) {
                 $value->weburl = $getWebUrl($value->filename);
-                $value->basename = $getBasename($value->filename);
+                if (empty($value->originalbasename)) { // Older files fallback
+                    $value->basename = $getBasename($value->filename);
+                } else {
+                    $value->basename = $getBasename($value->originalbasename);
+                }
                 if(!isset($record->images[$value->filekey])) {
                     $record->images[$value->filekey] = $value->data();
                 }else {
@@ -185,7 +189,10 @@ class UploadableWincomment extends \slicedup_behaviors\models\behaviors\ModelBeh
                         if((isset($file)) && (isset($file['newname']))){
                             $conditions = array('model' => $params['model'], 'model_id' => $params['record']->id, 'filekey' => $params['key'], 'filename' => $file['newname']);
                             $fileModel = $self::$fileModel;
-                            $data = array('filename' => $file['newname']) + $conditions;
+                            $data = array(
+                                'filename' => $file['newname'],
+                                'originalbasename' => $file['name'],
+                            ) + $conditions;
                             if($existingRow = $fileModel::first(array('conditions' => $conditions))) {
                                 $existingRow->set($data);
                                 $existingRow->save();
@@ -200,7 +207,10 @@ class UploadableWincomment extends \slicedup_behaviors\models\behaviors\ModelBeh
                     if((isset($params['uploadedFile']['data'])) && (isset($params['uploadedFile']['data']['newname']))){
                         $conditions = array('model' => $params['model'], 'model_id' => $params['record']->id, 'filekey' => $params['key'], 'filename' => $params['uploadedFile']['data']['newname']);
                         $fileModel = $self::$fileModel;
-                        $data = array('filename' => $params['uploadedFile']['data']['newname']) + $conditions;
+                        $data = array(
+                            'filename' => $params['uploadedFile']['data']['newname'],
+                            'originalbasename' => $params['uploadedFile']['data']['name'],
+                        ) + $conditions;
                         if($existingRow = $fileModel::first(array('conditions' => $conditions))) {
                             $existingRow->set($data);
                             $existingRow->save();
