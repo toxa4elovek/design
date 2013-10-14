@@ -431,7 +431,7 @@ $(document).ready(function(){
         }
     }
 
-    $('#client-only-toggle').change(function() {
+    $(document).on('change', '#client-only-toggle', function() {
         if($(this).attr('checked')) {
             $.each($('section[data-type="designer"]', '.messages_gallery'), function(index, object) {
                 var comment = $(object);
