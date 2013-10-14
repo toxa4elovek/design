@@ -1013,6 +1013,8 @@ function FeatureCart() {
                             $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
                         }
                         $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
+                        $('.pmwidget').addClass('mod');
+                        $('h1.pmheader', '.pmwidget').addClass('mod');
                     }
                     // Masterbank
                     $('#order-id').val(response.id);
