@@ -1,5 +1,9 @@
 <div class="groupc">
 
+    <?php if($pitch->billed == 1):?>
+    <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+    <?php endif?>
+
     <p>
         <label>Какие 3 основных качества нужно донести до аудитории?</label>
         <input type="text" name="qualities" value="<?=$specifics['qualities']?>"  placeholder="Надежный, технологичный, инновационный" class="specific-prop">
@@ -43,6 +47,6 @@
             <span class="slider-wrapper"><span class="slider"></span></span>
             <span class="label-b">Пассивный</span>
         </li>
-    </ul><!-- .logo-properties -->    
+    </ul><!-- .logo-properties -->
 
 </div>
