@@ -383,24 +383,6 @@ $(document).ready(function(){
         return false;
     })
 
-    $('#sort-by-rating').hover(function() {
-        $('img', this).attr('src', '/img/star_press.png');
-    }, function() {
-        $('img', this).attr('src', '/img/star_sort.png');
-    })
-
-    $('#sort-by-likes').hover(function() {
-        $('img', this).attr('src', '/img/like_press.png');
-    }, function() {
-        $('img', this).attr('src', '/img/like_sort.png');
-    })
-
-    $('#sort-by-created').hover(function() {
-        $('img', this).attr('src', '/img/time_press.png');
-    }, function() {
-        $('img', this).attr('src', '/img/time_sort.png');
-    })
-
     var cycle = {};
     $('.photo_block').on('mouseenter', function() {
 
