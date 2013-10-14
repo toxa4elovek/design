@@ -23,6 +23,7 @@ class TransactionsController extends \app\controllers\AppController {
             $sign = $webgate->generateSign($data);
 		    $data['sign'] = $sign;
             Logger::write('debug', serialize($data));
+            $data['category'] = $pitch->category_id;
             return $data;
         }
 	}
