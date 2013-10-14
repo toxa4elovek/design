@@ -133,7 +133,7 @@ class Optimize extends \lithium\template\Helper {
                                     )),
                                 )
                             ));
-                            $js .= file_get_contents($matches[1], $context);
+                            $js .= file_get_contents($matches[1], false, $context);
                             continue;
                         }
                         if(preg_match('/src="([^"]*)"/', $file, $matches)) {
