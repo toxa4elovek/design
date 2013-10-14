@@ -43,7 +43,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'callback', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
 	);
 
     public function blank() {
