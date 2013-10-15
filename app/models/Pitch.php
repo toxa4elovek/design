@@ -34,7 +34,7 @@ class Pitch extends \app\models\AppModel {
         'validateFile' => array(
             'extensionForbid' => array('php', 'exe', 'sh', 'js'),
         ),
-        'moveFile' => array('preserveFileName' => true, 'path' => '/webroot/pitchfiles/'),
+        'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/pitchfiles/'),
         'setPermission' => array('mode' => 0600),
     ));
 

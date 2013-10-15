@@ -398,7 +398,11 @@ endif?>
             <a href="#">+ добавить файл</a></p--><!-- .add-another-file -->
             <ul id="filezone">
                 <?php foreach($files as $file):?>
-                <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php if (empty($file->originalbasename)):?>
+                        <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php else:?>
+                        <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=str_replace('pitchfiles/', 'pitchfiles/1', $file->weburl);?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php endif;?>
                 <?php endforeach;?>
             </ul>
             <div style="clear:both"></div>
@@ -464,7 +468,7 @@ endif?>
             <div class="g_line"></div>
             <div id="P_card">
                 <table>
-                    <!--tr>
+                    <tr>
                         <td>
                             <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                         </td>
@@ -478,19 +482,20 @@ endif?>
                         </td>
                     </tr>
                     <tr id="paymaster-images">
-                        <td colspan="4" class="s3_text" style="padding: 20px 0 0 40px; text-transform: uppercase;">
+                        <td colspan="4" style="padding: 20px 0 0 40px; text-transform: uppercase;">
                             <img src="/img/s3_paymaster.png" alt="">
                             <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
                         </td>
                     </tr>
                     <tr id="paymaster-select" style="display: none;">
                         <td colspan="4">
-                            <img src="/img/s3_widget_need_delete.png" alt="" style="padding: 20px 0 0 40px;">
+                            <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
+                            <script type='text/javascript' src='https://paymaster.ru/widget/Basic/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=100&LMI_PAYMENT_DESC=Test+payment&LMI_CURRENCY=RUB'></script>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                    </tr-->
+                    </tr>
                     <tr>
                         <td>
                             <input type="radio" name="1" class="rb1" data-pay="online">

@@ -123,15 +123,10 @@
 
         <nav class="other_nav_gallery clear">
             <p class="supplement4" style="margin-left:200px;float:left;height:30px;padding-top:4px;font-weight: bold; color:#b2afaf;">
-                <span style="display: inline-block; margin-top:0; height:20px;padding-top:0px;">СОРТИРОВАТЬ ПО:</span>
-                <a <?php if($sort != 'rating'):?>id="sort-by-rating"<?php endif?> style="height:20px;width:20px;" href="/pitches/view/<?=$pitch->id?>?sorting=rating"><?php if($sort == 'rating'):?><img src="/img/star_press.png" alt="сортировать по рейтингу"><?php else:?><img src="/img/star_sort.png" alt="сортировать по рейтингу"><?php endif?></a>
-                <a <?php if($sort != 'likes'):?>id="sort-by-likes"<?php endif?> style="height:20px;width:20px;" href="/pitches/view/<?=$pitch->id?>?sorting=likes"><?php if($sort == 'likes'):?><img src="/img/like_press.png" alt="сортировать по лайкам"><?php else:?><img src="/img/like_sort.png" alt="сортировать по лайкам"><?php endif?></a>
-                <a <?php if($sort != 'created'):?>id="sort-by-created"<?php endif?> style="height:20px;width:20px;" href="/pitches/view/<?=$pitch->id?>?sorting=created">
-                    <?php if($sort == 'created'):?>
-                    <img src="/img/time_press.png" alt="сортировать по дате создания">
-                    <?php else:?>
-                    <img src="/img/time_sort.png" alt="сортировать по дате создания">
-                    <?php endif?></a>
+                <span style="display: inline-block; margin-top: 4px; vertical-align: top;">СОРТИРОВАТЬ ПО:</span>
+                <a class="sort-by-rating<?php if ($sort == 'rating'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=rating"><span title="сортировать по рейтингу"></span></a>
+                <a class="sort-by-likes<?php if ($sort == 'likes'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=likes"><span title="сортировать по лайкам"></span></a>
+                <a class="sort-by-created<?php if ($sort == 'created'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=created"><span title="сортировать по дате создания"></span></a>
             </p>
             <?php
             if(($this->session->read('user.id') != $pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
