@@ -16,6 +16,7 @@ use \app\models\Promoted;
 use \app\models\Promocode;
 use \app\models\Grade;
 use \app\models\Transaction;
+use \app\models\Paymaster;
 use \app\models\Receipt;
 use \app\extensions\helper\NumInflector;
 use \app\extensions\helper\NameInflector;
@@ -686,5 +687,11 @@ class Pitch extends \app\models\AppModel {
             return true;
         }
         return false;
+    }
+
+    public static function getTransactions($pitchId) {
+        $transMaster = Transaction::all(array('conditions' => array('ORDER' => $pitchId)));
+        $transPay = Paymaster::all(array('conditions' => array('LMI_PAYMENT_NO' => $pitchId)));
+        return compact('transMaster', 'transPay');
     }
 }
