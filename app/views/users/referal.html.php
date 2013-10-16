@@ -35,8 +35,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="text" id="userPhone" name="userPhone" placeholder="" data-placeholder="" style="width: 270px; float: left; margin-top: 12px;">
-                            <input type="submit" class="button" style="width: 300px; float: right;" value="Получить код">
+                            <div style="float: left; text-align: left;">
+                            <select style="height: 20px; width: 300px; border: none; border-radius: 2px;">
+                                <optgroup label="Россия">
+                                    <option value="mts-rus">МТС</option>
+                                    <option value="bee-rus">Билайн</option>
+                                    <option value="meg-rus">Мегафон</option>
+                                    <option value="tele-rus">Теле-2</option>
+                                </optgroup>
+                                <optgroup label="Беларусь">
+                                    <option value="mts-blr">МТС Беларусь</option>
+                                    <option value="meg-blr">Мегафон Беларусь</option>
+                                </optgroup>
+                                <optgroup label="Украина">
+                                    <option value="mts-ukr">МТС</option>
+                                    <option value="bee-ukr">Билайн</option>
+                                </optgroup>
+                            </select>
+                            <br>
+                            <span class="" style="font: 24px/50px Arial; color: #666; text-shadow: 0 1px 0 #fff;">+</span>
+                            <input type="text" id="userPhone" name="userPhone" placeholder="Введите номер телефона" data-placeholder="Введите номер телефона" style="width: 260px; margin-top: -2px;">
+                            </div>
+                            <input type="submit" class="button" style="width: 300px; height: 70px; float: right;" value="Получить код">
                             <div class="clr"></div>
                             <div class="clr"></div>
                         </form>

@@ -424,10 +424,14 @@ textarea.placeholder {
 .referal-section a:hover {
     text-decoration: underline;
 }
-.referal-section input.placeholder {
-	font: 18px/20px "Arial", sans-serif;
-    color: #ccc;
+.referal-section input[type=text] {
+	font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #666;
     text-transform: none;
+}
+.referal-section input.placeholder {
+	color: #ccc;
 }
 .referal-section .remark {
 	margin: 0 0 30px 0;
