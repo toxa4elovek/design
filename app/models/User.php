@@ -844,7 +844,7 @@ class User extends \app\models\AppModel {
             $user->phone_code = self::generatePhoneCode();
             $user->phone_valid = 0;
             $user->save(null, array('validate' => false));
-            $respond = SmsFeedback::send($user->phone, 'Код для проверки: ' . $user->phone_code);
+            $respond = SmsFeedback::send($user->phone, $user->phone_code . ' - код для проверки');
             $phone_valid = 0;
             return compact('respond', 'phone', 'phone_valid');
         }

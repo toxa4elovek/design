@@ -6,8 +6,8 @@ class SmsFeedback {
     protected static $defaults = array(
         'host' => 'api.smsfeedback.ru',
         'port' => 80,
-        'login' => '',
-        'password' => '',
+        'login' => 'godesigner',
+        'password' => '6446969i',
         'sender' => 'GoDesigner',
         'wapurl' => '',
     );
