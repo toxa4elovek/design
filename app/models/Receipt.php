@@ -3,6 +3,7 @@
 namespace app\models;
 
 use \app\models\Expert;
+use \app\models\Category;
 
 class Receipt extends \app\models\AppModel {
 
@@ -18,7 +19,7 @@ class Receipt extends \app\models\AppModel {
         'fee' => 'Сбор GoDesigner',
     );
 
-    public static $fee = 0.145;
+    public static $fee = FEE_LOW;
 
 
     public static function createReceipt($data) {
@@ -90,6 +91,7 @@ class Receipt extends \app\models\AppModel {
             $total += $row['value'];
 
         }
+        self::$fee = self::findOutFee($data);
         $comission = round($data['features']['award'] * self::$fee);
         if($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'])) {
             if($promocode['type'] == 'discount') {
@@ -101,7 +103,7 @@ class Receipt extends \app\models\AppModel {
         }
         $receiptData[] = array(
             'pitch_id' => $data['commonPitchData']['id'],
-            'name' => self::$dict['fee'],
+            'name' => self::$dict['fee'] . ' ' . str_replace('.', ',', self::$fee * 100 . '%'),
             'value' => $comission
         );
         self::remove(array('pitch_id' => $data['commonPitchData']['id']));
@@ -124,5 +126,62 @@ class Receipt extends \app\models\AppModel {
             $total += $item->value;
         }
         return $total;
+    }
+
+    protected static function findOutFee($data) {
+        $fee = self::$fee;
+        $award = $data['features']['award'];
+        if ($category = Category::first($data['commonPitchData']['category_id'])) {
+            $minAward = $minValue = $category->minAward;
+            $normalAward = $normal = $category->normalAward;
+            $goodAward = $high = $category->goodAward;
+            if (!empty($data['specificPitchData']['site-sub'])) { // Multi Items Pitch
+                $quantity = $data['specificPitchData']['site-sub'];
+                if ($category->id == 3) {
+                    $mult = 2000;
+                } else {
+                    $mult = $minAward / 2;
+                }
+                $minValue = (($quantity - 1) * $mult) + $minAward;
+            }
+            if ($category->id == 7) {
+                /*
+                 * Needed for another behavior
+
+                $mods = 0;
+                $mods += (!empty($data['specificPitchData']['first-option'])) ? 1 : 0;
+                $mods += (!empty($data['specificPitchData']['second-option'])) ? 1 : 0;
+                $mods += (!empty($data['specificPitchData']['third-option'])) ? 1 : 0;
+                switch ($mods) {
+                    case 1: $mod = 1; break;
+                    case 2: $mod = 1.5; break;
+                    case 3: $mod = 1.75; break;
+                    default: $mod = 1; break;
+                }
+                $minValue = COPY_BASE_PRICE * $mod;
+                 */
+
+                $minValue = $minAward;
+            }
+            if ($category->id == 11) {
+                /*
+                 * Nothing needed
+                 *
+                 */
+                $minValue = $minAward;
+            }
+            $extraNormal = $normalAward - $minAward;
+            $extraHigh = $goodAward - $minAward;
+            $normal = $minValue + $extraNormal;
+            $high = $minValue + $extraHigh;
+            if ($award < $normal) {
+                $fee = FEE_LOW;
+            } else if ($award < $high) {
+                $fee = FEE_NORMAL;
+            } else {
+                $fee = FEE_GOOD;
+            }
+        }
+        return $fee;
     }
 }

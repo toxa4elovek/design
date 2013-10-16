@@ -32,10 +32,14 @@ td.s3_text{
 	padding:15px 0px 0px 0px;
 	text-transform:uppercase;
 	width:100%;
-	color:#999;
+	color: #666;
+	font-size: 11px;
 	text-shadow: -1px 0 0 #FFFFFF;
+	cursor: pointer;
 }
-
+td.s3_h {
+	cursor: pointer;
+}
 #s3_kv {
 	display: none;
 	font-size: 13px;

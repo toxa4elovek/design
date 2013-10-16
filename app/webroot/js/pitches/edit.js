@@ -247,7 +247,7 @@ function FeatureCart() {
     this.fileIds = [];
     this.specificTemplates = [];
     this.validatetype = 1;
-    this.transferFee = 0.145;
+    this.transferFee = feeRates.low;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
     this.mode = 'add';
@@ -289,6 +289,16 @@ function FeatureCart() {
     this.fillCheck = function(data) {
         self.content = {};
         $.each(data, function(index, object) {
+            var feeOption = object.name.indexOf(self.transferFeeKey);
+            if (feeOption != -1) {
+                var percent = object.name.substr(self.transferFeeKey.length + 1, 4);
+                if (percent.length > 0) {
+                    self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
+                } else { // For older pitches
+                    self.transferFee = feeRates.good;
+                }
+                object.name = self.transferFeeKey;
+            }
             if((object.value != 0)) {
                 self.updateOption(object.name, parseInt(object.value));
             }else if((object.name == 'Заполнение брифа')) {
@@ -476,7 +486,11 @@ function FeatureCart() {
     this._renderOptions = function() {
         var html = '';
         $.each(self.content, function(key, value) {
-            html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            if (key == self.transferFeeKey) {
+                html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>';
+            } else {
+                html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            }
         });
         self.container.html(html);
     };

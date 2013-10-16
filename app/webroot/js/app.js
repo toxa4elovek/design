@@ -715,8 +715,8 @@ function copyrightedInfo(data) {
 
 function isExpert(user, expertsObj) {
     var res = false;
-    for (var i = 0; i < expertsObj.length; i++) {
-        if (expertsObj[i].user_id == user) {
+    for (var key in expertsObj) {
+        if (expertsObj[key].user_id == user) {
             res = true;
             break;
         }

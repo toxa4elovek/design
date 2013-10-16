@@ -554,6 +554,36 @@ a.this-page{
 	height: 100px;
 	color: #666;
 }
+a.sort-by-rating span,
+a.sort-by-likes span,
+a.sort-by-created span {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin: 0 !important;
+    padding: 0;
+    background-image: url('/img/solutions-sort-sprite.png');
+    background-repeat: no-repeat
+}
+a.sort-by-rating span {
+    background-position: 0 0;
+}
+a.sort-by-likes span {
+    background-position: -20px 0;
+}
+a.sort-by-created span {
+    background-position: -40px 0;
+}
+a.sort-by-rating:hover span, a.sort-by-rating.active span {
+	background-position: 0 -20px;
+}
+a.sort-by-likes:hover span, a.sort-by-likes.active span {
+	background-position: -20px -20px;
+}
+a.sort-by-created:hover span, a.sort-by-created.active span {
+	background-position: -40px -20px;
+}
+
 
 /* ------------------ View Solution Overlay --------------------
  *

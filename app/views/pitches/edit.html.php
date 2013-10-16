@@ -26,6 +26,7 @@ $specifics = unserialize($pitch->specifics);
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 <input type="hidden" id="referal" value="<?=$pitch->referal_sum;?>">
 <input type="hidden" id="referalId" value="<?=$pitch->referal;?>">
+<script>var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};</script>
 <aside class="summary-price expanded">
     <h3>Итого:</h3>
     <p class="summary"><strong id="total-tag">0.-</strong></p><!-- .summary -->
@@ -75,10 +76,10 @@ endif?>
             if(isset($chosenCategory['mult'])) {
                 $mult = 'data-mult="' . $chosenCategory['mult'] . '"';
             }
-
+            $site_sub = (empty($details['site-sub'])) ? 1 : $details['site-sub'];
             $html = '<div class="set-price"><p>
                         <label style="width:260px;">' . $text . '</label>
-                        <input type="text" ' . $mult . ' name="site-sub" id="sub-site" placeholder="1" value="' . $details['site-sub'] . '" class="initial-price specific-prop" style="width:242px;"/>
+                        <input type="text" ' . $mult . ' name="site-sub" id="sub-site" value="' . $site_sub . '" class="specific-prop" style="width:242px;"/>
                     </p></div>';
             return $html;
         }?>
@@ -89,14 +90,13 @@ endif?>
         <div class="groupc">
             <p>
                 <label>Выберите вид копирайтинга</label>
-
-            <ul class="radiooptionssite">
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 0): echo 'checked'; endif;?> value="0" class="sub-radio specific-group" data-min-value="5000" checked="checked"><span class="radiospan">Название / слоган (от 5 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 1): echo 'checked'; endif;?> value="1" class="sub-radio specific-group" data-min-value="8000"><span class="radiospan">Идея для рекламы (от 8 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 2): echo 'checked'; endif;?> value="2" class="sub-radio specific-group" data-min-value="1200"><span class="radiospan">Наполнение сайта (от 12 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 3): echo 'checked'; endif;?> value="3" class="sub-radio specific-group" data-min-value="14000"><span class="radiospan">Тексты, другое (от 14 000)</span></label></li>
-            </ul>
+                <input type="hidden" id="copybaseminprice" value="<?php echo COPY_BASE_PRICE;?>"/>
             </p>
+            <ul class="radiooptionssite">
+                <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" <?php if (isset($specifics['first-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Имя / название</span></label></li>
+                <li><label><input type="checkbox" name="second-option" value="1" class="sub-check specific-group" <?php if (isset($specifics['second-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Адрес сайта</span></label></li>
+                <li><label><input type="checkbox" name="third-option" value="2" class="sub-check specific-group" <?php if (isset($specifics['third-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Слоган / лозунг</span></label></li>
+            </ul>
         </div>
         <?php endif;?>
 
@@ -104,10 +104,11 @@ endif?>
 
             <p>
                 <label>Сумма вознаграждения для дизайнера (от <?=$this->moneyFormatter->formatMoney($category->minAward, array('suffix' => 'Р.'))?>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
-                <input type="text" name="" id="award" data-low="<?=$category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=$category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=$category->minAward?>" class="initial-price placeholder" placeholder="5500" value="<?=(int)$pitch->price?>">
+                <input type="text" name="" id="award" data-low="<?=$category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=$category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=$category->minAward?>" value="<?=(int)$pitch->price?>">
             </p>
-
-            <div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите.">
+            <div class="clr"></div>
+            <!-- <div id="indicator" class="indicator low tooltip" data-normal="183" data-high="366" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
+            <div id="indicator" class="indicator low" data-normal="183" data-high="366">
                 <div class="bar">
                     <div class="line"></div>
                     <div class="shadow-b"></div>
@@ -118,6 +119,7 @@ endif?>
                     <li>самое то!</li>
                 </ul>
             </div><!-- .indicator -->
+            <img src="/img/comissions.png" style="margin-bottom: 30px;">
         </div><!-- .set-price -->
 
         <?php if($category->id == 11):?>
@@ -396,7 +398,11 @@ endif?>
             <a href="#">+ добавить файл</a></p--><!-- .add-another-file -->
             <ul id="filezone">
                 <?php foreach($files as $file):?>
-                <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php if (empty($file->originalbasename)):?>
+                        <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php else:?>
+                        <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=str_replace('pitchfiles/', 'pitchfiles/1', $file->weburl);?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php endif;?>
                 <?php endforeach;?>
             </ul>
             <div style="clear:both"></div>
@@ -464,13 +470,38 @@ endif?>
                 <table>
                     <tr>
                         <td>
-                            <input type="radio" name="1" class="rb1" data-pay="online" checked>
+                            <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
+                        </td>
+                        <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                            Оплата пластиковыми картами и эл. деньгами <br>через PayMaster
                         </td>
                         <td>
-                            <img src="/img/s3_card.png" alt="">
+                            <form action="" method="post">
+                                <input type="submit" id="paybutton-paymaster" value="продолжить оплату" class="button" style="background: #a2b2bb;">
+                            </form>
                         </td>
-                        <td class="s3_text">
-                            Пластиковая карта ВИЗА, МАСТЕРКАРД<br/>(VISA, MASTERCARD)
+                    </tr>
+                    <tr id="paymaster-images">
+                        <td colspan="4" style="padding: 20px 0 0 40px; text-transform: uppercase;">
+                            <img src="/img/s3_paymaster.png" alt="">
+                            <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
+                        </td>
+                    </tr>
+                    <tr id="paymaster-select" style="display: none;">
+                        <td colspan="4">
+                            <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
+                            <script type='text/javascript' src='https://paymaster.ru/widget/Basic/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=100&LMI_PAYMENT_DESC=Test+payment&LMI_CURRENCY=RUB'></script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><div class="g_line"><i>или</i></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="1" class="rb1" data-pay="online">
+                        </td>
+                        <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                            Оплата пластиковыми картами <br>через Мастер-Банк
                         </td>
                         <td>
                             <form action="https://pay.masterbank.ru/acquiring" method="post">
@@ -480,8 +511,13 @@ endif?>
                                 <input type="HIDDEN" value="" NAME="SIGN" id="order-sign">
                                 <input type="HIDDEN" value="http://godesigner.ru/users/mypitches" name="MERCH_URL">
                                 <input type="HIDDEN" value="71846655" name="TERMINAL">
-                                <input type="submit" id="paybutton" value="продолжить оплату" class="button" >
+                                <input type="submit" id="paybutton-online" value="продолжить оплату" class="button" style="background: #a2b2bb;">
                             </form>
+                        </td>
+                    </tr>
+                    <tr id="online-images">
+                        <td colspan="4" style="padding: 20px 0 0 40px;">
+                            <img src="/img/s3_master.png" alt="">
                         </td>
                     </tr>
                     <tr>

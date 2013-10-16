@@ -121,7 +121,7 @@ endswitch;
 
                     $html = '<div class="set-price"><p>
                         <label style="width:260px;">' . $text . '</label>
-                        <input type="text" ' . $mult . ' name="site-sub" id="sub-site" placeholder="1" class="initial-price specific-prop" style="width:242px;"/>
+                        <input type="text" ' . $mult . ' name="site-sub" id="sub-site" value="1" class="initial-price specific-prop" style="width:242px;"/>
                     </p></div>';
                     return $html;
                 }?>
@@ -134,7 +134,7 @@ endswitch;
                 <div class="groupc">
                 <p>
                     <label>Выберите вид копирайтинга</label>
-                    <input type="hidden" id="copybaseminprice" value="5000"/>
+                    <input type="hidden" id="copybaseminprice" value="<?php echo COPY_BASE_PRICE;?>"/>
                 </p>
                 <ul class="radiooptionssite">
                     <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" checked="checked" style="vertical-align: middle;"><span class="radiospan">Имя / название</span></label></li>
@@ -149,8 +149,9 @@ endswitch;
 						<label>Сумма вознаграждения для дизайнера (от <?=$this->moneyFormatter->formatMoney($category->minAward, array('suffix' => 'Р.'))?>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
 						<input type="text" name="" id="award" data-low="<?=$category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=$category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=$category->minAward?>" class="initial-price placeholder" placeholder="<?=$category->minAward?>" value="<?=$category->minAward?>">
 					</p>
-
-					<div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите.">
+                    <div class="clr"></div>
+					<!-- <div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
+					<div id="indicator" class="indicator low" data-normal="183" data-high="366">
 						<div class="bar">
 							<div class="line"></div>
 							<div class="shadow-b"></div>
@@ -161,6 +162,7 @@ endswitch;
 							<li>самое то!</li>
 						</ul>
 					</div><!-- .indicator -->
+					<img src="/img/comissions.png" style="margin-bottom: 30px;">
 				</div><!-- .set-price -->
 
             <?php if($category->id == 11):?>
@@ -202,7 +204,10 @@ endswitch;
             line-height: 41px;
             text-align: center;
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
-            <script>var fillBrief = <?php echo ($this->session->read('fillbrief')) ? 1 : 0; ?>;</script>
+            <script>
+            var fillBrief = <?php echo ($this->session->read('fillbrief')) ? 1 : 0; ?>;
+            var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
+            </script>
                     <div class="ribbon complete-brief">
                         <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
                         <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
@@ -487,27 +492,57 @@ endswitch;
                     <table>
                         <tr>
                             <td>
-                                <input type="radio" name="1" class="rb1" data-pay="online" checked>
+                                <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
+                            </td>
+                            <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                                Оплата пластиковыми картами и эл. деньгами <br>через PayMaster
                             </td>
                             <td>
-                                <img src="/img/s3_card.png" alt="">
+                                <form action="" method="post">
+                                    <input type="submit" id="paybutton-paymaster" value="продолжить оплату" class="button" style="background: #a2b2bb;">
+                                </form>
                             </td>
-                            <td class="s3_text">
-                                Пластиковая карта ВИЗА, МАСТЕРКАРД<br/>(VISA, MASTERCARD)
+                        </tr>
+                        <tr id="paymaster-images">
+                            <td colspan="4" style="padding: 20px 0 0 40px; text-transform: uppercase;">
+                                <img src="/img/s3_paymaster.png" alt="">
+                                <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
+                            </td>
+                        </tr>
+                        <tr id="paymaster-select" style="display: none;">
+                            <td colspan="4">
+                                <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
+                                <script type='text/javascript' src='https://paymaster.ru/widget/Basic/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=100&LMI_PAYMENT_DESC=Test+payment&LMI_CURRENCY=RUB'></script>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><div class="g_line"><i>или</i></div></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="1" class="rb1" data-pay="online">
+                            </td>
+                            <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                                Оплата пластиковыми картами <br>через Мастер-Банк
                             </td>
                             <td>
                                 <form action="https://pay.masterbank.ru/acquiring" method="post">
                                     <input type="HIDDEN" value="" name="ORDER" id="order-id">
-									<input type="HIDDEN" value="" name="AMOUNT" id="order-total">
-									<input type="HIDDEN" value="" name="TIMESTAMP" id="order-timestamp">
-									<input type="HIDDEN" value="" NAME="SIGN" id="order-sign">
-									<input type="HIDDEN" value="http://godesigner.ru/users/mypitches" name="MERCH_URL">
-									<input type="HIDDEN" value="71846655" name="TERMINAL">
-                                    <input type="submit" id="paybutton" value="продолжить оплату" class="button" >
+                                    <input type="HIDDEN" value="" name="AMOUNT" id="order-total">
+                                    <input type="HIDDEN" value="" name="TIMESTAMP" id="order-timestamp">
+                                    <input type="HIDDEN" value="" NAME="SIGN" id="order-sign">
+                                    <input type="HIDDEN" value="http://godesigner.ru/users/mypitches" name="MERCH_URL">
+                                    <input type="HIDDEN" value="71846655" name="TERMINAL">
+                                    <input type="submit" id="paybutton-online" value="продолжить оплату" class="button" style="background: #a2b2bb;">
                                 </form>
                             </td>
                         </tr>
-						<tr>
+                        <tr id="online-images">
+                            <td colspan="4" style="padding: 20px 0 0 40px;">
+                                <img src="/img/s3_master.png" alt="">
+                            </td>
+                        </tr>
+                        <tr>
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
                         </tr>
                         <tr>
@@ -518,7 +553,7 @@ endswitch;
                                 <img src="/img/s3_rsh.png" alt="">
                             </td>
                             <td class="s3_text">
-                                Перевод на расчетный счёт<br/>(Безналичный платеж через банк)
+                                Перевод  на расчетный счёт<br/>(Безналичный платеж через банк)
                             </td>
                             <td></td>
                         </tr>

@@ -1,10 +1,8 @@
 <div class="groupc">
 
-    <p>
-        <label>Сколько единиц упаковки нужно разработать</label>
-        <input type="text" name="pack-units" placeholder="" class="specific-prop">
-    </p>
-
+    <?php if($pitch->billed == 1):?>
+    <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+    <?php endif?>
 
     <p><label>Опишите целевую аудиторию</label></p>
 
@@ -36,7 +34,7 @@
         </li>
     </ul><!-- .logo-properties -->
 
-    
+
 
     <p>
         <label>Предпочтения</label>

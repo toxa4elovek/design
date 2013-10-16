@@ -154,27 +154,19 @@ $(document).ready(function() {
         var input = $('#award');
         var minAward = input.data('minimalAward');
         $('#indicator').removeClass('low normal good');
-        //console.log('award numeric ' + minAward);
         if(minAward > input.val()) {
             input.val(minAward);
             input.addClass('initial-price');
             $('#indicator').addClass('low');
+            Cart.transferFee = feeRates.low;
         }else {
             input.removeClass('initial-price');
-            if(input.val() < input.data('normal')) {
-                $('#indicator').addClass('low');
-            }else if (input.val() < input.data('high')){
-                $('#indicator').addClass('normal');
-            }else {
-                $('#indicator').addClass('good');
-            }
+            drawIndicator(input, input.val());
         }
     });
 
     $('#award').keyup(function() {
         var input = $(this);
-        var minAward = input.data('minimalAward');
-        $('#indicator').removeClass('low normal good');
 
         input.removeClass('initial-price');
         if((input.val() == '') && (!input.is(':focus'))) {
@@ -185,13 +177,7 @@ $(document).ready(function() {
         }else {
             var value = input.val();
         }
-        if(value < input.data('normal')) {
-            $('#indicator').addClass('low');
-        }else if (value < input.data('high')){
-            $('#indicator').addClass('normal');
-        }else {
-            $('#indicator').addClass('good');
-        }
+        drawIndicator(input, value);
         Cart.updateOption($(this).data('optionTitle'), value);
     })
 
@@ -454,22 +440,9 @@ $(document).ready(function() {
     })*/
 
     $('#sub-site').keyup(function() {
-        var input = $(this);
-        var award = $('#award')
-        var defLow = award.data('lowDef');
-        var defNormal = award.data('normalDef');
-        var defHigh = award.data('highDef');
-        var mult = $(this).data('mult');
-        if((typeof(mult) == undefined) || (!mult)) {
-            mult = parseInt(award.data('lowDef')) / 2;
-        }
-        var extraNormal = (defNormal - defLow);
-        var extraHigh = (defHigh - defLow);
-
-        var minValue = (($(this).val() - 1) * mult) + defLow;
-        $('#award').data('minimalAward', minValue);
-        $('#award').blur();
-    })
+        $(this).addClass('freeze');
+        $(this).change();
+    });
 
     $('input[name=package-type]').on('change', function() {
         var newMinValue = $(this).data('minValue');
@@ -499,8 +472,17 @@ $(document).ready(function() {
     });
 
     $('#sub-site').change(function() {
-        if(($(this).val() == '') || ($(this).val() == 0)) {
-            $(this).val('1');
+        var value = $(this).val();
+        if ($(this).hasClass('freeze')) {
+            $(this).removeClass('freeze');
+            if(($(this).val() == '') || ($(this).val() == 0)) {
+                value = 1;
+            }
+        } else {
+            if(($(this).val() == '') || ($(this).val() == 0)) {
+                $(this).val('1');
+                value = 1;
+            }
         }
         var award = $('#award');
         var defLow = award.data('lowDef');
@@ -513,7 +495,7 @@ $(document).ready(function() {
         var extraNormal = (defNormal - defLow);
         var extraHigh = (defHigh - defLow);
 
-        var minValue = (($(this).val() - 1) * mult) + defLow;
+        var minValue = ((value - 1) * mult) + defLow;
         award.data('minimalAward', minValue);
         award.data('low', minValue);
         award.data('normal', minValue + extraNormal);
@@ -522,13 +504,12 @@ $(document).ready(function() {
         //$('#award').data('highDef', minValue + 18000);
         //$('#award').data('normalDef', minValue + 8000);
         award.blur();
-
     })
 
     $('#sub-site').focus(function(){
         $(this).removeClass('initial-price');
-    })
-
+        $(this).removeClass('freeze');
+    });
 
     $('input[name=isGuaranteed]').on('change', function() {
         var radioButton = $(this);
@@ -587,14 +568,33 @@ $(document).ready(function() {
         tooltipBGColor: 'transparent'
     })
 
+    $(document).on('click', 'td.s3_text, td.s3_h', function() {
+        $('.rb1', $(this).prevAll(':last')).click();
+    });
 
     $('.rb1').change(function() {
-        if($(this).data('pay') == 'online') {
-            $("#paybutton").removeAttr('style');
-            $('#s3_kv').hide();
-        }else {
-            $("#paybutton").css('background', '#a2b2bb');
-            $('#s3_kv').show();
+        switch ($(this).data('pay')) {
+            case 'paymaster':
+                $("#paybutton-paymaster").removeAttr('style');
+                $("#paybutton-online").css('background', '#a2b2bb');
+                $("#paymaster-images").hide();
+                $("#paymaster-select").show();
+                $('#s3_kv').hide();
+                break;
+            case 'online':
+                $("#paybutton-online").removeAttr('style');
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').hide();
+                break;
+            case 'offline':
+                $("#paybutton-online").css('background', '#a2b2bb');
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').show();
+                break;
         }
     });
 
@@ -691,6 +691,7 @@ $(document).ready(function() {
     }
 
     checkReferal();
+    drawIndicator($('#award'), $('#award').val());
 
 });
 
@@ -748,6 +749,38 @@ function checkRequired(form) {
     return required;
 }
 
+function drawIndicator(input, value) {
+    $('#indicator').removeClass('low normal good');
+    var fullPx = $('#indicator').width();
+    var normalPx = $('#indicator').data('normal');
+    var highPx = $('#indicator').data('high');
+    var line = $('.line', '#indicator');
+    if (value < input.data('normal')) {
+        var ratio = (input.data('normal') - input.data('low')) / (value - input.data('low'));
+        $('#indicator').addClass('low');
+        Cart.transferFee = feeRates.low;
+        var width = normalPx / ratio;
+        if (width < 10) {
+            width = 10;
+        }
+        line.width(width);
+    } else if (value < input.data('high')) {
+        var ratio = (input.data('high') - input.data('normal')) / (value - input.data('normal'));
+        $('#indicator').addClass('normal');
+        Cart.transferFee = feeRates.normal;
+        line.width(normalPx + ((highPx - normalPx) / ratio));
+    } else {
+        var ratio = (input.data('high') * 3 - input.data('high')) / (value - input.data('high'));
+        $('#indicator').addClass('good');
+        Cart.transferFee = feeRates.good;
+        var width = highPx + ((fullPx - highPx) / ratio);
+        if (width > (fullPx - 10)) {
+            width = fullPx - 10;
+        }
+        line.width(width);
+    }
+}
+
 //$('input[name=category_id]').val()
 
 /* Class */
@@ -765,7 +798,7 @@ function FeatureCart() {
     this.fileIds = [];
     this.specificTemplates = [];
     this.validatetype = 1;
-    this.transferFee = 0.145;
+    this.transferFee = feeRates.low;
     this.transferFeeDiscount = 0;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
@@ -829,6 +862,16 @@ function FeatureCart() {
         $.each(data, function(index, object) {
             if(object.name == 'Экспертное мнение') {
                 $('#expert-label').html('+' + object.value + '.-');
+            }
+            var feeOption = object.name.indexOf(self.transferFeeKey);
+            if (feeOption != -1) {
+                var percent = object.name.substr(self.transferFeeKey.length + 1, 4);
+                if (percent.length > 0) {
+                    self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
+                } else { // For older pitches
+                    self.transferFee = feeRates.good;
+                }
+                object.name = self.transferFeeKey;
             }
             if((object.value != 0)) {
                 self.updateOption(object.name, parseInt(object.value));
@@ -1044,7 +1087,11 @@ function FeatureCart() {
     this._renderOptions = function() {
         var html = '';
         $.each(self.content, function(key, value) {
-            html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            if (key == self.transferFeeKey) {
+                html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>';
+            } else {
+                html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            }
         });
         self.container.html(html);
     };

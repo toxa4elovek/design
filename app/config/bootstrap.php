@@ -96,6 +96,12 @@ require __DIR__ . '/bootstrap/validation.php';
 	define('REFERAL_DISCOUNT', 300);
 	define('REFERAL_AWARD', 500);
 
+	define('FEE_LOW', 0.245);
+	define('FEE_NORMAL', 0.195);
+	define('FEE_GOOD', 0.145);
+
+	define('COPY_BASE_PRICE', 5000);
+
 date_default_timezone_set('Europe/Moscow');
 
 /*
