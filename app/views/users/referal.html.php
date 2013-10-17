@@ -37,19 +37,23 @@
                             </div>
                             <div style="float: left; text-align: left;">
                             <select name="phone-operator" id="phone-operator" style="height: 20px; width: 300px; border: none; border-radius: 2px;">
+                                <option value="0">Выберите провайдера</option>
                                 <optgroup label="Россия">
-                                    <option>МТС</option>
-                                    <option>Билайн</option>
-                                    <option>Мегафон</option>
-                                    <option>Теле-2</option>
+                                    <option value="1">МТС</option>
+                                    <option value="2">Билайн</option>
+                                    <option value="293">Мегафон</option>
+                                    <option value="31">Теле-2</option>
                                 </optgroup>
                                 <optgroup label="Беларусь">
-                                    <option>МТС Беларусь</option>
-                                    <option>Мегафон Беларусь</option>
+                                    <option value="620">МТС Беларусь</option>
+                                    <option value="621">Velcom</option>
+                                    <option value="623">Life</option>
+                                    <option value="622">DIALLOG</option>
                                 </optgroup>
                                 <optgroup label="Украина">
-                                    <option>МТС</option>
-                                    <option>Билайн</option>
+                                    <option value="41">Киевстар</option>
+                                    <option value="42">МТС Украина</option>
+                                    <option value="253">Life</option>
                                 </optgroup>
                             </select>
                             <br>
