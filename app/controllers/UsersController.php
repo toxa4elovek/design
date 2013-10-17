@@ -1226,7 +1226,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function checkPhone() {
         if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
-            if (!preg_match("/^[0-9]{11,11}+$/", $this->request->data['userPhone']) || empty($this->request->data['phoneOperator'])) {
+            if (!preg_match("/^[0-9]{11,12}+$/", $this->request->data['userPhone']) || empty($this->request->data['phoneOperator'])) {
                 return json_encode(false);
             }
 
@@ -1238,10 +1238,12 @@ class UsersController extends \app\controllers\AppController {
             // 11-ти значный то для корректной отправки через наш API необходимо,
             // чтобы номер начинался с 7, проверим это
 
-            $first = substr($this->request->data['userPhone'], "0", 1);
+            /* For Russian Phones Only
+             *
+             * $first = substr($this->request->data['userPhone'], "0", 1);
             if ($first != 7) {
                 return json_encode(false);
-            }
+            } */
 
             return User::phoneValidationStart($user->id, $this->request->data['userPhone'], $this->request->data['phoneOperator']);
         }
