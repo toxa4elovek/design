@@ -35,8 +35,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="text" id="userPhone" name="userPhone" placeholder="" data-placeholder="" style="width: 270px; float: left; margin-top: 12px;">
-                            <input type="submit" class="button" style="width: 300px; float: right;" value="Получить код">
+                            <div style="float: left; text-align: left;">
+                            <select name="phone-operator" id="phone-operator" style="height: 20px; width: 300px; border: none; border-radius: 2px;">
+                                <optgroup label="Россия">
+                                    <option>МТС</option>
+                                    <option>Билайн</option>
+                                    <option>Мегафон</option>
+                                    <option>Теле-2</option>
+                                </optgroup>
+                                <optgroup label="Беларусь">
+                                    <option>МТС Беларусь</option>
+                                    <option>Мегафон Беларусь</option>
+                                </optgroup>
+                                <optgroup label="Украина">
+                                    <option>МТС</option>
+                                    <option>Билайн</option>
+                                </optgroup>
+                            </select>
+                            <br>
+                            <span class="" style="font: 24px/50px Arial; color: #666; text-shadow: 0 1px 0 #fff;">+</span>
+                            <input type="text" id="userPhone" name="userPhone" placeholder="Введите номер телефона" data-placeholder="Введите номер телефона" style="width: 260px; margin-top: -2px;">
+                            </div>
+                            <input type="submit" class="button" style="width: 300px; height: 70px; float: right;" value="Получить код">
                             <div class="clr"></div>
                             <div class="clr"></div>
                         </form>
