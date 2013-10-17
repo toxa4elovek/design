@@ -1189,8 +1189,10 @@ $(document).ready(function() {
             'userPhone': $('#userPhone').val(),
             'phoneOperator': $('#phone-operator').val()
         }, function(result) {
-            if (result == 'false') {
+            if (result == false) {
                 Ref.tooltipPhone('К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.');
+            } else if (result == "limit") {
+                Ref.tooltipPhone('К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.');
             } else {
                 if (result.respond.indexOf('error') != -1) {
                     Ref.tooltipPhone('Произошел сбой доставки SMS-сообщения. Попробуйте позже.');
@@ -1200,7 +1202,7 @@ $(document).ready(function() {
                     Ref.reset(result);
                 }
             }
-        });
+        }, 'json');
     });
 
     /*

@@ -76,7 +76,7 @@
                             </div>
                             <span class="referal-title">Ваш телефон +<span class="phone-number"><?=$user->phone;?></span></span>
                             <a href="/users/deletephone" class="phone-delete" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a><br />
-                            <a href="/users/checkphone" class="code-resend" data-phone="<?=$user->phone;?>" style="padding-left: 20px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a><br />
+                            <a href="/users/checkphone" class="code-resend" data-phone="<?=$user->phone;?>" data-phone-operator="<?=$user->phone_operator;?>" style="padding-left: 20px; background: url('/img/refresh.png') top left no-repeat;">Выслать код повторно</a><br />
                             <p class="regular" style="margin: 20px 0;">Подтвердите свой номер телефона, на счёт которого будет поступать вознаграждение,<br /> для получения личной ссылки.</p>
                             <input type="text" id="verifyCode" name="verifyCode" placeholder="Введите код" data-placeholder="Введите код" style="width: 270px; float: left; margin-top: 12px;">
                             <input type="submit" class="button" style="width: 300px; float: right;" value="Подтвердить код">

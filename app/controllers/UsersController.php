@@ -1230,6 +1230,25 @@ class UsersController extends \app\controllers\AppController {
                 return json_encode(false);
             }
 
+            // SMS Spam Prevention
+            if ($smsCount = Session::read('user.smsCount')) {
+                if (end($smsCount) > (time() - HOUR)) {
+                    $i = 1;
+                    while ((prev($smsCount) > (time() - HOUR)) && $i < 10) {
+                        $i++;
+                    }
+                    if ($i >= 10) {
+                        return json_encode('limit');
+                    }
+                    $smsCount[] = time();
+                } else {
+                    $smsCount = array(time());
+                }
+            } else {
+                $smsCount = array(time());
+            }
+            Session::write('user.smsCount', $smsCount);
+
             // Добавляем семерку к номеру телефону, если мы рассылаем по России.
 
             //$this->request->data['userPhone'] = "7" . $this->request->data['userPhone'];
