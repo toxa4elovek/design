@@ -613,7 +613,7 @@ $(document).ready(function() {
                     var descBefore = desc.slice(0, viewLength - 1);
                     descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
                     var descAfter = desc.slice(descBefore.length);
-                    $('.solution-description').text(descBefore);
+                    $('.solution-description').html(descBefore);
                     $('.description-more').show(500);
                     $('.description-more').on('click', function() {
                         $('.solution-description').append(descAfter);
