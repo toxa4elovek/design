@@ -1162,6 +1162,13 @@ function Referal() {
             $('.block-3').fadeIn(600);
         }
     };
+    this.tooltipPhone = function(text) {
+        var position = $('#userPhone').position();
+        position.top += 45;
+        $('p', '#tooltip-phone').text(text);
+        $('#tooltip-phone').css(position).fadeIn(200);
+        setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+    };
 }
 $(document).ready(function() {
     if (window.location.pathname.match(/users\/referal/)) {
@@ -1174,25 +1181,19 @@ $(document).ready(function() {
      */
     $(document).on('submit', '#referal-1', function(e) {
         e.preventDefault();
+        if ($('#phone-operator').val() == 0) {
+            Ref.tooltipPhone('Выберите вашего провайдера!');
+            return false;
+        }
         $.post($(this).attr('action') + '.json', {
             'userPhone': $('#userPhone').val(),
             'phoneOperator': $('#phone-operator').val()
         }, function(result) {
             if (result == 'false') {
-                // Tooltip
-                var position = $('#userPhone').position();
-                position.top += 55;
-                $('p', '#tooltip-phone').text('К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.');
-                $('#tooltip-phone').css(position).fadeIn(200);
-                setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+                Ref.tooltipPhone('К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.');
             } else {
                 if (result.respond.indexOf('error') != -1) {
-                    // Tooltip
-                    var position = $('#userPhone').position();
-                    position.top += 55;
-                    $('p', '#tooltip-phone').text('Произошел сбой доставки SMS-сообщения. Попробуйте позже.');
-                    $('#tooltip-phone').css(position).fadeIn(200);
-                    setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+                    Ref.tooltipPhone('Произошел сбой доставки SMS-сообщения. Попробуйте позже.');
                 } else {
                     $('.phone-number', '.referal-title').text(result.phone);
                     $('.code-resend').data('phone', result.phone);
