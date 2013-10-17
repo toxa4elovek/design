@@ -113,3 +113,16 @@ td.s3_h {
 	width:190px;	
 	padding-left:25px;
 }
+/*
+ * Paymaster Widget
+ */
+.pmwidget.mod {
+	background: #e2e2e2;
+	box-shadow: none;
+}
+#step3 div.pmwidget h1.pmheader.mod {
+	font: 14px/17px Arial;
+	color: #666;
+	text-transform: none;
+	text-align: left;
+}

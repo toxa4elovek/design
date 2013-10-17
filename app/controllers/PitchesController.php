@@ -43,7 +43,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'callback', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
 	);
 
     public function blank() {
@@ -603,7 +603,26 @@ class PitchesController extends \app\controllers\AppController {
     }
 
     function paymaster() {
-        Logger::write('info', serialize($this->request->data), array('name' => 'paymaster'));
+        if (!empty($this->request->data)
+        && !empty($this->request->data['LMI_MERCHANT_ID'])
+        && !empty($this->request->data['LMI_PAYMENT_SYSTEM'])
+        && !empty($this->request->data['LMI_CURRENCY'])
+        && !empty($this->request->data['LMI_PAYMENT_AMOUNT'])
+        && !empty($this->request->data['LMI_PAYMENT_NO'])
+        && !empty($this->request->data['LMI_PAYMENT_DESC'])
+        && !empty($this->request->data['LMI_SYS_PAYMENT_DATE'])
+        && !empty($this->request->data['LMI_SYS_PAYMENT_ID'])
+        && !empty($this->request->data['LMI_PAID_AMOUNT'])
+        && !empty($this->request->data['LMI_PAID_CURRENCY'])
+        && !empty($this->request->data['LMI_SIM_MODE'])
+        && !empty($this->request->data['LMI_PAYER_IDENTIFIER'])
+        && !empty($this->request->data['LMI_HASH'])) {
+            Logger::write('info', serialize($this->request->data), array('name' => 'paymaster'));
+            $transaction = Paymaster::create();
+            $transaction->set($this->request->data);
+            $transaction->save();
+        }
+        header("HTTP/1.0 200 OK");
         die();
     }
 
