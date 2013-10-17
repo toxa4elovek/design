@@ -160,6 +160,7 @@ class UsersController extends \app\controllers\AppController {
 	public function deletePhone() {
 	    if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
 	        $user->phone = 0;
+	        $user->phone_operator = 0;
 	        $user->phone_code = 0;
 	        $user->phone_valid = 0;
 	        $user->save(null, array('validate' => false));
@@ -1225,7 +1226,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function checkPhone() {
         if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
-            if (!preg_match("/^[0-9]{11,11}+$/", $this->request->data['userPhone'])) {
+            if (!preg_match("/^[0-9]{11,11}+$/", $this->request->data['userPhone']) || empty($this->request->data['phoneOperator'])) {
                 return json_encode(false);
             }
 
@@ -1242,7 +1243,7 @@ class UsersController extends \app\controllers\AppController {
                 return json_encode(false);
             }
 
-            return User::phoneValidationStart($user->id, $this->request->data['userPhone']);
+            return User::phoneValidationStart($user->id, $this->request->data['userPhone'], $this->request->data['phoneOperator']);
         }
         $this->redirect('/');
     }

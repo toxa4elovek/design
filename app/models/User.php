@@ -838,9 +838,10 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function phoneValidationStart($userId, $phone) {
+    public static function phoneValidationStart($userId, $phone, $phoneOperator) {
         if (($user = self::first($userId)) && !empty($phone)) {
             $user->phone = $phone;
+            $user->phone_operator = $phoneOperator;
             $user->phone_code = self::generatePhoneCode();
             $user->phone_valid = 0;
             $user->save(null, array('validate' => false));

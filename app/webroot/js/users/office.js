@@ -1176,6 +1176,7 @@ $(document).ready(function() {
         e.preventDefault();
         $.post($(this).attr('action') + '.json', {
             'userPhone': $('#userPhone').val(),
+            'phoneOperator': $('#phone-operator').val()
         }, function(result) {
             if (result == 'false') {
                 // Tooltip

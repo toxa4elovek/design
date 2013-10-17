@@ -36,20 +36,20 @@
                                 </div>
                             </div>
                             <div style="float: left; text-align: left;">
-                            <select style="height: 20px; width: 300px; border: none; border-radius: 2px;">
+                            <select name="phone-operator" id="phone-operator" style="height: 20px; width: 300px; border: none; border-radius: 2px;">
                                 <optgroup label="Россия">
-                                    <option value="mts-rus">МТС</option>
-                                    <option value="bee-rus">Билайн</option>
-                                    <option value="meg-rus">Мегафон</option>
-                                    <option value="tele-rus">Теле-2</option>
+                                    <option>МТС</option>
+                                    <option>Билайн</option>
+                                    <option>Мегафон</option>
+                                    <option>Теле-2</option>
                                 </optgroup>
                                 <optgroup label="Беларусь">
-                                    <option value="mts-blr">МТС Беларусь</option>
-                                    <option value="meg-blr">Мегафон Беларусь</option>
+                                    <option>МТС Беларусь</option>
+                                    <option>Мегафон Беларусь</option>
                                 </optgroup>
                                 <optgroup label="Украина">
-                                    <option value="mts-ukr">МТС</option>
-                                    <option value="bee-ukr">Билайн</option>
+                                    <option>МТС</option>
+                                    <option>Билайн</option>
                                 </optgroup>
                             </select>
                             <br>
