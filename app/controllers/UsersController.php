@@ -1086,8 +1086,24 @@ class UsersController extends \app\controllers\AppController {
         );
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
-            $res = Cache::write('default', 'twitterstream', $data);
-            var_dump($data);
+            $censoredTweets = array();
+            $censoredTweets['statuses'] = array();
+            foreach($data['statuses'] as $key => &$tweet) {
+                $delete = false;
+                if(isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
+                    foreach($tweet['entities']['urls'] as $url) {
+                        if($matches = preg_match('*godesigners.ru/\?ref\=*', $url['expanded_url'])) {
+                            $delete = true;
+                        }
+                    }
+                }
+                if($delete == false) {
+                    $censoredTweets['statuses'][$key] = $tweet;
+                }
+            }
+            $res = Cache::write('default', 'twitterstream', $censoredTweets);
+            echo '<pre>';
+            var_dump($censoredTweets['statuses']);
             die();
         }else {
             echo '<pre>';

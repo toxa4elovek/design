@@ -898,7 +898,7 @@ class User extends \app\models\AppModel {
             $pitches = Pitch::count(array('conditions' => array('user_id' => $user->id)));
             return $pitches;
         }
-        return false;
+        return 0;
     }
 
     public static function setReferalCookie($ref) {

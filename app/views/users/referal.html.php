@@ -21,7 +21,7 @@
                     <input type="hidden" id="prop-phone_valid" value="<?=$user->phone_valid;?>">
                     <h1 class="separator-flag">ПРИГЛАШАЙ ДРУЗЕЙ</h1>
                     <span class="referal-title">Вы получите 500 рублей на телефон,<br /> когда ваши друзья создадут питч на GoDesigner</span>
-                    <a href="#">Правила и условия</a>
+                    <a href="/answers/view/90" target="_blank">Правила и условия</a>
                     <br />
                     <br />
                     <br />
@@ -47,13 +47,13 @@
                                 <optgroup label="Беларусь">
                                     <option value="620">МТС Беларусь</option>
                                     <option value="621">Velcom</option>
-                                    <option value="623">Life</option>
+                                    <option value="623">Life Беларусь</option>
                                     <option value="622">DIALLOG</option>
                                 </optgroup>
                                 <optgroup label="Украина">
                                     <option value="41">Киевстар</option>
                                     <option value="42">МТС Украина</option>
-                                    <option value="253">Life</option>
+                                    <option value="253">Life Украина</option>
                                 </optgroup>
                             </select>
                             <br>
@@ -89,7 +89,7 @@
                             <a href="/users/deletephone" class="phone-delete" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
                             <div class="clr" style="margin: 30px 0;"></div>
                             <input type="text" name="" value="http://www.godesigner.ru/?ref=<?=$user->referal_token;?>" style="width: 270px; float: left; margin-top: 12px; font-size: 15px; font-weight: bold; color: #999;">
-                            <input type="submit" class="button" style="width: 300px; float: right;" value="Отправить по почте">
+                            <!--input type="submit" class="button" style="width: 300px; float: right;" value="Отправить по почте"-->
                             <div class="clr"></div>
                         </form>
                         <?php
@@ -99,7 +99,7 @@
                         ?>
                         <a href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&p[title]=<?php echo urlencode($shareTitleFacebook);?>&p[summary]=<?php echo urlencode($shareTextFacebook);?>" class="button facebook small social-popup" style="width: 176px;">Поделиться в facebook</a>
                         <a href="http://www.vkontakte.ru/share.php?url=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&title=<?php echo urlencode($shareTitleFacebook);?>&description=<?php echo urlencode($shareTextFacebook);?>&noparse=1" class="button vkontakte small social-popup" style="width: 176px;">Поделиться vkontakte</a>
-                        <a href="https://twitter.com/share?url=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&text=<?php echo urlencode($shareTextTwitter);?>" class="button twitter small social-popup" style="width: 176px;">Поделиться в twitter</a>
+                        <a href="https://twitter.com/share?url=http://www.godesigners.ru/?ref=<?=$user->referal_token?>&text=<?php echo urlencode($shareTextTwitter);?>" class="button twitter small social-popup" style="width: 176px;">Поделиться в twitter</a>
                         <?php if (count($refPitches) > 0):?>
                             <div class="separator-flag-empty">
                                 <img src="/img/text-druzya.png" alt="Друзья на GoDesigner" />

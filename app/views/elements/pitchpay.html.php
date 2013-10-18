@@ -4,7 +4,7 @@
     <div id="P_card">
         <table>
             <?php if ($pitch->category_id != 10):?>
-            <tr class="paymaster-section">
+            <!--tr class="paymaster-section">
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                 </td>
@@ -31,7 +31,7 @@
             </tr>
             <tr class="paymaster-section">
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
-            </tr>
+            </tr-->
             <?php endif;?>
             <tr>
                 <td>
