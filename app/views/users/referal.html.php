@@ -88,7 +88,7 @@
                             <span class="referal-title">Ваш телефон +<span class="phone-number"><?=$user->phone;?></span></span>
                             <a href="/users/deletephone" class="phone-delete" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
                             <div class="clr" style="margin: 30px 0;"></div>
-                            <input type="text" name="" placeholder="https://www.airbnb.ru/referrals" data-placeholder="https://www.airbnb.ru/referrals" style="width: 270px; float: left; margin-top: 12px;">
+                            <input type="text" name="" value="http://www.godesigner.ru/?ref=<?=$user->referal_token;?>" style="width: 270px; float: left; margin-top: 12px; font-size: 15px; font-weight: bold; color: #999;">
                             <input type="submit" class="button" style="width: 300px; float: right;" value="Отправить по почте">
                             <div class="clr"></div>
                         </form>
@@ -100,7 +100,7 @@
                         <a href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&p[title]=<?php echo urlencode($shareTitleFacebook);?>&p[summary]=<?php echo urlencode($shareTextFacebook);?>" class="button facebook small social-popup" style="width: 176px;">Поделиться в facebook</a>
                         <a href="http://www.vkontakte.ru/share.php?url=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&title=<?php echo urlencode($shareTitleFacebook);?>&description=<?php echo urlencode($shareTextFacebook);?>&noparse=1" class="button vkontakte small social-popup" style="width: 176px;">Поделиться vkontakte</a>
                         <a href="https://twitter.com/share?url=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&text=<?php echo urlencode($shareTextTwitter);?>" class="button twitter small social-popup" style="width: 176px;">Поделиться в twitter</a>
-                        <?php if (!empty($user->friends)):?>
+                        <?php if (count($refPitches) > 0):?>
                             <div class="separator-flag-empty">
                                 <img src="/img/text-druzya.png" alt="Друзья на GoDesigner" />
                             </div>
@@ -113,31 +113,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">irenfrid@gmail.com</span></td>
-                                        <td width="100" class="ref-status">приглашена</td>
-                                        <td width="198">—</td>
+                                <?php foreach ($refPitches as $refPitch):
+                                    $refStatus = 'присоедин.';
+                                    $refClass = '';
+                                    $refSum = '—';
+                                    if (($refPitch->billed == 1) && ($refPitch->published == 1)) {
+                                        $refStatus = 'оплатил питч';
+                                        $refClass = ' class="active"';
+                                        $refSum = '+500р.-';
+                                    }?>
+                                    <tr<?php echo $refClass;?>>
+                                        <td width="308"><img class="referal-avatar" src="<?=$this->avatar->show($refPitch->user->data(), false, true);?>" /><span style="float: left;"><?=$refPitch->user->email;?></span></td>
+                                        <td width="100" class="ref-status"><?=$refStatus;?></td>
+                                        <td width="198"><?php echo $refSum;?></td>
                                     </tr>
-                                    <tr>
-                                        <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
-                                        <td width="100" class="ref-status">присоедин.</td>
-                                        <td width="198">—</td>
-                                    </tr>
-                                    <tr class="active">
-                                        <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">George Kronberg</span></td>
-                                        <td width="100" class="ref-status">создал питч</td>
-                                        <td width="198">+500р.-</td>
-                                    </tr>
-                                    <tr>
-                                        <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
-                                        <td width="100" class="ref-status">присоедин.</td>
-                                        <td width="198">—</td>
-                                    </tr>
-                                    <tr>
-                                        <td width="308"><img class="referal-avatar" src="" /><span style="float: left;">tulenvarstitagasi@yahoo.com</span></td>
-                                        <td width="100" class="ref-status">присоедин.</td>
-                                        <td width="198">—</td>
-                                    </tr>
+                                <?php endforeach;?>
                                 </tbody>
                             </table>
                         <?php endif;?>

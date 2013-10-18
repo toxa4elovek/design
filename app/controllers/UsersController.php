@@ -150,10 +150,19 @@ class UsersController extends \app\controllers\AppController {
 	        $user->referal_token = User::generateReferalToken();
 	        $user->save(null, array('validate' => false));
 	    }
+	    $refPitches = Pitch::all(array(
+	        'conditions' => array(
+	            'user_id' => array(
+	               '!=' => 0,
+	            ),
+	            'referal' => $user->id
+	        ),
+	        'with' => array('User'),
+	    ));
 	    if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-	        return compact('user');
+	        return compact('user', 'refPitches');
 	    } else {
-	        return $this->render(array('layout' => false, 'data' => compact('user')));
+	        return $this->render(array('layout' => false, 'data' => compact('user', 'refPitches')));
 	    }
 	}
 
