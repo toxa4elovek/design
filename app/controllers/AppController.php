@@ -159,6 +159,10 @@ class AppController extends \lithium\action\Controller {
         if (isset($_GET['promocode']) && !empty($_GET['promocode']) && (strlen($_GET['promocode']) == $promocodeLength)) {
             Session::write('promocode', $_GET['promocode']);
         }
+
+        if (!is_null($this->request->query['ref'])) {
+            User::setReferalCookie($this->request->query['ref']);
+        }
     }
 
     protected function popularQuestions() {

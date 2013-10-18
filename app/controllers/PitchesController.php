@@ -688,9 +688,6 @@ class PitchesController extends \app\controllers\AppController {
 		foreach($temp as $cat) {
 			$categories[$cat->id] = $cat;
 		}
-        if (!is_null($this->request->query['ref'])) {
-            User::setReferalCookie($this->request->query['ref']);
-        }
 		return compact('categories');
 	}
 
@@ -843,9 +840,6 @@ class PitchesController extends \app\controllers\AppController {
 	public function brief() {
 	    $referal = 0;
 	    $referalId = 0;
-	    if (!is_null($this->request->query['ref'])) {
-	        User::setReferalCookie($this->request->query['ref']);
-	    }
 	    if (isset($_COOKIE['ref']) && ($_COOKIE['ref'] != '')) {
             $referal = REFERAL_DISCOUNT;
             $referalId = $_COOKIE['ref'];
