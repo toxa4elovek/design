@@ -6,6 +6,7 @@ namespace app\models;
 use \lithium\util\Validator;
 use \lithium\util\String;
 */
+use \lithium\storage\Session;
 use \app\models\Addon;
 use \app\models\Category;
 use \app\models\Event;
@@ -18,6 +19,7 @@ use \app\models\Grade;
 use \app\models\Transaction;
 use \app\models\Paymaster;
 use \app\models\Receipt;
+use \app\models\Wincomment;
 use \app\extensions\helper\NumInflector;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
@@ -86,6 +88,18 @@ class Pitch extends \app\models\AppModel {
 		});
         self::applyFilter('finishPitch', function($self, $params, $chain){
             Event::createEvent($params['pitch']->id, 'PitchFinished', $params['pitch']->user_id, $params['solutions']->first()->id);
+            if (Session::read('user.isAdmin') == 1) {
+                $newComment = Wincomment::create();
+                $newComment->user_id = Session::read('user.id');
+                $newComment->created = date('Y-m-d H:i:s');
+                $newComment->solution_id = $params['solutions']->first()->id;
+                $newComment->text = 'Питч завершен по правилам сервиса GoDesigner.';
+                $newComment->step = 3;
+                $newComment->save();
+
+                $recipient = User::first($params['pitch']->user_id);
+                User::sendSpamWincomment($newComment, $recipient);
+            }
             $result = $chain->next($self, $params, $chain);
             return $result;
         });

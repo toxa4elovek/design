@@ -444,9 +444,13 @@ class UsersController extends \app\controllers\AppController {
     public function step4() {
         if(($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User'))))) {
             if(($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
-                (Session::read('user.id') == $solution->pitch->user_id) && ($solution->step == 3)) {
+                ((Session::read('user.id') == $solution->pitch->user_id) || (Session::read('user.isAdmin') == 1)) && ($solution->step == 3)) {
                 $user = User::first($solution->user_id);
-                User::sendSpamWinstep($user, $solution, '4');
+                if (Session::read('user.isAdmin') == 1) {
+                    User::sendSpamWinstepGo($user, $solution, '4');
+                } else {
+                    User::sendSpamWinstep($user, $solution, '4');
+                }
                 $solution->step = 4;
                 $solution->save();
                 Pitch::finishPitch($solution->pitch_id);
@@ -454,9 +458,13 @@ class UsersController extends \app\controllers\AppController {
             }
 
             if(($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
-                (Session::read('user.id') == $solution->pitch->user_id) && ($solution->pitch->category_id == 7)) {
+                ((Session::read('user.id') == $solution->pitch->user_id) || (Session::read('user.isAdmin') == 1)) && ($solution->pitch->category_id == 7)) {
                 $user = User::first($solution->user_id);
-                User::sendSpamWinstep($user, $solution, '4');
+                if (Session::read('user.isAdmin') == 1) {
+                    User::sendSpamWinstepGo($user, $solution, '4');
+                } else {
+                    User::sendSpamWinstep($user, $solution, '4');
+                }
                 $solution->step = 4;
                 $solution->save();
                 Pitch::finishPitch($solution->pitch_id);
