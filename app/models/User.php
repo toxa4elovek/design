@@ -517,6 +517,14 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function sendSpamWinstepGo($user, $solution, $step) {
+        $pitch = Pitch::first($solution->pitch_id);
+        $text = 'Ваши исходники одобрены администрацией GoDesigner, вы переходите на стадию выставления оценок.';
+        $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution);
+        SpamMailer::winstep($data);
+        return true;
+    }
+
     public static function sendPersonalComment($params) {
         $user = User::first($params['reply_to']);
         $pitch = Pitch::first($params['pitch_id']);
