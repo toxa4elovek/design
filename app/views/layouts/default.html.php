@@ -82,8 +82,7 @@
     ?>
     <meta property="og:image" content="<?=$url?>"/>
     <meta property="og:description" content="<?=$description?>"/>
-    <?php endif;?>
-    <?php if(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
+    <?php elseif(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
     /*if(!isset($solution->images['solution_galleryLargeSize'][0])):
         $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
     else:
@@ -98,8 +97,7 @@
     echo '<meta property="fb:admins" content="nyudmitriy"/>';
     echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
-    <?php endif;?>
-    <?php if(preg_match('@/pitches/details@', $_SERVER['REQUEST_URI'])):
+    <?php elseif (preg_match('@/pitches/details@', $_SERVER['REQUEST_URI'])):
     echo '<meta content="godesigner:pitch" property="og:type"/>';
     echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
     echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
@@ -107,7 +105,10 @@
     echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
     echo '<meta property="fb:admins" content="nyudmitriy"/>';
     echo '<meta property="fb:app_id" content="202765613136579"/>';
-    ?>
+    else:
+        echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
+
+        ?>
     <?php endif;?>
     <script>
         var showSocialPopup = false;
