@@ -21,4 +21,16 @@ class Solution extends \lithium\template\Helper {
         }
     }
 
+    function getShortDescription($solution, $length = 100) {
+        if (!empty($solution->description)) {
+            if (mb_strlen($solution->description, 'UTF-8') > $length) {
+                $res = mb_substr($solution->description, 0, $length - 1, 'UTF-8');
+                $res .= '...';
+                return $res;
+            }
+            return $solution->description;
+        }
+        return '';
+    }
+
 }
