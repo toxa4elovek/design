@@ -81,7 +81,7 @@ class PitchesController extends \app\controllers\AppController {
             $totalOwn = count($usersPitches);
         }
 
-        $limit = 30;
+        $limit = 50;
 		$page = 1;
 		$types = array(
 			'finished' => array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)'))),
