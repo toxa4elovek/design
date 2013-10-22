@@ -88,8 +88,8 @@
                             <span class="referal-title">Ваш телефон +<span class="phone-number"><?=$user->phone;?></span></span>
                             <a href="/users/deletephone" class="phone-delete" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
                             <div class="clr" style="margin: 30px 0;"></div>
-                            <input type="text" name="" value="http://www.godesigner.ru/?ref=<?=$user->referal_token;?>" style="width: 270px; float: left; margin-top: 12px; font-size: 15px; font-weight: bold; color: #999;">
-                            <!--input type="submit" class="button" style="width: 300px; float: right;" value="Отправить по почте"-->
+                            <input type="text" name="" value="http://www.godesigner.ru/?ref=<?=$user->referal_token;?>" style="width: 270px; float: left; margin-top: 3px; font-size: 15px; font-weight: bold; color: #999;">
+                            <a href="mailto:?subject=Это новый сервис для создания дизайна" class="button" style="width: 240px; float: right;">Отправить по почте</a>
                             <div class="clr"></div>
                         </form>
                         <?php
