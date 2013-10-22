@@ -1157,7 +1157,10 @@ class PitchesController extends \app\controllers\AppController {
                 }
             }
 
-            if((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
+            if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) < time()) && ($pitch->status == 0)) {
+                $sort = 'created';
+                $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+            } else if ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
                 //$sort = 'rating';
                 //$order = array('nominated' => 'desc', 'rating' => 'desc');
                 $sort = 'rating';
