@@ -81,11 +81,13 @@ $(document).ready(function() {
     })
 
     /* Social networks widgets modal*/
-    if (showSocialPopup) {
-        setTimeout(function() { appendSocials(); }, 5000);
-    }
-    if (needSocialWrite) {
-        $.post('/users/addsocial.json');
+    if ($.browser.mobile) {
+        if (showSocialPopup) {
+            setTimeout(function() { appendSocials(); }, 5000);
+        }
+        if (needSocialWrite) {
+            $.post('/users/addsocial.json');
+        }
     }
 
     $('input[name=case]').val('fu27fwkospf');

@@ -197,14 +197,14 @@
                             <?php if(($solution->hidden == 1) && ($pitch->user_id == $this->session->read('user.id'))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                                 <a style="<?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
                                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                                    <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="">
+                                    <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                                     <?php else:?>
                                         <?php
                                         $picCounter = 0;
                                         $extra = array();
                                         foreach($solution->images['solution_galleryLargeSize'] as $image):
                                             if($picCounter == 0):?>
-                                            <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="">
+                                            <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                                         <?php
                                             else:
                                                 $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
@@ -251,7 +251,7 @@
 
 
                                         <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                                        <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="">
+                                        <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                                         <?php else:?>
                                         <?php
                                         $picCounter = 0;
@@ -259,7 +259,7 @@
                                         foreach($solution->images['solution_galleryLargeSize'] as $image):
                                             if($picCounter == 0):
                                             ?>
-                                            <img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="">
+                                            <img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                                             <?php
                                             else:
                                                 $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
@@ -304,7 +304,7 @@
                             <ul style="margin-left: 78px;" class="right">
                                 <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
                                     <a href="#" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
-                                    <span style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
+                                    <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
                                     <?php if((($pitch->private != 1) && ($pitch->category_id != 7))):?>
                                     <div class="sharebar" style="padding:0 0 4px !important;background:url('/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;position:relative;z-index:10000;display: none; left: -10px; right: auto; top: 20px;height: 178px;width:288px;">
                                         <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">

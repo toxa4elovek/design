@@ -636,16 +636,19 @@ $(document).ready(function(){
 
                 $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
                     $(this).toggleClass('already');
+                    var counter = $('.value-likes')
+                    var solutionId = $(this).data('id')
+                    var newCount = parseInt(counter.text());
                     if($(this).hasClass('already')) {
-                        var counter = $('.value-likes')
-                        var solutionId = $(this).data('id')
-                        counter.html(parseInt(counter.html()) + 1);
+                        newCount++;
+                        counter.text(newCount);
+                        $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
                         $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
                         });
                     }else {
-                        var counter = $('.value-likes')
-                        var solutionId = $(this).data('id')
-                        counter.html(parseInt(counter.html()) - 1);
+                        newCount--;
+                        counter.text(newCount);
+                        $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
                         $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
                         });
                     }

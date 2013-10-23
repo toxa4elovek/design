@@ -116,23 +116,21 @@
         <?php if ($this->session->read('user.id')):?>
             <?php if ($this->session->read('user.social') != 1):?>
                 <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
-                showSocialPopup = true;
-                needSocialWrite = true;
+                    showSocialPopup = true;
+                    needSocialWrite = true;
                     <?php setcookie('scl', 'true', strtotime('+6 month'), '/');?>
-                    <?php else:?>
-                needSocialWrite = true;
-                    <?php endif;?>
-                <?php else:
+                <?php else:?>
+                    needSocialWrite = true;
+                <?php endif;?>
+            <?php else:
                 setcookie('scl', 'true', strtotime('+6 month'), '/');
             endif?>
-
-            <?php else:?>
-
+        <?php else:?>
             <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
-            showSocialPopup = true;
+                showSocialPopup = true;
                 <?php setcookie('scl', 'true', strtotime('+6 month'), '/');?>
-                <?php endif;?>
-            <?php endif?>
+            <?php endif;?>
+        <?php endif?>
     </script>
     <?php echo $this->html->script('http://vk.com/js/api/openapi.js');?>
 </head>
@@ -155,9 +153,10 @@ $showPanel = ((count($clientNotice) > 0) || (count($designerNotice) > 0) || (!is
 echo  $this->html->script('jquery-1.7.1.min.js', array('inline' => false, 'weight' => 10));
 echo  $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 11));
 echo  $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));
-echo  $this->html->script('plugins', array('inline' => false, 'weight' => 13));
-echo  $this->html->script('scripts', array('inline' => false, 'weight' => 14));
-echo  $this->html->script('app', array('inline' => false, 'weight' => 15));
+echo  $this->html->script('jquery.detectmobilebrowser.min.js', array('inline' => false, 'weight' => 13));
+echo  $this->html->script('plugins', array('inline' => false, 'weight' => 14));
+echo  $this->html->script('scripts', array('inline' => false, 'weight' => 15));
+echo  $this->html->script('app', array('inline' => false, 'weight' => 16));
 ?>
 <?= $this->optimize->scripts() ?>
 <?php
