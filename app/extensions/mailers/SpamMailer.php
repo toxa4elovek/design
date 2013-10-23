@@ -268,4 +268,11 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
             'reply-to' => 'devochkina@godesigner.ru',
         ));
     }
+
+    public static function referalspam($data) {
+        return self::_mail(array(
+            'to' => $data['email'],
+            'subject' => $data['subject'],
+        ));
+    }
 }
