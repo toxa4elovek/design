@@ -616,6 +616,22 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function sendSpamReferal() {
+        $users = self::all();
+        $sent = 0;
+        foreach ($users as $user) {
+            if (!empty($user->email)) {
+                $data = array(
+                    'email' => $user->email,
+                    'subject' => 'Запуск партнёрской программы',
+                );
+                SpamMailer::referalspam($data);
+                $sent++;
+            }
+        }
+        return $sent;
+    }
+
     public static function getAdmin() {
         $admin = self::first(array('conditions' => array('isAdmin' => 1)));
         return $admin->id;
