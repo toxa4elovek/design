@@ -649,6 +649,14 @@ $(document).ready(function() {
         }
     });
 
+    // Unpin check
+    $(window).on('scroll', function() {
+        var diff = $(window).scrollTop() - $('.main').offset().top - 500;
+        if (diff > 0) {
+            $('.summary-price').offset({top: $('.main').offset().top + 728});
+        }
+    });
+
     /**/
     Cart = new FeatureCart;
     Cart.init();
