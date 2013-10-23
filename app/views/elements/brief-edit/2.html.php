@@ -1,7 +1,13 @@
 <div class="groupc">
 
     <?php if($pitch->billed == 1):?>
-    <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+        <?php if (($this->session->read('user.isAdmin') == 1) || \app\models\User::checkRole('admin')):?>
+            <p><label>Ведите количество макетов/страниц</label>
+            <input type="text" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+            </p>
+        <?php else:?>
+            <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+        <?php endif;?>
     <?php endif?>
 
     <p><label>Опишите целевую аудиторию</label></p>
