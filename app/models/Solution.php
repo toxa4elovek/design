@@ -283,10 +283,15 @@ http://godesigner.ru/answers/view/73');
     }
 
     public static function getNextNum($pitchId) {
-        if($prevSolution = self::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('num' => 'desc')))) {
-            return ($prevSolution->num + 1);
+        $pitch = Pitch::first($pitchId);
+        if (($prevSolution = self::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('num' => 'desc')))) && (strtotime($prevSolution->created) < strtotime('2013-10-23 00:00:00'))) {
+            $res = $prevSolution->num + 1;
+        } else {
+	       $res = $pitch->last_solution + 1;
         }
-        return 1;
+        $pitch->last_solution = $res;
+        $pitch->save();
+        return $res;
     }
 
     public static function getUserSolutionGallery($userId) {
