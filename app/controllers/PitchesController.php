@@ -1057,7 +1057,7 @@ class PitchesController extends \app\controllers\AppController {
 			}
 			$pitch->set($data);
 			if($pitch->save()) {
-                if(($edit == true) && ($pitch->published == 1)) {
+                if(($edit == true) && ($pitch->published == 1) && ($pitch->status != 2)) {
                     $message = 'Друзья, в брифе возникли изменения, и мы убедительно просим вас с ними ознакомиться.';
                     $admin = $admin = User::getAdmin();
                     $data = array('pitch_id' => $pitch->id, 'reply_to' => 0, 'user_id' => $admin, 'text' => $message);
