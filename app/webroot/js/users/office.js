@@ -618,7 +618,7 @@ function ParticipateTableLoader() {
                 }else {
                     var status = object.startedHuman;
                 }
-                if(($('#user_id').val() == object.user_id) && (object.status == 0)) {
+                if(($('#user_id').val() == object.user_id)) {
                     editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link' + imgForDraft + '" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a>';
                 }
             }
