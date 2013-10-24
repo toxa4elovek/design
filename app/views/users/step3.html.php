@@ -37,11 +37,13 @@
                     <h4>Комментарии</h4>
                     <?php //if(($solution->step == 3) && ($solution->pitch->status < 2)):?>
                     <?php if($solution->step >= 3):?>
-                    <form method="post" action="/users/step3/<?=$solution->id?>" enctype="multipart/form-data">
+                    <form id="wincomment" method="post" action="/users/step3/<?=$solution->id?>.json" enctype="multipart/form-data">
                         <textarea id="newComment" name="text" style="margin:10px 0 0 0;"></textarea>
-                        <div>
-                            <input type="file" name="file[]" class="wincommentfileupload"/>
-                            <input type="submit" class="button" value="Отправить" style="width:185px;height:49px;margin:0;padding:0;float:right">
+                        <div style="position: relative;">
+                            <input type="file" name="file[]" multiple="multiple" class="wincommentfileupload" />
+                            <input id="fakebutton" type="button" style="position: absolute; z-index: 4; top: 0; left: 0; width: 185px; height: 23px; font-size: 12px;" value="Выбрать файлы">
+                            <input type="submit" class="button" value="Отправить" style="width:185px;height:49px;margin:10px 0 0 0;padding:0;float:right">
+                            <ul id="filelist" style="margin-top: 40px;"></ul>
                         </div>
                     </form>
                     <?php endif;?>
@@ -207,5 +209,13 @@
     </div>
 </div>
 
-<?=$this->html->script(array('jquery.simplemodal-1.4.2.js', 'users/step2', 'users/step3'), array('inline' => false))?>
+<div id="loading-overlay" class="popup-final-step" style="display:none;width:353px;text-align:center;text-shadow:none;">
+    <div style="margin-top: 15px; margin-bottom:20px; color:#afafaf;font-size:14px"><span id="progressbar">0%</span></div>
+    <div id="progressbarimage" style="text-align: left; padding-left: 6px; padding-top: 1px; padding-right: 6px; height: 23px; background: url('/img/indicator_empty.png') repeat scroll 0px 0px transparent; width: 341px;">
+        <img id="filler" src="/img/progressfilled.png" style="width:1px" height="22">
+    </div>
+    <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
+</div>
+
+<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'users/step2', 'users/step3'), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>

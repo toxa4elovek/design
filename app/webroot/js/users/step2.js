@@ -1,12 +1,4 @@
 $(document).ready(function() {
-
-    $(document).on('change', 'input[type=file]', function() {
-        var fileInput = '<input type="file" name="file[]" class="wincommentfileupload"/>';
-        if($(this).next('input[type=file]').length == 0) {
-            $(this).after(fileInput);
-        }
-    });
-
     $('#nofile').click(function() {
         $('#nofiles-warning').modal({
             containerId: 'generic-popup',
@@ -91,4 +83,64 @@ $(document).ready(function() {
             el.focus().val(newText);
         }
     }
+
+    $('#wincomment').fileupload({
+        dataType: 'html',
+        autoUpload: false,
+        singleFileUploads: false,
+        dropZone: null,
+        add: function(e, data) {
+            if (data.files.length > 0) {
+                e.data.fileupload.myData = data;
+                var html = '';
+                $.each(data.files, function(index, object) {
+                    html += '<li class="fakelist">' + object.name + '</li>';
+                });
+                $('#filelist').html(html);
+            }else {
+                return false;
+            }
+        },
+        done: function(e, data) {
+            var completed = 100;
+            fillProgress(completed);
+            location.reload(true);
+        },
+        progressall: function(e, data) {
+            if (data.total > 0) {
+                var completed = Math.round(data.loaded / data.total * 100);
+                fillProgress(completed);
+            }
+        },
+        send: function(e, data) {
+            $('#loading-overlay').modal({
+                containerId: 'spinner',
+                opacity: 80,
+                close: false
+            });
+        }
+    });
+
+    $('#wincomment').submit(function(e) {
+        e.preventDefault();
+        $('#wincomment').fileupload('uploadByClickNoCheck', $(this), window.location.href);
+    });
 });
+
+/*
+ * Filling progressbar with completed value
+ */
+function fillProgress(completed) {
+    completed = (completed > 95) ? 100 : completed;
+    $('#progressbar').text(completed + '%');
+    var progresspx = Math.round(3.4 * completed);
+    if(progresspx > 330) {
+        progresspx == 330;
+    }
+    $('#filler').css('width', progresspx);
+    if(completed > 95) {
+        setTimeout(function() {
+            $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
+        }, 500);
+    }
+}
