@@ -638,6 +638,13 @@ function ParticipateTableLoader() {
                 }
             }else {
                 var status = 'Питч завершен';
+                if (object.hasBill == 'fiz') {
+                    status = '<a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                }
+                if (object.hasBill == 'yur') {
+                    status = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                }
+
                 if(object.winlink == true) {
                     var link = '/users/step2/' + object.awarded;
                 }else {
