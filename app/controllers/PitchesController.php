@@ -459,6 +459,13 @@ class PitchesController extends \app\controllers\AppController {
                 if($pitch->user_id == Session::read('user.id')) {
                     $pitch->winlink = true;
                 }
+
+                $pitch->hasBill = false;
+                if (($pitch->status == 2) && ($pitch->user_id == Session::read('user.id'))) {
+                    if ($bill = Bill::first($pitch->id)) {
+                        $pitch->hasBill = ($bill->individual == 1) ? 'fiz' : 'yur';
+                    }
+                }
             }
             $i = 1;
             $tempPitchList = $pitches->data();
