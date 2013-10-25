@@ -4,7 +4,7 @@
     <div id="P_card">
         <table>
             <?php if ($pitch->category_id != 10):?>
-            <!--tr class="paymaster-section">
+            <tr class="paymaster-section">
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                 </td>
@@ -26,12 +26,12 @@
             <tr id="paymaster-select" class="paymaster-section" style="display: none;">
                 <td colspan="4">
                     <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
-                    <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=100&LMI_PAYMENT_DESC=Test+payment&LMI_CURRENCY=RUB'></script>
+                    <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
                 </td>
             </tr>
             <tr class="paymaster-section">
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
-            </tr-->
+            </tr>
             <?php endif;?>
             <tr>
                 <td>
