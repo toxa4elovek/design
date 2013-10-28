@@ -543,33 +543,34 @@ $(document).ready(function() {
             } else if (currentUserId == result.solution.user_id) {
                 // Solution Author views nothing
             } else { // Any User
-                var already = ''
-                if(result.likes == true) {
-                    already = ' already'
-                }
-
-                $('<div class="like-wrapper"><div class="left">поддержи</div> \
-                   <div class="like-widget' + already + '" data-id="' + result.solution.id + '"></div> \
-                   <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
-
-                $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
-                    $(this).toggleClass('already');
-                    if($(this).hasClass('already')) {
-                        var counter = $('.value-likes')
-                        var solutionId = $(this).data('id')
-                        counter.html(parseInt(counter.html()) + 1);
-                        $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
-                        });
-                    }else {
-                        var counter = $('.value-likes')
-                        var solutionId = $(this).data('id')
-                        counter.html(parseInt(counter.html()) - 1);
-                        $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
-                        });
+                if (result.pitch.status != 2) {
+                    var already = ''
+                    if(result.likes == true) {
+                        already = ' already'
                     }
-                    return false
-                });
 
+                    $('<div class="like-wrapper"><div class="left">поддержи</div> \
+                       <div class="like-widget' + already + '" data-id="' + result.solution.id + '"></div> \
+                       <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
+
+                    $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
+                        $(this).toggleClass('already');
+                        if($(this).hasClass('already')) {
+                            var counter = $('.value-likes')
+                            var solutionId = $(this).data('id')
+                            counter.html(parseInt(counter.html()) + 1);
+                            $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                            });
+                        }else {
+                            var counter = $('.value-likes')
+                            var solutionId = $(this).data('id')
+                            counter.html(parseInt(counter.html()) - 1);
+                            $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                            });
+                        }
+                        return false
+                    });
+                }
             }
             
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');

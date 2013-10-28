@@ -625,35 +625,36 @@ $(document).ready(function(){
             } else if (currentUserId == result.solution.user_id) {
              // Solution Author views nothing
             } else { // Any User
-                var already = ''
-                if(result.likes == true) {
-                    already = ' already'
-                }
-                $('<div class="like-wrapper"><div class="left">поддержи</div> \
-                   <a class="like-widget'+ already + '" data-id="' + result.solution.id + '"></a> \
-                   <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
-
-
-                $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
-                    $(this).toggleClass('already');
-                    var counter = $('.value-likes')
-                    var solutionId = $(this).data('id')
-                    var newCount = parseInt(counter.text());
-                    if($(this).hasClass('already')) {
-                        newCount++;
-                        counter.text(newCount);
-                        $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
-                        $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
-                        });
-                    }else {
-                        newCount--;
-                        counter.text(newCount);
-                        $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
-                        $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
-                        });
+                if (result.pitch.status != 2) {
+                    var already = ''
+                    if(result.likes == true) {
+                        already = ' already'
                     }
-                    return false
-                });
+                    $('<div class="like-wrapper"><div class="left">поддержи</div> \
+                       <a class="like-widget'+ already + '" data-id="' + result.solution.id + '"></a> \
+                       <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
+
+                    $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
+                        $(this).toggleClass('already');
+                        var counter = $('.value-likes')
+                        var solutionId = $(this).data('id')
+                        var newCount = parseInt(counter.text());
+                        if($(this).hasClass('already')) {
+                            newCount++;
+                            counter.text(newCount);
+                            $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
+                            $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                            });
+                        }else {
+                            newCount--;
+                            counter.text(newCount);
+                            $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
+                            $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                            });
+                        }
+                        return false
+                    });
+                }
             }
 
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
