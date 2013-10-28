@@ -449,22 +449,6 @@ $(document).ready(function() {
 
     }
 
-    $(document).on('click', '.client-hide', function() {
-        var link = $(this)
-        $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Показать</a>')
-        })
-        return false;
-    })
-
-    $(document).on('click', '.client-show', function() {
-        var link = $(this)
-        $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">Скрыть</a>')
-        })
-        return false;
-    })
-    
     /*
      * View solution via json
      */
@@ -657,16 +641,17 @@ $(document).ready(function() {
             $('.value-comments', '.solution-stat').text(result.comments.length || 0);
 
             if (currentUserId == result.pitch.user_id) {
-                var html = '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
+                var html = '';
                 if (result.solution.hidden == 1) {
-                    html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Показать</a>';
+                    html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Сделать видимой</a>';
                 }else {
-                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
+                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">С глаз долой</a>';
                 }
+                html += '<a class="client-comment" href="#">Комментировать</a>';
+                html += '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
                 if (result.selectedsolution != true) {
                     html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>';
                 }
-                html += '<a class="client-comment" href="#">Комментировать</a>';
                 $('.solution-abuse').html(html);
             }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
