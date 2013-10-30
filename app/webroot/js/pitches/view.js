@@ -625,7 +625,7 @@ $(document).ready(function(){
             } else if (currentUserId == result.solution.user_id) {
              // Solution Author views nothing
             } else { // Any User
-                if (result.pitch.status != 2) {
+                if ((result.pitch.status != 1) && (result.pitch.status != 2)) {
                     var already = ''
                     if(result.likes == true) {
                         already = ' already'
