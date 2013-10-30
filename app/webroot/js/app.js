@@ -679,7 +679,7 @@ function solutionShowHide() {
         e.preventDefault();
         var link = $(this);
         $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Показать</a>');
+            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Сделать видимой</a>');
             solutionShowHide();
         });
         return false;
@@ -689,7 +689,7 @@ function solutionShowHide() {
         e.preventDefault();
         var link = $(this);
         $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">Скрыть</a>');
+            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">С глаз долой</a>');
             solutionShowHide();
         });
         return false;

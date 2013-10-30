@@ -385,9 +385,13 @@
                     <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
                     <div class="solution_menu" style="display: none;">
                         <ul class="solution_menu_list" style="position:absolute;z-index:6;">
-                            <?php if((!$selectedsolution) && ($this->session->read('user.id') == $pitch->user_id)):?>
-                            <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a></li>
+                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 0) && ($this->session->read('user.id') == $pitch->user_id)): ?>
+                            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/hide/<?=$solution->id?>.json" class="hide-item" data-to="<?=$solution->num?>">С глаз долой</a></li>
                             <?php endif;?>
+
+
+
+
                             <?php if(($selectedsolution) && ($this->session->read('user.id') == $pitch->user_id) && ($pitch->awarded == $solution->id)):?>
                             <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a href="/users/step4/<?=$solution->id?>">Перейти к завершению</a></li>
                             <?php endif;?>
@@ -404,9 +408,10 @@
                             <?php if($this->session->read('user.id') > 0):?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/<?=$solution->id?>.json" class="warning" data-solution-id="<?=$solution->id?>">Пожаловаться</a></li>
                             <?php endif;?>
-                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 0) && ($this->session->read('user.id') == $pitch->user_id)): ?>
-                            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/hide/<?=$solution->id?>.json" class="hide-item" data-to="<?=$solution->num?>">С глаз долой</a></li>
+                            <?php if((!$selectedsolution) && ($this->session->read('user.id') == $pitch->user_id)):?>
+                            <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a></li>
                             <?php endif;?>
+
                             <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 1) && ($this->session->read('user.id') == $pitch->user_id)): ?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
                             <?php endif;?>
