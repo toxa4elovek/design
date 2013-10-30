@@ -184,6 +184,10 @@ function TableLoader() {
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
             }
+            var pitchMultiple = '';
+            if (object.multiple) {
+                pitchMultiple = '<br>' + object.multiple;
+            }
 
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons">' + icons + '</td>' +
@@ -195,7 +199,7 @@ function TableLoader() {
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
+                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + timeleft + '</td>' +

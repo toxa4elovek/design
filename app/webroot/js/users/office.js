@@ -658,6 +658,10 @@ function ParticipateTableLoader() {
             shortIndustry = '<span style="font-size: 11px;">' + shortIndustry + '</span>';
             // Disabling Industry in Table
             shortIndustry = '';
+            var pitchMultiple = '';
+            if (object.multiple) {
+                pitchMultiple = '<br>' + object.multiple;
+            }
 
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
@@ -669,7 +673,7 @@ function ParticipateTableLoader() {
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
+                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + status + '</td>' +
@@ -877,6 +881,11 @@ function FavesTableLoader() {
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
             }
+            var pitchMultiple = '';
+            if (object.multiple) {
+                pitchMultiple = '<br>' + object.multiple;
+            }
+
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
                 '<td class="pitches-name">' +
@@ -887,7 +896,7 @@ function FavesTableLoader() {
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
+                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + status + '</td>' +
