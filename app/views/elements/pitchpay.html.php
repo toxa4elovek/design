@@ -12,9 +12,6 @@
                     Оплата пластиковыми картами и эл. деньгами <br>через PayMaster
                 </td>
                 <td>
-                    <form action="" method="post">
-                        <input type="submit" id="paybutton-paymaster" value="продолжить оплату" class="button" style="background: #a2b2bb;">
-                    </form>
                 </td>
             </tr>
             <tr id="paymaster-images" class="paymaster-section">
