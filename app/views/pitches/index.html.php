@@ -190,6 +190,7 @@
                     if($pitch['ideas_count'] == 0) {
                         $pitchPath = 'details';
                     }
+                    $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
                     $html = '<tr data-id="' . $pitch['id'] . '" class="' . $rowClass . '">' .
                         '<td class="icons">' . $icons . '</td>' .
                         '<td class="pitches-name">' .
@@ -200,7 +201,7 @@
                         '</div>' .
                         '</td>' .
                         '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' .
-                        '<a href="#" style="font-size:11px;">' . $pitch['category']['title'] . '</a>' .
+                        '<a href="#" style="font-size:11px;">' . $pitch['category']['title'] . $multiple . '</a>' .
                         '</td>' .
                         '<td class="idea"  style="font-size:11px;">' . $pitch['ideas_count'] . '</td>' .
                         '<td class="pitches-time"  style="font-size:11px;">' . $timeleft . '</td>' .

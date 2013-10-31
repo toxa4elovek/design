@@ -225,6 +225,7 @@ class PitchesController extends \app\controllers\AppController {
 		foreach($tempPitchList as &$pitch) {
 			$pitch['sort'] = $i;
             $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title']);
+            $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
 			$pitchList[] = $pitch;
 			$i++;
 		}
@@ -477,6 +478,7 @@ class PitchesController extends \app\controllers\AppController {
             $pitchList = array();
             foreach($tempPitchList as &$pitch) {
                 $pitch['sort'] = $i;
+                $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
                 $pitchList[] = $pitch;
                 $i++;
             }
@@ -672,6 +674,7 @@ class PitchesController extends \app\controllers\AppController {
             $tempPitchList = $pitches->data();
                 foreach($tempPitchList as &$pitch) {
                     $pitch['sort'] = $i;
+                    $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
                     $pitchList[] = $pitch;
                     $i++;
                 }

@@ -708,4 +708,42 @@ class Pitch extends \app\models\AppModel {
         $transPay = Paymaster::all(array('conditions' => array('LMI_PAYMENT_NO' => $pitchId)));
         return compact('transMaster', 'transPay');
     }
+
+    public static function getMultiple($category, $specifics) {
+        $specifics = unserialize($specifics);
+        if (!empty($specifics['site-sub'])) {
+            $numInflector = new NumInflector();
+            switch ($category) {
+                case 2:
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
+                    break;
+                case 3:
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'страница', 'second' => 'страницы', 'third' => 'страниц'));
+                    break;
+                case 4:
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
+                    break;
+                case 6:
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'страница', 'second' => 'страницы', 'third' => 'страниц'));
+                    break;
+                case 9:
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'иллюстрация', 'second' => 'иллюстрации', 'third' => 'иллюстраций'));
+                    break;
+                case 10:
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
+                    break;
+                case 11:
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
+                    break;
+                case 12:
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
+                    break;
+                default:
+                    $res = null;
+                    break;
+            }
+            return $res;
+        }
+        return null;
+    }
 }
