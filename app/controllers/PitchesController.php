@@ -628,9 +628,14 @@ class PitchesController extends \app\controllers\AppController {
             && !empty($this->request->data['LMI_SYS_PAYMENT_ID'])
             && !empty($this->request->data['LMI_PAID_AMOUNT'])
             && !empty($this->request->data['LMI_HASH'])) {
-            $transaction = Paymaster::create();
-            $transaction->set($this->request->data);
-            $transaction->save();
+                $transaction = Paymaster::create();
+                $transaction->set($this->request->data);
+                $transaction->save();
+                if($pitch = Pitch::first($this->request->data['LMI_PAYMENT_NO'])) {
+                    Pitch::activate($this->request->data['LMI_PAYMENT_NO']);
+                } elseif ($addon = Addon::first($this->request->data['LMI_PAYMENT_NO'])) {
+                    Addon::activate($addon);
+                }
         }
         header("HTTP/1.0 200 OK");
         die();
