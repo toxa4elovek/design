@@ -171,6 +171,7 @@
                     endif;
                 ?>
                 <li <?php if(($picCounter2 > 1) && ($pitch->category_id != 7)): echo 'class="multiclass"'; endif;?>>
+                    <!-- multisolution branch -->
                     <div class="photo_block" <?php if(($picCounter2 > 1) && (($solution->hidden) && ($pitch->user_id == $this->session->read('user.id')))):?>style="background: url(/img/copy-inv.png) 10px 10px no-repeat white"<?php endif;?>>
                         <?php
                         $visible = false;
@@ -197,7 +198,12 @@
                             <?php if(($solution->hidden == 1) && ($pitch->user_id == $this->session->read('user.id'))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                                 <a style="<?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
                                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                                    <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                                    <!-- <?php
+                                    if(!isset($solution->images['solution_galleryLargeSize'])):
+                                    $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
+                                    endif;
+                                     ?> -->
+                                        <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                                     <?php else:?>
                                         <?php
                                         $picCounter = 0;
@@ -223,6 +229,7 @@
                                 <?php endif?>
                             <?php endif?>
                         <?php else:?>
+                            <!-- solo branch -->
                             <?php
                             if($pitch->category_id == 7):
                                 if(($pitch->user_id == $this->session->read('user.id')) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == $this->session->read('user.id'))):
