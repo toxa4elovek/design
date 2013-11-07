@@ -168,10 +168,10 @@
                         <?php endif;?>
                     </div>
                 </div>
-                <?php elseif(($type == 'client') &&  ($solution->step < 3)):?>
+                <?php elseif((($type == 'client') || ($this->session->read('user.isAdmin') == 1)) &&  ($solution->step < 3)):?>
                 <div class="buttons">
                     <div class="verify spanned" style="margin-right: 0px;">
-                        <?php if($nofiles == false):?>
+                        <?php if(($nofiles == false) || ($this->session->read('user.isAdmin') == 1)):?>
                         <?=$this->html->link('<img src="/img/proceed.png" /><br />
                             <span style="">Одобрить макеты</span>', array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
                         <?php else:?>

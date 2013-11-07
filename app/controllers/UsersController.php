@@ -372,7 +372,7 @@ class UsersController extends \app\controllers\AppController {
         \lithium\net\http\Media::type('json', array('text/html'));
         if(($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
             if(($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
-                (Session::read('user.id') == $solution->pitch->user_id) && ($solution->step < 3)) {
+                ((Session::read('user.isAdmin') == 1) || (Session::read('user.id') == $solution->pitch->user_id)) && ($solution->step < 3)) {
                 $user = User::first($solution->user_id);
                 User::sendSpamWinstep($user, $solution, '3');
                 $solution->step = 3;
