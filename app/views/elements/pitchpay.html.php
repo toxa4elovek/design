@@ -1,5 +1,7 @@
 <div style="padding-bottom: 50px;">
     <h1>выберите способ оплаты</h1>
+    <!--h1 class="greyboldheader" style="text-transform:none; line-height: 20px; font: bold 17px/24px 'RodeoC',sans-serif">Друзья, в связи со внезапным <a href="http://lenta.ru/news/2013/11/20/master/" style="" target="_blank">приостановлением работы</a> «Мастер-банка», оплата питчей пока стала возможна только <br/>с помощью переводов на альтернативный рассчетный счет. Благодарим за понимание.</h1-->
+    <!--p>В связи с временным ограничением платежной системы Paymaster, максимально возможная сумма платежа составляет <b>15000</b> рублей.</p-->
     <div class="g_line"></div>
     <div id="P_card">
         <table>
@@ -9,7 +11,8 @@
                     <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                 </td>
                 <td colspan="2" class="s3_text" style="padding-left: 20px;">
-                    Оплата пластиковыми картами и эл. деньгами <br>через PayMaster
+                    Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
+                    <p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-30000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p>
                 </td>
                 <td>
                 </td>
@@ -30,7 +33,7 @@
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
             </tr>
             <?php endif;?>
-            <tr>
+            <!--tr>
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="online">
                 </td>
@@ -56,7 +59,7 @@
             </tr>
             <tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
-            </tr>
+            </tr-->
             <tr>
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="offline">

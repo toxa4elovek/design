@@ -1690,6 +1690,15 @@ Disallow: /pitches/upload/' . $pitch['id'];
         return compact('pitch', 'experts');
     }
 
+    public function addmoney() {
+        $pitch = Pitch::first($this->request->id);
+        if($pitch->id != '101534') {
+            return $this->redirect('/');
+        }else {
+            $addon = Addon::first(array('conditions' => array('reward' => '10120')));
+        }
+    }
+
     public function promocode() {
         Pitch::dailypitch();
         die();

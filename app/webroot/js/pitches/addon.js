@@ -157,12 +157,21 @@ $(document).ready(function() {
     })
 
     $('.rb1').change(function() {
-        if($(this).data('pay') == 'online') {
-            $("#paybutton").removeAttr('style');
-            $('#s3_kv').hide();
-        }else {
-            $("#paybutton").css('background', '#a2b2bb');
-            $('#s3_kv').show();
+        switch ($(this).data('pay')) {
+            case 'paymaster':
+                $("#paybutton-paymaster").removeAttr('style');
+                $("#paybutton-online").css('background', '#a2b2bb');
+                $("#paymaster-images").hide();
+                $("#paymaster-select").show();
+                $('#s3_kv').hide();
+                break;
+            case 'offline':
+                $("#paybutton-online").css('background', '#a2b2bb');
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').show();
+                break;
         }
     });
 
@@ -351,6 +360,18 @@ function FeatureCart() {
                 $.get('/transactions/getaddondata/' + response + '.json', function(response) {
                     $('.middle').not('#step3').hide();
                     $('#step3').show();
+
+                    $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
+                    if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
+                        $('input[name=LMI_PAYMENT_NO]').val(response.id);
+                    } else {
+                        $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
+                    }
+                    $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
+                    $('.pmwidget').addClass('mod');
+                    $('h1.pmheader', '.pmwidget').addClass('mod');
+
+
                     $('#order-id').val(response.id);
                     $('#order-total').val(response.total);
                     $('#order-timestamp').val(response.timestamp);
