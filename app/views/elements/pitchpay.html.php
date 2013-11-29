@@ -2,6 +2,7 @@
     <h1>выберите способ оплаты</h1>
     <!--h1 class="greyboldheader" style="text-transform:none; line-height: 20px; font: bold 17px/24px 'RodeoC',sans-serif">Друзья, в связи со внезапным <a href="http://lenta.ru/news/2013/11/20/master/" style="" target="_blank">приостановлением работы</a> «Мастер-банка», оплата питчей пока стала возможна только <br/>с помощью переводов на альтернативный рассчетный счет. Благодарим за понимание.</h1-->
     <!--p>В связи с временным ограничением платежной системы Paymaster, максимально возможная сумма платежа составляет <b>15000</b> рублей.</p-->
+    <!-- <?php echo var_dump($pitch->category_id);  ?> -->
     <div class="g_line"></div>
     <div id="P_card">
         <table>
