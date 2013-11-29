@@ -160,7 +160,7 @@ class AppController extends \lithium\action\Controller {
             Session::write('promocode', $_GET['promocode']);
         }
 
-        if (!is_null($this->request->query['ref'])) {
+        if (!empty($this->request->query['ref'])) {
             User::setReferalCookie($this->request->query['ref']);
         }
     }

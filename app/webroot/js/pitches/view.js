@@ -625,35 +625,36 @@ $(document).ready(function(){
             } else if (currentUserId == result.solution.user_id) {
              // Solution Author views nothing
             } else { // Any User
-                var already = ''
-                if(result.likes == true) {
-                    already = ' already'
-                }
-                $('<div class="like-wrapper"><div class="left">поддержи</div> \
-                   <a class="like-widget'+ already + '" data-id="' + result.solution.id + '"></a> \
-                   <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
-
-
-                $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
-                    $(this).toggleClass('already');
-                    var counter = $('.value-likes')
-                    var solutionId = $(this).data('id')
-                    var newCount = parseInt(counter.text());
-                    if($(this).hasClass('already')) {
-                        newCount++;
-                        counter.text(newCount);
-                        $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
-                        $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
-                        });
-                    }else {
-                        newCount--;
-                        counter.text(newCount);
-                        $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
-                        $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
-                        });
+                if ((result.pitch.status != 1) && (result.pitch.status != 2)) {
+                    var already = ''
+                    if(result.likes == true) {
+                        already = ' already'
                     }
-                    return false
-                });
+                    $('<div class="like-wrapper"><div class="left">поддержи</div> \
+                       <a class="like-widget'+ already + '" data-id="' + result.solution.id + '"></a> \
+                       <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
+
+                    $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
+                        $(this).toggleClass('already');
+                        var counter = $('.value-likes')
+                        var solutionId = $(this).data('id')
+                        var newCount = parseInt(counter.text());
+                        if($(this).hasClass('already')) {
+                            newCount++;
+                            counter.text(newCount);
+                            $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
+                            $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                            });
+                        }else {
+                            newCount--;
+                            counter.text(newCount);
+                            $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
+                            $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                            });
+                        }
+                        return false
+                    });
+                }
             }
 
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
@@ -782,16 +783,17 @@ $(document).ready(function(){
             }
 
             if (currentUserId == result.pitch.user_id) {
-                var html = '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
+                var html = '';
                 if (result.solution.hidden == 1) {
-                    html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Показать</a>';
+                    html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Сделать видимой</a>';
                 }else {
-                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
+                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">С глаз долой</a>';
                 }
+                html += '<a class="client-comment" href="#">Комментировать</a>';
+                html += '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
                 if (result.selectedsolution != true) {
                     html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>';
                 }
-                html += '<a class="client-comment" href="#">Комментировать</a>';
                 $('.solution-abuse').html(html);
             }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \

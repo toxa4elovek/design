@@ -171,6 +171,7 @@
                     endif;
                 ?>
                 <li <?php if(($picCounter2 > 1) && ($pitch->category_id != 7)): echo 'class="multiclass"'; endif;?>>
+                    <!-- multisolution branch -->
                     <div class="photo_block" <?php if(($picCounter2 > 1) && (($solution->hidden) && ($pitch->user_id == $this->session->read('user.id')))):?>style="background: url(/img/copy-inv.png) 10px 10px no-repeat white"<?php endif;?>>
                         <?php
                         $visible = false;
@@ -197,7 +198,12 @@
                             <?php if(($solution->hidden == 1) && ($pitch->user_id == $this->session->read('user.id'))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                                 <a style="<?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
                                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                                    <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                                    <!-- <?php
+                                    if(!isset($solution->images['solution_galleryLargeSize'])):
+                                    $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
+                                    endif;
+                                     ?> -->
+                                        <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                                     <?php else:?>
                                         <?php
                                         $picCounter = 0;
@@ -223,6 +229,7 @@
                                 <?php endif?>
                             <?php endif?>
                         <?php else:?>
+                            <!-- solo branch -->
                             <?php
                             if($pitch->category_id == 7):
                                 if(($pitch->user_id == $this->session->read('user.id')) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == $this->session->read('user.id'))):
@@ -303,7 +310,11 @@
                             </div>
                             <ul style="margin-left: 78px;" class="right">
                                 <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
-                                    <a href="#" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
+                                    <?php if ($pitch->status == 2):?>
+                                        <img src="/img/like.png" style="float: left;" alt="количество лайков" />
+                                    <?php else:?>
+                                        <a href="#" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
+                                    <?php endif;?>
                                     <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
                                     <?php if((($pitch->private != 1) && ($pitch->category_id != 7))):?>
                                     <div class="sharebar" style="padding:0 0 4px !important;background:url('/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;position:relative;z-index:10000;display: none; left: -10px; right: auto; top: 20px;height: 178px;width:288px;">
@@ -381,9 +392,13 @@
                     <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
                     <div class="solution_menu" style="display: none;">
                         <ul class="solution_menu_list" style="position:absolute;z-index:6;">
-                            <?php if((!$selectedsolution) && ($this->session->read('user.id') == $pitch->user_id)):?>
-                            <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a></li>
+                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 0) && ($this->session->read('user.id') == $pitch->user_id)): ?>
+                            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/hide/<?=$solution->id?>.json" class="hide-item" data-to="<?=$solution->num?>">С глаз долой</a></li>
                             <?php endif;?>
+
+
+
+
                             <?php if(($selectedsolution) && ($this->session->read('user.id') == $pitch->user_id) && ($pitch->awarded == $solution->id)):?>
                             <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a href="/users/step4/<?=$solution->id?>">Перейти к завершению</a></li>
                             <?php endif;?>
@@ -400,9 +415,10 @@
                             <?php if($this->session->read('user.id') > 0):?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/<?=$solution->id?>.json" class="warning" data-solution-id="<?=$solution->id?>">Пожаловаться</a></li>
                             <?php endif;?>
-                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 0) && ($this->session->read('user.id') == $pitch->user_id)): ?>
-                            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/hide/<?=$solution->id?>.json" class="hide-item" data-to="<?=$solution->num?>">С глаз долой</a></li>
+                            <?php if((!$selectedsolution) && ($this->session->read('user.id') == $pitch->user_id)):?>
+                            <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a></li>
                             <?php endif;?>
+
                             <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 1) && ($this->session->read('user.id') == $pitch->user_id)): ?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
                             <?php endif;?>

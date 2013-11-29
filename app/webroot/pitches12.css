@@ -1151,3 +1151,6 @@ h1.solution-title-page  {
     height: 18px;
 
 }
+#filler {
+    transition: width .5s;
+}

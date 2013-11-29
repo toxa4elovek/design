@@ -81,7 +81,7 @@
                                     <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['phone']?>" name="phone" /></td></tr>
                                     <tr>
                                         <td width="304" class="tableheader" style="padding-right:10px">Счет</td>
-                                        <td width="304" class="tableheader" style="padding-left:10px">ИНН</td></tr>
+                                        <td width="304" class="tableheader" style="padding-left:10px">Ваш личный ИНН <a href="#" style="display: block; width: 10px; height: 10px; margin-left: 110px; margin-top: -25px; font: 12px Helvetica, sans-serif; color: #658fa5" class="second tooltip" title="Запрашивается банком как обязательное, для формирования платежного поручения">(?)</a></td></tr>
                                     <tr style="height: 80px;">
                                         <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['accountnum']?>" name="accountnum" /></td>
                                         <td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['inn']?>" name="inn" /></td>
@@ -168,4 +168,4 @@
     <div class="conteiner-bottom"></div>
 </div><!-- .wrapper -->
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
-<?=$this->html->script(array('users/step1.js'), array('inline' => false))?>
+<?=$this->html->script(array('jquery.tooltip.js', 'users/step1.js'), array('inline' => false))?>

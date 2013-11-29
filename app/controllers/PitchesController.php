@@ -18,6 +18,7 @@ use \app\models\Receipt;
 use \app\models\Request;
 use \app\models\Expert;
 use \app\models\Promocode;
+use \app\models\Paymaster;
 use \app\models\Promoted;
 use app\models\Ratingchange;
 use \app\models\Avatar;
@@ -49,9 +50,13 @@ class PitchesController extends \app\controllers\AppController {
     public function blank() {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
-        Logger::write('info', serialize('init'), array('name' => 'masterbank'));
-        Logger::write('info', serialize('init'), array('name' => 'paymaster'));
-        Logger::write('debug', serialize('init'));
+
+        $var = unserialize('a:13:{s:15:"LMI_MERCHANT_ID";s:36:"d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60";s:18:"LMI_PAYMENT_SYSTEM";s:1:"3";s:12:"LMI_CURRENCY";s:3:"RUB";s:18:"LMI_PAYMENT_AMOUNT";s:8:"11710.00";s:14:"LMI_PAYMENT_NO";s:2:"13";s:16:"LMI_PAYMENT_DESC";s:23:"Оплата питча";s:20:"LMI_SYS_PAYMENT_DATE";s:19:"2013-10-25T10:36:27";s:18:"LMI_SYS_PAYMENT_ID";s:8:"10299519";s:15:"LMI_PAID_AMOUNT";s:8:"11710.00";s:17:"LMI_PAID_CURRENCY";s:3:"RUB";s:12:"LMI_SIM_MODE";s:1:"0";s:20:"LMI_PAYER_IDENTIFIER";s:12:"212571931422";s:8:"LMI_HASH";s:24:"uCYU7ZDqmnzNLK335/WPSQ==";}');
+        echo '<pre>';
+        echo (http_build_query($var));
+        //Logger::write('info', serialize('init'), array('name' => 'masterbank'));
+        //Logger::write('info', serialize('init'), array('name' => 'paymaster'));
+        //Logger::write('debug', serialize('init'));
         die();
     }
 
@@ -220,6 +225,7 @@ class PitchesController extends \app\controllers\AppController {
 		foreach($tempPitchList as &$pitch) {
 			$pitch['sort'] = $i;
             $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title']);
+            $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
 			$pitchList[] = $pitch;
 			$i++;
 		}
@@ -459,12 +465,20 @@ class PitchesController extends \app\controllers\AppController {
                 if($pitch->user_id == Session::read('user.id')) {
                     $pitch->winlink = true;
                 }
+
+                $pitch->hasBill = false;
+                if (($pitch->status == 2) && ($pitch->user_id == Session::read('user.id'))) {
+                    if ($bill = Bill::first($pitch->id)) {
+                        $pitch->hasBill = ($bill->individual == 1) ? 'fiz' : 'yur';
+                    }
+                }
             }
             $i = 1;
             $tempPitchList = $pitches->data();
             $pitchList = array();
             foreach($tempPitchList as &$pitch) {
                 $pitch['sort'] = $i;
+                $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
                 $pitchList[] = $pitch;
                 $i++;
             }
@@ -603,24 +617,25 @@ class PitchesController extends \app\controllers\AppController {
     }
 
     function paymaster() {
+        Logger::write('info', serialize($this->request->data), array('name' => 'paymaster'));
         if (!empty($this->request->data)
-        && !empty($this->request->data['LMI_MERCHANT_ID'])
-        && !empty($this->request->data['LMI_PAYMENT_SYSTEM'])
-        && !empty($this->request->data['LMI_CURRENCY'])
-        && !empty($this->request->data['LMI_PAYMENT_AMOUNT'])
-        && !empty($this->request->data['LMI_PAYMENT_NO'])
-        && !empty($this->request->data['LMI_PAYMENT_DESC'])
-        && !empty($this->request->data['LMI_SYS_PAYMENT_DATE'])
-        && !empty($this->request->data['LMI_SYS_PAYMENT_ID'])
-        && !empty($this->request->data['LMI_PAID_AMOUNT'])
-        && !empty($this->request->data['LMI_PAID_CURRENCY'])
-        && !empty($this->request->data['LMI_SIM_MODE'])
-        && !empty($this->request->data['LMI_PAYER_IDENTIFIER'])
-        && !empty($this->request->data['LMI_HASH'])) {
-            Logger::write('info', serialize($this->request->data), array('name' => 'paymaster'));
-            $transaction = Paymaster::create();
-            $transaction->set($this->request->data);
-            $transaction->save();
+            && !empty($this->request->data['LMI_MERCHANT_ID'])
+            && !empty($this->request->data['LMI_PAYMENT_SYSTEM'])
+            && !empty($this->request->data['LMI_CURRENCY'])
+            && !empty($this->request->data['LMI_PAYMENT_AMOUNT'])
+            && !empty($this->request->data['LMI_PAYMENT_NO'])
+            && !empty($this->request->data['LMI_SYS_PAYMENT_DATE'])
+            && !empty($this->request->data['LMI_SYS_PAYMENT_ID'])
+            && !empty($this->request->data['LMI_PAID_AMOUNT'])
+            && !empty($this->request->data['LMI_HASH'])) {
+                $transaction = Paymaster::create();
+                $transaction->set($this->request->data);
+                $transaction->save();
+                if($pitch = Pitch::first($this->request->data['LMI_PAYMENT_NO'])) {
+                    Pitch::activate($this->request->data['LMI_PAYMENT_NO']);
+                } elseif ($addon = Addon::first($this->request->data['LMI_PAYMENT_NO'])) {
+                    Addon::activate($addon);
+                }
         }
         header("HTTP/1.0 200 OK");
         die();
@@ -664,6 +679,7 @@ class PitchesController extends \app\controllers\AppController {
             $tempPitchList = $pitches->data();
                 foreach($tempPitchList as &$pitch) {
                     $pitch['sort'] = $i;
+                    $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
                     $pitchList[] = $pitch;
                     $i++;
                 }
@@ -1057,7 +1073,7 @@ class PitchesController extends \app\controllers\AppController {
 			}
 			$pitch->set($data);
 			if($pitch->save()) {
-                if(($edit == true) && ($pitch->published == 1)) {
+                if(($edit == true) && ($pitch->published == 1) && ($pitch->status != 2)) {
                     $message = 'Друзья, в брифе возникли изменения, и мы убедительно просим вас с ними ознакомиться.';
                     $admin = $admin = User::getAdmin();
                     $data = array('pitch_id' => $pitch->id, 'reply_to' => 0, 'user_id' => $admin, 'text' => $message);
@@ -1672,6 +1688,15 @@ Disallow: /pitches/upload/' . $pitch['id'];
         $pitch = Pitch::first($this->request->id);
         $experts = Expert::all(array('order' => array('id' => 'asc')));
         return compact('pitch', 'experts');
+    }
+
+    public function addmoney() {
+        $pitch = Pitch::first($this->request->id);
+        if($pitch->id != '101534') {
+            return $this->redirect('/');
+        }else {
+            $addon = Addon::first(array('conditions' => array('reward' => '10120')));
+        }
     }
 
     public function promocode() {

@@ -1,20 +1,20 @@
 <div style="padding-bottom: 50px;">
     <h1>выберите способ оплаты</h1>
+    <!--h1 class="greyboldheader" style="text-transform:none; line-height: 20px; font: bold 17px/24px 'RodeoC',sans-serif">Друзья, в связи со внезапным <a href="http://lenta.ru/news/2013/11/20/master/" style="" target="_blank">приостановлением работы</a> «Мастер-банка», оплата питчей пока стала возможна только <br/>с помощью переводов на альтернативный рассчетный счет. Благодарим за понимание.</h1-->
+    <!--p>В связи с временным ограничением платежной системы Paymaster, максимально возможная сумма платежа составляет <b>15000</b> рублей.</p-->
     <div class="g_line"></div>
     <div id="P_card">
         <table>
             <?php if ($pitch->category_id != 10):?>
-            <!--tr class="paymaster-section">
+            <tr class="paymaster-section">
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                 </td>
                 <td colspan="2" class="s3_text" style="padding-left: 20px;">
-                    Оплата пластиковыми картами и эл. деньгами <br>через PayMaster
+                    Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
+                    <p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-30000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p>
                 </td>
                 <td>
-                    <form action="" method="post">
-                        <input type="submit" id="paybutton-paymaster" value="продолжить оплату" class="button" style="background: #a2b2bb;">
-                    </form>
                 </td>
             </tr>
             <tr id="paymaster-images" class="paymaster-section">
@@ -26,14 +26,14 @@
             <tr id="paymaster-select" class="paymaster-section" style="display: none;">
                 <td colspan="4">
                     <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
-                    <script type='text/javascript' src='https://paymaster.ru/widget/Basic/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=100&LMI_PAYMENT_DESC=Test+payment&LMI_CURRENCY=RUB'></script>
+                    <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
                 </td>
             </tr>
             <tr class="paymaster-section">
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
-            </tr-->
+            </tr>
             <?php endif;?>
-            <tr>
+            <!--tr>
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="online">
                 </td>
@@ -59,7 +59,7 @@
             </tr>
             <tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
-            </tr>
+            </tr-->
             <tr>
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="offline">

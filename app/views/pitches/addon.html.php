@@ -110,7 +110,7 @@
                 <div class="g_line"></div>
                 <div id="P_card">
                     <table>
-                        <tr>
+                        <!--tr>
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="online" checked>
                             </td>
@@ -132,7 +132,34 @@
                                 </form>
                             </td>
                         </tr>
+
                         <tr>
+                            <td colspan="4"><div class="g_line"><i>или</i></div></td>
+                        </tr-->
+                        <tr class="paymaster-section">
+                            <td>
+                                <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
+                            </td>
+                            <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                                Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
+                                <p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-30000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr id="paymaster-images" class="paymaster-section">
+                            <td colspan="4" class="s3_text" style="padding: 20px 0 0 40px; text-transform: uppercase;">
+                                <img src="/img/s3_paymaster.png" alt="">
+                                <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
+                            </td>
+                        </tr>
+                        <tr id="paymaster-select" class="paymaster-section" style="display: none;">
+                            <td colspan="4">
+                                <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
+                                <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
+                            </td>
+                        </tr>
+                        <tr class="paymaster-section">
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
                         </tr>
                         <tr>
@@ -154,7 +181,7 @@
                                 <td width="25px;"><img src="/img/s3_hz.png" alt=""></td>
                                 <td colspan="3">
                                     <p><a id="pdf-link" href="#" target="_blank">Скачайте счёт на оплату</a> и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p><br/>
-                                    <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>. Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
+                                    <p>Мы активируем ваши опции на сайте в течение рабочего дня после поступления денег. Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
                                 </td>
                             </tr>
                         </table>

@@ -216,11 +216,11 @@ endswitch;
                         <p class="label">1750.-</p>
                     </div>
 
-				<div class="ribbon">
+				<!--div class="ribbon">
 					<p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Закрытый питч" data-option-value="<?php if($this->session->read('user.id') == 1431):?>950<?php else:?>950<?php endif?>">Закрытый питч</label></p>
 					<p class="description">Питч станет не виден для поисковых систем, а идеи будут доступны для просмотра только вам и их авторам. Подробнее <a target="_blank" href="http://www.godesigner.ru/answers/view/64">тут</a> <a href="#" class="second tooltip" title="Это идеальная возможность, если вы являетесь посредником, рекламным агентством или не хотите разглашать секретов в маркетинговых целях.">(?)</a></p>
 					<p class="label">+<?php if($this->session->read('user.id') == 1431):?>950<?php else:?>950<?php endif?>.-</p>
-				</div>
+				</div-->
 
 				<div class="ribbon">
 					<p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Рекламный Кейс" data-option-value="15900">Рекламный Кейс</label></p>

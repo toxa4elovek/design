@@ -618,7 +618,7 @@ function ParticipateTableLoader() {
                 }else {
                     var status = object.startedHuman;
                 }
-                if(($('#user_id').val() == object.user_id) && (object.status == 0)) {
+                if(($('#user_id').val() == object.user_id)) {
                     editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link' + imgForDraft + '" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a>';
                 }
             }
@@ -638,6 +638,13 @@ function ParticipateTableLoader() {
                 }
             }else {
                 var status = 'Питч завершен';
+                if (object.hasBill == 'fiz') {
+                    status = '<a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                }
+                if (object.hasBill == 'yur') {
+                    status = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                }
+
                 if(object.winlink == true) {
                     var link = '/users/step2/' + object.awarded;
                 }else {
@@ -651,6 +658,10 @@ function ParticipateTableLoader() {
             shortIndustry = '<span style="font-size: 11px;">' + shortIndustry + '</span>';
             // Disabling Industry in Table
             shortIndustry = '';
+            var pitchMultiple = '';
+            if (object.multiple) {
+                pitchMultiple = '<br>' + object.multiple;
+            }
 
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
@@ -662,7 +673,7 @@ function ParticipateTableLoader() {
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
+                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + status + '</td>' +
@@ -870,6 +881,11 @@ function FavesTableLoader() {
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
             }
+            var pitchMultiple = '';
+            if (object.multiple) {
+                pitchMultiple = '<br>' + object.multiple;
+            }
+
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
                 '<td class="pitches-name">' +
@@ -880,7 +896,7 @@ function FavesTableLoader() {
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
+                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + status + '</td>' +

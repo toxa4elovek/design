@@ -28,7 +28,7 @@
         <section>
             <div class="center_block messages_gallery"  style="margin:35px 0 0 63px !important">
                 <?php if($type == 'designer'):?>
-                <span class="regular">Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об в комментариях. Успехов!</span>
+                <span class="regular">Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об этом в комментариях. Успехов!</span>
                 <?php elseif($type == 'client') :?>
                 <span class="regular">У вас есть право на внесение 3 поправок в течение <?=$solution->pitch->category->default_timelimit?> дней до запроса исходных файлов. Если вы удовлетворены макетами, пожалуйста, нажмите кнопку &laquo;Одобрить макеты&raquo; внизу страницы.</span>
                 <?php endif;?>
@@ -36,11 +36,13 @@
                 <div class="comment" style="margin-left:0px;">
                     <h4>Комментарии</h4>
                     <?php if(($solution->step < 3) && ($solution->pitch->status < 2)):?>
-                    <form method="post" action="/users/step2/<?=$solution->id?>" enctype="multipart/form-data">
+                    <form id="wincomment" method="post" action="/users/step2/<?=$solution->id?>.json" enctype="multipart/form-data">
                         <textarea id="newComment" name="text" style="margin:10px 0 0 0;"></textarea>
-                        <div>
-                            <input type="file" name="file[]" class="wincommentfileupload"/>
-                            <input type="submit" class="button" value="Отправить" style="width:185px;height:49px;margin:0;padding:0;float:right">
+                        <div style="position: relative;">
+                            <input type="file" name="file[]" multiple="multiple" class="wincommentfileupload" />
+                            <input id="fakebutton" type="button" style="position: absolute; z-index: 4; top: 0; left: 0; width: 185px; height: 23px; font-size: 12px;" value="Выбрать файлы">
+                            <input type="submit" class="button" value="Отправить" style="width:185px;height:49px;margin:10px 0 0 0;padding:0;float:right">
+                            <ul id="filelist" style="margin-top: 40px;"></ul>
                         </div>
                     </form>
                     <?php endif;?>
@@ -166,10 +168,10 @@
                         <?php endif;?>
                     </div>
                 </div>
-                <?php elseif(($type == 'client') &&  ($solution->step < 3)):?>
+                <?php elseif((($type == 'client') || ($this->session->read('user.isAdmin') == 1)) &&  ($solution->step < 3)):?>
                 <div class="buttons">
                     <div class="verify spanned" style="margin-right: 0px;">
-                        <?php if($nofiles == false):?>
+                        <?php if(($nofiles == false) || ($this->session->read('user.isAdmin') == 1)):?>
                         <?=$this->html->link('<img src="/img/proceed.png" /><br />
                             <span style="">Одобрить макеты</span>', array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
                         <?php else:?>
@@ -204,5 +206,14 @@
         <input style="width:167px" type="submit" class="button popup-close" value="OK!">
     </div>
 </div>
-<?=$this->html->script(array('jquery.simplemodal-1.4.2.js', 'users/step2'), array('inline' => false))?>
+
+<div id="loading-overlay" class="popup-final-step" style="display:none;width:353px;text-align:center;text-shadow:none;">
+    <div style="margin-top: 15px; margin-bottom:20px; color:#afafaf;font-size:14px"><span id="progressbar">0%</span></div>
+    <div id="progressbarimage" style="text-align: left; padding-left: 6px; padding-top: 1px; padding-right: 6px; height: 23px; background: url('/img/indicator_empty.png') repeat scroll 0px 0px transparent; width: 341px;">
+        <img id="filler" src="/img/progressfilled.png" style="width:1px" height="22">
+    </div>
+    <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
+</div>
+
+<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'users/step2'), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
