@@ -47,6 +47,7 @@ class Pitch extends \app\models\AppModel {
 			$result = $chain->next($self, $params, $chain);
             $result = $self::addHumanisedTimeleft($result);
             $result = $self::addEditedBrief($result);
+            $result = $self::addNoveltyStatus($result);
 			return $result;
 		});
 		self::applyFilter('activate', function($self, $params, $chain){
@@ -312,6 +313,27 @@ class Pitch extends \app\models\AppModel {
 		}
 		return $result;
 	}
+
+    public static function addNoveltyStatus($result) {
+        if(is_object($result)) {
+            $addNoveltyStatus = function($record) {
+                if((strtotime($record->started) + DAY) > time())  {
+                    $record->new_pitch = 1;
+                }else {
+                    $record->new_pitch = 0;
+                }
+                return $record;
+            };
+            if(get_class($result) == 'lithium\data\entity\Record') {
+                $result = $addNoveltyStatus($result);
+            }else {
+                foreach($result as $foundItem) {
+                    $foundItem = $addNoveltyStatus($foundItem);
+                }
+            }
+        }
+        return $result;
+    }
 
     public static function addEditedBrief($result) {
         if(is_object($result)) {

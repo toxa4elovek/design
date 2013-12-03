@@ -102,7 +102,7 @@ function TableLoader() {
             var pitchStartDate = new Date(temp.slice(0,3).join('/')+' '+temp[3]);
             var plusoneday = Math.round(pitchStartDate.getTime() / 1000) + 24 * 60 * 60;
             var currentunixtime = Math.round(new Date().getTime() / 1000);
-            if(plusoneday > currentunixtime) {
+            if(object.new_pitch == 1) {
                 rowClass += ' newpitch';
             }else {
                 if(object.pinned == 1) {
