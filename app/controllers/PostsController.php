@@ -134,4 +134,13 @@ class PostsController extends \app\controllers\AppController {
         }
     }
 
+    public function delete() {
+        if(User::checkRole('editor')) {
+            if($post = Post::first($this->request->id)) {
+                $post->delete();
+            }
+        }
+        return $this->redirect('/posts');
+    }
+
 }

@@ -37,10 +37,12 @@
                                         <?php echo $post->short?>
                                     </div>
                                     <div style="height:1px;width:200px;margin-bottom:10px;"></div>
-                                    <a style="" class="more" href="/posts/view/<?=$post->id?>">Подробнее</a>
+
                                     <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81, 1773, 3049))):?>
-                                    <a target="_blank" class="more" href="/posts/edit/<?=$post->id?>" style="margin-left:100px;">редактировать</a>
+                                    <a target="_blank" class="more" href="/posts/edit/<?=$post->id?>" >редактировать</a>
+                                    <a target="_blank" class="more delete-post" href="/posts/delete/<?=$post->id?>" >удалить</a>
                                     <?php endif?>
+                                    <a style="" class="more" href="/posts/view/<?=$post->id?>">Подробнее</a>
                                 </div>
                                 <div style="float:left;width:500px;margin-bottom: 20px; height:1px;"></div>
                             </div>

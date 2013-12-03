@@ -56,9 +56,9 @@ $(document).ready(function() {
                         // Editor
                         var editor = ''
                         if (result.editor == 1) {
-                            var editor = '<a target="_blank" class="more" href="/posts/edit/' + field.id + '" style="margin-left:100px;">редактировать</a>';  
+                            var editor = '<a target="_blank" class="more" href="/posts/edit/' + field.id + '" style="">редактировать</a>';
+                            editor += '<a target="_blank" class="more delete-post" href="/posts/delete/' + field.id + '" style="">удалить</a>';
                         }
-                        
                         $(".howitworks").append(
                                 '<div> \
                                 <div style="float:left;width:249px;height:185px;background-image: url(/img/frame.png);margin-top:15px;"> \
@@ -72,10 +72,10 @@ $(document).ready(function() {
                                     <div class="regular" style="margin-top:10px">'
                                         + field.short +
                                     '</div> \
-                                    <div style="height:1px;width:200px;margin-bottom:10px;"></div> \
-                                    <a style="" class="more" href="/posts/view/' + field.id + '">Подробнее</a>'
+                                    <div style="height:1px;width:200px;margin-bottom:10px;"></div>'
                                     + editor +
-                                '</div> \
+                                    '<a style="" class="more" href="/posts/view/' + field.id + '">Подробнее</a> \
+                                </div> \
                                 <div style="float:left;width:500px;margin-bottom: 20px; height:1px;"></div> \
                             </div>'
                         );
@@ -98,6 +98,15 @@ $(document).ready(function() {
     scrollInit();
     
     $(window).on('resize', function() { Tip.resize(); });
+
+    $( ".delete-post" ).on( "click", function() {
+        if (confirm("Точно удалить статью?")) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+
 });
 
 /*

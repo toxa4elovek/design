@@ -13,6 +13,7 @@
  .hover.more {
      color:#666666;background: url(img/a.png) no-repeat right -40px;
  }
+a.more-noicon{font:11px arial;text-decoration:none;color:#999999;text-shadow:none;padding:2px 24px 4px 1px;text-transform:uppercase}
  .largest-header-blog{
 	font: normal 28px/34px "RodeoC", sans-serif;
     color: #666666;
