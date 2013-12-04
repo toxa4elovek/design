@@ -21,9 +21,10 @@
                         <p style="margin-top:10px"><a href="mailto:<?=$user->email?>"><?=$user->email?></a> <a href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=http://www.godesigner.ru/users/loginasuser/<?=$user->id?>">(войти)</a></p>
                         <p style="margin-top:10px">Онлайн: <?=date('d.m.Y H:i', strtotime($user->lastTimeOnline))?></p>
                         <?php if($user->silenceCount > 0):?>
-                              <p style>Запретов на общение: <?=$user->silenceCount?></p>
+                              <p style="margin-top:10px">Запретов на общение: <?=$user->silenceCount?></p>
+                              <p style="margin-top:10px">Молчит до: <?=date('d.m.Y H:i:s', strtotime($user->silenceUntil))?></p>
                             <?php if(($user->silenceCount > 0) && (strtotime($user->silenceUntil) > strtotime(date('Y-m-d H:i:s')))):?>
-                                <button class="allowcomment" data-term=""/>Разрешить комментарии</button>
+                                <button style="margin-top:10px" class="allowcomment" data-term=""/>Разрешить комментарии</button>
                             <?php endif?>
                         <?php endif?>
                         <div style="margin-top:10px;">
