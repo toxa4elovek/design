@@ -44,6 +44,7 @@ class PagesController extends \app\controllers\AppController {
     	$totalAwards = Pitch::getTotalAwards();
     	$totalWaitingForClaim = Pitch::getTotalWaitingForClaim();
     	//$totalAwardsValue = Pitch::getTotalAwardsValue();
+        $totalParticipants = Solution::getTotalParticipants();
         $lastDaySolutionNum = Solution::getNumOfUploadedSolutionInLastDay();
     	$pitches = Pitch::all(array(
 			'order' => array(
@@ -77,7 +78,7 @@ class PagesController extends \app\controllers\AppController {
             $grade->user = User::first(array('conditions' => array('id' => $grade->user_id)));
         }
         $experts = Expert::all();
-        return compact('category_id', 'numOfSolutionsPerProject', 'numOfCurrentPitches', 'totalAwards', 'totalWaitingForClaim', 'lastDaySolutionNum', 'pitches', 'promos', 'experts', 'grades');
+        return compact('category_id', 'numOfSolutionsPerProject', 'numOfCurrentPitches', 'totalAwards', 'totalWaitingForClaim', 'totalParticipants', 'lastDaySolutionNum', 'pitches', 'promos', 'experts', 'grades');
     }
 
     public function cross() {

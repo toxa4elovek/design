@@ -270,8 +270,8 @@
         <dd>заработанных<br> дизайнерами денег</dd>
       </dl>
       <dl class="dl_4">
-        <dt><?=$this->moneyFormatter->formatMoney($totalWaitingForClaim)?></dt>
-        <dd>в ожидании победителей</dd>
+        <dt><?=$totalParticipants; ?></dt>
+        <dd>количество участников</dd>
       </dl>
       <dl class="dl_5">
         <dt><?=$lastDaySolutionNum?></dt>

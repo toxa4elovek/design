@@ -339,4 +339,9 @@ http://godesigner.ru/answers/view/73');
         return $count;
     }
 
+    public static function getTotalParticipants() {
+        $count = self::all(array('group' => 'user_id'));
+        return count($count);
+    }
+
 }
