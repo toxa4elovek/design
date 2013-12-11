@@ -334,4 +334,9 @@ http://godesigner.ru/answers/view/73');
         });
     }
 
+    public static function getNumOfUploadedSolutionInLastDay() {
+        $count = Solution::count(array('conditions' => array('created' => array('>' => date('Y-m-d H:i:s', (time() - DAY))))));
+        return $count;
+    }
+
 }

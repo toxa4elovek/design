@@ -14,6 +14,7 @@ use \app\models\Expert;
 use \app\models\Promo;
 use \app\models\User;
 use \app\models\Grade;
+use \app\models\Solution;
 use \app\extensions\mailers\ContactMailer;
 
 class PagesController extends \app\controllers\AppController {
@@ -36,11 +37,14 @@ class PagesController extends \app\controllers\AppController {
     }
 
     public function home() {
-    	$numOfSolutionsPerProject = Pitch::getNumOfSolutionsPerProject();
+        $pool = array(1, 3, 7);
+        $category_id = $pool[array_rand($pool)];
+    	$numOfSolutionsPerProject = Pitch::getNumOfSolutionsPerProjectOfCategory($category_id);
     	$numOfCurrentPitches = Pitch::getNumOfCurrentPitches();
     	$totalAwards = Pitch::getTotalAwards();
     	$totalWaitingForClaim = Pitch::getTotalWaitingForClaim();
-    	$totalAwardsValue = Pitch::getTotalAwardsValue();
+    	//$totalAwardsValue = Pitch::getTotalAwardsValue();
+        $lastDaySolutionNum = Solution::getNumOfUploadedSolutionInLastDay();
     	$pitches = Pitch::all(array(
 			'order' => array(
 				/*'pinned' => 'desc',
@@ -73,7 +77,7 @@ class PagesController extends \app\controllers\AppController {
             $grade->user = User::first(array('conditions' => array('id' => $grade->user_id)));
         }
         $experts = Expert::all();
-        return compact('numOfSolutionsPerProject', 'numOfCurrentPitches', 'totalAwards', 'totalWaitingForClaim', 'totalAwardsValue', 'pitches', 'promos', 'experts', 'grades');
+        return compact('category_id', 'numOfSolutionsPerProject', 'numOfCurrentPitches', 'totalAwards', 'totalWaitingForClaim', 'lastDaySolutionNum', 'pitches', 'promos', 'experts', 'grades');
     }
 
     public function cross() {

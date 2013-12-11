@@ -200,6 +200,19 @@ class Pitch extends \app\models\AppModel {
 		return ceil($result->first()->averageCount);
 	}
 
+    public static function getNumOfSolutionsPerProjectOfCategory($category_id) {
+        $result = self::find('all', array(
+            'fields' => array('AVG(ideas_count) as averageCount'),
+            'conditions' => array(
+                'published' => 1,
+                'category_id' => $category_id,
+                'started' => array('>' => date('Y-m-d H:i:s', time() - (365 * DAY)))
+            )
+        ));
+        return ceil($result->first()->averageCount);
+    }
+
+
 	public static function getNumOfCurrentPitches() {
 		$result = self::find('count', array(
 			'conditions' => array('published' => 1, 'status' => array('<' => 2))

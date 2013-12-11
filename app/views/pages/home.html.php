@@ -254,7 +254,12 @@
     <div class="statistika">
       <dl class="dl_1">
         <dt><?=$numOfSolutionsPerProject?></dt>
-        <dd>Решений <br>на проект</dd>
+        <?php switch($category_id):
+            case 1: $string = '<dd>решений <br>в категории <br>«логотип»</dd>'; break;
+            case 3: $string = '<dd>решений <br>в категории <br>«сайт»</dd>'; break;
+            case 7: $string = '<dd>решений <br>в категории <br>«копирайтинг»</dd>'; break;
+        endswitch?>
+        <?php echo $string; ?>
       </dl>
       <dl class="dl_2">
         <dt><?=$numOfCurrentPitches?></dt>
@@ -269,8 +274,8 @@
         <dd>в ожидании победителей</dd>
       </dl>
       <dl class="dl_5">
-        <dt><?=$this->moneyFormatter->formatMoney($totalAwardsValue)?></dt>
-        <dd>общий бюджет прошедший через GoDesigner</dd>
+        <dt><?=$lastDaySolutionNum?></dt>
+        <dd>новых работ загружено за сутки</dd>
       </dl>
     </div>
 
