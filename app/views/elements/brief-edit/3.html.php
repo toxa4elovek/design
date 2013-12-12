@@ -20,25 +20,6 @@
         <textarea placeholder="" rows="5" cols="30" name="site-inspiration" class="<?php if(empty($specifics['site-inspiration'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-inspiration']?></textarea>
     </p>
 
-    <p>
-        <label>Какую CMS вы предпочитаете?</label>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="0" <?php if($specifics['cms'] == '0'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">не уверен</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="1" <?php if($specifics['cms'] == '1'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">Wordpress</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="2" <?php if($specifics['cms'] == '2'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">Joomla</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="3" <?php if($specifics['cms'] == '3'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">DLE</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="4" <?php if($specifics['cms'] == '4'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">1С-Битрикс</span>
-    </div>
-    </p>
-
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">
