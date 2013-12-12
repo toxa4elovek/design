@@ -253,7 +253,7 @@
 
     <div class="statistika">
       <dl class="dl_1">
-        <dt><?=$numOfSolutionsPerProject?></dt>
+        <dt><?=$statistic['numOfSolutionsPerProject'][$category_id]?></dt>
         <?php switch($category_id):
             case 1: $string = '<dd>решений <br>в категории <br>«логотип»</dd>'; break;
             case 3: $string = '<dd>решений <br>в категории <br>«сайт»</dd>'; break;
@@ -262,19 +262,19 @@
         <?php echo $string; ?>
       </dl>
       <dl class="dl_2">
-        <dt><?=$numOfCurrentPitches?></dt>
+        <dt><?=$statistic['numOfCurrentPitches']?></dt>
         <dd>текущих<br> питчей</dd>
       </dl>
       <dl class="dl_3">
-        <dt><?=$this->moneyFormatter->formatMoney($totalAwards)?></dt>
+        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'])?></dt>
         <dd>заработанных<br> дизайнерами денег</dd>
       </dl>
       <dl class="dl_4">
-        <dt><?=$totalParticipants; ?></dt>
+        <dt><?=$statistic['totalParticipants']?></dt>
         <dd>количество участников</dd>
       </dl>
       <dl class="dl_5">
-        <dt><?=$lastDaySolutionNum?></dt>
+        <dt><?=$statistic['lastDaySolutionNum']?></dt>
         <dd>новых работ загружено за сутки</dd>
       </dl>
     </div>
