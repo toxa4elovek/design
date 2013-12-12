@@ -44,6 +44,7 @@
 			</p>
 		</nav><!-- .nav -->
         <ul class="pay-systems">
+            <li style="width:80px;padding-top:6px"><a href="http://www.payanyway.ru" target="_blank">PayAnyWay</a></li>
             <li><img src="/img/mastercard.png" alt="MasteCard"/></li>
             <li><img src="/img/visa.png" alt="Visa" /></li>
         </ul><!-- .social -->
