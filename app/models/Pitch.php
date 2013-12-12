@@ -214,10 +214,27 @@ class Pitch extends \app\models\AppModel {
 
 
 	public static function getNumOfCurrentPitches() {
-		$result = self::find('count', array(
-			'conditions' => array('published' => 1, 'status' => array('<' => 2))
+		$result = self::all(array(
+			'conditions' => array(
+			    'published' => 1,
+			    'status' => array('<' => 2),
+			),
+		    'fields' => array('id', 'Solution.nominated'),
+		    'with' => array('Solution'),
 		));
-		return $result;
+		$result = $result->data();
+		foreach ($result as $key => $pitch) {
+		    $delete = false;
+		    array_walk_recursive($pitch, function($item, $idx) use (&$delete) {
+			    if (($idx == 'nominated') && ($item == 1)) {
+			        $delete = true;
+			    }
+		    });
+		    if($delete) {
+		      unset($result[$key]);
+		    }
+		}
+		return count($result);
 	}
 
 	public static function getTotalAwards() {
