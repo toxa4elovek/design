@@ -40,7 +40,7 @@ class PagesController extends \app\controllers\AppController {
     public function home() {
         $pool = array(1, 3, 7);
         $category_id = $pool[array_rand($pool)];
-        $statistic = Cache::read('default', 'statistic');
+        $statistic = Cache::read('files', 'statistic');
         if (empty($statistic)) {
             $statistic = array(
                 'numOfSolutionsPerProject' => array(

@@ -24,9 +24,12 @@ class Statistic extends \lithium\console\Command {
             'lastDaySolutionNum' => Solution::getNumOfUploadedSolutionInLastDay(),
         );
 
-        $default = array('adapter' => 'File', 'strategies' => array('Serializer'));
-        Cache::config(compact('default'));
-        Cache::write('default', 'statistic', $statistic, '+2 hour');
+        $default = array('adapter' => 'Apc');
+        Cache::config(array(
+            'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+            'default' => array('adapter' => 'Apc')
+        ));
+        Cache::write('files', 'statistic', $statistic, '+2 hour');
         $this->out('Cache has been updated.');
     }
 }

@@ -42,6 +42,11 @@ if ($apcEnabled) {
 }
 Cache::config(compact('default'));
 
+Cache::config(array(
+    'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+    'default' => array('adapter' => 'Apc')
+));
+
 /**
  * Caches paths for auto-loaded and service-located classes.
  */
