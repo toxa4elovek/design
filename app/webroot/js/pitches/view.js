@@ -168,6 +168,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.delete-solution', function() {
         var link = $(this);
+        $('#model_id', '#popup-delete-solution').val($(this).data('solution'));
         
      // Show Delete Moderation Overlay
         $('#popup-delete-solution').modal({
@@ -190,6 +191,14 @@ $(document).ready(function(){
                 $('#hidden-solutions-count').val(newSolutionCount);
             }
         });
+        return false;
+    });
+    
+    // Delete Solution Popup
+    $(document).on('click', '#sendDeleteSolution, #sendDeleteComment', function() {
+        var form = $(this).parent().parent();
+        var data = form.serialize();
+        $.post(form.attr('action') + '.json', data).always(function(result) { console.log(result) });
         return false;
     });
 
