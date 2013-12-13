@@ -2777,14 +2777,19 @@ ul.social li#rss {
     background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 
-#final-step {
+#final-step,
+#final-step-clean {
     position: relative;
     width: 739px;
     height: 505px;
     background: url(img/popup-submit-top.png) 0 0 no-repeat;
 }
-
-#final-step:after {
+#final-step-clean {
+	background: url(img/main_bg.jpg) 0 0 repeat;
+	height: 485px;
+}
+#final-step:after,
+#final-step-clean:after {
     content: "";
     display: block;
     position: absolute;
@@ -2794,7 +2799,36 @@ ul.social li#rss {
     height: 19px;
     background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
 }
-
+#final-step-clean .button {
+    float: left;
+    min-width: 250px;
+}
+#popup-delete-comment ul>li,
+#popup-delete-solution ul>li {
+	display: inline-block;
+	float: left;
+	margin: 10px 60px 10px 0;
+}
+#popup-delete-comment input[type=radio],
+#popup-delete-solution input[type=radio] {
+	vertical-align: baseline;
+	margin: 10px 7px 10px 0;
+}
+#popup-delete-comment input[type=radio]:focus,
+#popup-delete-solution input[type=radio]:focus {
+	outline: none;
+}
+#popup-delete-comment h1,
+#popup-delete-solution h1 {
+	font-size: 30px;
+	text-transform: uppercase;
+	margin: 10px 0;
+}
+#popup-delete-comment h2,
+#popup-delete-solution h2 {
+	font-size: 16px;
+	margin: 10px 0;
+}
 .popup-final-step {
     padding: 0 72px 0 100px;
     font: 14px/1.5em Arial, Helvetica, sans-serif;

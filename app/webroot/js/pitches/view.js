@@ -168,6 +168,18 @@ $(document).ready(function(){
 
     $(document).on('click', '.delete-solution', function() {
         var link = $(this);
+        
+     // Show Delete Moderation Overlay
+        $('#popup-delete-solution').modal({
+            containerId: 'final-step-clean',
+            opacity: 80,
+            closeClass: 'popup-close',
+            onShow: function() {
+            }
+        });
+        return false;
+        
+        // Instant Delete
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
         var word = formatString(newSolutionCount, {'string':'решен', 'first':'ие', 'second':'ия', 'third':'ий'});
         var newString = newSolutionCount + ' ' + word;

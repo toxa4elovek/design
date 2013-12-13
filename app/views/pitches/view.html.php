@@ -602,6 +602,60 @@
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
 
+<!-- Comment Delete Moderation -->
+<div id="popup-delete-comment" class="popup-warn generic-window" style="display:none">
+    <br>
+    <h1 class="largest-header regular">Удалить комментарий</h1>
+    <ul>
+        <li>
+            <h2>Причина</h2>
+            <input type="radio" name="reason" value="critique">Публичная ссылка<br>
+            <input type="radio" name="reason" value="link">Ссылка<br>
+            <input type="radio" name="reason" value="other">Другое
+        </li>
+        <li>
+            <h2>Срок</h2>
+            <input type="radio" name="time" value="10">10 дней<br>
+            <input type="radio" name="time" value="30">30 дней<br>
+            <input type="radio" name="time" value="90">90 дней
+        </li>
+        <li>
+            <h2>&nbsp;</h2>
+            <input type="radio" name="penalty" value="0">Без штрафа<br>
+            <input type="radio" name="penalty" value="1">Заблокировать<br>
+        </li>
+    </ul>
+    <textarea id="moderate-comment" class="placeholder" placeholder="Комментарий"></textarea>
+    <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button" id="sendDeleteComment" value="Отправить"></div>
+</div>
+
+<!-- Solution Delete Moderation -->
+<div id="popup-delete-solution" class="popup-warn generic-window" style="display:none">
+    <br>
+    <h1 class="largest-header regular">Удалить решение</h1>
+    <ul>
+        <li>
+            <h2>Причина</h2>
+            <input type="radio" name="reason" value="plagiat">Плагиат<br>
+            <input type="radio" name="reason" value="template">Использование шаблонов<br>
+            <input type="radio" name="reason" value="other">Другое
+        </li>
+        <li>
+            <h2>Срок</h2>
+            <input type="radio" name="time" value="10">10 дней<br>
+            <input type="radio" name="time" value="30">30 дней<br>
+            <input type="radio" name="time" value="90">90 дней
+        </li>
+        <li>
+            <h2>&nbsp;</h2>
+            <input type="radio" name="penalty" value="0">Без штрафа<br>
+            <input type="radio" name="penalty" value="1">Заблокировать<br>
+        </li>
+    </ul>
+    <textarea id="moderate-comment" class="placeholder" placeholder="ссылка на первоисточник или комментарий"></textarea>
+    <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button" id="sendDeleteSolution" value="Отправить"></div>
+</div>
+
 <!-- Solution Popup -->
 <script>
 var pitchNumber = <?php echo $pitch->id; ?>;

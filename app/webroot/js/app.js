@@ -742,6 +742,18 @@ function enableToolbar() {
         var section = $(this).parent().parent().parent();
         var id = $(section).attr('data-id');
         var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+        
+        // Show Delete Moderation Overlay
+        $('#popup-delete-comment').modal({
+            containerId: 'final-step-clean',
+            opacity: 80,
+            closeClass: 'popup-close',
+            onShow: function() {
+            }
+        });
+        return false;
+        
+        // Instant Delete
         $.post($(this).attr('href') + '.json', function(result) {
             if (result == 'true') {
                 sectionPitch.remove();
