@@ -67,7 +67,7 @@
                 <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
                 <div class="about_profile">
                     <dl>
-                        <dt class="greyboldheader">Обо мне:</dt>
+                        <dt class="greyboldheader" style="margin-left: 60px">Обо мне:</dt>
 
                         <dd class="regular">
                             <?=$this->brief->stripemail(nl2br($userdata['about']))?>

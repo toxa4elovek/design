@@ -38,23 +38,22 @@
                             </div>
                             <div class="likes">
                                 <ul class="profile-list">
-                                    <li class="regular-small-grey" style="color:#666666;">Total Likes:<span> <?=(int)$totalLikes?></span></li>
-                                    <li class="regular-small-grey" style="color:#666666;">Просмотров решений:<span> <?=(int)$totalViews?></span></li>
+                                    <li class="regular-small-grey" style="color:#666666;">Total Likes:<span> <?=$totalLikes?></span></li>
+                                    <li class="regular-small-grey" style="color:#666666;">Просмотров решений:<span> <?=$totalViews?></span></li>
                                     <?php if($isClient):?>
-                                    <li class="regular-small-grey" style="color:#666666;">Рейтинг у заказчика:<span> <?=$averageGrade?></span></li>
+                                        <li class="regular-small-grey" style="color:#666666;">Рейтинг у дизайнеров:<span> <?=$averageGrade?></span></li>
                                     <?php else:?>
-                                    <li class="regular-small-grey" style="color:#666666;">Рейтинг у заказчика:<span> <?=$averageGrade?></span></li>
+                                        <li class="regular-small-grey" style="color:#666666;">Рейтинг у заказчика:<span> <?=$averageGrade?></span></li>
                                     <?php endif?>
                                 </ul>
                             </div>
                         </div>
                     </div>
 
-                    <img src="/img/profile-separate.png" />
-
                     <div class="about_profile">
                         <dl>
-                            <dt class="greyboldheader">Обо мне:</dt>
+                            <dt class="greyboldheader" style="margin-left: 60px">Обо мне:</dt>
+
                             <dd class="regular">
                                 <?=$this->brief->stripemail(nl2br($userdata['about']))?>
                             </dd>
@@ -65,7 +64,7 @@
 
             <?php if(count($selectedSolutions) > 0):?>
             <div class="portfolio">
-                <ul class="list_portfolio" style="margin-left:-30px;">
+                <ul class="list_portfolio" style="margin-left:-25px;">
                     <?php foreach($selectedSolutions as $solution):
                     if(($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):
                         continue;
