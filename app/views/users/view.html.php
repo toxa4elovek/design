@@ -6,9 +6,9 @@
     ?>
     <div class="middle">
 
-        <div class="middle_inner">
+        <div class="middle_inner user_view">
 
-            <div class="profile" style="margin: 20px 39px 10px 0;">
+            <div class="profile">
 
                 <div class="info_profile">
 
@@ -64,25 +64,23 @@
                     </div>
                 </div>
 
-                <img src="/img/profile-separate.png" />
-
+                <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
                 <div class="about_profile">
                     <dl>
-                        <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
                         <dt class="greyboldheader">Обо мне:</dt>
 
                         <dd class="regular">
                             <?=$this->brief->stripemail(nl2br($userdata['about']))?>
                         </dd>
-                        <?php endif?>
                         <div class="separate"> </div>
                     </dl>
                 </div>
+                <?php endif?>
             </div>
 
     <?php if(count($selectedSolutions) > 0):?>
         <div class="portfolio">
-            <ul class="list_portfolio" style="margin-left:-30px;">
+            <ul class="list_portfolio" style="margin-left:-25px;">
                 <?php foreach($selectedSolutions as $solution):
                 if(($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):
                     continue;

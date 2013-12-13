@@ -311,7 +311,7 @@ $(document).ready(function() {
                         $('.conteiner').css('margin-top', 0);
                         $('.main').css('margin-top', 0);
                         $('.conteiners').css('margin-top', 0);
-                        $('.middle_inner').css('margin-top', 0);
+                        $('.middle_inner').not('.user_view').css('margin-top', 0);
                     }
                 }
             }
