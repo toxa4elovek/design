@@ -182,12 +182,12 @@ $(document).ready(function(){
         
         // Delete Solution Popup Form
         $(document).on('click', '#sendDeleteSolution', function() {
-            if (!$('input[name=reason]:checked').length || !$('input[name=penalty]:checked').length) {
+            var form = $(this).parent().parent();
+            if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
                 $('#popup-delete-solution').addClass('wrong-input');
                 return false;
             }
             $(document).off('click', '#sendDeleteSolution');
-            var form = $(this).parent().parent();
             var data = form.serialize();
             $.post(form.attr('action') + '.json', data).done(function(result) {
                 solutionDelete(link);

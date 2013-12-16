@@ -758,7 +758,7 @@ function enableToolbar() {
      // Delete Comment Popup Form
         $(document).on('click', '#sendDeleteComment', function() {
             var form = $(this).parent().parent();
-            if (!$('input[name=reason]:checked').length || !$('input[name=penalty]:checked').length) {
+            if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
                 $('#popup-delete-comment').addClass('wrong-input');
                 return false;
             }
