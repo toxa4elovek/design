@@ -737,10 +737,13 @@ function enableToolbar() {
         $('.toolbar', this).fadeOut(200);
     });
 
+    // Delete Comment
     $('.delete-link-in-comment.ajax').on('click', function(e) {
         e.preventDefault();
-        var section = $(this).parent().parent().parent();
+        var link = $(this);
+        var section = link.parent().parent().parent();
         var id = $(section).attr('data-id');
+        $('#model_id', '#popup-delete-comment').val(id);
         var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
         
         // Show Delete Moderation Overlay
@@ -751,19 +754,38 @@ function enableToolbar() {
             onShow: function() {
             }
         });
-        return false;
         
-        // Instant Delete
-        $.post($(this).attr('href') + '.json', function(result) {
-            if (result == 'true') {
-                sectionPitch.remove();
-                $('.separator', '.pitch-comments section:first').remove();
-                if ($('.solution-overlay').is(':visible')) {
-                    section.remove();
-                }
+     // Delete Comment Popup Form
+        $(document).on('click', '#sendDeleteComment', function() {
+            var form = $(this).parent().parent();
+            if (!$('input[name=reason]:checked').length || !$('input[name=penalty]:checked').length) {
+                $('#popup-delete-comment').addClass('wrong-input');
+                return false;
             }
+            $(document).off('click', '#sendDeleteComment');
+            var data = form.serialize();
+            $.post(form.attr('action') + '.json', data).done(function(result) {
+                commentDelete(link, section, sectionPitch);
+                $('.popup-close').click();
+            });
+            return false;
         });
+        return false;
     });
+}
+
+// Instant Delete Comment
+function commentDelete(link, section, sectionPitch) {
+    $.post(link.attr('href') + '.json', function(result) {
+        if (result == 'true') {
+            sectionPitch.remove();
+            $('.separator', '.pitch-comments section:first').remove();
+            if ($('.solution-overlay').is(':visible')) {
+                section.remove();
+            }
+        }
+    });
+    return true;
 }
 
 /*

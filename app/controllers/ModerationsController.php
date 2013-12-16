@@ -34,12 +34,13 @@ class ModerationsController extends \app\controllers\AppController {
                         'user_id' => $solution->user_id,
                         'created' => $solution->created,
                         'description' => $solution->description,
-                        'image' => $solution->images['solution_galleryLargeSize'][0]['weburl'],
+                        'image' => self::getThumbnail($solution),
                 )));
             }
             $data['user_id'] = $currentUser;
             $data['reason'] = $this->request->data['reason'];
             $data['penalty'] = $this->request->data['penalty'];
+            $data['explanation'] = $this->request->data['explanation'];
 
             $moderation = Moderation::create();
             $moderation->set($data);
@@ -51,5 +52,20 @@ class ModerationsController extends \app\controllers\AppController {
             return json_encode($result);
         }
         return $this->redirect('/pitches/view/' . $pitch->id);
+    }
+
+    private static function getThumbnail($solution) {
+        if (isset($solution->images['solution_galleryLargeSize'][0])) {
+            $image = $solution->images['solution_galleryLargeSize'][0];
+        } else {
+            $image = $solution->images['solution_galleryLargeSize'];
+        }
+        if (file_exists($image['filename'])) {
+            $newFileName = pathinfo($image['filename'], PATHINFO_DIRNAME) . '/deleted/' . pathinfo($image['filename'], PATHINFO_BASENAME);
+            copy($image['filename'], $newFileName);
+        } else {
+            $newFileName = null;
+        }
+        return $newFileName;
     }
 }

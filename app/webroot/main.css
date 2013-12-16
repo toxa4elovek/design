@@ -2802,12 +2802,21 @@ ul.social li#rss {
 #final-step-clean .button {
     float: left;
     min-width: 250px;
+    margin-top: 10px;
+}
+#popup-delete-solution,
+#popup-delete-comment {
+	border: 1px solid transparent;
+}
+#popup-delete-solution.wrong-input,
+#popup-delete-comment.wrong-input {
+	border: 1px solid red;
 }
 #popup-delete-comment ul>li,
 #popup-delete-solution ul>li {
 	display: inline-block;
 	float: left;
-	margin: 10px 60px 10px 0;
+	margin: 5px 50px 5px 0;
 }
 #popup-delete-comment input[type=radio],
 #popup-delete-solution input[type=radio] {

@@ -166,11 +166,12 @@ $(document).ready(function(){
        });
     });
 
+    // Delete Solution
     $(document).on('click', '.delete-solution', function() {
         var link = $(this);
         $('#model_id', '#popup-delete-solution').val($(this).data('solution'));
         
-     // Show Delete Moderation Overlay
+        // Show Delete Moderation Overlay
         $('#popup-delete-solution').modal({
             containerId: 'final-step-clean',
             opacity: 80,
@@ -178,30 +179,40 @@ $(document).ready(function(){
             onShow: function() {
             }
         });
-        return false;
         
-        // Instant Delete
+        // Delete Solution Popup Form
+        $(document).on('click', '#sendDeleteSolution', function() {
+            if (!$('input[name=reason]:checked').length || !$('input[name=penalty]:checked').length) {
+                $('#popup-delete-solution').addClass('wrong-input');
+                return false;
+            }
+            $(document).off('click', '#sendDeleteSolution');
+            var form = $(this).parent().parent();
+            var data = form.serialize();
+            $.post(form.attr('action') + '.json', data).done(function(result) {
+                solutionDelete(link);
+                $('.popup-close').click();
+            });
+            return false;
+        });
+        return false;
+    });
+    
+    // Instant Delete Solution
+    function solutionDelete(link) {
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
         var word = formatString(newSolutionCount, {'string':'решен', 'first':'ие', 'second':'ия', 'third':'ий'});
         var newString = newSolutionCount + ' ' + word;
-        $.get($(this).attr('href'), function(response) {
+        $.get(link.attr('href'), function(response) {
             if(response.result != false) {
                 link.parent().parent().parent().parent().remove();
                 $('#solutions', 'ul').html(newString);
                 $('#hidden-solutions-count').val(newSolutionCount);
             }
         });
-        return false;
-    });
+        return true;
+    }
     
-    // Delete Solution Popup
-    $(document).on('click', '#sendDeleteSolution, #sendDeleteComment', function() {
-        var form = $(this).parent().parent();
-        var data = form.serialize();
-        $.post(form.attr('action') + '.json', data).always(function(result) { console.log(result) });
-        return false;
-    });
-
     function formatString(value, strings) {
         root = strings['string'];
         if((value == 1) || (value.toString().match(/[^1]1$/))) {
@@ -994,10 +1005,8 @@ function inlineActions() {
 
     $('.delete-solution-popup').on('click', function(e) {
         e.preventDefault();
-        if (confirm('Действительно удалить решение?')) {
-            hideSolutionPopup();
-            $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
-        }
+        hideSolutionPopup();
+        $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
     });
 
     $('.select-winner-popup').click(function() {
