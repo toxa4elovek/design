@@ -33,7 +33,7 @@ class Moderation extends \app\models\AppModel {
                             $user->silenceUntil = date('Y-m-d H:i:s', time() + $term);
                             $user->silenceCount += 1;
                             $user->save(null, array('validate' => false));
-                            UserMailer::ban(array('user' => $user->data(), 'term' => $term));
+                            UserMailer::ban(array('user' => $user->data(), 'term' => (int) $penalty ));
                         }
                         break;
                 }
