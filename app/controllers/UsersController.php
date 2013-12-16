@@ -12,6 +12,7 @@ use \app\models\Pitch;
 use \app\models\Event;
 use \app\models\Invite;
 use \app\models\Avatar;
+use \app\models\Moderation;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\mailers\ContactMailer;
@@ -963,7 +964,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function view() {
         if($user = User::first($this->request->id)) {
-            if(($user->active == 0) && (!in_array(Session::read('user.id'), array(32, 4, 5, 108, 81)))):
+            if(($user->active == 0) && !User::checkRole('admin')):
                 return $this->redirect('/');
             endif;
 
@@ -981,6 +982,10 @@ class UsersController extends \app\controllers\AppController {
             }else {
                 $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
             }
+            $moderations = null;
+            if (User::checkRole('admin') || (Session::read('user.isAdmin') == 1)) {
+                $moderations = Moderation::all();
+            }
             $isClient = false;
             $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
             if(count($userPitches) > 0) {
@@ -996,7 +1001,7 @@ class UsersController extends \app\controllers\AppController {
                     'with' => array('Pitch')
                 ));
             }
-            return compact('user', 'pitchCount', 'averageGrade', 'totalViews', 'totalLikes' ,'awardedSolutionNum' , 'totalSolutionNum', 'selectedSolutions', 'isClient');
+            return compact('user', 'pitchCount', 'averageGrade', 'totalViews', 'totalLikes' ,'awardedSolutionNum' , 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
         }
         throw new Exception('Public:Такого пользователя не существует.', 404);
     }

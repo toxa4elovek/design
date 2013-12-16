@@ -76,6 +76,52 @@
                     </dl>
                 </div>
                 <?php endif?>
+
+                <?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) && (!empty($moderations)) ):?>
+                    <hr class="clr">
+                    <h2>История:</h2>
+                    <?php foreach ($moderations as $moderation): ?>
+                        <div style="clear: both;">
+                            <?=$moderation->user_id;?>
+                            <?php $model = ($moderation->model == '\app\models\Comment') ? 'Удаление комментария' : 'Удаление решения';?>
+                            <?php switch($moderation->reason) {
+                                case 'plagiat':
+                                    $reason = 'плагиат';
+                                    break;
+                                case 'template':
+                                    $reason = 'использование шаблонов';
+                                    break;
+                                case 'other':
+                                    $reason = 'другое';
+                                    break;
+                                case 'critique':
+                                    $reason = 'публичную критику';
+                                    break;
+                                case 'link':
+                                    $reason = 'ссылку';
+                                    break;
+                                default:
+                                    $reason = 'просто так';
+                                    break;
+                                } ?>
+                            <?php switch($moderation->penalty) {
+                                case 0:
+                                    $penalty = 'без штрафа';
+                                    break;
+                                case 1:
+                                    $penalty = 'заблокирован';
+                                    break;
+                                default:
+                                    $penalty = 'бан ' . (int) $moderation->penalty . ' дней';
+                                    break;
+                                } ?>
+                            <h3><?=$model . ' за ' . $reason . ', ' . $penalty;?></h3>
+                            <?=$moderation->explanation;?>
+                        </div>
+                        <hr>
+                    <?php endforeach; ?>
+                <?php endif?>
+
             </div>
 
     <?php if(count($selectedSolutions) > 0):?>

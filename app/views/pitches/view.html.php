@@ -610,7 +610,7 @@
         <ul>
             <li>
                 <h2>Причина</h2>
-                <input type="radio" name="reason" value="critique" required>Публичная ссылка<br>
+                <input type="radio" name="reason" value="critique" required>Публичная критика<br>
                 <input type="radio" name="reason" value="link">Ссылка<br>
                 <input type="radio" name="reason" value="other">Другое
             </li>
