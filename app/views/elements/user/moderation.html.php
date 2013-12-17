@@ -1,0 +1,72 @@
+<div style="padding: 5px 0;">
+    <?php switch($moderation->reason) {
+        case 'plagiat':
+            $reason = 'плагиат';
+            break;
+        case 'template':
+            $reason = 'использование шаблонов';
+            break;
+        case 'other':
+            $reason = 'другое';
+            break;
+        case 'critique':
+            $reason = 'публичную критику';
+            break;
+        case 'link':
+            $reason = 'ссылку';
+            break;
+        default:
+            $reason = 'просто так';
+            break;
+    }
+    switch($moderation->penalty) {
+        case 0:
+            $penalty = 'без штрафа';
+            break;
+        case 1:
+            $penalty = 'заблокирован';
+            break;
+        default:
+            $penalty = 'бан ' . (int) $moderation->penalty . ' дней';
+            break;
+    }
+    $modelData = unserialize($moderation->model_data);
+    if ($moderation->model == '\app\models\Comment') {
+        $model = 'Удаление комментария';
+        $postDate = date('d.m.y H:i', strtotime($modelData['created']));
+        $messageInfo = 'message_info1';
+        $user = \app\models\User::first($modelData['user_id']);
+        $commentAuthor = $this->nameInflector->renderName($user->first_name, $user->last_name );
+        $panel = '<div class="' . $messageInfo . '" style="margin: 20px 40px 20px 0;">
+                    <a href="/users/view/' . $modelData['user_id'] . '">' .
+                    $this->avatar->show(array('id' => $modelData['user_id'])) .
+                    '</a>
+                    <a href="/users/view/' . $modelData['user_id'] . '" data-comment-to="' . $commentAuthor . '" class="replyto">
+                        <span>' . $commentAuthor . '</span><br />
+                        <span style="font-weight: normal;">' . $postDate . '</span>
+                    </a>
+                </div>';
+        $text = '<p class="regular">' . $modelData['text'] . '</p>';
+
+    } else {
+        $model = 'Удаление решения';
+        $file = '/img/copy-inv.png';
+        if (file_exists($modelData['image'])) {
+            $fileName = pathinfo($modelData['image'], PATHINFO_BASENAME);
+            $file = '/solutions/deleted/' . $fileName;
+        }
+        $panel = '<div class="portfolio" style="float:left; width: 250px;"><div class="photo_block"><img src="' . $file . '"></div></div>';
+        $text = '';
+    } ?>
+    <?echo $panel;?>
+    <div style="float: right; width: 360px;">
+        <h2 class="regular" style="font-size: 15px; font-weight: bold;"><?=$model . ' за ' . $reason . ', ' . $penalty;?></h2>
+        <p class="regular"><?=date('d.m.y', strtotime($moderation->created));?></p><br>
+        <?echo $text; ?>
+        <?php if (!empty($moderation->explanation)): ?>
+            <?echo '<br><p class="regular" style="font-style:italic;">Примечание: ' . $moderation->explanation . '</p>';?>
+        <?php endif; ?>
+    </div>
+    <div class="clr">&nbsp;</div>
+<hr style="clear: both;">
+</div>
