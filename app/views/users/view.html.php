@@ -8,6 +8,35 @@
 
         <div class="middle_inner user_view">
 
+        <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
+            <div class="right-sidebar-user">
+                <a class="button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=http://www.godesigner.ru/users/loginasuser/<?=$user->id?>">Войти под именем</a>
+                <hr>
+                <h2 class="greyboldheader">E-mail:</h2>
+                <p style="margin-top:10px"><a href="mailto:<?=$user->email?>"><?=$user->email?></a></p>
+                <hr>
+                <h2 class="greyboldheader">Online:</h2>
+                <p class="regular" style="margin-top:10px"><?=date('d.m.Y H:i', strtotime($user->lastTimeOnline))?></p>
+                <hr>
+                <?php if($user->silenceCount > 0):?>
+                      <p style="margin-top:10px">Запретов на общение: <?=$user->silenceCount?></p>
+                      <p style="margin-top:10px">Молчит до: <?=date('d.m.Y H:i:s', strtotime($user->silenceUntil))?></p>
+                    <?php if(($user->silenceCount > 0) && (strtotime($user->silenceUntil) > strtotime(date('Y-m-d H:i:s')))):?>
+                        <button style="margin-top:10px" class="allowcomment" data-term=""/>Разрешить комментарии</button>
+                    <?php endif?>
+                <hr>
+                <?php endif?>
+                <h2 class="greyboldheader" style="margin-bottom: 10px;">Блокировать на срок:</h2>
+                <input type="hidden" value="<?=$user->id?>" id="user_id"/>
+                <button class="banhammer odd" data-term="10" />10 дней</button>
+                <button class="banhammer" data-term="30" />1 месяц</button>
+                <button class="banhammer odd" data-term="90" />3 месяца</button>
+                <button class="block" data-term="" <?php if($user->banned == 1):?>style="display: none;"<?php else:?>style="display: inline;"<?php endif?>/>Навсегда</button>
+                <button class="unblock" data-term="" <?php if($user->banned == 1):?>style="display: inline;"<?php else:?>style="display: none;"<?php endif?>/>Разблокировать</button>
+                <hr>
+            </div>
+        <?php endif?>
+
             <div class="profile">
 
                 <div class="info_profile">
@@ -17,27 +46,6 @@
                     </div>
                     <div class="info_profile_about">
                         <span class="nickname"><?=$this->nameInflector->renderName($user->first_name, $user->last_name )?>!</span>
-                        <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
-                        <p style="margin-top:10px"><a href="mailto:<?=$user->email?>"><?=$user->email?></a> <a href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=http://www.godesigner.ru/users/loginasuser/<?=$user->id?>">(войти)</a></p>
-                        <p style="margin-top:10px">Онлайн: <?=date('d.m.Y H:i', strtotime($user->lastTimeOnline))?></p>
-                        <?php if($user->silenceCount > 0):?>
-                              <p style="margin-top:10px">Запретов на общение: <?=$user->silenceCount?></p>
-                              <p style="margin-top:10px">Молчит до: <?=date('d.m.Y H:i:s', strtotime($user->silenceUntil))?></p>
-                            <?php if(($user->silenceCount > 0) && (strtotime($user->silenceUntil) > strtotime(date('Y-m-d H:i:s')))):?>
-                                <button style="margin-top:10px" class="allowcomment" data-term=""/>Разрешить комментарии</button>
-                            <?php endif?>
-                        <?php endif?>
-                        <div style="margin-top:10px;">
-                            <input type="hidden" value="<?=$user->id?>" id="user_id"/>
-                        <button class="banhammer" data-term="10" />10 дней</button>
-                        <button class="banhammer" data-term="30" />1 месяц</button>
-                        <button class="banhammer" data-term="90" />3 месяца</button>
-
-                            <button class="block" data-term="" <?php if($user->banned == 1):?>style="display: none;"<?php else:?>style="display: block;"<?php endif?>/>Заблокировать</button>
-                            <button class="unblock" data-term="" <?php if($user->banned == 1):?>style="display: block;"<?php else:?>style="display: none;"<?php endif?>/>Разблокировать</button>
-
-                        </div>
-                        <?php endif?>
                         <ul class="profile-list-info">
                             <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripemail($userdata['birthdate'])?></li>
                             <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripemail($userdata['city'])?></li>
@@ -64,11 +72,10 @@
                     </div>
                 </div>
 
-                <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81, 20))):?>
-                <div class="about_profile">
+                <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
+                <div class="about_profile clr">
                     <dl>
-                        <dt class="greyboldheader" style="margin-left: 60px">Обо мне:</dt>
-
+                        <dt class="greyboldheader">Обо мне:<br><span class="regular">(доступно только <br>администрации)</span></dt>
                         <dd class="regular">
                             <?=$this->brief->stripemail(nl2br($userdata['about']))?>
                         </dd>
@@ -78,14 +85,12 @@
                 <?php endif?>
 
                 <?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) && (!empty($moderations)) ):?>
-                    <div class="clr" style="margin-top: 10px;">&nbsp;</div>
                     <hr>
                     <h2 class="greyboldheader">История:</h2>
                     <?php foreach ($moderations as $moderation): ?>
                         <?=$this->view()->render(array('element' => 'user/moderation'), array('moderation' => $moderation))?>
                     <?php endforeach; ?>
                 <?php endif?>
-
             </div>
 
     <?php if(count($selectedSolutions) > 0):?>
