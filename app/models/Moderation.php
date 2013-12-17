@@ -11,29 +11,56 @@ class Moderation extends \app\models\AppModel {
         parent::__init();
         self::applyFilter('save', function($self, $params, $chain){
             $result = $chain->next($self, $params, $chain);
-            if ($result && ($penalty = $params['entity']->penalty)) {
+            if ($result) {
+                $penalty = $params['entity']->penalty;
+                $modelData = unserialize($params['entity']->model_data);
+                $explanation = $params['entity']->explanation;
                 switch ($penalty) {
                     case 0:
-                        // Nothing to do
+                        // Just Remove
+                        $user = $self::fetchModelUser($modelData);
+                        if ($user) {
+                            if ($params['entity']->model == '\app\models\Comment') {
+                                UserMailer::removecomment(array(
+                                    'user' => $user->data(),
+                                    'term' => null,
+                                    'reason' => $params['entity']->reason,
+                                    'text' => $self::fetchModelText($modelData),
+                                    'explanation' => $explanation,
+                                ));
+                            } else {
+                                UserMailer::removesolution(array('user' => $user->data(), 'term' => null, 'reason' => $params['entity']->reason));
+                            }
+                        }
                         break;
                     case 1:
                         // Block User
-                        $user = $self::fetchModelUser($params['entity']->model_data);
+                        $user = $self::fetchModelUser($modelData);
                         if ($user) {
                             $user->banned = 1;
                             $user->save(null, array('validate' => false));
-                            UserMailer::block(array('user' => $user->data()));
+                            UserMailer::removeandblock(array('user' => $user->data(), 'reason' => $params['entity']->reason));
                         }
                         break;
                     default:
                         // Ban User Until
-                        $user = $self::fetchModelUser($params['entity']->model_data);
+                        $user = $self::fetchModelUser($modelData);
                         if ($user) {
                             $term = ((int) $penalty) * DAY;
                             $user->silenceUntil = date('Y-m-d H:i:s', time() + $term);
                             $user->silenceCount += 1;
                             $user->save(null, array('validate' => false));
-                            UserMailer::ban(array('user' => $user->data(), 'term' => (int) $penalty ));
+                            if ($params['entity']->model == '\app\models\Comment') {
+                                UserMailer::removecomment(array(
+                                    'user' => $user->data(),
+                                    'term' => (int) $penalty,
+                                    'reason' => $params['entity']->reason,
+                                    'text' => $self::fetchModelText($modelData),
+                                    'explanation' => $explanation,
+                                ));
+                            } else {
+                                UserMailer::removesolution(array('user' => $user->data(), 'term' => (int) $penalty, 'reason' => $params['entity']->reason));
+                            }
                         }
                         break;
                 }
@@ -45,12 +72,18 @@ class Moderation extends \app\models\AppModel {
     /**
      * Get User from Deleted Comment or Solution
      */
-    public static function fetchModelUser($modelData) {
-        $data = unserialize($modelData);
+    public static function fetchModelUser($data) {
         $user_id = $data['user_id'];
         if (!$user = User::first($user_id)) {
             return false;
         }
         return $user;
+    }
+
+    /**
+     * Get Comment Text from Deleted Comment
+     */
+    public static function fetchModelText($data) {
+        return (!empty($data['text'])) ? $data['text'] : null;
     }
 }
