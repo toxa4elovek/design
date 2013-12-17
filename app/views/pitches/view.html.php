@@ -610,20 +610,20 @@
         <ul>
             <li>
                 <h2>Причина</h2>
-                <input type="radio" name="reason" value="critique" required>Публичная критика<br>
-                <input type="radio" name="reason" value="link">Ссылка<br>
-                <input type="radio" name="reason" value="other">Другое
+                <label><input type="radio" name="reason" value="critique" required>Публичная критика</label><br>
+                <label><input type="radio" name="reason" value="link">Ссылка</label><br>
+                <label><input type="radio" name="reason" value="other">Другое</label>
             </li>
             <li>
                 <h2>Срок</h2>
-                <input type="radio" name="penalty" value="10" required>10 дней<br>
-                <input type="radio" name="penalty" value="30">30 дней<br>
-                <input type="radio" name="penalty" value="90">90 дней
+                <label><input type="radio" name="penalty" value="10" required>10 дней</label><br>
+                <label><input type="radio" name="penalty" value="30">30 дней</label><br>
+                <label><input type="radio" name="penalty" value="90">90 дней</label>
             </li>
             <li>
                 <h2>&nbsp;</h2>
-                <input type="radio" name="penalty" value="0">Без штрафа<br>
-                <input type="radio" name="penalty" value="1">Заблокировать<br>
+                <label><input type="radio" name="penalty" value="0">Без штрафа</label><br>
+                <label><input type="radio" name="penalty" value="1">Заблокировать</label><br>
             </li>
         </ul>
         <textarea id="explanation" name="explanation" form="delete-comment-form" class="placeholder" placeholder="Комментарий"></textarea>
@@ -641,20 +641,20 @@
         <ul>
             <li>
                 <h2>Причина</h2>
-                <input type="radio" name="reason" value="plagiat" required>Плагиат<br>
-                <input type="radio" name="reason" value="template">Использование шаблонов<br>
-                <input type="radio" name="reason" value="other">Другое
+                <label><input type="radio" name="reason" value="plagiat" required>Плагиат</label><br>
+                <label><input type="radio" name="reason" value="template">Использование шаблонов</label><br>
+                <label><input type="radio" name="reason" value="other">Другое</label>
             </li>
             <li>
                 <h2>Срок</h2>
-                <input type="radio" name="penalty" value="10" required>10 дней<br>
-                <input type="radio" name="penalty" value="30">30 дней<br>
-                <input type="radio" name="penalty" value="90">90 дней
+                <label><input type="radio" name="penalty" value="10" required>10 дней</label><br>
+                <label><input type="radio" name="penalty" value="30">30 дней</label><br>
+                <label><input type="radio" name="penalty" value="90">90 дней</label>
             </li>
             <li>
                 <h2>&nbsp;</h2>
-                <input type="radio" name="penalty" value="0">Без штрафа<br>
-                <input type="radio" name="penalty" value="1">Заблокировать<br>
+                <label><input type="radio" name="penalty" value="0">Без штрафа</label><br>
+                <label><input type="radio" name="penalty" value="1">Заблокировать</label><br>
             </li>
         </ul>
         <textarea id="explanation" name="explanation" form="delete-solution-form" class="placeholder" placeholder="ссылка на первоисточник или комментарий"></textarea>

@@ -41,6 +41,7 @@ class ModerationsController extends \app\controllers\AppController {
             $data['reason'] = $this->request->data['reason'];
             $data['penalty'] = $this->request->data['penalty'];
             $data['explanation'] = $this->request->data['explanation'];
+            $data['created'] = date('Y-m-d H:i:s');
 
             $moderation = Moderation::create();
             $moderation->set($data);

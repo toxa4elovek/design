@@ -64,7 +64,7 @@
                     </div>
                 </div>
 
-                <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
+                <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81, 20))):?>
                 <div class="about_profile">
                     <dl>
                         <dt class="greyboldheader" style="margin-left: 60px">Обо мне:</dt>
@@ -78,47 +78,11 @@
                 <?php endif?>
 
                 <?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) && (!empty($moderations)) ):?>
-                    <hr class="clr">
-                    <h2>История:</h2>
+                    <div class="clr" style="margin-top: 10px;">&nbsp;</div>
+                    <hr>
+                    <h2 class="greyboldheader">История:</h2>
                     <?php foreach ($moderations as $moderation): ?>
-                        <div style="clear: both;">
-                            <?=$moderation->user_id;?>
-                            <?php $model = ($moderation->model == '\app\models\Comment') ? 'Удаление комментария' : 'Удаление решения';?>
-                            <?php switch($moderation->reason) {
-                                case 'plagiat':
-                                    $reason = 'плагиат';
-                                    break;
-                                case 'template':
-                                    $reason = 'использование шаблонов';
-                                    break;
-                                case 'other':
-                                    $reason = 'другое';
-                                    break;
-                                case 'critique':
-                                    $reason = 'публичную критику';
-                                    break;
-                                case 'link':
-                                    $reason = 'ссылку';
-                                    break;
-                                default:
-                                    $reason = 'просто так';
-                                    break;
-                                } ?>
-                            <?php switch($moderation->penalty) {
-                                case 0:
-                                    $penalty = 'без штрафа';
-                                    break;
-                                case 1:
-                                    $penalty = 'заблокирован';
-                                    break;
-                                default:
-                                    $penalty = 'бан ' . (int) $moderation->penalty . ' дней';
-                                    break;
-                                } ?>
-                            <h3><?=$model . ' за ' . $reason . ', ' . $penalty;?></h3>
-                            <?=$moderation->explanation;?>
-                        </div>
-                        <hr>
+                        <?=$this->view()->render(array('element' => 'user/moderation'), array('moderation' => $moderation))?>
                     <?php endforeach; ?>
                 <?php endif?>
 
@@ -175,4 +139,4 @@
 
 </div><!-- .wrapper -->
 <?=$this->html->script(array('users/view'), array('inline' => false))?>
-<?=$this->html->style(array('/cabinet', '/portfolio.css'), array('inline' => false))?>
+<?=$this->html->style(array('/cabinet', '/portfolio.css', '/messages12'), array('inline' => false))?>
