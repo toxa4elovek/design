@@ -22,17 +22,17 @@
                       <p style="margin-top:10px">Запретов на общение: <?=$user->silenceCount?></p>
                       <p style="margin-top:10px">Молчит до: <?=date('d.m.Y H:i:s', strtotime($user->silenceUntil))?></p>
                     <?php if(($user->silenceCount > 0) && (strtotime($user->silenceUntil) > strtotime(date('Y-m-d H:i:s')))):?>
-                        <button style="margin-top:10px" class="banhammer allowcomment" data-term=""/>Разрешить комментарии</button>
+                        <button style="margin-top:10px" class="allowcomment" data-term=""/>Разрешить комментарии</button>
                     <?php endif?>
-                <?php endif?>
                 <hr>
+                <?php endif?>
                 <h2 class="greyboldheader" style="margin-bottom: 10px;">Блокировать на срок:</h2>
                 <input type="hidden" value="<?=$user->id?>" id="user_id"/>
                 <button class="banhammer odd" data-term="10" />10 дней</button>
                 <button class="banhammer" data-term="30" />1 месяц</button>
                 <button class="banhammer odd" data-term="90" />3 месяца</button>
-                <button class="banhammer block" data-term="" <?php if($user->banned == 1):?>style="display: none;"<?php else:?>style="display: inline;"<?php endif?>/>Навсегда</button>
-                <button class="banhammer unblock" data-term="" <?php if($user->banned == 1):?>style="display: inline;"<?php else:?>style="display: none;"<?php endif?>/>Разблокировать</button>
+                <button class="block" data-term="" <?php if($user->banned == 1):?>style="display: none;"<?php else:?>style="display: inline;"<?php endif?>/>Навсегда</button>
+                <button class="unblock" data-term="" <?php if($user->banned == 1):?>style="display: inline;"<?php else:?>style="display: none;"<?php endif?>/>Разблокировать</button>
                 <hr>
             </div>
         <?php endif?>

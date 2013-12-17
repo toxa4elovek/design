@@ -273,7 +273,7 @@
 .right-sidebar-user h2 {
     font-size: 16px;
 }
-.right-sidebar-user .banhammer {
+.right-sidebar-user button {
 	min-width: 90px;
 	padding: 10px;
 	font-size: 14px;
@@ -291,7 +291,7 @@
     border-bottom: 1px solid #b1b1b1;
     border-radius: 2px;
 }
-.right-sidebar-user .banhammer:hover {
+.right-sidebar-user button:hover {
 	background: #64A470;
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#e3e3e3), to(#efefef));
     background: -webkit-linear-gradient(#e3e3e3, #efefef);
@@ -300,6 +300,6 @@
     background:      -o-linear-gradient(#e3e3e3, #efefef);
     background:         linear-gradient(#e3e3e3, #efefef);
 }
-.right-sidebar-user .banhammer.odd {
+.right-sidebar-user button.odd {
 	margin-right: 10px;
 }

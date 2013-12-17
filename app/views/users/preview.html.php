@@ -50,16 +50,16 @@
                         </div>
                     </div>
 
-                    <div class="about_profile">
+                    <div class="about_profile clr">
                         <dl>
-                            <dt class="greyboldheader" style="margin-left: 60px">Обо мне:</dt>
-
+                            <dt class="greyboldheader">Обо мне:</dt>
                             <dd class="regular">
                                 <?=$this->brief->stripemail(nl2br($userdata['about']))?>
                             </dd>
                             <div class="separate"> </div>
                         </dl>
                     </div>
+
                 </div>
 
             <?php if(count($selectedSolutions) > 0):?>
