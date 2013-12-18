@@ -7,6 +7,39 @@
     <div id="P_card">
         <table>
             <?php if ($pitch->category_id != 10):?>
+                <tr>
+                    <td>
+                        <input type="radio" name="1" class="rb1" data-pay="payanyway">
+                    </td>
+                    <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                        Оплата пластиковыми картами <br>через Payanyway<br><br>
+                    </td>
+                    <td>
+                        <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
+                            <input type="hidden" name="MNT_ID" value="36102238">
+                            <input type="hidden" name="MNT_TRANSACTION_ID" value="">
+                            <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
+                            <input type="hidden" name="MNT_AMOUNT" value="">
+                            <input type="hidden" name="MNT_TEST_MODE" value="1">
+                            <input type="hidden" name="paymentSystem.unitId" value="499669">
+                            <input type="hidden" name="followup" value="true">
+                            <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="background: #a2b2bb;">
+                        </form>
+                    </td>
+                </tr>
+                <tr id="online-images">
+                    <td colspan="4" style="padding: 20px 0 0 40px;">
+                        <img src="/img/s3_master.png" alt="">
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="4"><div class="g_line"><i>или</i></div></td>
+                </tr>
+
+
+
             <tr class="paymaster-section">
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
@@ -30,6 +63,9 @@
                     <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
                 </td>
             </tr>
+
+
+
             <tr class="paymaster-section">
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
             </tr>

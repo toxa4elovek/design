@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     var pitchid = '';
 
     /* Download Form Select */
@@ -574,6 +573,13 @@ $(document).ready(function() {
 
     $('.rb1').change(function() {
         switch ($(this).data('pay')) {
+            case 'payanyway':
+                $("#paybutton-payanyway").removeAttr('style');
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').hide();
+                break;
             case 'paymaster':
                 $("#paybutton-paymaster").removeAttr('style');
                 $("#paybutton-online").css('background', '#a2b2bb');
@@ -1024,11 +1030,16 @@ function FeatureCart() {
                         $('.pmwidget').addClass('mod');
                         $('h1.pmheader', '.pmwidget').addClass('mod');
                     }
+                    // Payanyway
+
+                    $('input[name=MNT_AMOUNT]').val(response.total)
+                    $('input[name=MNT_TRANSACTION_ID]').val(response.id)
+
                     // Masterbank
-                    $('#order-id').val(response.id);
-                    $('#order-total').val(response.total);
-                    $('#order-timestamp').val(response.timestamp);
-                    $('#order-sign').val(response.sign);
+                    //$('#order-id').val(response.id);
+                    //$('#order-total').val(response.total);
+                    //$('#order-timestamp').val(response.timestamp);
+                    //$('#order-sign').val(response.sign);
                     // Bill
                     $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');
                 })

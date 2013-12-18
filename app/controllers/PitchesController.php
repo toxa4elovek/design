@@ -19,6 +19,7 @@ use \app\models\Request;
 use \app\models\Expert;
 use \app\models\Promocode;
 use \app\models\Paymaster;
+use \app\models\Payanyway;
 use \app\models\Promoted;
 use app\models\Ratingchange;
 use \app\models\Avatar;
@@ -44,7 +45,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
 	);
 
     public function blank() {
@@ -640,6 +641,16 @@ class PitchesController extends \app\controllers\AppController {
         header("HTTP/1.0 200 OK");
         die();
     }
+
+    public function payanyway() {
+        Logger::write('info', serialize($this->request->data), array('name' => 'payanyway'));
+        $transaction = Payanyway::create();
+        $transaction->set($this->request->data);
+        $transaction->save();
+        header("HTTP/1.0 200 OK");
+        die();
+    }
+
 
     public function favourites() {
         error_reporting(E_ALL);

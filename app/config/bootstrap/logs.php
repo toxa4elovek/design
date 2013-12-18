@@ -13,4 +13,9 @@ Logger::config(array(
         'priority' => array('info'),
         'file' => function($data, $config) { return "paymaster.log"; },
     ),
+    'payanyway' => array(
+        'adapter' => 'File',
+        'priority' => array('info'),
+        'file' => function($data, $config) { return "payanyway.log"; },
+    ),
 ));
