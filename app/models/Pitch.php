@@ -407,6 +407,28 @@ class Pitch extends \app\models\AppModel {
         return false;
     }
 
+    /**
+     * Add Expert when Addon Activated
+     */
+    public static function addExpert($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $expertsPitch = array();
+            if ($pitch->expert == 1) {
+                $expertsPitch = unserialize($pitch->{'expert-ids'});
+            }
+            $expertsAddon = unserialize($addon->{'expert-ids'});
+            foreach ($expertsAddon as $expertId) {
+                if (!in_array($expertId, $expertsPitch)) {
+                    $expertsPitch[] = (int) $expertId;
+                }
+            }
+            $pitch->expert = 1;
+            $pitch->{'expert-ids'} = serialize($expertsPitch);
+            $pitch->save();
+        }
+        return true;
+    }
+
     public static function finishPitch($pitchId) {
         $solutions = Solution::all(array(
             'conditions' => array('pitch_id' => $pitchId, 'nominated' => 1, 'awarded' => 0),
