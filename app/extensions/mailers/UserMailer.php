@@ -42,7 +42,8 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
             'to' => $data['user']['email'],
             'subject' => 'Удаление комментария',
-            'data' => array('user' => $data['user'],
+            'data' => array(
+                'user' => $data['user'],
                 'term' => $data['term'],
                 'reason' => $data['reason'],
                 'text' => $data['text'],
@@ -52,7 +53,18 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
     }
 
     public static function removesolution($data) {
-        return self::_mail(array('to' => $data['user']['email'], 'subject' => 'Удаление решения', 'data' => array('user' => $data['user'], 'term' => $data['term'], 'reason' => $data['reason'])));
+        return self::_mail(array(
+            'to' => $data['user']['email'],
+            'subject' => 'Удаление решения',
+            'data' => array(
+                'user' => $data['user'],
+                'term' => $data['term'],
+                'solution_id' => $data['solution_id'],
+                'reason' => $data['reason'],
+                'image' => $data['image'],
+                'explanation' => $data['explanation'],
+            ),
+        ));
     }
 
     public static function removeandblock($data) {
