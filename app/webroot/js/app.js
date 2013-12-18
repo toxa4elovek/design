@@ -743,8 +743,15 @@ function enableToolbar() {
         var link = $(this);
         var section = link.parent().parent().parent();
         var id = $(section).attr('data-id');
-        $('#model_id', '#popup-delete-comment').val(id);
         var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+        
+        // Delete without Moderation
+        if (!isCurrentAdmin) {
+            commentDelete(link, section, sectionPitch);
+            return false;
+        }
+        
+        $('#model_id', '#popup-delete-comment').val(id);
         
         // Show Delete Moderation Overlay
         $('#popup-delete-comment').modal({

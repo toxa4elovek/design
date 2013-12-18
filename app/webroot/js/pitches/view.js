@@ -169,6 +169,13 @@ $(document).ready(function(){
     // Delete Solution
     $(document).on('click', '.delete-solution', function() {
         var link = $(this);
+
+        // Delete without Moderation
+        if (!isCurrentAdmin) {
+            solutionDelete(link);
+            return false;
+        }
+        
         $('#model_id', '#popup-delete-solution').val($(this).data('solution'));
         
         // Show Delete Moderation Overlay

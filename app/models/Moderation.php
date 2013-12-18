@@ -29,7 +29,14 @@ class Moderation extends \app\models\AppModel {
                                     'explanation' => $explanation,
                                 ));
                             } else {
-                                UserMailer::removesolution(array('user' => $user->data(), 'term' => null, 'reason' => $params['entity']->reason));
+                                UserMailer::removesolution(array(
+                                    'user' => $user->data(),
+                                    'term' => null,
+                                    'solution_id' => $params['entity']->model_id,
+                                    'reason' => $params['entity']->reason,
+                                    'image' => $self::fetchModelImage($modelData),
+                                    'explanation' => $explanation,
+                                ));
                             }
                         }
                         break;
@@ -59,7 +66,14 @@ class Moderation extends \app\models\AppModel {
                                     'explanation' => $explanation,
                                 ));
                             } else {
-                                UserMailer::removesolution(array('user' => $user->data(), 'term' => (int) $penalty, 'reason' => $params['entity']->reason));
+                                UserMailer::removesolution(array(
+                                    'user' => $user->data(),
+                                    'term' => (int) $penalty,
+                                    'solution_id' => $params['entity']->model_id,
+                                    'reason' => $params['entity']->reason,
+                                    'image' => $self::fetchModelImage($modelData),
+                                    'explanation' => $explanation,
+                                ));
                             }
                         }
                         break;
@@ -85,5 +99,17 @@ class Moderation extends \app\models\AppModel {
      */
     public static function fetchModelText($data) {
         return (!empty($data['text'])) ? $data['text'] : null;
+    }
+
+    /**
+     * Get Image from Deleted Solution
+     */
+    public static function fetchModelImage($data) {
+        $file = null;
+        if (!empty($data['image']) && file_exists($data['image'])) {
+            $fileName = pathinfo($data['image'], PATHINFO_BASENAME);
+            $file = 'http://godesigner.ru/solutions/deleted/' . $fileName;
+        }
+        return $file;
     }
 }
