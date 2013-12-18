@@ -14,70 +14,45 @@ class Moderation extends \app\models\AppModel {
             if ($result) {
                 $penalty = $params['entity']->penalty;
                 $modelData = unserialize($params['entity']->model_data);
-                $explanation = $params['entity']->explanation;
-                switch ($penalty) {
-                    case 0:
-                        // Just Remove
-                        $user = $self::fetchModelUser($modelData);
-                        if ($user) {
-                            if ($params['entity']->model == '\app\models\Comment') {
-                                UserMailer::removecomment(array(
-                                    'user' => $user->data(),
-                                    'term' => null,
-                                    'reason' => $params['entity']->reason,
-                                    'text' => $self::fetchModelText($modelData),
-                                    'explanation' => $explanation,
-                                ));
-                            } else {
-                                UserMailer::removesolution(array(
-                                    'user' => $user->data(),
-                                    'term' => null,
-                                    'solution_id' => $params['entity']->model_id,
-                                    'reason' => $params['entity']->reason,
-                                    'image' => $self::fetchModelImage($modelData),
-                                    'explanation' => $explanation,
-                                ));
-                            }
-                        }
-                        break;
-                    case 1:
-                        // Block User
-                        $user = $self::fetchModelUser($modelData);
-                        if ($user) {
+                $user = $self::fetchModelUser($modelData);
+                $dataInfo = array(
+                    'user' => $user->data(),
+                    'reason' => $params['entity']->reason,
+                    'explanation' => $params['entity']->explanation,
+                );
+                if ($params['entity']->model == '\app\models\Comment') {
+                    $dataInfo['text'] = $self::fetchModelText($modelData);
+                    $dataInfo['image'] = null;
+                    $mailerTemplate = 'removecomment';
+                } else {
+                    $dataInfo['solution_id'] = $params['entity']->model_id;
+                    $dataInfo['text'] = null;
+                    $dataInfo['image'] = $self::fetchModelImage($modelData);
+                    $mailerTemplate = 'removesolution';
+                }
+                if ($user) {
+                    switch ($penalty) {
+                        case 0:
+                            // Just Remove
+                            $dataInfo['term'] = null;
+                            break;
+                        case 1:
+                            // Block User
                             $user->banned = 1;
                             $user->save(null, array('validate' => false));
-                            UserMailer::removeandblock(array('user' => $user->data(), 'reason' => $params['entity']->reason));
-                        }
-                        break;
-                    default:
-                        // Ban User Until
-                        $user = $self::fetchModelUser($modelData);
-                        if ($user) {
+                            $mailerTemplate = 'removeandblock';
+                            break;
+                        default:
+                            // Ban User Until
                             $term = ((int) $penalty) * DAY;
                             $user->silenceUntil = date('Y-m-d H:i:s', time() + $term);
                             $user->silenceCount += 1;
                             $user->save(null, array('validate' => false));
-                            if ($params['entity']->model == '\app\models\Comment') {
-                                UserMailer::removecomment(array(
-                                    'user' => $user->data(),
-                                    'term' => (int) $penalty,
-                                    'reason' => $params['entity']->reason,
-                                    'text' => $self::fetchModelText($modelData),
-                                    'explanation' => $explanation,
-                                ));
-                            } else {
-                                UserMailer::removesolution(array(
-                                    'user' => $user->data(),
-                                    'term' => (int) $penalty,
-                                    'solution_id' => $params['entity']->model_id,
-                                    'reason' => $params['entity']->reason,
-                                    'image' => $self::fetchModelImage($modelData),
-                                    'explanation' => $explanation,
-                                ));
-                            }
-                        }
-                        break;
+                            $dataInfo['term'] = (int) $penalty;
+                            break;
+                    }
                 }
+                UserMailer::$mailerTemplate($dataInfo);
             }
             return $result;
         });
