@@ -20,8 +20,8 @@ class ModerationsController extends \app\controllers\AppController {
                 $data = array(
                     'model' => '\app\models\Comment',
                     'model_id' => $comment->id,
+                    'model_user' => $comment->user_id,
                     'model_data' => serialize(array(
-                        'user_id' => $comment->user_id,
                         'created' => $comment->created,
                         'text' => $comment->text,
                 )));
@@ -30,8 +30,8 @@ class ModerationsController extends \app\controllers\AppController {
                 $data = array(
                     'model' => '\app\models\Solution',
                     'model_id' => $solution->id,
+                    'model_user' => $solution->user_id,
                     'model_data' => serialize(array(
-                        'user_id' => $solution->user_id,
                         'created' => $solution->created,
                         'description' => $solution->description,
                         'image' => self::getThumbnail($solution),

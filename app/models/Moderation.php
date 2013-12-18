@@ -14,7 +14,7 @@ class Moderation extends \app\models\AppModel {
             if ($result) {
                 $penalty = $params['entity']->penalty;
                 $modelData = unserialize($params['entity']->model_data);
-                $user = $self::fetchModelUser($modelData);
+                $user = $self::fetchModelUser($params['entity']->model_user);
                 $dataInfo = array(
                     'user' => $user->data(),
                     'reason' => $params['entity']->reason,
@@ -61,8 +61,7 @@ class Moderation extends \app\models\AppModel {
     /**
      * Get User from Deleted Comment or Solution
      */
-    public static function fetchModelUser($data) {
-        $user_id = $data['user_id'];
+    public static function fetchModelUser($user_id) {
         if (!$user = User::first($user_id)) {
             return false;
         }

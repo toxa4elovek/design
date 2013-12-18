@@ -35,13 +35,13 @@
         $model = 'Удаление комментария';
         $postDate = date('d.m.y H:i', strtotime($modelData['created']));
         $messageInfo = 'message_info1';
-        $user = \app\models\User::first($modelData['user_id']);
+        $user = \app\models\User::first($moderation->model_user);
         $commentAuthor = $this->nameInflector->renderName($user->first_name, $user->last_name );
         $panel = '<div class="' . $messageInfo . '" style="margin: 20px 40px 20px 0;">
-                    <a href="/users/view/' . $modelData['user_id'] . '">' .
-                    $this->avatar->show(array('id' => $modelData['user_id'])) .
+                    <a href="/users/view/' . $moderation->model_user . '">' .
+                    $this->avatar->show(array('id' => $moderation->model_user)) .
                     '</a>
-                    <a href="/users/view/' . $modelData['user_id'] . '" data-comment-to="' . $commentAuthor . '" class="replyto">
+                    <a href="/users/view/' . $moderation->model_user . '" data-comment-to="' . $commentAuthor . '" class="replyto">
                         <span>' . $commentAuthor . '</span><br />
                         <span style="font-weight: normal;">' . $postDate . '</span>
                     </a>

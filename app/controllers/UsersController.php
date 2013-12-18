@@ -984,7 +984,7 @@ class UsersController extends \app\controllers\AppController {
             }
             $moderations = null;
             if (User::checkRole('admin') || (Session::read('user.isAdmin') == 1)) {
-                $moderations = Moderation::all();
+                $moderations = Moderation::all(array('conditions' => array('model_user' => $user->id)));
             }
             $isClient = false;
             $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
