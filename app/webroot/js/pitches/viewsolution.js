@@ -564,16 +564,6 @@ $(document).ready(function() {
                 $('.solution-comments').html(fetchComments(result));
                 
                 enableToolbar();
-
-                $('.delete-link-in-comment.ajax').on('click', function(e) {
-                    e.preventDefault();
-                    var section = $(this).parent().parent().parent();
-                    $.post($(this).attr('href') + '.json', function(result) {
-                        if (result == 'true') {
-                            section.remove();
-                        }
-                    });
-                });
             }
             
             // Right Panel

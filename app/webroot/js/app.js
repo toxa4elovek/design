@@ -743,11 +743,11 @@ function enableToolbar() {
         var link = $(this);
         var section = link.parent().parent().parent();
         var id = $(section).attr('data-id');
-        var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+        
         
         // Delete without Moderation
         if (!isCurrentAdmin) {
-            commentDelete(link, section, sectionPitch);
+            commentDelete(link, section, id);
             return false;
         }
         
@@ -772,7 +772,7 @@ function enableToolbar() {
             $(document).off('click', '#sendDeleteComment');
             var data = form.serialize();
             $.post(form.attr('action') + '.json', data).done(function(result) {
-                commentDelete(link, section, sectionPitch);
+                commentDelete(link, section, id);
                 $('.popup-close').click();
             });
             return false;
@@ -782,12 +782,15 @@ function enableToolbar() {
 }
 
 // Instant Delete Comment
-function commentDelete(link, section, sectionPitch) {
+function commentDelete(link, section, id) {
     $.post(link.attr('href') + '.json', function(result) {
         if (result == 'true') {
-            sectionPitch.remove();
-            $('.separator', '.pitch-comments section:first').remove();
             if ($('.solution-overlay').is(':visible')) {
+                section.remove();
+                var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+                sectionPitch.remove();
+                $('.separator', '.pitch-comments section:first').remove();
+            } else {
                 section.remove();
             }
         }

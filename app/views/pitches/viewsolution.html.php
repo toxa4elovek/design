@@ -273,6 +273,12 @@
     <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
+
+<!-- Moderation Popups -->
+<?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) ):?>
+    <?=$this->view()->render(array('element' => 'moderation'))?>
+<?php endif; ?>
+
 <!-- Start: Tooltips -->
 <div style="display:none;">
 <?php if((count($solutions) > 0) && ($pitch->published == 1)):?>
