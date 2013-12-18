@@ -20,7 +20,7 @@
                             <input type="hidden" name="MNT_TRANSACTION_ID" value="">
                             <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
                             <input type="hidden" name="MNT_AMOUNT" value="">
-                            <input type="hidden" name="MNT_TEST_MODE" value="1">
+                            <input type="hidden" name="MNT_TEST_MODE" value="0">
                             <input type="hidden" name="paymentSystem.unitId" value="499669">
                             <input type="hidden" name="followup" value="true">
                             <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="background: #a2b2bb;">
@@ -37,7 +37,6 @@
                 <tr>
                     <td colspan="4"><div class="g_line"><i>или</i></div></td>
                 </tr>
-
 
 
             <tr class="paymaster-section">

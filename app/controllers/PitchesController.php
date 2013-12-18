@@ -644,9 +644,23 @@ class PitchesController extends \app\controllers\AppController {
 
     public function payanyway() {
         Logger::write('info', serialize($this->request->data), array('name' => 'payanyway'));
-        $transaction = Payanyway::create();
-        $transaction->set($this->request->data);
-        $transaction->save();
+        if (!empty($this->request->data)
+            && !empty($this->request->data['MNT_ID'])
+            && !empty($this->request->data['MNT_TRANSACTION_ID'])
+            && !empty($this->request->data['MNT_AMOUNT'])
+        ) {
+            $transaction = Payanyway::create();
+            $transaction->set($this->request->data);
+            $transaction->save();
+            if(($pitch = Pitch::first($this->request->data['MNT_TRANSACTION_ID'])) && ($pitch->total == $this->request->data['MNT_AMOUNT'])) {
+                Pitch::activate($this->request->data['MNT_TRANSACTION_ID']);
+            } elseif ($addon = Addon::first($this->request->data['MNT_TRANSACTION_ID'])) {
+                Addon::activate($addon);
+            }
+            echo 'SUCCESS';
+        }else {
+            echo 'FAIL';
+        }
         header("HTTP/1.0 200 OK");
         die();
     }
