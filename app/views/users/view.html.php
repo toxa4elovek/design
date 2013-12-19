@@ -72,7 +72,7 @@
                     </div>
                 </div>
 
-                <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
+                <?php if((in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) && (trim($userdata['about']) != '')):?>
                 <div class="about_profile clr">
                     <dl>
                         <dt class="greyboldheader">Обо мне:<br><span class="regular">(доступно только <br>администрации)</span></dt>
@@ -84,7 +84,7 @@
                 </div>
                 <?php endif?>
 
-                <?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) && (!empty($moderations)) ):?>
+                <?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) && (count($moderations) > 0) && (!empty($moderations)) ):?>
                     <hr>
                     <h2 class="greyboldheader">История:</h2>
                     <?php foreach ($moderations as $moderation): ?>
