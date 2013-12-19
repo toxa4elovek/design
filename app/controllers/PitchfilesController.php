@@ -31,15 +31,6 @@ class PitchfilesController extends \app\controllers\AppController {
         }
 	}
 
-	public function addDescription() {
-	    if (true == $this->request->data['description']) {
-            $file = Pitchfile::first((int)$this->request->data['id']);
-            $file->{'file-description'} = $this->request->data['description'];
-            $file->save();
-	    }
-	    $this->render(array('head' => true));
-	}
-
     public function delete() {
         $file = Pitchfile::first($this->request->data['id']);
 

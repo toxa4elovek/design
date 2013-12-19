@@ -312,10 +312,6 @@ endswitch;
                         <?php endif?>
 						<input type="hidden" name="category_id" value="<?=$category->id?>">
 					</p>
-					<p>
-						<label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-						<input type="text" name="industry" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
-					</p>
 
 					<div class="ribbon term" style="height: 80px;">
 						<p class="option">Установите срок</p>
@@ -400,9 +396,6 @@ endswitch;
                                 <span class="fakeinput supplement" id="filename" style="display:block; float: left; height:19px; width: 450px; padding-top: 1px; margin-left:10px;">Файл не выбран</span>
 						        <input type="file" name="files" multiple id="fileupload" style="display:block; opacity:0; position:absolute;z-index:5"/>
                             </div>
-                            <div clas="clr"></div>
-						    <input type="text" id="fileupload-description" name="file-description" style="width:370px;margin-right: 20px;" placeholder="Пояснение"/>
-                            <!--input type="button" class="button" value="Загрузить" id="uploadButton"/-->
                             <div class="span5 fileupload-progress fade">
                                 <!-- The global progress bar -->
                                 <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
