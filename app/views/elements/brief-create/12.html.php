@@ -10,11 +10,6 @@
         <textarea placeholder="Нужно, чтобы потенциальные потребители поверили, что напиток Coca-Cola - для молодых, энергичных, веселых ребят, что он дарит бодрость и настроение, что без него не обходится ни одна вечеринка..." rows="5" cols="30" name="site-image" class="placeholder specific-prop"></textarea>
     </p>
 
-    <p>
-        <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="placeholder specific-prop"></textarea>
-    </p>
-
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">
@@ -43,6 +38,6 @@
             <span class="slider-wrapper"><span class="slider"></span></span>
             <span class="label-b">Пассивный</span>
         </li>
-    </ul><!-- .logo-properties -->    
+    </ul><!-- .logo-properties -->
 
 </div>

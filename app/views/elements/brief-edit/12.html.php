@@ -20,10 +20,12 @@
         <textarea placeholder="Нужно, чтобы потенциальные потребители поверили, что напиток Coca-Cola - для молодых, энергичных, веселых ребят, что он дарит бодрость и настроение, что без него не обходится ни одна вечеринка..." rows="5" cols="30" name="site-image" class="<?php if(empty($specifics['site-image'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-image']?></textarea>
     </p>
 
+    <?php if (!empty($specifics['site-inspiration'])): ?>
     <p>
         <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="<?php if(empty($specifics['site-inspiration'])) echo 'placeholder'?>s specific-prop"><?=$specifics['site-inspiration']?></textarea>
+        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="specific-prop"><?=$specifics['site-inspiration']?></textarea>
     </p>
+    <?php endif; ?>
 
     <p><label>Опишите целевую аудиторию</label></p>
 
