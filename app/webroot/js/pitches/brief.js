@@ -346,45 +346,10 @@ $(document).ready(function() {
         return false;
     })
 
-    /*
-    $('#fileuploadform').fileupload({
-        dataType: 'json',
-        add: function(e, data) {
-            console.log(data);
-            e.data.fileupload.myData = data;
-            $('#filename').html(data.files[0].name);
-        },
-        done: function (e, data) {
-            $.modal.close();
-            var li = '<li><a href="' + data.result.weburl + '" class="filezone-filename" target="_blank">' + data.result.basename + '</a>' +
-                '<p>' + data.result['file-description'] + '</p>' +
-                '<a href="/pitchfiles/delete/' + data.result.id + '.json" class="filezone-delete-link">удалить</a></li>';
-            $("#filezone").append(li);
-            $('#fileupload-description').val('');
-            $('#filename').html('Файл не выбран');
-            Cart.fileIds.push(data.result.id);
-        },
-        send: function(e, data) {
-            $('#loading-overlay').modal({
-                containerId: 'spinner',
-                opacity: 80,
-                close: false
-            });
-        },
-        progressall: function(e, data) {
-            if(data.total > 0) {
-                var percent = data.total / 100;
-                var completed = Math.round(data.loaded / percent);
-                $('#progressbar').text(completed + '%');
-            }
-        }
-    });*/
-
     var fileIds = [];
-    var placeholder = $('#fileupload-description').attr('placeholder');
     var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
-        onSelect: function(file) { onSelectHandler.call(this, file, placeholder, fileIds, Cart); }  // See app.js
+        onSelect: function(file) { onSelectHandler.call(this, file, fileIds, Cart); }  // See app.js
     });
 
     $('input[name="phone-brief"]').change(function() {

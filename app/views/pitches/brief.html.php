@@ -396,9 +396,6 @@ endswitch;
                                 <span class="fakeinput supplement" id="filename" style="display:block; float: left; height:19px; width: 450px; padding-top: 1px; margin-left:10px;">Файл не выбран</span>
 						        <input type="file" name="files" multiple id="fileupload" style="display:block; opacity:0; position:absolute;z-index:5"/>
                             </div>
-                            <div clas="clr"></div>
-						    <input type="text" id="fileupload-description" name="file-description" style="width:370px;margin-right: 20px;" placeholder="Пояснение"/>
-                            <!--input type="button" class="button" value="Загрузить" id="uploadButton"/-->
                             <div class="span5 fileupload-progress fade">
                                 <!-- The global progress bar -->
                                 <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">

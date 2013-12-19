@@ -387,9 +387,6 @@ endif?>
                     <span class="fakeinput" id="filename" style="display:block; float: left; height:19px; width: 450px; padding-top: 1px; margin-left:10px;">Файл не выбран</span>
                     <input type="file" name="files" id="fileupload" style="display:block; opacity:0; position:absolute;z-index:5"/>
                 </div>
-                <div clas="clr"></div>
-                <input type="text" id="fileupload-description" name="file-description" style="width:370px;margin-right: 20px;" placeholder="Пояснение"/>
-                <!--input type="button" class="button" value="Загрузить" id="uploadButton"/-->
             </form>
             </p>
             </div>
