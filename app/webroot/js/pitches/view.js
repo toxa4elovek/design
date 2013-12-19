@@ -568,7 +568,7 @@ $(document).ready(function(){
                     commentData.userAvatar = '/img/default_small_avatar.png';
                 }
 
-                commentData.commentAuthor = result.comment.user.first_name + ' ' + result.comment.user.last_name.substring(0, 1) + '.';
+                commentData.commentAuthor = result.comment.user.first_name + ((result.comment.user.last_name.length == 0) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
                 commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
 
                 // Date Time

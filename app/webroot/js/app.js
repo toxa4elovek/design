@@ -597,7 +597,7 @@ function fetchComments(result) {
     
         commentData.userAvatar = comment.avatar;
     
-        commentData.commentAuthor = comment.user.first_name + ' ' + comment.user.last_name.substring(0, 1) + '.';
+        commentData.commentAuthor = comment.user.first_name + ((comment.user.last_name.length == 0) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
         commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
         
         // Date Time
