@@ -354,7 +354,7 @@ function FeatureCart() {
             'id': self.id,
             'title': $('input[name=title]').val(),
             'category_id': $('input[name=category_id]').val(),
-            'industry': $('input[name=industry]').val(),
+            'industry': $('input[name=industry]').val() || '',
             'business-description': $('textarea[name=business-description]').val(),
             'description': $('textarea[name=description]').val(),
             'fileFormats': self._formatArray(),
@@ -376,10 +376,6 @@ function FeatureCart() {
         if(self.validatetype == 1) {
             if((self.data.commonPitchData.title == '') || ($('input[name=title]').data('placeholder') == self.data.commonPitchData.title)) {
                 $('input[name=title]').addClass('wrong-input');
-                result = false;
-            }
-            if((self.data.commonPitchData.industry == '') || ($('input[name=industry]').data('placeholder') == self.data.commonPitchData.industry)) {
-                $('input[name=industry]').addClass('wrong-input');
                 result = false;
             }
             if((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {

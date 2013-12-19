@@ -289,10 +289,12 @@ endif?>
                 <input type="text" name="title" placeholder="Логотип для Star Lift" data-placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
                 <input type="hidden" name="category_id" value="<?=$category->id?>">
             </p>
+            <?php if (!empty($pitch->industry)):?>
             <p>
                 <label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-                <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
+                    <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
             </p>
+            <?php endif; ?>
 
             <?php if(!$onlyText):?>
             <div class="ribbon term" style="height: 80px;">

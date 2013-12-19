@@ -312,10 +312,6 @@ endswitch;
                         <?php endif?>
 						<input type="hidden" name="category_id" value="<?=$category->id?>">
 					</p>
-					<p>
-						<label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-						<input type="text" name="industry" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
-					</p>
 
 					<div class="ribbon term" style="height: 80px;">
 						<p class="option">Установите срок</p>
