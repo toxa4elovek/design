@@ -184,6 +184,7 @@ $(document).ready(function(){
             opacity: 80,
             closeClass: 'popup-close',
             onShow: function() {
+                $(document).off('click', '#sendDeleteSolution');
             }
         });
         

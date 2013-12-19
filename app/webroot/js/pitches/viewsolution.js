@@ -341,8 +341,50 @@ $(document).ready(function() {
     }, function() {
         $('.toolbar', this).fadeOut(150);
     });
-
-
+    
+    // Delete Solution
+    $(document).on('click', '.delete-solution', function() {
+        // Delete without Moderation
+        if (!isCurrentAdmin) {
+            return true;
+        }
+        var link = $(this);
+        if (link.attr('data-pressed') == 'on') {
+            window.location = link.attr("href");
+        }
+        
+        // Show Delete Moderation Overlay
+        $('#popup-delete-solution').modal({
+            containerId: 'final-step-clean',
+            opacity: 80,
+            closeClass: 'popup-close',
+            onShow: function() {
+                $('#model_id', '#popup-delete-solution').val(link.data('solution'));
+                link.attr('data-pressed', 'on');
+                $(document).on('click', '.popup-close', function() {
+                    link.attr('data-pressed', 'off');
+                });
+                $(document).off('click', '#sendDeleteSolution');
+            }
+        });
+        
+        // Delete Solution Popup Form
+        $(document).on('click', '#sendDeleteSolution', function() {
+            var form = $(this).parent().parent();
+            if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
+                $('#popup-delete-solution').addClass('wrong-input');
+                return false;
+            }
+            $(document).off('click', '#sendDeleteSolution');
+            var data = form.serialize();
+            $.post(form.attr('action') + '.json', data).done(function(result) {
+                link.click();
+            });
+            return false;
+        });
+        return false;
+    });
+    
     $(document).on('click', '.hide', function() {
         var link = $(this);
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
@@ -646,7 +688,7 @@ $(document).ready(function() {
                 $('.solution-abuse').html(html);
             }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
-                    <a class="hide" href="/solutions/delete/' + result.solution.id + '.json">Удалить</a>');
+                    <a class="delete-solution" href="/solutions/delete/' + result.solution.id + '" data-solution="' + result.solution.id + '">Удалить</a>');
             }else {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
             }

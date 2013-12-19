@@ -1087,7 +1087,8 @@ h1.solution-title-page  {
 .solution-right-panel .solution-abuse a.abuse {
 	background-position: 0 -81px;
 }
-.solution-right-panel .solution-abuse a.hide {
+.solution-right-panel .solution-abuse a.hide,
+.solution-right-panel .solution-abuse a.delete-solution {
     background-position: 0 -108px;
 }
 .solution-right-panel .solution-abuse a.client-hide {

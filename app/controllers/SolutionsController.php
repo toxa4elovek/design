@@ -60,9 +60,11 @@ class SolutionsController extends \app\controllers\AppController {
         $isAdmin = Session::read('user.isAdmin');
         if(($solution = Solution::first($this->request->id)) && (($isAdmin == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == Session::read('user.id')))) {
             $result = $solution->delete();
+        }
+        if ($this->request->is('json')) {
             return compact('result');
         }
-        return compact('result');
+        $this->redirect(array('Pitches::view', 'id' => $solution->pitch_id));
     }
 
     public function warn() {
