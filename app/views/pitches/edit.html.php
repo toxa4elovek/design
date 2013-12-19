@@ -55,9 +55,22 @@ endif?>
             <li class="last"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
         </ol><!-- .steps -->
 
+        <?php if($category->id == 11):?>
+        <div class="groupc">
+            <p>
+                <label>Вид упаковки</label>
+                <ul class="radiooptionssite">
+                    <li><label><input type="radio" name="package-type" <?php if($specifics['package-type'] == 0): echo 'checked'; endif;?> value="0" class="sub-radio specific-group" data-min-value="7000" checked="checked"><span class="radiospan">Этикетка и контрэтикетка (от 7000) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Этикетка — графическое или текстовое описание товара, заполняющее одну плоскость бумажной формы, наклейки и т.п. Н-р, э. пива, э. на консервы, конфетная э. и т.п.">(?)</a></span></label></li>
+                    <li><label><input type="radio" name="package-type" <?php if($specifics['package-type'] == 1): echo 'checked'; endif;?> value="1" class="sub-radio specific-group" data-min-value="13400"><span class="radiospan">Оформление коробки, развёртки, и прочее (от 13400 Р-.) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Упаковка — комплекс полиграфической продукции и материалов, в которые упаковывают товар или сырье; графическое или текстовое описание товара, которое подразумевает более одной плоскости. Например, картонная коробка, бутылка, стрейч-пленка и т.п.">(?)</a></span></label></li>
+                </ul>
+            </p>
+        </div>
+        <?php endif;?>
+
         <?php
         function renderNumBox($category, $details) {
             $categoriesWithBox = array(3, 9, 4, 6, 2, 12, 11, 10);
+            if (($category == 11) && empty($details['site-sub'])) { return '';}
             if(!in_array($category, $categoriesWithBox)) { return '';}
             $info = array(
                 3 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашего сайта? Внимание, только дизайн,  без кода HTML', 'mult' => 2000),
@@ -121,19 +134,6 @@ endif?>
             </div><!-- .indicator -->
             <img src="/img/comissions.png" style="margin-bottom: 30px;">
         </div><!-- .set-price -->
-
-        <?php if($category->id == 11):?>
-        <div class="groupc">
-            <p>
-                <label>Вид упаковки</label>
-
-            <ul class="radiooptionssite">
-                <li><label><input type="radio" name="package-type" <?php if($specifics['package-type'] == 0): echo 'checked'; endif;?> value="0" class="sub-radio specific-group" data-min-value="7000" checked="checked"><span class="radiospan">Этикетка и контрэтикетка (от 7000) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Этикетка — графическое или текстовое описание товара, заполняющее одну плоскость бумажной формы, наклейки и т.п. Н-р, э. пива, э. на консервы, конфетная э. и т.п.">(?)</a></span></label></li>
-                <li><label><input type="radio" name="package-type" <?php if($specifics['package-type'] == 1): echo 'checked'; endif;?> value="1" class="sub-radio specific-group" data-min-value="13400"><span class="radiospan">Оформление коробки, развёртки, и прочее (от 13400 Р-.) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Упаковка — комплекс полиграфической продукции и материалов, в которые упаковывают товар или сырье; графическое или текстовое описание товара, которое подразумевает более одной плоскости. Например, картонная коробка, бутылка, стрейч-пленка и т.п.">(?)</a></span></label></li>
-            </ul>
-            </p>
-        </div>
-            <?php endif;?>
 
         <div style="margin-top:5px;height:200px;">
 

@@ -52,3 +52,7 @@ input.file {
 input.wrong-input, textarea.wrong-input, ul.wrong-input {
     border: 1px solid #FF585D;
 }
+input[name=package-type] {
+    vertical-align: baseline;
+    margin-right: 3px;
+}
