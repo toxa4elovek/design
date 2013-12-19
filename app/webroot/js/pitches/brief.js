@@ -582,20 +582,13 @@ $(document).ready(function() {
                 break;
             case 'paymaster':
                 $("#paybutton-paymaster").removeAttr('style');
-                $("#paybutton-online").css('background', '#a2b2bb');
+                $("#paybutton-payanyway").css('background', '#a2b2bb');
                 $("#paymaster-images").hide();
                 $("#paymaster-select").show();
                 $('#s3_kv').hide();
                 break;
-            case 'online':
-                $("#paybutton-online").removeAttr('style');
-                $("#paybutton-paymaster").css('background', '#a2b2bb');
-                $("#paymaster-images").show();
-                $("#paymaster-select").hide();
-                $('#s3_kv').hide();
-                break;
             case 'offline':
-                $("#paybutton-online").css('background', '#a2b2bb');
+                $("#paybutton-payanyway").css('background', '#a2b2bb');
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
@@ -1031,15 +1024,9 @@ function FeatureCart() {
                         $('h1.pmheader', '.pmwidget').addClass('mod');
                     }
                     // Payanyway
-
                     $('input[name=MNT_AMOUNT]').val(response.total)
                     $('input[name=MNT_TRANSACTION_ID]').val(response.id)
 
-                    // Masterbank
-                    //$('#order-id').val(response.id);
-                    //$('#order-total').val(response.total);
-                    //$('#order-timestamp').val(response.timestamp);
-                    //$('#order-sign').val(response.sign);
                     // Bill
                     $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');
                 })

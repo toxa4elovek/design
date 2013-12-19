@@ -105,46 +105,48 @@
     <div class="middle add-pitch" style="display:none;" id="step3">
 
         <div class="main">
-            <div style="height:800px"><p>
+            <div>
                 <h1>выберите способ оплаты</h1>
                 <div class="g_line"></div>
                 <div id="P_card">
                     <table>
-                        <!--tr>
+                        <tr>
                             <td>
-                                <input type="radio" name="1" class="rb1" data-pay="online" checked>
+                                <input type="radio" name="1" class="rb1" data-pay="payanyway">
+                            </td>
+                            <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                                Оплата пластиковыми картами <br>через Payanyway<br><br>
                             </td>
                             <td>
-                                <img src="/img/s3_card.png" alt="">
-                            </td>
-                            <td class="s3_text">
-                                Пластиковая карта ВИЗА, МАСТЕРКАРД<br/>(VISA, MASTERCARD)
-                            </td>
-                            <td>
-                                <form action="https://pay.masterbank.ru/acquiring" method="post">
-                                    <input type="HIDDEN" value="" name="ORDER" id="order-id">
-                                    <input type="HIDDEN" value="" name="AMOUNT" id="order-total">
-                                    <input type="HIDDEN" value="" name="TIMESTAMP" id="order-timestamp">
-                                    <input type="HIDDEN" value="" NAME="SIGN" id="order-sign">
-                                    <input type="HIDDEN" value="http://godesigner.ru/users/mypitches" name="MERCH_URL">
-                                    <input type="HIDDEN" value="71846655" name="TERMINAL">
-                                    <input type="submit" id="paybutton" value="продолжить оплату" class="button" >
+                                <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
+                                    <input type="hidden" name="MNT_ID" value="36102238">
+                                    <input type="hidden" name="MNT_TRANSACTION_ID" value="">
+                                    <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
+                                    <input type="hidden" name="MNT_AMOUNT" value="">
+                                    <input type="hidden" name="MNT_TEST_MODE" value="0">
+                                    <input type="hidden" name="paymentSystem.unitId" value="499669">
+                                    <input type="hidden" name="followup" value="true">
+                                    <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="background: #a2b2bb;">
                                 </form>
+                            </td>
+                        </tr>
+                        <tr id="online-images">
+                            <td colspan="4" style="padding: 20px 0 0 40px;">
+                                <img src="/img/s3_master.png" alt="">
                             </td>
                         </tr>
 
                         <tr>
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                        </tr-->
+                        </tr>
+
                         <tr class="paymaster-section">
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                             </td>
-                            <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                            <td colspan="3" class="s3_text" style="padding-left: 20px;">
                                 Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
-                                <p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-30000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p>
-                            </td>
-                            <td>
+                                <p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p>
                             </td>
                         </tr>
                         <tr id="paymaster-images" class="paymaster-section">
@@ -159,41 +161,13 @@
                                 <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
                             </td>
                         </tr>
-                        <tr class="paymaster-section">
-                            <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="radio" name="1" class="rb1" data-pay="offline">
-                            </td>
-                            <td class="s3_h">
-                                <img src="/img/s3_rsh.png" alt="">
-                            </td>
-                            <td class="s3_text">
-                                Перевод  на расчетный счёт<br/>(Безналичный платеж через банк)
-                            </td>
-                            <td></td>
-                        </tr>
                     </table>
-                    <div id="s3_kv" style="display:none;">
-                        <table>
-                            <tr>
-                                <td width="25px;"><img src="/img/s3_hz.png" alt=""></td>
-                                <td colspan="3">
-                                    <p><a id="pdf-link" href="#" target="_blank">Скачайте счёт на оплату</a> и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p><br/>
-                                    <p>Мы активируем ваши опции на сайте в течение рабочего дня после поступления денег. Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
                 </div>
                 <div class="g_line"></div>
                 <p class="submit">
                     <input type="submit" value="Назад" id="prev" class="button steps-link" data-step="2">
                 </p><!-- .submit -->
-
-                </div>
-            </form>
+            </div>
         </div><!-- .main -->
 
     </div><!-- .middle -->

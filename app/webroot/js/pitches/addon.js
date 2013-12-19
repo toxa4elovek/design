@@ -155,22 +155,24 @@ $(document).ready(function() {
         $(this).parent().addClass('expanded');
         return false;
     })
+    
+    $(document).on('click', 'td.s3_text, td.s3_h', function() {
+        $('.rb1', $(this).prevAll(':last')).click();
+    });
 
     $('.rb1').change(function() {
         switch ($(this).data('pay')) {
-            case 'paymaster':
-                $("#paybutton-paymaster").removeAttr('style');
-                $("#paybutton-online").css('background', '#a2b2bb');
-                $("#paymaster-images").hide();
-                $("#paymaster-select").show();
-                $('#s3_kv').hide();
-                break;
-            case 'offline':
-                $("#paybutton-online").css('background', '#a2b2bb');
+            case 'payanyway':
+                $("#paybutton-payanyway").removeAttr('style');
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
-                $('#s3_kv').show();
+                break;
+            case 'paymaster':
+                $("#paybutton-paymaster").removeAttr('style');
+                $("#paybutton-payanyway").css('background', '#a2b2bb');
+                $("#paymaster-images").hide();
+                $("#paymaster-select").show();
                 break;
         }
     });
@@ -360,7 +362,7 @@ function FeatureCart() {
                 $.get('/transactions/getaddondata/' + response + '.json', function(response) {
                     $('.middle').not('#step3').hide();
                     $('#step3').show();
-
+                    // Paymaster
                     $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
                     if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
                         $('input[name=LMI_PAYMENT_NO]').val(response.id);
@@ -370,13 +372,9 @@ function FeatureCart() {
                     $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
                     $('.pmwidget').addClass('mod');
                     $('h1.pmheader', '.pmwidget').addClass('mod');
-
-
-                    $('#order-id').val(response.id);
-                    $('#order-total').val(response.total);
-                    $('#order-timestamp').val(response.timestamp);
-                    $('#order-sign').val(response.sign);
-                    $('#pdf-link').attr('href', '/addons/getpdf/godesigner-pitch-' + self.addonid + '.pdf');
+                    // Payanyway
+                    $('input[name=MNT_AMOUNT]').val(response.total)
+                    $('input[name=MNT_TRANSACTION_ID]').val(response.id)
                 })
 
 
