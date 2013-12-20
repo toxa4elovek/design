@@ -411,7 +411,6 @@ $(document).ready(function() {
     $('input[name=package-type]').on('change', function() {
         var newMinValue = $(this).data('minValue');
         var award = $('#award');
-        var input = $('#sub-site');
         award.data('lowDef', newMinValue);
         var defLow = award.data('lowDef');
         var defNormal = award.data('normalDef');
@@ -422,11 +421,7 @@ $(document).ready(function() {
         }
         var extraNormal = (defNormal - defLow);
         var extraHigh = (defHigh - defLow);
-        var numberOfItems = input.val();
-        if(numberOfItems == '') {
-            numberOfItems = input.attr('placeholder');
-        }
-        var minValue = ((numberOfItems - 1) * mult) + defLow;
+        var minValue = defLow;
         award.data('minimalAward', minValue);
         award.blur();
     })
