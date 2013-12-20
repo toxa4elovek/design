@@ -40,12 +40,12 @@
         </li>
     </ul><!-- .logo-properties -->
 
-
-
+    <?php if (!empty($specifics['site-inspiration'])): ?>
     <p>
         <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="<?php if(empty($specifics['site-inspiration'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-inspiration']?></textarea>
+        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="specific-prop"><?=$specifics['site-inspiration']?></textarea>
     </p>
+    <?php endif; ?>
 
     <p>
         <label>Какие 3 основных качества нужно донести до аудитории?</label>

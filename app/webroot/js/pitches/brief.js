@@ -346,45 +346,10 @@ $(document).ready(function() {
         return false;
     })
 
-    /*
-    $('#fileuploadform').fileupload({
-        dataType: 'json',
-        add: function(e, data) {
-            console.log(data);
-            e.data.fileupload.myData = data;
-            $('#filename').html(data.files[0].name);
-        },
-        done: function (e, data) {
-            $.modal.close();
-            var li = '<li><a href="' + data.result.weburl + '" class="filezone-filename" target="_blank">' + data.result.basename + '</a>' +
-                '<p>' + data.result['file-description'] + '</p>' +
-                '<a href="/pitchfiles/delete/' + data.result.id + '.json" class="filezone-delete-link">удалить</a></li>';
-            $("#filezone").append(li);
-            $('#fileupload-description').val('');
-            $('#filename').html('Файл не выбран');
-            Cart.fileIds.push(data.result.id);
-        },
-        send: function(e, data) {
-            $('#loading-overlay').modal({
-                containerId: 'spinner',
-                opacity: 80,
-                close: false
-            });
-        },
-        progressall: function(e, data) {
-            if(data.total > 0) {
-                var percent = data.total / 100;
-                var completed = Math.round(data.loaded / percent);
-                $('#progressbar').text(completed + '%');
-            }
-        }
-    });*/
-
     var fileIds = [];
-    var placeholder = $('#fileupload-description').attr('placeholder');
     var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
-        onSelect: function(file) { onSelectHandler.call(this, file, placeholder, fileIds, Cart); }  // See app.js
+        onSelect: function(file) { onSelectHandler.call(this, file, fileIds, Cart); }  // See app.js
     });
 
     $('input[name="phone-brief"]').change(function() {
@@ -944,7 +909,7 @@ function FeatureCart() {
             'id': self.id,
             'title': $('input[name=title]').val(),
             'category_id': $('input[name=category_id]').val(),
-            'industry': $('input[name=industry]').val(),
+            'industry': $('input[name=industry]').val() || '',
             'business-description': $('textarea[name=business-description]').val(),
             'description': $('textarea[name=description]').val(),
             'fileFormats': self._formatArray(),
@@ -969,10 +934,6 @@ function FeatureCart() {
         if(self.validatetype == 1) {
             if((self.data.commonPitchData.title == '') || ($('input[name=title]').data('placeholder') == self.data.commonPitchData.title)) {
                 $('input[name=title]').addClass('wrong-input');
-                result = false;
-            }
-            if((self.data.commonPitchData.industry == '') || ($('input[name=industry]').data('placeholder') == self.data.commonPitchData.industry)) {
-                $('input[name=industry]').addClass('wrong-input');
                 result = false;
             }
             if((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
