@@ -49,6 +49,8 @@ endif?>
 
     <div class="main">
 
+        <h2><?=$category->title;?></h2>
+
         <ol class="steps">
             <li class="current"><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
             <li><a href="#" class="steps-link" data-step="2">2. Бриф</a></li>
@@ -276,6 +278,9 @@ endif?>
 <div class="middle add-pitch" style="display:block;" id="step2">
 <?php endif?>
     <div class="main">
+
+        <h2><?=$category->title;?></h2>
+
         <?php if(!$onlyText):?>
         <ol class="steps">
             <li><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
@@ -454,6 +459,9 @@ endif?>
 <div class="middle add-pitch" style="display:none;" id="step3">
 
     <div class="main">
+
+        <h2><?=$category->title;?></h2>
+
         <form action="https://pay.masterbank.ru/acquiring" method="post">
             <input type="hidden" id="pitch-id" name="id" value=""/>
             <ol class="steps">
