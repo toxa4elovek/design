@@ -102,6 +102,8 @@ require __DIR__ . '/bootstrap/validation.php';
 
 	define('COPY_BASE_PRICE', 5000);
 
+	define('WINS_FOR_VIEW', 1); // Designer`s wins for allow private pitches view
+
 date_default_timezone_set('Europe/Moscow');
 
 /*
