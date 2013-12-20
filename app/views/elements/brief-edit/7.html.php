@@ -36,15 +36,18 @@
         </li>
     </ul><!-- .logo-properties -->
 
+    <?php if (!empty($specifics['copy-extra'])): ?>
     <p>
         <label>Есть что добавить?</label>
         <textarea placeholder="" rows="5" cols="30" name="copy-extra" class="specific-prop"><?=$specifics['copy-extra']?></textarea>
     </p>
-
+    <?php endif; ?>
+    <?php if (!empty($specifics['copy-ref'])): ?>
     <p>
         <label>Референсы</label>
         <textarea placeholder="" rows="5" cols="30" name="copy-ref" class="specific-prop"><?=$specifics['copy-ref']?></textarea>
     </p>
+    <?php endif; ?>
 
     <p>
         <label style="font:14px/20px 'Arial',sans-serif;text-shadow:-1px 0 0 #FFFFFF;color:#666666;"><input type="checkbox" style="vertical-align: middle; margin-right: 5px;" name="copy-trademark" class="specific-prop" <?php if(isset($specifics['copy-trademark']) && $specifics['copy-trademark'] == 'on') echo "checked";?>> я буду регистрировать название как уникальную торговую марку</label>
