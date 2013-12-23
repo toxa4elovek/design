@@ -251,7 +251,9 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     }
     stage.add(layer);
 
-
+    if (response.needRatingPopup == true) {
+        fireRatingPopup();
+    }
 
     //======
     var can, ctx,
