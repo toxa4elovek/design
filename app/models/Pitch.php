@@ -817,4 +817,21 @@ class Pitch extends \app\models\AppModel {
         }
         return null;
     }
+
+    public function ratingPopup($pitch, $avgArray) {
+        $twoDayAvg = 0;
+        if (count($avgArray) >= 3) {
+            $twoDayArray = array_slice($avgArray, -3, 2);
+            $twoDayAvg = round(array_sum($twoDayArray) / 2, 1);
+        }
+        if (($pitch->guaranteed == 0)
+        && (Session::read('user.id') == $pitch->user_id)
+        && ($twoDayAvg < 3)
+        && ($twoDayAvg != 0)
+        && (!isset($_COOKIE['ratPop_' . $pitch->id]) || $_COOKIE['ratPop_' . $pitch->id] == '')) {
+            setcookie('ratPop_' . $pitch->id, 'true', strtotime('+2 day'), '/');
+            return true;
+        }
+        return false;
+    }
 }

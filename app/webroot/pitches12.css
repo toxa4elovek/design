@@ -1155,3 +1155,47 @@ h1.solution-title-page  {
 #filler {
     transition: width .5s;
 }
+#popup-rating {
+	display: none;
+	padding: 0 40px;
+    color: #666;
+    text-shadow: 1px 1px 1px #FFF;
+}
+#popup-rating a.modalCloseImg {
+position: absolute;
+right: 16px;
+top: 14px;
+display: inline-block;
+zoom: 1;
+width: 15px;
+height: 15px;
+background-image: url(img/popup-close-sprite.png);
+background-position: center bottom;
+background-repeat: none;
+cursor: pointer;
+}
+#popup-rating a.modalCloseImg:hover {
+	background-position: center top;
+}
+#popup-rating h1 {
+	margin: 30px auto 10px auto;
+}
+#popup-rating p {
+    font: 16px/1.5em Arial, Helvetica, sans-serif;
+    margin: 2em auto;
+}
+#popup-rating-box {
+	width: 480px;
+	height: 400px;
+	background: url(img/main_bg.jpg) 0 0 repeat;
+}
+#popup-rating-box:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 14px;
+    bottom: -19px;
+    width: 452px;
+    height: 19px;
+    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+}
