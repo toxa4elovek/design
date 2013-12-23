@@ -644,6 +644,7 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
         </div>
         <!-- start: Solution Right Panel -->
         <div class="solution-right-panel">
+            <div class="solution-popup-close"></div>
             <div class="solution-info solution-summary">
                 <div class="solution-number">#<span class="number isField"><!--  --></span></div>
                 <div class="solution-rating"><div class="rating-image star0"></div> рейтинг заказчика</div>

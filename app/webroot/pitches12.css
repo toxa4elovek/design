@@ -1106,6 +1106,22 @@ h1.solution-title-page  {
 	background: url('img/attach_icon.png') no-repeat;
 	padding: 0 0 5px 20px;
 }
+.solution-right-panel .solution-popup-close {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	display: inline-block;
+	zoom: 1;
+	width: 15px;
+	height: 15px;
+	background-image: url(img/popup-close-sprite.png);
+	background-position: center bottom;
+	background-repeat: none;
+	cursor: pointer;
+}
+.solution-right-panel .solution-popup-close:hover {
+    background-position: center top;
+}
 
 /*
  * Pitch Comments

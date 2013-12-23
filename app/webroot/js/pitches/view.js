@@ -512,12 +512,11 @@ $(document).ready(function(){
         hideSolutionPopup();
         return false;
     });
-    $('.solution-title').on('click', function(e) {
+    $('.solution-title, .solution-popup-close').on('click', function(e) {
         e.preventDefault();
         hideSolutionPopup();
         return false;
     });
-
     $('.solution-prev-area, .solution-next-area').on('mouseover', function(e) {
         $(this).prev().addClass('active');
     });
