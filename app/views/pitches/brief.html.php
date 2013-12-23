@@ -473,7 +473,7 @@ endswitch;
 
 		    <h2><?=$category->title;?></h2>
 
-		    <form action="https://pay.masterbank.ru/acquiring" method="post">
+		    <form action="" method="post">
 				<input type="hidden" id="pitch-id" name="id" value=""/>
 				<ol class="steps">
 					<li><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
