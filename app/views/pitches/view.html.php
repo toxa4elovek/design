@@ -9,6 +9,12 @@
 	<div class="middle_inner_gallery" style="padding-top:25px">
     <?php if((int)$this->session->read('user.id') == $pitch->user_id):?>
     <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.6; margin-left: 740px">
+        <div class="bubble">
+            <span>Возврат денег недоступен:</span><br>
+            <span class="lowReason"></span><br><br>
+            <a href="/answers/view/71">Как это исправить?</a>
+        <div id="bubble-close"></div>
+        </div>
         <div style="width:150px;height:190px;text-align;center">
             <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
                 <canvas id="canFloat" height="132" width="132" style="">
