@@ -35,9 +35,11 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     };
 
     if((parseFloat(response.avgNum) < 3) || (response.guaranteed == '1')) {
-        $('#switch').attr('src', '/img/off.png');
+        //$('#switch').attr('src', '/img/off.png');
+        $('#refundLabel').text('Нельзя вернуть деньги.').css('color', '#ed6567');
     }else {
-        $('#switch').attr('src', '/img/on.png');
+        //$('#switch').attr('src', '/img/on.png');
+        $('#refundLabel').text('Возможность вернуть деньги доступна.');
     }
     var minimum = 3;
     var colorBigNum = '#757472';

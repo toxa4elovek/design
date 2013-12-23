@@ -561,11 +561,9 @@
                         </div>
                         <?php if($pitch->guaranteed == 0):?>
                         <div style="width:200px;float:left;height:190px;text-align;center">
-                            <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 34px;">Доступность</h2>
-                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: 34px;">опции <a target="_blank" href="http://www.godesigner.ru/answers/view/71">«Вернуть деньги»</a><br>
-                                (&gt;/= 3.0 вкл. опцию)*</p>
-                            <img id="switch" src="/img/off.png" style="margin-top: 15px; margin-left: 55px;">
-                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: 34px; margin-top: 23px;">______________<br>*только в негарантиров.<br>питчах</p>
+                            <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
+                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 16px/15px arial;"><a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a><br>
+                            </p>
                         </div>
                         <?php else:?>
                         <div style="width:200px;float:left;height:190px;text-align:center">
