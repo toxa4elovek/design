@@ -9,6 +9,12 @@
 	<div class="middle_inner_gallery" style="padding-top:25px">
     <?php if((int)$this->session->read('user.id') == $pitch->user_id):?>
     <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.6; margin-left: 740px">
+        <div class="bubble">
+            <span>Возврат денег недоступен:</span><br>
+            <span class="lowReason"></span><br><br>
+            <a href="/answers/view/71">Как это исправить?</a>
+        <div id="bubble-close"></div>
+        </div>
         <div style="width:150px;height:190px;text-align;center">
             <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
                 <canvas id="canFloat" height="132" width="132" style="">
@@ -561,11 +567,9 @@
                         </div>
                         <?php if($pitch->guaranteed == 0):?>
                         <div style="width:200px;float:left;height:190px;text-align;center">
-                            <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 34px;">Доступность</h2>
-                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: 34px;">опции <a target="_blank" href="http://www.godesigner.ru/answers/view/71">«Вернуть деньги»</a><br>
-                                (&gt;/= 3.0 вкл. опцию)*</p>
-                            <img id="switch" src="/img/off.png" style="margin-top: 15px; margin-left: 55px;">
-                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: 34px; margin-top: 23px;">______________<br>*только в негарантиров.<br>питчах</p>
+                            <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
+                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 16px/15px arial;"><a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a><br>
+                            </p>
                         </div>
                         <?php else:?>
                         <div style="width:200px;float:left;height:190px;text-align:center">
@@ -646,6 +650,7 @@ var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \a
         </div>
         <!-- start: Solution Right Panel -->
         <div class="solution-right-panel">
+            <div class="solution-popup-close"></div>
             <div class="solution-info solution-summary">
                 <div class="solution-number">#<span class="number isField"><!--  --></span></div>
                 <div class="solution-rating"><div class="rating-image star0"></div> рейтинг заказчика</div>

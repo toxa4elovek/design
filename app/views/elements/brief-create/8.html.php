@@ -41,9 +41,4 @@
         <input type="text" name="qualities" placeholder="Надежный, технологический, инновационный" class="specific-prop">
     </p>
 
-    <p>
-        <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="placeholder specific-prop"></textarea>
-    </p>
-
 </div>

@@ -101,9 +101,7 @@
 
 
                         </div>
-                        <?php if($user->facebook_uid == ''):?>
                         <span style="display: none;position:absolute;top:396px;left:79px; width:118px;" id="file-uploader-demo1"></span>
-                        <?php endif;?>
                         <div id="fieldblock1">
                             <div class="userwelcometext" style="padding-top:5px;margin-bottom: 9px">Привет, <?=$user->first_name?> <?=$user->last_name?>!</div>
                             <div style="margin-bottom: 7px"><input type="text" name="birthdate" placeholder="Дата рождения" value="<?=$userdata['birthdate']?>" ></div>

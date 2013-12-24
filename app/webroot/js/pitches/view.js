@@ -512,12 +512,11 @@ $(document).ready(function(){
         hideSolutionPopup();
         return false;
     });
-    $('.solution-title').on('click', function(e) {
+    $('.solution-title, .solution-popup-close').on('click', function(e) {
         e.preventDefault();
         hideSolutionPopup();
         return false;
     });
-
     $('.solution-prev-area, .solution-next-area').on('mouseover', function(e) {
         $(this).prev().addClass('active');
     });
@@ -1065,5 +1064,23 @@ function mentionLinks() {
             el.val(newText);
         }
         return false;
+    });
+}
+
+// Rating Popup
+function fireRatingPopup() {
+    var el = '<div id="popup-rating"> \
+                <a class="modalCloseImg popup-rating-close" title="Close"></a> \
+                <h1 class="largest-header">Возврат средств недоступен</h1> \
+                <p>Возврат средств по окончанию питча доступен тогда, когда средний балл вашей активности не меньшн трех.</p> \
+                <p>На данный момент ваш средний балл активности ниже трех. Это означает, что оставлено недостаточно комментариев или не всем выставлен рейтинг.</p> \
+                <p><a href="/answers/view/71">Как это исправить?</a></p> \
+              </div>';
+    $('body').append(el);
+    $('#popup-rating').modal({
+        containerId: 'popup-rating-box',
+        opacity: 80,
+        closeClass: 'popup-rating-close',
+        onShow: function() {}
     });
 }

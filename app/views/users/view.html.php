@@ -6,7 +6,7 @@
     ?>
     <div class="middle">
 
-        <div class="middle_inner user_view">
+        <div class="middle_inner user_view" style="min-height:330px;">
 
         <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
             <div class="right-sidebar-user">
