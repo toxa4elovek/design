@@ -845,7 +845,7 @@ class Pitch extends \app\models\AppModel {
                 return 'win';
             }
             // For Loser
-            if ((User::getAwardedSolutionNum(Session::read('user.id')) < WINS_FOR_VIEW) && (!isset($_COOKIE['winPop']) || $_COOKIE['winPop'] != 'los')) {
+            if ((User::getAwardedSolutionNum(Session::read('user.id')) == 0) && (!isset($_COOKIE['winPop']) || $_COOKIE['winPop'] != 'los')) {
                 setcookie('winPop', 'los', time() + YEAR, '/');
                 return 'los';
             }
