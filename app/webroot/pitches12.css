@@ -1204,6 +1204,7 @@ cursor: pointer;
 	width: 480px;
 	height: 400px;
 	background: url(img/main_bg.jpg) 0 0 repeat;
+	opacity: 0;
 }
 #popup-rating-box:after {
     content: "";
