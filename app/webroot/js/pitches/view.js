@@ -1072,10 +1072,36 @@ function fireRatingPopup() {
     var el = '<div id="popup-rating"> \
                 <a class="modalCloseImg popup-rating-close" title="Close"></a> \
                 <h1 class="largest-header">Возврат средств недоступен</h1> \
-                <p>Возврат средств по окончанию питча доступен тогда, когда средний балл вашей активности не меньшн трех.</p> \
+                <p>Возврат средств по окончанию питча доступен тогда, когда средний балл вашей активности не меньше трех.</p> \
                 <p>На данный момент ваш средний балл активности ниже трех. Это означает, что оставлено недостаточно комментариев или не всем выставлен рейтинг.</p> \
                 <p><a href="/answers/view/71">Как это исправить?</a></p> \
               </div>';
+    $('body').append(el);
+    $('#popup-rating').modal({
+        containerId: 'popup-rating-box',
+        opacity: 80,
+        closeClass: 'popup-rating-close',
+        onShow: function() {}
+    });
+}
+
+// Winner Popup for Private Pitches
+function fireWinnerPopup(whom) {
+    var el = '<div id="popup-rating"> \
+                <a class="modalCloseImg popup-rating-close" title="Close"></a> \
+                <h1 class="largest-header">Это закрытый питч!</h1> \
+                <p>Просмотр решений других участников доступен только заказчику и привилегированному меньшинству — победителям GoDesigner. Побеждайте в питчах, и работа на сервисе станет для вас еще интереснее!</p> \
+                <p><a href="/answers/view/64">Подробнее</a></p> \
+              </div>';
+    if (whom == 'win') {
+        el = '<div id="popup-rating"> \
+                <a class="modalCloseImg popup-rating-close" title="Close"></a> \
+                <h1 class="largest-header">Та-даам!</h1> \
+                <p>Поздравляем, вы — член элитного общества на GoDesigner: вы не раз принимали участие в питчах и, главное, становились победителем. Именно поэтому мы предоставляем вам эксклюзивную привилегию: вы сможете видеть работы других участников в закрытых питчах.<br> \
+                Соблюдение условий соглашения о неразглашении является по-прежнему обязательным. Спасибо за понимание и творческих успехов!</p> \
+                <p><a href="/answers/view/64">Подробнее</a></p> \
+              </div>';
+    }
     $('body').append(el);
     $('#popup-rating').modal({
         containerId: 'popup-rating-box',

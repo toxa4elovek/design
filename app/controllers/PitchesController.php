@@ -871,7 +871,8 @@ class PitchesController extends \app\controllers\AppController {
         $avgNum = round(array_sum($avgArray) / count($avgArray), 1);
         $guaranteed = $pitch->guaranteed;
         $needRatingPopup = $pitch->ratingPopup($avgArray);
-        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'needRatingPopup');
+        $needWinnerPopup = $pitch->winnerPopup();
+        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'needRatingPopup', 'needWinnerPopup');
     }
 
     public function fillbrief() {

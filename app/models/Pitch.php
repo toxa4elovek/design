@@ -818,6 +818,7 @@ class Pitch extends \app\models\AppModel {
         return null;
     }
 
+    // Check if Low Rating Popup needed
     public function ratingPopup($pitch, $avgArray) {
         $twoDayAvg = 0;
         if (count($avgArray) >= 3) {
@@ -831,6 +832,23 @@ class Pitch extends \app\models\AppModel {
         && (!isset($_COOKIE['ratPop_' . $pitch->id]) || $_COOKIE['ratPop_' . $pitch->id] == '')) {
             setcookie('ratPop_' . $pitch->id, 'true', strtotime('+2 day'), '/');
             return true;
+        }
+        return false;
+    }
+
+    // Check if private Pitch Popup needed
+    public function winnerPopup($pitch) {
+        if (($pitch->private == 1) && (Session::read('user.id') != $pitch->user_id)) {
+            // For Winner
+            if ((User::getAwardedSolutionNum(Session::read('user.id')) >= WINS_FOR_VIEW) && (!isset($_COOKIE['winPop']) || $_COOKIE['winPop'] != 'win')) {
+                setcookie('winPop', 'win', time() + YEAR, '/');
+                return 'win';
+            }
+            // For Loser
+            if ((User::getAwardedSolutionNum(Session::read('user.id')) < WINS_FOR_VIEW) && (!isset($_COOKIE['winPop']) || $_COOKIE['winPop'] != 'los')) {
+                setcookie('winPop', 'los', time() + YEAR, '/');
+                return 'los';
+            }
         }
         return false;
     }
