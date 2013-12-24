@@ -5,11 +5,6 @@
         <input type="text" name="qualities" value=""  placeholder="Надежный, технологичный, инновационный" class="specific-prop">
     </p>
 
-    <p>
-        <label>Какой образ о себе (продукте/услуге) вы бы хотели создать?</label>
-        <textarea placeholder="Нужно, чтобы потенциальные потребители поверили, что напиток Coca-Cola - для молодых, энергичных, веселых ребят, что он дарит бодрость и настроение, что без него не обходится ни одна вечеринка..." rows="5" cols="30" name="site-image" class="placeholder specific-prop"></textarea>
-    </p>
-
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">

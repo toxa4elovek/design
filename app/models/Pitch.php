@@ -806,9 +806,6 @@ class Pitch extends \app\models\AppModel {
                 case 10:
                     //$res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
                     break;
-                case 11:
-                    //$res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
-                    break;
                 case 12:
                     //$res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
                     break;
@@ -819,5 +816,40 @@ class Pitch extends \app\models\AppModel {
             return $res;
         }
         return null;
+    }
+
+    // Check if Low Rating Popup needed
+    public function ratingPopup($pitch, $avgArray) {
+        $twoDayAvg = 0;
+        if (count($avgArray) >= 3) {
+            $twoDayArray = array_slice($avgArray, -3, 2);
+            $twoDayAvg = round(array_sum($twoDayArray) / 2, 1);
+        }
+        if (($pitch->guaranteed == 0)
+        && (Session::read('user.id') == $pitch->user_id)
+        && ($twoDayAvg < 3)
+        && ($twoDayAvg != 0)
+        && (!isset($_COOKIE['ratPop_' . $pitch->id]) || $_COOKIE['ratPop_' . $pitch->id] == '')) {
+            setcookie('ratPop_' . $pitch->id, 'true', strtotime('+2 day'), '/');
+            return true;
+        }
+        return false;
+    }
+
+    // Check if private Pitch Popup needed
+    public function winnerPopup($pitch) {
+        if (($pitch->private == 1) && (Session::read('user.id') != $pitch->user_id)) {
+            // For Winner
+            if ((User::getAwardedSolutionNum(Session::read('user.id')) >= WINS_FOR_VIEW) && (!isset($_COOKIE['winPop']) || $_COOKIE['winPop'] != 'win')) {
+                setcookie('winPop', 'win', time() + YEAR, '/');
+                return 'win';
+            }
+            // For Loser
+            if ((User::getAwardedSolutionNum(Session::read('user.id')) == 0) && (!isset($_COOKIE['winPop']) || $_COOKIE['winPop'] != 'los')) {
+                setcookie('winPop', 'los', time() + YEAR, '/');
+                return 'los';
+            }
+        }
+        return false;
     }
 }
