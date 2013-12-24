@@ -8,7 +8,7 @@
         <?php //$this->view()->render(array('element' => 'pitchinfo'), array('pitch' => $pitch))?>
 	<div class="middle_inner_gallery" style="padding-top:25px">
     <?php if((int)$this->session->read('user.id') == $pitch->user_id):?>
-    <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.6; margin-left: 740px">
+    <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
         <div class="bubble">
             <span>Возврат денег недоступен:</span><br>
             <span class="lowReason"></span><br><br>
@@ -568,7 +568,7 @@
                         <?php if($pitch->guaranteed == 0):?>
                         <div style="width:200px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
-                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 16px/15px arial;"><a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a><br>
+                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;"><a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a><br>
                             </p>
                         </div>
                         <?php else:?>

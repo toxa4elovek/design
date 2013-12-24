@@ -1072,7 +1072,7 @@ function fireRatingPopup() {
     var el = '<div id="popup-rating"> \
                 <a class="modalCloseImg popup-rating-close" title="Close"></a> \
                 <h1 class="largest-header">Возврат средств недоступен</h1> \
-                <p>Возврат средств по окончанию питча доступен тогда, когда средний балл вашей активности не меньшн трех.</p> \
+                <p>Возврат средств по окончанию питча доступен тогда, когда средний балл вашей активности не меньше трех.</p> \
                 <p>На данный момент ваш средний балл активности ниже трех. Это означает, что оставлено недостаточно комментариев или не всем выставлен рейтинг.</p> \
                 <p><a href="/answers/view/71">Как это исправить?</a></p> \
               </div>';
@@ -1081,6 +1081,8 @@ function fireRatingPopup() {
         containerId: 'popup-rating-box',
         opacity: 80,
         closeClass: 'popup-rating-close',
-        onShow: function() {}
+        onShow: function() {
+            $('#popup-rating-box').animate({opacity: 1}, 800);
+        }
     });
 }
