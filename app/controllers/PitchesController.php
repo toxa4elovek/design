@@ -871,7 +871,8 @@ class PitchesController extends \app\controllers\AppController {
         $avgNum = round(array_sum($avgArray) / count($avgArray), 1);
         $guaranteed = $pitch->guaranteed;
         $needRatingPopup = $pitch->ratingPopup($avgArray);
-        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'needRatingPopup');
+        $needWinnerPopup = $pitch->winnerPopup();
+        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'needRatingPopup', 'needWinnerPopup');
     }
 
     public function fillbrief() {
@@ -1199,6 +1200,11 @@ class PitchesController extends \app\controllers\AppController {
                 }
             }
 
+            $canViewPrivate = false;
+            if (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW) {
+                $canViewPrivate = true;
+            }
+
             if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) < time()) && ($pitch->status == 0)) {
                 $sort = 'created';
                 $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
@@ -1258,9 +1264,9 @@ class PitchesController extends \app\controllers\AppController {
             }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-			    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts');
+			    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate');
             }else {
-                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts'));
+                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate'));
             }
 		}
 		throw new Exception('Public:Такого питча не существует.', 404);
@@ -1532,13 +1538,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::addAvatars($comments);
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
-            if(($pitch->private == 1) || ($pitch->category_id == 7)) {
-                //$expertIds = unserialize($pitch->{'expert-ids'});
-                //$experts = array();
-                //if(!empty($expertIds)) {
-                    //$experts = Expert::all(array('conditions' => array('id' => $expertIds)));
-                //}
-
+            if ($pitch->category_id == 7) {
                 $expertsIds = array();
                 foreach($experts as $expert) :
                     $expertsIds[] = $expert->user_id;
@@ -1546,10 +1546,20 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 if((Session::read('user') == null) || ($solution->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), $expertsIds)) && (!in_array(Session::read('user.id'), User::$admins)) && ($pitch->user_id != Session::read('user.id'))){
                     return $this->redirect('/pitches/view/' . $pitch->id);
                 }
-
-                /*if(($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
-                    return $this->redirect('/requests/sign/' . $pitch->id);
-                }*/
+            }
+            if ($pitch->private == 1) {
+                $canViewPrivate = false;
+                $currentUser = Session::read('user');
+                if (!empty($currentUser) && (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW)) {
+                    $canViewPrivate = true;
+                }
+                $expertsIds = array();
+                foreach($experts as $expert) :
+                    $expertsIds[] = $expert->user_id;
+                endforeach;
+                if((Session::read('user') == null) || ($solution->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), $expertsIds)) && (!in_array(Session::read('user.id'), User::$admins)) && ($pitch->user_id != Session::read('user.id')) && !$canViewPrivate){
+                    return $this->redirect('/pitches/view/' . $pitch->id);
+                }
             }
             $selectedsolution = false;
             $nominatedSolutionOfThisPitch = Solution::first(array(
