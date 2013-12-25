@@ -35,6 +35,8 @@
                     <?=$explanation;?>
                     <br><br>
                 <?php endif;?>
+                Если вы заметили плагиат, вовремя подайте жалобу, и мы рассмотрим её в порядке очереди: позвольте нам утрясти все конфликтные вопросы и удалить плагиат: <a href="http://www.godesigner.ru/answers/view/75">http://www.godesigner.ru/answers/view/75</a>
+                <br><br>
                 <?php if (!is_null($text)):?>
                     «<?=$text;?>»
                     <br><br>
