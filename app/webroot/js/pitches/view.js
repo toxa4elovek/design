@@ -1081,7 +1081,9 @@ function fireRatingPopup() {
         containerId: 'popup-rating-box',
         opacity: 80,
         closeClass: 'popup-rating-close',
-        onShow: function() {}
+        onShow: function() {
+            $('#popup-rating-box').animate({opacity: 1}, 800);
+        }
     });
 }
 

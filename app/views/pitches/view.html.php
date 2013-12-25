@@ -8,7 +8,7 @@
         <?php //$this->view()->render(array('element' => 'pitchinfo'), array('pitch' => $pitch))?>
 	<div class="middle_inner_gallery" style="padding-top:25px">
     <?php if((int)$this->session->read('user.id') == $pitch->user_id):?>
-    <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.6; margin-left: 740px">
+    <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
         <div class="bubble">
             <span>Возврат денег недоступен:</span><br>
             <span class="lowReason"></span><br><br>
@@ -32,7 +32,7 @@
                 <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
                     <?php if($pitch->user_id != $this->session->read('user.id') || $pitch->status > 0): ?>
                     <table class="pitch-info-table" border="1">
-                        <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1"><span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?></span></td>
+                        <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1"><span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?><?php echo ($pitch->guaranteed == 1) ? ' гарантированы' : ''; ?></span></td>
                             <td width="15"></td>
                             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Заказчик:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$this->html->link($this->nameInflector->renderName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'))?></td></tr>
                         <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Решений:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$pitch->ideas_count ?></span></td>
@@ -568,7 +568,7 @@
                         <?php if($pitch->guaranteed == 0):?>
                         <div style="width:200px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
-                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 16px/15px arial;"><a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a><br>
+                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;"><a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a><br>
                             </p>
                         </div>
                         <?php else:?>

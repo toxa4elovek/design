@@ -522,16 +522,6 @@ window.onscroll = function () {
     }
 }
 
-$('#dinamic').on('mouseover', function() {
-    $(this).animate({
-        opacity: 1
-    }, 100)
-})
-$('#dinamic').on('mouseleave', function() {
-    $(this).animate({
-        opacity:0.6
-    }, 100)
-})
 $('#dinamic').on('click', function() {
     $.scrollTo($('#floatingblock'), {duration:500});
 })
