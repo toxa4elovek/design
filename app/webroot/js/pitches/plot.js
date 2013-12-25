@@ -275,6 +275,12 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
         });
     }
 
+    // Private Pitch Popups
+    if (response.needWinnerPopup != false) {
+        var whom = (response.needWinnerPopup == 'win') ? 'win' : 'los';
+        fireWinnerPopup(whom);
+    }
+
     //======
     var can, ctx,
         numSamples,

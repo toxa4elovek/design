@@ -1086,3 +1086,31 @@ function fireRatingPopup() {
         }
     });
 }
+
+// Winner Popup for Private Pitches
+function fireWinnerPopup(whom) {
+    var el = '<div id="popup-rating"> \
+                <a class="modalCloseImg popup-rating-close" title="Close"></a> \
+                <h1 class="largest-header">Это закрытый питч!</h1> \
+                <p>Просмотр решений других участников доступен только заказчику и привилегированному меньшинству — победителям GoDesigner.</p><p>Побеждайте в питчах, и работа на сервисе станет для вас еще интереснее!</p> \
+                <p><a href="/answers/view/64">Подробнее</a></p> \
+              </div>';
+    if (whom == 'win') {
+        el = '<div id="popup-rating"> \
+                <a class="modalCloseImg popup-rating-close" title="Close"></a> \
+                <h1 class="largest-header">Та-даам!</h1> \
+                <p>Поздравляем, вы — член элитного общества на GoDesigner: вы не раз принимали участие в питчах и, главное, становились победителем. Именно поэтому мы предоставляем вам эксклюзивную привилегию: вы сможете видеть работы других участников в закрытых питчах.<br> \
+                Соблюдение условий соглашения о неразглашении является по-прежнему обязательным. Спасибо за понимание и творческих успехов!</p> \
+                <p><a href="/answers/view/64">Подробнее</a></p> \
+              </div>';
+    }
+    $('body').append(el);
+    $('#popup-rating').modal({
+        containerId: 'popup-rating-box',
+        opacity: 80,
+        closeClass: 'popup-rating-close',
+        onShow: function() {
+            $('#popup-rating-box').animate({opacity: 1}, 800);
+        }
+    });
+}
