@@ -22,7 +22,7 @@
     </td>
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
-            <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?= mb_strtoupper($pitch->industry . ', срок: ' . $pitch->startedHuman . ', гонорар: ' . (int) $pitch->price . ' Р.-', 'utf-8')?></span><br/>
+            <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
             <?php if($pitch->private == 1):?>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="http://www.godesigner.ru/answers/view/64">закрытый питч</a> и вам нужно подписать соглашение о неразглашении!</span><br/>
             <?php else:?>

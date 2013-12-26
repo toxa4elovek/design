@@ -20,7 +20,7 @@
     </td>
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/users/step3/<?=$solution->id?>"><?=$pitch->title?></a><br/>
-            <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?= mb_strtoupper($pitch->industry . ', срок: ' . $pitch->startedHuman . ', гонорар: ' . (int) $pitch->price . ' Р.-', 'utf-8')?></span><br/>
+            <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php echo $text?></span><br/>
         </td></tr>
     <tr>
