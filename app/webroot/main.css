@@ -2502,6 +2502,12 @@ td.pitches-name{
 
 	/*background:url(img/arrow.png) no-repeat 10px 16px;*/
 }
+td.pitches-name.mypitches {
+    vertical-align: middle;
+}
+td.pitches-name.mypitches a {
+	margin: 0 5px 0 40px;
+}
 .pitches-name-td-img {
     position: absolute; margin-top: 16px; margin-left: 10px;
 }
@@ -2570,6 +2576,35 @@ td.price{
     text-transform: none;
     color: #e2e2e2;
     line-height: 19px;
+}
+td.price.mypitches {
+    width: 117px;
+    border-right:#575864 1px solid;
+}
+td.pitches-status.mypitches {
+	width: 135px;
+}
+td.pitches-status.mypitches a {
+	color: #7e7e7e;
+	font-size: 11px; 
+}
+td.pitches-status.mypitches a.pitches-finish {
+   color: #ff575d;
+}
+td.pitches-status.mypitches a.pitches-time {
+   color: #639f6d;
+}
+td.pitches-edit.mypitches {
+	width: 210px;
+	border-right: none;
+	text-align: left;
+}
+td.pitches-edit.mypitches a {
+	display: block;
+	text-transform: none;
+	color: #575864;
+	font: 12px Arial, sans-serif;
+	margin-left: 75px;
 }
 .al-info-pitch{
  width:547px;
@@ -2919,9 +2954,10 @@ ul.social li#rss {
 .pitch-buttons-legend {
    font: 12px Arial, sans-serif;
    color: #999;
-    text-shadow: 0 1px 0 #f8f8f8;
+   text-shadow: 0 1px 0 #f8f8f8;
    text-transform: none;
    padding: 15px 0 0;
+   min-height: 17px;
 }
 
 .pitch-buttons-legend i {
@@ -3003,7 +3039,8 @@ ul.social li#rss {
     background:         linear-gradient(#d94747, #64A470);
 }
 
-.winner-chois .pitches-time, .pitches-finish {
+.winner-chois .pitches-time,
+.pitches-finish {
    color: #ff575d;
 }
 

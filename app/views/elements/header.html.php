@@ -43,63 +43,59 @@
                             <?php $pitchPath = 'view';
                             if($mypitch->ideas_count == 0) {
                                 $pitchPath = 'details';
+                            }
+                            if ($mypitch->awarded != 0) {
+                                $step = $mypitch->winner->step;
+                            }
+                            if ($step < 1) {
+                                $step = 1;
                             } ?>
-                        <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
-                            <td class="pitches-name">
+                            <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
+                                <td class="pitches-name mypitches">
+                                    <a href="/pitches/view/<?=$mypitch->id?>"><?=$mypitch->title?></a>
+                                </td>
+                                <td class="pitches-status mypitches">
+                                    <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
+                                        $types['current'] += 1?>
+                                    <a href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a>
+                                    <?php endif;?>
+                                    <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
+                                        $types['needpay'] += 1?>
+                                        <a href="/pitches/edit/<?=$mypitch->id?>" >Ожидание оплаты</a>
+                                    <?php endif;?>
+                                    <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
+                                        $types['needpay'] += 1?>
+                                        <a href="/pitches/edit/<?=$mypitch->id?>" >Ожидание модерации</a>
+                                    <?php endif;?>
+                                    <?php if(($mypitch->published == 0) &&($mypitch->brief == 1) && ($mypitch->billed == 1) && ($mypitch->published == 0)):
+                                        $types['needpay'] += 1?>
+                                        <a href="/pitches/edit/<?=$mypitch->id?>">Ожидайте звонка</a>
+                                    <?php endif;?>
+                                    <?php if(($mypitch->status == 1) && ($mypitch->awarded != 0)):
+                                        $types['finish'] += 1?>
+                                        <a class="pitches-finish" href="/users/step<?=$step?>/<?=$mypitch->awarded?>">Завершительный этап</a>
+                                    <?php endif?>
+                                    <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0)):
+                                        $types['winner'] += 1?>
+                                        <a class="pitches-time" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Выбор победителя</a>
+                                    <?php endif?>
+                                </td>
+                                <td class="price mypitches">
+                                    <?=$this->moneyFormatter->formatMoney($mypitch->price)?>
+                                </td>
+                                <td class="pitches-edit mypitches">
                                     <?php if($mypitch->billed == 0):?>
-                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/2" class="delete deleteheader mypitch_delete_link" title="удалить"><img class="pitches-name-td-img" src="/img/1.gif"></a>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать"><img class="pitches-name-td-img" src="/img/1.gif"></a>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить"><img class="pitches-name-td2-img" src="/img/1.gif"></a>
+                                    <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/2" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                                     <?php elseif($mypitch->status < 1):?>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать"><img class="pitches-name-td-img" src="/img/1.gif"></a>
+                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <?php endif?>
-
-                                <div style="background-image: none;padding: 15px 0 17px 40px">
-                                    <?php if($mypitch->awarded != 0):
-                                    $step = $mypitch->winner->step;
-
-                                    if($step < 1) {
-                                        $step = 1;
-                                    }
-                                    ?>
-                                    <a href="/users/step<?=$step?>/<?=$mypitch->awarded?>"><?=$mypitch->title?></a>
-                                    <?php elseif($mypitch->published == 0):?>
-                                    <a class="" href="/pitches/edit/<?=$mypitch->id?>"><?=$mypitch->title?></a>
-                                    <?php else:?>
-                                    <a class="" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>"><?=$mypitch->title?></a>
-
-                                    <?php endif?>
-                                    <!--span style="font-size: 11px;"><?=$mypitch->industry?></span--></div></td>
-                                <td class="pitches-cat" style="padding-left:5px;padding-right:5px"><a href="#" style="font-size: 11px;"><?=$mypitch->category->title?></a></td>
-                                <td class="idea" style="font-size: 11px;"><?=$mypitch->ideas_count?></td>
-                                <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
-                                    $types['current'] += 1?>
-                                <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a></td>
-                                <?php endif;?>
-                                <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
-                                    $types['needpay'] += 1?>
-                                <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/edit/<?=$mypitch->id?>" >Ожидание оплаты</a></td>
-                                <?php endif;?>
-                                <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
-                                    $types['needpay'] += 1?>
-                                <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/edit/<?=$mypitch->id?>" >Ожидание модерации</a></td>
-                                <?php endif;?>
-                                <?php if(($mypitch->published == 0) &&($mypitch->brief == 1) && ($mypitch->billed == 1) && ($mypitch->published == 0)):
-                                    $types['needpay'] += 1?>
-                                <td><a style="color:#7e7e7e;font-size: 11px;" href="/pitches/edit/<?=$mypitch->id?>">Ожидайте звонка</a></td>
-                                <?php endif;?>
-                                <?php if(($mypitch->status == 1) && ($mypitch->awarded != 0)):
-                                    $types['finish'] += 1?>
-                                <td class="pitches-finish"><a style="color:#FF575D;font-size: 11px;" href="/users/step<?=$step?>/<?=$mypitch->awarded?>" style="font-size: 11px;">Завершительный этап</a></td>
-                                <?php endif?>
-                                <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0)):
-                                    $types['winner'] += 1?>
-                                <td class="pitches-time"><a style="color:#639F6D;font-size: 11px;" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Выбор победителя</a></td>
-                                <?php endif?>
-                                <td class="price"><?=$this->moneyFormatter->formatMoney($mypitch->price)?></td></tr>
-                    <?php
-                        $i++;
-                        if($i > 1) $i = 0;
+                                </td>
+                            </tr>
+                            <?php
+                                $i++;
+                                if($i > 1) $i = 0;
 
                         endforeach;
                         if(!empty($types)):
@@ -113,9 +109,6 @@
                 </tbody>
             </table>
             <p class="pitch-buttons-legend">
-                <i id="delete" style="background: url(/img/header_delete.png) no-repeat scroll 0 2px transparent"></i>удалить
-                <i id="edit" style="background: url(/img/header_edit.png) no-repeat scroll 0 2px transparent"></i>редактировать
-                <i id="buy" style="background: url(/img/header_buy.png) no-repeat scroll 0 2px transparent"></i>оплатить
                 <?php echo $helpLink?>
             </p>
         </div>
