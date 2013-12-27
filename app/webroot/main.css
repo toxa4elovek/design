@@ -2601,10 +2601,23 @@ td.pitches-edit.mypitches {
 }
 td.pitches-edit.mypitches a {
 	display: block;
+	height: 22px;
 	text-transform: none;
-	color: #575864;
+	color: #7E7E7E;
 	font: 12px Arial, sans-serif;
-	margin-left: 75px;
+	margin-left: 50px;
+	background-image: url('img/mypitches-sprite.png');
+	background-repeat: no-repeat;
+	padding-left: 25px;
+}
+td.pitches-edit.mypitches a.buy {
+	background-position: 0 -3px;
+}
+td.pitches-edit.mypitches a.edit {
+	background-position: 0 -23px;
+}
+td.pitches-edit.mypitches a.delete {
+	background-position: 0 -45px;
 }
 .al-info-pitch{
  width:547px;
