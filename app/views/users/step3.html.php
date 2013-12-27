@@ -38,7 +38,7 @@
                     <?php //if(($solution->step == 3) && ($solution->pitch->status < 2)):?>
                     <?php if($solution->step >= 3):?>
                     <form id="wincomment" method="post" action="/users/step3/<?=$solution->id?>.json" enctype="multipart/form-data">
-                        <textarea id="newComment" name="text" style="margin:10px 0 0 0;"></textarea>
+                        <textarea id="newComment" name="text" style="margin:10px 0 0 0;">@<?=$this->nameInflector->renderName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
                         <div style="position: relative;">
                             <input type="file" name="file[]" multiple="multiple" class="wincommentfileupload" />
                             <input id="fakebutton" type="button" style="position: absolute; z-index: 4; top: 0; left: 0; width: 185px; height: 23px; font-size: 12px;" value="Выбрать файлы">

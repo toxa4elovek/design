@@ -311,11 +311,14 @@ class UsersController extends \app\controllers\AppController {
             $solution->pitch->category = Category::first($solution->pitch->category_id);
             if($solution->user_id == Session::read('user.id')) {
                 $type = 'designer';
+                $messageTo = User::first($solution->pitch->user_id);
             }else {
                 $type = 'client';
+                $messageTo = User::first($solution->user_id);
             }
             if(Session::read('user.isAdmin') == 1) {
                 $type = 'admin';
+                $messageTo = User::first($solution->pitch->user_id);
             }
             if(($solution->pitch->category_id == 7) && ($solution->step < 4)) {
                 return $this->redirect('/users/step1/' . $solution->id);
@@ -365,7 +368,7 @@ class UsersController extends \app\controllers\AppController {
             }else {
                 $nofiles = false;
             }
-            return compact('type', 'solution', 'comments', 'step', 'nofiles');
+            return compact('type', 'solution', 'comments', 'step', 'nofiles', 'messageTo');
         }
     }
 
@@ -390,11 +393,14 @@ class UsersController extends \app\controllers\AppController {
             $solution->pitch->category = Category::first($solution->pitch->category_id);
             if($solution->user_id == Session::read('user.id')) {
                 $type = 'designer';
+                $messageTo = User::first($solution->pitch->user_id);
             }else {
                 $type = 'client';
+                $messageTo = User::first($solution->user_id);
             }
             if(Session::read('user.isAdmin') == 1) {
                 $type = 'admin';
+                $messageTo = User::first($solution->pitch->user_id);
             }
             if($this->request->data) {
                 $newComment = Wincomment::create();
@@ -440,7 +446,7 @@ class UsersController extends \app\controllers\AppController {
             }else {
                 $nofiles = false;
             }
-            return compact('type', 'solution', 'comments', 'step', 'nofiles');
+            return compact('type', 'solution', 'comments', 'step', 'nofiles', 'messageTo');
         }
     }
 
