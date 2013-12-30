@@ -174,7 +174,10 @@
                 elseif(($solution->step < 4)):?>
                 <div class="buttons">
                     <div class="verify spanned" style="margin-right: 0px;">
-                        <?php if($nofiles == false):?>
+                        <?php
+                            // временно разрешаем одобрять макеты без самих макетов
+                            $nofiles = false;
+                            if($nofiles == false):?>
                             <?=$this->html->link('<img src="/img/proceed.png" /><br />
                                 <span>' . (($this->session->read('user.isAdmin') == 1) ? 'Закрыть питч' : 'Одобрить исходники') . '</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
                         <?php else:?>
