@@ -2,6 +2,9 @@ $(document).ready(function() {
 
 
     $('#step2-link-saveform').click(function() {
+        if($('.wrong-input').length > 0) {
+            return false;
+        }
         if(($('input[name="cashintype"]:checked').data('pay') == 'cards') && ($('input[name="accountnum"]').val().length < 20)) {
             alert('Введите номер своего счета, он должен содержать не меньше 20 символов!');
             return false;
@@ -43,4 +46,25 @@ $(document).ready(function() {
     $('#step2-link-saveform').mouseout(function() {
         $('span', this).css('color', '#BABABA');
     });
+    
+    $('input[data-validate]').focus(function() {
+        $(this).removeClass('wrong-input');
+    });
+    
+    $('input[data-validate=fio]').blur(function() {
+        if (/[^а-я\s]/i.test($(this).val())) {
+            $(this).addClass('wrong-input');
+            required = true;
+            return true;
+        }
+    });
+    
+    $('input[data-validate=numeric]').blur(function() {
+        if (/[\D\s]/i.test($(this).val())) {
+            $(this).addClass('wrong-input');
+            required = true;
+            return true;
+        }
+    });
+    
 })

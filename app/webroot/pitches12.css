@@ -1263,3 +1263,6 @@ cursor: pointer;
 #dinamic div.bubble #bubble-close:hover {
     opacity: 1;
 }
+input.wrong-input {
+	border: 1px solid red;
+}
