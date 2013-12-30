@@ -1135,7 +1135,7 @@ $(document).on('focus', 'input[data-validate]', function() {
 });
 
 $(document).on('blur', 'input[data-validate=fio]', function() {
-    if (/[^а-я\s]/i.test($(this).val())) {
+    if (!/^[а-я]+\s[а-я]+\s[а-я]+$/i.test($(this).val())) {
         $(this).addClass('wrong-input');
         required = true;
         return true;

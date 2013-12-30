@@ -52,7 +52,7 @@ $(document).ready(function() {
     });
     
     $('input[data-validate=fio]').blur(function() {
-        if (/[^а-я\s]/i.test($(this).val())) {
+        if (!/^[а-я]+\s[а-я]+\s[а-я]+$/i.test($(this).val())) {
             $(this).addClass('wrong-input');
             required = true;
             return true;
