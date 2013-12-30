@@ -17,11 +17,11 @@
         <tr><td width="5"></td><td valign="top">
 
 
-        
+
         </td>
             <td>
                 <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/view/<?=$block['pitch']->id?>"><?=$block['pitch']->title?></a><br/>
-                <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?= mb_strtoupper($block['pitch']->industry . ', срок: ' . $block['pitch']->startedHuman . ', гонорар: ' . (int) $block['pitch']->price . ' Р.-', 'utf-8')?></span><br/>
+                <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
                 <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
                 <?php echo $block['solutions']?>
                 <br><br>
