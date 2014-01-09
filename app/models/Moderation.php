@@ -38,8 +38,7 @@ class Moderation extends \app\models\AppModel {
                             break;
                         case 1:
                             // Block User
-                            $user->banned = 1;
-                            $user->save(null, array('validate' => false));
+                            $user->block();
                             $mailerTemplate = 'removeandblock';
                             break;
                         default:

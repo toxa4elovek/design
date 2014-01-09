@@ -1174,8 +1174,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function block() {
         if(($user = User::first($this->request->data['id'])) && (Session::read('user.isAdmin') == 1|| (in_array(Session::read('user.id'), User::$admins)))){
-            $user->banned = 1;
-            $user->save(null, array('validate' => false));
+            $user->block();
             UserMailer::block(array('user' => $user->data()));
             return $this->request->data;
         }
