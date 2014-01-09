@@ -58,13 +58,13 @@
         $panel = '<div class="portfolio" style="float:left; width: 250px;"><div class="photo_block"><img src="' . $file . '"></div></div>';
         $text = '';
     } ?>
-    <?echo $panel;?>
+    <?php echo $panel;?>
     <div style="float: right; width: 360px;">
         <h2 class="regular" style="font-size: 15px; font-weight: bold;"><?=$model . ' за ' . $reason . ', ' . $penalty;?></h2>
         <p class="regular"><?=date('d.m.y', strtotime($moderation->created));?></p><br>
-        <?echo $text; ?>
+        <?php echo $text; ?>
         <?php if (!empty($moderation->explanation)): ?>
-            <?echo '<br><p class="regular" style="font-style:italic;">Примечание: ' . $moderation->explanation . '</p>';?>
+            <?php echo '<br><p class="regular" style="font-style:italic;">Примечание: ' . $moderation->explanation . '</p>';?>
         <?php endif; ?>
     </div>
     <div class="clr">&nbsp;</div>

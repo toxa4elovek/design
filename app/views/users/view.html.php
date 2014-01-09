@@ -72,13 +72,15 @@
                     </div>
                 </div>
 
-                <?php if((in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) && (trim($userdata['about']) != '')):?>
+                <?php if((in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)))):?>
                 <div class="about_profile clr">
                     <dl>
+                        <?php if(trim($userdata['about']) != ''):?>
                         <dt class="greyboldheader">Обо мне:<br><span class="regular">(доступно только <br>администрации)</span></dt>
                         <dd class="regular">
                             <?=$this->brief->stripemail(nl2br($userdata['about']))?>
                         </dd>
+                        <?php endif?>
                         <div class="separate"> </div>
                     </dl>
                 </div>
