@@ -123,7 +123,7 @@
                                     <tr><td class="tableheader" colspan="3">Кошелек</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-account']?>" name="wmr-account" /></td></tr>
                                     <tr><td class="tableheader" colspan="3">ФИО</td></tr>
-                                    <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-fio']?>" name="wmr-fio" data-validate="fio" /></td></tr>
+                                    <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-fio']?>" name="wmr-fio" /></td></tr>
                                     <tr><td class="tableheader" colspan="3">Телефон для связи</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-phone']?>" name="wmr-phone" /></td></tr>
                                     <tr>
