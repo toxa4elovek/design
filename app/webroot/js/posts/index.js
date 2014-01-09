@@ -56,8 +56,8 @@ $(document).ready(function() {
                         // Editor
                         var editor = ''
                         if (result.editor == 1) {
-                            var editor = '<a target="_blank" class="more" href="/posts/edit/' + field.id + '" style="">редактировать</a>';
-                            editor += '<a target="_blank" class="more delete-post" href="/posts/delete/' + field.id + '" style="">удалить</a>';
+                            var editor = '<a target="_blank" class="more-editor" href="/posts/edit/' + field.id + '" style="">редактировать</a>';
+                            editor += '<a target="_blank" class="more-editor delete-post" href="/posts/delete/' + field.id + '" style="">удалить</a>';
                         }
                         $(".howitworks").append(
                                 '<div> \
