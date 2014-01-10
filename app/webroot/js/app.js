@@ -597,6 +597,62 @@ function fetchComments(result) {
 }
 
 /*
+ * Fetch Comments data from response. Hierarchial
+ */
+function fetchCommentsNew(result) {
+    var fetchedComments = '';
+    $.each(result.comments, function(idx, comment) {
+        var commentData = prepareCommentData(comment, result);
+        fetchedComments += populateComment(commentData);
+        if (comment.child) {
+            var commentChildData = prepareCommentData(comment.child, result);
+            fetchedComments += populateComment(commentChildData);
+        }
+    });
+    return fetchedComments;
+}
+
+function prepareCommentData(comment, result) {
+    var commentData = {};
+    var expertsObj = result.experts || {};
+    commentData.commentId = comment.id;
+    commentData.commentUserId = comment.user.id;
+    commentData.commentText = comment.text;
+    commentData.commentPlainText = comment.originalText.replace(/"/g, "\'");
+    commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
+    commentData.isExpert = isExpert(comment.user_id, expertsObj);
+    
+    if (result.pitch.user_id == comment.user_id) {
+        commentData.messageInfo = 'message_info2';
+    } else if (comment.user.isAdmin == "1") {
+        commentData.messageInfo = 'message_info4';
+        commentData.isAdmin = comment.user.isAdmin;
+    } else if (commentData.isExpert) {
+        commentData.messageInfo = 'message_info5';
+    }else {
+        commentData.messageInfo = 'message_info1';
+    }
+    
+    commentData.userAvatar = comment.avatar;
+    
+    commentData.commentAuthor = comment.user.first_name + ((comment.user.last_name.length == 0) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
+    commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
+    
+    // Date Time
+    var postDateObj = getProperDate(comment.created);
+    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+    commentData.relImageUrl = '';
+    if (comment.solution_url) {
+        commentData.relImageUrl = comment.solution_url.solution_solutionView.weburl;
+    }
+    if (comment.isChild == 1) {
+        commentData.isChild = 1;
+    }
+    return commentData;
+}
+
+/*
  * Populate each comment layout
  */
 function populateComment(data) {
@@ -605,6 +661,11 @@ function populateComment(data) {
                         <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
     var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
                       <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+    var sectionClass = '';
+    if (data.isChild == 1) {
+        sectionClass = 'is-child ';
+        console.log('is');
+    }
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
     } else if (currentUserId) {
@@ -619,7 +680,7 @@ function populateComment(data) {
                         <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
                         </a>'; 
     }
-    return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+    return '<section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                 <div class="separator"></div> \
                 <div class="' + data.messageInfo + '">'
                 + avatarElement +

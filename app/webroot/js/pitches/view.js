@@ -879,11 +879,8 @@ function fetchPitchCommentsNew() {
     $.getJSON('/pitches/getcommentsnew/' + pitchNumber + '.json', function(result) {
         if (result.comments) {
             var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div> \
-                                <div class="comment" style="width:35%;float:left;">КОММЕНТАРИИ</div> \
-                                <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div> \
-                                <div style="clear:both;"></div> \
                                 <div class="new-comment-here"></div>';
-            $('.pitch-comments').html(fetchComments(result));
+            $('.pitch-comments').html(fetchCommentsNew(result));
             $('.pitch-comments').prepend(commentsTitle);
             $('.separator', '.pitch-comments section:first').remove();
 

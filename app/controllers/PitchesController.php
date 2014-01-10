@@ -1417,8 +1417,11 @@ class PitchesController extends \app\controllers\AppController {
 	        // Fetch Child
 	        foreach ($comments as $comment) {
 	            $comment->child = '';
-	            if ($child = Comment::first(array('conditions' => array('question_id' => $comment->id)))) {
-	                $comment->child = Comment::addAvatars($child);
+	            if ($child = Comment::first(array('conditions' => array('question_id' => $comment->id), 'with' => array('User')))) {
+	                $avatarHelper = new AvatarHelper;
+	                $child->avatar = $avatarHelper->show($child->user->data(), false, true);
+	                $child->isChild = 1;
+	                $comment->child = $child;
 	            }
 	        }
 

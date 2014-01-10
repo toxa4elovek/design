@@ -1266,3 +1266,9 @@ cursor: pointer;
 input.wrong-input {
 	border: 1px solid red;
 }
+section.is-child {
+	margin-left: 100px;
+}
+section.is-child div.separator {
+	margin-left: -70px;
+}
