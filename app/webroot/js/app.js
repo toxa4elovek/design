@@ -649,7 +649,7 @@ function prepareCommentData(comment, result) {
     if (comment.isChild == 1) {
         commentData.isChild = 1;
     }
-    if (comment.child) {
+    if (comment.hasChild) {
         commentData.hasChild = 1;
     }
     if (comment.needAnswer) {

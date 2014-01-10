@@ -983,7 +983,7 @@ function inlineActions() {
         return false;
     });
 
-    $('.replyto').click(function() {
+/*    $('.replyto').click(function() {
         var el = $('#newComment');
         var anchor = $('#comment-anchor');
         if ($('.allow-comments').is(':visible')) {
@@ -997,6 +997,62 @@ function inlineActions() {
             el.val(newText);
             $.scrollTo(anchor, {duration:250});
         }
+        return false;
+    });*/
+    
+    // Reply to Question
+    $('.replyto').click(function() {
+        var messageInfo = 'message_info1';
+        if (isCurrentExpert) {
+            messageInfo = 'message_info5';
+        }
+        if (isCurrentAdmin) {
+            messageInfo = 'message_info4';
+        }
+        if (isClient) {
+            messageInfo = 'message_info2';
+        }
+        // Date Time
+        var postDateObj = new Date();
+        var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+        var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+        var avatarElement = '';
+        if (!isCurrentAdmin) {
+            avatarElement = '<a href="/users/view/' + currentUserId + '"> \
+                            <img src="' + currentAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                            </a>';
+        }
+        var el = $('<section data-id="' + 3333333333 + '" data-type="' + 33333333333333 + '" style="display: none;"> \
+                        <div class="separator"></div> \
+                        <div class="' + messageInfo + '">'
+                            + avatarElement +
+                            '<a href="#" data-comment-id="' + 33333333333333 + '" data-comment-to="' + 3333333333333 + '" class="replyto"> \
+                                <span>' + currentUserName + '</span><br /> \
+                                <span style="font-weight: normal;">' + postDate + ' ' + postTime + '</span> \
+                            </a> \
+                            <div class="clr"></div> \
+                        </div> \
+                        <div data-id="' + 33333333333 + '" class="message_text" style="margin-top: 0;"> \
+                            <div class="hiddenform"> \
+                                <section> \
+                                    <form style="margin-left: 0;" action="/comments/edit/' + 3333333333 + '" method="post"> \
+                                        <textarea name="text" data-id="' + 3333333333 + '"></textarea><br> \
+                                        <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button editcomment" style="margin: 15px 11px 15px 0; font-size: 11px;"> \
+                                        <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button editcomment" style="margin: 15px 0 15px 11px; font-size: 11px;"> \
+                                        <div class="clr"></div> \
+                                    </form> \
+                                </section> \
+                            </div> \
+                        </div> \
+                        <div class="clr"></div> \
+                    </section>');
+        var section = $(this).parent().parent().parent();
+        el.insertAfter(section).slideDown(600);
+        /*if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
+            $('input[name=comment_id]').val($(this).data('commentId'));
+            var prepend = '@' + $(this).data('commentTo') + ', ';
+            var newText = prepend + el.val();
+        }*/
         return false;
     });
 

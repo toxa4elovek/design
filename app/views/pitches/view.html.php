@@ -643,8 +643,11 @@
 <script>
 var pitchNumber = <?php echo $pitch->id; ?>;
 var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
+var currentUserName = '<?=$this->nameInflector->renderName($this->session->read('user.first_name'), $this->session->read('user.last_name'))?>';
 var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')) ? 1 : 0 ?>;
+var isCurrentExpert = <?php echo (in_array($this->session->read('user.id'), $expertsIds)) ? 1 : 0; ?>;
 var isNewComments = <?php echo (time() > NEW_COMMENT_DATE) ? 1 : 0 ?>;
+var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 1 : 0; ?>;
 </script>
 <!-- start: Solution overlay -->
 <div class="solution-overlay">
