@@ -637,6 +637,7 @@
 var pitchNumber = <?php echo $pitch->id; ?>;
 var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
 var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')) ? 1 : 0 ?>;
+var isNewComments = <?php echo (time() > NEW_COMMENT_DATE) ? 1 : 0 ?>;
 </script>
 <!-- start: Solution overlay -->
 <div class="solution-overlay">

@@ -1363,6 +1363,71 @@ class PitchesController extends \app\controllers\AppController {
 	    }
 	}
 
+	public function getCommentsNew() {
+	    if (!$this->request->is('json')) {
+	        return $this->redirect('/pitches');
+	    }
+	    if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
+	        $currentUser = Session::read('user');
+	        $isUserClient = ($currentUser['id'] == $pitch->user_id) ? true : false;
+	        $isUserAdmin = (($currentUser['isAdmin'] == 1) || User::checkRole('admin')) ? true : false;
+	        $isUserDesigner = false;
+	        if (($pitch->published == 0) && (false == $isUserClient) && (false == $isUserAdmin)) {
+	            return false;
+	        }
+
+	        $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+	        $expertsIds = array();
+	        foreach ($experts as $expert) {
+	            $expertsIds[] = $expert->user_id;
+	        }
+
+	        // Fetch Top Level Comments
+	        $commentsRaw = Comment::all(array(
+	            'conditions' => array(
+                    'pitch_id' => $pitch->id,
+                    'question_id' => 0,
+	            ),
+	            'order' => array('Comment.id' => 'desc'),
+	            'with' => array('User')));
+
+	        $commentsRaw = Comment::addAvatars($commentsRaw);
+	        $comments = new \lithium\util\Collection();
+
+	        if ((true == $isUserClient) || (true == $isUserAdmin)) {
+	            foreach ($commentsRaw as $comment) {
+	                $comments->append($comment);
+	            }
+	        } else if (true == $isUserDesigner) {
+	            foreach ($commentsRaw as $comment) {
+	                if (($comment->public == 0) && ($comment->user_id != $currentUser['id'])) {
+	                    continue;
+	                }
+	                $comments->append($comment);
+	            }
+	        } else {
+	            foreach ($commentsRaw as $comment) {
+	                if ($comment->public == 0) {
+	                    continue;
+	                }
+	                $comments->append($comment);
+	            }
+	        }
+
+	        // Fetch Child
+	        foreach ($comments as $comment) {
+	            $comment->child = '';
+	            if ($child = Comment::first(array('conditions' => array('question_id' => $comment->id)))) {
+	                $comment->child = Comment::addAvatars($child);
+	            }
+	        }
+
+	        return compact('comments', 'experts', 'pitch');
+	    } else {
+	        return false;
+	    }
+	}
+
     public function robots() {
         $pitches = Pitch::all(array('conditions' => array('private' => 1)));
         $text = 'User-agent: *';
