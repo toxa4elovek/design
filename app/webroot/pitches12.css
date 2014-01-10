@@ -1131,7 +1131,7 @@ h1.solution-title-page  {
 .pitch-comments div.message_info3,
 .pitch-comments div.message_info4,
 .pitch-comments div.message_info5 {
-    margin: 20px 0 0px 38px;
+    margin: 15px 0 0px 38px;
 }
 .pitch-comments div.separator {
 	width: 810px;
@@ -1145,12 +1145,15 @@ h1.solution-title-page  {
 .pitch-comments div.message_text {
     margin: 15px 0 0 26px;
     float: left;
-    width: 520px;
+    width: 570px;
     text-transform: none;
     color: #8f8f8f;
     font: normal 13px/1 "Arial", sans-serif;
     line-height: 17px;
     word-wrap:break-word;
+}
+.pitch-comments section.is-child div.message_text {
+	width: 505px;
 }
 .pitch-comments div.toolbar-wrapper {
     width: 810px;
@@ -1167,6 +1170,15 @@ h1.solution-title-page  {
     margin: 0 0 8px 0;
     height: 18px;
 
+}
+div#comment-anchor.comment {
+	color: #666666;
+}
+section.is-child {
+    margin-left: 65px;
+}
+section.is-child div.separator {
+    margin-left: -35px;
 }
 #filler {
     transition: width .5s;
@@ -1265,10 +1277,4 @@ cursor: pointer;
 }
 input.wrong-input {
 	border: 1px solid red;
-}
-section.is-child {
-	margin-left: 100px;
-}
-section.is-child div.separator {
-	margin-left: -70px;
 }
