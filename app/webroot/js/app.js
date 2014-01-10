@@ -649,6 +649,12 @@ function prepareCommentData(comment, result) {
     if (comment.isChild == 1) {
         commentData.isChild = 1;
     }
+    if (comment.child) {
+        commentData.hasChild = 1;
+    }
+    if (comment.needAnswer) {
+        commentData.needAnswer = 1;
+    }
     return commentData;
 }
 
@@ -659,13 +665,18 @@ function populateComment(data) {
     var toolbar = '';
     var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
                         <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
-    var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
-                      <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+    var answerTool = '';
+    if (data.needAnswer == 1) {
+        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>';
+    }
     var sectionClass = '';
     if (data.isChild == 1) {
         sectionClass = 'is-child ';
-        console.log('is');
     }
+    if ((data.isChild == 1) || (data.hasChild == 1)) {
+        answerTool = '';
+    }
+    var userToolbar =  answerTool + '<a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
     } else if (currentUserId) {

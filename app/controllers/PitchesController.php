@@ -1371,7 +1371,6 @@ class PitchesController extends \app\controllers\AppController {
 	        $currentUser = Session::read('user');
 	        $isUserClient = ($currentUser['id'] == $pitch->user_id) ? true : false;
 	        $isUserAdmin = (($currentUser['isAdmin'] == 1) || User::checkRole('admin')) ? true : false;
-	        $isUserDesigner = false;
 	        if (($pitch->published == 0) && (false == $isUserClient) && (false == $isUserAdmin)) {
 	            return false;
 	        }
@@ -1389,25 +1388,22 @@ class PitchesController extends \app\controllers\AppController {
                     'question_id' => 0,
 	            ),
 	            'order' => array('Comment.id' => 'desc'),
-	            'with' => array('User')));
+	            'with' => array('User', 'Pitch')));
 
 	        $commentsRaw = Comment::addAvatars($commentsRaw);
 	        $comments = new \lithium\util\Collection();
 
 	        if ((true == $isUserClient) || (true == $isUserAdmin)) {
 	            foreach ($commentsRaw as $comment) {
-	                $comments->append($comment);
-	            }
-	        } else if (true == $isUserDesigner) {
-	            foreach ($commentsRaw as $comment) {
-	                if (($comment->public == 0) && ($comment->user_id != $currentUser['id'])) {
-	                    continue;
+	                $comment->needAnswer = '';
+	                if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
+	                    $comment->needAnswer = 1;
 	                }
 	                $comments->append($comment);
 	            }
 	        } else {
 	            foreach ($commentsRaw as $comment) {
-	                if ($comment->public == 0) {
+	                if (($comment->public == 0) && ($comment->user_id != $currentUser['id'])) {
 	                    continue;
 	                }
 	                $comments->append($comment);
@@ -1417,11 +1413,13 @@ class PitchesController extends \app\controllers\AppController {
 	        // Fetch Child
 	        foreach ($comments as $comment) {
 	            $comment->child = '';
+	            $comment->hasChild = '';
 	            if ($child = Comment::first(array('conditions' => array('question_id' => $comment->id), 'with' => array('User')))) {
 	                $avatarHelper = new AvatarHelper;
 	                $child->avatar = $avatarHelper->show($child->user->data(), false, true);
 	                $child->isChild = 1;
 	                $comment->child = $child;
+	                $comment->hasChild = 1;
 	            }
 	        }
 
