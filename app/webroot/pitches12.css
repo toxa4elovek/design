@@ -1180,6 +1180,13 @@ section.is-child {
 section.is-child div.separator {
     margin-left: -35px;
 }
+section.answer-section div.ajax-loader {
+    position: absolute;
+    top: 80px;
+    right: 35px;
+    width: 32px;
+    height: 32px;
+}
 #filler {
     transition: width .5s;
 }

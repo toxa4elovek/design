@@ -45,7 +45,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments', 'getcommentsnew'
 	);
 
     public function blank() {
@@ -1395,6 +1395,7 @@ class PitchesController extends \app\controllers\AppController {
 
 	        if ((true == $isUserClient) || (true == $isUserAdmin)) {
 	            foreach ($commentsRaw as $comment) {
+	                $comment = Comment::fetchChild($comment);
 	                $comment->needAnswer = '';
 	                if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
 	                    $comment->needAnswer = 1;
@@ -1403,23 +1404,11 @@ class PitchesController extends \app\controllers\AppController {
 	            }
 	        } else {
 	            foreach ($commentsRaw as $comment) {
+	                $comment = Comment::fetchChild($comment);
 	                if (($comment->public == 0) && ($comment->user_id != $currentUser['id'])) {
 	                    continue;
 	                }
 	                $comments->append($comment);
-	            }
-	        }
-
-	        // Fetch Child
-	        foreach ($comments as $comment) {
-	            $comment->child = '';
-	            $comment->hasChild = '';
-	            if ($child = Comment::first(array('conditions' => array('question_id' => $comment->id), 'with' => array('User')))) {
-	                $avatarHelper = new AvatarHelper;
-	                $child->avatar = $avatarHelper->show($child->user->data(), false, true);
-	                $child->isChild = 1;
-	                $comment->child = $child;
-	                $comment->hasChild = 1;
 	            }
 	        }
 

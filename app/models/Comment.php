@@ -270,4 +270,20 @@ class Comment extends \app\models\AppModel {
         return true;
     }
 
+    public static function fetchChild($comment) {
+        $comment->child = '';
+        $comment->hasChild = '';
+        if ($child = self::first(array('conditions' => array('question_id' => $comment->id), 'with' => array('User')))) {
+            $avatarHelper = new AvatarHelper;
+            $child->avatar = $avatarHelper->show($child->user->data(), false, true);
+            $child->isChild = 1;
+            $comment->child = $child;
+            $comment->hasChild = 1;
+            if ($child->public == 1) {
+                $comment->public = 1;
+            }
+        }
+        return $comment;
+    }
+
 }
