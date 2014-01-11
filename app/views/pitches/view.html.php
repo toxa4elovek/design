@@ -497,10 +497,12 @@
                     <div class="separator" style="width: 810px; margin-left: 30px;"></div>
                     <div class="comment" id="comment-anchor">
                     <?php if ((($this->session->read('user.id') == $pitch->user_id) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($this->session->read('user.isAdmin')))):
-                        $buttonText = 'Отправить'; ?>
+                        $buttonText = 'Отправить';
+                        $publicComment = 1; ?>
                         Оставьте комментарий всем участникам
                     <?php else:
-                        $buttonText = 'Отправить вопрос'; ?>
+                        $buttonText = 'Отправить вопрос';
+                        $publicComment = 0; ?>
                         Задайте вопрос заказчику
                     <?php endif; ?>
                     </div>
@@ -520,6 +522,7 @@
                         <textarea id="newComment" name="text"></textarea>
                         <input type="hidden" value="" name="solution_id">
                         <input type="hidden" value="" name="comment_id">
+                        <input type="hidden" value="<?php echo $publicComment?>" name="public">
                         <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
                         <input type="submit" style="margin-left:16; width: 200px;" id="createComment" class="button" value="<?php echo $buttonText; ?>" src="/img/message_button.png" />
                         <div class="clr"></div>

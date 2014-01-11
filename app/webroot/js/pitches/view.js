@@ -865,7 +865,9 @@ $(document).ready(function(){
         var textarea = $(this).closest('section').find('textarea');
         var is_public = $(this).data('is_public');
         if (isCommentValid(textarea.val())) { // See app.js
-            $('.answer-section').animate({opacity: .3}, 500, function() {
+            var currentSection = $(this).closest('.answer-section');
+            var answerLink = currentSection.prev().find('.reply-link-in-comment');
+            currentSection.animate({opacity: .3}, 500, function() {
                 var el = $('<div class="ajax-loader"></div>');
                 $(this).append(el);
             });
@@ -878,10 +880,10 @@ $(document).ready(function(){
                 'fromAjax': 1
             }).done(function(result) {
                 var commentData = preparePitchCommentData(result);
-                $('.answer-section').animate({opacity: 0}, 500, function() {
+                currentSection.animate({opacity: 0}, 500, function() {
                     $(this).replaceWith(populatePitchComment(commentData));
                     inlineActions();
-                    $('.reply-link-in-comment.active').removeClass('active').text('Ответить').hide();
+                    answerLink.removeClass('active').text('Ответить').hide();
                 });
             });
         } else {
@@ -1129,7 +1131,7 @@ $(document).on('click', '.replyto', function() {
  */
 function toggleAnswer(link) {
     if (link.hasClass('active')) {
-        $('.answer-section').slideUp(600, function() {
+        link.closest('section').next('.answer-section').slideUp(600, function() {
             $(this).remove();
             link.text('Ответить');
             link.removeClass('active');
