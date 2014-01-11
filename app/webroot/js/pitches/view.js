@@ -881,6 +881,7 @@ $(document).ready(function(){
                 $('.answer-section').animate({opacity: 0}, 500, function() {
                     $(this).replaceWith(populatePitchComment(commentData));
                     inlineActions();
+                    $('.reply-link-in-comment.active').removeClass('active').text('Ответить').hide();
                 });
             });
         } else {
@@ -937,8 +938,14 @@ function populatePitchComment(data) {
     var toolbar = '';
     var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
                         <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
-    var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
-                      <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+    var answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
+    if (data.needAnswer == 1) {
+        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>';
+    }
+    if ((data.isChild == 1) || (data.hasChild == 1)) {
+        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
+    }
+    var userToolbar = answerTool + '<a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
     } else if (currentUserId) {
@@ -954,11 +961,12 @@ function populatePitchComment(data) {
                         </a>';
     }
     var sectionClass = '';
+    var newCommentHere = '<div class="new-comment-here"></div>'; 
     if (data.isChild) {
         sectionClass = 'is-child ';
+        newCommentHere = '';
     }
-    return '<div class="new-comment-here"></div> \
-            <section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+    return newCommentHere + '<section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                 <div class="separator"></div> \
                 <div class="' + data.messageInfo + '" style="margin-top:20px;">'
                 + avatarElement +
@@ -1043,72 +1051,6 @@ function inlineActions() {
         return false;
     });*/
     
-    // Reply to Question
-    $('.replyto').click(function() {
-        toggleAnswer($(this));
-        return false;
-    });
-    
-    function toggleAnswer(link) {
-        if (link.hasClass('active')) {
-            $('.answer-section').slideUp(600, function() {
-                $(this).remove();
-                link.text('Ответить');
-                link.removeClass('active');
-            });
-            return;
-        }
-        var messageInfo = 'message_info1';
-        if (isCurrentExpert) {
-            messageInfo = 'message_info5';
-        }
-        if (isCurrentAdmin) {
-            messageInfo = 'message_info4';
-        }
-        if (isClient) {
-            messageInfo = 'message_info2';
-        }
-        // Date Time
-        var postDateObj = new Date();
-        var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-        var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-        var avatarElement = '';
-        if (!isCurrentAdmin) {
-            avatarElement = '<a href="/users/view/' + currentUserId + '"> \
-                            <img src="' + currentAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
-                            </a>';
-        }
-        var el = $('<section style="display: none; position: relative;" class="answer-section"> \
-                        <div class="separator"></div> \
-                        <div class="' + messageInfo + '">'
-                            + avatarElement +
-                            '<a href="#" onClick="return false;"> \
-                                <span>' + currentUserName + '</span><br /> \
-                                <span style="font-weight: normal;">' + postDate + ' ' + postTime + '</span> \
-                            </a> \
-                            <div class="clr"></div> \
-                        </div> \
-                        <div class="message_text" style="margin-top: 0;"> \
-                            <div class="hiddenform"> \
-                                <section> \
-                                    <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
-                                        <textarea name="text" data-question-id="' + link.data('comment-id') + '">@' + link.data('comment-to') + ', </textarea><br> \
-                                        <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 11px 15px 0; font-size: 11px;"> \
-                                        <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 11px; font-size: 11px;"> \
-                                        <div class="clr"></div> \
-                                    </form> \
-                                </section> \
-                            </div> \
-                        </div> \
-                        <div class="clr"></div> \
-                    </section>');
-        var section = link.parent().parent().parent();
-        el.insertAfter(section).slideDown(600, function() {
-            link.text('Не отвечать');
-            link.addClass('active');
-        });
-    }
-
     $('.client-comment').click(function() {
         $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
         return false;
@@ -1174,6 +1116,75 @@ function inlineActions() {
     mentionLinks();
     solutionShowHide();
     warningModal();
+}
+
+// Reply to Question
+$(document).on('click', '.replyto', function() {
+    toggleAnswer($(this));
+    return false;
+});
+
+/*
+ * Show/Hide Answer Form
+ */
+function toggleAnswer(link) {
+    if (link.hasClass('active')) {
+        $('.answer-section').slideUp(600, function() {
+            $(this).remove();
+            link.text('Ответить');
+            link.removeClass('active');
+        });
+        return;
+    }
+    var messageInfo = 'message_info1';
+    if (isCurrentExpert) {
+        messageInfo = 'message_info5';
+    }
+    if (isCurrentAdmin) {
+        messageInfo = 'message_info4';
+    }
+    if (isClient) {
+        messageInfo = 'message_info2';
+    }
+    // Date Time
+    var postDateObj = new Date();
+    var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+    var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+    var avatarElement = '';
+    if (!isCurrentAdmin) {
+        avatarElement = '<a href="/users/view/' + currentUserId + '"> \
+                        <img src="' + currentAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                        </a>';
+    }
+    var el = $('<section style="display: none; position: relative;" class="answer-section"> \
+                    <div class="separator"></div> \
+                    <div class="' + messageInfo + '">'
+                        + avatarElement +
+                        '<a href="#" onClick="return false;"> \
+                            <span>' + currentUserName + '</span><br /> \
+                            <span style="font-weight: normal;">' + postDate + ' ' + postTime + '</span> \
+                        </a> \
+                        <div class="clr"></div> \
+                    </div> \
+                    <div class="message_text" style="margin-top: 0;"> \
+                        <div class="hiddenform"> \
+                            <section> \
+                                <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
+                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '">@' + link.data('comment-to') + ', </textarea><br> \
+                                    <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 11px 15px 0; font-size: 11px;"> \
+                                    <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 11px; font-size: 11px;"> \
+                                    <div class="clr"></div> \
+                                </form> \
+                            </section> \
+                        </div> \
+                    </div> \
+                    <div class="clr"></div> \
+                </section>');
+    var section = link.parent().parent().parent();
+    el.insertAfter(section).slideDown(600, function() {
+        link.text('Не отвечать');
+        link.addClass('active');
+    });
 }
 
 /*

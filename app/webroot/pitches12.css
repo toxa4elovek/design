@@ -1135,7 +1135,7 @@ h1.solution-title-page  {
 }
 .pitch-comments div.separator {
 	width: 810px;
-	margin-left: 30px;
+	margin: 0 0 0 30px;
 }
 .pitch-comments div.ajax-loader {
     width: 100%;

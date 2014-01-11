@@ -665,7 +665,7 @@ function populateComment(data) {
     var toolbar = '';
     var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
                         <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
-    var answerTool = '';
+    var answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
     if (data.needAnswer == 1) {
         answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>';
     }
@@ -674,7 +674,7 @@ function populateComment(data) {
         sectionClass = 'is-child ';
     }
     if ((data.isChild == 1) || (data.hasChild == 1)) {
-        answerTool = '';
+        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
     }
     var userToolbar =  answerTool + '<a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
@@ -836,6 +836,10 @@ function enableToolbar() {
 
 // Instant Delete Comment
 function commentDelete(link, section, id) {
+    if (section.hasClass('is-child')) {
+        var parentSection = section.prev();
+        parentSection.find('.reply-link-in-comment').css('display', 'block');
+    }
     $.post(link.attr('href') + '.json', function(result) {
         if (result == 'true') {
             if ($('.solution-overlay').is(':visible')) {
