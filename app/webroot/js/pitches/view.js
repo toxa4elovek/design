@@ -545,40 +545,7 @@ $(document).ready(function(){
                 'pitch_id': pitchNumber,
                 'fromAjax': 1
             }, function(result) {
-                var commentData = {};
-                var expertsObj = result.experts || {};
-                commentData.commentId = result.comment.id;
-                commentData.commentUserId = result.comment.user_id;
-                commentData.commentText = result.comment.text;
-                commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
-                commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
-                commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
-
-                if (result.comment.pitch.user_id == result.comment.user_id) {
-                    commentData.messageInfo = 'message_info2';
-                } else if (result.comment.user.isAdmin == "1") {
-                    commentData.messageInfo = 'message_info4';
-                    commentData.isAdmin = result.comment.user.isAdmin;
-                } else if (commentData.isExpert) {
-                    commentData.messageInfo = 'message_info5';
-                }else {
-                    commentData.messageInfo = 'message_info1';
-                }
-
-                if (result.userAvatar) {
-                    commentData.userAvatar = result.userAvatar;
-                } else {
-                    commentData.userAvatar = '/img/default_small_avatar.png';
-                }
-
-                commentData.commentAuthor = result.comment.user.first_name + ((result.comment.user.last_name.length == 0) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
-                commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
-
-                // Date Time
-                var postDateObj = getProperDate(result.comment.created);
-                commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-                commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-
+                var commentData = preparePitchCommentData(result);
                 $('.solution-comments').prepend(populateComment(commentData));
                 $('.pitch-comments section:first').prepend('<div class="separator"></div>');
                 $('.new-comment-here').replaceWith(populatePitchComment(commentData));
@@ -591,6 +558,47 @@ $(document).ready(function(){
             return false;
         }
     });
+    
+    function preparePitchCommentData(result) {
+        var commentData = {};
+        var expertsObj = result.experts || {};
+        commentData.commentId = result.comment.id;
+        commentData.commentUserId = result.comment.user_id;
+        commentData.commentText = result.comment.text;
+        commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
+        commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
+        commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
+
+        if (result.comment.pitch.user_id == result.comment.user_id) {
+            commentData.messageInfo = 'message_info2';
+        } else if (result.comment.user.isAdmin == "1") {
+            commentData.messageInfo = 'message_info4';
+            commentData.isAdmin = result.comment.user.isAdmin;
+        } else if (commentData.isExpert) {
+            commentData.messageInfo = 'message_info5';
+        }else {
+            commentData.messageInfo = 'message_info1';
+        }
+
+        if (result.userAvatar) {
+            commentData.userAvatar = result.userAvatar;
+        } else {
+            commentData.userAvatar = '/img/default_small_avatar.png';
+        }
+        
+        if (result.comment.question_id) {
+            commentData.isChild = 1;
+        }
+
+        commentData.commentAuthor = result.comment.user.first_name + ((result.comment.user.last_name.length == 0) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
+        commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
+
+        // Date Time
+        var postDateObj = getProperDate(result.comment.created);
+        commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+        commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+        return commentData;
+    }
 
     function hideSolutionPopup() {
         if ($('.solution-overlay').is(':visible')) {
@@ -852,9 +860,10 @@ $(document).ready(function(){
         });
     }
     
-    
+    // Send Answer Comment
     $(document).on('click', '.answercomment', function() {
         var textarea = $(this).closest('section').find('textarea');
+        var is_public = $(this).data('is_public');
         if (isCommentValid(textarea.val())) { // See app.js
             $('.answer-section').animate({opacity: .3}, 500, function() {
                 var el = $('<div class="ajax-loader"></div>');
@@ -865,12 +874,14 @@ $(document).ready(function(){
                 'solution_id': solutionId,
                 'question_id': textarea.data('question-id'),
                 'pitch_id': pitchNumber,
+                'public': is_public,
                 'fromAjax': 1
             }).done(function(result) {
+                var commentData = preparePitchCommentData(result);
                 $('.answer-section').animate({opacity: 0}, 500, function() {
-                    $(this).remove();
+                    $(this).replaceWith(populatePitchComment(commentData));
+                    inlineActions();
                 });
-                console.log(result);
             });
         } else {
             alert('Введите текст комментария!');
@@ -942,8 +953,12 @@ function populatePitchComment(data) {
                         <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
                         </a>';
     }
+    var sectionClass = '';
+    if (data.isChild) {
+        sectionClass = 'is-child ';
+    }
     return '<div class="new-comment-here"></div> \
-            <section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+            <section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                 <div class="separator"></div> \
                 <div class="' + data.messageInfo + '" style="margin-top:20px;">'
                 + avatarElement +
@@ -1078,8 +1093,8 @@ function inlineActions() {
                                 <section> \
                                     <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
                                         <textarea name="text" data-question-id="' + link.data('comment-id') + '">@' + link.data('comment-to') + ', </textarea><br> \
-                                        <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" style="margin: 15px 11px 15px 0; font-size: 11px;"> \
-                                        <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" style="margin: 15px 0 15px 11px; font-size: 11px;"> \
+                                        <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 11px 15px 0; font-size: 11px;"> \
+                                        <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 11px; font-size: 11px;"> \
                                         <div class="clr"></div> \
                                     </form> \
                                 </section> \
