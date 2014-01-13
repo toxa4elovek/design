@@ -737,6 +737,9 @@ h1.solution-title-page  {
 	height: 3px;
 	background: url('img/sep-solution.png');
 }
+.solution-left-panel section.is-child div.separator {
+    margin-left: -65px;
+}
 .solution-left-panel .separator.full {
     width: 692px;
     margin-left: -46px;
@@ -831,6 +834,12 @@ h1.solution-title-page  {
     width: 382px;
     margin: 20px auto 20px auto;
     word-wrap: break-word;
+}
+.solution-left-panel section.is-child div.message_text {
+	width: 325px;
+}
+.solution-left-panel section.answer-section textarea {
+	width: 380px;
 }
 .solution-left-panel div.toolbar {
 	display: none;

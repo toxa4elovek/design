@@ -714,7 +714,7 @@ $(document).ready(function(){
             solutionId = result.solution.id;
 
             if (result.comments) {
-                $('.solution-comments').html(fetchComments(result));
+                $('.solution-comments').html(fetchCommentsNew(result));
             }
 
             // Right Panel
@@ -862,12 +862,32 @@ $(document).ready(function(){
         });
     }
     
+    // Reply to Question
+    $(document).on('click', '.replyto', function() {
+        toggleAnswer($(this));
+        return false;
+    });
+    $('.solution-overlay').on('click', '.replyto', function() {
+        toggleAnswer($(this));
+        return false;
+    });
+    
     // Send Answer Comment
-    $(document).on('click', '.answercomment', function() {
-        var textarea = $(this).closest('section').find('textarea');
-        var is_public = $(this).data('is_public');
+    $(document).on('click', '.answercomment', function(event) {
+        addAnswerComment($(event.target));
+    });
+    $('.solution-overlay').on('click', '.answercomment', function(event) {
+        addAnswerComment($(event.target));
+    });
+    
+    function addAnswerComment(button) {
+        var textarea = button.closest('section').find('textarea');
+        var is_public = button.data('is_public');
+        if (!solutionId) {
+            var solutionId = 0;
+        } 
         if (isCommentValid(textarea.val())) { // See app.js
-            var currentSection = $(this).closest('.answer-section');
+            var currentSection = button.closest('.answer-section');
             var answerLink = currentSection.prev().find('.reply-link-in-comment');
             currentSection.animate({opacity: .3}, 500, function() {
                 var el = $('<div class="ajax-loader"></div>');
@@ -892,10 +912,10 @@ $(document).ready(function(){
             alert('Введите текст комментария!');
             return false;
         }
-    });
-    
+    }
     
 });
+
 
 /*
  * Fetch and populate Comments via AJAX on the pitch solutions gallery page
@@ -1122,12 +1142,6 @@ function inlineActions() {
     warningModal();
 }
 
-// Reply to Question
-$(document).on('click', '.replyto', function() {
-    toggleAnswer($(this));
-    return false;
-});
-
 /*
  * Show/Hide Answer Form
  */
@@ -1184,7 +1198,7 @@ function toggleAnswer(link) {
                     </div> \
                     <div class="clr"></div> \
                 </section>');
-    var section = link.parent().parent().parent();
+    var section = link.closest('section');
     el.insertAfter(section).slideDown(600, function() {
         link.text('Не отвечать');
         link.addClass('active');

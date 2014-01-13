@@ -297,49 +297,14 @@ foreach($experts as $expert) {
 
                 && ($this->session->read('user.id'))
             ):?>
-                <section>
-                    <div class="all_messages">
-                        <div class="clr"></div>
-                    </div>
-                    <div class="separator" style="width: 810px; margin-left: 30px;"></div>
-
-                    <div class="comment" id="comment-anchor"><h2 class="blueheading">Что непонятно? Спросите меня прямо здесь!</h2></div>
-                    <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
-                    <form id="createCommentForm" method="post" action="/comments/add">
-                        <div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
-                            <div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
-                                <div style="" id="tooltipContent" class="supplement3">
-                                    <p>Укажите номер комментируемого варианта, используя хештег #. Например:
-                                        #2, нравится!<br>
-                                        Обратитесь к автору решения, используя @. Например:<br>
-                                        @username, спасибо!
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <textarea id="newComment" name="text">@<?=$this->nameInflector->renderName($pitch->user->first_name, $pitch->user->last_name)?>, </textarea>
-                        <input type="hidden" value="" name="solution_id">
-                        <input type="hidden" value="" name="comment_id">
-                        <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-                        <input type="hidden" value="/pitches/details/<?= $pitch->id ?>" name="from">
-                        <input type="submit" style="margin-left:16px; width: 200px;" id="createComment" class="button" value="Отправить" src="/img/message_button.png" />
-                        <div class="clr"></div>
-                    </form>
-                    <?php   if(isset($comments) && count($comments) > 0):?>
-                        <div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>
-                    <?php endif;?>
-                </section>
-                <?php else:?>
-                    <?php   if(isset($comments) && count($comments) > 0):?>
-                        <div style="width: 810px; margin-left: 30px; " id="t1" class="separator"></div>
-                    <?php endif;?>
-                <?php endif?>
+                <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'expertsIds' => $expertsIds))?>
+            <?php else:?>
+                <?php   if(isset($comments) && count($comments) > 0):?>
+                    <div style="width: 810px; margin-left: 30px; " id="t1" class="separator"></div>
+                <?php endif;?>
+            <?php endif?>
             <?php
             if(isset($comments) && count($comments) > 0):?>
-                <div class="comment" style="width:35%;float:left;"><h2 class="blueheading">Комментарии</h2></div>
-                <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div>
-                <div style="clear:both;"></div>
-
                 <?php
                 $totalComments = count($comments);
                 $i = 0;
