@@ -1391,26 +1391,7 @@ class PitchesController extends \app\controllers\AppController {
 	            'with' => array('User', 'Pitch')));
 
 	        $commentsRaw = Comment::addAvatars($commentsRaw);
-	        $comments = new \lithium\util\Collection();
-
-	        if ((true == $isUserClient) || (true == $isUserAdmin)) {
-	            foreach ($commentsRaw as $comment) {
-	                $comment = Comment::fetchChild($comment);
-	                $comment->needAnswer = '';
-	                if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
-	                    $comment->needAnswer = 1;
-	                }
-	                $comments->append($comment);
-	            }
-	        } else {
-	            foreach ($commentsRaw as $comment) {
-	                $comment = Comment::fetchChild($comment);
-	                if (($comment->public == 0) && ($comment->user_id != $currentUser['id'])) {
-	                    continue;
-	                }
-	                $comments->append($comment);
-	            }
-	        }
+	        $comments = Comment::filterCommentsPrivate($commentsRaw, $pitch->user_id);
 
 	        return compact('comments', 'experts', 'pitch');
 	    } else {
@@ -1588,10 +1569,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
 			$results = getArrayNeighborsByKey($solutions->data(), (int) $solution->id);
 			$next = $results['next'];
 			$prev = $results['prev'];
-            $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
+            $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
             $comments = Comment::filterComments($solution->num, $comments);
             $comments = Comment::addAvatars($comments);
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
+            $comments = Comment::filterCommentsPrivate($comments, $pitch->user_id);
+
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             if ($pitch->category_id == 7) {
                 $expertsIds = array();

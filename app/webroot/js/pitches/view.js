@@ -535,14 +535,16 @@ $(document).ready(function(){
         fetchSolution(urlJSON);
     });
 
-    $('#createComment', '.solution-left-panel').on('click', function(e) {
+    $('.createComment', '.solution-left-panel').on('click', function(e) {
         e.preventDefault();
         if (isCommentValid($('#newComment', '.solution-left-panel').val())) { // See app.js
+            var is_public = $(this).data('is_public');
             $.post('/comments/add.json', {
                 'text': $('#newComment', '.solution-left-panel').val(),
                 'solution_id': solutionId,
                 'comment_id': '',
                 'pitch_id': pitchNumber,
+                'public': is_public,
                 'fromAjax': 1
             }, function(result) {
                 var commentData = preparePitchCommentData(result);
@@ -586,7 +588,7 @@ $(document).ready(function(){
             commentData.userAvatar = '/img/default_small_avatar.png';
         }
         
-        if (result.comment.question_id) {
+        if (result.comment.question_id != 0) {
             commentData.isChild = 1;
         }
 
@@ -963,7 +965,7 @@ function populatePitchComment(data) {
                         </a>';
     }
     var sectionClass = '';
-    var newCommentHere = '<div class="new-comment-here"></div>'; 
+    var newCommentHere = '<div class="new-comment-here"></div>';
     if (data.isChild) {
         sectionClass = 'is-child ';
         newCommentHere = '';

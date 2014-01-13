@@ -5,6 +5,7 @@ namespace app\models;
 use \app\models\Solution;
 use \app\models\Historycomment;
 use \app\extensions\helper\Avatar as AvatarHelper;
+use \lithium\storage\Session;
 
 class Comment extends \app\models\AppModel {
 
@@ -190,6 +191,33 @@ class Comment extends \app\models\AppModel {
             }
         }
         return $solutionComments;
+    }
+
+    public static function filterCommentsPrivate($comments, $pitchUserId) {
+        $currentUser = Session::read('user');
+        $isUserClient = ($currentUser['id'] == $pitchUserId) ? true : false;
+        $isUserAdmin = (($currentUser['isAdmin'] == 1) || User::checkRole('admin')) ? true : false;
+        $commentsFiltered = new \lithium\util\Collection();
+
+        if ((true == $isUserClient) || (true == $isUserAdmin)) {
+            foreach ($comments as $comment) {
+                $comment = self::fetchChild($comment);
+                $comment->needAnswer = '';
+                if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
+                    $comment->needAnswer = 1;
+                }
+                $commentsFiltered->append($comment);
+            }
+        } else {
+            foreach ($comments as $comment) {
+                $comment = self::fetchChild($comment);
+                if (($comment->public == 0) && ($comment->user_id != $currentUser['id'])) {
+                    continue;
+                }
+                $commentsFiltered->append($comment);
+            }
+        }
+        return $commentsFiltered;
     }
 
     public static function addAvatars($comments) {
