@@ -1173,8 +1173,8 @@ function toggleAnswer(link) {
                             <section> \
                                 <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
                                     <textarea name="text" data-question-id="' + link.data('comment-id') + '">@' + link.data('comment-to') + ', </textarea><br> \
-                                    <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 11px 15px 0; font-size: 11px;"> \
-                                    <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 11px; font-size: 11px;"> \
+                                    <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 8px 15px 0; font-size: 11px;"> \
+                                    <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;"> \
                                     <div class="clr"></div> \
                                 </form> \
                             </section> \

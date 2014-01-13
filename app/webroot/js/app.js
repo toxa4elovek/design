@@ -836,6 +836,7 @@ function enableToolbar() {
 
 // Instant Delete Comment
 function commentDelete(link, section, id) {
+    // Enable Answer Link in Parent
     if (section.hasClass('is-child')) {
         var parentSection = section.prev();
         parentSection.find('.reply-link-in-comment').css('display', 'block');
@@ -846,10 +847,15 @@ function commentDelete(link, section, id) {
                 section.remove();
                 var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
                 sectionPitch.remove();
-                $('.separator', '.pitch-comments section:first').remove();
             } else {
+                // Detect and Remove Child Section
+                var childSection = section.next('section.is-child');
+                if (childSection.length > 0) {
+                    childSection.remove();
+                }
                 section.remove();
             }
+            $('.separator', '.pitch-comments section:first').remove();
         }
     });
     return true;

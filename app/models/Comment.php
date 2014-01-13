@@ -105,6 +105,9 @@ class Comment extends \app\models\AppModel {
                 if($event = Event::first(array('conditions' => array('comment_id' => $record->id)))) {
                     $event->delete();
                 }
+                if ($childComment = Comment::first(array('conditions' => array('question_id' => $record->id)))) {
+                    $childComment->delete();
+                }
             }
         });
         self::applyFilter('find', function($self, $params, $chain){
