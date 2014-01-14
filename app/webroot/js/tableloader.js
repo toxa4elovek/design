@@ -156,7 +156,7 @@ function TableLoader() {
             }
 
             var imgForDraft = '';
-            if((object.user_id == $('#user_id').val()) && (object.status != 2)) {
+            if((object.user_id == $('#user_id').val()) && (object.awarded == '')) {
                 if (object.published == 1) {
                     imgForDraft = ' not-draft';
                 }
