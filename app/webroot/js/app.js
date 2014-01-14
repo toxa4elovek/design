@@ -533,8 +533,8 @@ function warningModal() {
         $(this).attr('placeholder', warnPlaceholder); 
     });
     
-    $('.warning-comment').off('click');
-    $('.warning-comment').on('click', function() {
+    // Warn Comment
+    $('body, .solution-overlay').on('click', '.warning-comment', function() {
         $('#sendWarnComment').data('url', $(this).data('url'));
         $('#sendWarnComment').data('commentId', $(this).data('commentId'));
         $('#popup-warning-comment').modal({
@@ -547,9 +547,20 @@ function warningModal() {
         });
         return false;
     });
-    
-    $('.warning').off('click');
-    $('.warning').on('click', function(e) {
+    $('#sendWarnComment').on('click', function() {
+        var url = $(this).data('url');
+        var id = $(this).data('commentId');
+        if(($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
+            $.post(url, {"text": $('#warn-comment').val(), "id": id}, function(response) {
+                $('.popup-close').click();
+            });
+        }else {
+            alert('Введите текст жалобы!');
+        }
+    });
+
+    // Warn Solution
+    $('body, .solution-overlay').on('click', '.warning', function(e) {
         e.preventDefault();
         $('#sendWarn').data('url', $(this).attr('href'));
         $('#popup-warning').modal({
@@ -562,21 +573,6 @@ function warningModal() {
         });
         return false;
     });
-    
-    $('#sendWarnComment').off('click');
-    $('#sendWarnComment').on('click', function() {
-        var url = $(this).data('url');
-        var id = $(this).data('commentId');
-        if(($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
-            $.post(url, {"text": $('#warn-comment').val(), "id": id}, function(response) {
-                $('.popup-close').click();
-            });
-        }else {
-            alert('Введите текст жалобы!');
-        }
-    });
-    
-    $('#sendWarn').off('click');
     $('#sendWarn').on('click', function() {
         var url = $(this).data('url');
         if(($('#warn-solution').val().length > 0) && ($('#warn-solution').val() != warnPlaceholder)) {
@@ -873,6 +869,25 @@ function enableToolbar() {
                 hideSolutionPopup();
             }
         }
+    });
+    
+    // Select Winner Solution
+    $('body, .solution-overlay').on('click', '.select-winner-popup', function() {
+        var item = $('.select-winner[data-solutionid=' + $(this).data('solutionid') + ']').parent().parent().parent().prev().prev().clone();
+        $('#winner-num').text('#' + $(this).data('num'));
+        $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+        $('#winner-user-link').text($(this).data('user'));
+        $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
+        $('#confirmWinner').data('url', $(this).attr('href'));
+        if (item.length > 0) {
+            $('#replacingblock').replaceWith(item);
+        }
+        $('#popup-final-step').modal({
+            containerId: 'final-step',
+            opacity: 80,
+            closeClass: 'popup-close'
+        });
+        return false;
     });
 }
 

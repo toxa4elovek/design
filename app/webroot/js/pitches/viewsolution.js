@@ -46,20 +46,6 @@ $(document).ready(function() {
             return false;
         });
 
-        $('.select-winner-popup').click(function() {
-            $('#winner-num').text('#' + $(this).data('num'));
-            $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
-            $('#winner-user-link').text($(this).data('user'));
-            $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
-            $('#confirmWinner').data('url', $(this).attr('href'));
-            $('#popup-final-step').modal({
-                containerId: 'final-step',
-                opacity: 80,
-                closeClass: 'popup-close'
-            });
-            return false;
-        });
-
         $('.mention-link').click(function() {
             if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
                 $('input[name=comment_id]').val('');
@@ -85,7 +71,6 @@ $(document).ready(function() {
         });
 
         solutionShowHide();
-        warningModal();
     }
 
 	$('#like').click(function(event){
@@ -606,6 +591,7 @@ $(document).ready(function() {
             }
             
             inlineActions();
+            warningModal();
             Socialite.load($('.solution-share'), [
                                                   $('#facebook' + result.solution.id)[0],
                                                   $('#twitter' + result.solution.id)[0]

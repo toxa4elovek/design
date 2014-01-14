@@ -237,6 +237,7 @@ $(document).ready(function(){
     fetchPitchComments();
     inlineActions();
     enableToolbar();
+    warningModal();
 
     // Keys navigation
     $(document).keydown(function(e) {
@@ -788,34 +789,8 @@ function inlineActions() {
         $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
     });
 
-    $('.select-winner-popup').click(function() {
-        var item = $('.select-winner[data-solutionid=' + $(this).data('solutionid') + ']').parent().parent().parent().prev().prev().clone();
-        $('#winner-num').text('#' + $(this).data('num'));
-        $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
-        $('#winner-user-link').text($(this).data('user'));
-        $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
-        $('#confirmWinner').data('url', $(this).attr('href'));
-        $('#replacingblock').replaceWith(item);
-        $('#popup-final-step').modal({
-            containerId: 'final-step',
-            opacity: 80,
-            closeClass: 'popup-close'
-        });
-        return false;
-    });
-
-    function hideSolutionPopup() {
-        if ($('.solution-overlay').is(':visible')) {
-            window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
-            $('#pitch-panel').show();
-            $('.wrapper', 'body').first().removeClass('wrapper-frozen');
-            $('.solution-overlay').hide();
-        }
-    }
-
     mentionLinks();
     solutionShowHide();
-    warningModal();
 }
 
 /*

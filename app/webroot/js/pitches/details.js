@@ -112,6 +112,7 @@ $(document).ready(function() {
     
     fetchPitchComments();
     enableToolbar();
+    warningModal(); // See app.js
 
     $('#newComment').focus(function() {
         var position = $(this).position();
@@ -127,7 +128,6 @@ $(document).ready(function() {
         $('#tooltip-bubble').fadeOut(200);
     });
 
-    warningModal(); // See app.js
 
     $('.mention-link').click(function() {
         if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
