@@ -733,9 +733,10 @@ h1.solution-title-page  {
     margin: 10px 0;
 }
 .solution-left-panel .separator {
-	width: 600px;
+	width: 630px;
 	height: 3px;
 	background: url('img/sep-solution.png');
+	margin: 0;
 }
 .solution-left-panel section.is-child div.separator {
     margin-left: -65px;
@@ -913,6 +914,9 @@ h1.solution-title-page  {
     font-size: 20px;
     line-height: 30px;
     font-family: "RodeoC", sans-serif; 
+}
+.solution-left-panel .createCommentForm {
+	width: 640px;
 }
 /*
  * ----- Right Panel -----

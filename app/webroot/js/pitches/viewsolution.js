@@ -64,26 +64,7 @@ $(document).ready(function() {
                 section.children().show();
                 $('.hiddenform', section).hide();
                 editcommentflag = false;
-                enableToolbar();
             })
-            return false;
-        });
-
-        $('.replyto').click(function() {
-            if ($('.allow-comments').is(':visible')) {
-                var el = $('#newComment', '.allow-comments');
-                var anchor = $('.allow-comments');
-            } else {
-                var el = $('#newComment');
-                var anchor = $('#comment-anchor');
-            }
-            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val($(this).data('commentId'))
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + el.val();
-                el.val(newText);
-                $.scrollTo(anchor, {duration:250});
-            }
             return false;
         });
 
@@ -303,25 +284,6 @@ $(document).ready(function() {
             $('#newComment').val(newText);
             $(this).parent().parent().parent().hide();
         }
-        return false;
-    });
-
-    $('.replyto').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-            $('input[name=comment_id]').val($(this).data('commentId'))
-            var prepend = '@' + $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $.scrollTo($('#comment-anchor'), {duration:250});
-            $('#newComment').val(newText);
-        }
-        return false;
-    })
-
-    $('#createComment').click(function() {
-        if (isCommentValid($('#newComment').val())) { // See app.js
-            return true;
-        }
-        alert('Введите текст комментария!');
         return false;
     });
 

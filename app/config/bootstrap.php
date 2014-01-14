@@ -104,8 +104,6 @@ require __DIR__ . '/bootstrap/validation.php';
 
 	define('WINS_FOR_VIEW', 1); // Designer`s wins for allow private pitches view
 
-	define('NEW_COMMENT_DATE', strtotime('2014-01-10')); // New Comments System Enable Moment
-
 date_default_timezone_set('Europe/Moscow');
 
 /*

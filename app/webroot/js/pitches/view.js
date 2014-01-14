@@ -234,20 +234,9 @@ $(document).ready(function(){
         return string;
     }
 
-    $('#createComment').click(function() {
-        if (isCommentValid($('#newComment').val())) { // See app.js
-            return true;
-        }
-        alert('Введите текст комментария!');
-        return false;
-    });
-
-    if (isNewComments) {
-        fetchPitchCommentsNew();
-    } else {
-        fetchPitchComments();
-    }
+    fetchPitchComments();
     inlineActions();
+    enableToolbar();
 
     editcommentflag = false;
     $(document).keyup(function(e) {
@@ -260,7 +249,6 @@ $(document).ready(function(){
                     section.children().show();
                     $(object).hide();
                 });
-                enableToolbar();
             } else {
                 e.preventDefault();
                 hideSolutionPopup();
@@ -535,73 +523,6 @@ $(document).ready(function(){
         fetchSolution(urlJSON);
     });
 
-    $('.createComment', '.solution-left-panel').on('click', function(e) {
-        e.preventDefault();
-        if (isCommentValid($('#newComment', '.solution-left-panel').val())) { // See app.js
-            var is_public = $(this).data('is_public');
-            $.post('/comments/add.json', {
-                'text': $('#newComment', '.solution-left-panel').val(),
-                'solution_id': solutionId,
-                'comment_id': '',
-                'pitch_id': pitchNumber,
-                'public': is_public,
-                'fromAjax': 1
-            }, function(result) {
-                var commentData = preparePitchCommentData(result);
-                $('.solution-comments').prepend(populateComment(commentData));
-                $('.pitch-comments section:first').prepend('<div class="separator"></div>');
-                $('.new-comment-here').replaceWith(populatePitchComment(commentData));
-                $('.separator', '.pitch-comments section:first').remove();
-                $('#newComment', '.solution-left-panel').val('#' + result.result.solution_num + ', ');
-                inlineActions();
-            });
-        } else {
-            alert('Введите текст комментария!');
-            return false;
-        }
-    });
-    
-    function preparePitchCommentData(result) {
-        var commentData = {};
-        var expertsObj = result.experts || {};
-        commentData.commentId = result.comment.id;
-        commentData.commentUserId = result.comment.user_id;
-        commentData.commentText = result.comment.text;
-        commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
-        commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
-        commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
-
-        if (result.comment.pitch.user_id == result.comment.user_id) {
-            commentData.messageInfo = 'message_info2';
-        } else if (result.comment.user.isAdmin == "1") {
-            commentData.messageInfo = 'message_info4';
-            commentData.isAdmin = result.comment.user.isAdmin;
-        } else if (commentData.isExpert) {
-            commentData.messageInfo = 'message_info5';
-        }else {
-            commentData.messageInfo = 'message_info1';
-        }
-
-        if (result.userAvatar) {
-            commentData.userAvatar = result.userAvatar;
-        } else {
-            commentData.userAvatar = '/img/default_small_avatar.png';
-        }
-        
-        if (result.comment.question_id != 0) {
-            commentData.isChild = 1;
-        }
-
-        commentData.commentAuthor = result.comment.user.first_name + ((result.comment.user.last_name.length == 0) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
-        commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
-
-        // Date Time
-        var postDateObj = getProperDate(result.comment.created);
-        commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-        commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-        return commentData;
-    }
-
     function hideSolutionPopup() {
         if ($('.solution-overlay').is(':visible')) {
             window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
@@ -862,58 +783,6 @@ $(document).ready(function(){
         });
     }
     
-    // Reply to Question
-    $(document).on('click', '.replyto', function() {
-        toggleAnswer($(this));
-        return false;
-    });
-    $('.solution-overlay').on('click', '.replyto', function() {
-        toggleAnswer($(this));
-        return false;
-    });
-    
-    // Send Answer Comment
-    $(document).on('click', '.answercomment', function(event) {
-        addAnswerComment($(event.target));
-    });
-    $('.solution-overlay').on('click', '.answercomment', function(event) {
-        addAnswerComment($(event.target));
-    });
-    
-    function addAnswerComment(button) {
-        var textarea = button.closest('section').find('textarea');
-        var is_public = button.data('is_public');
-        if (!solutionId) {
-            var solutionId = 0;
-        } 
-        if (isCommentValid(textarea.val())) { // See app.js
-            var currentSection = button.closest('.answer-section');
-            var answerLink = currentSection.prev().find('.reply-link-in-comment');
-            currentSection.animate({opacity: .3}, 500, function() {
-                var el = $('<div class="ajax-loader"></div>');
-                $(this).append(el);
-            });
-            $.post('/comments/add.json', {
-                'text': textarea.val(),
-                'solution_id': solutionId,
-                'question_id': textarea.data('question-id'),
-                'pitch_id': pitchNumber,
-                'public': is_public,
-                'fromAjax': 1
-            }).done(function(result) {
-                var commentData = preparePitchCommentData(result);
-                currentSection.animate({opacity: 0}, 500, function() {
-                    $(this).replaceWith(populatePitchComment(commentData));
-                    inlineActions();
-                    answerLink.removeClass('active').text('Ответить').hide();
-                });
-            });
-        } else {
-            alert('Введите текст комментария!');
-            return false;
-        }
-    }
-    
 });
 
 
@@ -921,29 +790,9 @@ $(document).ready(function(){
  * Fetch and populate Comments via AJAX on the pitch solutions gallery page
  */
 function fetchPitchComments() {
-    $.getJSON('/pitches/getcomments/' + pitchNumber + '.json', function(result) {
-        if (result.comments) {
-            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div> \
-                                <div class="comment" style="width:35%;float:left;">КОММЕНТАРИИ</div> \
-                                <div class="checkbox-input" style="margin-right:45px;"><input type="checkbox" id="client-only-toggle" style="font-size:14px;vertical-align: text-top;" /> <span class="supplement">показывать только комментарии заказчика</span></div> \
-                                <div style="clear:both;"></div> \
-                                <div class="new-comment-here"></div>';
-            $('.pitch-comments').html(fetchComments(result));
-            $('.pitch-comments').prepend(commentsTitle);
-            $('.separator', '.pitch-comments section:first').remove();
-
-            inlineActions();
-        } else {
-            $('.ajax-loader', '.pitch-comments').remove();
-        }
-    });
-}
-
-function fetchPitchCommentsNew() {
     $.getJSON('/pitches/getcommentsnew/' + pitchNumber + '.json', function(result) {
         if (result.comments) {
-            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div> \
-                                <div class="new-comment-here"></div>';
+            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>';
             $('.pitch-comments').html(fetchCommentsNew(result));
             $('.pitch-comments').prepend(commentsTitle);
             $('.separator', '.pitch-comments section:first').remove();
@@ -953,74 +802,6 @@ function fetchPitchCommentsNew() {
             $('.ajax-loader', '.pitch-comments').remove();
         }
     });
-}
-
-/*
- * Comments In Pitch View
- */
-function populatePitchComment(data) {
-    var toolbar = '';
-    var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
-                        <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
-    var answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
-    if (data.needAnswer == 1) {
-        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>';
-    }
-    if ((data.isChild == 1) || (data.hasChild == 1)) {
-        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
-    }
-    var userToolbar = answerTool + '<a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
-    if (data.isCommentAuthor) {
-        toolbar = manageToolbar;
-    } else if (currentUserId) {
-        toolbar = userToolbar;
-    }
-    if (isCurrentAdmin == 1) {
-        toolbar = manageToolbar + userToolbar;
-    }
-    var avatarElement = '';
-    if (!data.isAdmin) {
-        avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
-                        <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
-                        </a>';
-    }
-    var sectionClass = '';
-    var newCommentHere = '<div class="new-comment-here"></div>';
-    if (data.isChild) {
-        sectionClass = 'is-child ';
-        newCommentHere = '';
-    }
-    return newCommentHere + '<section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
-                <div class="separator"></div> \
-                <div class="' + data.messageInfo + '" style="margin-top:20px;">'
-                + avatarElement +
-                '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
-                    <span>' + data.commentAuthor + '</span><br /> \
-                    <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
-                </a> \
-                <div class="clr"></div> \
-                </div> \
-                <div data-id="' + data.commentId + '" class="message_text" style="margin-top:15px;"> \
-                    <span class="regular comment-container">'
-                        + data.commentText +
-                    '</span> \
-                </div> \
-                <div style="width:810px;float:right;margin-top: 6px;margin-right: 95px;padding-bottom: 2px;height:18px;"> \
-                    <div class="toolbar" style="display: none;">'
-                    + toolbar +
-                '</div></div> \
-                <div class="clr"></div> \
-                <div class="hiddenform" style="display:none"> \
-                    <section> \
-                        <form style="margin-bottom: 25px;" action="/comments/edit/' + data.commentId + '" method="post"> \
-                            <textarea name="text" data-id="' + data.commentId + '"></textarea> \
-                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin-left:16px;margin-bottom:5px; width: 200px;"><br> \
-                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span> \
-                            <div class="clr"></div> \
-                        </form> \
-                    </section> \
-                </div> \
-            </section>';
 }
 
 /*
@@ -1057,23 +838,6 @@ function inlineActions() {
         });
         return false;
     });
-    
-/*    $('.replyto').click(function() {
-        var el = $('#newComment');
-        var anchor = $('#comment-anchor');
-        if ($('.allow-comments').is(':visible')) {
-            el = $('#newComment', '.allow-comments');
-            anchor = $('.allow-comments');
-        }
-        if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
-            $('input[name=comment_id]').val($(this).data('commentId'));
-            var prepend = '@' + $(this).data('commentTo') + ', ';
-            var newText = prepend + el.val();
-            el.val(newText);
-            $.scrollTo(anchor, {duration:250});
-        }
-        return false;
-    });*/
     
     $('.client-comment').click(function() {
         $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
@@ -1136,73 +900,9 @@ function inlineActions() {
         }
     }
 
-    enableToolbar();
     mentionLinks();
     solutionShowHide();
     warningModal();
-}
-
-/*
- * Show/Hide Answer Form
- */
-function toggleAnswer(link) {
-    if (link.hasClass('active')) {
-        link.closest('section').next('.answer-section').slideUp(600, function() {
-            $(this).remove();
-            link.text('Ответить');
-            link.removeClass('active');
-        });
-        return;
-    }
-    var messageInfo = 'message_info1';
-    if (isCurrentExpert) {
-        messageInfo = 'message_info5';
-    }
-    if (isCurrentAdmin) {
-        messageInfo = 'message_info4';
-    }
-    if (isClient) {
-        messageInfo = 'message_info2';
-    }
-    // Date Time
-    var postDateObj = new Date();
-    var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-    var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-    var avatarElement = '';
-    if (!isCurrentAdmin) {
-        avatarElement = '<a href="/users/view/' + currentUserId + '"> \
-                        <img src="' + currentAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
-                        </a>';
-    }
-    var el = $('<section style="display: none; position: relative;" class="answer-section"> \
-                    <div class="separator"></div> \
-                    <div class="' + messageInfo + '">'
-                        + avatarElement +
-                        '<a href="#" onClick="return false;"> \
-                            <span>' + currentUserName + '</span><br /> \
-                            <span style="font-weight: normal;">' + postDate + ' ' + postTime + '</span> \
-                        </a> \
-                        <div class="clr"></div> \
-                    </div> \
-                    <div class="message_text" style="margin-top: 0;"> \
-                        <div class="hiddenform"> \
-                            <section> \
-                                <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
-                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '">@' + link.data('comment-to') + ', </textarea><br> \
-                                    <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 8px 15px 0; font-size: 11px;"> \
-                                    <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;"> \
-                                    <div class="clr"></div> \
-                                </form> \
-                            </section> \
-                        </div> \
-                    </div> \
-                    <div class="clr"></div> \
-                </section>');
-    var section = link.closest('section');
-    el.insertAfter(section).slideDown(600, function() {
-        link.text('Не отвечать');
-        link.addClass('active');
-    });
 }
 
 /*

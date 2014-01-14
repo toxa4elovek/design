@@ -30,9 +30,8 @@
         <textarea id="newComment" name="text"></textarea>
         <input type="hidden" value="" name="solution_id">
         <input type="hidden" value="" name="comment_id">
-        <input type="hidden" value="<?php echo $publicComment?>" name="public">
         <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-        <input type="submit" style="margin-left:16; width: 200px;" id="createComment" class="button" value="<?php echo $buttonText; ?>" src="/img/message_button.png" />
+        <input type="submit" style="margin-left:16; width: 200px;" data-is_public="<?php echo $publicComment?>" class="button createComment" value="<?php echo $buttonText; ?>" src="/img/message_button.png" />
         <div class="clr"></div>
     </form>
 </section>

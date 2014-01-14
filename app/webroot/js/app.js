@@ -360,8 +360,44 @@ $(document).ready(function() {
 
     //Цвет фона для текущих питчей
     //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
-
-})
+    
+    // Add New Comment Form Handler
+    $('.createComment').on('click', function(e) {
+        e.preventDefault();
+        var textarea = $(this).closest('form').find('textarea');
+        if (typeof(solutionId) == undefined) {
+            var solutionId = 0;
+        }
+        if (isCommentValid(textarea.val())) {
+            var is_public = $(this).data('is_public');
+            $.post('/comments/add.json', {
+                'text': textarea.val(),
+                'solution_id': solutionId,
+                'comment_id': '',
+                'pitch_id': pitchNumber,
+                'public': is_public,
+                'fromAjax': 1
+            }, function(result) {
+                var commentData = preparePitchCommentData(result);
+                // ViewSolution or Popup
+                if ($('.solution-comments').length > 0) {
+                    $('.solution-comments').prepend(populateComment(commentData));
+                    textarea.val('#' + result.result.solution_num + ', ');
+                }
+                // Pitch Gallery
+                if ($('.pitch-comments').length > 0) {
+                    $('.pitch-comments section:first').prepend('<div class="separator"></div>');
+                    $(populateComment(commentData)).insertAfter('.pitch-comments .separator:first');
+                    $('.separator', '.pitch-comments section:first').remove();
+                }
+            });
+        } else {
+            alert('Введите текст комментария!');
+            return false;
+        }
+    });
+    
+});
 
 window.fbAsyncInit = function() {
     FB.init({
@@ -669,14 +705,10 @@ function populateComment(data) {
     if (data.needAnswer == 1) {
         answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>';
     }
-    var sectionClass = '';
-    if (data.isChild == 1) {
-        sectionClass = 'is-child ';
-    }
     if ((data.isChild == 1) || (data.hasChild == 1)) {
         answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
     }
-    var userToolbar =  answerTool + '<a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+    var userToolbar = answerTool + '<a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
     } else if (currentUserId) {
@@ -689,7 +721,11 @@ function populateComment(data) {
     if (!data.isAdmin) {
         avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
                         <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
-                        </a>'; 
+                        </a>';
+    }
+    var sectionClass = '';
+    if (data.isChild == 1) {
+        sectionClass = 'is-child ';
     }
     return '<section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                 <div class="separator"></div> \
@@ -782,53 +818,79 @@ function isExpert(user, expertsObj) {
  * Comments Toolbar
  */
 function enableToolbar() {
-    $('section', '.solution-comments, .pitch-comments').on('mouseenter', function() {
+    $(document).on('mouseenter', '.pitch-comments section, .solution-comments section', function() {
         $('.toolbar', this).fadeIn(200);
     });
-    $('section', '.solution-comments, .pitch-comments').on('mouseleave', function() {
+    $(document).on('mouseleave', '.pitch-comments section, .solution-comments section', function() {
         $('.toolbar', this).fadeOut(200);
+    });
+    
+    // Reply to Question
+    $(document).on('click', '.replyto', function() {
+        toggleAnswer($(this));
+        return false;
+    });
+    $('.solution-overlay').on('click', '.replyto', function() {
+        toggleAnswer($(this));
+        return false;
+    });
+    
+    // Send Answer Comment
+    $(document).on('click', '.answercomment', function(event) {
+        addAnswerComment($(event.target));
+    });
+    $('.solution-overlay').on('click', '.answercomment', function(event) {
+        addAnswerComment($(event.target));
     });
 
     // Delete Comment
-    $('.delete-link-in-comment.ajax').on('click', function(e) {
+    $(document).on('click', '.delete-link-in-comment.ajax', function(e) {
         e.preventDefault();
-        var link = $(this);
-        var section = link.parent().parent().parent();
-        var id = $(section).attr('data-id');
-        
-        
-        // Delete without Moderation
-        if (!isCurrentAdmin) {
-            commentDelete(link, section, id);
+        commentDeleteHandler($(e.target));
+        return false;
+    });
+    $('.solution-overlay').on('click', '.delete-link-in-comment.ajax', function(e) {
+        e.preventDefault();
+        commentDeleteHandler($(e.target));
+        return false;
+    });
+}
+
+function commentDeleteHandler(link) {
+    var section = link.closest('section');
+    var id = $(section).attr('data-id');
+    
+    
+    // Delete without Moderation
+    if (!isCurrentAdmin) {
+        commentDelete(link, section, id);
+        return false;
+    }
+    
+    $('#model_id', '#popup-delete-comment').val(id);
+    
+    // Show Delete Moderation Overlay
+    $('#popup-delete-comment').modal({
+        containerId: 'final-step-clean',
+        opacity: 80,
+        closeClass: 'popup-close',
+        onShow: function() {
+            $(document).off('click', '#sendDeleteComment');
+        }
+    });
+    
+ // Delete Comment Popup Form
+    $(document).on('click', '#sendDeleteComment', function() {
+        var form = $(this).parent().parent();
+        if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
+            $('#popup-delete-comment').addClass('wrong-input');
             return false;
         }
-        
-        $('#model_id', '#popup-delete-comment').val(id);
-        
-        // Show Delete Moderation Overlay
-        $('#popup-delete-comment').modal({
-            containerId: 'final-step-clean',
-            opacity: 80,
-            closeClass: 'popup-close',
-            onShow: function() {
-                $(document).off('click', '#sendDeleteComment');
-            }
-        });
-        
-     // Delete Comment Popup Form
-        $(document).on('click', '#sendDeleteComment', function() {
-            var form = $(this).parent().parent();
-            if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
-                $('#popup-delete-comment').addClass('wrong-input');
-                return false;
-            }
-            $(document).off('click', '#sendDeleteComment');
-            var data = form.serialize();
-            $.post(form.attr('action') + '.json', data).done(function(result) {
-                commentDelete(link, section, id);
-                $('.popup-close').click();
-            });
-            return false;
+        $(document).off('click', '#sendDeleteComment');
+        var data = form.serialize();
+        $.post(form.attr('action') + '.json', data).done(function(result) {
+            commentDelete(link, section, id);
+            $('.popup-close').click();
         });
         return false;
     });
@@ -906,4 +968,148 @@ function appendSocials() {
             $.modal.impl.d = {};
         }
     });
+}
+
+/*
+ * Show/Hide Answer Form
+ */
+function toggleAnswer(link) {
+    if (link.hasClass('active')) {
+        link.closest('section').next('.answer-section').slideUp(600, function() {
+            $(this).remove();
+            link.text('Ответить');
+            link.removeClass('active');
+        });
+        return;
+    }
+    var messageInfo = 'message_info1';
+    if (isCurrentExpert) {
+        messageInfo = 'message_info5';
+    }
+    if (isCurrentAdmin) {
+        messageInfo = 'message_info4';
+    }
+    if (isClient) {
+        messageInfo = 'message_info2';
+    }
+    // Date Time
+    var postDateObj = new Date();
+    var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+    var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+    var avatarElement = '';
+    if (!isCurrentAdmin) {
+        avatarElement = '<a href="/users/view/' + currentUserId + '"> \
+                        <img src="' + currentAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                        </a>';
+    }
+    var el = $('<section style="display: none; position: relative;" class="answer-section"> \
+                    <div class="separator"></div> \
+                    <div class="' + messageInfo + '">'
+                        + avatarElement +
+                        '<a href="#" onClick="return false;"> \
+                            <span>' + currentUserName + '</span><br /> \
+                            <span style="font-weight: normal;">' + postDate + ' ' + postTime + '</span> \
+                        </a> \
+                        <div class="clr"></div> \
+                    </div> \
+                    <div class="message_text" style="margin-top: 0;"> \
+                        <div class="hiddenform"> \
+                            <section> \
+                                <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
+                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '">@' + link.data('comment-to') + ', </textarea><br> \
+                                    <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 8px 15px 0; font-size: 11px;"> \
+                                    <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;"> \
+                                    <div class="clr"></div> \
+                                </form> \
+                            </section> \
+                        </div> \
+                    </div> \
+                    <div class="clr"></div> \
+                </section>');
+    var section = link.closest('section');
+    el.insertAfter(section).slideDown(600, function() {
+        link.text('Не отвечать');
+        link.addClass('active');
+    });
+}
+
+function preparePitchCommentData(result) {
+    var commentData = {};
+    var expertsObj = result.experts || {};
+    commentData.commentId = result.comment.id;
+    commentData.commentUserId = result.comment.user_id;
+    commentData.commentText = result.comment.text;
+    commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
+    commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
+    commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
+
+    if (result.comment.pitch.user_id == result.comment.user_id) {
+        commentData.messageInfo = 'message_info2';
+    } else if (result.comment.user.isAdmin == "1") {
+        commentData.messageInfo = 'message_info4';
+        commentData.isAdmin = result.comment.user.isAdmin;
+    } else if (commentData.isExpert) {
+        commentData.messageInfo = 'message_info5';
+    }else {
+        commentData.messageInfo = 'message_info1';
+    }
+
+    if (result.userAvatar) {
+        commentData.userAvatar = result.userAvatar;
+    } else {
+        commentData.userAvatar = '/img/default_small_avatar.png';
+    }
+    
+    if (result.comment.question_id != 0) {
+        commentData.isChild = 1;
+    }
+
+    commentData.commentAuthor = result.comment.user.first_name + ((result.comment.user.last_name.length == 0) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
+    commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
+
+    // Date Time
+    var postDateObj = getProperDate(result.comment.created);
+    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+    return commentData;
+}
+
+function addAnswerComment(button) {
+    var textarea = button.closest('section').find('textarea');
+    var is_public = button.data('is_public');
+    if (typeof(solutionId) == undefined) {
+        var solutionId = 0;
+    }
+    if (isCommentValid(textarea.val())) {
+        var currentSection = button.closest('.answer-section');
+        var answerLink = currentSection.prev().find('.reply-link-in-comment');
+        currentSection.animate({opacity: .3}, 500, function() {
+            var el = $('<div class="ajax-loader"></div>');
+            $(this).append(el);
+        });
+        $.post('/comments/add.json', {
+            'text': textarea.val(),
+            'solution_id': solutionId,
+            'question_id': textarea.data('question-id'),
+            'pitch_id': pitchNumber,
+            'public': is_public,
+            'fromAjax': 1
+        }).done(function(result) {
+            var commentData = preparePitchCommentData(result);
+            var el = populateComment(commentData);
+            currentSection.animate({opacity: 0}, 500, function() {
+                $(this).replaceWith(el);
+                answerLink.removeClass('active').text('Ответить').hide();
+                if ($('.solution-overlay').is(':visible')) {
+                    var sectionPitch = $('.messages_gallery section[data-id=' + textarea.data('question-id') + ']');
+                    $(el).insertAfter(sectionPitch);
+                    var answerLinkPitch = sectionPitch.find('.reply-link-in-comment');
+                    answerLinkPitch.removeClass('active').text('Ответить').hide();
+                }
+            });
+        });
+    } else {
+        alert('Введите текст комментария!');
+        return false;
+    }
 }
