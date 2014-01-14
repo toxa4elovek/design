@@ -257,7 +257,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     }
 
     // Low Rating Bubble
-    if (response.avgNum < 3) {
+    if ((response.avgNum < 3) && (response.guaranteed != "1")) {
         if (response.percentages.rating < 20) {
             var lowReason = 'недостаточно звезд.';
         }
