@@ -252,7 +252,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     stage.add(layer);
 
     // Low Rating Popup
-    if (response.needRatingPopup == true) {
+    if ((response.needRatingPopup == true) && (response.guaranteed != "1")) {
         fireRatingPopup();
     }
 
