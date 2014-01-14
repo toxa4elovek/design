@@ -84,32 +84,9 @@ $(document).ready(function() {
             $($(this).prev('#tooltip-bubble')).fadeOut(200);
         });
 
-        $('.hoverimage[data-comment-to]').tooltip({
-            tooltipID: 'tooltip2',
-            tooltipSource: 'hidden',
-            width: '205px',
-            correctPosX: 40,
-            //positionTop: 0,
-            borderSize: '0px',
-            tooltipPadding: 0,
-            tooltipBGColor: 'transparent'
-        });
-
         solutionShowHide();
         warningModal();
     }
-
-    $(document).keyup(function(e) {
-
-        if ((e.keyCode == 27) && (editcommentflag == true)) {
-            editcommentflag = false;
-            $.each($('.hiddenform:visible'), function(index, object) {
-                var section = $(object).parent();
-                section.children().show();
-                $(object).hide();
-            })
-        }
-    });
 
 	$('#like').click(function(event){
         event.stopPropagation();

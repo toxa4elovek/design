@@ -238,24 +238,6 @@ $(document).ready(function(){
     inlineActions();
     enableToolbar();
 
-    editcommentflag = false;
-    $(document).keyup(function(e) {
-        if (e.keyCode == 27) {
-            if (editcommentflag == true) {
-                e.stopPropagation();
-                editcommentflag = false;
-                $.each($('.hiddenform:visible'), function(index, object) {
-                    var section = $(object).parent();
-                    section.children().show();
-                    $(object).hide();
-                });
-            } else {
-                e.preventDefault();
-                hideSolutionPopup();
-            }
-        }
-    });
-
     // Keys navigation
     $(document).keydown(function(e) {
         if ($('.solution-overlay').is(':hidden')) {
@@ -523,15 +505,6 @@ $(document).ready(function(){
         fetchSolution(urlJSON);
     });
 
-    function hideSolutionPopup() {
-        if ($('.solution-overlay').is(':visible')) {
-            window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
-            $('#pitch-panel').show();
-            $('.wrapper', 'body').first().removeClass('wrapper-frozen');
-            $('.solution-overlay').hide();
-        }
-    }
-
     /*
      * Fetch solution via JSON and populate layout
      */
@@ -785,25 +758,6 @@ $(document).ready(function(){
     
 });
 
-
-/*
- * Fetch and populate Comments via AJAX on the pitch solutions gallery page
- */
-function fetchPitchComments() {
-    $.getJSON('/pitches/getcommentsnew/' + pitchNumber + '.json', function(result) {
-        if (result.comments) {
-            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>';
-            $('.pitch-comments').html(fetchCommentsNew(result));
-            $('.pitch-comments').prepend(commentsTitle);
-            $('.separator', '.pitch-comments section:first').remove();
-
-            inlineActions();
-        } else {
-            $('.ajax-loader', '.pitch-comments').remove();
-        }
-    });
-}
-
 /*
  * Various actions running after DOM rebuild
  */
@@ -826,17 +780,6 @@ function inlineActions() {
 
     $('textarea').keydown(function() {
         $($(this).prev('#tooltip-bubble')).fadeOut(200);
-    });
-
-    $('.hoverimage[data-comment-to]').tooltip({
-        tooltipID: 'tooltip2',
-        tooltipSource: 'rel',
-        width: '205px',
-        correctPosX: 40,
-        //positionTop: 0,
-        borderSize: '0px',
-        tooltipPadding: 0,
-        tooltipBGColor: 'transparent'
     });
 
     $('.delete-solution-popup').on('click', function(e) {

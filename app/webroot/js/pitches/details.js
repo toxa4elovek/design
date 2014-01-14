@@ -109,6 +109,9 @@ $(document).ready(function() {
 
     ]);
 */
+    
+    fetchPitchComments();
+    enableToolbar();
 
     $('#newComment').focus(function() {
         var position = $(this).position();
@@ -124,84 +127,7 @@ $(document).ready(function() {
         $('#tooltip-bubble').fadeOut(200);
     });
 
-    $('.hoverimage[data-comment-to]').tooltip({
-        tooltipID: 'tooltip2',
-        tooltipSource: 'hidden',
-        width: '205px',
-        correctPosX: 40,
-        //positionTop: 0,
-        borderSize: '0px',
-        tooltipPadding: 0,
-        tooltipBGColor: 'transparent'
-    });
-
-    $('section', '.messages_gallery').hover(function() {
-        $('.toolbar', this).fadeIn(150);
-    }, function() {
-        $('.toolbar', this).fadeOut(150);
-    });
-
     warningModal(); // See app.js
-
-    $('#createComment').click(function() {
-        if (isCommentValid($('#newComment').val())) { // See app.js
-            return true;
-        }
-        alert('Введите текст комментария!');
-        return false;
-    });
-
-
-    var editcommentflag = false;
-
-    $('.edit-link-in-comment').click(function(){
-        var section = $(this).parent().parent().parent();
-        section.children().hide();
-        var hiddenform = $('.hiddenform', section);
-        hiddenform.show();
-        var text = $(this).data('text');
-        $('textarea', hiddenform).val(text);
-        editcommentflag = true;
-        return false;
-    })
-
-    $('.editcomment').click(function() {
-        var textarea = $(this).prev();
-        var newcomment = textarea.val();
-        var id = textarea.data('id');
-        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
-            var newText = response;
-            var section = textarea.parent().parent().parent().parent();
-            $('.edit-link-in-comment', section).data('text', newcomment);
-            $('.comment-container', section).html(newText);
-            section.children().show();
-            $('.hiddenform', section).hide();
-        })
-        return false;
-    })
-
-    $(document).keyup(function(e) {
-
-        if ((e.keyCode == 27) && (editcommentflag == true)) {
-            editcommentflag = false;
-            $.each($('.hiddenform:visible'), function(index, object) {
-                var section = $(object).parent();
-                section.children().show();
-                $(object).hide();
-            })
-        }
-    });
-
-    $('.replyto').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-            $('input[name=comment_id]').val($(this).data('commentId'))
-            var prepend = '@' + $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $('#newComment').val(newText);
-            $.scrollTo($('#comment-anchor'), {duration:250});
-        }
-        return false;
-    })
 
     $('.mention-link').click(function() {
         if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
@@ -212,19 +138,4 @@ $(document).ready(function() {
         }
         return false;
     });
-
-    /*
-    $( ".slider" ).slider({
-        value: 5,
-        min: 1,
-        max: 9,
-        step: 1,
-        slide: function( event, ui ) {
-            var rightOpacity = (((ui.value-1) * 0.08) + 0.36).toFixed(2);
-            var leftOpacity = (1 - ((ui.value-1) * 0.08)).toFixed(2);
-            $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
-            $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
-        }
-    })
-    */
-})
+});

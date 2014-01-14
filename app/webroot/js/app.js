@@ -772,6 +772,22 @@ function isExpert(user, expertsObj) {
 }
 
 /*
+ * Fetch and populate Comments via AJAX on the pitch solutions gallery page
+ */
+function fetchPitchComments() {
+    $.getJSON('/pitches/getcommentsnew/' + pitchNumber + '.json', function(result) {
+        if (result.comments) {
+            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>';
+            $('.pitch-comments').html(fetchCommentsNew(result));
+            $('.pitch-comments').prepend(commentsTitle);
+            $('.separator', '.pitch-comments section:first').remove();
+        } else {
+            $('.ajax-loader', '.pitch-comments').remove();
+        }
+    });
+}
+
+/*
  * Comments Toolbar
  */
 function enableToolbar() {
@@ -801,6 +817,7 @@ function enableToolbar() {
     });
     
     // Edit Comment
+    var editcommentflag = false;
     $('body, .solution-overlay').on('click', '.edit-link-in-comment', function(e) {
         e.preventDefault();
         var section = $(this).parent().parent().parent();
@@ -826,6 +843,36 @@ function enableToolbar() {
             editcommentflag = false;
         });
         return false;
+    });
+    
+    // Solutions Tooltips
+    $('.hoverimage[data-comment-to]').tooltip({
+        tooltipID: 'tooltip2',
+        tooltipSource: 'hidden',
+        width: '205px',
+        correctPosX: 40,
+        //positionTop: 0,
+        borderSize: '0px',
+        tooltipPadding: 0,
+        tooltipBGColor: 'transparent'
+    });
+
+    // Escaping
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) {
+            if (editcommentflag == true) {
+                e.stopPropagation();
+                editcommentflag = false;
+                $.each($('.hiddenform:visible'), function(index, object) {
+                    var section = $(object).parent();
+                    section.children().show();
+                    $(object).hide();
+                });
+            } else {
+                e.preventDefault();
+                hideSolutionPopup();
+            }
+        }
     });
 }
 
@@ -1084,5 +1131,14 @@ function addAnswerComment(button) {
     } else {
         alert('Введите текст комментария!');
         return false;
+    }
+}
+
+function hideSolutionPopup() {
+    if ($('.solution-overlay').is(':visible')) {
+        window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
+        $('#pitch-panel').show();
+        $('.wrapper', 'body').first().removeClass('wrapper-frozen');
+        $('.solution-overlay').hide();
     }
 }

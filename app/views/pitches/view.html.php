@@ -480,26 +480,7 @@
         </section>
 
         <section class="white" style="margin: 0 -34px">
-            <div class="messages_gallery">
-                <?php
-                if(
-
-                (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($this->session->read('user.isAdmin')))) ||
-                (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true))
-
-                && ($this->session->read('user.id'))
-                ):?>
-                <script>var allowComments = true;</script>
-                <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'expertsIds' => $expertsIds))?>
-                <?php else:?>
-                <script>var allowComments = false;</script>
-                <?php endif?>
-                <!-- start: Pitch Comments -->
-                <section class="pitch-comments isField">
-                    <div class="ajax-loader"></div>
-                <!-- end: Pitch Comments -->
-                </section>
-            </div>
+            <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'expertsIds' => $expertsIds))?>
         </section>
                 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
     <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
@@ -600,20 +581,8 @@
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
 
-<!-- Moderation Popups -->
-<?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) ):?>
-    <?=$this->view()->render(array('element' => 'moderation'))?>
-<?php endif; ?>
-
 <!-- Solution Popup -->
-<script>
-var pitchNumber = <?php echo $pitch->id; ?>;
-var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
-var currentUserName = '<?=$this->nameInflector->renderName($this->session->read('user.first_name'), $this->session->read('user.last_name'))?>';
-var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')) ? 1 : 0 ?>;
-var isCurrentExpert = <?php echo (in_array($this->session->read('user.id'), $expertsIds)) ? 1 : 0; ?>;
-var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 1 : 0; ?>;
-</script>
+
 <!-- start: Solution overlay -->
 <div class="solution-overlay">
     <!-- start: Solution Container -->
