@@ -382,7 +382,11 @@ $(document).ready(function() {
                 // ViewSolution or Popup
                 if ($('.solution-comments').length > 0) {
                     $('.solution-comments').prepend(populateComment(commentData));
-                    textarea.val('#' + result.result.solution_num + ', ');
+                    if (result.result.solution_num) {
+                        textarea.val('#' + result.result.solution_num + ', ');
+                    } else {
+                        textarea.val('');
+                    }
                 }
                 // Pitch Gallery
                 if ($('.pitch-comments').length > 0) {
@@ -586,53 +590,6 @@ function warningModal() {
 }
 
 /*
- * Fetch Comments data from response
- */
-function fetchComments(result) {
-    var fetchedComments = '';
-    var expertsObj = result.experts || {};
-    $.each(result.comments, function(idx, comment) {
-        var commentData = {};
-        commentData.commentId = comment.id;
-        commentData.commentUserId = comment.user.id;
-        commentData.commentText = comment.text;
-        commentData.commentPlainText = comment.originalText.replace(/"/g, "\'");
-        commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
-        commentData.isExpert = isExpert(comment.user_id, expertsObj);
-        
-        if (result.pitch.user_id == comment.user_id) {
-            commentData.messageInfo = 'message_info2';
-        } else if (comment.user.isAdmin == "1") {
-            commentData.messageInfo = 'message_info4';
-            commentData.isAdmin = comment.user.isAdmin;
-        } else if (commentData.isExpert) {
-            commentData.messageInfo = 'message_info5';
-        }else {
-            commentData.messageInfo = 'message_info1';
-        }
-    
-        commentData.userAvatar = comment.avatar;
-    
-        commentData.commentAuthor = comment.user.first_name + ((comment.user.last_name.length == 0) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
-        commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
-        
-        // Date Time
-        var postDateObj = getProperDate(comment.created);
-        commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-        commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-        commentData.relImageUrl = '';
-        if (comment.solution_url) {
-            commentData.relImageUrl = comment.solution_url.solution_solutionView.weburl;
-        }
-        
-        fetchedComments += populateComment(commentData);
-        
-    });
-    
-    return fetchedComments;
-}
-
-/*
  * Fetch Comments data from response. Hierarchial
  */
 function fetchCommentsNew(result) {
@@ -826,32 +783,48 @@ function enableToolbar() {
     });
     
     // Reply to Question
-    $(document).on('click', '.replyto', function() {
-        toggleAnswer($(this));
-        return false;
-    });
-    $('.solution-overlay').on('click', '.replyto', function() {
+    $('body, .solution-overlay').on('click', '.replyto', function() {
         toggleAnswer($(this));
         return false;
     });
     
     // Send Answer Comment
-    $(document).on('click', '.answercomment', function(event) {
-        addAnswerComment($(event.target));
-    });
-    $('.solution-overlay').on('click', '.answercomment', function(event) {
+    $('body, .solution-overlay').on('click', '.answercomment', function(event) {
         addAnswerComment($(event.target));
     });
 
     // Delete Comment
-    $(document).on('click', '.delete-link-in-comment.ajax', function(e) {
+    $('body, .solution-overlay').on('click', '.delete-link-in-comment.ajax', function(e) {
         e.preventDefault();
         commentDeleteHandler($(e.target));
         return false;
     });
-    $('.solution-overlay').on('click', '.delete-link-in-comment.ajax', function(e) {
+    
+    // Edit Comment
+    $('body, .solution-overlay').on('click', '.edit-link-in-comment', function(e) {
         e.preventDefault();
-        commentDeleteHandler($(e.target));
+        var section = $(this).parent().parent().parent();
+        section.children().not('.separator').hide();
+        var hiddenform = $('.hiddenform', section);
+        hiddenform.show();
+        var text = $(this).data('text');
+        $('textarea', hiddenform).val(text);
+        editcommentflag = true;
+        return false;
+    });
+    $('body, .solution-overlay').on('click', '.editcomment', function() {
+        var section = $(this).closest('section[data-id]');
+        var textarea = section.find('textarea');
+        var newcomment = textarea.val();
+        var id = textarea.data('id');
+        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
+            var newText = response;
+            $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
+            $('.comment-container', 'section[data-id=' + id + ']').html(newText);
+            section.children().show();
+            $('.hiddenform', section).hide();
+            editcommentflag = false;
+        });
         return false;
     });
 }

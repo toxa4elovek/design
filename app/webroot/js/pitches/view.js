@@ -809,36 +809,6 @@ function fetchPitchComments() {
  */
 function inlineActions() {
 
-
-    $('.edit-link-in-comment').click(function(e) {
-        e.preventDefault();
-        var section = $(this).parent().parent().parent();
-        section.children().not('.separator').hide();
-        var hiddenform = $('.hiddenform', section);
-        hiddenform.show();
-        var text = $(this).data('text');
-        $('textarea', hiddenform).val(text);
-        editcommentflag = true;
-        return false;
-    });
-
-    $('.editcomment').click(function() {
-        var textarea = $(this).prev();
-        var newcomment = textarea.val();
-        var id = textarea.data('id');
-        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
-            var newText = response;
-            var section = textarea.parent().parent().parent().parent();
-            $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
-            $('.comment-container', 'section[data-id=' + id + ']').html(newText);
-            section.children().show();
-            $('.hiddenform', section).hide();
-            editcommentflag = false;
-            inlineActions();
-        });
-        return false;
-    });
-    
     $('.client-comment').click(function() {
         $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
         return false;
