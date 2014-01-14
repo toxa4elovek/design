@@ -162,7 +162,7 @@
                     if ($pitch['published'] == 1) {
                         $imgForDraft = ' not-draft';
                     }
-                    if($pitch['user_id'] == $this->session->read('user.id')){
+                    if(($pitch['user_id'] == $this->session->read('user.id')) && ($pitch['status'] != 2)){
                         if($pitch['billed'] == 1) {
                             $userString = '<a title="Редактировать" href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link' . $imgForDraft . '"><img class="pitches-name-td-img" src="/img/1.gif"></a>';
                         }else {
