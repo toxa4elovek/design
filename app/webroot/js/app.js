@@ -81,7 +81,7 @@ $(document).ready(function() {
     })
 
     /* Social networks widgets modal*/
-    if ($.browser.mobile) {
+    if (!$.browser.mobile) {
         if (showSocialPopup) {
             setTimeout(function() { appendSocials(); }, 5000);
         }
