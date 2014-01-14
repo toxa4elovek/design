@@ -252,12 +252,12 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     stage.add(layer);
 
     // Low Rating Popup
-    if (response.needRatingPopup == true) {
+    if ((response.needRatingPopup == true) && (response.guaranteed != 1)) {
         fireRatingPopup();
     }
 
     // Low Rating Bubble
-    if (response.avgNum < 3) {
+    if ((response.avgNum < 3) && (response.guaranteed != 1)) {
         if (response.percentages.rating < 20) {
             var lowReason = 'недостаточно звезд.';
         }
@@ -273,6 +273,8 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
             $(this).parent().hide();
             return false;
         });
+    }else {
+        $('.bubble').hide();
     }
 
     // Private Pitch Popups
