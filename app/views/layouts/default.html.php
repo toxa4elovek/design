@@ -56,7 +56,7 @@
     ?>
     <title><?=$title?></title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1024"/>
     <link rel="apple-touch-icon" href="/img/icon_57.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="/img/icon_72.png" />
     <link rel="apple-touch-icon" sizes="114x114" href="/img/icon_114.png" />
@@ -141,7 +141,7 @@ $timeoutNotice = $this->session->read('user.timeoutpitch');
 $showPanel = ((count($clientNotice) > 0) || (count($designerNotice) > 0) || (!is_null($timeoutNotice)));
 ?>
 <body>
-<a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
+<a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;display:hidden;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
 <?php echo $this->content() ?>
 
 <?=$this->view()->render(array('element' => 'footer'))?>

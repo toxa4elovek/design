@@ -88,7 +88,18 @@ $(document).ready(function() {
         if (needSocialWrite) {
             $.post('/users/addsocial.json');
         }
+        $('#feedback-link').show();
+        $('#feedback-link').live('mouseover', function() {
+            $(this).css('left', '0');
+        })
+
+        $('#feedback-link').live('mouseout', function() {
+            $(this).css('left', '-5px');
+        })
+    }else {
+        $('#feedback-link').hide();
     }
+
 
     $('input[name=case]').val('fu27fwkospf');
 
@@ -350,13 +361,7 @@ $(document).ready(function() {
         $('#pitch-title').height($('.breadcrumbs-view', $('#pitch-title')).height() + 10)
     }
 
-    $('#feedback-link').live('mouseover', function() {
-        $(this).css('left', '0');
-    })
 
-    $('#feedback-link').live('mouseout', function() {
-        $(this).css('left', '-5px');
-    })
 
     //Цвет фона для текущих питчей
     //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
