@@ -686,7 +686,7 @@ class PitchesController extends \app\controllers\AppController {
                 $page = abs(intval($this->request->query['page']));
             }
             $conditions = array('Pitch.id' => $pitchesId);
-            $conditions += array('status' => array('<' => 2));
+            //$conditions += array('status' => array('<' => 2));
             /*******/
             $total = ceil(Pitch::count(array(
                 'conditions' => $conditions,
