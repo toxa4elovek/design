@@ -45,7 +45,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments', 'getcommentsnew'
 	);
 
     public function blank() {
@@ -1103,7 +1103,7 @@ class PitchesController extends \app\controllers\AppController {
                 if(($edit == true) && ($pitch->published == 1) && ($pitch->status != 2)) {
                     $message = 'Друзья, в брифе возникли изменения, и мы убедительно просим вас с ними ознакомиться.';
                     $admin = $admin = User::getAdmin();
-                    $data = array('pitch_id' => $pitch->id, 'reply_to' => 0, 'user_id' => $admin, 'text' => $message);
+                    $data = array('pitch_id' => $pitch->id, 'reply_to' => 0, 'user_id' => $admin, 'text' => $message, 'public' => 1);
                     Comment::createComment($data);
                 }
 
@@ -1363,6 +1363,42 @@ class PitchesController extends \app\controllers\AppController {
 	    }
 	}
 
+	public function getCommentsNew() {
+	    if (!$this->request->is('json')) {
+	        return $this->redirect('/pitches');
+	    }
+	    if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id)))) {
+	        $currentUser = Session::read('user');
+	        $isUserClient = ($currentUser['id'] == $pitch->user_id) ? true : false;
+	        $isUserAdmin = (($currentUser['isAdmin'] == 1) || User::checkRole('admin')) ? true : false;
+	        if (($pitch->published == 0) && (false == $isUserClient) && (false == $isUserAdmin)) {
+	            return false;
+	        }
+
+	        $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+	        $expertsIds = array();
+	        foreach ($experts as $expert) {
+	            $expertsIds[] = $expert->user_id;
+	        }
+
+	        // Fetch Top Level Comments
+	        $commentsRaw = Comment::all(array(
+	            'conditions' => array(
+                    'pitch_id' => $pitch->id,
+                    'question_id' => 0,
+	            ),
+	            'order' => array('Comment.id' => 'desc'),
+	            'with' => array('User', 'Pitch')));
+
+	        $commentsRaw = Comment::addAvatars($commentsRaw);
+	        $comments = Comment::filterCommentsPrivate($commentsRaw, $pitch->user_id);
+
+	        return compact('comments', 'experts', 'pitch');
+	    } else {
+	        return false;
+	    }
+	}
+
     public function robots() {
         $pitches = Pitch::all(array('conditions' => array('private' => 1)));
         $text = 'User-agent: *';
@@ -1533,10 +1569,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
 			$results = getArrayNeighborsByKey($solutions->data(), (int) $solution->id);
 			$next = $results['next'];
 			$prev = $results['prev'];
-            $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
+            $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
             $comments = Comment::filterComments($solution->num, $comments);
             $comments = Comment::addAvatars($comments);
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
+            $comments = Comment::filterCommentsPrivate($comments, $pitch->user_id);
+
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             if ($pitch->category_id == 7) {
                 $expertsIds = array();

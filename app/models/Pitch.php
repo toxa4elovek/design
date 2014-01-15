@@ -399,6 +399,7 @@ class Pitch extends \app\models\AppModel {
                     'pitch_id' => $pitch->id,
                     'user_id' => User::getAdmin(),
                     'text' => 'Дорогие друзья! Обратите внимание, что срок питча продлен до ' . date('d.m.Y', strtotime($pitch->finishDate)) . ', а размер вознаграждения увеличен.',
+                    'public' => 1,
                 ));
                return true;
             }
