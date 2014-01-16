@@ -733,9 +733,13 @@ h1.solution-title-page  {
     margin: 10px 0;
 }
 .solution-left-panel .separator {
-	width: 600px;
+	width: 630px;
 	height: 3px;
 	background: url('img/sep-solution.png');
+	margin: 0;
+}
+.solution-left-panel section.is-child div.separator {
+    margin-left: -65px;
 }
 .solution-left-panel .separator.full {
     width: 692px;
@@ -832,6 +836,12 @@ h1.solution-title-page  {
     margin: 20px auto 20px auto;
     word-wrap: break-word;
 }
+.solution-left-panel section.is-child div.message_text {
+	width: 325px;
+}
+.solution-left-panel section.answer-section textarea {
+	width: 380px;
+}
 .solution-left-panel div.toolbar {
 	display: none;
 	clear: both;
@@ -904,6 +914,9 @@ h1.solution-title-page  {
     font-size: 20px;
     line-height: 30px;
     font-family: "RodeoC", sans-serif; 
+}
+.solution-left-panel .createCommentForm {
+	width: 640px;
 }
 /*
  * ----- Right Panel -----
@@ -1131,11 +1144,11 @@ h1.solution-title-page  {
 .pitch-comments div.message_info3,
 .pitch-comments div.message_info4,
 .pitch-comments div.message_info5 {
-    margin: 20px 0 0px 38px;
+    margin: 15px 0 0px 38px;
 }
 .pitch-comments div.separator {
 	width: 810px;
-	margin-left: 30px;
+	margin: 0 0 0 30px;
 }
 .pitch-comments div.ajax-loader {
     width: 100%;
@@ -1145,12 +1158,15 @@ h1.solution-title-page  {
 .pitch-comments div.message_text {
     margin: 15px 0 0 26px;
     float: left;
-    width: 520px;
+    width: 570px;
     text-transform: none;
     color: #8f8f8f;
     font: normal 13px/1 "Arial", sans-serif;
     line-height: 17px;
     word-wrap:break-word;
+}
+.pitch-comments section.is-child div.message_text {
+	width: 505px;
 }
 .pitch-comments div.toolbar-wrapper {
     width: 810px;
@@ -1167,6 +1183,22 @@ h1.solution-title-page  {
     margin: 0 0 8px 0;
     height: 18px;
 
+}
+div#comment-anchor.comment {
+	color: #666666;
+}
+section.is-child {
+    margin-left: 65px;
+}
+section.is-child div.separator {
+    margin-left: -35px;
+}
+section.answer-section div.ajax-loader {
+    position: absolute;
+    top: 80px;
+    right: 35px;
+    width: 32px;
+    height: 32px;
 }
 #filler {
     transition: width .5s;
@@ -1262,4 +1294,7 @@ cursor: pointer;
 }
 #dinamic div.bubble #bubble-close:hover {
     opacity: 1;
+}
+input.wrong-input {
+	border: 1px solid red;
 }

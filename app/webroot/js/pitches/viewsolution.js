@@ -40,69 +40,9 @@ $(document).ready(function() {
     var editcommentflag = false;
 
     function inlineActions() {
-        $('.edit-link-in-comment').click(function(e) {
-            e.preventDefault();
-            var section = $(this).parent().parent().parent();
-            section.children().not('.separator').hide();
-            var hiddenform = $('.hiddenform', section);
-            hiddenform.show();
-            var text = $(this).data('text');
-            $('textarea', hiddenform).val(text);
-            editcommentflag = true;
-            return false;
-        });
-
-        $('.editcomment').click(function() {
-            var textarea = $(this).prev();
-            var newcomment = textarea.val();
-            var id = textarea.data('id');
-            $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
-                var newText = response;
-                var section = textarea.parent().parent().parent().parent();
-                $('.edit-link-in-comment', section).data('text', newcomment);
-                $('.comment-container', section).html(newText);
-                section.children().show();
-                $('.hiddenform', section).hide();
-                editcommentflag = false;
-                enableToolbar();
-            })
-            return false;
-        });
-
-        $('.replyto').click(function() {
-            if ($('.allow-comments').is(':visible')) {
-                var el = $('#newComment', '.allow-comments');
-                var anchor = $('.allow-comments');
-            } else {
-                var el = $('#newComment');
-                var anchor = $('#comment-anchor');
-            }
-            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val($(this).data('commentId'))
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + el.val();
-                el.val(newText);
-                $.scrollTo(anchor, {duration:250});
-            }
-            return false;
-        });
 
         $('.client-comment').click(function() {
             $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
-            return false;
-        });
-
-        $('.select-winner-popup').click(function() {
-            $('#winner-num').text('#' + $(this).data('num'));
-            $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
-            $('#winner-user-link').text($(this).data('user'));
-            $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
-            $('#confirmWinner').data('url', $(this).attr('href'));
-            $('#popup-final-step').modal({
-                containerId: 'final-step',
-                opacity: 80,
-                closeClass: 'popup-close'
-            });
             return false;
         });
 
@@ -130,32 +70,8 @@ $(document).ready(function() {
             $($(this).prev('#tooltip-bubble')).fadeOut(200);
         });
 
-        $('.hoverimage[data-comment-to]').tooltip({
-            tooltipID: 'tooltip2',
-            tooltipSource: 'hidden',
-            width: '205px',
-            correctPosX: 40,
-            //positionTop: 0,
-            borderSize: '0px',
-            tooltipPadding: 0,
-            tooltipBGColor: 'transparent'
-        });
-
         solutionShowHide();
-        warningModal();
     }
-
-    $(document).keyup(function(e) {
-
-        if ((e.keyCode == 27) && (editcommentflag == true)) {
-            editcommentflag = false;
-            $.each($('.hiddenform:visible'), function(index, object) {
-                var section = $(object).parent();
-                section.children().show();
-                $(object).hide();
-            })
-        }
-    });
 
 	$('#like').click(function(event){
         event.stopPropagation();
@@ -303,25 +219,6 @@ $(document).ready(function() {
             $('#newComment').val(newText);
             $(this).parent().parent().parent().hide();
         }
-        return false;
-    });
-
-    $('.replyto').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-            $('input[name=comment_id]').val($(this).data('commentId'))
-            var prepend = '@' + $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $.scrollTo($('#comment-anchor'), {duration:250});
-            $('#newComment').val(newText);
-        }
-        return false;
-    })
-
-    $('#createComment').click(function() {
-        if (isCommentValid($('#newComment').val())) { // See app.js
-            return true;
-        }
-        alert('Введите текст комментария!');
         return false;
     });
 
@@ -603,7 +500,7 @@ $(document).ready(function() {
             solutionId = result.solution.id;
             
             if (result.comments) {
-                $('.solution-comments').html(fetchComments(result));
+                $('.solution-comments').html(fetchCommentsNew(result));
                 
                 enableToolbar();
             }
@@ -694,6 +591,7 @@ $(document).ready(function() {
             }
             
             inlineActions();
+            warningModal();
             Socialite.load($('.solution-share'), [
                                                   $('#facebook' + result.solution.id)[0],
                                                   $('#twitter' + result.solution.id)[0]

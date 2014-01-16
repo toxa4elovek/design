@@ -81,14 +81,25 @@ $(document).ready(function() {
     })
 
     /* Social networks widgets modal*/
-    if ($.browser.mobile) {
+    if (!$.browser.mobile) {
         if (showSocialPopup) {
             setTimeout(function() { appendSocials(); }, 5000);
         }
         if (needSocialWrite) {
             $.post('/users/addsocial.json');
         }
+        $('#feedback-link').show();
+        $('#feedback-link').live('mouseover', function() {
+            $(this).css('left', '0');
+        })
+
+        $('#feedback-link').live('mouseout', function() {
+            $(this).css('left', '-5px');
+        })
+    }else {
+        $('#feedback-link').hide();
     }
+
 
     $('input[name=case]').val('fu27fwkospf');
 
@@ -350,18 +361,52 @@ $(document).ready(function() {
         $('#pitch-title').height($('.breadcrumbs-view', $('#pitch-title')).height() + 10)
     }
 
-    $('#feedback-link').live('mouseover', function() {
-        $(this).css('left', '0');
-    })
 
-    $('#feedback-link').live('mouseout', function() {
-        $(this).css('left', '-5px');
-    })
 
     //Цвет фона для текущих питчей
     //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
-
-})
+    
+    // Add New Comment Form Handler
+    $('.createComment').on('click', function(e) {
+        e.preventDefault();
+        var textarea = $(this).closest('form').find('textarea');
+        if (typeof(solutionId) == undefined) {
+            var solutionId = 0;
+        }
+        if (isCommentValid(textarea.val())) {
+            var is_public = $(this).data('is_public');
+            $.post('/comments/add.json', {
+                'text': textarea.val(),
+                'solution_id': solutionId,
+                'comment_id': '',
+                'pitch_id': pitchNumber,
+                'public': is_public,
+                'fromAjax': 1
+            }, function(result) {
+                var commentData = preparePitchCommentData(result);
+                // ViewSolution or Popup
+                if ($('.solution-comments').length > 0) {
+                    $('.solution-comments').prepend(populateComment(commentData));
+                    if (result.result.solution_num) {
+                        textarea.val('#' + result.result.solution_num + ', ');
+                    } else {
+                        textarea.val('');
+                    }
+                }
+                // Pitch Gallery
+                if ($('.pitch-comments').length > 0) {
+                    $('.pitch-comments section:first').prepend('<div class="separator"></div>');
+                    $(populateComment(commentData)).insertAfter('.pitch-comments .separator:first');
+                    $('.separator', '.pitch-comments section:first').remove();
+                }
+            });
+        } else {
+            alert('Введите текст комментария!');
+            return false;
+        }
+    });
+    
+});
 
 window.fbAsyncInit = function() {
     FB.init({
@@ -493,8 +538,8 @@ function warningModal() {
         $(this).attr('placeholder', warnPlaceholder); 
     });
     
-    $('.warning-comment').off('click');
-    $('.warning-comment').on('click', function() {
+    // Warn Comment
+    $('body, .solution-overlay').on('click', '.warning-comment', function() {
         $('#sendWarnComment').data('url', $(this).data('url'));
         $('#sendWarnComment').data('commentId', $(this).data('commentId'));
         $('#popup-warning-comment').modal({
@@ -507,9 +552,20 @@ function warningModal() {
         });
         return false;
     });
-    
-    $('.warning').off('click');
-    $('.warning').on('click', function(e) {
+    $('#sendWarnComment').on('click', function() {
+        var url = $(this).data('url');
+        var id = $(this).data('commentId');
+        if(($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
+            $.post(url, {"text": $('#warn-comment').val(), "id": id}, function(response) {
+                $('.popup-close').click();
+            });
+        }else {
+            alert('Введите текст жалобы!');
+        }
+    });
+
+    // Warn Solution
+    $('body, .solution-overlay').on('click', '.warning', function(e) {
         e.preventDefault();
         $('#sendWarn').data('url', $(this).attr('href'));
         $('#popup-warning').modal({
@@ -522,21 +578,6 @@ function warningModal() {
         });
         return false;
     });
-    
-    $('#sendWarnComment').off('click');
-    $('#sendWarnComment').on('click', function() {
-        var url = $(this).data('url');
-        var id = $(this).data('commentId');
-        if(($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
-            $.post(url, {"text": $('#warn-comment').val(), "id": id}, function(response) {
-                $('.popup-close').click();
-            });
-        }else {
-            alert('Введите текст жалобы!');
-        }
-    });
-    
-    $('#sendWarn').off('click');
     $('#sendWarn').on('click', function() {
         var url = $(this).data('url');
         if(($('#warn-solution').val().length > 0) && ($('#warn-solution').val() != warnPlaceholder)) {
@@ -550,50 +591,65 @@ function warningModal() {
 }
 
 /*
- * Fetch Comments data from response
+ * Fetch Comments data from response. Hierarchial
  */
-function fetchComments(result) {
+function fetchCommentsNew(result) {
     var fetchedComments = '';
-    var expertsObj = result.experts || {};
     $.each(result.comments, function(idx, comment) {
-        var commentData = {};
-        commentData.commentId = comment.id;
-        commentData.commentUserId = comment.user.id;
-        commentData.commentText = comment.text;
-        commentData.commentPlainText = comment.originalText.replace(/"/g, "\'");
-        commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
-        commentData.isExpert = isExpert(comment.user_id, expertsObj);
-        
-        if (result.pitch.user_id == comment.user_id) {
-            commentData.messageInfo = 'message_info2';
-        } else if (comment.user.isAdmin == "1") {
-            commentData.messageInfo = 'message_info4';
-            commentData.isAdmin = comment.user.isAdmin;
-        } else if (commentData.isExpert) {
-            commentData.messageInfo = 'message_info5';
-        }else {
-            commentData.messageInfo = 'message_info1';
-        }
-    
-        commentData.userAvatar = comment.avatar;
-    
-        commentData.commentAuthor = comment.user.first_name + ((comment.user.last_name.length == 0) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
-        commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
-        
-        // Date Time
-        var postDateObj = getProperDate(comment.created);
-        commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
-        commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-        commentData.relImageUrl = '';
-        if (comment.solution_url) {
-            commentData.relImageUrl = comment.solution_url.solution_solutionView.weburl;
-        }
-        
+        var commentData = prepareCommentData(comment, result);
         fetchedComments += populateComment(commentData);
-        
+        if (comment.child) {
+            var commentChildData = prepareCommentData(comment.child, result);
+            fetchedComments += populateComment(commentChildData);
+        }
     });
-    
     return fetchedComments;
+}
+
+function prepareCommentData(comment, result) {
+    var commentData = {};
+    var expertsObj = result.experts || {};
+    commentData.commentId = comment.id;
+    commentData.commentUserId = comment.user.id;
+    commentData.commentText = comment.text;
+    commentData.commentPlainText = comment.originalText.replace(/"/g, "\'");
+    commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
+    commentData.isExpert = isExpert(comment.user_id, expertsObj);
+    
+    if (result.pitch.user_id == comment.user_id) {
+        commentData.messageInfo = 'message_info2';
+    } else if (comment.user.isAdmin == "1") {
+        commentData.messageInfo = 'message_info4';
+        commentData.isAdmin = comment.user.isAdmin;
+    } else if (commentData.isExpert) {
+        commentData.messageInfo = 'message_info5';
+    }else {
+        commentData.messageInfo = 'message_info1';
+    }
+    
+    commentData.userAvatar = comment.avatar;
+    
+    commentData.commentAuthor = comment.user.first_name + ((comment.user.last_name.length == 0) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
+    commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
+    
+    // Date Time
+    var postDateObj = getProperDate(comment.created);
+    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+    commentData.relImageUrl = '';
+    if (comment.solution_url) {
+        commentData.relImageUrl = comment.solution_url.solution_solutionView.weburl;
+    }
+    if (comment.isChild == 1) {
+        commentData.isChild = 1;
+    }
+    if (comment.hasChild) {
+        commentData.hasChild = 1;
+    }
+    if (comment.needAnswer) {
+        commentData.needAnswer = 1;
+    }
+    return commentData;
 }
 
 /*
@@ -603,8 +659,14 @@ function populateComment(data) {
     var toolbar = '';
     var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
                         <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
-    var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a> \
-                      <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+    var answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
+    if (data.needAnswer == 1) {
+        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>';
+    }
+    if ((data.isChild == 1) || (data.hasChild == 1)) {
+        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
+    }
+    var userToolbar = answerTool + '<a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
     } else if (currentUserId) {
@@ -617,9 +679,13 @@ function populateComment(data) {
     if (!data.isAdmin) {
         avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
                         <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
-                        </a>'; 
+                        </a>';
     }
-    return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+    var sectionClass = '';
+    if (data.isChild == 1) {
+        sectionClass = 'is-child ';
+    }
+    return '<section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                 <div class="separator"></div> \
                 <div class="' + data.messageInfo + '">'
                 + avatarElement +
@@ -707,56 +773,164 @@ function isExpert(user, expertsObj) {
 }
 
 /*
+ * Fetch and populate Comments via AJAX on the pitch solutions gallery page
+ */
+function fetchPitchComments() {
+    $.getJSON('/pitches/getcommentsnew/' + pitchNumber + '.json', function(result) {
+        if (result.comments) {
+            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>';
+            $('.pitch-comments').html(fetchCommentsNew(result));
+            $('.pitch-comments').prepend(commentsTitle);
+            $('.separator', '.pitch-comments section:first').remove();
+        } else {
+            $('.ajax-loader', '.pitch-comments').remove();
+        }
+    });
+}
+
+/*
  * Comments Toolbar
  */
 function enableToolbar() {
-    $('section', '.solution-comments, .pitch-comments').on('mouseenter', function() {
+    $(document).on('mouseenter', '.pitch-comments section, .solution-comments section', function() {
         $('.toolbar', this).fadeIn(200);
     });
-    $('section', '.solution-comments, .pitch-comments').on('mouseleave', function() {
+    $(document).on('mouseleave', '.pitch-comments section, .solution-comments section', function() {
         $('.toolbar', this).fadeOut(200);
+    });
+    
+    // Reply to Question
+    $('body, .solution-overlay').on('click', '.replyto', function() {
+        toggleAnswer($(this));
+        return false;
+    });
+    
+    // Send Answer Comment
+    $('body, .solution-overlay').on('click', '.answercomment', function(event) {
+        addAnswerComment($(event.target));
     });
 
     // Delete Comment
-    $('.delete-link-in-comment.ajax').on('click', function(e) {
+    $('body, .solution-overlay').on('click', '.delete-link-in-comment.ajax', function(e) {
         e.preventDefault();
-        var link = $(this);
-        var section = link.parent().parent().parent();
-        var id = $(section).attr('data-id');
-        
-        
-        // Delete without Moderation
-        if (!isCurrentAdmin) {
-            commentDelete(link, section, id);
+        commentDeleteHandler($(e.target));
+        return false;
+    });
+    
+    // Edit Comment
+    var editcommentflag = false;
+    $('body, .solution-overlay').on('click', '.edit-link-in-comment', function(e) {
+        e.preventDefault();
+        var section = $(this).parent().parent().parent();
+        section.children().not('.separator').hide();
+        var hiddenform = $('.hiddenform', section);
+        hiddenform.show();
+        var text = $(this).data('text');
+        $('textarea', hiddenform).val(text);
+        editcommentflag = true;
+        return false;
+    });
+    $('body, .solution-overlay').on('click', '.editcomment', function() {
+        var section = $(this).closest('section[data-id]');
+        var textarea = section.find('textarea');
+        var newcomment = textarea.val();
+        var id = textarea.data('id');
+        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
+            var newText = response;
+            $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
+            $('.comment-container', 'section[data-id=' + id + ']').html(newText);
+            section.children().show();
+            $('.hiddenform', section).hide();
+            editcommentflag = false;
+        });
+        return false;
+    });
+    
+    // Solutions Tooltips
+    $('.hoverimage[data-comment-to]').tooltip({
+        tooltipID: 'tooltip2',
+        tooltipSource: 'hidden',
+        width: '205px',
+        correctPosX: 40,
+        //positionTop: 0,
+        borderSize: '0px',
+        tooltipPadding: 0,
+        tooltipBGColor: 'transparent'
+    });
+
+    // Escaping
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) {
+            if (editcommentflag == true) {
+                e.stopPropagation();
+                editcommentflag = false;
+                $.each($('.hiddenform:visible'), function(index, object) {
+                    var section = $(object).parent();
+                    section.children().show();
+                    $(object).hide();
+                });
+            } else {
+                e.preventDefault();
+                hideSolutionPopup();
+            }
+        }
+    });
+    
+    // Select Winner Solution
+    $('body, .solution-overlay').on('click', '.select-winner-popup', function() {
+        var item = $('.select-winner[data-solutionid=' + $(this).data('solutionid') + ']').parent().parent().parent().prev().prev().clone();
+        $('#winner-num').text('#' + $(this).data('num'));
+        $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+        $('#winner-user-link').text($(this).data('user'));
+        $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
+        $('#confirmWinner').data('url', $(this).attr('href'));
+        if (item.length > 0) {
+            $('#replacingblock').replaceWith(item);
+        }
+        $('#popup-final-step').modal({
+            containerId: 'final-step',
+            opacity: 80,
+            closeClass: 'popup-close'
+        });
+        return false;
+    });
+}
+
+function commentDeleteHandler(link) {
+    var section = link.closest('section');
+    var id = $(section).attr('data-id');
+    
+    
+    // Delete without Moderation
+    if (!isCurrentAdmin) {
+        commentDelete(link, section, id);
+        return false;
+    }
+    
+    $('#model_id', '#popup-delete-comment').val(id);
+    
+    // Show Delete Moderation Overlay
+    $('#popup-delete-comment').modal({
+        containerId: 'final-step-clean',
+        opacity: 80,
+        closeClass: 'popup-close',
+        onShow: function() {
+            $(document).off('click', '#sendDeleteComment');
+        }
+    });
+    
+ // Delete Comment Popup Form
+    $(document).on('click', '#sendDeleteComment', function() {
+        var form = $(this).parent().parent();
+        if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
+            $('#popup-delete-comment').addClass('wrong-input');
             return false;
         }
-        
-        $('#model_id', '#popup-delete-comment').val(id);
-        
-        // Show Delete Moderation Overlay
-        $('#popup-delete-comment').modal({
-            containerId: 'final-step-clean',
-            opacity: 80,
-            closeClass: 'popup-close',
-            onShow: function() {
-                $(document).off('click', '#sendDeleteComment');
-            }
-        });
-        
-     // Delete Comment Popup Form
-        $(document).on('click', '#sendDeleteComment', function() {
-            var form = $(this).parent().parent();
-            if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
-                $('#popup-delete-comment').addClass('wrong-input');
-                return false;
-            }
-            $(document).off('click', '#sendDeleteComment');
-            var data = form.serialize();
-            $.post(form.attr('action') + '.json', data).done(function(result) {
-                commentDelete(link, section, id);
-                $('.popup-close').click();
-            });
-            return false;
+        $(document).off('click', '#sendDeleteComment');
+        var data = form.serialize();
+        $.post(form.attr('action') + '.json', data).done(function(result) {
+            commentDelete(link, section, id);
+            $('.popup-close').click();
         });
         return false;
     });
@@ -767,13 +941,39 @@ function commentDelete(link, section, id) {
     $.post(link.attr('href') + '.json', function(result) {
         if (result == 'true') {
             if ($('.solution-overlay').is(':visible')) {
-                section.remove();
                 var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+                // Enable Answer Link in Parent
+                if (section.hasClass('is-child')) {
+                    var parentSection = section.prev();
+                    var parentSectionPitch = sectionPitch.prev();
+                    parentSection.find('.reply-link-in-comment').css('display', 'block');
+                    parentSectionPitch.find('.reply-link-in-comment').css('display', 'block');
+                }
+                // Detect and Remove Child Section
+                var childSection = section.next('section.is-child');
+                var childSectionPitch = sectionPitch.next('section.is-child');
+                if (childSection.length > 0) {
+                    childSection.remove();
+                }
+                if (childSectionPitch.length > 0) {
+                    childSectionPitch.remove();
+                }
+                section.remove();
                 sectionPitch.remove();
-                $('.separator', '.pitch-comments section:first').remove();
             } else {
+                // Enable Answer Link in Parent
+                if (section.hasClass('is-child')) {
+                    var parentSection = section.prev();
+                    parentSection.find('.reply-link-in-comment').css('display', 'block');
+                }
+                // Detect and Remove Child Section
+                var childSection = section.next('section.is-child');
+                if (childSection.length > 0) {
+                    childSection.remove();
+                }
                 section.remove();
             }
+            $('.separator', '.pitch-comments section:first').remove();
         }
     });
     return true;
@@ -808,4 +1008,157 @@ function appendSocials() {
             $.modal.impl.d = {};
         }
     });
+}
+
+/*
+ * Show/Hide Answer Form
+ */
+function toggleAnswer(link) {
+    if (link.hasClass('active')) {
+        link.closest('section').next('.answer-section').slideUp(600, function() {
+            $(this).remove();
+            link.text('Ответить');
+            link.removeClass('active');
+        });
+        return;
+    }
+    var messageInfo = 'message_info1';
+    if (isCurrentExpert) {
+        messageInfo = 'message_info5';
+    }
+    if (isCurrentAdmin) {
+        messageInfo = 'message_info4';
+    }
+    if (isClient) {
+        messageInfo = 'message_info2';
+    }
+    // Date Time
+    var postDateObj = new Date();
+    var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+    var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+    var avatarElement = '';
+    if (!isCurrentAdmin) {
+        avatarElement = '<a href="/users/view/' + currentUserId + '"> \
+                        <img src="' + currentAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                        </a>';
+    }
+    var el = $('<section style="display: none; position: relative;" class="answer-section"> \
+                    <div class="separator"></div> \
+                    <div class="' + messageInfo + '">'
+                        + avatarElement +
+                        '<a href="#" onClick="return false;"> \
+                            <span>' + currentUserName + '</span><br /> \
+                            <span style="font-weight: normal;">' + postDate + ' ' + postTime + '</span> \
+                        </a> \
+                        <div class="clr"></div> \
+                    </div> \
+                    <div class="message_text" style="margin-top: 0;"> \
+                        <div class="hiddenform"> \
+                            <section> \
+                                <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
+                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '">@' + link.data('comment-to') + ', </textarea><br> \
+                                    <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 8px 15px 0; font-size: 11px; padding-left: 28px"> \
+                                    <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;"> \
+                                    <div class="clr"></div> \
+                                </form> \
+                            </section> \
+                        </div> \
+                    </div> \
+                    <div class="clr"></div> \
+                </section>');
+    var section = link.closest('section');
+    el.insertAfter(section).slideDown(600, function() {
+        link.text('Не отвечать');
+        link.addClass('active');
+    });
+}
+
+function preparePitchCommentData(result) {
+    var commentData = {};
+    var expertsObj = result.experts || {};
+    commentData.commentId = result.comment.id;
+    commentData.commentUserId = result.comment.user_id;
+    commentData.commentText = result.comment.text;
+    commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
+    commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
+    commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
+
+    if (result.comment.pitch.user_id == result.comment.user_id) {
+        commentData.messageInfo = 'message_info2';
+    } else if (result.comment.user.isAdmin == "1") {
+        commentData.messageInfo = 'message_info4';
+        commentData.isAdmin = result.comment.user.isAdmin;
+    } else if (commentData.isExpert) {
+        commentData.messageInfo = 'message_info5';
+    }else {
+        commentData.messageInfo = 'message_info1';
+    }
+
+    if (result.userAvatar) {
+        commentData.userAvatar = result.userAvatar;
+    } else {
+        commentData.userAvatar = '/img/default_small_avatar.png';
+    }
+    
+    if (result.comment.question_id != 0) {
+        commentData.isChild = 1;
+    }
+
+    commentData.commentAuthor = result.comment.user.first_name + ((result.comment.user.last_name.length == 0) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
+    commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
+
+    // Date Time
+    var postDateObj = getProperDate(result.comment.created);
+    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+    return commentData;
+}
+
+function addAnswerComment(button) {
+    var textarea = button.closest('section').find('textarea');
+    var is_public = button.data('is_public');
+    if (typeof(solutionId) == undefined) {
+        var solutionId = 0;
+    }
+    if (isCommentValid(textarea.val())) {
+        var currentSection = button.closest('.answer-section');
+        var answerLink = currentSection.prev().find('.reply-link-in-comment');
+        currentSection.animate({opacity: .3}, 500, function() {
+            var el = $('<div class="ajax-loader"></div>');
+            $(this).append(el);
+        });
+        $.post('/comments/add.json', {
+            'text': textarea.val(),
+            'solution_id': solutionId,
+            'question_id': textarea.data('question-id'),
+            'pitch_id': pitchNumber,
+            'public': is_public,
+            'fromAjax': 1
+        }).done(function(result) {
+            var commentData = preparePitchCommentData(result);
+            var el = populateComment(commentData);
+            currentSection.animate({opacity: 0}, 500, function() {
+                $(this).replaceWith(el);
+                answerLink.removeClass('active').text('Ответить').hide();
+                if ($('.solution-overlay').is(':visible')) {
+                    var sectionPitch = $('.messages_gallery section[data-id=' + textarea.data('question-id') + ']');
+                    $(el).insertAfter(sectionPitch);
+                    var answerLinkPitch = sectionPitch.find('.reply-link-in-comment');
+                    answerLinkPitch.removeClass('active').text('Ответить').hide();
+                }
+            });
+        });
+    } else {
+        alert('Введите текст комментария!');
+        return false;
+    }
+}
+
+function hideSolutionPopup() {
+    if ($('.solution-overlay').is(':visible')) {
+        window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
+        $('#pitch-panel').show();
+        $('.wrapper', 'body').first().removeClass('wrapper-frozen');
+        $('.solution-overlay').hide();
+    }
 }

@@ -12,7 +12,7 @@
             </nav>
             </div>
         </section>
-        <section>
+        <section class="js-participate">
             <div class="title" style="padding-left: 0px; margin-left: 75px;">
                 <span>Участие</span>
             </div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </section>
-        <section>
+        <section class="js-favourites">
             <div class="title" style="padding-left: 0px; margin-left: 75px;">
                 <span>Добавленные</span>
             </div>

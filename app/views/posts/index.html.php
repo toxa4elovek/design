@@ -39,8 +39,8 @@
                                     <div style="height:1px;width:200px;margin-bottom:10px;"></div>
 
                                     <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81, 1773, 3049))):?>
-                                    <a target="_blank" class="more" href="/posts/edit/<?=$post->id?>" >редактировать</a>
-                                    <a target="_blank" class="more delete-post" href="/posts/delete/<?=$post->id?>" >удалить</a>
+                                    <a target="_blank" class="more-editor" href="/posts/edit/<?=$post->id?>" >редактировать</a>
+                                    <a target="_blank" class="more-editor delete-post" href="/posts/delete/<?=$post->id?>" >удалить</a>
                                     <?php endif?>
                                     <a style="" class="more" href="/posts/view/<?=$post->id?>">Подробнее</a>
                                 </div>

@@ -535,7 +535,7 @@ function ParticipateTableLoader() {
     // initialisation method
     this.init = function() {
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
-        $(document).on('click', '.nav-page', function() {
+        $(document).on('click', '.js-participate .nav-page', function() {
             var page = $(this).attr('rel');
             if(page == 'prev') {
                 page = parseInt(self.page) - 1;
@@ -795,7 +795,7 @@ function FavesTableLoader() {
     // initialisation method
     this.init = function() {
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
-        $(document).on('click', '.nav-page', function() {
+        $(document).on('click', '.js-favourites .nav-page', function() {
             var page = $(this).attr('rel');
             if(page == 'prev') {
                 page = parseInt(self.page) - 1;
@@ -1106,6 +1106,9 @@ $(document).ready(function() {
 /* ============= */
 // details.js start
 $('#save').live('click', function() {
+    if($('.wrong-input').length > 0) {
+        return false;
+    }
     if(($('input[name="cashintype"]:checked').data('pay') == 'cards') && ($('input[name="accountnum"]').val().length < 20)) {
         alert('Введите номер своего счета, он должен содержать не меньше 20 символов!');
         return false;
@@ -1124,6 +1127,26 @@ $('.rb1').live('change', function() {
     }else {
         $('#cards').hide();
         $('#wmr').show();
+    }
+});
+
+$(document).on('focus', 'input[data-validate]', function() {
+    $(this).removeClass('wrong-input');
+});
+
+$(document).on('blur', 'input[data-validate=fio]', function() {
+    if (!/^[а-я]+\s[а-я]+\s[а-я]+$/i.test($(this).val())) {
+        $(this).addClass('wrong-input');
+        required = true;
+        return true;
+    }
+});
+
+$(document).on('blur', 'input[data-validate=numeric]', function() {
+    if (/[\D\s]/i.test($(this).val())) {
+        $(this).addClass('wrong-input');
+        required = true;
+        return true;
     }
 });
 

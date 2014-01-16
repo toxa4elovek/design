@@ -121,6 +121,11 @@ class Pitch extends \app\models\AppModel {
             $result = $chain->next($self, $params, $chain);
             return $result;
         });
+        self::applyFilter('save', function($self, $params, $chain) {
+            $params['entity']->title = preg_replace('/"(.*)"/U', '«\1»', $params['entity']->title);
+            $result = $chain->next($self, $params, $chain);
+            return $result;
+        });
 	}
 
     public static function sendExpertMail($params) {
@@ -399,6 +404,7 @@ class Pitch extends \app\models\AppModel {
                     'pitch_id' => $pitch->id,
                     'user_id' => User::getAdmin(),
                     'text' => 'Дорогие друзья! Обратите внимание, что срок питча продлен до ' . date('d.m.Y', strtotime($pitch->finishDate)) . ', а размер вознаграждения увеличен.',
+                    'public' => 1,
                 ));
                return true;
             }

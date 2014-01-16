@@ -275,7 +275,7 @@
       </dl>
       <dl class="dl_5">
         <dt><?=$statistic['lastDaySolutionNum']?></dt>
-        <dd>новых работ загружено за сутки</dd>
+        <dd>новых работ загружено за последние 24 часа</dd>
       </dl>
     </div>
 
