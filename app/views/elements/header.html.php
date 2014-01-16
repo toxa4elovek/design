@@ -175,8 +175,10 @@
             <div class="avatar-top" style="width: 41px; float: left; height: 50px;">
                 <?php if(($this->session->read('user.images.avatar_small.weburl') != '') || ($this->session->read('user.images.avatar_small.weburl') != false)):?>
                 <img style="display:block; float:left;width:41px;"src="<?=$this->session->read('user.images.avatar_small.weburl')?>" alt="" />
+                <script>var currentAvatar = '<?=$this->session->read('user.images.avatar_small.weburl')?>'</script>
                 <?php else:?>
                 <img style="display:block; float:left;width:41px;"src="/img/default_small_avatar.png" alt="" />
+                <script>var currentAvatar = '/img/default_small_avatar.png'</script>
                 <?php endif?>
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">

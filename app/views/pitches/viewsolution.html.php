@@ -12,6 +12,9 @@
         var pitchNumber = <?php echo $pitch->id; ?>;
         var currentUserId = <?php echo (int) $this->session->read('user.id'); ?>;
         var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')) ? 1 : 0 ?>;
+        var currentUserName = '<?=$this->nameInflector->renderName($this->session->read('user.first_name'), $this->session->read('user.last_name'))?>';
+        var isCurrentExpert = <?php echo (in_array($this->session->read('user.id'), $expertsIds)) ? 1 : 0; ?>;
+        var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 1 : 0; ?>;
         </script>
         <!-- start: Solution Container -->
         <div class="solution-container page">
@@ -196,6 +199,7 @@
                 <section class="allow-comments">
                     <div class="separator full"></div>
                     <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
+                    <?php if (($this->session->read('user.id') == $pitch->user->id) || (int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')): ?>
                     <form class="createCommentForm" method="post" action="/comments/add">
                     	<div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
                     		<div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
@@ -213,9 +217,11 @@
                     	<input type="hidden" value="" name="comment_id">
                         <input type="hidden" value="/pitches/viewsolution/<?=$solution->id?>" name="from">
                     	<input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-                    	<input type="submit" id="createComment" class="button" value="Отправить комментарий">
+                        <input type="button" src="/img/message_button.png" value="Публиковать комментарий для всех" class="button createComment" data-is_public="1" style="margin: 15px 18px 15px 0;">
+                        <input type="button" src="/img/message_button.png" value="Отправить только дизайнеру" class="button createComment" data-is_public="0" style="margin: 15px 0 15px 18px;">
                     	<div class="clr"></div>
                     </form>
+                    <?php endif; ?>
                 </section>
                 <!-- start: Comments -->
                 <section class="solution-comments isField">
