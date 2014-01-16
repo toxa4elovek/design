@@ -535,7 +535,7 @@ function ParticipateTableLoader() {
     // initialisation method
     this.init = function() {
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
-        $(document).on('click', '.nav-page', function() {
+        $(document).on('click', '.js-participate .nav-page', function() {
             var page = $(this).attr('rel');
             if(page == 'prev') {
                 page = parseInt(self.page) - 1;
@@ -795,7 +795,7 @@ function FavesTableLoader() {
     // initialisation method
     this.init = function() {
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
-        $(document).on('click', '.nav-page', function() {
+        $(document).on('click', '.js-favourites .nav-page', function() {
             var page = $(this).attr('rel');
             if(page == 'prev') {
                 page = parseInt(self.page) - 1;

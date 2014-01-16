@@ -121,6 +121,11 @@ class Pitch extends \app\models\AppModel {
             $result = $chain->next($self, $params, $chain);
             return $result;
         });
+        self::applyFilter('save', function($self, $params, $chain) {
+            $params['entity']->title = preg_replace('/"(.*)"/U', '«\1»', $params['entity']->title);
+            $result = $chain->next($self, $params, $chain);
+            return $result;
+        });
 	}
 
     public static function sendExpertMail($params) {
