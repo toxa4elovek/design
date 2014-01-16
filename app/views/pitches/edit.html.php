@@ -305,9 +305,9 @@ endif?>
             <div class="ribbon term" style="height: 80px;">
                 <p class="option">Установите срок</p>
                     <ul>
-                        <li><label><input type="radio" <?php if($pitch->timelimit == 0): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="0" data-option-title="Поджимают сроки" data-option-value="0" checked="checked"><?=$category->default_timelimit?> дней (бесплатно)</label></li>
-                        <li><label><input type="radio" <?php if($pitch->timelimit == 1): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="1" data-option-title="Поджимают сроки" data-option-value="950" ><?=$category->shortTimelimit?> дней (950 Р.-)</label></li>
-                        <li><label><input type="radio" <?php if($pitch->timelimit == 2): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="2" data-option-title="Поджимают сроки" data-option-value="1450" ><?=$category->shortestTimelimit?> дня (1450 Р.-)</label></li>
+                        <li><label><input type="radio" <?php if($pitch->timelimit == 0): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="0" data-option-title="Установлен срок" data-option-value="0" checked="checked"><?=$category->default_timelimit?> дней (бесплатно)</label></li>
+                        <li><label><input type="radio" <?php if($pitch->timelimit == 1): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="1" data-option-title="Установлен срок" data-option-value="950" ><?=$category->shortTimelimit?> дней (950 Р.-)</label></li>
+                        <li><label><input type="radio" <?php if($pitch->timelimit == 2): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="2" data-option-title="Установлен срок" data-option-value="1450" ><?=$category->shortestTimelimit?> дня (1450 Р.-)</label></li>
                     </ul>
                     <ul>
                         <li style="margin-top:10px"><label><input type="radio" <?php if($pitch->timelimit == 3): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="3" data-option-title="Установлен срок" data-option-value="950" ><?=$category->smallIncreseTimelimit?> дней (950 Р.-)</label></li>
@@ -316,9 +316,9 @@ endif?>
                 <p style="margin-top:-34px;" class="label <?php if($pitch->timelimit > 0): echo "unfold"; endif;?>" id="timelimit-label">
                     <?php if($pitch->timelimit > 0 ):
                         if(($pitch->timelimit == 1) || ($pitch->timelimit == 3)):
-                            echo '950';
+                            echo '+950';
                         else:
-                            echo '1450';
+                            echo '+1450';
                         endif;
                     endif ?>.-</p>
             </div>
