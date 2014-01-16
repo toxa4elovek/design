@@ -86,7 +86,7 @@ $(document).ready(function() {
             setTimeout(function() { appendSocials(); }, 5000);
         }
         if (needSocialWrite) {
-            $.post('/users/addsocial.json');
+            $.post('/users/addsocial/' + needSocialWrite + '.json');
         }
         $('#feedback-link').show();
         $('#feedback-link').live('mouseover', function() {
