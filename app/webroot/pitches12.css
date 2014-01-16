@@ -1298,3 +1298,12 @@ cursor: pointer;
 input.wrong-input {
 	border: 1px solid red;
 }
+#tooltip-bubble {
+    display: none;
+    background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important;
+    padding: 4px 0 0 !important;
+    height: auto;
+    width: 205px;
+    position: absolute;
+    z-index: 2147483647; 
+}

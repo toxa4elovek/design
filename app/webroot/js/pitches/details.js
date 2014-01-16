@@ -114,21 +114,6 @@ $(document).ready(function() {
     enableToolbar();
     warningModal(); // See app.js
 
-    $('#newComment').focus(function() {
-        var position = $(this).position();
-        position.top -= 135;
-        $('#tooltip-bubble').css(position).fadeIn(200);
-    });
-
-    $('textarea').blur(function() {
-        $('#tooltip-bubble').fadeOut(200);
-    });
-
-    $('textarea').keydown(function() {
-        $('#tooltip-bubble').fadeOut(200);
-    });
-
-
     $('.mention-link').click(function() {
         if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
             $('input[name=comment_id]').val('');
