@@ -2506,6 +2506,7 @@ td.pitches-name.mypitches {
     vertical-align: middle;
 }
 td.pitches-name.mypitches a {
+	display: block;
 	margin: 0 5px 0 40px;
 }
 .pitches-name-td-img {
