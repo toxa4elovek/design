@@ -510,7 +510,7 @@
                         </ul>
                         <div style="width:150px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 7px;">Средняя оценка</h2>
-                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: 7px;">вашей активности из 5</p>
+                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: -7px; text-align: center;"><?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 'вашей активности' : 'активности заказчика';?> из 5</p>
                             <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
                             <canvas id="can" height="132" width="132" style="">
                             </canvas></div>
