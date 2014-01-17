@@ -845,7 +845,7 @@ class Pitch extends \app\models\AppModel {
 
     // Check if private Pitch Popup needed
     public function winnerPopup($pitch) {
-        if (($pitch->private == 1) && (Session::read('user.id') != $pitch->user_id)) {
+        if (($pitch->private == 1) && (Session::read('user.id') != $pitch->user_id) && ($pitch->category_id != 7)) {
             // For Winner
             if ((User::getAwardedSolutionNum(Session::read('user.id')) >= WINS_FOR_VIEW) && (!isset($_COOKIE['winPop']) || $_COOKIE['winPop'] != 'win')) {
                 setcookie('winPop', 'win', time() + YEAR, '/');
