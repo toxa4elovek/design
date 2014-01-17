@@ -1513,24 +1513,6 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
             $solution->description = nl2br($solution->description);
 
-            $solutions = Solution::all(array('conditions' => array('pitch_id' => $solution->pitch_id), 'order' => $order));
-            /*foreach($solutions->data() as $setSolution){
-                if($solution->id == $setSolution['id']) {
-                	if($item = prev($solutions)) {
-                		$prev = $item;
-                	}else {
-                		$prev = array_pop(array_keys($solutions->data()));
-                	}
-                	$res = next($solutions);
-                	var_dump($res);
-                    if($item = next($solutions)) {
-                		$next = $item;
-                	}else {
-                		$next = array_shift(array_keys($solutions->data()));
-                	}
-                    break;
-                }
-            }*/
             function getArrayNeighborsByKey($array, $findKey) {
 
 			    if ( ! array_key_exists($findKey, $array)) {
@@ -1566,6 +1548,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
 			    );
 
 			}
+			$solutions = Solution::all(array('conditions' => array('pitch_id' => $solution->pitch_id), 'order' => $order));
 			$results = getArrayNeighborsByKey($solutions->data(), (int) $solution->id);
 			$next = $results['next'];
 			$prev = $results['prev'];
@@ -1576,6 +1559,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::filterCommentsPrivate($comments, $pitch->user_id);
 
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+            // Forbid Copywrited
             if ($pitch->category_id == 7) {
                 $expertsIds = array();
                 foreach($experts as $expert) :
@@ -1585,6 +1569,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     return $this->redirect('/pitches/view/' . $pitch->id);
                 }
             }
+            // Forbid Private
             if ($pitch->private == 1) {
                 $canViewPrivate = false;
                 $currentUser = Session::read('user');
@@ -1624,11 +1609,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     $likes = true;
                 }
             }
-			//if($pitch->category_id != 7){
-                return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
-            //}else{
-                //return $this->render(array('template' => '/viewsolution-copy', 'data' => compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution')));
-            //}
+            return compact('pitch', 'solution', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
 		}else {
 		    throw new Exception('Public:Такого решения не существует.', 404);
         }
