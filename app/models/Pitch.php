@@ -793,6 +793,7 @@ class Pitch extends \app\models\AppModel {
         $specifics = unserialize($specifics);
         if (!empty($specifics['site-sub'])) {
             $numInflector = new NumInflector();
+            $res = '';
             switch ($category) {
                 case 2:
                     //$res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));

@@ -694,7 +694,7 @@ class PitchesController extends \app\controllers\AppController {
             $pitches = Pitch::all(array(
                 'with' => 'Category',
                 'conditions' => $conditions,
-                'order' => array('price' => 'desc'),
+                'order' => array('id' => 'desc'),
                 'limit' => $limit,
                 'page' => $page,
             ));
