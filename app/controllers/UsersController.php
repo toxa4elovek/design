@@ -884,6 +884,7 @@ class UsersController extends \app\controllers\AppController {
 
 
         $passwordInfo = false;
+        $emailInfo = false;
         if($this->request->data) {
 
             if(($this->request->data['newpassword'] != '') && ($this->request->data['confirmpassword'] != '')) {
@@ -936,11 +937,21 @@ class UsersController extends \app\controllers\AppController {
             }else{
                 $user->email_digest = 0;
             }
-            $user->email = $this->request->data['email'];
+            if ($userWithEmail = User::first(array(
+                'conditions' => array(
+                    'email' => $this->request->data['email'],
+                    'id' => array(
+                        '!=' => $user->id,
+                    ),
+                )))) {
+                $emailInfo = 'Пользователь с таким адресом электронной почты уже существует!';
+            } else {
+                $user->email = $this->request->data['email'];
+            }
 
             $user->save(null, array('validate' => false));
         }
-        return compact('user', 'winners', 'passwordInfo');
+        return compact('user', 'winners', 'passwordInfo', 'emailInfo');
     }
 
     public function preview() {
