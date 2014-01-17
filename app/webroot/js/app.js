@@ -86,7 +86,7 @@ $(document).ready(function() {
             setTimeout(function() { appendSocials(); }, 5000);
         }
         if (needSocialWrite) {
-            $.post('/users/addsocial.json');
+            $.post('/users/addsocial/' + needSocialWrite + '.json');
         }
         $('#feedback-link').show();
         $('#feedback-link').live('mouseover', function() {
@@ -894,6 +894,35 @@ function enableToolbar() {
         });
         return false;
     });
+    
+    // Comment Textarea Tooltip
+    if (isClient) {
+        $('.createCommentForm').on('focus', '#newComment', function() {
+            var el = $('<div id="tooltip-bubble"> \
+                            <div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;"> \
+                                <div style="" id="tooltipContent" class="supplement3"> \
+                                    <p>Укажите номер комментируемого варианта, используя хештег #. Например: \
+                                    #2, нравится!<br> \
+                                    Обратитесь к автору решения, используя @. Например:<br> \
+                                    @username, спасибо! \
+                                    </p> \
+                                </div> \
+                            </div> \
+                        </div>');
+            var position = $(this).position();
+            position.top -= 135;
+            el.insertBefore($(this));
+            el.css(position).fadeIn(200);
+        });
+    
+        $('.createCommentForm').on('blur', 'textarea', function() {
+            $('#tooltip-bubble').fadeOut(200, function() { $(this).remove(); });
+        });
+    
+        $('.createCommentForm').on('keydown', 'textarea', function() {
+            $('#tooltip-bubble').fadeOut(200, function() { $(this).remove(); });
+        });
+    }
 }
 
 function commentDeleteHandler(link) {

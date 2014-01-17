@@ -769,20 +769,6 @@ function inlineActions() {
         return false;
     });
 
-    $('.createCommentForm').click(function() {
-        var position = $(this).offset();
-        position.top -= 115;
-        //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
-    });
-
-    $('textarea').blur(function() {
-        $($(this).prev('#tooltip-bubble')).fadeOut(200);
-    });
-
-    $('textarea').keydown(function() {
-        $($(this).prev('#tooltip-bubble')).fadeOut(200);
-    });
-
     $('.delete-solution-popup').on('click', function(e) {
         e.preventDefault();
         hideSolutionPopup();

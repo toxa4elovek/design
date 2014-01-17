@@ -510,7 +510,7 @@
                         </ul>
                         <div style="width:150px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 7px;">Средняя оценка</h2>
-                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: 7px;">вашей активности из 5</p>
+                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: -7px; text-align: center;"><?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 'вашей активности' : 'активности заказчика';?> из 5</p>
                             <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
                             <canvas id="can" height="132" width="132" style="">
                             </canvas></div>
@@ -527,7 +527,7 @@
                         </div>
                         <?php else:?>
                         <div style="width:200px;float:left;height:190px;text-align:center">
-                            <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255);">Ваш питч<br> гарантированный</h2>
+                            <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255);"><?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 'Ваш питч' : 'Питч';?><br> гарантированный</h2>
 
                             <img src="/img/bigg.png" style="margin-bottom:10px;margin-top: 15px; margin-left: 54px; padding-right:50px;">
                             <a href="/answers/view/79" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Что это такое?</a>
@@ -666,17 +666,6 @@
                 <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
                 <?php if (($this->session->read('user.id') == $pitch->user->id) || (int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')): ?>
                 <form class="createCommentForm" method="post" action="/comments/add">
-                	<div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
-                		<div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
-                			<div style="" id="tooltipContent" class="supplement3">
-                				<p>Укажите номер комментируемого варианта, используя хештег #. Например:
-                				#2, нравится!<br>
-                				Обратитесь к автору решения, используя @. Например:<br>
-                				@username, спасибо!
-                				</p>
-                			</div>
-                		</div>
-                	</div>
                 	<textarea id="newComment" name="text"></textarea>
                 	<input type="hidden" value="" name="solution_id">
                 	<input type="hidden" value="" name="comment_id">

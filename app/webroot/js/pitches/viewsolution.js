@@ -56,20 +56,6 @@ $(document).ready(function() {
             return false;
         });
 
-        $('.createCommentForm').click(function() {
-            var position = $(this).offset();
-            position.top -= 115;
-            //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
-        });
-
-        $('textarea').blur(function() {
-            $($(this).prev('#tooltip-bubble')).fadeOut(200);
-        });
-
-        $('textarea').keydown(function() {
-            $($(this).prev('#tooltip-bubble')).fadeOut(200);
-        });
-
         solutionShowHide();
     }
 
@@ -98,26 +84,6 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-
-    $('#newComment').click(function() {
-        var position = $(this).offset();
-        position.top -= 360;
-        position.left -= 560;
-        $('#tooltip-bubble').css(position).fadeIn(200);
-    });
-
-    $('textarea').blur(function() {
-        $('#tooltip-bubble').fadeOut(200);
-    });
-
-    $('textarea').keydown(function() {
-        $('#tooltip-bubble').fadeOut(200);
-    });
-
-    //$('form').keypress(function(e){
-        //if ( e.which == 13 ) e.preventDefault();
-    //});
-
 
     $('#solution-menu-toggle').mouseover(function(){
         $('img', $(this)).attr('src', '/img/big-arrow-hover.png');

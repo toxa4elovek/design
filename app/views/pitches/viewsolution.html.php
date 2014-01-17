@@ -201,17 +201,6 @@
                     <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
                     <?php if (($this->session->read('user.id') == $pitch->user->id) || (int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')): ?>
                     <form class="createCommentForm" method="post" action="/comments/add">
-                    	<div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
-                    		<div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
-                    			<div style="" id="tooltipContent" class="supplement3">
-                    				<p>Укажите номер комментируемого варианта, используя хештег #. Например:
-                    				#2, нравится!<br>
-                    				Обратитесь к автору решения, используя @. Например:<br>
-                    				@username, спасибо!
-                    				</p>
-                    			</div>
-                    		</div>
-                    	</div>
                     	<textarea id="newComment" name="text"></textarea>
                     	<input type="hidden" value="<?=$solution->id?>" name="solution_id">
                     	<input type="hidden" value="" name="comment_id">
