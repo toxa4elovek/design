@@ -281,3 +281,11 @@ input.rb1{
     margin-top: 9px;
     display: none;
 }
+tr.account-check {
+    opacity: 0;
+}
+tr.account-check td {
+    border: 1px solid #FF585D;
+    padding: 1em;
+    color: #FF585D;
+}
