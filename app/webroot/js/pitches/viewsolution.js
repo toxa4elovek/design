@@ -39,16 +39,6 @@ $(document).ready(function() {
 
     var editcommentflag = false;
 
-    function inlineActions() {
-
-        $('.client-comment').click(function() {
-            $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
-            return false;
-        });
-
-        solutionShowHide();
-    }
-
 	$('#like').click(function(event){
         event.stopPropagation();
         $('body').one('click',function() {
@@ -455,12 +445,6 @@ $(document).ready(function() {
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
             solutionId = result.solution.id;
             
-            if (result.comments) {
-                $('.solution-comments').html(fetchCommentsNew(result));
-                
-                enableToolbar();
-            }
-            
             // Right Panel
             $('.number', '.solution-number').text(result.solution.num || '');
             $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
@@ -546,7 +530,7 @@ $(document).ready(function() {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
             }
             
-            inlineActions();
+            enableToolbar();
             warningModal();
             Socialite.load($('.solution-share'), [
                                                   $('#facebook' + result.solution.id)[0],
