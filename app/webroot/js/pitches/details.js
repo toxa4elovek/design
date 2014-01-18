@@ -112,5 +112,4 @@ $(document).ready(function() {
     
     fetchPitchComments();
     enableToolbar();
-    warningModal(); // See app.js
 });

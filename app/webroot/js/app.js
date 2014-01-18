@@ -717,31 +717,6 @@ function populateComment(data) {
             </section>';
 }
 
-/*
- * Solution Actions for Pitch owner
- */
-function solutionShowHide() {
-    $('.client-hide').on('click', function(e) {
-        e.preventDefault();
-        var link = $(this);
-        $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Сделать видимой</a>');
-            solutionShowHide();
-        });
-        return false;
-    });
-    
-    $('.client-show').on('click', function(e) {
-        e.preventDefault();
-        var link = $(this);
-        $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">С глаз долой</a>');
-            solutionShowHide();
-        });
-        return false;
-    });
-}
-
 /**
  * Solution Copyrighted Materials Info
  */
@@ -895,6 +870,33 @@ function enableToolbar() {
         return false;
     });
     
+    // Solution Actions for Pitch owner
+    $('body, .solution-overlay').on('click', '.client-hide', function(e) {
+        e.preventDefault();
+        var link = $(this);
+        var underlyingHide = $('.hide-item'); 
+        if (underlyingHide.length > 0) {
+            underlyingHide.click();
+        } else {
+            $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) { });
+        }
+        link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Сделать видимой</a>');
+        return false;
+    });
+    
+    $('body, .solution-overlay').on('click', '.client-show', function(e) {
+        e.preventDefault();
+        var link = $(this);
+        var underlyingUnhide = $('.unhide-item');
+        if (underlyingUnhide.length > 0) {
+            underlyingUnhide.click();
+        } else {
+            $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) { });
+        }
+        link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">С глаз долой</a>');
+        return false;
+    });
+    
     // Comment Textarea Tooltip
     if (isClient) {
         $('.createCommentForm').on('focus', '#newComment', function() {
@@ -924,9 +926,7 @@ function enableToolbar() {
         });
     }
     
-    /*
-     * Enable Comment-to Action
-     */
+    // Enable Comment-to Action
     $('body, .solution-overlay').on('click', '.mention-link', function(e) {
         e.preventDefault();
         var el = $('#newComment');
@@ -941,6 +941,14 @@ function enableToolbar() {
         }
         return false;
     });
+    
+    // Scroll to Comment Form on Viewsolution Panel
+    $('body, .solution-overlay').on('click', '.client-comment', function() {
+        $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
+        return false;
+    });
+    
+    warningModal();
 }
 
 function commentDeleteHandler(link) {
