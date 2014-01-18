@@ -46,16 +46,6 @@ $(document).ready(function() {
             return false;
         });
 
-        $('.mention-link').click(function() {
-            if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val('');
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + $('#newComment').val();
-                $('#newComment').val(newText);
-            }
-            return false;
-        });
-
         solutionShowHide();
     }
 

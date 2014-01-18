@@ -775,28 +775,7 @@ function inlineActions() {
         $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
     });
 
-    mentionLinks();
     solutionShowHide();
-}
-
-/*
- * Enable Comment-to Action
- */
-function mentionLinks() {
-    $('.mention-link').click(function(e) {
-        e.preventDefault();
-        var el = $('#newComment');
-        if ($('.allow-comments').is(':visible')) {
-            el = $('#newComment', '.allow-comments');
-        }
-        if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
-            $('input[name=comment_id]').val('');
-            var prepend = '@' + $(this).data('commentTo') + ', ';
-            var newText = prepend + el.val();
-            el.val(newText);
-        }
-        return false;
-    });
 }
 
 // Rating Popup
