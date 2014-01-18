@@ -243,7 +243,6 @@ $(document).ready(function(){
 
     fetchPitchComments();
     enableToolbar();
-    warningModal();
 
     // Keys navigation
     $(document).keydown(function(e) {

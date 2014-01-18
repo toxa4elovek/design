@@ -947,6 +947,8 @@ function enableToolbar() {
         $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
         return false;
     });
+    
+    warningModal();
 }
 
 function commentDeleteHandler(link) {
