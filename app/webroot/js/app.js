@@ -689,7 +689,7 @@ function populateComment(data) {
                 <div class="separator"></div> \
                 <div class="' + data.messageInfo + '">'
                 + avatarElement +
-                '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto"> \
+                '<a href="/users/view/' + data.commentUserId + '" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '"> \
                     <span>' + data.commentAuthor + '</span><br /> \
                     <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
                 </a> \
@@ -923,6 +923,24 @@ function enableToolbar() {
             $('#tooltip-bubble').fadeOut(200, function() { $(this).remove(); });
         });
     }
+    
+    /*
+     * Enable Comment-to Action
+     */
+    $('body, .solution-overlay').on('click', '.mention-link', function(e) {
+        e.preventDefault();
+        var el = $('#newComment');
+        if ($('.allow-comments').is(':visible')) {
+            el = $('#newComment', '.allow-comments');
+        }
+        if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
+            $('input[name=comment_id]').val('');
+            var prepend = '@' + $(this).data('commentTo') + ', ';
+            var newText = prepend + el.val();
+            el.val(newText);
+        }
+        return false;
+    });
 }
 
 function commentDeleteHandler(link) {
@@ -1085,7 +1103,7 @@ function toggleAnswer(link) {
                         <div class="hiddenform"> \
                             <section> \
                                 <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
-                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '">@' + link.data('comment-to') + ', </textarea><br> \
+                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '"></textarea><br> \
                                     <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 8px 15px 0; font-size: 11px; padding-left: 28px"> \
                                     <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;"> \
                                     <div class="clr"></div> \
