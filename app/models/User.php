@@ -961,5 +961,40 @@ class User extends \app\models\AppModel {
         }
     }
 
+    public function block($user) {
+        $user->banned = 1;
+        $user->save(null, array('validate' => false));
+
+        // Remove Solutions
+        $solutions = Solution::all(array(
+            'conditions' => array(
+                'Solution.user_id' => $user->id,
+                'OR' => array(
+                    '(`Pitch`.`status` = 0)',
+                    '(`Pitch`.`status` = 1 AND `Pitch`.`awarded` = 0)',
+                ),
+            ),
+            'with' => array('Pitch'),
+        ));
+        foreach ($solutions as $solution) {
+            $solution->delete();
+        }
+
+        // Remove Comments
+        $comments = Comment::all(array(
+            'conditions' => array(
+                'Comment.user_id' => $user->id,
+                'OR' => array(
+                    '(`Pitch`.`status` = 0)',
+                    '(`Pitch`.`status` = 1 AND `Pitch`.`awarded` = 0)',
+                ),
+            ),
+            'with' => array('Pitch'),
+        ));
+        foreach ($comments as $comment) {
+            $comment->delete();
+        }
+    }
+
 }
 ?>
