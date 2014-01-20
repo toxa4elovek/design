@@ -447,6 +447,7 @@ $(document).ready(function() {
 
             if (result.comments) {
                 $('.solution-comments').html(fetchCommentsNew(result));
+                solutionTooltip();
             }
 
             // Right Panel

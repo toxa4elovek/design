@@ -760,6 +760,7 @@ function fetchPitchComments() {
         } else {
             $('.ajax-loader', '.pitch-comments').remove();
         }
+        solutionTooltip();
     });
 }
 
@@ -821,18 +822,6 @@ function enableToolbar() {
         return false;
     });
     
-    // Solutions Tooltips
-    $('.hoverimage[data-comment-to]').tooltip({
-        tooltipID: 'tooltip2',
-        tooltipSource: 'hidden',
-        width: '205px',
-        correctPosX: 40,
-        //positionTop: 0,
-        borderSize: '0px',
-        tooltipPadding: 0,
-        tooltipBGColor: 'transparent'
-    });
-
     // Escaping
     $(document).keyup(function(e) {
         if (e.keyCode == 27) {
@@ -949,6 +938,20 @@ function enableToolbar() {
     });
     
     warningModal();
+}
+
+function solutionTooltip() {
+    // Solutions Tooltips
+    $('.hoverimage[data-comment-to]').tooltip({
+        tooltipID: 'tooltip2',
+        tooltipSource: 'rel',
+        width: '205px',
+        correctPosX: 40,
+        //positionTop: 0,
+        borderSize: '0px',
+        tooltipPadding: 0,
+        tooltipBGColor: 'transparent'
+    });
 }
 
 function commentDeleteHandler(link) {

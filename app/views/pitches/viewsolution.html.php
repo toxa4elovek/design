@@ -284,9 +284,9 @@
             ?>
             <?php else:?>
                 <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                    <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
+                    <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
                 <?php else:?>
-                    <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
+                    <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
                 <?php endif?>
             <?php endif?>
         <?php else:?>
@@ -296,12 +296,12 @@
             <?php else:?>
                 <?php if(($pitch->user_id == $this->session->read('user.id')) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == $this->session->read('user.id'))):?>
                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                        <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
+                        <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
                     <?php else:?>
-                        <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
+                        <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
                     <?php endif?>
                 <?php else:?>
-                    <input type="hidden" rel="#<?=$solution->num?>" data-src="/img/copy-inv.png">
+                    <input type="hidden" rel="#<?=$solution->num?>" src="/img/copy-inv.png">
                 <?php endif?>
             <?php endif?>
         <?php endif?>
