@@ -216,7 +216,7 @@ class Comment extends \app\models\AppModel {
                 if ($solution = Solution::first(array('fields' => array('user_id'), 'conditions' => array( 'id' => $comment->solution_id)))) {
                     $designer = $solution->user_id;
                 }
-                if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer != $currentUser['id'])) {
+                if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer !== $currentUser['id'])) {
                     continue;
                 }
                 if (($comment->user_id != $currentUser['id']) && ($designer == $currentUser['id'])) {
