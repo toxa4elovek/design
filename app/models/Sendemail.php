@@ -23,7 +23,7 @@ class Sendemail extends \app\models\AppModel {
 
     public static function clearOldSpamSimple() {
         $sentEmails = self::find('all', array(
-            'limit' => 100,
+            'limit' => 500,
             'conditions' =>  array('created' => array('<' => date('Y-m-d H:i:s', time() - MONTH))),
             'order' => array('id' => 'asc')
         ));
