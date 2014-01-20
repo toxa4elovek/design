@@ -1087,6 +1087,11 @@ function toggleAnswer(link) {
     if (isClient) {
         messageInfo = 'message_info2';
     }
+    var answerButtons = '<input type="button" src="/img/message_button.png" value="Ответить" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;">';
+    if (isCurrentExpert || isCurrentAdmin || isClient) {
+        answerButtons = '<input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 8px 15px 0; font-size: 11px; padding-left: 28px"> \
+        <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;">';
+    }
     // Date Time
     var postDateObj = new Date();
     var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
@@ -1111,10 +1116,9 @@ function toggleAnswer(link) {
                         <div class="hiddenform"> \
                             <section> \
                                 <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
-                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '"></textarea><br> \
-                                    <input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 8px 15px 0; font-size: 11px; padding-left: 28px"> \
-                                    <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;"> \
-                                    <div class="clr"></div> \
+                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '"></textarea><br>'
+                                    + answerButtons +
+                                    '<div class="clr"></div> \
                                 </form> \
                             </section> \
                         </div> \

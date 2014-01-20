@@ -212,11 +212,15 @@ class Comment extends \app\models\AppModel {
             foreach ($comments as $comment) {
                 $comment = self::fetchChild($comment);
                 $designer = false;
+                $comment->needAnswer = '';
                 if ($solution = Solution::first(array('fields' => array('user_id'), 'conditions' => array( 'id' => $comment->solution_id)))) {
                     $designer = $solution->user_id;
                 }
                 if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer != $currentUser['id'])) {
                     continue;
+                }
+                if (($comment->user_id != $currentUser['id']) && ($designer == $currentUser['id'])) {
+                    $comment->needAnswer = 1;
                 }
                 $commentsFiltered->append($comment);
             }

@@ -444,7 +444,11 @@ $(document).ready(function() {
             
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
             solutionId = result.solution.id;
-            
+
+            if (result.comments) {
+                $('.solution-comments').html(fetchCommentsNew(result));
+            }
+
             // Right Panel
             $('.number', '.solution-number').text(result.solution.num || '');
             $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
