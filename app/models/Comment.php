@@ -124,9 +124,9 @@ class Comment extends \app\models\AppModel {
                                 $num = substr($solutionNum, 1);
                                 $solution = Solution::first(array('conditions' => array('pitch_id' => $pitchId, 'num' => $num)));
                                 if (isset($solution)) {
-                                    $record->text = preg_replace("/($solutionNum)([\W]+)/", '<a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1">$1</a>$2', $record->text);
+                                    $record->text = preg_replace("/($solutionNum)([\W]*)/", '<a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1">$1</a>$2', $record->text);
                                 } else {
-                                    $record->text = preg_replace("/($solutionNum)([\W]+)/", '<a href="#" target="_blank" class="solution-link hoverimage">$1</a>$2', $record->text);
+                                    $record->text = preg_replace("/($solutionNum)([\W]*)/", '<a href="#" target="_blank" class="solution-link hoverimage">$1</a>$2', $record->text);
                                 }
                             }
                         }
