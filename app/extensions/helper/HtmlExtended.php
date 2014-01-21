@@ -1,12 +1,19 @@
 <?php
 namespace app\extensions\helper;
 
+use app\extensions\helper\NameInflector;
+
 class HtmlExtended extends \lithium\template\helper\Html {
 
-    public function title($params, $solution, $post) {
+    protected function _init() {
+        parent::_init();
+    }
+
+    public function title($params, $vars) {
+        extract($vars);
         $title = 'Лого, сайт и дизайн от всего креативного интернет сообщества';
         if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView'])) && (is_object($solution->pitch)) && (is_object($solution->user))):
-            $title = 'Go Designer; ' . $solution->pitch->title . '; Дизайнер: ' . $this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name);
+            $title = 'Go Designer; ' . $solution->pitch->title . '; Дизайнер: ' . NameInflector::renderName($solution->user->first_name, $solution->user->last_name);
         endif;
         if((isset($post)) && (isset($post->title))):
             $title = $post->title . '; Лого, сайт и дизайн от всего креативного интернет сообщества';

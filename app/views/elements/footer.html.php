@@ -1,3 +1,4 @@
+<div id="fb-root"></div>
 <footer class="footer">
 	<div class="footer-inner">
 
