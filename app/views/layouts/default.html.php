@@ -110,6 +110,9 @@
 
         ?>
     <?php endif;?>
+
+    <?=$this->view()->render(array('element' => 'newrelic/newrelic_header'))?>
+
     <script>
         var showSocialPopup = false;
         var needSocialWrite = false;
@@ -280,5 +283,6 @@ echo '<!--' . $this->session->read('user.blogpost.date') . '-->';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 </script>
+<?=$this->view()->render(array('element' => 'newrelic/newrelic_footer'))?>
 </body>
 </html>
