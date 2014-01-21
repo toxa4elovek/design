@@ -2,59 +2,7 @@
 <html itemscope itemtype="http://schema.org/LocalBusiness">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# godesigner: http://ogp.me/ns/fb/godesigner#">
     <?= $this->html->charset();?>
-    <?php
-    $title = 'Лого, сайт и дизайн от всего креативного интернет сообщества';
-    if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView'])) && (is_object($solution->pitch)) && (is_object($solution->user))):
-        $title = 'Go Designer; ' . $solution->pitch->title . '; Дизайнер: ' . $this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name);
-    endif;
-    if((isset($post)) && (isset($post->title))):
-        $title = $post->title . '; Лого, сайт и дизайн от всего креативного интернет сообщества';
-    endif;
-    if((strtolower($this->_request->params['controller']) == 'pages') && ($this->_request->params['action'] == 'view') && ($this->_request->params['args'][0] == 'howitworks')):
-        $title = 'Как это работает';
-    endif;
-    /* echo '<!-- ' . ($this->_request->params['controller']) . ' -->';
-    echo '<!-- ' . ($this->_request->params['action']) . ' -->';
-    echo '<!-- ' . ($this->_request->params['args'][0]) . ' -->'; */
-    if(($this->_request->params['controller'] == 'pages') && ($this->_request->params['action'] == 'view') && ($this->_request->params['args'][0] == 'to_designers')):
-        $title = 'Дизайнерам';
-    endif;
-    if(($this->_request->params['controller'] == 'pages') && ($this->_request->params['action'] == 'contacts')):
-        $title = 'Контакты';
-    endif;
-    if((($this->_request->params['controller'] == 'posts')) && ($this->_request->params['action'] == 'index')):
-        $title = 'Блог';
-    endif;
-    if(($this->_request->params['controller'] == 'Pitches') && ($this->_request->params['action'] == 'index')):
-        $title = 'Все питчи';
-    endif;
-    if(($this->_request->params['controller'] == 'pitches') && ($this->_request->params['action'] == 'create')):
-        $title = 'Создание питча';
-    endif;
-    if(($this->_request->params['controller'] == 'pitches') && (($this->_request->params['action'] == 'details') || ($this->_request->params['action'] == 'viewsolution') || ($this->_request->params['action'] == 'view'))):
-        $title = $pitch->title;
-    endif;
-    if((($this->_request->params['controller'] == 'answers')) && ($this->_request->params['action'] == 'index')):
-        $title = 'Помощь';
-    endif;
-    if((($this->_request->params['controller'] == 'answers')) && ($this->_request->params['action'] == 'view')):
-        $title = $answer->title;
-    endif;
-    if((($this->_request->params['controller'] == 'posts')) && ($this->_request->params['action'] == 'view')):
-        $title = $post->title;
-    endif;
-    if((($this->_request->params['controller'] == 'users')) && ($this->_request->params['action'] == 'registration')):
-        $title = 'Зарегистрироваться';
-    endif;
-    if((($this->_request->params['controller'] == 'users')) && ($this->_request->params['action'] == 'login')):
-        $title = 'Войти';
-    endif;
-    if((($this->_request->params['controller'] == 'pages')) && ($this->_request->params['action'] == 'view') && ($this->_request->params['args'][0] == 'about')):
-        $title = 'О проекте';
-    endif;
-    $title .= ' | GoDesigner'
-    ?>
-    <title><?=$title?></title>
+    <?= $this->HtmlExtended->title($this->_request->params, $solution, $post)?>
     <meta name="description" content="">
     <meta name="viewport" content="width=1024"/>
     <link rel="apple-touch-icon" href="/img/icon_57.png" />
@@ -247,42 +195,7 @@ echo '<!--' . $this->session->read('user.blogpost.date') . '-->';
     </div>
 </div>
 <!-- End: Socials Popup -->
-<script type="text/javascript">
-    /*
-    var proto = (document.location.protocol=='https:')?'https:':'http:';
-    var host = proto+'//widget.copiny.com';
-    document.write(unescape("%3Cscript src='" + host + "/static/js/widget.js' type='text/javascript'%3E%3C/script%3E"));
-    */
-</script>
-<script type="text/javascript">
-    /*
-    var copinyWidgetOptions = {
-        position: 'left',
-        hostcommunity:'http://godesigner.copiny.com',
-        newwindow: '0',
-        type: 'question',
-        color:       '#526c7d',
-        border:   '#526c7d',
-        round:    '1',
-        title:      "\u043e\u0442\u0437\u044b\u0432\u044b - \u0441\u043e\u0432\u0435\u0442\u044b",
-        cache:   "af442c92e4d3aaf6ee76a84b8c66d8fb\/af442c92e4d3aaf6ee76a84b8c66d8fb\/ejOwVXUxUHVyVXUxVLUwArPNwWwnMNsIwtbW1QYzDGGKIVJA0hSmEaQMAA--",
-        community:4109
-    };
-    initCopinyWidget(copinyWidgetOptions);
-    CopinyWidget.showTab();
-    */
-</script>
-<script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-9235854-5']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-</script>
+<?=$this->view()->render(array('element' => 'external_scripts/ga'))?>
 <?=$this->view()->render(array('element' => 'newrelic/newrelic_footer'))?>
 </body>
 </html>
