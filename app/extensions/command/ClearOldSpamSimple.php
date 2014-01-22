@@ -4,7 +4,7 @@ namespace app\extensions\command;
 
 use \app\models\Sendemail;
 
-class ClearOldSpamSimple extends \lithium\console\Command {
+class ClearOldSpamSimple extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the ClearOldSpam command!');

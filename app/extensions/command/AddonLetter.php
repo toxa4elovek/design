@@ -4,7 +4,7 @@ namespace app\extensions\command;
 
 use \app\models\Pitch;
 
-class AddonLetter extends \lithium\console\Command {
+class AddonLetter extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the AddonLetter command!');

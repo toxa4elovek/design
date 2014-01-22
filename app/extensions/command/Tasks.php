@@ -6,7 +6,7 @@ use \app\models\Task;
 use \app\models\Pitch;
 use \app\models\User;
 
-class Tasks extends \lithium\console\Command {
+class Tasks extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the Task Command');

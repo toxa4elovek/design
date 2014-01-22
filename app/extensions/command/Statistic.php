@@ -6,7 +6,7 @@ use \app\models\Pitch;
 use \app\models\Solution;
 use \lithium\storage\Cache;
 
-class Statistic extends \lithium\console\Command {
+class Statistic extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the Statistic command!');
