@@ -108,6 +108,9 @@ $(document).ready(function() {
     });
 
     function checkPromocode() {
+        if ($('#promocode').prop('disabled')) {
+            return false;
+        }
         var value = $('#promocode').val();
         $.post('/promocodes/check.json', {"code": value}, function(response){
             if(response == 'false') {

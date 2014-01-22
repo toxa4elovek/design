@@ -934,12 +934,12 @@ class PitchesController extends \app\controllers\AppController {
             $freePinned = false;
             $promocode = '';
             if((isset($commonPitchData['promocode'])) && (!empty($commonPitchData['promocode']))) {
-                $code = Promocode::first(array('conditions' => array('code' => $commonPitchData['promocode'])));
-                if($code->type == 'pinned') {
-                    $freePinned = true;
-                }
-                if($code) {
+                if ($code = Promocode::first(array('conditions' => array('code' => $commonPitchData['promocode'])))) {
                     $promocode = $commonPitchData['promocode'];
+                    if ($code->type == 'pinned') {
+                        $freePinned = true;
+                        $promocode = '';
+                    }
                 }
             }
 

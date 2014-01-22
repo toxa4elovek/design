@@ -241,12 +241,12 @@ endif?>
             $disabled = '';
             if($code) {
                 $codeValue = $code->code;
-                $text = 'Промкод активирован!';
+                $text = 'Промокод активирован!';
                 $disabled = 'disabled="disabled"';
             }
             if($pitch->promocode) {
                 $codeValue = $pitch->promocode;
-                $text = 'Промкод активирован!';
+                $text = 'Промокод активирован!';
                 $disabled = 'disabled="disabled"';
                 $fieldHidden = '<input type="hidden" value="700" name="discount" id="discount">';
             }
