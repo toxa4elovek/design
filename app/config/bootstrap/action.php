@@ -62,16 +62,13 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 
     $ctrl = $chain->next($self, $params, $chain);
-    if (Auth::check('user')) {
+    if((Auth::check('user')) || (($params['params']['controller'] == 'lithium\test\Controller')) || (isset($ctrl->publicActions) && in_array($params['params']['action'], $ctrl->publicActions))) {
+        if (extension_loaded ('newrelic')) {
+            newrelic_name_transaction ($params['params']['controller'] . '/' . $params['params']['action']);
+        }
         return $ctrl;
     }
-	if(($params['params']['controller'] == 'lithium\test\Controller')) {
-		return $ctrl;
-	}
 
-    if (isset($ctrl->publicActions) && in_array($params['params']['action'], $ctrl->publicActions)) {
-        return $ctrl;
-    }
     return function() use ($params) {
         if($params['request']->type != 'json') {
     	    Session::write('redirect', '/'. $params['request']->url);
