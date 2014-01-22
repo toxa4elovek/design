@@ -8,7 +8,7 @@
         <script>allowComments = true;</script>
     <?php endif?>
 	<div class="middle">
-        <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
+        <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch, 'expertsIds' => $expertsIds))?>
         <!-- start: Solution Container -->
         <div class="solution-container page">
             <div class="pitch-info">
