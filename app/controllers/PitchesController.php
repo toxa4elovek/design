@@ -810,9 +810,9 @@ class PitchesController extends \app\controllers\AppController {
             $ratingArray[] = $rating;
             if(!empty($ids)){
                 if(strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
-                    $commentsNum = Historycomment::all(array('conditions' => array('user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                    $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
                 }else {
-                    $commentsNum = Comment::all(array('conditions' => array('user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                    $commentsNum = Comment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
                 }
             }else {
                 $commentsNum = array();
@@ -872,7 +872,7 @@ class PitchesController extends \app\controllers\AppController {
         $guaranteed = $pitch->guaranteed;
         $needRatingPopup = $pitch->ratingPopup($avgArray);
         $needWinnerPopup = $pitch->winnerPopup();
-        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'needRatingPopup', 'needWinnerPopup');
+        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'needRatingPopup', 'needWinnerPopup', 'commentsNum');
     }
 
     public function fillbrief() {
