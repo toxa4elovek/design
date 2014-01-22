@@ -3,7 +3,7 @@
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
 
 	<script>var allowComments = false;</script>
-	<?php if((($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($this->session->read('user.isAdmin')))) ||
+	<?php if((($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert($expertsIds)) || ($this->user->isAdmin()) )) ||
         (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true)) && ($this->session->read('user.id'))):?>
         <script>allowComments = true;</script>
     <?php endif?>
