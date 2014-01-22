@@ -1559,12 +1559,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::filterCommentsPrivate($comments, $pitch->user_id);
 
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+            $expertsIds = array();
+            foreach($experts as $expert) :
+                $expertsIds[] = $expert->user_id;
+            endforeach;
             // Forbid Copywrited
             if ($pitch->category_id == 7) {
-                $expertsIds = array();
-                foreach($experts as $expert) :
-                    $expertsIds[] = $expert->user_id;
-                endforeach;
                 if((Session::read('user') == null) || ($solution->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), $expertsIds)) && (!in_array(Session::read('user.id'), User::$admins)) && ($pitch->user_id != Session::read('user.id'))){
                     return $this->redirect('/pitches/view/' . $pitch->id);
                 }
@@ -1576,10 +1576,6 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 if (!empty($currentUser) && (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW)) {
                     $canViewPrivate = true;
                 }
-                $expertsIds = array();
-                foreach($experts as $expert) :
-                    $expertsIds[] = $expert->user_id;
-                endforeach;
                 if((Session::read('user') == null) || ($solution->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), $expertsIds)) && (!in_array(Session::read('user.id'), User::$admins)) && ($pitch->user_id != Session::read('user.id')) && !$canViewPrivate){
                     return $this->redirect('/pitches/view/' . $pitch->id);
                 }
@@ -1609,7 +1605,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     $likes = true;
                 }
             }
-            return compact('pitch', 'solution', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
+            return compact('pitch', 'solution', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'expertsIds');
 		}else {
 		    throw new Exception('Public:Такого решения не существует.', 404);
         }
