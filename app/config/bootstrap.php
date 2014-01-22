@@ -23,6 +23,10 @@
  * @see lithium\util\collection\Filters
  */
 
+if (extension_loaded('newrelic')) {
+    newrelic_set_appname('GoDesigner');
+}
+
 /**
  * The libraries file contains the loading instructions for all plugins, frameworks and other class
  * libraries used in the application, including the Lithium core, and the application itself. These
