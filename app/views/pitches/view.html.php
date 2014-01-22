@@ -40,15 +40,8 @@
                         <a href="/pitches">Все питчи /</a> <a href="/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a>
                     </div>
                     <?php if($pitch->status == 0):?>
-                    <?php if(!in_array($pitch->id, $this->session->read('user.faves'))):?>
-                    <div style="width:36px;height:36px;float:right;margin-right: 20px;">
-                        <a data-pitchid="<?=$pitch->id?>" id="fav" data-type="add" href="#" title="Добавить в избранное"><img class="fav-plus" alt="добавить в избранное" src="/img/plus 2.png"></a>
-                    </div>
-                    <?php else:?>
-                    <div style="width:36px;height:36px;float:right;margin-right: 20px;">
-                        <a data-pitchid="<?=$pitch->id?>" id="fav" data-type="remove" href="#" title="Удалить из избранного"><img class="fav-minus" alt="Удалить из избранного" src="/img/minus.png"></a>
-                    </div>
-                    <?php endif?><?php endif?>
+                        <?= $this->view()->render(array('element' => 'pitch-info/favourite_status'), array('pitch' => $pitch))?>
+                    <?php endif?>
                 </div>
 
                 <div class="menu">
