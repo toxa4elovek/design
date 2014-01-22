@@ -253,6 +253,9 @@ class Comment extends \app\models\AppModel {
                 $params['reply_to'] = $mentionedComment->user_id;
                 unset($params['comment_id']);
             }
+            if (isset($params['question_id']) && ($mentionedComment = $self::first($params['question_id']))) {
+                $params['reply_to'] = $mentionedComment->user_id;
+            }
             $comment->set($params);
             $comment->created = date('Y-m-d H:i:s');
             $comment->save();
