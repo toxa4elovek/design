@@ -4,7 +4,7 @@ namespace app\extensions\command;
 
 use \app\models\User;
 
-class Referalspam extends \lithium\console\Command {
+class Referalspam extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the Referalspam command!');

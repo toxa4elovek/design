@@ -4,7 +4,7 @@ namespace app\extensions\command;
 
 use \app\models\Pitch;
 
-class SendReports extends \lithium\console\Command {
+class SendReports extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the SendReports command!');

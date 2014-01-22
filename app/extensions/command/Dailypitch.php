@@ -4,7 +4,7 @@ namespace app\extensions\command;
 
 use \app\models\Pitch;
 
-class Dailypitch extends \lithium\console\Command {
+class Dailypitch extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the Dailypitch command!');
