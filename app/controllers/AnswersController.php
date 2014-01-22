@@ -54,7 +54,7 @@ class AnswersController extends \lithium\action\Controller {
     }
 
     public function view() {
-        if($answer = Answer::first($this->request->id)) {
+        if(($this->request->id != null) && ($answer = Answer::first($this->request->id))) {
             Answer::increaseCounter($this->request->id);
             $similar = Answer::all(array(
                 'order' => array('RAND()'),
