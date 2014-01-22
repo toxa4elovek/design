@@ -4,14 +4,15 @@ namespace app\extensions\command;
 
 use \app\models\Task;
 
-class ClearTask extends \app\extensions\command\CronJob {
+class ClearTasks extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the ClearTask command!');
-        //if ($count = Sendemail::clearOldSpamSimple()) {
-        //    $this->out($count . ' old messages have been deleted successfully.');
-        //}
-            $this->out('End of task.');
-        //}
+        $tasks = Task::getCompletedTasks(2);
+        $this->out('Total tasks fetched for deletion - ' . count($tasks));
+        foreach($tasks as $task) {
+            $task->delete();
+        }
+        $this->out('Task completed');
     }
 }
