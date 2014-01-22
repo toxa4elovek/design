@@ -5,8 +5,10 @@ namespace app\extensions\command;
 class CronJob extends \lithium\console\Command {
 
     public function _init() {
-        echo 'Task';
-        die();
+        // Mark cron job as background task for newrelic
+        if (extension_loaded('newrelic')) {
+            newrelic_background_job(true);
+        }
     }
 
 }
