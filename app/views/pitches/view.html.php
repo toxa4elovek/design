@@ -106,9 +106,11 @@
                         if(!isset($solution->images['solution_galleryLargeSize'])):
                             $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
                             $picCounter2 = 0;
-                            foreach($solution->images['solution_galleryLargeSize'] as $image):
-                                $picCounter2++;
-                            endforeach;
+                            if(is_array($solution->images['solution_galleryLargeSize'])):
+                                foreach($solution->images['solution_galleryLargeSize'] as $image):
+                                    $picCounter2++;
+                                endforeach;
+                            endif;
                         endif;
                     endif;
                 ?>
