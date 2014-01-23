@@ -53,7 +53,7 @@ class Pitchfile extends \app\models\AppModel {
                 }
                 return $record;
             };
-            if(get_class($result) == 'lithium\data\entity\Record') {
+            if((is_object($result)) and (get_class($result) == 'lithium\data\entity\Record')) {
                 $result = $attachRecord($result);
             }elseif(($result) and (count($result) > 0)) {
                 foreach($result as $foundItem) {

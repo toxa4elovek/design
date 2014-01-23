@@ -148,16 +148,16 @@
                                         $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
                                         $picCounter = 0;
                                         $extra = array();
-                                        foreach($solution->images['solution_galleryLargeSize'] as $image):
-                                            if($picCounter == 0):?>
-                            <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
-                            <?php
-                                            else:
-                                                $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
-                                            endif;
-
-                                        $picCounter++;
-                                        endforeach;
+                                        if(is_array($solution->images['solution_galleryLargeSize'])):
+                                            foreach($solution->images['solution_galleryLargeSize'] as $image):
+                                                if($picCounter == 0):?>
+                                <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                                                <?php else:
+                                                    $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
+                                                endif;
+                                                $picCounter++;
+                                            endforeach;
+                                        endif;
                                     endif;
                                      ?>
                                         <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
