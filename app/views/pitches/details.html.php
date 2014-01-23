@@ -217,7 +217,7 @@ foreach($experts as $expert) {
     <div style="margin-top:15px;">
 
     <section class="white" style="margin: 0 -34px">
-        <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'expertsIds' => $expertsIds))?>
+        <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch))?>
     </section>
 </div>
 

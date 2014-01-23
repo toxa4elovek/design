@@ -80,10 +80,6 @@
     <div class="portfolio_gallery" style="padding-top:32px;">
     <div class="pht"></div>
             <?php
-            $expertsIds = array();
-            foreach($experts as $expert) :
-                $expertsIds[] = $expert->user_id;
-            endforeach;
             $mySolutionList = array();
             $mySolutionNumList = array();
             if((count($solutions) > 0) && ($pitch->published == 1)): ?>
@@ -410,7 +406,7 @@
         </section>
 
         <section class="white" style="margin: 0 -34px">
-            <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'expertsIds' => $expertsIds))?>
+            <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch))?>
         </section>
                 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
     <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
