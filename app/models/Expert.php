@@ -2,14 +2,20 @@
 
 namespace app\models;
 
-/*
-use \lithium\util\Validator;
-use \lithium\util\String;
-*/
-
-
 class Expert extends \app\models\AppModel {
 
     public $belongsTo = array('User');
 
+    /**
+     * Метод возвращает айди пользователей (users.id) из таблицы экспертов (experts.user_id)
+     * @return array
+     */
+    public static function getExpertUserIds() {
+        $experts = self::all(array('fields' => array('user_id')));
+        $expertIds = array();
+        $experts->each(function($record) use (&$expertIds){
+           $expertIds[] = $record->user_id;
+        });
+        return $expertIds;
+    }
 }

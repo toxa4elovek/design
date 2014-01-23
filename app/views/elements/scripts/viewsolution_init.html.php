@@ -5,7 +5,7 @@
     var currentUserName = '<?=$this->nameInflector->renderName($this->session->read('user.first_name'), $this->session->read('user.last_name'))?>';
     var isCurrentExpert = <?php
         if($this->session->read('user')):
-            echo (in_array($this->session->read('user.id'), $expertsIds)) ? 1 : 0;
+            echo $this->user->isExpert() ? 1 : 0;
         else:
             echo 0;
         endif;

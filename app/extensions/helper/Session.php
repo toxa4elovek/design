@@ -10,6 +10,4 @@
 namespace app\extensions\helper;
 
 class Session extends \lithium\storage\Session {
-
-
 }

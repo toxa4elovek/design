@@ -1,29 +1,57 @@
 <?php
 namespace app\extensions\helper;
 
+use app\models\User as UserModel;
+use app\models\Expert;
+
+/**
+ * Class User - Хелпер для различных проверок текущего пользователя
+ * Взаимодействует с моделью User и Expert
+ * @package app\extensions\helper
+ */
 class User extends \app\extensions\helper\Session {
 
-    public $admins = array(32, 4, 5, 108, 81);
+    /**
+     * @var array Массив хранит айди админом
+     */
+    public $adminIds = array();
 
     /**
-     * @param $expertsIds - Список айдишников эксперта
-     * @return bool - Является ли пользователь экспертом
+     * @var array Массив хранит айди экспертов
      */
-    public function isExpert($expertsIds) {
-        if(!$this->read('user')) {
-            return false;
-        }
-        return in_array($this->read('user.id'), $expertsIds);
+    public $expertIds = array();
+
+    /**
+     * Конструктор устанавливает свойства
+     */
+    public function __construct() {
+        $this->adminIds = UserModel::$admins;
+        $this->expertIds = Expert::getExpertUserIds();
     }
 
     /**
+     * Метод определяет, является ли текущий пользователь экспертом
+     *
+     * @param $expertsIds - Список айдишников эксперта
+     * @return bool - Является ли пользователь экспертом
+     */
+    public function isExpert() {
+        if(!$this->read('user')) {
+            return false;
+        }
+        return in_array($this->read('user.id'), $this->expertIds);
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь админом
+     *
      * @return bool - Является ли пользователь админом
      */
     public function isAdmin() {
         if(!$this->read('user')) {
             return false;
         }
-        if(($this->read('user.isAdmin')) || (in_array($this->read('user.id'), $this->admins))) {
+        if(($this->read('user.isAdmin')) || (in_array($this->read('user.id'), $this->adminIds))) {
             return true;
         }
         return false;
