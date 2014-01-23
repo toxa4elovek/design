@@ -940,6 +940,9 @@ class PitchesController extends \app\controllers\AppController {
                         $freePinned = true;
                         $promocode = '';
                     }
+                    if ($code->type == 'misha') {
+                        $freePinned = true;
+                    }
                 }
             }
 
