@@ -132,7 +132,7 @@
                 <section class="allow-comments">
                     <div class="separator full"></div>
                     <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
-                    <?php if (($this->session->read('user.id') == $pitch->user->id) || (int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')): ?>
+                    <?php if (($this->session->read('user.id') == $pitch->user->id) || $this->user->isAdmin()): ?>
                     <form class="createCommentForm" method="post" action="/comments/add">
                     	<textarea id="newComment" name="text"></textarea>
                     	<input type="hidden" value="<?=$solution->id?>" name="solution_id">
@@ -203,7 +203,7 @@
 </div>
 
 <!-- Moderation Popups -->
-<?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) ):?>
+<?php if($this->user->isAdmin()):?>
     <?=$this->view()->render(array('element' => 'moderation'))?>
 <?php endif; ?>
 
@@ -227,7 +227,7 @@
                 //
             ?>
             <?php else:?>
-                <?php if(($pitch->user_id == $this->session->read('user.id')) || ($this->user->isExpert()) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == $this->session->read('user.id'))):?>
+                <?php if(($pitch->user_id == $this->session->read('user.id')) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id'))):?>
                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
                         <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
                     <?php else:?>

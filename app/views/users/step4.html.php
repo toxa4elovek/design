@@ -109,7 +109,7 @@
                     </div>
 
                     <div class="buttons">
-                        <?php //if($this->session->read('user.isAdmin') != 1):
+                        <?php //if($this->user->isAdmin()):
                         if(1 == 1):
                         ?>
                         <div class="continue spanned" style="margin-bottom:10px;">

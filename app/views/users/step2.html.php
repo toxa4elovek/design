@@ -124,12 +124,12 @@
                         if(($this->session->read('user.id') == $comment->user_id) && (($solution->step <= 2) && ($solution->pitch->status < 2))):?>
                             <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
                         <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
-                            <?php if ($this->session->read('user.isAdmin') == 1):?>
+                            <?php if ($this->user->isAdmin()):?>
                             <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
                             <?php endif?>
                             <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
                         <?php endif;?>
-                        <?php if ($this->session->read('user.isAdmin') == 1):?>
+                        <?php if ($this->user->isAdmin()):?>
                             <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
                         <?php endif?>
                         </div>
@@ -168,10 +168,10 @@
                         <?php endif;?>
                     </div>
                 </div>
-                <?php elseif((($type == 'client') || ($this->session->read('user.isAdmin') == 1)) &&  ($solution->step < 3)):?>
+                <?php elseif((($type == 'client') || ($this->user->isAdmin())) &&  ($solution->step < 3)):?>
                 <div class="buttons">
                     <div class="verify spanned" style="margin-right: 0px;">
-                        <?php if(($nofiles == false) || ($this->session->read('user.isAdmin') == 1)):?>
+                        <?php if(($nofiles == false) || ($this->user->isAdmin())):?>
                         <?=$this->html->link('<img src="/img/proceed.png" /><br />
                             <span style="">Одобрить макеты</span>', array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
                         <?php else:?>

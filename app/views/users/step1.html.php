@@ -147,7 +147,7 @@
                     <span class="regular">Вы можете вернуться к этому этапу позже!</span>
                 </div>
                 <div class="proceed">
-                    <?php if(($this->session->read('user.isAdmin') == 1) || ($solution->pitch->category_id == 7 && $solution->step != 4)):?>
+                    <?php if(($this->user->isAdmin()) || ($solution->pitch->category_id == 7 && $solution->step != 4)):?>
 
                     <?php else:?>
                     <?=$this->html->link('<img src="/img/proceed.png" /><br />

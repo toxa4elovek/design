@@ -2,7 +2,7 @@
 var pitchNumber = <?php echo $pitch->id; ?>;
 var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
 var currentUserName = '<?=$this->nameInflector->renderName($this->session->read('user.first_name'), $this->session->read('user.last_name'))?>';
-var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')) ? 1 : 0 ?>;
+var isCurrentAdmin = <?php echo $this->user->isAdmin() ? 1 : 0 ?>;
 var isCurrentExpert = <?php echo $this->user->isExpert() ? 1 : 0; ?>;
 var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 1 : 0; ?>;
 </script>
@@ -10,7 +10,7 @@ var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user-
     <?php
     if(
 
-    (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert()) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($this->session->read('user.isAdmin')))) ||
+    (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
     (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true))
 
     && ($this->session->read('user.id'))
@@ -22,7 +22,7 @@ var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user-
             </div>
             <div class="separator" style="width: 810px; margin-left: 30px;"></div>
             <div class="comment" id="comment-anchor">
-            <?php if ((($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert()) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($this->session->read('user.isAdmin')))):
+            <?php if (($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert()) || ($this->user->isAdmin())):
             $buttonText = 'Отправить';
                 $publicComment = 1; ?>
                 Оставьте комментарий всем участникам
@@ -52,6 +52,6 @@ var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user-
     </section>
 </div>
 <!-- Moderation Popups -->
-<?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) ):?>
+<?php if ($this->user->isAdmin()):?>
     <?=$this->view()->render(array('element' => 'moderation'))?>
 <?php endif; ?>

@@ -8,7 +8,7 @@
 
         <div class="middle_inner user_view" style="min-height:330px;">
 
-        <?php if(in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))):?>
+        <?php if($this->user->isAdmin()):?>
             <div class="right-sidebar-user">
                 <a class="button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=http://www.godesigner.ru/users/loginasuser/<?=$user->id?>">Войти под именем</a>
                 <hr>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
 
-                <?php if((in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)))):?>
+                <?php if($this->user->isAdmin()):?>
                 <div class="about_profile clr">
                     <dl>
                         <?php if(trim($userdata['about']) != ''):?>
@@ -86,7 +86,7 @@
                 </div>
                 <?php endif?>
 
-                <?php if ( (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81)) || ($this->session->read('user.isAdmin') == 1)) && (count($moderations) > 0) && (!empty($moderations)) ):?>
+                <?php if($this->user->isAdmin() && (count($moderations) > 0) && (!empty($moderations))):?>
                     <hr>
                     <h2 class="greyboldheader">История:</h2>
                     <?php foreach ($moderations as $moderation): ?>

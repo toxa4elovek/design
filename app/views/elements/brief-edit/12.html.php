@@ -1,7 +1,7 @@
 <div class="groupc">
 
     <?php if($pitch->billed == 1):?>
-        <?php if (($this->session->read('user.isAdmin') == 1) || \app\models\User::checkRole('admin')):?>
+        <?php if ($this->user->isAdmin()):?>
             <p><label>Ведите количество макетов/страниц</label>
             <input type="text" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
             </p>
