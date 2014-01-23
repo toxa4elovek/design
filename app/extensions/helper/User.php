@@ -24,9 +24,14 @@ class User extends \app\extensions\helper\Session {
     /**
      * Конструктор устанавливает свойства
      */
-    public function __construct() {
-        $this->adminIds = UserModel::$admins;
-        $this->expertIds = Expert::getExpertUserIds();
+    public function __construct($config) {
+        $defaults = array(
+            'userModel' => 'app\models\User',
+            'expertModel' => 'app\models\Expert'
+        );
+        $options = $config + $defaults;
+        $this->adminIds = $options['userModel']::$admins;
+        $this->expertIds = $options['expertModel']::getExpertUserIds();
     }
 
     /**
