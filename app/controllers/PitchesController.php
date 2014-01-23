@@ -868,7 +868,11 @@ class PitchesController extends \app\controllers\AppController {
         }
         $percentages['empty'] = 100 - $total;
         $avgArray = calcAvg($ratingArray, $moneyArray, $commentArray);
-        $avgNum = round(array_sum($avgArray) / count($avgArray), 1);
+        if($avgArray != 0) {
+            $avgNum = round(array_sum($avgArray) / count($avgArray), 1);
+        }else {
+            $avgNum = 0;
+        }
         $guaranteed = $pitch->guaranteed;
         $needRatingPopup = $pitch->ratingPopup($avgArray);
         $needWinnerPopup = $pitch->winnerPopup();
