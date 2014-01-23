@@ -1484,11 +1484,15 @@ Disallow: /pitches/upload/' . $pitch['id'];
         return compact('pitches');
     }
 
+
+    /**
+    * Метод отображения страницы решения
+    * @return array|object
+    * @throws \Exception
+    */
 	public function viewsolution() {
-        //error_reporting(E_ALL);
-        //ini_set('display_errors', '1');
-		Solution::increaseView($this->request->id);
-		if($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch')))) {
+		if(($this->request->id) && ($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch'))))) {
+            Solution::increaseView($this->request->id);
             $validSorts = array('rating', 'created', 'likes');
             if((isset($this->request->query['sorting'])) && (in_array($this->request->query['sorting'], $validSorts))){
                 switch($this->request->query['sorting']) {
