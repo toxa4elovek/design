@@ -615,6 +615,7 @@ function prepareCommentData(comment, result) {
     commentData.commentPlainText = comment.originalText.replace(/"/g, "\'");
     commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
     commentData.isExpert = isExpert(comment.user_id, expertsObj);
+    commentData.isClosedPitch = (result.pitch.status != 0) ? 1 : 0;
     
     if (result.pitch.user_id == comment.user_id) {
         commentData.messageInfo = 'message_info2';
@@ -659,14 +660,18 @@ function populateComment(data) {
     var toolbar = '';
     var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
                         <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>';
-    var answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
+    var answerTool = ' display: none;';
     if (data.needAnswer == 1) {
-        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>';
+        answerTool = '';
     }
     if ((data.isChild == 1) || (data.hasChild == 1)) {
-        answerTool = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right; display: none;">Ответить</a>';
+        answerTool = ' display: none;';
     }
-    var userToolbar = answerTool + '<a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
+    if (isCurrentAdmin != 1 && isClient != 1 && data.isClosedPitch) {
+        answerTool = ' display: none;';
+    }
+    var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;' + answerTool + '">Ответить</a> \
+                        <a href="#" data-comment-id="' + data.commentId + '" data-url="/comments/warn.json" class="warning-comment warn-link-in-comment" style="float:right;">Пожаловаться</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
     } else if (currentUserId) {
@@ -1144,6 +1149,7 @@ function preparePitchCommentData(result) {
     commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
     commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
     commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
+    commentData.isClosedPitch = (result.comment.pitch.status != 0) ? 1 : 0;
 
     if (result.comment.pitch.user_id == result.comment.user_id) {
         commentData.messageInfo = 'message_info2';
