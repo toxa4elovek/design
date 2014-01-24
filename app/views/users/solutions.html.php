@@ -41,7 +41,7 @@
                             </div>
                             </div>
                             <div class="selecting_numb">
-                                <?php if(($filterType != 'nominating') && ($solution->user_id == $this->session->read('user.id'))):?>
+                                <?php if(($filterType != 'nominating') && ($this->user->isSolutionAuthor($solution->user_id))):?>
                                 <input type="checkbox" <?php if(($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):?>disabled="disabled"<?php endif?> <?php if($solution->selected):?>checked="checked"<?php endif?> class="select_checkbox" data-id="<?=$solution->id?>" style="margin-right: 5px;">
                                 <?php endif;?>
                                 <span class="number_img">#<?=$solution->num?></span>
