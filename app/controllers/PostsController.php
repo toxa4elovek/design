@@ -9,8 +9,16 @@ use lithium\analysis\Logger;
 
 class PostsController extends \app\controllers\AppController {
 
+    /**
+     * @var array Массив экшенов, доступных не залогинненым пользователям
+     */
     public $publicActions = array('index', 'view');
 
+    /**
+     * Метод показа индексной страницы, используется в html и json форматах
+     *
+     * @return array
+     */
     public function index() {
 
         $limit = 7;
@@ -45,6 +53,11 @@ class PostsController extends \app\controllers\AppController {
         return compact('posts', 'total', 'page', 'currenttag', 'editor');
     }
 
+    /**
+     * Метод сохранения поста (нового или существующего)
+     *
+     * @return object
+     */
     public function save() {
         if(User::checkRole('editor')) {
             if((!empty($this->request->data['id'])) && ($this->request->data['id'])) {
@@ -53,7 +66,6 @@ class PostsController extends \app\controllers\AppController {
                 unset($this->request->data['id']);
                 $post = Post::create();
                 $post->user_id = Session::read('user.id');
-                //$post->created = date('Y-m-d H:i:s');
             }
             $post->set($this->request->data);
             $tagsArray = array();
@@ -77,6 +89,11 @@ class PostsController extends \app\controllers\AppController {
         }
     }
 
+    /**
+     * Метод просмотра поста из блога
+     *
+     * @return array|object
+     */
     public function view() {
         if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || User::checkRole('editor'))) {
             if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
@@ -114,6 +131,11 @@ class PostsController extends \app\controllers\AppController {
         }
     }
 
+    /**
+     * Метод показа страницы нового поста
+     *
+     * @return array|object
+     */
     public function add() {
         if(false === User::checkRole('editor')) {
             return $this->redirect('/posts');
@@ -122,6 +144,11 @@ class PostsController extends \app\controllers\AppController {
         return compact('commonTags');
     }
 
+    /**
+     * Метод показа страницы редактирования поста
+     *
+     * @return array|object
+     */
     public function edit() {
         if(User::checkRole('editor')) {
             if($post = Post::first($this->request->id)) {
@@ -134,6 +161,11 @@ class PostsController extends \app\controllers\AppController {
         }
     }
 
+    /**
+     * Метод удаления поста.
+     *
+     * @return object
+     */
     public function delete() {
         if(User::checkRole('editor')) {
             if($post = Post::first($this->request->id)) {

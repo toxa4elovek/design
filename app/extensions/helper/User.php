@@ -11,12 +11,17 @@ class User extends \app\extensions\helper\Session {
     /**
      * @var array Массив хранит айди админом
      */
-    public $adminIds = array();
+    public $adminsIds = array();
 
     /**
      * @var array Массив хранит айди экспертов
      */
-    public $expertIds = array();
+    public $expertsIds = array();
+
+    /**
+     * @var array Массив хранит айди редакторов блога
+     */
+    public $editorsIds = array();
 
     /**
      * Конструктор устанавливает свойства
@@ -27,8 +32,9 @@ class User extends \app\extensions\helper\Session {
             'expertModel' => 'app\models\Expert'
         );
         $options = $config + $defaults;
-        $this->adminIds = $options['userModel']::$admins;
-        $this->expertIds = $options['expertModel']::getExpertUserIds();
+        $this->adminsIds = $options['userModel']::$admins;
+        $this->expertsIds = $options['expertModel']::getExpertUserIds();
+        $this->editorsIds = $options['userModel']::$editors;
     }
 
     /**
@@ -41,7 +47,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->read('user.id'), $this->expertIds);
+        return in_array($this->read('user.id'), $this->expertsIds);
     }
 
     /**
@@ -53,7 +59,17 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        if(($this->read('user.isAdmin')) || (in_array($this->read('user.id'), $this->adminIds))) {
+        if(($this->read('user.isAdmin')) || (in_array($this->read('user.id'), $this->adminsIds))) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isEditor() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        if(in_array($this->read('user.id'), $this->expertsIds)) {
             return true;
         }
         return false;

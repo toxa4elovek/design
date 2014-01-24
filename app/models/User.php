@@ -38,7 +38,7 @@ class User extends \app\models\AppModel {
      *
      * @var array
      */
-    private static $editors = array(32, 4, 5, 108, 81, 1773, 3049);
+    private static $editors = array(32, 4, 5, 108, 81, 3049, 8472);
 
 
     protected static $_behaviors = array(
