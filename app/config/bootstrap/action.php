@@ -70,7 +70,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     }
 
     return function() use ($params) {
-        if($params['request']->type != 'json') {
+        if(($params['request']->type != 'json') || (($params['params']['controller'] == 'Pitchfiles') and (($params['params']['action'] == 'index')|| ($params['params']['action'] == 'download')))) {
     	    Session::write('redirect', '/'. $params['request']->url);
         }
         return new Response(compact('request') + array('location' => '/users/login'));
