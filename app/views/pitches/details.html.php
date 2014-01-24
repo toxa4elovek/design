@@ -257,7 +257,7 @@ foreach($experts as $expert) {
                 //
             ?>
             <?php else:?>
-                <?php if(($pitch->user_id == $this->session->read('user.id')) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id'))):?>
+                <?php if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):?>
                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
                         <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
                     <?php else:?>
