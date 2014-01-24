@@ -11,7 +11,7 @@ namespace app\extensions\helper;
 
 class NameInflector extends \lithium\template\Helper {
 
-	function renderName($first, $second = '') {
+	static function renderName($first, $second = '') {
 	    $dot = ($second == '') ? '' : '.';
 		return strip_tags($first . ' ' . mb_substr($second, 0, 1, 'utf-8') . $dot);
 	}

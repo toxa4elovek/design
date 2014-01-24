@@ -23,15 +23,18 @@ class User extends \app\extensions\helper\Session {
      */
     public $editorsIds = array();
 
+    protected $_options = array();
+
     /**
      * Конструктор устанавливает свойства
      */
     public function __construct($config) {
         $defaults = array(
             'userModel' => 'app\models\User',
-            'expertModel' => 'app\models\Expert'
+            'expertModel' => 'app\models\Expert',
+            'inflector' => 'app\extensions\helper\NameInflector'
         );
-        $options = $config + $defaults;
+        $this->_options = $options =  $config + $defaults;
         $this->adminsIds = $options['userModel']::$admins;
         $this->expertsIds = $options['expertModel']::getExpertUserIds();
         $this->editorsIds = $options['userModel']::$editors;
@@ -65,6 +68,11 @@ class User extends \app\extensions\helper\Session {
         return false;
     }
 
+    /**
+     * Метод определяет, является ли текущий пользователь редактором блога
+     *
+     * @return bool
+     */
     public function isEditor() {
         if(!$this->isLoggedIn()) {
             return false;
@@ -99,6 +107,72 @@ class User extends \app\extensions\helper\Session {
      */
     public function isSolutionAuthor($solutionUserId) {
         return $this->__detectOwnership($solutionUserId);
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь автором комментария с айди $commentAuthorId
+     *
+     * @param $commentAuthorId
+     * @return bool
+     */
+    public function isCommentAuthor($commentAuthorId) {
+        return $this->__detectOwnership($commentAuthorId);
+    }
+
+    /**
+     * Метод возвращает айди пользователя или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getId() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->read('user.id');
+    }
+
+    /**
+     * Метод возвращает имя пользователя или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getFirstname() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->read('user.first_name');
+    }
+
+    /**
+     * Метод возвращает фамилию пользователя или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getLastname() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->read('user.last_name');
+    }
+
+    /**
+     * Метод возвращает email или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getEmail() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->read('user.email');
+    }
+
+    public function getFormattedName() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        $inflectorClassName = $this->_options['inflector'];
+        return $inflectorClassName::renderName($this->getFirstname(), $this->getLastname());
     }
 
     /**

@@ -121,7 +121,7 @@
                     <div style="width:810px;float:right;margin-top:6px;margin-right:5px;padding-bottom:2px;height:18px;">
                         <div class="toolbar">
                         <?php
-                        if(($this->session->read('user.id') == $comment->user_id) && (($solution->step <= 2) && ($solution->pitch->status < 2))):?>
+                        if(($this->user->isCommentAuthor($comment->user_id)) && (($solution->step <= 2) && ($solution->pitch->status < 2))):?>
                             <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
                         <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
                             <?php if ($this->user->isAdmin()):?>

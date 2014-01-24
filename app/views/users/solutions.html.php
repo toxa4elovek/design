@@ -14,7 +14,7 @@
             <?=$this->view()->render(array('element' => 'complete-process/filtersmenu'), array('link' => 1))?>
             <div class="portfolio" style="min-height:500px;">
                 <?php if(count($solutions) > 0):?>
-                    <p class="supplement2" style="margin-top:10px; margin-bottom: 10px;">Выберите работы для отображения портфолио в просмотре вашего <a target="_blank" href="/users/view/<?=$this->session->read('user.id')?>">профиля</a>.</p>
+                    <p class="supplement2" style="margin-top:10px; margin-bottom: 10px;">Выберите работы для отображения портфолио в просмотре вашего <a target="_blank" href="/users/view/<?=$this->user->getId()?>">профиля</a>.</p>
                     <ul class="list_portfolio">
                         <?php foreach($solutions as $solution):                    ?>
                         <li>
@@ -64,7 +64,7 @@
             </div>
         </div><!-- .conteiner -->
         <div id="popup-warning" class="popup-warn generic-window" style="display:none;height:300px;">
-            <p style="margin-top:120px;">Изменения, внесенные вами в список отображаемых работ в вашем профиле, сохранены!<br> Вы можете просмотреть ваш профиль по этой ссылке:<br> <a href="http://www.godesigner.ru/user/view/<?=$this->session->read('user.id')?>" target="_blank">http://www.godesigner.ru/user/view/<?=$this->session->read('user.id')?></a></p>
+            <p style="margin-top:120px;">Изменения, внесенные вами в список отображаемых работ в вашем профиле, сохранены!<br> Вы можете просмотреть ваш профиль по этой ссылке:<br> <a href="http://www.godesigner.ru/user/view/<?=$this->user->getId()?>" target="_blank">http://www.godesigner.ru/user/view/<?=$this->user->getId()?></a></p>
             <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" style="width:108px;" class="button popup-close" value="ОК"></div>
         </div>
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->

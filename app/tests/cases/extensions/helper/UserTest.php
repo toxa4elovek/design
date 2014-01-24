@@ -8,6 +8,7 @@ class UserTest extends \lithium\test\Unit {
 
     protected $_user_model = 'app\tests\mocks\template\helper\MockUserModel';
     protected $_expert_model = 'app\tests\mocks\template\helper\MockExpertModel';
+    protected $_inflector = 'app\extensions\helper\NameInflector';
 
     /**
      * Test object instance.
@@ -20,7 +21,11 @@ class UserTest extends \lithium\test\Unit {
      * Initialize test by creating a new object instance with a default context.
      */
     public function setUp() {
-        $this->user = new User(array('userModel' => $this->_user_model, 'expertModel' => $this->_expert_model));
+        $this->user = new User(array(
+            'userModel' => $this->_user_model,
+            'expertModel' => $this->_expert_model,
+            'inflector' => $this->_inflector
+        ));
     }
 
     public function tearDown() {
@@ -81,6 +86,47 @@ class UserTest extends \lithium\test\Unit {
         $this->assertFalse($this->user->isEditor());
         $this->user->write('user.id', 4);
         $this->assertTrue($this->user->isEditor());
+    }
+
+    public function testGetId() {
+        $this->assertFalse($this->user->getId());
+        $this->user->write('user.id', 1);
+        $this->assertEqual(1, $this->user->getId());
+    }
+
+    public function testGetFirstname() {
+        $this->assertFalse($this->user->getFirstname());
+        $this->user->write('user.first_name', 'Дмитрий');
+        $this->assertEqual('Дмитрий', $this->user->getFirstname());
+    }
+
+    public function testGetLastname() {
+        $this->assertFalse($this->user->getLastname());
+        $this->user->write('user.last_name', 'Васильев');
+        $this->assertEqual('Васильев', $this->user->getLastname());
+    }
+
+    public function testGetEmail() {
+        $this->assertFalse($this->user->getEmail());
+        $this->user->write('user.email', 'nyudmitriy@gmail.com');
+        $this->assertEqual('nyudmitriy@gmail.com', $this->user->getEmail());
+    }
+
+    public function testIsCommentAuthor() {
+        $commentAuthorId = 1;
+        $randomUserId = 4;
+        $this->assertFalse($this->user->isCommentAuthor($commentAuthorId));
+        $this->user->write('user.id', $randomUserId);
+        $this->assertFalse($this->user->isCommentAuthor($commentAuthorId));
+        $this->user->write('user.id', $commentAuthorId);
+        $this->assertTrue($this->user->isCommentAuthor($commentAuthorId));
+    }
+
+    public function testGetFormattedName() {
+        $this->assertFalse($this->user->getFormattedName());
+        $this->user->write('user.first_name', 'Дмитрий');
+        $this->user->write('user.last_name', 'Васильев');
+        $this->assertEqual('Дмитрий В.', $this->user->getFormattedName());
     }
 
 }
