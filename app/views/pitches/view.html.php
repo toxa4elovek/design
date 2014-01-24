@@ -6,7 +6,7 @@
     </script>
 	<div class="middle">
 	<div class="middle_inner_gallery" style="padding-top:25px">
-    <?php if((int)$this->session->read('user.id') == $pitch->user_id):?>
+    <?php if($this->user->isPitchOwner($pitch->user_id)):?>
     <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
         <div class="bubble">
             <span>Возврат денег недоступен:</span><br>
@@ -28,7 +28,7 @@
 
     <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
                 <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
-                    <?php if($pitch->user_id != $this->session->read('user.id') || $pitch->status > 0): ?>
+                    <?php if(!$this->user->isPitchOwner($pitch->user_id)|| $pitch->status > 0): ?>
                         <?=$this->view()->render(array('element' => 'pitch-info/designers_infotable'), array('pitch' => $pitch))?>
                     <?php else: ?>
                         <?=$this->view()->render(array('element' => 'pitch-info/clients_infotable'), array('pitch' => $pitch))?>
@@ -64,7 +64,6 @@
             </p>
             <?php
             if(($this->session->read('user.id') != $pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
-                <?php //echo $this->html->link('<img src="/img/1.gif" width="184" height="34" alt="" /><br /><span>предложить решение</span>', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('class' => 'other-nav-right active', 'escape' => false))?>
                 <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;width:155px">предложить решение</a>
                 <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
                 <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/>
@@ -88,7 +87,7 @@
                 $i = 1;
 
                 foreach($solutions as $solution):
-                    if($this->session->read('user.id') == $solution->user_id) {
+                    if($this->user->isSolutionAuthor($solution->user_id)) {
                         $mySolutionList[] = $solution->id;
                         $mySolutionNumList[] = '#' . $solution->num;
                     }
@@ -112,13 +111,13 @@
                 ?>
                 <li <?php if(($picCounter2 > 1) && ($pitch->category_id != 7)): echo 'class="multiclass"'; endif;?>>
                     <!-- multisolution branch -->
-                    <div class="photo_block" <?php if(($picCounter2 > 1) && (($solution->hidden) && ($pitch->user_id == $this->session->read('user.id')))):?>style="background: url(/img/copy-inv.png) 10px 10px no-repeat white"<?php endif;?>>
+                    <div class="photo_block" <?php if(($picCounter2 > 1) && (($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id)))):?>style="background: url(/img/copy-inv.png) 10px 10px no-repeat white"<?php endif;?>>
                         <?php
                         $visible = false;
 
                         if($pitch->private != 1):
                             if($pitch->category_id == 7):
-                                if(($this->session->read('user.id') != null) && (($pitch->user_id == $this->session->read('user.id')) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id')))):
+                                if(($this->session->read('user.id') != null) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id')))):
                                     $visible = true;?>
                                     <a class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
                                         <?php if(mb_strlen(trim($solution->description)) > 100):?>
@@ -135,8 +134,8 @@
                                     $visible = true;?>
                                 <div style="z-index: 2; position: absolute; color: rgb(102, 102, 102); font-weight: bold; font-size: 14px; padding-top: 7px; height: 16px; top: -34px; text-align: right; width: 18px; padding-right: 21px; background: url(/img/multi-icon.png) no-repeat scroll 22px 5px transparent; left: 169px;"><?=$picCounter2?></div>
                                 <?php endif?>
-                            <?php if(($solution->hidden == 1) && ($pitch->user_id == $this->session->read('user.id'))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
-                                <a style="<?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
+                            <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
+                                <a style="<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
                                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
                                         <!-- 3 <?php var_dump($extra) ?> -->
                                     <?php
@@ -174,7 +173,7 @@
                                         endforeach;?>
                                     <?php endif?>
 
-                                </a><?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?></div><?php endif?>
+                                </a><?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?></div><?php endif?>
 
                                 <?php if(isset($solution->images['solution_galleryLargeSize'][0])):?>
                                 <script type="text/javascript">
@@ -185,7 +184,7 @@
                             <!-- solo branch -->
                             <?php
                             if($pitch->category_id == 7):
-                                if(($pitch->user_id == $this->session->read('user.id')) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id'))):
+                                if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id'))):
                                     $visible = true;?>
                                 <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
                                     <?php if(mb_strlen(trim($solution->description)) > 100):?>
@@ -198,7 +197,7 @@
                                 <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="background-image: url(/img/copy-inv.png);width:179px;height:136px;background-color:#efefef;display:block;"></a>
                                 <?php endif?>
                             <?php else:
-                                    if(($pitch->user_id == $this->session->read('user.id')) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id')) || ($canViewPrivate)):
+                                    if($this->user->isPitchOwner($pitch->user_id) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id')) || ($canViewPrivate)):
                                         $visible = true;
                                         if($this->solution->getImageCount($solution->images['solution_galleryLargeSize']) > 1):?>
                                         <div style="z-index: 2; position: absolute; color: rgb(102, 102, 102); font-weight: bold; font-size: 14px; padding-top: 7px; height: 16px; top: -34px; text-align: right; width: 18px; padding-right: 21px; background: url(/img/multi-icon.png) no-repeat scroll 22px 5px transparent; left: 169px;"><?=$this->solution->getImageCount($solution->images['solution_solutionView'])?></div>
@@ -206,8 +205,8 @@
                                         <?php
 
 
-                                        if(($solution->hidden == 1) && ($pitch->user_id == $this->session->read('user.id'))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
-                                    <a style="<?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
+                                        if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
+                                    <a style="<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
 
 
                                         <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
@@ -230,7 +229,7 @@
                                         <?php endif?>
 
 
-                                    </a><?php if(($solution->hidden) && ($pitch->user_id == $this->session->read('user.id'))):?></div><?php endif?>
+                                    </a><?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?></div><?php endif?>
                                         <?php if(isset($solution->images['solution_galleryLargeSize'][0])):?>
                                         <script type="text/javascript">
                                             extraimages[<?= $solution->id?>] = <?php echo json_encode($extra)?>;</script>
@@ -250,7 +249,7 @@
                             <div class="" style="display: block; float:left;">
                                 <span class="rating_block">
                                     <div class="ratingcont" data-default="<?=$solution->rating?>" data-solutionid="<?=$solution->id?>" style="float: left; height: 9px; background: url(/img/<?=$solution->rating?>-rating.png) repeat scroll 0% 0% transparent; width: 56px;">
-                                        <?php if($pitch->user_id == $this->session->read('user.id')):?>
+                                        <?php if($this->user->isPitchOwner($pitch->user_id)):?>
                                         <a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
                                         <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
                                         <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
@@ -345,20 +344,20 @@
                     <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
                     <div class="solution_menu" style="display: none;">
                         <ul class="solution_menu_list" style="position:absolute;z-index:6;">
-                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 0) && ($this->session->read('user.id') == $pitch->user_id)): ?>
+                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 0) && ($this->user->isPitchOwner($pitch->user_id))): ?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/hide/<?=$solution->id?>.json" class="hide-item" data-to="<?=$solution->num?>">С глаз долой</a></li>
                             <?php endif;?>
 
 
 
 
-                            <?php if(($selectedsolution) && ($this->session->read('user.id') == $pitch->user_id) && ($pitch->awarded == $solution->id)):?>
+                            <?php if(($selectedsolution) && ($this->user->isPitchOwner($pitch->user_id)) && ($pitch->awarded == $solution->id)):?>
                             <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a href="/users/step4/<?=$solution->id?>">Перейти к завершению</a></li>
                             <?php endif;?>
                     <?php
                     if(
 
-                        (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
+                        (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
                         (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true))
 
                         && ($this->session->read('user.id'))
@@ -368,14 +367,14 @@
                             <?php if($this->session->read('user.id') > 0):?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/<?=$solution->id?>.json" class="warning" data-solution-id="<?=$solution->id?>">Пожаловаться</a></li>
                             <?php endif;?>
-                            <?php if((!$selectedsolution) && ($this->session->read('user.id') == $pitch->user_id)):?>
+                            <?php if((!$selectedsolution) && ($this->user->isPitchOwner($pitch->user_id))):?>
                             <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a></li>
                             <?php endif;?>
 
-                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 1) && ($this->session->read('user.id') == $pitch->user_id)): ?>
+                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))): ?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
                             <?php endif;?>
-                            <?php if(($this->session->read('user.id') == $solution->user_id) || ($this->user->isAdmin())):?>
+                            <?php if(($this->user->isSolutionAuthor($solution->user_id)) || ($this->user->isAdmin())):?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?=$solution->id?>" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
                             <?php endif;?>
 

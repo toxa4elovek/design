@@ -1,9 +1,6 @@
 <?php
 namespace app\extensions\helper;
 
-use app\models\User as UserModel;
-use app\models\Expert;
-
 /**
  * Class User - Хелпер для различных проверок текущего пользователя
  * Взаимодействует с моделью User и Expert
@@ -41,7 +38,7 @@ class User extends \app\extensions\helper\Session {
      * @return bool - Является ли пользователь экспертом
      */
     public function isExpert() {
-        if(!$this->read('user')) {
+        if(!$this->isLoggedIn()) {
             return false;
         }
         return in_array($this->read('user.id'), $this->expertIds);
@@ -53,13 +50,55 @@ class User extends \app\extensions\helper\Session {
      * @return bool - Является ли пользователь админом
      */
     public function isAdmin() {
-        if(!$this->read('user')) {
+        if(!$this->isLoggedIn()) {
             return false;
         }
         if(($this->read('user.isAdmin')) || (in_array($this->read('user.id'), $this->adminIds))) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Метод определяет, залогинен ли текущий пользователь
+     *
+     * @return bool
+     */
+    public function isLoggedIn() {
+        return (bool) $this->read('user');
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь владельцем питча с айди $pitchUserId
+     *
+     * @param $pitchUserId - айди владельца питча
+     * @return bool
+     */
+    public function isPitchOwner($pitchUserId) {
+        return $this->__detectOwnership($pitchUserId);
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь автором решения с айди $solutionUserId
+     *
+     * @param $solutionUserId
+     * @return bool
+     */
+    public function isSolutionAuthor($solutionUserId) {
+        return $this->__detectOwnership($solutionUserId);
+    }
+
+    /**
+     * Приватный метод помощник, сравнивает аргумент @model_id с текущим user.id, если установлен
+     *
+     * @param $model_id
+     * @return bool
+     */
+    private function __detectOwnership($model_id) {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $model_id == $this->read('user.id');
     }
 
 }

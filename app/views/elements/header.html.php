@@ -171,7 +171,7 @@
 
 	<p class="<?=$logo?>"><strong><a href="/">Go Designer</a></strong></p>
 	<nav class="topnav">
-        <?php if($this->Session->read('user')):?>
+        <?php if($this->user->isLoggedIn()):?>
             <div class="avatar-top" style="width: 41px; float: left; height: 50px;">
                 <?php if(($this->session->read('user.images.avatar_small.weburl') != '') || ($this->session->read('user.images.avatar_small.weburl') != false)):?>
                 <img style="display:block; float:left;width:41px;"src="<?=$this->session->read('user.images.avatar_small.weburl')?>" alt="" />

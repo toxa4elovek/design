@@ -103,7 +103,7 @@
 					</p><!-- .submit -->
 				<?=$this->form->end() ?>
 			</section>
-            <?php if($this->session->read('user')):?>
+            <?php if($this->user->isLoggedIn()):?>
 			<section>
 				<h2>Вы еще не зарегистрированы?</h2>
 

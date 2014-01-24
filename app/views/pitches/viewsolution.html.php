@@ -3,7 +3,7 @@
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
 
 	<script>var allowComments = false;</script>
-	<?php if((($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
+	<?php if((($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
         (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true)) && ($this->session->read('user.id'))):?>
         <script>allowComments = true;</script>
     <?php endif?>
@@ -227,7 +227,7 @@
                 //
             ?>
             <?php else:?>
-                <?php if(($pitch->user_id == $this->session->read('user.id')) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id'))):?>
+                <?php if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($solution->user_id == $this->session->read('user.id'))):?>
                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
                         <input type="hidden" rel="#<?=$solution->num?>" data-src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
                     <?php else:?>

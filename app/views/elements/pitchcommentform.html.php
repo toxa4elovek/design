@@ -10,7 +10,7 @@ var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user-
     <?php
     if(
 
-    (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
+    (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
     (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true))
 
     && ($this->session->read('user.id'))
@@ -22,7 +22,7 @@ var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user-
             </div>
             <div class="separator" style="width: 810px; margin-left: 30px;"></div>
             <div class="comment" id="comment-anchor">
-            <?php if (($this->session->read('user.id') == $pitch->user_id) || ($this->user->isExpert()) || ($this->user->isAdmin())):
+            <?php if (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin())):
             $buttonText = 'Отправить';
                 $publicComment = 1; ?>
                 Оставьте комментарий всем участникам

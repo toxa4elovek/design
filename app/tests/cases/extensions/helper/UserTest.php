@@ -48,4 +48,30 @@ class UserTest extends \lithium\test\Unit {
         $this->assertTrue($this->user->isExpert());
     }
 
+    public function testIsLoggedIn() {
+        $this->assertFalse($this->user->isLoggedIn());
+        $this->user->write('user.id', 4);
+        $this->assertTrue($this->user->isLoggedIn());
+    }
+
+    public function testIsPitchOwner() {
+        $pitchOwnerId = 1;
+        $randomUserId = 4;
+        $this->assertFalse($this->user->isPitchOwner($pitchOwnerId));
+        $this->user->write('user.id', $randomUserId);
+        $this->assertFalse($this->user->isPitchOwner($pitchOwnerId));
+        $this->user->write('user.id', $pitchOwnerId);
+        $this->assertTrue($this->user->isPitchOwner($pitchOwnerId));
+    }
+
+    public function testIsSolutionAuthor() {
+        $solutionOwnerId = 1;
+        $randomUserId = 4;
+        $this->assertFalse($this->user->isSolutionAuthor($solutionOwnerId));
+        $this->user->write('user.id', $randomUserId);
+        $this->assertFalse($this->user->isSolutionAuthor($solutionOwnerId));
+        $this->user->write('user.id', $solutionOwnerId);
+        $this->assertTrue($this->user->isSolutionAuthor($solutionOwnerId));
+    }
+
 }
