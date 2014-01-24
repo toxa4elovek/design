@@ -79,7 +79,7 @@ class UserTest extends \lithium\test\Unit {
         $this->assertFalse($this->user->isEditor());
         $this->user->write('user.id', 5);
         $this->assertFalse($this->user->isEditor());
-        $this->user->write('user.id', 2);
+        $this->user->write('user.id', 4);
         $this->assertTrue($this->user->isEditor());
     }
 

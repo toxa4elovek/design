@@ -69,10 +69,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        if(in_array($this->read('user.id'), $this->expertsIds)) {
-            return true;
-        }
-        return false;
+        return in_array($this->read('user.id'), $this->editorsIds);
     }
 
     /**
