@@ -568,7 +568,6 @@
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-abuse isField"><!--  --></div>
-            <div class="separator"></div>
         <!-- end: Solution Right Panel -->
         </div>
         <!-- start: Solution Left Panel -->
@@ -587,9 +586,9 @@
                 <div class="all_messages">
                 	<div class="clr"></div>
                 </div>
-                <div class="separator full"></div>
                 <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
                 <?php if (($this->session->read('user.id') == $pitch->user->id) || $this->user->isAdmin()): ?>
+                <div class="separator full"></div>
                 <form class="createCommentForm" method="post" action="/comments/add">
                 	<textarea id="newComment" name="text"></textarea>
                 	<input type="hidden" value="" name="solution_id">

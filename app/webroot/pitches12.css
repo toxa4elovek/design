@@ -788,7 +788,7 @@ h1.solution-title-page  {
 .solution-left-panel .like-wrapper {
     width: 304px;
     height: 115px;
-    margin: 10px 140px;
+    margin: 30px 140px;
 }
 .solution-left-panel .like-wrapper div.left, .solution-left-panel .like-wrapper div.right {
     color: #666;
@@ -822,6 +822,10 @@ h1.solution-title-page  {
 
 .solution-left-panel .allow-comments {
 	display: none;
+}
+.solution-left-panel .solution-comments section:first-child div.separator {
+	width: 692px;
+    margin-left: -46px;
 }
 .solution-left-panel div.message_info1,
 .solution-left-panel div.message_info2,
