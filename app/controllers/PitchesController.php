@@ -1558,6 +1558,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
 			}
 			$solutions = Solution::all(array('conditions' => array('pitch_id' => $solution->pitch_id), 'order' => $order));
 			$results = getArrayNeighborsByKey($solutions->data(), (int) $solution->id);
+			if ($this->request->is('json')) {
+			    $solutions = array();
+			}
 			$next = $results['next'];
 			$prev = $results['prev'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
@@ -1613,7 +1616,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     $likes = true;
                 }
             }
-            return compact('pitch', 'solution', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'expertsIds');
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
 		}else {
 		    throw new Exception('Public:Такого решения не существует.', 404);
         }

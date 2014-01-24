@@ -124,9 +124,9 @@ class Comment extends \app\models\AppModel {
                                 $num = substr($solutionNum, 1);
                                 $solution = Solution::first(array('conditions' => array('pitch_id' => $pitchId, 'num' => $num)));
                                 if (isset($solution)) {
-                                    $record->text = preg_replace("/($solutionNum)([\W]+)/", '<a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1">$1</a>$2', $record->text);
+                                    $record->text = preg_replace("/($solutionNum)([\W]*)/", '<a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1">$1</a>$2', $record->text);
                                 } else {
-                                    $record->text = preg_replace("/($solutionNum)([\W]+)/", '<a href="#" target="_blank" class="solution-link hoverimage">$1</a>$2', $record->text);
+                                    $record->text = preg_replace("/($solutionNum)([\W]*)/", '<a href="#" target="_blank" class="solution-link hoverimage">$1</a>$2', $record->text);
                                 }
                             }
                         }
@@ -216,7 +216,7 @@ class Comment extends \app\models\AppModel {
                 if ($solution = Solution::first(array('fields' => array('user_id'), 'conditions' => array( 'id' => $comment->solution_id)))) {
                     $designer = $solution->user_id;
                 }
-                if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer != $currentUser['id'])) {
+                if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer !== $currentUser['id'])) {
                     continue;
                 }
                 if (($comment->user_id != $currentUser['id']) && ($designer == $currentUser['id'])) {
@@ -252,6 +252,9 @@ class Comment extends \app\models\AppModel {
             if((isset($params['comment_id'])) && ($mentionedComment = $self::first($params['comment_id']))) {
                 $params['reply_to'] = $mentionedComment->user_id;
                 unset($params['comment_id']);
+            }
+            if (isset($params['question_id']) && ($mentionedComment = $self::first($params['question_id']))) {
+                $params['reply_to'] = $mentionedComment->user_id;
             }
             $comment->set($params);
             $comment->created = date('Y-m-d H:i:s');
