@@ -48,3 +48,29 @@ input[type="radio"], input[type="checkbox"] {
 .warning {
     color: #5C0002;
 }
+.upload-dropzone {
+	position: relative;
+	width: 878px;
+	height: 322px;
+	background-image: url('/img/upload-dropzone.png');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.upload-dropzone #truebutton,
+.upload-dropzone #fakebutton {
+    display: block;
+    position: absolute;
+    top: 210px;
+    left: 300px;
+    width: 260px;
+    height: 50px;
+    opacity: 0;
+    z-index:5;
+}
+.upload-dropzone #fakebutton {
+    z-index: 4;
+    opacity: 1;
+}
+.upload-dropzone.active {
+	background-position: 0 -322px;
+}
