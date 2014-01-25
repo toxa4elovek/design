@@ -12,11 +12,7 @@
         <!-- start: Solution Container -->
         <div class="solution-container page">
             <div class="pitch-info">
-            <?php if(!$this->user->isPitchOwner($pitch->user_id) || $pitch->status > 0): ?>
-                <?=$this->view()->render(array('element' => 'pitch-info/designers_infotable'), array('pitch' => $pitch))?>
-            <?php else: ?>
-                <?=$this->view()->render(array('element' => 'pitch-info/clients_infotable'), array('pitch' => $pitch))?>
-            <?php endif ?>
+                <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             </div>
             <div style="height:1px; clear:both;"></div>
             <!-- start: Solution Right Panel -->

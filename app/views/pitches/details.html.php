@@ -18,11 +18,7 @@ foreach($experts as $expert) {
         <div class="middle_inner_gallery"  style="padding-top:25px">
 
             <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
-                <?php if(!$this->user->isPitchOwner($pitch->user_id) || $pitch->status > 0): ?>
-                    <?=$this->view()->render(array('element' => 'pitch-info/designers_infotable'), array('pitch' => $pitch))?>
-                <?php else: ?>
-                    <?=$this->view()->render(array('element' => 'pitch-info/clients_infotable'), array('pitch' => $pitch))?>
-                <?php endif ?>
+                <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             </div>
 
             <div  id="pitch-title" style="height:36px;margin-bottom:5px;">
