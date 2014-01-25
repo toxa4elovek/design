@@ -39,13 +39,30 @@ $(document).ready(function() {
     $('.order2').on('mouseout', function() {
         $('img', this).attr('src', '/img/order2.png');
     })
+    
+    // Uploader's Drag'n'drop
+    $(document).on('dragover', function(e) {
+        e.preventDefault();
+        $('.upload-dropzone').addClass('active');
+        $('#fakebutton, #truebutton').hide();
+    });
+    $(document).on('dragleave', function(e) {
+        e.preventDefault();
+        $('.upload-dropzone').removeClass('active');
+        $('#fakebutton, #truebutton').show();
+    });
+    $(document).on('drop', function(e) {
+        e.preventDefault();
+        $('.upload-dropzone').removeClass('active');
+        $('#fakebutton, #truebutton').show();
+    });
 
     var loadPercentage = 30; // Progressbar percentage for loading files.
     $('#solution').fileupload({
         dataType: 'html',
         autoUpload: false,
         singleFileUploads: false,
-        dropZone: $('.uploadblock'),
+        dropZone: $('.upload-dropzone'),
         add: function(e, data) {
             if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
                 e.data.fileupload.myData = data;
@@ -122,16 +139,8 @@ $(document).ready(function() {
         $('.fileinput-button').css('top', '525px');
     }
 
-    /*$('.uploadblock').on('mouseenter', function() {
-        $('#fakebutton').addClass('buttonhover');
-    });*/
-
     $('input[type=file]').on('mouseenter', function() {
         $('#fakebutton').addClass('buttonhover');
-    });
-
-    $('.uploadblock').on('mouseout', function() {
-        $('#fakebutton').removeClass('buttonhover');
     });
 });
 
