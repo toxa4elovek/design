@@ -43,19 +43,38 @@ $(document).ready(function() {
     // Uploader's Drag'n'drop
     $(document).on('dragover', function(e) {
         e.preventDefault();
-        $('.upload-dropzone').addClass('active');
+        $('.upload-dropzone-wrapper').removeClass('upload-empty');
+        $('.upload-dropzone-wrapper, .upload-dropzone').addClass('active');
         $('#fakebutton, #truebutton').hide();
     });
     $(document).on('dragleave', function(e) {
         e.preventDefault();
-        $('.upload-dropzone').removeClass('active');
-        $('#fakebutton, #truebutton').show();
+        addCallback();
     });
     $(document).on('drop', function(e) {
         e.preventDefault();
-        $('.upload-dropzone').removeClass('active');
-        $('#fakebutton, #truebutton').show();
+        addCallback();
     });
+    $(document).on('click', '.uploadable-wrapper', function() {
+        $(this).fadeOut(200, function() { 
+            $(this).remove();
+            if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
+                $('.upload-dropzone-wrapper').removeClass('upload-empty');
+                $('#fakebutton, #truebutton').show();
+            }
+        });
+    });
+
+    function addCallback() {
+        $('.upload-dropzone-wrapper, .upload-dropzone').removeClass('active');
+        if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
+            $('#fakebutton, #truebutton').show();
+        } else {
+            $('.upload-dropzone-wrapper').addClass('upload-empty');
+            $('#fakebutton, #truebutton').hide();
+            $('.upload-progressbar').css('width', '100%');
+        }
+    }
 
     var loadPercentage = 30; // Progressbar percentage for loading files.
     $('#solution').fileupload({
@@ -65,12 +84,31 @@ $(document).ready(function() {
         dropZone: $('.upload-dropzone'),
         add: function(e, data) {
             if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
-                e.data.fileupload.myData = data;
+                
+                
+             // Check URL.createObjectURL() support
+                var URL = window.URL && window.URL.createObjectURL ? window.URL :
+                    window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
+                    null;
+                if (URL) {
+                    $.each(data.files, function (index, file) {
+                        $('.upload-dropzone').append('<div class="uploadable-wrapper"><div class="thumbnail-container"><img src="' + URL.createObjectURL(file) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar"></div></div></div>');
+                    });
+                } else {
+                    $.each(data.files, function (index, file) {
+                        $('<p/>').text(file.name).appendTo('#file-list');
+                    });
+                }
+                addCallback();
+                
+                
+                
+                /*e.data.fileupload.myData = data;
                 var html = '';
                 $.each(data.files, function(index, object) {
                     html += '<li class="fakeinput" style="background: url(/img/attach_icon.png) no-repeat scroll 0px 0px transparent; padding-top: 1px; margin-left: 0px; height:20px; padding-left: 20px;">' + object.name + '</li>';
                 });
-                $('#filelist').html(html);
+                $('#filelist').html(html);*/
             }else {
                 return false;
             }
