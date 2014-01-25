@@ -36,7 +36,7 @@
         $postDate = date('d.m.y H:i', strtotime($modelData['created']));
         $messageInfo = 'message_info1';
         $user = \app\models\User::first($moderation->model_user);
-        $commentAuthor = $this->nameInflector->renderName($user->first_name, $user->last_name );
+        $commentAuthor = $this->user->getFormattedName($user->first_name, $user->last_name );
         $panel = '<div class="' . $messageInfo . '" style="margin: 20px 40px 20px 0;">
                     <a href="/users/view/' . $moderation->model_user . '">' .
                     $this->avatar->show(array('id' => $moderation->model_user)) .

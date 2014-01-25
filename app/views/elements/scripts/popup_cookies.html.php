@@ -1,7 +1,7 @@
 <script>
     var showSocialPopup = false;
     var needSocialWrite = false;
-    <?php if ($this->session->read('user.id')):?>
+    <?php if ($this->user->getId()):?>
     <?php if ($this->session->read('user.social') == 0):?>
     <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
     <?php setcookie('scl', '1', strtotime('+6 month'), '/');?>

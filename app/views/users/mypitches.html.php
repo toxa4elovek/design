@@ -4,7 +4,7 @@
 
     <div class="middle">
         <div class="middle_inner conteiners" style="margin-top: 0px;padding-left: 0px;">
-            <input type="hidden" value="<?=$this->session->read('user.id')?>" id="user_id">
+            <input type="hidden" value="<?=$this->user->getId()?>" id="user_id">
         <section>
             <div class="menu" style="background:none;border:none;width:857px;margin-left:63px;margin-top:0;">
             <nav class="main_nav clear" style="width:832px;">

@@ -87,7 +87,7 @@
                                     <?php if($mypitch->billed == 0):?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
-                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/2" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
+                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                                     <?php elseif($mypitch->status < 1):?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <?php endif?>
@@ -183,7 +183,7 @@
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">
             <?php if($this->session->read('user.events.count') > 0):?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->nameInflector->renderName($this->session->read('user.first_name'), $this->session->read('user.last_name'))?></a>
+                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
                 <?=$this->html->link('(' . $this->session->read('user.events.count') . ')', 'Users::office', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
             <?php else:?>
                 <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->session->read('user.first_name') . ' ' . $this->session->read('user.last_name')?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /

@@ -4,19 +4,15 @@
 
 	<script>var allowComments = false;</script>
 	<?php if((($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
-        (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true)) && ($this->session->read('user.id'))):?>
+        (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true)) && ($this->user->isLoggedIn())):?>
         <script>allowComments = true;</script>
     <?php endif?>
 	<div class="middle">
-        <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch, 'expertsIds' => $expertsIds))?>
+        <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
         <!-- start: Solution Container -->
         <div class="solution-container page">
             <div class="pitch-info">
-            <?php if($pitch->user_id != $this->session->read('user.id') || $pitch->status > 0): ?>
-                <?=$this->view()->render(array('element' => 'pitch-info/designers_infotable'), array('pitch' => $pitch))?>
-            <?php else: ?>
-                <?=$this->view()->render(array('element' => 'pitch-info/clients_infotable'), array('pitch' => $pitch))?>
-            <?php endif ?>
+                <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             </div>
             <div style="height:1px; clear:both;"></div>
             <!-- start: Solution Right Panel -->
@@ -130,7 +126,7 @@
                 </section>
                 <section class="allow-comments">
                     <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
-                    <?php if (($this->session->read('user.id') == $pitch->user->id) || $this->user->isAdmin()): ?>
+                    <?php if ($this->user->isPitchOwner($pitch->user->id) || $this->user->isAdmin()): ?>
                     <div class="separator full"></div>
                     <form class="createCommentForm" method="post" action="/comments/add">
                     	<textarea id="newComment" name="text"></textarea>

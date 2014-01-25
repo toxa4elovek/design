@@ -37,7 +37,7 @@
                     <h4>Комментарии</h4>
                     <?php if(($solution->step < 3) && ($solution->pitch->status < 2)):?>
                     <form id="wincomment" method="post" action="/users/step2/<?=$solution->id?>.json" enctype="multipart/form-data">
-                        <textarea id="newComment" name="text" style="margin:10px 0 0 0;">@<?=$this->nameInflector->renderName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
+                        <textarea id="newComment" name="text" style="margin:10px 0 0 0;">@<?=$this->user->getFormattedName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
                         <div style="position: relative;">
                             <input type="file" name="file[]" multiple="multiple" class="wincommentfileupload" />
                             <input id="fakebutton" type="button" style="position: absolute; z-index: 4; top: 0; left: 0; width: 185px; height: 23px; font-size: 12px;" value="Выбрать файлы">
@@ -69,9 +69,9 @@
                                 <?=$this->avatar->show($comment->user->data());?>
                             </a>
                             <?php endif;?>
-                            <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto">
+                            <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?>" class="replyto">
                                 <?php if(!$comment->user->isAdmin):?>
-                                <span><?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?></span><br/>
+                                <span><?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?></span><br/>
                                 <?php else:?>
                                 <span>GoDesigner</span><br/>
                                 <?php endif;?>
@@ -121,13 +121,13 @@
                     <div style="width:810px;float:right;margin-top:6px;margin-right:5px;padding-bottom:2px;height:18px;">
                         <div class="toolbar">
                         <?php
-                        if(($this->session->read('user.id') == $comment->user_id) && (($solution->step <= 2) && ($solution->pitch->status < 2))):?>
+                        if(($this->user->isCommentAuthor($comment->user_id)) && (($solution->step <= 2) && ($solution->pitch->status < 2))):?>
                             <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
-                        <?php elseif(($this->session->read('user.id') > 0) && (($this->session->read('user.id') != $comment->user_id))):?>
+                        <?php elseif(($this->user->isLoggedIn()) && ((!$this->user->isCommentAuthor($comment->user_id)))):?>
                             <?php if ($this->user->isAdmin()):?>
                             <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
                             <?php endif?>
-                            <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->nameInflector->renderName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
+                            <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
                         <?php endif;?>
                         <?php if ($this->user->isAdmin()):?>
                             <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>

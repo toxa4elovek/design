@@ -28,11 +28,7 @@
 
     <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
                 <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
-                    <?php if(!$this->user->isPitchOwner($pitch->user_id)|| $pitch->status > 0): ?>
-                        <?=$this->view()->render(array('element' => 'pitch-info/designers_infotable'), array('pitch' => $pitch))?>
-                    <?php else: ?>
-                        <?=$this->view()->render(array('element' => 'pitch-info/clients_infotable'), array('pitch' => $pitch))?>
-                    <?php endif ?>
+                    <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
                 </div>
 
                 <div id="pitch-title" style="height:36px;margin-bottom:5px;">
@@ -63,7 +59,7 @@
                 <a class="sort-by-created<?php if ($sort == 'created'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=created"><span title="сортировать по дате создания"></span></a>
             </p>
             <?php
-            if(($this->session->read('user.id') != $pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
+            if(!$this->user->isPitchOwner($pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
                 <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;width:155px">предложить решение</a>
                 <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
                 <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/>
@@ -117,7 +113,7 @@
 
                         if($pitch->private != 1):
                             if($pitch->category_id == 7):
-                                if(($this->session->read('user.id') != null) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id)))):
+                                if($this->user->isLoggedIn() && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id)))):
                                     $visible = true;?>
                                     <a class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
                                         <?php if(mb_strlen(trim($solution->description)) > 100):?>
@@ -329,7 +325,7 @@
                                 </li>
                                 <li style="padding-left:0;margin-left:0;float: left; padding-top: 1px; height: 16px; margin-top: 0;width:30px">
                                     <span class="bottom_arrow">
-                                    <?php if($this->session->read('user.id')):?>
+                                    <?php if($this->user->isLoggedIn()):?>
                                          <a href="#" class="solution-menu-toggle"><img src="/img/marker5_2.png" alt=""></a>
                                     <?php endif?>
                                     </span>
@@ -341,10 +337,10 @@
                         </div>
 
                     </div>
-                    <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
+                    <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
                     <div class="solution_menu" style="display: none;">
                         <ul class="solution_menu_list" style="position:absolute;z-index:6;">
-                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 0) && ($this->user->isPitchOwner($pitch->user_id))): ?>
+                            <?php if($this->user->isLoggedIn() && ($solution->hidden == 0) && ($this->user->isPitchOwner($pitch->user_id))): ?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/hide/<?=$solution->id?>.json" class="hide-item" data-to="<?=$solution->num?>">С глаз долой</a></li>
                             <?php endif;?>
 
@@ -360,18 +356,18 @@
                         (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
                         (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true))
 
-                        && ($this->session->read('user.id'))
+                        && ($this->user->isLoggedIn())
                     ):?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-comment-to="#<?=$solution->num?>">Комментировать</a></li>
                         <?php endif;?>
-                            <?php if($this->session->read('user.id') > 0):?>
+                            <?php if($this->user->isLoggedIn()):?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/<?=$solution->id?>.json" class="warning" data-solution-id="<?=$solution->id?>">Пожаловаться</a></li>
                             <?php endif;?>
                             <?php if((!$selectedsolution) && ($this->user->isPitchOwner($pitch->user_id))):?>
-                            <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a></li>
+                            <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;"><a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a></li>
                             <?php endif;?>
 
-                            <?php if(($this->session->read('user.id') > 0) && ($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))): ?>
+                            <?php if(($this->user->isLoggedIn()) && ($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))): ?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
                             <?php endif;?>
                             <?php if(($this->user->isSolutionAuthor($solution->user_id)) || ($this->user->isAdmin())):?>
@@ -388,7 +384,7 @@
             <?php else:?>
             <div class="bigfont">
                 <h2 class="title">Ещё никто не выложил свои идеи.</h2>
-                <?php if($pitch->user_id != $this->session->read('user.id')):?>
+                <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
                 <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
                 <h2 class="title">и стань первым!</h2>
                 <?php endif?>
@@ -435,7 +431,7 @@
                         </ul>
                         <div style="width:150px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 7px;">Средняя оценка</h2>
-                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: -7px; text-align: center;"><?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 'вашей активности' : 'активности заказчика';?> из 5</p>
+                            <p style="color: rgb(102, 102, 102); font: 12px/15px arial; margin-left: -7px; text-align: center;"><?php echo $this->user->isPitchOwner($pitch->user->id) ? 'вашей активности' : 'активности заказчика';?> из 5</p>
                             <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
                             <canvas id="can" height="132" width="132" style="">
                             </canvas></div>
@@ -452,7 +448,7 @@
                         </div>
                         <?php else:?>
                         <div style="width:200px;float:left;height:190px;text-align:center">
-                            <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255);"><?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 'Ваш питч' : 'Питч';?><br> гарантированный</h2>
+                            <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255);"><?php echo $this->user->isPitchOwner($pitch->user->id) ? 'Ваш питч' : 'Питч';?><br> гарантированный</h2>
 
                             <img src="/img/bigg.png" style="margin-bottom:10px;margin-top: 15px; margin-left: 54px; padding-right:50px;">
                             <a href="/answers/view/79" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Что это такое?</a>
@@ -587,7 +583,7 @@
                 	<div class="clr"></div>
                 </div>
                 <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
-                <?php if (($this->session->read('user.id') == $pitch->user->id) || $this->user->isAdmin()): ?>
+                <?php if ($this->user->isPitchOwner($pitch->user->id) || $this->user->isAdmin()): ?>
                 <div class="separator full"></div>
                 <form class="createCommentForm" method="post" action="/comments/add">
                 	<textarea id="newComment" name="text"></textarea>
