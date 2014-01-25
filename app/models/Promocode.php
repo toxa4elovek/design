@@ -84,6 +84,9 @@ class Promocode extends \app\models\AppModel {
             'conditions' => array(
                 'type' => 'pinned',
                 'pitch_id' => null,
+                'expires' => array(
+                    '<' => date('Y-m-d H:i:s'),
+                ),
             ),
         ));
     }
