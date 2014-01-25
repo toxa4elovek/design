@@ -23,15 +23,18 @@ class User extends \app\extensions\helper\Session {
      */
     public $editorsIds = array();
 
+    protected $_options = array();
+
     /**
      * Конструктор устанавливает свойства
      */
     public function __construct($config) {
         $defaults = array(
             'userModel' => 'app\models\User',
-            'expertModel' => 'app\models\Expert'
+            'expertModel' => 'app\models\Expert',
+            'inflector' => 'app\extensions\helper\NameInflector'
         );
-        $options = $config + $defaults;
+        $this->_options = $options =  $config + $defaults;
         $this->adminsIds = $options['userModel']::$admins;
         $this->expertsIds = $options['expertModel']::getExpertUserIds();
         $this->editorsIds = $options['userModel']::$editors;
@@ -47,7 +50,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->read('user.id'), $this->expertsIds);
+        return in_array($this->getId(), $this->expertsIds);
     }
 
     /**
@@ -59,17 +62,22 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        if(($this->read('user.isAdmin')) || (in_array($this->read('user.id'), $this->adminsIds))) {
+        if(($this->read('user.isAdmin')) || (in_array($this->getId(), $this->adminsIds))) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Метод определяет, является ли текущий пользователь редактором блога
+     *
+     * @return bool
+     */
     public function isEditor() {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->read('user.id'), $this->editorsIds);
+        return in_array($this->getId(), $this->editorsIds);
     }
 
     /**
@@ -102,6 +110,75 @@ class User extends \app\extensions\helper\Session {
     }
 
     /**
+     * Метод определяет, является ли текущий пользователь автором комментария с айди $commentAuthorId
+     *
+     * @param $commentAuthorId
+     * @return bool
+     */
+    public function isCommentAuthor($commentAuthorId) {
+        return $this->__detectOwnership($commentAuthorId);
+    }
+
+    /**
+     * Метод возвращает айди пользователя или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getId() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return (int) $this->read('user.id');
+    }
+
+    /**
+     * Метод возвращает имя пользователя или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getFirstname() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->read('user.first_name');
+    }
+
+    /**
+     * Метод возвращает фамилию пользователя или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getLastname() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->read('user.last_name');
+    }
+
+    /**
+     * Метод возвращает email или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getEmail() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->read('user.email');
+    }
+
+    public function getFormattedName($firstName = null, $lastName = null) {
+        $inflectorClassName = $this->_options['inflector'];
+        if(!is_null($firstName) && !is_null($lastName)) {
+            return $inflectorClassName::renderName($firstName, $lastName);
+        }
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $inflectorClassName::renderName($this->getFirstname(), $this->getLastname());
+    }
+
+    /**
      * Приватный метод помощник, сравнивает аргумент @model_id с текущим user.id, если установлен
      *
      * @param $model_id
@@ -111,7 +188,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return $model_id == $this->read('user.id');
+        return $model_id == $this->getId();
     }
 
 }

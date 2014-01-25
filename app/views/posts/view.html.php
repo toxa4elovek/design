@@ -16,7 +16,7 @@
                             $tagstring[] = '<a class="blogtaglink" href="/posts?tag=' . urlencode($tag) . '">' . $tag . '</a>';
                         endforeach;
                         ?>
-                            <p style="margin-bottom: 15px;margin-top:5px;text-transform:uppercase;font-size:11px;color:#666666">опубликовано: <a style="text-decoration:none;" href="/users/view/<?=$post->user->id?>"><?=$this->nameInflector->renderName($post->user->first_name, $post->user->last_name)?></a> &bull; <?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?>
+                            <p style="margin-bottom: 15px;margin-top:5px;text-transform:uppercase;font-size:11px;color:#666666">опубликовано: <a style="text-decoration:none;" href="/users/view/<?=$post->user->id?>"><?=$this->user->getFormattedName($post->user->first_name, $post->user->last_name)?></a> &bull; <?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?>
                             &bull; Просмотров: <?=$post->views?>
                             </p>
                             <div class="regular viewpost">

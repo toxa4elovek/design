@@ -1,11 +1,4 @@
-<script>
-var pitchNumber = <?php echo $pitch->id; ?>;
-var currentUserId = <?php echo (int)$this->session->read('user.id'); ?>;
-var currentUserName = '<?=$this->nameInflector->renderName($this->session->read('user.first_name'), $this->session->read('user.last_name'))?>';
-var isCurrentAdmin = <?php echo $this->user->isAdmin() ? 1 : 0 ?>;
-var isCurrentExpert = <?php echo $this->user->isExpert() ? 1 : 0; ?>;
-var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user->id) ? 1 : 0; ?>;
-</script>
+<?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
 <div class="messages_gallery">
     <?php
     if(
@@ -13,7 +6,7 @@ var isClient = <?php echo ((int)$this->session->read('user.id') == $pitch->user-
     (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
     (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true))
 
-    && ($this->session->read('user.id'))
+    && ($this->user->getId())
     ):?>
         <script>var allowComments = true;</script>
         <section>

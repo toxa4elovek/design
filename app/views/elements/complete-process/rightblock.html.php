@@ -16,7 +16,7 @@
         <img src="/img/like.png" style="margin: 6px 0 0 0px;" /><span><?=$solution->likes?></span>
     </div>
     <div class="info ">
-        <span class="bold supplement"><?=$this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name)?></span>
+        <span class="bold supplement"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></span>
         <span class="supplement"><a href="/pitches/view/<?=$solution->pitch->id?>" target="_blank"><?=$solution->pitch->title?></a></span>
         <!--span class="bold supplement">Победил</span>
         <span class="supplement"><?=date('d.m.Y', strtotime($solution->change))?></span-->
@@ -29,6 +29,6 @@
             <?php endif?>
     заключительного этапа.</span>
         <span class="supplement">Со дня определения победителя, у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты (3 поправки) и исходники.<?php
-            if(($step < 3) && ($solution->pitch->user_id == $this->session->read('user.id'))): echo ' Для начала вам нужно получить джипеги, внести правки и одобрить макеты.'; endif;?></span>
+            if(($step < 3) && ($this->user->isPitchOwner($solution->pitch->user_id))): echo ' Для начала вам нужно получить джипеги, внести правки и одобрить макеты.'; endif;?></span>
     </div>
 </div>

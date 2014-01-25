@@ -162,7 +162,7 @@
                     if ($pitch['published'] == 1) {
                         $imgForDraft = ' not-draft';
                     }
-                    if(($pitch['user_id'] == $this->session->read('user.id')) && ($pitch['awarded'] == '')){
+                    if(($this->user->isPitchOwner($pitch['user_id'])) && ($pitch['awarded'] == '')){
                         if($pitch['billed'] == 1) {
                             $userString = '<a title="Редактировать" href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link' . $imgForDraft . '"><img class="pitches-name-td-img" src="/img/1.gif"></a>';
                         }else {
@@ -304,7 +304,7 @@
                 </div>
 			</div>
 			<div class="no-result">
-                <h1>Упс, мы ничего не нашли!</h2>
+                <h1>Упс, мы ничего не нашли!</h1>
                 <p class="regular">Попробуйте ввести другое слово, или используйте<br /> стрелку в поле, повторив поиск с выбранным<br /> фильтром. <a href="/answers/view/85">Подробнее…</a></p>
                 <p><img src="http://www.godesigner.ru/img/help/d3fa990a965b8ebf1cf8691586140165.jpg" alt="" width="610" height="292"></p>
 
@@ -314,7 +314,7 @@
 	</div>
 	<div class="conteiner-bottom">
 	<input type="hidden" value="<?=$selectedCategory?>" name="category">
-    <input type="hidden" value="<?=$this->session->read('user.id')?>" id="user_id">
+    <input type="hidden" value="<?=$this->user->getId()?>" id="user_id">
     </div>
 	</div>
 </div><!-- .wrapper -->

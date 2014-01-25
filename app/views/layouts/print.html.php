@@ -5,7 +5,7 @@
     <?php
     $title = 'Зашёл, заполнил, получил. Go Designer — первый краудсорсинг-сервис в сфере дизайна в Рунете.';
     if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView'])) && (is_object($solution->pitch)) && (is_object($solution->user))):
-        $title = 'Go Designer; ' . $solution->pitch->title . '; Дизайнер: ' . $this->nameInflector->renderName($solution->user->first_name, $solution->user->last_name);
+        $title = 'Go Designer; ' . $solution->pitch->title . '; Дизайнер: ' . $this->user->getFormattedName($solution->user->first_name, $solution->user->last_name);
     endif;
     if((isset($post)) && (isset($post->title))):
         $title = $post->title . '; Go Designer — первый краудсорсинг-сервис в сфере дизайна в Рунете.';
