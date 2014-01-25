@@ -78,4 +78,13 @@ class Promocode extends \app\models\AppModel {
         return $result;
     }
 
+    public static function getOldPromocodes() {
+        return self::all(array(
+            'fields' => array('id'),
+            'conditions' => array(
+                'type' => 'pinned',
+                'pitch_id' => null,
+            ),
+        ));
+    }
 }
