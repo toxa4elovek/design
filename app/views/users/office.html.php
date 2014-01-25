@@ -71,7 +71,7 @@
                             $imageurl = '/img/zaglushka.jpg';
                         }else {
                             if($object['pitch']['private'] == 1) {
-                                if(($object['user_id'] != $this->session->read('user.id')) && ($this->user->isPitchOwner($object['pitch']['user_id']))) {
+                                if(($object['user_id'] != $this->user->getId()) && ($this->user->isPitchOwner($object['pitch']['user_id']))) {
                                 $imageurl = '/img/copy-inv.png';
                                 }
                             }

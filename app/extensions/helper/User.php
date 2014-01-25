@@ -50,7 +50,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->read('user.id'), $this->expertsIds);
+        return in_array($this->getId(), $this->expertsIds);
     }
 
     /**
@@ -62,7 +62,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        if(($this->read('user.isAdmin')) || (in_array($this->read('user.id'), $this->adminsIds))) {
+        if(($this->read('user.isAdmin')) || (in_array($this->getId(), $this->adminsIds))) {
             return true;
         }
         return false;
@@ -77,7 +77,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->read('user.id'), $this->editorsIds);
+        return in_array($this->getId(), $this->editorsIds);
     }
 
     /**
@@ -128,7 +128,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return $this->read('user.id');
+        return (int) $this->read('user.id');
     }
 
     /**
@@ -167,11 +167,14 @@ class User extends \app\extensions\helper\Session {
         return $this->read('user.email');
     }
 
-    public function getFormattedName() {
+    public function getFormattedName($firstName = null, $lastName = null) {
+        $inflectorClassName = $this->_options['inflector'];
+        if(!is_null($firstName) && !is_null($lastName)) {
+            return $inflectorClassName::renderName($firstName, $lastName);
+        }
         if(!$this->isLoggedIn()) {
             return false;
         }
-        $inflectorClassName = $this->_options['inflector'];
         return $inflectorClassName::renderName($this->getFirstname(), $this->getLastname());
     }
 
@@ -185,7 +188,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return $model_id == $this->read('user.id');
+        return $model_id == $this->getId();
     }
 
 }

@@ -1,5 +1,5 @@
 <div class="wrapper">
-<?php if($this->session->read('user.id')):?>
+<?php if($this->read->getId()):?>
 <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header'))?>
 <?php else:?>
     <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>

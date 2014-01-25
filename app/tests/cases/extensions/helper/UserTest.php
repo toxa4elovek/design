@@ -90,8 +90,8 @@ class UserTest extends \lithium\test\Unit {
 
     public function testGetId() {
         $this->assertFalse($this->user->getId());
-        $this->user->write('user.id', 1);
-        $this->assertEqual(1, $this->user->getId());
+        $this->user->write('user.id', '1');
+        $this->assertIdentical(1, $this->user->getId());
     }
 
     public function testGetFirstname() {
@@ -127,6 +127,11 @@ class UserTest extends \lithium\test\Unit {
         $this->user->write('user.first_name', 'Дмитрий');
         $this->user->write('user.last_name', 'Васильев');
         $this->assertEqual('Дмитрий В.', $this->user->getFormattedName());
+    }
+
+    public function testGetFormattedNameWithParams() {
+        $this->assertFalse($this->user->getFormattedName());
+        $this->assertEqual('Дмитрий В.', $this->user->getFormattedName('Дмитрий', 'Васильев'));
     }
 
 }

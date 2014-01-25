@@ -18,7 +18,7 @@ foreach($experts as $expert) {
         <div class="middle_inner_gallery"  style="padding-top:25px">
 
             <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
-                <?php if($pitch->user_id != $this->session->read('user.id') || $pitch->status > 0): ?>
+                <?php if(!$this->user->isPitchOwner($pitch->user_id) || $pitch->status > 0): ?>
                     <?=$this->view()->render(array('element' => 'pitch-info/designers_infotable'), array('pitch' => $pitch))?>
                 <?php else: ?>
                     <?=$this->view()->render(array('element' => 'pitch-info/clients_infotable'), array('pitch' => $pitch))?>
@@ -46,7 +46,7 @@ foreach($experts as $expert) {
 
     <nav class="other_nav_gallery clear">
         <?php
-        if(($this->session->read('user.id') != $pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
+        if((!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1)):?>
             <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;width:155px">предложить решение</a>
             <a class="print-link" target="_blank" href="/pitches/printpitch/<?=$pitch->id?>" style="float: right; margin-right: 250px;"><img alt="" src="/img/print_brief_button.png"></a>
             <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
