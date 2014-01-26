@@ -59,7 +59,7 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
 		'request' => $params['request'],
 		'status' => $info['exception']->getCode()
 	));
-    if ((Environment::is('production')) && ($info['exception']->getCode() == '404')) {
+    if (Environment::is('production')) {
         Media::render($response, compact('info', 'params'), array(
             'library' => true,
             'controller' => '_errors',
