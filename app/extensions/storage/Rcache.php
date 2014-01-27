@@ -35,6 +35,7 @@ class Rcache {
             'persistent' => false
         );
         self::$_config = $config + $defaults;
+        self::connect();
     }
 
     /**

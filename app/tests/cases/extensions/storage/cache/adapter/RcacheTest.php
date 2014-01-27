@@ -24,23 +24,10 @@ class RcacheTest extends \lithium\test\Unit {
 
     public function skip() {
         $this->skipIf(!Rcache::enabled(), 'The redis extension is not installed.');
-        $redis = new Rcache();
-        $redis->init();
-        $cfg = $this->_config;
-
-        try {
-            $redis->connect($cfg['host'], $cfg['port']);
-        } catch (Exception $e) {
-            $info = $redis->info();
-            $msg = "redis-server does not appear to be running on {$cfg['host']}:{$cfg['port']}";
-            $this->skipIf(!$info, $msg);
-        }
-        unset($redis);
     }
 
     public function setUp() {
         Rcache::init();
-        Rcache::connect($this->_config['host'], $this->_config['port']);
     }
 
     public function tearDown() {
