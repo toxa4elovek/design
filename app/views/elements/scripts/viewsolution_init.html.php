@@ -1,6 +1,6 @@
 <script>
     var pitchNumber = <?php echo $pitch->id; ?>;
-    var currentUserId = <?= $this->user->getId(); ?>;
+    var currentUserId = <?= (int) $this->user->getId(); ?>;
     var currentUserName = '<?=$this->user->getFormattedName()?>';
     var isCurrentAdmin = <?php echo $this->user->isAdmin() ? 1 : 0 ?>;
     var isCurrentExpert = <?php echo $this->user->isExpert() ? 1 : 0 ?>;
