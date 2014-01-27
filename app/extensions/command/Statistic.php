@@ -4,7 +4,7 @@ namespace app\extensions\command;
 
 use \app\models\Pitch;
 use \app\models\Solution;
-use \lithium\storage\Cache;
+use app\extensions\storage\Rcache;
 
 class Statistic extends \app\extensions\command\CronJob {
 
@@ -23,13 +23,8 @@ class Statistic extends \app\extensions\command\CronJob {
             'totalParticipants' => Solution::getTotalParticipants(),
             'lastDaySolutionNum' => Solution::getNumOfUploadedSolutionInLastDay(),
         );
-
-        $default = array('adapter' => 'Apc');
-        Cache::config(array(
-            'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
-            'default' => array('adapter' => 'Apc')
-        ));
-        Cache::write('files', 'statistic', $statistic, '+2 hour');
-        $this->out('Cache has been updated.');
+        Rcache::init();
+        Rcache::write('statistic', $statistic, '+2 hour');
+        $this->out('Rcache has been updated.');
     }
 }
