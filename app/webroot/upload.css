@@ -48,7 +48,7 @@ input[type="radio"], input[type="checkbox"] {
 .warning {
     color: #5C0002;
 }
-.upload-dropzone {
+.upload-dropzone-wrapper {
 	position: relative;
 	width: 878px;
 	height: 322px;
@@ -56,12 +56,28 @@ input[type="radio"], input[type="checkbox"] {
 	background-repeat: no-repeat;
 	background-position: 0 0;
 }
+.upload-dropzone-wrapper.active {
+    background-position: 0 -322px;
+}
+.upload-dropzone-wrapper.upload-empty {
+    background-position: 0 -644px;
+}
+.upload-dropzone {
+	position: absolute;
+	width: 840px;
+	height: 280px;
+	overflow: auto;
+    margin: 20px;
+}
+.upload-dropzone.active {
+	opacity: 0.2;
+}
 .upload-dropzone #truebutton,
 .upload-dropzone #fakebutton {
     display: block;
     position: absolute;
-    top: 210px;
-    left: 300px;
+    top: 185px;
+    left: 280px;
     width: 260px;
     height: 50px;
     opacity: 0;
@@ -71,6 +87,57 @@ input[type="radio"], input[type="checkbox"] {
     z-index: 4;
     opacity: 1;
 }
-.upload-dropzone.active {
-	background-position: 0 -322px;
+.upload-dropzone .uploadable-wrapper {
+	position: relative;
+    display: inline-block;
+    max-width: 180px;
+    height: 167px;
+    margin: 20px 8px 30px 8px;
+}
+.upload-dropzone .uploadable-wrapper .thumbnail-container {
+	max-width: 180px;
+	overflow: hidden;
+	box-sizing: border-box;
+	border-width: 6px;
+	border-style: solid;
+	border-color: transparent;
+	text-align: center
+}
+.upload-dropzone .uploadable-wrapper .thumbnail-container:hover {
+	border-color: #628ba0;
+}
+.upload-dropzone .uploadable-wrapper .thumbnail-container:hover:after {
+    position: absolute;
+    display: block;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    background: url('/img/uploader-close.png');
+    cursor: pointer;
+    content: "";
+}
+.upload-progressbar-wrapper {
+	position: relative;
+	width: 94%;
+	height: 11px;
+	margin: 4px auto 0 auto;
+	background-color: #c0c0c0;
+	border-radius: 5px;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+}
+.upload-progressbar {
+	transition: width 8s;
+	position: absolute;
+	width: 0%;
+	height: 10px;
+	border-radius: 5px;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, .2);
+	background: #5c8296;
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#6e95a9), to(#547789));
+    background: -webkit-linear-gradient(#6e95a9, #547789);
+    background:    -moz-linear-gradient(#6e95a9, #547789);
+    background:     -ms-linear-gradient(#6e95a9, #547789);
+    background:      -o-linear-gradient(#6e95a9, #547789);
+    background:         linear-gradient(#6e95a9, #547789);
 }

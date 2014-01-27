@@ -20,9 +20,11 @@
             </div>
 
             <form action="/pitches/upload/<?=$pitch->id?>.json" method="post" id="solution" class="add-pitch upload-form" enctype="multipart/form-data">
-                <div class="upload-dropzone">
-                    <input type="file" id="truebutton" multiple="multiple" name="solution[]" class="fileinput-button">
-                    <input id="fakebutton" type="button" class="button" value="Выберите файлы">
+                <div class="upload-dropzone-wrapper">
+                    <div class="upload-dropzone">
+                        <input type="file" id="truebutton" multiple="multiple" name="solution[]" class="fileinput-button">
+                        <input id="fakebutton" type="button" class="button" value="Выберите файлы">
+                    </div>
                 </div>
                 <div style="float:left; width: 627px;">
                     <ul id="filelist" class="supplement" style="margin-top: 10px;">
