@@ -96,15 +96,7 @@ class UploadableFile extends \slicedup_behaviors\models\behaviors\ModelBehavior{
 		};
 		$attachRecord = function($fileModel, $record) use ($getWebUrl) {
             $record->images = array();
-            $key = $record->model() . '_' . $record->id;
-            if($record->model() == 'app\models\Solution') {
-                if(!$images = Rcache::read($key)) {
-                    $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
-                    Rcache::write($key, $images, '+1 hour');
-                }
-            }else {
-                $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
-            }
+            $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
             foreach ($images as $value) {
 				$value->weburl = $getWebUrl($value->filename);
 				if(!isset($record->images[$value->filekey])) {
