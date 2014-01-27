@@ -16,7 +16,7 @@ use \app\models\User;
 use \app\models\Grade;
 use \app\models\Solution;
 use \app\extensions\mailers\ContactMailer;
-use \lithium\storage\Cache;
+use app\extensions\storage\Rcache;
 
 class PagesController extends \app\controllers\AppController {
 
@@ -40,8 +40,7 @@ class PagesController extends \app\controllers\AppController {
     public function home() {
         $pool = array(1, 3, 7);
         $category_id = $pool[array_rand($pool)];
-        $statistic = Cache::read('files', 'statistic');
-        if (empty($statistic)) {
+        if(!$statistic = Rcache::read('statistic')) {
             $statistic = array(
                 'numOfSolutionsPerProject' => array(
                     '1' => Pitch::getNumOfSolutionsPerProjectOfCategory(1),
@@ -51,16 +50,13 @@ class PagesController extends \app\controllers\AppController {
                 'numOfCurrentPitches' => Pitch::getNumOfCurrentPitches(),
                 'totalAwards' => Pitch::getTotalAwards(),
                 'totalWaitingForClaim' => Pitch::getTotalWaitingForClaim(),
-                //'totalAwardsValue' => Pitch::getTotalAwardsValue(),
                 'totalParticipants' => Solution::getTotalParticipants(),
                 'lastDaySolutionNum' => Solution::getNumOfUploadedSolutionInLastDay(),
             );
+            Rcache::write('statistic', $statistic, '+1 hour');
         }
-
     	$pitches = Pitch::all(array(
 			'order' => array(
-				/*'pinned' => 'desc',
-				'started' => 'desc'*/
                 'pinned' => 'desc',
                 'ideas_count' => 'desc',
                 'price' => 'desc'
@@ -90,13 +86,6 @@ class PagesController extends \app\controllers\AppController {
         }
         $experts = Expert::all();
         return compact('category_id', 'statistic', 'pitches', 'promos', 'experts', 'grades');
-    }
-
-    public function cross() {
-        $url = $this->request->query['url'];
-
-        var_dump($url);
-        die();
     }
 
     public function contacts() {

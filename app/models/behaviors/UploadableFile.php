@@ -6,7 +6,6 @@ use \app\models\File;
 use \app\models\behaviors\handlers\ValidateHandler;
 use \app\models\behaviors\handlers\MoveFileHandler;
 use \app\models\behaviors\handlers\SetPermissionHandler;
-use app\extensions\storage\Rcache;
 
 /**
  * Поведение UploadableFile
