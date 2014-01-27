@@ -87,7 +87,7 @@
                                     <?php if($mypitch->billed == 0):?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
-                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/2" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
+                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                                     <?php elseif($mypitch->status < 1):?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <?php endif?>
