@@ -19,14 +19,18 @@
                 <?php endif?>
             </div>
 
-            <form action="/pitches/upload/<?=$pitch->id?>.json" method="post" id="solution" class="add-pitch upload-form" enctype="multipart/form-data">
-                <input type="hidden" name="upload_nonce" id="upload_nonce" value="<?php echo $uploadnonce; ?>">
+
+            <form action="/pitches/uploadfile/<?=$pitch->id?>.json" method="post" id="solutionfiles" class="add-pitch upload-form" enctype="multipart/form-data">
+                <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">
                 <div class="upload-dropzone-wrapper">
                     <div class="upload-dropzone">
                         <input type="file" id="truebutton" multiple="multiple" name="solution[]" class="fileinput-button">
                         <input id="fakebutton" type="button" class="button" value="Выберите файлы">
                     </div>
                 </div>
+            </form>
+            <form action="/pitches/uploaddata/<?=$pitch->id?>.json" method="post" id="solution" class="add-pitch upload-form">
+                <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">
                 <div style="float:left; width: 627px;">
                     <ul id="filelist" class="supplement" style="margin-top: 10px;">
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:0;"></li>

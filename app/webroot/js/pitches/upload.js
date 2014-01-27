@@ -77,7 +77,7 @@ $(document).ready(function() {
     }
 
     var loadPercentage = 30; // Progressbar percentage for loading files.
-    $('#solution').fileupload({
+    $('#solutionfiles').fileupload({
         dataType: 'html',
         dropZone: $('.upload-dropzone'),
         add: function(e, data) {
@@ -156,7 +156,7 @@ $(document).ready(function() {
             == 0) && ($('#filename').html() != 'Файл не выбран')) {
             $('a[href="#invalid"]').click();
         }else {
-            $('#solution').fileupload('uploadByClick');
+            return true;
         }
         return false;
     });

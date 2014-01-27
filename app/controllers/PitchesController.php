@@ -1659,6 +1659,48 @@ Disallow: /pitches/upload/' . $pitch['id'];
         throw new Exception('Public:Такого питча не существует.', 404);
     }
 
+    public function uploadfile() {
+        if (($this->request->id > 0) && ($pitch =  Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
+            $currentUser = Session::read('user.id');
+            if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && (!in_array($currentUser, User::$admins)))) {
+                return $this->redirect('/pitches');
+            }
+
+            if(($this->request->data)) {
+                if((isset($this->request->data['solution']) && is_array($this->request->data['solution'])) && !empty($this->request->data['solution'])) {
+                    $result = Uploadnonce::uploadFile($this->request->data);
+                    if ($result) {
+                        return json_encode('true'); //$this->render(array('data' => array('json' => $result->data())));
+                    }
+                    return json_encode('false');
+                }
+                return json_encode('nofile');
+            }
+        }
+        throw new Exception('Public:Такого питча не существует.', 404);
+    }
+
+    public function uploadData() {
+        if(($this->request->id > 0) && ($pitch =  Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
+            $currentUser = Session::read('user.id');
+            if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && (!in_array($currentUser, User::$admins)))) {
+                return $this->redirect('/pitches');
+            }
+
+            if(($this->request->data)) {
+                $this->request->data['pitch_id'] = $this->request->id;
+                $this->request->data['user_id'] = Session::read('user.id');
+                $result = Solution::uploadSolution($this->request->data);
+                if($result) {
+                    return $this->redirect('/pitches/view/' . $pitch->id);
+                }else {
+                    return false;
+                }
+            }
+        }
+        throw new Exception('Public:Такого питча не существует.', 404);
+    }
+
     public function uploadcopy() {
         if(($this->request->id > 0) && ($pitch =  Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             if(($pitch->status != 0) || ($pitch->published != 1)) {
