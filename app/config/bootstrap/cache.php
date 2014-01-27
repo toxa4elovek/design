@@ -49,8 +49,8 @@ if ($apcEnabled) {
     ));
 }else {
     Cache::config(array(
-         'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
-         'default' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+        'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+        'default' => array('adapter' => 'File', 'strategies' => array('Serializer')),
     ));
 }
 
