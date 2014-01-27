@@ -25,6 +25,7 @@ use app\models\Ratingchange;
 use \app\models\Avatar;
 use \app\models\Url;
 use \app\models\Like;
+use \app\models\Uploadnonce;
 
 use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
@@ -1649,7 +1650,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 }
             }
             if($pitch->category_id != 7){
-                return compact('pitch');
+                $uploadnonce = Uploadnonce::getNonce();
+                return compact('pitch', 'uploadnonce');
             }else{
                 return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
             }

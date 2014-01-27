@@ -79,20 +79,17 @@ $(document).ready(function() {
     var loadPercentage = 30; // Progressbar percentage for loading files.
     $('#solution').fileupload({
         dataType: 'html',
-        autoUpload: false,
-        singleFileUploads: false,
         dropZone: $('.upload-dropzone'),
         add: function(e, data) {
             if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
-                
-                
-             // Check URL.createObjectURL() support
+                e.data.fileupload.myData = data;
+                // Check URL.createObjectURL() support
                 var URL = window.URL && window.URL.createObjectURL ? window.URL :
                     window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
                     null;
                 if (URL) {
                     $.each(data.files, function (index, file) {
-                        $('.upload-dropzone').append('<div class="uploadable-wrapper"><div class="thumbnail-container"><img src="' + URL.createObjectURL(file) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar"></div></div></div>');
+                        $('.upload-dropzone').append('<div class="uploadable-wrapper"><div class="thumbnail-container"><img src="' + URL.createObjectURL(file) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar" data-filename="' + file.name + '"></div></div></div>');
                     });
                 } else {
                     $.each(data.files, function (index, file) {
@@ -100,42 +97,33 @@ $(document).ready(function() {
                     });
                 }
                 addCallback();
-                
-                
-                
-                /*e.data.fileupload.myData = data;
-                var html = '';
-                $.each(data.files, function(index, object) {
-                    html += '<li class="fakeinput" style="background: url(/img/attach_icon.png) no-repeat scroll 0px 0px transparent; padding-top: 1px; margin-left: 0px; height:20px; padding-left: 20px;">' + object.name + '</li>';
-                });
-                $('#filelist').html(html);*/
+                $(this).fileupload('uploadByAuto');
             }else {
                 return false;
             }
         },
-        done: function (e, data) {
-            var result = data.result;
-            result = $.parseJSON(result);
-            if ((result != false) && result.solution && result.solution.length > 0) {
-                var progressPerEach = Math.round((100 - loadPercentage) / result.solution.length);
-                var i = 0;
-                uploadCallback(result, i, loadPercentage, progressPerEach);
+        progress: function(e, data) {
+            if (data.total > 0) {
+                var percent = data.total / 100;
+                var completed = Math.round(data.loaded / percent);
+                var $el = $('.upload-progressbar[data-filename="' + data.files[0].name + '"]');
+                $el.css('width', completed + '%');
             }
+        },
+        done: function(e, data) {
+            // Done each
         },
         progressall: function(e, data) {
             if(data.total > 0) {
-                var percent = data.total / loadPercentage;
+                var percent = data.total / 100;
                 var completed = Math.round(data.loaded / percent);
-                fillProgress(completed);
+                if (completed > 95) {
+                    $('#uploadSolution').css('opacity', 1);
+                }
             }
         },
         send: function (e, data) {
-            $('#loading-overlay').modal({
-                containerId: 'spinner',
-                opacity: 80,
-                close: false
-            });
-            $('a[href="#uploading"]').click();
+            $('#uploadSolution').css('opacity', 0);
         }
     });
 

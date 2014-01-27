@@ -829,6 +829,12 @@
             }
         },
 
+        uploadByAuto: function(data) {
+            if(this.myData) {
+                this.myData.submit();
+            }
+        },
+
         uploadByClickNoCheck: function(form, redirect) {
             $('#loading-overlay').modal({
                 containerId: 'spinner',
