@@ -117,7 +117,7 @@ class RcacheTest extends \lithium\test\Unit {
         $key = 'key';
         $key2 = 'key2';
         // добавляем новую запись с тегами
-        $result = Rcache::write($key, $data, null, array('tag1', 'tag2'));
+        $result = Rcache::write($key, $data, array('tag1', 'tag2'));
         $this->assertTrue($result);
         $result = Rcache::read($key);
         $this->assertEqual($data, $result);
@@ -126,14 +126,14 @@ class RcacheTest extends \lithium\test\Unit {
         $tag2 = Rcache::read('tag2');
         $this->assertEqual(array('key'), $tag2);
         // добавляем вторую запись с пересекающимся тегом
-        $result = Rcache::write($key2, $data, null, array('tag1'));
+        $result = Rcache::write($key2, $data, array('tag1'));
         $this->assertTrue($result);
         $tag1 = Rcache::read('tag1');
         $this->assertEqual(array('key', 'key2'), $tag1);
         $tag2 = Rcache::read('tag2');
         $this->assertEqual(array('key'), $tag2);
         // убедимся в том, что в списке ключей для тега не происходит дублирования
-        $result = Rcache::write($key, $data2, null, array('tag1', 'tag2'));
+        $result = Rcache::write($key, $data2, array('tag1', 'tag2'));
         $this->assertTrue($result);
         $tag1 = Rcache::read('tag1');
         $this->assertEqual(array('key', 'key2'), $tag1);
@@ -157,7 +157,7 @@ class RcacheTest extends \lithium\test\Unit {
         $key = 'key';
         $data = 'value';
         // добавляем новую запись с тегами
-        $result = Rcache::write($key, $data, '+1 hour', array('tag1', 'tag2'));
+        $result = Rcache::write($key, $data, array('tag1', 'tag2'), '+1 hour');
         $this->assertTrue($result);
         $ttl = Rcache::ttl($key);
         $this->assertTrue($ttl);
@@ -165,11 +165,11 @@ class RcacheTest extends \lithium\test\Unit {
 
     public function testDeleteByTags() {
         // Добавим новые записи с тегами
-        $result = Rcache::write('key1', 'data1', null, array('tag1', 'tag2'));
+        $result = Rcache::write('key1', 'data1', array('tag1', 'tag2'));
         $this->assertTrue($result);
-        $result = Rcache::write('key2', 'data2', null, array('tag2', 'tag3'));
+        $result = Rcache::write('key2', 'data2', array('tag2', 'tag3'));
         $this->assertTrue($result);
-        $result = Rcache::write('key2', 'data2', null, array('tag3'));
+        $result = Rcache::write('key2', 'data2', array('tag3'));
         $this->assertTrue($result);
         // Удалим первую запись по общему для двух записей тегу
         $result = Rcache::deleteByTag('tag2');
@@ -189,7 +189,7 @@ class RcacheTest extends \lithium\test\Unit {
         $redis->connect('127.0.0.1', '6379');
         $redis->rpush('__tags__', 'tagWithExpiredKey');
         $redis->rpush('tagWithExpiredKey', 'expiredKey');
-        $result = Rcache::write('key1', 'data1', null, array('tagWithExpiredKey', 'tag1'));
+        $result = Rcache::write('key1', 'data1', array('tagWithExpiredKey', 'tag1'));
         $this->assertTrue($result);
         // проверим текущие теги
         $result = Rcache::read('__tags__');
@@ -209,7 +209,7 @@ class RcacheTest extends \lithium\test\Unit {
         $redis->connect('127.0.0.1', '6379');
         $redis->rpush('__tags__', 'tagWithExpiredKey');
         $redis->rpush('tagWithExpiredKey', 'expiredKey');
-        $result = Rcache::write('key1', 'data1', null, array('tag1'));
+        $result = Rcache::write('key1', 'data1', array('tag1'));
         $this->assertTrue($result);
         // проверим текущие теги
         $result = Rcache::read('__tags__');
@@ -226,5 +226,3 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertEqual(array('tag1'), $result);
     }
 }
-
-?>
