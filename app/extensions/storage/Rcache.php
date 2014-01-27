@@ -6,7 +6,7 @@
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
-namespace app\extensions\storage\cache\adapter;
+namespace app\extensions\storage;
 
 class Rcache {
 
@@ -32,7 +32,6 @@ class Rcache {
         self::$client = new \Redis;
         $defaults = array(
             'host' => '127.0.0.1:6379',
-            'expiry' => '+1 hour',
             'persistent' => false
         );
         self::$_config = $config + $defaults;

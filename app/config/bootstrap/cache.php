@@ -15,6 +15,7 @@ use lithium\core\Libraries;
 use lithium\core\Environment;
 use lithium\action\Dispatcher;
 use lithium\storage\cache\adapter\Apc;
+use app\extensions\storage\Rcache;
 
 if (PHP_SAPI === 'cli') {
 	return;
@@ -52,6 +53,10 @@ if ($apcEnabled) {
         'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
         'default' => array('adapter' => 'File', 'strategies' => array('Serializer')),
     ));
+}
+
+if(Rcache::enabled()) {
+    Rcache::init();
 }
 
 /**

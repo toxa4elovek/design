@@ -9,7 +9,7 @@
 namespace app\tests\cases\extensions\storage\cache\adapter;
 
 use Exception;
-use app\extensions\storage\cache\adapter\Rcache;
+use app\extensions\storage\Rcache;
 use app\tests\mocks\storage\MockDummy;
 
 class RcacheTest extends \lithium\test\Unit {
