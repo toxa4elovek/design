@@ -21,7 +21,7 @@ use \lithium\security\Auth;
 use \li3_flash_message\extensions\storage\FlashMessage;
 use \lithium\util\String;
 use \lithium\analysis\Logger;
-use \lithium\storage\Cache;
+use app\extensions\storage\Rcache;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 use \Exception;
@@ -1133,7 +1133,7 @@ class UsersController extends \app\controllers\AppController {
                     $censoredTweets['statuses'][$key] = $tweet;
                 }
             }
-            $res = Cache::write('default', 'twitterstream', $censoredTweets);
+            $res = Rcache::write('twitterstream', $censoredTweets);
             echo '<pre>';
             var_dump($censoredTweets['statuses']);
             die();
