@@ -457,7 +457,7 @@ endswitch;
                 </div>
 
                 <div class="tos-container supplement" style="margin-bottom: 20px;">
-                    <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a href="/docs/dogovor.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
+                    <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
                 </div>
 				<p class="submit submit-brief">
 					<input type="button" value="Вернуться к шагу 1" class="button steps-link" data-step="1">
