@@ -170,14 +170,14 @@ class Event extends \app\models\AppModel {
                     // Parent
                     if ( ($event->comment->question_id == 0) && ($event->comment->public != 1) ) {
                         if (Comment::find('count', array('conditions' => array('question_id' => $event->comment->id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
-                            $event->updateText = 'Этот комментарий закрыт для просмотра';
+                            contunue;
                         }
                     }
 
                     // Child
                     if ( ($event->comment->question_id != 0) && ($event->comment->public != 1) && ($event->comment->reply_to != Session::read('user.id')) ) {
                         if (Comment::find('count', array('conditions' => array('id' => $event->comment->question_id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
-                            $event->updateText = 'Этот комментарий закрыт для просмотра';
+                            contunue;
                         }
                     }
                 }

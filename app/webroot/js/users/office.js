@@ -300,11 +300,12 @@ function OfficeStatusUpdater() {
                     if(object.type == 'PitchCreated') {
                         newclass = ' newpitchstream ';
                     }
-                    console.log(object);
-                    if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
-                        var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
-                    }else{
-                        var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
+                    if (typeof(object.solution.images.solution_galleryLargeSize) != "undefined") {
+                        if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
+                            var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
+                        }else{
+                            var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
+                        }
                     }
                     if(object.type == 'PitchCreated') {
                         var imageurl = '/img/zaglushka.jpg';
@@ -371,10 +372,12 @@ function OfficeStatusUpdater() {
                         object.solution.likes = 0;
                         object.solution.images.solution_galleryLargeSize.weburl = '';
                     }
-                    if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
-                        var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
-                    }else{
-                        var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
+                    if (typeof(object.solution.images.solution_galleryLargeSize) != "undefined") {
+                        if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
+                            var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
+                        }else{
+                            var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
+                        }
                     }
                     html +=  '<div class="obnovlenia_box group">'+
                         '<section class="global_info">'+
