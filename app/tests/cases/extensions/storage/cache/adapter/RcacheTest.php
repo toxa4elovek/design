@@ -213,4 +213,18 @@ class RcacheTest extends \lithium\test\Unit {
         $result = Rcache::read('__tags__');
         $this->assertEqual(array('tag1'), $result);
     }
+
+    public function testWriteOnSameKey() {
+        $data = 'value';
+        $data2 = 'value2';
+        $key = 'key';
+        $result = Rcache::write($key, $data);
+        $this->assertTrue($result);
+        $result = Rcache::read($key);
+        $this->assertEqual($data, $result);
+        $result = Rcache::write($key, $data2);
+        $this->assertTrue($result);
+        $result = Rcache::read($key);
+        $this->assertEqual($data2, $result);
+    }
 }
