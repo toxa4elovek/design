@@ -64,7 +64,12 @@ class Rcache {
                 }
             }
         }
-        return self::$client->set($key, serialize($data), strtotime($expiry));
+        if(!$expiry) {
+            return self::$client->set($key, serialize($data));
+        }else {
+            return self::$client->set($key, serialize($data), (strtotime($expiry) - time()));
+        }
+
     }
 
     /**

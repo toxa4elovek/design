@@ -73,7 +73,8 @@ class RcacheTest extends \lithium\test\Unit {
         $ttl = Rcache::ttl($key);
         $this->assertTrue(is_numeric($ttl));
         $this->assertTrue($ttl > 0);
-
+        $this->assertEqual(60, $ttl);
+        
         // проверка ключа без срока годности
         $result = Rcache::write($key, $data);
         $this->assertTrue($result);
