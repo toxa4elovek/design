@@ -12,29 +12,29 @@ use \app\models\behaviors\handlers\SetPermissionHandler;
  *
  * @description	Поведение позволяющие загружать файлы аттачи к любой модели.
  *
- * 
+ *
  */
 class UploadableFile extends \app\models\behaviors\ModelBehavior{
 
 
 	/**
-	* Массив-хранилище загруженных файлов. 
-	* 
+	* Массив-хранилище загруженных файлов.
+	*
 	* @description
 	* @access protected;
 	*/
 	protected static $_storage = array();
-	
+
 	public static $fileModel = 'app\models\File';
 	public static $name = null;
 
 	public static $defaults = array(
-		'validate' => array('uploadedOnly' => true), 
-		'moveFile' => array('preserveFileName' => false, 'path' => '/resources/tmp/'), 
+		'validate' => array('uploadedOnly' => true),
+		'moveFile' => array('preserveFileName' => false, 'path' => '/resources/tmp/'),
 		'setPermission' => array('mode' => 0644)
 	);
 
-	
+
 	protected static $_handlers = array();
 	protected static $_handlersRegistry = array();
 
@@ -43,15 +43,15 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 	* @var boolean
 	*/
 	public static $validateUploadedFile = true;
-	
+
 	protected function _init(){
 		parent::_init();
-		static::$name = __CLASS__;		
+		static::$name = __CLASS__;
 	}
-	
-	
+
+
 	/**
-	* Коллбэк вызываемый до вызова метода Model::save(). 
+	* Коллбэк вызываемый до вызова метода Model::save().
 	*
 	* @description  Проверяем есть ли в пришедших данных ключи совпадающие с ключами в Model::$_attaches,
 	* 				выносим их из пришедших данных во временный контейнер, передаем данные дальше.
@@ -61,7 +61,7 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 		$model = $this->_model;
 		if(isset($model::$attaches)){
 			self::__fillStorage();
-			$recordObject = $params['entity'];  
+			$recordObject = $params['entity'];
 			$data = $params['data'];
             if(is_null($data)) {
                 $data = $recordObject->data();
@@ -77,18 +77,18 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 				if(isset($data[$key])){
 					$recordObject->set(array($key => null));
 					static::$_storage[$model]['attaches'][$key]['data'] = $data[$key];
-					static::$_storage[$model]['record'] = $recordObject; 
+					static::$_storage[$model]['record'] = $recordObject;
 				}
 			}
 		}
 		return $params;
 	}
-	
+
 	public function afterFind($data) {
 		if(is_null($data)) return $data;
 		$getWebUrl = function($path) {
 			if(preg_match('#webroot(.*)#', $path, $matches)) {
-				return $matches[1]; 
+				return $matches[1];
 			}else {
 				return false;
 			}
@@ -133,7 +133,7 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 	 *
 	 * @param boolean $result record saved
 	 */
-	public function afterSave($result) {	
+	public function afterSave($result) {
 		$model = $this->_model;
 		if(!isset(static::$_storage[$model]['record'])) {
 			return $result;
@@ -152,7 +152,7 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 			foreach($handlersSet as $handlerName => $options){
 				if((is_int($handlerName)) && (is_string($options))){
 					$handlerName = $options;
-				}	
+				}
 
 				$handlerClassName =  ucfirst($handlerName).'Handler';
 				$handlerClassPath = 'app\models\behaviors\handlers\\';
@@ -161,7 +161,7 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 				    $handlerObject::useHandler(static::$name);
                 }
 			}
-							
+
 			$params = compact('model', 'key', 'attachRules', 'record', 'uploadedFile');
    			static::_filter('afterSave', $params, function($self, $params) {
    				if(isset($params['uploadedFile']['data'])){
@@ -176,7 +176,8 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
                         $fileModel = $self::$fileModel;
                         $data = array(
                                'filename' => $params['uploadedFile']['data']['newname'],
-                               'originalbasename' => $params['uploadedFile']['data']['name']
+                               'originalbasename' => $params['uploadedFile']['data']['name'],
+                               'position' => $params['record']->position,
 
                            ) + $conditions;
                         if($existingRow = $fileModel::first(array('conditions' => $conditions))) {
@@ -198,7 +199,8 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
                                 $fileModel = $self::$fileModel;
                                 $data = array(
                                     'filename' => $file['newname'],
-                                    'originalbasename' => $file['name']
+                                    'originalbasename' => $file['name'],
+                                    'position' => $params['record']->position,
 
                                 ) + $conditions;
                                 if($existingRow = $fileModel::first(array('conditions' => $conditions))) {
@@ -213,13 +215,13 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 	   			}
 				return true;
 			});
-			
+
 		}
 		return $result;
 	}
-	
+
 	/**
-	* Определяет был ли файл загружен через HTTP_POST. 
+	* Определяет был ли файл загружен через HTTP_POST.
 	* Обертка над is_uploaded_file()
 	*
 	* @param array|string $filedata
@@ -235,7 +237,7 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 		}
 		return $result;
 	}
-	
+
 	public function beforeDelete($params) {
 		$model = $this->_model;
 		foreach($model::$attaches as $key => &$attachInfo){
@@ -243,7 +245,7 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 		}
 		return $params;
 	}
-	
+
 	public function afterDelete($result){
 		if($result){
 			$model = $this->_model;
@@ -252,8 +254,8 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 				if(isset($attachInfo['deleteId'])){
 					$fileModel = static::$fileModel;
 					$filerecord = $fileModel::find('first', array('conditions' => array(
-						'model' => $model, 
-						'model_id' => $attachInfo['deleteId'], 
+						'model' => $model,
+						'model_id' => $attachInfo['deleteId'],
 						'filekey' => $key,
 					)));
 					if(!is_null($filerecord)){
@@ -261,13 +263,13 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 							unlink($filerecord->filename);
 						}
 						$filerecord->delete();
-					} 
+					}
 				}
-			} 
+			}
 		}
 		return $result;
 	}
-	
+
 	protected function __fillStorage(){
 		$model = $this->_model;
 		static::$_storage[$model] = array();
@@ -275,13 +277,13 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 			if((is_numeric($key)) && (is_string($attach))){
 				$key = $attach;
 				$attach = array();
-			}  
+			}
 			static::$_storage[$model]['attaches'][$key] = array(
-				'attachInfo' => $attach + static::$defaults, 
+				'attachInfo' => $attach + static::$defaults,
 				'data' => null,
 				'deleteId' => null,
 			);
-		}		
+		}
 	}
 
 }

@@ -29,6 +29,7 @@ class Uploadnonce extends \app\models\AppModel {
     public static function uploadFile($formdata) {
         $data = array(
             'solution' => $formdata['solution'],
+            'position' => $formdata['fileposition'],
         );
         if ($nonce = self::first(array('conditions' => array('nonce' => $formdata['uploadnonce'])))) {
             return $nonce->save($data);
