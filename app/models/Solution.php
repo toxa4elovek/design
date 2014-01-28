@@ -7,6 +7,8 @@ use \app\models\Pitch;
 use \app\models\Like;
 use \app\models\Comment;
 use \app\models\Ratingchange;
+use \app\models\Solutionfile;
+use \app\models\Uploadnonce;
 use \app\models\Historysolution;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
@@ -70,6 +72,18 @@ class Solution extends \app\models\AppModel {
         self::applyFilter('uploadSolution', function($self, $params, $chain){
             $result = $chain->next($self, $params, $chain);
             if($result) {
+                if ($uploadnonce = Uploadnonce::first(array('conditions' => array('nonce' => $params->uploadnonce)))) {
+                    $nonce = $uploadnonce->id;
+                }
+                if ($files = Solutionfile::all(array('fields' => array('id'), 'conditions' => array('model' => '\app\models\Uploadnonce', 'model_id' => $nonce)))) {
+                    foreach ($files as $file) {
+                        $file->set(array(
+                            'model' => '\app\models\Solution',
+                            'model_id' => $result->id,
+                        ));
+                        $file->save();
+                    }
+                }
                 Event::createEvent($result->pitch_id, 'SolutionAdded', $result->user_id, $result->id);
                 Pitch::increaseIdeasCountOne($result->pitch_id);
                 $historySolution = Historysolution::create();
@@ -171,6 +185,7 @@ http://godesigner.ru/answers/view/73');
         $solution = Solution::create();
         $solution->save($data);
         $params = $solution;
+        $params->uploadnonce = $formdata['uploadnonce'];
         return static::_filter(__FUNCTION__, $params, function($self, $params) {
             return $params;
         });

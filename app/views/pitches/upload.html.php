@@ -19,13 +19,18 @@
                 <?php endif?>
             </div>
 
-            <form action="/pitches/upload/<?=$pitch->id?>.json" method="post" id="solution" class="add-pitch upload-form" enctype="multipart/form-data">
+
+            <form action="/pitches/uploadfile/<?=$pitch->id?>.json" method="post" id="solutionfiles" class="add-pitch upload-form" enctype="multipart/form-data">
+                <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">
                 <div class="upload-dropzone-wrapper">
                     <div class="upload-dropzone">
                         <input type="file" id="truebutton" multiple="multiple" name="solution[]" class="fileinput-button">
                         <input id="fakebutton" type="button" class="button" value="Выберите файлы">
                     </div>
                 </div>
+            </form>
+            <form action="/pitches/uploaddata/<?=$pitch->id?>.json" method="post" id="solution" class="add-pitch upload-form">
+                <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">
                 <div style="float:left; width: 627px;">
                     <ul id="filelist" class="supplement" style="margin-top: 10px;">
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:0;"></li>
@@ -114,5 +119,5 @@
 </div>
 
 
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'jquery.damnUploader.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/upload','/jquery.fancybox-1.3.4.css'), array('inline' => false))?>

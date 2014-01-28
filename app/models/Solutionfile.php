@@ -99,4 +99,8 @@ class Solutionfile extends \app\models\AppModel {
 
         return true;
     }
+
+    public static function getParams() {
+        return self::$processImage;
+    }
 }

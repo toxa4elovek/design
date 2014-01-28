@@ -127,7 +127,7 @@ input[type="radio"], input[type="checkbox"] {
 	box-shadow: 0 1px 0 rgba(255, 255, 255, .6);
 }
 .upload-progressbar {
-	transition: width 8s;
+	transition: width .3s;
 	position: absolute;
 	width: 0%;
 	height: 10px;
