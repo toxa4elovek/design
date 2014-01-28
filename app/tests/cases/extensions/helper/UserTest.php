@@ -156,4 +156,11 @@ class UserTest extends \lithium\test\Unit {
         $this->assertTrue($this->user->isAllowedToComment());
     }
 
+    public function testGetFullname() {
+        $this->assertFalse($this->user->getFullname());
+        $this->user->write('user.first_name', 'Дмитрий');
+        $this->user->write('user.last_name', 'Васильев');
+        $this->assertEqual('Дмитрий Васильев', $this->user->getFullname());
+    }
+
 }

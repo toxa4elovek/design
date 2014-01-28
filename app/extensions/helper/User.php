@@ -179,6 +179,18 @@ class User extends \app\extensions\helper\Session {
     }
 
     /**
+     * Метод возвращает имя и фамилию пользователя, разделленные пробелом
+     *
+     * @return bool|string
+     */
+    public function getFullname() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    /**
      * Метод возвращает email или false, если он не залогинен
      *
      * @return bool|mixed
