@@ -225,4 +225,22 @@ class UserTest extends \lithium\test\Unit {
         $this->assertIdentical(4 , $this->user->getCountOfCurrentDesignersPitches());
     }
 
+    public function testGetNewBlogpostCount() {
+        $this->assertIdentical(0, $this->user->getNewBlogpostCount());
+        $this->user->write('user.blogpost.count', 3);
+        $this->assertIdentical(3, $this->user->getNewBlogpostCount());
+    }
+
+    public function testGetNewEventsCount() {
+        $this->assertIdentical(0, $this->user->getNewEventsCount());
+        $this->user->write('user.events.count', 3);
+        $this->assertIdentical(3, $this->user->getNewEventsCount());
+    }
+
+    public function testGetAvatarUrl() {
+        $this->assertEqual('/img/default_small_avatar.png', $this->user->getAvatarUrl());
+        $this->user->write('user.images.avatar_small.weburl', '/img/custom_avatar.png');
+        $this->assertEqual('/img/custom_avatar.png', $this->user->getAvatarUrl());
+    }
+
 }

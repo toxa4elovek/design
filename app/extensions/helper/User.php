@@ -20,7 +20,8 @@ class User extends \app\extensions\helper\Session {
         $defaults = array(
             'userModel' => 'app\models\User',
             'expertModel' => 'app\models\Expert',
-            'inflector' => 'app\extensions\helper\NameInflector'
+            'inflector' => 'app\extensions\helper\NameInflector',
+            'defaultAvatarUrl' => '/img/default_small_avatar.png',
         );
         $this->_options = $options = $config + $defaults;
         $this->_options['adminsIds'] = $options['userModel']::getAdminsIds();
@@ -292,6 +293,37 @@ class User extends \app\extensions\helper\Session {
      */
     public function getCountOfCurrentDesignersPitches() {
         return $this->__countPitches($this->getCurrentDesignersPitches());
+    }
+
+    /**
+     * Метод возвращает количество непрочитанных постов в блоге
+     *
+     * @return int
+     */
+    public function getNewBlogpostCount() {
+        return (int) $this->read('user.blogpost.count');
+    }
+
+    /**
+     * Метод возвращает количество непрочитанных обновлений
+     *
+     * @return int
+     */
+    public function getNewEventsCount() {
+        return (int) $this->read('user.events.count');
+    }
+
+    /**
+     * Метод возвращает текущий аватар пользователя - или дефолтный, если он не установлен
+     *
+     * @return mixed
+     */
+    public function getAvatarUrl() {
+        if(!$avatarUrl = $this->read('user.images.avatar_small.weburl')) {
+            return $this->_options['defaultAvatarUrl'];
+        }else {
+            return $avatarUrl;
+        }
     }
 
     /**
