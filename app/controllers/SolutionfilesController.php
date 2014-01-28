@@ -5,6 +5,7 @@ namespace app\controllers;
 use \lithium\storage\Session;
 use \app\models\Solutionfile;
 use \app\models\Solution;
+use \app\models\Uploadnonce;
 
 class SolutionfilesController extends \app\controllers\AppController {
 
@@ -50,6 +51,37 @@ class SolutionfilesController extends \app\controllers\AppController {
             return compact('res');
         }
         if (Solutionfile::resize($params)) {
+            $res['result'] = true;
+        }
+        return compact('res');
+    }
+
+    public function delete() {
+        $res = array(
+            'error' => false,
+        );
+        if (!$this->request->is('json') || (Session::read('user') == null)) {
+            $this->redirect('/pitches/');
+        }
+        if (empty($this->request->data['name']) || empty($this->request->data['nonce']) || empty($this->request->data['position'])) {
+            $res['error'] = 'wrong data';
+            return compact('res');
+        }
+        if ($nonce = Uploadnonce::first(array('fields' => array('id'), 'conditions' => array('nonce' => $this->request->data['nonce'])))) {
+            $nonce = $nonce->id;
+            $files = Solutionfile::all(array(
+                'conditions' => array(
+                    'model' => '\app\models\Uploadnonce',
+                    'model_id' => $nonce,
+                    'position' => $this->request->data['position'],
+                ),
+            ));
+            foreach ($files as $file) {
+                if (file_exists($file->filename)) {
+                    unlink($file->filename);
+                }
+                $file->delete();
+            }
             $res['result'] = true;
         }
         return compact('res');

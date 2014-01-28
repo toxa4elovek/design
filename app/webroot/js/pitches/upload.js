@@ -56,13 +56,33 @@ $(document).ready(function() {
         addCallback();
     });
     $(document).on('click', '.uploadable-wrapper', function() {
-        $(this).fadeOut(200, function() { 
-            $(this).remove();
-            if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
-                $('.upload-dropzone-wrapper').removeClass('upload-empty');
-                $('#fakebutton, #truebutton').show();
-            }
-        });
+        var self = $(this);
+        var $el = $('.upload-progressbar', $(this)); 
+        $el.css('transition', 'width 3s');
+        $el.css('width', '20%');
+        var data = {
+                nonce: $('#uploadnonce').val(),
+                name: $el.data('filename'),
+                position: $el.data('position'),
+            };
+            $.ajax({
+                url: '/solutionfiles/delete.json/',
+                type: 'POST',
+                data: data,
+                global: false,
+                dataType: 'json'
+            }).done(function() {
+                $el.css('transition', 'width .3s');
+                $el.css('width', '0');
+                boxFileNames.splice($.inArray($el.data('filename'), boxFileNames), 1);
+                self.fadeOut(200, function() { 
+                    self.remove();
+                    if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
+                        $('.upload-dropzone-wrapper').removeClass('upload-empty');
+                        $('#fakebutton, #truebutton').show();
+                    }
+                });
+            });
     });
 
     function addCallback() {
@@ -101,7 +121,7 @@ $(document).ready(function() {
                     window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
                     null;
                 if (URL) {
-                    $('.upload-dropzone').append('<div class="uploadable-wrapper"><div class="thumbnail-container"><img src="' + URL.createObjectURL(data.files[0]) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar" data-filename="' + data.files[0].name + '"></div></div></div>');
+                    $('.upload-dropzone').append('<div class="uploadable-wrapper"><div class="thumbnail-container"><img src="' + URL.createObjectURL(data.files[0]) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar" data-filename="' + data.files[0].name + '" data-position="' + filePosition + '"></div></div></div>');
                 } else {
                     // Not supported
                 }
