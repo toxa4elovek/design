@@ -69,14 +69,7 @@ class Pitch extends \app\models\AppModel {
                         $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer';
                     }
                     User::sendTweet($tweet);
-                    $task = Task::create();
-                    $task->set(array(
-                        'model_id' => $params['pitch']->id,
-                        'type' => 'newpitch',
-                        'date' => date('Y-m-d H:i:s'),
-                        'completed' => 0
-                    ));
-                    $task->save();
+                    Task::createNewTask($params['pitch']->id, 'newpitch');
                 }elseif(($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {
                     User::sendAdminBriefPitch($params);
                 }
