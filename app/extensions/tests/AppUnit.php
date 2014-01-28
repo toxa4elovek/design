@@ -18,6 +18,8 @@ class AppUnit extends \lithium\test\Unit {
 		foreach($tables as $table) {
 			$model = '\app\models\\' . $table;
 			$model::config(array('connection' => 'test'));
+            $connectionConfig = Connections::get('test', array('config' => true));
+            mysql_query('TRUNCATE TABLE `' . $connectionConfig['database'] . '`.`' . Inflector::underscore(Inflector::pluralize($table)) . '`') or die(mysql_error());
 			$fixtures = Fixture::load($table);
             if(count($fixtures) > 0) {
                 $data = $fixtures->to('array');

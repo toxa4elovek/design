@@ -37,4 +37,35 @@ class Task extends \app\models\AppModel {
         return $newTask->id;
     }
 
+    /**
+     * Метод удаляет $count завершенных залач
+     *
+     * @param $count
+     * @return int
+     */
+    public static function deleteCompleted($count = 100) {
+        $tasksToDelete = self::getCompletedTasks($count);
+        $count = 0;
+        foreach($tasksToDelete as $task) {
+            $task->delete();
+            $count++;
+        }
+        return $count;
+    }
+
+    /**
+     * Метод помечает задачу как выполненную, вызывается для объекта задачи
+     *
+     * @param $record
+     * @return bool
+     */
+    public function markAsCompleted($record) {
+        if($record->completed == 1) {
+            return false;
+        }else {
+            $record->completed = 1;
+            return $record->save();
+        }
+    }
+
 }
