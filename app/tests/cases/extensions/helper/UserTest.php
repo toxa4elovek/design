@@ -171,4 +171,22 @@ class UserTest extends \lithium\test\Unit {
         $this->assertTrue($this->user->isSocialNetworkUser());
     }
 
+    public function testHasFavouritePitches() {
+        $this->assertFalse($this->user->hasFavouritePitches());
+        $this->user->write('user.id', 1);
+        $this->assertFalse($this->user->hasFavouritePitches());
+        $this->user->write('user.faves', array(1, 2, 3));
+        $this->assertTrue($this->user->hasFavouritePitches());
+    }
+
+    public function testIsPitchFavourite() {
+        $favPitch = 2;
+        $notFavPitch = 4;
+        $favs = array(1, 2);
+        $this->assertFalse($this->user->isPitchFavourite($favPitch));
+        $this->user->write('user.faves', $favs);
+        $this->assertFalse($this->user->isPitchFavourite($notFavPitch));
+        $this->assertTrue($this->user->isPitchFavourite($favPitch));
+    }
+
 }

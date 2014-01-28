@@ -142,11 +142,41 @@ class User extends \app\extensions\helper\Session {
         return strtotime($this->read('user.silenceUntil')) < time();
     }
 
+    /**
+     * Метод проверяет, входит ли пользователь через социальные сети
+     *
+     * @return bool
+     */
     public function isSocialNetworkUser() {
         if(!$this->isLoggedIn()) {
             return false;
         }
         return (bool) $this->read('user.social');
+    }
+
+    /**
+     * Метод определяет, есть ли питч с айди $pitchId в избранном у пользователя
+     *
+     * @param $pitchId
+     * @return bool
+     */
+    public function isPitchFavourite($pitchId) {
+        if((!$this->isLoggedIn()) and (!$this->hasFavouritePitches())) {
+            return false;
+        }
+        return in_array($pitchId, $this->read('user.faves'));
+    }
+
+    /**
+     * Метод проверяет, есть ли у пользовать избранные питчи
+     *
+     * @return bool
+     */
+    public function hasFavouritePitches() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return is_array($this->read('user.faves'));
     }
 
     /**
