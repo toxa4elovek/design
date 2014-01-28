@@ -20,11 +20,12 @@ class AppUnit extends \lithium\test\Unit {
 			$model::config(array('connection' => 'test'));
 			$fixtures = Fixture::load($table);
             if(count($fixtures) > 0) {
-                $item = $model::create();
                 $data = $fixtures->to('array');
-                $data = $data[0];
-                $item->set($data);
-                $item->save(null, array('validate' => null));
+                foreach($data as $fixtureItem) {
+                    $item = $model::create();
+                    $item->set($fixtureItem);
+                    $item->save(null, array('validate' => null));
+                }
                 /*
                     $formatFunc = function($key) { return '`' . $key . '`';};
                     $keys = array_map($formatFunc, array_keys($model::schema()));
