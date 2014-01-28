@@ -115,7 +115,7 @@
     </div>
 </div>
 <?php endif?>
-<?php if($this->user->getCurrentDesignersPitches() > 0):?>
+<?php if($this->user->getCountOfCurrentDesignersPitches() > 0):?>
 <div id="pitch-panel">
     <div class="conteiner" style="margin-top: 0px;">
         <div class="content">
