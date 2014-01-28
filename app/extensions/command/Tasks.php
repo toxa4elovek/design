@@ -11,14 +11,12 @@ class Tasks extends \app\extensions\command\CronJob {
     public function run() {
         $this->header('Welcome to the Task Command');
         set_time_limit(0);
-        $tasks = Task::all(array('conditions' => array('completed' => 0)));
-        foreach($tasks as $task) {
+        $task = Task::first(array('conditions' => array('completed' => 0)));
+        if($task) {
             if('newpitch' == $task->type) {
                 Tasks::__newptich($task);
             }
-        }
-        if(count($tasks > 0)) {
-            $this->out('All tasks are completed');
+            $this->out('Task completed');
         }else {
             $this->out('No tasks are in due.');
         }
@@ -27,10 +25,8 @@ class Tasks extends \app\extensions\command\CronJob {
     private function __newptich($task) {
         $pitch = Pitch::first($task->model_id);
         $params = array('pitch' => $pitch);
-        $task->completed = 1;
-        $task->save();
+        $task->markAsCompleted();
         User::sendSpamNewPitch($params);
-
         $this->out('New pitch email has been sent');
     }
 
