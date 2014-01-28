@@ -78,11 +78,21 @@ $(document).ready(function() {
 
     var loadPercentage = 30; // Progressbar percentage for loading files.
     var filePosition = 0;
+    var nowLoading = 0;
+    var boxFileNames = [];
     $('#solutionfiles').fileupload({
         dataType: 'html',
         dropZone: $('.upload-dropzone'),
         add: function(e, data) {
             if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
+                addCallback();
+
+                // Check files already in dropbox
+                if ($.inArray(data.files[0].name, boxFileNames) == -1) {
+                    boxFileNames.push(data.files[0].name);
+                } else {
+                    return false;
+                }
                 filePosition++;
                 $('#fileposition').val(filePosition);
                 e.data.fileupload.myData = data;
@@ -91,15 +101,10 @@ $(document).ready(function() {
                     window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
                     null;
                 if (URL) {
-                    $.each(data.files, function (index, file) {
-                        $('.upload-dropzone').append('<div class="uploadable-wrapper"><div class="thumbnail-container"><img src="' + URL.createObjectURL(file) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar" data-filename="' + file.name + '"></div></div></div>');
-                    });
+                    $('.upload-dropzone').append('<div class="uploadable-wrapper"><div class="thumbnail-container"><img src="' + URL.createObjectURL(data.files[0]) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar" data-filename="' + data.files[0].name + '"></div></div></div>');
                 } else {
-                    $.each(data.files, function (index, file) {
-                        $('<p/>').text(file.name).appendTo('#file-list');
-                    });
+                    // Not supported
                 }
-                addCallback();
                 $(this).fileupload('uploadByAuto');
             }else {
                 return false;
@@ -108,25 +113,31 @@ $(document).ready(function() {
         progress: function(e, data) {
             if (data.total > 0) {
                 var percent = data.total / 100;
-                var completed = Math.round(data.loaded / percent);
+                var completed = data.loaded / percent;
                 var $el = $('.upload-progressbar[data-filename="' + data.files[0].name + '"]');
-                $el.css('width', completed + '%');
+                if (completed >= (50)) {
+                    $el.css('width', '80%');
+                } else {
+                    $el.css('width', Math.round(completed) / 100 * loadPercentage + '%');
+                }
             }
         },
         done: function(e, data) {
             // Done each
-        },
-        progressall: function(e, data) {
-            if(data.total > 0) {
-                var percent = data.total / 100;
-                var completed = Math.round(data.loaded / percent);
-                if (completed > 95) {
-                    $('#uploadSolution').css('opacity', 1);
-                }
+            var $el = $('.upload-progressbar[data-filename="' + data.files[0].name + '"]');
+            $el.css('transition', 'width .3s');
+            $el.css('width', '100%');
+            nowLoading--;
+            if (nowLoading == 0) {
+                $('#uploadSolution').fadeIn();
             }
         },
+        progressall: function(e, data) {
+            // Overall progress
+        },
         send: function (e, data) {
-            $('#uploadSolution').css('opacity', 0);
+            nowLoading++;
+            $('#uploadSolution').fadeOut();
         }
     });
 
