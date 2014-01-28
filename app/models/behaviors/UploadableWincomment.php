@@ -14,7 +14,7 @@ use \app\models\behaviors\handlers\SetPermissionHandler;
  *
  *
  */
-class UploadableWincomment extends \slicedup_behaviors\models\behaviors\ModelBehavior{
+class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
 
 
     /**

@@ -15,7 +15,6 @@ namespace app\models\behaviors;
  * 				by packaging commmon methods, and creating callback filters that
  * 				are applied to filterable model methods
  *
- * @package 	slicedup_behaviors
  */
 class ModelBehavior extends \lithium\core\StaticObject{
 
