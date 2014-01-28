@@ -77,11 +77,14 @@ $(document).ready(function() {
     }
 
     var loadPercentage = 30; // Progressbar percentage for loading files.
+    var filePosition = 0;
     $('#solutionfiles').fileupload({
         dataType: 'html',
         dropZone: $('.upload-dropzone'),
         add: function(e, data) {
             if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
+                filePosition++;
+                $('#fileposition').val(filePosition);
                 e.data.fileupload.myData = data;
                 // Check URL.createObjectURL() support
                 var URL = window.URL && window.URL.createObjectURL ? window.URL :
