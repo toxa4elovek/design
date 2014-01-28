@@ -163,4 +163,12 @@ class UserTest extends \lithium\test\Unit {
         $this->assertEqual('Дмитрий Васильев', $this->user->getFullname());
     }
 
+    public function testIsSocialNetworkUser() {
+        $this->assertFalse($this->user->isSocialNetworkUser());
+        $this->user->write('user.social', 0);
+        $this->assertFalse($this->user->isSocialNetworkUser());
+        $this->user->write('user.social', 1);
+        $this->assertTrue($this->user->isSocialNetworkUser());
+    }
+
 }

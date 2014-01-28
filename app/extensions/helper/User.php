@@ -142,6 +142,13 @@ class User extends \app\extensions\helper\Session {
         return strtotime($this->read('user.silenceUntil')) < time();
     }
 
+    public function isSocialNetworkUser() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return (bool) $this->read('user.social');
+    }
+
     /**
      * Метод возвращает айди пользователя или false, если он не залогинен
      *
