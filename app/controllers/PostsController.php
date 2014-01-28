@@ -92,7 +92,7 @@ class PostsController extends \app\controllers\AppController {
      * @return array|object
      */
     public function view() {
-        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || User::checkRole('editor'))) {
+        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
             if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
                 Session::delete('user.blogpost');
                 setcookie('counterdata', '', time() - 3600, '/');

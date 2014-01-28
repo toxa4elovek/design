@@ -136,4 +136,14 @@ class UserTest extends \lithium\test\Unit {
         $this->assertEqual('Дмитрий В.', $this->user->getFormattedName('Дмитрий', 'Васильев'));
     }
 
+    public function testIsPostAuthor() {
+        $postAuthorId = 4;
+        $randomUserId = 1;
+        $this->assertFalse($this->user->isPostAuthor($postAuthorId));
+        $this->user->write('user.id', $randomUserId);
+        $this->assertFalse($this->user->isPostAuthor($postAuthorId));
+        $this->user->write('user.id', $postAuthorId);
+        $this->assertTrue($this->user->isPostAuthor($postAuthorId));
+    }
+
 }

@@ -121,6 +121,16 @@ class User extends \app\extensions\helper\Session {
     }
 
     /**
+     * Метод определяет, является ли текущий пользователь автором поста с айди $postAuthorId
+     *
+     * @param $commentAuthorId
+     * @return bool
+     */
+    public function isPostAuthor($postAuthorId) {
+        return $this->__detectOwnership($postAuthorId);
+    }
+
+    /**
      * Метод возвращает айди пользователя или false, если он не залогинен
      *
      * @return bool|mixed
