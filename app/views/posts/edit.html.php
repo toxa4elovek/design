@@ -53,13 +53,16 @@
                                 </p>
                             </div>
 
-                            <div class="groupc">
-                                <p>
-                                    <label>Опубликован?</label>
-                                    <input type="checkbox" name="published" <?php if($post->published == 1): echo 'checked="checked"'; endif;?>/>
-                                </p>
-                            </div>
-
+                            <?php if($this->user->isAuthor()): ?>
+                                <input type="hidden" value="<?= $post->published ?>" name="published">
+                            <?php else: ?>
+                                <div class="groupc">
+                                    <p>
+                                        <label>Опубликован?</label>
+                                        <input type="checkbox" name="published" <?php if($post->published == 1): echo 'checked="checked"'; endif;?>/>
+                                    </p>
+                                </div>
+                            <?php endif ?>
                             <input type="button" id="save" value="Сохранить" class="button" >
                             <a href="/posts/view/<?=$post->id?>" type="button" target="_blank" class="button" >Предпросмотр<a/>
 

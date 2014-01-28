@@ -12,11 +12,11 @@
                 </div>
                 <div style="height: 1px; clear: both; margin-bottom: 10px;"></div>
                 <span style="margin-left: 45px; font-size: 11px; color: #666666;text-shadow: 0 1px 1px white">ВАШ EMAIL</span><span style="text-decoration:none;margin-left:5px;color:#ff5a5e;font-size:11px;">*</span>
-                <input name="email" value="<?= $this->session->read('user.email')?>" id="reqemail" type="text" style="height:43px;
+                <input name="email" value="<?= $this->user->getEmail()?>" id="reqemail" type="text" style="height:43px;
                 margin-left: 43px;margin-top:5px;width:365px;" name="name" class="i1">
                 <div style="height: 1px; clear: both; margin-bottom: 10px;"></div>
                 <span style="margin-left: 45px; font-size: 11px; color: #666666;text-shadow: 0 1px 1px white">ВАШЕ ИМЯ</span>
-                <input name="name" id="reqname" type="text" value="<?= $this->session->read('user.first_name') . ' ' . $this->session->read('user.last_name')?>" style="height:43px;margin-left: 43px;margin-top:5px;width:365px;" name="name" class="i1">
+                <input name="name" id="reqname" type="text" value="<?= $this->user->getFullname()?>" style="height:43px;margin-left: 43px;margin-top:5px;width:365px;" name="name" class="i1">
                 <input name="target" id="reqtarget" type="hidden" value="0">
                 <div style="height: 1px; clear: both; margin-bottom: 10px;"></div>
                 <span style="margin-left: 45px; font-size: 11px; color: #666666;text-shadow: 0 1px 1px white">ОПИШИТЕ ПРОБЛЕМУ И ЗАДАЙТЕ ВОПРОС</span>

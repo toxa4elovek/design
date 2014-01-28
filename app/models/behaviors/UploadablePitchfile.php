@@ -14,7 +14,7 @@ use \app\models\behaviors\handlers\SetPermissionHandler;
  *
  *
  */
-class UploadablePitchfile extends \slicedup_behaviors\models\behaviors\ModelBehavior{
+class UploadablePitchfile extends \app\models\behaviors\ModelBehavior{
 
 
 	/**

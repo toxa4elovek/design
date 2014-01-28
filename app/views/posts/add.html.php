@@ -52,13 +52,16 @@
                                 </p>
                             </div>
 
-                            <div class="groupc">
-                                <p>
-                                    <label>Опубликован?</label>
-                                    <input type="checkbox" name="published" />
-                                </p>
-                            </div>
-
+                            <?php if($this->user->isAuthor()): ?>
+                                <input type="hidden" value="0" name="published">
+                            <?php else: ?>
+                                <div class="groupc">
+                                    <p>
+                                        <label>Опубликован?</label>
+                                        <input type="checkbox" name="published" />
+                                    </p>
+                                </div>
+                            <?php endif ?>
                             <input type="button" id="save" value="Сохранить" class="button" >
                             <a style="display:none;" id="preview" href="/posts/view/" type="button" target="_blank" class="button" >Предпросмотр<a/>
 

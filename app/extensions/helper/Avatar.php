@@ -1,16 +1,14 @@
 <?php
 namespace app\extensions\helper;
 
-use app\models\User;
+use app\models\User as UserModel;
 
 class Avatar extends \lithium\template\Helper {
 
-
     function show($data = array(), $large = false, $srcOnly = false) {
         if(isset($data['id'])) {
-            $user = User::first($data['id']);
+            $user = UserModel::first($data['id']);
             $data = $user->data();
-        //    echo 'test';
         }
         $src = '/img/default_small_avatar.png';
         if($large) {
@@ -105,6 +103,4 @@ class Avatar extends \lithium\template\Helper {
         }
         return $string;
     }
-
-
 }

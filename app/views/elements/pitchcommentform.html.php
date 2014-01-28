@@ -3,8 +3,8 @@
     <?php
     if(
 
-    (($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
-    (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true))
+    (($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
+    (($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment()))
 
     && ($this->user->getId())
     ):?>

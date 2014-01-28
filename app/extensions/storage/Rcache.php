@@ -13,7 +13,7 @@ class Rcache {
     /**
      * @var Свойство для хранения объекта класса Redis
      */
-    public static $client;
+    protected static $client;
     /**
      * @var array Свойство для хранения конфига, переданного в init
      */

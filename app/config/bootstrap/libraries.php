@@ -125,7 +125,6 @@ Libraries::add('li3_fixtures');
 Libraries::add('li3_mailer');
 Libraries::add('li3_flash_message');
 Libraries::add('li3_oauth');
-Libraries::add('slicedup_behaviors');
 Libraries::add('image_manipulation');
 Libraries::add('tmhOAuth');
 Libraries::add('li3_assets', array(

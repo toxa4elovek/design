@@ -64,28 +64,6 @@
 </a>
     <?php $i++;endforeach?>
                             </div><?php endif?>
-                            <!--div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:640px;margin-bottom:20px;"></div-->
-        <!--div id="disqus_thread"></div>
-        <script type="text/javascript">
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'godesigner'; // required: replace example with your forum shortname
-            var disqus_developer = 1;
-            /* * * DON'T EDIT BELOW THIS LINE * * */
-            (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a-->
-                        <!--script>
-                            var idcomments_acct = '88393bdece6b387c5d426e2998f1806a';
-                            var idcomments_post_id;
-                            var idcomments_post_url;
-                        </script>
-                        <span id="IDCommentsPostTitle" style="display:none"></span>
-                        <script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script-->
                         <!-- START: Livefyre Embed -->
                         <script type='text/javascript' src='http://zor.livefyre.com/wjs/v1.0/javascripts/livefyre_init.js'></script>
                         <script type='text/javascript'>
@@ -95,7 +73,6 @@
                             });
                         </script>
                         <!-- END: Livefyre Embed -->
-
                     </section>
                 </div>
                 <div id="right_sidebar_help" style="width:200px;">

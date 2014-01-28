@@ -22,7 +22,11 @@
         <finish-unix-time type="integer"><?= strtotime($pitch->finishDate) ?></finish-unix-time>
         <remains-seconds type="integer"><?= strtotime($pitch->finishDate) - time() ?></remains-seconds>
         <category nil="true"/>
+        <?php if ($pitch->category_id == 7):?>
+        <parent-category>Копирайтинг</parent-category>
+        <?php else: ?>
         <parent-category>Дизайн</parent-category>
+        <?php endif?>
         <url>
             http://www.godesigner.ru/pitches/details/<?= $pitch->id ?>
         </url>

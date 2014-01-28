@@ -38,8 +38,14 @@ class User extends \app\models\AppModel {
      *
      * @var array
      */
-    public static $editors = array(32, 4, 5, 108, 81, 3049, 8472);
+    public static $editors = array(32, 4, 5, 108, 81, 3049);
 
+    /**
+     * Массив хранящий айдишники авторов блога
+     *
+     * @var array
+     */
+    public static $authors = array(8472);
 
     protected static $_behaviors = array(
         'UploadableAvatar'
@@ -245,6 +251,9 @@ class User extends \app\models\AppModel {
                 break;
             case 'editor':
                 $res = in_array(Session::read('user.id'), self::$editors);
+                break;
+            case 'author':
+                $res = in_array(Session::read('user.id'), self::$authors);
                 break;
             default:
                 $res = false;
@@ -994,6 +1003,33 @@ class User extends \app\models\AppModel {
         foreach ($comments as $comment) {
             $comment->delete();
         }
+    }
+
+    /**
+     * Метод возвращает список айдишников авторов блога
+     *
+     * @return array
+     */
+    public static function getAuthorsIds() {
+        return self::$authors;
+    }
+
+    /**
+     * Метод возвращает список айдишников админов
+     *
+     * @return array
+     */
+    public static function getAdminsIds() {
+        return self::$admins;
+    }
+
+    /**
+     * Метод возвращает список айдишников редакторов блога
+     *
+     * @return array
+     */
+    public static function getEditorsIds() {
+        return self::$editors;
     }
 
 }
