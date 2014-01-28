@@ -38,4 +38,22 @@ class TaskTest extends AppUnit{
         $this->assertEqual($correctIds, $ids);
     }
 
+    public function testMarkAsCompleted() {
+        $item = Task::first(array('conditions' => array('completed' => 1)));
+        $result = $item->markAsCompleted();
+        $this->assertFalse($result);
+        $item2 = Task::first(array('conditions' => array('completed' => 0)));
+        $result = $item2->markAsCompleted();
+        $this->assertTrue($result);
+        $item2 = Task::first(array('conditions' => array('id' => $item2->id)));
+        $this->assertEqual('1', $item2->completed);
+    }
+
+    public function testDeleteCompleted() {
+        $count = Task::deleteCompleted(2);
+        $this->assertEqual(2, $count);
+        $completedTasks = Task::all(array('conditions' => array('completed' => 1)));
+        $this->assertEqual(1, count($completedTasks));
+    }
+
 }
