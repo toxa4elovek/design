@@ -54,7 +54,7 @@
                             </div>
 
                             <?php if($this->user->isAuthor()): ?>
-                                <input type="hidden" value="0" name="published">
+                                <input type="hidden" value="<?= $post->published ?>" name="published">
                             <?php else: ?>
                                 <div class="groupc">
                                     <p>
