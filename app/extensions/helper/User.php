@@ -259,6 +259,42 @@ class User extends \app\extensions\helper\Session {
     }
 
     /**
+     * Метод возвращает текущие питчи (user.currentpitches) пользователя
+     *
+     * @return bool|mixed
+     */
+    public function getCurrentPitches() {
+        return $this->__getPitchesFromList('currentpitches');
+    }
+
+    /**
+     * Метод возвращает текущие питчи для дизайнера (user.currentdesignpitches) пользователя
+     *
+     * @return bool|mixed
+     */
+    public function getCurrentDesignersPitches() {
+        return $this->__getPitchesFromList('currentdesignpitches');
+    }
+
+    /**
+     * Метод возвращает количество текущий питчей (user.currentpitches) пользователя
+     *
+     * @return int
+     */
+    public function getCountOfCurrentPitches() {
+        return $this->__countPitches($this->getCurrentPitches());
+    }
+
+    /**
+     * Метод возвращает количество текущий питчей для дизайнера (user.currentdesignpitches) пользователя
+     *
+     * @return int
+     */
+    public function getCountOfCurrentDesignersPitches() {
+        return $this->__countPitches($this->getCurrentDesignersPitches());
+    }
+
+    /**
      * Приватный метод помощник, сравнивает аргумент @model_id с текущим user.id, если установлен
      *
      * @param $model_id
@@ -269,6 +305,35 @@ class User extends \app\extensions\helper\Session {
             return false;
         }
         return $model_id == $this->getId();
+    }
+
+    /**
+     * Приватный метод помощник, получает массив/объекты и возвращает их количество
+     *
+     * @param $pitches
+     * @return int
+     */
+    private function __countPitches($pitches) {
+        if($pitches) {
+            return count($pitches);
+        }
+        return 0;
+    }
+
+    /**
+     * Приватный метод помощник, пытается получить данные текущих питчий или питчей для дизайнера
+     *
+     * @param $listType
+     * @return bool|mixed
+     */
+    private function __getPitchesFromList($listType) {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        $pitches = $this->read('user.' . $listType);
+        if(!is_null($pitches)) {
+            return $pitches;
+        }
     }
 
 }

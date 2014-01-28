@@ -189,4 +189,40 @@ class UserTest extends \lithium\test\Unit {
         $this->assertTrue($this->user->isPitchFavourite($favPitch));
     }
 
+    public function testGetCurrentPitches() {
+        $pitches = array(1, 2, 3);
+        $this->assertFalse($this->user->getCurrentPitches());
+        $this->user->write('user.id', 1);
+        $this->assertFalse($this->user->getCurrentPitches());
+        $this->user->write('user.currentpitches', $pitches);
+        $this->assertEqual($pitches, $this->user->getCurrentPitches());
+    }
+
+    public function testGetCountOfCurrentPitches() {
+        $pitches = array(1, 2, 3);
+        $this->assertIdentical(0, $this->user->getCountOfCurrentPitches());
+        $this->user->write('user.id', 1);
+        $this->assertIdentical(0, $this->user->getCountOfCurrentPitches());
+        $this->user->write('user.currentpitches', $pitches);
+        $this->assertIdentical(3 , $this->user->getCountOfCurrentPitches());
+    }
+
+    public function testGetCurrentDesignersPitches() {
+        $pitches = array(1, 2, 3);
+        $this->assertFalse($this->user->getCurrentDesignersPitches());
+        $this->user->write('user.id', 1);
+        $this->assertFalse($this->user->getCurrentDesignersPitches());
+        $this->user->write('user.currentdesignpitches', $pitches);
+        $this->assertEqual($pitches, $this->user->getCurrentDesignersPitches());
+    }
+
+    public function testGetCountOfCurrentDesignersPitches() {
+        $pitches = array(1, 2, 3, 4);
+        $this->assertIdentical(0, $this->user->getCountOfCurrentDesignersPitches());
+        $this->user->write('user.id', 1);
+        $this->assertIdentical(0, $this->user->getCountOfCurrentDesignersPitches());
+        $this->user->write('user.currentdesignpitches', $pitches);
+        $this->assertIdentical(4 , $this->user->getCountOfCurrentDesignersPitches());
+    }
+
 }

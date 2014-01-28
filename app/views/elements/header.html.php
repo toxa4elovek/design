@@ -23,7 +23,7 @@
 	});
 
 ?>
-<?php if(count($this->session->read('user.currentpitches')) > 0):?>
+<?php if($this->user->getCountOfCurrentPitches() > 0):?>
 <div id="pitch-panel">
     <div class="conteiner" style="margin-top: 0px;">
         <div class="content">
@@ -39,7 +39,7 @@
 
                         );
                         $types = array();
-                        foreach($this->session->read('user.currentpitches') as $mypitch):?>
+                        foreach($this->user->getCurrentPitches() as $mypitch):?>
                             <?php $pitchPath = 'view';
                             if($mypitch->ideas_count == 0) {
                                 $pitchPath = 'details';
@@ -186,7 +186,7 @@
                 <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
                 <?=$this->html->link('(' . $this->session->read('user.events.count') . ')', 'Users::office', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
             <?php else:?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->session->read('user.first_name') . ' ' . $this->session->read('user.last_name')?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
+                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
             <?php endif?>
 
         <?php else:?>
