@@ -15,7 +15,6 @@ namespace app\models\behaviors;
  * 				fields with formated timestamps on save operations when records
  * 				are created & updated.
  *
- * @package 	slicedup_behaviors
  */
 class RecordTimestamp extends \app\models\behaviors\ModelBehavior{
 

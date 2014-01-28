@@ -32,12 +32,6 @@ class UserTest extends \lithium\test\Unit {
         $this->user->clear();
     }
 
-    public function testInitialization() {
-        $this->assertEqual(array(1, 2), $this->user->adminsIds);
-        $this->assertEqual(array(1, 2, 3), $this->user->expertsIds);
-        $this->assertEqual(array(1, 2, 3, 4), $this->user->editorsIds);
-    }
-
     public function testIsAdmin() {
         $this->assertFalse($this->user->isAdmin());
         $this->user->write('user.id', 4);
@@ -88,6 +82,14 @@ class UserTest extends \lithium\test\Unit {
         $this->assertTrue($this->user->isEditor());
     }
 
+    public function testIsAuthor() {
+        $this->assertFalse($this->user->isAuthor());
+        $this->user->write('user.id', 4);
+        $this->assertFalse($this->user->isAuthor());
+        $this->user->write('user.id', 5);
+        $this->assertTrue($this->user->isAuthor());
+    }
+
     public function testGetId() {
         $this->assertFalse($this->user->getId());
         $this->user->write('user.id', '1');
@@ -132,6 +134,113 @@ class UserTest extends \lithium\test\Unit {
     public function testGetFormattedNameWithParams() {
         $this->assertFalse($this->user->getFormattedName());
         $this->assertEqual('Дмитрий В.', $this->user->getFormattedName('Дмитрий', 'Васильев'));
+    }
+
+    public function testIsPostAuthor() {
+        $postAuthorId = 4;
+        $randomUserId = 1;
+        $this->assertFalse($this->user->isPostAuthor($postAuthorId));
+        $this->user->write('user.id', $randomUserId);
+        $this->assertFalse($this->user->isPostAuthor($postAuthorId));
+        $this->user->write('user.id', $postAuthorId);
+        $this->assertTrue($this->user->isPostAuthor($postAuthorId));
+    }
+
+    public function testIsAllowedToComment() {
+        $this->assertFalse($this->user->isAllowedToComment());
+        $timeInFuture = date('Y-m-d H:i:s', time() + 3000);
+        $timeInPast = date('Y-m-d H:i:s', time() - 3000);
+        $this->user->write('user.silenceUntil', $timeInFuture);
+        $this->assertFalse($this->user->isAllowedToComment());
+        $this->user->write('user.silenceUntil', $timeInPast);
+        $this->assertTrue($this->user->isAllowedToComment());
+    }
+
+    public function testGetFullname() {
+        $this->assertFalse($this->user->getFullname());
+        $this->user->write('user.first_name', 'Дмитрий');
+        $this->user->write('user.last_name', 'Васильев');
+        $this->assertEqual('Дмитрий Васильев', $this->user->getFullname());
+    }
+
+    public function testIsSocialNetworkUser() {
+        $this->assertFalse($this->user->isSocialNetworkUser());
+        $this->user->write('user.social', 0);
+        $this->assertFalse($this->user->isSocialNetworkUser());
+        $this->user->write('user.social', 1);
+        $this->assertTrue($this->user->isSocialNetworkUser());
+    }
+
+    public function testHasFavouritePitches() {
+        $this->assertFalse($this->user->hasFavouritePitches());
+        $this->user->write('user.id', 1);
+        $this->assertFalse($this->user->hasFavouritePitches());
+        $this->user->write('user.faves', array(1, 2, 3));
+        $this->assertTrue($this->user->hasFavouritePitches());
+    }
+
+    public function testIsPitchFavourite() {
+        $favPitch = 2;
+        $notFavPitch = 4;
+        $favs = array(1, 2);
+        $this->assertFalse($this->user->isPitchFavourite($favPitch));
+        $this->user->write('user.faves', $favs);
+        $this->assertFalse($this->user->isPitchFavourite($notFavPitch));
+        $this->assertTrue($this->user->isPitchFavourite($favPitch));
+    }
+
+    public function testGetCurrentPitches() {
+        $pitches = array(1, 2, 3);
+        $this->assertFalse($this->user->getCurrentPitches());
+        $this->user->write('user.id', 1);
+        $this->assertFalse($this->user->getCurrentPitches());
+        $this->user->write('user.currentpitches', $pitches);
+        $this->assertEqual($pitches, $this->user->getCurrentPitches());
+    }
+
+    public function testGetCountOfCurrentPitches() {
+        $pitches = array(1, 2, 3);
+        $this->assertIdentical(0, $this->user->getCountOfCurrentPitches());
+        $this->user->write('user.id', 1);
+        $this->assertIdentical(0, $this->user->getCountOfCurrentPitches());
+        $this->user->write('user.currentpitches', $pitches);
+        $this->assertIdentical(3 , $this->user->getCountOfCurrentPitches());
+    }
+
+    public function testGetCurrentDesignersPitches() {
+        $pitches = array(1, 2, 3);
+        $this->assertFalse($this->user->getCurrentDesignersPitches());
+        $this->user->write('user.id', 1);
+        $this->assertFalse($this->user->getCurrentDesignersPitches());
+        $this->user->write('user.currentdesignpitches', $pitches);
+        $this->assertEqual($pitches, $this->user->getCurrentDesignersPitches());
+    }
+
+    public function testGetCountOfCurrentDesignersPitches() {
+        $pitches = array(1, 2, 3, 4);
+        $this->assertIdentical(0, $this->user->getCountOfCurrentDesignersPitches());
+        $this->user->write('user.id', 1);
+        $this->assertIdentical(0, $this->user->getCountOfCurrentDesignersPitches());
+        $this->user->write('user.currentdesignpitches', $pitches);
+        $this->assertIdentical(4 , $this->user->getCountOfCurrentDesignersPitches());
+    }
+
+    public function testGetNewBlogpostCount() {
+        $this->assertIdentical(0, $this->user->getNewBlogpostCount());
+        $this->user->write('user.blogpost.count', 3);
+        $this->assertIdentical(3, $this->user->getNewBlogpostCount());
+    }
+
+    public function testGetNewEventsCount() {
+        $this->assertIdentical(0, $this->user->getNewEventsCount());
+        $this->user->write('user.events.count', 3);
+        $this->assertIdentical(3, $this->user->getNewEventsCount());
+    }
+
+    public function testGetAvatarUrl() {
+        $this->assertEqual('/img/default_small_avatar.png', $this->user->getAvatarUrl());
+        $this->user->write('user.images.avatar_small.weburl', '/img/custom_avatar.png');
+        $this->assertEqual('/img/custom_avatar.png', $this->user->getAvatarUrl());
     }
 
 }

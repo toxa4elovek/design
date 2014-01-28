@@ -2,7 +2,7 @@
     var showSocialPopup = false;
     var needSocialWrite = false;
     <?php if ($this->user->getId()):?>
-    <?php if ($this->session->read('user.social') == 0):?>
+    <?php if (!$this->user->isSocialNetworkUser()):?>
     <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
     <?php setcookie('scl', '1', strtotime('+6 month'), '/');?>
     needSocialWrite = 1;
@@ -13,7 +13,7 @@
     <?php else:?>
     needSocialWrite = 2;
     <?php endif;?>
-    <?php elseif ($this->session->read('user.social') == 1):?>
+    <?php elseif ($this->user->isSocialNetworkUser()):?>
     <?php if (!isset($_COOKIE['scl']) || $_COOKIE['scl'] == ''):?>
     <?php setcookie('scl', '2', strtotime('+6 month'), '/');?>
     needSocialWrite = 2;

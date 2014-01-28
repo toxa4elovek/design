@@ -23,7 +23,7 @@
 	});
 
 ?>
-<?php if(count($this->session->read('user.currentpitches')) > 0):?>
+<?php if($this->user->getCountOfCurrentPitches() > 0):?>
 <div id="pitch-panel">
     <div class="conteiner" style="margin-top: 0px;">
         <div class="content">
@@ -39,7 +39,7 @@
 
                         );
                         $types = array();
-                        foreach($this->session->read('user.currentpitches') as $mypitch):?>
+                        foreach($this->user->getCurrentPitches() as $mypitch):?>
                             <?php $pitchPath = 'view';
                             if($mypitch->ideas_count == 0) {
                                 $pitchPath = 'details';
@@ -115,7 +115,7 @@
     </div>
 </div>
 <?php endif?>
-<?php if(count($this->session->read('user.currentdesignpitches')) > 0):?>
+<?php if($this->user->getCountOfCurrentDesignersPitches() > 0):?>
 <div id="pitch-panel">
     <div class="conteiner" style="margin-top: 0px;">
         <div class="content">
@@ -128,7 +128,7 @@
                         '<a href="/answers/view/56"><i id="help"></i>Что, если заказчик просит вас сделать то, что не указано в брифе?</a>'
                     );
                     $types = array();
-                    foreach($this->session->read('user.currentdesignpitches') as $mypitch):?>
+                    foreach($this->user->getCurrentDesignersPitches() as $mypitch):?>
                     <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                         <td class="pitches-name">
                             <div style="background-image: none; padding: 15px 0 17px 40px;">
@@ -173,20 +173,15 @@
 	<nav class="topnav">
         <?php if($this->user->isLoggedIn()):?>
             <div class="avatar-top" style="width: 41px; float: left; height: 50px;">
-                <?php if(($this->session->read('user.images.avatar_small.weburl') != '') || ($this->session->read('user.images.avatar_small.weburl') != false)):?>
-                <img style="display:block; float:left;width:41px;"src="<?=$this->session->read('user.images.avatar_small.weburl')?>" alt="" />
-                <script>var currentAvatar = '<?=$this->session->read('user.images.avatar_small.weburl')?>'</script>
-                <?php else:?>
-                <img style="display:block; float:left;width:41px;"src="/img/default_small_avatar.png" alt="" />
-                <script>var currentAvatar = '/img/default_small_avatar.png'</script>
-                <?php endif?>
+                <img style="display:block; float:left;width:41px;"src="<?=$this->user->getAvatarUrl()?>" alt="" />
+                <script>var currentAvatar = '<?=$this->user->getAvatarUrl()?>'</script>
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">
-            <?php if($this->session->read('user.events.count') > 0):?>
+            <?php if($this->user->getNewEventsCount() > 0):?>
                 <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
-                <?=$this->html->link('(' . $this->session->read('user.events.count') . ')', 'Users::office', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
+                <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::office', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
             <?php else:?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->session->read('user.first_name') . ' ' . $this->session->read('user.last_name')?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
+                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
             <?php endif?>
 
         <?php else:?>
@@ -196,8 +191,8 @@
                 <?php endif?>
                 <a href="/pages/howitworks">Как это работает?</a> /
                 <a href="/pitches">Все питчи</a> /
-                <?php if($this->session->read('user.blogpost.count') > 0):?>
-                <a href="/posts">Блог</a><?php echo $this->html->link('(' . $this->session->read('user.blogpost.count') . ')', 'Posts::index', array('style' => 'color: #648FA4', 'class' => 'updatecurrent', 'escape' => false))?>
+                <?php if($this->user->getNewBlogpostCount() > 0):?>
+                <a href="/posts">Блог</a><?php echo $this->html->link('(' . $this->user->getNewBlogpostCount() . ')', 'Posts::index', array('style' => 'color: #648FA4', 'class' => 'updatecurrent', 'escape' => false))?>
                 <?php else:?>
                 <a href="/posts">Блог</a>
                 <?php endif?>

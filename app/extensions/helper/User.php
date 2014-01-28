@@ -9,20 +9,8 @@ namespace app\extensions\helper;
 class User extends \app\extensions\helper\Session {
 
     /**
-     * @var array Массив хранит айди админом
+     * @var array Массив для хранения опций и данных из моделей
      */
-    public $adminsIds = array();
-
-    /**
-     * @var array Массив хранит айди экспертов
-     */
-    public $expertsIds = array();
-
-    /**
-     * @var array Массив хранит айди редакторов блога
-     */
-    public $editorsIds = array();
-
     protected $_options = array();
 
     /**
@@ -32,12 +20,14 @@ class User extends \app\extensions\helper\Session {
         $defaults = array(
             'userModel' => 'app\models\User',
             'expertModel' => 'app\models\Expert',
-            'inflector' => 'app\extensions\helper\NameInflector'
+            'inflector' => 'app\extensions\helper\NameInflector',
+            'defaultAvatarUrl' => '/img/default_small_avatar.png',
         );
-        $this->_options = $options =  $config + $defaults;
-        $this->adminsIds = $options['userModel']::$admins;
-        $this->expertsIds = $options['expertModel']::getExpertUserIds();
-        $this->editorsIds = $options['userModel']::$editors;
+        $this->_options = $options = $config + $defaults;
+        $this->_options['adminsIds'] = $options['userModel']::getAdminsIds();
+        $this->_options['expertsIds'] = $options['expertModel']::getExpertUserIds();
+        $this->_options['editorsIds'] = $options['userModel']::getEditorsIds();
+        $this->_options['authorIds'] = $options['userModel']::getAuthorsIds();
     }
 
     /**
@@ -50,7 +40,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->getId(), $this->expertsIds);
+        return in_array($this->getId(), $this->_options['expertsIds']);
     }
 
     /**
@@ -62,7 +52,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        if(($this->read('user.isAdmin')) || (in_array($this->getId(), $this->adminsIds))) {
+        if(($this->read('user.isAdmin')) || (in_array($this->getId(), $this->_options['adminsIds']))) {
             return true;
         }
         return false;
@@ -77,7 +67,19 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->getId(), $this->editorsIds);
+        return in_array($this->getId(), $this->_options['editorsIds']);
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь редактором блога
+     *
+     * @return bool
+     */
+    public function isAuthor() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return in_array($this->getId(), $this->_options['authorIds']);
     }
 
     /**
@@ -120,6 +122,65 @@ class User extends \app\extensions\helper\Session {
     }
 
     /**
+     * Метод определяет, является ли текущий пользователь автором поста с айди $postAuthorId
+     *
+     * @param $commentAuthorId
+     * @return bool
+     */
+    public function isPostAuthor($postAuthorId) {
+        return $this->__detectOwnership($postAuthorId);
+    }
+
+    /**
+     * Метод определяет, нет ли актуального запрета на комментирование у пользователя
+     *
+     * @return bool
+     */
+    public function isAllowedToComment() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return strtotime($this->read('user.silenceUntil')) < time();
+    }
+
+    /**
+     * Метод проверяет, входит ли пользователь через социальные сети
+     *
+     * @return bool
+     */
+    public function isSocialNetworkUser() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return (bool) $this->read('user.social');
+    }
+
+    /**
+     * Метод определяет, есть ли питч с айди $pitchId в избранном у пользователя
+     *
+     * @param $pitchId
+     * @return bool
+     */
+    public function isPitchFavourite($pitchId) {
+        if((!$this->isLoggedIn()) and (!$this->hasFavouritePitches())) {
+            return false;
+        }
+        return in_array($pitchId, $this->read('user.faves'));
+    }
+
+    /**
+     * Метод проверяет, есть ли у пользовать избранные питчи
+     *
+     * @return bool
+     */
+    public function hasFavouritePitches() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return is_array($this->read('user.faves'));
+    }
+
+    /**
      * Метод возвращает айди пользователя или false, если он не залогинен
      *
      * @return bool|mixed
@@ -156,6 +217,18 @@ class User extends \app\extensions\helper\Session {
     }
 
     /**
+     * Метод возвращает имя и фамилию пользователя, разделленные пробелом
+     *
+     * @return bool|string
+     */
+    public function getFullname() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    /**
      * Метод возвращает email или false, если он не залогинен
      *
      * @return bool|mixed
@@ -167,6 +240,14 @@ class User extends \app\extensions\helper\Session {
         return $this->read('user.email');
     }
 
+    /**
+     * Метод возвращает отформатированное имя в формате "Дмитрий Н."
+     * Если даны оба параметра, то вместо текущих данных сессии используются параметры
+     *
+     * @param null $firstName
+     * @param null $lastName
+     * @return bool
+     */
     public function getFormattedName($firstName = null, $lastName = null) {
         $inflectorClassName = $this->_options['inflector'];
         if(!is_null($firstName) && !is_null($lastName)) {
@@ -176,6 +257,73 @@ class User extends \app\extensions\helper\Session {
             return false;
         }
         return $inflectorClassName::renderName($this->getFirstname(), $this->getLastname());
+    }
+
+    /**
+     * Метод возвращает текущие питчи (user.currentpitches) пользователя
+     *
+     * @return bool|mixed
+     */
+    public function getCurrentPitches() {
+        return $this->__getPitchesFromList('currentpitches');
+    }
+
+    /**
+     * Метод возвращает текущие питчи для дизайнера (user.currentdesignpitches) пользователя
+     *
+     * @return bool|mixed
+     */
+    public function getCurrentDesignersPitches() {
+        return $this->__getPitchesFromList('currentdesignpitches');
+    }
+
+    /**
+     * Метод возвращает количество текущий питчей (user.currentpitches) пользователя
+     *
+     * @return int
+     */
+    public function getCountOfCurrentPitches() {
+        return $this->__countPitches($this->getCurrentPitches());
+    }
+
+    /**
+     * Метод возвращает количество текущий питчей для дизайнера (user.currentdesignpitches) пользователя
+     *
+     * @return int
+     */
+    public function getCountOfCurrentDesignersPitches() {
+        return $this->__countPitches($this->getCurrentDesignersPitches());
+    }
+
+    /**
+     * Метод возвращает количество непрочитанных постов в блоге
+     *
+     * @return int
+     */
+    public function getNewBlogpostCount() {
+        return (int) $this->read('user.blogpost.count');
+    }
+
+    /**
+     * Метод возвращает количество непрочитанных обновлений
+     *
+     * @return int
+     */
+    public function getNewEventsCount() {
+        return (int) $this->read('user.events.count');
+    }
+
+    /**
+     * Метод возвращает текущий аватар пользователя - или дефолтный, если он не установлен
+     *
+     * @return mixed
+     */
+    public function getAvatarUrl() {
+        if(!$avatarUrl = $this->read('user.images.avatar_small.weburl')) {
+            return $this->_options['defaultAvatarUrl'];
+        }else {
+            return $avatarUrl;
+        }
     }
 
     /**
@@ -189,6 +337,35 @@ class User extends \app\extensions\helper\Session {
             return false;
         }
         return $model_id == $this->getId();
+    }
+
+    /**
+     * Приватный метод помощник, получает массив/объекты и возвращает их количество
+     *
+     * @param $pitches
+     * @return int
+     */
+    private function __countPitches($pitches) {
+        if($pitches) {
+            return count($pitches);
+        }
+        return 0;
+    }
+
+    /**
+     * Приватный метод помощник, пытается получить данные текущих питчий или питчей для дизайнера
+     *
+     * @param $listType
+     * @return bool|mixed
+     */
+    private function __getPitchesFromList($listType) {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        $pitches = $this->read('user.' . $listType);
+        if(!is_null($pitches)) {
+            return $pitches;
+        }
     }
 
 }

@@ -41,6 +41,8 @@
                                     <?php if($this->user->isEditor()):?>
                                     <a target="_blank" class="more-editor" href="/posts/edit/<?=$post->id?>" >редактировать</a>
                                     <a target="_blank" class="more-editor delete-post" href="/posts/delete/<?=$post->id?>" >удалить</a>
+                                    <?php elseif($this->user->isPostAuthor($post->user_id)):?>
+                                        <a target="_blank" class="more-editor" href="/posts/edit/<?=$post->id?>" >редактировать</a>
                                     <?php endif?>
                                     <a style="" class="more" href="/posts/view/<?=$post->id?>">Подробнее</a>
                                 </div>

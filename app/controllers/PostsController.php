@@ -20,7 +20,6 @@ class PostsController extends \app\controllers\AppController {
      * @return array
      */
     public function index() {
-
         $limit = 7;
         $page = 1;
         $tag = false;
@@ -33,13 +32,11 @@ class PostsController extends \app\controllers\AppController {
             $conditions += array('tags' => array('LIKE' => '%' . $tag . '%'));
         }
         if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
-
-
             setcookie('counterdata', "", time() - 3600, '/');
             Session::delete('user.blogpost');
         }
 
-        if(User::checkRole('editor')) {
+        if(User::checkRole('editor') || User::checkRole('author')) {
             $posts = Post::all(array('conditions' => $conditions, 'page' => $page, 'limit' => $limit,'order' => array('created' => 'desc'), 'with' => array('User')));
             $editor = 1;
         }else {
@@ -59,7 +56,7 @@ class PostsController extends \app\controllers\AppController {
      * @return object
      */
     public function save() {
-        if(User::checkRole('editor')) {
+        if((User::checkRole('editor')) || (User::checkRole('author'))) {
             if((!empty($this->request->data['id'])) && ($this->request->data['id'])) {
                 $post = Post::first($this->request->data['id']);
             }else {
@@ -95,7 +92,7 @@ class PostsController extends \app\controllers\AppController {
      * @return array|object
      */
     public function view() {
-        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || User::checkRole('editor'))) {
+        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
             if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
                 Session::delete('user.blogpost');
                 setcookie('counterdata', '', time() - 3600, '/');
@@ -137,7 +134,7 @@ class PostsController extends \app\controllers\AppController {
      * @return array|object
      */
     public function add() {
-        if(false === User::checkRole('editor')) {
+        if(false === (User::checkRole('author') and User::checkRole('editor'))) {
             return $this->redirect('/posts');
         }
         $commonTags = Post::getCommonTags();
@@ -150,7 +147,7 @@ class PostsController extends \app\controllers\AppController {
      * @return array|object
      */
     public function edit() {
-        if(User::checkRole('editor')) {
+        if(User::checkRole('editor') or User::checkRole('author')) {
             if($post = Post::first($this->request->id)) {
                 return compact('post');
             }else {
@@ -167,7 +164,7 @@ class PostsController extends \app\controllers\AppController {
      * @return object
      */
     public function delete() {
-        if(User::checkRole('editor')) {
+        if(User::checkRole('editor') or User::checkRole('author')) {
             if($post = Post::first($this->request->id)) {
                 $post->delete();
             }
