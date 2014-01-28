@@ -12,10 +12,10 @@ class Tasks extends \app\extensions\command\CronJob {
         $this->header('Welcome to the Task Command');
         set_time_limit(0);
         $task = Task::first(array('conditions' => array('completed' => 0)));
-        if('newpitch' == $task->type) {
-            Tasks::__newptich($task);
-        }
         if($task) {
+            if('newpitch' == $task->type) {
+                Tasks::__newptich($task);
+            }
             $this->out('Task completed');
         }else {
             $this->out('No tasks are in due.');
