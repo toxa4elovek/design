@@ -36,7 +36,7 @@ class PostsController extends \app\controllers\AppController {
             Session::delete('user.blogpost');
         }
 
-        if(User::checkRole('editor')) {
+        if(User::checkRole('editor') || User::checkRole('author')) {
             $posts = Post::all(array('conditions' => $conditions, 'page' => $page, 'limit' => $limit,'order' => array('created' => 'desc'), 'with' => array('User')));
             $editor = 1;
         }else {
