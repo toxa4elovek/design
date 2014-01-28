@@ -131,6 +131,18 @@ class User extends \app\extensions\helper\Session {
     }
 
     /**
+     * Метод определяет, нет ли актуального запрета на комментирование у пользователя
+     *
+     * @return bool
+     */
+    public function isAllowedToComment() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return strtotime($this->read('user.silenceUntil')) < time();
+    }
+
+    /**
      * Метод возвращает айди пользователя или false, если он не залогинен
      *
      * @return bool|mixed

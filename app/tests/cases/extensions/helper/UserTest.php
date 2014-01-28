@@ -146,4 +146,14 @@ class UserTest extends \lithium\test\Unit {
         $this->assertTrue($this->user->isPostAuthor($postAuthorId));
     }
 
+    public function testIsAllowedToComment() {
+        $this->assertFalse($this->user->isAllowedToComment());
+        $timeInFuture = date('Y-m-d H:i:s', time() + 3000);
+        $timeInPast = date('Y-m-d H:i:s', time() - 3000);
+        $this->user->write('user.silenceUntil', $timeInFuture);
+        $this->assertFalse($this->user->isAllowedToComment());
+        $this->user->write('user.silenceUntil', $timeInPast);
+        $this->assertTrue($this->user->isAllowedToComment());
+    }
+
 }
