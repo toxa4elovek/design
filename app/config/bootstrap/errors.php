@@ -59,7 +59,7 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
 		'request' => $params['request'],
 		'status' => $info['exception']->getCode()
 	));
-    //if ((Environment::is('production')) && ($info['exception']->getCode() == '404')) {
+    if (Environment::is('production')) {
         Media::render($response, compact('info', 'params'), array(
             'library' => true,
             'controller' => '_errors',
@@ -67,15 +67,15 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
             'layout' => 'default',
             'request' => $params['request']
         ));
-    /*}else {
+    }else {
         Media::render($response, compact('info', 'params'), array(
             'library' => true,
             'controller' => '_errors',
-            'template' => '404',
+            'template' => 'development',
             'layout' => 'default',
             'request' => $params['request']
         ));
-    }*/
+    }
 	return $response;
 });
 

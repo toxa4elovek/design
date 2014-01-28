@@ -133,7 +133,6 @@
                             <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                                 <a style="<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
                                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                                        <!-- 3 <?php var_dump($extra) ?> -->
                                     <?php
                                     if(!isset($solution->images['solution_galleryLargeSize'])):
                                         $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];

@@ -95,8 +95,8 @@ class UploadableFile extends \slicedup_behaviors\models\behaviors\ModelBehavior{
 		};
 		$attachRecord = function($fileModel, $record) use ($getWebUrl) {
             $record->images = array();
-			$images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
-			foreach ($images as $value) {
+            $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
+            foreach ($images as $value) {
 				$value->weburl = $getWebUrl($value->filename);
 				if(!isset($record->images[$value->filekey])) {
 					$record->images[$value->filekey] = $value->data();
@@ -160,11 +160,6 @@ class UploadableFile extends \slicedup_behaviors\models\behaviors\ModelBehavior{
                 if(class_exists($handlerObject)) {
 				    $handlerObject::useHandler(static::$name);
                 }
-                //var_dump($handlerClassName);
-				/*if(isset(static::$_handlers[$handlerName])){				
-					$lambda = static::$_handlers[$handlerName];
-					$lambda(static::$name);
-				}*/
 			}
 							
 			$params = compact('model', 'key', 'attachRules', 'record', 'uploadedFile');
