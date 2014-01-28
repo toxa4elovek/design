@@ -9,20 +9,8 @@ namespace app\extensions\helper;
 class User extends \app\extensions\helper\Session {
 
     /**
-     * @var array Массив хранит айди админом
+     * @var array Массив для хранения опций и данных из моделей
      */
-    public $adminsIds = array();
-
-    /**
-     * @var array Массив хранит айди экспертов
-     */
-    public $expertsIds = array();
-
-    /**
-     * @var array Массив хранит айди редакторов блога
-     */
-    public $editorsIds = array();
-
     protected $_options = array();
 
     /**
@@ -34,10 +22,11 @@ class User extends \app\extensions\helper\Session {
             'expertModel' => 'app\models\Expert',
             'inflector' => 'app\extensions\helper\NameInflector'
         );
-        $this->_options = $options =  $config + $defaults;
-        $this->adminsIds = $options['userModel']::$admins;
-        $this->expertsIds = $options['expertModel']::getExpertUserIds();
-        $this->editorsIds = $options['userModel']::$editors;
+        $this->_options = $options = $config + $defaults;
+        $this->_options['adminsIds'] = $options['userModel']::getAdminsIds();
+        $this->_options['expertsIds'] = $options['expertModel']::getExpertUserIds();
+        $this->_options['editorsIds'] = $options['userModel']::getEditorsIds();
+        $this->_options['authorIds'] = $options['userModel']::getAuthorsIds();
     }
 
     /**
@@ -50,7 +39,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->getId(), $this->expertsIds);
+        return in_array($this->getId(), $this->_options['expertsIds']);
     }
 
     /**
@@ -62,7 +51,7 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        if(($this->read('user.isAdmin')) || (in_array($this->getId(), $this->adminsIds))) {
+        if(($this->read('user.isAdmin')) || (in_array($this->getId(), $this->_options['adminsIds']))) {
             return true;
         }
         return false;
@@ -77,7 +66,19 @@ class User extends \app\extensions\helper\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->getId(), $this->editorsIds);
+        return in_array($this->getId(), $this->_options['editorsIds']);
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь редактором блога
+     *
+     * @return bool
+     */
+    public function isAuthor() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return in_array($this->getId(), $this->_options['authorIds']);
     }
 
     /**
@@ -167,6 +168,14 @@ class User extends \app\extensions\helper\Session {
         return $this->read('user.email');
     }
 
+    /**
+     * Метод возвращает отформатированное имя в формате "Дмитрий Н."
+     * Если даны оба параметра, то вместо текущих данных сессии используются параметры
+     *
+     * @param null $firstName
+     * @param null $lastName
+     * @return bool
+     */
     public function getFormattedName($firstName = null, $lastName = null) {
         $inflectorClassName = $this->_options['inflector'];
         if(!is_null($firstName) && !is_null($lastName)) {

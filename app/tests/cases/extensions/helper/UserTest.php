@@ -32,12 +32,6 @@ class UserTest extends \lithium\test\Unit {
         $this->user->clear();
     }
 
-    public function testInitialization() {
-        $this->assertEqual(array(1, 2), $this->user->adminsIds);
-        $this->assertEqual(array(1, 2, 3), $this->user->expertsIds);
-        $this->assertEqual(array(1, 2, 3, 4), $this->user->editorsIds);
-    }
-
     public function testIsAdmin() {
         $this->assertFalse($this->user->isAdmin());
         $this->user->write('user.id', 4);
@@ -86,6 +80,14 @@ class UserTest extends \lithium\test\Unit {
         $this->assertFalse($this->user->isEditor());
         $this->user->write('user.id', 4);
         $this->assertTrue($this->user->isEditor());
+    }
+
+    public function testIsAuthor() {
+        $this->assertFalse($this->user->isAuthor());
+        $this->user->write('user.id', 4);
+        $this->assertFalse($this->user->isAuthor());
+        $this->user->write('user.id', 5);
+        $this->assertTrue($this->user->isAuthor());
     }
 
     public function testGetId() {
