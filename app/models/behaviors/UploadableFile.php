@@ -95,7 +95,11 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 		};
 		$attachRecord = function($fileModel, $record) use ($getWebUrl) {
             $record->images = array();
-            $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
+            if ($fileModel == 'app\models\Solutionfile') {
+                $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model()), 'order' => array('position' => 'asc')));
+            } else {
+                $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
+            }
             foreach ($images as $value) {
 				$value->weburl = $getWebUrl($value->filename);
 				if(!isset($record->images[$value->filekey])) {
