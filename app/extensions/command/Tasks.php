@@ -5,6 +5,7 @@ namespace app\extensions\command;
 use \app\models\Task;
 use \app\models\Pitch;
 use \app\models\User;
+use app\extensions\mailers\SolutionsMailer;
 
 class Tasks extends \app\extensions\command\CronJob {
 
@@ -15,6 +16,9 @@ class Tasks extends \app\extensions\command\CronJob {
         if($task) {
             if('newpitch' == $task->type) {
                 Tasks::__newptich($task);
+            }
+            if('newSolutionNotification' == $task->type) {
+                Tasks::__newSolutionNotification($task);
             }
             $this->out('Task completed');
         }else {
@@ -28,6 +32,15 @@ class Tasks extends \app\extensions\command\CronJob {
         $task->markAsCompleted();
         User::sendSpamNewPitch($params);
         $this->out('New pitch email has been sent');
+    }
+
+    private function __newSolutionNotification($task) {
+        $task->markAsCompleted();
+        if($result = SolutionsMailer::sendNewSolutionNotification($task->model_id)) {
+            $this->out('New Solution Notification sent');
+        }else {
+            $this->out('Error sending notification for solution ' . $task->model_id);
+        }
     }
 
 }

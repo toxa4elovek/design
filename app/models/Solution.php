@@ -8,6 +8,7 @@ use \app\models\Like;
 use \app\models\Comment;
 use \app\models\Ratingchange;
 use \app\models\Historysolution;
+use app\models\Task;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
 
@@ -65,8 +66,8 @@ http://godesigner.ru/answers/view/78
 http://godesigner.ru/answers/view/73');
                     Comment::createComment($data);
                 }else {
-                    // Пробуем отправить письмо уведомление о новом питче владельцу питча
-                    User::sendNewSolutionNotification($result->id);
+                    // Добавляем задание о рассылке уведомления о новом решении в очередь
+                    Task::createNewTask($result->id, 'newSolutionNotification');
                 }
             }
             return $result;
