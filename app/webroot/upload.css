@@ -62,12 +62,43 @@ input[type="radio"], input[type="checkbox"] {
 .upload-dropzone-wrapper.upload-empty {
     background-position: 0 -644px;
 }
+.upload-dropzone-wrapper #scrollerarea {
+	display: none;
+    position: absolute;
+	right: 20px;
+	top: 20px;
+	height: 280px;
+	width: 12px;
+	background: #d7d7d7;
+	border-top: 1px solid #d2d2d2;
+	border-right: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+	border-left: 1px solid #d2d2d2;
+}
+.upload-dropzone-wrapper #scroller {
+    position: absolute;
+    height: 76px;
+    width: 10px;
+    background: #e2e2e2;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#d2d2d2));
+    background: -webkit-linear-gradient(#f5f5f5, #d2d2d2);
+    background:    -moz-linear-gradient(#f5f5f5, #d2d2d2);
+    background:     -ms-linear-gradient(#f5f5f5, #d2d2d2);
+    background:      -o-linear-gradient(#f5f5f5, #d2d2d2);
+    background:         linear-gradient(#f5f5f5, #d2d2d2);
+    border-top: 1px solid #fbfbfb;
+    border-right: 1px solid #bebebe;
+    border-left: 1px solid #fbfbfb;
+    border-bottom: 1px solid #bebebe;
+    box-shadow: 1px 0 1px rgba(0, 0, 0, .2);
+}
 .upload-dropzone {
 	position: absolute;
-	width: 840px;
-	height: 280px;
-	overflow: auto;
-    margin: 20px;
+	width: 835px;
+	height: 290px;
+	overflow: hidden;
+    top: 10px;
+    left: 10px;
 }
 .upload-dropzone.active {
 	opacity: 0.2;
@@ -76,8 +107,8 @@ input[type="radio"], input[type="checkbox"] {
 .upload-dropzone #fakebutton {
     display: block;
     position: absolute;
-    top: 185px;
-    left: 280px;
+    top: 205px;
+    left: 285px;
     width: 260px;
     height: 50px;
     opacity: 0;
@@ -92,7 +123,7 @@ input[type="radio"], input[type="checkbox"] {
     display: inline-block;
     max-width: 180px;
     height: 167px;
-    margin: 20px 8px 30px 8px;
+    margin: 10px 8px 30px 8px;
 }
 .upload-dropzone .uploadable-wrapper .thumbnail-container {
 	max-width: 180px;

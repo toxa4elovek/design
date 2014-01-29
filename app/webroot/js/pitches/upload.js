@@ -40,6 +40,18 @@ $(document).ready(function() {
         $('img', this).attr('src', '/img/order2.png');
     })
     
+    // Dropzone Scroll
+    $( "#scroller" ).draggable({
+        drag: function() {
+            var y = $('#scroller').css('top');
+            y = parseInt(y.substring(0, y.length - 2));
+            var mod = ($('.upload-dropzone', '.upload-dropzone-wrapper')[0].scrollHeight - 290) / 200;
+            $('.uploadable-wrapper', '.upload-dropzone').css('top', -Math.round(y * mod) + 'px');
+        },
+        axis: "y",
+        containment: "parent"
+    });
+    
     // Uploader's Drag'n'drop
     $(document).on('dragover', function(e) {
         e.preventDefault();
@@ -81,6 +93,7 @@ $(document).ready(function() {
                         $('.upload-dropzone-wrapper').removeClass('upload-empty');
                         $('#fakebutton, #truebutton').show();
                     }
+                    checkScrollbar();
                 });
             });
     });
@@ -125,6 +138,7 @@ $(document).ready(function() {
                 } else {
                     // Not supported
                 }
+                checkScrollbar();
                 $(this).fileupload('uploadByAuto');
             }else {
                 return false;
@@ -161,16 +175,6 @@ $(document).ready(function() {
         }
     });
 
-    /*
-     $('a[href="#uploading"]').fancybox({
-     'autoScale': true,
-     'speedIn': 0,
-     'speedOut': 0,
-     'autoDimensions': true,
-     'centerOnScroll': true  // as MattBall already said, remove the comma
-     });
-     */
-
     $('a[href="#invalid"]').fancybox({
         'autoScale': true,
         'speedIn': 0,
@@ -204,6 +208,21 @@ $(document).ready(function() {
     });
 });
 
+function checkScrollbar() {
+    var $el = $('.upload-dropzone', '.upload-dropzone-wrapper');
+    var scroll = 0;
+    setTimeout(function() {
+        scroll = ($el[0].scrollHeight - $el.height());
+        if ( scroll > 0) {
+            $('#scrollerarea', '.upload-dropzone-wrapper').fadeIn(); 
+        } else {
+            $('#scrollerarea', '.upload-dropzone-wrapper').fadeOut();
+            $('.uploadable-wrapper', '.upload-dropzone').css('top', '0');
+            $('#scroller').animate({top:0});
+        }
+    }, 500);
+}
+
 function isAddressEmpty() {
     var res = false;
     $('input[name^=source]').each(function() {
@@ -213,52 +232,4 @@ function isAddressEmpty() {
         }
     });
     return res;
-}
-
-/*
- * Filling progressbar with completed value
- */
-function fillProgress(completed) {
-    completed = (completed > 95) ? 100 : completed;
-    $('#progressbar').text(completed + '%');
-    var progresspx = Math.round(3.4 * completed);
-    if(progresspx > 330) {
-        progresspx == 330;
-    }
-    $('#filler').css('width', progresspx);
-    if(completed > 95) {
-        setTimeout(function() {
-            $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
-        }, 500);
-    }
-}
-
-/*
- * Asynchronous callback for image resize
- * Synchronous is not working in Chrome (see http://bugs.jquery.com/ticket/7464)
- */
-function uploadCallback(result, i, completed, progressPerEach) {
-    if (i < result.solution.length) {
-        var query = {
-            id: result.id,
-            name: result.solution[i].name
-        };
-        $.ajax({
-            url: '/solutionfiles/resize.json/',
-            type: 'POST',
-            data: query,
-            global: false,
-            dataType: 'json'
-        }).done(function() {
-            completed += progressPerEach;
-            fillProgress(completed);
-            i++;
-            uploadCallback(result, i, completed, progressPerEach);
-        });
-    } else {
-        setTimeout(function() {
-            $('#filename').html('Файл не выбран');
-            window.location = $('#redirect-value').val();
-        }, 800);
-    }
 }
