@@ -67,7 +67,7 @@ $(document).ready(function() {
         e.preventDefault();
         addCallback();
     });
-    $(document).on('click', '.uploadable-wrapper', function() {
+    $(document).on('click', '.uploadable-wrapper.ready', function() {
         var self = $(this);
         var $el = $('.upload-progressbar', $(this)); 
         $el.css('transition', 'width 3s');
@@ -159,6 +159,8 @@ $(document).ready(function() {
         done: function(e, data) {
             // Done each
             var $el = $('.upload-progressbar[data-filename="' + data.files[0].name + '"]');
+            var $wrapper = $el.closest('.uploadable-wrapper');
+            $wrapper.addClass('ready');
             $el.css('transition', 'width .3s');
             $el.css('width', '100%');
             nowLoading--;
