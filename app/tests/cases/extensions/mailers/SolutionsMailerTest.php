@@ -18,6 +18,8 @@ class SolutionsMailerTest extends  AppUnit {
     public function testSendNewSolutionNotification() {
         $html = SolutionsMailer::sendNewSolutionNotification(1);
         $this->assertPattern("/ДОБАВЛЕНО НОВОЕ РЕШЕНИЕ/", $html);
+        $this->assertPattern("/ДМИТРИЙ/", $html);
+        $this->assertPattern("/Test title/", $html);
     }
 
 }

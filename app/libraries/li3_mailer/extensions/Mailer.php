@@ -5,6 +5,7 @@ use \app\models\Sendemail;
 use \Mail;
 use \Mail_mime;
 use lithium\core\Environment;
+use lithium\util\Inflector;
 
 class Mailer extends \lithium\core\StaticObject {
 
@@ -129,12 +130,21 @@ class Mailer extends \lithium\core\StaticObject {
 	}
 
 	public static function render(array $options = array()) {
+        $directory = self::__getMailerDirectory();
 		$view = new static::$_classes['view'](array(
 		    'paths' => array(
-		        'template' => '{:library}/views/mails/{:template}.{:type}.php',
+		        'template' => '{:library}/views/mails/' . $directory . '/{:template}.{:type}.php',
 		    )
 		));
 		return $view->render('template', $options['data'], array('template' => $options['template']));
 	}
+
+    private static function __getMailerDirectory() {
+        $fullClassPath = get_called_class();
+        $explodedArray = explode('\\', $fullClassPath);
+        $className = end($explodedArray);
+        preg_match('/(.*)Mailer/', $className, $matches);
+        return Inflector::underscore(end($matches));
+    }
 }
 ?>
