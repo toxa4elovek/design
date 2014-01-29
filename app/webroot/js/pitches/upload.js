@@ -41,12 +41,16 @@ $(document).ready(function() {
     })
     
     // Dropzone Scroll
-    $( "#scroller" ).draggable({ drag: function() {
-    var y = $('#scroller').css('top');
-    y = parseInt(y.substring(0, y.length - 2));
-    var mod = ($('.upload-dropzone', '.upload-dropzone-wrapper')[0].scrollHeight - 290) / 220;
-    $('.uploadable-wrapper', '.upload-dropzone').css('top', -Math.round(y * mod) + 'px');
-    }, axis: "y", containment: "parent"});
+    $( "#scroller" ).draggable({
+        drag: function() {
+            var y = $('#scroller').css('top');
+            y = parseInt(y.substring(0, y.length - 2));
+            var mod = ($('.upload-dropzone', '.upload-dropzone-wrapper')[0].scrollHeight - 290) / 200;
+            $('.uploadable-wrapper', '.upload-dropzone').css('top', -Math.round(y * mod) + 'px');
+        },
+        axis: "y",
+        containment: "parent"
+    });
     
     // Uploader's Drag'n'drop
     $(document).on('dragover', function(e) {
