@@ -12,15 +12,18 @@ class Tasks extends \app\extensions\command\CronJob {
     public function run() {
         $this->header('Welcome to the Task Command');
         set_time_limit(0);
-        $task = Task::first(array('conditions' => array('completed' => 0)));
-        if($task) {
+        $tasks = Task::all(array('conditions' => array('completed' => 0)));
+        $count = count($tasks);
+        foreach($tasks as $task) {
             if('newpitch' == $task->type) {
                 Tasks::__newptich($task);
             }
             if('newSolutionNotification' == $task->type) {
                 Tasks::__newSolutionNotification($task);
             }
-            $this->out('Task completed');
+        }
+        if($count) {
+            $this->out($count . ' tasks completed');
         }else {
             $this->out('No tasks are in due.');
         }
@@ -39,7 +42,7 @@ class Tasks extends \app\extensions\command\CronJob {
         if($result = SolutionsMailer::sendNewSolutionNotification($task->model_id)) {
             $this->out('New Solution Notification sent');
         }else {
-            $this->out('Error sending notification for solution ' . $task->model_id);
+            $this->out('Error (or receiver disabled this notification) sending notification for solution ' . $task->model_id);
         }
     }
 
