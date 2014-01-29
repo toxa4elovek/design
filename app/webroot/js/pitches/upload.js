@@ -67,7 +67,7 @@ $(document).ready(function() {
         e.preventDefault();
         addCallback();
     });
-    $(document).on('click', '.uploadable-wrapper.ready', function() {
+    $(document).on('click', '.uploadable-wrapper.ready__disabled___', function() {
         var self = $(this);
         var $el = $('.upload-progressbar', $(this)); 
         $el.css('transition', 'width 3s');
@@ -96,6 +96,32 @@ $(document).ready(function() {
                     checkScrollbar();
                 });
             });
+    });
+
+    var reSortable = [];
+    $( ".upload-dropzone" ).sortable({
+        items: "> div.uploadable-wrapper",
+        update: function(e, ui) {
+            reSortable[1] = ui.item.index() + 1;
+            $.ajax({
+                url: '/solutionfiles/resort.json',
+                type: 'POST',
+                data: {
+                    sort: reSortable,
+                    nonce: $('#uploadnonce').val()
+                },
+                dataType: 'json'
+            }).done(function(result) {
+            });
+        },
+        start: function(e, ui) {
+            reSortable[0] = ui.item.index() + 1;
+        },
+        placeholder: "sortable-placeholder",
+        scroll: true,
+        opacity: 0.8,
+        tolerance: 'pointer',
+        containment: 'parent'
     });
 
     function addCallback() {
@@ -134,12 +160,12 @@ $(document).ready(function() {
                     window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
                     null;
                 if (URL) {
-                    $('.upload-dropzone').append('<div class="uploadable-wrapper"><div class="thumbnail-container"><img src="' + URL.createObjectURL(data.files[0]) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar" data-filename="' + data.files[0].name + '" data-position="' + filePosition + '"></div></div></div>');
+                    $('.upload-dropzone').prepend('<div class="uploadable-wrapper" id="sort_' + filePosition + '"><div class="thumbnail-container"><img src="' + URL.createObjectURL(data.files[0]) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar" data-filename="' + data.files[0].name + '" data-position="' + filePosition + '"></div></div></div>');
                 } else {
                     // Not supported
                 }
                 checkScrollbar();
-                $(this).fileupload('uploadByAuto');
+                //$(this).fileupload('uploadByAuto');
             }else {
                 return false;
             }
