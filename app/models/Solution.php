@@ -54,8 +54,14 @@ class Solution extends \app\models\AppModel {
                 if ($uploadnonce = Uploadnonce::first(array('conditions' => array('nonce' => $params->uploadnonce)))) {
                     $nonce = $uploadnonce->id;
                 }
-                if ($files = Solutionfile::all(array('fields' => array('id'), 'conditions' => array('model' => '\app\models\Uploadnonce', 'model_id' => $nonce)))) {
+                if ($files = Solutionfile::all(array('fields' => array('id', 'position'), 'conditions' => array('model' => '\app\models\Uploadnonce', 'model_id' => $nonce)))) {
                     foreach ($files as $file) {
+                        // Change order
+                        if (!empty($params->resortable[$file->position]) && $file->position != $params->resortable[$file->position]) {
+                            $file->set(array(
+                                'position' => $params->resortable[$file->position],
+                            ));
+                        }
                         $file->set(array(
                             'model' => '\app\models\Solution',
                             'model_id' => $result->id,
@@ -153,6 +159,7 @@ http://godesigner.ru/answers/view/73');
         $solution->save($data);
         $params = $solution;
         $params->uploadnonce = $formdata['uploadnonce'];
+        $params->resortable = $formdata['reSortable'];
         return static::_filter(__FUNCTION__, $params, function($self, $params) {
             return $params;
         });

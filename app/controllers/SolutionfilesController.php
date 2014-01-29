@@ -86,20 +86,4 @@ class SolutionfilesController extends \app\controllers\AppController {
         }
         return compact('res');
     }
-
-    public function resort() {
-        $res = array(
-            'error' => false,
-        );
-        if (!$this->request->is('json') || (Session::read('user') == null)) {
-            $this->redirect('/pitches/');
-        }
-        if (empty($this->request->data['sort']) || empty($this->request->data['nonce'])) {
-            $res['error'] = 'wrong data';
-            return compact('res');
-        }
-        $res['result'] = $this->request->data['sort'];
-
-        return compact('res');
-    }
 }

@@ -67,9 +67,9 @@ $(document).ready(function() {
         e.preventDefault();
         addCallback();
     });
-    $(document).on('click', '.uploadable-wrapper.ready__disabled___', function() {
-        var self = $(this);
-        var $el = $('.upload-progressbar', $(this)); 
+    $(document).on('click', '.thumbnail-close', function() {
+        var $wrapper = $(this).closest('.uploadable-wrapper');
+        var $el = $wrapper.find('.upload-progressbar'); 
         $el.css('transition', 'width 3s');
         $el.css('width', '20%');
         var data = {
@@ -87,8 +87,9 @@ $(document).ready(function() {
                 $el.css('transition', 'width .3s');
                 $el.css('width', '0');
                 boxFileNames.splice($.inArray($el.data('filename'), boxFileNames), 1);
-                self.fadeOut(200, function() { 
-                    self.remove();
+                $wrapper.fadeOut(200, function() {
+                    reSortable[$el.data('position')] = 0;
+                    $wrapper.remove();
                     if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
                         $('.upload-dropzone-wrapper').removeClass('upload-empty');
                         $('#fakebutton, #truebutton').show();
@@ -99,23 +100,38 @@ $(document).ready(function() {
     });
 
     var reSortable = [];
-    $( ".upload-dropzone" ).sortable({
-        items: "> div.uploadable-wrapper",
+    var startPosition = 0;
+    $('.upload-dropzone').sortable({
+        items: '> div.uploadable-wrapper.ready',
         update: function(e, ui) {
-            reSortable[1] = ui.item.index() + 1;
-            $.ajax({
-                url: '/solutionfiles/resort.json',
-                type: 'POST',
-                data: {
-                    sort: reSortable,
-                    nonce: $('#uploadnonce').val()
-                },
-                dataType: 'json'
-            }).done(function(result) {
-            });
+            var initPosition = ui.item.find('.upload-progressbar').data('position');
+            var newPosition = ui.item.index() + 1;
+            reSortable[initPosition] = newPosition;
+            // Move Up
+            if (newPosition > startPosition) {
+                $.each(reSortable, function(idx, val) {
+                    if (idx == initPosition || val == 0) {
+                        return true;
+                    }
+                    if (val > startPosition && val <= newPosition) {
+                        reSortable[idx]--;
+                    }
+                });
+            }
+            // Move Down
+            if (newPosition < startPosition) {
+                $.each(reSortable, function(idx, val) {
+                    if (idx == initPosition || val == 0) {
+                        return true;
+                    }
+                    if (val < startPosition && val >= newPosition) {
+                        reSortable[idx]++;
+                    }
+                });
+            }
         },
         start: function(e, ui) {
-            reSortable[0] = ui.item.index() + 1;
+            startPosition = ui.item.index() + 1;
         },
         placeholder: "sortable-placeholder",
         scroll: true,
@@ -160,12 +176,22 @@ $(document).ready(function() {
                     window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
                     null;
                 if (URL) {
-                    $('.upload-dropzone').prepend('<div class="uploadable-wrapper" id="sort_' + filePosition + '"><div class="thumbnail-container"><img src="' + URL.createObjectURL(data.files[0]) + '" height="135" class="thumbnail" /></div><div class="upload-progressbar-wrapper"><div class="upload-progressbar" data-filename="' + data.files[0].name + '" data-position="' + filePosition + '"></div></div></div>');
+                    var $html = $('<div class="uploadable-wrapper"> \
+                                       <div class="thumbnail-container"> \
+                                           <img src="' + URL.createObjectURL(data.files[0]) + '" height="135" class="thumbnail" /> \
+                                       </div> \
+                                       <div class="thumbnail-close"></div> \
+                                       <div class="upload-progressbar-wrapper"> \
+                                           <div class="upload-progressbar" data-filename="' + data.files[0].name + '" data-position="' + filePosition + '"></div> \
+                                       </div> \
+                                   </div>');
+                    $html.insertBefore('#truebutton');
+                    reSortable[filePosition] = filePosition;
                 } else {
                     // Not supported
                 }
                 checkScrollbar();
-                //$(this).fileupload('uploadByAuto');
+                $(this).fileupload('uploadByAuto');
             }else {
                 return false;
             }
@@ -212,6 +238,7 @@ $(document).ready(function() {
     });
 
     $('#uploadSolution').click(function() {
+        $('#reSortable').val(reSortable);
         // Check if copyrighted material not empty
         if (($('input[name=licensed_work][value=1]').prop('checked')) && isAddressEmpty()) {
             alert('Укажите адрес используемых допольнительных материалов!');

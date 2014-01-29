@@ -84,6 +84,7 @@
 
                 <div class="group" style="background:none;">
                     <?=$this->html->link('Отмена', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'button second', 'style' => 'width:80px;margin-right:40px;')); ?>
+                    <input type="hidden" id="reSortable" name="reSortable" value="" />
                     <input id="uploadSolution" type="submit" class="button" value="Отправить"/>
                 </div>
 
