@@ -852,4 +852,16 @@ class Pitch extends \app\models\AppModel {
         }
         return false;
     }
+
+    /**
+     * Метод возвращяет объект пользователя-владельца питча по номеру питча $pitchId
+     *
+     * @param $pitchId
+     * @return mixed
+     */
+    public static function getOwnerOfPitch($pitchId) {
+        if($pitchData = self::first(array('fields' => array('user_id'), 'conditions' => array('id' => $pitchId)))) {
+            return User::first($pitchData->user_id);
+        }
+    }
 }

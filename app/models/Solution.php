@@ -25,14 +25,6 @@ class Solution extends \app\models\AppModel {
         'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/solutions/'),
         'setPermission' => array('mode' => 0644),
         'processImage' => array(
-// This param is disabled for resizing image separately
-//              //'largest' => array('image_resize' => true, 'image_ratio_crop' => true, 'image_x' => 960, 'image_y' => 740, 'file_overwrite' => true),
-//            'solutionView' => array('image_resize' => true, 'image_ratio_fill' => true, 'image_x' => 488, 'image_background_color' => '#dddddd',  'image_y' => 366, 'file_overwrite' => true),
-//            //'gallerySmallSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 99, 'image_y' => 75, 'file_overwrite' => true),
-//            'galleryLargeSize' => array('image_resize' => true, 'image_ratio_fill' => true, 'image_x' => 180, 'image_background_color' => '#ffffff', 'image_y' => 135, 'file_overwrite' => true),
-//            'gallerySiteSize' => array('image_resize' => true, 'image_x' => 800, 'image_ratio_y' => true),
-//            /*'galleryLargeSize' => array('image_resize' => true, 'image_ratio_crop' => 'TB', 'image_x' => 179, 'image_y' => 135, 'file_overwrite' => true),*/
-//            //'promoSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 259, 'image_y' => 258, 'file_overwrite' => true),
         ),
     ));
 
@@ -40,20 +32,6 @@ class Solution extends \app\models\AppModel {
         parent::__init();
         self::applyFilter('find', function($self, $params, $chain){
             $result = $chain->next($self, $params, $chain);
-            /*if(is_object($result)) {
-                $addCopyrightedText = function($record) {
-                    if($record->copyrightedMaterial == 1){
-
-                    }
-                };
-                if(get_class($result) == 'lithium\data\entity\Record') {
-                    $result = $addCopyrightedText($result);
-                }else {
-                    foreach($result as $foundItem) {
-                        $foundItem = $addCopyrightedText($foundItem);
-                    }
-                }
-            }*/
             return $result;
         });
         self::applyFilter('delete', function($self, $params, $chain){
@@ -87,7 +65,8 @@ http://godesigner.ru/answers/view/78
 http://godesigner.ru/answers/view/73');
                     Comment::createComment($data);
                 }else {
-                    User::sendSpamNewsolution(array('solution_id' => $result->id));
+                    // Пробуем отправить письмо уведомление о новом питче владельцу питча
+                    User::sendNewSolutionNotification($result->id);
                 }
             }
             return $result;
@@ -99,13 +78,8 @@ http://godesigner.ru/answers/view/73');
                 $admin = User::getAdmin();
                 $solution = $params['solution'];
                 $pitch = Pitch::first($solution->pitch_id);
-                //if($pitch->split === 0) {
                 $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $params['solution']->id . '">Им стал</a> #' . $params['solution']->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше - все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
 Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
-                //}elseif($pitch->split === 1) {
-                /*$message = 'Друзья, заказчик не выбрал победителя и не отказался от предложенных решений вовремя. По регламенту проведения питча мы удерживаем 30% от суммы вознаграждения в пользу самого популярного решения, определённого с помощью 1–лайков, 2–просмотров. Оставшаяся сумма возвращается заказчику.  Мы благодарим всех за участие, и хотим напомнить, что права на свои идеи сохраняются за авторами, и вы можете адаптировать их для участия в другом питче!<br/>
-Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';*/
-                //}
                 $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
                 Comment::createComment($data);
                 $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
@@ -124,14 +98,6 @@ http://godesigner.ru/answers/view/73');
                 User::sendSpamSolutionSelected($result);
             }
             return $result;
-        });
-        self::applyFilter('setRating', function($self, $params, $chain){
-            $result = $chain->next($self, $params, $chain);
-            if($result->rating == 5) {
-                //$tweet = '5 звёзд поставил заказчик в питче «' . $params['pitch']->title . '» http://www.godesigner.ru/pitches/viewsolution/' . $result->id . ' #Go_Deer';
-                //User::sendTweet($tweet);
-            }
-            return $result->rating;
         });
     }
 

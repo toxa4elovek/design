@@ -454,22 +454,6 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function sendSpamNewsolution($params) {
-        $solution = Solution::first($params['solution_id']);
-        $pitch = Pitch::first($solution->pitch_id);
-        $user = self::first(array(
-            'conditions' => array('id' => $pitch->user_id),
-        ));
-        /*$user = self::first(array(
-            'conditions' => array('email' => 'nyudmitriy@gmail.com'),
-        ));*/
-        if($user->email_newsol == 1){
-            $data = array('user' => $user, 'pitch' => $pitch, 'solution' => $solution);
-            SpamMailer::newsolution($data);
-        }
-        return true;
-    }
-
     public static function sendAdminBriefPitch($params) {
         $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
         foreach($users as $user) {
