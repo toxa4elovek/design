@@ -107,8 +107,8 @@ input[type="radio"], input[type="checkbox"] {
 .upload-dropzone #fakebutton {
     display: block;
     position: absolute;
-    top: 205px;
-    left: 285px;
+    top: 200px;
+    left: 290px;
     width: 260px;
     height: 50px;
     opacity: 0;
@@ -137,7 +137,10 @@ input[type="radio"], input[type="checkbox"] {
 .upload-dropzone .uploadable-wrapper .thumbnail-container:hover {
 	border-color: #628ba0;
 }
-.upload-dropzone .uploadable-wrapper .thumbnail-container:hover:after {
+.upload-dropzone .uploadable-wrapper.ready .thumbnail-container:hover {
+	cursor: pointer;
+}
+.upload-dropzone .uploadable-wrapper.ready .thumbnail-container:hover:after {
     position: absolute;
     display: block;
     top: -4px;
