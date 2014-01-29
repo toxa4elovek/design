@@ -1,8 +1,3 @@
-<?php
-var_dump($this->solution->renderImageUrl($solution->images['solution_galleryLargeSize']));
-die();
-?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -24,7 +19,7 @@ die();
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
-            <a href="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><img src="http://www.godesigner.ru/<?=$this->solution->renderImageUrl($solution['images']['solution_galleryLargeSize'])?>" alt=""></a>
+            <a href="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><img src="http://www.godesigner.ru/<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt=""></a>
             <br>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$solution->description?></span><br/>
         </td></tr>
