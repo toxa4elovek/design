@@ -158,7 +158,7 @@ $(document).ready(function() {
         dropZone: $('.upload-dropzone'),
         add: function(e, data) {
             if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
-                addCallback();
+                setTimeout(function() { addCallback(); }, 200 );
 
                 // Check files already in dropbox
                 if ($.inArray(data.files[0].name, boxFileNames) == -1) {
@@ -176,7 +176,7 @@ $(document).ready(function() {
                 if (URL) {
                     var $html = $('<div class="uploadable-wrapper"> \
                                        <div class="thumbnail-container"> \
-                                           <img src="' + URL.createObjectURL(data.files[0]) + '" height="135" class="thumbnail" /> \
+                                           <img src="' + URL.createObjectURL(data.files[0]) + '" style="display: none;" class="thumbnail" /> \
                                        </div> \
                                        <div class="thumbnail-close"></div> \
                                        <div class="upload-progressbar-wrapper"> \
@@ -184,6 +184,18 @@ $(document).ready(function() {
                                        </div> \
                                    </div>');
                     $html.insertBefore('#truebutton');
+                    var $image = $html.find('.thumbnail');
+                    setTimeout(function() {
+                        if ($image.width() >= $image.height()) {
+                            $image.width('180');
+                            $image.height('auto');
+                            $image.parent().css('margin-top', (135 - $image.height()) / 2);
+                        } else {
+                            $image.height('135');
+                            $image.width('auto');
+                        }
+                        $image.show();
+                    }, 200);
                     reSortable[filePosition] = filePosition;
                 } else {
                     // Not supported
@@ -199,7 +211,7 @@ $(document).ready(function() {
                 var percent = data.total / 100;
                 var completed = data.loaded / percent;
                 var $el = $('.upload-progressbar[data-filename="' + data.files[0].name + '"]');
-                if (completed >= (50)) {
+                if (completed >= 50) {
                     $el.css('width', '80%');
                 } else {
                     $el.css('width', Math.round(completed) / 100 * loadPercentage + '%');

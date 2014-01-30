@@ -15,12 +15,8 @@ class Tasks extends \app\extensions\command\CronJob {
         $tasks = Task::all(array('conditions' => array('completed' => 0)));
         $count = count($tasks);
         foreach($tasks as $task) {
-            if('newpitch' == $task->type) {
-                Tasks::__newptich($task);
-            }
-            if('newSolutionNotification' == $task->type) {
-                Tasks::__newSolutionNotification($task);
-            }
+            $methodName = '__' . $task->type;
+            Tasks::$methodName($task);
         }
         if($count) {
             $this->out($count . ' tasks completed');
@@ -43,6 +39,15 @@ class Tasks extends \app\extensions\command\CronJob {
             $this->out('New Solution Notification sent');
         }else {
             $this->out('Error (or receiver disabled this notification) sending notification for solution ' . $task->model_id);
+        }
+    }
+
+    private function __victoryNotification($task) {
+        $task->markAsCompleted();
+        if($result = SolutionsMailer::sendVictoryNotification($task->model_id)) {
+            $this->out('New Victory Notification sent');
+        }else {
+            $this->out('Error sending Victory Notification');
         }
     }
 

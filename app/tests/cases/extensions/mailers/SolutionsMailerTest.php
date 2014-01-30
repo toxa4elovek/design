@@ -22,4 +22,12 @@ class SolutionsMailerTest extends  AppUnit {
         $this->assertPattern("/Test title/", $html);
     }
 
+    public function testSendVictoryNotification() {
+        $html = SolutionsMailer::sendVictoryNotification(1);
+        $this->assertPattern("/ВАШЕ РЕШЕНИЕ СТАЛО ПОБЕДИТЕЛЕМ!/", $html);
+        $this->assertPattern("/АЛЕКСЕЙ/", $html);
+        $this->assertPattern("/Test title/", $html);
+        $this->assertPattern("/#5/", $html);
+    }
+
 }
