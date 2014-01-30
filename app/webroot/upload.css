@@ -132,15 +132,16 @@ input[type="radio"], input[type="checkbox"] {
 	border-width: 6px;
 	border-style: solid;
 	border-color: transparent;
-	text-align: center
+	text-align: center;
+	cursor: wait;
 }
 .upload-dropzone .uploadable-wrapper .thumbnail-container:hover {
 	border-color: #628ba0;
 }
 .upload-dropzone .uploadable-wrapper.ready .thumbnail-container:hover {
-	cursor: pointer;
+	cursor: move;
 }
-.upload-dropzone .uploadable-wrapper.ready .thumbnail-container:hover:after {
+.upload-dropzone .uploadable-wrapper.ready:hover .thumbnail-close {
     position: absolute;
     display: block;
     top: -4px;
@@ -149,7 +150,6 @@ input[type="radio"], input[type="checkbox"] {
     height: 18px;
     background: url('/img/uploader-close.png');
     cursor: pointer;
-    content: "";
 }
 .upload-progressbar-wrapper {
 	position: relative;
@@ -174,4 +174,13 @@ input[type="radio"], input[type="checkbox"] {
     background:     -ms-linear-gradient(#6e95a9, #547789);
     background:      -o-linear-gradient(#6e95a9, #547789);
     background:         linear-gradient(#6e95a9, #547789);
+}
+.sortable-placeholder {
+	display: inline-block;
+	width: 177px;
+	height: 135px;
+	background: transparent;
+	border: 2px dashed #d0d0d0;
+	border-radius: 6px;
+	margin: 10px 8px 30px 8px;
 }
