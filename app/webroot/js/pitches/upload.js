@@ -177,8 +177,8 @@ $(document).ready(function() {
                     var $html = $('<div class="uploadable-wrapper"> \
                                        <div class="thumbnail-container"> \
                                            <img src="' + URL.createObjectURL(data.files[0]) + '" style="display: none;" class="thumbnail" /> \
+                                           <div class="thumbnail-close"></div> \
                                        </div> \
-                                       <div class="thumbnail-close"></div> \
                                        <div class="upload-progressbar-wrapper"> \
                                            <div class="upload-progressbar" data-filename="' + data.files[0].name + '" data-position="' + filePosition + '"></div> \
                                        </div> \
@@ -189,13 +189,13 @@ $(document).ready(function() {
                         if ($image.width() >= $image.height()) {
                             $image.width('180');
                             $image.height('auto');
-                            $image.parent().css('margin-top', (135 - $image.height()) / 2);
+                            $image.css('margin-top', (135 - $image.height()) / 2);
                         } else {
                             $image.height('135');
                             $image.width('auto');
                         }
                         $image.show();
-                    }, 200);
+                    }, 300);
                     reSortable[filePosition] = filePosition;
                 } else {
                     // Not supported
