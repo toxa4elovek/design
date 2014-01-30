@@ -17,7 +17,7 @@ class Tasks extends \app\extensions\command\CronJob {
         $count = count($tasks);
         foreach($tasks as $task) {
             $methodName = '__' . $task->type;
-            if(method_exists(self, $methodName)) {
+            if(method_exists('app\extensions\command\Tasks', $methodName)) {
                 $task->markAsCompleted();
                 Tasks::$methodName($task);
             }
