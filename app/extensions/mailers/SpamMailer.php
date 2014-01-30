@@ -168,14 +168,6 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
-    public static function newadmincomment($data) {
-        return self::_mail(array(
-            'to' => $data['user']->email,
-            'subject' => 'Go Designer оставил комментарий',
-            'data' => $data
-        ));
-    }
-
     public static function newadminnotification($data) {
         return self::_mail(array(
             'to' => $data['admin'],

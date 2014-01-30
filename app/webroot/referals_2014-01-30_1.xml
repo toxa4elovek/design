@@ -1,0 +1,9 @@
+<payments>
+    <payment>
+        <Destination>9851119613</Destination>
+        <Contractor>1</Contractor>
+        <Amount>500.00</Amount>
+        <Currency>WMR</Currency>
+        <Description>Оплата партнерского вознаграждения</Description>
+    </payment>
+</payments>

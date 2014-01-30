@@ -2,6 +2,7 @@
 
 namespace app\extensions\command;
 
+use app\extensions\mailers\CommentsMailer;
 use \app\models\Task;
 use \app\models\Pitch;
 use \app\models\User;
@@ -16,7 +17,10 @@ class Tasks extends \app\extensions\command\CronJob {
         $count = count($tasks);
         foreach($tasks as $task) {
             $methodName = '__' . $task->type;
-            Tasks::$methodName($task);
+            if(method_exists(self, $methodName)) {
+                $task->markAsCompleted();
+                Tasks::$methodName($task);
+            }
         }
         if($count) {
             $this->out($count . ' tasks completed');
@@ -28,13 +32,11 @@ class Tasks extends \app\extensions\command\CronJob {
     private function __newptich($task) {
         $pitch = Pitch::first($task->model_id);
         $params = array('pitch' => $pitch);
-        $task->markAsCompleted();
         User::sendSpamNewPitch($params);
         $this->out('New pitch email has been sent');
     }
 
     private function __newSolutionNotification($task) {
-        $task->markAsCompleted();
         if($result = SolutionsMailer::sendNewSolutionNotification($task->model_id)) {
             $this->out('New Solution Notification sent');
         }else {
@@ -43,11 +45,18 @@ class Tasks extends \app\extensions\command\CronJob {
     }
 
     private function __victoryNotification($task) {
-        $task->markAsCompleted();
         if($result = SolutionsMailer::sendVictoryNotification($task->model_id)) {
             $this->out('New Victory Notification sent');
         }else {
             $this->out('Error sending Victory Notification');
+        }
+    }
+
+    private function __newCommentFromAdminNotification($task) {
+        if($count = CommentsMailer::sendNewCommentFromAdminNotification($task->model_id)) {
+            $this->out($count . ' new comment from admin notifications sent');
+        }else {
+            $this->out('no new comment from admin notifications sent');
         }
     }
 
