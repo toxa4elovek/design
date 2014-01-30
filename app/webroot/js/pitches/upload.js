@@ -45,7 +45,7 @@ $(document).ready(function() {
         drag: function() {
             var y = $('#scroller').css('top');
             y = parseInt(y.substring(0, y.length - 2));
-            var mod = ($('.upload-dropzone', '.upload-dropzone-wrapper')[0].scrollHeight - 290) / 200;
+            var mod = ($('.upload-dropzone', '.upload-dropzone-wrapper')[0].scrollHeight - 290) / 180;
             $('.uploadable-wrapper', '.upload-dropzone').css('top', -Math.round(y * mod) + 'px');
         },
         axis: "y",
@@ -84,8 +84,6 @@ $(document).ready(function() {
                 global: false,
                 dataType: 'json'
             }).done(function() {
-                $el.css('transition', 'width .3s');
-                $el.css('width', '0');
                 boxFileNames.splice($.inArray($el.data('filename'), boxFileNames), 1);
                 $wrapper.fadeOut(200, function() {
                     reSortable[$el.data('position')] = 0;
@@ -215,6 +213,7 @@ $(document).ready(function() {
             $wrapper.addClass('ready');
             $el.css('transition', 'width .3s');
             $el.css('width', '100%');
+            $el.parent().fadeOut();
             nowLoading--;
             if (nowLoading == 0) {
                 $('#uploadSolution').fadeIn();
@@ -238,6 +237,10 @@ $(document).ready(function() {
     });
 
     $('#uploadSolution').click(function() {
+        if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
+            alert('Вы не выбрали файл для загрузки!');
+            return false;
+        }
         $('#reSortable').val(reSortable);
         // Check if copyrighted material not empty
         if (($('input[name=licensed_work][value=1]').prop('checked')) && isAddressEmpty()) {
