@@ -14,18 +14,19 @@ class Comment extends \app\models\AppModel {
 	public static function __init() {
 		parent::__init();
         self::applyFilter('save', function($self, $params, $chain){
-            if(($params['entity']->data()) && (isset($params['entity']->id) && $params['entity'] > 0) && (isset($params['entity']->text))) {
+            if(($params['entity']->data()) && (isset($params['entity']->id) && $params['entity']->id > 0) && (isset($params['entity']->text))) {
                 $comment = $params['entity'];
-                $original = Comment::first($comment->id);
-                $comment = $params['entity'];
-                $historyArchive = $comment->history;
-                if($historyArchive == '') {
-                    $history = array();
-                }else {
-                    $history = unserialize($historyArchive);
+                if($original = Comment::first($comment->id)) {
+                    $comment = $params['entity'];
+                    $historyArchive = $comment->history;
+                    if($historyArchive == '') {
+                        $history = array();
+                    }else {
+                        $history = unserialize($historyArchive);
+                    }
+                    $history[] = array('date' => date('Y-m-d H:i:s'), 'text' => $original->text);
+                    $params['entity']->history = serialize($history);
                 }
-                $history[] = array('date' => date('Y-m-d H:i:s'), 'text' => $original->text);
-                $params['entity']->history = serialize($history);
             }
             return $chain->next($self, $params, $chain);
         });
