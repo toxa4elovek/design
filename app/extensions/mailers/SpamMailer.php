@@ -192,14 +192,6 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
-    public static function solutionselected($data) {
-        return self::_mail(array(
-            'to' => $data['user']->email,
-            'subject' => 'Ваше решение стало победителем!',
-            'data' => $data
-        ));
-    }
-
     public static function expertselected($data) {
         return self::_mail(array(
             'to' => $data['user']->email,

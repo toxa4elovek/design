@@ -1,4 +1,4 @@
 [
-    {"id": 1, "email_sol": 1},
+    {"id": 1, "email_sol": 1, "first_name": "Алексей", "last_name": "Пашков"},
     {"id": 2, "email_sol": 0, "first_name": "Дмитрий", "last_name": "Ню", "email": "nyudmitriy@godesigner.ru", "email_newsol": 1}
 ]

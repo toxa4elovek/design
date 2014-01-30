@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\extensions\mailers\SolutionsMailer;
 use \app\models\Event;
 use \app\models\Pitch;
 use \app\models\Like;
@@ -96,7 +97,7 @@ http://godesigner.ru/answers/view/73');
                     $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
                 }
                 User::sendTweet($tweet);
-                User::sendSpamSolutionSelected($result);
+                Task::createNewTask($solution->id, 'victoryNotification');
             }
             return $result;
         });
