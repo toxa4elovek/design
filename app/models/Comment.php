@@ -6,6 +6,7 @@ use \app\models\Solution;
 use \app\models\Historycomment;
 use \app\extensions\helper\Avatar as AvatarHelper;
 use \lithium\storage\Session;
+use app\extensions\mailers\CommentsMailer;
 
 class Comment extends \app\models\AppModel {
 
@@ -88,7 +89,7 @@ class Comment extends \app\models\AppModel {
                 User::sendAdminNotification($params);
             }
             if(($sender->isAdmin == 1) && ($params['solution_id'] == 0) && ((!isset($params['reply_to'])) || ((isset($params['reply_to'])) && $params['reply_to'] == 0))) {
-                User::sendAdminSpamComment($params);
+                Task::createNewTask($params['id'], 'newCommentFromAdminNotification');
             }
             if((isset($params['reply_to'])) && ($params['reply_to'] != 0)) {
                 User::sendPersonalComment($params);

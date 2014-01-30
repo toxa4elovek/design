@@ -8,13 +8,17 @@ use app\models\Solution;
 
 class CommentsMailer extends \li3_mailer\extensions\Mailer {
 
+    /**
+     * Метод отправляет пользоватлею уведомление о том, что GoDesigner оставил новый комментарий
+     *
+     * @param $commentId
+     * @param $userId
+     * @return bool
+     */
     public static function sendNewCommentFromAdminNotificationToUser($commentId, $userId) {
         $comment = Comment::first($commentId);
-
         $pitch = Pitch::first($comment->pitch_id);
         $user = User::first($userId);
-
-
         $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $comment);
         return self::_mail(array(
             'to' => $user->email,
@@ -23,6 +27,13 @@ class CommentsMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    /**
+     * Метод получает пользователей (владельца питча и участников) и отправляет почтовые
+     * уведомления о том, что GoDesigner оставил новый комментарий
+     *
+     * @param $commentId
+     * @return int
+     */
     public static function sendNewCommentFromAdminNotification($commentId) {
         $comment = Comment::first($commentId);
         $pitch = Pitch::first($comment->pitch_id);
@@ -40,14 +51,10 @@ class CommentsMailer extends \li3_mailer\extensions\Mailer {
         }
         $emailsSent = 0;
         foreach($ids as $id) {
-            var_dump($id);
-            self::sendNewCommentFromAdminNotification($commentId, $id);
-        }
-        /*foreach($ids as $id) {
-            if(CommentsMailer::sendNewCommentFromAdminNotification($commentId, $id)) {
+            if(CommentsMailer::sendNewCommentFromAdminNotificationToUser($commentId, $id)) {
                 $emailsSent++;
             }
-        }*/
+        }
         return $emailsSent;
     }
 
