@@ -602,13 +602,6 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function sendSpamSolutionSelected($solutionArray) {
-        $user = self::first($solutionArray['result']['user_id']);
-        $data = array('user' => $user, 'solution' => $solutionArray['result'], 'pitch' => $solutionArray['result']['pitch']);
-        SpamMailer::solutionselected($data);
-        return true;
-    }
-
     public static function sendSpamReferal() {
         $users = self::all();
         $sent = 0;
