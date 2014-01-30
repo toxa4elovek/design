@@ -134,6 +134,7 @@ input[type="radio"], input[type="checkbox"] {
 	border-color: transparent;
 	text-align: center;
 	cursor: wait;
+	background: #fff;
 }
 .upload-dropzone .uploadable-wrapper .thumbnail-container:hover {
 	border-color: #628ba0;

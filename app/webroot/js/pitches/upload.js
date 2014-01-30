@@ -157,8 +157,8 @@ $(document).ready(function() {
         dataType: 'html',
         dropZone: $('.upload-dropzone'),
         add: function(e, data) {
+            setTimeout(function() { addCallback(); }, 200 );
             if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
-                setTimeout(function() { addCallback(); }, 200 );
 
                 // Check files already in dropbox
                 if ($.inArray(data.files[0].name, boxFileNames) == -1) {
