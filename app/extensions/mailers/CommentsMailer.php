@@ -35,24 +35,26 @@ class CommentsMailer extends \li3_mailer\extensions\Mailer {
      * @return int
      */
     public static function sendNewCommentFromAdminNotification($commentId) {
-        $comment = Comment::first($commentId);
-        $pitch = Pitch::first($comment->pitch_id);
-        $client = User::first($pitch->user_id);
-        $ids = array();
-        if($client->email_newcomments == 1) {
-            $ids[] = $client->id;
-        }
-        $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id)));
-        foreach($solutions as $solution) {
-            $user = User::first($solution->user_id);
-            if($user->email_newcomments == 1) {
-                $ids[] = $user->id;
-            }
-        }
         $emailsSent = 0;
-        foreach($ids as $id) {
-            if(CommentsMailer::sendNewCommentFromAdminNotificationToUser($commentId, $id)) {
-                $emailsSent++;
+        if($comment = Comment::first($commentId)) {
+            $pitch = Pitch::first($comment->pitch_id);
+            $client = User::first($pitch->user_id);
+            $ids = array();
+            if($client->email_newcomments == 1) {
+                $ids[] = $client->id;
+            }
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id)));
+            foreach($solutions as $solution) {
+                $user = User::first($solution->user_id);
+                if($user->email_newcomments == 1) {
+                    $ids[] = $user->id;
+                }
+            }
+
+            foreach($ids as $id) {
+                if(CommentsMailer::sendNewCommentFromAdminNotificationToUser($commentId, $id)) {
+                    $emailsSent++;
+                }
             }
         }
         return $emailsSent;

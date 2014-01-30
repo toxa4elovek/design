@@ -23,6 +23,8 @@ class CommentsMailerTest extends  AppUnit {
     }
 
     public function testSendNewCommentFromAdninNotification() {
+        $count = CommentsMailer::sendNewCommentFromAdminNotification(1000);
+        $this->assertIdentical(0, $count);
         $count = CommentsMailer::sendNewCommentFromAdminNotification(1);
         $this->assertIdentical(2, $count);
     }
