@@ -92,7 +92,7 @@ class Comment extends \app\models\AppModel {
                 Task::createNewTask($params['id'], 'newCommentFromAdminNotification');
             }
             if((isset($params['reply_to'])) && ($params['reply_to'] != 0)) {
-                User::sendPersonalComment($params);
+                Task::createNewTask($params['id'], 'newPersonalCommentNotification');
             }
             if($pitch->user_id == $sender->id) {
                 $historyComment = Historycomment::create();

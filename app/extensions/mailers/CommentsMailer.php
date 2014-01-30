@@ -60,4 +60,25 @@ class CommentsMailer extends \li3_mailer\extensions\Mailer {
         return $emailsSent;
     }
 
+    /**
+     * Метод пытается отправить уведомление о новом личном комментарии
+     *
+     * @param $commentId
+     * @return bool
+     */
+    public static function sendNewPersonalCommentNotification($commentId) {
+        if($comment = Comment::first($commentId)){
+            $user = User::first($comment->reply_to);
+            $pitch = Pitch::first($comment->pitch_id);
+            if($user->email_newcomments == 1) {
+                $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $comment);
+                return self::_mail(array(
+                    'to' => $user->email,
+                    'subject' => 'Вам оставлен новый комментарий!',
+                    'data' => $data
+                ));
+            }
+        }
+    }
+
 }

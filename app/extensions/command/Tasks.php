@@ -38,7 +38,7 @@ class Tasks extends \app\extensions\command\CronJob {
 
     private function __newSolutionNotification($task) {
         if($result = SolutionsMailer::sendNewSolutionNotification($task->model_id)) {
-            $this->out('New Solution Notification sent');
+            $this->out('New solution notification sent');
         }else {
             $this->out('Error (or receiver disabled this notification) sending notification for solution ' . $task->model_id);
         }
@@ -46,9 +46,9 @@ class Tasks extends \app\extensions\command\CronJob {
 
     private function __victoryNotification($task) {
         if($result = SolutionsMailer::sendVictoryNotification($task->model_id)) {
-            $this->out('New Victory Notification sent');
+            $this->out('New victory notification sent');
         }else {
-            $this->out('Error sending Victory Notification');
+            $this->out('Error sending victory notification');
         }
     }
 
@@ -60,6 +60,12 @@ class Tasks extends \app\extensions\command\CronJob {
         }
     }
 
-}
+    private function __newPersonalCommentNotification($task) {
+        if($result = CommentsMailer::sendNewPersonalCommentNotification($task->model_id)) {
+            $this->out('New personal comment notifications sent');
+        }else {
+            $this->out('User do not want to receive this notification');
+        }
+    }
 
-?>
+}

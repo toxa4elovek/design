@@ -29,4 +29,13 @@ class CommentsMailerTest extends  AppUnit {
         $this->assertIdentical(2, $count);
     }
 
+    public function testSendNewPersonalCommentNotification() {
+        $html = CommentsMailer::sendNewPersonalCommentNotification(1000);
+        $this->assertFalse($html);
+        $html = CommentsMailer::sendNewPersonalCommentNotification(1);
+        $this->assertPattern("/ВАМ ОСТАВЛЕН НОВЫЙ КОММЕНТАРИЙ/", $html);
+        $this->assertPattern("/АЛЕКСЕЙ/", $html);
+        $this->assertPattern("/This is test text/", $html);
+    }
+
 }
