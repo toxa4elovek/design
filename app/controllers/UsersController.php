@@ -593,13 +593,9 @@ class UsersController extends \app\controllers\AppController {
                     $isFBUserExists = $user->checkFacebookUser($this->request->data);
                     if(!$isFBUserExists) {
                         // если пользователей фейсбука у нас отсутствует, то сохраняем его в базу
-
                         if($user->saveFacebookUser($this->request->data)) {
                             $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
-                            //$userToLog->invited = 1;
-                            $userToLog->lastActionTime = date('Y-m-d H:i:s');
-                            $userToLog->save(null, array('validate' => false));
-                            //Invite::activateInvite($this->request->query['invite'], $userToLog->id);
+                            $userToLog->setLastActionTime();
                             $userToLog->getFbAvatar();
                             UserMailer::hi_mail($userToLog);
                             $newuser = true;
@@ -659,10 +655,7 @@ class UsersController extends \app\controllers\AppController {
 			    if(($user->validates()) && ($user->save($this->request->data))) {
                     $userToLog = User::first(array('conditions' => array('id' => $user->id)));
                     $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
-                    $userToLog->lastActionTime = date('Y-m-d H:i:s');
-                    //$userToLog->invited = 1;
-                    $userToLog->save(null, array('validate' => false));
-                    //Invite::activateInvite($this->request->query['invite'], $userToLog->id);
+                    $userToLog->setLastActionTime();
                     $res = UserMailer::verification_mail($userToLog);
                     // производим аутентификацию
                     Auth::set('user', $userToLog->data());
