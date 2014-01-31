@@ -24,12 +24,12 @@
                 <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">
                 <input type="hidden" name="fileposition" id="fileposition" value="">
                 <div class="upload-dropzone-wrapper">
+                    <div id="scrollerarea">
+                        <div id="scroller" class="ui-draggable"></div>
+                    </div>
                     <div class="upload-dropzone">
                         <input type="file" id="truebutton" multiple="multiple" name="solution[]" class="fileinput-button">
                         <input id="fakebutton" type="button" class="button" value="Выберите файлы">
-                    </div>
-                    <div id="scrollerarea">
-                        <div id="scroller" class="ui-draggable"></div>
                     </div>
                 </div>
             </form>

@@ -135,8 +135,7 @@ $(document).ready(function() {
         scroll: false,
         opacity: 0.8,
         tolerance: 'pointer',
-        containment: 'parent',
-        delay: 100,
+        containment: 'parent'
     });
 
     function addCallback() {
@@ -150,10 +149,6 @@ $(document).ready(function() {
         }
     }
     
-    $(document).on('mousedown', '.uploadable-wrapper', function() {
-        $("html, body").animate({ scrollTop: 0 }, 80);
-    });
-
     var loadPercentage = 30; // Progressbar percentage for loading files.
     var filePosition = 0;
     var nowLoading = 0;
