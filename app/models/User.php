@@ -18,7 +18,7 @@ use \app\extensions\smsfeedback\SmsFeedback;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 use app\extensions\mailers\CommentsMailer;
-
+use app\extensions\storage\Rcache;
 use \DirectoryIterator;
 
 class User extends \app\models\AppModel {
@@ -985,6 +985,32 @@ class User extends \app\models\AppModel {
      */
     public static function getEditorsIds() {
         return self::$editors;
+    }
+
+
+    /**
+     * Метод обновляет дату последнего действия для пользователя
+     *
+     * @param $record
+     */
+    public function setLastActionTime($record) {
+        if(!Rcache::write('user_' . $record->id . '_LastActionTime', date('Y-m-d H:i:s'))) {
+            $record->lastActionTime = date('Y-m-d H:i:s');
+            $record->save(null, array('validate' => false));
+        }
+    }
+
+    /**
+     * Метод возвращается время (unix-time) последнего действия для пользователя
+     *
+     * @param $record
+     * @return int
+     */
+    public function getLastActionTime($record) {
+        if(!$lastActionTime = Rcache::read('user_' . $record->id . '_LastActionTime')) {
+            $lastActionTime = $record->$lastActionTime;
+        }
+        return strtotime($lastActionTime);
     }
 
 }

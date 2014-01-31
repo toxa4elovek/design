@@ -22,12 +22,13 @@ class AppController extends \lithium\action\Controller {
             Session::write('user.attentionpitch', null);
             Session::write('user.attentionsolution', null);
             Session::write('user.timeoutpitch', null);
-            //check for ban
             if($user = User::find(Session::read('user.id'))) {
+                // Проверяем, ни забанен ли пользователь
                 if($user->banned) {
                     Auth::clear('user');
                     return $this->redirect('/users/banned');
                 }
+                // Проверяем, не удалил ли себя пользователь
                 if($user->email == '') {
                     Auth::clear('user');
                     return $this->redirect('/');
@@ -39,13 +40,6 @@ class AppController extends \lithium\action\Controller {
 
             // updates avatars
             Session::write('user.images', $user->images);
-
-
-            $myPitches = Pitch::all(array(
-                'with' => array('Category'),
-                'conditions' => array('user_id' => Session::read('user.id')),
-
-            ));
 
             $topPanel = Pitch::all(array(
                 'with' => array('Category'),
@@ -115,11 +109,7 @@ class AppController extends \lithium\action\Controller {
                         Session::write('user.events.count', 0);
                     }
                 }
-
-
-            $user->lastActionTime = date('Y-m-d H:i:s');
-            $user->save(null, array('validate' => false));
-
+            $user->setLastActionTime();
         }else {
             if(isset($_COOKIE['autologindata'])) {
 
