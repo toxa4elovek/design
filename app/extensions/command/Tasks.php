@@ -29,7 +29,7 @@ class Tasks extends \app\extensions\command\CronJob {
         }
     }
 
-    private function __newptich($task) {
+    private function __newpitch($task) {
         $pitch = Pitch::first($task->model_id);
         $params = array('pitch' => $pitch);
         User::sendSpamNewPitch($params);
