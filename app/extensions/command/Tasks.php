@@ -40,7 +40,7 @@ class Tasks extends \app\extensions\command\CronJob {
         if($result = SolutionsMailer::sendNewSolutionNotification($task->model_id)) {
             $this->out('New solution notification sent');
         }else {
-            $this->out('Error (or receiver disabled this notification) sending notification for solution ' . $task->model_id);
+            $this->out('User do not want to receive notification for solution ' . $task->model_id);
         }
     }
 
