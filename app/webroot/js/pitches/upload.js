@@ -132,10 +132,11 @@ $(document).ready(function() {
             startPosition = ui.item.index() + 1;
         },
         placeholder: "sortable-placeholder",
-        scroll: true,
+        scroll: false,
         opacity: 0.8,
         tolerance: 'pointer',
-        containment: 'parent'
+        containment: 'parent',
+        delay: 100,
     });
 
     function addCallback() {
@@ -148,6 +149,10 @@ $(document).ready(function() {
             $('.upload-progressbar').css('width', '100%');
         }
     }
+    
+    $(document).on('mousedown', '.uploadable-wrapper', function() {
+        $("html, body").animate({ scrollTop: 0 }, 80);
+    });
 
     var loadPercentage = 30; // Progressbar percentage for loading files.
     var filePosition = 0;

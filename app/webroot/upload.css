@@ -93,7 +93,7 @@ input[type="radio"], input[type="checkbox"] {
     box-shadow: 1px 0 1px rgba(0, 0, 0, .2);
 }
 .upload-dropzone {
-	position: absolute;
+	position: relative;
 	width: 835px;
 	height: 290px;
 	overflow: hidden;

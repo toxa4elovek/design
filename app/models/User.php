@@ -17,6 +17,7 @@ use \app\extensions\helper\NameInflector;
 use \app\extensions\smsfeedback\SmsFeedback;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
+use app\extensions\mailers\CommentsMailer;
 
 use \DirectoryIterator;
 
@@ -548,29 +549,6 @@ class User extends \app\models\AppModel {
         //$user = User::first(array('conditions' => array('email' => 'nyudmitriy@gmail.com')));
         $data = array('user' => $user, 'pitches' => $pitches);
         SpamMailer::dailypitch($data);
-    }
-
-    public static function sendAdminSpamComment($params) {
-        $pitch = Pitch::first($params['pitch_id']);
-        $ids = array();
-        $client = User::first($pitch->user_id);
-        if($client->email_newcomments == 1) {
-            $data = array('user' => $client, 'pitch' => $pitch, 'comment' => $params);
-            SpamMailer::newadmincomment($data);
-        }
-        $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id)));
-        $emails = array();
-        foreach($solutions as $solution) {
-            $user = User::first($solution->user_id);
-            if($user->email_newcomments == 1) {
-                $emails[$user->email] = $user;
-            }
-        }
-        foreach($emails as $email => $user) {
-            $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $params);
-            SpamMailer::newadmincomment($data);
-        }
-        return true;
     }
 
     public static function sendOpenLetter($pitch) {

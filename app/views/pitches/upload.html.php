@@ -3,7 +3,7 @@
     <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
 
     <div class="middle">
-        <div class="middle_inner_gallery" style="padding-top:25px">
+        <div class="middle_inner_gallery" style="padding-top:25px; padding-left: 40px;">
 
             <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
                 <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
@@ -39,14 +39,14 @@
                     <ul id="filelist" class="supplement" style="margin-top: 10px;">
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:0;"></li>
                     </ul>
-                    <div class="group" style="margin-top: 10px;background:none;margin-bottom:0;">
+                    <div class="group">
                         <p>
                             <label class="greyboldheader">Опишите идею</label>
                             <textarea id="charzone" class="upload-textarea" style="height:130px; width: 557px;margin-top: 8px;" name="description"></textarea>
                         </p>
                     </div>
                 </div>
-                <div style="float:left; width: 230px; margin-bottom: 20px; margin-top: 50px;"><p class="supplement">
+                <div style="float:left; width: 230px; margin-bottom: 20px; margin-top: 40px;"><p class="supplement">
                 Прикрепляемые за раз файлы должны соответствовать одной концепции, быть в формате JPEG/RGB, max 800px по ширине, &lt;&nbsp;5&nbsp;МБ. Если ваше решение победит в питче, вы загрузите запрашиваемые заказчиком рабочие файлы.
                 </div>
                 <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
