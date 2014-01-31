@@ -69,36 +69,44 @@ class Comment extends \app\models\AppModel {
             foreach($matches[1] as $hashtag){
                 $nums[] = substr($hashtag, 1);
             }
-
-            if(!empty($num)) {
-                $solutions = Solution::all(array('with' => array('User'), 'conditions' => array('pitch_id' => $params['pitch_id'], 'num' => $nums)));
-                $emails = array();
-                foreach($solutions as $solution) {
-                    $emails[$solution->user->email] = $solution;
-                }
-                foreach($emails as $solution) {
-                    $data = $params;
-                    $data['solution_id'] = $solution->id;
-                    User::sendSpamNewcomment($data);
-                }
-            }
             $sender = User::first($params['user_id']);
             $pitch = Pitch::first($params['pitch_id']);
             if($pitch->status > 0) {
                 // notify admin
                 User::sendAdminNotification($params);
-            }
-            if(($sender->isAdmin == 1) && ($params['solution_id'] == 0) && ((!isset($params['reply_to'])) || ((isset($params['reply_to'])) && $params['reply_to'] == 0))) {
-                Task::createNewTask($params['id'], 'newCommentFromAdminNotification');
-            }
-            if((isset($params['reply_to'])) && ($params['reply_to'] != 0)) {
-                Task::createNewTask($params['id'], 'newPersonalCommentNotification');
-            }
-            if($pitch->user_id == $sender->id) {
-                $historyComment = Historycomment::create();
-                $historyComment->set($params);
-                $historyComment->created = date('Y-m-d H:i:s');
-                $historyComment->save();
+                if((!empty($num)) || ((isset($params['reply_to'])) && ($params['reply_to'] != 0))) {
+                    // Отправить комментарий владельцу питча
+                    //Comment::createComment();
+                }
+            }else {
+                // Если упоминаются номера решения, отправляем комментарии их владельцам
+                if(!empty($num)) {
+                    $solutions = Solution::all(array('with' => array('User'), 'conditions' => array('pitch_id' => $params['pitch_id'], 'num' => $nums)));
+                    $emails = array();
+                    foreach($solutions as $solution) {
+                        $emails[$solution->user->email] = $solution;
+                    }
+                    foreach($emails as $solution) {
+                        $data = $params;
+                        $data['solution_id'] = $solution->id;
+                        User::sendSpamNewcomment($data);
+                    }
+                }
+                // Если коммент написал админ всем пользователям, отправляем уведомление об этом всем участникам питча
+                if(($sender->isAdmin == 1) && ($params['solution_id'] == 0) && ((!isset($params['reply_to'])) || ((isset($params['reply_to'])) && $params['reply_to'] == 0))) {
+                    Task::createNewTask($params['id'], 'newCommentFromAdminNotification');
+                }
+                // Если ответ какому-то пользователю, отправляем уведомление пользователю
+                if((isset($params['reply_to'])) && ($params['reply_to'] != 0)) {
+                    Task::createNewTask($params['id'], 'newPersonalCommentNotification');
+                }
+                // Если комментарий владельца питча, запишем в историю для статистики
+                if($pitch->user_id == $sender->id) {
+                    $historyComment = Historycomment::create();
+                    $historyComment->set($params);
+                    $historyComment->created = date('Y-m-d H:i:s');
+                    $historyComment->save();
+                }
             }
 			return $params;
 		});
