@@ -12,7 +12,7 @@ class SolutionsMailerTest extends  AppUnit {
     }
 
     public function tearDown() {
-        $this->rollUp(array('Pitch', 'User', 'Solution', 'Category'));
+        $this->rollDown(array('Pitch', 'User', 'Solution', 'Category'));
     }
 
     public function testSendNewSolutionNotification() {

@@ -14,16 +14,17 @@ class SolutionsMailer extends \li3_mailer\extensions\Mailer {
      * @return bool
      */
     public static function sendNewSolutionNotification($solutionId) {
-        $solution = Solution::first($solutionId);
-        $pitch = Pitch::first($solution->pitch_id);
-        $owner = Pitch::getOwnerOfPitch($pitch->id);
-        if($owner->email_newsol == 1){
-            $data = array('user' => $owner, 'pitch' => $pitch, 'solution' => $solution);
-            return self::_mail(array(
-                'to' => $owner->email,
-                'subject' => 'Добавлено новое решение!',
-                'data' => $data
-            ));
+        if($solution = Solution::first($solutionId)) {
+            $pitch = Pitch::first($solution->pitch_id);
+            $owner = Pitch::getOwnerOfPitch($pitch->id);
+            if($owner->email_newsol == 1){
+                $data = array('user' => $owner, 'pitch' => $pitch, 'solution' => $solution);
+                return self::_mail(array(
+                    'to' => $owner->email,
+                    'subject' => 'Добавлено новое решение!',
+                    'data' => $data
+                ));
+        }
         }
         return false;
     }
