@@ -47,6 +47,10 @@ class UserTest extends AppUnit {
     }
 
     public function testGetLastActionTime() {
+        $user = User::first(1);
+        $result = $user->getLastActionTime();
+        $this->assertEqual(strtotime($user->lastActionTime), $result);
+
         $user = User::first(2);
         $user->setLastActionTime();
         $time = time();

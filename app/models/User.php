@@ -1008,7 +1008,7 @@ class User extends \app\models\AppModel {
      */
     public function getLastActionTime($record) {
         if(!$lastActionTime = Rcache::read('user_' . $record->id . '_LastActionTime')) {
-            $lastActionTime = $record->$lastActionTime;
+            $lastActionTime = $record->lastActionTime;
         }
         return strtotime($lastActionTime);
     }
