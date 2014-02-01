@@ -1029,8 +1029,9 @@ h1.solution-title-page  {
 .solution-right-panel .solution-summary .solution-rating .rating-image.star5 {
     background-position: 0 0;
 }
-.solution-right-panel .solution-info.solution-about {
-	word-wrap: break-word;
+.solution-right-panel .solution-info.solution-about,
+.solution-right-panel .solution-info.solution-about span {
+	word-break: break-word;
 }
 .solution-right-panel .description-more {
 	display: none;

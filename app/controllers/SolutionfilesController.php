@@ -27,6 +27,17 @@ class SolutionfilesController extends \app\controllers\AppController {
         die();
     }
 
+    public function solutions() {
+        if (null != Session::read('user.id') && $file = Solutionfile::first(array('conditions' => array('filename' => array('LIKE' => '%' . substr($this->request->url, -30)))))) {
+            if (file_exists($file->filename)) {
+                header('Content-Type: application/download');
+                header('Content-Disposition: attachment; filename="' . $file->originalbasename . '"');
+                readfile($file->filename);
+            }
+        }
+        exit;
+    }
+
     public function resize() {
         $res = array(
             'error' => false,

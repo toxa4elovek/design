@@ -494,10 +494,10 @@ $(document).ready(function() {
                 if (result.solution.images.solution) {
                     if ($.isArray(result.solution.images.solution)) {
                         $.each(result.solution.images.solution, function(index, object) {
-                            html += '<a target="_blank" href="' + object.weburl + '" class="attach">' + object.originalbasename + '</a><br>'
+                            html += '<a target="_blank" href="/solutionfiles' + object.weburl + '" class="attach">' + object.originalbasename + '</a><br>'
                         })
                     }else {
-                        html = '<a href="' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
+                        html = '<a href="/solutionfiles' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
                     }
                     html += '</div>';
                     $('.solution-description').prev().html('ФАЙЛЫ')
