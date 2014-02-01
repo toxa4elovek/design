@@ -106,7 +106,7 @@ class Pitch extends \app\models\AppModel {
             else:
                 $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', питч завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
             endif;
-            $data = array('pitch_id' => $params['pitch']->id, 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message);
+            $data = array('pitch_id' => $params['pitch']->id, 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
             Comment::createComment($data);
             if($params['pitch']->expert == 1) {
                 Pitch::sendExpertTimeoutMail($params);
