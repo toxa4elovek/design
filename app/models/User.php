@@ -1013,5 +1013,16 @@ class User extends \app\models\AppModel {
         return strtotime($lastActionTime);
     }
 
+    public static function getReferalPayments() {
+        return self::count(array(
+            'conditions' => array(
+                'balance' => array(
+                    '>' => 0,
+                ),
+                'phone_valid' => 1,
+            ),
+        ));
+    }
+
 }
 ?>

@@ -243,4 +243,11 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
             'subject' => $data['subject'],
         ));
     }
+
+    public static function referalpayments($data) {
+        return self::_mail(array(
+            'to' => $data['to'],
+            'subject' => 'Выплаты рефералам'
+        ));
+    }
 }
