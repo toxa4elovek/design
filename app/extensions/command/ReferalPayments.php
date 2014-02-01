@@ -7,7 +7,7 @@ use \app\extensions\mailers\SpamMailer;
 
 class ReferalPayments extends \app\extensions\command\CronJob {
 
-    protected $dest = 'georgepet@yandex.ru';
+    protected $dest = 'nyudmitriy@godesigner.ru';
 
     public function run() {
         $this->header('Welcome to the ReferalPayments command!');
