@@ -2416,7 +2416,7 @@ table.all-pitches{
     border-top: 1px solid #575864;
 }
 
-.all-pitches td{
+.all-pitches tr td{
 	vertical-align:middle;
 	text-align:center;
 	height:80px;
@@ -2430,7 +2430,7 @@ table.all-pitches{
 .all-pitches a:hover{
 	text-decoration:underline;
 }
-td.pitches-name{
+tr td.pitches-name{
 	vertical-align:top;
 	text-align:left;
 }
