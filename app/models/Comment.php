@@ -5,6 +5,7 @@ namespace app\models;
 use \app\models\Solution;
 use \app\models\Historycomment;
 use \app\extensions\helper\Avatar as AvatarHelper;
+use \app\extensions\helper\NameInflector;
 use \lithium\storage\Session;
 use app\extensions\mailers\CommentsMailer;
 
@@ -70,13 +71,18 @@ class Comment extends \app\models\AppModel {
                 $nums[] = substr($hashtag, 1);
             }
             $sender = User::first($params['user_id']);
+            $admin = User::getAdmin();
             $pitch = Pitch::first($params['pitch_id']);
-            if($pitch->status > 0) {
+            if($pitch->status > 0 && $params['user_id'] != $admin) {
                 // notify admin
                 User::sendAdminNotification($params);
                 if((!empty($num)) || ((isset($params['reply_to'])) && ($params['reply_to'] != 0))) {
                     // Отправить комментарий владельцу питча
-                    //Comment::createComment();
+                    $client = User::first($pitch->user_id);
+                    $nameInflector = new nameInflector();
+                    $message = 'Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
+                    $data = array('pitch_id' => $params['pitch_id'], 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message, 'public' => (int) $params['public'], 'question_id' => $params['id']);
+                    Comment::createComment($data);
                 }
             }else {
                 // Если упоминаются номера решения, отправляем комментарии их владельцам
