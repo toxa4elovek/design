@@ -5,7 +5,9 @@ $(document).ready(function() {
         autoUpload: false,
         singleFileUploads: false,
         add: function(e, data) {
-            if(data.files[0].name.match(/(\.|\/)(doc?x|pdf|rtf)$/i)) {
+            console.log(data.files[0]);
+            console.log(data);
+            if(data.files[0].name.match(/(\.|\/)(docx?|pdf|rtf)$/i)) {
                 e.data.fileupload.myData = data;
                 var html = '<li class="fakeinput" style=" padding-top: 1px; margin-left:10px;font-weight: bold;">Список загружаемых файлов:</li>';
                 $.each(data.files, function(index, object) {
