@@ -345,6 +345,7 @@ $(document).ready(function(){
             var newText = prepend + $('#newComment').val();
             $('#newComment').val(newText);
             $(this).parent().parent().parent().hide();
+            $.scrollTo($('.createCommentForm'), {duration: 500});
         }
         return false;
     });
