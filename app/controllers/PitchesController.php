@@ -1214,8 +1214,6 @@ class PitchesController extends \app\controllers\AppController {
                 $sort = 'created';
                 $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             } else if ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-                //$sort = 'rating';
-                //$order = array('nominated' => 'desc', 'rating' => 'desc');
                 $sort = 'rating';
                 $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
             }else {
@@ -1497,27 +1495,54 @@ Disallow: /pitches/upload/' . $pitch['id'];
     */
 	public function viewsolution() {
 		if(($this->request->id) && ($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch'))))) {
+            $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
             Solution::increaseView($this->request->id);
             $validSorts = array('rating', 'created', 'likes');
             if((isset($this->request->query['sorting'])) && (in_array($this->request->query['sorting'], $validSorts))){
-                switch($this->request->query['sorting']) {
-                    case 'rating':
-                        $sort = 'rating';
-                        $order = array('nominated' => 'desc', 'rating' => 'desc');
-                        break;
-                    case 'created':
-                        $sort = 'created';
-                        $order = array('nominated' => 'desc', 'created' => 'desc');
-                        break;
-                    case 'likes':
-                        $sort = 'likes';
-                        $order = array('nominated' => 'desc', 'likes' => 'desc');
-                        break;
-                    default: break;
+                if((Session::read('user')) && (Session::read('user.id') == $pitch->user_id)) {
+                    switch($this->request->query['sorting']) {
+                        case 'rating':
+                            $sort = 'rating';
+                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'rating' => 'desc', );
+                            break;
+                        case 'created':
+                            $sort = 'created';
+                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'created' => 'desc');
+                            break;
+                        case 'likes':
+                            $sort = 'likes';
+                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'likes' => 'desc');
+                            break;
+                        default: break;
+                    }
+                }else {
+                    switch($this->request->query['sorting']) {
+                        case 'rating':
+                            $sort = 'rating';
+                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
+                            break;
+                        case 'created':
+                            $sort = 'created';
+                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                            break;
+                        case 'likes':
+                            $sort = 'likes';
+                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc');
+                            break;
+                        default: break;
+                    }
                 }
             }else {
-                $sort = 'created';
-                $order = array('nominated' => 'desc', 'created' => 'desc');
+                if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) < time()) && ($pitch->status == 0)) {
+                    $sort = 'created';
+                    $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                } else if ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
+                    $sort = 'rating';
+                    $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
+                }else {
+                    $sort = 'created';
+                    $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                }
             }
 
             $solution->description = nl2br($solution->description);
@@ -1567,9 +1592,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
             $comments = Comment::filterComments($solution->num, $comments);
             $comments = Comment::addAvatars($comments);
-            $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
             $comments = Comment::filterCommentsPrivate($comments, $pitch->user_id);
-
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             $expertsIds = array();
             foreach($experts as $expert) :
