@@ -470,6 +470,7 @@ $(document).ready(function(){
             return false;
         }
         $('#pitch-panel').hide();
+        beforeScrollTop = $(window).scrollTop();
         $('.wrapper', 'body').first().addClass('wrapper-frozen');
         $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
         if(!$.browser.chrome){
