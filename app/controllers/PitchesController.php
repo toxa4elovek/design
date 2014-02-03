@@ -1393,8 +1393,6 @@ class PitchesController extends \app\controllers\AppController {
 	            'order' => array('Comment.id' => 'desc'),
 	            'with' => array('User', 'Pitch')));
 
-	        //$commentsRaw = Comment::addAvatars($commentsRaw);
-	        //$comments = Comment::filterCommentsPrivate($commentsRaw, $pitch->user_id);
 	        $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
 
 	        return compact('comments', 'experts', 'pitch');
@@ -1590,10 +1588,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
 			}
 			$next = $results['next'];
 			$prev = $results['prev'];
-            $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
+            $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.id' => 'desc'), 'with' => array('User', 'Pitch')));
             $comments = Comment::filterComments($solution->num, $comments);
-            $comments = Comment::addAvatars($comments);
-            $comments = Comment::filterCommentsPrivate($comments, $pitch->user_id);
+            $comments = Comment::filterCommentsTree($comments, $pitch->user_id);
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             $expertsIds = array();
             foreach($experts as $expert) :

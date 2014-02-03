@@ -254,8 +254,9 @@ class Comment extends \app\models\AppModel {
         $isUserClient = ($currentUser['id'] == $pitchUserId) ? true : false;
         $isUserAdmin = (($currentUser['isAdmin'] == 1) || User::checkRole('admin')) ? true : false;
 
-        // Make Public for Parent
+        // Set Publicity
         foreach ($commentsFiltered as $comment) {
+            // Parent
             if ($comment->isChild == 1 && $comment->public == 1) {
                 $question_id = $comment->question_id;
                 $parent = $commentsFiltered->find(function($comment) use ($question_id) {
@@ -265,7 +266,19 @@ class Comment extends \app\models\AppModel {
                     return false;
                 });
                 $parent->current()->public = 1;
-                \lithium\analysis\Logger::write('debug', var_export($parent->current()->public, true));
+            }
+            // Child
+            if ($comment->user_id == $comment->pitch->user_id) {
+                $comment_id = $comment->id;
+                $child = $commentsFiltered->find(function($comm) use ($comment_id) {
+                    if ($comm->question_id == $comment_id) {
+                        return true;
+                    }
+                    return false;
+                });
+                if (count($child) > 0) {
+                    $child->current()->public = $comment->public;
+                }
             }
         }
 
@@ -283,20 +296,38 @@ class Comment extends \app\models\AppModel {
                 if (($comment->solution_id != 0) && ($solution = Solution::first(array('fields' => array('user_id'), 'conditions' => array( 'id' => $comment->solution_id))))) {
                     $designer = $solution->user_id;
                 }
-                if (($comment->user_id != $currentUser['id']) && ($designer === $currentUser['id'])) {
+                if (($comment->user_id != $currentUser['id']) && (($designer === $currentUser['id']) || ($comment->reply_to === $currentUser['id']))) {
                     $comment->needAnswer = 1;
                 }
-                if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer !== $currentUser['id'])) {
+                if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer !== $currentUser['id']) && ($comment->reply_to !== $currentUser['id'])) {
                     $comment->text = '__must be unset__';
                 }
             }
         }
+
+        // Delete marked forbidden comment
         $commentsFiltered = $commentsFiltered->find(function($comment) {
             if ($comment->text != '__must be unset__') {
                 return true;
             }
             return false;
         });
+
+        // Set insonsequent padding
+        foreach ($commentsFiltered as $comment) {
+            if ($comment->isChild == 1) {
+                $question_id = $comment->question_id;
+                $emptyParent = $commentsFiltered->find(function($comm) use ($question_id) {
+                    if ($comm->id == $question_id) {
+                        return true;
+                    }
+                    return false;
+                });
+                if (count($emptyParent) == 0) {
+                    $comment->isChild = 0;
+                }
+            }
+        }
         return $commentsFiltered;
     }
 
