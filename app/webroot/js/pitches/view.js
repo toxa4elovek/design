@@ -556,13 +556,18 @@ $(document).ready(function(){
 
             var firstImage = $('.solution-image').first().parent();
             if (currentUserId == result.pitch.user_id) { // isClient
-                $('<div class="separator-rating"> \
-                <div class="separator-left"></div> \
-                <div class="rating-widget"><span class="left">выставьте</span> \
-                        <span id="star-widget"></span> \
-                <span class="right">рейтинг</span></div> \
-                <div class="separator-right"></div> \
-                </div>').insertAfter(firstImage);
+                var ratingWidget = $('<div class="separator-rating"> \
+                    <div class="separator-left"></div> \
+                    <div class="rating-widget"><span class="left">выставьте</span> \
+                            <span id="star-widget"></span> \
+                    <span class="right">рейтинг</span></div> \
+                    <div class="separator-right"></div> \
+                    </div>');
+                if(firstImage.length > 0){
+                    ratingWidget.insertAfter(firstImage);
+                }else {
+                    ratingWidget.insertAfter('.preview');
+                }
                 $("#star-widget").raty({
                     path: '/img',
                     starOff: 'solution-star-off.png',
