@@ -115,13 +115,15 @@
                             if($pitch->category_id == 7):
                                 if($this->user->isLoggedIn() && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id)))):
                                     $visible = true;?>
-                                    <a class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
+                                    <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
+                                    <a class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>">
                                         <?php if(mb_strlen(trim($solution->description)) > 100):?>
                                         <?=mb_substr(trim($solution->description), 0, 100, 'UTF-8')?>
                                         <?php else:?>
                                         <?=trim($solution->description)?>
                                         <?php endif?>
                                     </a>
+                                    <?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?></div><?php endif?>
                                 <?php else:?>
                                     <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="background-image: url(/img/copy-inv.png);width:179px;height:136px;background-color:#efefef;display:block;"></a>
                                 <?php endif?>
@@ -181,15 +183,17 @@
                             if($pitch->category_id == 7):
                                 if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):
                                     $visible = true;?>
-                                <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
-                                    <?php if(mb_strlen(trim($solution->description)) > 100):?>
-                                    <?=mb_substr(trim($solution->description), 0, 100, 'UTF-8')?>
-                                    <?php else:?>
-                                    <?=trim($solution->description)?>
-                                    <?php endif?>
-                                </a>
+                                    <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
+                                    <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>">
+                                        <?php if(mb_strlen(trim($solution->description)) > 100):?>
+                                        <?=mb_substr(trim($solution->description), 0, 100, 'UTF-8')?>
+                                        <?php else:?>
+                                        <?=trim($solution->description)?>
+                                        <?php endif?>
+                                    </a>
+                                    <?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?></div><?php endif?>
                                 <?php else:?>
-                                <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="background-image: url(/img/copy-inv.png);width:179px;height:136px;background-color:#efefef;display:block;"></a>
+                                    <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="background-image: url(/img/copy-inv.png);width:179px;height:136px;background-color:#efefef;display:block;"></a>
                                 <?php endif?>
                             <?php else:
                                     if($this->user->isPitchOwner($pitch->user_id) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id)) || ($canViewPrivate)):
