@@ -293,6 +293,17 @@ endif?>
                 <label class="required">Название питча <a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
                 <input type="text" name="title" placeholder="Логотип для Star Lift" data-placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
                 <input type="hidden" name="category_id" value="<?=$category->id?>">
+                <?php if(($pitch->category_id == 7) && $onlyText): ?>
+                    <?php if (isset($specifics['first-option'])):?>
+                    <input type="hidden" data-selected="true" name="first-option" value="0" class="sub-check specific-group">
+                    <?php endif;?>
+                    <?php if (isset($specifics['second-option'])):?>
+                    <input type="hidden" data-selected="true" name="second-option" value="1" class="sub-check specific-group">
+                    <?php endif;?>
+                    <?php if (isset($specifics['third-option'])):?>
+                    <input type="hidden" data-selected="true" name="third-option" value="2" class="sub-check specific-group">
+                    <?php endif;?>
+                <?php endif?>
             </p>
             <?php if (!empty($pitch->industry)):?>
             <p>

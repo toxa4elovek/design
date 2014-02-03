@@ -86,21 +86,6 @@ $(document).ready(function() {
         $('.extensions').removeClass('wrong-input');
     });
 
-    /*
-     $( ".slider" ).slider({
-     value: 5,
-     min: 1,
-     max: 9,
-     step: 1,
-     slide: function( event, ui ) {
-
-     var rightOpacity = (((ui.value-1) * 0.08) + 0.36).toFixed(2);
-     var leftOpacity = (1 - ((ui.value-1) * 0.08)).toFixed(2);
-     $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
-     $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
-     }
-     })*/
-
     $('#save').click(function() {
         if((($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length == 0)) && ($('input[name=tos]').length == 1)) {
             alert('Вы должны принять правила и условия');
@@ -393,6 +378,9 @@ function FeatureCart() {
             specificPitchData[$(object).attr('name')] = $(object).val()
         });
         $('input.specific-group:checked').each(function(index, object){
+            specificPitchData[$(object).attr('name')] = $(object).val()
+        });
+        $('input.specific-group[data-selected~="true"]').each(function(index, object){
             specificPitchData[$(object).attr('name')] = $(object).val()
         });
         if($('.slider').length > 0) {
