@@ -400,6 +400,7 @@ $(document).ready(function() {
                     ratingWidget.insertAfter(firstImage);
                 }else {
                     ratingWidget.insertAfter('.preview');
+                    $('.separator-rating').css({"margin-top": "20px", "margin-bottom": "20px"});
                 }
                 $("#star-widget").raty({
                     path: '/img',
