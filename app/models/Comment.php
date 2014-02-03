@@ -11,6 +11,9 @@ use app\extensions\mailers\CommentsMailer;
 
 class Comment extends \app\models\AppModel {
 
+    public static $result = '';
+    public static $level = 0;
+
 	public $belongsTo = array('Pitch', 'User');
 
 	public static function __init() {
@@ -242,6 +245,86 @@ class Comment extends \app\models\AppModel {
             }
         }
         return $commentsFiltered;
+    }
+
+    public static function filterCommentsTree($commentsRaw, $pitchUserId) {
+        self::$result = new \lithium\util\Collection();
+        $commentsFiltered = self::fetchCommentsTree($commentsRaw);
+        $currentUser = Session::read('user');
+        $isUserClient = ($currentUser['id'] == $pitchUserId) ? true : false;
+        $isUserAdmin = (($currentUser['isAdmin'] == 1) || User::checkRole('admin')) ? true : false;
+
+        // Make Public for Parent
+        foreach ($commentsFiltered as $comment) {
+            if ($comment->isChild == 1 && $comment->public == 1) {
+                $question_id = $comment->question_id;
+                $parent = $commentsFiltered->find(function($comment) use ($question_id) {
+                    if ($comment->id == $question_id) {
+                        return true;
+                    }
+                    return false;
+                });
+                $parent->current()->public = 1;
+                \lithium\analysis\Logger::write('debug', var_export($parent->current()->public, true));
+            }
+        }
+
+        if ((true == $isUserClient) || (true == $isUserAdmin)) {
+            foreach ($commentsFiltered as $comment) {
+                $comment->needAnswer = '';
+                if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
+                    $comment->needAnswer = 1;
+                }
+            }
+        } else {
+            foreach ($commentsFiltered as $comment) {
+                $designer = false;
+                $comment->needAnswer = '';
+                if (($comment->solution_id != 0) && ($solution = Solution::first(array('fields' => array('user_id'), 'conditions' => array( 'id' => $comment->solution_id))))) {
+                    $designer = $solution->user_id;
+                }
+                if (($comment->user_id != $currentUser['id']) && ($designer === $currentUser['id'])) {
+                    $comment->needAnswer = 1;
+                }
+                if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer !== $currentUser['id'])) {
+                    $comment->text = '__must be unset__';
+                }
+            }
+        }
+        $commentsFiltered = $commentsFiltered->find(function($comment) {
+            if ($comment->text != '__must be unset__') {
+                return true;
+            }
+            return false;
+        });
+        return $commentsFiltered;
+    }
+
+    function fetchCommentsTree($commentsRaw) {
+        self::$level++;
+        foreach ($commentsRaw as $comment) {
+            $avatarHelper = new AvatarHelper;
+            $comment->avatar = $avatarHelper->show($comment->user->data(), false, true);
+            if (self::$level > 1) {
+                $comment->isChild = 1;
+            }
+            $children = Comment::all(array(
+                'conditions' => array(
+                    'question_id' => $comment->id,
+                ),
+                'with' => array('User', 'Pitch')));
+            if (count($children) > 0) {
+                $comment->hasChild = 1;
+                self::$result->append($comment);
+                self::fetchCommentsTree($children);
+            } else {
+                self::$result->append($comment);
+            }
+        }
+        self::$level--;
+        if (self::$level == 0) {
+            return self::$result;
+        }
     }
 
     public static function addAvatars($comments) {

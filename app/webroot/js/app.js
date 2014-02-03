@@ -664,7 +664,7 @@ function populateComment(data) {
     if (data.needAnswer == 1) {
         answerTool = '';
     }
-    if ((data.isChild == 1) || (data.hasChild == 1)) {
+    if (data.hasChild == 1) {
         answerTool = ' display: none;';
     }
     if (isCurrentAdmin != 1 && isClient != 1 && data.isClosedPitch) {

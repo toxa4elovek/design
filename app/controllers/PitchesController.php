@@ -1393,8 +1393,9 @@ class PitchesController extends \app\controllers\AppController {
 	            'order' => array('Comment.id' => 'desc'),
 	            'with' => array('User', 'Pitch')));
 
-	        $commentsRaw = Comment::addAvatars($commentsRaw);
-	        $comments = Comment::filterCommentsPrivate($commentsRaw, $pitch->user_id);
+	        //$commentsRaw = Comment::addAvatars($commentsRaw);
+	        //$comments = Comment::filterCommentsPrivate($commentsRaw, $pitch->user_id);
+	        $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
 
 	        return compact('comments', 'experts', 'pitch');
 	    } else {
