@@ -339,6 +339,10 @@ $(document).ready(function(){
         $('img', $(this)).attr('src', '/img/marker5_2.png');
     });
 
+    $('.solution-menu-toggle').on('click', function() {
+        return false;
+    })
+
     $('.solution-link-menu').click(function() {
         if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
             var prepend = $(this).data('commentTo') + ', ';
