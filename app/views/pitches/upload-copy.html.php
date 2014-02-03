@@ -26,8 +26,8 @@
 
                     <div class="group" style="background:none;margin-bottom:0;">
                         <p>
-                            <label class="greyboldheader">Название, хедлайн или слоган</label> <a class="second" href="">(?)</a>
-                            <span id="charcounter" class="greyboldheader" style="display: block; float: right; margin-right: 40px;">375</span>
+                            <label class="greyboldheader">Название, хедлайн или слоган</label>
+
                             <textarea id="charzone" class="upload-textarea" style="height:130px; width: 557px;margin-top: 8px;" name="description"></textarea>
                         </p>
                     </div>

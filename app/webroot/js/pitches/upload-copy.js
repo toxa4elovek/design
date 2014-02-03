@@ -61,18 +61,10 @@ $(document).ready(function() {
             alert('Не все поля заполнены! (соглашение)');
         }else if($('#charzone').val().length == 0) {
             alert('Вы не указали идею!');
-        }else if($('#charzone').val().length > 375) {
-            alert('Вы ввели слишком длинный текст идеи, используйте возможности прикрепления файлов!');
         }else {
             $('#solution').fileupload('uploadByClickNoCheck', $('#solution'), $('#redirect-value').val());
         }
         return false;
-    });
-
-    $('#charzone').charCount({
-        "counterElement": $('#charcounter'),
-        "allowed": 375,
-        "warning": 50
     });
 
     if($('#panel').length > 0){
