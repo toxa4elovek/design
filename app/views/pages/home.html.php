@@ -13,16 +13,6 @@
         <div class="slide">
             <a href="/pages/howitworks"><img src="/img/3_BANNER.png" alt="" /></a>
         </div>
-      <!--div class="slide">
-       <a href="#" class="b_img_slide"><img src="img/4.png" alt="" /></a>
-       <a href="#" class="s_img_slide"><img src="img/5.png" alt="" /></a>
-       <a href="/pages/howitworks"><img src="/img/2_BANNER.png" alt="" /></a>
-      </div>
-      <div class="slide">
-       <a href="#" class="b_img_slide"><img src="img/4.png" alt="" /></a>
-       <a href="#" class="s_img_slide"><img src="img/5.png" alt="" /></a>
-       <a href="/pages/howitworks"><img src="/img/3_BANNER.png" alt="" /></a>
-      </div-->
     </div>
     <a id="finished" href="/pitches/?type=finished" style="height:32px;width:173px;position: absolute; top: 251px; left: 79px; z-index:101;background-image:url(/img/examples_173_32_red.png)"><img src="/img/examples_173_32.png" alt="Просмотреть примеры"></a>
     <a id="video" href="#" style="height:32px;width:190px;position: absolute; top: 251px; left: 242px; z-index:101;background-image:url(/img/video_red_173_32.png)"><img src="/img/video_173_32.png" alt="Просмотреть примеры"></a>
@@ -91,7 +81,6 @@
           <?php endif?>
         </li>
       <li>
-       <!--img src="/img/special_offer_banner_260X260.jpg" alt="" /-->
        <?php
        if(mt_rand(0,1) == 0) {
         $specialShow = true;
@@ -130,7 +119,7 @@
     <div class="use_table">
         <div id="pitch-table" style="height:280px;">
               <div class="to_use">
-                  <?=$this->html->link('Используя<br> сообщество<br> дизайнеров<br>в сети, Создайте<br> лого, буклет,<br> упаковку, сайт, <br> визитку, etc ...', 'Pages::howitworks', array('class' => '', 'id' => 'to_use_text', 'escape' => false))?>
+                  <?=$this->html->link('Используя<br> сообщество<br> дизайнеров<br>в сети, Создайте<br> лого, название,<br> упаковку, сайт, <br> визитку, etc ...', 'Pages::howitworks', array('class' => '', 'id' => 'to_use_text', 'escape' => false))?>
               </div>
               <div class="wap_table">
                 <table class="spec_table">
