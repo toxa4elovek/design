@@ -89,12 +89,12 @@
                     }
 
                     $picCounter2 = 0;
-                    if(isset($solution->images['solution_galleryLargeSize'][0])):
+                    if(isset($solution->images['solution_galleryLargeSize'][0]) && ($pitch->category_id != 7)):
                         foreach($solution->images['solution_galleryLargeSize'] as $image):
                             $picCounter2++;
                         endforeach;
                     else:
-                        if(!isset($solution->images['solution_galleryLargeSize'])):
+                        if(!isset($solution->images['solution_galleryLargeSize']) && ($pitch->category_id != 7)):
                             $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
                             $picCounter2 = 0;
                             if(is_array($solution->images['solution_galleryLargeSize'])):
