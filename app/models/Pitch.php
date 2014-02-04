@@ -864,4 +864,20 @@ class Pitch extends \app\models\AppModel {
             return User::first($pitchData->user_id);
         }
     }
+
+    /**
+    * Метод возвращает массив для запроса сортировки решений, применяется для объекта $pitch
+    *
+    * @param $pitch
+    * @return array
+    */
+    public function getSolutionsSortingOrder($pitch) {
+        if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
+            return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+        }elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
+            return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
+        }else {
+            return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+        }
+    }
 }

@@ -1209,16 +1209,13 @@ class PitchesController extends \app\controllers\AppController {
             if (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW) {
                 $canViewPrivate = true;
             }
-
-            if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) < time()) && ($pitch->status == 0)) {
+            $order = $pitch->getSolutionsSortingOrder();
+            if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
                 $sort = 'created';
-                $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             } else if ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
                 $sort = 'rating';
-                $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
             }else {
                 $sort = 'created';
-                $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             }
             $validSorts = array('rating', 'created', 'likes');
             if((isset($this->request->query['sorting'])) && (in_array($this->request->query['sorting'], $validSorts))){
@@ -1533,15 +1530,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     }
                 }
             }else {
-                if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) < time()) && ($pitch->status == 0)) {
+                $order = $pitch->getSolutionsSortingOrder();
+                if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
                     $sort = 'created';
-                    $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
                 } else if ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
                     $sort = 'rating';
-                    $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
                 }else {
                     $sort = 'created';
-                    $order = array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
                 }
             }
 
