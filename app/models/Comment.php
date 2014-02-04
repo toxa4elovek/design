@@ -212,41 +212,6 @@ class Comment extends \app\models\AppModel {
         return $solutionComments;
     }
 
-    public static function filterCommentsPrivate($comments, $pitchUserId) {
-        $currentUser = Session::read('user');
-        $isUserClient = ($currentUser['id'] == $pitchUserId) ? true : false;
-        $isUserAdmin = (($currentUser['isAdmin'] == 1) || User::checkRole('admin')) ? true : false;
-        $commentsFiltered = new \lithium\util\Collection();
-
-        if ((true == $isUserClient) || (true == $isUserAdmin)) {
-            foreach ($comments as $comment) {
-                $comment = self::fetchChild($comment);
-                $comment->needAnswer = '';
-                if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
-                    $comment->needAnswer = 1;
-                }
-                $commentsFiltered->append($comment);
-            }
-        } else {
-            foreach ($comments as $comment) {
-                $comment = self::fetchChild($comment);
-                $designer = false;
-                $comment->needAnswer = '';
-                if ($solution = Solution::first(array('fields' => array('user_id'), 'conditions' => array( 'id' => $comment->solution_id)))) {
-                    $designer = $solution->user_id;
-                }
-                if (($comment->public == 0) && ($comment->user_id != $currentUser['id']) && ($designer !== $currentUser['id'])) {
-                    continue;
-                }
-                if (($comment->user_id != $currentUser['id']) && ($designer == $currentUser['id'])) {
-                    $comment->needAnswer = 1;
-                }
-                $commentsFiltered->append($comment);
-            }
-        }
-        return $commentsFiltered;
-    }
-
     public static function filterCommentsTree($commentsRaw, $pitchUserId) {
         self::$result = new \lithium\util\Collection();
         $commentsFiltered = self::fetchCommentsTree($commentsRaw);
@@ -313,7 +278,7 @@ class Comment extends \app\models\AppModel {
             return false;
         });
 
-        // Set insonsequent padding
+        // Set inconsequent padding
         foreach ($commentsFiltered as $comment) {
             if ($comment->isChild == 1) {
                 $question_id = $comment->question_id;
@@ -441,21 +406,4 @@ class Comment extends \app\models\AppModel {
         }
         return true;
     }
-
-    public static function fetchChild($comment) {
-        $comment->child = '';
-        $comment->hasChild = '';
-        if ($child = self::first(array('conditions' => array('question_id' => $comment->id), 'with' => array('User')))) {
-            $avatarHelper = new AvatarHelper;
-            $child->avatar = $avatarHelper->show($child->user->data(), false, true);
-            $child->isChild = 1;
-            $comment->child = $child;
-            $comment->hasChild = 1;
-            if ($child->public == 1) {
-                $comment->public = 1;
-            }
-        }
-        return $comment;
-    }
-
 }
