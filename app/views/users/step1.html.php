@@ -147,12 +147,8 @@
                     <span class="regular">Вы можете вернуться к этому этапу позже!</span>
                 </div>
                 <div class="proceed">
-                    <?php if(($this->user->isAdmin()) || ($solution->pitch->category_id == 7 && $solution->step != 4)):?>
-
-                    <?php else:?>
                     <?=$this->html->link('<img src="/img/proceed.png" /><br />
-                            <span>Продолжить</span>', array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id), array('escape' => false, 'id' => 'step2-link-saveform'))?>
-                    <?php endif;?>
+                        <span>Продолжить</span>', array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id), array('escape' => false, 'id' => 'step2-link-saveform'))?>
                 </div>
                 <div class="clr"></div>
 

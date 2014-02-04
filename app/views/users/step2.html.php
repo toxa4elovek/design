@@ -27,11 +27,19 @@
         </section>
         <section>
             <div class="center_block messages_gallery"  style="margin:35px 0 0 63px !important">
-                <?php if($type == 'designer'):?>
-                <span class="regular">Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об этом в комментариях. Успехов!</span>
-                <?php elseif($type == 'client') :?>
-                <span class="regular">У вас есть право на внесение 3 поправок в течение <?=$solution->pitch->category->default_timelimit?> дней до запроса исходных файлов. Если вы удовлетворены макетами, пожалуйста, нажмите кнопку &laquo;Одобрить макеты&raquo; внизу страницы.</span>
-                <?php endif;?>
+                <?php if ($solution->pitch->category_id == 7):?>
+                    <?php if($type == 'designer'):?>
+                    <span class="regular">Со дня определения победителя у заказчика есть 10 дней для получения полного объема работ, запрошенного в брифе.</span>
+                    <?php elseif($type == 'client') :?>
+                    <span class="regular">Со дня определения победителя у вас есть 10 дней для получения полного объема работ, запрошенного в брифе. Если вас все устраивает, пожалуйста, завершите питч.</span>
+                    <?php endif;?>
+                <?php else: ?>
+                    <?php if($type == 'designer'):?>
+                    <span class="regular">Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об этом в комментариях. Успехов!</span>
+                    <?php elseif($type == 'client') :?>
+                    <span class="regular">У вас есть право на внесение 3 поправок в течение <?=$solution->pitch->category->default_timelimit?> дней до запроса исходных файлов. Если вы удовлетворены макетами, пожалуйста, нажмите кнопку &laquo;Одобрить макеты&raquo; внизу страницы.</span>
+                    <?php endif;?>
+                <?php endif; ?>
 
                 <div class="comment" style="margin-left:0px;">
                     <h4>Комментарии</h4>
@@ -157,20 +165,32 @@
                             <span>Назад</span>', array('controller' => 'users', 'action' => 'step1', 'id' => $solution->id), array('escape' => false))?>
                     </div>
                     <div class="continue spanned" style="margin-bottom:10px;">
+                    <?php if ($solution->pitch->category_id == 7): ?>
+                        <?php if($solution->step < 4):?>
+                        <p><img src="/img/continue.png" /><br />
+                            <span style="font: normal 18px/21px 'RodeoC',sans-serif; margin: 10px 0 0; display: inline-block; color: #BABABA; text-transform: uppercase;">Продолжить</span></p>
+                        <?php else:?>
+                        <?=$this->html->link('<img src="/img/proceed.png" /><br />
+                            <span>Продолжить</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id), array('escape' => false))?>
+                        <?php endif;?>
+                    <?php else: ?>
                         <?php if($solution->step < 3):?>
                         <p><img src="/img/continue.png" /><br />
-                            <span style="font: normal 18px/21px 'RodeoC',sans-serif;
-    margin: 10px 0 0;
-    display: inline-block;color:#BABABA;text-transform:uppercase;">Продолжить</span></p>
+                            <span style="font: normal 18px/21px 'RodeoC',sans-serif; margin: 10px 0 0; display: inline-block; color: #BABABA; text-transform: uppercase;">Продолжить</span></p>
                         <?php else:?>
                         <?=$this->html->link('<img src="/img/proceed.png" /><br />
                             <span>Продолжить</span>', array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id), array('escape' => false))?>
                         <?php endif;?>
+                    <?php endif; ?>
                     </div>
                 </div>
                 <?php elseif((($type == 'client') || ($this->user->isAdmin())) &&  ($solution->step < 3)):?>
                 <div class="buttons">
                     <div class="verify spanned" style="margin-right: 0px;">
+                    <?php if ($solution->pitch->category_id == 7): ?>
+                        <?=$this->html->link('<img src="/img/proceed.png" /><br />
+                            <span style="">Одобрить работу</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false))?>
+                    <?php else: ?>
                         <?php if(($nofiles == false) || ($this->user->isAdmin())):?>
                         <?=$this->html->link('<img src="/img/proceed.png" /><br />
                             <span style="">Одобрить макеты</span>', array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
@@ -178,8 +198,8 @@
                             <a href="#" id="nofile"><img src="/img/proceed.png"><br>
                             <span>Одобрить макеты</span></a>
                         <?php endif;?>
-
-                </div>
+                    <?php endif; ?>
+                    </div>
                 </div>
                 <?php endif;?>
             </div>

@@ -281,12 +281,7 @@ class UsersController extends \app\controllers\AppController {
                 return $this->redirect('Users::office');
             }
             if(Session::read('user.id') == $solution->pitch->user_id) {
-                if($solution->pitch->category_id != 7) {
-                    return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id));
-                }else {
-                    //return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
-                    return $this->redirect('/users/step4/' .  $solution->id . '/confirm');
-                }
+                return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id));
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
             if($solution->user_id == Session::read('user.id')) {
@@ -319,11 +314,6 @@ class UsersController extends \app\controllers\AppController {
             if(Session::read('user.isAdmin') == 1) {
                 $type = 'admin';
                 $messageTo = User::first($solution->pitch->user_id);
-            }
-            if(($solution->pitch->category_id == 7) && ($solution->step < 4)) {
-                return $this->redirect('/users/step1/' . $solution->id);
-            }elseif(($solution->pitch->category_id == 7) && ($solution->step == 4)) {
-                return $this->redirect('/users/step4/' . $solution->id);
             }
             if($this->request->data) {
                 $newComment = Wincomment::create();
@@ -389,6 +379,9 @@ class UsersController extends \app\controllers\AppController {
             }
             if($solution->step < 3) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $this->request->id));
+            }
+            if (($solution->pitch->category_id == 7) && ($solution->step == 4)) {
+                return $this->redirect('/users/step4/' . $solution->id);
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
             if($solution->user_id == Session::read('user.id')) {

@@ -27,7 +27,7 @@
             </div>
             <?php
             if(($solution->pitch->category_id == 7) && ($type == 'client')):?>
-
+                <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
             <?php else:?>
                 <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
             <?php endif?>

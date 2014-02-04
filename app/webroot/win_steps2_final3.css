@@ -313,6 +313,7 @@ ul li a.active span {
 }
 .conteiner section .info {
 	width: 187px;
+	margin-bottom: 50px;
 }
 .conteiner section .info span {
 	/*font: normal 13px/1 "RodeoC", sans-serif;

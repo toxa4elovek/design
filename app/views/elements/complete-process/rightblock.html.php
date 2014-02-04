@@ -21,6 +21,13 @@
         <!--span class="bold supplement">Победил</span>
         <span class="supplement"><?=date('d.m.Y', strtotime($solution->change))?></span-->
         <span class="supplement">Дата окончания питча <?=date('d.m.Y', strtotime($solution->pitch->awardedDate))?>. в <?=date('H:i', strtotime($solution->pitch->awardedDate))?></span>
+        <?php if ($solution->pitch->category_id == 7):?>
+            <?php if($type == 'designer'):?>
+                <span class="supplement">Со дня определения победителя у заказчика есть 10 дней для получения полного объема работ, запрошенного в брифе.</span>
+            <?php else: ?>
+                <span class="supplement">Со дня определения победителя у вас есть 10 дней для получения полного объема работ, запрошенного в брифе. Если вас все устраивает, пожалуйста, завершите питч.</span>
+            <?php endif; ?>
+        <?php else: ?>
         <span class="supplement">Ознакомьтесь с
             <?php if($type == 'designer'):?>
                 <a href="/answers/view/54">инструкциями</a>
@@ -30,5 +37,6 @@
     заключительного этапа.</span>
         <span class="supplement">Со дня определения победителя, у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты (3 поправки) и исходники.<?php
             if(($step < 3) && ($this->user->isPitchOwner($solution->pitch->user_id))): echo ' Для начала вам нужно получить джипеги, внести правки и одобрить макеты.'; endif;?></span>
+        <?php endif; ?>
     </div>
 </div>
