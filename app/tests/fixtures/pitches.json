@@ -1,3 +1,5 @@
 [
-    {"id": 1, "user_id": 2, "category_id": 1, "title": "Test title"}
+    {"id": 1, "user_id": 2, "category_id": 1, "title": "Test title", "status": 0},
+    {"id": 2, "user_id": 2, "category_id": 1, "title": "Test title 2", "status": 0},
+    {"id": 3, "user_id": 2, "category_id": 1, "title": "Test title 3", "status": 1}
 ]
