@@ -616,6 +616,7 @@ function prepareCommentData(comment, result) {
     commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
     commentData.isExpert = isExpert(comment.user_id, expertsObj);
     commentData.isClosedPitch = (result.pitch.status != 0) ? 1 : 0;
+    commentData.publicClass = (comment.public == 1) ? ' public-comment' : ' private-comment'; 
     
     if (result.pitch.user_id == comment.user_id) {
         commentData.messageInfo = 'message_info2';
@@ -700,7 +701,7 @@ function populateComment(data) {
                 </a> \
                 <div class="clr"></div> \
                 </div> \
-                <div data-id="' + data.commentId + '" class="message_text"> \
+                <div data-id="' + data.commentId + '" class="message_text' + data.publicClass + '"> \
                     <span class="regular comment-container">'
                         + data.commentText +
                     '</span> \
@@ -1150,6 +1151,7 @@ function preparePitchCommentData(result) {
     commentData.commentType = (result.comment.user_id == result.comment.pitch.user_id) ? 'client' : 'designer';
     commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
     commentData.isClosedPitch = (result.comment.pitch.status != 0) ? 1 : 0;
+    commentData.publicClass = (result.comment.public == 1) ? ' public-comment' : ' private-comment';
 
     if (result.comment.pitch.user_id == result.comment.user_id) {
         commentData.messageInfo = 'message_info2';

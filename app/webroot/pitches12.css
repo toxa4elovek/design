@@ -836,12 +836,13 @@ h1.solution-title-page  {
 }
 .solution-left-panel div.message_text {
 	float: right;
-    width: 382px;
-    margin: 20px auto 20px auto;
+    width: 362px;
+    margin: 5px auto 20px auto;
+    padding: 10px 20px 0 0;
     word-wrap: break-word;
 }
 .solution-left-panel section.is-child div.message_text {
-	width: 325px;
+	width: 305px;
 }
 .solution-left-panel section.answer-section textarea {
 	width: 380px;
@@ -1134,7 +1135,7 @@ h1.solution-title-page  {
 	height: 15px;
 	background-image: url(img/popup-close-sprite.png);
 	background-position: center bottom;
-	background-repeat: none;
+	background-repeat: no-repeat;
 	cursor: pointer;
 }
 .solution-right-panel .solution-popup-close:hover {
@@ -1161,9 +1162,10 @@ h1.solution-title-page  {
     background: url('img/blog-ajax-loader.gif') center no-repeat;
 }
 .pitch-comments div.message_text {
-    margin: 15px 0 0 26px;
+    margin: 5px 0 0 26px;
+    padding: 10px 20px 0 0;
     float: left;
-    width: 570px;
+    width: 545px;
     text-transform: none;
     color: #8f8f8f;
     font: normal 13px/1 "Arial", sans-serif;
@@ -1171,7 +1173,7 @@ h1.solution-title-page  {
     word-wrap:break-word;
 }
 .pitch-comments section.is-child div.message_text {
-	width: 505px;
+	width: 480px;
 }
 .pitch-comments div.toolbar-wrapper {
     width: 810px;
@@ -1224,7 +1226,7 @@ width: 15px;
 height: 15px;
 background-image: url(img/popup-close-sprite.png);
 background-position: center bottom;
-background-repeat: none;
+background-repeat: no-repeat;
 cursor: pointer;
 }
 #popup-rating a.modalCloseImg:hover {
@@ -1294,7 +1296,7 @@ height: 10px;
 opacity: .5;
 background-image: url(img/bubble-close.png);
 background-position: center bottom;
-background-repeat: none;
+background-repeat: no-repeat;
 cursor: pointer;
 }
 #dinamic div.bubble #bubble-close:hover {
@@ -1311,4 +1313,14 @@ input.wrong-input {
     width: 205px;
     position: absolute;
     z-index: 2147483647; 
+}
+div.message_text.private-comment {
+	background-image: url(img/private-comment-eye.png);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+div.message_text.public-comment {
+	background-image: url(img/public-comment-eye.png);
+	background-repeat: no-repeat;
+	background-position: right top;
 }
