@@ -1024,5 +1024,67 @@ class User extends \app\models\AppModel {
         ));
     }
 
+    /**
+     * Check User's Accounts
+     */
+    public static function accountCheck($entity) {
+        $options = unserialize($entity->paymentOptions);
+        $options = $options[0];
+        $resultCor = self::fn_checkKS($options['coraccount']) ? 1 : 0;
+        $resultAcc = self::fn_checkRS($options['accountnum'], $options['bik']) ? 2 : 0;
+        $result = $resultCor + $resultAcc;
+        $message = '';
+        switch ($result) {
+            case 0:
+                $message = 'Неверно указан Счёт.<br>Неверно указан Корсчёт.<br>';
+                    break;
+            case 1:
+                $message = 'Неверно указан Счёт.<br>';
+                    break;
+            case 2:
+                $message = 'Неверно указан Корсчёт.<br>';
+                    break;
+            default:
+                break;
+        }
+        $messageBik = (preg_match('/^[0-9]{9}$/', $options['bik'])) ? '' : 'Неверно указан БИК.<br>';
+        $messageInn = (preg_match('/^[0-9]{12}$/', $options['inn'])) ? '' : 'Неверно указан ИНН.<br>';
+        $message = $messageBik . $messageInn . $message;
+        return ! (bool) $message;
+    }
+
+    protected static function fn_bank_account($str) {
+        $result = false;
+        $sum = 0;
+        if ($str == 0) {
+            return $result;
+        }
+
+        //весовые коэффициенты
+        $v = array(7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1);
+
+        for ($i = 0; $i <= 22; $i++) {
+            //вычисляем контрольную сумму
+            $sum = $sum + ( ((int) $str{$i}) * $v[$i] ) % 10;
+        }
+
+        //сравниваем остаток от деления контрольной суммы на 10 с нулём
+        if ($sum % 10 == 0) {
+            $result = true;
+        }
+
+        return $result;
+    }
+
+    protected static function fn_checkKS($account) {
+        return (bool) preg_match('/^[0-9]{20}$/', $account);
+    }
+
+    /*
+     * Проверка правильности указания расчётного счёта:
+     * 1. Для проверки контрольной суммы перед расчётным счётом добавляются три последние цифры БИКа банка.
+     */
+    protected function fn_checkRS($account, $BIK) {
+        return self::fn_bank_account(substr($BIK, -3, 3) . $account);
+    }
 }
-?>
