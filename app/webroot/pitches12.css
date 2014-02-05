@@ -761,6 +761,9 @@ h1.solution-title-page  {
     float: right;
     width: 150px;
 }
+.solution-left-panel #newComment {
+	color: #666666;
+}
 /* Star Widget */
 .solution-left-panel .rating-widget {
 	float: left;
