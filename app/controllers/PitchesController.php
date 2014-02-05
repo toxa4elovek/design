@@ -226,7 +226,7 @@ class PitchesController extends \app\controllers\AppController {
         $pitchTitleHelper = new PitchTitleFormatter;
 		foreach($tempPitchList as &$pitch) {
 			$pitch['sort'] = $i;
-            $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title']);
+            $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title'], 95);
             $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
 			$pitchList[] = $pitch;
 			$i++;
@@ -478,8 +478,10 @@ class PitchesController extends \app\controllers\AppController {
             $i = 1;
             $tempPitchList = $pitches->data();
             $pitchList = array();
+            $pitchTitleHelper = new PitchTitleFormatter;
             foreach($tempPitchList as &$pitch) {
                 $pitch['sort'] = $i;
+                $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title'], 95);
                 $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
                 $pitchList[] = $pitch;
                 $i++;
@@ -702,9 +704,11 @@ class PitchesController extends \app\controllers\AppController {
             $i = 1;
             $pitchList = array();
             if($pitches) {
-            $tempPitchList = $pitches->data();
+                $tempPitchList = $pitches->data();
+                $pitchTitleHelper = new PitchTitleFormatter;
                 foreach($tempPitchList as &$pitch) {
                     $pitch['sort'] = $i;
+                    $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title'], 95);
                     $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
                     $pitchList[] = $pitch;
                     $i++;

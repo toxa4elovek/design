@@ -196,7 +196,7 @@
                         '<td class="pitches-name">' .
                         $userString .
                         '<div style="padding-left: 34px; padding-right: 12px;">' .
-                        '<a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="newpitchfont" >' . $this->PitchTitleFormatter->renderTitle($pitch['title']) . '</a>' .
+                        '<a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="newpitchfont" >' . $pitch['title'] . '</a>' .
                         '<!--span style="font-size:11px;">' . $shortIndustry . '</span-->' .
                         '</div>' .
                         '</td>' .

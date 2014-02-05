@@ -20,12 +20,15 @@ if(!function_exists('mb_ucfirst'))
 
 class PitchTitleFormatter extends \lithium\template\Helper {
 
-    function renderTitle($title) {
+    function renderTitle($title, $length = 0) {
         $title = mb_ucfirst($title);
         $title = preg_replace('@"(.+?)"@', '«$1»', $title);
         preg_match('@«(.+?)»@', $title, $matches);
         if($matches) {
             $title = preg_replace('@' . $matches[1] . '@', mb_ucfirst($matches[1]), $title);
+        }
+        if ($length > 0 && mb_strlen($title, 'UTF-8') > $length) {
+            $title = mb_substr($title, 0, $length - 1, 'UTF-8') . '…';
         }
         return $title;
     }
