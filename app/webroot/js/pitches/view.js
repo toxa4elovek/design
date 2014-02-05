@@ -358,9 +358,7 @@ $(document).ready(function(){
     $(document).on('mouseover', '.hidedummy', function() {
         $(this).css('background-image', '');
         var $imagecontainer = $(this).find('a');
-        if ($imagecontainer.find('img').length == 0) {
-            $imagecontainer.css('opacity', '.8');
-        }
+        $imagecontainer.css('opacity', '1');
         if($('.imagecontainer', this).children().length > 1) {
             $(this).parent().css('background-image', '')
         }
