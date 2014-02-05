@@ -1324,3 +1324,14 @@ div.message_text.public-comment {
 	background-repeat: no-repeat;
 	background-position: right top;
 }
+div.moderation-spinner {
+	float: left;
+	width: 32px;
+	height: 32px;
+	margin: 17px 0 0 10px;
+	background: url(img/blog-ajax-loader.gif);
+	opacity: 0;
+}
+div.moderation-spinner.active {
+	opacity: 1;
+}

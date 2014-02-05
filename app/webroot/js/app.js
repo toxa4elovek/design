@@ -990,10 +990,13 @@ function commentDeleteHandler(link) {
             $('#popup-delete-comment').addClass('wrong-input');
             return false;
         }
+        var $spinner = $(this).next();
+        $spinner.addClass('active');
         $(document).off('click', '#sendDeleteComment');
         var data = form.serialize();
         $.post(form.attr('action') + '.json', data).done(function(result) {
             commentDelete(link, section, id);
+            $spinner.removeClass('active');
             $('.popup-close').click();
         });
         return false;

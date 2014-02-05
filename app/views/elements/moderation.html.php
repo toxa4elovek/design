@@ -25,7 +25,10 @@
         <textarea id="explanation" name="explanation" form="delete-comment-form" class="placeholder" placeholder="Комментарий"></textarea>
         <input type="hidden" name="model" id="model" value="comment" />
         <input type="hidden" name="model_id" id="model_id" value="" />
-        <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" name="comment" class="button" id="sendDeleteComment" value="Отправить"></div>
+        <div class="final-step-nav wrapper" style="margin-top:20px;">
+            <input type="submit" name="comment" class="button" id="sendDeleteComment" value="Отправить">
+            <div class="moderation-spinner"></div>
+        </div>
     </form>
 </div>
 
@@ -56,6 +59,9 @@
         <textarea id="explanation" name="explanation" form="delete-solution-form" class="placeholder" placeholder="ссылка на первоисточник или комментарий"></textarea>
         <input type="hidden" name="model" id="model" value="solution" />
         <input type="hidden" name="model_id" id="model_id" value="" />
-        <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button" id="sendDeleteSolution" value="Отправить"></div>
+        <div class="final-step-nav wrapper" style="margin-top:20px;">
+            <input type="submit" class="button" id="sendDeleteSolution" value="Отправить">
+            <div class="moderation-spinner"></div>
+        </div>
     </form>
 </div>

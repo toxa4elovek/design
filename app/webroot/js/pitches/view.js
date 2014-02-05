@@ -202,10 +202,13 @@ $(document).ready(function(){
                 $('#popup-delete-solution').addClass('wrong-input');
                 return false;
             }
+            var $spinner = $(this).next();
+            $spinner.addClass('active');
             $(document).off('click', '#sendDeleteSolution');
             var data = form.serialize();
             $.post(form.attr('action') + '.json', data).done(function(result) {
                 solutionDelete(link);
+                $spinner.removeClass('active');
                 $('.popup-close').click();
             });
             return false;
