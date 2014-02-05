@@ -59,7 +59,7 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
             'data' => array(
                 'user' => $data['user'],
                 'term' => $data['term'],
-                'solution_id' => $data['solution_id'],
+                'solution_num' => $data['solution_num'],
                 'reason' => $data['reason'],
                 'image' => $data['image'],
                 'explanation' => $data['explanation'],
