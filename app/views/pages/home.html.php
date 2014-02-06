@@ -145,7 +145,7 @@
                   ?>
                   <tr class="<?=$class?>">
                     <td class="pitches-name">
-                    <?=$this->html->link($this->PitchTitleFormatter->renderTitle($pitch->title, 95), array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'expand-link'))?><br>
+                    <?=$this->html->link($this->PitchTitleFormatter->renderTitle($pitch->title, 80), array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'expand-link'))?><br>
                     <!--span><?=$pitch->industry?></span-->
                     </td>
                     <td><?=$this->moneyFormatter->formatMoney($pitch->price)?></td>

@@ -52,7 +52,7 @@
                             } ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                                 <td class="pitches-name mypitches">
-                                    <a href="/pitches/view/<?=$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 95)?></a>
+                                    <a href="/pitches/view/<?=$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
                                 </td>
                                 <td class="pitches-status mypitches">
                                     <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
