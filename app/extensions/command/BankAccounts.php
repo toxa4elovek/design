@@ -14,6 +14,7 @@ class BankAccounts extends \app\extensions\command\CronJob {
             if (false === User::accountCheck($user)) {
                 $data = unserialize($user->paymentOptions);
                 $data[0]['accountnum'] = '';
+                $data[0]['bik'] = '';
                 $user->paymentOptions = serialize($data);
                 $user->save(null, array('validate' => false));
                 $count++;
