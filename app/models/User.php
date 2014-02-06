@@ -1030,27 +1030,30 @@ class User extends \app\models\AppModel {
     public static function accountCheck($entity) {
         $options = unserialize($entity->paymentOptions);
         $options = $options[0];
-        $resultCor = self::fn_checkKS($options['coraccount']) ? 1 : 0;
-        $resultAcc = self::fn_checkRS($options['accountnum'], $options['bik']) ? 2 : 0;
-        $result = $resultCor + $resultAcc;
-        $message = '';
-        switch ($result) {
-            case 0:
-                $message = 'Неверно указан Счёт.<br>Неверно указан Корсчёт.<br>';
+        if((isset($options['coraccount'])) and (isset($options['accountnum'])) and (isset($options['bik']))) {
+            $resultCor = self::fn_checkKS($options['coraccount']) ? 1 : 0;
+            $resultAcc = self::fn_checkRS($options['accountnum'], $options['bik']) ? 2 : 0;
+            $result = $resultCor + $resultAcc;
+            $message = '';
+            switch ($result) {
+                case 0:
+                    $message = 'Неверно указан Счёт.<br>Неверно указан Корсчёт.<br>';
+                        break;
+                case 1:
+                    $message = 'Неверно указан Счёт.<br>';
+                        break;
+                case 2:
+                    $message = 'Неверно указан Корсчёт.<br>';
+                        break;
+                default:
                     break;
-            case 1:
-                $message = 'Неверно указан Счёт.<br>';
-                    break;
-            case 2:
-                $message = 'Неверно указан Корсчёт.<br>';
-                    break;
-            default:
-                break;
+            }
+            $messageBik = (preg_match('/^[0-9]{9}$/', $options['bik'])) ? '' : 'Неверно указан БИК.<br>';
+            $messageInn = (preg_match('/^[0-9]{12}$/', $options['inn'])) ? '' : 'Неверно указан ИНН.<br>';
+            $message = $messageBik . $messageInn . $message;
+            return ! (bool) $message;
         }
-        $messageBik = (preg_match('/^[0-9]{9}$/', $options['bik'])) ? '' : 'Неверно указан БИК.<br>';
-        $messageInn = (preg_match('/^[0-9]{12}$/', $options['inn'])) ? '' : 'Неверно указан ИНН.<br>';
-        $message = $messageBik . $messageInn . $message;
-        return ! (bool) $message;
+        return false;
     }
 
     protected static function fn_bank_account($str) {
