@@ -127,6 +127,7 @@ $(document).ready(function() {
 	if($('input[name=user_id]').val() == $('input[name=pitch_user_id]').val()) {
 		$('#rating').raty({
 			path: '/img',
+            hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
 			starOn:   'rating-plus.png',
 	  		starOff:  'rating-null.png',
 	  		start: $('input[name=rating]').val(),
@@ -141,6 +142,7 @@ $(document).ready(function() {
 			path: '/img',
 			starOn:   'rating-plus.png',
 	  		starOff:  'rating-null.png',
+            hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
 	  		readOnly: true,
 	  		start: $('input[name=rating]').val()
 		});  		
@@ -406,6 +408,7 @@ $(document).ready(function() {
                 }
                 $("#star-widget").raty({
                     path: '/img',
+                    hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
                     starOff: 'solution-star-off.png',
                     starOn : 'solution-star-on.png',
                     start: result.solution.rating,

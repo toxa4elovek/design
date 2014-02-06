@@ -582,6 +582,7 @@ $(document).ready(function(){
                 }
                 $("#star-widget").raty({
                     path: '/img',
+                    hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
                     starOff: 'solution-star-off.png',
                     starOn : 'solution-star-on.png',
                     start: result.solution.rating,
