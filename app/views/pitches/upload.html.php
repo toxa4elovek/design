@@ -54,15 +54,15 @@
                 <div style="float:left; width: 627px;">
                     <div class="group" style="background: none;margin-bottom:0;">
                             <div style="margin-bottom:20px;"  class="greyboldheader">Укажите источники изображений и шрифтов</div>
-                            <label style="margin-bottom: 15px;" class="checkboxtext label-switch"><input type="radio" name="licensed_work" value="0">ВСЯ РАБОТА - РЕЗУЛЬТАТ МОЕГО ТРУДА</label>
+                            <label style="margin-bottom: 15px;" class="checkboxtext label-switch"><input type="radio" name="licensed_work" value="0">ВСЯ РАБОТА — РЕЗУЛЬТАТ МОЕГО ТРУДА</label>
                             <div id="fine" style="display:none; margin-bottom:10px;margin-left:12px;">
                                 <img src="/img/bravo.png" alt="Браво!">
                             </div>
                             <label style="margin-bottom: 30px;" class="checkboxtext label-switch"><input type="radio" name="licensed_work" value="1">РАБОТА СОДЕРЖИТ НЕ ТОЛЬКО МОИ ИЗОБРАЖЕНИЯ</label>
                         <div id="works" style="display:none;padding:15px;width:627px;height:44px;">
                             <div>
-                                <input class="notransform" placeholder="Название изображения" value="" type="text" style="width:138px;margin-left:0px;margin-right:14px;float:left;text-transform:none;" name="filename[1]">
-                                <input class="notransform" placeholder="http://" value="" type="text" style="width:200px;margin-left:0px;margin-right:22px;float:left;text-transform:none;" name="source[1]" >
+                                <input class="notransform" placeholder="Название изображения" value="" type="text" name="filename[1]">
+                                <input class="notransform" placeholder="http://" value="" type="text" name="source[1]" >
                                 <label style="color:#666666;width:65px;display:block;float:left;margin-right:40px;">
                                 <input type="checkbox" name="needtobuy[1]" style="width:14px;display:block;float:left;margin-top:10px;"><span style="width:46px;display:block;float:left;margin-top:5px;">Нужно<br>покупать</span></label>
                                 <input type="button" class="button" value="+" id="plusbutton" style="float:left;display:block;padding-left:20px;padding-right:20px;font-size:20px;">
@@ -77,7 +77,7 @@
                 <div style="height:1px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
 
                 <div class="tos-container supplement">
-                    <label><input type="checkbox" name="tos" style="margin-right:5px;"/>Я прочитал и согласен с <a href="/docs/dogovor.pdf" style="text-decoration: none;">правилами и условиями</a> Go Designer</label>
+                    <label><input type="checkbox" name="tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="/docs/dogovor.pdf" style="text-decoration: none;">правилами и условиями</a> Go Designer</label>
                 </div>
 
 

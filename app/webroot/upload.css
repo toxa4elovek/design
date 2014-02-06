@@ -186,3 +186,25 @@ input[type="radio"], input[type="checkbox"] {
 	border-radius: 6px;
 	margin: 10px 8px 30px 8px;
 }
+#works input[type=text] {
+    color: #999;
+    font-size: 13px;
+    text-transform: none;
+    margin-left: 0px;
+    float: left;
+    line-height: 1em;
+}
+#works input[type=text]:focus {
+    color: #666;
+}
+#works input[name='filename[1]'] {
+    width: 138px;
+    margin-right: 14px;
+}
+#works input[name='source[1]'] {
+    width: 200px;
+    margin-right: 22px;
+}
+input[name=licensed_work] {
+	margin-bottom: 3px;
+}
