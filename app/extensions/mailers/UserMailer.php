@@ -48,6 +48,7 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
                 'reason' => $data['reason'],
                 'text' => $data['text'],
                 'explanation' => $data['explanation'],
+                'pitch' => $data['pitch'],
             ),
         ));
     }
@@ -63,6 +64,7 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
                 'reason' => $data['reason'],
                 'image' => $data['image'],
                 'explanation' => $data['explanation'],
+                'pitch' => $data['pitch'],
             ),
         ));
     }

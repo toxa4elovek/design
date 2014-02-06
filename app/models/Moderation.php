@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\Comment;
 use app\models\Solution;
 use app\models\User;
 use app\extensions\mailers\UserMailer;
@@ -22,11 +23,14 @@ class Moderation extends \app\models\AppModel {
                     'explanation' => $params['entity']->explanation,
                 );
                 if ($params['entity']->model == '\app\models\Comment') {
+                    $comment = Comment::first(array('conditions' => array('Comment.id' => $params['entity']->model_id), 'with' => array('Pitch')));
+                    $dataInfo['pitch'] = $comment->pitch;
                     $dataInfo['text'] = $self::fetchModelText($modelData);
                     $dataInfo['image'] = null;
                     $mailerTemplate = 'removecomment';
                 } else {
-                    $solution = Solution::first(array('fields' => array('num'), 'conditions' => array('id' => $params['entity']->model_id)));
+                    $solution = Solution::first(array('conditions' => array('Solution.id' => $params['entity']->model_id), 'with' => array('Pitch')));
+                    $dataInfo['pitch'] = $solution->pitch;
                     $dataInfo['solution_num'] = $solution->num;
                     $dataInfo['text'] = null;
                     $dataInfo['image'] = $self::fetchModelImage($modelData);
