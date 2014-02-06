@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\Solution;
 use app\models\User;
 use app\extensions\mailers\UserMailer;
 
@@ -25,7 +26,8 @@ class Moderation extends \app\models\AppModel {
                     $dataInfo['image'] = null;
                     $mailerTemplate = 'removecomment';
                 } else {
-                    $dataInfo['solution_id'] = $params['entity']->model_id;
+                    $solution = Solution::first(array('fields' => array('num'), 'conditions' => array('id' => $params['entity']->model_id)));
+                    $dataInfo['solution_num'] = $solution->num;
                     $dataInfo['text'] = null;
                     $dataInfo['image'] = $self::fetchModelImage($modelData);
                     $mailerTemplate = 'removesolution';
