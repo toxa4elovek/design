@@ -31,7 +31,7 @@
                 <input type="hidden" value="" name="solution_id">
                 <input type="hidden" value="" name="comment_id">
                 <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-                <input type="submit" style="margin-left:16; width: 200px;" data-is_public="<?php echo $publicComment?>" class="button createComment" value="<?php echo $buttonText; ?>" src="/img/message_button.png" />
+                <input type="submit" style="margin-left:16px; width: 200px;" data-is_public="<?php echo $publicComment?>" class="button createComment" value="<?php echo $buttonText; ?>" src="/img/message_button.png" />
                 <div class="clr"></div>
             </form>
         </section>

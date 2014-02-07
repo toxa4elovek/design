@@ -338,6 +338,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 }
 .wrapper input.button {
 	height: 49px;
+	outline: none;
 }
 @font-face {
 	font-family: 'RodeoC';
