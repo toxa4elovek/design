@@ -1221,6 +1221,10 @@ class UsersController extends \app\controllers\AppController {
                 $this->request->data['target'] = 'team@godesigner.ru';
             }
             $this->request->data['subject'] = 'Сообщение с сайта GoDesigner.ru';
+            if ($this->request->data['target'] != 'va@godesigner.ru') {
+                $this->request->data['needInfo'] = true;
+                $this->request->data['user'] = User::getUserInfo();
+            }
             ContactMailer::contact_mail2($this->request->data);
             $success = 'true';
         }

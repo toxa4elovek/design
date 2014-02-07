@@ -1090,4 +1090,18 @@ class User extends \app\models\AppModel {
     protected function fn_checkRS($account, $BIK) {
         return self::fn_bank_account(substr($BIK, -3, 3) . $account);
     }
+
+    public static function getUserInfo() {
+        $res = null;
+        $currentUserId = Session::read('user.id');
+        if ((false != $currentUserId) && ($user = self::first(array('conditions' => array('User.id' => $currentUserId), 'with' => array('Pitch'))))) {
+            $res = array(
+                'id' => $user->id,
+                'firstName' => $user->first_name,
+                'lastName' => $user->last_name,
+                'pitches' => $user->pitches,
+            );
+        }
+        return $res;
+    }
 }
