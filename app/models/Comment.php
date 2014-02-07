@@ -5,6 +5,7 @@ namespace app\models;
 use \app\models\Solution;
 use \app\models\Historycomment;
 use \app\extensions\helper\Avatar as AvatarHelper;
+use \app\extensions\helper\Brief;
 use \app\extensions\helper\NameInflector;
 use \lithium\storage\Session;
 use app\extensions\mailers\CommentsMailer;
@@ -182,11 +183,20 @@ class Comment extends \app\models\AppModel {
                     }
                     return $record;
                 };
+                $stripEmail = function($record) {
+                    if (isset($record->text)) {
+                        $briefHelper = new Brief;
+                        $record->text = $briefHelper->stripemail($record->text);
+                        $record->originalText = $briefHelper->stripemail($record->originalText);
+                    }
+                    return $record;
+                };
                 if(get_class($result) == 'lithium\data\entity\Record') {
                     //$result = $addSolutionNumLinkIfNotExists($result);
                     $result = $addOriginalText($result);
                     $result = $addMentionLink($result);
                     $result = $addHyperlink($result);
+                    $result = $stripEmail($result);
 
                 }else {
                     foreach($result as $foundItem) {
@@ -194,6 +204,7 @@ class Comment extends \app\models\AppModel {
                         $foundItem = $addOriginalText($foundItem);
                         $foundItem = $addMentionLink($foundItem);
                         $foundItem = $addHyperlink($foundItem);
+                        $foundItem = $stripEmail($foundItem);
 
                     }
                 }

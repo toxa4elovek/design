@@ -1099,10 +1099,10 @@ function toggleAnswer(link) {
     if (isClient) {
         messageInfo = 'message_info2';
     }
-    var answerButtons = '<input type="button" src="/img/message_button.png" value="Ответить" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;">';
+    var answerButtons = '<input type="button" src="/img/message_button.png" value="Ответить" class="button answercomment" data-is_public="0" style="float: left;">';
     if (isCurrentExpert || isCurrentAdmin || isClient) {
-        answerButtons = '<input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="margin: 15px 8px 15px 0; font-size: 11px; padding-left: 28px"> \
-        <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="margin: 15px 0 15px 8px; font-size: 11px;">';
+        answerButtons = '<input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="float: left;"> \
+        <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="float: right;">';
     }
     // Date Time
     var postDateObj = new Date();
@@ -1124,7 +1124,7 @@ function toggleAnswer(link) {
                         </a> \
                         <div class="clr"></div> \
                     </div> \
-                    <div class="message_text" style="margin-top: 0;"> \
+                    <div class="message_text"> \
                         <div class="hiddenform"> \
                             <section> \
                                 <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
