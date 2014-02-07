@@ -583,6 +583,11 @@ a.sort-by-likes:hover span, a.sort-by-likes.active span {
 a.sort-by-created:hover span, a.sort-by-created.active span {
 	background-position: -40px -20px;
 }
+.button.answercomment {
+    margin: 15px 0;
+    font-size: 11px;
+    padding: 0 28px;
+}
 
 
 /* ------------------ View Solution Overlay --------------------
@@ -830,6 +835,11 @@ h1.solution-title-page  {
 	width: 692px;
     margin-left: -46px;
 }
+.solution-left-panel section.answer-section div.message_text {
+    margin: 0;
+    padding: 0;
+    width: 430px;
+}
 .solution-left-panel div.message_info1,
 .solution-left-panel div.message_info2,
 .solution-left-panel div.message_info3,
@@ -847,8 +857,11 @@ h1.solution-title-page  {
 .solution-left-panel section.is-child div.message_text {
 	width: 305px;
 }
+.solution-left-panel section.answer-section {
+	width: 637px;
+}
 .solution-left-panel section.answer-section textarea {
-	width: 380px;
+	width: 393px;
 }
 .solution-left-panel div.toolbar {
 	display: none;
@@ -899,6 +912,11 @@ h1.solution-title-page  {
     background:     -ms-linear-gradient(#6f9db5, #5c8296);
     background:      -o-linear-gradient(#6f9db5, #5c8296);
     background:         linear-gradient(#6f9db5, #5c8296);
+}
+.solution-left-panel .button.answercomment {
+    margin: 15px 0;
+    font-size: 10px;
+    padding: 0 2px;
 }
 .solution-left-panel textarea {
     width: 600px;
@@ -1209,6 +1227,11 @@ section.answer-section div.ajax-loader {
     right: 35px;
     width: 32px;
     height: 32px;
+}
+section.answer-section div.message_text {
+	margin: 0;
+	padding: 0;
+	width: 567px;
 }
 #filler {
     transition: width .5s;
