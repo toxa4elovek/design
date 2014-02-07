@@ -91,6 +91,7 @@ class PagesController extends \app\controllers\AppController {
     public function contacts() {
         $success = false;
         if($this->request->data) {
+            $this->request->data['user'] = User::getUserInfo();
             ContactMailer::contact_mail($this->request->data);
             $success = true;
         }

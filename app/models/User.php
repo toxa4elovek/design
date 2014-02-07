@@ -1099,7 +1099,7 @@ class User extends \app\models\AppModel {
                 'id' => $user->id,
                 'firstName' => $user->first_name,
                 'lastName' => $user->last_name,
-                'pitches' => $user->pitches,
+                'pitches' => $user->pitches->data(),
             );
         }
         return $res;

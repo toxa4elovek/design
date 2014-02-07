@@ -11,7 +11,7 @@
                         <section class="howitworks">
                             <h1 style="color:#bebebe">Напишите нам</h1>
                         </section>
-                        <form action="" method="post">
+                        <form action="" method="post" class="contacts-form">
                             <input class="i1" name="name" style="margin-top:30px;" type="text" placeholder="ВАШЕ ИМЯ" />
                             <input class="i1" name="email" type="text" placeholder="ВАШ EMAIL" />
                             <input class="i1" name="subject" type="text" placeholder="ТЕМА СООБЩЕНИЯ" />
