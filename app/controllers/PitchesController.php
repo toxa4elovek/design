@@ -498,30 +498,6 @@ class PitchesController extends \app\controllers\AppController {
         return compact('data', 'categories', 'query', 'selectedCategory');
     }
 
-    /*public function test() {
-        $url = "http://www.godesigner.ru/callback";
-        $array = unserialize('a:21:{s:8:"FUNCTION";s:13:"TransResponse";s:2:"RC";s:2:"00";s:6:"AMOUNT";s:7:"7665.00";s:8:"CURRENCY";s:3:"RUB";s:5:"ORDER";s:6:"100198";s:3:"RRN";s:12:"215003928732";s:8:"AUTHCODE";s:6:"700740";s:3:"PAN";s:16:"4XXXXXXXXXXX4021";s:3:"BIN";s:0:"";s:8:"TERMINAL";s:8:"71846655";s:6:"TRTYPE";s:1:"0";s:11:"TEXTMESSAGE";s:8:"Approved";s:14:"CARDHOLDERNAME";s:13:"ANNA KISELEVA";s:3:"ACS";s:71:"http://web3ds.masterbank.ru:8235/way4mpi/xml/pa?traceid=#004021eba85b9e";s:4:"ACS1";s:79:"https://acs.sbrf.ru/acs/uidispatcherjsessionid=A1C02BE0C210F8F9E880CD9B04F9B030";s:6:"RESULT";s:1:"0";s:7:"INT_REF";s:16:"2B11C6CB0ACA7BF8";s:9:"TIMESTAMP";s:14:"20120529064821";s:7:"USER_IP";s:15:"192.168.201.107";s:4:"SIGN";s:32:"ef6d940d541f50963a575f000a459121";s:13:"SIGN_CALLBACK";s:32:"c90c1c78d448afe26dbe06d7d4d17940";}');
-        $string = http_build_query($array);
-        echo $string;die();
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$url); // set url to post to
-        curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable
-        curl_setopt($ch, CURLOPT_TIMEOUT, 3); // times out after 4s
-        curl_setopt($ch, CURLOPT_POST, 1); // set POST method
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $string); // add POST fields
-        $result = curl_exec($ch); // run the whole process
-
-        echo '****<br>';
-        echo curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        echo '<br>****<br>';
-        curl_close($ch);
-        echo $result;
-        die();
-    }*/
-
-
     public function updatefiles() {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
@@ -603,20 +579,6 @@ class PitchesController extends \app\controllers\AppController {
             $transaction->save();
         }
         header("HTTP/1.0 200 OK");
-        die();
-    }
-
-    public function readlogs() {
-        /*
-        2012-02-27 15:30:24 a:0:{}
-2012-02-27 15:30:24 a:0:{}
-2012-02-27 15:32:22 a:19:{s:8:"FUNCTION";s:13:"TransResponse";s:6:"RESULT";s:1:"3";s:2:"RC";s:2:"-2";s:6:"AMOUNT";s:7:"3500.00";s:8:"CURRENCY";s:3:"RUB";s:5:"ORDER";s:2:"47";s:3:"RRN";s:0:"";s:8:"AUTHCODE";s:0:"";s:3:"PAN";s:16:"4XXXXXXXXXXX1896";s:8:"TERMINAL";s:8:"10000059";s:6:"TRTYPE";s:1:"0";s:11:"TEXTMESSAGE";s:15:"Bad CGI request";s:14:"CARDHOLDERNAME";s:0:"";s:3:"ACS";s:0:"";s:7:"INT_REF";s:0:"";s:9:"TIMESTAMP";s:14:"20120227153222";s:7:"USER_IP";s:14:"192.168.200.35";s:4:"SIGN";s:32:"72d89e1593c669c49808f7731c2216e7";s:13:"SIGN_CALLBACK";s:32:"383f33976775347289f0bb3ff0e6255c";}
-2012-02-27 15:32:22 a:19:{s:8:"FUNCTION";s:13:"TransResponse";s:6:"RESULT";s:1:"3";s:2:"RC";s:2:"-2";s:6:"AMOUNT";s:7:"3500.00";s:8:"CURRENCY";s:3:"RUB";s:5:"ORDER";s:2:"47";s:3:"RRN";s:0:"";s:8:"AUTHCODE";s:0:"";s:3:"PAN";s:16:"4XXXXXXXXXXX1896";s:8:"TERMINAL";s:8:"10000059";s:6:"TRTYPE";s:1:"0";s:11:"TEXTMESSAGE";s:15:"Bad CGI request";s:14:"CARDHOLDERNAME";s:0:"";s:3:"ACS";s:0:"";s:7:"INT_REF";s:0:"";s:9:"TIMESTAMP";s:14:"20120227153222";s:7:"USER_IP";s:14:"192.168.200.35";s:4:"SIGN";s:32:"72d89e1593c669c49808f7731c2216e7";s:13:"SIGN_CALLBACK";s:32:"383f33976775347289f0bb3ff0e6255c";}
-
-         * */
-        echo '<pre>';
-        var_dump(unserialize('a:19:{s:8:"FUNCTION";s:13:"TransResponse";s:6:"RESULT";s:1:"3";s:2:"RC";s:2:"-2";s:6:"AMOUNT";s:7:"3500.00";s:8:"CURRENCY";s:3:"RUB";s:5:"ORDER";s:2:"47";s:3:"RRN";s:0:"";s:8:"AUTHCODE";s:0:"";s:3:"PAN";s:16:"4XXXXXXXXXXX1896";s:8:"TERMINAL";s:8:"10000059";s:6:"TRTYPE";s:1:"0";s:11:"TEXTMESSAGE";s:15:"Bad CGI request";s:14:"CARDHOLDERNAME";s:4:"Test";s:3:"ACS";s:0:"";s:7:"INT_REF";s:0:"";s:9:"TIMESTAMP";s:14:"20120227154456";s:7:"USER_IP";s:14:"192.168.200.35";s:4:"SIGN";s:32:"346ac406b6f44ad743ae446294efe154";s:13:"SIGN_CALLBACK";s:32:"0cd09d1829025aacfca6b8a98c18c2a0";}'));
-        echo '</pre>';
         die();
     }
 
@@ -910,13 +872,6 @@ class PitchesController extends \app\controllers\AppController {
 		return $this->redirect('Pitches::create');
 	}
 
-	/*public function activate() {
-		if(isset($this->request->data['id'])) {
-			Pitch::activate($this->request->data['id']);
-		}
-		return $this->redirect('Pitches::index');
-	}*/
-
 	public function add () {
 		if($this->request->data) {
 			$featuresData = $this->request->data['features'];
@@ -934,10 +889,6 @@ class PitchesController extends \app\controllers\AppController {
 			if(!isset($commonPitchData['fileFormats'])) {
 				$commonPitchData['fileFormats'] = array();
 			}
-
-			/*if(!isset($commonPitchData['fileFormatDesc'])) {
-				$commonPitchData['fileFormatDesc'] = '';
-			}*/
 			$specificPitchData = $this->request->data['specificPitchData'];
 			$pinned = $private = $social = $email = $brief = $timelimit = 0;
             $freePinned = false;
@@ -1213,50 +1164,8 @@ class PitchesController extends \app\controllers\AppController {
             if (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW) {
                 $canViewPrivate = true;
             }
-            $order = $pitch->getSolutionsSortingOrder();
-            if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
-                $sort = 'created';
-            } else if ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-                $sort = 'rating';
-            }else {
-                $sort = 'created';
-            }
-            $validSorts = array('rating', 'created', 'likes');
-            if((isset($this->request->query['sorting'])) && (in_array($this->request->query['sorting'], $validSorts))){
-                if(Session::read('user.id') == $pitch->user_id) {
-                    switch($this->request->query['sorting']) {
-                        case 'rating':
-                            $sort = 'rating';
-                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'rating' => 'desc', );
-                            break;
-                        case 'created':
-                            $sort = 'created';
-                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'created' => 'desc');
-                            break;
-                        case 'likes':
-                            $sort = 'likes';
-                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'likes' => 'desc');
-                            break;
-                        default: break;
-                    }
-                }else {
-                    switch($this->request->query['sorting']) {
-                        case 'rating':
-                            $sort = 'rating';
-                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
-                            break;
-                        case 'created':
-                            $sort = 'created';
-                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
-                            break;
-                        case 'likes':
-                            $sort = 'likes';
-                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc');
-                            break;
-                        default: break;
-                    }
-                }
-            }
+            $sort = $pitch->getSolutionsSortName($this->request->query);
+            $order = $pitch->getSolutionsSortingOrder($this->request->query);
 
 			$solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order));
             $selectedsolution = false;
@@ -1406,51 +1315,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
 		if(($this->request->id) && ($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch'))))) {
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
             Solution::increaseView($this->request->id);
-            $validSorts = array('rating', 'created', 'likes');
-            if((isset($this->request->query['sorting'])) && (in_array($this->request->query['sorting'], $validSorts))){
-                if((Session::read('user')) && (Session::read('user.id') == $pitch->user_id)) {
-                    switch($this->request->query['sorting']) {
-                        case 'rating':
-                            $sort = 'rating';
-                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'rating' => 'desc', );
-                            break;
-                        case 'created':
-                            $sort = 'created';
-                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'created' => 'desc');
-                            break;
-                        case 'likes':
-                            $sort = 'likes';
-                            $order = array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'likes' => 'desc');
-                            break;
-                        default: break;
-                    }
-                }else {
-                    switch($this->request->query['sorting']) {
-                        case 'rating':
-                            $sort = 'rating';
-                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
-                            break;
-                        case 'created':
-                            $sort = 'created';
-                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
-                            break;
-                        case 'likes':
-                            $sort = 'likes';
-                            $order = array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc');
-                            break;
-                        default: break;
-                    }
-                }
-            }else {
-                $order = $pitch->getSolutionsSortingOrder();
-                if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
-                    $sort = 'created';
-                } else if ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-                    $sort = 'rating';
-                }else {
-                    $sort = 'created';
-                }
-            }
+            $sort = $pitch->getSolutionsSortName($this->request->query);
+            $order = $pitch->getSolutionsSortingOrder($this->request->query);
 
             $solution->description = nl2br($solution->description);
 

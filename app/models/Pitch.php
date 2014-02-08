@@ -30,10 +30,14 @@ use \app\extensions\helper\PdfGetter;
 class Pitch extends \app\models\AppModel {
 
 	public $belongsTo = array('Category', 'User');
-	public $hasMany = array('Solution');//, 'Pitchfile' => array('key' => array('id' => 'model_id')));
+	public $hasMany = array('Solution');
+
+    /**
+     * @var array Валидные строчки для определения типа сортировки решений
+     */
+    public $validSorts = array('rating', 'created', 'likes');
 
     public static $attaches = array('files' => array(
-        /*'validate' => array('uploadedOnly' => true),*/
         'validateFile' => array(
             'extensionForbid' => array('php', 'exe', 'sh', 'js'),
         ),
@@ -869,15 +873,65 @@ class Pitch extends \app\models\AppModel {
     * Метод возвращает массив для запроса сортировки решений, применяется для объекта $pitch
     *
     * @param $pitch
+    * @sorting array|string массив с ключем sorting или строка
     * @return array
     */
-    public function getSolutionsSortingOrder($pitch) {
-        if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
-            return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
-        }elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-            return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
+    public function getSolutionsSortingOrder($pitch, $type = null) {
+        if($result = $this->__getSortingString($type)){
+            switch($result) {
+                case 'rating':
+                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'); break;
+                case 'created':
+                    $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'); break;
+                case 'likes':
+                    $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc'); break;
+            }
+            if(Session::read('user.id') == $pitch->user_id) {
+                $array = array_merge($array, array('awarded' => 'desc', 'hidden' => 'asc'));
+                $array = array_slice($array, 0, 1, true) +
+                    array('hidden' => 'asc') +
+                    array_slice($array, 1, null, true);
+            }
+            return $array;
         }else {
-            return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+            if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+            }elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
+            }else {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+            }
         }
+    }
+
+    /**
+    * Метод возвращает названия сортировки для текущего пользователя и питча.
+    *
+    * @param $pitch
+    * @param array|string $type - массив с ключем sorting или строка
+    * @return null|string
+    */
+    public function getSolutionsSortName($pitch, $type = null) {
+        if($result = $this->__getSortingString($type)){
+            return $result;
+        }else {
+            if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
+                return 'created';
+            }elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
+                return 'rating';
+            }else {
+                return 'created';
+            }
+        }
+    }
+
+    private function __getSortingString($param) {
+        if($param and is_array($param) and isset($param['sorting'])) {
+            $param = $param['sorting'];
+        }
+        if(($param) and (is_string($param)) and(in_array($param, $this->validSorts))) {
+            return $param;
+        }
+        return false;
     }
 }
