@@ -144,7 +144,6 @@ class Event extends \app\models\AppModel {
     public static function getEvents($pitchIds, $page = 1, $created = null){
         $eventList = $conditions = array();
         $limit = 10;
-        //var_dump(isset($created));
         if(isset($created)) {
             $page = 1;
             $limit = 100;
@@ -158,11 +157,6 @@ class Event extends \app\models\AppModel {
                 'page' => $page
                 )
             );
-            //echo $created;
-            //echo '<pre>';
-            //var_dump($conditions + Event::createConditions($pitchIds));
-            //var_dump($conditions);
-            //echo '</pre>';
             $i = 1;
             foreach($events as $event) {
                 if(($event->type == 'CommentAdded' || $event->type == 'CommentCreated') && ($event->user_id != Session::read('user.id')) && ($event->pitch->user_id != Session::read('user.id'))) {
@@ -170,14 +164,14 @@ class Event extends \app\models\AppModel {
                     // Parent
                     if ( ($event->comment->question_id == 0) && ($event->comment->public != 1) ) {
                         if (Comment::find('count', array('conditions' => array('question_id' => $event->comment->id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
-                            contunue;
+                            continue;
                         }
                     }
 
                     // Child
                     if ( ($event->comment->question_id != 0) && ($event->comment->public != 1) && ($event->comment->reply_to != Session::read('user.id')) ) {
                         if (Comment::find('count', array('conditions' => array('id' => $event->comment->question_id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
-                            contunue;
+                            continue;
                         }
                     }
                 }
