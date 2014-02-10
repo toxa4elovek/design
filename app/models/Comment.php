@@ -319,7 +319,9 @@ class Comment extends \app\models\AppModel {
                 'conditions' => array(
                     'question_id' => $comment->id,
                 ),
-                'with' => array('User', 'Pitch')));
+                'with' => array('User', 'Pitch'),
+                'order' => array('id' => 'desc'),
+            ));
             if (count($children) > 0) {
                 $comment->hasChild = 1;
                 self::$result->append($comment);

@@ -370,7 +370,7 @@ $(document).ready(function() {
     $('.createComment').on('click', function(e) {
         e.preventDefault();
         var textarea = $(this).closest('form').find('textarea');
-        if (typeof(solutionId) == undefined) {
+        if (typeof(solutionId) == 'undefined') {
             var solutionId = 0;
         }
         if (isCommentValid(textarea.val())) {
@@ -664,9 +664,6 @@ function populateComment(data) {
     var answerTool = ' display: none;';
     if (data.needAnswer == 1) {
         answerTool = '';
-    }
-    if (data.hasChild == 1) {
-        answerTool = ' display: none;';
     }
     if (isCurrentAdmin != 1 && isClient != 1 && data.isClosedPitch) {
         answerTool = ' display: none;';
@@ -1190,7 +1187,7 @@ function preparePitchCommentData(result) {
 function addAnswerComment(button) {
     var textarea = button.closest('section').find('textarea');
     var is_public = button.data('is_public');
-    if (typeof(solutionId) == undefined) {
+    if (typeof(solutionId) == 'undefined') {
         var solutionId = 0;
     }
     if (isCommentValid(textarea.val())) {
