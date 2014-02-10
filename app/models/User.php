@@ -360,7 +360,7 @@ class User extends \app\models\AppModel {
             $users1 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    array('isDesigner' => 1, 'email_newpitch' => 1)
+                    array('isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0)
                 )
             ));
             $result1 = $users1->data();
@@ -544,9 +544,7 @@ class User extends \app\models\AppModel {
         SpamMailer::promocode($data);
     }
 
-    public static function sendDailyPitch($userId, $pitches) {
-        $user = User::first(array('conditions' => array('id' => $userId)));
-        //$user = User::first(array('conditions' => array('email' => 'nyudmitriy@gmail.com')));
+    public static function sendDailyPitch($user, $pitches) {
         $data = array('user' => $user, 'pitches' => $pitches);
         SpamMailer::dailypitch($data);
     }

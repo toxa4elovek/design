@@ -15,6 +15,7 @@
     <tr><td colspan="3" height="40"></td></tr>
 
     <?php foreach($pitches as $pitch): ?>
+        <?php if (($user->email_onlycopy == 1) && ($pitch->category_id != 7)) continue; ?>
     <tr><td width="5"></td><td valign="top">
 
 

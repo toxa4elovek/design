@@ -560,7 +560,7 @@ class Pitch extends \app\models\AppModel {
         if(count($pitches) > 0) {
             $users = User::all(array('conditions' => array('email_newpitchonce' => 1)));
             foreach($users as $user) {
-                User::sendDailyPitch($user->id, $pitches);
+                User::sendDailyPitch($user, $pitches);
             }
         }else {
             $users = array();

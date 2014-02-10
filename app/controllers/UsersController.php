@@ -923,6 +923,11 @@ class UsersController extends \app\controllers\AppController {
             }else{
                 $user->email_digest = 0;
             }
+            if(isset($this->request->data['email_onlycopy'])) {
+                $user->email_onlycopy = 1;
+            }else{
+                $user->email_onlycopy = 0;
+            }
             if ($userWithEmail = User::first(array(
                 'conditions' => array(
                     'email' => $this->request->data['email'],
