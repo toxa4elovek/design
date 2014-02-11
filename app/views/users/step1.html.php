@@ -80,7 +80,7 @@
                                     <tr><td class="tableheader" colspan="2">Телефон для связи</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['phone']?>" name="phone" /></td></tr>
                                     <tr>
-                                        <td width="304" class="tableheader" style="padding-right:10px">Счет</td>
+                                        <td width="304" class="tableheader" style="padding-right:10px">Номер счета получателя</td>
                                         <td width="304" class="tableheader" style="padding-left:10px">Ваш личный ИНН <a href="#" style="display: block; width: 10px; height: 10px; margin-left: 110px; margin-top: -25px; font: 12px Helvetica, sans-serif; color: #658fa5" class="second tooltip" title="Запрашивается банком как обязательное, для формирования платежного поручения. Если у вас нет ИНН, заполните это поле двенадцатью нулями.">(?)</a></td></tr>
                                     <tr style="height: 80px;">
                                         <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['accountnum']?>" name="accountnum" data-validate="numeric" /></td>
@@ -90,8 +90,8 @@
                                     <tr><td class="tableheader" colspan="2">Наименование</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['bankname']?>" name="bankname" /></td></tr>
                                     <tr>
-                                        <td width="304" class="tableheader" style="padding-right:10px">Бик</td>
-                                        <td width="304" class="tableheader" style="padding-left:10px">Корсчет</td></tr>
+                                        <td colspan="2" class="tableheader" style="padding-right:10px">Бик</td>
+                                        <!--td width="304" class="tableheader" style="padding-left:10px">Корсчет</td--></tr>
                                     <tr style="height: 80px;">
                                         <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['bik']?>" name="bik" /></td>
                                         <td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['coraccount']?>" name="coraccount" /></td>

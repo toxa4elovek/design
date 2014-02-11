@@ -80,7 +80,7 @@ $(document).ready(function() {
 
 function accountCheck() {
     $('.account-check').remove();
-    var resultCor = (fn_checkKS($('input[name=coraccount]').val())) ? 1 : 0;
+    var resultCor = 1; //var resultCor = (fn_checkKS($('input[name=coraccount]').val())) ? 1 : 0;
     var resultAcc = (fn_checkRS($('input[name=accountnum]').val(), $('input[name=bik]').val())) ? 2 : 0;
     var result = resultCor + resultAcc;
     var message = '';

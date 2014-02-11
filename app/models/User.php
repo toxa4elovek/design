@@ -1029,7 +1029,7 @@ class User extends \app\models\AppModel {
         $options = unserialize($entity->paymentOptions);
         $options = $options[0];
         if((isset($options['coraccount'])) and (isset($options['accountnum'])) and (isset($options['bik']))) {
-            $resultCor = self::fn_checkKS($options['coraccount']) ? 1 : 0;
+            $resultCor = 1; //$resultCor = self::fn_checkKS($options['coraccount']) ? 1 : 0;
             $resultAcc = self::fn_checkRS($options['accountnum'], $options['bik']) ? 2 : 0;
             $result = $resultCor + $resultAcc;
             $message = '';
