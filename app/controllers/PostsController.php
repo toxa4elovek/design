@@ -134,7 +134,7 @@ class PostsController extends \app\controllers\AppController {
      * @return array|object
      */
     public function add() {
-        if(false === (User::checkRole('author') and User::checkRole('editor'))) {
+        if(false === (User::checkRole('author') or User::checkRole('editor'))) {
             return $this->redirect('/posts');
         }
         $commonTags = Post::getCommonTags();
