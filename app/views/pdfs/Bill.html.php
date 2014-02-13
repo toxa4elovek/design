@@ -1,6 +1,6 @@
 <table style="" width="550" cellspacing="0" border="0" cellpadding="1">
     <tr ><td width="275"><img src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/logo-01.png" width="180"></td>
-        <td>ООО "КРАУД МЕДИА"<br/>г. Санкт-Петербург, ул. Беринга, д. 27<br />ИНН: 7801563047<br />Телефон: +7(812) 648 24 12</td></tr>
+        <td>ООО "КРАУД МЕДИА"<br/>г. Санкт-Петербург, ул. Беринга, д. 27<br />ИНН: 7801563047<br />Телефон: +7 (812) 648 24 12</td></tr>
     <tr ><td colspan="2" style="text-align:center"><br><br>Образец заполнения платежного поручения</td></tr>
 </table>
 <br/>

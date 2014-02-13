@@ -210,7 +210,7 @@
 
 	<div class="add-pitch">
         <div style="float: left; height: 47px; padding-top: 7px;">
-            <span style="text-decoration: none; font-weight: bold; font-size: 12px; margin-left: 30px;" class="current">(812) 648 24 12</span>
+            <span style="text-decoration: none; font-weight: bold; font-size: 12px; margin-left: 12px;" class="current">+7 (812) 648 24 12</span>
             <br><a style="background: url(/img/smallmailicon.png) no-repeat 0 3px;padding-left:20px;font-size:11px;margin-right:10px;" href="#" id="requesthelplink">запросить помощь</a>
         </div>
         <?=$this->html->link('Cоздать питч', 'Pitches::create', array('class' => 'button third'))?>

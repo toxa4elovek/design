@@ -28,7 +28,7 @@
                             <div class="w100"  style="text-align:center;">
                                 <div class="bigletters largest-header">
                                     <a href="mailto:team@godesigner.ru">team@godesigner.ru</a><br/>
-                                    (812) 648 2412
+                                    +7 (812) 648 2412
                                 </div>
 
                                 <img src="/img/map.png" alt="" style="margin-left:auto;
@@ -55,7 +55,7 @@
                         <div style="margin-top:85px; position:relative; float:left;" class="regular">
                             ООО "КРАУД МЕДИА"<br/>
                             Галерная 55, Санкт-Петебург<br/>
-                            (812) 648 2412<br/>
+                            +7 (812) 648 2412<br/>
                             197 000 Россия,<br/>
                             ИНН 7801563047<br/>
                             ОГРН 1117847588561<br/>
