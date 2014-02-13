@@ -314,15 +314,6 @@ $(document).ready(function(){
         $('img:first', $(this)).attr('src', '/img/like.png');
     });
 
-    $('.solution-link, .number_img_gallery').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-            var prepend = $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $('#newComment').val(newText);
-        }
-        return false;
-    });
-
     $('.solution-menu-toggle').mouseover(function(){
         $('img', $(this)).attr('src', '/img/marker5_2_hover.png');
         $('body').one('click',function() {
@@ -346,17 +337,16 @@ $(document).ready(function(){
         return false;
     })
 
-    $('.solution-link-menu').click(function() {
+    $(document).on('click', '.solution-link-menu, .solution-link, .number_img_gallery', function() {
         if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
             var prepend = $(this).data('commentTo') + ', ';
             var newText = prepend + $('#newComment').val();
             $('#newComment').val(newText);
-            $(this).parent().parent().parent().hide();
+            $(this).closest('.solution_menu').hide();
             $.scrollTo($('.createCommentForm'), {duration: 500});
         }
         return false;
     });
-
 
     $(document).on('mouseover', '.hidedummy', function() {
         $(this).css('background-image', '');
