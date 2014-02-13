@@ -570,6 +570,13 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function sendSpamExpertSpeaking($params) {
+        $user = self::first($params['pitch']->user_id);
+        $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => 'Добавлено экспертное мнение');
+        SpamMailer::sendclientexpertspeaking($data);
+        return true;
+    }
+
     public static function sendSpamFirstSolutionForPitch($pitchId) {
         $pitch = Pitch::first($pitchId);
         $user = self::first($pitch->user_id);

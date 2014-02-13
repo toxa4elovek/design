@@ -18,4 +18,13 @@ class Expert extends \app\models\AppModel {
         });
         return $expertIds;
     }
+
+    public static function getPitchExpertUserIds($expertIds) {
+        $experts = self::all(array('fields' => array('user_id'), 'conditions' => array('id' => $expertIds)));
+        $expertIds = array();
+        $experts->each(function($record) use (&$expertIds){
+            $expertIds[] = $record->user_id;
+        });
+        return $expertIds;
+    }
 }
