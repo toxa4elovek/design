@@ -62,7 +62,7 @@ class ModerationsController extends \app\controllers\AppController {
             $image = $solution->images['solution_galleryLargeSize'];
         }
         if (file_exists($image['filename'])) {
-            $newFileName = pathinfo($image['filename'], PATHINFO_DIRNAME) . '/deleted/' . pathinfo($image['filename'], PATHINFO_BASENAME);
+            $newFileName = LITHIUM_APP_PATH . '/webroot/solutions/deleted/' . pathinfo($image['filename'], PATHINFO_BASENAME);
             copy($image['filename'], $newFileName);
         } else {
             $newFileName = null;
