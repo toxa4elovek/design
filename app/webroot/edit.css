@@ -211,6 +211,15 @@ textarea.placeholder {
 	font-weight: bold;
     text-shadow: -1px 0 0 #FFFFFF;
 }
+#fieldblock4 ul {
+	float: left;
+}
+#fieldblock4 ul:nth-child(odd) {
+	margin-right: 15px;
+}
+#fieldblock4 ul> li {
+	margin-bottom: 10px;
+}
 
 /* Fields */
 .fieldleft {

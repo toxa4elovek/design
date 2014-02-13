@@ -148,7 +148,6 @@
                             <div><a href="/users/deleteaccount" style="padding-left: 10px; width: 282px; display: block; float: left; height: 40px; margin-top: 13px;" id="deleteaccount">Удалить аккаунт</a></div>
                             <div class="fieldleft">
                                 <input type="password" placeholder="Повторите новый пароль" name="confirmpassword">
-
                             </div>
                         </div>
                         <div style="clear:both;height:1px"></div>
@@ -157,14 +156,46 @@
                         <h1 class="separator-flag">УВЕДОМЛЕНИЯ ПО E-MAIL</h1>
                         <div id="fieldblock4">
                             <!--div class="fieldleft"><label><input type="checkbox" name="asas">важные изменения на сайте</label></div-->
-                            <div class="fieldleft"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых питчах раз в день</label></div>
-                            <div class="" style="margin-bottom: 4px;"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;раз в день</label></div>
-                            <div class="fieldleft"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых питчах сразу, как они<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;публикуются на сайте</label></div>
-                            <div class="fieldleft"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_onlycopy" <?php if($user->email_onlycopy): echo 'checked'; endif;?>>только о новых питчах на копирайтинг</label></div>
-                            <div class="" style="margin-bottom: 14px;"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сразу, как только их выкладывают на<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сайт</label></div>
-                            <div class="fieldleft"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>>комментарии к моим решениям</label></div>
-                            <div class=""><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>дайджест новостей (1 раз в 3 недели)</label></div>
-
+                            <ul>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых питчах раз в день
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых питчах сразу, как они<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;публикуются на сайте
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0" type="checkbox" name="email_onlycopy" <?php if($user->email_onlycopy): echo 'checked'; endif;?>>только о новых питчах на копирайтинг
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>>комментарии к моим решениям
+                                    </label>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;раз в день
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сразу, как только их выкладывают на<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сайт
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>дайджест новостей (1 раз в 3 недели)
+                                    </label>
+                                </li>
+                            </ul>
+                            <div class="clr"></div>
                         </div>
                     </section>
 
