@@ -343,7 +343,7 @@ $(document).ready(function(){
             var newText = prepend + $('#newComment').val();
             $('#newComment').val(newText);
             $(this).closest('.solution_menu').hide();
-            $.scrollTo($('.createCommentForm'), {duration: 500});
+            $.scrollTo($('.all_messages'), {duration: 500});
         }
         return false;
     });
