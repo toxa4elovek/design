@@ -8,15 +8,13 @@
 <img src="http://www.godesigner.ru/img/logo_original-01.png" width="200">
 
 <table width="800">
-    <tr><td width="5"></td><td width="30"></td><td>
-        <span style="color: #666666; line-height: 20px; font-size: 14px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user['first_name'], 'utf-8')?>!</span><br>
-    </td></tr>
     <tr><td colspan="3" height="40"></td></tr>
     <tr><td width="5"></td><td valign="top"></td>
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif; text-decoration: none;" href="http://www.godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?> <?=(int) $pitch->price?> Р.-</a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/><br/>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
+            <span style="color: #666666; line-height: 23px; font-size: 14px; font-family: Arial, sans-serif;">
+                Здравствуйте, <?=$user['first_name']?>!<br>
                 Пожалуйста, соблюдайте правила: <a href="http://godesigner.ru/answers/view/37" target="_blank">http://godesigner.ru/answers/view/37</a><br><br>
 
                 Мы были вынуждены <?php echo (is_null($term)) ? '' : 'приостановить вашу возможность комментирования на ' .
