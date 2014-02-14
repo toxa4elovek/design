@@ -7,7 +7,7 @@
             <div class="pitches-ajax-loader">&nbsp;</div>
         </div>
 		<section>
-            <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 788px; margin-left: 77px;">
+            <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 786px; margin-left: 79px;">
                 <table><tr><td>
                 <div id="filterContainer" style="border-radius:4px 4px 4px 4px;border:4px solid #F3F3F3; height:41px;padding-top:10px;background-color:white;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset; width:618px;margin-left:25px">
                     <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
