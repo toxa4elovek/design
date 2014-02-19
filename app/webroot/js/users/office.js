@@ -30,9 +30,6 @@ $(document).ready(function(){
 
     });*/
 
-
-
-
     $(document).on('click', '#older-events', function() {
         $(this).remove();
         Updater.nextPage();
@@ -356,7 +353,9 @@ function OfficeStatusUpdater() {
     }
     this.nextPage = function() {
         self.page += 1;
+        $('#officeAjaxLoader').show();
         $.get('/events/updates.json', {"init": true, "page": self.page}, function(response) {
+            $('#officeAjaxLoader').hide();
             if(response.count != 0) {
                 function sortfunction(a, b){
                     return (a.sort - b.sort);

@@ -120,6 +120,7 @@
                     echo $html
                     ?>
                 </div><!-- .maincontent -->
+                <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><image src="/img/blog-ajax-loader.gif"></div>
 
                 <div id="no-updates" style="display:none;">
                     <section class="post">
