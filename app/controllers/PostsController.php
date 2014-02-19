@@ -52,6 +52,11 @@ class PostsController extends \app\controllers\AppController {
 
     public function search() {
         if ($this->request->is('json') && isset($this->request->query['search'])) {
+            $limit = 7;
+            $page = 1;
+            if (isset($this->request->query['page'])) {
+                $page = abs(intval($this->request->query['page']));
+            }
             $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
             $words = explode(' ', $searchCondition);
             foreach ($words as $index => &$searchWord) {
@@ -70,7 +75,12 @@ class PostsController extends \app\controllers\AppController {
                     ),
                     'published' => 1,
                     'Post.created' => array('<=' => date('Y-m-d H:i:s')),
-                )));
+                    ),
+                    'page' => $page,
+                    'limit' => $limit,
+                    'order' => array('created' => 'desc'),
+                    'with' => array('User'),
+                ));
                 $posts = $posts->data();
             } else {
                 $posts = array();
@@ -82,7 +92,12 @@ class PostsController extends \app\controllers\AppController {
                         ),
                         'published' => 1,
                         'Post.created' => array('<=' => date('Y-m-d H:i:s')),
-                    )));
+                        ),
+                        'page' => $page,
+                        'limit' => $limit,
+                        'order' => array('created' => 'desc'),
+                        'with' => array('User'),
+                    ));
                     $posts += $result->data();
                 }
             }
