@@ -26,7 +26,7 @@
     }
     ?>
 
-    <div class="conteiner" style="width:958px !important">
+    <div class="conteiner">
         <section>
 
             <div class="menu">
