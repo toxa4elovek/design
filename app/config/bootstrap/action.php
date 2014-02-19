@@ -81,7 +81,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
             $needWrite = false;
         }
         if ($needWrite) {
-            Session::write('redirect', ''. $params['request']->url);
+            Session::write('redirect', '/'. $params['request']->url);
         }
         return new Response(compact('request') + array('location' => '/users/login'));
     };
