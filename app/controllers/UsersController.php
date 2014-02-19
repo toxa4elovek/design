@@ -138,10 +138,11 @@ class UsersController extends \app\controllers\AppController {
         }
         $winners = array();
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
+        $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
         if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-            return compact('gallery', 'winners', 'date', 'updates');
+            return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates');
         }else {
-            return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates')));
+            return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates')));
         }
 	}
 

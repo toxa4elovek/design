@@ -52,72 +52,71 @@
 
                         }else {
                             $newclass = '';
-                        if(strtotime($object['created']) > strtotime($date)) {
-                            $newclass = ' newevent ';
-                        }
-                        if($object['type'] == 'PitchCreated') {
-                            $newclass = ' newpitchstream ';
-                        }
-                        //if(index == 0) {
-                        //    self.date = object.created;
-                        //}
-                        if(isset($object['solution']['images']['solution_galleryLargeSize'])) {
-                            if(!isset($object['solution']['images']['solution_galleryLargeSize'][0])) {
-                                $imageurl = $object['solution']['images']['solution_galleryLargeSize']['weburl'];
-                            }else {
-                                $imageurl = $object['solution']['images']['solution_galleryLargeSize'][0]['weburl'];
+                            if(strtotime($object['created']) > strtotime($date)) {
+                                $newclass = ' newevent ';
                             }
-                        if($object['type'] == 'PitchCreated') {
-                            $imageurl = '/img/zaglushka.jpg';
-                        }else {
-                            if($object['pitch']['private'] == 1) {
-                                if(($object['user_id'] != $this->user->getId()) && ($this->user->isPitchOwner($object['pitch']['user_id']))) {
-                                $imageurl = '/img/copy-inv.png';
+                            if($object['type'] == 'PitchCreated') {
+                                $newclass = ' newpitchstream ';
+                            }
+                            //if(index == 0) {
+                            //    self.date = object.created;
+                            //}
+                            if(isset($object['solution']['images']['solution_galleryLargeSize'])) {
+                                if(!isset($object['solution']['images']['solution_galleryLargeSize'][0])) {
+                                    $imageurl = $object['solution']['images']['solution_galleryLargeSize']['weburl'];
+                                }else {
+                                    $imageurl = $object['solution']['images']['solution_galleryLargeSize'][0]['weburl'];
                                 }
+                                if($object['type'] == 'PitchCreated') {
+                                    $imageurl = '/img/zaglushka.jpg';
+                                }else {
+                                    if($object['pitch']['private'] == 1) {
+                                        if(($object['user_id'] != $this->user->getId()) && ($this->user->isPitchOwner($object['pitch']['user_id']))) {
+                                        $imageurl = '/img/copy-inv.png';
+                                        }
+                                    }
+                                }
+                                $extraUI = '';
+                                if($object['type'] != 'PitchCreated') {
+                                    $extraUI = '<ul class="group">'.
+                                    '<li><a href="#"></a></li>'.
+                                    '<li><a href="#"></a></li>'.
+                                    '<li><a href="#"></a></li>'.
+                                    '<li><a href="#"></a></li>'.
+                                    '<li><a href="#"></a></li>'.
+                                    '</ul>'.
+                                    '<p class="visit_number">' . $object['solution']['views'] . '</p>'.
+                                    '<p class="fb_like"><a href="#">' . $object['solution']['likes'] . '</a></p>';
+                                }
+                                $html .=  '<div class="obnovlenia_box ' . $newclass . 'group">'.
+                                '<section class="global_info">'.
+                                    '<p>' . $object['humanType'] . '</p>'.
+                                    '<p class="designer_name">' . $object['creator'] . '</p>'.
+                                    '<p class="add_date">' . $object['humanCreated'] . '</p>'.
+                                    $extraUI .
+                                    '</section>'.
+
+                                '<section class="global_picture">'.
+                                    '<div class="pic_wrapper">'.
+                                        '<a href="/pitches/viewsolution/' . $object['solution']['id'] . '"><img src="' . $imageurl . '" width="99" height="75" alt="" /></a>'.
+                                        '<!--img class="winning" src="/img/winner_icon.png" width="25" height="59" /-->'.
+                                        '</div>'.
+                                    '</section>'.
+
+                                '<section class="main_info">'.
+                                    '<h2><a href="/pitches/view/' . $object['pitch']['id'] . '">' . $object['pitch']['title'] . '</a></h2>'.
+                                    '<p class="subject">' . $object['pitch']['industry'] . '</p>'.
+                                    '<p class="price"><span>' . $this->moneyFormatter->formatMoney($object['pitch']['price']) . '</span> P.-</p>'.
+                                    '<p class="main_text">'.
+                                        $object['updateText'] .
+                                        '</p>'.
+                                    '<p class="full_pitch"><a href="/pitches/view/' . $object['pitch']['id'] . '"></a></p>'.
+                                    '</section>'.
+                                '</div>';
                             }
                         }
-
-                    $extraUI = '';
-                    if($object['type'] != 'PitchCreated') {
-                    $extraUI = '<ul class="group">'.
-                    '<li><a href="#"></a></li>'.
-                    '<li><a href="#"></a></li>'.
-                    '<li><a href="#"></a></li>'.
-                    '<li><a href="#"></a></li>'.
-                    '<li><a href="#"></a></li>'.
-                    '</ul>'.
-                    '<p class="visit_number">' . $object['solution']['views'] . '</p>'.
-                    '<p class="fb_like"><a href="#">' . $object['solution']['likes'] . '</a></p>';
-                    }
-                    $html .=  '<div class="obnovlenia_box ' . $newclass . 'group">'.
-                    '<section class="global_info">'.
-                        '<p>' . $object['humanType'] . '</p>'.
-                        '<p class="designer_name">' . $object['creator'] . '</p>'.
-                        '<p class="add_date">' . $object['humanCreated'] . '</p>'.
-                        $extraUI .
-                        '</section>'.
-
-                    '<section class="global_picture">'.
-                        '<div class="pic_wrapper">'.
-                            '<a href="/pitches/viewsolution/' . $object['solution']['id'] . '"><img src="' . $imageurl . '" width="99" height="75" alt="" /></a>'.
-                            '<!--img class="winning" src="/img/winner_icon.png" width="25" height="59" /-->'.
-                            '</div>'.
-                        '</section>'.
-
-                    '<section class="main_info">'.
-                        '<h2><a href="/pitches/view/' . $object['pitch']['id'] . '">' . $object['pitch']['title'] . '</a></h2>'.
-                        '<p class="subject">' . $object['pitch']['industry'] . '</p>'.
-                        '<p class="price"><span>' . $this->moneyFormatter->formatMoney($object['pitch']['price']) . '</span> P.-</p>'.
-                        '<p class="main_text">'.
-                            $object['updateText'] .
-                            '</p>'.
-                        '<p class="full_pitch"><a href="/pitches/view/' . $object['pitch']['id'] . '"></a></p>'.
-                        '</section>'.
-                    '</div>';
-                    }
-                    }
-                     endforeach;
-                    $html .= '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
+                    endforeach;
+                    $html .= '<div id="earlier_button"' . (($nextUpdates == 0) ? 'style="display: none"' : '') . '><a href="#" id="older-events">Ранее</a></div>';
                     echo $html
                     ?>
                 </div><!-- .maincontent -->

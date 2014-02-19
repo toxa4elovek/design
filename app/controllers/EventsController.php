@@ -16,8 +16,9 @@ class EventsController extends \app\controllers\AppController {
             $this->request->query['created'] = null;
         }
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created']);
+        $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
         $count = count($updates);
-        return compact('updates', 'count');
+        return compact('updates', 'count', 'nextUpdates');
     }
 
     public function sidebar() {

@@ -413,8 +413,10 @@ function OfficeStatusUpdater() {
                         '</section>'+
                     '</div>'
                 });
-                //html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-                $('#updates-box').append(html + '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>');
+                if (response.nextUpdates > 0) {
+                    html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
+                }
+                $('#updates-box').append(html);
             }
         });
 
