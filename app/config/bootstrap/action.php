@@ -70,10 +70,18 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     }
 
     return function() use ($params) {
-        if(($params['request']->type != 'json')
-            || ((false === ($params['params']['controller'] == 'Requests') and ($params['params']['action'] == 'sign'))
-            and (false === ($params['params']['controller'] == 'Pitchfiles') and (($params['params']['action'] == 'index')|| ($params['params']['action'] == 'download'))))) {
-    	    Session::write('redirect', '/'. $params['request']->url);
+        $needWrite = true;
+        if ($params['request']->type() == 'json') {
+            $needWrite = false;
+        }
+        if (($params['params']['controller'] == 'Requests') && ($params['params']['action'] == 'sign')) {
+            $needWrite = false;
+        }
+        if (($params['params']['controller'] == 'Pitchfiles') && (($params['params']['action'] == 'index') || ($params['params']['action'] == 'download'))) {
+            $needWrite = false;
+        }
+        if ($needWrite) {
+            Session::write('redirect', ''. $params['request']->url);
         }
         return new Response(compact('request') + array('location' => '/users/login'));
     };
