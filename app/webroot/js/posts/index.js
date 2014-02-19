@@ -106,6 +106,13 @@ $(document).ready(function() {
             return false;
         }
     });
+    
+    $(document).on('submit', '#post-search', function() {
+        $.get($(this).attr('action') + '.json', $(this).serialize(), function(result) {
+            console.log(result);
+        });
+        return false;
+    });
 
 });
 

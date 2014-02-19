@@ -4,6 +4,12 @@
 
     <div class="middle">
         <div class="middle_inner">
+            <!-- <div id="post-seach-wrap" style="background: none repeat scroll 0 0 #F3F3F3;box-shadow: 3px 3px #D2D2D2;margin:20px 0;padding:20px 30px;">
+                <form id="post-search" action="/posts/search">
+                    <input type="text" id="search" name="search" value="" class="text">
+                    <input type="submit" class="button second" style="margin-left: 30px" value="Поиск">
+                </form>
+            </div> -->
             <div class="content group">
                 <div id="content_help" style="width:620px;">
                     <section class="howitworks">

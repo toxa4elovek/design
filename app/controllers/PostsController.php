@@ -12,7 +12,7 @@ class PostsController extends \app\controllers\AppController {
     /**
      * @var array Массив экшенов, доступных не залогинненым пользователям
      */
-    public $publicActions = array('index', 'view');
+    public $publicActions = array('index', 'view', 'search');
 
     /**
      * Метод показа индексной страницы, используется в html и json форматах
@@ -48,6 +48,49 @@ class PostsController extends \app\controllers\AppController {
         $currenttag = $tag;
 
         return compact('posts', 'total', 'page', 'currenttag', 'editor');
+    }
+
+    public function search() {
+        if ($this->request->is('json') && isset($this->request->query['search'])) {
+            $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
+            $words = explode(' ', $searchCondition);
+            foreach ($words as $index => &$searchWord) {
+                if ($searchWord == '') {
+                    unset($words[$index]);
+                    continue;
+                }
+                $searchWord = mb_eregi_replace('[^A-Za-z0-9а-яА-Я]', '', $searchWord);
+                $searchWord = trim($searchWord);
+            }
+            if (count($words) == 1) {
+                $posts = Post::all(array('conditions' => array(
+                    'OR' => array(
+                        'title' => array('LIKE' => '%' . $words[0] . '%'),
+                        'full' => array('LIKE' => '%' . $words[0] . '%'),
+                    ),
+                    'published' => 1,
+                    'Post.created' => array('<=' => date('Y-m-d H:i:s')),
+                )));
+                $posts = $posts->data();
+            } else {
+                $posts = array();
+                foreach ($words as $word) {
+                    $result = Post::all(array('conditions' => array(
+                        'OR' => array(
+                            'title' => array('LIKE' => '%' . $word . '%'),
+                            'full' => array('LIKE' => '%' . $word . '%'),
+                        ),
+                        'published' => 1,
+                        'Post.created' => array('<=' => date('Y-m-d H:i:s')),
+                    )));
+                    $posts += $result->data();
+                }
+            }
+            $search = implode(' ', $words);
+
+            return compact('posts', 'search');
+        }
+        return $this->redirect('/posts');
     }
 
     /**
