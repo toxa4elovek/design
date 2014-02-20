@@ -290,7 +290,7 @@ $(document).ready(function() {
         $('.main').css('margin-top', 0);
         $('.conteiners').css('margin-top', 0);
         $('.middle_inner').css('margin-top', 0);
-        if(($('#slides').length > 0) || ($('.conteiner').length > 0) || ($('div.about_pitch').length == 1)){
+        if(($('#slides').length > 0) || ($('.conteiner').length > 0)){
             $('header').css('margin-bottom', '89px');
         }else {
             $('header').css('margin-bottom', '0');
@@ -305,32 +305,6 @@ $(document).ready(function() {
     $('#closepanel').mouseout(function() {
         $(this).css('background', 'url("/img/panel/close-btn.png") repeat scroll 0 0 transparent');
     })
-    if($('#panel').length == 1) {
-        $('.middle_inner, .main').css('margin-top', '13px');
-    }else {
-        /*$('.conteiner').css('margin-top', 0);
-        $('.main').css('margin-top', 0);
-        $('.conteiners').css('margin-top', 0);
-        $('.middle_inner').css('margin-top', 0);*/
-        if(($('#pitch-panel').length != 1) || ($('#slides').length > 0) || ($('.conteiner').length > 0) || ($('div.about_pitch').length == 1)){
-            if($('#worker-payment-data').length != 1) {
-                //$('header').css('margin-bottom', '89px');
-                if(($('.shadow').length != 0) || ($('.about_pitch').length != 0)){
-                    $('header').css('margin-bottom', '89px');
-                }else{
-                    if($('#pitch-panel').length == 1){
-                        $('.conteiner').css('margin-top', 0);
-                        $('.main').css('margin-top', 0);
-                        $('.conteiners').css('margin-top', 0);
-                        $('.middle_inner').not('.user_view').css('margin-top', 0);
-                    }
-                }
-            }
-
-        }else {
-            $('header').css('margin-bottom', '0');
-        }
-    }
 
     $('.header-menu-item').on('mouseover', function() {
         $(this).removeClass('header-menu-item').addClass('header-menu-item-higlighted');

@@ -25,7 +25,7 @@
 ?>
 <?php if($this->user->getCountOfCurrentPitches() > 0):?>
 <div id="pitch-panel">
-    <div class="conteiner" style="margin-top: 0px;">
+    <div class="conteiner">
         <div class="content">
             <table class="all-pitches" id="header-table">
                 <tbody>
@@ -117,7 +117,7 @@
 <?php endif?>
 <?php if($this->user->getCountOfCurrentDesignersPitches() > 0):?>
 <div id="pitch-panel">
-    <div class="conteiner" style="margin-top: 0px;">
+    <div class="conteiner">
         <div class="content">
             <table class="all-pitches">
                 <tbody>
