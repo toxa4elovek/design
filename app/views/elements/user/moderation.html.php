@@ -68,5 +68,5 @@
         <?php endif; ?>
     </div>
     <div class="clr">&nbsp;</div>
-<hr style="clear: both;">
+<hr class="tiny-hr" style="clear: both;">
 </div>

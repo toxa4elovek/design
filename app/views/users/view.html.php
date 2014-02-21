@@ -11,20 +11,20 @@
         <?php if($this->user->isAdmin()):?>
             <div class="right-sidebar-user">
                 <a class="button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=http://www.godesigner.ru/users/loginasuser/<?=$user->id?>">Войти под именем</a>
-                <hr>
+                <hr class="tiny-hr">
                 <h2 class="greyboldheader">E-mail:</h2>
                 <p style="margin-top:10px"><a href="mailto:<?=$user->email?>"><?=$user->email?></a></p>
-                <hr>
+                <hr class="tiny-hr">
                 <h2 class="greyboldheader">Online:</h2>
                 <p class="regular" style="margin-top:10px"><?=date('d.m.Y H:i', strtotime($user->lastTimeOnline))?></p>
-                <hr>
+                <hr class="tiny-hr">
                 <?php if($user->silenceCount > 0):?>
                       <p style="margin-top:10px">Запретов на общение: <?=$user->silenceCount?></p>
                       <p style="margin-top:10px">Молчит до: <?=date('d.m.Y H:i:s', strtotime($user->silenceUntil))?></p>
                     <?php if(($user->silenceCount > 0) && (strtotime($user->silenceUntil) > strtotime(date('Y-m-d H:i:s')))):?>
                         <button style="margin-top:10px" class="allowcomment" data-term=""/>Разрешить комментарии</button>
                     <?php endif?>
-                <hr>
+                <hr class="tiny-hr">
                 <?php endif?>
                 <h2 class="greyboldheader" style="margin-bottom: 10px;">Блокировать на срок:</h2>
                 <input type="hidden" value="<?=$user->id?>" id="user_id"/>
@@ -33,7 +33,7 @@
                 <button class="banhammer odd" data-term="90" />3 месяца</button>
                 <button class="block" data-term="" <?php if($user->banned == 1):?>style="display: none;"<?php else:?>style="display: inline;"<?php endif?>/>Навсегда</button>
                 <button class="unblock" data-term="" <?php if($user->banned == 1):?>style="display: inline;"<?php else:?>style="display: none;"<?php endif?>/>Разблокировать</button>
-                <hr>
+                <hr class="tiny-hr">
             </div>
         <?php endif?>
 
@@ -87,7 +87,7 @@
                 <?php endif?>
 
                 <?php if($this->user->isAdmin() && (count($moderations) > 0) && (!empty($moderations))):?>
-                    <hr>
+                    <hr class="tiny-hr">
                     <h2 class="greyboldheader">История:</h2>
                     <?php foreach ($moderations as $moderation): ?>
                         <?=$this->view()->render(array('element' => 'user/moderation'), array('moderation' => $moderation))?>

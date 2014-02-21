@@ -303,3 +303,7 @@
 .right-sidebar-user button.odd {
 	margin-right: 10px;
 }
+hr.tiny-hr {
+	border-style: none;
+	border-top: 1px solid #C1C1C1;
+}
