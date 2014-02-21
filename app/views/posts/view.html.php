@@ -65,12 +65,23 @@
     <?php $i++;endforeach?>
                             </div><?php endif?>
                         <!-- START: Livefyre Embed -->
-                        <script type='text/javascript' src='http://zor.livefyre.com/wjs/v1.0/javascripts/livefyre_init.js'></script>
-                        <script type='text/javascript'>
-                            var fyre = LF({
-                                site_id: 307155,
-                                article_id: <?=$post->id?>
-                            });
+                        <div id="livefyre-comments" style="margin-top: 20px"></div>
+                        <script type="text/javascript" src="http://zor.livefyre.com/wjs/v3.0/javascripts/livefyre.js"></script>
+                        <script type="text/javascript">
+                            (function () {
+                                var articleId = fyre.conv.load.makeArticleId(null, <?= $post->id ?>);
+                                fyre.conv.load({}, [{
+                                    el: 'livefyre-comments',
+                                    network: "livefyre.com",
+                                    siteId: 307155,
+                                    articleId: articleId,
+                                    signed: false,
+                                    collectionMeta: {
+                                        articleId: articleId,
+                                        url: fyre.conv.load.makeCollectionUrl()
+                                    }
+                                }], function() {});
+                            }());
                         </script>
                         <!-- END: Livefyre Embed -->
                     </section>
