@@ -159,39 +159,39 @@
                             <ul>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых питчах раз в день
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых питчах раз в день
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых питчах сразу, как они<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;публикуются на сайте
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых питчах сразу, как они<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;публикуются на сайте
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0" type="checkbox" name="email_onlycopy" <?php if($user->email_onlycopy): echo 'checked'; endif;?>>только о новых питчах на копирайтинг
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_onlycopy" <?php if($user->email_onlycopy): echo 'checked'; endif;?>>только о новых питчах на копирайтинг
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>>комментарии к моим решениям
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>>комментарии к моим решениям
                                     </label>
                                 </li>
                             </ul>
                             <ul>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;раз в день
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;раз в день
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сразу, как только их выкладывают на<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сайт
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сразу, как только их выкладывают на<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сайт
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>дайджест новостей (1 раз в 3 недели)
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>дайджест новостей (1 раз в 3 недели)
                                     </label>
                                 </li>
                             </ul>

@@ -26,7 +26,7 @@
     }
     ?>
     <div class="middle">
-    <div class="conteiner" style="padding: 0 0 35px !important;width:956px !important">
+    <div class="conteiner" style="padding: 0 0 35px !important;">
         <nav class="main_nav clear" style="margin-top:65px;margin-left:62px;width:832px;">
             <?=$this->view()->render(array('element' => 'office/nav'));?>
         </nav>

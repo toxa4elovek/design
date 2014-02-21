@@ -687,7 +687,6 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
    .middle_inner_gallery {
  background: url(img/main_bg.jpg) repeat;
  padding: 34px 34px 20px 63px;
- margin-top: -6px;
  }
 /*.auth section {
  margin: 0;
@@ -2233,11 +2232,10 @@ textarea.placeholder {
 .conteiner{
 	position:relative;
 	background:#e0e0e0 url(img/content-bg.png);
-	margin-top:100px;
 	border:1px solid #e0e0e0;
 	text-transform:uppercase;
 	margin:0 auto;
-	width:940px;
+	width:958px;
 }
 .conteiner h2{
 	height:73px;

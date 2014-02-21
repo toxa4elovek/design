@@ -3,7 +3,7 @@
     <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 
 
-    <div class="conteiner" style="width:958px !important">
+    <div class="conteiner">
         <section>
             <div class="menu">
                 <?=$this->view()->render(array('element' => 'step-menu'))?>

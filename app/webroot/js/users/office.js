@@ -30,9 +30,6 @@ $(document).ready(function(){
 
     });*/
 
-
-
-
     $(document).on('click', '#older-events', function() {
         $(this).remove();
         Updater.nextPage();
@@ -349,14 +346,17 @@ function OfficeStatusUpdater() {
                         '</section>'+
                     '</div>'
                 });
-                //html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-                $('#updates-box').prepend(html);
+                var $prependEl = $(html);
+                $prependEl.hide();
+                $prependEl.prependTo('#updates-box').slideDown('slow');
             }
         });
     }
     this.nextPage = function() {
         self.page += 1;
+        $('#officeAjaxLoader').show();
         $.get('/events/updates.json', {"init": true, "page": self.page}, function(response) {
+            $('#officeAjaxLoader').hide();
             if(response.count != 0) {
                 function sortfunction(a, b){
                     return (a.sort - b.sort);
@@ -413,8 +413,12 @@ function OfficeStatusUpdater() {
                         '</section>'+
                     '</div>'
                 });
-                //html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-                $('#updates-box').append(html + '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>');
+                if (response.nextUpdates > 0) {
+                    html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
+                }
+                var $appendEl = $(html);
+                $appendEl.hide();
+                $appendEl.appendTo('#updates-box').slideDown('slow');
             }
         });
 
