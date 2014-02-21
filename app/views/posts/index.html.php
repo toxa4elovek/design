@@ -4,12 +4,6 @@
 
     <div class="middle">
         <div class="middle_inner">
-            <!-- <div id="post-seach-wrap" style="background: none repeat scroll 0 0 #F3F3F3;box-shadow: 3px 3px #D2D2D2;margin:20px 0;padding:20px 30px;">
-                <form id="post-search" action="/posts/search">
-                    <input type="text" id="search" name="search" value="" class="text">
-                    <input type="submit" class="button second" style="margin-left: 30px" value="Поиск">
-                </form>
-            </div> -->
             <div class="content group">
                 <div id="content_help" style="width:620px;">
                     <section class="howitworks">
@@ -125,6 +119,10 @@
                     </section>
                 </div>
                 <div id="right_sidebar_help" style="width:200px;">
+                    <form id="post-search">
+                        <input type="text" id="blog-search" name="search" value="" class="text">
+                        <input type="submit" class="blog-submit" value="">
+                    </form>
                     <table style="width: 200px;margin-bottom: 30px;">
                         <tr height="25"><td width="110"><a class="blogtaglink" href="/posts?tag=<?=urlencode('заказчикам')?>">заказчикам</a></td><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('дизайнерам')?>">дизайнерам</a></td></tr>
                         <tr height="25"><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('фриланс')?>">фриланс</a></td><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('интервью')?>">интервью</a></td></tr>
