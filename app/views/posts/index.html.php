@@ -125,7 +125,6 @@
                     </section>
                 </div>
                 <div id="right_sidebar_help" style="width:200px;">
-                    <h2 style="padding-right: 25px;font:20px 'RodeoC',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-bottom:30px">Рубрики</h2>
                     <table style="width: 200px;margin-bottom: 30px;">
                         <tr height="25"><td width="110"><a class="blogtaglink" href="/posts?tag=<?=urlencode('заказчикам')?>">заказчикам</a></td><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('дизайнерам')?>">дизайнерам</a></td></tr>
                         <tr height="25"><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('фриланс')?>">фриланс</a></td><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('интервью')?>">интервью</a></td></tr>
@@ -135,7 +134,7 @@
                         <!--tr height="25"><td></td><td></td></tr-->
                     </table>
                     <div id="current_pitch">
-                    <?php echo $this->stream->renderStream();?>
+                    <?php echo $this->stream->renderStream(10, false);?>
                     </div>
                 </div>
             </div><!-- /content -->
