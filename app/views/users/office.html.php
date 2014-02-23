@@ -62,6 +62,7 @@
                             //    self.date = object.created;
                             //}
                             if(isset($object['solution']['images']['solution_galleryLargeSize'])) {
+                                echo '<!-- loop start -->';
                                 if(!isset($object['solution']['images']['solution_galleryLargeSize'][0])) {
                                     $imageurl = $object['solution']['images']['solution_galleryLargeSize']['weburl'];
                                 }else {
@@ -71,8 +72,8 @@
                                     $imageurl = '/img/zaglushka.jpg';
                                 }else {
                                     if($object['pitch']['private'] == 1) {
-                                        if(($object['user_id'] != $this->user->getId()) && ($this->user->isPitchOwner($object['pitch']['user_id']))) {
-                                        $imageurl = '/img/copy-inv.png';
+                                        if(($object['user_id'] != $this->user->getId()) && (!$this->user->isPitchOwner($object['pitch']['user_id']))) {
+                                            $imageurl = '/img/copy-inv.png';
                                         }
                                     }
                                 }
