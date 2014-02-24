@@ -573,7 +573,6 @@ $(document).ready(function() {
     $('#bill-fiz').submit(function(e) {
         e.preventDefault();
         if (checkRequired($(this))) {
-            console.log(checkRequired($(this)));
             $.scrollTo($('.wrong-input', $(this)).parent(), {duration: 600});
         } else {
             $.post($(this).attr('action') + '.json', {
@@ -676,6 +675,10 @@ function checkReferal() {
 function checkRequired(form) {
     var required = false;
     $.each($('[required]', form), function(index, object) {
+        if (($(this).attr('id') == 'yur-kpp') && ($('#yur-inn').val().length == 10)) {
+            $(this).val('');
+            return true;
+        }
         if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {
             $(this).addClass('wrong-input');
             required = true;
