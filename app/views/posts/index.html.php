@@ -7,7 +7,7 @@
             <div class="content group">
                 <div id="content_help" style="width:620px;">
                     <section class="howitworks">
-                        <h1 style="margin-bottom: 30px;">Наш блог</h1>
+                        <h1 style="margin-bottom: 30px;" class="js-blog-index-title">Наш блог</h1>
                         <?php
                         $currentIndex = 1;
                         $count = count($posts);
