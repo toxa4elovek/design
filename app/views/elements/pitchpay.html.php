@@ -79,7 +79,7 @@
                                 <label class="required">ИНН</label>
                                 <input type="text" name="yur-inn" id="yur-inn" placeholder="123456789012" data-placeholder="123456789012" required="" data-content="numeric" data-length="[10,12]">
 
-                                <label class="required">КПП</label>
+                                <label>КПП</label>
                                 <input type="text" name="yur-kpp" id="yur-kpp" placeholder="123456789" data-placeholder="123456789" required="" data-content="numeric" data-length="[9]">
 
                                 <label class="required">Юридический адрес</label>
