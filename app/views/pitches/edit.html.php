@@ -225,7 +225,7 @@ endif?>
         <div class="ribbon">
             <?php
             $value = 1000;
-            if(($code) && ($code->type == 'pinned')):
+            if($code && (($code->type == 'pinned') || ($code->type == 'misha'))):
                 $value = 0;
             endif;
             ?>
@@ -243,12 +243,9 @@ endif?>
                 $codeValue = $code->code;
                 $text = 'Промокод активирован!';
                 $disabled = 'disabled="disabled"';
-            }
-            if($pitch->promocode) {
-                $codeValue = $pitch->promocode;
-                $text = 'Промокод активирован!';
-                $disabled = 'disabled="disabled"';
-                $fieldHidden = '<input type="hidden" value="700" name="discount" id="discount">';
+                if($code->type == 'discount') {
+                    $fieldHidden = '<input type="hidden" value="700" name="discount" id="discount">';
+                }
             }
             ?>
 
