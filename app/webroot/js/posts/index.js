@@ -49,11 +49,19 @@ $(document).ready(function() {
                 url = '/posts/search.json?search=' + $('#blog-search').val();
                 currentPage = 1;
                 $('div', '.howitworks').remove();
+                $('.js-blog-index-title').text('Результат поиска');
                 populatePosts(result);
                 scrollInit();
             }
         });
         return false;
+    });
+    
+    $(document).on('focus', '#blog-search', function() {
+        $('#post-search').addClass('active');
+    });
+    $(document).on('blur', '#blog-search', function() {
+        $('#post-search').removeClass('active');
     });
 
 });
