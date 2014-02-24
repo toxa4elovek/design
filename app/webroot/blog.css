@@ -99,13 +99,19 @@ a.more-editor:hover {
 }
 #post-search {
 	position: relative;
-	width: 200px;
+	width: 194px;
+	height: 41px;
 	margin-bottom: 72px;
+	border: 3px solid transparent;
+}
+#post-search.active {
+	border: 3px solid #d9d9d9;
+	border-radius: 3px;
 }
 #blog-search {
 	position: absolute;
 	width: 128px;
-	height: 41px;
+	height: 40px;
 }
 .blog-submit {
 	position: absolute;
@@ -114,7 +120,12 @@ a.more-editor:hover {
 	height: 40px;
 	border: none;
 	padding: 0;
-	margin-top: 1px;
-	background: url('img/blog-search.png') left top no-repeat #5d8397;
+	background-color: #5d8397;
+	background-image: url('img/blog-search.png');
+	background-repeat: no-repeat;
+	background-position: left top;
 	outline: none;
+}
+.blog-submit:hover {
+	background-position: left bottom;
 }

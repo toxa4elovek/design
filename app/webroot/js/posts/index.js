@@ -55,6 +55,13 @@ $(document).ready(function() {
         });
         return false;
     });
+    
+    $(document).on('focus', '#blog-search', function() {
+        $('#post-search').addClass('active');
+    });
+    $(document).on('blur', '#blog-search', function() {
+        $('#post-search').removeClass('active');
+    });
 
 });
 
