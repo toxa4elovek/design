@@ -16,7 +16,7 @@ class Stream extends \lithium\template\Helper {
         if ($header) {
             $header = '<h2 style="font:20px \'RodeoC\',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-bottom:10px">Твиттер лента</h2><ul id="sidebar-content" style="background-color:#E7E7E7;">';
         } else {
-            $header = '';
+            $header = '<ul id="sidebar-content" style="background-color:#E7E7E7;">';
         }
         if($data = Rcache::read('twitterstream')):
             $tweets = $data['statuses'];
