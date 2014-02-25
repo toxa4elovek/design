@@ -185,6 +185,7 @@ function OfficeStatusUpdater() {
     this.date = '';
     // initialisation method
     this.init = function() {
+        $('.obnovlenia_box').last().addClass('last_item');
         /*$.get('/events/updates.json', {"init": true, "page": self.page}, function(response) {
             if(response.count == 0) {
                 $('#no-updates').show();
@@ -355,6 +356,7 @@ function OfficeStatusUpdater() {
     this.nextPage = function() {
         self.page += 1;
         $('#officeAjaxLoader').show();
+        var $formerLast = $('.obnovlenia_box').last();
         $.get('/events/updates.json', {"init": true, "page": self.page}, function(response) {
             $('#officeAjaxLoader').hide();
             if(response.count != 0) {
@@ -418,7 +420,10 @@ function OfficeStatusUpdater() {
                 }
                 var $appendEl = $(html);
                 $appendEl.hide();
-                $appendEl.appendTo('#updates-box').slideDown('slow');
+                $formerLast.removeClass('last_item');
+                $appendEl.appendTo('#updates-box').slideDown('slow', function() {
+                    $('.obnovlenia_box').last().addClass('last_item');
+                });
             }
         });
 

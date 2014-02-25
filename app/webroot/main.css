@@ -861,6 +861,10 @@ section.obnovlenia {
  padding: 20px 30px 12px 30px;
  background: url(img/news_buttom_line.jpg) repeat-x left bottom;
  }
+.obnovlenia_box.last_item {
+	background: none;
+	padding-bottom: 2px;
+}
 .newevent {
     background-color:#e1ecee;
 }
