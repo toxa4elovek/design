@@ -9,7 +9,7 @@
                 <?php endif?>
             </a>
         <?php else:?>
-            <a target="_blank" href="/pitches/viewsolution/<?=$solution->id?>"><img src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" /></a>
+            <a target="_blank" href="/pitches/viewsolution/<?=$solution->id?>"><img width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" /></a>
         <?php endif?>
         <img src="/img/<?=$solution->rating?>-rating.png" alt="" style="margin: 10px 0 0 0;" />
         <img src="/img/looked.png" style="margin: 10px 0 0 37px;" /><span><?=$solution->views?></span>
