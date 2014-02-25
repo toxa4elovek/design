@@ -16,7 +16,7 @@
                 <span style="color: #666666; line-height: 23px; font-size: 14px; font-family: Arial, sans-serif;">
                     Здравствуйте, <?=$user->first_name?>!<br>
                     GoDesigner оставил комментарий.<br><br>
-                    <?= $comment->text?></span><br/>
+                    <?php echo $comment->text?></span><br/>
             </td>
         </tr>
         <tr>
