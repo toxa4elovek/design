@@ -21,7 +21,7 @@ use app\extensions\storage\Rcache;
 class PagesController extends \app\controllers\AppController {
 
 	public $publicActions = array(
-		'view', 'home', 'contacts', 'howitworks', 'experts'
+		'view', 'home', 'contacts', 'howitworks', 'experts', 'special'
 	);
 
 	public function view() {
@@ -35,6 +35,10 @@ class PagesController extends \app\controllers\AppController {
 
     public function stats() {
         return $this->render(array('layout' => 'stats'));
+    }
+
+    public function special() {
+
     }
 
     public function home() {
