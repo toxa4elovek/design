@@ -1183,12 +1183,12 @@ function addAnswerComment(button) {
             var el = populateComment(commentData);
             currentSection.animate({opacity: 0}, 500, function() {
                 $(this).replaceWith(el);
-                answerLink.removeClass('active').text('Ответить').hide();
+                answerLink.removeClass('active').text('Ответить');
                 if ($('.solution-overlay').is(':visible')) {
                     var sectionPitch = $('.messages_gallery section[data-id=' + textarea.data('question-id') + ']');
                     $(el).insertAfter(sectionPitch);
                     var answerLinkPitch = sectionPitch.find('.reply-link-in-comment');
-                    answerLinkPitch.removeClass('active').text('Ответить').hide();
+                    answerLinkPitch.removeClass('active').text('Ответить');
                 }
             });
         });
