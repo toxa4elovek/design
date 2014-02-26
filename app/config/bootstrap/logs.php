@@ -18,4 +18,9 @@ Logger::config(array(
         'priority' => array('info'),
         'file' => function($data, $config) { return "payanyway.log"; },
     ),
+    'solution' => array(
+        'adapter' => 'File',
+        'priority' => array('info'),
+        'file' => function($data, $config) { return "solution_select.log"; },
+    ),
 ));

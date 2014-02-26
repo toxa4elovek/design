@@ -14,6 +14,8 @@ use \app\models\Historysolution;
 use app\models\Task;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
+use \lithium\analysis\Logger;
+use \lithium\storage\Session;
 
 class Solution extends \app\models\AppModel {
 
@@ -94,6 +96,7 @@ http://godesigner.ru/answers/view/73');
             return $result;
         });
         self::applyFilter('selectSolution', function($self, $params, $chain){
+            Logger::write('info', Session::read('user.id'), array('name' => 'solution'));
             Event::createEvent($params['solution']->pitch->id, 'SolutionPicked', $params['solution']->pitch->user_id, $params['solution']->id);
             $result = $chain->next($self, $params, $chain);
             if($result != false) {

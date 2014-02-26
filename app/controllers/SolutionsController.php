@@ -41,6 +41,10 @@ class SolutionsController extends \app\controllers\AppController {
 
     public function select() {
         if($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch')))){
+            if ((Session::read('user.id') != $solution->pitch->user_id) && (Session::read('user.isAdmin') != 1) && !User::checkRole('admin')) {
+                $result = false;
+                return compact('result');
+            }
             $nominatedSolutionOfThisPitch = Solution::first(array(
                 'conditions' => array('nominated' => 1, 'pitch_id' => $solution->pitch->id)
             ));
