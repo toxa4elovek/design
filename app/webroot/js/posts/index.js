@@ -44,11 +44,14 @@ $(document).ready(function() {
             return false;
         }
         $(window).off('scroll');
+        $('div', '.howitworks').remove();
+        $('#blog-ajax-wrapper').hide();
+        $('#search-ajax-loader').show();
         $.get('/posts/search.json', $(this).serialize(), function(result) {
+            $('#search-ajax-loader').hide();
             if ((typeof(result) != 'undefined') && (Object.keys(result.posts).length > 0)) {
                 url = '/posts/search.json?search=' + $('#blog-search').val();
                 currentPage = 1;
-                $('div', '.howitworks').remove();
                 $('.js-blog-index-title').text('Результат поиска');
                 populatePosts(result);
                 scrollInit();

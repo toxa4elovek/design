@@ -8,6 +8,7 @@
                 <div id="content_help" style="width:620px;">
                     <section class="howitworks">
                         <h1 style="margin-bottom: 30px;" class="js-blog-index-title">Наш блог</h1>
+                        <img id="search-ajax-loader" src="img/blog-ajax-loader.gif">
                         <?php
                         $currentIndex = 1;
                         $count = count($posts);
