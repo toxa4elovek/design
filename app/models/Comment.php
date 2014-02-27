@@ -81,7 +81,10 @@ class Comment extends \app\models\AppModel {
             // Expert writing
             $experts = unserialize($pitch->{'expert-ids'});
             if($pitch->status > 0 && in_array($params['user_id'], Expert::getPitchExpertUserIds($experts))) {
-                $data = array('pitch' => $pitch);
+                $data = array(
+                    'pitch' => $pitch,
+                    'text' => $params['text'],
+                );
                 User::sendSpamExpertSpeaking($data);
             }
             if($pitch->status > 0 && $params['user_id'] != $admin) {

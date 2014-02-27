@@ -8,25 +8,37 @@
     <img src="http://www.godesigner.ru/img/logo_original-01.png" width="200">
 
     <table width="800">
-        <tr><td width="5"></td><td width="30"></td><td>
-            <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user->first_name, 'utf-8')?>!</span>
-        </td></tr>
-        <tr><td colspan="3" height="40"></td></tr>
-        <tr><td width="5"></td><td valign="top">
-
-
-
-        </td>
-            <td>
-                <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
-                <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
-                <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$text?></span><br/>
-        </td></tr>
         <tr>
-            <td colspan="3" height="40"></td>
+            <td width="5"></td><td width="30"></td>
+            <td>
+                <a style="color: #ff5360; line-height: 23px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
+                <span style="color: #CCCCCC; line-height: 23px; font-size: 12px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
+            </td>
         </tr>
         <tr>
-            <td width="5"></td><td valign="top"></td>
+            <td colspan="3" height="5"></td>
+        </tr>
+        <tr>
+            <td width="5"></td><td width="30"></td>
+            <td>
+                <span style="color: #737171; line-height: 23px; font-size: 14px; font-family: Arial, sans-serif;">
+                Здравствуйте, <?=$user->first_name?>!<br>
+                Эксперт оставил комментарий к вашему питчу. Ознакомится с ним вы можете ниже, или перейти по ссылке:<br>
+                <a href="http://www.godesigner.ru/pitches/view/<?=$pitch->id?>#comment-anchor">http://www.godesigner.ru/pitches/view/<?=$pitch->id?></a>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" height="30"></td>
+        </tr>
+        <tr>
+            <td width="5"></td><td width="30"></td>
+            <td>
+                <span style="color: #666666; line-height: 23px; font-size: 14px; font-family: Arial, sans-serif;">— <?=$text?></span><br/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" height="40"></td>
         </tr>
     </table>
 </body></html>
