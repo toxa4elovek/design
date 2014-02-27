@@ -74,9 +74,6 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
         if ($params['request']->type() == 'json') {
             $needWrite = false;
         }
-        if (($params['params']['controller'] == 'Requests') && ($params['params']['action'] == 'sign')) {
-            $needWrite = false;
-        }
         if (($params['params']['controller'] == 'Pitchfiles') && (($params['params']['action'] == 'index') || ($params['params']['action'] == 'download'))) {
             $needWrite = false;
         }
