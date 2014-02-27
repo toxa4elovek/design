@@ -39,6 +39,7 @@ $(document).ready(function() {
         }
     });
     
+    // Search
     $(document).on('submit', '#post-search', function() {
         if ($('#blog-search').val().length == 0) {
             return false;
@@ -55,6 +56,8 @@ $(document).ready(function() {
                 $('.js-blog-index-title').text('Результат поиска');
                 populatePosts(result);
                 scrollInit();
+            } else {
+                $('.howitworks').append('<div style="text-align: center;"><h2 class="largest-header" style="line-height: 2em;">УПС, НИЧЕГО НЕ НАШЛИ!</h2><p class="large-regular">Попробуйте еще раз, изменив запрос.</p></div>');
             }
         });
         return false;
