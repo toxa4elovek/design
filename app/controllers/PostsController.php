@@ -103,7 +103,9 @@ class PostsController extends \app\controllers\AppController {
             }
             $search = implode(' ', $words);
 
-            return compact('posts', 'search');
+            $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
+
+            return compact('posts', 'search', 'editor');
         }
         return $this->redirect('/posts');
     }
