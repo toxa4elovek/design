@@ -51,7 +51,7 @@ $(document).ready(function() {
     });
     
     $('input[data-validate=fio]').blur(function() {
-        if (!/^[а-я]+\s[а-я]+\s[а-я]+$/i.test($(this).val())) {
+        if (!/^[А-Я]{1}[а-я]+\s[А-Я]{1}[а-я]+\s[А-Я]{1}[а-я]+$/.test($(this).val())) {
             $(this).addClass('wrong-input');
             required = true;
             return true;
@@ -89,7 +89,7 @@ function accountCheck() {
         message = 'Неверно указан Счёт.<br>Неверно указан Корсчёт.<br>'
         break;
     case 1:
-        message = 'Неверно указан Счёт.<br>'
+        message = 'Неверно указан Счёт или БИК.<br>'
             break;
     case 2:
         message = 'Неверно указан Корсчёт.<br>'
