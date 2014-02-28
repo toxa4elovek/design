@@ -355,11 +355,8 @@
                             <?php endif;?>
                     <?php
                     if(
-
                         (($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
-                        (($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment()))
-
-                        && ($this->user->isLoggedIn())
+                        (($pitch->status == 0) && ($pitch->published == 1) && $this->user->isAllowedToComment() && ($this->user->isSolutionAuthor($solution->user_id) || $this->user->isPitchOwner($pitch->user_id)))
                     ):?>
                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-comment-to="#<?=$solution->num?>">Комментировать</a></li>
                         <?php endif;?>
