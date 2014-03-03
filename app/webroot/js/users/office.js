@@ -1149,7 +1149,7 @@ $(document).on('focus', 'input[data-validate]', function() {
 });
 
 $(document).on('blur', 'input[data-validate=fio]', function() {
-    if (!/^[А-Я]{1}[а-я]+\s[А-Я]{1}[а-я]+\s[А-Я]{1}[а-я]+$/.test($(this).val())) {
+    if (!/^[А-ЯЁ]{1}[а-яё]+\s[А-ЯЁ]{1}[а-яё]+\s[А-ЯЁ]{1}[а-яё]+$/.test($(this).val())) {
         $(this).addClass('wrong-input');
         required = true;
         return true;

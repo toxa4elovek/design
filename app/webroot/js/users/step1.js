@@ -51,7 +51,7 @@ $(document).ready(function() {
     });
     
     $('input[data-validate=fio]').blur(function() {
-        if (!/^[А-Я]{1}[а-я]+\s[А-Я]{1}[а-я]+\s[А-Я]{1}[а-я]+$/.test($(this).val())) {
+        if (!/^[А-ЯЁ]{1}[а-яё]+\s[А-ЯЁ]{1}[а-яё]+\s[А-ЯЁ]{1}[а-яё]+$/.test($(this).val())) {
             $(this).addClass('wrong-input');
             required = true;
             return true;
