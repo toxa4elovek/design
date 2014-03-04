@@ -36,7 +36,7 @@
     echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
     echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
     echo '<meta property="og:title" content="' . $post->title . '"/>';
-    echo '<meta property="og:image" content="' . $post->imageurl . '"/>';
+    echo '<meta property="og:image" content="http://www.godesigner.ru/' . $post->imageurl . '"/>';
     echo '<meta property="fb:admins" content="nyudmitriy"/>';
     echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
