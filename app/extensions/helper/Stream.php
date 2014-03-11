@@ -14,9 +14,9 @@ class Stream extends \lithium\template\Helper {
     */
     public function renderStream($num = 10, $header = true) {
         if ($header) {
-            $header = '<h2 style="font:20px \'RodeoC\',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-bottom:10px">Твиттер лента</h2><ul id="sidebar-content" style="background-color:#E7E7E7;">';
+            $header = '<h2 style="font:20px \'RodeoC\',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-bottom:10px">Твиттер лента</h2><ul id="sidebar-content">';
         } else {
-            $header = '<ul id="sidebar-content" style="background-color:#E7E7E7;">';
+            $header = '<ul id="sidebar-content">';
         }
         if($data = Rcache::read('twitterstream')):
             $tweets = $data['statuses'];
@@ -39,9 +39,9 @@ class Stream extends \lithium\template\Helper {
                 }
                 $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/'. $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name']  . '</a>';
                 if($count == 1):
-                    $content .= '<li style=" background: #e7e7e7 url(/img/up.png) repeat-x 196px -2px;padding-left:5px;padding-right:5px;padding-top:10px;">';
+                    $content .= '<li style="padding-left:5px;padding-right:5px;padding-top:10px;">';
                 else:
-                    $content .= '<li style=" background-color:#e7e7e7;padding-left:5px;">';
+                    $content .= '<li style="padding-left:5px;">';
                 endif;
                 $content .= '<p class="regular" style="line-height:20px;">' . $user . ' ' . $text . '</p><p class="time" title="' . date('Y-m-d H:i:s', strtotime($tweet['created_at'])) . '">' . date('H:i:s d.m.Y', strtotime($tweet['created_at'])) . '</p><div style="height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:188px;margin-top:7px;margin-bottom:15px;"></div></li>';
                 $count += 1;

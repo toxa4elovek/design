@@ -158,7 +158,7 @@
                 </div>
                 <?php endif;?>
                 <div id="current_pitch">
-                    <?php echo $this->stream->renderStream();?>
+                    <?php echo $this->stream->renderStream(10, false);?>
                 </div>
 
             </div><!-- /right_sidebar -->

@@ -13,6 +13,7 @@ use \app\models\Event;
 use \app\models\Invite;
 use \app\models\Avatar;
 use \app\models\Moderation;
+use \app\models\Wp_post;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\mailers\ContactMailer;
@@ -1112,6 +1113,7 @@ class UsersController extends \app\controllers\AppController {
             $data = json_decode($tmhOAuth->response['response'], true);
             $censoredTweets = array();
             $censoredTweets['statuses'] = array();
+            $minTimestamp = 1893355200;
             foreach($data['statuses'] as $key => &$tweet) {
                 $delete = false;
                 if(isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
@@ -1122,9 +1124,23 @@ class UsersController extends \app\controllers\AppController {
                     }
                 }
                 if($delete == false) {
+                    $tweet['timestamp'] = strtotime($tweet['created_at']);
+                    $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
                     $censoredTweets['statuses'][$key] = $tweet;
                 }
             }
+
+            if (($tutPosts = Wp_post::getPostsForStream($minTimestamp)) && (count($tutPosts) > 0)) {
+                foreach ($tutPosts as $post) {
+                    $censoredTweets['statuses'][] = array(
+                        'text' => $post->post_title,
+                        'timestamp' => strtotime($post->post_modified),
+                    );
+                }
+            }
+
+            uasort($censoredTweets['statuses'], function($a, $b) { return ($a['timestamp'] > $b['timestamp']) ? -1 : 1; });
+
             $res = Rcache::write('twitterstream', $censoredTweets);
             echo '<pre>';
             var_dump($censoredTweets['statuses']);
