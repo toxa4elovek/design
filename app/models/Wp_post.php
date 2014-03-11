@@ -2,9 +2,17 @@
 
 namespace app\models;
 
+use \app\models\Wp_postmeta;
+use \app\models\Wp_term;
+
 class Wp_post extends \app\models\AppModel {
 
     public $_meta = array('connection' => 'tutdesign');
+
+    public $hasMany = array(
+        'Wp_term_relationship' => array('key' => array('ID' => 'object_id')),
+        'Wp_postmeta' => array('key' => array('ID' => 'post_id')),
+    );
 
     protected $_schema = array(
         'ID'  => array(
@@ -134,6 +142,42 @@ class Wp_post extends \app\models\AppModel {
         ),
     );
 
+    public static function __init() {
+        parent::__init();
+
+        self::applyFilter('find', function($self, $params, $chain) {
+            $result = $chain->next($self, $params, $chain);
+            if (is_object($result)) {
+                $addCategory = function($record) {
+                    if (isset($record->wp_term_relationships[0]->term_taxonomy_id)) {
+                        $category = Wp_term::first(array(
+                            'fields' => array('term_id', 'slug'),
+                            'conditions' => array('term_id' => $record->wp_term_relationships[0]->term_taxonomy_id)));
+                        $record->category = $category->slug;
+                    }
+                    if (isset($record->wp_postmeta[0]->meta_value)) {
+                        $thumbnail = Wp_postmeta::first(array(
+                            'conditions' => array(
+                                'post_id' => $record->wp_postmeta[0]->meta_value,
+                                'meta_key' => '_wp_attached_file',
+                            )));
+                        $record->thumbnail = $thumbnail->meta_value;
+                    }
+                    return $record;
+                };
+
+                if (get_class($result) == 'lithium\data\entity\Record') {
+                    $result = $addCategory($result);
+                } else {
+                    foreach ($result as $foundItem) {
+                        $foundItem = $addCategory($foundItem);
+                    }
+                }
+            }
+            return $result;
+        });
+    }
+
     public static function getPostsForStream($timestamp) {
         $time = date('Y-m-d H:i:s', $timestamp);
         $posts = self::all(array(
@@ -143,7 +187,9 @@ class Wp_post extends \app\models\AppModel {
                 'post_modified' => array(
                     '>=' => $time,
                 ),
+                'Wp_postmeta.meta_key' => '_thumbnail_id',
             ),
+            'with' => array('Wp_term_relationship', 'Wp_postmeta')
         ));
         return $posts;
     }

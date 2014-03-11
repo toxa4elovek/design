@@ -1133,8 +1133,14 @@ class UsersController extends \app\controllers\AppController {
             if (($tutPosts = Wp_post::getPostsForStream($minTimestamp)) && (count($tutPosts) > 0)) {
                 foreach ($tutPosts as $post) {
                     $censoredTweets['statuses'][] = array(
+                        'type' => 'tutdesign',
                         'text' => $post->post_title,
                         'timestamp' => strtotime($post->post_modified),
+                        'created_at' => $post->post_modified,
+                        'slug' => $post->post_name,
+                        'category' => $post->category,
+                        'id' => $post->ID,
+                        'thumbnail' => $post->thumbnail,
                     );
                 }
             }
