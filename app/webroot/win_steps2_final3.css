@@ -149,6 +149,7 @@ ul li a.active span {
 }
 .center_block span {
 	line-height: 20px;
+	word-wrap: break-word;
 	/*font: normal 12px/1 "Arial", sans-serif;     */
 }
 .comment {
