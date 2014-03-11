@@ -43,7 +43,7 @@ class AnswersController extends \lithium\action\Controller {
             }
             $search = implode(' ', $words);
         }else {
-            $answers = Answer::all(array('order' => array('display_order' => 'asc')));
+            $answers = Answer::all(array('order' => array('hits' => 'desc')));
             $answers = $answers->data();
         }
         if((isset($this->request->query['ajax'])) && ($this->request->query['ajax'] == 'true')) {
