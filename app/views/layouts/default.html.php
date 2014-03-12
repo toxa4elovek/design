@@ -32,11 +32,19 @@
     <meta property="og:image" content="<?=$url?>"/>
     <meta property="og:description" content="<?=$description?>"/>
     <?php elseif(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
+        $first_img = $post->imageurl;
+        preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->full, $matches);
+        if (!empty($matches[1])) {
+            $first_img = $matches[1][0];
+        }
+        if (stripos($first_img, 'http://') === false) {
+            $first_img = 'http://www.godesigner.ru' . $first_img;
+        }
     echo '<meta content="article" property="og:type"/>';
     echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
     echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
     echo '<meta property="og:title" content="' . $post->title . '"/>';
-    echo '<meta property="og:image" content="http://www.godesigner.ru/' . $post->imageurl . '"/>';
+    echo '<meta property="og:image" content="' . $first_img . '"/>';
     echo '<meta property="fb:admins" content="nyudmitriy"/>';
     echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
