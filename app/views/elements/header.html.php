@@ -54,7 +54,7 @@
                                 <td class="pitches-name mypitches">
                                     <a href="/pitches/view/<?=$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
                                 </td>
-                                <td class="pitches-status mypitches">
+                                <td <?php echo ($mypitch->status < 1) ? '' : 'colspan="2"' ?> class="pitches-status mypitches">
                                     <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
                                         $types['current'] += 1?>
                                     <a href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a>
@@ -83,15 +83,17 @@
                                 <td class="price mypitches">
                                     <?=$this->moneyFormatter->formatMoney($mypitch->price)?>
                                 </td>
+                                <?php if ($mypitch->status < 1):?>
                                 <td class="pitches-edit mypitches">
                                     <?php if($mypitch->billed == 0):?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
-                                    <?php elseif($mypitch->status < 1):?>
+                                    <?php else:?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <?php endif?>
                                 </td>
+                                <?php endif ?>
                             </tr>
                             <?php
                                 $i++;
