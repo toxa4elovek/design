@@ -274,6 +274,9 @@ class Comment extends \app\models\AppModel {
                 if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
                     $comment->needAnswer = 1;
                 }
+                if (true == $isUserAdmin) {
+                    $comment->needAnswer = 1;
+                }
             }
         } else {
             foreach ($commentsFiltered as $comment) {
