@@ -73,7 +73,7 @@
                                     <?php endif;?>
                                     <?php if(($mypitch->status == 1) && ($mypitch->awarded != 0)):
                                         $types['finish'] += 1?>
-                                        <a class="pitches-finish" href="/users/step<?=$step?>/<?=$mypitch->awarded?>">Завершительный этап</a>
+                                        <a class="pitches-finish" href="/users/step<?=$step?>/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
                                     <?php endif?>
                                     <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0)):
                                         $types['winner'] += 1?>
