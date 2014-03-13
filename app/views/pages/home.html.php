@@ -81,28 +81,21 @@
           <?php endif?>
         </li>
       <li>
-       <?php
-       if(mt_rand(0,1) == 0) {
-        $specialShow = true;
-        $briefShow = false;
-       }else {
-        $specialShow = false;
-        $briefShow = true;
-       }
-
-       ?>
-       <div style="height:261px;width:260px" id="bannerblock">
-        <div id="special_banner" style="position: absolute; <?php if($specialShow == false) echo 'display:none;'?>">
-       <img src="/img/vernem_dengi_feb-02.png" alt="" />
-       <a id="special_link" class="more_info" href="/pages/special" style="background: url(/img/banner_onpress.png) repeat scroll left top transparent">
-
-       </a></div>
-       <div id="brief_banner" style="position: absolute; <?php if($briefShow == false) echo 'display:none;'?>">
-       <img src="/img/brief.png" alt="" />
-       <a id="brief_link" class="more_info" href="/pages/brief" style="background: url(/img/banner_onpress.png) repeat scroll left top transparent">
-
-       </a>
-        </div></div>
+       <?php $randonBanner = mt_rand(1, 3);?>
+        <div style="height:261px;width:260px" id="bannerblock">
+            <div id="special_banner" style="position: absolute; <?php if($randonBanner != 1) echo 'display:none;'?>">
+                <img src="/img/vernem_dengi_feb-02.png" alt="" />
+                <a class="more_info" href="/pages/special"></a>
+            </div>
+            <div id="brief_banner" style="position: absolute; <?php if($randonBanner != 2) echo 'display:none;'?>">
+                <img src="/img/brief.png" alt="" />
+                <a class="more_info" href="/pages/brief"></a>
+            </div>
+            <div id="referal_banner" style="position: absolute; <?php if($randonBanner != 3) echo 'display:none;'?>">
+                <img src="/img/banner-referal.jpg" alt="" />
+                <a class="more_info" href="/pages/referal"></a>
+            </div>
+        </div>
       </li>
     </ul>
     <div class="take_fill_block">

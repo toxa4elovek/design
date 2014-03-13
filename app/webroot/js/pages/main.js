@@ -122,14 +122,13 @@ $(function(){
     });
 
     function changeBanner() {
-        $.each($('#bannerblock').children(), function(index, object) {
-            var banner = $(object);
-            if(banner.css('display') == 'none') {
-                banner.fadeIn(300);
-            }else{
-                banner.fadeOut(300);
-            }
-        })
+        var $el = $('div:visible', '#bannerblock');
+        var $elNext = $el.next();
+        if ($elNext.length == 0) {
+            $elNext = $el.prevAll().last();
+        }
+        $el.fadeOut(300);
+        $elNext.fadeIn(300);
     }
     setInterval(changeBanner, 7500);
     $('.talkhoverzone').on('mouseover', function() {
@@ -140,8 +139,6 @@ $(function(){
         $('a', $(this)).css('color', '#666666');
     })
 
-
-
     $('.front_catalog li').hover(function() {
         $('.more_info', $(this)).fadeIn(300);
     },
@@ -150,14 +147,6 @@ $(function(){
                 $(this).hide();
             });
     });
-
-    $('#special_banner').on('mouseenter', function() {
-        $('#special_link').fadeIn(300); 
-    })
-
-    $('#brief_banner').on('mouseenter', function() {
-        $('#brief_link').fadeIn(300); 
-    })
 
     $('#video').click(function() {
         $('#popup-final-step').modal({

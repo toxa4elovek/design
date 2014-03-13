@@ -36,7 +36,12 @@
                 <?php else:?>
                 <a href="/pages/contacts">Контакты</a> /
                 <?php endif?>
-                <?php if(preg_match('@posts$@', $_SERVER["REQUEST_URI"])):?> 
+                <?php if(preg_match('@pages/referal$@', $_SERVER["REQUEST_URI"])):?>
+                <?=$this->html->link('Партнёрка', 'Pages::referal', array('style' => 'color: #4a4c55'))?> /
+                <?php else:?>
+                <?=$this->html->link('Партнёрка', 'Pages::referal')?> /
+                <?php endif?>
+                <?php if(preg_match('@posts$@', $_SERVER["REQUEST_URI"])):?>
                 <?=$this->html->link('Блог', 'Posts::index', array('style' => 'color: #4a4c55'))?> /
             	<?php else:?>
             	<?=$this->html->link('Блог', 'Posts::index')?> /
