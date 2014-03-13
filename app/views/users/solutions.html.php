@@ -42,7 +42,7 @@
                             </div>
                             <div class="selecting_numb">
                                 <?php if(($filterType != 'nominating') && ($this->user->isSolutionAuthor($solution->user_id))):?>
-                                <input type="checkbox" <?php if(($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):?>disabled="disabled"<?php endif?> <?php if($solution->selected):?>checked="checked"<?php endif?> class="select_checkbox" data-id="<?=$solution->id?>" style="margin-right: 5px;">
+                                <input type="checkbox" <?php if(($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):?>disabled="disabled" <?php elseif($solution->selected):?>checked="checked"<?php endif?> class="select_checkbox" data-id="<?=$solution->id?>" style="margin-right: 5px;">
                                 <?php endif;?>
                                 <span class="number_img">#<?=$solution->num?></span>
                             <?=$this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false))?>   </div>
