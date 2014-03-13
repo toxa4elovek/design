@@ -47,7 +47,9 @@ class PostsController extends \app\controllers\AppController {
         $total = ceil($total / $limit);
         $currenttag = $tag;
 
-        return compact('posts', 'total', 'page', 'currenttag', 'editor');
+        $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
+
+        return compact('posts', 'total', 'page', 'currenttag', 'editor', 'search');
     }
 
     public function search() {
@@ -152,6 +154,10 @@ class PostsController extends \app\controllers\AppController {
      * @return array|object
      */
     public function view() {
+        if (!empty($this->request->query['search'])) {
+            return $this->redirect('/posts?search=' . $this->request->query['search']);
+        }
+
         if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
             if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
                 Session::delete('user.blogpost');

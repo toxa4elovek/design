@@ -121,7 +121,7 @@
                 </div>
                 <div id="right_sidebar_help" style="width:200px;">
                     <form id="post-search">
-                        <input type="text" id="blog-search" name="search" value="" class="text">
+                        <input type="text" id="blog-search" name="search" value="<?=$search?>" class="text">
                         <input type="submit" class="blog-submit" value="">
                     </form>
                     <table style="width: 200px;margin-bottom: 30px;">

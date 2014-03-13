@@ -69,6 +69,9 @@ $(document).ready(function() {
     $(document).on('blur', '#blog-search', function() {
         $('#post-search').removeClass('active');
     });
+    if ($('#blog-search').val().length > 0) {
+        $('#post-search').trigger('submit');
+    }
 
 });
 
