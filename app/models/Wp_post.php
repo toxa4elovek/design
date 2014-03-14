@@ -162,7 +162,7 @@ class Wp_post extends \app\models\AppModel {
                                 'post_id' => $record->wp_postmeta[0]->meta_value,
                                 'meta_key' => '_wp_attachment_metadata',
                             )));
-                        $record->thumbnail = Wp_post::extractThumbnail($thumbnail->meta_value);
+                        $record->thumbnail = Wp_post::extractThumbnail($thumbnail->meta_value, $record->wp_postmeta[0]->meta_value);
                     }
                     return $record;
                 };
@@ -195,13 +195,23 @@ class Wp_post extends \app\models\AppModel {
         return $posts;
     }
 
-    public static function extractThumbnail($data) {
+    public static function extractThumbnail($data, $id) {
         $data = unserialize($data);
-        $path = preg_replace('#[^/]*$#', '', $data['file']);
-        if (isset($data['sizes']['tut_small']['file'])) {
-            $file = $path . $data['sizes']['tut_small']['file'];
+        if (!empty($data['sizes'])) {
+            $path = preg_replace('#[^/]*$#', '', $data['file']);
+            if (isset($data['sizes']['tut_small']['file'])) {
+                $file = $path . $data['sizes']['tut_small']['file'];
+            } else {
+                $file = $path . $data['sizes']['thumbnail']['file'];
+            }
         } else {
-            $file = $path . $data['sizes']['thumbnail']['file'];
+            $thumbnail = Wp_postmeta::first(array(
+                'conditions' => array(
+                    'post_id' => $id,
+                    'meta_key' => '_wp_attached_file',
+                ),
+            ));
+            $file = $thumbnail->meta_value;
         }
         return $file;
     }
