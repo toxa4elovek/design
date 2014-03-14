@@ -7,6 +7,10 @@ $(document).ready(function() {
         url += currentTag;
     }
     var currentPage = 1;
+    var searchQuery = getParameterByName('search');
+    if (searchQuery) {
+        url = '/posts/search.json?search=' + searchQuery;
+    }
     /*
      * Initialize endless scroll
      */
@@ -69,10 +73,6 @@ $(document).ready(function() {
     $(document).on('blur', '#blog-search', function() {
         $('#post-search').removeClass('active');
     });
-    if ($('#blog-search').val().length > 0) {
-        $('#post-search').trigger('submit');
-    }
-
 });
 
 /*

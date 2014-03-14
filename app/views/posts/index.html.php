@@ -7,8 +7,14 @@
             <div class="content group">
                 <div id="content_help" style="width:620px;">
                     <section class="howitworks">
-                        <h1 style="margin-bottom: 30px;" class="js-blog-index-title">Наш блог</h1>
-                        <img id="search-ajax-loader" src="img/blog-ajax-loader.gif">
+                        <h1 style="margin-bottom: 30px;" class="js-blog-index-title"><?php echo (empty($search)) ? 'Наш блог' : 'Результат поиска'; ?></h1>
+                        <img id="search-ajax-loader" src="/img/blog-ajax-loader.gif">
+                        <?php if (count($posts) == 0):?>
+                            <div style="text-align: center;">
+                                <h2 class="largest-header" style="line-height: 2em;">УПС, НИЧЕГО НЕ НАШЛИ!</h2>
+                                <p class="large-regular">Попробуйте еще раз, изменив запрос.</p>
+                            </div>
+                        <?php endif; ?>
                         <?php
                         $currentIndex = 1;
                         $count = count($posts);
@@ -55,68 +61,6 @@
                             <div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>
                             <?php endif?>
                         <?php endforeach?>
-
-                    <?php if(false): ?>
-                                        <div class="page-nambe-nav">
-                    <?php if($total > 1):
-                        $url = '';
-                        if($currenttag) $url = '&tag=' . $currenttag;
-                        $prev = $page - 1;
-                        if($prev < 1) $prev = 1?>
-                        <a href="/posts?page=<?=$prev . $url?>">&#60;</a>
-
-                        <?php if($total <= 5):?>
-                            <?php for($i = 1; $i <= $total; $i++):?>
-                                <?php if($page == $i):?>
-                                    <a href="/posts?page=<?=$i . $url?>" class="this-page nav-page" rel="<?=$i?>"><?=$i?></a>
-                                <?php else:?>
-                                    <a href="/posts?page=<?=$i . $url?>" class="nav-page" rel="<?=$i?>"><?=$i?></a>
-                                <?php endif?>
-                            <?php endfor?>
-                        <?php else:?>
-                            <?php if(($page - 3) <= 0): ?>
-                                <?php for($i = 1; $i <= 4; $i++): ?>
-                                    <?php if($page == $i):?>
-                                        <a href="/posts?page=<?=$i . $url?>" class="this-page nav-page" rel="<?=$i?>"><?=$i?></a>
-                                    <?php else:?>
-                                        <a href="/posts?page=<?=$i . $url?>" class="nav-page" rel="<?=$i?>"><?=$i?></a>
-                                    <?php endif?>
-                                <?php endfor?>
-                                ... <a href="/posts?page=<?=$total . $url?>" class="nav-page" rel="<?=$total?>"><?=$total?></a>
-                            <?php endif?>
-
-                            <?php if((($page - 3) > 0) && ($total > ($page + 2))): ?>
-                                <a href="/posts?page=1<?=$url?>" class="nav-page" rel="1">1</a> ...
-                                <?php for($i = $page - 1 ; $i <= $page + 1; $i++):?>
-                                    <?php if($page == $i):?>
-                                        <a href="/posts?page=<?=$i . $url?>" class="this-page nav-page" rel="<?=$i?>"><?=$i?></a>
-                                    <?php else:?>
-                                        <a href="/posts?page=<?=$i . $url?>" class="nav-page" rel="<?=$i?>"><?=$i?></a>
-                                    <?php endif?>
-                                <?php endfor?>
-                                 ... <a href="/posts?page=<?=$total . $url?>" class="nav-page" rel="<?php $total?>"><?=$total?></a>
-                            <?php endif?>
-
-                            <?php if($total <= ($page + 2)):?>
-                                <a href="/posts?page=1<?=$url?>" class="nav-page" rel="1">1</a> ...
-                                <?php for($i = $total - 3; $i <= $total; $i++): ?>
-                                    <?php if($page == $i):?>
-                                        <a href="/posts?page=<?=$i . $url?>" class="this-page nav-page" rel="<?=$i?>"><?=$i?></a>
-                                    <?php else:?>
-                                        <a href="/posts?page=<?=$i . $url?>" class="nav-page" rel="<?=$i?>"><?=$i?></a>
-                                    <?php endif?>
-                                <?php endfor?>
-                            <?php endif?>
-
-                        <?php endif;
-                        $next = $page + 1;
-                        if($next > $total) $next = $total;
-                        ?>
-                        <a href="/posts?page=<?=$next . $url?>">&#62;</a>
-                    <?php endif?>
-                    <!--a href="#">&#60;</a><a href="#" class="this-page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a> ... <a href="#">7</a><a href="#">&#62;</a-->
-                </div>
-                <?php endif ?>
                     </section>
                 </div>
                 <div id="right_sidebar_help" style="width:200px;">

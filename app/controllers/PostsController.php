@@ -43,17 +43,13 @@ class PostsController extends \app\controllers\AppController {
             $posts = Post::all(array('conditions' => array('published' => 1, 'Post.created' => array('<=' => date('Y-m-d H:i:s'))) + $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
         }
 
-        $total = Post::count(array('conditions' => $conditions));
-        $total = ceil($total / $limit);
-        $currenttag = $tag;
-
         $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
 
-        return compact('posts', 'total', 'page', 'currenttag', 'editor', 'search');
+        return compact('posts', 'editor', 'search');
     }
 
     public function search() {
-        if ($this->request->is('json') && isset($this->request->query['search'])) {
+        if (isset($this->request->query['search'])) {
             $limit = 7;
             $page = 1;
             if (isset($this->request->query['page'])) {
@@ -83,9 +79,8 @@ class PostsController extends \app\controllers\AppController {
                     'order' => array('created' => 'desc'),
                     'with' => array('User'),
                 ));
-                $posts = $posts->data();
             } else {
-                $posts = array();
+                $posts = new \lithium\util\Collection();
                 foreach ($words as $word) {
                     $result = Post::all(array('conditions' => array(
                         'OR' => array(
@@ -100,14 +95,18 @@ class PostsController extends \app\controllers\AppController {
                         'order' => array('created' => 'desc'),
                         'with' => array('User'),
                     ));
-                    $posts += $result->data();
+                    $posts->append($result);
                 }
             }
             $search = implode(' ', $words);
 
             $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
 
-            return compact('posts', 'search', 'editor');
+            if ($this->request->is('json')) {
+                return compact('posts', 'search', 'editor');
+            }
+            $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
+            return $this->render(array('template' => 'index', 'data' => compact('posts', 'search', 'editor')));
         }
         return $this->redirect('/posts');
     }
@@ -155,7 +154,7 @@ class PostsController extends \app\controllers\AppController {
      */
     public function view() {
         if (!empty($this->request->query['search'])) {
-            return $this->redirect('/posts?search=' . $this->request->query['search']);
+            return $this->redirect('/posts/search?search=' . $this->request->query['search']);
         }
 
         if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
