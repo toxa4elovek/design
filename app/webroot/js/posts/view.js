@@ -11,6 +11,13 @@ $(document).ready(function() {
         $('.title', this).css('color', '#999999');
     })
 
+    $(document).on('focus', '#blog-search', function() {
+        $('#post-search').addClass('active');
+    });
+    $(document).on('blur', '#blog-search', function() {
+        $('#post-search').removeClass('active');
+    });
+
     // gplus
     window.___gcfg = {lang: 'ru'};
 
