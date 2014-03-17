@@ -1,4 +1,4 @@
-<div class="right_block">
+<div class="right_block<?php echo ($type == 'designer') ? '' : ' for-client'; ?>">
     <div class="user_photo">
         <?php if($solution->pitch->category_id == 7):?>
             <a href="/users/step<?=$step?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">

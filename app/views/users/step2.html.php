@@ -10,7 +10,7 @@
             </div>
         </section>
         <section>
-            <div class="block-toggler" style="margin-left: 65px;">
+            <div class="block-toggler finish-steps">
                 <a href="/users/solutions">все решения</a> /
                 <?php if($solution->step == 4):?>
                 <a href="/users/awarded" class="link">награжденные</a> /

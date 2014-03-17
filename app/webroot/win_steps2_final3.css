@@ -1,5 +1,15 @@
+ul li a.active {
+    background: url(img/main_nav_active.jpg) no-repeat 0 0;
+    color: #fff;
+    line-height: 39px;
+    height: 43px;
+}
 ul li a.active span {
-	color: #ff585d;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+	background: url(img/manin_nav_active_arrow.jpg) no-repeat 50% bottom;
+	color: #fff;
 }
 .solutions {
 	margin: 0 0 0 63px;
@@ -21,6 +31,9 @@ ul li a.active span {
 	color: #aaaaaa;
 	text-decoration: none;
 	font: normal 12px/1 "RodeoC", sans-serif;
+}
+.status.for-client a {
+	font-size: 11px;
 }
 .requisites {
 	width: 209px;
@@ -54,6 +67,11 @@ ul li a.active span {
 .layouts {
 	margin-left: -18px;
 }
+.layouts.for-client {
+	margin-left: 0;
+	width: 200px;
+	background-size: 100% 100%;
+}
 .source {
 	width: 277px;
 	height: 37px;
@@ -74,8 +92,18 @@ ul li a.active span {
     float: left;
     margin-left: -18px;
 }
+.source.for-client,
+.source.for-client:hover,
+.source-nonactive.for-client,
+.source_active.for-client {
+    width: 270px;
+    background-size: 100% 100%;
+}
 .source-nonactive span {
     font: 12px/1 "RodeoC",sans-serif;
+}
+.source-nonactive.for-client span {
+	font-size: 11px;
 }
 .source_active {
     width: 277px;
@@ -121,6 +149,9 @@ ul li a.active span {
 .rating-nonactive span {
     font: 12px/1 "RodeoC",sans-serif;
 }
+.rating-nonactive.for-client span {
+	font-size: 11px;
+}
 .rating:hover {
 	background: url('img/rating-hover-bg.png') no-repeat;
 }
@@ -139,6 +170,13 @@ ul li a.active span {
 }
 .rating_active {
     color: #fff;
+}
+.rating.for-client,
+.rating.for-client:hover,
+.rating-nonactive.for-client,
+.rating_active.for-client {
+    width: 178px;
+    background-size: 100% 100%;
 }
 .center_block {
 	width: 608px;
@@ -294,12 +332,6 @@ ul li a.active span {
 	color: #50525a;
 }
 
-
-
-.right_block {
-	margin: 35px 0 0 32px;
-	float: left;
-}
 .user_photo {
 	width: 190px;
 	height: 164px;
