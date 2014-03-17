@@ -60,6 +60,11 @@ class Brief extends \lithium\template\Helper {
             '<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $string);
     }
 
+    function linkemail($string) {
+        return preg_replace('#(' . $this->emailPattern . ')#',
+            '<a href="mailto://$1">$1</a>', $string);
+    }
+
     function trim_all($str, $what = NULL, $with = ' ') {
         if ($what === NULL) {
             //  Character      Decimal      Use

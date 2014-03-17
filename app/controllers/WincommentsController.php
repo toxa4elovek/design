@@ -41,7 +41,7 @@ class WincommentsController extends \lithium\action\Controller {
             $comment->save();
             $comment = Wincomment::first($this->request->id);
             $brief = new Brief();
-            return $brief->stripemail($comment->text);
+            return $brief->linkemail($brief->eee($comment->text));
         }
     }
 }
