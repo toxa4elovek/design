@@ -95,7 +95,9 @@ class PostsController extends \app\controllers\AppController {
                         'order' => array('created' => 'desc'),
                         'with' => array('User'),
                     ));
-                    $posts->append($result);
+                    foreach ($result as $post) {
+                        $posts[$post->id] = $post;
+                    }
                 }
             }
             $search = implode(' ', $words);
