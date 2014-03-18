@@ -453,6 +453,69 @@ a.number_img_gallery {
 	margin-bottom:8px;}
 .portfolio_gallery a.add_pdf_link:hover .red_arrow{
 	background-position:center bottom;}
+.portfolio_gallery .ratingcomment {
+    position: absolute;
+    z-index: 10;
+    top: 80px;
+    left: -273px;
+    width: 242px;
+    height: 136px;
+    background: rgba(255, 255, 255, .85);
+    padding: 13px 15px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+}
+.portfolio_gallery .ratingcomment.right-pos {
+	left: 76px
+}
+.portfolio_gallery .ratingcomment:after {
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-width: 18px 0 18px 15px;
+	border-color: transparent rgba(255, 255, 255, .6);
+	display: block;
+	width: 0;
+	z-index: 1;
+	right: -15px;
+	top: 65px;
+}
+.portfolio_gallery .ratingcomment.right-pos:after {
+	left: -15px;
+	border-width: 18px 15px 18px 0;
+}
+.portfolio_gallery .ratingcomment #bubble-close {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	display: inline-block;
+	zoom: 1;
+	width: 10px;
+	height: 10px;
+	opacity: .5;
+	background-image: url(img/bubble-close.png);
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+.portfolio_gallery .ratingcomment #bubble-close:hover {
+    opacity: 1;
+}
+.portfolio_gallery .ratingcomment span {
+	font: 15px/1.2em Arial, Helvetica, sans-serif;
+    color: #666;
+    font-weight: bold;
+}
+.portfolio_gallery .ratingcomment textarea {
+	width: 232px;
+	height: 85px;
+	padding: 5px;
+	margin-top: 15px;
+	background: white;
+	resize: none;
+}
 .solution_menu {
     position:relative;
     width:150px;

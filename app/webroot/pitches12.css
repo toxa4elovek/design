@@ -1272,17 +1272,17 @@ cursor: pointer;
     background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 #dinamic div.bubble {
-position: absolute;
-width: 230px;
-height: 80px;
-left: -290px;
-top: 20px;
-padding: 20px 20px 20px 25px;
-background: #FFFFFF;
--webkit-border-radius: 8px;
--moz-border-radius: 8px;
-border-radius: 8px;
-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+	position: absolute;
+	width: 230px;
+	height: 80px;
+	left: -290px;
+	top: 20px;
+	padding: 20px 20px 20px 25px;
+	background: #FFFFFF;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
 }
 #dinamic div.bubble span {
 	font: 15px/1.2em Arial, Helvetica, sans-serif;
@@ -1290,30 +1290,30 @@ box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
 	font-weight: bold;
 }
 #dinamic div.bubble:after {
-content: '';
-position: absolute;
-border-style: solid;
-border-width: 18px 0 18px 15px;
-border-color: transparent #FFFFFF;
-display: block;
-width: 0;
-z-index: 1;
-right: -15px;
-top: 42px;
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-width: 18px 0 18px 15px;
+	border-color: transparent #FFFFFF;
+	display: block;
+	width: 0;
+	z-index: 1;
+	right: -15px;
+	top: 42px;
 }
 #dinamic div.bubble #bubble-close {
-position: absolute;
-right: 10px;
-top: 10px;
-display: inline-block;
-zoom: 1;
-width: 10px;
-height: 10px;
-opacity: .5;
-background-image: url(img/bubble-close.png);
-background-position: center bottom;
-background-repeat: no-repeat;
-cursor: pointer;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	display: inline-block;
+	zoom: 1;
+	width: 10px;
+	height: 10px;
+	opacity: .5;
+	background-image: url(img/bubble-close.png);
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	cursor: pointer;
 }
 #dinamic div.bubble #bubble-close:hover {
     opacity: 1;

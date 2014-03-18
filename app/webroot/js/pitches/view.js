@@ -85,6 +85,9 @@ $(document).ready(function(){
         var id = $(this).parent().data('solutionid');
         var rating = $(this).data('rating');
         var self = $(this);
+        //var $el = $(this).closest('li').find('.photo_block');
+        //var positionClass = ($(this).parent().offset().left > 300) ? '' : ' right-pos';
+        //$el.append('<div class="ratingcomment' + positionClass + '"><span>Как улучшить?</span><textarea>Vassya</textarea><div id="bubble-close"></div></div>');
         $.post('/solutions/rating/' + id + '.json',
             {"id": id, "rating": rating}, function(response) {
                 self.parent().data('default', rating);
