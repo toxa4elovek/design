@@ -81,6 +81,9 @@
                         </div>
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
+                        <?php if (($comment->touch != '0000-00-00 00:00:00') && ($this->user->isAdmin() || ($this->user->isCommentAuthor($comment->user_id)))): ?>
+                        <div class="comment-touch">Просмотрено <?=date('H:i, d.m.y', strtotime($comment->touch));?></div>
+                        <?php endif; ?>
                         <div class="message_text2">
                             <span class="regular comment-container"><?=$this->brief->linkemail($this->brief->eee($comment->originalText))?></span>
                         </div>

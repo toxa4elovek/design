@@ -313,7 +313,7 @@ class UsersController extends \app\controllers\AppController {
                 $type = 'client';
                 $messageTo = User::first($solution->user_id);
             }
-            if(Session::read('user.isAdmin') == 1) {
+            if((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
                 $messageTo = User::first($solution->pitch->user_id);
             }
@@ -352,6 +352,10 @@ class UsersController extends \app\controllers\AppController {
                     }
                 }else {
                     $comment->type = 'client';
+                }
+                if (($type != 'admin') && ($comment->type != $type) && ($comment->touch == '0000-00-00 00:00:00')) {
+                    $comment->touch = date('Y-m-d H:i:s');
+                    $comment->save();
                 }
             }
             $step = 2;
@@ -393,7 +397,7 @@ class UsersController extends \app\controllers\AppController {
                 $type = 'client';
                 $messageTo = User::first($solution->user_id);
             }
-            if(Session::read('user.isAdmin') == 1) {
+            if((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
                 $messageTo = User::first($solution->pitch->user_id);
             }
@@ -433,6 +437,10 @@ class UsersController extends \app\controllers\AppController {
                     }
                 }else {
                     $comment->type = 'client';
+                }
+                if (($type != 'admin') && ($comment->type != $type) && ($comment->touch == '0000-00-00 00:00:00')) {
+                    $comment->touch = date('Y-m-d H:i:s');
+                    $comment->save();
                 }
             }
             $step = 3;

@@ -420,9 +420,14 @@ ul li a.active span {
     padding-left: 20px;
     margin-bottom: 15px;
 }
-
 .spanned span{
 	font: normal 18px/21px "RodeoC",sans-serif;
 	margin: 10px 0 0;
 	display: inline-block;
+}
+.comment-touch {
+	float: right;
+	margin-top: 2px;
+	padding-left: 23px;
+	background: url('/img/viewed.png') left 2px no-repeat transparent;
 }
