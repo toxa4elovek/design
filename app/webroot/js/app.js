@@ -334,52 +334,6 @@ $(document).ready(function() {
     if($('.breadcrumbs-view', $('#pitch-title')).height() > 36) {
         $('#pitch-title').height($('.breadcrumbs-view', $('#pitch-title')).height() + 10)
     }
-
-
-
-    //Цвет фона для текущих питчей
-    //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
-    
-    // Add New Comment Form Handler
-    $('.createComment').on('click', function(e) {
-        e.preventDefault();
-        var textarea = $(this).closest('form').find('textarea');
-        if (typeof(solutionId) == 'undefined') {
-            var solutionId = 0;
-        }
-        if (isCommentValid(textarea.val())) {
-            var is_public = $(this).data('is_public');
-            $.post('/comments/add.json', {
-                'text': textarea.val(),
-                'solution_id': solutionId,
-                'comment_id': '',
-                'pitch_id': pitchNumber,
-                'public': is_public,
-                'fromAjax': 1
-            }, function(result) {
-                var commentData = preparePitchCommentData(result);
-                // ViewSolution or Popup
-                if ($('.solution-comments').length > 0) {
-                    $('.solution-comments').prepend(populateComment(commentData));
-                    if (result.result.solution_num) {
-                        textarea.val('#' + result.result.solution_num + ', ');
-                    } else {
-                        textarea.val('');
-                    }
-                }
-                // Pitch Gallery
-                if ($('.pitch-comments').length > 0) {
-                    $('.pitch-comments section:first').prepend('<div class="separator"></div>');
-                    $(populateComment(commentData)).insertAfter('.pitch-comments .separator:first');
-                    $('.separator', '.pitch-comments section:first').remove();
-                }
-            });
-        } else {
-            alert('Введите текст комментария!');
-            return false;
-        }
-    });
-    
 });
 
 window.fbAsyncInit = function() {
@@ -604,8 +558,7 @@ function prepareCommentData(comment, result) {
     }
     
     commentData.userAvatar = comment.avatar;
-    
-    commentData.commentAuthor = comment.user.first_name + ((comment.user.last_name.length == 0) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
+    commentData.commentAuthor = comment.user.first_name + ((comment.user.last_name == null) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
     commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
     
     // Date Time
@@ -863,6 +816,48 @@ function enableToolbar() {
         return false;
     });
     
+    // Add New Comment Form Handler
+    $('body, .solution-overlay').on('click', '.createComment, #rating_comment_send', function(e) {
+        e.preventDefault();
+        var textarea = $(this).closest('form').find('textarea');
+        var addSolution = $(this).data('solution_id');
+        addSolution = (typeof(addSolution) != 'undefined') ? addSolution + ', ' : '';
+        if (typeof(solutionId) == 'undefined') {
+            var solutionId = 0;
+        }
+        if (isCommentValid(textarea.val())) {
+            var is_public = $(this).data('is_public');
+            $.post('/comments/add.json', {
+                'text': addSolution + textarea.val(),
+                'solution_id': solutionId,
+                'comment_id': '',
+                'pitch_id': pitchNumber,
+                'public': is_public,
+                'fromAjax': 1
+            }, function(result) {
+                var commentData = preparePitchCommentData(result);
+                // ViewSolution or Popup
+                if ($('.solution-comments').length > 0) {
+                    $('.solution-comments').prepend(populateComment(commentData));
+                    if (result.result.solution_num) {
+                        textarea.val('#' + result.result.solution_num + ', ');
+                    } else {
+                        textarea.val('');
+                    }
+                }
+                // Pitch Gallery
+                if ($('.pitch-comments').length > 0) {
+                    $('.pitch-comments section:first').prepend('<div class="separator"></div>');
+                    $(populateComment(commentData)).insertAfter('.pitch-comments .separator:first');
+                    $('.separator', '.pitch-comments section:first').remove();
+                }
+            });
+        } else {
+            alert('Введите текст комментария!');
+            return false;
+        }
+    });
+
     // Comment Textarea Tooltip
     if (isClient) {
         $('.createCommentForm').on('focus', '#newComment', function() {

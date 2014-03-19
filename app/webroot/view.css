@@ -486,7 +486,7 @@ a.number_img_gallery {
 	left: -15px;
 	border-width: 18px 15px 18px 0;
 }
-.portfolio_gallery .ratingcomment #bubble-close {
+.portfolio_gallery .ratingcomment #rating-close {
 	position: absolute;
 	right: 10px;
 	top: 10px;
@@ -500,7 +500,7 @@ a.number_img_gallery {
 	background-repeat: no-repeat;
 	cursor: pointer;
 }
-.portfolio_gallery .ratingcomment #bubble-close:hover {
+.portfolio_gallery .ratingcomment #rating-close:hover {
     opacity: 1;
 }
 .portfolio_gallery .ratingcomment span {
@@ -515,6 +515,12 @@ a.number_img_gallery {
 	margin-top: 15px;
 	background: white;
 	resize: none;
+}
+.portfolio_gallery .ratingcomment a#rating_comment_send {
+	float: right;
+}
+.portfolio_gallery .ratingcomment a#rating_comment_send:hover {
+	text-decoration: underline;
 }
 .solution_menu {
     position:relative;

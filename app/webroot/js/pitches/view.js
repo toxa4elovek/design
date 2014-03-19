@@ -85,9 +85,12 @@ $(document).ready(function(){
         var id = $(this).parent().data('solutionid');
         var rating = $(this).data('rating');
         var self = $(this);
-        //var $el = $(this).closest('li').find('.photo_block');
-        //var positionClass = ($(this).parent().offset().left > 300) ? '' : ' right-pos';
-        //$el.append('<div class="ratingcomment' + positionClass + '"><span>Как улучшить?</span><textarea>Vassya</textarea><div id="bubble-close"></div></div>');
+        if (rating < 5) {
+            var number = $(this).closest('li').find('.number_img_gallery').data('comment-to');
+            var $el = $(this).closest('li').find('.photo_block');
+            var positionClass = ($(this).parent().offset().left > 300) ? '' : ' right-pos';
+            $el.append('<div class="ratingcomment' + positionClass + '"><span>Как улучшить?</span><form><textarea></textarea><a href="#" id="rating_comment_send" data-solution_id="' + number + '">отправить</a></form><div id="rating-close"></div></div>');
+        }
         $.post('/solutions/rating/' + id + '.json',
             {"id": id, "rating": rating}, function(response) {
                 self.parent().data('default', rating);
@@ -95,6 +98,14 @@ $(document).ready(function(){
             });
         return false;
     })
+
+    $(document).on('click', '#rating-close', function() {
+        $(this).closest('.ratingcomment').fadeOut(200, function() { $(this).remove(); });
+    });
+    $(document).on('click', '#rating_comment_send', function(e) {
+        e.preventDefault();
+        $(this).closest('.ratingcomment').fadeOut(200, function() { $(this).remove(); });
+    });
 
     // socialite
     //Socialite.load();
