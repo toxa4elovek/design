@@ -41,7 +41,7 @@
                                 <optgroup label="Россия">
                                     <option value="1">МТС</option>
                                     <option value="2">Билайн</option>
-                                    <option value="293">Мегафон</option>
+                                    <option value="3">Мегафон</option>
                                     <option value="31">Теле-2</option>
                                 </optgroup>
                                 <optgroup label="Беларусь">
