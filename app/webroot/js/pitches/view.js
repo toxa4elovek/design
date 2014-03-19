@@ -70,18 +70,18 @@ $(document).ready(function(){
         $('img', this).attr('src', '/img/order2.png');
     })
 
-  //Цвет фона для текущих питчей
-  $('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
+    //Цвет фона для текущих питчей
+    $('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 
-    $('.ratingchange').on('mouseenter', function(){
+    $(document).on('mouseenter', '.ratingchange', function(){
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
     })
 
-    $('.ratingcont').on('mouseleave', function() {
+    $(document).on('mouseleave', '.ratingcont', function() {
         $(this).css('background', 'url(/img/' + $(this).data('default') + '-rating.png) repeat scroll 0% 0% transparent');
     })
 
-    $('.ratingchange').on('click', function() {
+    $(document).on('click', '.ratingchange', function() {
         var id = $(this).parent().data('solutionid');
         var rating = $(this).data('rating');
         var self = $(this);
@@ -107,9 +107,13 @@ $(document).ready(function(){
         $(this).closest('.ratingcomment').fadeOut(200, function() { $(this).remove(); });
     });
 
-    // socialite
-    //Socialite.load();
-
+    // Gallery buttons
+    $(document).on('click', '.next_part', function(e) {
+        e.preventDefault();
+        $.get('/pitches/view/100106', {page: 2}, function(response) {
+            $('.list_portfolio').append(response);
+        });
+    });
 
   //Добавление оценки(звездочки)
   $('.global_info ul li a').toggle(function(){
@@ -320,20 +324,20 @@ $(document).ready(function(){
     }
 
 
-    $('.like-hoverbox').mouseenter(function(){
+    $(document).on('mouseenter', '.like-hoverbox', function(){
         $('img:first', $(this)).attr('src', '/img/like_hover.png');
     });
 
-    $('.like-hoverbox').mouseleave( function() {
+    $(document).on('mouseleave', '.like-hoverbox', function() {
         $('img:first', $(this)).attr('src', '/img/like.png');
     });
 
-    $('.solution-menu-toggle').mouseover(function(){
+    $(document).on('mouseover', '.solution-menu-toggle', function(){
         $('img', $(this)).attr('src', '/img/marker5_2_hover.png');
         $('body').one('click',function() {
             $('.solution_menu').fadeOut(200);
         });
-        var menu = $(this).parent().parent().parent().parent().parent().next().next();
+        var menu = $(this).closest('.photo_block').next().next();
         menu.fadeIn(200);
         $(menu).on('mouseleave', function() {
             $(this).fadeOut(200);
@@ -343,11 +347,11 @@ $(document).ready(function(){
         });
     });
 
-    $('.solution-menu-toggle').mouseleave( function() {
+    $(document).on('mouseleave', '.solution-menu-toggle', function() {
         $('img', $(this)).attr('src', '/img/marker5_2.png');
     });
 
-    $('.solution-menu-toggle').on('click', function() {
+    $(document).on('click', '.solution-menu-toggle', function() {
         return false;
     })
 
