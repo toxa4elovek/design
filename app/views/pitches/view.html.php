@@ -391,13 +391,12 @@
             </div>
             <?php endif;?>
         </div>
-        <div class="foot-content" style="display:none">
-                <ul class="icons-infomation">
-                </ul>
-                <div class="page-nambe-nav">
-                    <a href="">&#60;</a><a href="" class="this-page">1</a><a href="">2</a><a href="">3</a><a href="">4</a><a href="">5</a><a href="">6</a> … <a href="">7</a><a href="">&#62;</a>
-                </div>
-            </div>
+        <div class="gallery_postload">
+            <div class="separator"></div>
+            <a href="#" class="button_more">Показать ещё 36</a>
+            <a href="#" class="button_more">Показать все</a>
+            <div class="separator"></div>
+        </div>
         </section>
 
         <section class="white" style="margin: 0 -34px">
