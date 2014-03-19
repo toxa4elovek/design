@@ -641,7 +641,7 @@ class UsersController extends \app\controllers\AppController {
                     Session::delete('temppitch');
                     $redirect = '/pitches/edit/' . $pitchId . '#step3';
                 }
-                if(!is_null(Session::read('redirect'))) {
+                if(!is_null(Session::read('redirect')) && false === $redirect) {
                     $redirect = Session::read('redirect');
                     Session::delete('redirect');
                 }
@@ -730,11 +730,23 @@ class UsersController extends \app\controllers\AppController {
                     setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->token), time() + strtotime('+1 month'), '/');
                 }
                 $userToLog->save(null, array('validate' => false));
-                //var_dump(Session::read('redirect'));die();
+
+                $redirect = false;
+                $pitchId = Session::read('temppitch');
+                if(!is_null($pitchId)) {
+                    if($pitch = Pitch::first($pitchId)) {
+                        $pitch->user_id = $userToLog->id;
+                        $pitch->save();
+                    }
+                    Session::delete('temppitch');
+                    $redirect = '/pitches/edit/' . $pitchId . '#step3';
+                }
                 if(!is_null(Session::read('redirect'))) {
-                    $red = Session::read('redirect');
+                    if (false === $redirect) {
+                        $redirect = Session::read('redirect');
+                    }
                     Session::delete('redirect');
-                    return $this->redirect($red);
+                    return $this->redirect($redirect);
                 }else {
 	                return $this->redirect('Users::office');
                 }
