@@ -612,9 +612,9 @@ $(document).ready(function() {
 
     // Unpin check
     $(window).on('scroll', function() {
-        var diff = $(window).scrollTop() - $('.main').offset().top - 500;
+        var diff = $(window).scrollTop() - $('header').offset().top - 440;
         if (diff > 0) {
-            $('.summary-price').offset({top: $('.main').offset().top + 728});
+            $('.summary-price').offset({top: $('header').offset().top + 668});
         }
     });
 
