@@ -88,9 +88,6 @@
                         </div>
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
-                        <?php if (($comment->touch != '0000-00-00 00:00:00') && ($this->user->isAdmin() || ($this->user->isCommentAuthor($comment->user_id)))): ?>
-                        <div class="comment-touch">Просмотрено <?=date('H:i, d.m.y', strtotime($comment->touch));?></div>
-                        <?php endif; ?>
                         <div class="message_text2">
                             <span class="regular comment-container"><?php echo $this->brief->linkemail($this->brief->eee($comment->originalText)); ?></span>
                         </div>
@@ -130,6 +127,9 @@
                     ?>
 
                     <div style="width:810px;float:right;margin-top:6px;margin-right:5px;padding-bottom:2px;height:18px;">
+                        <?php if (($comment->touch != '0000-00-00 00:00:00') && ($this->user->isAdmin() || ($this->user->isCommentAuthor($comment->user_id)))): ?>
+                        <div class="comment-touch">Просмотрено <?=date('H:i, d.m.y', strtotime($comment->touch));?></div>
+                        <?php endif; ?>
                         <div class="toolbar">
                         <?php
                         if(($this->user->isCommentAuthor($comment->user_id)) && (($solution->step <= 2) && ($solution->pitch->status < 2))):?>

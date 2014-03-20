@@ -426,8 +426,8 @@ ul li a.active span {
 	display: inline-block;
 }
 .comment-touch {
-	float: right;
-	margin-top: 2px;
-	padding-left: 23px;
-	background: url('/img/viewed.png') left 2px no-repeat transparent;
+	float: left;
+	margin: 0 0 0 208px;
+	padding: 3px 0 0 23px;
+	background: url('/img/viewed.png') left 5px no-repeat transparent;
 }
