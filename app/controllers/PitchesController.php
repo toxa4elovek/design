@@ -1153,10 +1153,11 @@ class PitchesController extends \app\controllers\AppController {
 
 	public function view() {
 		if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
-		    $limit = 1;
-		    $page = 1;
-		    if (isset($this->request->query['page'])) {
-		        $page = (int) $this->request->query['page'];
+		    $limit = $limitSolutions = 1; // Set this to limit solutions per page
+		    $offset = 0;
+		    if (isset($this->request->query['count'])) {
+		        $offset = (int) $this->request->query['count'];
+		        $limit = (isset($this->request->query['rest'])) ? 9999 : $limitSolutions;
 		    }
             $currentUser = Session::read('user');
             if(($pitch->published == 0) && (($currentUser['id'] != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
@@ -1175,7 +1176,8 @@ class PitchesController extends \app\controllers\AppController {
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getSolutionsSortingOrder($this->request->query);
 
-			$solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order, 'limit' => $limit, 'page' => $page));
+			$solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order, 'limit' => $limit, 'offset' => $offset));
+			$solutionsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id)));
             $selectedsolution = false;
             $nominatedSolutionOfThisPitch = Solution::first(array(
                 'conditions' => array('nominated' => 1, 'pitch_id' => $pitch->id)
@@ -1185,12 +1187,12 @@ class PitchesController extends \app\controllers\AppController {
             }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-			    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate');
+			    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions');
             }else {
-                if (isset($this->request->query['page'])) {
-                    return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate')));
+                if (isset($this->request->query['count'])) {
+                    return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount')));
                 }
-                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate'));
+                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount'));
             }
 		}
 		throw new Exception('Public:Такого питча не существует.', 404);

@@ -566,6 +566,15 @@ a.number_img_gallery {
     background:         linear-gradient(#fafafa, #dfdfdf);
     box-shadow: 0 1px 1px rgba(100, 100, 100, .1);
 }
+.gallery_postload_loader {
+    display: none;
+    position: absolute;
+    width: 810px;
+    text-align: center;
+}
+.gallery_postload_loader img {
+	margin: 10px auto;
+}
 .solution_menu {
     position:relative;
     width:150px;

@@ -1,9 +1,7 @@
 <div class="wrapper pitchpanel login">
 
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
-    <script type="text/javascript">
-        var extraimages = {};
-    </script>
+
 	<div class="middle">
 	<div class="middle_inner_gallery" style="padding-top:25px">
     <?php if($this->user->isPitchOwner($pitch->user_id)):?>
@@ -79,7 +77,7 @@
             $mySolutionNumList = array();
             if((count($solutions) > 0) && ($pitch->published == 1)): ?>
             <ul class="list_portfolio">
-                <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate'))?>
+                <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount'))?>
             </ul>
             <?php else:?>
             <div class="bigfont">
@@ -91,12 +89,15 @@
             </div>
             <?php endif;?>
         </div>
+        <?php if (count($solutions) < $solutionsCount): ?>
         <div class="gallery_postload">
             <div class="separator"></div>
-            <a href="#" class="button_more next_part">Показать ещё 36</a>
+            <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>
+            <a href="#" class="button_more next_part">Показать ещё <?php echo $limitSolutions; ?></a>
             <a href="#" class="button_more rest_part">Показать все</a>
             <div class="separator"></div>
         </div>
+        <?php endif; ?>
         </section>
 
         <section class="white" style="margin: 0 -34px">

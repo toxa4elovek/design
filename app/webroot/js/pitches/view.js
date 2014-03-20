@@ -1,12 +1,15 @@
 $(document).ready(function(){
 
     // грузим экстра картинки...
-    $.each(extraimages, function(index, object) {
-        var block = $('a[data-solutionid=' + index +']');
-        for(i=0;i < object.length; i++) {
-            block.append('<img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;display:none;" src="' + object[i] + '" alt="">');
-        }
-    })
+    function loadExtraimages() {
+        $.each(extraimages, function(index, object) {
+            var block = $('a[data-solutionid=' + index +']');
+            for(i=0;i < object.length; i++) {
+                block.append('<img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;display:none;" src="' + object[i] + '" alt="">');
+            }
+        });
+    }
+    loadExtraimages();
 
     function preload(arrayOfImages) {
         $(arrayOfImages).each(function(){
@@ -110,8 +113,28 @@ $(document).ready(function(){
     // Gallery buttons
     $(document).on('click', '.next_part', function(e) {
         e.preventDefault();
-        $.get('/pitches/view/100106', {page: 2}, function(response) {
-            $('.list_portfolio').append(response);
+        $('.button_more').css('opacity', 0);
+        $('.gallery_postload_loader').show();
+        $.get('/pitches/view/' + $('input[name=pitch_id').val(), {count: $('.photo_block').length}, function(response) {
+            var solutionsCount = $($(response)[0]).val();
+            $(response).hide().appendTo('.list_portfolio').fadeIn(400);
+            $('.gallery_postload_loader').hide();
+            if ($('.photo_block').length < solutionsCount) {
+                $('.button_more').css('opacity', 1);
+            } else {
+                $('.gallery_postload').hide();
+            }
+            loadExtraimages();
+        });
+    });
+    $(document).on('click', '.rest_part', function(e) {
+        e.preventDefault();
+        $('.button_more').css('opacity', 0);
+        $('.gallery_postload_loader').show();
+        $.get('/pitches/view/' + $('input[name=pitch_id').val(), {count: $('.photo_block').length, rest: 1}, function(response) {
+            $(response).hide().appendTo('.list_portfolio').fadeIn(400);
+            $('.gallery_postload').hide();
+            loadExtraimages();
         });
     });
 
@@ -423,8 +446,7 @@ $(document).ready(function(){
     })
 
     var cycle = {};
-    $('.photo_block').on('mouseenter', function() {
-
+    $(document).on('mouseenter', '.photo_block', function() {
         if($(this).children('.imagecontainer').children().length > 1) {
             cycle[$(this).children('.imagecontainer').data('solutionid')] = true;
             var image = $(this).children('.imagecontainer').children(':visible');
@@ -432,7 +454,7 @@ $(document).ready(function(){
         }
     })
 
-    $('.photo_block').on('mouseleave', function() {
+    $(document).on('mouseleave', '.photo_block', function() {
         cycle[$(this).children('.imagecontainer').data('solutionid')] = false;
     })
 
@@ -478,7 +500,7 @@ $(document).ready(function(){
      * View Solution Overlay
      */
     var solutionId = '';
-    $('.imagecontainer').on('click', function(e) {
+    $(document).on('click', '.imagecontainer', function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (window.history.pushState) {
