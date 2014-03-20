@@ -1153,7 +1153,7 @@ class PitchesController extends \app\controllers\AppController {
 
 	public function view() {
 		if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
-		    $limit = $limitSolutions = 1; // Set this to limit solutions per page
+		    $limit = $limitSolutions = 2; // Set this to limit solutions per page
 		    $offset = 0;
 		    if (isset($this->request->query['count'])) {
 		        $offset = (int) $this->request->query['count'];

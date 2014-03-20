@@ -117,7 +117,7 @@ $(document).ready(function(){
         $('.gallery_postload_loader').show();
         $.get('/pitches/view/' + $('input[name=pitch_id').val(), {count: $('.photo_block').length}, function(response) {
             var solutionsCount = $($(response)[0]).val();
-            $(response).hide().appendTo('.list_portfolio').fadeIn(400);
+            $(response).hide().appendTo('.list_portfolio.main_portfolio').fadeIn(400);
             $('.gallery_postload_loader').hide();
             if ($('.photo_block').length < solutionsCount) {
                 $('.button_more').css('opacity', 1);
@@ -132,7 +132,7 @@ $(document).ready(function(){
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
         $.get('/pitches/view/' + $('input[name=pitch_id').val(), {count: $('.photo_block').length, rest: 1}, function(response) {
-            $(response).hide().appendTo('.list_portfolio').fadeIn(400);
+            $(response).hide().appendTo('.list_portfolio.main_portfolio').fadeIn(400);
             $('.gallery_postload').hide();
             loadExtraimages();
         });
