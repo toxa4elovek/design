@@ -283,6 +283,7 @@ abstract class Database extends \lithium\data\Source {
 								'joins' => $query->joins(),
 								'conditions' => $query->conditions(),
 								'limit' => $query->limit(),
+                                'offset' => $query->offset(),
 								'page' => $query->page(),
 								'order' => $query->order()
 							)
