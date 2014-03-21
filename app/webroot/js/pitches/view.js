@@ -116,7 +116,14 @@ $(document).ready(function(){
         e.preventDefault();
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
-        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), {count: $('.photo_block').length}, function(response) {
+        var data = {
+            count: $('.photo_block', '.main_portfolio').length
+        };
+        var gallerySorting = getParameterByName('sorting');
+        if (gallerySorting.length > 0) {
+            data.sorting = gallerySorting;
+        }
+        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), data, function(response) {
             var solutionsCount = $($(response)[0]).val();
             obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
             obj.each(function(index) {
@@ -144,7 +151,15 @@ $(document).ready(function(){
         e.preventDefault();
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
-        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), {count: $('.photo_block').length, rest: 1}, function(response) {
+        var data = {
+            count: $('.photo_block', '.main_portfolio').length,
+            rest: 1
+        };
+        var gallerySorting = getParameterByName('sorting');
+        if (gallerySorting.length > 0) {
+            data.sorting = gallerySorting;
+        }
+        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), data, function(response) {
             obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
             obj.each(function(index) {
                 if ($(this).is('li')) {

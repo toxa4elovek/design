@@ -89,7 +89,7 @@
             </div>
             <?php endif;?>
         </div>
-        <?php if (count($solutions) < $solutionsCount): ?>
+        <?php if (count($solutions) < $solutionsCount): $initialSeparator = true; ?>
         <div class="gallery_postload">
             <div class="separator"></div>
             <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>
@@ -102,7 +102,7 @@
         </section>
 
         <section class="white" style="margin: 0 -34px">
-            <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch))?>
+            <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
         </section>
                 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
     <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>

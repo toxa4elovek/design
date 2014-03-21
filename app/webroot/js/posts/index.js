@@ -120,13 +120,6 @@ function TopTip() {
     }
 }
 
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
 function populatePosts(result) {
     $('#blog-ajax-wrapper').hide();
     if (result.posts.length == 0) { // No more posts
