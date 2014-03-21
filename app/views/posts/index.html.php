@@ -68,14 +68,7 @@
                         <input type="text" id="blog-search" name="search" value="<?=$search?>" class="text">
                         <input type="submit" class="blog-submit" value="">
                     </form>
-                    <table style="width: 200px;margin-bottom: 30px;">
-                        <tr height="25"><td width="110"><a class="blogtaglink" href="/posts?tag=<?=urlencode('заказчикам')?>">заказчикам</a></td><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('дизайнерам')?>">дизайнерам</a></td></tr>
-                        <tr height="25"><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('фриланс')?>">фриланс</a></td><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('интервью')?>">интервью</a></td></tr>
-                        <tr height="25"><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('команда go')?>">команда go</a></td><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('герой месяца')?>">герой месяца</a></td></tr>
-                        <tr height="25"><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('cовет в обед')?>">cовет в обед</a></td><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('топ 10')?>">топ 10</a></td></tr>
-                        <tr height="25"><td><a class="blogtaglink" href="/posts?tag=<?=urlencode('фриланс под пальмами')?>">фриланс под пальмами</a></td><td></td></tr>
-                        <!--tr height="25"><td></td><td></td></tr-->
-                    </table>
+                    <?=$this->view()->render(array('element' => 'posts/categories_menu'))?>
                     <div id="current_pitch">
                     <?php echo $this->stream->renderStream(10, false);?>
                     </div>
