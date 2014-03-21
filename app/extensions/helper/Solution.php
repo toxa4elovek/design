@@ -41,7 +41,7 @@ class Solution extends \lithium\template\Helper {
         }
         $images = $solution->images[$size];
         if ($pitch->private == 1) {
-            $user = new UserHelper();
+            $user = new UserHelper(array());
             if ($user->isPitchOwner($pitch->user_id) || $user->isExpert() || $user->isAdmin() || $user->isSolutionAuthor($solution->user_id)) {
                 return $this->renderImageUrl($images, $index);
             }
