@@ -916,7 +916,7 @@ function solutionTooltip() {
     // Solutions Tooltips
     $('.hoverimage[data-comment-to]').tooltip({
         tooltipID: 'tooltip2',
-        tooltipSource: 'rel',
+        tooltipSource: 'data',
         width: '205px',
         correctPosX: 40,
         //positionTop: 0,

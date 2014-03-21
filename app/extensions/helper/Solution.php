@@ -2,6 +2,8 @@
 
 namespace app\extensions\helper;
 
+use \app\extensions\helper\User as UserHelper;
+
 class Solution extends \lithium\template\Helper {
 
     function renderImageUrl($images, $index=0) {
@@ -31,6 +33,21 @@ class Solution extends \lithium\template\Helper {
             return $solution->description;
         }
         return '';
+    }
+
+    function renderImageUrlRights($solution, $size, $pitch, $index=0) {
+        if ($pitch->category == 7) {
+            return '/img/copy-inv.png';
+        }
+        $images = $solution->images[$size];
+        if ($pitch->private == 1) {
+            $user = new UserHelper();
+            if ($user->isPitchOwner($pitch->user_id) || $user->isExpert() || $user->isAdmin() || $user->isSolutionAuthor($solution->user_id)) {
+                return $this->renderImageUrl($images, $index);
+            }
+            return '/img/copy-inv.png';
+        }
+        return $this->renderImageUrl($images, $index);
     }
 
 }

@@ -157,6 +157,9 @@
                         var imageTag = $('[rel=' + num + ']');
                         $ttContent.html('<img src="' + imageTag.attr('src') + '">');
                         break;
+                    case 'data':
+                        $ttContent.html('<img src="' + $(e.currentTarget).data('thumbnail') + '">');
+                        break;
                     case 'attribute':/*/////////////////////////////// attribute //////////////////////////////////////////*/
                         $ttContent.text(s.titleAttributeContent);
                         showTooltip();

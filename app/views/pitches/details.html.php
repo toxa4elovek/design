@@ -2,13 +2,7 @@
 function mb_basename($file)
 {
     return end(explode('/',$file));
-}
-
-$expertsIds = array();
-foreach($experts as $expert) {
-	$expertsIds[] = $expert->user_id;
-}
-?>
+}?>
 
 <div class="wrapper pitchpanel login">
 
@@ -233,40 +227,5 @@ foreach($experts as $expert) {
     <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
-<!-- Start: Tooltips -->
-<div style="display:none;">
-<?php if((count($solutions) > 0) && ($pitch->published == 1)):?>
-    <?php foreach($solutions as $solution):	?>
-        <?php if($pitch->private != 1):
-            if($pitch->category_id == 7):
-                //
-            ?>
-            <?php else:?>
-                <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                    <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
-                <?php else:?>
-                    <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
-                <?php endif?>
-            <?php endif?>
-        <?php else:?>
-            <?php if($pitch->category_id == 7):
-                //
-            ?>
-            <?php else:?>
-                <?php if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):?>
-                    <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                        <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
-                    <?php else:?>
-                        <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
-                    <?php endif?>
-                <?php else:?>
-                    <input type="hidden" rel="#<?=$solution->num?>" src="/img/copy-inv.png">
-                <?php endif?>
-            <?php endif?>
-        <?php endif?>
-    <?php endforeach;?>
-<?php endif;?>
-</div>
-<!-- End: Tooltips -->
 <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.hover.js', 'jquery-ui-1.8.17.custom.min.js', 'jcarousellite_1.0.1.js', 'jquery.timeago.js', 'jquery.scrollto.min.js', 'pitches/details.js'), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/details', '/pitch_overview'), array('inline' => false))?>
