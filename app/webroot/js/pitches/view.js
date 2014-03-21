@@ -235,8 +235,13 @@ $(document).ready(function(){
     // Delete Solution from Solution Popup
     $('.solution-overlay').on('click', '.delete-solution-popup', function(e) {
         e.preventDefault();
-        hideSolutionPopup();
-        $('.delete-solution[data-solution="' + $(this).data('solution') + '"]').click();
+        var item = $('.delete-solution[data-solution="' + $(this).data('solution') + '"]');
+        if (item.length > 0) {
+            hideSolutionPopup();
+            item.click();
+        } else {
+            window.location = '/solutions/delete/' + $(this).data('solution');
+        }
     });
     
     // Delete Solution
