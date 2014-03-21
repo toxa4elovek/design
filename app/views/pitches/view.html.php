@@ -96,6 +96,7 @@
             <a href="#" class="button_more next_part">Показать ещё <?php echo $limitSolutions; ?></a>
             <a href="#" class="button_more rest_part">Показать все</a>
             <div class="separator"></div>
+            <div style="clear: both;"></div>
         </div>
         <?php endif; ?>
         </section>

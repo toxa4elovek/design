@@ -13,7 +13,7 @@
             <div class="all_messages">
             <div class="clr"></div>
             </div>
-            <div class="separator" style="width: 810px; margin-left: 30px;"></div>
+            <div class="separator pre-comment-separator" style="display: none; width: 810px; margin-left: 30px;"></div>
             <div class="comment" id="comment-anchor">
             <?php if (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin())):
             $buttonText = 'Отправить';

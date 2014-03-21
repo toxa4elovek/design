@@ -93,6 +93,7 @@ $(document).ready(function(){
             var $el = $(this).closest('li').find('.photo_block');
             var positionClass = ($(this).parent().offset().left > 300) ? '' : ' right-pos';
             $el.append('<div class="ratingcomment' + positionClass + '"><span>Как улучшить?</span><form><textarea></textarea><a href="#" id="rating_comment_send" data-solution_id="' + number + '">отправить</a></form><div id="rating-close"></div></div>');
+            $('textarea', $el).focus();
         }
         $.post('/solutions/rating/' + id + '.json',
             {"id": id, "rating": rating}, function(response) {
@@ -115,14 +116,26 @@ $(document).ready(function(){
         e.preventDefault();
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
-        $.get('/pitches/view/' + $('input[name=pitch_id').val(), {count: $('.photo_block').length}, function(response) {
+        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), {count: $('.photo_block').length}, function(response) {
             var solutionsCount = $($(response)[0]).val();
-            $(response).hide().appendTo('.list_portfolio.main_portfolio').fadeIn(400);
+            obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+            obj.each(function(index) {
+                if ($(this).is('li')) {
+                    $(this).css('opacity', '0');
+                }
+            });
+            obj.appendTo('.list_portfolio.main_portfolio');
+            obj.each(function(index) {
+                if ($(this).is('li')) {
+                    $(this).animate({opacity:1}, 500);
+                }
+            });
             $('.gallery_postload_loader').hide();
             if ($('.photo_block').length < solutionsCount) {
                 $('.button_more').css('opacity', 1);
             } else {
                 $('.gallery_postload').hide();
+                $('.pre-comment-separator').fadeIn();
             }
             loadExtraimages();
         });
@@ -131,9 +144,21 @@ $(document).ready(function(){
         e.preventDefault();
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
-        $.get('/pitches/view/' + $('input[name=pitch_id').val(), {count: $('.photo_block').length, rest: 1}, function(response) {
-            $(response).hide().appendTo('.list_portfolio.main_portfolio').fadeIn(400);
+        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), {count: $('.photo_block').length, rest: 1}, function(response) {
+            obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+            obj.each(function(index) {
+                if ($(this).is('li')) {
+                    $(this).css('opacity', '0');
+                }
+            });
+            obj.appendTo('.list_portfolio.main_portfolio');
+            obj.each(function(index) {
+                if ($(this).is('li')) {
+                    $(this).animate({opacity:1}, 500);
+                }
+            });
             $('.gallery_postload').hide();
+            $('.pre-comment-separator').fadeIn();
             loadExtraimages();
         });
     });
@@ -304,7 +329,7 @@ $(document).ready(function(){
         }
     });
 
-    $('.like-small-icon').click(function(){
+    $(document).on('click', '.like-small-icon', function(){
 
         var likesNum = $(this).next();
         var likeLink = $(this);
