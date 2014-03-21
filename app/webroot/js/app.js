@@ -772,15 +772,25 @@ function enableToolbar() {
     
     // Select Winner Solution
     $('body, .solution-overlay').on('click', '.select-winner-popup', function() {
-        var item = $('.select-winner[data-solutionid=' + $(this).data('solutionid') + ']').parent().parent().parent().prev().prev().clone();
         $('#winner-num').text('#' + $(this).data('num'));
         $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
         $('#winner-user-link').text($(this).data('user'));
         $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
         $('#confirmWinner').data('url', $(this).attr('href'));
+        var item = $('.select-winner[data-solutionid=' + $(this).data('solutionid') + ']').parent().parent().parent().prev().prev();
         if (item.length > 0) {
-            $('#replacingblock').replaceWith(item);
+            item = item.clone();
+        } else {
+            item = $('<div id="replacingblock" class="photo_block"> \
+                        <a href="#" onClick="return false;"><img alt="" src="' + solutionThumbnail + '"></a> \
+                        <div class="photo_opt"> \
+                        <span class="rating_block"><img alt="" src="/img/' + $('.rating-image', '.solution-rating').attr('data-rating') + '-rating.png"></span> \
+                        <span class="like_view" style="margin-top:1px;"><img class="icon_looked" alt="" src="/img/looked.png"><span>' + $('.isField.value-views').text() + '</span> \
+                        <a data-id="57" class="like-small-icon" href="#"><img alt="" src="/img/like.png"></a><span>' + $('.isField.value-likes').text() + '</span></span> \
+                        <span class="bottom_arrow"><a class="solution-menu-toggle" href="#"><img alt="" src="/img/marker5_2.png"></a></span> \
+                    </div>');
         }
+        $('#replacingblock').replaceWith(item);
         $('#popup-final-step').modal({
             containerId: 'final-step',
             opacity: 80,
@@ -793,7 +803,7 @@ function enableToolbar() {
     $('body, .solution-overlay').on('click', '.client-hide', function(e) {
         e.preventDefault();
         var link = $(this);
-        var underlyingHide = $('.hide-item'); 
+        var underlyingHide = $('.hide-item[data-to=' + $('.isField.number').text() + ']');
         if (underlyingHide.length > 0) {
             underlyingHide.click();
         } else {
@@ -806,7 +816,7 @@ function enableToolbar() {
     $('body, .solution-overlay').on('click', '.client-show', function(e) {
         e.preventDefault();
         var link = $(this);
-        var underlyingUnhide = $('.unhide-item');
+        var underlyingUnhide = $('.unhide-item[data-to=' + $('.isField.number').text() + ']');
         if (underlyingUnhide.length > 0) {
             underlyingUnhide.click();
         } else {
