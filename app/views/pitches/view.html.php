@@ -33,24 +33,20 @@
                     <div class="breadcrumbs-view" style="<?php if($pitch->status == 0): echo 'width: 770px;'; else: echo 'width: 640px;'; endif?>float:left;">
                         <a href="/pitches">Все питчи /</a> <a href="/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a>
                     </div>
-                    <?php if($pitch->status == 0):?>
-                        <?= $this->view()->render(array('element' => 'pitch-info/favourite_status'), array('pitch' => $pitch))?>
-                    <?php endif?>
                 </div>
 
-                <div class="menu">
-                    <ul>
-                        <li class="first_li">
-                            <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'selected menu-toggle', 'data-page' => 'gallery'))?>
-                        </li>
-                        <li>
-                            <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'brief'))?>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="tabs-curve group">
+                    <li class="active" style="z-index: 3;">
+                        <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'selected menu-toggle', 'data-page' => 'gallery'))?>
+                    </li>
+                    <li style="z-index: 2;">
+                        <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'brief'))?>
+                    </li>
+                    <!-- <li style="z-index: 1;"><a href="#three">Дизайнеры</a></li> -->
+                </ul>
 
         <nav class="other_nav_gallery clear">
-            <p class="supplement4" style="margin-left:200px;float:left;height:30px;padding-top:4px;font-weight: bold; color:#b2afaf;">
+            <p class="supplement4" style="float:left;height:30px;padding-top:20px;font-weight: bold; color:#b2afaf;">
                 <span style="display: inline-block; margin-top: 4px; vertical-align: top;">СОРТИРОВАТЬ ПО:</span>
                 <a class="sort-by-rating<?php if ($sort == 'rating'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=rating"><span title="сортировать по рейтингу"></span></a>
                 <a class="sort-by-likes<?php if ($sort == 'likes'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=likes"><span title="сортировать по лайкам"></span></a>
@@ -58,19 +54,17 @@
             </p>
             <?php
             if(!$this->user->isPitchOwner($pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
-                <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;width:155px">предложить решение</a>
+                <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;margin-top: -45px; width:155px">предложить решение</a>
                 <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
                 <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/>
                 <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>
                 <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/>
                 <?php elseif($pitch->status == 2):?>
                 <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/>
-            <?php else:?>
-                <a href="http://www.godesigner.ru/answers/view/78" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;width:178px">инструменты заказчика</a>
             <?php endif;?>
         </nav>
 
-    <div class="portfolio_gallery" style="padding-top:32px;">
+    <div class="portfolio_gallery">
     <div class="pht"></div>
             <?php
             $mySolutionList = array();

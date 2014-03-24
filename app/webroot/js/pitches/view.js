@@ -185,7 +185,7 @@ $(document).ready(function(){
             $('.separator', '.isField.pitch-comments').first().show();
         }
     }
-
+    
   //Добавление оценки(звездочки)
   $('.global_info ul li a').toggle(function(){
 	 $(this).css({backgroundPosition: '0 -9px'});

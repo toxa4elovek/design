@@ -23,35 +23,33 @@ function mb_basename($file)
 
 <div class="details-cont">
 
-    <div class="menu">
-        <ul>
-            <li class="first_li">
-                <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id))?>
-            </li>
-            <li>
-                <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'selected'))?>
-            </li>
-        </ul>
-    </div>
+    <ul class="tabs-curve group">
+        <li style="z-index: 3;">
+            <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'selected menu-toggle', 'data-page' => 'gallery'))?>
+        </li>
+        <li class="active" style="z-index: 2;">
+            <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'brief'))?>
+        </li>
+        <!-- <li style="z-index: 1;"><a href="#three">Дизайнеры</a></li> -->
+    </ul>
 
     <nav class="other_nav_gallery clear">
         <?php
         if((!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1)):?>
-            <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;width:155px">предложить решение</a>
-            <a class="print-link" target="_blank" href="/pitches/printpitch/<?=$pitch->id?>" style="float: right; margin-right: 250px;"><img alt="" src="/img/print_brief_button.png"></a>
+            <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px; margin-top: -45px; width:155px">предложить решение</a>
+            <a class="print-link" target="_blank" href="/pitches/printpitch/<?=$pitch->id?>" style="float: right; margin-right: 100px; margin-top: 10px;"><img alt="" src="/img/print_brief_button.png"></a>
             <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
             <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/>
             <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>
             <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/>
             <?php elseif($pitch->status == 2):?>
             <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/>
-        <?php else:?>
-            <a href="http://www.godesigner.ru/answers/view/78" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;width:178px">инструменты заказчика</a>
-            <a class="print-link" href="/pitches/printpitch/<?=$pitch->id?>" style="float: right; margin-right: 250px;"><img alt="" src="/img/print_brief_button.png"></a>
+        <?php else: ?>
+            <a class="print-link" target="_blank" href="/pitches/printpitch/<?=$pitch->id?>" style="float: right; margin-right: 350px; margin-top: 10px;"><img alt="" src="/img/print_brief_button.png"></a>
         <?php endif;?>
     </nav>
 
-            <div class="Center">
+            <div class="Center clr">
                 <div class="details">
                     <h2 class="blueheading">Название</h2>
                     <p class="regular"><?=$pitch->title?></p>

@@ -82,8 +82,7 @@ ul.social_share li:hover .tooltip{
 	margin-bottom:120px !important;
 }
 .other_nav_gallery {
-	margin-bottom:80px !important;
-	margin-top:-70px;
+
 }
 a.other-nav-left{
 	display:block;
@@ -93,7 +92,6 @@ a.other-nav-left{
 	display:block;
 	text-align:center;
 	width:110px;
-	margin-left:30px !important;
 	margin-top:10px;
 	margin-bottom:10px;
 }
@@ -346,7 +344,7 @@ span.clear{
 .portfolio_gallery{
 	width:837px;
 	margin:0 auto;
-	padding-top:8px;
+	clear: both;
 	text-transform:none;
 	line-height:1.2em;}
 .portfolio_gallery ul.list_portfolio{
@@ -657,3 +655,31 @@ a.number_img_gallery {
 #tooltipContent li{
     margin-left: 20px;
 } */
+
+.tabs-curve li { 
+	float: left; 
+	position: relative;
+	margin-right: -20px;
+	background-image: url(img/tab-curve.png);
+	background-position: left top;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	width: 193px;
+	height: 38px;
+	text-align: center;
+}
+.tabs-curve a {
+	display: inline-block; 
+    margin: 0 auto;
+    line-height: 38px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 1);
+    color: #666;
+    width: 80%;
+}
+.tabs-curve .active {
+	z-index: 5 !important;
+	background-position: left bottom;
+}
