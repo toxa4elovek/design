@@ -143,6 +143,7 @@ $(document).ready(function(){
             } else {
                 $('.gallery_postload').hide();
                 $('.pre-comment-separator').fadeIn();
+                checkSeparator();
             }
             loadExtraimages();
         });
@@ -174,9 +175,16 @@ $(document).ready(function(){
             });
             $('.gallery_postload').hide();
             $('.pre-comment-separator').fadeIn();
+            checkSeparator();
             loadExtraimages();
         });
     });
+
+    function checkSeparator() {
+        if ($('#newComment').length == 0) {
+            $('.separator', '.isField.pitch-comments').first().show();
+        }
+    }
 
   //Добавление оценки(звездочки)
   $('.global_info ul li a').toggle(function(){

@@ -683,9 +683,12 @@ function isExpert(user, expertsObj) {
 function fetchPitchComments() {
     $.getJSON('/pitches/getcommentsnew/' + pitchNumber + '.json', function(result) {
         if (result.comments) {
-            var commentsTitle = '<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>';
+            var $commentsTitle = $('<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>');
+            if ($('#newComment').length == 0 && $('.gallery_postload').is(':visible')) {
+                $commentsTitle.hide();
+            }
             $('.pitch-comments').html(fetchCommentsNew(result));
-            $('.pitch-comments').prepend(commentsTitle);
+            $('.pitch-comments').prepend($commentsTitle);
             $('.separator', '.pitch-comments section:first').remove();
         } else {
             $('.ajax-loader', '.pitch-comments').remove();
