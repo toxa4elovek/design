@@ -558,7 +558,7 @@ function prepareCommentData(comment, result) {
     }
     
     commentData.userAvatar = comment.avatar;
-    commentData.commentAuthor = comment.user.first_name + ((comment.user.last_name == null) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
+    commentData.commentAuthor = comment.user.first_name + (((comment.user.last_name == null) || (comment.user.last_name.length == 0)) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
     commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
     
     // Date Time
@@ -1156,7 +1156,7 @@ function preparePitchCommentData(result) {
         commentData.isChild = 1;
     }
 
-    commentData.commentAuthor = result.comment.user.first_name + ((result.comment.user.last_name.length == 0) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
+    commentData.commentAuthor = result.comment.user.first_name + (((result.comment.user.last_name == null) || (result.comment.user.last_name.length == 0)) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
     commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
 
     // Date Time
