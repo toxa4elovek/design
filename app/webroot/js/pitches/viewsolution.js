@@ -15,19 +15,6 @@ $(document).ready(function() {
         preload(fileSet);
     }
 
-    $('.order1').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order1_hover.png');
-    })
-    $('.order1').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order1.png');
-    })
-
-    $('.order2').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order2_hover.png');
-    })
-    $('.order2').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order2.png');
-    })
     // gplus
     window.___gcfg = {lang: 'ru'};
 

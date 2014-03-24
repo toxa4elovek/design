@@ -29,9 +29,7 @@ $(document).ready(function(){
         '/img/4-rating.png',
         '/img/5-rating.png',
         '/img/like.png',
-        '/img/like_hover.png',
-        '/img/order1_hover.png',
-        '/img/order2_hover.png'
+        '/img/like_hover.png'
     ]);
 
   //Переключение активной страницы в Главном меню
@@ -57,21 +55,6 @@ $(document).ready(function(){
   },function(){
 	 $(this).parent().siblings('h2').children().css('color','#666');
   });
-
-
-    $('.order1').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order1_hover.png');
-    })
-    $('.order1').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order1.png');
-    })
-
-    $('.order2').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order2_hover.png');
-    })
-    $('.order2').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order2.png');
-    })
 
     //Цвет фона для текущих питчей
     $('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
