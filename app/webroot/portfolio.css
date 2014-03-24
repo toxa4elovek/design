@@ -13,7 +13,9 @@
 	margin:0 auto;
 	padding-top:8px;
 	text-transform:none;
-	line-height:1.2em;}
+	line-height:1.2em;
+	clear: both;
+}
 .portfolio ul.list_portfolio{
 	list-style-type:none;
 	margin-left:-13px;}
