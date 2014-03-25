@@ -133,7 +133,7 @@ class PostsController extends \app\controllers\AppController {
                 $tagsArray[] = trim($tag);
             }
             $tagsString = implode('|', $tagsArray);
-            if((isset($this->request->data['published'])) && ($this->request->data['published'] == 'on')) {
+            if((isset($this->request->data['published'])) && (($this->request->data['published'] == 'on') || ($this->request->data['published'] == 1))) {
                 $published = '1';
             }else {
                 $published = '0';
