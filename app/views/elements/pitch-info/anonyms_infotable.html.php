@@ -42,7 +42,7 @@
         <td width="15"></td>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
             <span class="regular">Бриф заполнен:</span>&nbsp;
-                <?php echo ($pitch->brief == 1) ? '<a class="client-linknew" href="/answers/view/68" target="_blank">GoDesigner</a>' : $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew')); ?>
+            <?php echo ($pitch->brief == 1) ? '<a class="client-linknew" href="/answers/view/68" target="_blank">GoDesigner</a>' : $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew')); ?>
         </td>
     </tr>
 </table>

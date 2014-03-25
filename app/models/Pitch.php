@@ -432,6 +432,17 @@ class Pitch extends \app\models\AppModel {
         return true;
     }
 
+    /**
+     * Add Brief when Addon Activated
+     */
+    public static function addBrief($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $pitch->brief = 1;
+            $pitch->save();
+        }
+        return true;
+    }
+
     public static function finishPitch($pitchId) {
         $solutions = Solution::all(array(
             'conditions' => array('pitch_id' => $pitchId, 'nominated' => 1, 'awarded' => 0),
