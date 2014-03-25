@@ -315,6 +315,14 @@ $(document).ready(function() {
     if($('.breadcrumbs-view', $('#pitch-title')).height() > 36) {
         $('#pitch-title').height($('.breadcrumbs-view', $('#pitch-title')).height() + 10)
     }
+
+    // Countdown
+    $("#countdown").countdown({
+        date: $("#countdown").data('deadline'), // Change this to your desired date to countdown to
+        format: "on",
+        showEmptyDays: 'off'
+    });
+
 });
 
 window.fbAsyncInit = function() {
@@ -1371,3 +1379,57 @@ function getParameterByName(name) {
         results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+// Countdown
+(function (e) {
+    e.fn.countdown = function (t, n) {
+    function i() {
+        eventDate = r.date;
+        currentDate = Math.floor(e.now() / 1e3);
+        seconds = eventDate - currentDate;
+        days = Math.floor(seconds / 86400);
+        seconds -= days * 60 * 60 * 24;
+        hours = Math.floor(seconds / 3600);
+        seconds -= hours * 60 * 60;
+        minutes = Math.floor(seconds / 60);
+        seconds -= minutes * 60;
+        thisEl.find(".timeRefDays").text("дн");
+        thisEl.find(".timeRefHours").text(":");
+        thisEl.find(".timeRefMinutes").text(":");
+        thisEl.find(".timeRefSeconds").text("");
+        if (eventDate <= currentDate) {
+            days = 0;
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+            clearInterval(interval)
+        }
+        if (r["format"] == "on") {
+            days = String(days).length >= 2 ? days : "0" + days;
+            hours = String(hours).length >= 2 ? hours : "0" + hours;
+            minutes = String(minutes).length >= 2 ? minutes : "0" + minutes;
+            seconds = String(seconds).length >= 2 ? seconds : "0" + seconds
+        }
+        if ((r['showEmptyDays'] != 'on') && ((days == '0') || (days == '00'))) {
+            thisEl.find(".timeRefDays").text('');
+            days = '';
+        }
+        if (!isNaN(eventDate)) {
+            thisEl.find(".days").text(days);
+            thisEl.find(".hours").text(hours);
+            thisEl.find(".minutes").text(minutes);
+            thisEl.find(".seconds").text(seconds)
+        } else {
+            //alert("Invalid date. Example: 30 Tuesday 2013 15:50:00");
+            //clearInterval(interval)
+        }
+    }
+    thisEl = e(this);
+    var r = {
+        date: null,
+        format: null
+    };
+    t && e.extend(r, t);
+    //i();
+    interval = setInterval(i, 1e3)
+    }
+})(jQuery);
