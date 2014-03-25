@@ -1178,6 +1178,7 @@ class PitchesController extends \app\controllers\AppController {
 
 			$solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order, 'limit' => $limit, 'offset' => $offset));
 			$solutionsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id)));
+			$pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
             $selectedsolution = false;
             $nominatedSolutionOfThisPitch = Solution::first(array(
                 'conditions' => array('nominated' => 1, 'pitch_id' => $pitch->id)
@@ -1284,6 +1285,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $pitch->views += 1;
             $pitch->save();
 
+            $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
             $fileIds = unserialize($pitch->filesId);
             $files = array();
             $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
@@ -1421,6 +1423,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     $likes = true;
                 }
             }
+            $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $pitch->id), 'fields' => array('distinct(user_id)')));
             return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes');
 		}else {
 		    throw new Exception('Public:Такого решения не существует.', 404);
@@ -1453,6 +1456,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     return 'nofile';
                 }
             }
+            $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
             if($pitch->category_id != 7){
                 $uploadnonce = Uploadnonce::getNonce();
                 return compact('pitch', 'uploadnonce');

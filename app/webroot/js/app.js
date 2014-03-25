@@ -215,43 +215,24 @@ $(document).ready(function() {
 	 	}, {scope: 'email,publish_stream,publish_actions'});
 	});
 
-    $('#fav').live('click', function() {
+    $(document).on('click', '#fav', function() {
         var link = $(this)
         var data = { "pitch_id": link.data('pitchid')};
         var type= link.data('type');
         if(type == 'add') {
             var newtype = 'remove';
-            var cssClass = 'fav-minus';
-            var src = '/img/minus.png';
+            var newText = 'Убрать из избранного';
         }else{
             var newtype = 'add';
-            var cssClass = 'fav-plus';
-            var src = '/img/plus2.png';
+            var newText = 'Добавить в избранное';
         }
         $.post('/favourites/'+ type + '.json', data, function(response) {
             link.data('type', newtype);
-            console.log($('img', link).attr('src'))
             if($('img', link).attr('src') != '/img/plusb.png' && $('img', link).attr('src') != '/img/plusb_2.png') {
-                $('img', link).removeClass().addClass(cssClass).attr('src', src);
+                link.text(newText);
             }
         });
         return false;
-    })
-
-    $('.fav-plus').live('mouseover', function() {
-        $(this).attr('src', '/img/plus2.png');
-    })
-
-    $('.fav-plus').live('mouseout', function() {
-        $(this).attr('src', '/img/plus 2.png');
-    })
-
-    $('.fav-minus').live('mouseover', function() {
-        $(this).attr('src', '/img/minus2.png');
-    })
-
-    $('.fav-minus').live('mouseout', function() {
-        $(this).attr('src', '/img/minus.png');
     })
 
     $('.deleteheader').click(function(){
