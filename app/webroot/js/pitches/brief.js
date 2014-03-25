@@ -21,6 +21,12 @@ $(document).ready(function() {
             });
             return false;
         }
+        if(stepNum == 3) {
+            if (false === $('input[name=tos]').prop('checked')) {
+                alert('Вы должны принять правила и условия');
+                return false;
+            }
+        }
         if(Cart.validatetype == 1) {
             if((stepNum == 3) && ((notExists == true)|| (existsNotPublshed == true))) {
                 if(Cart.prepareData()) {
@@ -328,7 +334,7 @@ $(document).ready(function() {
         }
     }
     $('#save').click(function() {
-        if((($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length == 0)) && ($('input[name=tos]').length == 1)) {
+        if (false === $('input[name=tos]').prop('checked')) {
             alert('Вы должны принять правила и условия');
         }else {
             if(Cart.prepareData()) {
