@@ -891,11 +891,11 @@ class Pitch extends \app\models\AppModel {
         if($result = $this->__getSortingString($type)){
             switch($result) {
                 case 'rating':
-                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'); break;
+                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc'); break;
                 case 'created':
                     $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'); break;
                 case 'likes':
-                    $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc'); break;
+                    $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created' => 'desc'); break;
             }
             if(Session::read('user.id') == $pitch->user_id) {
                 $array = array_merge($array, array('awarded' => 'desc', 'hidden' => 'asc'));
@@ -908,7 +908,7 @@ class Pitch extends \app\models\AppModel {
             if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
                 return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             }elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc');
             }else {
                 return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             }
