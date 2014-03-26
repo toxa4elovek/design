@@ -11,10 +11,9 @@
         <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
         <!-- start: Solution Container -->
         <div class="solution-container page">
-            <div class="pitch-info">
+            <div style="padding: 25px 0 0 63px;">
                 <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             </div>
-            <div style="height:1px; clear:both;"></div>
             <!-- start: Solution Right Panel -->
             <div class="solution-right-panel page">
                 <div class="solution-info solution-summary">
@@ -111,14 +110,6 @@
             </div>
             <!-- start: Solution Left Panel -->
             <div class="solution-left-panel">
-                <h1 class="solution-title-page">
-                    <a href="/pitches">
-                        Все питчи /
-                    </a>
-                    <a href="/pitches/view/<?=$pitch->id?>">
-                        <?=$pitch->title?>
-                    </a>
-                </h1>
                 <!-- start: Soluton Images -->
                 <section class="solution-images isField bla">
                     <div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>

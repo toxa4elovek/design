@@ -4,16 +4,7 @@
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px; padding-left: 40px;">
-            <div id="pitch-title" style="height:36px;margin-bottom:5px;">
-                <div class="breadcrumbs-view" style="width:840px; margin: 30px 0 20px 0; float:left;">
-                    <a href="/pitches">Все питчи /</a> <a href="/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a>
-                </div>
-            </div>
-            <div class="crl" style="width: 840px; margin-bottom: 30px;">
-                <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
-            </div>
-
-
+            <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
 
             <form action="/pitches/uploadfile/<?=$pitch->id?>.json" method="post" id="solutionfiles" class="add-pitch upload-form" enctype="multipart/form-data">
                 <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">

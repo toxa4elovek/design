@@ -10,16 +10,7 @@ function mb_basename($file)
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
-        <div id="pitch-title" style="height:36px;margin-bottom:5px;">
-            <div class="breadcrumbs-view" style="width: 840px; margin: 30px 0 20px 0; float:left;">
-                <a href="/pitches">Все питчи /</a> <a href="/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a>
-            </div>
-        </div>
-
-        <div class="clr" style="width: 840px; margin-bottom: 30px;">
             <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
-        </div>
-
 
 <div class="details-cont">
 
@@ -33,18 +24,18 @@ function mb_basename($file)
         <!-- <li style="z-index: 1;"><a href="#three">Дизайнеры</a></li> -->
     </ul>
 
-    <!-- <nav class="other_nav_gallery clear">
+    <nav class="other_nav_gallery clear">
         <?php
         if((!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1)):?>
             <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px; margin-top: -45px; width:155px">предложить решение</a>
             <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
-            <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/>
+            <!-- <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/> -->
             <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>
-            <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/>
+            <!-- <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/> -->
             <?php elseif($pitch->status == 2):?>
-            <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/>
+            <!-- <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/> -->
         <?php endif;?>
-    </nav> -->
+    </nav>
 
             <div class="Center clr" style="margin-top: 20px;">
                 <div class="details">
