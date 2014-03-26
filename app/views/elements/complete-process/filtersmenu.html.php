@@ -1,4 +1,4 @@
-<div class="block-toggler" style="margin:10px 0 0 15px;font-family: 'RodeoC';font-size:13px">
+<div class="block-toggler filter-steps">
     <?php if($link == 1):?>
     <?=$this->html->link('все решения', array('controller' => 'users', 'action' => 'solutions'), array('class' => 'link'))?> /
     <?php else:?>
