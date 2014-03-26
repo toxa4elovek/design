@@ -19,15 +19,14 @@ class Pitch extends \lithium\template\Helper {
             foreach ($expertUserIds as $expert) {
                 $this->expert = $expert;
                 $res = array_filter($comments, array($this, 'wasExpertComment'));
-                \lithium\analysis\Logger::write('debug', var_export(count($res), true));
                 if (count($res) == 0) {
-                    return strtotime($pitch->finishDate) + DAY * 2;
+                    return strtotime($pitch->finishDate);
                 }
             }
-            arsort($this->dates);
-            return $this->dates[0] + DAY * 2;
+            rsort($this->dates);
+            return $this->dates[0];
         }
-        return strtotime($pitch->finishDate) + DAY * 2;
+        return strtotime($pitch->finishDate);
     }
 
     protected function wasExpertComment($comment) {

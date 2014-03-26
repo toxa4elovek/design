@@ -39,8 +39,8 @@
         </td>
         <td width="15"></td>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-            <span class="regular">Прием работ:</span>&nbsp;&nbsp;&nbsp;
             <?php if($pitch->status == 0):?>
+                <span class="regular">Прием работ:</span>&nbsp;&nbsp;&nbsp;
                 <span class="pitch-info-text" style="color: #ff585d; display: inline-block;" id="countdown" data-deadline="<?=strtotime($pitch->finishDate);?>">
                     <span class="days">00</span>
                     <span class="timeRefDays">дн</span>

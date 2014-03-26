@@ -1422,6 +1422,7 @@ function getParameterByName(name) {
             //alert("Invalid date. Example: 30 Tuesday 2013 15:50:00");
             //clearInterval(interval)
         }
+        thisEl.css({opacity:1});
     }
     thisEl = e(this);
     var r = {

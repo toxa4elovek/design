@@ -3221,3 +3221,6 @@ div.no-result p {
 .clr {
     clear: both;
 }
+#countdown {
+	opacity: 0;
+}

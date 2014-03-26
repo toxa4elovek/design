@@ -33,7 +33,7 @@ function mb_basename($file)
         <!-- <li style="z-index: 1;"><a href="#three">Дизайнеры</a></li> -->
     </ul>
 
-    <nav class="other_nav_gallery clear">
+    <!-- <nav class="other_nav_gallery clear">
         <?php
         if((!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1)):?>
             <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px; margin-top: -45px; width:155px">предложить решение</a>
@@ -44,7 +44,7 @@ function mb_basename($file)
             <?php elseif($pitch->status == 2):?>
             <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/>
         <?php endif;?>
-    </nav>
+    </nav> -->
 
             <div class="Center clr" style="margin-top: 20px;">
                 <div class="details">
