@@ -1318,10 +1318,18 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
 
+            $distincts = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
+            $designers = new \lithium\util\Collection();
+            foreach ($distincts as $item) {
+                $item->user = User::first($item->{'distinct(user_id)'});
+                $item->solutions = Solution::all(array('conditions' => array('user_id' => $item->user->id, 'pitch_id' => $this->request->id)));
+                $designers->append($item);
+            }
+
             $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
 
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-                return compact('pitch', 'comments', 'limitDesigners');
+                return compact('pitch', 'comments', 'limitDesigners', 'designers');
             }else {
                 if (isset($this->request->query['count'])) {
                     return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments')));
@@ -1346,7 +1354,6 @@ Disallow: /pitches/upload/' . $pitch['id'];
         }
         return compact('pitches');
     }
-
 
     /**
     * Метод отображения страницы решения

@@ -722,3 +722,69 @@ a.order-button:hover {
     box-shadow: 0 1px 1px rgba(100, 100, 100, .1);
     color: #717171;
 }
+
+/* Designers Tab */
+.portfolio_gallery.designers_tab {
+	margin: 0;
+}
+.portfolio_gallery.designers_tab .message_info1 {
+	margin: 0;
+}
+.portfolio_gallery.designers_tab ul.list_portfolio {
+	position: relative;
+	width: 630px;
+	overflow-x: hidden;
+	white-space: nowrap;
+	margin-left: 0;
+}
+.portfolio_gallery.designers_tab ul.list_portfolio .scroll_right,
+.portfolio_gallery.designers_tab ul.list_portfolio .scroll_left {
+	position: absolute;
+    top: 0;
+    z-index: 10;
+    opacity: .6;
+    width: 40px;
+    height: 178px;
+    border-top: 1px solid #cfcfcf;
+    border-bottom: 1px solid #afafaf;
+    border-left: 1px solid #c2c2c2;
+    border-right: 1px solid #c2c2c2;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background: #eeeeee;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#f8f8f8), to(#dedede));
+    background: -webkit-linear-gradient(#f8f8f8, #dedede);
+    background:    -moz-linear-gradient(#f8f8f8, #dedede);
+    background:     -ms-linear-gradient(#f8f8f8, #dedede);
+    background:      -o-linear-gradient(#f8f8f8, #dedede);
+    background:         linear-gradient(#f8f8f8, #dedede);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    text-align: center;
+    line-height: 24px;
+    color: #717171;
+    text-shadow: 0 1px 1px white;
+    font-size: 12px;
+    font-weight: bold;
+}
+.portfolio_gallery.designers_tab ul.list_portfolio .scroll_left {
+	left: 0;
+}
+.portfolio_gallery.designers_tab ul.list_portfolio .scroll_right {
+	right: 0;
+}
+.portfolio_gallery.designers_tab ul.list_portfolio .scroll_right:hover,
+.portfolio_gallery.designers_tab ul.list_portfolio .scroll_left:hover {
+	opacity: 1;
+}
+.portfolio_gallery.designers_tab ul.list_portfolio li {
+	margin-top: 0;
+}
+.message_info1 a span.designer_plate {
+    font-weight: normal;
+    padding-left: 21px;
+    margin-left: 3px;
+    font-size: 12px;
+    line-height: 30px;
+    background: url('/img/multi-icon-trans.png') no-repeat left 7px;
+}

@@ -36,6 +36,30 @@
                 <?php endif;?>
             </nav>
 
+            <ul class="portfolio_gallery designers_tab">
+            <?php foreach ($designers as $designer):?>
+                <li>
+                    <div class="message_info1">
+                        <a href="/users/view/<?=$designer->user->id;?>">
+                            <img src="<?=$this->avatar->show($designer->user->data(), false, true);?>" alt="Портрет пользователя" width="41" height="41">
+                        </a>
+                        <a href="/users/view/<?=$designer->user->id;?>">
+                            <span><?=$this->user->getFormattedName($designer->user->first_name, $designer->user->last_name);?></span><br />
+                            <span class="designer_plate"><?=count($designer->solutions);?> <?=$this->numInflector->formatString(count($designer->solutions), array('string' => array('first' => 'решение', 'second' => 'решения', 'third' => 'решений')))?></span>
+                        </a>
+                        <div class="clr"></div>
+                    </div>
+
+                    <?php $solutions = $designer->solutions;?>
+                    <ul class="list_portfolio designers_tab">
+                        <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount'))?>
+                        <li class="scroll_left" style="display: none;"><</li>
+                        <li class="scroll_right" style="display: none;">></li>
+                    </ul>
+                </li>
+            <?php endforeach;?>
+            </ul>
+
             <div class="gallery_postload">
                 <div class="separator"></div>
                 <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>
@@ -44,11 +68,16 @@
                 <div class="separator"></div>
                 <div style="clear: both;"></div>
             </div>
+
+            <section class="white" style="margin: 0 -34px">
+            <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
+            </section>
+
         </div><!-- /middle_inner -->
     </div><!-- /middle -->
 </div><!-- .wrapper -->
 
 <?=$this->view()->render(array('element' => 'popups/warning'))?>
 
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'jquery.raty.min.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'pitches/designers.js', 'jquery.hover.js', 'jquery.raty.min.js'), array('inline' => false))?>
 <?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>
