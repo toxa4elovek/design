@@ -50,12 +50,17 @@
                         <div class="clr"></div>
                     </div>
 
-                    <?php $solutions = $designer->solutions;?>
-                    <ul class="list_portfolio designers_tab">
-                        <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount'))?>
-                        <li class="scroll_left" style="display: none;"><</li>
-                        <li class="scroll_right" style="display: none;">></li>
-                    </ul>
+                    <?php
+                        $solutions = $designer->solutions;
+                        $fromDesignersTab = true;
+                    ?>
+                    <div class="designer_wrapper">
+                        <ul class="list_portfolio designers_tab">
+                            <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount', 'fromDesignersTab'))?>
+                        </ul>
+                        <div class="scroll_left" style="display: none;"><i></i></div>
+                        <div class="scroll_right" style="display: none;"><i></i></div>
+                    </div>
                 </li>
             <?php endforeach;?>
             </ul>

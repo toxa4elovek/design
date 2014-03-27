@@ -728,23 +728,31 @@ a.order-button:hover {
 	margin: 0;
 }
 .portfolio_gallery.designers_tab .message_info1 {
-	margin: 0;
+	margin: 22px 0 0 0;
 }
-.portfolio_gallery.designers_tab ul.list_portfolio {
+.portfolio_gallery.designers_tab .designer_wrapper {
 	position: relative;
 	width: 630px;
 	overflow-x: hidden;
-	white-space: nowrap;
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.portfolio_gallery.designers_tab ul.designers_tab {
+	position: relative;
+	display: inline-block;
+    white-space: nowrap;
 	margin-left: 0;
 }
-.portfolio_gallery.designers_tab ul.list_portfolio .scroll_right,
-.portfolio_gallery.designers_tab ul.list_portfolio .scroll_left {
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_right,
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_left {
 	position: absolute;
-    top: 0;
+    top: 22px;
     z-index: 10;
     opacity: .6;
     width: 40px;
-    height: 178px;
+    height: 185px;
     border-top: 1px solid #cfcfcf;
     border-bottom: 1px solid #afafaf;
     border-left: 1px solid #c2c2c2;
@@ -766,19 +774,36 @@ a.order-button:hover {
     text-shadow: 0 1px 1px white;
     font-size: 12px;
     font-weight: bold;
+    cursor: pointer;
 }
-.portfolio_gallery.designers_tab ul.list_portfolio .scroll_left {
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_right i,
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_left i {
+	position: absolute;
+	display: block;
+    top: 80px;
+    width: 40px;
+    height: 25px;
+    background-image: url('img/designer-arrow-sprite.png');
+    background-repeat: no-repeat;
+}
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_right i {
+	background-position: right top;
+}
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_left i {
+	background-position: left top;
+}
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_left {
 	left: 0;
 }
-.portfolio_gallery.designers_tab ul.list_portfolio .scroll_right {
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_right {
 	right: 0;
 }
-.portfolio_gallery.designers_tab ul.list_portfolio .scroll_right:hover,
-.portfolio_gallery.designers_tab ul.list_portfolio .scroll_left:hover {
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_right:hover,
+.portfolio_gallery.designers_tab .designer_wrapper .scroll_left:hover {
 	opacity: 1;
 }
 .portfolio_gallery.designers_tab ul.list_portfolio li {
-	margin-top: 0;
+	margin-top: 22px;
 }
 .message_info1 a span.designer_plate {
     font-weight: normal;

@@ -396,7 +396,7 @@ $(document).ready(function(){
         $('body').one('click',function() {
             $('.solution_menu').fadeOut(200);
         });
-        var menu = $(this).closest('.photo_block').next().next();
+        var menu = $(this).closest('.photo_block').siblings('.solution_menu');
         menu.fadeIn(200);
         $(menu).on('mouseleave', function() {
             $(this).fadeOut(200);

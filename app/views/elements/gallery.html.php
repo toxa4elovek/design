@@ -176,9 +176,12 @@ foreach($solutions as $solution):
                         <?php endif;?>
                     </div>
                 </span>
-                <span class="like_view" style="margin-top:2px;"><img src="/img/looked.png" alt="" class="icon_looked" /><span><?=$solution->views?></span>
+                <?php if (!isset($fromDesignersTab)):?>
+                    <span class="like_view" style="margin-top:2px;"><img src="/img/looked.png" alt="" class="icon_looked" /><span><?=$solution->views?></span>
+                <?php endif;?>
             </div>
             <ul style="margin-left: 78px;" class="right">
+                <?php if (!isset($fromDesignersTab)):?>
                 <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
                     <?php if ($pitch->status == 2):?>
                         <img src="/img/like.png" style="float: left;" alt="количество лайков" />
@@ -245,6 +248,11 @@ foreach($solutions as $solution):
                     </div></div>
                     <?php endif;?>
                 </li>
+                <?php else:?>
+                <li style="float: left; margin: 1px -10px 0 57px; padding: 0; width: auto;">
+                    <a href="#" class="number_img_gallery" style="color: #999;" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a>
+                </li>
+                <?php endif;?>
                 <li style="padding-left:0;margin-left:0;float: left; padding-top: 1px; height: 16px; margin-top: 0;width:30px">
                     <span class="bottom_arrow">
                     <?php if($this->user->isLoggedIn()):?>
@@ -259,7 +267,9 @@ foreach($solutions as $solution):
         </div>
 
     </div>
+    <?php if (!isset($fromDesignersTab)):?>
     <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
+    <?php endif; ?>
     <div class="solution_menu" style="display: none;">
         <ul class="solution_menu_list" style="position:absolute;z-index:6;">
             <?php if($this->user->isLoggedIn() && ($solution->hidden == 0) && ($this->user->isPitchOwner($pitch->user_id))): ?>
