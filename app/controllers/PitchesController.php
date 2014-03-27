@@ -46,7 +46,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments', 'getcommentsnew'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew'
 	);
 
     public function blank() {
@@ -1296,6 +1296,37 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 return compact('pitch', 'files', 'comments', 'prevpitch');
             }else {
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments')));
+            }
+        }
+        throw new Exception('Public:Такого питча не существует.', 404);
+    }
+
+    public function designers() {
+        if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
+            $limit = $limitDesigners = 6; // Set this to limit of designers per page
+            $offset = 0;
+
+            $currentUser = Session::read('user.id');
+            if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
+                return $this->redirect('/pitches');
+            }
+            if($pitch->private == 1) {
+                if(($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
+                    return $this->redirect('/requests/sign/' . $pitch->id);
+                }
+            }
+
+            $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
+
+            $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
+
+            if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+                return compact('pitch', 'comments', 'limitDesigners');
+            }else {
+                if (isset($this->request->query['count'])) {
+                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments')));
+                }
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments')));
             }
         }
         throw new Exception('Public:Такого питча не существует.', 404);

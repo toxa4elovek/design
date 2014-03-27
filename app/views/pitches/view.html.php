@@ -29,12 +29,14 @@
 
                 <ul class="tabs-curve group">
                     <li class="active" style="z-index: 3;">
-                        <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'selected menu-toggle', 'data-page' => 'gallery'))?>
+                        <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'gallery'))?>
                     </li>
                     <li style="z-index: 2;">
                         <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'brief'))?>
                     </li>
-                    <!-- <li style="z-index: 1;"><a href="#three">Дизайнеры</a></li> -->
+                    <li style="z-index: 1;">
+                        <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'designers'))?>
+                    </li>
                 </ul>
 
         <nav class="other_nav_gallery clear">
@@ -157,39 +159,8 @@
 	</div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<div id="popup-final-step" class="popup-final-step" style="display:none">
-    <h3>Убедитесь в правильном выборе!</h3>
-    <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё мнение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Вы уверены, что победителем питча становится <a id="winner-user-link" href="#" target="_blank"></a> c решением <a id="winner-num" href="#" target="_blank"></a>?</p>
-    <div class="portfolio_gallery" style="width:200px;margin-bottom:5px;">
-        <ul class="list_portfolio">
-            <li>
-                <div id="replacingblock">
-                    <a href="#"><img alt="" src="#"></a>
-                    <div class="photo_opt">
-                    <span class="rating_block"><img alt="" src="/img/0-rating.png"></span>
-                                <span class="like_view" style="margin-top:1px;"><img class="icon_looked" alt="" src="/img/looked.png"><span>0</span>
-                                <a data-id="57" class="like-small-icon" href="#"><img alt="" src="/img/like.png"></a><span>0</span></span>
-                    <span class="bottom_arrow"><a class="solution-menu-toggle" href="#"><img alt="" src="/img/marker5_2.png"></a></span>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="final-step-nav wrapper"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="confirmWinner" value="Да, подтвердить"></div>
-</div>
 
-<div id="popup-warning" class="popup-warn generic-window" style="display:none">
-    <p style="margin-top:120px;">Вы можете пожаловаться, если обнаружены грубые высказывания, реклама, спам, контент для взрослых, ссылки на работы, сделки вне Go Designer, копирование чужой работы или плагиат. В последнем случае важно предоставить ссылку на оригинал. Важно однако учитывать, что в питче с одним брифом некоторая степень похожести работ допускается. Подробнее <a href="http://www.godesigner.ru/answers/view/38" target="_blank">тут</a></p>
-    <p>Пожалуйста, прокомментируйте суть жалобы:</p>
-    <textarea id="warn-solution" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
-    <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarn" value="Да, подтвердить"></div>
-</div>
-
-<div id="popup-warning-comment" class="popup-warn generic-window" style="display:none">
-    <p style="margin-top:120px;">Вы можете пожаловаться, если обнаружены грубые высказывания, реклама, спам, контент для взрослых, ссылки на работы, сделки вне Go Designer, копирование чужой работы или плагиат. В последнем случае важно предоставить ссылку на оригинал. Важно однако учитывать, что в питче с одним брифом некоторая степень похожести работ допускается. Подробнее <a href="http://www.godesigner.ru/answers/view/38" target="_blank">тут</a></p>
-    <p>Пожалуйста, прокомментируйте суть жалобы:</p>
-    <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
-    <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
-</div>
+<?=$this->view()->render(array('element' => 'popups/warning'))?>
 
 <!-- Solution Popup -->
 
