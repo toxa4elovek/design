@@ -10,18 +10,8 @@
             </div>
         </section>
         <section>
-            <div class="block-toggler finish-steps">
-                <a href="/users/solutions">все решения</a> /
-                <?php if($solution->step == 4):?>
-                <a href="/users/awarded" class="link">награжденные</a> /
-                <?php else:?>
-                <a href="/users/awarded">награжденные</a> /
-                <?php endif?>
-                <?php if($solution->step < 4):?>
-                <a href="/users/nominated" class="link">в процессе завершения</a>
-                <?php else:?>
-                <a href="/users/nominated">в процессе завершения</a>
-                <?php endif?>
+            <div style="margin-left: 50px;">
+                <?=$this->view()->render(array('element' => 'complete-process/filtersmenu'), array('link' => ($solution->step == 4) ? 2 : 3))?>
             </div>
             <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
         </section>
