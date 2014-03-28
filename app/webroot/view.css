@@ -733,7 +733,9 @@ a.order-button:hover {
 .portfolio_gallery.designers_tab .designer_wrapper {
 	position: relative;
 	width: 630px;
+	height: 214px;
 	overflow-x: hidden;
+	overflow-y: hidden;
 	-webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -804,6 +806,7 @@ a.order-button:hover {
 }
 .portfolio_gallery.designers_tab ul.list_portfolio li {
 	margin-top: 22px;
+	white-space: normal;
 }
 .message_info1 a span.designer_plate {
     font-weight: normal;

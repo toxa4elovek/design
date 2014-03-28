@@ -4,6 +4,7 @@
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
+            <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
             <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             <ul class="tabs-curve group">
                 <li style="z-index: 3;">
@@ -20,9 +21,9 @@
             <nav class="other_nav_gallery clear">
                 <p class="supplement4" style="float:left;height:30px;padding-top:20px;font-weight: bold; color:#b2afaf;">
                     <span style="display: inline-block; margin-top: 4px; vertical-align: top;">СОРТИРОВАТЬ ПО:</span>
-                    <a class="sort-by-rating<?php if ($sort == 'rating'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=rating"><span title="сортировать по рейтингу"></span></a>
-                    <a class="sort-by-likes<?php if ($sort == 'likes'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=likes"><span title="сортировать по лайкам"></span></a>
-                    <a class="sort-by-created<?php if ($sort == 'created'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=created"><span title="сортировать по дате создания"></span></a>
+                    <a class="sort-by-number<?php if ($sort == 'number'):?> active<?php endif;?>" href="/pitches/designers/<?=$pitch->id?>?sorting=number"><span title="сортировать по количеству решений"></span></a>
+                    <a class="sort-by-created<?php if ($sort == 'created'):?> active<?php endif;?>" href="/pitches/designers/<?=$pitch->id?>?sorting=created"><span title="сортировать по дате создания"></span></a>
+                    <a class="sort-by-rating<?php if ($sort == 'rating'):?> active<?php endif;?>" href="/pitches/designers/<?=$pitch->id?>?sorting=rating"><span title="сортировать по рейтингу"></span></a>
                 </p>
                 <?php
                 if(!$this->user->isPitchOwner($pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
@@ -37,42 +38,19 @@
             </nav>
 
             <ul class="portfolio_gallery designers_tab">
-            <?php foreach ($designers as $designer):?>
-                <li>
-                    <div class="message_info1">
-                        <a href="/users/view/<?=$designer->user->id;?>">
-                            <img src="<?=$this->avatar->show($designer->user->data(), false, true);?>" alt="Портрет пользователя" width="41" height="41">
-                        </a>
-                        <a href="/users/view/<?=$designer->user->id;?>">
-                            <span><?=$this->user->getFormattedName($designer->user->first_name, $designer->user->last_name);?></span><br />
-                            <span class="designer_plate"><?=count($designer->solutions);?> <?=$this->numInflector->formatString(count($designer->solutions), array('string' => array('first' => 'решение', 'second' => 'решения', 'third' => 'решений')))?></span>
-                        </a>
-                        <div class="clr"></div>
-                    </div>
-
-                    <?php
-                        $solutions = $designer->solutions;
-                        $fromDesignersTab = true;
-                    ?>
-                    <div class="designer_wrapper">
-                        <ul class="list_portfolio designers_tab">
-                            <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount', 'fromDesignersTab'))?>
-                        </ul>
-                        <div class="scroll_left" style="display: none;"><i></i></div>
-                        <div class="scroll_right" style="display: none;"><i></i></div>
-                    </div>
-                </li>
-            <?php endforeach;?>
+                <?=$this->view()->render(array('element' => 'designers'), compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount'))?>
             </ul>
 
+            <?php if (count($designers) < $designersCount): ?>
             <div class="gallery_postload">
                 <div class="separator"></div>
                 <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>
-                <a href="#" class="button_more next_part">Показать ещё <?php echo $limitDesigners; ?></a>
-                <a href="#" class="button_more rest_part">Показать всех</a>
+                <a href="#" class="button_more next_part_design">Показать ещё <?php echo $limitDesigners; ?></a>
+                <a href="#" class="button_more rest_part_design">Показать всех</a>
                 <div class="separator"></div>
                 <div style="clear: both;"></div>
             </div>
+            <?php endif; ?>
 
             <section class="white" style="margin: 0 -34px">
             <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>

@@ -546,6 +546,7 @@ a.this-page{
 }
 a.sort-by-rating span,
 a.sort-by-likes span,
+a.sort-by-number span,
 a.sort-by-created span {
     display: inline-block;
     height: 20px;
@@ -564,6 +565,9 @@ a.sort-by-likes span {
 a.sort-by-created span {
     background-position: -40px 0;
 }
+a.sort-by-number span {
+    background-position: -60px 0;
+}
 a.sort-by-rating:hover span, a.sort-by-rating.active span {
 	background-position: 0 -20px;
 }
@@ -572,6 +576,9 @@ a.sort-by-likes:hover span, a.sort-by-likes.active span {
 }
 a.sort-by-created:hover span, a.sort-by-created.active span {
 	background-position: -40px -20px;
+}
+a.sort-by-number:hover span, a.sort-by-number.active span {
+	background-position: -60px -20px;
 }
 .button.answercomment {
     margin: 15px 0;

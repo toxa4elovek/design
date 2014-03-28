@@ -414,7 +414,8 @@ $(document).ready(function(){
         return false;
     })
 
-    $(document).on('click', '.solution-link-menu, .solution-link, .number_img_gallery', function() {
+    $(document).on('click', '.solution-link-menu, .solution-link, .number_img_gallery', function(e) {
+        e.preventDefault();
         if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
             var prepend = $(this).data('commentTo') + ', ';
             var newText = prepend + $('#newComment').val();
@@ -422,7 +423,6 @@ $(document).ready(function(){
             $(this).closest('.solution_menu').hide();
             $.scrollTo($('.all_messages'), {duration: 500});
         }
-        return false;
     });
 
     $(document).on('mouseover', '.hidedummy', function() {

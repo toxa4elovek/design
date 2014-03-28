@@ -35,7 +35,7 @@ class Pitch extends \app\models\AppModel {
     /**
      * @var array Валидные строчки для определения типа сортировки решений
      */
-    public $validSorts = array('rating', 'created', 'likes');
+    public $validSorts = array('rating', 'created', 'likes', 'number');
 
     public static $attaches = array('files' => array(
         'validateFile' => array(
@@ -902,6 +902,28 @@ class Pitch extends \app\models\AppModel {
                 $array = array_slice($array, 0, 1, true) +
                     array('hidden' => 'asc') +
                     array_slice($array, 1, null, true);
+            }
+            return $array;
+        }else {
+            if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+            }elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc');
+            }else {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+            }
+        }
+    }
+
+    public function getDesignersSortingOrder($pitch, $type = null) {
+        if($result = $this->__getSortingString($type)){
+            switch($result) {
+                case 'rating':
+                    $array = array('rating' => 'desc', 'created' => 'desc'); break;
+                case 'created':
+                    $array =  array('created' => 'desc'); break;
+                case 'number':
+                    $array =  array('Num' => 'desc', 'created' => 'desc'); break;
             }
             return $array;
         }else {

@@ -1303,8 +1303,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
     public function designers() {
         if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
-            $limit = $limitDesigners = 6; // Set this to limit of designers per page
+            $limit = $limitDesigners = 1; // Set this to limit of designers per page
             $offset = 0;
+            if (isset($this->request->query['count'])) {
+                $offset = (int) $this->request->query['count'];
+                $limit = (isset($this->request->query['rest'])) ? 9999 : $limitDesigners;
+            }
 
             $currentUser = Session::read('user.id');
             if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
@@ -1315,26 +1319,43 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     return $this->redirect('/requests/sign/' . $pitch->id);
                 }
             }
+            $canViewPrivate = false;
+            if (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW) {
+                $canViewPrivate = true;
+            }
 
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
 
-            $distincts = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
+            $sort = $pitch->getSolutionsSortName($this->request->query);
+            $order = $pitch->getDesignersSortingOrder($this->request->query);
+
+            $distincts = Solution::all(array(
+                'conditions' => array(
+                    'pitch_id' => $this->request->id,
+                ),
+                'fields' => array('user_id', 'COUNT(user_id) as Num'),
+                'group' => array('user_id'),
+                'order' => $order,
+                'limit' => $limit,
+                'offset' => $offset
+            ));
+            $designersCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
             $designers = new \lithium\util\Collection();
             foreach ($distincts as $item) {
-                $item->user = User::first($item->{'distinct(user_id)'});
-                $item->solutions = Solution::all(array('conditions' => array('user_id' => $item->user->id, 'pitch_id' => $this->request->id)));
+                $item->user = User::first($item->{'user_id'});
+                $item->solutions = Solution::all(array('conditions' => array('user_id' => $item->user->id, 'pitch_id' => $this->request->id), 'order' => array('created' => 'desc')));
                 $designers->append($item);
             }
 
             $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
 
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-                return compact('pitch', 'comments', 'limitDesigners', 'designers');
+                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount');
             }else {
                 if (isset($this->request->query['count'])) {
-                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments')));
+                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount')));
                 }
-                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments')));
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount')));
             }
         }
         throw new Exception('Public:Такого питча не существует.', 404);

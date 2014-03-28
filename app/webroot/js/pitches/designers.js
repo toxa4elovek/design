@@ -15,7 +15,7 @@ $(document).ready(function() {
             if ($el.position().left < 0) {
                 $opp.show();
             }
-            if (-$el.position().left > $wrapper.width() + 10) {
+            if ($el.width() + $el.position().left < $wrapper.width() + 10) {
                 self.hide();
                 clearInterval(designerInterval);
                 $el.animate({right: -($el.width() - $el.parent().width())}, 0);
@@ -29,7 +29,7 @@ $(document).ready(function() {
         var $el = $wrapper.children('ul');
         designerInterval = setInterval(function() {
             $el.animate({left: '+=5'}, 5);
-            if (-$el.position().left < $wrapper.width()) {
+            if ($el.width() + $el.position().left > $wrapper.width()) {
                 $opp.show();
             }
             if ($el.position().left > 0) {
@@ -42,4 +42,79 @@ $(document).ready(function() {
     $(document).on('mouseup', '.scroll_right, .scroll_left', function() {
         clearInterval(designerInterval);
     });
+
+    // Designers buttons
+    $(document).on('click', '.next_part_design', function(e) {
+        e.preventDefault();
+        $('.button_more').css('opacity', 0);
+        $('.gallery_postload_loader').show();
+        var data = {
+            count: $('.designer_row').length
+        };
+        var gallerySorting = getParameterByName('sorting');
+        if (gallerySorting.length > 0) {
+            data.sorting = gallerySorting;
+        }
+        $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), data, function(response) {
+            var designersCount = $($(response)[0]).val();
+            obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+            obj.each(function(index) {
+                if ($(this).is('li')) {
+                    $(this).css('opacity', '0');
+                }
+            });
+            obj.appendTo('.portfolio_gallery.designers_tab');
+            obj.each(function(index) {
+                if ($(this).is('li')) {
+                    $(this).animate({opacity:1}, 500);
+                }
+            });
+            $('.gallery_postload_loader').hide();
+            if ($('.designer_row').length < designersCount) {
+                $('.button_more').css('opacity', 1);
+            } else {
+                $('.gallery_postload').hide();
+                //$('.pre-comment-separator').fadeIn();
+                //checkSeparator();
+            }
+            //loadExtraimages();
+        });
+    });
+    $(document).on('click', '.rest_part_design', function(e) {
+        e.preventDefault();
+        $('.button_more').css('opacity', 0);
+        $('.gallery_postload_loader').show();
+        var data = {
+            count: $('.designer_row').length,
+            rest: 1
+        };
+        var gallerySorting = getParameterByName('sorting');
+        if (gallerySorting.length > 0) {
+            data.sorting = gallerySorting;
+        }
+        $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), data, function(response) {
+            obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+            obj.each(function(index) {
+                if ($(this).is('li')) {
+                    $(this).css('opacity', '0');
+                }
+            });
+            obj.appendTo('.portfolio_gallery.designers_tab');
+            obj.each(function(index) {
+                if ($(this).is('li')) {
+                    $(this).animate({opacity:1}, 500);
+                }
+            });
+            $('.gallery_postload').hide();
+            //$('.pre-comment-separator').fadeIn();
+            //checkSeparator();
+            //loadExtraimages();
+        });
+    });
+
+    function checkSeparator() {
+        if ($('#newComment').length == 0) {
+            $('.separator', '.isField.pitch-comments').first().show();
+        }
+    }
 });

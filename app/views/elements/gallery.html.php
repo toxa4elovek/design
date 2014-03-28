@@ -250,7 +250,7 @@ foreach($solutions as $solution):
                 </li>
                 <?php else:?>
                 <li style="float: left; margin: 1px -10px 0 57px; padding: 0; width: auto;">
-                    <a href="#" class="number_img_gallery" style="color: #999;" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a>
+                    <a href="#" class="number_img_gallery" style="color: #ccc;" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a>
                 </li>
                 <?php endif;?>
                 <li style="padding-left:0;margin-left:0;float: left; padding-top: 1px; height: 16px; margin-top: 0;width:30px">
