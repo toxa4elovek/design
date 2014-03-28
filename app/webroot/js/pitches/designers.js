@@ -1,4 +1,6 @@
 $(document).ready(function() {
+
+    // Scrolling
     function checkScrollers() {
         $.each($('.designer_wrapper'), function(idx, obj) {
             if ($(obj).width() < $('ul', $(obj)).first().width()) {

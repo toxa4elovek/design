@@ -66,8 +66,15 @@ $(document).ready(function(){
             var number = $(this).closest('li').find('.number_img_gallery').data('comment-to');
             var $el = $(this).closest('li').find('.photo_block');
             var positionClass = ($(this).parent().offset().left > 300) ? '' : ' right-pos';
-            $el.append('<div class="ratingcomment' + positionClass + '"><span>Как улучшить?</span><form><textarea></textarea><a href="#" id="rating_comment_send" data-solution_id="' + number + '">отправить</a></form><div id="rating-close"></div></div>');
-            $('textarea', $el).focus();
+            var offset = $(this).parent().offset();
+            var $newEl = $('<div class="ratingcomment' + positionClass + '"><span>Как улучшить?</span><form><textarea></textarea><a href="#" id="rating_comment_send" data-solution_id="' + number + '">отправить</a></form><div id="rating-close"></div></div>');
+            $('body').append($newEl);
+            if ($newEl.hasClass('right-pos')) {
+                $newEl.offset({top: offset.top - 78, left: offset.left + 20});
+            } else {
+                $newEl.offset({top: offset.top - 78, left: offset.left - 283});
+            }
+            $('textarea', $newEl).focus();
         }
         $.post('/solutions/rating/' + id + '.json',
             {"id": id, "rating": rating}, function(response) {
@@ -306,7 +313,9 @@ $(document).ready(function(){
         return string;
     }
 
-    fetchPitchComments();
+    if (/view/.test(window.location.pathname)) {
+        fetchPitchComments();
+    }
     enableToolbar();
 
     // Keys navigation
@@ -522,6 +531,9 @@ $(document).ready(function(){
      */
     var solutionId = '';
     $(document).on('click', '.imagecontainer', function(e) {
+        if (/designers/.test(window.location.pathname)) {
+            return true;
+        }
         e.preventDefault();
         e.stopPropagation();
         if (window.history.pushState) {

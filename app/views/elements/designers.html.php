@@ -14,7 +14,6 @@
 
         <?php
             $solutions = $designer->solutions;
-            $fromDesignersTab = true;
         ?>
         <div class="designer_wrapper">
             <ul class="list_portfolio designers_tab">

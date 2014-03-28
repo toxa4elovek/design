@@ -53,7 +53,7 @@
             <?php endif; ?>
 
             <section class="white" style="margin: 0 -34px">
-            <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
+            <?=$this->view()->render(array('element' => 'pitchcommentform'), compact('pitch', 'initialSeparator', 'fromDesignersTab'))?>
             </section>
 
         </div><!-- /middle_inner -->
