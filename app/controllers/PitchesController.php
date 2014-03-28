@@ -1326,6 +1326,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
 
+            $designersCount = $pitch->applicantsCount;
+
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getDesignersSortingOrder($this->request->query);
 
@@ -1336,15 +1338,19 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 'fields' => array('user_id', 'COUNT(user_id) as Num'),
                 'group' => array('user_id'),
                 'order' => $order,
-                'limit' => $limit,
-                'offset' => $offset
             ));
-            $designersCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
+
             $designers = new \lithium\util\Collection();
+            $o = 0;
+            $l = 0;
             foreach ($distincts as $item) {
+                $o++;
+                if ($o <= $offset) continue;
                 $item->user = User::first($item->{'user_id'});
                 $item->solutions = Solution::all(array('conditions' => array('user_id' => $item->user->id, 'pitch_id' => $this->request->id), 'order' => array('created' => 'desc')));
                 $designers->append($item);
+                $l++;
+                if ($l == $limit) break;
             }
 
             $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));

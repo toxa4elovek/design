@@ -1,14 +1,5 @@
 $(document).ready(function(){
 
-    // грузим экстра картинки...
-    function loadExtraimages() {
-        $.each(extraimages, function(index, object) {
-            var block = $('a[data-solutionid=' + index +']');
-            for(i=0;i < object.length; i++) {
-                block.append('<img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;display:none;" src="' + object[i] + '" alt="">');
-            }
-        });
-    }
     loadExtraimages();
 
     function preload(arrayOfImages) {
@@ -163,12 +154,6 @@ $(document).ready(function(){
         });
     });
 
-    function checkSeparator() {
-        if ($('#newComment').length == 0) {
-            $('.separator', '.isField.pitch-comments').first().show();
-        }
-    }
-    
   //Добавление оценки(звездочки)
   $('.global_info ul li a').toggle(function(){
 	 $(this).css({backgroundPosition: '0 -9px'});
@@ -907,6 +892,23 @@ function fireWinnerPopup(whom) {
         closeClass: 'popup-rating-close',
         onShow: function() {
             $('#popup-rating-box').animate({opacity: 1}, 800);
+        }
+    });
+}
+
+// Show Separator after Gallery Postload
+function checkSeparator() {
+    if ($('#newComment').length == 0) {
+        $('.separator', '.isField.pitch-comments').first().show();
+    }
+}
+
+//грузим экстра картинки...
+function loadExtraimages() {
+    $.each(extraimages, function(index, object) {
+        var block = $('a[data-solutionid=' + index +']');
+        for(i=0;i < object.length; i++) {
+            block.append('<img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;display:none;" src="' + object[i] + '" alt="">');
         }
     });
 }

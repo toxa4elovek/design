@@ -41,7 +41,7 @@
                 <?=$this->view()->render(array('element' => 'designers'), compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount'))?>
             </ul>
 
-            <?php if (count($designers) < $designersCount): ?>
+            <?php if (count($designers) < $designersCount): $initialSeparator = true; ?>
             <div class="gallery_postload">
                 <div class="separator"></div>
                 <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>
