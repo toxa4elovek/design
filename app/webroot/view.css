@@ -575,10 +575,9 @@ a.number_img_gallery {
 	margin: 10px auto;
 }
 .solution_menu {
-    position:relative;
-    width:150px;
-    left:47px;
-    top: -30px;
+    position: absolute;
+    width: 150px;
+    z-index: 100;
 }
 .sol_hov {
     background-color: #fff;

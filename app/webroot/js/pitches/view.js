@@ -193,8 +193,9 @@ $(document).ready(function(){
   });
 
    $(document).on('click', '.select-winner', function() {
-       var item = $(this).parent().parent().parent().prev().prev().clone();
-       $('#winner-num').text('#' + $(this).data('num'));
+       var num = $(this).data('num');
+       var item = $('.photo_block', '#li_' + num).clone();
+       $('#winner-num').text('#' + num);
        $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
        $('#winner-user-link').text($(this).data('user'));
        $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
@@ -388,15 +389,20 @@ $(document).ready(function(){
     $(document).on('mouseover', '.solution-menu-toggle', function(){
         $('img', $(this)).attr('src', '/img/marker5_2_hover.png');
         $('body').one('click',function() {
-            $('.solution_menu').fadeOut(200);
+            $('.solution_menu.temp').fadeOut(200, function() { $(this).remove(); });
         });
         var menu = $(this).closest('.photo_block').siblings('.solution_menu');
+        var offset = $(this).offset();
+        menu = menu.clone();
+        menu.addClass('temp');
+        $('body').append(menu);
+        menu.offset({top: offset.top, left: offset.left - 127});
         menu.fadeIn(200);
         $(menu).on('mouseleave', function() {
-            $(this).fadeOut(200);
+            $(this).fadeOut(200, function() { $(this).remove(); });
         });
         $('.photo_block').on('mouseenter', function() {
-            $('.solution_menu').fadeOut(200);
+            $('.solution_menu.temp').fadeOut(200, function() { $(this).remove(); });
         });
     });
 
@@ -414,7 +420,7 @@ $(document).ready(function(){
             var prepend = $(this).data('commentTo') + ', ';
             var newText = prepend + $('#newComment').val();
             $('#newComment').val(newText);
-            $(this).closest('.solution_menu').hide();
+            $('.solution_menu.temp').hide().remove();
             $.scrollTo($('.all_messages'), {duration: 500});
         }
     });
@@ -439,7 +445,7 @@ $(document).ready(function(){
     $(document).on('click', '.hide-item', function() {
         var link = $(this);
         var num = link.data('to');
-        var block = link.parent().parent().parent().parent()
+        var block = $('#li_' + num);
         var listofitems = $('.list_portfolio');
         $.get($(this).attr('href'), function(response) {
             if($('.imagecontainer', block).children().length == 1) {
@@ -448,16 +454,16 @@ $(document).ready(function(){
                 $('.photo_block', block).css('background', 'url(/img/copy-inv.png) 10px 10px no-repeat white');
             }
             $('.imagecontainer', block).css('opacity', 0.1)
-            link.replaceWith('<a data-to="' + num + '" class="unhide-item" href="/solutions/unhide/' + num + '.json">Сделать видимой</a>');
-            listofitems.append(block);
+            $('.hide-item', block).replaceWith('<a data-to="' + num + '" class="unhide-item" href="/solutions/unhide/' + num + '.json">Сделать видимой</a>');
+            //listofitems.append(block);
         })
         return false;
     })
 
     $(document).on('click', '.unhide-item', function() {
         var link = $(this);
-        var block = link.parent().parent().parent().parent()
-        var num = link.data('to')
+        var num = link.data('to');
+        var block = $('#li_' + num);
         var listofitems = $('.list_portfolio');
         $.get($(this).attr('href'), function(response) {
             if($('.imagecontainer', block).children().length == 1) {
@@ -469,8 +475,8 @@ $(document).ready(function(){
                 $('.photo_block', block).css('background', '');
                 $('.imagecontainer', block).css('opacity', 1)
             }
-            $('.solution_menu', block).hide()
-            link.replaceWith('<a data-to="' + num + '" class="hide-item" href="/solutions/hide/' + num + '.json">С глаз долой</a>');
+            $('.solution_menu.temp').hide().remove();
+            $('.unhide-item', block).replaceWith('<a data-to="' + num + '" class="hide-item" href="/solutions/hide/' + num + '.json">С глаз долой</a>');
         })
         return false;
     })

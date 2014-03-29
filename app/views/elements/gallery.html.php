@@ -24,7 +24,7 @@ foreach($solutions as $solution):
         endif;
     endif;
 ?>
-<li <?php if(($picCounter2 > 1) && ($pitch->category_id != 7)): echo 'class="multiclass"'; endif;?>>
+<li <?php if(($picCounter2 > 1) && ($pitch->category_id != 7)): echo 'class="multiclass"'; endif;?> id="li_<?=$solution->num;?>">
     <!-- multisolution branch -->
     <div class="photo_block" <?php if(($picCounter2 > 1) && (($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id)))):?>style="background: url(/img/copy-inv.png) 10px 10px no-repeat white"<?php endif;?>>
         <?php
