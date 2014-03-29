@@ -416,12 +416,23 @@ $(document).ready(function(){
 
     $(document).on('click', '.solution-link-menu, .solution-link, .number_img_gallery', function(e) {
         e.preventDefault();
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-            var prepend = $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $('#newComment').val(newText);
-            $('.solution_menu.temp').hide().remove();
-            $.scrollTo($('.all_messages'), {duration: 500});
+        if ($('#newComment').length > 0) { // View Tab
+            if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
+                var prepend = $(this).data('commentTo') + ', ';
+                var newText = prepend + $('#newComment').val();
+                $('#newComment').val(newText);
+                $('.solution_menu.temp').hide().remove();
+                $.scrollTo($('.all_messages'), {duration: 500});
+            }
+        } else { // Designers Tab
+            var number = $(this).data('comment-to');
+            var num = number.slice(1);
+            var $el = $('#li_' + num).find('.photo_block');
+            var offset = $el.offset();
+            var $newEl = $('<div class="ratingcomment"><span>Комментировать</span><form><textarea></textarea><a href="#" id="rating_comment_send" data-solution_id="' + number + '">отправить</a></form><div id="rating-close"></div></div>');
+            $('body').append($newEl);
+            $newEl.offset({top: offset.top + 78, left: offset.left - 139});
+            $('textarea', $newEl).focus();
         }
     });
 
