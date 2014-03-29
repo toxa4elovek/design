@@ -19,6 +19,10 @@
             </ul>
 
             <nav class="other_nav_gallery clear">
+                <form id="designers-search">
+                    <input type="text" id="designer-name-search" name="search" value="<?=$search?>" class="text" placeholder="Поиск по имени" data-placeholder="Поиск по имени">
+                    <input type="submit" class="designer-submit" value="">
+                </form>
                 <p class="supplement4" style="float:left;height:30px;padding-top:20px;font-weight: bold; color:#b2afaf;">
                     <span style="display: inline-block; margin-top: 4px; vertical-align: top;">СОРТИРОВАТЬ ПО:</span>
                     <a class="sort-by-number<?php if ($sort == 'number'):?> active<?php endif;?>" href="/pitches/designers/<?=$pitch->id?>?sorting=number"><span title="сортировать по количеству решений"></span></a>

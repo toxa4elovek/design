@@ -816,3 +816,40 @@ a.order-button:hover {
     line-height: 30px;
     background: url('/img/multi-icon-trans.png') no-repeat left 7px;
 }
+#designers-search {
+    position: relative;
+    float: left;
+    width: 194px;
+    height: 41px;
+    margin: 10px 20px 30px 0;
+    border: 3px solid transparent;
+}
+#designers-search.active {
+    border: 3px solid #d9d9d9;
+    border-radius: 3px;
+}
+#designer-name-search {
+    position: absolute;
+    width: 128px;
+    height: 40px;
+    text-transform: uppercase;
+}
+#designer-name-search.placeholder {
+	line-height: 40px;
+}
+.designer-submit {
+    position: absolute;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border: none;
+    padding: 0;
+    background-color: #5d8397;
+    background-image: url('img/blog-search.png');
+    background-repeat: no-repeat;
+    background-position: left top;
+    outline: none;
+}
+.designer-submit:hover {
+    background-position: left bottom;
+}

@@ -1305,6 +1305,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
         if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
             $limit = $limitDesigners = 1; // Set this to limit of designers per page
             $offset = 0;
+            $search = '';
             if (isset($this->request->query['count'])) {
                 $offset = (int) $this->request->query['count'];
                 $limit = (isset($this->request->query['rest'])) ? 9999 : $limitDesigners;
@@ -1333,14 +1334,24 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getDesignersSortingOrder($this->request->query);
 
-            $distincts = Solution::all(array(
+            $query = array(
                 'conditions' => array(
                     'pitch_id' => $this->request->id,
                 ),
                 'fields' => array('user_id', 'COUNT(user_id) as Num'),
                 'group' => array('user_id'),
                 'order' => $order,
-            ));
+                'with' => array('User'),
+            );
+
+            if (isset($this->request->query['search'])) {
+                $search = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
+                $query['conditions']['User.first_name'] = array('LIKE' => '%' . $search . '%');
+                $distincts = Solution::all($query);
+                $designersCount = count($distincts);
+            } else {
+                $distincts = Solution::all($query);
+            }
 
             $designers = new \lithium\util\Collection();
             $o = 0;
@@ -1358,12 +1369,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
 
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab');
+                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search');
             }else {
-                if (isset($this->request->query['count'])) {
-                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab')));
+                if (isset($this->request->query['count']) || isset($this->request->query['search'])) {
+                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search')));
                 }
-                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab')));
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search')));
             }
         }
         throw new Exception('Public:Такого питча не существует.', 404);
