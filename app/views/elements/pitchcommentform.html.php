@@ -1,4 +1,5 @@
 <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
+<?php if (isset($fromDesignersTab)) return false; ?>
 <div class="messages_gallery">
     <?php
     if(

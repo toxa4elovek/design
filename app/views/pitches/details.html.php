@@ -16,12 +16,14 @@ function mb_basename($file)
 
     <ul class="tabs-curve group">
         <li style="z-index: 3;">
-            <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'selected menu-toggle', 'data-page' => 'gallery'))?>
+            <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'gallery'))?>
         </li>
         <li class="active" style="z-index: 2;">
             <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'brief'))?>
         </li>
-        <!-- <li style="z-index: 1;"><a href="#three">Дизайнеры</a></li> -->
+        <li style="z-index: 1;">
+            <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'designers'))?>
+        </li>
     </ul>
 
     <nav class="other_nav_gallery clear">

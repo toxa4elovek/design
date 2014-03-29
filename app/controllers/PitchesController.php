@@ -46,7 +46,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'getcomments', 'getcommentsnew'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew'
 	);
 
     public function blank() {
@@ -1301,6 +1301,85 @@ Disallow: /pitches/upload/' . $pitch['id'];
         throw new Exception('Public:Такого питча не существует.', 404);
     }
 
+    public function designers() {
+        if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
+            $limit = $limitDesigners = 1; // Set this to limit of designers per page
+            $offset = 0;
+            $search = '';
+            if (isset($this->request->query['count'])) {
+                $offset = (int) $this->request->query['count'];
+                $limit = (isset($this->request->query['rest'])) ? 9999 : $limitDesigners;
+            }
+
+            $currentUser = Session::read('user.id');
+            if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
+                return $this->redirect('/pitches');
+            }
+            if($pitch->private == 1) {
+                if(($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
+                    return $this->redirect('/requests/sign/' . $pitch->id);
+                }
+            }
+            $canViewPrivate = false;
+            if (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW) {
+                $canViewPrivate = true;
+            }
+
+            $fromDesignersTab = true;
+
+            $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
+
+            $designersCount = $pitch->applicantsCount;
+
+            $sort = $pitch->getSolutionsSortName($this->request->query);
+            $order = $pitch->getDesignersSortingOrder($this->request->query);
+
+            $query = array(
+                'conditions' => array(
+                    'pitch_id' => $this->request->id,
+                ),
+                'fields' => array('user_id', 'COUNT(user_id) as Num'),
+                'group' => array('user_id'),
+                'order' => $order,
+                'with' => array('User'),
+            );
+
+            if (isset($this->request->query['search'])) {
+                $search = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
+                $query['conditions']['User.first_name'] = array('LIKE' => '%' . $search . '%');
+                $distincts = Solution::all($query);
+                $designersCount = count($distincts);
+            } else {
+                $distincts = Solution::all($query);
+            }
+
+            $designers = new \lithium\util\Collection();
+            $o = 0;
+            $l = 0;
+            foreach ($distincts as $item) {
+                $o++;
+                if ($o <= $offset) continue;
+                $item->user = User::first($item->{'user_id'});
+                $item->solutions = Solution::all(array('conditions' => array('user_id' => $item->user->id, 'pitch_id' => $this->request->id), 'order' => array('created' => 'desc')));
+                $designers->append($item);
+                $l++;
+                if ($l == $limit) break;
+            }
+
+            $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
+
+            if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search');
+            }else {
+                if (isset($this->request->query['count']) || isset($this->request->query['search'])) {
+                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search')));
+                }
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search')));
+            }
+        }
+        throw new Exception('Public:Такого питча не существует.', 404);
+    }
+
     public function crowdsourcing() {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
@@ -1315,7 +1394,6 @@ Disallow: /pitches/upload/' . $pitch['id'];
         }
         return compact('pitches');
     }
-
 
     /**
     * Метод отображения страницы решения
