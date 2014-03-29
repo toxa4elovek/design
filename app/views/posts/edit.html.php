@@ -64,7 +64,7 @@
                                 </div>
                             <?php endif ?>
                             <input type="button" id="save" value="Сохранить" class="button" >
-                            <a href="/posts/view/<?=$post->id?>" type="button" target="_blank" class="button" >Предпросмотр<a/>
+                            <a href="/posts/view/<?=$post->id?>" type="button" target="_blank" class="button post_preview">Предпросмотр<a/>
 
                         </section>
                     </form>
