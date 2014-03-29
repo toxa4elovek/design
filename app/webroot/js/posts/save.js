@@ -28,6 +28,7 @@ $(document).ready(function() {
         language : "ru",
         height : "480",
         relative_urls: false,
+        remove_script_host: false,
         spellchecker_languages : "+Russian=ru,English=en",
         // Style formats
         style_formats : [
