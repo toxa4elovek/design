@@ -28,6 +28,7 @@ $(document).ready(function() {
         language : "ru",
         height : "480",
         relative_urls: false,
+        remove_script_host: false,
         spellchecker_languages : "+Russian=ru,English=en",
         // Style formats
         style_formats : [
@@ -67,6 +68,10 @@ $(document).ready(function() {
         return false;
     });
     
+    $(document).on('click', '.post_preview', function(e) {
+        $.post('/posts/save.json', $('form').serialize(), function(response) { } );
+    });
+
     $('#typeahead').textext({
         plugins : 'tags arrow suggestions autocomplete prompt',
         prompt : 'Выберите из списка',
