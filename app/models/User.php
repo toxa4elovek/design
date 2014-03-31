@@ -360,7 +360,7 @@ class User extends \app\models\AppModel {
             $users1 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    array('isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0)
+                    'isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0, 'email' => array('!=' => ''),
                 )
             ));
             $result1 = $users1->data();
@@ -369,7 +369,7 @@ class User extends \app\models\AppModel {
         // All but pitches owners
         $users2 = self::all(array(
             'conditions' => array(
-                array('isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1)
+                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'email' => array('!=' => ''),
             ),
             'with' => array('Pitch')
         ));
@@ -386,7 +386,7 @@ class User extends \app\models\AppModel {
         if(!empty($ids)) {
             $users2 = self::all(array(
                 'conditions' => array(
-                    array('id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1)
+                    'id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'email' => array('!=' => ''),
                 ),
             ));
             $result2 = $users2->data();
@@ -398,7 +398,7 @@ class User extends \app\models\AppModel {
             $users3 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    array('isCopy' => 1, 'email_newpitch' => 1)
+                    'isCopy' => 1, 'email_newpitch' => 1, 'email' => array('!=' => ''),
                 )
             ));
             $result3 = $users3->data();
@@ -586,17 +586,15 @@ class User extends \app\models\AppModel {
     }
 
     public static function sendSpamReferal() {
-        $users = self::all();
+        $users = self::all(array('conditions' => array('email' => array('!=' => ''))));
         $sent = 0;
         foreach ($users as $user) {
-            if (!empty($user->email)) {
-                $data = array(
-                    'email' => $user->email,
-                    'subject' => 'Запуск партнёрской программы',
-                );
-                SpamMailer::referalspam($data);
-                $sent++;
-            }
+            $data = array(
+                'email' => $user->email,
+                'subject' => 'Запуск партнёрской программы',
+            );
+            SpamMailer::referalspam($data);
+            $sent++;
         }
         return $sent;
     }
@@ -620,6 +618,9 @@ class User extends \app\models\AppModel {
 
     public static function getDailyDigest($userId) {
         $user = self::first($userId);
+        if (empty($user->email)) {
+            return true;
+        }
         $pitches = Pitch::all(array('conditions' => array(
             'status' => 0,
             'published' => 1,
@@ -682,6 +683,9 @@ class User extends \app\models\AppModel {
         $userArray = array();
         foreach($ids as $id) {
             $user = User::first($id);
+            if (empty($user->email)) {
+                continue;
+            }
             $start = time() - (DAY * 3);
             if(strtotime($user->lastActionTime) < $start ) {
                 $userArray[] = $user;
