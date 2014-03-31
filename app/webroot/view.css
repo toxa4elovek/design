@@ -726,13 +726,14 @@ a.order-button:hover {
 /* Designers Tab */
 .portfolio_gallery.designers_tab {
 	margin: 0;
+	width: 852px;
 }
 .portfolio_gallery.designers_tab .message_info1 {
 	margin: 22px 0 0 0;
 }
 .portfolio_gallery.designers_tab .designer_wrapper {
 	position: relative;
-	width: 630px;
+	width: 645px;
 	height: 214px;
 	overflow-x: hidden;
 	overflow-y: hidden;
