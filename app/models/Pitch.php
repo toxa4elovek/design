@@ -896,6 +896,8 @@ class Pitch extends \app\models\AppModel {
                     $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'); break;
                 case 'likes':
                     $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created' => 'desc'); break;
+                default:
+                    $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'); break;
             }
             if(Session::read('user.id') == $pitch->user_id) {
                 $array = array_merge($array, array('awarded' => 'desc', 'hidden' => 'asc'));

@@ -39,18 +39,7 @@
         </td>
         <td width="15"></td>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-            <?php if($pitch->status == 0):?>
-                <span class="regular">Прием работ:</span>&nbsp;&nbsp;&nbsp;
-                <span class="pitch-info-text" style="color: #ff585d; display: inline-block;" id="countdown" data-deadline="<?=strtotime($pitch->finishDate);?>">
-                    <span class="days">00</span>
-                    <span class="timeRefDays">дн</span>
-                    <span class="hours">00</span><span class="timeRefHours">:</span><span class="minutes">00</span><span class="timeRefMinutes">:</span><span class="seconds">00</span><span class="timeRefSeconds"></span>
-                </span>
-            <?php elseif($pitch->status == 1):?>
-                <span class="pitch-info-text">Выбор победителя</span>
-            <?php elseif($pitch->status == 2):?>
-                <span class="pitch-info-text">Победитель выбран</span>
-            <?php endif?>
+            <?=$this->view()->render(array('element' => 'pitch-info/timer'), array('pitch' => $pitch))?>
         </td>
         <td width="15"></td>
         <?php if ($pitch->status == 0):?>
