@@ -1370,7 +1370,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 if ($l == $limit) break;
             }
 
-            $comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
+            $comments = '';
+            //$comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
 
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
                 return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search');

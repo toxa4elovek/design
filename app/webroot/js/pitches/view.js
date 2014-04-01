@@ -414,6 +414,7 @@ $(document).ready(function(){
         return false;
     })
 
+    // Comment Bubble
     $(document).on('click', '.solution-link-menu, .solution-link, .number_img_gallery', function(e) {
         e.preventDefault();
         if ($('#newComment').length > 0) { // View Tab
@@ -425,6 +426,9 @@ $(document).ready(function(){
                 $.scrollTo($('.all_messages'), {duration: 500});
             }
         } else { // Designers Tab
+            if (!isClient && !isCurrentAdmin) {
+                return false;
+            }
             var number = $(this).data('comment-to');
             var num = number.slice(1);
             var $el = $('#li_' + num).find('.photo_block');

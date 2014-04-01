@@ -65,7 +65,7 @@
             <?php
             $mySolutionList = array();
             $mySolutionNumList = array();
-            if((count($solutions) > 0) && ($pitch->published == 1)): ?>
+            if((!empty($solutions) > 0) && ($pitch->published == 1)): ?>
             <ul class="list_portfolio main_portfolio">
                 <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount'))?>
             </ul>

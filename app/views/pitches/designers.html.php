@@ -41,9 +41,19 @@
                 <?php endif;?>
             </nav>
 
+            <?php if(($designersCount > 0) && ($pitch->published == 1)): ?>
             <ul class="portfolio_gallery designers_tab">
                 <?=$this->view()->render(array('element' => 'designers'), compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount'))?>
             </ul>
+            <?php else: ?>
+            <div class="bigfont">
+                <h2 class="title clr">Ещё никто не выложил свои идеи.</h2>
+                <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
+                <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
+                <h2 class="title">и стань первым!</h2>
+                <?php endif?>
+            </div>
+            <?php endif; ?>
 
             <?php if (count($designers) < $designersCount): $initialSeparator = true; ?>
             <div class="gallery_postload">
