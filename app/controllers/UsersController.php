@@ -788,6 +788,9 @@ class UsersController extends \app\controllers\AppController {
 	public function logout() {
         setcookie("autologindata", "", time()-3600000, '/');
         Auth::clear('user');
+        if (!is_null($_SERVER['HTTP_REFERER'])) {
+            return $this->redirect($_SERVER['HTTP_REFERER']);
+        }
         return $this->redirect('/');
     }
 
