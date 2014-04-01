@@ -1303,7 +1303,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
     public function designers() {
         if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
-            $limit = $limitDesigners = 1; // Set this to limit of designers per page
+            $limit = $limitDesigners = 6; // Set this to limit of designers per page
             $offset = 0;
             $search = '';
             if (isset($this->request->query['count'])) {
