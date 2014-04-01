@@ -26,6 +26,7 @@ use \app\models\Avatar;
 use \app\models\Url;
 use \app\models\Like;
 use \app\models\Uploadnonce;
+use \app\models\Note;
 
 use \app\extensions\paymentgateways\Webgate;
 use \lithium\storage\Session;
@@ -466,6 +467,9 @@ class PitchesController extends \app\controllers\AppController {
                 }
                 if($pitch->user_id == Session::read('user.id')) {
                     $pitch->winlink = true;
+                }
+                if (($pitch->status > 0) && ($note = Note::first(array('conditions' => array('pitch_id' => $pitch->id, 'status' => 2))))) {
+                    $pitch->winlink = false;
                 }
 
                 $pitch->hasBill = false;
