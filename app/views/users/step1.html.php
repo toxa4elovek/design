@@ -84,7 +84,7 @@
                                         <!--td width="304" class="tableheader" style="padding-left:10px">Корсчет</td--></tr>
                                     <tr style="height: 80px;">
                                         <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['bik']?>" name="bik" /></td>
-                                        <td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['coraccount']?>" name="coraccount" /></td>
+                                        <!--td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['coraccount']?>" name="coraccount" /></td-->
                                     </tr>
                                     <tr><td class="tableheader" colspan="2">Примечание</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?php if(isset($paydata['extradata'])) echo $paydata['extradata']?>" name="extradata" /></td></tr>
