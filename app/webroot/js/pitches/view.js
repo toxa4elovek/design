@@ -245,7 +245,8 @@ $(document).ready(function(){
     
     // Delete Solution
     $(document).on('click', '.delete-solution', function() {
-        var link = $(this);
+        var num = $(this).data('solution_num');
+        var link = $('a.delete-solution', '#li_' + num);
 
         // Delete without Moderation
         if (!isCurrentAdmin) {

@@ -300,7 +300,7 @@ foreach($solutions as $solution):
             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
             <?php endif;?>
             <?php if(($this->user->isSolutionAuthor($solution->user_id)) || ($this->user->isAdmin())):?>
-            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?=$solution->id?>" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
+            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?=$solution->id?>" data-solution_num="<?=$solution->num?>" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
             <?php endif;?>
 
         </ul>

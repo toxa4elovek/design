@@ -14,8 +14,7 @@ class ModerationsController extends \app\controllers\AppController {
         $result = false;
         $isAdmin = Session::read('user.isAdmin');
         $currentUser = Session::read('user.id');
-        if ((isset($this->request->data))
-        && (($isAdmin == 1) || (in_array($currentUser, array(32, 4, 5, 108, 81))))) {
+        if (isset($this->request->data) && (($isAdmin == 1) || User::checkRole('admin'))) {
             if ( ($this->request->data['model'] == 'comment') && ($comment = Comment::first($this->request->data['model_id'])) ) {
                 $data = array(
                     'model' => '\app\models\Comment',

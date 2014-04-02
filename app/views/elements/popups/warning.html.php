@@ -31,3 +31,7 @@
     <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
     <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
 </div>
+<!-- Moderation Popups -->
+<?php if ($this->user->isAdmin()):?>
+    <?=$this->view()->render(array('element' => 'moderation'))?>
+<?php endif; ?>

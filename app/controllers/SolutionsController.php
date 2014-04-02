@@ -62,7 +62,7 @@ class SolutionsController extends \app\controllers\AppController {
         //ini_set('display_errors', '1');
         $result = false;
         $isAdmin = Session::read('user.isAdmin');
-        if(($solution = Solution::first($this->request->id)) && (($isAdmin == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == Session::read('user.id')))) {
+        if(($solution = Solution::first($this->request->id)) && (($isAdmin == 1) || User::checkRole('admin') || ($solution->user_id == Session::read('user.id')))) {
             $result = $solution->delete();
         }
         if ($this->request->is('json')) {

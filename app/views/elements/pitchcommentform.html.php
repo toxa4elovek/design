@@ -45,7 +45,3 @@
     <!-- end: Pitch Comments -->
     </section>
 </div>
-<!-- Moderation Popups -->
-<?php if ($this->user->isAdmin()):?>
-    <?=$this->view()->render(array('element' => 'moderation'))?>
-<?php endif; ?>
