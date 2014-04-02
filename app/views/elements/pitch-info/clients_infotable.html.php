@@ -15,7 +15,9 @@
             <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=experts-checkbox">Заказать</a>
         </td>
         <?php else: ?>
-        <td width="255" height="25"></td>
+        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <span class="regular">Заказчик:</span>&nbsp;&nbsp;<?=$this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'))?>
+        </td>
         <?php endif; ?>
     </tr>
     <tr>
@@ -37,7 +39,9 @@
             <?php endif;?>
         </td>
         <?php else: ?>
-        <td width="255" height="25"></td>
+        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <span class="regular">Был online:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=date('d.m.Y', $pitch->user->getLastActionTime())?> в <?=date('H:i', $pitch->user->getLastActionTime()) ?></span>
+        </td>
         <?php endif; ?>
     </tr>
     <tr>
@@ -55,7 +59,10 @@
             <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=prolong">Заказать</a>
         </td>
         <?php else: ?>
-        <td width="255" height="25"></td>
+        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <span class="regular">Бриф заполнен:</span>&nbsp;
+            <?php echo ($pitch->brief == 1) ? '<a class="client-linknew" href="/answers/view/68" target="_blank">GoDesigner</a>' : $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew')); ?>
+        </td>
         <?php endif; ?>
     </tr>
 </table>
