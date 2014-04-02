@@ -185,7 +185,7 @@ class Wp_post extends \app\models\AppModel {
             'conditions' => array(
                 'post_status' => 'publish',
                 'post_type' => 'post',
-                'post_modified' => array(
+                'post_date' => array(
                     '>=' => $time,
                 ),
                 'Wp_postmeta.meta_key' => '_thumbnail_id',
