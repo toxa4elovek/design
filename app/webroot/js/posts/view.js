@@ -18,10 +18,12 @@ $(document).ready(function() {
         $('#post-search').removeClass('active');
     });
 
-    var $rama = $('p').children('img');
-    if ($rama.length > 1) {
-        $rama.wrapAll( '<div class="fotorama" data-nav="dots" />');
-    }
+    $.each($('p'), function(idx, obj) {
+        var $rama = $(obj).children('img');
+        if ($rama.length > 1) {
+            $rama.wrapAll( '<div class="fotorama" data-nav="dots" />');
+        }
+    });
     $('.fotorama').fotorama();
 
     // gplus
