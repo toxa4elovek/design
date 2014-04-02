@@ -46,7 +46,7 @@
                 <?=$this->view()->render(array('element' => 'designers'), compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount'))?>
             </ul>
             <?php else: ?>
-            <div class="bigfont">
+            <div class="bigfont" style="margin-bottom: 76px;">
                 <h2 class="title clr">Ещё никто не выложил свои идеи.</h2>
                 <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
                 <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
@@ -56,7 +56,7 @@
             <?php endif; ?>
 
             <?php if (count($designers) < $designersCount): $initialSeparator = true; ?>
-            <div class="gallery_postload">
+            <div class="gallery_postload designers_tab">
                 <div class="separator"></div>
                 <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>
                 <a href="#" class="button_more next_part_design">Показать ещё <?php echo $limitDesigners; ?></a>
@@ -69,8 +69,8 @@
             <section class="white" style="margin: 0 -34px">
             <?=$this->view()->render(array('element' => 'pitchcommentform'), compact('pitch', 'initialSeparator', 'fromDesignersTab'))?>
             </section>
-
         </div><!-- /middle_inner -->
+        <div id="under_middle_inner"></div><!-- /under_middle_inner -->
     </div><!-- /middle -->
 </div><!-- .wrapper -->
 

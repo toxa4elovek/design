@@ -202,9 +202,9 @@ function mb_basename($file)
         </div><!-- /solution -->
 
     </div>
+<div id="under_middle_inner"></div><!-- /under_middle_inner -->
 
 </div><!-- /middle_inner -->
-
 
 </div><!-- /middle -->
 

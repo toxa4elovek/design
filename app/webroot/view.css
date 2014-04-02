@@ -809,6 +809,12 @@ a.order-button:hover {
 	margin-top: 22px;
 	white-space: normal;
 }
+.gallery_postload.designers_tab .separator {
+    margin: 27px 0 0 0;
+}
+.gallery_postload.designers_tab .button_more {
+    margin: 7px 7px 0 7px;
+}
 .message_info1 a span.designer_plate {
     font-weight: normal;
     padding-left: 21px;
