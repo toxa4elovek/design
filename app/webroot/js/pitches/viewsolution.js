@@ -349,6 +349,7 @@ $(document).ready(function() {
         $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
         $('.description-more').hide();
         $('#newComment', '.solution-left-panel').val('');
+        solutionThumbnail = '';
         $.getJSON(urlJSON, function(result) {
 
             // Navigation
@@ -357,6 +358,7 @@ $(document).ready(function() {
             $('.solution-images').html('');
             // Left Panel
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
+                // Main Images
                 if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
                     work = result.solution.images.solution_solutionView
@@ -371,6 +373,18 @@ $(document).ready(function() {
                     });
                 }else {
                     $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
+                }
+                // Thumbnail Image
+                if(typeof(result.solution.images.solution_galleryLargeSize) != 'undefined') {
+                    viewsize = result.solution.images.solution_galleryLargeSize;
+                }else {
+                    // case when we don't have gallerySiteSize image size
+                    viewsize = result.solution.images.solution;
+                }
+                if ($.isArray(viewsize)) {
+                    solutionThumbnail = viewsize[0].weburl;
+                }else {
+                    solutionThumbnail = viewsize.weburl;
                 }
             }else {
                 $('.solution-images').append('<div class="preview"> \
@@ -450,7 +464,7 @@ $(document).ready(function() {
 
             // Right Panel
             $('.number', '.solution-number').text(result.solution.num || '');
-            $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
+            $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating).attr('data-rating', result.solution.rating);
             if (result.userAvatar) {
                 $('.author-avatar').attr('src', result.userAvatar);
             } else {
