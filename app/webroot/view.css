@@ -731,6 +731,9 @@ a.order-button:hover {
 	margin: 0;
 	width: 852px;
 }
+.portfolio_gallery.designers_tab li.designer_row {
+	margin-bottom: 34px;
+}
 .portfolio_gallery.designers_tab .message_info1 {
 	margin: 22px 0 0 0;
 }
@@ -831,7 +834,7 @@ a.order-button:hover {
     float: left;
     width: 194px;
     height: 41px;
-    margin: 10px 20px 30px 0;
+    margin: 10px 20px 4px 0;
     border: 3px solid transparent;
 }
 #designers-search.active {

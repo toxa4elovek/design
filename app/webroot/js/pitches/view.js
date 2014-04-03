@@ -392,12 +392,13 @@ $(document).ready(function(){
         $('body').one('click',function() {
             $('.solution_menu.temp').fadeOut(200, function() { $(this).remove(); });
         });
-        var menu = $(this).closest('.photo_block').siblings('.solution_menu');
-        var offset = $(this).offset();
+        var container = $(this).closest('.photo_block');
+        var menu = container.siblings('.solution_menu');
+        var offset = container.offset();
         menu = menu.clone();
         menu.addClass('temp');
         $('body').append(menu);
-        menu.offset({top: offset.top, left: offset.left - 127});
+        menu.offset({top: offset.top + 155, left: offset.left + 47});
         menu.fadeIn(200);
         $(menu).on('mouseleave', function() {
             $(this).fadeOut(200, function() { $(this).remove(); });
