@@ -656,7 +656,7 @@ a.number_img_gallery {
     margin-left: 20px;
 } */
 
-.tabs-curve li { 
+.tabs-curve li {
 	float: left; 
 	position: relative;
 	margin-right: -20px;
@@ -678,6 +678,9 @@ a.number_img_gallery {
     text-shadow: 0 1px 1px rgba(255, 255, 255, 1);
     color: #666;
     width: 80%;
+}
+.tabs-curve a:hover {
+	color: #648fa4;
 }
 .tabs-curve .active {
 	z-index: 5 !important;
