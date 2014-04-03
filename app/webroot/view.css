@@ -839,7 +839,6 @@ a.order-button:hover {
     position: absolute;
     width: 128px;
     height: 40px;
-    text-transform: uppercase;
 }
 #designer-name-search.placeholder {
 	line-height: 40px;

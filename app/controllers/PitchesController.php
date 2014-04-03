@@ -1350,7 +1350,21 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
             if (isset($this->request->query['search'])) {
                 $search = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
-                $query['conditions']['User.first_name'] = array('LIKE' => '%' . $search . '%');
+                $words = explode(' ', $search);
+                foreach ($words as $index => &$searchWord) {
+                    if ($searchWord == '') {
+                        unset($words[$index]);
+                        continue;
+                    }
+                    $searchWord = mb_eregi_replace('[^A-Za-z0-9а-яА-Я]', '', $searchWord);
+                    $searchWord = trim($searchWord);
+                }
+                if (count($words) == 1) {
+                    $query['conditions']['User.first_name'] = array('LIKE' => '%' . $words[0] . '%');
+                } else {
+                    $query['conditions']['User.first_name'] = array('LIKE' => '%' . $words[0] . '%');
+                    $query['conditions']['User.last_name'] = array('LIKE' => mb_substr($words[1], 0, 1, 'UTF-8') . '%');
+                }
                 $distincts = Solution::all($query);
                 $designersCount = count($distincts);
             } else {
