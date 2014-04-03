@@ -122,42 +122,79 @@ $(document).ready(function() {
     });
 
     // Search
+    function searchCallback($search, forced) {
+        var forced = forced || false;
+        var $form = $search.parent();
+        var $container = $('.portfolio_gallery.designers_tab');
+        var $buttons = $('.gallery_postload');
+        if ($buttons.is(':visible') || forced) {
+            $container.html('<img id="search-ajax-loader" src="/img/blog-ajax-loader.gif" style="margin: 0 0 100px 400px;">');
+            $buttons.hide();
+            $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), $form.serialize(), function(response) {
+                var designersCount = $($(response)[0]).val();
+                $('#search-ajax-loader').remove();
+                if (designersCount != 0) {
+                    obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+                    obj.each(function(index) {
+                        if ($(this).is('li')) {
+                            $(this).css('opacity', '0');
+                        }
+                    });
+                    obj.appendTo($container);
+                    obj.each(function(index) {
+                        if ($(this).is('li')) {
+                            $(this).animate({opacity:1}, 500);
+                        }
+                    });
+                    if ($('.designer_row').length < designersCount) {
+                        $buttons.show();
+                    } else {
+                        $('.pre-comment-separator').fadeIn();
+                        checkSeparator();
+                    }
+                    checkScrollers();
+                } else {
+                    $container.html('<div class="ooopsSign" style="text-align: center; margin-bottom: 50px;"><h2 class="largest-header" style="line-height: 2em;">УПС, НИЧЕГО НЕ НАШЛИ!</h2><p class="large-regular">Попробуйте еще раз, изменив запрос.</p></div>');
+                }
+            });
+        } else {
+            var pattern = $search.val().toLowerCase();
+            $('.designer_row').each(function(idx, obj) {
+                var name = $(obj).find('.designer_name').text().toLowerCase();
+                if (name.indexOf(pattern) == -1) {
+                    $(obj).fadeOut(200);
+                } else {
+                    $('.ooopsSign', $container).remove();
+                    $(obj).fadeIn(200);
+                }
+            });
+            setTimeout(function() {
+                if ($('.designer_row:visible').length == 0) {
+                    $('.ooopsSign', $container).remove();
+                    $container.append('<div class="ooopsSign" style="text-align: center; margin-bottom: 50px;"><h2 class="largest-header" style="line-height: 2em;">УПС, НИЧЕГО НЕ НАШЛИ!</h2><p class="large-regular">Попробуйте еще раз, изменив запрос.</p></div>');
+                }
+            }, 400);
+        }
+    }
+
     $(document).on('submit', '#designers-search', function() {
         var $search = $('#designer-name-search');
         if (($search.val().length == 0) || ($search.val() == $search.data('placeholder'))) {
             return false;
         }
-        var $container = $('.portfolio_gallery.designers_tab');
-        $container.html('<img id="search-ajax-loader" src="/img/blog-ajax-loader.gif" style="margin: 0 0 100px 400px;">');
-        $('.gallery_postload').hide();
-        $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), $(this).serialize(), function(response) {
-            var designersCount = $($(response)[0]).val();
-            $('#search-ajax-loader').remove();
-            if (designersCount != 0) {
-                obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
-                obj.each(function(index) {
-                    if ($(this).is('li')) {
-                        $(this).css('opacity', '0');
-                    }
-                });
-                obj.appendTo($container);
-                obj.each(function(index) {
-                    if ($(this).is('li')) {
-                        $(this).animate({opacity:1}, 500);
-                    }
-                });
-                if ($('.designer_row').length < designersCount) {
-                    $('.gallery_postload').show();
-                } else {
-                    $('.pre-comment-separator').fadeIn();
-                    checkSeparator();
-                }
-                checkScrollers();
-            } else {
-                $container.html('<div style="text-align: center; margin-bottom: 50px;"><h2 class="largest-header" style="line-height: 2em;">УПС, НИЧЕГО НЕ НАШЛИ!</h2><p class="large-regular">Попробуйте еще раз, изменив запрос.</p></div>');
-            }
-        });
+        searchCallback($search, true);
         return false;
+    });
+
+    // Live Search
+    $(document).on('keyup', '#designer-name-search', function(e) {
+        clearTimeout($.data(this, 'timer'));
+        var $search = $(this);
+        if (($search.val().length < 2) || ($search.val() == $search.data('placeholder')) || (e.keyCode == 13)) {
+            return true;
+        }
+        $(this).data('timer', setTimeout(function() { searchCallback($search); }, 600));
+        return true;
     });
 
     $(document).on('focus', '#designer-name-search', function() {

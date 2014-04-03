@@ -6,7 +6,7 @@
                 <img src="<?=$this->avatar->show($designer->user->data(), false, true);?>" alt="Портрет пользователя" width="41" height="41">
             </a>
             <a href="/users/view/<?=$designer->user->id;?>">
-                <span><?=$this->user->getFormattedName($designer->user->first_name, $designer->user->last_name);?></span><br />
+                <span class="designer_name"><?=$this->user->getFormattedName($designer->user->first_name, $designer->user->last_name);?></span><br />
                 <span class="designer_plate"><?=count($designer->solutions);?> <?=$this->numInflector->formatString(count($designer->solutions), array('string' => array('first' => 'решение', 'second' => 'решения', 'third' => 'решений')))?></span>
             </a>
             <div class="clr"></div>
