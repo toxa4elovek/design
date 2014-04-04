@@ -180,7 +180,7 @@ $(document).ready(function() {
     $(document).on('submit', '#designers-search', function() {
         var $search = $('#designer-name-search');
         if (($search.val().length == 0) || ($search.val() == $search.data('placeholder'))) {
-            return false;
+            $search.val('');
         }
         searchCallback($search, true);
         return false;
@@ -189,11 +189,16 @@ $(document).ready(function() {
     // Live Search
     $(document).on('keyup', '#designer-name-search', function(e) {
         clearTimeout($.data(this, 'timer'));
-        var $search = $(this);
-        if (($search.val().length < 2) || ($search.val() == $search.data('placeholder')) || (e.keyCode == 13)) {
+        if (e.keyCode == 13) {
             return true;
         }
-        $(this).data('timer', setTimeout(function() { searchCallback($search); }, 600));
+        var forced = false;
+        var $search = $(this);
+        if (($search.val().length == 0) || ($search.val() == $search.data('placeholder'))) {
+            $search.val('');
+            forced = true;
+        }
+        $(this).data('timer', setTimeout(function() { searchCallback($search, forced); }, 600));
         return true;
     });
 
