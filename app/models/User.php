@@ -691,7 +691,6 @@ class User extends \app\models\AppModel {
                 ),
             ));
             if ($solutions[0]->averageRating > 3) continue;
-            echo true . PHP_EOL;
             $data = array('user' => $pitch->user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения питча. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
             SpamMailer::comeback($data);
             $count++;
