@@ -672,33 +672,31 @@ class User extends \app\models\AppModel {
     }
 
     public static function sendSpamToLostClients() {
-        $pitches = Pitch::all(array('conditions' => array(
-            'status' => 0,
-            'published' => 1,
-        )));
-        $ids = array();
-        foreach($pitches as $pitch) {
-            $ids[] = $pitch->user_id;
-        }
-        $userArray = array();
-        foreach($ids as $id) {
-            $user = User::first($id);
-            if (empty($user->email)) {
-                continue;
-            }
-            $start = time() - (DAY * 3);
-            if(strtotime($user->lastActionTime) < $start ) {
-                $userArray[] = $user;
-            }
-        }
-        foreach($userArray as $user) {
-            $pitch = Pitch::first(array('conditions' => array('user_id' => $user->id, 'status' => 0, 'published' => 1)));
-            $data = array('user' => $user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения питча. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
+        $pitches = Pitch::all(array(
+            'conditions' => array(
+                'ideas_count' => array('>' => 0),
+                'status' => 0,
+                'published' => 1,
+                'User.email' => array('!=' => ''),
+                'User.lastActionTime' => array('<' => date('Y-m-d H:i:s', time() - (DAY * 3))),
+            ),
+            'with' => array('User', 'Solution'),
+        ));
+        $count = 0;
+        foreach ($pitches as $pitch) {
+            $solutions = Solution::all(array(
+                'fields' => array('AVG(rating) as averageRating'),
+                'conditions' => array(
+                    'pitch_id' => $pitch->id,
+                ),
+            ));
+            if ($solutions[0]->averageRating > 3) continue;
+            $data = array('user' => $pitch->user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения питча. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
             SpamMailer::comeback($data);
+            $count++;
         }
-        return count($userArray);
+        return $count;
     }
-
 
     public static function sendChooseWinnerSpam() {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
