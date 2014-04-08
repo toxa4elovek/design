@@ -969,4 +969,150 @@ class Pitch extends \app\models\AppModel {
         }
         return false;
     }
+
+    public function pitchData($pitch) {
+        $pitchId = $pitch->id;
+        $award = $pitch->price;
+        $category = $pitch->category;
+        $money = 3;
+        if($award >= $category->normalAward) {
+            $money = 4;
+        }else if ($award >= $category->goodAward) {
+            $money = 5;
+        }
+        $begin = new \DateTime( $pitch->started );
+        if(strtotime($pitch->finishDate) > time()) {
+            $end = new \DateTime( date('Y-m-d', time() + DAY ) );
+        }else{
+            $end = new \DateTime( date('Y-m-d', strtotime($pitch->finishDate) ) );
+        }
+        $interval = \DateInterval::createFromDateString('1 day');
+        $period = new \DatePeriod($begin, $interval, $end);
+
+        $ratingArray = array();
+        $moneyArray = array();
+        $commentArray = array();
+        $dates = array();
+        $pitch->firstSolution = Solution::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('created' => 'asc')) );
+        if($pitch->firstSolution) {
+            $pitch->firstSolutionTime = strtotime($pitch->firstSolution->created);
+        }
+        foreach ( $period as $dt ) {
+            $time = strtotime($dt->format('Y-m-d'));
+            $plusDay = date('Y-m-d H:i:s', $time + DAY);
+            if(strtotime($pitch->created) > strtotime('2013-03-25 00-00-00')) {
+                $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
+            }else {
+                $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
+            }
+            $ids = array();
+            foreach($solutions as $solution) {
+                $ids[] = $solution->id;
+            }
+            $dates[] = $dt->format('d/m');
+            $moneyArray[] = $money;
+            $ratingArray[] = $this->calcRating($ids, $pitch, $plusDay, $dt);
+            $commentArray[] = $this->calcComments($ids, $pitch, $plusDay, $dt);
+        }
+
+        $ratingAverage = (empty($ratingArray)) ? 0 : round(array_sum($ratingArray) / count($ratingArray), 1);
+        $moneyAverage = (empty($moneyArray)) ? 0 : round(array_sum($moneyArray) / count($moneyArray), 1);
+        $commentAverage = (empty($commentArray)) ? 0 : round(array_sum($commentArray) / count($commentArray), 1);
+        $percentages = array(
+            'rating' => round(($ratingAverage / 15) * 100),
+            'money' => round(($moneyAverage / 15) * 100),
+            'comment' => round(($commentAverage / 15) * 100),
+        );
+        $total = 0;
+        foreach($percentages as $key => $value) {
+            $total += $value;
+        }
+        $percentages['empty'] = 100 - $total;
+        $avgArray = $this->calcAvg($ratingArray, $moneyArray, $commentArray);
+        $avgNum = (empty($avgArray)) ? 0 : round(array_sum($avgArray) / count($avgArray), 1);
+        $guaranteed = $pitch->guaranteed;
+
+        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'commentsNum');
+    }
+
+    private function calcAvg($first, $second, $third) {
+        $avgArray = array();
+        for($i=0;$i<count($first);$i++) {
+            $avg = round((($first[$i] + $second[$i] + $third[$i]) / 3), 1);
+            $avgArray[] = $avg;
+        }
+        return $avgArray;
+    }
+
+    public function calcRating($ids, $pitch, $plusDay, $dt) {
+        if(!empty($ids)) {
+            $ratingsNum = Ratingchange::all(array('conditions' => array('solution_id' => $ids ,'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+        }else {
+            $ratingsNum = array();
+        }
+        $rating = 0;
+        $percents = 0;
+        if(count($ids) > 0) {
+            $percents = (count($ratingsNum) / count($ids)) * 100;
+        }
+        if($percents > 100) {
+            $percents = 100;
+        }
+        switch($percents) {
+            case $percents < 50: $rating =1; break;
+            case $percents < 63: $rating =2; break;
+            case $percents < 79: $rating =3; break;
+            case $percents < 89: $rating =4; break;
+            case $percents <= 100: $rating =5; break;
+        }
+        if((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + DAY))) {
+            $rating = 3;
+        }elseif(($dt->format('d/m') == '12/03') && ($pitch->id == '100757')) {
+            $rating = 3;
+        }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
+            $rating = 2;
+        }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
+            $rating = 5;
+        }
+
+        return $rating;
+    }
+
+    public function calcComments($ids, $pitch, $plusDay, $dt) {
+        if(!empty($ids)){
+            if(strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
+                $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+            }else {
+                $commentsNum = Comment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+            }
+        }else {
+            $commentsNum = array();
+        }
+
+        $comments = 0;
+        $percents = 0;
+        if(count($ids) > 0) {
+            $percents = (count($commentsNum) / count($ids)) * 100;
+        }
+
+        if($percents > 100) {
+            $percents = 100;
+        }
+        switch($percents) {
+            case $percents < 50: $comments =1; break;
+            case $percents < 63: $comments =2; break;
+            case $percents < 79: $comments =3; break;
+            case $percents < 89: $comments =4; break;
+            case $percents <= 100: $comments =5; break;
+        }
+
+        if((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + DAY))) {
+            $comments = 3;
+        }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
+            $comments = 4;
+        }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
+            $comments = 5;
+        }
+        return $comments;
+    }
 }

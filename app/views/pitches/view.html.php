@@ -79,7 +79,8 @@
             </div>
             <?php endif;?>
         </div>
-        <?php if (count($solutions) < $solutionsCount): $initialSeparator = true; ?>
+        <?php $initialSeparator = false;
+        if (count($solutions) < $solutionsCount): $initialSeparator = true; ?>
         <div class="gallery_postload">
             <div class="separator"></div>
             <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>

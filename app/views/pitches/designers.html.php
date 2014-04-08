@@ -55,7 +55,8 @@
             </div>
             <?php endif; ?>
 
-            <?php if (count($designers) < $designersCount): $initialSeparator = true; ?>
+            <?php $initialSeparator = false;
+            if (count($designers) < $designersCount): $initialSeparator = true; ?>
             <div class="gallery_postload designers_tab">
                 <div class="separator"></div>
                 <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>

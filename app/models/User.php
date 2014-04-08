@@ -680,17 +680,13 @@ class User extends \app\models\AppModel {
                 'User.email' => array('!=' => ''),
                 'User.lastActionTime' => array('<' => date('Y-m-d H:i:s', time() - (DAY * 3))),
             ),
-            'with' => array('User', 'Solution'),
+            'with' => array('User', 'Category'),
         ));
         $count = 0;
         foreach ($pitches as $pitch) {
-            $solutions = Solution::all(array(
-                'fields' => array('AVG(rating) as averageRating'),
-                'conditions' => array(
-                    'pitch_id' => $pitch->id,
-                ),
-            ));
-            if ($solutions[0]->averageRating > 3) continue;
+            $pitchData = $pitch->pitchData();
+            $avgNum = $pitchData['avgNum'];
+            if ($avgNum > 3) continue;
             $data = array('user' => $pitch->user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения питча. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
             SpamMailer::comeback($data);
             $count++;
