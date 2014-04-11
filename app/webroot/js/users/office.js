@@ -1164,6 +1164,14 @@ $(document).on('blur', 'input[data-validate=numeric]', function() {
     }
 });
 
+$(document).on('blur', 'input[data-validate=wmr]', function() {
+    if (! /^R\d{12}$/.test($(this).val()) ) {
+        $(this).addClass('wrong-input');
+        required = true;
+        return true;
+    }
+});
+
 $('input[name=bik], input[name=coraccount], input[name=accountnum], input[name="inn"]').on('blur', function() {
     accountCheck();
 });

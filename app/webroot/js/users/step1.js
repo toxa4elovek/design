@@ -46,26 +46,34 @@ $(document).ready(function() {
         $('span', this).css('color', '#BABABA');
     });
     
-    $('input[data-validate]').focus(function() {
+    $(document).on('focus', 'input[data-validate]', function() {
         $(this).removeClass('wrong-input');
     });
-    
-    $('input[data-validate=fio]').blur(function() {
+
+    $(document).on('blur', 'input[data-validate=fio]', function() {
         if (!/^[А-ЯЁ]{1}[а-яё]+\s[А-ЯЁ]{1}[а-яё]+\s[А-ЯЁ]{1}[а-яё]+$/.test($(this).val())) {
             $(this).addClass('wrong-input');
             required = true;
             return true;
         }
     });
-    
-    $('input[data-validate=numeric]').blur(function() {
+
+    $(document).on('blur', 'input[data-validate=numeric]', function() {
         if (/[\D\s]/i.test($(this).val())) {
             $(this).addClass('wrong-input');
             required = true;
             return true;
         }
     });
-    
+
+    $(document).on('blur', 'input[data-validate=wmr]', function() {
+        if (! /^R\d{12}$/.test($(this).val()) ) {
+            $(this).addClass('wrong-input');
+            required = true;
+            return true;
+        }
+    });
+
     $('input[name=bik], input[name=coraccount], input[name=accountnum], input[name="inn"]').on('blur', function() {
         accountCheck();
     });
