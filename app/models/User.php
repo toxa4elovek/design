@@ -360,7 +360,7 @@ class User extends \app\models\AppModel {
             $users1 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    'isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0, 'email' => array('!=' => ''),
+                    'isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0, 'User.email' => array('!=' => ''),
                 )
             ));
             $result1 = $users1->data();
@@ -369,7 +369,7 @@ class User extends \app\models\AppModel {
         // All but pitches owners
         $users2 = self::all(array(
             'conditions' => array(
-                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'email' => array('!=' => ''),
+                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
             ),
             'with' => array('Pitch')
         ));
@@ -386,7 +386,7 @@ class User extends \app\models\AppModel {
         if(!empty($ids)) {
             $users2 = self::all(array(
                 'conditions' => array(
-                    'id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'email' => array('!=' => ''),
+                    'id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
                 ),
             ));
             $result2 = $users2->data();
@@ -398,7 +398,7 @@ class User extends \app\models\AppModel {
             $users3 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    'isCopy' => 1, 'email_newpitch' => 1, 'email' => array('!=' => ''),
+                    'isCopy' => 1, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
                 )
             ));
             $result3 = $users3->data();
@@ -586,7 +586,7 @@ class User extends \app\models\AppModel {
     }
 
     public static function sendSpamReferal() {
-        $users = self::all(array('conditions' => array('email' => array('!=' => ''))));
+        $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
         $sent = 0;
         foreach ($users as $user) {
             $data = array(
