@@ -67,7 +67,7 @@
     <?php echo $this->html->script('http://vk.com/js/api/openapi.js');?>
 </head>
 
-<body>
+<body class="<?=$this->_request->controller;?>_<?=$this->_request->action;?>">
 <a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;display:hidden;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
 <?php echo $this->content() ?>
 
