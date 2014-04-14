@@ -16,16 +16,16 @@ function mb_basename($file)
 
     <ul class="tabs-curve group">
         <li style="z-index: 3;">
-            <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'gallery'))?>
+            <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'))?>
         </li>
         <li class="active" style="z-index: 2;">
-            <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'brief'))?>
+            <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'))?>
         </li>
         <li style="z-index: 1;">
-            <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'designers'))?>
+            <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
         </li>
     </ul>
-
+<div class="gallery_container">
     <nav class="other_nav_gallery clear">
         <?php
         if((!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1)):?>
@@ -39,7 +39,7 @@ function mb_basename($file)
         <?php endif;?>
     </nav>
 
-            <div class="Center clr" style="margin-top: 20px;">
+            <div class="Center clr">
                 <div class="details">
                     <h2 class="blueheading">Название</h2>
                     <p class="regular"><?=$pitch->title?></p>
@@ -190,7 +190,7 @@ function mb_basename($file)
     <a href="#" style="margin-right:20px;" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"><img src="/img/plusb.png" alt=""></a>
     <a href="/pitches/printpitch/<?=$pitch->id?>" style="margin-right:20px;" class="print-link"><img src="/img/print_brief_button.png" alt=""></a>
     <a href="/pitches/details/<?= $prevpitch->id?>" style="margin-right:20px;" class="next-pitch-link"><img src="/img/next.png" alt=""></a>
-
+</div><!-- /gallery_container -->
 
     <div style="margin-top:15px;">
 
@@ -212,5 +212,5 @@ function mb_basename($file)
 
 <?=$this->view()->render(array('element' => 'popups/warning'))?>
 
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.hover.js', 'jquery-ui-1.8.17.custom.min.js', 'jcarousellite_1.0.1.js', 'jquery.timeago.js', 'jquery.scrollto.min.js', 'pitches/details.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.hover.js', 'jquery-ui-1.8.17.custom.min.js', 'jcarousellite_1.0.1.js', 'jquery.timeago.js', 'jquery.scrollto.min.js', 'pitches/gallery.js', 'pitches/details.js'), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/details', '/pitch_overview'), array('inline' => false))?>

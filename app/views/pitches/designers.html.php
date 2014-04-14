@@ -8,16 +8,16 @@
             <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             <ul class="tabs-curve group">
                 <li style="z-index: 3;">
-                    <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'gallery'))?>
+                    <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'))?>
                 </li>
                 <li style="z-index: 2;">
-                    <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'brief'))?>
+                    <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'))?>
                 </li>
                 <li class="active" style="z-index: 1;">
-                    <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle', 'data-page' => 'designers'))?>
+                    <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
                 </li>
             </ul>
-
+<div class="gallery_container">
             <nav class="other_nav_gallery clear">
                 <form id="designers-search">
                     <input type="text" id="designer-name-search" name="search" value="<?=$search?>" class="text" placeholder="Поиск по имени" data-placeholder="Поиск по имени">
@@ -66,7 +66,7 @@
                 <div style="clear: both;"></div>
             </div>
             <?php endif; ?>
-
+</div>
             <section class="white" style="margin: 0 -34px">
             <?=$this->view()->render(array('element' => 'pitchcommentform'), compact('pitch', 'initialSeparator', 'fromDesignersTab'))?>
             </section>
@@ -77,5 +77,5 @@
 
 <?=$this->view()->render(array('element' => 'popups/warning'))?>
 
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'pitches/designers.js', 'jquery.hover.js', 'jquery.raty.min.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'pitches/gallery.js', 'pitches/designers.js', 'jquery.hover.js', 'jquery.raty.min.js'), array('inline' => false))?>
 <?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>

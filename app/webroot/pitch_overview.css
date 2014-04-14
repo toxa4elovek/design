@@ -26,6 +26,7 @@
 
 .Center {
 	width: 600px;
+	padding-top: 20px;
 }
 
 .menu ul li a.selected {
