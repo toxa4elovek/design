@@ -212,5 +212,5 @@ function mb_basename($file)
 
 <?=$this->view()->render(array('element' => 'popups/warning'))?>
 
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.hover.js', 'jquery-ui-1.8.17.custom.min.js', 'jcarousellite_1.0.1.js', 'jquery.timeago.js', 'jquery.scrollto.min.js', 'pitches/gallery.js', 'pitches/details.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.hover.js', 'jquery-ui-1.8.17.custom.min.js', 'jcarousellite_1.0.1.js', 'jquery.timeago.js', 'jquery.scrollto.min.js', 'pitches/gallery.js'), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/details', '/pitch_overview'), array('inline' => false))?>
