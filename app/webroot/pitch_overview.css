@@ -21,6 +21,7 @@
 	color: #666;
 	font: 14px/20px "Arial", sans-serif;
 	margin: 0 0 20px;
+	word-break: break-word;
 }
 
 .Center {

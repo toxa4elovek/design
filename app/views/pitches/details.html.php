@@ -55,7 +55,7 @@ function mb_basename($file)
                     <?php endif;?>
 
                     <h2 class="blueheading">Описание питча</h2>
-                    <p class="regular" style="word-break: break-word;"><?=$this->brief->e($pitch->description)?></p>
+                    <p class="regular"><?=$this->brief->e($pitch->description)?></p>
 
                     <div class="separator" style="width:620px"></div>
 
