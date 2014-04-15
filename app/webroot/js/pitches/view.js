@@ -1,4 +1,4 @@
-$(document).ready(function(){
+;$(document).ready(function(){
 
     // @todo Remove to Init
     if (window.location.pathname.indexOf('details') == -1) { // Details Tab Init
@@ -26,12 +26,6 @@ $(document).ready(function(){
         '/img/like_hover.png'
     ]);
 
-  //Переключение активной страницы в Главном меню
-  $('.main_nav a').click(function(){
-	 $('.main_nav a').removeClass('active');
-	 $(this).addClass('active');
-  });
-
     VK.init({apiId: 2950889, onlyWidgets: true});
 
     // gplus
@@ -42,13 +36,6 @@ $(document).ready(function(){
         po.src = 'https://apis.google.com/js/plusone.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
     })();
-
-  //Hover на кнопке "full_pitch"
-  $('p.full_pitch a').hover(function(){
-	 $(this).parent().siblings('h2').children().css('color','#648fa4');
-  },function(){
-	 $(this).parent().siblings('h2').children().css('color','#666');
-  });
 
     //Цвет фона для текущих питчей
     // @todo Неясно для чего
@@ -164,37 +151,6 @@ $(document).ready(function(){
             loadExtraimages();
         });
     });
-
-  //Добавление оценки(звездочки)
-  $('.global_info ul li a').toggle(function(){
-	 $(this).css({backgroundPosition: '0 -9px'});
-  },function(){
-	 $(this).css({backgroundPosition: 'left top'});
-  });
-
-  //Большая карусель
-	$('#big_carousel').jCarouselLite({
-		auto: 5000,
-		speed: 1500,
-		btnPrev: "#prev",
-		btnNext: "#next"
-	});
-
-  //Маленькая карусель
-	$('#carousel_small').jCarouselLite({
-		auto: 5000,
-		speed: 1500,
-		btnPrev: "#prev2",
-		btnNext: "#next2",
-		visible: 1
-	});
-
-  // Появление блока с инфой, при наведении на элементы главной карусели
-  $('.main_carou ul li').hover(function(){
-  	$(this).html('<div class="info_block"></div>')
-  },function(){
-
-  });
 
    $(document).on('click', '.select-winner', function() {
        var num = $(this).data('num');
@@ -569,6 +525,7 @@ $(document).ready(function(){
             window.location = $(this).attr('href');
             return false;
         }
+        $('.solution-overlay-dummy').clone().appendTo('body').addClass('solution-overlay');
         $('#pitch-panel').hide();
         beforeScrollTop = $(window).scrollTop();
         $('.wrapper', 'body').first().addClass('wrapper-frozen');
@@ -588,13 +545,13 @@ $(document).ready(function(){
         fetchSolution(urlJSON);
         return false;
     });
-    $('.solution-overlay').on('click', function(e) {
+    $(document).on('click', '.solution-overlay', function(e) {
         e.stopPropagation();
         if (!$(e.target).is('.solution-overlay')) return;
         hideSolutionPopup();
         return false;
     });
-    $('.solution-title, .solution-popup-close').on('click', function(e) {
+    $('body, .solution-overlay').on('click', '.solution-title, .solution-popup-close', function(e) {
         e.preventDefault();
         hideSolutionPopup();
         return false;

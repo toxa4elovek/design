@@ -295,7 +295,7 @@ var gallerySwitch = (function() {
             activateTab($('a[href="' + window.location.pathname + '"]'));
             var $container = $('.gallery_container');
             $container.html('<img id="search-ajax-loader" src="/img/blog-ajax-loader.gif" style="margin: 60px 0 100px 400px;">');
-            $.get(url, function(response) {
+            $.get(url, {fromTab: true}, function(response) {
                 var $replacement = $(response).find('.gallery_container');
                 $container.fadeOut(200, function() { $(this).html($replacement); });
                 $container.fadeIn(200, function() { gallerySwitch.tabInit(); });
@@ -315,9 +315,13 @@ var gallerySwitch = (function() {
                         step: 1
                     });
                 });
+                window.onscroll = function() {};
+                $(window).off('scroll');
             }
             if (window.location.pathname.indexOf('designers') != -1) { // Designers Tab Init
                 checkScrollers();
+                window.onscroll = function() {};
+                $(window).off('scroll');
             }
         }
     }

@@ -1056,7 +1056,7 @@ class PitchesController extends \app\controllers\AppController {
                 $selectedsolution = true;
             }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
-            if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
 			    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions');
             }else {
                 if (isset($this->request->query['count'])) {

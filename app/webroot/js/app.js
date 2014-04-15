@@ -1201,7 +1201,7 @@ function hideSolutionPopup() {
         $(window).scrollTop(beforeScrollTop);
         $('#pitch-panel').show();
         $('.wrapper', 'body').first().removeClass('wrapper-frozen');
-        $('.solution-overlay').hide();
+        $('.solution-overlay').hide().remove();
     }
 }
 
