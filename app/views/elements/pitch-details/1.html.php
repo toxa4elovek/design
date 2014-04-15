@@ -10,7 +10,7 @@ $types = array(
     '7' => 'Вэб-кнопка'
 );
 ?>
-<script type="text/javascript">var logoProperties = <?php echo json_encode($details["logo-properties"])?>;</script>
+<input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["logo-properties"])); ?>">
 
 <?php if(!empty($details['logoType'])):?>
 <h2 class="blueheading">Предпочтительный вид логотипа</h2>

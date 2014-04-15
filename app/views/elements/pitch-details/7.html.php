@@ -2,7 +2,7 @@
 $details = unserialize($pitch->specifics);
 $subValues = array('Имя / название', 'Адрес сайта', 'Слоган / лозунг');
 ?>
-<script type="text/javascript">var logoProperties = <?php echo json_encode($details["audience"])?>;</script>
+<input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["audience"])); ?>">
 <h2 class="blueheading">Вид копирайтинга</h2>
 <?php if(isset($details['first-option'])):?>
 <p class="regular"><?=$subValues[0]?></p>
@@ -55,7 +55,7 @@ if(isset($details['third-option'])):?>
 <h2 class="blueheading">Есть что добавить?</h2>
 <p class="regular"><?=$this->brief->e($details['copy-extra'])?></p>
 <?php endif;?>
-    
+
 <?php if(!empty($details['copy-ref'])):?>
 <h2 class="blueheading">Референсы</h2>
 <p class="regular"><?=$this->brief->e($details['copy-ref'])?></p>

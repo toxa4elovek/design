@@ -6,7 +6,7 @@ else:
     $subValues = array('главная страница', 'главная и 1 внутренняя', 'главная и 2 внутренних', '= /> 4 страниц');
 endif;
 ?>
-<script type="text/javascript">var logoProperties = <?php echo json_encode($details["audience"])?>;</script>
+<input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["audience"])); ?>">
 <?php if((!empty($subValues[$details['site-sub']])) && (strtotime($pitch->started) < strtotime('2012-11-19 12:00:00'))):?>
 <h2 class="blueheading">Сколько шаблонов страниц необходимо создать для этого сайта</h2>
 <p class="regular"><?=$subValues[$details['site-sub']]?></p>

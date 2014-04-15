@@ -2,7 +2,7 @@
 $details = unserialize($pitch->specifics);
 $subValues = array('Этикетка и контрэтикетка', 'Оформление коробки, развёртки, и прочее');
 ?>
-<script type="text/javascript">var logoProperties = <?php echo json_encode($details["audience"])?>;</script>
+<input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["audience"])); ?>">
 
 <?php if(isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько макетов необходимо создать?</h2>
@@ -46,7 +46,7 @@ $subValues = array('Этикетка и контрэтикетка', 'Оформ
     </ul><!-- .logo-properties -->
 </div>
 
-    
+
 <?php if(!empty($details['qualities'])):?>
 <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
 <p class="regular"><?=$this->brief->e($details['qualities'])?></p>

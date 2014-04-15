@@ -304,8 +304,9 @@ var gallerySwitch = (function() {
         tabInit: function() {
             if (window.location.pathname.indexOf('details') != -1) { // Details Tab Init
                 $('.time').timeago();
+                var logoProperties = $.parseJSON(decodeURIComponent($('#logo_properties').data('props')));
                 $( ".slider" ).each(function(index, object) {
-                    var value = logoProperties[index];
+                    var value = parseInt(logoProperties[index]);
                     $(object).slider({
                         disabled: true,
                         value: value,
