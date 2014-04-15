@@ -15,47 +15,6 @@ $(document).ready(function() {
     
     // details.js start
     /* ==============*/
-    $( ".slider" ).each(function(index, object) {
-        var value = logoProperties[index];
-        $(object).slider({
-            disabled: true,
-            value: value,
-            min: 1,
-            max: 9,
-            step: 1
-        });
-    });
-
-    $('.time').timeago();
-
-    $('.print-link').on('mouseover', function() {
-        $('img', this).attr('src', '/img/print_brief_button2.png');
-    })
-    $('.print-link').on('mouseout', function() {
-        $('img', this).attr('src', '/img/print_brief_button.png');
-    })
-
-    $('.fav-plus').on('mouseover', function() {
-        $('img', this).attr('src', '/img/plusb_2.png');
-    })
-    $('.fav-plus').on('mouseout', function() {
-        $('img', this).attr('src', '/img/plusb.png');
-    })
-
-    $('.all-pitches-link').on('mouseover', function() {
-        $('img', this).attr('src', '/img/all_pitches_2.png');
-    })
-    $('.all-pitches-link').on('mouseout', function() {
-        $('img', this).attr('src', '/img/all_pitches.png');
-    })
-
-    $('.next-pitch-link').on('mouseover', function() {
-        $('img', this).attr('src', '/img/next_2.png');
-    })
-    $('.next-pitch-link').on('mouseout', function() {
-        $('img', this).attr('src', '/img/next.png');
-    })
-
     $('#client-only-toggle').change(function() {
         if($(this).attr('checked')) {
             $.each($('section[data-type="designer"]', '.messages_gallery'), function(index, object) {
@@ -90,14 +49,6 @@ $(document).ready(function() {
     //vk like
     VK.init({apiId: 2950889, onlyWidgets: true});
     VK.Widgets.Like("vk_like", {type: "mini"});
-
-    function preload(arrayOfImages) {
-        $(arrayOfImages).each(function(){
-            $('<img/>')[0].src = this;
-            // Alternatively you could use:
-            // (new Image()).src = this;
-        });
-    }
 
     fetchPitchComments();
     enableToolbar();
@@ -352,7 +303,17 @@ var gallerySwitch = (function() {
         },
         tabInit: function() {
             if (window.location.pathname.indexOf('details') != -1) { // Details Tab Init
-
+                $('.time').timeago();
+                $( ".slider" ).each(function(index, object) {
+                    var value = logoProperties[index];
+                    $(object).slider({
+                        disabled: true,
+                        value: value,
+                        min: 1,
+                        max: 9,
+                        step: 1
+                    });
+                });
             }
             if (window.location.pathname.indexOf('designers') != -1) { // Designers Tab Init
                 checkScrollers();

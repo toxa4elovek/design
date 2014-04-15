@@ -12,8 +12,6 @@ function mb_basename($file)
         <div class="middle_inner_gallery" style="padding-top:25px">
             <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
 
-<div class="details-cont">
-
     <ul class="tabs-curve group">
         <li style="z-index: 3;">
             <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'))?>
@@ -186,10 +184,10 @@ function mb_basename($file)
 
     <div class="separator" style="width: 620px; margin-bottom: 15px; margin-top: 30px;"></div>
 
-    <a href="/pitches" style="margin-right:20px;" class="all-pitches-link"><img src="/img/all_pitches.png" alt=""></a>
-    <a href="#" style="margin-right:20px;" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"><img src="/img/plusb.png" alt=""></a>
-    <a href="/pitches/printpitch/<?=$pitch->id?>" style="margin-right:20px;" class="print-link"><img src="/img/print_brief_button.png" alt=""></a>
-    <a href="/pitches/details/<?= $prevpitch->id?>" style="margin-right:20px;" class="next-pitch-link"><img src="/img/next.png" alt=""></a>
+    <a href="/pitches" class="all-pitches-link"></a>
+    <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
+    <a href="/pitches/printpitch/<?=$pitch->id?>" class="print-link"></a>
+    <a href="/pitches/details/<?= $prevpitch->id?>" class="next-pitch-link"></a>
 </div><!-- /gallery_container -->
 
     <div style="margin-top:15px;">
@@ -198,8 +196,6 @@ function mb_basename($file)
         <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch))?>
     </section>
 </div>
-
-        </div><!-- /solution -->
 
     </div>
 <div id="under_middle_inner"></div><!-- /under_middle_inner -->
@@ -212,5 +208,5 @@ function mb_basename($file)
 
 <?=$this->view()->render(array('element' => 'popups/warning'))?>
 
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.hover.js', 'jquery-ui-1.8.17.custom.min.js', 'jcarousellite_1.0.1.js', 'jquery.timeago.js', 'jquery.scrollto.min.js', 'pitches/gallery.js'), array('inline' => false))?>
-<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/details', '/pitch_overview'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.17.custom.min.js', 'jquery.timeago.js', 'pitches/gallery.js'), array('inline' => false))?>
+<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview'), array('inline' => false))?>

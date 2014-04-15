@@ -1,6 +1,9 @@
 $(document).ready(function(){
 
-    loadExtraimages();
+    // @todo Remove to Init
+    if (window.location.pathname.indexOf('details') == -1) { // Details Tab Init
+        loadExtraimages();
+    }
 
     function preload(arrayOfImages) {
         $(arrayOfImages).each(function(){
@@ -48,7 +51,8 @@ $(document).ready(function(){
   });
 
     //Цвет фона для текущих питчей
-    $('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
+    // @todo Неясно для чего
+    //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 
     $(document).on('mouseenter', '.ratingchange', function(){
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
