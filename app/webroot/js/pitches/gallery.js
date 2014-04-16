@@ -292,6 +292,7 @@ var gallerySwitch = (function() {
     var initGallery = function() {
         // Refresh Comments
         fetchPitchComments();
+        // Pancake
         renderFloatingBlock();
         var floatingBlockHeight = $('#floatingblock').height()
         var offset = $('#floatingblock').offset();
@@ -315,14 +316,14 @@ var gallerySwitch = (function() {
                 $('#dinamic').fadeIn(150);
             }
         });
-        
+        // Plot
         $( "#scroller" ).draggable({ drag: function() {
             var x = $('#scroller').css('left');
             x = parseInt(x.substring(0, x.length - 2));
             var mod = ($('.kineticjs-content', '#container').width() - 476) / 350;
             $('.kineticjs-content', '#container').css('right', Math.round(x * mod) + 'px');
         }, axis: "x", containment: "parent"});
-    }
+    };
     // Details Tab Init
     var initDetails = function() {
         $('.time').timeago();
@@ -339,11 +340,11 @@ var gallerySwitch = (function() {
         });
         // Refresh Comments
         fetchPitchComments();
-    }
+    };
     // Designers Tab Init
     var initDesigners = function() {
         checkScrollers();
-    }
+    };
     return {
         historyChange: function() {
             var url = window.location.pathname;
@@ -353,8 +354,8 @@ var gallerySwitch = (function() {
             $container.html('<img id="search-ajax-loader" src="/img/blog-ajax-loader.gif" style="margin: 60px 0 100px 400px;">');
             $.get(url, {fromTab: true}, function(response) {
                 var $replacement = $(response).find('.gallery_container');
-                $container.fadeOut(200, function() { $(this).html($replacement); });
-                $container.fadeIn(200, function() { gallerySwitch.tabInit(); });
+                $container.hide().html($replacement).fadeIn();
+                gallerySwitch.tabInit();
             });
         },
         tabInit: function() {

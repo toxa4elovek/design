@@ -525,13 +525,13 @@
         hideSolutionPopup();
         return false;
     });
-    $('.solution-prev-area, .solution-next-area').on('mouseover', function(e) {
+    $('body, .solution-overlay').on('mouseover', '.solution-prev-area, .solution-next-area', function(e) {
         $(this).prev().addClass('active');
     });
-    $('.solution-prev-area, .solution-next-area').on('mouseout', function(e) {
+    $('body, .solution-overlay').on('mouseout', '.solution-prev-area, .solution-next-area', function(e) {
         $(this).prev().removeClass('active');
     });
-    $('.solution-prev-area, .solution-next-area').on('click', function(e) {
+    $('body, .solution-overlay').on('click', '.solution-prev-area, .solution-next-area', function(e) {
         e.preventDefault();
         e.stopPropagation();
         window.history.pushState('object or string', 'Title', this.href); // @todo Check params
@@ -595,7 +595,7 @@
                 </div>');
             }
 
-            var firstImage = $('.solution-image').first().parent();
+            var firstImage = $('.solution-image', '.solution-overlay').first().parent();
             if (currentUserId == result.pitch.user_id) { // isClient
                 var ratingWidget = $('<div class="separator-rating"> \
                     <div class="separator-left"></div> \
