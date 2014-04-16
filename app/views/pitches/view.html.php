@@ -3,103 +3,101 @@
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
 
 	<div class="middle">
-	<div class="middle_inner_gallery" style="padding-top:25px">
-    <?php if($this->user->isPitchOwner($pitch->user_id)):?>
-    <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
-        <div class="bubble">
-            <span>Возврат денег недоступен:</span><br>
-            <span class="lowReason"></span><br><br>
-            <a href="/answers/view/71">Как это исправить?</a>
-        <div id="bubble-close"></div>
-        </div>
-        <div style="width:150px;height:190px;text-align;center">
-            <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
-                <canvas id="canFloat" height="132" width="132" style="">
-                </canvas></div>
-            <div style="background: url('/img/krug-small.png') no-repeat scroll 32px 30px transparent;height: 82px; width: 87px; position: relative; top: -132px; bottom: 0px; z-index: 15; padding-top: 50px; padding-left: 45px;">
-                <h2 id="avgPointsFloat" style="font-size:28px;color:#666666;text-shadow: -1px 0 0 #FFFFFF;width:40px;text-align:center"></h2>
-                <h2 id="avgPointsStringFloat" style="color: rgb(102, 102, 102); text-align: center; text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 0px; margin-top: 4px; font-size: 9px; width: 44px;">БАЛЛА</h2>
+	   <div class="middle_inner_gallery" style="padding-top:25px">
+            <?php if($this->user->isPitchOwner($pitch->user_id)):?>
+            <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
+                <div class="bubble">
+                    <span>Возврат денег недоступен:</span><br>
+                    <span class="lowReason"></span><br><br>
+                    <a href="/answers/view/71">Как это исправить?</a>
+                <div id="bubble-close"></div>
+                </div>
+                <div style="width:150px;height:190px;text-align;center">
+                    <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
+                        <canvas id="canFloat" height="132" width="132" style="">
+                        </canvas></div>
+                    <div style="background: url('/img/krug-small.png') no-repeat scroll 32px 30px transparent;height: 82px; width: 87px; position: relative; top: -132px; bottom: 0px; z-index: 15; padding-top: 50px; padding-left: 45px;">
+                        <h2 id="avgPointsFloat" style="font-size:28px;color:#666666;text-shadow: -1px 0 0 #FFFFFF;width:40px;text-align:center"></h2>
+                        <h2 id="avgPointsStringFloat" style="color: rgb(102, 102, 102); text-align: center; text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 0px; margin-top: 4px; font-size: 9px; width: 44px;">БАЛЛА</h2>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <?php endif?>
+            <?php endif?>
 
-    <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-    <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
-                <ul class="tabs-curve group">
-                    <li class="active" style="z-index: 3;">
-                        <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'))?>
-                    </li>
-                    <li style="z-index: 2;">
-                        <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'))?>
-                    </li>
-                    <li style="z-index: 1;">
-                        <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
-                    </li>
-                </ul>
-
-    <div class="gallery_container">
-        <nav class="other_nav_gallery clear">
-            <p class="supplement4" style="float:left;height:30px;padding-top:20px;font-weight: bold; color:#b2afaf;">
-                <span style="display: inline-block; margin-top: 4px; vertical-align: top;">СОРТИРОВАТЬ ПО:</span>
-                <a class="sort-by-rating<?php if ($sort == 'rating'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=rating"><span title="сортировать по рейтингу"></span></a>
-                <a class="sort-by-likes<?php if ($sort == 'likes'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=likes"><span title="сортировать по лайкам"></span></a>
-                <a class="sort-by-created<?php if ($sort == 'created'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=created"><span title="сортировать по дате создания"></span></a>
-            </p>
-
-            <?php
-            if(!$this->user->isPitchOwner($pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
-                <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;margin-top: -45px; width:155px">предложить решение</a>
-                <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
-                <!-- <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/> -->
-                <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>
-                <!-- <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/> -->
-                <?php elseif($pitch->status == 2):?>
-                <!-- <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/> -->
-            <?php endif;?>
-
-        </nav>
-
-    <div class="portfolio_gallery">
-    <div class="pht"></div>
-            <?php
-            $mySolutionList = array();
-            $mySolutionNumList = array();
-            if((!empty($solutions) > 0) && ($pitch->published == 1)): ?>
-            <ul class="list_portfolio main_portfolio">
-                <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount'))?>
+            <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
+            <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
+            <ul class="tabs-curve group">
+                <li class="active" style="z-index: 3;">
+                    <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'))?>
+                </li>
+                <li style="z-index: 2;">
+                    <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'))?>
+                </li>
+                <li style="z-index: 1;">
+                    <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
+                </li>
             </ul>
-            <?php else:?>
-            <div class="bigfont">
-                <h2 class="title">Ещё никто не выложил свои идеи.</h2>
-                <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
-                <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
-                <h2 class="title">и стань первым!</h2>
-                <?php endif?>
-            </div>
-            <?php endif;?>
-        </div>
-        <?php $initialSeparator = false;
-        if (count($solutions) < $solutionsCount): $initialSeparator = true; ?>
-        <div class="gallery_postload">
-            <div class="separator"></div>
-            <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>
-            <a href="#" class="button_more next_part">Показать ещё <?php echo $limitSolutions; ?></a>
-            <a href="#" class="button_more rest_part">Показать все</a>
-            <div class="separator"></div>
-            <div style="clear: both;"></div>
-        </div>
-        <?php endif; ?>
-        </section>
-        <!-- Solution Popup -->
-        <?=$this->view()->render(array('element' => 'popups/solution'), array('pitch' => $pitch))?>
-    </div><!-- /gallery_container -->
-        <section class="white" style="margin: 0 -34px">
-            <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
-        </section>
+
+            <div class="gallery_container">
+                <nav class="other_nav_gallery clear">
+                    <p class="supplement4" style="float:left;height:30px;padding-top:20px;font-weight: bold; color:#b2afaf;">
+                        <span style="display: inline-block; margin-top: 4px; vertical-align: top;">СОРТИРОВАТЬ ПО:</span>
+                        <a class="sort-by-rating<?php if ($sort == 'rating'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=rating"><span title="сортировать по рейтингу"></span></a>
+                        <a class="sort-by-likes<?php if ($sort == 'likes'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=likes"><span title="сортировать по лайкам"></span></a>
+                        <a class="sort-by-created<?php if ($sort == 'created'):?> active<?php endif;?>" href="/pitches/view/<?=$pitch->id?>?sorting=created"><span title="сортировать по дате создания"></span></a>
+                    </p>
+
+                    <?php
+                    if(!$this->user->isPitchOwner($pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
+                        <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px;margin-top: -45px; width:155px">предложить решение</a>
+                        <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
+                        <!-- <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/> -->
+                        <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>
+                        <!-- <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/> -->
+                        <?php elseif($pitch->status == 2):?>
+                        <!-- <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/> -->
+                    <?php endif;?>
+
+                </nav>
+
+                <div class="portfolio_gallery">
+                    <div class="pht"></div>
+                    <?php
+                    $mySolutionList = array();
+                    $mySolutionNumList = array();
+                    if((!empty($solutions) > 0) && ($pitch->published == 1)): ?>
+                    <ul class="list_portfolio main_portfolio">
+                        <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount'))?>
+                    </ul>
+                    <?php else:?>
+                    <div class="bigfont">
+                        <h2 class="title">Ещё никто не выложил свои идеи.</h2>
+                        <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
+                        <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
+                        <h2 class="title">и стань первым!</h2>
+                        <?php endif?>
+                    </div>
+                    <?php endif;?>
+                </div>
+                <?php $initialSeparator = false;
+                if (count($solutions) < $solutionsCount): $initialSeparator = true; ?>
+                <div class="gallery_postload">
+                    <div class="separator"></div>
+                    <div class="gallery_postload_loader"><img alt="" src="/img/blog-ajax-loader.gif"></div>
+                    <a href="#" class="button_more next_part">Показать ещё <?php echo $limitSolutions; ?></a>
+                    <a href="#" class="button_more rest_part">Показать все</a>
+                    <div class="separator"></div>
+                    <div style="clear: both;"></div>
+                </div>
+                <?php endif; ?>
+
+                <section class="white" style="margin: 0 -34px">
+                    <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
+                </section>
+
                 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
-    <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
-    <div style="display:none;" id="floatingblock" class="floatingblock">
+                <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
+                <div style="display:none;" id="floatingblock" class="floatingblock">
                     <table style="width:500px;float:left">
                     <tr style="width:500px;float:left; height:28px">
                         <td><img style="margin-left:19px;margin-top:9px" src="/img/top.png"/></td>
@@ -151,16 +149,11 @@
                     </div>
                 </div>
                 <?php endif?>
-
-                </div><!-- /solution -->
-                <div id="under_middle_inner"></div><!-- /under_middle_inner -->
-            </div>
-
+                <!-- Solution Popup Dummy --><?=$this->view()->render(array('element' => 'popups/solution'), array('pitch' => $pitch))?>
+            </div><!-- /gallery_container -->
         </div><!-- /middle_inner -->
-
-
+        <div id="under_middle_inner"></div><!-- /under_middle_inner -->
 	</div><!-- /middle -->
-
 </div><!-- .wrapper -->
 
 <?=$this->view()->render(array('element' => 'popups/warning'))?>
@@ -169,6 +162,6 @@
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
 <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php else:?>
-    <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'pitches/view.js?' . mt_rand(100, 999), 'jquery.hover.js', 'kinetic-v4.5.4.min.js'), array('inline' => false))?>
+    <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php endif?>
 <?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>
