@@ -4,7 +4,6 @@
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
-            <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
             <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             <ul class="tabs-curve group">
                 <li style="z-index: 3;">

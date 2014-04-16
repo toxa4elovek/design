@@ -288,12 +288,42 @@ var gallerySwitch = (function() {
         $('.tabs-curve').find('li').removeClass('active');
         $el.parent().addClass('active');
     };
-    // Init Gallery Tab
+    // Gallery Tab Init
     var initGallery = function() {
         // Refresh Comments
         fetchPitchComments();
+        renderFloatingBlock();
+        var floatingBlockHeight = $('#floatingblock').height()
+        var offset = $('#floatingblock').offset();
+        $(window).scroll(function() {
+            var currentPosition = $(window).scrollTop() + floatingBlockHeight;
+            var obj = $('#floatingblock');
+            if (currentPosition < offset.top) {
+                //console.log(currentPosition + ' vs ' + offset.top);
+                //$('#floatingblock').addClass('fixed');
+            } else {
+                //console.log('removing fixed' + currentPosition);
+                obj.removeClass('fixed');
+            }
+            var height = $(window).height();
+            var scrollTop = $(window).scrollTop();
+            var pos = obj.position();
+            if (height + scrollTop > pos.top) {
+                $('#dinamic').fadeOut(150);
+            }
+            else {
+                $('#dinamic').fadeIn(150);
+            }
+        });
+        
+        $( "#scroller" ).draggable({ drag: function() {
+            var x = $('#scroller').css('left');
+            x = parseInt(x.substring(0, x.length - 2));
+            var mod = ($('.kineticjs-content', '#container').width() - 476) / 350;
+            $('.kineticjs-content', '#container').css('right', Math.round(x * mod) + 'px');
+        }, axis: "x", containment: "parent"});
     }
-    // Init Details Tab
+    // Details Tab Init
     var initDetails = function() {
         $('.time').timeago();
         var logoProperties = $.parseJSON(decodeURIComponent($('#logo_properties').data('props')));
@@ -307,21 +337,18 @@ var gallerySwitch = (function() {
                 step: 1
             });
         });
-        window.onscroll = function() {};
-        $(window).off('scroll');
         // Refresh Comments
         fetchPitchComments();
     }
-    // Init Designers Tab
+    // Designers Tab Init
     var initDesigners = function() {
         checkScrollers();
-        window.onscroll = function() {};
-        $(window).off('scroll');
     }
     return {
         historyChange: function() {
             var url = window.location.pathname;
             activateTab($('a[href="' + window.location.pathname + '"]'));
+            $(window).off('scroll');
             var $container = $('.gallery_container');
             $container.html('<img id="search-ajax-loader" src="/img/blog-ajax-loader.gif" style="margin: 60px 0 100px 400px;">');
             $.get(url, {fromTab: true}, function(response) {
