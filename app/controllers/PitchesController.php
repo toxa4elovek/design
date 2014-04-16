@@ -1252,7 +1252,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = '';
             //$comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
 
-            if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            if(is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])){
                 return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search');
             }else {
                 if (isset($this->request->query['count']) || isset($this->request->query['search'])) {

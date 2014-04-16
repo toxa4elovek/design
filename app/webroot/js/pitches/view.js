@@ -1,21 +1,13 @@
 ;$(document).ready(function(){
 
-    // @todo Remove to Init
-    if (window.location.pathname.indexOf('details') == -1) { // Details Tab Init
-        loadExtraimages();
-    }
-
-    function preload(arrayOfImages) {
+    // Preload Images
+    (function(arrayOfImages) {
         $(arrayOfImages).each(function(){
             $('<img/>')[0].src = this;
             // Alternatively you could use:
             // (new Image()).src = this;
         });
-    }
-
-    // Usage:
-
-    preload([
+    })([
         '/img/0-rating.png',
         '/img/1-rating.png',
         '/img/2-rating.png',
@@ -36,10 +28,6 @@
         po.src = 'https://apis.google.com/js/plusone.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
     })();
-
-    //Цвет фона для текущих питчей
-    // @todo Неясно для чего
-    //$('#current_pitch ul li:odd').css({backgroundColor: '#2f313a'});
 
     $(document).on('mouseenter', '.ratingchange', function(){
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
@@ -117,7 +105,6 @@
                 $('.pre-comment-separator').fadeIn();
                 checkSeparator();
             }
-            loadExtraimages();
         });
     });
     $(document).on('click', '.rest_part', function(e) {
@@ -148,7 +135,6 @@
             $('.gallery_postload').hide();
             $('.pre-comment-separator').fadeIn();
             checkSeparator();
-            loadExtraimages();
         });
     });
 
@@ -275,11 +261,6 @@
         return string;
     }
 
-    if (/view/.test(window.location.pathname)) {
-        fetchPitchComments();
-    }
-    enableToolbar();
-
     // Keys navigation
     $(document).keydown(function(e) {
         if ($('.solution-overlay').is(':hidden')) {
@@ -326,18 +307,6 @@
         });
         return false;
     });
-
-    //iframes();
-
-    function iframes() {
-        if ($('iframe').length < 2) {
-            window.setTimeout(iframes, 200);
-        }else {
-            $('iframe').css('width', '40px').css('height', '14px');
-            window.setTimeout(iframes, 200);
-        }
-    }
-
 
     $(document).on('mouseenter', '.like-hoverbox', function(){
         $('img:first', $(this)).attr('src', '/img/like_hover.png');
@@ -897,14 +866,4 @@ function checkSeparator() {
     if ($('#newComment').length == 0) {
         $('.separator', '.isField.pitch-comments').first().show();
     }
-}
-
-//грузим экстра картинки...
-function loadExtraimages() {
-    $.each(extraimages, function(index, object) {
-        var block = $('a[data-solutionid=' + index +']');
-        for(i=0;i < object.length; i++) {
-            block.append('<img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;display:none;" src="' + object[i] + '" alt="">');
-        }
-    });
 }

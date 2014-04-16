@@ -1,5 +1,4 @@
 <input type="hidden" class="solutions-count" value="<?=$solutionsCount?>">
-<script>extraimages = {}</script>
 <?php
 foreach($solutions as $solution):
     if($this->user->isSolutionAuthor($solution->user_id)) {
@@ -51,50 +50,30 @@ foreach($solutions as $solution):
                     $visible = true;?>
                 <div style="z-index: 2; position: absolute; color: rgb(102, 102, 102); font-weight: bold; font-size: 14px; padding-top: 7px; height: 16px; top: -34px; text-align: right; width: 18px; padding-right: 21px; background: url(/img/multi-icon.png) no-repeat scroll 22px 5px transparent; left: 169px;"><?=$picCounter2?></div>
                 <?php endif?>
-            <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
+                <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                 <a style="<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                    <?php
-                    if(!isset($solution->images['solution_galleryLargeSize'])):
+                    <?php if(!isset($solution->images['solution_galleryLargeSize'])):
                         $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
                         $picCounter = 0;
-                        $extra = array();
                         if(is_array($solution->images['solution_galleryLargeSize'])):
-                            foreach($solution->images['solution_galleryLargeSize'] as $image):
-                                if($picCounter == 0):?>
-                <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
-                                <?php else:
-                                    $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
-                                endif;
-                                $picCounter++;
+                            foreach($solution->images['solution_galleryLargeSize'] as $image):?>
+                                <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php echo ($picCounter > 0) ? 'display:none;' : 'opacity:1;'; ?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                                <?php $picCounter++;
                             endforeach;
                         endif;
-                    endif;
-                     ?>
+                    endif; ?>
                         <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                     <?php else:?>
-
                         <?php
                         $picCounter = 0;
-                        $extra = array();
-                        foreach($solution->images['solution_galleryLargeSize'] as $image):
-                            if($picCounter == 0):?>
-                            <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
-                        <?php
-                            else:
-                                $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
-                            endif;
-
-                        $picCounter++;
+                        foreach($solution->images['solution_galleryLargeSize'] as $image):?>
+                            <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php echo ($picCounter > 0) ? 'display:none;' : 'opacity:1;'; ?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                        <?php $picCounter++;
                         endforeach;?>
                     <?php endif?>
 
                 </a><?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?></div><?php endif?>
-
-                <?php if(isset($solution->images['solution_galleryLargeSize'][0])):?>
-                <script type="text/javascript">
-                    extraimages[<?= $solution->id?>] = <?php echo json_encode($extra)?>;</script>
-                <?php endif?>
             <?php endif?>
         <?php else:?>
             <!-- solo branch -->
@@ -122,36 +101,23 @@ foreach($solutions as $solution):
                         <?php endif?>
                         <?php
 
-
                         if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                     <a style="<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
-
 
                         <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
                         <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                         <?php else:?>
                         <?php
                         $picCounter = 0;
-                        $extra = array();
-                        foreach($solution->images['solution_galleryLargeSize'] as $image):
-                            if($picCounter == 0):
-                            ?>
-                            <img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
-                            <?php
-                            else:
-                                $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
-                            endif;
-                            $picCounter++;
+                        foreach($solution->images['solution_galleryLargeSize'] as $image):?>
+                            <img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php echo ($picCounter > 0) ? 'display:none;' : 'opacity:1;'; ?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                            <?php $picCounter++;
                         endforeach;?>
 
                         <?php endif?>
 
-
                     </a><?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?></div><?php endif?>
-                        <?php if(isset($solution->images['solution_galleryLargeSize'][0])):?>
-                        <script type="text/javascript">
-                            extraimages[<?= $solution->id?>] = <?php echo json_encode($extra)?>;</script>
-                        <?php endif?>
+
                     <?php else:?>
                     <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="background-image: url(/img/copy-inv.png);width:179px;height:136px;background-color:#efefef;display:block;"></a>
                     <?php endif?>

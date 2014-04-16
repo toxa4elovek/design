@@ -12,6 +12,9 @@ $(document).ready(function() {
     $(window).on('popstate', function() {
         gallerySwitch.historyChange();
     });
+
+    gallerySwitch.tabInit();
+    enableToolbar();
     
     // details.js start
     /* ==============*/
@@ -50,12 +53,9 @@ $(document).ready(function() {
     VK.init({apiId: 2950889, onlyWidgets: true});
     VK.Widgets.Like("vk_like", {type: "mini"});
 
-    fetchPitchComments();
-    enableToolbar();
     // details.js end
     /* ==============*/
     // designers.js start
-    gallerySwitch.tabInit();
     
     // Scrolling
     $(document).on('click', '.scroll_right', function() {
@@ -127,7 +127,6 @@ $(document).ready(function() {
                 checkSeparator();
             }
             checkScrollers();
-            loadExtraimages();
         });
     });
     $(document).on('click', '.rest_part_design', function(e) {
@@ -165,7 +164,6 @@ $(document).ready(function() {
             checkScrollers();
             $('.pre-comment-separator').fadeIn();
             checkSeparator();
-            loadExtraimages();
         });
     });
 
@@ -285,10 +283,41 @@ function checkScrollers() {
 }
 
 var gallerySwitch = (function() {
+    // Make Tab Active
     var activateTab = function($el) {
         $('.tabs-curve').find('li').removeClass('active');
         $el.parent().addClass('active');
     };
+    // Init Gallery Tab
+    var initGallery = function() {
+        // Refresh Comments
+        fetchPitchComments();
+    }
+    // Init Details Tab
+    var initDetails = function() {
+        $('.time').timeago();
+        var logoProperties = $.parseJSON(decodeURIComponent($('#logo_properties').data('props')));
+        $( ".slider" ).each(function(index, object) {
+            var value = parseInt(logoProperties[index]);
+            $(object).slider({
+                disabled: true,
+                value: value,
+                min: 1,
+                max: 9,
+                step: 1
+            });
+        });
+        window.onscroll = function() {};
+        $(window).off('scroll');
+        // Refresh Comments
+        fetchPitchComments();
+    }
+    // Init Designers Tab
+    var initDesigners = function() {
+        checkScrollers();
+        window.onscroll = function() {};
+        $(window).off('scroll');
+    }
     return {
         historyChange: function() {
             var url = window.location.pathname;
@@ -302,26 +331,12 @@ var gallerySwitch = (function() {
             });
         },
         tabInit: function() {
-            if (window.location.pathname.indexOf('details') != -1) { // Details Tab Init
-                $('.time').timeago();
-                var logoProperties = $.parseJSON(decodeURIComponent($('#logo_properties').data('props')));
-                $( ".slider" ).each(function(index, object) {
-                    var value = parseInt(logoProperties[index]);
-                    $(object).slider({
-                        disabled: true,
-                        value: value,
-                        min: 1,
-                        max: 9,
-                        step: 1
-                    });
-                });
-                window.onscroll = function() {};
-                $(window).off('scroll');
-            }
-            if (window.location.pathname.indexOf('designers') != -1) { // Designers Tab Init
-                checkScrollers();
-                window.onscroll = function() {};
-                $(window).off('scroll');
+            if (window.location.pathname.indexOf('view') != -1) { // Gallery Tab Init
+                initGallery();
+            } else if (window.location.pathname.indexOf('details') != -1) { // Details Tab Init
+                initDetails();
+            } else if (window.location.pathname.indexOf('designers') != -1) { // Designers Tab Init
+                initDesigners();
             }
         }
     }
