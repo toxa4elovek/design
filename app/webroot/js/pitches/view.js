@@ -18,17 +18,6 @@
         '/img/like_hover.png'
     ]);
 
-    VK.init({apiId: 2950889, onlyWidgets: true});
-
-    // gplus
-    window.___gcfg = {lang: 'ru'};
-
-    (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-    })();
-
     $(document).on('mouseenter', '.ratingchange', function(){
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
     })

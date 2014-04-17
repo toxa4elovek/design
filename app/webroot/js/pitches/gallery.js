@@ -48,10 +48,9 @@ $(document).ready(function() {
         po.src = 'https://apis.google.com/js/plusone.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
     })();
-
+    
     //vk like
     VK.init({apiId: 2950889, onlyWidgets: true});
-    VK.Widgets.Like("vk_like", {type: "mini"});
 
     // details.js end
     /* ==============*/
@@ -340,6 +339,8 @@ var gallerySwitch = (function() {
         });
         // Refresh Comments
         fetchPitchComments();
+        // VK
+        VK.Widgets.Like("vk_like", {type: "mini"});
     };
     // Designers Tab Init
     var initDesigners = function() {

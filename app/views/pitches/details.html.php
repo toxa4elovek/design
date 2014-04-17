@@ -55,11 +55,11 @@ function mb_basename($file)
                         <h2 class="blueheading">Описание питча</h2>
                         <p class="regular"><?=$this->brief->e($pitch->description)?></p>
 
-                        <div class="separator" style="width:620px"></div>
+                        <div class="separator" style="width:620px; margin:0;"></div>
 
                         <?=$this->view()->render(array('element' => 'pitch-details/' . $pitch->category_id), array('pitch' => $pitch))?>
 
-                        <div class="separator" style="width:620px"></div>
+                        <div class="separator" style="width:620px; margin:0;"></div>
 
                         <?php if(($pitch->category_id != 7) && ($pitch->category_id != 1)):?>
                             <h2 class="blueheading">Можно ли дополнительно использовать материал из банков с изображениями или шрифтами?</h2>
@@ -88,7 +88,7 @@ function mb_basename($file)
 
 
                         <?php if((!empty($files)) && (count($files) > 0)):?>
-                        <div class="separator" style="width:620px"></div>
+                        <div class="separator" style="width:620px; margin:0;"></div>
                         <h2 class="blueheading">Прикрепленные документы:</h2>
 
                         <ul>
@@ -113,37 +113,6 @@ function mb_basename($file)
                 <div class="SideBarRight">
                     <div id="current_pitch" style="margin-top: 20px;">
                         <?php echo $this->stream->renderStream(3);?>
-                        <!--script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
-                        <script>
-                        <script>
-                            new TWTR.Widget({
-                                version: 2,
-                                type: 'search',
-                                search: 'godesigner',
-                                interval: 30000,
-                                title: 'Твиттер лента',
-                                subject: 'Go Designer',
-                                width: 180,
-                                height: 500,
-                                theme: {
-                                    shell: {
-                                        background: '#45464f',
-                                        color: '#e1e1e1'
-                                    },
-                                    tweets: {
-                                        background: '#f3f3f3',
-                                        color: '#45464f',
-                                        links: '#ff575d'
-                                    }
-                                },
-                                features: {
-                                    scrollbar: true,
-                                    loop: true,
-                                    live: true,
-                                    behavior: 'all'
-                                }
-                            }).render().start();
-                        </script-->
                     </div>
                 </div>
                 <?php if(($pitch->status == 0) && ($pitch->published == 1)):?>
@@ -156,7 +125,7 @@ function mb_basename($file)
                 <?php endif;?>
 
                 <?php if($pitch->private == 0):?>
-                <div class="separator" style="width: 620px; margin-bottom: 15px; margin-top: 30px;"></div>
+                <div class="separator" style="width: 620px; margin: 30px 0 15px 0;"></div>
                 <div style="">
                     <div style="float:left;height:20px;margin-right:15px;">
                         <div class="fb-like" data-href="http://www.godesigner.ru/pitches/details/<?=$pitch->id?>" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" data-font="arial"></div>
@@ -179,7 +148,7 @@ function mb_basename($file)
                 <?php endif?>
 
 
-                <div class="separator" style="width: 620px; margin-bottom: 15px; margin-top: 30px;"></div>
+                <div class="separator" style="width: 620px; margin: 30px 0 15px 0;"></div>
 
                 <a href="/pitches" class="all-pitches-link"></a>
                 <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
