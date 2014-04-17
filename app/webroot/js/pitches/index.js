@@ -45,6 +45,7 @@ $(document).ready(function() {
         }
         $('#filterContainer').css('border', '4px solid rgb(231, 231, 231)');
         $('#filterContainer').css('box-shadow', '');
+        toggleFilterTab();
         //$('#filterContainer').css('height', '37px')
         //$('#filterContainer').css('padding-top', '6px')
         //$('#filterContainer').css('margin-top', '2px')
@@ -59,7 +60,10 @@ $(document).ready(function() {
        //#$('#filterContainer').css('margin-top', '')
     })
 
-    $('html').click(function() {
+    $(document).on('click', function(e) {
+        if ($(e.target).is('#searchTerm')) {
+            return false;
+        }
         var image = '/img/filter-arrow-down.png';
         $('#filterToggle').data('dir', 'up');
         $('img', '#filterToggle').attr('src', image);
@@ -71,18 +75,23 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#filterToggle', function(){
-        var dir = $(this).data('dir');
+        toggleFilterTab();
+        return false;
+    });
+    
+    function toggleFilterTab() {
+        var $el = $('#filterToggle');
+        var dir = $el.data('dir');
         if(dir == 'up') {
             var image = '/img/filter-arrow-up.png';
-            $(this).data('dir', 'down');
+            $el.data('dir', 'down');
         }else {
             var image = '/img/filter-arrow-down.png';
-            $(this).data('dir', 'up');
+            $el.data('dir', 'up');
         }
-        $('img', this).attr('src', image);
+        $('img', $el).attr('src', image);
         $('#filtertab').toggle();
-        return false;
-    })
+    }
 
     $(document).on('click', '.removeTag', function() {
         removeTag($(this));
