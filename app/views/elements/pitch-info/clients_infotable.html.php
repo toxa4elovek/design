@@ -50,7 +50,11 @@
         </td>
         <td width="15"></td>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-            <?=$this->view()->render(array('element' => 'pitch-info/timer'), array('pitch' => $pitch))?>
+            <?php if ($pitch->published == 0 && $pitch->billed == 1 && $pitch->brief == 1): ?>
+                <span class="regular">Ожидайте звонка</span>
+            <?php else: ?>
+                <?=$this->view()->render(array('element' => 'pitch-info/timer'), array('pitch' => $pitch))?>
+            <?php endif; ?>
         </td>
         <td width="15"></td>
         <?php if ($pitch->status == 0):?>
