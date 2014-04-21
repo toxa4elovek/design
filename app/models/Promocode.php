@@ -63,13 +63,13 @@ class Promocode extends \app\models\AppModel {
             'code' => $codeString
 
         )))) {
-            if(($code->pitch_id != null) && (($code->type != 'discount') && ($code->type != 'misha'))) {
+            if(($code->pitch_id != null) && (($code->type != 'discount') && ($code->type != 'misha') && ($code->type != 'in_twain'))) {
                 return $result;
             }
             if(time() > strtotime($code->expires)) {
                 return $result;
             }
-            if(($code->type != 'discount') && ($code->type != 'misha')) {
+            if(($code->type != 'discount') && ($code->type != 'misha') && ($code->type != 'in_twain')) {
                 $code->user_id = Session::read('user.id');
                 $code->save();
             }

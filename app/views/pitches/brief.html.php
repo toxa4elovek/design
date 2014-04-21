@@ -204,6 +204,7 @@ endswitch;
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
             <script>
             var fillBrief = <?php echo ($this->session->read('fillbrief')) ? 1 : 0; ?>;
+            var feeRatesOrig = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
             var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
             </script>
                     <div class="ribbon complete-brief">

@@ -94,6 +94,10 @@ class Receipt extends \app\models\AppModel {
         self::$fee = self::findOutFee($data);
         $comission = round($data['features']['award'] * self::$fee);
         if($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'])) {
+            if($promocode['type'] == 'in_twain') {
+                self::$fee = round((self::$fee / 2), 3, PHP_ROUND_HALF_DOWN);
+                $comission = round($data['features']['award'] * self::$fee);
+            }
             if($promocode['type'] == 'discount') {
                 $comission -= 700;
             }

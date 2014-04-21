@@ -123,6 +123,7 @@ $(document).ready(function() {
                 $('#hint').text('Промокод неверен!');
             }else{
                 $('#hint').text('Промокод активирован!');
+                $('#promocode').prop('disabled', true);
                 if((response.type == 'pinned') || (response.type == 'misha')) {
                     Cart.addOption("“Прокачать” бриф", 0);
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
@@ -130,6 +131,10 @@ $(document).ready(function() {
                     $('.label', '#pinned-block').text('+0.-').addClass('unfold');
                 }else if(response.type == 'discount') {
                     Cart.transferFeeDiscount = 700;
+                    Cart.updateFees();
+                    Cart._renderCheck();
+                }else if(response.type == 'in_twain') {
+                    Cart.feeRatesReCalc(2);
                     Cart.updateFees();
                     Cart._renderCheck();
                 }
@@ -844,7 +849,7 @@ function FeatureCart() {
             }
             var feeOption = object.name.indexOf(self.transferFeeKey);
             if (feeOption != -1) {
-                var percent = object.name.substr(self.transferFeeKey.length + 1, 4);
+                var percent = object.name.substr(self.transferFeeKey.length + 1, object.name.length - self.transferFeeKey.length - 2);
                 if (percent.length > 0) {
                     self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
                 } else { // For older pitches
@@ -1027,6 +1032,13 @@ function FeatureCart() {
     this.decoratePrice = function(price) {
         price += '.-';
         return price;
+    }
+    this.feeRatesReCalc = function(divider) {
+        feeRates.low = (feeRatesOrig.low / divider).toFixed(3);
+        feeRates.normal = (feeRatesOrig.normal / divider).toFixed(3);
+        feeRates.good = (feeRatesOrig.good / divider).toFixed(3);
+        var input = $('#award');
+        drawIndicator(input, input.val());
     }
     this._logoProperites = function() {
         var array = new Array();
