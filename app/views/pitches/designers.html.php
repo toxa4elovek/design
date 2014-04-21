@@ -45,7 +45,7 @@
                     <?=$this->view()->render(array('element' => 'designers'), compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount'))?>
                 </ul>
                 <?php else: ?>
-                <div class="bigfont" style="margin-bottom: 76px;">
+                <div class="bigfont clr" style="margin-bottom: 76px; padding-top: 80px;">
                     <h2 class="title clr">Ещё никто не выложил свои идеи.</h2>
                     <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
                     <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
