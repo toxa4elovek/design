@@ -33,6 +33,14 @@ class Solutionfile extends \app\models\AppModel {
             'image_y' => 200,
             'file_overwrite' => true
         ),
+        'mobile' => array(
+            'image_resize' => true,
+            'image_ratio_fill' => true,
+            'image_x' => 590,
+            'image_background_color' => '#dddddd',
+            'image_y' => 448,
+            'file_overwrite' => true
+        ),
     );
 
     protected static $processImageWatermark = array(
