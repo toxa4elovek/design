@@ -603,9 +603,9 @@ class User extends \app\models\AppModel {
         $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
         $sent = 0;
         // Test User
-        $user = new \stdClass();
-        $user->email = 'nyudmitriy@godesigner.ru';
-        $users = array($user);
+        //$user = new \stdClass();
+        //$user->email = 'nyudmitriy@godesigner.ru';
+        //$users = array($user);
         // End Test User
         foreach($users as $user) {
             $data = array(
