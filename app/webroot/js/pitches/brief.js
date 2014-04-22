@@ -114,10 +114,10 @@ $(document).ready(function() {
     });
 
     function checkPromocode() {
-        if ($('#promocode').prop('disabled')) {
+        var value = $('#promocode').val();
+        if ($('#promocode').prop('disabled') || value.length == 0) {
             return false;
         }
-        var value = $('#promocode').val();
         $.post('/promocodes/check.json', {"code": value}, function(response){
             if(response == 'false') {
                 $('#hint').text('Промокод неверен!');
