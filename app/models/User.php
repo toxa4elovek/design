@@ -599,6 +599,25 @@ class User extends \app\models\AppModel {
         return $sent;
     }
 
+    public static function sendDvaSpam() {
+        $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
+        $sent = 0;
+        // Test User
+        $user = new \stdClass();
+        $user->email = 'nyudmitriy@godesigner.ru';
+        $users = array($user);
+        // End Test User
+        foreach($users as $user) {
+            $data = array(
+                'email' => $user->email,
+                'subject' => 'Подарочный промо-код на скидку',
+            );
+            SpamMailer::dvaspam($data);
+            $sent++;
+        }
+        return $sent;
+    }
+
     public static function getAdmin() {
         $admin = self::first(array('conditions' => array('isAdmin' => 1)));
         return $admin->id;

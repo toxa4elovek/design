@@ -252,6 +252,13 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function dvaspam($data) {
+        return self::_mail(array(
+            'to' => $data['email'],
+            'subject' => $data['subject'],
+        ));
+    }
+
     public static function referalpayments($data) {
         return self::_mail(array(
             'to' => $data['to'],
