@@ -1034,9 +1034,9 @@ function FeatureCart() {
         return price;
     }
     this.feeRatesReCalc = function(divider) {
-        feeRates.low = (feeRatesOrig.low / divider).toFixed(3);
-        feeRates.normal = (feeRatesOrig.normal / divider).toFixed(3);
-        feeRates.good = (feeRatesOrig.good / divider).toFixed(3);
+        feeRates.low = (Math.floor(feeRatesOrig.low * 1000 / divider) / 1000).toFixed(3);
+        feeRates.normal = (Math.floor(feeRatesOrig.normal * 1000 / divider) / 1000).toFixed(3);
+        feeRates.good = (Math.floor(feeRatesOrig.good * 1000 / divider) / 1000).toFixed(3);
         var input = $('#award');
         drawIndicator(input, input.val());
     }

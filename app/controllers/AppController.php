@@ -146,7 +146,7 @@ class AppController extends \lithium\action\Controller {
             }
         }
 
-        if (isset($_GET['promocode']) && !empty($_GET['promocode']) && (strlen($_GET['promocode']) == $promocodeLength)) {
+        if (isset($_GET['promocode']) && !empty($_GET['promocode']) && ((mb_strlen($_GET['promocode'], 'UTF-8') == 3) || (mb_strlen($_GET['promocode'], 'UTF-8') == 4))) {
             Session::write('promocode', $_GET['promocode']);
         }
 
