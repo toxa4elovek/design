@@ -37,7 +37,7 @@ class Solutionfile extends \app\models\AppModel {
             'image_resize' => true,
             'image_ratio_fill' => true,
             'image_x' => 590,
-            'image_background_color' => '#dddddd',
+            'image_background_color' => '#ffffff',
             'image_y' => 448,
             'file_overwrite' => true
         ),
