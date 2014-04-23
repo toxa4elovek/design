@@ -123,7 +123,7 @@ $(document).ready(function() {
                 $('#hint').text('Промокод неверен!');
             }else{
                 $('#hint').text('Промокод активирован!');
-                $('#promocode').prop('disabled', true);
+                //$('#promocode').prop('disabled', true);
                 if((response.type == 'pinned') || (response.type == 'misha')) {
                     Cart.addOption("“Прокачать” бриф", 0);
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
