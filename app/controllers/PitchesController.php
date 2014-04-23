@@ -762,15 +762,18 @@ class PitchesController extends \app\controllers\AppController {
 			$pinned = $private = $social = $email = $brief = $timelimit = 0;
             $freePinned = false;
             $promocode = '';
+            $codes = array();
             if((isset($commonPitchData['promocode'])) && (!empty($commonPitchData['promocode']))) {
-                if ($code = Promocode::first(array('conditions' => array('code' => $commonPitchData['promocode'])))) {
-                    $promocode = $commonPitchData['promocode'];
-                    if ($code->type == 'pinned') {
-                        $freePinned = true;
-                        $promocode = '';
-                    }
-                    if ($code->type == 'misha') {
-                        $freePinned = true;
+                foreach ($commonPitchData['promocode'] as $promocode) {
+                    if ($code = Promocode::first(array('conditions' => array('code' => $promocode)))) {
+                        if ($code->type == 'pinned') {
+                            $freePinned = true;
+                            $promocode = '';
+                        }
+                        if ($code->type == 'misha') {
+                            $freePinned = true;
+                        }
+                        $codes[] = $code;
                     }
                 }
             }
@@ -939,9 +942,11 @@ class PitchesController extends \app\controllers\AppController {
                     Comment::createComment($data);
                 }
 
-                if(isset($code)) {
-                    $code->pitch_id = $pitch->id;
-                    $code->save();
+                if(!empty($codes)) {
+                    foreach ($codes as $code) {
+                        $code->pitch_id = $pitch->id;
+                        $code->save();
+                    }
                     Session::delete('promocode');
                 }
             }
@@ -977,7 +982,7 @@ class PitchesController extends \app\controllers\AppController {
             if(count(unserialize($pitch->filesId)) > 0) {
             	$files = Pitchfile::all(array('conditions' => array('id' => unserialize($pitch->filesId))));
             }
-            $code = Promocode::first(array('conditions' => array('pitch_id' => $pitch->id)));
+            $codes = Promocode::all(array('conditions' => array('pitch_id' => $pitch->id)));
             $experts = Expert::all(array('order' => array('id' => 'asc')));
             // Referal correction
             if (!empty($pitch->referal)) {
@@ -991,7 +996,7 @@ class PitchesController extends \app\controllers\AppController {
                     $pitch->save();
                 }
             }
-            return compact('pitch', 'category', 'files', 'experts', 'code');
+            return compact('pitch', 'category', 'files', 'experts', 'codes');
         }
     }
 

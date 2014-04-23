@@ -228,9 +228,13 @@ endif?>
         <div class="ribbon">
             <?php
             $value = 1000;
-            if($code && (($code->type == 'pinned') || ($code->type == 'misha'))):
-                $value = 0;
-            endif;
+            if (!empty($codes)) {
+                foreach ($codes as $code) {
+                    if (($code->type == 'pinned') || ($code->type == 'misha')) {
+                        $value = 0;
+                    }
+                }
+            }
             ?>
             <p class="option"><label><input type="checkbox" name="" <?php if($pitch->pinned): echo "checked"; endif;?>  class="single-check" data-option-title="“Прокачать” бриф" data-option-value="<?=$value?>">“Прокачать” бриф</label></p>
             <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения дизайнеров мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>

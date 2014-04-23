@@ -123,7 +123,6 @@ $(document).ready(function() {
                 $('#hint').text('Промокод неверен!');
             }else{
                 $('#hint').text('Промокод активирован!');
-                //$('#promocode').prop('disabled', true);
                 if((response.type == 'pinned') || (response.type == 'misha')) {
                     Cart.addOption("“Прокачать” бриф", 0);
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
@@ -138,6 +137,7 @@ $(document).ready(function() {
                     Cart.updateFees();
                     Cart._renderCheck();
                 }
+                Cart.promocodes.push(value);
             }
         });
     }
@@ -789,6 +789,7 @@ function FeatureCart() {
     this.referalDiscount = 0;
     this.referalId = 0;
     this.mode = 'add';
+    this.promocodes = [];
     this.init = function() {
         if(($('#pitch_id').length > 0) && (typeof($('#pitch_id').val()) != 'undefined')) {
             self.id = $('#pitch_id').val();
@@ -930,7 +931,7 @@ function FeatureCart() {
             'phone-brief': $('input[name=phone-brief]').val(),
             'materials': $('input[name=materials]:checked').val(),
             'materials-limit': $('input[name=materials-limit]').val(),
-            'promocode': $('#promocode').val(),
+            'promocode': $.unique(this.promocodes),
             'referalDiscount':this.referalDiscount,
             'referalId':this.referalId
         };
