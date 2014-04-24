@@ -246,7 +246,7 @@ endswitch;
                         8 => '/img/experts/makarov_dmitry_174.png',
                     );
 
-                    foreach($experts as $expert):?>
+                    foreach($experts as $expert): if ($expert->enabled == 0) continue;?>
                         <li>
                             <a href="/experts/view/<?=$expert->id?>" target="_blank" class="photo"><img src="<?=$imageArray[$expert->id]?>" alt="<?=$expert->name?>"></a><!-- .photo -->
                             <p class="select"><input type="checkbox" name="" class="expert-check" data-id="<?=$expert->id?>" data-option-title="экспертное мнение" data-option-value="<?=$expert->price?>"></p><!-- .select -->

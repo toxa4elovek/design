@@ -68,7 +68,7 @@
                 8 => '/img/experts/makarov_dmitry_174.png',
             );
             $i = 0;
-            foreach($experts as $expert):
+            foreach($experts as $expert): if ($expert->enabled == 0) continue;
                 if(in_array($expert->id, unserialize($pitch->{'expert-ids'}))) {
                     continue;
                 }
