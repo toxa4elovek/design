@@ -173,8 +173,8 @@
 
     <div class="experts-main">
       <ul id="experts-zone">
-        <?php foreach($experts->data() as $expert):?>
-        <li class="expert-<?=$expert['id']?>" style="display:none;">
+        <?php foreach($experts->data() as $expert): if ($expert['enabled'] == 0) continue; ?>
+        <li class="expert-<?=$expert['id']?> expert_enabled" data-expert_id="<?=$expert['id']?>" style="display:none;">
             <?=$this->html->link('<img style="width: 174px; height: 174px;" src="'. $imageArray[$expert['id']] .'" alt="" />', array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id'], 'escape' => false))?>
             <p><?=$this->html->link($expert['name'], array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id']))?></p>
             <span><?php echo strip_tags($expert['title'])?></span>
