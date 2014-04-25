@@ -54,7 +54,7 @@
                         </div>
                         <div style="margin-top:85px; position:relative; float:left;" class="regular">
                             ООО "КРАУД МЕДИА"<br/>
-                            Галерная 55, Санкт-Петебург<br/>
+                            Галерная 55, Санкт-Петербург<br/>
                             +7 (812) 648 2412<br/>
                             197 000 Россия,<br/>
                             ИНН 7801563047<br/>
