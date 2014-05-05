@@ -1171,7 +1171,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
                 return compact('pitch', 'files', 'comments', 'prevpitch');
             }else {
-                return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments')));
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch')));
             }
         }
         throw new Exception('Public:Такого питча не существует.', 404);
