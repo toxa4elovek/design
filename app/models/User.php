@@ -46,7 +46,7 @@ class User extends \app\models\AppModel {
      *
      * @var array
      */
-    public static $authors = array(8472, 17865);
+    public static $authors = array(8472, 17865, 18856);
 
     protected static $_behaviors = array(
         'UploadableAvatar'
