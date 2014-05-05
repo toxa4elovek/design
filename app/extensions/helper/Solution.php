@@ -39,6 +39,9 @@ class Solution extends \lithium\template\Helper {
         if ($pitch->category == 7) {
             return '/img/copy-inv.png';
         }
+        if(($size == 'solution_galleryLargeSize') && (!isset($solution->images[$size]))) {
+            return '/img/copy-inv.png';
+        }
         $images = $solution->images[$size];
         if ($pitch->private == 1) {
             $user = new UserHelper(array());

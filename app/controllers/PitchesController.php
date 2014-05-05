@@ -1115,6 +1115,8 @@ class PitchesController extends \app\controllers\AppController {
         $text .= '
 Disallow: /pitches/view/' . $pitch['id'] . '
 Disallow: /pitches/details/'. $pitch['id'] . '
+Disallow: /pitches/designers/'. $pitch['id'] . '
+Disallow: /pitches/printpitch/'. $pitch['id'] . '
 Disallow: /pitches/upload/' . $pitch['id'];
         endforeach;
         file_put_contents(LITHIUM_APP_PATH . '/webroot/robots.txt', $text);
