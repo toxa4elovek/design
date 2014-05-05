@@ -9,9 +9,11 @@ $(document).ready(function() {
             window.location = $(this).attr('href');
         }
     });
-    $(window).on('popstate', function() {
-        gallerySwitch.historyChange();
-    });
+    if(window.location.href.match(/pitches\/designers/)) {
+        $(window).on('popstate', function() {
+            //gallerySwitch.historyChange();
+        });
+    }
 
     gallerySwitch.tabInit();
     enableToolbar();
