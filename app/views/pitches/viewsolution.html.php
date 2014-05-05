@@ -2,13 +2,12 @@
 
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
 
-	<script>var allowComments = false;</script>
+    <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
 	<?php if((($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
         (($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment())) && ($this->user->isLoggedIn())):?>
         <script>allowComments = true;</script>
     <?php endif?>
 	<div class="middle">
-        <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
         <!-- start: Solution Container -->
         <div class="solution-container page">
             <div style="padding: 25px 0 0 63px;">
