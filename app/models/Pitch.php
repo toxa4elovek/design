@@ -668,6 +668,30 @@ class Pitch extends \app\models\AppModel {
         return $res;
     }
 
+    public static function ExpertReminder() {
+        $conditions = array(
+            'expert' => 1,
+            'status' => 1,
+            'awarded' => 0,
+            'finishDate' => array(
+                '>=' => date('Y-m-d H:i:s', time() - 62 * HOUR),
+                '<' => date('Y-m-d H:i:s', time() - 61 * HOUR),
+            ),
+        );
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+        ));
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (User::sendExpertReminder($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
     protected static function getAddonConditions($time) {
         if ((0 < $time) && ($time < 1)) {
             $timeCond = array(

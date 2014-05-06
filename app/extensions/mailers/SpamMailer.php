@@ -200,6 +200,14 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function expertreminder($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Ожидается ваше экспертное мнение',
+            'data' => $data
+        ));
+    }
+
     public static function openletter($data) {
         return self::_mail(array(
             'to' => $data['user']->email,
