@@ -580,6 +580,9 @@ class User extends \app\models\AppModel {
                 ),
                 'with' => array('User'),
             ));
+            if ($comments = Comment::all(array('conditions' => array('pitch_id' => $pitch_id, 'user_id' => $expert->user_id)))) {
+                continue;
+            }
             $data['user'] = $expert->user;
             SpamMailer::expertreminder($data);
         }
