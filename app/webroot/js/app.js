@@ -474,7 +474,7 @@ function warningModal() {
         var id = $(this).data('commentId');
         if(($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
             $.post(url, {"text": $('#warn-comment').val(), "id": id}, function(response) {
-                $('.popup-close').click();
+                warningThanks();
             });
         }else {
             alert('Введите текст жалобы!');
@@ -499,7 +499,7 @@ function warningModal() {
         var url = $(this).data('url');
         if(($('#warn-solution').val().length > 0) && ($('#warn-solution').val() != warnPlaceholder)) {
             $.post(url, {"text": $('#warn-solution').val()}, function(response) {
-                $('.popup-close').click();
+                warningThanks();
             });
         }else {
             alert('Введите текст жалобы!');
@@ -1434,3 +1434,13 @@ function getParameterByName(name) {
     interval = setInterval(i, 1e3)
     }
 })(jQuery);
+
+function warningThanks() {
+    $('.popup-close').click();
+    $('#popup-warning-thanks').modal({
+        containerId: 'final-step',
+        opacity: 80,
+        closeClass: 'popup-close',
+        overlayClose: true
+    });
+}
