@@ -570,6 +570,22 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function sendExpertReminder($pitch) {
+        $data = array('pitch' => $pitch);
+        $experts = unserialize($pitch->{'expert-ids'});
+        foreach ($experts as $expert) {
+            $expert = Expert::first(array(
+                'conditions' => array(
+                    'Expert.id' => $expert,
+                ),
+                'with' => array('User'),
+            ));
+            $data['user'] = $expert->user;
+            SpamMailer::expertreminder($data);
+        }
+        return true;
+    }
+
     public static function sendSpamExpertSpeaking($params) {
         $user = self::first($params['pitch']->user_id);
         $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $params['text']);
