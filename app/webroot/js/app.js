@@ -239,11 +239,11 @@ $(document).ready(function() {
         var id = $(this).data('id');
         $.post('/pitches/delete/' + id + '.json', function() {
             $('tr[data-id="' + id + '"]').hide();
+            var visibleRows = $('tr:visible', '#header-table').length
+            if(visibleRows == 0) {
+                $('#pitch-panel').hide();
+            }
         })
-        /*$.post('/pitches/delete/' + id + '.json', function() {
-            $('tr[data-id="' + id + '"]').hide();
-            $('.popup-close').click();
-        })*/
         return false;
     })
 
