@@ -2834,7 +2834,8 @@ ul.social li#rss {
 }
 
 #final-step,
-#final-step-clean {
+#final-step-clean,
+#final-step-thanks {
     position: relative;
     width: 739px;
     height: 505px;
@@ -2844,8 +2845,12 @@ ul.social li#rss {
 	background: url(img/main_bg.jpg) 0 0 repeat;
 	height: 485px;
 }
+#final-step-thanks {
+	height: 337px;
+}
 #final-step:after,
-#final-step-clean:after {
+#final-step-clean:after,
+#final-step-thanks:after {
     content: "";
     display: block;
     position: absolute;
@@ -2854,6 +2859,12 @@ ul.social li#rss {
     width: 652px;
     height: 19px;
     background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+}
+#final-step-thanks p {
+    margin: 150px -10px 0 30px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 25px;
 }
 #final-step-clean .button {
     float: left;
