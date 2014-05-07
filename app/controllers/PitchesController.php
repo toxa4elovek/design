@@ -1294,7 +1294,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
 	public function viewsolution() {
 		if(($this->request->id) && ($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch'))))) {
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
-            Solution::increaseView($this->request->id);
+            if($this->request->env('HTTP_X_REQUESTED_WITH')) {
+                $solution->views = Solution::increaseView($this->request->id);
+            }
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getSolutionsSortingOrder($this->request->query);
 
