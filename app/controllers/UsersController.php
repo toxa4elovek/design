@@ -341,6 +341,7 @@ class UsersController extends \app\controllers\AppController {
                     $recipient = User::first($solution->user_id);
                 }
                 User::sendSpamWincomment($newComment, $recipient);
+                return json_encode($newComment->data());
             }
             $files = array();
             $comments = Wincomment::all(array('conditions' => array('step' => 2, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));

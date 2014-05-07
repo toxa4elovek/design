@@ -123,7 +123,14 @@ $(document).ready(function() {
 
     $('#wincomment').submit(function(e) {
         e.preventDefault();
-        $('#wincomment').fileupload('uploadByClickNoCheck', $(this), window.location.href);
+        $('#wincomment').fileupload('uploadByClickNoCheckInplace', $(this));
+    });
+    
+    // Delete Comment
+    $(document).on('click', '.delete-link-in-comment', function() {
+        $(this).closest('section').fadeOut(400, function() { $(this).remove(); });
+        $.get($(this).attr('href'));
+        return false;
     });
 });
 

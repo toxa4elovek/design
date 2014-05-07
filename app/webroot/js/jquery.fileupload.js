@@ -851,6 +851,16 @@
             }
         },
 
+        uploadByClickNoCheckInplace: function(form) {
+            if(this.myData) {
+                this.myData.submit();
+            }else {
+                var data = form.serialize();
+                $.post(form.attr('action'), data, function(response) {
+                });
+            }
+        },
+
 
         // This method is exposed to the widget API and allows sending files
         // using the fileupload API. The data parameter accepts an object which
