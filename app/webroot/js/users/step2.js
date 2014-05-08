@@ -68,10 +68,10 @@ $(document).ready(function() {
         return false;
     });
     
-    $('section', '.center_block').on('mouseenter', function() {
+    $(document).on('mouseenter', '.center_block section', function() {
         $('.toolbar', this).fadeIn(200);
     });
-    $('section', '.center_block').on('mouseleave', function() {
+    $(document).on('mouseleave', '.center_block section', function() {
         $('.toolbar', this).fadeOut(200);
     });
     
@@ -123,7 +123,7 @@ $(document).ready(function() {
 
     $('#wincomment').submit(function(e) {
         e.preventDefault();
-        $('#wincomment').fileupload('uploadByClickNoCheckInplace', $(this));
+        $('#wincomment').fileupload('uploadByClickNoCheckInplace', $(this), placeWincomment);
     });
     
     // Delete Comment
@@ -150,4 +150,116 @@ function fillProgress(completed) {
             $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
         }, 500);
     }
+}
+
+function placeWincomment(result) {
+    var commentData = prepareWinCommentData(result);
+    var $lastComment = $('.messages_gallery').find('section').first();
+    var newComment = populateWincomment(commentData);
+    $(newComment).insertBefore($lastComment);
+}
+
+function prepareWinCommentData(result) {
+    var commentData = {};
+    var expertsObj = result.experts || {};
+    commentData.commentId = result.comment.id;
+    commentData.commentUserId = result.comment.user_id;
+    commentData.commentText = result.comment.text;
+    //commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
+    commentData.commentType = (result.comment.user_id == result.comment.solution.user_id) ? 'designer' : 'client';
+    commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
+    //commentData.isClosedPitch = (result.comment.pitch.status != 0) ? 1 : 0;
+
+    if (commentData.commentType == 'client') {
+        commentData.messageInfo = 'message_info2';
+    } else if (result.comment.user.isAdmin == "1") {
+        commentData.messageInfo = 'message_info4';
+        commentData.isAdmin = result.comment.user.isAdmin;
+    } else if (commentData.isExpert) {
+        commentData.messageInfo = 'message_info5';
+    }else {
+        commentData.messageInfo = 'message_info1';
+    }
+
+    if (result.userAvatar) {
+        commentData.userAvatar = result.userAvatar;
+    } else {
+        commentData.userAvatar = '/img/default_small_avatar.png';
+    }
+
+    commentData.commentAuthor = result.comment.user.first_name + (((result.comment.user.last_name == null) || (result.comment.user.last_name.length == 0)) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
+    commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
+
+    // Date Time
+    var postDateObj = getProperDate(result.comment.created);
+    commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
+    commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+    return commentData;
+}
+
+/*
+ * Populate each comment layout
+ */
+function populateWincomment(data) {
+    var isCurrentAdmin = 0;
+    var toolbar = '';
+    var manageToolbar = '<a href="/wincomments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ">Удалить</a>';
+    var answerTool = ' display: none;';
+    if (data.needAnswer == 1) {
+        answerTool = '';
+    }
+    /*if (isCurrentAdmin != 1 && isClient != 1 && data.isClosedPitch) {
+        answerTool = ' display: none;';
+    }*/
+    var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;' + answerTool + '">Ответить</a>';
+    if (data.isCommentAuthor) {
+        toolbar = manageToolbar;
+    } else if (typeof(currentUserId) !== 'undefined') {
+        toolbar = userToolbar;
+    }
+    if (isCurrentAdmin == 1) {
+        toolbar = manageToolbar + userToolbar;
+    }
+    var avatarElement = '';
+    if (!data.isAdmin) {
+        avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
+                        <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                        </a>';
+    }
+
+    return '<section data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
+                <div class="message_inf"> \
+                <div class="' + data.messageInfo + '" style="margin-top:20px;margin-left:0;">'
+                + avatarElement +
+                '<a href="/users/view/' + data.commentUserId + '" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '"> \
+                    <span>' + data.commentAuthor + '</span><br /> \
+                    <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
+                </a> \
+                <div class="clr"></div> \
+                </div> \
+                </div> \
+                <div class="message_inf2" style="margin-bottom: 10px;"> \
+                <div data-id="' + data.commentId + '" class="message_text2"> \
+                    <span class="regular comment-container">'
+                        + data.commentText +
+                    '</span> \
+                </div> \
+                </div> \
+                <div style="width: 810px; float: right; margin-top: 6px; margin-right: 5px; padding-bottom: 2px; height: 18px;"> \
+                <div class="toolbar" style="display: none;">'
+                    + toolbar +
+                '</div></div> \
+                <div class="clr"></div> \
+                <div class="hiddenform" style="display:none"> \
+                    <section> \
+                        <form style="margin-bottom: 25px;" action="/wincomments/edit/' + data.commentId + '" method="post"> \
+                            <textarea name="text" data-id="' + data.commentId + '"></textarea> \
+                            <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin: 15px 15px 5px 16px; width: 200px;"><br> \
+                            <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span> \
+                            <div class="clr"></div> \
+                        </form> \
+                    </section> \
+                </div> \
+                <div class="separator" style="margin-top: 0px;"></div> \
+            </section>';
 }

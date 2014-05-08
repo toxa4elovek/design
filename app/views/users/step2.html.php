@@ -2,6 +2,7 @@
 
     <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 
+    <script>var currentUserId = <?= (int) $this->user->getId(); ?>;</script>
 
     <div class="conteiner">
         <section>

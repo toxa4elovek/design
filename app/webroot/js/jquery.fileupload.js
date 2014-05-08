@@ -851,13 +851,15 @@
             }
         },
 
-        uploadByClickNoCheckInplace: function(form) {
+        uploadByClickNoCheckInplace: function(form, callback) {
             if(this.myData) {
                 this.myData.submit();
             }else {
                 var data = form.serialize();
                 $.post(form.attr('action'), data, function(response) {
-                });
+                    $('textarea', form).val('');
+                    callback(response);
+                }, 'json');
             }
         },
 
