@@ -85,6 +85,7 @@ echo  $this->html->script('app', array('inline' => false, 'weight' => 16));
 <?=$this->view()->render(array('element' => 'popups/contact_form'))?>
 <?=$this->view()->render(array('element' => 'popups/social_popup'))?>
 <?=$this->view()->render(array('element' => 'scripts/ga'))?>
+<?=$this->view()->render(array('element' => 'scripts/ua'))?>
 <?=$this->view()->render(array('element' => 'newrelic/newrelic_footer'))?>
 </body>
 </html>
