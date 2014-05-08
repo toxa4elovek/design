@@ -72,11 +72,15 @@
                     </div>
                 </div>
 
-                <?php if($this->user->isAdmin()):?>
+                <?php if($this->user->isAdmin() || $user->id == 18856):?>
                 <div class="about_profile clr">
                     <dl>
                         <?php if(trim($userdata['about']) != ''):?>
-                        <dt class="greyboldheader">Обо мне:<br><span class="regular">(доступно только <br>администрации)</span></dt>
+                        <dt class="greyboldheader" style="width: 119px;">Обо мне:
+                        <?php if ($this->user->isAdmin()): ?>
+                            <br><span class="regular">(доступно только <br>администрации)</span>
+                        <?php endif; ?>
+                        </dt>
                         <dd class="regular">
                             <?=$this->brief->stripemail(nl2br($userdata['about']))?>
                         </dd>
