@@ -66,7 +66,7 @@ class Brief extends \lithium\template\Helper {
     }
 
     function linkemail($string) {
-        return preg_replace('#(' . $this->emailPattern . ')#ig',
+        return preg_replace('#(' . $this->emailPattern . ')#',
             '<a href="mailto://$1">$1</a>', $string);
     }
 
