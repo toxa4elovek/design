@@ -1438,7 +1438,7 @@ function getParameterByName(name) {
 function warningThanks() {
     $('.popup-close').click();
     $('#popup-warning-thanks').modal({
-        containerId: 'final-step',
+        containerId: 'final-step-thanks',
         opacity: 80,
         closeClass: 'popup-close',
         overlayClose: true

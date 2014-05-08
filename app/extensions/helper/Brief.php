@@ -4,6 +4,7 @@ namespace app\extensions\helper;
 class Brief extends \lithium\template\Helper {
 
     public $emailPattern = "\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b";
+    public $urlPattern = '/(https?:\/\/w?w?w?\.?[a-zA-Z\.0-9]+\/.*)/i';
 
     function e($string) {
         $string = strip_tags(nl2br($string), '<br>');
@@ -60,8 +61,12 @@ class Brief extends \lithium\template\Helper {
             '<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $string);
     }
 
+    function stripurl($string) {
+        return preg_replace($this->urlPattern, '', $string);
+    }
+
     function linkemail($string) {
-        return preg_replace('#(' . $this->emailPattern . ')#',
+        return preg_replace('#(' . $this->emailPattern . ')#ig',
             '<a href="mailto://$1">$1</a>', $string);
     }
 

@@ -25,9 +25,9 @@
                         <div class="info_profile_about">
                             <span class="nickname"><?=$this->user->getFormattedName($user->first_name, $user->last_name )?>!</span>
                             <ul class="profile-list-info">
-                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripemail($userdata['birthdate'])?></li>
-                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripemail($userdata['city'])?></li>
-                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripemail($userdata['profession'])?></li>
+                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['birthdate']))?></li>
+                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['city']))?></li>
+                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['profession']))?></li>
                             </ul>
                             <div class="pitches">
                                 <ul class="profile-list">
