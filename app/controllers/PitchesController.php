@@ -109,6 +109,7 @@ class PitchesController extends \app\controllers\AppController {
 			'3' => array('price' => array('>' => 20000))
 		);
 		$order = array(
+            'free' => 'desc',
 			'price' => 'desc',
             'started' => 'desc'
 		);
@@ -183,10 +184,18 @@ class PitchesController extends \app\controllers\AppController {
                 if($field == 'finishDate') {
                     $order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
                 }else {
-                    $order = array(
-                        $field => $dir,
-                        'started' => 'desc'
-                    );
+                    if($field == 'price') {
+                        $order = array(
+                            'free' => 'desc',
+                            $field => $dir,
+                            'started' => 'desc'
+                        );
+                    }else {
+                        $order = array(
+                            $field => $dir,
+                            'started' => 'desc'
+                        );
+                    }
                 }
 			}
 		}
