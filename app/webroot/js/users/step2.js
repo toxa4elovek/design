@@ -154,9 +154,8 @@ function fillProgress(completed) {
 
 function placeWincomment(result) {
     var commentData = prepareWinCommentData(result);
-    var $lastComment = $('.messages_gallery').find('section').first();
     var newComment = populateWincomment(commentData);
-    $(newComment).insertBefore($lastComment);
+    $('.comments-container').prepend($(newComment));
 }
 
 function prepareWinCommentData(result) {
@@ -201,7 +200,6 @@ function prepareWinCommentData(result) {
  * Populate each comment layout
  */
 function populateWincomment(data) {
-    var isCurrentAdmin = 0;
     var toolbar = '';
     var manageToolbar = '<a href="/wincomments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ">Удалить</a>';
     var answerTool = ' display: none;';
@@ -214,7 +212,7 @@ function populateWincomment(data) {
     var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;' + answerTool + '">Ответить</a>';
     if (data.isCommentAuthor) {
         toolbar = manageToolbar;
-    } else if (typeof(currentUserId) !== 'undefined') {
+    } else if (currentUserId) {
         toolbar = userToolbar;
     }
     if (isCurrentAdmin == 1) {
