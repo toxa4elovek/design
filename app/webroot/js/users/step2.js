@@ -169,15 +169,15 @@ function prepareWinCommentData(result) {
     commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
     //commentData.isClosedPitch = (result.comment.pitch.status != 0) ? 1 : 0;
 
-    if (commentData.commentType == 'client') {
-        commentData.messageInfo = 'message_info2';
+    if (commentData.commentType == 'designer') {
+        commentData.messageInfo = 'message_info1';
     } else if (result.comment.user.isAdmin == "1") {
         commentData.messageInfo = 'message_info4';
         commentData.isAdmin = result.comment.user.isAdmin;
     } else if (commentData.isExpert) {
         commentData.messageInfo = 'message_info5';
     }else {
-        commentData.messageInfo = 'message_info1';
+        commentData.messageInfo = 'message_info2';
     }
 
     if (result.userAvatar) {
