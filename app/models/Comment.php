@@ -102,7 +102,7 @@ class Comment extends \app\models\AppModel {
                 return $params;
             }
             // Если упоминаются номера решения, отправляем комментарии их владельцам
-            if(!empty($num)) {
+            if(!empty($num) && $pitch->status == 0) {
                 $solutions = Solution::all(array('with' => array('User'), 'conditions' => array('pitch_id' => $params['pitch_id'], 'num' => $nums)));
                 $emails = array();
                 foreach($solutions as $solution) {
@@ -119,7 +119,7 @@ class Comment extends \app\models\AppModel {
                 Task::createNewTask($params['id'], 'newCommentFromAdminNotification');
             }
             // Если ответ какому-то пользователю, отправляем уведомление пользователю
-            if((isset($params['reply_to'])) && ($params['reply_to'] != 0)) {
+            if((isset($params['reply_to'])) && ($params['reply_to'] != 0) && ($pitch->status == 0)) {
                 Task::createNewTask($params['id'], 'newPersonalCommentNotification');
             }
             // Если комментарий владельца питча, запишем в историю для статистики
