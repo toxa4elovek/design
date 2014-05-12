@@ -26,6 +26,7 @@ use app\extensions\storage\Rcache;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 use \Exception;
+use \app\extensions\helper\Avatar as AvatarHelper;
 
 class UsersController extends \app\controllers\AppController {
 
@@ -341,6 +342,12 @@ class UsersController extends \app\controllers\AppController {
                     $recipient = User::first($solution->user_id);
                 }
                 User::sendSpamWincomment($newComment, $recipient);
+                $user = User::first(Session::read('user.id'));
+                $avatarHelper = new AvatarHelper;
+                $userAvatar = $avatarHelper->show($user->data(), false, true);
+                $comment = Wincomment::first(array('conditions' => array('Wincomment.id' => $newComment->id), 'with' => array('User', 'Solution')));
+                $comment = $comment->data();
+                return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
             $files = array();
             $comments = Wincomment::all(array('conditions' => array('step' => 2, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
@@ -425,6 +432,12 @@ class UsersController extends \app\controllers\AppController {
                     $recipient = User::first($solution->user_id);
                 }
                 User::sendSpamWincomment($newComment, $recipient);
+                $user = User::first(Session::read('user.id'));
+                $avatarHelper = new AvatarHelper;
+                $userAvatar = $avatarHelper->show($user->data(), false, true);
+                $comment = Wincomment::first(array('conditions' => array('Wincomment.id' => $newComment->id), 'with' => array('User', 'Solution')));
+                $comment = $comment->data();
+                return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
             $comments = Wincomment::all(array('conditions' => array('step' => 3, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
             $files = array();

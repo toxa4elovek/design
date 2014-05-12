@@ -2,6 +2,10 @@
 
     <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 
+    <script>
+        var currentUserId = <?= (int) $this->user->getId(); ?>;
+        var isCurrentAdmin = <?php echo $this->user->isAdmin() ? 1 : 0 ?>;
+    </script>
 
     <div class="conteiner">
         <section>
@@ -48,6 +52,7 @@
 
                 <div class="clr"></div>
                 <div class="separator" style="margin-top: 10px;"></div>
+                <section class="comments-container">
                 <?php foreach($comments as $comment):
                 if($comment->type == 'designer'):
                     $class ="message_info1";
@@ -151,6 +156,7 @@
                     <div class="separator" style="margin-top: 0px;"></div>
                 </section>
                 <?php endforeach;?>
+                </section><!-- /comments-container -->
                 <?php if($type == 'designer'):?>
                 <div class="buttons">
                     <div class="back spanned" style="margin-bottom:10px;">
