@@ -7,6 +7,7 @@ use \lithium\storage\Session;
 
 use \app\models\Expert;
 use \app\models\Promocode;
+use \app\models\Option;
 use \app\models\Pitch;
 use \app\models\Favourite;
 use \app\models\Solution;
@@ -707,6 +708,36 @@ class User extends \app\models\AppModel {
         $data = array('user' => $user, 'blocks' => $blocks);
         SpamMailer::dailydigest($data);
         return true;
+    }
+
+    public static function sendLastDigest() {
+        if ($lastPosts = Option::first(array('conditions' => array('name' => 'last_posts')))) {
+            $ids = unserialize($lastPosts->value);
+
+            $posts = Post::all(array('conditions' => array('id' => array_values($ids)), 'order' => array('created' => 'desc')));
+            $users = User::all(array(
+                'conditions' => array(
+                    'email_digest' => 1,
+                    'created' => array(
+                        '>=' => date('Y-m-d H:i:s', time() - (DAY * 4)),
+                        '<' => date('Y-m-d H:i:s', time() - (DAY * 3)),
+                    ),
+                ),
+            ));
+            $count = count($users);
+            if(count($posts) > 0) {
+                foreach($users as $user) {
+                    $data = array(
+                        'email' => $user->email,
+                        'subject' => 'Дайджест новостей',
+                        'posts' => $posts
+                    );
+                    SpamMailer::blogdigest($data);
+                }
+            }
+            return $count;
+        }
+        return 0;
     }
 
     public static function sendSpamToLostClients() {
