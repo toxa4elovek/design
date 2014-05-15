@@ -291,7 +291,7 @@
         <li><a href="/pitches/2?type=finished">web-баннер</a> /</li>
         <li><a href="/pitches/11?type=finished">упаковка</a> /</li>
         <li><a href="/pitches/7?type=finished">копирайтинг</a> /</li>
-        <li><a href="/pitches/8?type=finished">буклет</a> /</li>
+        <li><a href="/pitches/8?type=finished">презентация</a> /</li>
         <li><a href="/pitches/9?type=finished">иллюстрация</a> /</li>
         <li><a href="/pitches/12?type=finished">реклама</a> /</li>
         <li><a href="/pitches/4?type=finished">флаер</a> /</li>
