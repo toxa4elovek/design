@@ -490,6 +490,15 @@ class PitchesController extends \app\controllers\AppController {
             }
             $i = 1;
             $tempPitchList = $pitches->data();
+
+            // Winner Pitch Sort
+            usort($tempPitchList, function($a, $b) {
+                if ((int) $a['winlink'] == (int) $b['winlink']) {
+                    return 0;
+                }
+                return ((int) $a['winlink'] > (int) $b['winlink']) ? -1 : 1;
+            });
+
             $pitchList = array();
             $pitchTitleHelper = new PitchTitleFormatter;
             foreach($tempPitchList as &$pitch) {
