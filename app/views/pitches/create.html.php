@@ -58,8 +58,8 @@
 				</li>
 				<li class="category-buklet">
 					<?=$this->html->link('
-						<h3>Буклет</h3>
-						<p class="description">Сетка, верстка многополосного издания</p>
+						<h3>Презентация</h3>
+						<p class="description">Буклет, верстка многополосного издания</p>
 						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[8]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 8), array('escape' => false))?>
 				</li>
