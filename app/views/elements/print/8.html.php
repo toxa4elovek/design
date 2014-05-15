@@ -10,6 +10,11 @@ $details = unserialize($pitch->specifics);
     <p class="regular"><?=$details['booklet-pages']?></p>
     <?php endif;?>
 
+    <?php if(!empty($details['site-sub'])):?>
+    <h2 class="blueheading">Количество страниц</h2>
+    <p class="regular"><?=$details['site-sub']?></p>
+    <?php endif;?>
+
     <h2 class="blueheading">Целевая аудитория</h2>
 
     <ul class="logo-properties sliderul" data-name="audience">
@@ -44,7 +49,7 @@ $details = unserialize($pitch->specifics);
     <h2 class="blueheading">Предпочтения</h2>
     <p class="regular"><?=$this->brief->e($details['site-inspiration'])?></p>
     <?php endif;?>
-        
+
     <?php if(!empty($details['qualities'])):?>
     <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
     <p class="regular"><?=$this->brief->e($details['qualities'])?></p>

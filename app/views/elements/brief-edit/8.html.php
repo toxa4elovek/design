@@ -1,11 +1,5 @@
 <div class="groupc">
 
-    <p>
-        <label>Укажите количество страниц, кратное 4</label>
-        <input type="text" name="booklet-pages" value="<?=$specifics['booklet-pages']?>" placeholder="20 полос, включая обложку" class="specific-prop" >
-    </p>
-
-
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">
