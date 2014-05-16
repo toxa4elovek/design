@@ -610,6 +610,11 @@
                         {"id": result.solution.id, "rating": score}, function(response) {
                             $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
                             $('.rating-image', '.solution-rating').addClass('star' + score);
+                            var $underlyingRating = $('.ratingcont', '#li_' + $('.isField.number', '.solution-overlay').text());
+                            if ($underlyingRating.length > 0) {
+                                $underlyingRating.css('background-image', 'url(/img/' + score + '-rating.png)');
+                                $underlyingRating.data('default', score);
+                            }
                         });
                     }
                 });

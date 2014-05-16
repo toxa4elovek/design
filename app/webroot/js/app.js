@@ -795,7 +795,7 @@ function enableToolbar() {
     $('body, .solution-overlay').on('click', '.client-hide', function(e) {
         e.preventDefault();
         var link = $(this);
-        var underlyingHide = $('.hide-item[data-to=' + $('.isField.number').text() + ']');
+        var underlyingHide = $('.hide-item[data-to=' + $('.isField.number', '.solution-overlay').text() + ']');
         if (underlyingHide.length > 0) {
             underlyingHide.click();
         } else {
@@ -808,7 +808,7 @@ function enableToolbar() {
     $('body, .solution-overlay').on('click', '.client-show', function(e) {
         e.preventDefault();
         var link = $(this);
-        var underlyingUnhide = $('.unhide-item[data-to=' + $('.isField.number').text() + ']');
+        var underlyingUnhide = $('.unhide-item[data-to=' + $('.isField.number', '.solution-overlay').text() + ']');
         if (underlyingUnhide.length > 0) {
             underlyingUnhide.click();
         } else {
