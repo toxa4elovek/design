@@ -459,8 +459,6 @@ class PitchesController extends \app\controllers\AppController {
                 'with' => 'Category',
                 'conditions' => $conditions,
                 'order' => array('started' => 'desc'),
-                'limit' => $limit,
-                'page' => $page,
             ));
             foreach($pitches as $pitch) {
                 $pitch->winlink = false;
@@ -490,7 +488,6 @@ class PitchesController extends \app\controllers\AppController {
             }
             $i = 1;
             $tempPitchList = $pitches->data();
-
             // Winner Pitch Sort
             usort($tempPitchList, function($a, $b) {
                 if ((int) $a['winlink'] == (int) $b['winlink']) {
@@ -498,6 +495,8 @@ class PitchesController extends \app\controllers\AppController {
                 }
                 return ((int) $a['winlink'] > (int) $b['winlink']) ? -1 : 1;
             });
+
+            $tempPitchList = array_slice($tempPitchList, ($page - 1) * $limit, $limit, true);
 
             $pitchList = array();
             $pitchTitleHelper = new PitchTitleFormatter;
