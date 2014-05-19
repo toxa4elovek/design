@@ -3,6 +3,7 @@
 namespace app\models\behaviors\handlers;
 
 use \image_manipulation\processor\Upload;
+use \app\models\Solutionfile;
 
 class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
 
@@ -53,6 +54,11 @@ class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
                         $useroptions = $params['uploadedFile']['attachInfo']['processImage'];
                     }
                     $options = $useroptions + $self::$defaults['processImage'];
+
+                    if ($self::$fileModel == 'app\\models\\Solutionfile') {
+                        $options = Solutionfile::paramsModify($file) + $options;
+                    }
+
                     foreach($options as $option => $imageParams){
                         $imageProcessor = new Upload();
                         $imageProcessor->uploadandinit($file['newname']);

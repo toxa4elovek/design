@@ -68,6 +68,16 @@ class Solutionfile extends \app\models\AppModel {
         ),
     );
 
+    protected static $tallImageModifier = array(
+        'galleryLargeSize' => array(
+            'image_resize' => true,
+            'image_x' => 180,
+            'image_y' => 135,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true,
+        ),
+    );
+
     public static function resize($params) {
         $options = self::$processImage;
         if ($params['solution']->pitch->private > 0 && false) { // false turns off the watermarking
@@ -110,5 +120,18 @@ class Solutionfile extends \app\models\AppModel {
 
     public static function getParams() {
         return self::$processImage;
+    }
+
+    public static function paramsModify($file) {
+        $res = self::$processImage;
+        if (file_exists($file['tmp_name'])) {
+            $image_info = getimagesize($file["tmp_name"]);
+            $image_width = $image_info[0];
+            $image_height = $image_info[1];
+            if ($image_width < $image_height) {
+                $res = self::$tallImageModifier + self::$processImage;
+            }
+        }
+        return $res;
     }
 }
