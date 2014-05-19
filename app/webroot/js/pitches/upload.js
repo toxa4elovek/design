@@ -177,8 +177,8 @@ $(document).ready(function() {
                             $image.height('auto');
                             $image.css('margin-top', (135 - $image.height()) / 2);
                         } else {
-                            $image.height('135');
-                            $image.width('auto');
+                            $image.width('180');
+                            $image.height('auto');
                         }
                         $image.show();
                     }, 300);

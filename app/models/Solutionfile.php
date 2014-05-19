@@ -76,6 +76,20 @@ class Solutionfile extends \app\models\AppModel {
             'image_ratio_crop' => 'T',
             'file_overwrite' => true,
         ),
+        'tutdesign' => array(
+            'image_resize' => true,
+            'image_x' => 267,
+            'image_y' => 200,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
+        'mobile' => array(
+            'image_resize' => true,
+            'image_x' => 590,
+            'image_y' => 448,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
     );
 
     public static function resize($params) {
