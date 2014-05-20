@@ -1182,6 +1182,16 @@ $(document).on('click', function() {
     }
 });
 
+$('.tooltip_plugin').tooltip({
+    tooltipID: 'tooltip3',
+    width: '205px',
+    correctPosX: 45,
+    positionTop: 180,
+    borderSize: '0px',
+    tooltipPadding: 0,
+    tooltipBGColor: 'transparent'
+});
+
 // details.js end
 /* ==============*/
  $('.ajaxoffice').live('click', function() {

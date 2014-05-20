@@ -61,7 +61,7 @@
                                         <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['phone']?>" name="phone" /></td></tr>
                                         <tr>
                                             <td width="304" class="tableheader" style="padding-right:10px">Номер счета получателя</td>
-                                            <td width="304" class="tableheader" style="padding-left:10px">ИНН</td></tr>
+                                            <td width="304" class="tableheader" style="padding-left:10px">Ваш личный ИНН <a href="#" class="tooltip_plugin" style="display: inline-block; margin-top: -1px; font: 12px Helvetica, sans-serif; color: #658fa5" title="12 цифр без пробелов">(?)</a></td></tr>
                                         <tr style="height: 80px;">
                                             <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['accountnum']?>" name="accountnum" data-validate="numeric" /></td>
                                             <td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['inn']?>" name="inn" /></td>
@@ -140,5 +140,5 @@
 
     <div class="conteiner-bottom"></div></div>
 </div><!-- .wrapper -->
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>

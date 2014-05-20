@@ -29,8 +29,8 @@ $(document).ready(function() {
     });
 
     $('.tooltip').tooltip({
-        tooltipID: 'tooltip',
-        width: '282px',
+        tooltipID: 'tooltip3',
+        width: '205px',
         correctPosX: 45,
         positionTop: -180,
         borderSize: '0px',
