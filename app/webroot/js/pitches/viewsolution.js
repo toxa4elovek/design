@@ -439,14 +439,14 @@ $(document).ready(function() {
                         if($(this).hasClass('already')) {
                             var counter = $('.value-likes')
                             var solutionId = $(this).data('id')
-                            counter.html(parseInt(counter.html()) + 1);
                             $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                                counter.html(parseInt(response.likes));
                             });
                         }else {
                             var counter = $('.value-likes')
                             var solutionId = $(this).data('id')
-                            counter.html(parseInt(counter.html()) - 1);
                             $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                                counter.html(parseInt(response.likes));
                             });
                         }
                         return false

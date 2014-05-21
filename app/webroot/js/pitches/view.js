@@ -634,18 +634,15 @@
                         $(this).toggleClass('already');
                         var counter = $('.value-likes')
                         var solutionId = $(this).data('id')
-                        var newCount = parseInt(counter.text());
                         if($(this).hasClass('already')) {
-                            newCount++;
-                            counter.text(newCount);
-                            $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
                             $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                                counter.text(parseInt(response.likes));
+                                $('.underlying-likes[data-id=' + result.solution.id + ']').text(parseInt(response.likes));
                             });
                         }else {
-                            newCount--;
-                            counter.text(newCount);
-                            $('.underlying-likes[data-id=' + result.solution.id + ']').text(newCount);
                             $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                                counter.text(parseInt(response.likes));
+                                $('.underlying-likes[data-id=' + result.solution.id + ']').text(parseInt(response.likes));
                             });
                         }
                         return false
