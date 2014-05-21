@@ -54,7 +54,7 @@
 
                         <div class="content_help_line"></div>
                         <div id="ajaxzone">
-                            <?php if(($first == 0) && ($second == 0) && ($third == 0) && ($fourth == 0)):?>
+                            <?php if(($first == 0) && ($second == 0) && ($third == 0) && ($fourth == 0) && ($fifth == 0)):?>
                             <p class="regular">По вашему запросу ничего не найдено.</p>
                             <?php endif?>
                             <?php if($first > 0):?>
