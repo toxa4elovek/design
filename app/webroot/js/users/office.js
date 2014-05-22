@@ -42,6 +42,27 @@ $(document).ready(function(){
     }
     /*var SidebarUpdater = new SidebarStatusUpdater();
     SidebarUpdater.init();*/
+    
+    // Solution Stars
+    $(document).on('mouseenter', '.ratingchange', function(){
+        $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
+    });
+
+    $(document).on('mouseleave', '.ratingcont', function() {
+        $(this).css('background', 'url(/img/' + $(this).data('default') + '-rating.png) repeat scroll 0% 0% transparent');
+    });
+    $(document).on('click', '.ratingchange', function() {
+        var id = $(this).parent().data('solutionid');
+        var rating = $(this).data('rating');
+        var self = $(this);
+        $.post('/solutions/rating/' + id + '.json',
+            {"id": id, "rating": rating}, function(response) {
+                self.parent().data('default', rating);
+                self.parent().css('background', 'url(/img/' + rating + '-rating.png) repeat scroll 0% 0% transparent');
+            });
+        return false;
+    });
+    
 });
 
 function SidebarStatusUpdater() {
@@ -310,13 +331,17 @@ function OfficeStatusUpdater() {
                     }
                     var extraUI = '';
                     if(object.type != 'PitchCreated') {
-                        extraUI = '<ul class="group">'+
-                            '<li><a href="#"></a></li>'+
-                            '<li><a href="#"></a></li>'+
-                            '<li><a href="#"></a></li>'+
-                            '<li><a href="#"></a></li>'+
-                            '<li><a href="#"></a></li>'+
-                            '</ul>'+
+                        extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
+                                <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
+                                    if($('#user_id').val() == object.pitch.user_id) {
+                                        extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                        <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                        <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                        <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                        <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
+                                    }
+                       extraUI += '</div> \
+                            </div>'+
                             '<p class="visit_number">' + object.solution.views + '</p>'+
                             '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
                     }
@@ -386,13 +411,10 @@ function OfficeStatusUpdater() {
                             '<p>' + object.humanType + '</p>'+
                             '<p class="designer_name">' + object.creator + '</p>'+
                             '<p class="add_date">' + object.humanCreated + '</p>'+
-                            '<ul class="group">'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                            '</ul>'+
+                            '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
+                                <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;"> \
+                                </div> \
+                            </div>'+
                             '<p class="visit_number">' + object.solution.views + '</p>'+
                             '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'+
                         '</section>'+
