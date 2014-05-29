@@ -47,7 +47,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata'
 	);
 
     public function blank() {
@@ -728,6 +728,13 @@ class PitchesController extends \app\controllers\AppController {
             $res['needRatingPopup'] = $pitch->ratingPopup($res['avgArray']);
             $res['needWinnerPopup'] = $pitch->winnerPopup();
             return $res;
+        }
+        return false;
+    }
+
+    public function apiPitchData() {
+        if (!empty($this->request->query['pitch_id']) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->query['pitch_id']), 'with' => array('Category'))))) {
+            return $_GET['callback'] . '(' . json_encode($pitch->pitchData()) . ')';
         }
         return false;
     }
