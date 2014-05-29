@@ -185,7 +185,7 @@ class Comment extends \app\models\AppModel {
                             $record->text = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $record->text);
 
                         }
-                        $record->text = preg_replace('#href="(?!http://)(.*)"#', 'href="http://$1"', $record->text);
+                        $record->text = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $record->text);
                     }
                     return $record;
                 };
