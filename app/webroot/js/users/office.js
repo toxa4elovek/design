@@ -1160,6 +1160,16 @@ $('.rb1').live('change', function() {
     if($(this).data('pay') == 'cards') {
         $('#cards').show();
         $('#wmr').hide();
+        $('.tooltip_plugin').tooltip({
+            tooltipID: 'tooltip3',
+            width: '205px',
+            correctPosX: 45,
+            positionTop: 180,
+            borderSize: '0px',
+            tooltipPadding: 0,
+            titleAttributeContent: '12 цифр без пробелов',
+            tooltipBGColor: 'transparent'
+        });
     }else {
         $('#cards').hide();
         $('#wmr').show();
@@ -1202,16 +1212,6 @@ $(document).on('click', function() {
     if ($('.account-check').hasClass('active')) {
         $('.account-check').remove();
     }
-});
-
-$('.tooltip_plugin').tooltip({
-    tooltipID: 'tooltip3',
-    width: '205px',
-    correctPosX: 45,
-    positionTop: 180,
-    borderSize: '0px',
-    tooltipPadding: 0,
-    tooltipBGColor: 'transparent'
 });
 
 // details.js end
