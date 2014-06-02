@@ -11,7 +11,7 @@ $(function(){
     preload([
         '/img/partners/logo_tutdesign_on.png',
         '/img/partners/surfinbird_on.png',
-        '/img/partners/play_on.png',
+        '/img/partners/clodo_on.png',
         '/img/partners/zucker_on.png',
         '/img/partners/trends_on.png',
     ]);

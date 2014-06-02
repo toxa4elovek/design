@@ -270,9 +270,9 @@
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird.png" alt="" /></a>
           <a target="_blank" style="opacity:0;position:relative;bottom:60px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird_on.png" alt="" /></a>
         </li>
-        <li style="width:99px;">
-          <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100075" data-off="/img/partners/play.png" data-on="/img/partners/play_on.png"><img class="yota" src="/img/partners/play.png" alt="" /></a>
-          <a target="_blank" style="opacity:0;position:relative;bottom:50px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100075" data-off="/img/partners/play.png" data-on="/img/partners/play_on.png"><img class="yota" src="/img/partners/play_on.png" alt="" /></a></li>
+        <li style="width:94px;text-align: center;">
+          <a target="_blank" style="opacity:1;position:relative;z-index:2;margin-left: auto; margin-right: auto;" class="hoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo.png" alt="" /></a>
+          <a target="_blank" style="opacity:0;position:relative;bottom:55px;z-index:1;" class="nonhoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo_on.png" alt="" /></a></li>
 
         <li style="width:253px;">
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker.png" alt="" /></a>
