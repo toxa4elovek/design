@@ -5,25 +5,13 @@
     <div class="middle">
         <div class="middle_inner">
             <div class="content group">
-                <section class="howitworks quiz">
+                <section class="howitworks quiz result">
                     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
-                    <p>Этот тест не претендует на замену госэкзаменов в художественных ВУЗах и не гарантирует диплом по специльности «Дизайнер». Нашей целью стал праздный интерес к уровню воды в реке под названием Графический дизайн. Мы создали 15 вопросов, в каждом из которых всего один верный ответ.</p>
-                    <h2 class="largest-header-blog">Как прошли этот тест другие?</h1>
-                    <ul class="quiz-bars">
-                        <?php foreach ($params as $data): ?>
-                        <li>
-                            <h3><?=$data['text']?></h3>
-                            <div class="bar">
-                                <div class="line<?php echo ($data['percent'] > 98) ? ' all-round' : ''; ?>" style="width: <?=$data['percent']?>%"></div>
-                                <div class="shadow-b"></div>
-                            </div>
-                            <h6><?=$data['value']?> чел.</h6>
-                        </li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <a href="/questions" class="button" style="margin-right: 15px;">Начать тест</a>
-                    <a href="/questions" class="button">Отказаться от теста</a>
-                    <div class="share-this" style="margin-top: -20px;">
+                    <p>Результат: 12 из 15</p>
+                    <h2 class="largest-header-blog">Вы— Маляр!</h1>
+                    <p>Непыльная работёнка, вы лучший кандидат в команду Тома Сойера. <br>Хорошая занятость и сдельная зарплата вам обеспечены.</p>
+                    <div class="share-this">
+                        <span>Поделиться результатом:</span>
                         <?php if (true): ?>
                             <div style="">
                                 <div style="float:left;height:20px;margin-right:15px;">
@@ -49,6 +37,7 @@
                             </div>
                         <?php endif?>
                     </div>
+                    <p>Этого,  однако, недостаточно для участия на платформе GoDesigner, <br> поэтому мы просим вас подтянуть профессиональные навыки! <br>Ваш аккаунт будет активирован через 9 дн. 21 ч. 38 мин.</p>
                 </section>
             </div><!-- /content -->
             <div class="onTopMiddle">&nbsp;</div>

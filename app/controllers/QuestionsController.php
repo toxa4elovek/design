@@ -49,4 +49,8 @@ class QuestionsController extends \app\controllers\AppController {
 
         return compact('params');
     }
+
+    public function result() {
+
+    }
 }
