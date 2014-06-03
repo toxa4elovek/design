@@ -1,0 +1,62 @@
+.howitworks.quiz h1 { 
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: url("img/images/howitworks_long.png");
+    background-origin: padding-box;
+    background-position: 50% 0px;
+    background-repeat: no-repeat;
+    background-size: auto;
+    font-family: "RodeoC", serif;
+    font-size: 12px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    height: 38px;
+    line-height: 41px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+.howitworks.quiz h2 {
+	font-family: "RodeoC", serif;
+    font-size: 17px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    line-height: 30px;
+    color: #666;
+    margin-bottom: 1em;
+}
+.howitworks.quiz ol {
+	list-style: decimal inside;
+	font-family: "RodeoC", serif;
+    font-size: 17px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    line-height: 30px;
+    color: #666;
+}
+.howitworks.quiz ol li {
+    margin: 0 0 1.5em 0;
+}
+.howitworks.quiz label {
+	display: block;
+	font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 36px;
+    color: #666;
+    margin-left: .3em;
+}
+.howitworks.quiz .radio-input {
+	vertical-align: middle;
+	margin-right: 12px;
+}
+.howitworks.quiz a.button {
+	width: 180px;
+	margin: 10px 0 45px 0;
+}
