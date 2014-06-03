@@ -63,16 +63,19 @@ class Pitch extends \app\models\AppModel {
                 }
                 if(($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
-                    $queryString = '?utm_source=twitter&utm_medium=tweet&utm_content=new-pitch-tweet&utm_campaign=sharing';
-                    $pitchUrl = 'http://www.godesigner.ru/pitches/details/' . $params['pitch']->id . $queryString;
-                    $moneyFormatter = new MoneyFormatter();
-                    $winnerPrice = $moneyFormatter->formatMoney($params['pitch']->price, array('suffix' => ' р.-'));
-                    if (rand(1, 100) <= 50) {
-                        $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer';
-                    } else {
-                        $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer';
+                    // Send Tweet for Public Pitch only
+                    if ($params['pitch']->private != 1) {
+                        $queryString = '?utm_source=twitter&utm_medium=tweet&utm_content=new-pitch-tweet&utm_campaign=sharing';
+                        $pitchUrl = 'http://www.godesigner.ru/pitches/details/' . $params['pitch']->id . $queryString;
+                        $moneyFormatter = new MoneyFormatter();
+                        $winnerPrice = $moneyFormatter->formatMoney($params['pitch']->price, array('suffix' => ' р.-'));
+                        if (rand(1, 100) <= 50) {
+                            $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer';
+                        } else {
+                            $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer';
+                        }
+                        User::sendTweet($tweet);
                     }
-                    User::sendTweet($tweet);
                     Task::createNewTask($params['pitch']->id, 'newpitch');
                 }elseif(($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {
                     User::sendAdminBriefPitch($params);
