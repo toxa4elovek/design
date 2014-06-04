@@ -32,6 +32,7 @@ class QuestionsController extends \app\controllers\AppController {
             'percent' => 0,
             'total' => Question::count(),
         );
+        $firstTime = false;
 
         if (!empty($this->request->data['questions']) && is_array($this->request->data['questions']) && ($user_id = Session::read('user.id'))) {
             $variants = Variant::all(array('conditions' => array('correct' => 1)));
@@ -50,6 +51,7 @@ class QuestionsController extends \app\controllers\AppController {
                 $test = Test::create();
                 $test->set($result);
                 $test->save();
+                $firstTime = true;
             }
 
         }
@@ -57,7 +59,7 @@ class QuestionsController extends \app\controllers\AppController {
         return $this->render(array(
             'layout' => false,
             'template' => '_result',
-            'data' => compact('result'),
+            'data' => compact('result', 'firstTime'),
         ));
     }
 }
