@@ -108,6 +108,9 @@
 .howitworks.quiz .bar .line.all-round {
 	border-radius: 10px;
 }
+.howitworks.quiz .bar .line.zero-people {
+	opacity: 0;
+}
 .howitworks.quiz .bar .shadow-b {
 	height: 20px;
     margin-top: -20px;
@@ -163,4 +166,7 @@
 }
 .howitworks.quiz div.share-this:after {
 	margin-top: 14px;
+}
+.nicht {
+	display: none;
 }

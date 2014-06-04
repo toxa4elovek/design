@@ -5,6 +5,7 @@ namespace app\controllers;
 use \app\models\Question;
 use \app\models\Variant;
 use \app\models\Test;
+use \app\models\User;
 
 use \lithium\storage\Session;
 
@@ -18,40 +19,67 @@ class QuestionsController extends \app\controllers\AppController {
             shuffle($question['variants']);
         }
 
-        return compact('questions');
-    }
-
-    public function intro() {
-        $total = 1277;
-        $params = array(
+        $usersTotal = User::count();
+        $usersTested = Test::count();
+        $usersNeud = Test::count(array(
+            'conditions' => array(
+                'percent' => array(
+                    '<' => 70,
+                ),
+            ),
+        ));
+        $usersUd = Test::count(array(
+            'conditions' => array(
+                'percent' => array(
+                    '>=' => 70,
+                    '<' => 80,
+                ),
+            ),
+        ));
+        $usersGood = Test::count(array(
+            'conditions' => array(
+                'percent' => array(
+                    '>=' => 80,
+                    '<' => 90,
+                ),
+            ),
+        ));
+        $usersExc = Test::count(array(
+            'conditions' => array(
+                'percent' => array(
+                    '>' => 90,
+                ),
+            ),
+        ));
+        $stats = array(
             '0' => array(
                 'text' => 'Количество  тестируемых',
-                'percent' => round(1000 / $total * 100),
-                'value' => 1000,
+                'percent' => round($usersTested / $usersTotal * 100),
+                'value' => $usersTested,
             ),
             '1' => array(
                 'text' => 'Неудовлетворительно',
-                'percent' => round(837 / $total * 100),
-                'value' => 837,
+                'percent' => round($usersNeud / $usersTested * 100),
+                'value' => $usersNeud,
             ),
             '2' => array(
                 'text' => 'Удовлетворительно',
-                'percent' => round(654 / $total * 100),
-                'value' => 654,
+                'percent' => round($usersUd / $usersTested * 100),
+                'value' => $usersUd,
             ),
             '3' => array(
                 'text' => 'Хорошо',
-                'percent' => round(837 / $total * 100),
-                'value' => 837,
+                'percent' => round($usersGood / $usersTested * 100),
+                'value' => $usersGood,
             ),
             '4' => array(
                 'text' => 'Отлично',
-                'percent' => round(12 / $total * 100),
-                'value' => 12,
+                'percent' => round($usersExc / $usersTested * 100),
+                'value' => $usersExc,
             ),
         );
 
-        return compact('params');
+        return compact('stats', 'questions');
     }
 
     public function validate() {
