@@ -22,7 +22,7 @@
                         <?php endforeach; ?>
                     </ul>
                     <a href="/questions" class="button" style="margin-right: 15px;">Начать тест</a>
-                    <a href="/questions" class="button">Отказаться от теста</a>
+                    <a href="#" class="button" onclick="window.history.back();return false;">Отказаться от теста</a>
                     <div class="share-this" style="margin-top: -20px;">
                         <?php if (true): ?>
                             <div style="">

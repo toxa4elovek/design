@@ -66,9 +66,11 @@
 	vertical-align: middle;
 	margin-right: 12px;
 }
-.howitworks.quiz a.button {
+.howitworks.quiz a.button,
+.howitworks.quiz .quiz_submit.button {
 	width: 180px;
 	margin: 10px 0 45px 0;
+	box-sizing: content-box;
 }
 .howitworks.quiz p {
 	width: 552px;
