@@ -27,7 +27,7 @@
     else:
         $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
     endif;
-    $description = '';
+    $description = isset($description) ? $description : '';
     ?>
     <meta property="og:image" content="<?=$url?>"/>
     <meta property="og:description" content="<?=$description?>"/>
