@@ -4,7 +4,10 @@
 
     <div class="middle">
         <div class="middle_inner">
-            <div class="content group">
+            <div class="right-sidebar">
+                <?php echo $this->stream->renderStream(5, false);?>
+            </div>
+            <div class="content group narrow">
                 <section class="howitworks quiz">
                     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
                     <p>Этот тест не претендует на замену госэкзаменов в художественных ВУЗах и не гарантирует диплом по специльности «Дизайнер». Нашей целью стал праздный интерес к уровню воды в реке под названием Графический дизайн. Мы создали 15 вопросов, в каждом из которых всего один верный ответ.</p>
@@ -70,7 +73,7 @@
                     </form>
                 </section>
             </div><!-- /content -->
-            <div class="onTopMiddle">&nbsp;</div>
+            <div class="onTopMiddle clr">&nbsp;</div>
         </div><!-- /middle_inner -->
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->
     </div><!-- /middle -->

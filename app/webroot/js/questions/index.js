@@ -21,7 +21,12 @@ $(document).ready(function() {
 
     $(document).on('click', '.js-start-test', function(e) {
         e.preventDefault();
-        $('.howitworks.quiz').fadeOut(200, function() { $(this).remove();
+        $('.right-sidebar').fadeOut(200, function() {
+            $(this).remove();
+        });
+        $('.howitworks.quiz').fadeOut(200, function() {
+            $(this).remove();
+            $('.content.group').removeClass('narrow');
             $('.nicht').toggleClass('nicht howitworks quiz').appendTo($('.content.group')).fadeIn(600);
         });
     });

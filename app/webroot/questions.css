@@ -1,3 +1,6 @@
+.content.group.narrow {
+    width: 620px;
+}
 .howitworks.quiz.result {
 	text-align: center;
 }
@@ -169,4 +172,8 @@
 }
 .nicht {
 	display: none;
+}
+.right-sidebar {
+    width: 200px;
+    float: right;
 }
