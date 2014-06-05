@@ -126,17 +126,19 @@
                         <div class="comment-touch">Просмотрено <?=date('H:i, d.m.y', strtotime($comment->touch));?></div>
                         <?php endif; ?>
                         <div class="toolbar">
-                        <?php
-                        if(($this->user->isCommentAuthor($comment->user_id)) && (($solution->step <= 2) && ($solution->pitch->status < 2))):?>
-                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
-                        <?php elseif(($this->user->isLoggedIn()) && ((!$this->user->isCommentAuthor($comment->user_id)))):?>
-                            <?php if ($this->user->isAdmin()):?>
-                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
-                            <?php endif?>
-                            <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
-                        <?php endif;?>
                         <?php if ($this->user->isAdmin()):?>
+                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
                             <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
+                        <?php else: ?>
+                            <?php if (($solution->step <= 2) && ($solution->pitch->status < 2)):?>
+                                <?php if($this->user->isCommentAuthor($comment->user_id)):?>
+                                    <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
+                                <?php endif; ?>
+
+                                <?php if(($this->user->isLoggedIn()) && ((!$this->user->isCommentAuthor($comment->user_id)))):?>
+                                    <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
+                                <?php endif;?>
+                            <?php endif; ?>
                         <?php endif?>
                         </div>
                     </div>

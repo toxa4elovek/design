@@ -68,11 +68,11 @@ $(document).ready(function() {
         return false;
     });
     
-    $(document).on('mouseenter', '.center_block section', function() {
-        $('.toolbar', this).fadeIn(200);
+    $(document).on('mouseenter', '.comments-container section', function() {
+        $('.toolbar', $(this)).fadeIn(200);
     });
-    $(document).on('mouseleave', '.center_block section', function() {
-        $('.toolbar', this).fadeOut(200);
+    $(document).on('mouseleave', '.comments-container section', function() {
+        $('.toolbar', $(this)).fadeOut(200);
     });
     
     function replyTo(target) {
