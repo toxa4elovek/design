@@ -32,7 +32,7 @@ class User extends \app\models\AppModel {
 	 *
 	 * @var array
 	 */
-    public static $admins = array(32, 4, 5, 108, 81);
+    public static $admins = array(32, 4, 5, 108, 81, 8472);
     public static $experts = array();
 
     /**
