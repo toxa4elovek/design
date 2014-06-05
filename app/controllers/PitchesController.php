@@ -1421,7 +1421,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $pitch->id), 'fields' => array('distinct(user_id)')));
 
             $formatter = new MoneyFormatter;
-            $description = mb_substr($pitch->title, 0, 150, 'UTF-8') . ((mb_strlen($pitch->title) > 150) ? '... ' : '. ') . 'Награда: ' . $formatter->formatMoney($pitch->price, array('suffix' => ' рублей')) . (($pitch->guaranteed == 1) ? ', (гарантированы)' : '');
+            $description = mb_substr($pitch->description, 0, 150, 'UTF-8') . ((mb_strlen($pitch->description) > 150) ? '... ' : '. ') . 'Награда: ' . $formatter->formatMoney($pitch->price, array('suffix' => ' рублей')) . (($pitch->guaranteed == 1) ? ', гарантированы' : '');
 
             return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description');
 		}else {
