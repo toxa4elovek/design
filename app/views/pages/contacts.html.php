@@ -33,7 +33,7 @@
 
                                 <img src="/img/map.png" alt="" style="margin-left:auto;
                                 margin-right:auto; display:block; margin-top: 20px;">
-                                <a class="regular" target="_blank" style="text-align: center;" href="http://maps.google.ru/maps?client=safari&rls=en&oe=UTF-8&redir_esc=&q=галерная+55&um=1&ie=UTF-8&hq=&hnear=0x469630e01f3c5137:0x32c7e2d0479f34ce,Галерная+ул.,+55,+Санкт-Петербург&gl=ru&ei=iQljT_LCF5L44QStgf34Bw&sa=X&oi=geocode_result&ct=image&resnum=1&ved=0CCIQ8gEwAA">карта проезда</a>
+                                <a class="regular" target="_blank" style="text-align: center;" href="http://maps.google.ru/maps?client=safari&rls=en&oe=UTF-8&redir_esc=&q=инженерная+7&um=1&ie=UTF-8&hq=&hnear=0x469630e01f3c5137:0x32c7e2d0479f34ce,Инженерная+ул.,+7,+Санкт-Петербург&gl=ru&ei=iQljT_LCF5L44QStgf34Bw&sa=X&oi=geocode_result&ct=image&resnum=1&ved=0CCIQ8gEwAA">карта проезда</a>
 
                             </div>
                         </div>
@@ -53,12 +53,11 @@
                             <a href="/answers" class="av">Все вопросы</a>
                         </div>
                         <div style="margin-top:85px; position:relative; float:left;" class="regular">
-                            ООО "КРАУД МЕДИА"<br/>
-                            Галерная 55, Санкт-Петербург<br/>
-                            +7 (812) 648 2412<br/>
-                            197 000 Россия,<br/>
-                            ИНН 7801563047<br/>
-                            ОГРН 1117847588561<br/>
+                            Наш офис:<br/>Россия, Санкт-Петербург,<br/>Инженерная 7, 3 этаж
+                            <br/><br/>
+                            Юридический адрес<br/>
+                            и адрес для документов:<br/>
+                            199397, Россия, Санкт-Петербург,<br/>ул. Беринга, д. 27
                         </div>
                         <!--div id="ap_content_r_3">
                             <h2>Популярные разделы</h2>
