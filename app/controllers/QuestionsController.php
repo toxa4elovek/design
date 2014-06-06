@@ -16,6 +16,7 @@ class QuestionsController extends \app\controllers\AppController {
 
         $questions = Question::all(array('with' => array('Variant')));
         $questions = $questions->data();
+        shuffle($questions);
         foreach ($questions as &$question) {
             shuffle($question['variants']);
         }
