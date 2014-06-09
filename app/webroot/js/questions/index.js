@@ -1,6 +1,20 @@
 $(document).ready(function() {
+    testSubmitForce = false;
+
     $(document).on('submit', '#quiz_form', function(e) {
         e.preventDefault();
+
+        $('li', $(this)).each(function(idx, obj) {
+            if ($('.radio-input:checked', $(obj)).length == 0) {
+                $(obj).addClass('not-checked');
+            }
+        });
+
+        if (($(this).find('.not-checked').length > 0) && !testSubmitForce) {
+            $.scrollTo($('.not-checked'), {duration: 500});
+            return false;
+        }
+
         $.post($(this).attr('action'), $(this).serialize(), function() {
             
         }, 'html')
@@ -14,7 +28,7 @@ $(document).ready(function() {
             });
         })
         .fail(function(response) {
-        
+
         });
         return false;
     });
@@ -33,6 +47,10 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('change', '.radio-input', function() {
+        $(this).closest('li').removeClass('not-checked');
+    });
+
     $(window).on('scroll', function() {
         $('.test-timer').css('top', $(window).scrollTop() + 40);
     });
@@ -48,4 +66,5 @@ $(document).ready(function() {
             isTest: 'on'
         });
     }
+
 });

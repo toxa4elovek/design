@@ -1416,6 +1416,7 @@ function getParameterByName(name) {
         if ((r['isTest'] == 'on') && ((hours == '0') || (hours == '00')) && ((minutes == '0') || (minutes == '00')) && (seconds < 30)) {
             $('.test-timer').addClass('warning');
             if (seconds == '0' || seconds == '00') {
+                testSubmitForce = true;
                 $('#quiz_form').trigger('submit');
             }
         }

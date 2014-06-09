@@ -83,5 +83,5 @@
 
 </div><!-- .wrapper -->
 <div class="onTop">&nbsp;</div>
-<?=$this->html->script(array('questions/index'), array('inline' => false))?>
+<?=$this->html->script(array('jquery.scrollto.min.js', 'questions/index'), array('inline' => false))?>
 <?=$this->html->style(array('/questions'), array('inline' => false))?>
