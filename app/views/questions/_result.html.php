@@ -28,7 +28,7 @@
                     <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/posts/view/<?=$post->id?>" data-text="<?=$post->title?>" data-lang="en" data-hashtags="Go_Deer">Tweet</a>
                     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                 </div>
-                <div style="float:left;height:20px;width:70px;">
+                <!--div style="float:left;height:20px;width:70px;">
                     <div class="g-plusone" data-size="medium"></div>
                 </div>
                 <div style="float:left;height:20px;width:70px;">
@@ -36,7 +36,7 @@
                 </div>
                 <div style="float:left;height:20px;width:80px;">
                     <a target="_blank" class="surfinbird__like_button" data-surf-config="{'layout': 'common', 'width': '120', 'height': '20'}" href="http://surfingbird.ru/share">Серф</a>
-                </div>
+                </div-->
                 <div style="clear:both;width:300px;height:1px;"></div>
             </div>
         <?php endif?>

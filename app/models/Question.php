@@ -42,10 +42,14 @@ class Question extends \app\models\AppModel {
                 ),
             ),
         ));
+        $totalPercent = ceil($usersTested / $usersTotal * 100);
+        if($totalPercent < 3) {
+            $totalPercent = 3;
+        }
         $stats = array(
             '0' => array(
                 'text' => 'Количество  тестируемых',
-                'percent' => round($usersTested / $usersTotal * 100),
+                'percent' => $totalPercent,
                 'value' => $usersTested,
             ),
             '1' => array(
