@@ -8,13 +8,13 @@
         <table>
         <?php if ($pitch->category_id != 10):?>
             <tr>
-                <td>
+                <td style="width: 25px;">
                     <input type="radio" name="1" class="rb1" data-pay="payanyway">
                 </td>
                 <td colspan="2" class="s3_text" style="padding-left: 20px;">
                     Оплата пластиковыми картами <br>через Payanyway<br><br>
                 </td>
-                <td>
+                <td style="width: 190px;">
                     <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
                         <input type="hidden" name="MNT_ID" value="36102238">
                         <input type="hidden" name="MNT_TRANSACTION_ID" value="">
