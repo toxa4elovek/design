@@ -23,7 +23,7 @@
                         <input type="hidden" name="MNT_TEST_MODE" value="0">
                         <input type="hidden" name="paymentSystem.unitId" value="499669">
                         <input type="hidden" name="followup" value="true">
-                        <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="background: #a2b2bb;">
+                        <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="display: none;">
                     </form>
                 </td>
             </tr>

@@ -548,7 +548,7 @@ $(document).ready(function() {
     $('.rb1').change(function() {
         switch ($(this).data('pay')) {
             case 'payanyway':
-                $("#paybutton-payanyway").removeAttr('style');
+                $("#paybutton-payanyway").fadeIn(100);
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
@@ -556,13 +556,13 @@ $(document).ready(function() {
                 break;
             case 'paymaster':
                 $("#paybutton-paymaster").removeAttr('style');
-                $("#paybutton-payanyway").css('background', '#a2b2bb');
+                $("#paybutton-payanyway").fadeOut(100);
                 $("#paymaster-images").hide();
                 $("#paymaster-select").show();
                 $('#s3_kv').hide();
                 break;
             case 'offline':
-                $("#paybutton-payanyway").css('background', '#a2b2bb');
+                $("#paybutton-payanyway").fadeOut(100);
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
