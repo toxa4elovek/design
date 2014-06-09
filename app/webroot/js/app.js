@@ -1413,6 +1413,12 @@ function getParameterByName(name) {
             thisEl.find(".timeRefDays").text('');
             days = '';
         }
+        if ((r['isTest'] == 'on') && ((hours == '0') || (hours == '00')) && ((minutes == '0') || (minutes == '00')) && (seconds < 30)) {
+            $('.test-timer').addClass('warning');
+            if (seconds == '0' || seconds == '00') {
+                $('#quiz_form').trigger('submit');
+            }
+        }
         if (!isNaN(eventDate)) {
             thisEl.find(".days").text(days);
             thisEl.find(".hours").text(hours);
