@@ -3242,4 +3242,39 @@ div.no-result p {
     color: #666666;
     margin-bottom: 28px;
 }
-
+.register_who {
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 38px;
+}
+.register_who:after {
+	display: block;
+    margin: 38px auto 28px auto;
+    width: 100%;
+    height: 1px;
+    background-color: #d5d5d5;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #f7f7f7;
+    content: '';
+}
+.register_who label {
+    color: #666;
+}
+.register_who .radio-input {
+    vertical-align: middle;
+    margin-right: 7px;
+}
+.register_who span {
+    display: inline-block;
+}
+.register_who span:before,
+.register_who span:after {
+	display: inline-block;
+    margin: 0 7px 3px 7px;
+    width: 14px;
+    height: 1px;
+    background-color: #d5d5d5;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #f7f7f7;
+    content: '';
+}

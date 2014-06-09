@@ -667,6 +667,15 @@ class UsersController extends \app\controllers\AppController {
                 $user->token = User::generateToken();
                 $user->created = date('Y-m-d H:i:s');
 
+                if (isset($this->request->data['who_am_i'])) {
+                    if ($this->request->data['who_am_i'] == 'client') {
+                        $this->request->data['isClient'] = 1;
+                    }
+                    if ($this->request->data['who_am_i'] == 'designer') {
+                        $this->request->data['isDesigner'] = 1;
+                    }
+                }
+
                 $user->set($this->request->data) ;
 			    if(($user->validates()) && ($user->save($this->request->data))) {
                     $userToLog = User::first(array('conditions' => array('id' => $user->id)));

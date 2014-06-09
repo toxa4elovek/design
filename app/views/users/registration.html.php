@@ -104,6 +104,11 @@
 					<strong class="error" style="display:block">Подтвердите пароль</strong>
 					<?php endif?>
 				</p>
+				<p class="register_who">
+				    <label><?=$this->form->radio('who_am_i', array('value' => 'client', 'class' => 'radio-input'))?>Я — Заказчик</label>
+				    <span class="">или</span>
+				    <label><?=$this->form->radio('who_am_i', array('value' => 'designer', 'class' => 'radio-input'))?>Я — Дизайнер</label>
+				</p>
 				<p class="submit">
 					<input type="submit" value="Создать аккаунт" class="button second">
 
