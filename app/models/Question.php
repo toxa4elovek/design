@@ -11,9 +11,14 @@ class Question extends \app\models\AppModel {
 
     public static function getStats() {
         $usersTotal = User::count();
-        $usersTested = Test::count();
+        $usersTested = Test::count(array(
+            'conditions' => array(
+                'first_time' => 1,
+            ),
+        ));
         $usersNeud = Test::count(array(
             'conditions' => array(
+                'first_time' => 1,
                 'percent' => array(
                     '<' => 70,
                 ),
@@ -21,6 +26,7 @@ class Question extends \app\models\AppModel {
         ));
         $usersUd = Test::count(array(
             'conditions' => array(
+                'first_time' => 1,
                 'percent' => array(
                     '>=' => 70,
                     '<' => 80,
@@ -29,6 +35,7 @@ class Question extends \app\models\AppModel {
         ));
         $usersGood = Test::count(array(
             'conditions' => array(
+                'first_time' => 1,
                 'percent' => array(
                     '>=' => 80,
                     '<' => 90,
@@ -37,6 +44,7 @@ class Question extends \app\models\AppModel {
         ));
         $usersExc = Test::count(array(
             'conditions' => array(
+                'first_time' => 1,
                 'percent' => array(
                     '>' => 90,
                 ),
