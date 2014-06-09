@@ -53,7 +53,7 @@
                         <?php endif?>
                     </div>
                 </section>
-                <section class="nicht" style="display: none;">
+                <section class="nicht" style="display: none; position: relative;">
                     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
                     <form id="quiz_form" action="/questions/validate" method="post">
                     <ol>
@@ -71,6 +71,9 @@
                     </ol>
                     <input type="submit" class="button quiz_submit" value="Отправить">
                     </form>
+                    <div class="test-timer" id="test-countdown">
+                        <span class="minutes">03</span><span class="timeRefMinutes">:</span><span class="seconds">00</span><span class="timeRefSeconds"></span>
+                    </div>
                 </section>
             </div><!-- /content -->
             <div class="onTopMiddle clr">&nbsp;</div>

@@ -28,6 +28,24 @@ $(document).ready(function() {
             $(this).remove();
             $('.content.group').removeClass('narrow');
             $('.nicht').toggleClass('nicht howitworks quiz').appendTo($('.content.group')).fadeIn(600);
+            var testSeconds = 180 // Timer Duration in Seconds
+            testCountdown(testSeconds);
         });
     });
+
+    $(window).on('scroll', function() {
+        $('.test-timer').css('top', $(window).scrollTop() + 40);
+    });
+
+    // Countdown
+    var testCountdown = function(testSeconds) {
+        var now = new Date();
+        var deadline = Math.floor((now.getTime() / 1000) + testSeconds);
+        $("#test-countdown").countdown({
+            date: deadline, // Change this to your desired date to countdown to
+            format: "on",
+            showEmptyDays: 'off',
+            isTest: 'on'
+        });
+    }
 });
