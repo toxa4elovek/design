@@ -285,3 +285,16 @@ a.next-pitch-link:hover {
 .gogo a.idea { font-size:17px; color:#444756;}
 .gogo a.go { font:32px RodeoC; color:#FFF; text-shadow: -1px -1px 0 #444756;}
 .gogo a.go:hover { text-decoration: underline}
+
+.button.add_solution {
+    font-family: Arial, sans-serif;
+    color: #fff;
+    display: block;
+    float: right;
+    margin-right: 20px;
+    margin-top: -45px;
+    width: 155px;
+}
+.button.add_solution:hover {
+	color: #fff;
+}

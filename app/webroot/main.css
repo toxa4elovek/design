@@ -2871,14 +2871,19 @@ ul.social li#rss {
     min-width: 250px;
     margin-top: 10px;
 }
-#gotest-popup {
+#gotest-popup,
+#gotest-popup_gallery {
 	position: relative;
 	width: 480px;
 	height: 460px;
 	border: 1px solid #a7a7a9;
 	background-color: #e1e1e1;
 }
-#gotest-popup:after {
+#gotest-popup_gallery {
+	height: 485px;
+}
+#gotest-popup:after,
+#gotest-popup_gallery:after {
     content: "";
     display: block;
     position: absolute;
@@ -2888,7 +2893,8 @@ ul.social li#rss {
     height: 19px;
     background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
 }
-#gotest-popup h2 {
+#gotest-popup h2,
+#gotest-popup_gallery h2 {
 	font-family: RodeoC, serif;
 	font-size: 28px;
 	font-weight: normal;
@@ -2897,7 +2903,8 @@ ul.social li#rss {
 	margin: 30px auto;
 	text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
-#gotest-popup p {
+#gotest-popup p,
+#gotest-popup_gallery p {
 	font-family: Arial, sans-serif;
     font-size: 16px;
     font-weight: normal;
@@ -2912,7 +2919,8 @@ ul.social li#rss {
     width: 168px;
     font-size: 11px;
 }
-#gotest-popup .gotest-close {
+#gotest-popup .gotest-close,
+#gotest-popup_gallery .gotest-close {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -2925,7 +2933,8 @@ ul.social li#rss {
 	background-position: 0 -15px;
 	cursor: pointer;
 }
-#gotest-popup .gotest-close:hover {
+#gotest-popup .gotest-close:hover,
+#gotest-popup_gallery .gotest-close:hover {
 	background-position: 0 0;
 }
 #popup-delete-solution,

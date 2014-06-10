@@ -13,6 +13,7 @@ use \app\models\Favourite;
 use \app\models\Solution;
 use \app\models\Wincomment;
 use \app\models\Comment;
+use \app\models\Test;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\smsfeedback\SmsFeedback;
@@ -1126,6 +1127,23 @@ class User extends \app\models\AppModel {
             return ! (bool) $message;
         }
         return false;
+    }
+
+    public static function designerTimeWait($user_id) {
+        $query = array(
+            'conditions' => array(
+                'first_time' => 1,
+                'user_id' => $user_id,
+                'percent' => array(
+                    '>=' => 90,
+                ),
+        ));
+
+        if ($test = Test::first($query)) {
+            return 5;
+        }
+
+        return 10;
     }
 
     protected static function fn_bank_account($str) {
