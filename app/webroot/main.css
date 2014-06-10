@@ -2871,6 +2871,63 @@ ul.social li#rss {
     min-width: 250px;
     margin-top: 10px;
 }
+#gotest-popup {
+	position: relative;
+	width: 480px;
+	height: 460px;
+	border: 1px solid #a7a7a9;
+	background-color: #e1e1e1;
+}
+#gotest-popup:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 10px;
+    bottom: -19px;
+    width: 454px;
+    height: 19px;
+    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+}
+#gotest-popup h2 {
+	font-family: RodeoC, serif;
+	font-size: 28px;
+	font-weight: normal;
+	color: #666;
+	text-align: center;
+	margin: 30px auto;
+	text-shadow: 0 1px 0 rgb(240, 240, 240);
+}
+#gotest-popup p {
+	font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: #666;
+    text-align: left;
+    line-height: 24px;
+    margin: 18px 28px;
+    text-shadow: 0 1px 0 rgb(240, 240, 240);
+}
+#gotest-popup .button.third {
+    margin: 18px auto;
+    width: 168px;
+    font-size: 11px;
+}
+#gotest-popup .gotest-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 15px;
+	height: 15px;
+	margin: 12px 15px 0 0;
+	overflow: hidden;
+	background-image: url('img/popup-close-sprite.png');
+	background-repeat: none;
+	background-position: 0 -15px;
+	cursor: pointer;
+}
+#gotest-popup .gotest-close:hover {
+	background-position: 0 0;
+}
 #popup-delete-solution,
 #popup-delete-comment {
 	border: 1px solid transparent;

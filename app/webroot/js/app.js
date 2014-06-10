@@ -48,6 +48,25 @@ $(document).ready(function() {
   		}
 	});
 
+	$('#registration').on('submit', function(e) {
+	    e.preventDefault();
+	    $.post($(this).attr('action') + '.json', $(this).serialize(), function(response) {
+	        if (response.who_am_i == 'designer') {
+	            $('#popup-register').modal({
+	                containerId: 'gotest-popup',
+	                opacity: 80,
+	                closeClass: 'gotest-close',
+	                onClose: function() {
+	                    $('.simplemodal-container, .simplemodal-overlay').fadeOut();
+	                    window.location.href = response.redirect;
+	                }
+	            });
+	        } else {
+	            window.location.href = response.redirect;
+	        }
+	    });
+	});
+
     $('#UserEmail').blur(function(){
         $.post('/users/checkform.json', {"email": this.value}, function(response) {
             return (response.data);

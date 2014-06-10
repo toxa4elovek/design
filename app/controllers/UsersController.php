@@ -661,18 +661,20 @@ class UsersController extends \app\controllers\AppController {
                 return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
             }else {
                 // обычная регистрация
-                if (!isset($this->request->data['case']) || $this->request->data['case'] != 'fu27fwkospf') { // Check for bots
+                if (!isset($this->request->data['case']) || $this->request->data['case'] != 'fu27fwkospf' || !$this->request->is('json')) { // Check for bots
                     return $this->redirect('/');
                 }
                 $user->token = User::generateToken();
                 $user->created = date('Y-m-d H:i:s');
 
+                $redirect = '/';
                 if (isset($this->request->data['who_am_i'])) {
                     if ($this->request->data['who_am_i'] == 'client') {
                         $this->request->data['isClient'] = 1;
                     }
                     if ($this->request->data['who_am_i'] == 'designer') {
                         $this->request->data['isDesigner'] = 1;
+                        $redirect = '/pitches';
                     }
                 }
 
@@ -692,9 +694,9 @@ class UsersController extends \app\controllers\AppController {
                            $pitch->save();
                         }
                         Session::delete('temppitch');
-                        return $this->redirect('/pitches/edit/' . $pitchId . '#step3');
+                        return array('redirect' => '/pitches/edit/' . $pitchId . '#step3', 'who_am_i' => 'client');
                     }
-                    return $this->redirect('/');
+                    return array('redirect' => $redirect, 'who_am_i' => $this->request->data['who_am_i']);
 			    }
 
             }
