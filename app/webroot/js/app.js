@@ -52,15 +52,7 @@ $(document).ready(function() {
 	    e.preventDefault();
 	    $.post($(this).attr('action') + '.json', $(this).serialize(), function(response) {
 	        if (response.who_am_i == 'designer') {
-	            $('#popup-register').modal({
-	                containerId: 'gotest-popup',
-	                opacity: 80,
-	                closeClass: 'gotest-close',
-	                onClose: function() {
-	                    $('.simplemodal-container, .simplemodal-overlay').fadeOut();
-	                    window.location.href = response.redirect;
-	                }
-	            });
+	            user_popup_register();
 	        } else {
 	            window.location.href = response.redirect;
 	        }
@@ -202,6 +194,22 @@ $(document).ready(function() {
                     }
                     $.post(registerUrl, response, function(response) {
                         var ourResponse = response;
+                        if (ourResponse.newuser == true) {
+                            $('#popup-after-facebook').modal({
+                                containerId: 'after-fb-popup',
+                                opacity: 80,
+                                closeClass: 'gotest-close',
+                                onClose: function() {
+                                    user_set_status($('#setStatus'));
+                                }
+                            });
+                        } else {
+                            if (ourResponse.redirect != false) {
+                                window.location = ourResponse.redirect;
+                            } else {
+                                window.location = '/';
+                            }
+                        }
                         /*if(ourResponse.newuser == false) {
                             var params = {};
                             params['message'] = 'Test Message';
@@ -220,11 +228,6 @@ $(document).ready(function() {
                                 }
                             });
                         }*/
-                        if (ourResponse.redirect != false) {
-                            window.location = ourResponse.redirect;
-                        } else {
-                            window.location = '/';
-                        }
                     });
 	       			/*FB.logout(function(response) {
 	         			console.log('Logged out.');
@@ -233,6 +236,36 @@ $(document).ready(function() {
 	   		}
 	 	}, {scope: 'email,publish_stream,publish_actions'});
 	});
+
+    $('#setStatus').on('submit', function(e) {
+        e.preventDefault();
+        user_set_status($(this));
+    });
+
+    var user_set_status = function($form) {
+        $('.simplemodal-container, .simplemodal-overlay').fadeOut();
+        $.modal.close();
+        $.post($form.attr('action') + '.json', $form.serialize(), function(response) {
+            if ((response.result === true) && (response.status == 'designer')) {
+                user_popup_register();
+            } else {
+                window.location.href = '/';
+            }
+        }, 'json');
+    };
+
+    var user_popup_register = function() {
+        $('#popup-register').modal({
+            containerId: 'gotest-popup',
+            opacity: 80,
+            closeClass: 'gotest-close',
+            onClose: function() {
+                $('.simplemodal-container, .simplemodal-overlay').fadeOut();
+                $.modal.close();
+                window.location.href = '/pitches';
+            }
+        });
+    };
 
     $(document).on('click', '#fav', function() {
         var link = $(this)

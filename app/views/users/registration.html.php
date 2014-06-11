@@ -168,14 +168,7 @@
 		</div><!-- .main -->
 	</div><!-- .middle -->
 
-	<div id="popup-register" style="display: none;">
-	    <h2>Спасибо за регистрацию!</h2>
-	    <p class="regular">Мы очень рады, что вы решили стать частью нашего креативного сообщества. Через 10 дней с момента регистрации вы сможете выкладывать свои идеи.</p>
-	    <p>Пока вы можете принять участие либо в бесплатных проектах, либо пройти <a href="/questions">тест на профпригодность</a>. Это уменьшит срок ожидания на 5 дней!</p>
-	    <p>Такие меры созданы для того, чтобы обезопасить дизайнеров от мошенничества и недобросовестных клиентов. Спасибо за понимание и творческих успехов!</p>
-	    <div class="wrapper" style="text-align: center;"><a href="/questions" class="button third">Пройти тест</a></div>
-	    <div class="gotest-close"></div>
-	</div>
+	<?=$this->view()->render(array('element' => 'popups/register'))?>
 
     <script type="text/javascript">
         var fb_param = {};

@@ -722,6 +722,28 @@ class UsersController extends \app\controllers\AppController {
 		return compact('user', 'invite', 'params', 'url');
 	}
 
+    public function setStatus() {
+        if (!$this->request->is('json')) {
+            return $this->redirect('/');
+        }
+
+        $redirect = '/';
+        if ($user = User::first((int) Session::read('user.id'))) {
+            if (!$this->request->data || ($this->request->data['who_am_i_fb'] == 'designer')) {
+                $user->isDesigner = 1;
+                $redirect = '/pitches';
+                $status = 'designer';
+            }
+            if ($this->request->data['who_am_i_fb'] == 'client') {
+                $user->isClient = 1;
+                $status = 'client';
+            }
+            $user->save(null, array('validate' => false));
+            return array('result' => true, 'redirect' => $redirect, 'status' => $status);
+        }
+
+        return array('result' => false, 'error' => 'no user', 'redirect' => '/');
+    }
 
     /**
      *  Метод входа, устанавлививет сессию и делает редирект в рабочий кабинет
