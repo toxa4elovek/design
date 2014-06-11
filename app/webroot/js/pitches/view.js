@@ -688,7 +688,7 @@
                         $('.description-more').hide();
                     });
                 } else {
-                    $('.solution-description').text(result.solution.description);
+                    $('.solution-description').html(result.solution.description);
                 }
                 if(result.solution.description == '') {
                     $('.solution-about').next().hide();
