@@ -1,4 +1,5 @@
 <section class="howitworks quiz result">
+    <?php $bestResult = false; ?>
     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
     <p>Результат: <?=$result['correct']?> из <?=$result['total']?></p>
     <?php if ($result['percent'] >= 0 && $result['percent'] < 70): ?>
@@ -11,6 +12,7 @@
         <h2 class="largest-header-blog">Вы — большой мастер!</h2>
         <p>Большой мастер — почётное звание и выше только бог. </p>
     <?php else: ?>
+        <?php $bestResult = true; ?>
         <h2 class="largest-header-blog">Вы — Аполлон!</h2>
         <p>Вы эталон, бог искусств. Достаточно быть собой.</p>
     <?php endif; ?>
@@ -42,6 +44,22 @@
         <?php endif?>
     </div>
     <?php if ($firstTime): ?>
-        <p>Этого,  однако, недостаточно для участия на платформе GoDesigner, <br> поэтому мы просим вас подтянуть профессиональные навыки! <br>Ваш аккаунт будет активирован через 9 дн. 21 ч. 38 мин.</p>
+        <?php if ($bestResult): ?>
+            <?php
+                $datetime1 = new DateTime();
+                $datetime2 = new DateTime(date('Y-m-d H:i:s', (strtotime($result['user_created']) + 5 * DAY)));
+                $interval = $datetime2->diff($datetime1);
+                $remain = $interval->format('%d дн. %h ч. %i мин.');
+            ?>
+            <p style="width: 600px;">Oh my God! Вам самое место на платформе GoDesigner!<br>Ваш аккаунт будет активирован через <?=$remain?> (срок сокращен на 5 дн.)</p>
+        <?php else: ?>
+            <?php
+                $datetime1 = new DateTime();
+                $datetime2 = new DateTime(date('Y-m-d H:i:s', (strtotime($result['user_created']) + 10 * DAY)));
+                $interval = $datetime2->diff($datetime1);
+                $remain = $interval->format('%d дн. %h ч. %i мин.');
+            ?>
+            <p style="width: 600px;">Этого,  однако, недостаточно для участия на платформе GoDesigner, <br> поэтому мы просим вас подтянуть профессиональные навыки! <br>Ваш аккаунт будет активирован через <?=$remain?></p>
+        <?php endif; ?>
     <?php endif; ?>
 </section>
