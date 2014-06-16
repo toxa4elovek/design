@@ -26,28 +26,30 @@
                     </ul>
                     <a href="/questions" class="button js-start-test" style="margin-right: 15px;">Начать тест</a>
                     <a href="#" class="button" onclick="window.history.back();return false;">Отказаться от теста</a>
+
                     <div class="share-this" style="margin-top: -20px;">
                         <?php if (true): ?>
                             <div style="">
-                                <div style="float:left;height:20px;margin-right:15px;">
-                                    <div class="fb-like" data-href="http://www.godesigner.ru/posts/view/<?=$post->id?>" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" data-font="arial"></div>
+                                <div style="float:left;height:20px;margin-right: 5px;">
+                                    <a href="#" class="post-to-facebook">Запостить в Фейсбук</a>
                                 </div>
-                                <div style="float:left;height:20px;width:95px;">
-                                    <div id="vk_like"></div>
+
+                                <div style="float:left;height:20px;margin-right: 5px;">
+                                    <script type="text/javascript" id="share-vk" src="http://vk.com/js/api/share.js?90"></script>
+                                    <div class="vk_share_button" style="display: inline-block;"></div>
                                 </div>
-                                <div style="float:left;height:20px;width:90px;">
-                                    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/posts/view/<?=$post->id?>" data-text="<?=$post->title?>" data-lang="en" data-hashtags="Go_Deer">Tweet</a>
+
+                                <div style="float:left;height:20px;margin-right: 5px;">
+                                    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/questions" data-text="Tweet text" data-lang="en" data-hashtags="Go_Deer" data-count="none">Tweet</a>
                                     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                                 </div>
-                                <!--div style="float:left;height:20px;width:70px;">
-                                    <div class="g-plusone" data-size="medium"></div>
+
+                                <div style="float:left;height:20px;margin-right: 5px;">
+                                    <a href="//ru.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru&media=http%3A%2F%2Fwww.godesigner.ru%2Fimg%2F4.jpg&description=<?php echo urlencode('This is description'); ?>" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
+                                    <!-- Please call pinit.js only once per page -->
+                                    <script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
                                 </div>
-                                <div style="float:left;height:20px;width:70px;">
-                                    <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fposts%2Fview%2F<?=$post->id?>&media=<?=$post->imageurl?>&description=<?=$post->title?>" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
-                                </div>
-                                <div style="float:left;height:20px;width:80px;">
-                                    <a target="_blank" class="surfinbird__like_button" data-surf-config="{'layout': 'common', 'width': '120', 'height': '20'}" href="http://surfingbird.ru/share">Серф</a>
-                                </div-->
+
                                 <div style="clear:both;width:300px;height:1px;"></div>
                             </div>
                         <?php endif?>

@@ -55,6 +55,60 @@ $(document).ready(function() {
         $('.test-timer').css('top', $(window).scrollTop() + 40);
     });
 
+    $(document).on('click', '.post-to-facebook', function() {
+        /* make the API call */
+        sendFBMessage();
+        return false;
+        FB.api(
+            "/1310636360/feed",
+            "POST",
+            {
+                message: 'Message',
+                picture: 'http://www.godesigner.ru/img/4.jpg',
+                caption: "Caption",
+                name: "Name",
+                link: "http://www.godesigner.ru/",
+                description: "Description field",
+            },
+            function (response) {
+                console.log(response);
+                if (response && !response.error) {
+                    /* handle the result */
+                }
+            }
+        );
+        return false;
+    });
+
+    var sendFBMessage = function() {
+        var dataFbWallPost = {
+            method: 'stream.publish',
+            message: "Message.",
+            display: 'iframe',
+            caption: "Caption",
+            name: "Name",
+            picture: 'http://www.permadi.com/tutorial/permadi.png',
+            link: "http://www.godesigner.ru/",
+            description: "Description field",
+        };
+        FB.ui(dataFbWallPost, function() {  });
+    }
+
+    setTimeout(function() { $('.vk_share_button').replaceWith(VK.Share.button(
+        {
+          url: 'http://www.godesigner.ru',
+          title: 'Заголовок',
+          description: 'Описание',
+          image: 'http://www.godesigner.ru/img/4.jpg',
+          noparse: true
+        },
+        {
+            type: 'round_nocount',
+            text: 'Поделиться'
+        }
+        ));
+    }, 2000);
+
     // Countdown
     var testCountdown = function(testSeconds) {
         var now = new Date();
