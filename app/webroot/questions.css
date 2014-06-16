@@ -33,6 +33,7 @@
     line-height: 30px;
     color: #666;
     margin-bottom: 1em;
+    text-shadow: 0 1px 0 #eee;
 }
 .howitworks.quiz h2.largest-header-blog {
     font: normal 28px/34px "RodeoC", sans-serif;
