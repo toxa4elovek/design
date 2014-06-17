@@ -25,6 +25,8 @@ $(document).ready(function() {
             $objOld.fadeOut(200, function() {
                 $(this).remove();
                 $objNew.hide().appendTo($container).fadeIn(600);
+                // Refresh Share Buttons
+                initShares();
             });
         })
         .fail(function(response) {
@@ -67,27 +69,39 @@ $(document).ready(function() {
             display: 'iframe',
             caption: " ",
             name: "Узнай, какой ты дизайнер на самом деле",
-            picture: 'http://www.godesigner.ru/img/icon_512.png',
+            picture: $('.post-to-facebook').data('share-image'),
             link: "http://www.godesigner.ru/questions/index",
-            description: "Тест на знание основ графического дизайна",
+            description: $('.post-to-facebook').data('share-text'),
         };
         FB.ui(dataFbWallPost, function() {  });
     }
 
-    setTimeout(function() { $('.vk_share_button').replaceWith(VK.Share.button(
-        {
-          url: 'http://www.godesigner.ru/questions/index',
-          title: 'Узнай, какой ты дизайнер на самом деле',
-          description: 'Тест на знание основ графического дизайна',
-          image: 'http://www.godesigner.ru/img/icon_512.png',
-          noparse: true
-        },
-        {
-            type: 'round_nocount',
-            text: 'Поделиться'
-        }
-        ));
-    }, 2000);
+    var initShares = function() {
+
+        setTimeout(function() {
+            // Pinterest
+            window.parsePins($('.share-this')[0]);
+
+            // Vk
+            $('.vk_share_button').replaceWith(VK.Share.button(
+            {
+              url: 'http://www.godesigner.ru/questions/index',
+              title: 'Узнай, какой ты дизайнер на самом деле',
+              description: $('.vk_share_button').data('share-text'),
+              image: $('.vk_share_button').data('share-image'),
+              noparse: true
+            },
+            {
+                type: 'round_nocount',
+                text: 'Поделиться'
+            }
+            ));
+
+            // Twitter
+            twttr.widgets.load();
+        }, 2000);
+    }
+    initShares();
 
     // Countdown
     var testCountdown = function(testSeconds) {

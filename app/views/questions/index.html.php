@@ -28,31 +28,27 @@
                     <a href="#" class="button" onclick="window.history.back();return false;">Отказаться от теста</a>
 
                     <div class="share-this" style="margin-top: -20px;">
-                        <?php if (true): ?>
-                            <div style="">
-                                <div style="float:left;height:20px;margin-right: 5px;">
-                                    <a href="#" class="post-to-facebook"><img src="/img/fb-test-share.png"></a>
-                                </div>
-
-                                <div style="float:left;height:20px;margin-right: 5px;">
-                                    <script type="text/javascript" id="share-vk" src="http://vk.com/js/api/share.js?90"></script>
-                                    <div class="vk_share_button" style="display: inline-block;"></div>
-                                </div>
-
-                                <div style="float:left;height:20px;margin-right: 5px;">
-                                    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/questions/index" data-text="Узнай, какой ты дизайнер на самом деле" data-lang="en" data-hashtags="Go_Deer" data-count="none">Tweet</a>
-                                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                                </div>
-
-                                <div style="float:left;height:20px;margin-right: 5px;">
-                                    <a href="//ru.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fquestions%2Findex&media=http%3A%2F%2Fwww.godesigner.ru%2Fimg%2Ficon_512.png&description=<?php echo urlencode('Узнай, какой ты дизайнер на самом деле'); ?>" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
-                                    <!-- Please call pinit.js only once per page -->
-                                    <script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
-                                </div>
-
-                                <div style="clear:both;width:300px;height:1px;"></div>
+                        <div style="">
+                            <?php $shareImage = 'http://www.godesigner.ru/img/icon_512.png'; ?>
+                            <div style="float:left;height:20px;margin-right: 5px;">
+                                <a href="#" class="post-to-facebook" data-share-text="Тест на знание основ графического дизайна" data-share-image="<?php echo $shareImage; ?>"><img src="/img/fb-test-share.png"></a>
                             </div>
-                        <?php endif?>
+
+                            <div style="float:left;height:20px;margin-right: 5px;">
+                                <div class="vk_share_button" style="display: inline-block;" data-share-text="Тест на знание основ графического дизайна" data-share-image="<?php echo $shareImage; ?>"></div>
+                            </div>
+
+                            <div style="float:left;height:20px;margin-right: 5px;">
+                                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/questions/index" data-text="Узнай, какой ты дизайнер на самом деле" data-lang="en" data-hashtags="Go_Deer" data-count="none">Tweet</a>
+                                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                            </div>
+
+                            <div style="float:left;height:20px;margin-right: 5px;">
+                                <a href="//ru.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fquestions%2Findex&media=<?php echo urlencode($shareImage); ?>&description=<?php echo urlencode('Узнай, какой ты дизайнер на самом деле'); ?>" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
+                            </div>
+
+                            <div style="clear:both;width:300px;height:1px;"></div>
+                        </div>
                     </div>
                 </section>
                 <section class="nicht" style="display: none; position: relative;">
@@ -85,5 +81,7 @@
 
 </div><!-- .wrapper -->
 <div class="onTop">&nbsp;</div>
+<script defer="defer" src="//assets.pinterest.com/js/pinit.js" data-pin-build="parsePins"></script>
+<script type="text/javascript" id="share-vk" src="http://vk.com/js/api/share.js?90"></script>
 <?=$this->html->script(array('jquery.scrollto.min.js', 'questions/index'), array('inline' => false))?>
 <?=$this->html->style(array('/questions'), array('inline' => false))?>
