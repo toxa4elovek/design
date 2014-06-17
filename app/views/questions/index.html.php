@@ -31,7 +31,7 @@
                         <?php if (true): ?>
                             <div style="">
                                 <div style="float:left;height:20px;margin-right: 5px;">
-                                    <a href="#" class="post-to-facebook">Запостить в Фейсбук</a>
+                                    <a href="#" class="post-to-facebook"><img src="/img/fb-test-share.png"></a>
                                 </div>
 
                                 <div style="float:left;height:20px;margin-right: 5px;">
@@ -40,12 +40,12 @@
                                 </div>
 
                                 <div style="float:left;height:20px;margin-right: 5px;">
-                                    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/questions" data-text="Tweet text" data-lang="en" data-hashtags="Go_Deer" data-count="none">Tweet</a>
+                                    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/questions/index" data-text="Узнай, какой ты дизайнер на самом деле" data-lang="en" data-hashtags="Go_Deer" data-count="none">Tweet</a>
                                     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                                 </div>
 
                                 <div style="float:left;height:20px;margin-right: 5px;">
-                                    <a href="//ru.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru&media=http%3A%2F%2Fwww.godesigner.ru%2Fimg%2F4.jpg&description=<?php echo urlencode('This is description'); ?>" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
+                                    <a href="//ru.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fquestions%2Findex&media=http%3A%2F%2Fwww.godesigner.ru%2Fimg%2Ficon_512.png&description=<?php echo urlencode('Узнай, какой ты дизайнер на самом деле'); ?>" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
                                     <!-- Please call pinit.js only once per page -->
                                     <script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
                                 </div>

@@ -56,50 +56,30 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.post-to-facebook', function() {
-        /* make the API call */
         sendFBMessage();
-        return false;
-        FB.api(
-            "/1310636360/feed",
-            "POST",
-            {
-                message: 'Message',
-                picture: 'http://www.godesigner.ru/img/4.jpg',
-                caption: "Caption",
-                name: "Name",
-                link: "http://www.godesigner.ru/",
-                description: "Description field",
-            },
-            function (response) {
-                console.log(response);
-                if (response && !response.error) {
-                    /* handle the result */
-                }
-            }
-        );
         return false;
     });
 
     var sendFBMessage = function() {
         var dataFbWallPost = {
             method: 'stream.publish',
-            message: "Message.",
+            message: "",
             display: 'iframe',
-            caption: "Caption",
-            name: "Name",
-            picture: 'http://www.permadi.com/tutorial/permadi.png',
-            link: "http://www.godesigner.ru/",
-            description: "Description field",
+            caption: " ",
+            name: "Узнай, какой ты дизайнер на самом деле",
+            picture: 'http://www.godesigner.ru/img/icon_512.png',
+            link: "http://www.godesigner.ru/questions/index",
+            description: "Тест на знание основ графического дизайна",
         };
         FB.ui(dataFbWallPost, function() {  });
     }
 
     setTimeout(function() { $('.vk_share_button').replaceWith(VK.Share.button(
         {
-          url: 'http://www.godesigner.ru',
-          title: 'Заголовок',
-          description: 'Описание',
-          image: 'http://www.godesigner.ru/img/4.jpg',
+          url: 'http://www.godesigner.ru/questions/index',
+          title: 'Узнай, какой ты дизайнер на самом деле',
+          description: 'Тест на знание основ графического дизайна',
+          image: 'http://www.godesigner.ru/img/icon_512.png',
           noparse: true
         },
         {
