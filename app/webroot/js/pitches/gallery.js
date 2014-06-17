@@ -41,19 +41,7 @@ $(document).ready(function() {
             })
         }
     })
-
-    // gplus
-    window.___gcfg = {lang: 'ru'};
-
-    (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-    })();
     
-    //vk like
-    VK.init({apiId: 2950889, onlyWidgets: true});
-
     // details.js end
     /* ==============*/
     // designers.js start
@@ -341,8 +329,32 @@ var gallerySwitch = (function() {
         });
         // Refresh Comments
         fetchPitchComments();
-        // VK
-        VK.Widgets.Like("vk_like", {type: "mini"});
+        // Reinit Socials
+        setTimeout(function() {
+            // VK
+            VK.init({apiId: 2950889, onlyWidgets: true});
+            VK.Widgets.Like("vk_like", {type: "mini"});
+
+            // Twitter
+            $.getScript('/js/pitches/gallery.twitter.js', function() {
+                if (typeof(twttr) != 'undefined') {
+                    twttr.widgets.load();
+                }
+            });
+
+            // FB
+            FB.XFBML.parse();
+
+            // gplus
+            window.___gcfg = {lang: 'ru'};
+
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+
+        }, 2000);
     };
     // Designers Tab Init
     var initDesigners = function() {

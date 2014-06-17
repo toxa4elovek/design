@@ -744,7 +744,7 @@
                     <tbody> \
                         <tr height="35"> \
                             <td width="137" valign="middle">\
-                                <a id="facebook_pop' + result.solution.id + '" class="socialite facebook-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '" data-href="http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '" data-send="false" data-layout="button_count"> \
+                                <a id="facebook_pop' + result.solution.id + '" class="socialite facebook-like fb-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '" data-href="http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '" data-send="false" data-layout="button_count"> \
                                     Share on Facebook \
                                 </a> \
                             </td> \
@@ -754,7 +754,7 @@
                         </tr> \
                         <tr height="35"> \
                             <td valign="middle"> \
-                                <a id="twitter_pop' + result.solution.id + '" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="' + tweetLike + '" data-lang="ru" data-hashtags="Go_Deer"> \
+                                <a id="twitter_pop' + result.solution.id + '" class="socialite twitter-share twitter-share-button" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="' + tweetLike + '" data-lang="ru" data-hashtags="Go_Deer"> \
                                     Share on Twitter \
                                 </a> \
                             </td> \
@@ -764,7 +764,6 @@
                         </tr> \
                         <tr height="35"> \
                             <td valign="middle"><iframe frameborder="0" scrolling="no" class="surfinbird__like_iframe" src="//surfingbird.ru/button?layout=common&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;caption=%D0%A1%D0%B5%D1%80%D1%84&amp;referrer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fview%2F101057&amp;current_url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated" style="width: 120px; height: 20px;"></iframe><a target="_blank" class="surfinbird__like_button __sb_parsed__" data-surf-config="{layout: "common", width: "120", height: 20}" href="http://surfingbird.ru/share"></a></td> \
-                            <td valign="middle"><div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 106px; height: 24px; background-position: initial initial; background-repeat: initial initial;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 106px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 24px;" tabindex="0" vspace="0" width="100%" id="I0_1372837769255" name="I0_1372837769255" src="https://apis.google.com/_/+1/fastbutton?bsv&amp;hl=ru&amp;origin=http%3A%2F%2Fwww.godesigner.ru&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;ic=1&amp;jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.ru.fjfk_NiG5Js.O%2Fm%3D__features__%2Fam%3DEQ%2Frt%3Dj%2Fd%3D1%2Frs%3DAItRSTPAdsSDioxjaY0NLzoPJdX-TT1dfg#_methods=onPlusOne%2C_ready%2C_close%2C_open%2C_resizeMe%2C_renderstart%2Concircled%2Conload&amp;id=I0_1372837769255&amp;parent=http%3A%2F%2Fwww.godesigner.ru&amp;pfname=&amp;rpctoken=95865586" allowtransparency="true" data-gapiattached="true" title="+1"></iframe></div></td> \
                         </tr> \
                         <tr height="35"> \
                             <!--td valign="middle"><script src="//platform.linkedin.com/in.js" type="text/javascript"></script> \
@@ -795,10 +794,12 @@
             }else {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
             }
-            Socialite.load($('.solution-share'), [
-                                                  $('#facebook_pop' + result.solution.id)[0],
-                                                  $('#twitter_pop' + result.solution.id)[0]
-                                              ]);
+            FB.XFBML.parse();
+            $.getScript('/js/pitches/gallery.twitter.js', function() {
+                if (typeof(twttr) != 'undefined') {
+                    twttr.widgets.load();
+                }
+            });
         });
     }
     
