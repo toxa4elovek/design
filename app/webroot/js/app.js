@@ -88,6 +88,10 @@ $(document).ready(function() {
         if (needSocialWrite) {
             $.post('/users/addsocial/' + needSocialWrite + '.json');
         }
+        // Mobile Popup
+        if (showMobilePopup) {
+            setTimeout(function() { appendMobile(); }, 5000);
+        }
         $('#feedback-link').show();
         $('#feedback-link').live('mouseover', function() {
             $(this).css('left', '0');
@@ -1041,6 +1045,26 @@ function appendSocials() {
             $('#simplemodal-overlay').fadeOut(800, function() { $(this).remove(); });
             $('#socials-modal').removeClass('simplemodal-data');
             $.modal.impl.d = {};
+        }
+    });
+}
+
+/*
+ * Append Mobile Modal
+ */
+function appendMobile() {
+    $('#mobile-modal').modal({
+        containerId: 'spinner',
+        opacity: 80,
+        close: false,
+        onShow: function() {
+            $('#mobile-modal').fadeTo(600, 1);
+        },
+        onClose: function() {
+            $('.simplemodal-container').fadeOut(800);
+            $('#simplemodal-overlay').fadeOut(800, function() {
+                $.modal.close();
+            });
         }
     });
 }
