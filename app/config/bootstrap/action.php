@@ -64,7 +64,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     // Mobile Detect
     require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'Mobile-Detect/Mobile_Detect.php');
     $mobileDetect = new Mobile_Detect;
-    if ($mobileDetect->isMobile()) {
+    if ($mobileDetect->isMobile() && !$mobileDetect->isTablet()) {
         $goMobile = 'http://m.godesigner.ru';
         $routes = array(
             'pages' => array(
