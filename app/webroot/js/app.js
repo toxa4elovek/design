@@ -1053,12 +1053,12 @@ function appendSocials() {
  * Append Mobile Modal
  */
 function appendMobile() {
-    $('#mobile-modal').modal({
+    $('#mobile-popup').modal({
         containerId: 'spinner',
         opacity: 80,
-        close: false,
+        closeClass: 'mobile-close',
         onShow: function() {
-            $('#mobile-modal').fadeTo(600, 1);
+            $('#mobile-popup').fadeTo(600, 1);
         },
         onClose: function() {
             $('.simplemodal-container').fadeOut(800);
