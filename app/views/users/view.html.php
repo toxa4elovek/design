@@ -103,7 +103,7 @@
         <div class="portfolio">
             <ul class="list_portfolio" style="margin-left:-25px;">
                 <?php foreach($selectedSolutions as $solution):
-                if(($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):
+                if((($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)) && !$this->user->isAdmin()):
                     continue;
                 endif
                 ?>
