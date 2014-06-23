@@ -106,6 +106,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
 
     public static function dailypitch($data) {
         return self::_mail(array(
+            'use-smtp' => true,
             'to' => $data['user']->email,
             'subject' => 'Новые питчи!',
             'data' => $data
@@ -114,6 +115,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
 
     public static function choosewinner($data) {
         return self::_mail(array(
+            'use-smtp' => true,
             'to' => $data['user']->email,
             'subject' => 'Срок анонсирования победителя',
             'data' => $data
@@ -122,6 +124,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
 
     public static function step2($data) {
         return self::_mail(array(
+            'use-smtp' => true,
             'to' => $data['user']->email,
             'subject' => 'Доработка макетов',
             'data' => $data
@@ -130,6 +133,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
 
     public static function step3($data) {
         return self::_mail(array(
+            'use-smtp' => true,
             'to' => $data['user']->email,
             'subject' => 'Получение исходников',
             'data' => $data
@@ -138,6 +142,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
 
     public static function step4($data) {
         return self::_mail(array(
+            'use-smtp' => true,
             'to' => $data['user']->email,
             'subject' => 'Завершение рабочего процесса, рейтинг.',
             'data' => $data
@@ -162,6 +167,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
 
     public static function winstep($data) {
         return self::_mail(array(
+            'use-smtp' => true,
             'to' => $data['user']->email,
             'subject' => 'Обновление завершающего процесса!',
             'data' => $data
