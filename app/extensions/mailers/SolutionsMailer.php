@@ -41,6 +41,7 @@ class SolutionsMailer extends \li3_mailer\extensions\Mailer {
         $designer = User::first($solution->user_id);
         $data = array('user' => $designer, 'solution' => $solution, 'pitch' => $pitch);
         return self::_mail(array(
+            'use-smtp' => true,
             'to' => $designer->email,
             'subject' => 'Ваше решение стало победителем!',
             'data' => $data

@@ -74,6 +74,7 @@ class CommentsMailer extends \li3_mailer\extensions\Mailer {
                 $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $comment);
                 return self::_mail(array(
                     'to' => $user->email,
+                    'use-smtp' => true,
                     'subject' => 'Вам оставлен новый комментарий!',
                     'data' => $data
                 ));
