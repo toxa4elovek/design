@@ -2871,6 +2871,98 @@ ul.social li#rss {
     min-width: 250px;
     margin-top: 10px;
 }
+#gotest-popup,
+#gotest-popup_gallery,
+#after-fb-popup {
+	position: relative;
+	width: 480px;
+	height: 460px;
+	border: 1px solid #a7a7a9;
+	background-color: #e1e1e1;
+}
+#gotest-popup_gallery {
+	height: 485px;
+}
+#after-fb-popup {
+	height: 300px;
+}
+#gotest-popup:after,
+#gotest-popup_gallery:after,
+#after-fb-popup:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 10px;
+    bottom: -19px;
+    width: 454px;
+    height: 19px;
+    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+}
+#gotest-popup h2,
+#gotest-popup_gallery h2,
+#after-fb-popup h2 {
+	font-family: RodeoC, serif;
+	font-size: 28px;
+	font-weight: normal;
+	color: #666;
+	text-align: center;
+	margin: 30px auto;
+	text-shadow: 0 1px 0 rgb(240, 240, 240);
+}
+#after-fb-popup h2 {
+	margin-top: 45px;
+}
+#gotest-popup p,
+#gotest-popup_gallery p {
+	font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: #666;
+    text-align: left;
+    line-height: 24px;
+    margin: 18px 28px;
+    text-shadow: 0 1px 0 rgb(240, 240, 240);
+}
+#after-fb-popup label {
+	display: block;
+	text-transform: uppercase;
+	margin: 0 0 20px 170px;
+	color: #666;
+}
+#after-fb-popup .radio-input {
+    vertical-align: middle;
+    margin-right: 7px;
+    outline: none;
+}
+#gotest-popup .button.third,
+#after-fb-popup .button.third {
+    margin: 18px auto;
+    width: 168px;
+    font-size: 11px;
+}
+#after-fb-popup .button.third {
+	width: 220px;
+}
+#gotest-popup .gotest-close,
+#gotest-popup_gallery .gotest-close,
+#after-fb-popup .gotest-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 15px;
+	height: 15px;
+	margin: 12px 15px 0 0;
+	overflow: hidden;
+	background-image: url('img/popup-close-sprite.png');
+	background-repeat: none;
+	background-position: 0 -15px;
+	cursor: pointer;
+}
+#gotest-popup .gotest-close:hover,
+#gotest-popup_gallery .gotest-close:hover,
+#after-fb-popup .gotest-close:hover {
+	background-position: 0 0;
+}
 #popup-delete-solution,
 #popup-delete-comment {
 	border: 1px solid transparent;
@@ -3298,4 +3390,39 @@ div.no-result p {
     color: #666666;
     margin-bottom: 28px;
 }
-
+.register_who {
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 38px;
+}
+.register_who:after {
+	display: block;
+    margin: 38px auto 28px auto;
+    width: 100%;
+    height: 1px;
+    background-color: #d5d5d5;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #f7f7f7;
+    content: '';
+}
+.register_who label {
+    color: #666;
+}
+.register_who .radio-input {
+    vertical-align: middle;
+    margin-right: 7px;
+}
+.register_who span {
+    display: inline-block;
+}
+.register_who span:before,
+.register_who span:after {
+	display: inline-block;
+    margin: 0 7px 3px 7px;
+    width: 14px;
+    height: 1px;
+    background-color: #d5d5d5;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #f7f7f7;
+    content: '';
+}

@@ -27,7 +27,7 @@ function mb_basename($file)
                 <nav class="other_nav_gallery clear">
                     <?php
                     if((!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1)):?>
-                        <a href="/pitches/upload/<?=$pitch->id?>" class="button" style="font-family:Arial,sans-serif;color:#ffffff;display:block;float:right;margin-right:20px; margin-top: -45px; width:155px">предложить решение</a>
+                        <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution<?php echo ($this->user->designerTimeRemain()) ? ' needWait' : '';?>">предложить решение</a>
                         <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
                         <!-- <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/> -->
                         <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>

@@ -15,6 +15,18 @@ $(document).ready(function() {
         });
     }
 
+    $(document).on('click', '.add_solution', function() {
+        if (!$(this).hasClass('needWait')) {
+            return true;
+        }
+        $('#popup-need-wait').modal({
+            containerId: 'gotest-popup_gallery',
+            opacity: 80,
+            closeClass: 'gotest-close',
+        });
+        return false;
+    });
+
     gallerySwitch.tabInit();
     enableToolbar();
     

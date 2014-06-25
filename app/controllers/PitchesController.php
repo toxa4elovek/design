@@ -35,6 +35,7 @@ use \app\extensions\helper\MoneyFormatter;
 use \app\extensions\helper\PitchTitleFormatter;
 use \app\extensions\helper\PdfGetter;
 use \app\extensions\helper\Avatar as AvatarHelper;
+use \app\extensions\helper\User as UserHelper;
 
 use \Exception;
 
@@ -1438,6 +1439,11 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $currentUser = Session::read('user.id');
             if(($pitch->published == 0) && (($currentUser != $pitch->user_id) && (!in_array($currentUser, User::$admins)))) {
                 return $this->redirect('/pitches');
+            }
+
+            $userHelper = new UserHelper(array());
+            if ($userHelper->designerTimeRemain()) {
+                return $this->redirect(array('Pitches::view', 'id' => $pitch->id));
             }
 
             if(($this->request->data)) {
