@@ -40,22 +40,24 @@
         if (stripos($first_img, 'http://') === false) {
             $first_img = 'http://www.godesigner.ru' . $first_img;
         }
-    echo '<meta content="article" property="og:type"/>';
-    echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
-    echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
-    echo '<meta property="og:title" content="' . $post->title . '"/>';
-    echo '<meta property="og:image" content="' . $first_img . '"/>';
-    echo '<meta property="fb:admins" content="nyudmitriy"/>';
-    echo '<meta property="fb:app_id" content="202765613136579"/>';
+        echo '<meta content="article" property="og:type"/>';
+        echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
+        echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
+        echo '<meta property="og:title" content="' . $post->title . '"/>';
+        echo '<meta property="og:image" content="' . $first_img . '"/>';
+        echo '<meta property="fb:admins" content="nyudmitriy"/>';
+        echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
     <?php elseif (preg_match('@/pitches/details@', $_SERVER['REQUEST_URI'])):
-    echo '<meta content="godesigner:pitch" property="og:type"/>';
-    echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
-    echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
-    echo '<meta property="og:title" content="' . htmlspecialchars($pitch->title) . '"/>';
-    echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
-    echo '<meta property="fb:admins" content="nyudmitriy"/>';
-    echo '<meta property="fb:app_id" content="202765613136579"/>';
+        echo '<meta content="godesigner:pitch" property="og:type"/>';
+        echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
+        echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
+        echo '<meta property="og:title" content="' . htmlspecialchars($pitch->title) . '"/>';
+        echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
+        echo '<meta property="fb:admins" content="nyudmitriy"/>';
+        echo '<meta property="fb:app_id" content="202765613136579"/>';
+    elseif(preg_match('@/questions/@', $_SERVER['REQUEST_URI'])):
+        echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/general_big.png"/>';
     else:
         echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
 
