@@ -11,7 +11,7 @@
                 <section class="howitworks quiz">
                     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
                     <p>Этот тест не претендует на замену госэкзаменов в художественных ВУЗах и не гарантирует диплом по специльности «Дизайнер». Нашей целью стал праздный интерес к уровню воды в реке под названием Графический дизайн. Мы создали 15 вопросов, в каждом из которых всего один верный ответ.</p>
-                    <h2 class="largest-header-blog">Как прошли этот тест другие?</h1>
+                    <h2 class="largest-header-blog">Как прошли этот тест другие?</h2>
                     <ul class="quiz-bars">
                         <?php foreach ($stats as $data): ?>
                         <li>
@@ -30,15 +30,15 @@
                     <div class="share-this" style="margin-top: -20px;">
                         <div style="">
                             <?php $shareImage = 'http://www.godesigner.ru/img/icon_512.png'; ?>
-                            <div style="float:left;height:20px;margin-right: 5px;">
+                            <div style="float:left;height:20px;margin-right: 20px;">
                                 <a href="#" class="post-to-facebook" data-share-text="Тест на знание основ графического дизайна" data-share-image="<?php echo $shareImage; ?>"><img src="/img/fb-test-share.png"></a>
                             </div>
 
-                            <div style="float:left;height:20px;margin-right: 5px;">
+                            <div style="float:left;height:20px;margin-right: 20px;">
                                 <div class="vk_share_button" style="display: inline-block;" data-share-text="Тест на знание основ графического дизайна" data-share-image="<?php echo $shareImage; ?>"></div>
                             </div>
 
-                            <div style="float:left;height:20px;margin-right: 5px;">
+                            <div style="float:left;height:20px;margin-right: 20px;">
                                 <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/questions/index" data-text="Узнай, какой ты дизайнер на самом деле" data-lang="en" data-hashtags="Go_Deer" data-count="none">Tweet</a>
                                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                             </div>

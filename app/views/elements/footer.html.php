@@ -41,6 +41,11 @@
                 <?php else:?>
                 <?=$this->html->link('Партнёрка', 'Pages::referal')?> /
                 <?php endif?>
+                <?php if(preg_match('@questions@', $_SERVER["REQUEST_URI"])):?>
+                    <?=$this->html->link('Тест', 'Questions::index', array('style' => 'color: #4a4c55'))?> /
+                <?php else:?>
+                    <?=$this->html->link('Тест', 'Questions::index')?> /
+                <?php endif?>
                 <?php if(preg_match('@posts$@', $_SERVER["REQUEST_URI"])):?>
                 <?=$this->html->link('Блог', 'Posts::index', array('style' => 'color: #4a4c55'))?> /
             	<?php else:?>
