@@ -56,8 +56,9 @@
         echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
         echo '<meta property="fb:admins" content="nyudmitriy"/>';
         echo '<meta property="fb:app_id" content="202765613136579"/>';
-    elseif(preg_match('@/questions/@', $_SERVER['REQUEST_URI'])):
-        echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/general_big.png"/>';
+    elseif(preg_match('@/questions@', $_SERVER['REQUEST_URI'])):
+        echo '<meta property="og:description" content="Узнай, какой ты дизайнер на самом деле!"/>';
+        echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/general.jpg"/>';
     else:
         echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
 

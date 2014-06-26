@@ -1135,7 +1135,7 @@ class User extends \app\models\AppModel {
                 'first_time' => 1,
                 'user_id' => $user_id,
                 'percent' => array(
-                    '>=' => 90,
+                    '>=' => 80,
                 ),
         ));
 
