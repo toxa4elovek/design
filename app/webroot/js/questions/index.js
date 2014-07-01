@@ -2,6 +2,7 @@ $(document).ready(function() {
     testSubmitForce = false;
 
     $(document).on('submit', '#quiz_form', function(e) {
+        _gaq.push(['_trackEvent', 'Тест', 'Пользователь закончил тест']);
         e.preventDefault();
 
         $('li', $(this)).each(function(idx, obj) {
@@ -36,6 +37,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.js-start-test', function(e) {
+        _gaq.push(['_trackEvent', 'Тест', 'Пользователь начал тест']);
         e.preventDefault();
         $('.right-sidebar').fadeOut(200, function() {
             $(this).remove();
@@ -58,6 +60,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.post-to-facebook', function() {
+        _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания фейсбука']);
         sendFBMessage();
         return false;
     });
@@ -96,9 +99,20 @@ $(document).ready(function() {
                 text: 'Поделиться'
             }
             ));
-
+            $('#vkshare1').on('click', function() {
+                _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания ВК']);
+            })
             // Twitter
             twttr.widgets.load();
+            twttr.events.bind('click', function (e) {
+                if(e.target.id == 'twitter-widget-1') {
+                    _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания твиттера']);
+                }
+            })
+
+            $('.pin-share').on('click', function() {
+                _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания пинтереста']);
+            })
         }, 2000);
     }
     initShares();

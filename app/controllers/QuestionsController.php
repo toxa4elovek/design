@@ -65,6 +65,12 @@ class QuestionsController extends \app\controllers\AppController {
             $test = Test::create();
             $test->set($result);
             $test->save();
+        }elseif(!Session::read('user.id')) {
+            $result['user_id'] = 0;
+            $result['first_time'] = 1;
+            $test = Test::create();
+            $test->set($result);
+            $test->save();
         }
 
         return $this->render(array(
