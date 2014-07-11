@@ -2,9 +2,9 @@
     font-family: 'RodeoC';
     src: url('/fonts/rodeoc-webfont.eot');
     src: url('/fonts/rodeoc-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/fonts/rodeoc-webfont.woff') format('woff'),
-         url('/fonts/rodeoc-webfont.ttf') format('truetype'),
-         url('/fonts/rodeoc-webfont.svg#RodeoCRegular') format('svg');
+    url('/fonts/rodeoc-webfont.woff') format('woff'),
+    url('/fonts/rodeoc-webfont.ttf') format('truetype'),
+    url('/fonts/rodeoc-webfont.svg#RodeoCRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -12,9 +12,9 @@
     font-family: 'RodeoC';
     src: url('/fonts/rodeoc-bolditalic-webfont.eot');
     src: url('/fonts/rodeoc-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/fonts/rodeoc-bolditalic-webfont.woff') format('woff'),
-         url('/fonts/rodeoc-bolditalic-webfont.ttf') format('truetype'),
-         url('/fonts/rodeoc-bolditalic-webfont.svg#RodeoCBoldItalic') format('svg');
+    url('/fonts/rodeoc-bolditalic-webfont.woff') format('woff'),
+    url('/fonts/rodeoc-bolditalic-webfont.ttf') format('truetype'),
+    url('/fonts/rodeoc-bolditalic-webfont.svg#RodeoCBoldItalic') format('svg');
     font-weight: bold;
     font-style: italic;
 }
@@ -22,20 +22,20 @@
     font-family: 'RodeoC';
     src: url('/fonts/rodeoc-bold-webfont.eot');
     src: url('/fonts/rodeoc-bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/fonts/rodeoc-bold-webfont.woff') format('woff'),
-         url('/fonts/rodeoc-bold-webfont.ttf') format('truetype'),
-         url('/fonts/rodeoc-bold-webfont.svg#RodeoCBold') format('svg');
+    url('/fonts/rodeoc-bold-webfont.woff') format('woff'),
+    url('/fonts/rodeoc-bold-webfont.ttf') format('truetype'),
+    url('/fonts/rodeoc-bold-webfont.svg#RodeoCBold') format('svg');
     font-weight: bold;
     font-style: normal;
 }
-    
+
 html {
     /*background: none repeat scroll 0 0 #282A34;*/
 }
 
 body {
     background: url('/img/main_bg.jpg') repeat scroll 0 0 transparent;
-    width: 607px;
+    width: 538px;
 }
 
 p, div, span {
@@ -45,7 +45,7 @@ p, div, span {
 }
 
 ul {
-    list-style: none;
+    /*list-style: none;*/
 }
 
 ol li {
@@ -54,9 +54,7 @@ ol li {
     text-shadow: -1px 0 0 #FFFFFF;
 }
 
-ul li:before{ content:"—"; position:relative; left:-5px;}
 ul li{
-    text-indent:-5px;
     font: 14px/20px "Arial", sans-serif;
     color: #666666;
     text-shadow: -1px 0 0 #FFFFFF;
@@ -143,4 +141,18 @@ a:active {
 .largest-header a:hover{
     color: #ff7377;
     text-decoration: none;
+}
+ul li,  ol li {
+    text-shadow: -1px 0 0 #ffffff;
+    font: 14px/20px "Arial",sans-serif;
+    color: #666666;
+}
+ul, ol {
+    list-style: disc;
+    padding-left: 15px;
+    padding-bottom: 20px;
+}
+ol {
+    list-style: decimal;
+    padding-left: 18px;
 }

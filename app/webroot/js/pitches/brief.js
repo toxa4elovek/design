@@ -1,6 +1,38 @@
 $(document).ready(function() {
     var pitchid = '';
 
+    $('#full-description, textarea[name=business-description]').tinymce({
+       // Location of TinyMCE script
+       script_url : '/js/tiny_mce/tiny_mce.js',
+
+       // General options
+       theme : "advanced",
+       plugins : "autolink,lists,style,visualchars",
+
+       // Theme options
+       theme_advanced_buttons1 : "styleselect,link,unlink,bullist,numlist,charmap",
+       theme_advanced_buttons2 : "",
+       theme_advanced_buttons3 : "",
+       theme_advanced_toolbar_location : "top",
+       theme_advanced_toolbar_align : "left",
+       theme_advanced_statusbar_location : "bottom",
+       theme_advanced_resizing : true,
+       content_css : "/css/brief_wysiwyg.css",
+       language : "ru",
+       height : "180",
+       width: '538',
+       relative_urls: false,
+       remove_script_host: false,
+       onchange_callback : function(editor) {
+           isUndo = true;
+       },
+       style_formats : [
+             {title : 'Основной текст', inline : 'span', classes: "regular"},
+             {title : 'Заголовок', inline : 'span', classes: "greyboldheader"},
+             {title : 'Дополнение', inline : 'span', classes: "supplement2"},
+         ],
+   });
+
     /* Download Form Select */
     if ((window.File != null) && (window.FileList != null)) {
         $('#new-download').show();

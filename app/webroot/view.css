@@ -878,3 +878,25 @@ a.order-button:hover {
 .designer-submit:hover {
     background-position: left bottom;
 }
+.editor_content {
+    padding-bottom: 15px;
+}
+.editor_content, .editor_content p, .editor_content ul li, .editor_content ol li {
+    text-shadow: -1px 0 0 #ffffff;
+    font: 14px/20px "Arial",sans-serif;
+    color: #666666;
+}
+.editor_content ul, .editor_content ol {
+    list-style: disc;
+    padding-left: 15px;
+    padding-bottom: 20px;
+}
+.editor_content ol {
+    list-style: decimal;
+    padding-left: 18px;
+}
+.editor_content .greyboldheader {
+    font:bold 17px/20px "RodeoC", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}

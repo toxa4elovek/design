@@ -49,11 +49,11 @@ function mb_basename($file)
 
                         <?php if(!empty($pitch->{'business-description'})):?>
                         <h2 class="blueheading">Описание бизнеса/деятельности</h2>
-                        <p class="regular"><?=$this->brief->e($pitch->{'business-description'})?></p>
+                        <div class="editor_content"><?=$this->brief->briefDetails($pitch->{'business-description'}, $pitch)?></div>
                         <?php endif;?>
 
                         <h2 class="blueheading">Описание питча</h2>
-                        <p class="regular"><?=$this->brief->e($pitch->description)?></p>
+                        <div class="editor_content"><?=$this->brief->briefDetails("Что вы хотите получить на выходе от дизайнера? \n\rЧто должно быть прописано в логотипе? Кто ваши клиенты/потребители/покупатели? Где будет это размещаться?")?></div>
 
                         <div class="separator" style="width:620px; margin:0;"></div>
 

@@ -6,6 +6,21 @@ class Brief extends \lithium\template\Helper {
     public $emailPattern = "\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b";
     public $urlPattern = '/(https?:\/\/w?w?w?\.?[a-zA-Z\.0-9]+\/.*)/i';
 
+
+    function briefDetails($string) {
+        $string = strip_tags($string, '<p><ul><ol><li><a><br><span>');
+        $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
+
+        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
+        if(preg_match($regex, $string)) {
+            $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
+        }
+        while(preg_match('#href="(?!(http|https)://)(.*)"#', $string, $match)) {
+            $string = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $string, -1);
+        }
+        return $this->stripemail($string);
+    }
+
     function e($string) {
         $string = strip_tags(nl2br($string), '<br>');
         $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
