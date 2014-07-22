@@ -238,7 +238,7 @@ function FeatureCart() {
                     self.addOption('продлить срок', 1950)
                 }
                 if($('#experts-checkbox').attr('checked')) {
-                    self.addOption('экспертное мнение', 1000)
+                    self.addOption('экспертное мнение', 1500)
                 }
             }
         }else {
