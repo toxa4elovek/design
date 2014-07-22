@@ -2,7 +2,7 @@
 <html itemscope itemtype="http://schema.org/LocalBusiness">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# godesigner: http://ogp.me/ns/fb/godesigner#">
     <?= $this->html->charset();?>
-    <?php $vars = compact('solution', 'post', 'pitch') ?>
+    <?php $vars = compact('solution', 'post', 'pitch', 'answer') ?>
     <?= $this->HtmlExtended->title($this->_request->params, $vars)?>
     <meta name="description" content="">
     <meta name="viewport" content="width=1024"/>
