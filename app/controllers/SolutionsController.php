@@ -6,6 +6,7 @@ use \lithium\storage\Session;
 use \app\models\Solution;
 use \app\models\User;
 use \app\extensions\mailers\UserMailer;
+use \lithium\analysis\Logger;
 
 class SolutionsController extends \app\controllers\AppController {
 
@@ -63,12 +64,22 @@ class SolutionsController extends \app\controllers\AppController {
         $result = false;
         $isAdmin = Session::read('user.isAdmin');
         if(($solution = Solution::first($this->request->id)) && (($isAdmin == 1) || User::checkRole('admin') || ($solution->user_id == Session::read('user.id')))) {
+            $data = array(
+                'id' => $solution->id,
+                'num' => $solution->num,
+                'user_who_deletes' => Session::read('user.id'),
+                'user_id' => $solution->user_id,
+                'date' => date('Y-m-d H:i:s'),
+                'isAdmin' => $isAdmin
+            );
+            Logger::write('info', serialize($data), array('name' => 'deleted_solutions'));
             $result = $solution->delete();
         }
         if ($this->request->is('json')) {
             return compact('result');
+        }else {
+            $this->redirect(array('Pitches::view', 'id' => $solution->pitch_id));
         }
-        $this->redirect(array('Pitches::view', 'id' => $solution->pitch_id));
     }
 
     public function warn() {

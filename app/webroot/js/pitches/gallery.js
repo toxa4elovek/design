@@ -294,7 +294,11 @@ var gallerySwitch = (function() {
         // Refresh Comments
         fetchPitchComments();
         // Pancake
-        renderFloatingBlock();
+        try {
+            renderFloatingBlock();
+        }catch(err) {
+
+        }
         var floatingBlockHeight = $('#floatingblock').height()
         var offset = $('#floatingblock').offset();
         $(window).scroll(function() {

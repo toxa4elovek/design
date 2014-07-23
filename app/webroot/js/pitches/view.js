@@ -213,7 +213,11 @@
             $(document).off('click', '#sendDeleteSolution');
             var data = form.serialize();
             $.post(form.attr('action') + '.json', data).done(function(result) {
-                solutionDelete(link);
+                if($('input[name=penalty]:checked', '#delete-solution-form').val() == '1') {
+                    softSolutionDelete(link);
+                }else {
+                    solutionDelete(link);
+                }
                 $spinner.removeClass('active');
                 $('.popup-close').click();
             });
@@ -221,6 +225,15 @@
         });
         return false;
     });
+
+    function softSolutionDelete(link) {
+        var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
+        var word = formatString(newSolutionCount, {'string':'решен', 'first':'ие', 'second':'ия', 'third':'ий'});
+        var newString = newSolutionCount + ' ' + word;
+        link.parent().parent().parent().parent().remove();
+        $('#solutions', 'ul').html(newString);
+        $('#hidden-solutions-count').val(newSolutionCount);
+    }
     
     // Instant Delete Solution
     function solutionDelete(link) {

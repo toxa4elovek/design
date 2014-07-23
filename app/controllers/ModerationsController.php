@@ -24,6 +24,7 @@ class ModerationsController extends \app\controllers\AppController {
                         'created' => $comment->created,
                         'text' => $comment->text,
                 )));
+                $pitch_id = $comment->pitch_id;
             }
             if ( ($this->request->data['model'] == 'solution') && ($solution = Solution::first($this->request->data['model_id'])) ) {
                 $data = array(
@@ -35,6 +36,7 @@ class ModerationsController extends \app\controllers\AppController {
                         'description' => $solution->description,
                         'image' => self::getThumbnail($solution),
                 )));
+                $pitch_id = $solution->pitch_id;
             }
             $data['user_id'] = $currentUser;
             $data['reason'] = $this->request->data['reason'];
@@ -51,7 +53,7 @@ class ModerationsController extends \app\controllers\AppController {
         if ($this->request->is('json')) {
             return json_encode($result);
         }
-        return $this->redirect('/pitches/view/' . $pitch->id);
+        return $this->redirect('/pitches/view/' . $pitch_id);
     }
 
     private static function getThumbnail($solution) {
