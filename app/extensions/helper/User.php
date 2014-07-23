@@ -331,7 +331,11 @@ class User extends \app\extensions\helper\Session {
      *
      * @return boolean|DateInterval
      */
-    public function designerTimeRemain() {
+    public function designerTimeRemain($pitch = false) {
+        if(($pitch) && ($pitch->free)) {
+            return false;
+        }
+
         if (!$this->isLoggedIn()) {
             return false;
         }
