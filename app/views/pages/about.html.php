@@ -11,9 +11,9 @@
                         <div id="ap_content_top">
                         	<div id="ap_content_top_l">
                             	<h2 class="largest-header"><i>Go Designer</i> — это виртуальная площадка, объединяющая дизайнеров и тех, кому нужны творческие решения</h2>
-                                <div id="ap_content_top_l_img"><img src="/img/ap_c_t_d_1.jpg"></div>
+                                <div id="ap_content_top_l_img"><img src="/img/ap_c_t_d_1.jpg" alt=""></div>
                                 <p class="regular">Мы — команда креативщиков, бизнесменов и менеджеров из мира рекламы. Мы как никто другой знакомы с проблемой, когда прямо сейчас нужны свободные дизайнеры или интересные заказы. Поэтому мы решили приложить все усилия и соединить представителей творческих профессий и заказчиков воедино, создав платформу для эффективной работы.</p>
-                                <img src="/img/ap_c_i_d_2.png">
+                                <img src="/img/ap_c_i_d_2.png" alt="">
                                 <p class="regular">Есть проекты, для которых не нужны сетевые агентства или которые нужно сделать в короткие сроки. Вот где вас выручит Go Designer — мы опубликуем ваши питчи и предоставим дизайнеров с отличными идеями. </p>
 
 <p class="regular">Вам нужен сайт, логотип, слоган, любой графический дизайн, текст или сценарий? Тогда вам — к нам! Просто опишите, что вам нужно, какой гонорар вы предлагаете и укажите дедлайн. Опубликуйте бриф на сайте, и дизайнеры со всего мира предложат вам свои решения — а вы выберете лучшее! Вы назначаете цену, вы определяете требования и дэдлайн. <br/>
@@ -25,7 +25,7 @@
                             	<div id="ap_content_r_1" class="regular">
                                     <h2 class="greyboldheader">Возникли вопросы?</h2>
                                     Вы можете найти ответ в разделе <a href="/answers">«Часто задаваемые вопросы»</a>, или напишите нам сообщение. Мы постараемся вам ответить в течении 24 часов по рабочим дням.
-                                    <?=$this->html->link('<img src="/img/ap_r_1_1.gif">', 'Pages::contacts', array('escape' => false))?>
+                                    <?=$this->html->link('<img src="/img/ap_r_1_1.gif" alt="">', 'Pages::contacts', array('escape' => false))?>
                                 </div>
                                 <div id="ap_content_r_2">
                                     <h2 class="greyboldheader">Часто задаваемые вопросы</h2>
@@ -48,9 +48,9 @@
                             </section>
                             <table>	
                             	<tr>	
-                                	<td class="img"><img src="/img/mf.png"></td>
-                                    <td class="img"><img src="/img/od.png"></td>
-                                    <td class="img"><img src="/img/dn.png"></td>
+                                	<td class="img"><img src="/img/mf.png" alt="Максим Федченко"></td>
+                                    <td class="img"><img src="/img/od.png" alt="Оксана Девочкина"></td>
+                                    <td class="img"><img src="/img/dn.png" alt="Дмитрий Ню"></td>
                                 </tr>
                                 <tr>	
                                 	<td class="title greyboldheader"><i>Максим Федченко</i><br/>(CEO)</td>

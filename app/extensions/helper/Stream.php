@@ -25,7 +25,7 @@ class Stream extends \lithium\template\Helper {
             foreach($tweets as $tweet):
                 $text = $tweet['text'];
                 if (isset($tweet['type']) && $tweet['type'] == 'tutdesign') {
-                    $image = '<a href="http://tutdesign.ru/cats/' . $tweet['category'] . '/' . $tweet['id'] . '-' . $tweet['slug'] . '.html" target="_blank"><img style="position: relative; margin: 0 0 10px 6px;" src="http://tutdesign.ru/wp-content/uploads/' . $tweet['thumbnail'] . '" width="171" height="114"></a>';
+                    $image = '<a href="http://tutdesign.ru/cats/' . $tweet['category'] . '/' . $tweet['id'] . '-' . $tweet['slug'] . '.html" target="_blank"><img style="position: relative; margin: 0 0 10px 6px;" alt="' . $text . '" src="http://tutdesign.ru/wp-content/uploads/' . $tweet['thumbnail'] . '" width="171" height="114"></a>';
                     $link = '<a style="display:inline;color:#ff585d" target="_blank" href="http://tutdesign.ru/cats/' . $tweet['category'] . '/' . $tweet['id'] . '-' . $tweet['slug'] . '.html">http://tutdesign.ru/cats/' . $tweet['category'] . '</a>';
                     $content .= '<li style="padding-left:5px;"><p class="regular" style="line-height:20px;">' . $image . '<br>' . $text . '<br>' . $link . '</p>';
                 } else {
