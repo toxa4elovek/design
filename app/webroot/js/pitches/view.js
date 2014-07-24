@@ -609,9 +609,10 @@
                 if(firstImage.length > 0){
                     ratingWidget.insertAfter(firstImage);
                 }else {
-                    ratingWidget.insertAfter('.preview');
+                    ratingWidget.insertAfter('.preview:visible');
                     $('.separator-rating').css({"margin-top": "20px", "margin-bottom": "20px"});
                 }
+
                 $("#star-widget").raty({
                     path: '/img',
                     hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
@@ -631,6 +632,7 @@
                         });
                     }
                 });
+
             } else if (currentUserId == result.solution.user_id) {
              // Solution Author views nothing
             } else { // Any User
@@ -712,6 +714,10 @@
                 }
             }else {
                 $('.solution-description').html('');
+                $('.solution-about').next().hide();
+                $('.solution-about').hide();
+                $('.solution-share').next().hide();
+                $('.solution-share').next();
                 var html = '<div class="attach-wrapper">';
                 if (result.solution.images.solution) {
                     if ($.isArray(result.solution.images.solution)) {
