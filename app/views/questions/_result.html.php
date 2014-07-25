@@ -74,7 +74,7 @@
                 }
                 $remain = $interval->format('%d дн. %h ч. %i мин.');
             ?>
-            <p style="width: 600px;">Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner!</a>!<?php if(!$old):?><br>Ваш аккаунт будет активирован через <?=$remain?> (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a><?php endif?></p>
+            <p style="width: 650px;">Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!<?php if(!$old):?><br>Ваш аккаунт будет активирован через <?=$remain?> (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a><?php endif?></p>
         <?php elseif ($secondResult): ?>
             <?php
             $old = false;

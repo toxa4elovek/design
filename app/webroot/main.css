@@ -3315,16 +3315,16 @@ thead td .sort-link {
 thead td .sort-link:hover {
     color: #969696;
 }
-.sort-link[rel="desc"] {
+.sort-link[data-dir="desc"] {
     background-position: 100% -8px;
 }
-.sort-link[rel="asc"] {
+.sort-link[data-dir="asc"] {
     background-position: 100% -30px;
 }
-.sort-link[rel="desc"]:hover {
+.sort-link[data-dir="desc"]:hover {
     background-position: 100% 3px;
 }
-.sort-link[rel="asc"]:hover {
+.sort-link[data-dir="asc"]:hover {
     background-position: 100% -19px;
 }
 .pitches-ajax-wrapper {

@@ -9,7 +9,7 @@
 
                         <h2>Возникли вопросы?</h2>
                         Если вы&nbsp;не&nbsp;можете найти ответ на&nbsp;свой вопрос&nbsp;&mdash; напишите нам. Мы&nbsp;постараемся ответить вам в&nbsp;течении 24&nbsp;часов по&nbsp;рабочим дням.
-                        <?=$this->html->link('<img src="/img/otp_em.jpg">', 'Pages::contacts', array('escape' => false))?>
+                        <?=$this->html->link('<img src="/img/otp_em.jpg" alt="Контакты">', 'Pages::contacts', array('escape' => false))?>
                     </div>
 
             </div>
@@ -31,12 +31,12 @@
                     <a href="/users/referal" class="button" style="width: 180px; text-decoration: none; margin: 20px 0 30px 0;">На страницу партнерки</a>
                     <br />
                     <div class="remark">
-                        <hr align="left">
+                        <hr>
                         <span>— В акции могут принять участие владельцы номеров следующих операторов - Россия: МТС, Мегафон, Билайн, Теле-2, Беларусь: МТС Беларусь, Velcom, Life Беларусь, DIALLOG, Украина: Киевстар, МТС Украина, Life Украина.</span>
                     </div>
                 </section>
             </div>
-
+        </div>
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->

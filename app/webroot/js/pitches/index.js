@@ -303,11 +303,11 @@ $(document).ready(function() {
 
 	// title
 	$(document).on('click', '#sort-title', function(){
-		var sortDirection = $(this).attr('rel');
+		var sortDirection = $(this).attr('data-dir');
 		if(sortDirection == 'asc') {
-			$(this).attr('rel', 'desc');
+			$(this).attr('data-dir', 'desc');
 		}else {
-			$(this).attr('rel', 'asc');
+			$(this).attr('data-dir', 'asc');
 		}
 		Table.options.order = {"title": sortDirection};
 		Table.fetchTable(Table.options);

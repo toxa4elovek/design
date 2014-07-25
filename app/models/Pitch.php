@@ -1092,14 +1092,9 @@ class Pitch extends \app\models\AppModel {
             case $percents < 89: $rating =4; break;
             case $percents <= 100: $rating =5; break;
         }
-        if((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + DAY))) {
+        $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+        if((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
             $rating = 3;
-        }elseif(($dt->format('d/m') == '12/03') && ($pitch->id == '100757')) {
-            $rating = 3;
-        }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
-            $rating = 2;
-        }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
-            $rating = 5;
         }
 
         return $rating;
@@ -1132,13 +1127,9 @@ class Pitch extends \app\models\AppModel {
             case $percents < 89: $comments =4; break;
             case $percents <= 100: $comments =5; break;
         }
-
-        if((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + DAY))) {
+        $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+        if((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
             $comments = 3;
-        }elseif(($dt->format('d/m') == '13/03') && ($pitch->id == '100757')) {
-            $comments = 4;
-        }elseif(($dt->format('d/m') == '16/08') && ($pitch->id == '101187')) {
-            $comments = 5;
         }
         return $comments;
     }

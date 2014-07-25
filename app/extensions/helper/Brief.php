@@ -76,6 +76,10 @@ class Brief extends \lithium\template\Helper {
             '<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $string);
     }
 
+    function removeEmailClean($string) {
+        return preg_replace('#' . $this->emailPattern . '#', '', $string);
+    }
+
     function stripurl($string) {
         return preg_replace($this->urlPattern, '', $string);
     }

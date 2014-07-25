@@ -652,9 +652,15 @@ function populateComment(data) {
     }
     var avatarElement = '';
     if (!data.isAdmin) {
-        avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
-                        <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
-                        </a>';
+        if(!data.isExpert) {
+            avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
+                            <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                            </a>';
+        }else {
+            avatarElement = '<a href="/experts/view/' + data.isExpert + '"> \
+                            <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
+                            </a>';
+        }
     }
     var sectionClass = '';
     if (data.isChild == 1) {
@@ -715,7 +721,7 @@ function isExpert(user, expertsObj) {
     var res = false;
     for (var key in expertsObj) {
         if (expertsObj[key].user_id == user) {
-            res = true;
+            res = expertsObj[key].id;
             break;
         }
     }

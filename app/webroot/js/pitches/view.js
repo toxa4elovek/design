@@ -213,7 +213,11 @@
             $(document).off('click', '#sendDeleteSolution');
             var data = form.serialize();
             $.post(form.attr('action') + '.json', data).done(function(result) {
-                solutionDelete(link);
+                if($('input[name=penalty]:checked', '#delete-solution-form').val() == '1') {
+                    softSolutionDelete(link);
+                }else {
+                    solutionDelete(link);
+                }
                 $spinner.removeClass('active');
                 $('.popup-close').click();
             });
@@ -221,6 +225,15 @@
         });
         return false;
     });
+
+    function softSolutionDelete(link) {
+        var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
+        var word = formatString(newSolutionCount, {'string':'решен', 'first':'ие', 'second':'ия', 'third':'ий'});
+        var newString = newSolutionCount + ' ' + word;
+        link.parent().parent().parent().parent().remove();
+        $('#solutions', 'ul').html(newString);
+        $('#hidden-solutions-count').val(newSolutionCount);
+    }
     
     // Instant Delete Solution
     function solutionDelete(link) {
@@ -596,9 +609,10 @@
                 if(firstImage.length > 0){
                     ratingWidget.insertAfter(firstImage);
                 }else {
-                    ratingWidget.insertAfter('.preview');
+                    ratingWidget.insertAfter('.preview:visible');
                     $('.separator-rating').css({"margin-top": "20px", "margin-bottom": "20px"});
                 }
+
                 $("#star-widget").raty({
                     path: '/img',
                     hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
@@ -618,6 +632,7 @@
                         });
                     }
                 });
+
             } else if (currentUserId == result.solution.user_id) {
              // Solution Author views nothing
             } else { // Any User
@@ -699,6 +714,10 @@
                 }
             }else {
                 $('.solution-description').html('');
+                $('.solution-about').next().hide();
+                $('.solution-about').hide();
+                $('.solution-share').next().hide();
+                $('.solution-share').hide();
                 var html = '<div class="attach-wrapper">';
                 if (result.solution.images.solution) {
                     if ($.isArray(result.solution.images.solution)) {

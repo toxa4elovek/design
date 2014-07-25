@@ -6,7 +6,7 @@
         живой мозговой штурм он-лайн в вашем смарт-фоне.<br>
         Подробнее <a href="http://www.godesigner.ru/posts/view/202">тут</a>.
     </p>
-    <img src="/img/popup_mob_vers.png">
+    <img src="/img/popup_mob_vers.png" alt="Мобильная версия">
     <div class="mobile-close"></div>
 </div>
 <!-- End: Mobile Popup -->

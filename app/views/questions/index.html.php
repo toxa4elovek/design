@@ -31,7 +31,7 @@
                         <div style="">
                             <?php $shareImage = 'http://www.godesigner.ru/img/icon_512.png'; ?>
                             <div style="float:left;height:20px;margin-right: 20px;">
-                                <a href="#" class="post-to-facebook" data-share-text="Тест на знание основ графического дизайна" data-share-image="<?php echo $shareImage; ?>"><img src="/img/fb-test-share.png"></a>
+                                <a href="#" class="post-to-facebook" data-share-text="Тест на знание основ графического дизайна" data-share-image="<?php echo $shareImage; ?>"><img src="/img/fb-test-share.png" alt=""></a>
                             </div>
 
                             <div style="float:left;height:20px;margin-right: 20px;">
@@ -44,7 +44,7 @@
                             </div>
 
                             <div style="float:left;height:20px;margin-right: 5px;">
-                                <a href="//ru.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fquestions%2Findex&media=<?php echo urlencode($shareImage); ?>&description=<?php echo urlencode('Узнай, какой ты дизайнер на самом деле'); ?>" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
+                                <a href="//ru.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fquestions%2Findex&amp;media=<?php echo urlencode($shareImage); ?>&amp;description=<?php echo urlencode('Узнай, какой ты дизайнер на самом деле'); ?>" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" alt=""/></a>
                             </div>
 
                             <div style="clear:both;width:300px;height:1px;"></div>

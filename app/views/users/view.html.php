@@ -1,4 +1,4 @@
-<div class="wrapper register" xmlns="http://www.w3.org/1999/html">
+<div class="wrapper register">
 
     <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
     <?php
@@ -47,14 +47,14 @@
                     <div class="info_profile_about">
                         <span class="nickname"><?=$this->user->getFormattedName($user->first_name, $user->last_name )?>!</span>
                         <ul class="profile-list-info">
-                            <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['birthdate']))?></li>
-                            <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['city']))?></li>
-                            <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['profession']))?></li>
+                            <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->removeEmailClean($userdata['birthdate']))?></li>
+                            <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->removeEmailClean($userdata['city']))?></li>
+                            <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->removeEmailClean($userdata['profession']))?></li>
                         </ul>
                         <div class="pitches">
                             <ul class="profile-list">
                                 <li class="regular-small-grey" style="color:#666666;">Питчей:<span> <?=$pitchCount?></span></li>
-                                <li class="regular-small-grey" style="color:#666666;">Решений:<span> <?=$totalSolutionNum?></li>
+                                <li class="regular-small-grey" style="color:#666666;">Решений:<span> <?=$totalSolutionNum?></span></li>
                                 <li class="regular-small-grey" style="color:#666666;">Выиграно:<span> <?=$awardedSolutionNum?></span></li>
                             </ul>
                         </div>
