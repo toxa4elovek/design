@@ -717,7 +717,7 @@
                 $('.solution-about').next().hide();
                 $('.solution-about').hide();
                 $('.solution-share').next().hide();
-                $('.solution-share').next();
+                $('.solution-share').hide();
                 var html = '<div class="attach-wrapper">';
                 if (result.solution.images.solution) {
                     if ($.isArray(result.solution.images.solution)) {
