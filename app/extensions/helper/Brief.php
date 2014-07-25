@@ -7,7 +7,7 @@ class Brief extends \lithium\template\Helper {
     public $urlPattern = '/(https?:\/\/w?w?w?\.?[a-zA-Z\.0-9]+\/.*)/i';
 
     function isUsingPlainText($pitch) {
-        if(strtotime($pitch->started) < strtotime('2014-03-25 16:30:00')) {
+        if(strtotime($pitch->started) < strtotime('2014-07-25 16:30:00')) {
             return true;
         }
         return false;
