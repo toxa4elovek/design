@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var pitchid = '';
 
-    $('#full-description, textarea[name=business-description]').tinymce({
+    $('.enable-editor').tinymce({
        // Location of TinyMCE script
        script_url : '/js/tiny_mce/tiny_mce.js',
 

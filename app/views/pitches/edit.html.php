@@ -345,14 +345,14 @@ endif?>
             <p>
                 <label>Описание бизнеса/деятельности <a href="#" class="second tooltip" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
                 <?php if($category->id == 7):?>
-                <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"><?=$pitch->{'business-description'}?></textarea>
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?>  name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"><?=$pitch->{'business-description'}?></textarea>
                 <?php else:?>
-                <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"><?=$pitch->{'business-description'}?></textarea>
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?>  name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"><?=$pitch->{'business-description'}?></textarea>
                 <?php endif?>
             </p>
             <p>
                 <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
-                <textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?> id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
 Что должно быть прописано в логотипе?
 Кто ваши клиенты/потребители/покупатели?
 Где будет это размещаться?" data-placeholder="Что вы хотите получить на выходе от дизайнера?

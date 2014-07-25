@@ -333,9 +333,9 @@ endswitch;
 					<p>
 						<label>Описание бизнеса/деятельности <a href="#" class="second tooltip" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
                         <?php if($category->id == 7):?>
-                        <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"></textarea>
+                        <textarea class="enable-editor" name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"></textarea>
                         <?php else:?>
-                        <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"></textarea>
+                        <textarea class="enable-editor" name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"></textarea>
                         <?php endif?>
                     </p>
 					<p>
@@ -345,9 +345,9 @@ endswitch;
                         <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
                         <?php endif?>
                         <?php if($category->id == 7):?>
-						<textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-low="70" data-normal="140" data-high="280" ></textarea>
+						<textarea class="enable-editor" id="full-description" name="description" cols="30" rows="10" required placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-low="70" data-normal="140" data-high="280" ></textarea>
 						<?php else:?>
-						<textarea id="full-description" name="description" cols="30" rows="10" required placeholder="<?=$word2?>" data-placeholder="<?=$word2?>" data-low="70" data-normal="140" data-high="280" ></textarea>
+						<textarea class="enable-editor" id="full-description" name="description" cols="30" rows="10" required placeholder="<?=$word2?>" data-placeholder="<?=$word2?>" data-low="70" data-normal="140" data-high="280" ></textarea>
 						<?php endif?>
 					</p>
 

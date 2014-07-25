@@ -53,7 +53,7 @@ function mb_basename($file)
                         <?php endif;?>
 
                         <h2 class="blueheading">Описание питча</h2>
-                        <div class="editor_content"><?=$this->brief->briefDetails("Что вы хотите получить на выходе от дизайнера? \n\rЧто должно быть прописано в логотипе? Кто ваши клиенты/потребители/покупатели? Где будет это размещаться?")?></div>
+                        <div class="editor_content"><?=$this->brief->briefDetails($pitch->description, $pitch)?></div>
 
                         <div class="separator" style="width:620px; margin:0;"></div>
 

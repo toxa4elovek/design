@@ -6,19 +6,34 @@ class Brief extends \lithium\template\Helper {
     public $emailPattern = "\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b";
     public $urlPattern = '/(https?:\/\/w?w?w?\.?[a-zA-Z\.0-9]+\/.*)/i';
 
-
-    function briefDetails($string) {
-        $string = strip_tags($string, '<p><ul><ol><li><a><br><span>');
-        $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
-
-        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
-        if(preg_match($regex, $string)) {
-            $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
+    function isUsingPlainText($pitch) {
+        if(strtotime($pitch->started) < strtotime('2014-03-25 16:30:00')) {
+            return true;
         }
-        while(preg_match('#href="(?!(http|https)://)(.*)"#', $string, $match)) {
-            $string = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $string, -1);
+        return false;
+    }
+
+    function briefDetails($string, $pitch) {
+        if($this->isUsingPlainText($pitch)) {
+            return $this->e($string);
+        }else {
+            $string = strip_tags($string, '<p><ul><ol><li><a><br><span>');
+            $string = preg_replace('@(<a>)(.*?)(</a>)@', '<a class="check_url" href="$2">$2$3', $string);
+
+            $num = preg_match_all('@<a class="check_url" href="(.*?)">.*?</a>@Ui', $string, $matches, PREG_SET_ORDER);
+            if ($num > 0) {
+                foreach ($matches as $match) {
+                    if (!preg_match("~^(?:f|ht)tps?://~i", $match[1])) {
+                        $linkToFixRegExp = '@(<a class="check_url" href=")(' . $match[1] . ')(">' . $match[1] . '</a>)@';
+                        $url = "http://" . $match[1];
+                        $string = preg_replace($linkToFixRegExp, '<a href="' . $url . '$3', $string);
+
+                    }
+                }
+
+            }
+            return $this->stripemail($string);
         }
-        return $this->stripemail($string);
     }
 
     function e($string) {
