@@ -373,11 +373,11 @@ class Pitch extends \app\models\AppModel {
     public static function addEditedBrief($result) {
         if(is_object($result)) {
             $addEditedBrief = function($record) {
-                $strLengthLimit = 550;
+                $strLengthLimit = 1100;
                 if(isset($record->description)) {
                     $record->editedDescription = $record->description;
                     if(mb_strlen($record->description, 'UTF-8') > $strLengthLimit) {
-                        $record->editedDescription = mb_substr($record->description, 0, $strLengthLimit, 'UTF-8') . '...';
+                        $record->editedDescription = mb_substr($record->description, 0, $strLengthLimit, 'UTF-8') . '...</p>';
                     }
                 }
                 return $record;
