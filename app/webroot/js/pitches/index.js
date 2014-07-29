@@ -224,11 +224,11 @@ $(document).ready(function() {
 
 	// price
 	$(document).on('click', '#sort-price', function(){
-		var sortDirection = $(this).attr('rel');
+		var sortDirection = $(this).attr('data-dir');
 		if(sortDirection == 'asc') {
-			$(this).attr('rel', 'desc');
+			$(this).attr('data-dir', 'desc');
 		}else {
-			$(this).attr('rel', 'asc');
+			$(this).attr('data-dir', 'asc');
 		}
 		Table.options.order = {"price": sortDirection};
 		Table.fetchTable(Table.options);
@@ -237,11 +237,11 @@ $(document).ready(function() {
 
 	// ideas_count
 	$(document).on('click', '#sort-ideas_count', function(){
-		var sortDirection = $(this).attr('rel');
+		var sortDirection = $(this).attr('data-dir');
 		if(sortDirection == 'asc') {
-			$(this).attr('rel', 'desc');
+			$(this).attr('data-dir', 'desc');
 		}else {
-			$(this).attr('rel', 'asc');
+			$(this).attr('data-dir', 'asc');
 		}
 		Table.options.order = {"ideas_count": sortDirection};
 		Table.fetchTable(Table.options);
@@ -250,11 +250,11 @@ $(document).ready(function() {
 
 	// diff
 	$(document).on('click', '#sort-finishDate', function(){
-		var sortDirection = $(this).attr('rel');
+		var sortDirection = $(this).attr('data-dir');
 		if(sortDirection == 'asc') {
-			$(this).attr('rel', 'desc');
+			$(this).attr('data-dir', 'desc');
 		}else {
-			$(this).attr('rel', 'asc');
+			$(this).attr('data-dir', 'asc');
 		}
 		Table.options.order = {"finishDate": sortDirection};
 		Table.fetchTable(Table.options);
@@ -288,7 +288,7 @@ $(document).ready(function() {
 
 	// started
 	$(document).on('click', '#sort-started', function(){
-		var sortDirection = $(this).attr('rel');
+		var sortDirection = $(this).attr('data-dir');
 		/*if(sortDirection == 'asc') {
 			$(this).attr('rel', 'desc');
 		}else {
@@ -316,11 +316,11 @@ $(document).ready(function() {
 
 	// category
 	$(document).on('click', '#sort-category', function(){
-		var sortDirection = $(this).attr('rel');
+		var sortDirection = $(this).attr('data-dir');
 		if(sortDirection == 'asc') {
-			$(this).attr('rel', 'desc');
+			$(this).attr('data-dir', 'desc');
 		}else {
-			$(this).attr('rel', 'asc');
+			$(this).attr('data-dir', 'asc');
 		}
 		Table.options.order = {"category": sortDirection};
 		Table.fetchTable(Table.options);
