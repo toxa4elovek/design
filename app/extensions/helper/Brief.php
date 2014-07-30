@@ -7,14 +7,14 @@ class Brief extends \lithium\template\Helper {
     public $urlPattern = '/(https?:\/\/w?w?w?\.?[a-zA-Z\.0-9]+\/.*)/i';
 
     function isUsingPlainText($pitch) {
-        if(strtotime($pitch->started) < strtotime('2014-07-25 16:30:00')) {
+        if((strtotime($pitch->started) < strtotime('2013-07-25 16:30:00')) or ($pitch->id == '102442')) {
             return true;
         }
         return false;
     }
 
     function briefDetails($string, $pitch) {
-        if($this->isUsingPlainText($pitch)) {
+        if($this->isUsingPlainText($pitch)){
             return $this->e($string);
         }else {
             $string = strip_tags($string, '<p><ul><ol><li><a><br><span>');
@@ -32,8 +32,21 @@ class Brief extends \lithium\template\Helper {
                 }
 
             }
-            return $this->stripemail($string);
+            return $this->softE($string);
         }
+    }
+
+    function softE($string) {
+        $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
+
+        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
+        if(preg_match($regex, $string)) {
+            $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
+        }
+        while(preg_match('#href="(?!(http|https)://)(.*)"#', $string, $match)) {
+            $string = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $string, -1);
+        }
+        return $this->stripemail($string);
     }
 
     function e($string) {

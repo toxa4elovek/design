@@ -2,11 +2,11 @@ $(document).ready(function() {
 
     $('.enable-editor').tinymce({
        // Location of TinyMCE script
-       script_url : '/js/tiny_mce/tiny_mce.js',
+        script_url : '/js/tiny_mce/tiny_mce.js',
 
-       // General options
-       theme : "advanced",
-       plugins : "autolink,lists,style,visualchars",
+        // General options
+        theme : "advanced",
+        plugins : "autolink,lists,style,visualchars,paste",
 
        // Theme options
        theme_advanced_buttons1 : "styleselect,link,unlink,bullist,numlist,charmap",
@@ -22,6 +22,19 @@ $(document).ready(function() {
        width: '538',
        relative_urls: false,
        remove_script_host: false,
+        paste_auto_cleanup_on_paste : true,
+        paste_remove_styles: true,
+        paste_remove_styles_if_webkit: true,
+        paste_strip_class_attributes: true,
+        paste_preprocess : function(pl, o) {
+            console.log(o.content);
+            if((jQuery(o.content).text() == '') && (o.content != '')) {
+                var text = o.content
+            }else {
+                var text = jQuery(o.content).text()
+            }
+            o.content = text
+        },
        onchange_callback : function(editor) {
            isUndo = true;
        },
