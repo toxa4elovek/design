@@ -28,7 +28,6 @@ $(document).ready(function() {
        paste_remove_styles_if_webkit: true,
        paste_strip_class_attributes: true,
        paste_preprocess : function(pl, o) {
-           console.log(o.content);
            if((jQuery(o.content).text() == '') && (o.content != '')) {
                var text = o.content
            }else {

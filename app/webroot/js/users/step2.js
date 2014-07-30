@@ -21,7 +21,7 @@ $(document).ready(function() {
         window.location = ($('#confirm').attr('href'));
     });
     
-    $('.edit-link-in-comment').click(function(e) {
+    $(document).on('click', '.edit-link-in-comment', function(e) {
         e.preventDefault();
         var section = $(this).parent().parent().parent();
         section.children().not('.separator').hide();
@@ -33,7 +33,7 @@ $(document).ready(function() {
         return false;
     });
 
-    $('.editcomment').click(function() {
+    $(document).on('click', '.editcomment', function() {
         var textarea = $(this).prev();
         var newcomment = textarea.val();
         var id = textarea.data('id');
@@ -164,6 +164,7 @@ function prepareWinCommentData(result) {
     commentData.commentId = result.comment.id;
     commentData.commentUserId = result.comment.user_id;
     commentData.commentText = result.comment.text;
+    commentData.commentOriginalText = result.comment.originalText;
     //commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
     commentData.commentType = (result.comment.user_id == result.comment.solution.user_id) ? 'designer' : 'client';
     commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
@@ -210,13 +211,14 @@ function populateWincomment(data) {
         answerTool = ' display: none;';
     }*/
     var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;' + answerTool + '">Ответить</a>';
+    var editToolbar = '<a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId  + '" data-text="' + data.commentOriginalText + '">Редактировать</a>';
     if (data.isCommentAuthor) {
-        toolbar = manageToolbar;
+        toolbar = manageToolbar + editToolbar;
     } else if (currentUserId) {
         toolbar = userToolbar;
     }
     if (isCurrentAdmin == 1) {
-        toolbar = manageToolbar + userToolbar;
+        toolbar = manageToolbar + userToolbar + editToolbar;
     }
     var avatarElement = '';
     if (!data.isAdmin) {

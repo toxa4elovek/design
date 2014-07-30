@@ -133,6 +133,7 @@
                             <?php if (($solution->step <= 2) && ($solution->pitch->status < 2)):?>
                                 <?php if($this->user->isCommentAuthor($comment->user_id)):?>
                                     <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
+                                    <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
                                 <?php endif; ?>
 
                                 <?php if(($this->user->isLoggedIn()) && ((!$this->user->isCommentAuthor($comment->user_id)))):?>
