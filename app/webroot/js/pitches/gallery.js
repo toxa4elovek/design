@@ -15,15 +15,30 @@ $(document).ready(function() {
         });
     }
 
+    $('#resend').click(function() {
+        $('#mailsent').show();
+        $.get('/users/resend.json', function(response) {
+        })
+        return false;
+    })
+
     $(document).on('click', '.add_solution', function() {
-        if (!$(this).hasClass('needWait')) {
+        if ((!$(this).hasClass('needWait')) && (!$(this).hasClass('needConfirm'))) {
             return true;
         }
-        $('#popup-need-wait').modal({
-            containerId: 'gotest-popup_gallery',
-            opacity: 80,
-            closeClass: 'gotest-close',
-        });
+        if($(this).hasClass('needConfirm')) {
+            $('#popup-need-confirm-email').modal({
+                containerId: 'gotest-popup_gallery',
+                opacity: 80,
+                closeClass: 'gotest-close',
+            });
+        }else if ($(this).hasClass('needWait')) {
+            $('#popup-need-wait').modal({
+                containerId: 'gotest-popup_gallery',
+                opacity: 80,
+                closeClass: 'gotest-close',
+            });
+        }
         return false;
     });
 

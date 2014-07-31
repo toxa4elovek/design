@@ -1442,7 +1442,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
 
             $userHelper = new UserHelper(array());
-            if ($userHelper->designerTimeRemain($pitch)) {
+            if (($userHelper->designerTimeRemain($pitch)) or (Session::read('user.confirmed_email') == '0')) {
                 return $this->redirect(array('Pitches::view', 'id' => $pitch->id));
             }
 

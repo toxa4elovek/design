@@ -99,7 +99,7 @@
                 }
                 $remain = $interval->format('%d дн. %h ч. %i мин.');
             ?>
-            <p style="width: 600px;">Этого,  однако, недостаточно для участия на платформе <a href="/pitches" target="_blank">GoDesigner</a>, <br> поэтому мы просим вас подтянуть профессиональные навыки! <?php if(!$old):?><br>Ваш аккаунт будет активирован через <?=$remain?><?php endif?>. Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a></p>
+            <p style="width: 600px;">Этого,  однако, недостаточно для участия на платформе <a href="/pitches" target="_blank">GoDesigner</a>, <br> поэтому мы просим вас подтянуть профессиональные навыки! Помните, что на сокращение сроков активации влияет только первое прохождение теста. <?php if(!$old):?><br>Ваш аккаунт будет активирован через <?=$remain?><?php endif?>. Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a></p>
         <?php endif; ?>
     <?php else: ?>
         <?php if ($bestResult): ?>
