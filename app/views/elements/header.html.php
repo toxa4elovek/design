@@ -206,7 +206,7 @@
                 <li class="header-menu-item"><a href="/users/solutions">Решения</a></li>
                 <li class="header-menu-item"><a href="/users/details">Реквизиты</a></li>
                 <li class="header-menu-item"><a href="/questions">Тест</a></li>
-                <li class="header-menu-item"><a href="/users/referal">Партнерка</a></li>
+                <li class="header-menu-item"><a href="/users/referal">Пригласи друга</a></li>
                 <li class="header-menu-item"><a href="/users/logout">Выйти</a></li>
             </ul>
 	</nav><!-- .nav -->
