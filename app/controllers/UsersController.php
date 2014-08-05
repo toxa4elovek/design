@@ -931,6 +931,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function profile() {
         $user = User::first(Session::read('user.id'));
+        $currentEmail = $user->email;
         $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
         $winners = array();
         foreach($winnersData as $winner) {
@@ -1008,11 +1009,13 @@ class UsersController extends \app\controllers\AppController {
                 )))) {
                 $emailInfo = 'Пользователь с таким адресом электронной почты уже существует!';
             } else {
-                $emailInfo = 'Адрес электронной почты изменён, вам необходимо подтвердить его!';
                 $user->email = $this->request->data['email'];
-                $user->confirmed_email = 0;
-                $user->token = User::generateToken();
-                UserMailer::verification_mail($user);
+                if($currentEmail != $this->request->data['email']) {
+                    $emailInfo = 'Адрес электронной почты изменён, вам необходимо подтвердить его!';
+                    $user->confirmed_email = 0;
+                    $user->token = User::generateToken();
+                    UserMailer::verification_mail($user);
+                }
             }
 
             $user->save(null, array('validate' => false));

@@ -44,12 +44,19 @@
                             if($mypitch->ideas_count == 0) {
                                 $pitchPath = 'details';
                             }
+                            $step = 0;
                             if ($mypitch->awarded != 0) {
                                 $step = $mypitch->winner->step;
                             }
                             if ($step < 1) {
                                 $step = 1;
-                            } ?>
+                            }
+                            $types = array();
+                            $types['current'] = 0;
+                            $types['needpay'] = 0;
+                            $types['finish'] = 0;
+                            $types['winner'] = 0;
+                            ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                                 <td class="pitches-name mypitches">
                                     <a href="/pitches/view/<?=$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
