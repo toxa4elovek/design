@@ -71,6 +71,7 @@ class Optimize extends \lithium\template\Helper {
         // Set the output path
         $output_hash = md5(serialize($output_hash));
         $output_file = Media::asset($library['config']['js']['output_directory'] . DIRECTORY_SEPARATOR . $output_hash, 'js');
+		$output_file = str_replace("\\", "", $output_file);
         $output_folder = $webroot . strstr($output_file, $output_hash, true);
 
         // If the output directory doesn't exist, return the scripts like normal... TODO: also ensure permissions to write here?
@@ -212,6 +213,7 @@ class Optimize extends \lithium\template\Helper {
         // Set the output path
         $output_hash = md5(serialize($output_hash));
         $output_file = Media::asset($library['config']['css']['output_directory'] . DIRECTORY_SEPARATOR . $output_hash, 'css');
+		$output_file = str_replace("\\", "", $output_file);
         $output_folder = $webroot . strstr($output_file, $output_hash, true);
 
         // If the output directory doesn't exist, return the scripts like normal...
