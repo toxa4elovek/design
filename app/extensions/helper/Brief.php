@@ -98,20 +98,44 @@ class Brief extends \lithium\template\Helper {
         $string = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', $string);
         return $string;
     }
-
+	
+	/**
+     * Метод производит замену email на ссылку с вопросом помощи
+     *
+     * @param $string
+     * @return string
+     */
     function stripemail($string){
         return preg_replace('#' . $this->emailPattern . '#',
             '<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $string);
     }
 
+	/**
+     * Метод удаляет email адрес из строки
+     *
+     * @param $string
+     * @return string
+     */
     function removeEmailClean($string) {
         return preg_replace('#' . $this->emailPattern . '#', '', $string);
     }
 
+	/**
+     * Метод удаляет url из строки
+     *
+     * @param $string
+     * @return string
+     */
     function stripurl($string) {
         return preg_replace($this->urlPattern, '', $string);
     }
 
+	/**
+     * Метод создает mailto ссылку из email адреса
+     *
+     * @param $string
+     * @return string
+     */
     function linkemail($string) {
         return preg_replace('#(' . $this->emailPattern . ')#',
             '<a href="mailto://$1">$1</a>', $string);
