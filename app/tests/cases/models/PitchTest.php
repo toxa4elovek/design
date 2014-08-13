@@ -178,4 +178,25 @@ class PitchTest extends AppUnit {
         $this->assertEqual('created', $result);
     }
 
+    public function testGetQueryPageNum() {
+        // по умолчанию должна быть единичка
+        $pageNum = Pitch::getQueryPageNum();
+        $this->assertEqual(1, $pageNum);
+        // если входящий параметр - не число, то возвращяем значение по умолчанию
+        $pageNum = Pitch::getQueryPageNum(null);
+        $this->assertEqual(1, $pageNum);
+        $pageNum = Pitch::getQueryPageNum(false);
+        $this->assertEqual(1, $pageNum);
+        $pageNum = Pitch::getQueryPageNum('string');
+        $this->assertEqual(1, $pageNum);
+        // если вводим не целое или отрицальное число, возвращаем целое и положительно
+        $pageNum = Pitch::getQueryPageNum(-5);
+        $this->assertEqual(5, $pageNum);
+        $pageNum = Pitch::getQueryPageNum(5.25);
+        $this->assertEqual(5, $pageNum);
+        // если вводим просто страницу, возвращаем её
+        $pageNum = Pitch::getQueryPageNum(5);
+        $this->assertEqual(5, $pageNum);
+    }
+
 }
