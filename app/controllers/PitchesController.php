@@ -91,7 +91,7 @@ class PitchesController extends \app\controllers\AppController {
         }
 
         $limit = 50;
-		$page = 1;
+		$page = Pitch::getQueryPageNum($this->request->query['page']);
 		$types = array(
 			'finished' => array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)'))),
 			'current' => array('status' => array('<' => 2), 'awarded' => 0),
@@ -103,12 +103,13 @@ class PitchesController extends \app\controllers\AppController {
                 ),
             ),
         );
-		$priceFilter = array(
+		$priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
+/* 		$priceFilter = array(
 			'all' => array(),
 			'1' => array('price' => array('>' => 3000, '<=' => 10000)),
 			'2' => array('price' => array('>' => 10000, '<=' => 20000)),
 			'3' => array('price' => array('>' => 20000))
-		);
+		); */
 		$order = array(
             'free' => 'desc',
 			'price' => 'desc',
@@ -125,14 +126,8 @@ class PitchesController extends \app\controllers\AppController {
 		$category = array();
 		$conditions = array('published' => 1);
         $hasTag = false;
-		if(isset($this->request->query['page'])) {
-			$page = abs(intval($this->request->query['page']));
-		}
-		if((isset($this->request->query['priceFilter'])) && ($this->request->query['priceFilter'] != 'all') && (isset($priceFilter[$this->request->query['priceFilter']]))) {
-            $priceFilter = $priceFilter[$this->request->query['priceFilter']];
+		if($priceFilter != 'all') {
             $hasTag = true;
-		}else {
-			$priceFilter = $priceFilter['all'];
 		}
         if((isset($this->request->params['category'])) && (($this->request->params['category'] == 'all') || (in_array($this->request->params['category'], $allowedCategories)))){
             $category = $this->request->params['category'];

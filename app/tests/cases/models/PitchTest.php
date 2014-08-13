@@ -198,5 +198,15 @@ class PitchTest extends AppUnit {
         $pageNum = Pitch::getQueryPageNum(5);
         $this->assertEqual(5, $pageNum);
     }
-
+	
+	public function testgetQueryPriceFilter() {
+		// По умолчанию
+		$this->assertEqual(array(),Pitch::getQueryPriceFilter());
+		// Цена от 3000 - 10000
+		$this->assertEqual(array('price' => array('>' => 3000, '<=' => 10000)),Pitch::getQueryPriceFilter(1));
+		// Цена от 10000 - 20000
+		$this->assertEqual(array('price' => array('>' => 10000, '<=' => 20000)),Pitch::getQueryPriceFilter(2));
+		// Цена больше 20000
+		$this->assertEqual(array('price' => array('>' => 20000)),Pitch::getQueryPriceFilter(3));
+	}
 }

@@ -1133,4 +1133,39 @@ class Pitch extends \app\models\AppModel {
         }
         return $comments;
     }
+	
+	/**
+    * Метод возвращает номер страницы
+    *
+    * @param $page
+    * @return integer
+    */
+	public static function getQueryPageNum($page=1) {
+		$page = abs(intval($page));
+		if($page==0) $page=1;
+		return $page;
+	}
+	
+	/**
+    * Метод возвращает ценовой диапазон
+    *
+    * @param $priceFilter
+    * @return array
+    */
+	public static function getQueryPriceFilter($priceFilter='') {
+		switch ($priceFilter) {
+			case 1:
+				$result = array('price' => array('>' => 3000, '<=' => 10000));
+				break;
+			case 2:
+				$result = array('price' => array('>' => 10000, '<=' => 20000));
+				break;
+			case 3:
+				$result = array('price' => array('>' => 20000));
+				break;
+			default:
+				$result =  array();
+		}
+		return $result;
+	}
 }
