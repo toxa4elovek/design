@@ -1152,7 +1152,7 @@ class Pitch extends \app\models\AppModel {
     * @param $priceFilter
     * @return array
     */
-	public static function getQueryPriceFilter($priceFilter='') {
+	public static function getQueryPriceFilter($priceFilter=0) {
 		switch ($priceFilter) {
 			case 1:
 				$result = array('price' => array('>' => 3000, '<=' => 10000));
@@ -1162,6 +1162,32 @@ class Pitch extends \app\models\AppModel {
 				break;
 			case 3:
 				$result = array('price' => array('>' => 20000));
+				break;
+			default:
+				$result =  array();
+		}
+		return $result;
+	}
+	
+	/**
+    * Метод возвращает ценовой диапазон
+    *
+    * @param $priceFilter
+    * @return array
+    */
+	public static function getQueryTimeframe($timeframe=0) {
+		switch ($timeframe) {
+			case 1:
+				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3))));
+				break;
+			case 2:
+				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7))));
+				break;
+			case 3:
+				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10))));
+				break;
+			case 4:
+				$result = array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14))));
 				break;
 			default:
 				$result =  array();

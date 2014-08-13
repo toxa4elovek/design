@@ -209,4 +209,17 @@ class PitchTest extends AppUnit {
 		// Цена больше 20000
 		$this->assertEqual(array('price' => array('>' => 20000)),Pitch::getQueryPriceFilter(3));
 	}
+	
+	public function testgetQueryTimeframe() {
+		// По умолчанию
+		$this->assertEqual(array(),Pitch::getQueryTimeframe());
+		// 3 дня
+		$this->assertEqual(array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3)))),Pitch::getQueryTimeframe(1));
+		// 7 дней
+		$this->assertEqual(array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7)))),Pitch::getQueryTimeframe(2));
+		// 10 дней
+		$this->assertEqual(array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10)))),Pitch::getQueryTimeframe(3));
+		// 14 дней
+		$this->assertEqual(array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14)))),Pitch::getQueryTimeframe(4));
+	}
 }

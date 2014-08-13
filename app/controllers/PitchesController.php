@@ -109,18 +109,19 @@ class PitchesController extends \app\controllers\AppController {
 			'price' => 'desc',
             'started' => 'desc'
 		);
-        $timeleftFilter = array(
+		$timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
+/*         $timeleftFilter = array(
             '1' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3)))),
             '2' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7)))),
             '3' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10)))),
             '4' => array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14)))),
             'all' => array()
-        );
+        ); */
         $type = 'index';
 		$category = array();
 		$conditions = array('published' => 1);
         $hasTag = false;
-		if(empty($priceFilter)) {
+		if(!empty($priceFilter)) {
             $hasTag = true;
 		}
         if((isset($this->request->params['category'])) && (($this->request->params['category'] == 'all') || (in_array($this->request->params['category'], $allowedCategories)))){
@@ -142,9 +143,9 @@ class PitchesController extends \app\controllers\AppController {
 			}
 		}
         $timeframe = array();
-        if((isset($this->request->query['timeframe'])) && (($this->request->query['timeframe'] == 'all') || (in_array($this->request->query['timeframe'], $allowedTimeframe)))){
+        if(!empty($timeleftFilter)){
             $hasTag = true;
-            $timeframe = $timeleftFilter[$this->request->query['timeframe']];
+            $timeframe = $timeleftFilter;
         }
         $search = array();
         if((isset($this->request->query['searchTerm'])) && ($this->request->query['searchTerm'] != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ' && $this->request->query['searchTerm'] != '')){
