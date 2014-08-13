@@ -43,20 +43,20 @@ class PitchTest extends AppUnit {
         $pitch3 = Pitch::first(3);
         Session::write('user.id', 2);
         $result = $pitch3->getSolutionsSortingOrder();
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь не владелец питча и питч уже не проводится
         $pitch3 = Pitch::first(3);
         Session::write('user.id', 4);
         $result = $pitch3->getSolutionsSortingOrder();
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
     }
 
     public function testGetSolutionsSortingOrderWithParamNonClient() {
         // Пользователь не-владелец питча, рейтинг
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('rating');
-        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь не-владелец питча, дата создания
         $pitch1 = Pitch::first(1);
@@ -66,7 +66,7 @@ class PitchTest extends AppUnit {
         // Пользователь не-владелец питча, лайки
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('likes');
-        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь не-владелец питча, не существующий тип сортировки, питч еще идёт
         $pitch1 = Pitch::first(1);
@@ -76,7 +76,7 @@ class PitchTest extends AppUnit {
         // Пользователь не владелец питча, не существующий тип сортировки, питч уже не идет
         $pitch3 = Pitch::first(3);
         $result = $pitch3->getSolutionsSortingOrder('non-existing-type');
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
     }
 
     public function testGetSolutionsSortingOrderWithParamClient() {
@@ -84,7 +84,7 @@ class PitchTest extends AppUnit {
         // Пользователь владелец питча, рейтинг
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('rating');
-        $this->assertEqual(array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь владелец питча, дата создания
         $pitch1 = Pitch::first(1);
@@ -94,14 +94,14 @@ class PitchTest extends AppUnit {
         // Пользователь владелец питча, лайки
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('likes');
-        $this->assertEqual(array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'likes' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'likes' => 'desc', 'created'=>'desc'), $result);
     }
 
     public function testGetSolutionsSortingOrderWithArrayParam() {
         // Пользователь не-владелец питча, лайки
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder(array('sorting' => 'likes'));
-        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь не-владелец питча, не существующий тип сортировки, питч еще идёт
         $pitch1 = Pitch::first(1);
@@ -116,7 +116,7 @@ class PitchTest extends AppUnit {
         // Пользователь не-владелец питча, не существующий тип сортировки, питч уже не идёт
         $pitch3 = Pitch::first(3);
         $result = $pitch3->getSolutionsSortingOrder(array('sorting' => 'non-existing-type'));
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
     }
 
     public function testGetSolutionsSortTypeWithParams() {
