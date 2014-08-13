@@ -110,13 +110,6 @@ class PitchesController extends \app\controllers\AppController {
             'started' => 'desc'
 		);
 		$timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
-/*         $timeleftFilter = array(
-            '1' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3)))),
-            '2' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7)))),
-            '3' => array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10)))),
-            '4' => array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14)))),
-            'all' => array()
-        ); */
         $type = 'index';
 		$category = array();
 		$conditions = array('published' => 1);
@@ -147,15 +140,9 @@ class PitchesController extends \app\controllers\AppController {
             $hasTag = true;
             $timeframe = $timeleftFilter;
         }
-        $search = array();
-        if((isset($this->request->query['searchTerm'])) && ($this->request->query['searchTerm'] != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ' && $this->request->query['searchTerm'] != '')){
+        $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
+        if(!empty($search)){
             $hasTag = true;
-            $word = urldecode(filter_var($this->request->query['searchTerm'], FILTER_SANITIZE_STRING));
-            $firstLetter = mb_substr($word, 0, 1, 'utf-8');
-            $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
-            $firstLower = (mb_strtolower($firstLetter, 'utf-8'));
-            $string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
-            $search =  array('Pitch.title' => array('REGEXP' => $string));
         }
         if(($hasTag) || ((isset($this->request->query['type'])) && (in_array($this->request->query['type'], array_keys($types))))) {
             $type = $this->request->query['type'];

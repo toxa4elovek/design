@@ -1170,9 +1170,9 @@ class Pitch extends \app\models\AppModel {
 	}
 	
 	/**
-    * Метод возвращает ценовой диапазон
+    * Метод возвращает время размещения питча
     *
-    * @param $priceFilter
+    * @param $timeframe
     * @return array
     */
 	public static function getQueryTimeframe($timeframe=0) {
@@ -1193,5 +1193,25 @@ class Pitch extends \app\models\AppModel {
 				$result =  array();
 		}
 		return $result;
+	}
+	
+	/**
+    * Метод возвращает массив ключевых слов для поиска
+    *
+    * @param $search
+    * @return array
+    */
+	public static function getQuerySearchTerm($search=''){
+		if(!empty($search) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ'){
+			$word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
+			$firstLetter = mb_substr($word, 0, 1, 'utf-8');
+			$firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
+			$firstLower = (mb_strtolower($firstLetter, 'utf-8'));
+			$string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
+			$search = array('Pitch.title' => array('REGEXP' => $string));
+		} else {
+			$search = array();
+		}
+		return $search;
 	}
 }
