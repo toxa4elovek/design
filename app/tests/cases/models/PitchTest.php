@@ -229,4 +229,18 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'тест тест тест|Тест тест тест|ТЕСТ ТЕСТ ТЕСТ')),Pitch::getQuerySearchTerm('тест тест тест'));
 		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'test test test|Test test test|TEST TEST TEST')),Pitch::getQuerySearchTerm('test test test'));
 	}
+	
+	public function testgetQueryOrder() {
+		$this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(null));
+		$this->assertEqual(array('title' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('title'=>'desc')));
+		$this->assertEqual(array('title' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('title'=>'asc')));
+		$this->assertEqual(array('category_id' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('category'=>'desc')));
+		$this->assertEqual(array('category_id' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('category'=>'asc')));
+		$this->assertEqual(array('ideas_count' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('ideas_count'=>'desc')));
+		$this->assertEqual(array('ideas_count' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('ideas_count'=>'asc')));
+		$this->assertEqual(array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => 'desc'),Pitch::getQueryOrder(array('finishDate'=>'desc')));
+		$this->assertEqual(array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => 'asc'),Pitch::getQueryOrder(array('finishDate'=>'asc')));
+		$this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'desc')));
+		$this->assertEqual(array('free' => 'desc','price' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'asc')));
+	}
 }

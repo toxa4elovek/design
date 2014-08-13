@@ -1201,7 +1201,7 @@ class Pitch extends \app\models\AppModel {
     * @param $search
     * @return array
     */
-	public static function getQuerySearchTerm($search=''){
+	public static function getQuerySearchTerm($search='') {
 		if(!empty($search) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ'){
 			$word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
 			$firstLetter = mb_substr($word, 0, 1, 'utf-8');
@@ -1213,5 +1213,46 @@ class Pitch extends \app\models\AppModel {
 			$search = array();
 		}
 		return $search;
+	}
+	
+	/**
+    * Метод возвращает массив для сортировки полей
+    *
+    * @param $search
+    * @return array
+    */
+	public static function getQueryOrder($order) {
+		if(isset($order)) {
+			$allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
+			$allowedSortDirections = array('asc', 'desc');
+			$newOrder = $order;
+			foreach($newOrder as $key => $direction) {
+				$field = $key;
+				$dir = $direction;
+				break;
+			}
+			if((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))  {
+				if($field == 'category') $field = 'category_id';
+				if($field == 'finishDate') {
+					$order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
+				}else {
+					if($field == 'price') {
+						$order = array(
+							'free' => 'desc',
+							$field => $dir,
+							'started' => 'desc'
+						);
+					} else {
+						$order = array(
+							$field => $dir,
+							'started' => 'desc'
+						);
+					}
+				}
+			}
+		} else {
+			$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
+		}
+		return $order;
 	}
 }

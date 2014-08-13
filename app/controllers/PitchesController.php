@@ -71,9 +71,6 @@ class PitchesController extends \app\controllers\AppController {
 	public function index() {
 		$categories = Category::all();
 		$allowedCategories = array();
-		$allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
-		$allowedSortDirections = array('asc', 'desc');
-        $allowedTimeframe = array(1,2,3,4,'all');
         $hasOwnHiddenPitches = false;
 		foreach($categories as $catI) {
 			$allowedCategories[] = $catI->id;
@@ -104,11 +101,7 @@ class PitchesController extends \app\controllers\AppController {
             ),
         );
 		$priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
-		$order = array(
-            'free' => 'desc',
-			'price' => 'desc',
-            'started' => 'desc'
-		);
+		$order = Pitch::getQueryOrder($this->request->query['order']);
 		$timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
         $type = 'index';
 		$category = array();
@@ -150,34 +143,6 @@ class PitchesController extends \app\controllers\AppController {
             //    $type = 'all';
             //}
         }
-		if((isset($this->request->query['order']))) {
-			$newOrder = $this->request->query['order'];
-			foreach($newOrder as $key => $direction) {
-				$field = $key;
-				$dir = $direction;
-				break;
-			}
-			if((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))  {
-				if($field == 'category') $field = 'category_id';
-                if($field == 'finishDate') {
-                    $order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
-                }else {
-                    if($field == 'price') {
-                        $order = array(
-                            'free' => 'desc',
-                            $field => $dir,
-                            'started' => 'desc'
-                        );
-                    }else {
-                        $order = array(
-                            $field => $dir,
-                            'started' => 'desc'
-                        );
-                    }
-                }
-			}
-		}
-
 		$conditions += $types[$type];
 		$conditions += $category;
 		$conditions += $priceFilter;
