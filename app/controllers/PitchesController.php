@@ -104,12 +104,6 @@ class PitchesController extends \app\controllers\AppController {
             ),
         );
 		$priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
-/* 		$priceFilter = array(
-			'all' => array(),
-			'1' => array('price' => array('>' => 3000, '<=' => 10000)),
-			'2' => array('price' => array('>' => 10000, '<=' => 20000)),
-			'3' => array('price' => array('>' => 20000))
-		); */
 		$order = array(
             'free' => 'desc',
 			'price' => 'desc',
@@ -126,7 +120,7 @@ class PitchesController extends \app\controllers\AppController {
 		$category = array();
 		$conditions = array('published' => 1);
         $hasTag = false;
-		if($priceFilter != 'all') {
+		if(empty($priceFilter)) {
             $hasTag = true;
 		}
         if((isset($this->request->params['category'])) && (($this->request->params['category'] == 'all') || (in_array($this->request->params['category'], $allowedCategories)))){
