@@ -43,36 +43,36 @@ class BriefTest extends \lithium\test\Unit {
         $this->assertEqual('Проверка  вторая часть ', $this->brief->removeEmailClean('Проверка test@mail.com вторая часть test@mail.com'));
         // Метод не должен реагировать на простые строчки
         $this->assertEqual('test.ru/login/user', $this->brief->removeEmailClean('test.ru/login/user'));
-
-        // А этот тест провалется, просто чтобы показать, как это происходит
-        $this->assertEqual('', $this->brief->removeEmailClean('test@test.rutest@test.ru'), 'В качестве последнего параметра ассретам можно даавать строчку с пояснинем, что сломалось.');
     }
 
-/**
+
 	public function teststripemail(){
-		$this->assertNull(null);
-		$this->assertFalse('12345sdfqwe12');
-        $this->assertFalse('test@@test.ru');
-		$this->assertFalse('test.ru/login/user');
-		$this->assertFalse('test@test.rutest@test.ru');
-        $this->assertTrue('test@test.ru');
+		$this->assertEqual('', $this->brief->stripemail(null));
+		$this->assertEqual('', $this->brief->stripemail(false));
+		$this->assertEqual('asdfg12345', $this->brief->stripemail('asdfg12345'));
+		$this->assertEqual('<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripemail('test@test.ru'));
+		$this->assertEqual('Проверка <a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a> вторая часть <a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripemail('Проверка test@mail.com вторая часть test@mail.com'));
+		$this->assertEqual('test.ru/login/user', $this->brief->stripemail('test.ru/login/user'));
 	}
 
 	public function teststripurl() {
-		$this->assertFalse(null);
-		$this->assertFalse('test/login/user');
-		$this->assertFalse('qwerty65432');
-		$this->assertFalse('test@@test.ru');
-		$this->assertFalse('http://test/');
-		$this->assertTrue('http://test.ru/main');
+		$this->assertEqual('', $this->brief->stripurl(null));
+		$this->assertEqual('', $this->brief->stripurl(false));
+		$this->assertEqual('test.ru/login/user', $this->brief->stripurl('test.ru/login/user'));
+		$this->assertEqual('qwerty65432', $this->brief->stripurl('qwerty65432'));
+		$this->assertEqual('test@test.ru', $this->brief->stripurl('test@test.ru'));
+		$this->assertEqual('', $this->brief->stripurl('http://test/'));
+		$this->assertEqual('Начало строки конец строки', $this->brief->stripurl('Начало строки http://test.ru конец строки http://test.ru/main'));
 	}
+
 	public function testlinkemail() {
-		$this->assertFalse(null);
-		$this->assertFalse('test/login/user');
-		$this->assertFalse('lkjhg64431');
-		$this->assertFalse('test@@test.ru');
-		$this->assertFalse('test@test.rutest@test.ru');
-		$this->assertTrue('test@test.ru');
+		$this->assertEqual('', $this->brief->linkemail(null));
+		$this->assertEqual('', $this->brief->linkemail(false));
+		$this->assertEqual('test@@test.ru', $this->brief->linkemail('test@@test.ru'));
+		$this->assertEqual('test@test', $this->brief->linkemail('test@test'));
+		$this->assertEqual('<a href="mailto://test@test.ru">test@test.ru</a>', $this->brief->linkemail('test@test.ru'));
+		$this->assertEqual('Начало строки <a href="mailto://test@test.ru">test@test.ru</a> конец строки <a href="mailto://tester@tester.ru">tester@tester.ru</a>', $this->brief->linkemail('Начало строки test@test.ru конец строки tester@tester.ru'));
+		$this->assertEqual('http://test.ru/main', $this->brief->linkemail('http://test.ru/main'));
 	}
- */
+ 
 }
