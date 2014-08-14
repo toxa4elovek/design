@@ -1210,7 +1210,7 @@ class Pitch extends \app\models\AppModel {
 			$string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
 			$search = array('Pitch.title' => array('REGEXP' => $string));
 		} else {
-			$search = array();
+			$search = '';
 		}
 		return $search;
 	}
@@ -1235,7 +1235,7 @@ class Pitch extends \app\models\AppModel {
 				if($field == 'category') $field = 'category_id';
 				if($field == 'finishDate') {
 					$order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
-				}else {
+				} else {
 					if($field == 'price') {
 						$order = array(
 							'free' => 'desc',
@@ -1249,6 +1249,8 @@ class Pitch extends \app\models\AppModel {
 						);
 					}
 				}
+			} else {
+				$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
 			}
 		} else {
 			$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
