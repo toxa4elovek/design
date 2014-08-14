@@ -1218,7 +1218,7 @@ class Pitch extends \app\models\AppModel {
 	/**
     * Метод возвращает массив для сортировки полей
     *
-    * @param $search
+    * @param $order
     * @return array
     */
 	public static function getQueryOrder($order) {
@@ -1254,5 +1254,21 @@ class Pitch extends \app\models\AppModel {
 			$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
 		}
 		return $order;
+	}
+	
+	/**
+    * Метод возвращает id категории
+    *
+    * @param $category
+    * @return array
+    */
+	public static function getQueryCategory($category) {
+		$allowedCategories = array(1,2,3,4,5,6,7,8,9,10,11,12);
+		if (!empty($category) && in_array($category, $allowedCategories)){
+			$category = array('category_id' => $category);
+		} else {
+			$category = array();
+		}
+		return $category;
 	}
 }

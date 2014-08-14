@@ -243,4 +243,45 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'desc')));
 		$this->assertEqual(array('free' => 'desc','price' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'asc')));
 	}
+	
+	public function testgetQueryCategory() {
+		// all
+		$this->assertEqual(array(),Pitch::getQueryCategory(null));
+		// Логотип
+		$category = 1;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Web-баннер
+		$category = 2;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Сайт
+		$category = 3;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Флаер
+		$category = 4;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Фирменный стиль
+		$category = 5;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Страница соцсети
+		$category = 6;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Копирайтинг
+		$category = 7;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Буклет
+		$category = 8;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Иллюстрация
+		$category = 9;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Другое
+		$category = 10;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		// Упаковка
+		$category = 11;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+		//Реклама
+		$category = 12;
+		$this->assertEqual(array('category_id' => $category),Pitch::getQueryCategory($category));
+	}
 }

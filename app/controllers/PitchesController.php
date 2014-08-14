@@ -70,7 +70,6 @@ class PitchesController extends \app\controllers\AppController {
 
 	public function index() {
 		$categories = Category::all();
-		$allowedCategories = array();
         $hasOwnHiddenPitches = false;
 		foreach($categories as $catI) {
 			$allowedCategories[] = $catI->id;
@@ -104,30 +103,15 @@ class PitchesController extends \app\controllers\AppController {
 		$order = Pitch::getQueryOrder($this->request->query['order']);
 		$timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
         $type = 'index';
-		$category = array();
+		$category = Pitch::getQueryCategory($this->request->query['category']);
 		$conditions = array('published' => 1);
         $hasTag = false;
 		if(!empty($priceFilter)) {
             $hasTag = true;
 		}
-        if((isset($this->request->params['category'])) && (($this->request->params['category'] == 'all') || (in_array($this->request->params['category'], $allowedCategories)))){
-            $category = $this->request->params['category'];
-            if($category != 'all') {
-                $hasTag = true;
-                $category = array('category_id' => $category);
-            }else {
-                $category = array();
-            }
+        if(!empty($category)){
+			$hasTag = true;
         }
-		if((isset($this->request->query['category'])) && (($this->request->query['category'] == 'all') || (in_array($this->request->query['category'], $allowedCategories)))){
-			$category = $this->request->query['category'];
-			if($category != 'all') {
-                $hasTag = true;
-				$category = array('category_id' => $category);
-			}else {
-				$category = array();
-			}
-		}
         $timeframe = array();
         if(!empty($timeleftFilter)){
             $hasTag = true;
