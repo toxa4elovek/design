@@ -51,6 +51,11 @@
                                 $step = 1;
                             } ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
+							<td>
+							<?php if(($mypitch->status == 1) && ($mypitch->awarded != 0)):?>
+								<img class="pitches-image" src="<?=$mypitch->winner->images['solution_tutdesign']['weburl']?>">
+							<?php endif?>
+							</td>
                                 <td class="pitches-name mypitches">
                                     <a href="/pitches/view/<?=$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
                                 </td>

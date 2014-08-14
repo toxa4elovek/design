@@ -2587,13 +2587,24 @@ td.price.mypitches {
 }
 td.pitches-status.mypitches {
 	width: 135px;
+	text-align:center;
+	font-family: "Helvetica Bold", "Helvetica Neue";
+	
+	
 }
 td.pitches-status.mypitches a {
 	color: #7e7e7e;
 	font-size: 11px; 
 }
+td img.pitches-image{
+	height:80px;
+	width:105px
+}
 td.pitches-status.mypitches a.pitches-finish {
-   color: #ff575d;
+	color: #4f8b5c;
+	display:block;
+	padding-left:35px;
+	text-align:left;
 }
 td.pitches-status.mypitches a.pitches-time {
    color: #639f6d;
