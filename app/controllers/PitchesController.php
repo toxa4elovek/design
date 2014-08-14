@@ -71,9 +71,6 @@ class PitchesController extends \app\controllers\AppController {
 	public function index() {
 		$categories = Category::all();
         $hasOwnHiddenPitches = false;
-		foreach($categories as $catI) {
-			$allowedCategories[] = $catI->id;
-		}
         if(Session::read('user.id')) {
             $usersPitches = Pitch::all(array('conditions' => array(
                 'user_id' => Session::read('user.id'),
@@ -102,35 +99,14 @@ class PitchesController extends \app\controllers\AppController {
 		$priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
 		$order = Pitch::getQueryOrder($this->request->query['order']);
 		$timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
-        $type = 'index';
+        $type = Pitch::getQueryType($this->request->query['type']);
 		$category = Pitch::getQueryCategory($this->request->query['category']);
 		$conditions = array('published' => 1);
-        $hasTag = false;
-		if(!empty($priceFilter)) {
-            $hasTag = true;
-		}
-        if(!empty($category)){
-			$hasTag = true;
-        }
-        $timeframe = array();
-        if(!empty($timeleftFilter)){
-            $hasTag = true;
-            $timeframe = $timeleftFilter;
-        }
         $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
-        if(!empty($search)){
-            $hasTag = true;
-        }
-        if(($hasTag) || ((isset($this->request->query['type'])) && (in_array($this->request->query['type'], array_keys($types))))) {
-            $type = $this->request->query['type'];
-            //if(($hasTag)) {
-            //    $type = 'all';
-            //}
-        }
-		$conditions += $types[$type];
+		$conditions += $type;
 		$conditions += $category;
 		$conditions += $priceFilter;
-        $conditions += $timeframe;
+        $conditions += $timeleftFilter;
         $conditions += $search;
 
 		/*******/

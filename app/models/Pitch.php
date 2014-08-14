@@ -1274,4 +1274,31 @@ class Pitch extends \app\models\AppModel {
 		}
 		return $category;
 	}
+	
+	/**
+    * Метод возвращает данные для поиска по типу питча
+    *
+    * @param $types
+    * @return array
+    */
+	public static function getQueryType($types) {
+		switch ($types) {
+			case 'finished':
+				$result = array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)')));
+				break;
+			case 'current':
+				$result = array('status' => array('<' => 2), 'awarded' => 0);
+				break;
+			case 'all':
+				$result = array();
+				break;
+			default:
+				$result = array(
+							'OR' => array(
+								array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+								array('status < 2 AND awarded = 0'),
+				));
+		}
+		return $result;
+	}
 }

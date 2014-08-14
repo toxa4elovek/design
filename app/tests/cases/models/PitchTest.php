@@ -250,4 +250,15 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array(),Pitch::getQueryCategory(''));
 		$this->assertEqual(array('category_id' => 2),Pitch::getQueryCategory(2));
 	}
+	
+	public function testgetQueryType() {
+		// index
+		$this->assertEqual(array('OR' => array(array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),array('status < 2 AND awarded = 0'))),Pitch::getQueryType(null));
+		// Завершенные
+		$this->assertEqual(array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)'))),Pitch::getQueryType('finished'));
+		// Текущие
+		$this->assertEqual(array('status' => array('<' => 2), 'awarded' => 0),Pitch::getQueryType('current'));
+		// Все
+		$this->assertEqual(array(),Pitch::getQueryType('all'));
+	}
 }
