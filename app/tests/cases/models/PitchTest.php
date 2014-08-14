@@ -208,6 +208,8 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('price' => array('>' => 10000, '<=' => 20000)),Pitch::getQueryPriceFilter(2));
 		// Цена больше 20000
 		$this->assertEqual(array('price' => array('>' => 20000)),Pitch::getQueryPriceFilter(3));
+        // Неопределенный диапозон
+        $this->assertEqual(array(), Pitch::getQueryPriceFilter(200));
 	}
 	
 	public function testGetQueryTimeframe() {
@@ -221,6 +223,8 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10)))),Pitch::getQueryTimeframe(3));
 		// 14 дней
 		$this->assertEqual(array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14)))),Pitch::getQueryTimeframe(4));
+        // Неопределенный таймфрейм
+        $this->assertEqual(array(), Pitch::getQueryTimeframe(200));
 	}
 	
 	public function testGetQuerySearchTerm() {
