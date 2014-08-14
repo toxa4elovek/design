@@ -1263,7 +1263,10 @@ class Pitch extends \app\models\AppModel {
     * @return array
     */
 	public static function getQueryCategory($category) {
-		$allowedCategories = array(1,2,3,4,5,6,7,8,9,10,11,12);
+		$categories = Category::all();
+		foreach($categories as $cat){
+			$allowedCategories[] = $cat->id;
+		}
 		if (!empty($category) && in_array($category, $allowedCategories)){
 			$category = array('category_id' => $category);
 		} else {
