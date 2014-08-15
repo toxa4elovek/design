@@ -270,5 +270,7 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('status' => array('<' => 2), 'awarded' => 0),Pitch::getQueryType('current'));
 		// Все
 		$this->assertEqual(array(),Pitch::getQueryType('all'));
+        // неопределенный параметр
+        $this->assertEqual(array('OR' => array(array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),array('status < 2 AND awarded = 0'))), Pitch::getQueryType('fakeParam'));
 	}
 }
