@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'));var_dump($post->full)?>
+    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
 
     <div class="middle">
         <div class="middle_inner">
