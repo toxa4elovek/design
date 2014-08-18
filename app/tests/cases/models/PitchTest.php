@@ -277,4 +277,18 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('status' => array('<' => 2), 'awarded' => 0),Pitch::getQueryType('test',1));		// неопределенный параметр
 		$this->assertEqual(array('OR' => array(array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),array('status < 2 AND awarded = 0'))), Pitch::getQueryType('fakeParam'));
 	}
+	
+	public function testGetPitchesForHomePage() {
+		for ($i = 1; $i <= 3; $i++){
+			$pitch = Pitch::first($i);
+			$pitch->status = 0;
+			$pitch->published = 1;
+			$pitch->pinned = 1;
+			$pitch->price = 12500+$i;
+			$pitch->ideas_count = 10+$i;
+			$pitch->save();
+		}
+		$pitches = Pitch::getPitchesForHomePage();
+		$this->assertEqual(array(3,2,1),array_keys($pitches->data()));
+	}
 }

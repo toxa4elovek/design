@@ -1302,4 +1302,22 @@ class Pitch extends \app\models\AppModel {
 		}		
 		return $result;
 	}
+
+	/**
+    * Метод возвращает питчи для главной страницы
+    *
+    * @return array
+    */
+	public static function getPitchesForHomePage() {
+		return Pitch::all(array(
+			'order' => array(
+                'pinned' => 'desc',
+                'ideas_count' => 'desc',
+                'price' => 'desc'
+			),
+            'conditions' => array('status' => array('<' => 1), 'published' => 1),
+			'limit' => 3,
+			'page' => 1,
+		));
+	}
 }

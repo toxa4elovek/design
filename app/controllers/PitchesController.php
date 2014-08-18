@@ -47,7 +47,7 @@ class PitchesController extends \app\controllers\AppController {
      * @var array
      */
 	public $publicActions = array(
-        'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'finished', 'add', 'create',
+        'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
 	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata'
 	);
 
@@ -144,80 +144,6 @@ class PitchesController extends \app\controllers\AppController {
 		$query = $this->request->query;
 		return compact('data', 'categories', 'query', 'selectedCategory');
 	}
-
-    public function finished() {
-        $categories = Category::all();
-        $hasOwnHiddenPitches = false;
-        if(Session::read('user.id')) {
-            $usersPitches = Pitch::all(array('conditions' => array(
-                'user_id' => Session::read('user.id'),
-                'published' => 0,
-                'status' => 0
-            ), 'with' => array('Category')));
-            if($usersPitches) {
-                $hasOwnHiddenPitches = true;
-            }
-            $totalOwn = count($usersPitches);
-        }
-
-        $limit = 10;
-        $page = Pitch::getQueryPageNum($this->request->query['page']);
-        $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
-        $timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
-        $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
-        $type = Pitch::getQueryType($this->request->query['type'],1);
-        $category = Pitch::getQueryCategory($this->request->query['category']);
-		$order = Pitch::getQueryOrder($this->request->query['order'],1);
-        $conditions = array('published' => 1);
-
-        $conditions += $type;
-        $conditions += $category;
-        $conditions += $priceFilter;
-        $conditions += $timeleftFilter;
-		$conditions += $search;
-
-        /*******/
-        $total = ceil(Pitch::count(array(
-            'with' => 'Category',
-            'conditions' => $conditions,
-            'order' => $order,
-        )) / $limit);
-        $pitches = Pitch::all(array(
-            'with' => 'Category',
-            'conditions' => $conditions,
-            'order' => $order,
-            'limit' => $limit,
-            'page' => $page,
-        ));
-
-        $i = 1;
-        $tempPitchList = array();
-        if($pitches) {
-            if(($hasOwnHiddenPitches) && ($page == 1)){
-                foreach($usersPitches as $pitch) {
-                    $tempPitchList[] = $pitch->data();
-                }
-            }
-            foreach($pitches as $pitch) {
-                $tempPitchList[] = $pitch->data();
-            }
-        }
-        $pitchList = array();
-        foreach($tempPitchList as &$pitch) {
-            $pitch['sort'] = $i;
-            $pitchList[] = $pitch;
-            $i++;
-        }
-        $data = array(
-            'pitches' => $pitchList,
-            'info' => array(
-                'page' => $page,
-                'total' => $total
-            ),
-        );
-        $query = $this->request->query;
-        return compact('data', 'categories', 'query', 'selectedCategory');
-    }
 
     public function agreement() {
         if(isset($this->request->params['id'])) {
