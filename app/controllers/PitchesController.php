@@ -85,17 +85,6 @@ class PitchesController extends \app\controllers\AppController {
 
         $limit = 50;
 		$page = Pitch::getQueryPageNum($this->request->query['page']);
-		$types = array(
-			'finished' => array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)'))),
-			'current' => array('status' => array('<' => 2), 'awarded' => 0),
-            'all' => array(),
-            'index' => array(
-                'OR' => array(
-                    array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
-                    array('status < 2 AND awarded = 0'),
-                ),
-            ),
-        );
 		$priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
 		$order = Pitch::getQueryOrder($this->request->query['order']);
 		$timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);

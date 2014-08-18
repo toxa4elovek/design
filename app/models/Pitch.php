@@ -1222,35 +1222,24 @@ class Pitch extends \app\models\AppModel {
     * @return array
     */
 	public static function getQueryOrder($order) {
-		if(isset($order)) {
-			$allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
-			$allowedSortDirections = array('asc', 'desc');
-			$newOrder = $order;
-			foreach($newOrder as $key => $direction) {
-				$field = $key;
-				$dir = $direction;
-				break;
-			}
-			if((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))  {
-				if($field == 'category') $field = 'category_id';
-				if($field == 'finishDate') {
+		$allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
+		$allowedSortDirections = array('asc', 'desc');
+		$trigger = is_array($order);
+		$field = $trigger ? key($order) : '';
+		$dir = $trigger ? current($order) : '';
+		if($trigger && ((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))) {
+			switch ($field) {
+				case 'category':
+					$order = array('category_id' => $dir,'started' => 'desc');
+					break;
+				case 'finishDate':
 					$order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
-				} else {
-					if($field == 'price') {
-						$order = array(
-							'free' => 'desc',
-							$field => $dir,
-							'started' => 'desc'
-						);
-					} else {
-						$order = array(
-							$field => $dir,
-							'started' => 'desc'
-						);
-					}
-				}
-			} else {
-				$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
+					break;
+				case 'price':
+					$order = array('free' => 'desc',$field => $dir,'started' => 'desc');
+					break;
+				default:
+					$order = array($field => $dir,'started' => 'desc');
 			}
 		} else {
 			$order = array('free' => 'desc','price' => 'desc','started' => 'desc');

@@ -239,6 +239,7 @@ class PitchTest extends AppUnit {
 	
 	public function testGetQueryOrder() {
 		$this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(null));
+		$this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(false));
 		$this->assertEqual(array('title' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('title'=>'desc')));
 		$this->assertEqual(array('title' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('title'=>'asc')));
 		$this->assertEqual(array('category_id' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('category'=>'desc')));
