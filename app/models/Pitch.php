@@ -1210,7 +1210,7 @@ class Pitch extends \app\models\AppModel {
 			$string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
 			$search = array('Pitch.title' => array('REGEXP' => $string));
 		} else {
-			$search = '';
+			$search = array();
 		}
 		return $search;
 	}

@@ -92,13 +92,13 @@ class PitchesController extends \app\controllers\AppController {
 		$category = Pitch::getQueryCategory($this->request->query['category']);
 		$conditions = array('published' => 1);
         $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
+		
 		$conditions += $type;
 		$conditions += $category;
 		$conditions += $priceFilter;
         $conditions += $timeleftFilter;
-		if ($search) {
-			$conditions += $search;
-		}
+		$conditions += $search;
+		
 		/*******/
 		$total = ceil(Pitch::count(array(
 			'with' => 'Category',
@@ -174,9 +174,7 @@ class PitchesController extends \app\controllers\AppController {
         $conditions += $category;
         $conditions += $priceFilter;
         $conditions += $timeleftFilter;
-		if ($search) {
-			$conditions += $search;
-		}
+		$conditions += $search;
 
         /*******/
         $total = ceil(Pitch::count(array(
