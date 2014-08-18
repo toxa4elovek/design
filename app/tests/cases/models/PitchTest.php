@@ -208,6 +208,8 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('price' => array('>' => 10000, '<=' => 20000)),Pitch::getQueryPriceFilter(2));
 		// Цена больше 20000
 		$this->assertEqual(array('price' => array('>' => 20000)),Pitch::getQueryPriceFilter(3));
+        // Неопределенный диапозон
+        $this->assertEqual(array(), Pitch::getQueryPriceFilter(200));
 	}
 	
 	public function testGetQueryTimeframe() {
@@ -221,14 +223,17 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10)))),Pitch::getQueryTimeframe(3));
 		// 14 дней
 		$this->assertEqual(array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14)))),Pitch::getQueryTimeframe(4));
+        // Неопределенный таймфрейм
+        $this->assertEqual(array(), Pitch::getQueryTimeframe(200));
 	}
 	
 	public function testGetQuerySearchTerm() {
-		$this->assertEqual(array(),Pitch::getQuerySearchTerm());
-		$this->assertEqual(array(),Pitch::getQuerySearchTerm(array()));
-		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'тест тест тест|Тест тест тест|ТЕСТ ТЕСТ ТЕСТ')),Pitch::getQuerySearchTerm('Тест тест тест'));
-		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'тест тест тест|Тест тест тест|ТЕСТ ТЕСТ ТЕСТ')),Pitch::getQuerySearchTerm('тест тест тест'));
+		$this->assertEqual(array(), Pitch::getQuerySearchTerm());
+		$this->assertEqual(array(), Pitch::getQuerySearchTerm(array()));
+		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'тест тест тест|Тест тест тест|ТЕСТ ТЕСТ ТЕСТ')),Pitch::getQuerySearchTerm('Тест тест тест'));		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'тест тест тест|Тест тест тест|ТЕСТ ТЕСТ ТЕСТ')),Pitch::getQuerySearchTerm('тест тест тест'));
 		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'test test test|Test test test|TEST TEST TEST')),Pitch::getQuerySearchTerm('test test test'));
+        $this->assertEqual(array(), Pitch::getQuerySearchTerm(array('test' => 'test')));
+        $this->assertEqual(array(), Pitch::getQuerySearchTerm(null));
 	}
 	
 	public function testGetQueryOrder() {
@@ -268,6 +273,7 @@ class PitchTest extends AppUnit {
 		// Все
 		$this->assertEqual(array(),Pitch::getQueryType('all'));
 		// Finished default
-		$this->assertEqual(array('status' => array('<' => 2), 'awarded' => 0),Pitch::getQueryType('test',1));
+		$this->assertEqual(array('status' => array('<' => 2), 'awarded' => 0),Pitch::getQueryType('test',1));		// неопределенный параметр
+		$this->assertEqual(array('OR' => array(array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),array('status < 2 AND awarded = 0'))), Pitch::getQueryType('fakeParam'));
 	}
 }
