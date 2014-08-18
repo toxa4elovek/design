@@ -252,8 +252,6 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('free' => 'desc','price' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'asc')));
         $this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('fake'=>'desc')));
         $this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('fake'=>'asc')));
-		// Finished default
-		$this->assertEqual(array('price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('fake'=>'asc'),1));
 	}
 	
 	public function testGetQueryCategory() {
@@ -273,8 +271,7 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('status' => array('<' => 2), 'awarded' => 0),Pitch::getQueryType('current'));
 		// Все
 		$this->assertEqual(array(),Pitch::getQueryType('all'));
-		// Finished default
-		$this->assertEqual(array('status' => array('<' => 2), 'awarded' => 0),Pitch::getQueryType('test',1));		// неопределенный параметр
+		// неопределенный параметр
 		$this->assertEqual(array('OR' => array(array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),array('status < 2 AND awarded = 0'))), Pitch::getQueryType('fakeParam'));
 	}
 	
