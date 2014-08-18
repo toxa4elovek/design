@@ -1219,9 +1219,10 @@ class Pitch extends \app\models\AppModel {
     * Метод возвращает массив для сортировки полей
     *
     * @param $order
+	* @param $finished
     * @return array
     */
-	public static function getQueryOrder($order) {
+	public static function getQueryOrder($order,$finished=0) {
 		$allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
 		$allowedSortDirections = array('asc', 'desc');
 		$trigger = is_array($order);
@@ -1242,7 +1243,11 @@ class Pitch extends \app\models\AppModel {
 					$order = array($field => $dir,'started' => 'desc');
 			}
 		} else {
-			$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
+			if($finished) {
+				$order = array('price' => 'desc','started' => 'desc');
+			} else {
+				$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
+			}
 		}
 		return $order;
 	}
@@ -1270,9 +1275,10 @@ class Pitch extends \app\models\AppModel {
     * Метод возвращает данные для поиска по типу питча
     *
     * @param $types
+	* @param $finished
     * @return array
     */
-	public static function getQueryType($types) {
+	public static function getQueryType($types,$finished=0) {
 		switch ($types) {
 			case 'finished':
 				$result = array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)')));
@@ -1284,12 +1290,16 @@ class Pitch extends \app\models\AppModel {
 				$result = array();
 				break;
 			default:
-				$result = array(
-							'OR' => array(
-								array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
-								array('status < 2 AND awarded = 0'),
-				));
-		}
+				if($finished) {
+					$result = array('status' => array('<' => 2), 'awarded' => 0);
+				} else {
+					$result = array(
+								'OR' => array(
+									array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+									array('status < 2 AND awarded = 0'),
+					));
+				}
+		}		
 		return $result;
 	}
 }
