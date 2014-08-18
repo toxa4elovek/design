@@ -853,7 +853,7 @@ class UsersController extends \app\controllers\AppController {
                 UserMailer::hi_mail($user);
                 Auth::clear('user');
                 Auth::set('user', $user->data());
-                return $this->redirect('Users::office');
+                return $this->redirect('Pitches::index');
             }else {
                 return $this->redirect('Users::registration');
             }
