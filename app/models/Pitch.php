@@ -1202,7 +1202,7 @@ class Pitch extends \app\models\AppModel {
     * @return array
     */
 	public static function getQuerySearchTerm($search='') {
-		if(is_string($search) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ'){
+		if((is_string($search) && !empty($search)) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ'){
 			$word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
 			$firstLetter = mb_substr($word, 0, 1, 'utf-8');
 			$firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));

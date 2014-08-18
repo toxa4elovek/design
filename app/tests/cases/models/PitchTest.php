@@ -233,6 +233,7 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'тест тест тест|Тест тест тест|ТЕСТ ТЕСТ ТЕСТ')),Pitch::getQuerySearchTerm('тест тест тест'));
 		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'test test test|Test test test|TEST TEST TEST')),Pitch::getQuerySearchTerm('test test test'));
         $this->assertEqual(array(), Pitch::getQuerySearchTerm(array('test' => 'test')));
+		$this->assertEqual(array(), Pitch::getQuerySearchTerm(''));
         $this->assertEqual(array(), Pitch::getQuerySearchTerm(null));
 	}
 	
