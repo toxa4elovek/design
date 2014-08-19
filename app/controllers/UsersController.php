@@ -772,8 +772,8 @@ class UsersController extends \app\controllers\AppController {
                 }
                 $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                 if((isset($this->request->data['remember'])) && ($this->request->data['remember'] == 'on')) {
-                    $userToLog->token = User::generateToken();
-                    setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->token), time() + strtotime('+1 month'), '/');
+                    $userToLog->autologin_token = User::generateToken();
+                    setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->autologin_token), time() + strtotime('+1 month'), '/');
                 }
                 $userToLog->save(null, array('validate' => false));
 
