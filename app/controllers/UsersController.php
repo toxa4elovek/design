@@ -633,11 +633,11 @@ class UsersController extends \app\controllers\AppController {
                     Auth::clear('user');
                     return array('data' => true, 'redirect' => '/users/login');
                 }
-                $userToLog->token = User::generateToken();
+                $userToLog->autologin_token = User::generateToken();
                 if (isset($this->request->data['accessToken'])) {
                     $userToLog->accessToken = $this->request->data['accessToken'];
                 }
-                setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->token), time() + strtotime('+1 month'), '/');
+                setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->autologin_token), time() + strtotime('+1 month'), '/');
                 $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                 $userToLog->save(null, array('validate' => false));
                 // производим аутентификацию

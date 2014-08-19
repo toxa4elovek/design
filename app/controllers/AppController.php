@@ -112,13 +112,12 @@ class AppController extends \lithium\action\Controller {
             $user->setLastActionTime();
         }else {
             if(isset($_COOKIE['autologindata'])) {
-
                 $exploded = explode('&', $_COOKIE['autologindata']);
                 $id = (explode('=', $exploded[0]));
                 $id = $id[1];
                 $token = (explode('=', $exploded[1]));
                 $token = $token[1];
-                if(($user = User::first($id)) && (sha1($user->token) == $token)) {
+                if(($user = User::first($id)) && (sha1($user->autologin_token) == $token)) {
                     if($user->banned) {
                         Auth::clear('user');
                         return $this->redirect('/users/banned');
@@ -128,7 +127,7 @@ class AppController extends \lithium\action\Controller {
                         return $this->redirect('/');
                     }
                     $user->lastTimeOnline = date('Y-m-d H:i:s');
-                    $user->token = User::generateToken();
+                    $user->autologin_token = User::generateToken();
                     setcookie('autologindata', 'id=' . $user->id . '&token=' . sha1($user->token), time() + strtotime('+1 month') );
                     $user->save(null, array('validate' => false));
                     Auth::set('user', $user->data());
