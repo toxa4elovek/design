@@ -804,12 +804,12 @@ class UsersController extends \app\controllers\AppController {
                 UserMailer::hi_mail($user);
                 Auth::clear('user');
                 Auth::set('user', $user->data());
-                return $this->redirect('Users::office');
+                return $this->redirect(array('Users::office','?' => array('success' => 'true')));
             }else {
-                return $this->redirect('Users::registration');
+                return $this->redirect(array('Users::registration','?' => array('success' => 'false')));
             }
         }else {
-            return $this->redirect('Users::registration');
+            return $this->redirect(array('Users::registration','?' => array('success' => 'false')));
         }
     }
 
