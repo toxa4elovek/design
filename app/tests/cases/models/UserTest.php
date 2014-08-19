@@ -9,7 +9,7 @@ use app\extensions\storage\Rcache;
 class UserTest extends AppUnit {
 
     public function setUp() {
-        Rcache::init();
+		Rcache::init();
         $this->rollUp(array('Pitch', 'User', 'Solution', 'Category', 'Comment'));
     }
 
@@ -18,7 +18,7 @@ class UserTest extends AppUnit {
         $this->rollDown(array('Pitch', 'User', 'Solution', 'Category', 'Comment'));
     }
 
-    public function testGetAuthorsIds() {
+	public function testGetAuthorsIds() {
         $authors = array(1, 2);
         User::$authors = $authors;
         $result = User::getAuthorsIds();
@@ -56,6 +56,16 @@ class UserTest extends AppUnit {
         $time = time();
         $result = $user->getLastActionTime();
         $this->assertEqual($time, $result);
-    }
-
+    } 
+	
+	public function testActivateUser() {
+		$user = User::first(1);
+		$user->activateUser();
+		$this->assertEqual('', $user->token);
+		$this->assertEqual(1, $user->confirmed_email);
+		$user2 = User::first(1);
+		$this->assertEqual('', $user2->token);
+		$this->assertEqual(1, $user2->confirmed_email);
+	}
+	
 }
