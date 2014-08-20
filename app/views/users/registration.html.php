@@ -185,3 +185,4 @@
     <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6006509880528&amp;value=0" /></noscript>
 
 </div><!-- .wrapper -->
+<?=$this->html->script(array('users/registration.js'), array('inline' => false))?>
