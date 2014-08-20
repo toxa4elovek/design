@@ -4,7 +4,7 @@ namespace app\extensions\helper;
 class Brief extends \lithium\template\Helper {
 
     public $emailPattern = "\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b";
-    public $urlPattern = '/(https?:\/\/w?w?w?\.?[a-zA-Z\.0-9]+\/.*)/i';
+    public $urlPattern = '/\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i';
 
     function isUsingPlainText($pitch) {
         if((strtotime($pitch->started) < strtotime('2013-07-25 16:30:00')) or ($pitch->id == '102442')) {

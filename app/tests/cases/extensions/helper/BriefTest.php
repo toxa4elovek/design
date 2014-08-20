@@ -30,7 +30,7 @@ class BriefTest extends \lithium\test\Unit {
         // ничего пока не делаем тут
     }
 
-    public function testremoveEmailClean() {
+    public function testRemoveEmailClean() {
         // Метод должен конвертировать null в пустую строку
         $this->assertEqual('', $this->brief->removeEmailClean(null));
         // Метод должен конвертировать false в пустую строку
@@ -46,7 +46,7 @@ class BriefTest extends \lithium\test\Unit {
     }
 
 
-	public function teststripemail(){
+	public function testStripEmail(){
 		$this->assertEqual('', $this->brief->stripemail(null));
 		$this->assertEqual('', $this->brief->stripemail(false));
 		$this->assertEqual('asdfg12345', $this->brief->stripemail('asdfg12345'));
@@ -55,17 +55,17 @@ class BriefTest extends \lithium\test\Unit {
 		$this->assertEqual('test.ru/login/user', $this->brief->stripemail('test.ru/login/user'));
 	}
 
-	public function teststripurl() {
+	public function testStripUrl() {
 		$this->assertEqual('', $this->brief->stripurl(null));
 		$this->assertEqual('', $this->brief->stripurl(false));
 		$this->assertEqual('test.ru/login/user', $this->brief->stripurl('test.ru/login/user'));
 		$this->assertEqual('qwerty65432', $this->brief->stripurl('qwerty65432'));
 		$this->assertEqual('test@test.ru', $this->brief->stripurl('test@test.ru'));
 		$this->assertEqual('', $this->brief->stripurl('http://test/'));
-		$this->assertEqual('Начало строки конец строки', $this->brief->stripurl('Начало строки http://test.ru конец строки http://test.ru/main'));
+		$this->assertEqual('Начало строки  конец строки ', $this->brief->stripurl('Начало строки http://test.ru конец строки http://test.ru/main'));
 	}
 
-	public function testlinkemail() {
+	public function testLinkEmail() {
 		$this->assertEqual('', $this->brief->linkemail(null));
 		$this->assertEqual('', $this->brief->linkemail(false));
 		$this->assertEqual('test@@test.ru', $this->brief->linkemail('test@@test.ru'));
