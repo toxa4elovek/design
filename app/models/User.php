@@ -1194,4 +1194,18 @@ class User extends \app\models\AppModel {
         }
         return $res;
     }
+	
+    /**
+     * Метод генерирует токен, если нету
+     *
+     * @return object
+     */
+	public static function setUserToken() {
+		$user = self::first(Session::read('user.id'));
+		if(!$user->token) {
+			$user->token = $user->generateToken();
+			$user->save(null, array('validate' => false));
+		}
+		return $user;
+	}
 }

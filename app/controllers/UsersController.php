@@ -819,10 +819,7 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function resend() {
-        $user = User::first(Session::read('user.id'));
-        $user->token = User::generateToken();
-        $user->save(null, array('validate' => false));
-        UserMailer::verification_mail($user);
+        UserMailer::verification_mail(User::setUserToken());
         return true;
     }
 

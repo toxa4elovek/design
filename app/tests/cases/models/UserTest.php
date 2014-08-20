@@ -5,6 +5,7 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\User;
 use app\extensions\storage\Rcache;
+use lithium\storage\Session;
 
 class UserTest extends AppUnit {
 
@@ -68,4 +69,21 @@ class UserTest extends AppUnit {
 		$this->assertEqual(1, $user2->confirmed_email);
 	}
 	
+	public function testSetUserToken() {
+		// Токена нету
+		Session::write('user.id', 1);
+		$user = User::first(1);
+		$user->token = '';
+		$user->save(null, array('validate' => false));
+		$user2 = User::setUserToken();
+		$this->assertNotEqual($user->token, $user2->token);	
+		
+		// Токен есть
+		Session::write('user.id', 2);
+		$user3 = User::first(2);
+		$user3->token = '52e72fbb58de8';
+		$user3->save(null, array('validate' => false));
+		$user4 = User::setUserToken();
+		$this->assertEqual($user3->token, $user4->token);	
+	}
 }
