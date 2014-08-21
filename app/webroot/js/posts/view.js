@@ -21,7 +21,7 @@ $(document).ready(function() {
     $.each($('p'), function(idx, obj) {
         var $rama = $(obj).children('img');
         if ($rama.length > 1) {
-            $rama.wrapAll( '<div class="fotorama" data-nav="false"  data-width="500" data-maxwidth="100%" data-ratio="500/333" />');
+            $rama.wrapAll( '<div class="fotorama" data-nav="false" data-maxwidth="100%"/>');
         }
     });
     // 1. Initialize fotorama manually.
