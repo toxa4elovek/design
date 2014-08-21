@@ -25,4 +25,5 @@ class Pitchrating extends \app\models\AppModel {
 			} return true;
 		} else return false;
 	}
+
 }

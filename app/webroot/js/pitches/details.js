@@ -237,5 +237,12 @@ $(document).ready(function() {
 			$.post('/rating/save.json',
 			{"id": $(this).data('pitchid'), "rating": score}, function(response) {
 			});
+			$('#take-part').show('fast');
 		}});
 })
+$(document).mouseup(function (e){
+    var container = $("#take-part");
+    if (container.has(e.target).length === 0) {
+        container.hide('fast');
+    }
+});

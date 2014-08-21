@@ -23,4 +23,5 @@ class RatingController extends \app\controllers\AppController {
 			return 'true';
 		} else return 'false';
     }
+
 }
