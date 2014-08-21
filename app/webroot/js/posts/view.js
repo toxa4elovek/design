@@ -21,10 +21,39 @@ $(document).ready(function() {
     $.each($('p'), function(idx, obj) {
         var $rama = $(obj).children('img');
         if ($rama.length > 1) {
-            $rama.wrapAll( '<div class="fotorama" data-nav="dots" />');
+            $rama.wrapAll( '<div class="fotorama" data-nav="false" data-maxwidth="100%"/>');
         }
     });
-    $('.fotorama').fotorama();
+    // 1. Initialize fotorama manually.
+    var $fotoramaDiv = $('.fotorama').fotorama();
+    // 2. Get the API object.
+    var fotorama = $fotoramaDiv.data('fotorama');
+
+    if ($('.fotorama__arr').length > 0) {
+        $('.fotorama__arr').remove();
+    }
+    $('<div class="fotorama_arrows"><span class="fotorama__arr fotorama__arr--prev"></span><span class="page">1</span> / <span class="count"></span><span class="fotorama__arr fotorama__arr--next"></span></div>').insertAfter(".fotorama");
+	$('.count').append(fotorama.size);
+
+    $('.fotorama__arr--prev').click(function () {
+		fotorama = $(this).closest('p').find('.fotorama').data('fotorama');
+        fotorama.show('<');
+		var pageObject=$(this).closest('div').find('.page');
+		var page=parseInt(pageObject.text());
+		if(page>1){
+			pageObject.text(page-1);
+		}
+		
+    });
+    $('.fotorama__arr--next').click(function () {
+		fotorama = $(this).closest('p').find('.fotorama').data('fotorama');
+        fotorama.show('>');
+		var pageObject=$(this).closest('div').find('.page');
+		var page=parseInt(pageObject.text());
+		if(page<fotorama.size){
+			pageObject.text(page+1);
+		}
+    });
 
     // gplus
     window.___gcfg = {lang: 'ru'};
