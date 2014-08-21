@@ -18,3 +18,16 @@
     <?=$this->form->end() ?>
     <div class="gotest-close"></div>
 </div>
+
+<div id="popup-email-warning" style="display: none;">
+    <h2>Спасибо за регистрацию!</h2>
+    <p class="regular">К сожалению, владельцы эл.адресов с нижеперечислен&shy;ными доменами испытывают трудности с получением писем и уведомлений от GoDesigner:</p>
+    <ul>
+		<li>@mail.ru</li>
+		<li>@inbox.ru</li>
+		<li>@list.ru</li>
+		<li>@bk.ru</li>
+	</ul>
+    <p>В связи с чем мы просим вас по возможности указать другой email. Спасибо за понимание!</p>
+    <div class="wrapper" style="text-align: center;"><a href="#" class="button third gotest-close" style="width:190px">Закрыть</a></div>
+</div>
