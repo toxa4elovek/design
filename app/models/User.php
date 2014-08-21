@@ -1198,10 +1198,11 @@ class User extends \app\models\AppModel {
     /**
      * Метод генерирует токен, если нету
      *
+	 * @param $userid
      * @return object
      */
-	public static function setUserToken() {
-		$user = self::first(Session::read('user.id'));
+	public static function setUserToken($userid) {
+		$user = self::first($userid);
 		if(!$user->token) {
 			$user->token = $user->generateToken();
 			$user->save(null, array('validate' => false));
