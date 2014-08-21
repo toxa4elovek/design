@@ -197,7 +197,10 @@ foreach($experts as $expert) {
                         <?php endforeach?>
                     </ul>
                     <?php endif?>
-
+					<div class="separator" style="width: 620px; margin-bottom: 15px; margin-top: 30px;"></div>
+					<div><span id="rating_brief">Оцените бриф:</span>
+						<div style="position:relative;left:100px;bottom:20px;" id="pitch_rating" data-pitchid="<?=$pitch->id?>"></div>
+					</div>
                 </div>
             </div>
 
@@ -250,7 +253,7 @@ foreach($experts as $expert) {
             <?php endif;?>
 
     <?php if($pitch->private == 0):?>
-    <div class="separator" style="width: 620px; margin-bottom: 15px; margin-top: 30px;"></div>
+    <div class="separator" style="width: 620px; margin-bottom: 15px;"></div>
     <div style="">
         <div style="float:left;height:20px;margin-right:15px;">
             <div class="fb-like" data-href="http://www.godesigner.ru/pitches/details/<?=$pitch->id?>" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" data-font="arial"></div>
@@ -441,6 +444,7 @@ foreach($experts as $expert) {
                                         <?php endif;?>
                                     <?php endif;?>
                             </div></div>
+
                         <div class="clr"></div>
                         <div class="hiddenform" style="display:none">
                             <section><form style="margin-bottom: 25px;" action="/comments/edit/<?=$comment->id?>" method="post">
@@ -526,5 +530,5 @@ foreach($experts as $expert) {
 <?php endif;?>
 </div>
 <!-- End: Tooltips -->
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.hover.js', 'jquery-ui-1.8.17.custom.min.js', 'jcarousellite_1.0.1.js', 'jquery.timeago.js', 'jquery.scrollto.min.js', 'pitches/details.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.hover.js', 'jquery-ui-1.8.17.custom.min.js', 'jcarousellite_1.0.1.js', 'jquery.timeago.js', 'jquery.scrollto.min.js', 'jquery.raty.min.js', 'pitches/details.js'), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/details', '/pitch_overview'), array('inline' => false))?>

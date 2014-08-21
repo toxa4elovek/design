@@ -227,4 +227,15 @@ $(document).ready(function() {
         }
     })
     */
+	$('#pitch_rating').raty({
+		path: '/img',
+		hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
+		starOn: 'solution-star-on.png',
+		starOff: 'solution-star-off.png',
+		size: 24,
+		click: function(score, evt) {
+			$.post('/rating/save.json',
+			{"id": $(this).data('pitchid'), "rating": score}, function(response) {
+			});
+		}});
 })

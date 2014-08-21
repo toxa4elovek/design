@@ -2997,3 +2997,8 @@ div.no-result p {
 .clr {
     clear: both;
 }
+#rating_brief {
+	text-shadow:0 1px 1px rgba(255, 255, 255, 1);
+	font-style:italic;
+	font-family: Georgia, 'Times New Roman', Times, serif;
+}
