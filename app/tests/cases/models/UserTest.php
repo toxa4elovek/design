@@ -71,19 +71,19 @@ class UserTest extends AppUnit {
 	
 	public function testSetUserToken() {
 		// Токена нету
-		Session::write('user.id', 1);
-		$user = User::first(1);
+		$id=1;
+		$user = User::first($id);
 		$user->token = '';
 		$user->save(null, array('validate' => false));
-		$user2 = User::setUserToken();
+		$user2 = User::setUserToken($id);
 		$this->assertNotEqual($user->token, $user2->token);	
 		
 		// Токен есть
-		Session::write('user.id', 2);
-		$user3 = User::first(2);
+		$id=2;
+		$user3 = User::first($id);
 		$user3->token = '52e72fbb58de8';
 		$user3->save(null, array('validate' => false));
-		$user4 = User::setUserToken();
+		$user4 = User::setUserToken($id);
 		$this->assertEqual($user3->token, $user4->token);	
 	}
 }

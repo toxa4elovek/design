@@ -819,7 +819,8 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function resend() {
-        UserMailer::verification_mail(User::setUserToken());
+		$userid = Session::read('user.id');
+        UserMailer::verification_mail(User::setUserToken($userid));
         return true;
     }
 
