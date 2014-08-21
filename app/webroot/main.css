@@ -3037,14 +3037,14 @@ div.no-result p {
 }
 .btn-success:hover{
 	background:#cbcbcb;
-	background-image: linear-gradient(to bottom, #ffffff, #cccccc) repeat-x;
+	background-image: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(204,204,204,0.47) 100%);
 	color:#467d4a;
 }
 .btn-success {
 	width:200px;
 	height:40px;
 	background:#467d4a;
-	background-image: linear-gradient(to bottom, #539257, #467d4a) repeat-x;
+	background-image: linear-gradient(to bottom, rgba(82,145,87,1) 0%,rgba(67,121,71,0.47) 100%); 
 	font-family: "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", "HelveticaNeue", "Helvetica Neue", "Helvetica", "Geneva", "Arial", sans-serif;
 	font-weight:600;
 	margin: 27px 0 0 20px;
