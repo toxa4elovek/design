@@ -1299,13 +1299,16 @@ class Pitch extends \app\models\AppModel {
     * @return array
     */
 	public static function getPitchesForHomePage() {
-		return Pitch::all(array(
-			'order' => array(
+            return Pitch::all(array(
+                'order' => array(
                 'pinned' => 'desc',
                 'ideas_count' => 'desc',
                 'price' => 'desc'
 			),
-            'conditions' => array('status' => array('<' => 1), 'published' => 1),
+                'conditions' => array(
+                    'status' => array('<' => 1),
+                    'published' => 1,
+                    'multiwinner' => 0),
 			'limit' => 3,
 			'page' => 1,
 		));

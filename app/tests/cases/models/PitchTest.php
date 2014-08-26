@@ -276,16 +276,19 @@ class PitchTest extends AppUnit {
 	}
 	
 	public function testGetPitchesForHomePage() {
-		for ($i = 1; $i <= 3; $i++){
-			$pitch = Pitch::first($i);
-			$pitch->status = 0;
-			$pitch->published = 1;
-			$pitch->pinned = 1;
-			$pitch->price = 12500+$i;
-			$pitch->ideas_count = 10+$i;
-			$pitch->save();
-		}
-		$pitches = Pitch::getPitchesForHomePage();
-		$this->assertEqual(array(3,2,1),array_keys($pitches->data()));
+            for ($i = 1; $i <= 3; $i++){
+		$pitch = Pitch::first($i);
+		$pitch->status = 0;
+		$pitch->published = 1;
+		$pitch->pinned = 1;
+		$pitch->price = 12500+$i;
+		$pitch->ideas_count = 10+$i;
+		$pitch->save();
+            }
+            $pitches = Pitch::getPitchesForHomePage();
+            $this->assertEqual(array(3,2,1),array_keys($pitches->data()));
+            foreach ($pitches as $pitch){
+                $this->assertEqual(0,$pitch->multiwinner);
+            }
 	}
 }
