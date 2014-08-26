@@ -7,8 +7,6 @@ use \app\models\User;
 
 class Pitchrating extends \app\models\AppModel {
 
-    public $belongsTo = array('User');
-
     public static function setRating($userId, $pitchId, $rating) {
         $pitch = Pitch::first($pitchId);
         $user = User::first($userId);
@@ -45,6 +43,17 @@ class Pitchrating extends \app\models\AppModel {
         } else {
             return false;
         }
+    }
+
+    public static function getRating($pitchId) {
+        $pitchRating = Pitchrating::find('all', array('conditions' => array('pitch_id' => $pitchId)));
+        $sum = 0;
+        foreach ($pitchRating as $rating) {
+            $sum += $rating->rating;
+        }
+        $count = count($pitchRating);
+        $average = round($sum / $count, 2);
+        return $average;
     }
 
 }

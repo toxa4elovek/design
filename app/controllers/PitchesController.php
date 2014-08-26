@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use \app\models\Bill;
 use \app\models\Pitch;
+use \app\models\Pitchrating;
 use \app\models\Pitchfile;
 use \app\models\Category;
 use \app\models\Grade;
@@ -1294,8 +1295,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if(!empty($fileIds)) {
                 $files = Pitchfile::all(array('conditions' => array('id' => $fileIds)));
             }
+            $rating = Pitchrating::getRating($pitch->id);
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts');
+                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts','rating');
             }else {
                 //return compact('pitch', 'files');
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments')));

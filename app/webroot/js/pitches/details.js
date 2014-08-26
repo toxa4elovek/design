@@ -236,6 +236,8 @@ $(document).ready(function() {
         starOn: 'solution-star-on.png',
         starOff: 'solution-star-off.png',
         size: 24,
+        readOnly: $('#pitch_rating').data('read'),
+        start: $('#pitch_rating').data('rating'),
         click: function(score, evt) {
             $.post('/rating/save.json',
                     {"id": $(this).data('pitchid'), "rating": score}, function(response) {
