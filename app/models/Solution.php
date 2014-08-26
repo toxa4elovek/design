@@ -346,12 +346,7 @@ http://godesigner.ru/answers/view/73');
             $copySolution->set($data);
             if ($copySolution->save()) {
                 if($copySolution->images){
-                    foreach ($copySolution->images as $img){
-                        unset($img['id']);
-                        $newimg = Solutionfile::create($img);
-                        $newimg->model_id = $copySolution->id;
-                        $newimg->save();
-                    }
+                    Solutionfile::copy($solution->id, $copySolution->id);
                 }
                 return true;
             }
