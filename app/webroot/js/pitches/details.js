@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $( ".slider" ).each(function(index, object) {
+    $(".slider").each(function(index, object) {
         var value = logoProperties[index];
         $(object).slider({
             disabled: true,
@@ -7,9 +7,9 @@ $(document).ready(function() {
             min: 1,
             max: 9,
             step: 1,
-            slide: function( event, ui ) {
-                var rightOpacity = (((ui.value-1) * 0.08) + 0.36).toFixed(2);
-                var leftOpacity = (1 - ((ui.value-1) * 0.08)).toFixed(2);
+            slide: function(event, ui) {
+                var rightOpacity = (((ui.value - 1) * 0.08) + 0.36).toFixed(2);
+                var leftOpacity = (1 - ((ui.value - 1) * 0.08)).toFixed(2);
                 $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
                 $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
             }
@@ -61,21 +61,21 @@ $(document).ready(function() {
     })
 
     $('#client-only-toggle').change(function() {
-        if($(this).attr('checked')) {
+        if ($(this).attr('checked')) {
             $.each($('section[data-type="designer"]', '.messages_gallery'), function(index, object) {
                 var comment = $(object);
                 comment.hide();
                 var separator = comment.next('.separator');
-                if((separator) && (separator.length == 1)) {
+                if ((separator) && (separator.length == 1)) {
                     separator.hide();
                 }
             })
-        }else {
+        } else {
             $.each($('section[data-type="designer"]', '.messages_gallery'), function(index, object) {
                 var comment = $(object);
                 comment.show();
                 var separator = comment.next('.separator');
-                if((separator) && (separator.length == 1)) {
+                if ((separator) && (separator.length == 1)) {
                     separator.show();
                 }
             })
@@ -86,9 +86,12 @@ $(document).ready(function() {
     window.___gcfg = {lang: 'ru'};
 
     (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
         po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
     })();
 
     //vk like
@@ -96,7 +99,7 @@ $(document).ready(function() {
     VK.Widgets.Like("vk_like", {type: "mini"});
 
     function preload(arrayOfImages) {
-        $(arrayOfImages).each(function(){
+        $(arrayOfImages).each(function() {
             $('<img/>')[0].src = this;
             // Alternatively you could use:
             // (new Image()).src = this;
@@ -104,11 +107,11 @@ $(document).ready(function() {
     }
 
 // Usage:
-/*
-    preload([
-
-    ]);
-*/
+    /*
+     preload([
+     
+     ]);
+     */
 
     $('#newComment').focus(function() {
         var position = $(this).position();
@@ -154,7 +157,7 @@ $(document).ready(function() {
 
     var editcommentflag = false;
 
-    $('.edit-link-in-comment').click(function(){
+    $('.edit-link-in-comment').click(function() {
         var section = $(this).parent().parent().parent();
         section.children().hide();
         var hiddenform = $('.hiddenform', section);
@@ -193,18 +196,18 @@ $(document).ready(function() {
     });
 
     $('.replyto').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
+        if (($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)) {
             $('input[name=comment_id]').val($(this).data('commentId'))
             var prepend = '@' + $(this).data('commentTo') + ', ';
             var newText = prepend + $('#newComment').val();
             $('#newComment').val(newText);
-            $.scrollTo($('#comment-anchor'), {duration:250});
+            $.scrollTo($('#comment-anchor'), {duration: 250});
         }
         return false;
     })
 
     $('.mention-link').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
+        if (($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)) {
             $('input[name=comment_id]').val('');
             var prepend = '@' + $(this).data('commentTo') + ', ';
             var newText = prepend + $('#newComment').val();
@@ -214,33 +217,39 @@ $(document).ready(function() {
     });
 
     /*
-    $( ".slider" ).slider({
-        value: 5,
-        min: 1,
-        max: 9,
-        step: 1,
-        slide: function( event, ui ) {
-            var rightOpacity = (((ui.value-1) * 0.08) + 0.36).toFixed(2);
-            var leftOpacity = (1 - ((ui.value-1) * 0.08)).toFixed(2);
-            $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
-            $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
+     $( ".slider" ).slider({
+     value: 5,
+     min: 1,
+     max: 9,
+     step: 1,
+     slide: function( event, ui ) {
+     var rightOpacity = (((ui.value-1) * 0.08) + 0.36).toFixed(2);
+     var leftOpacity = (1 - ((ui.value-1) * 0.08)).toFixed(2);
+     $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
+     $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
+     }
+     })
+     */
+    $('#pitch_rating').raty({
+        path: '/img',
+        hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
+        starOn: 'solution-star-on.png',
+        starOff: 'solution-star-off.png',
+        size: 24,
+        click: function(score, evt) {
+            $.post('/rating/save.json',
+                    {"id": $(this).data('pitchid'), "rating": score}, function(response) {
+            });
+            $('#take-part').show('fast');
+        }});
+    $('.btn-success').on('click', function() {
+        {
+            $.post('/rating/takePart.json', {"id": $(this).data('pitchid')});
+            $('#take-part').hide('fast');
         }
-    })
-    */
-	$('#pitch_rating').raty({
-		path: '/img',
-		hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
-		starOn: 'solution-star-on.png',
-		starOff: 'solution-star-off.png',
-		size: 24,
-		click: function(score, evt) {
-			$.post('/rating/save.json',
-			{"id": $(this).data('pitchid'), "rating": score}, function(response) {
-			});
-			$('#take-part').show('fast');
-		}});
+    });
 })
-$(document).mouseup(function (e){
+$(document).mouseup(function(e) {
     var container = $("#take-part");
     if (container.has(e.target).length === 0) {
         container.hide('fast');
