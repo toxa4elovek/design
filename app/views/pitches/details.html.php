@@ -103,6 +103,7 @@ function mb_basename($file)
                             <?php endforeach?>
                         </ul>
                         <?php endif?>
+                      <?php if($this->session->read('user.id')):?>
                       <div class="separator" style="width: 620px; margin:30px 0 15px;"></div>
                       <div style="height:20px;margin-top:22px;"><span id="rating_brief">Оцените бриф:</span>
                         <div style="position:relative;left:100px;bottom:20px;" id="pitch_rating" data-pitchid="<?=$pitch->id?>" data-read="<?php echo $this->session->read('user.id') ? 'false' : 'true' ?>" data-rating="<?=$rating?>"></div>
@@ -110,6 +111,7 @@ function mb_basename($file)
                             <button class="btn btn-success" data-pitchid="<?=$pitch->id?>"><span class="glyphicon glyphicon-plus-sign"></span> Приму участие</button>
                         </div>
                     </div>
+                    <?php endif?>
                     </div>
                 </div>
                 <div class="SideBarRight">
