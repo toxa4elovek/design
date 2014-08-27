@@ -18,7 +18,7 @@ class PitchratingTest extends AppUnit {
     }
 
 	public function testSetRating() {
-		$pitchRating = Pitchrating::first();
+		$pitchRating = Pitchrating::create();
 		$pitchRating->rating = 4;
 		$pitchRating->user_id = User::first()->id;
 		$pitchRating->pitch_id = Pitch::first()->id;
