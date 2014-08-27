@@ -16,9 +16,11 @@ class Addon extends \app\models\AppModel {
             if ($result) {
                 User::sendAdminNewAddon($params['addon']);
                 if ($params['addon']->brief == 1) {
+                    Pitch::addBrief($params['addon']);
                     User::sendAdminNewAddonBrief($params['addon']);
                 }
                 if ($params['addon']->experts == 1) {
+                    Pitch::addExpert($params['addon']);
                     User::sendExpertMail($params['addon']);
                 }
                 if ($params['addon']->prolong == 1 && $params['addon']->{'prolong-days'} > 0) {

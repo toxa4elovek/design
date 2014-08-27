@@ -8,7 +8,7 @@
 .slide{position:relative}
 .b_img_slide{position:absolute;left:88px;top:0px;}
 .s_img_slide{position:absolute;left:91px;top:218px;}
-.more_info{position:absolute;display:none;background: url(img/promo-hover.png) left top;position:absolute;left:0;top:0;right:0;bottom:0;color:#8f9198;font:10px arial;text-transform:uppercase;text-decoration:none;}
+.more_info{position:absolute;display:none;background: url(img/banner_onpress.png) left top;position:absolute;left:0;top:0;right:0;bottom:0;color:#8f9198;font:10px arial;text-transform:uppercase;text-decoration:none;}
 .more_info:hover {text-transform:uppercase; color:#8f9198;text-decoration:none;}
 .more_info p {padding:0 0 11px 20px}
 .more_info span{font-size:28px;}
@@ -102,6 +102,7 @@
 .logos li{height:72px;float:left;list-style-type:none;margin:0 26px 0 0}
 .tutdesign {padding-top:19px;}
 .yota {}
+.clodo {padding-top:11px}
 .brands {}
 .surfin {padding-top:7px;}
 .zucker {padding-top: 6px;}

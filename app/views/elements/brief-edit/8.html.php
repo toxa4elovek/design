@@ -1,11 +1,5 @@
 <div class="groupc">
 
-    <p>
-        <label>Укажите количество страниц, кратное 4</label>
-        <input type="text" name="booklet-pages" value="<?=$specifics['booklet-pages']?>" placeholder="20 полос, включая обложку" class="specific-prop" >
-    </p>
-
-
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">
@@ -41,9 +35,11 @@
         <input type="text" name="qualities" value="<?=$specifics['qualities']?>"  placeholder="Надежный, технологический, инновационный" class="specific-prop">
     </p>
 
+    <?php if (!empty($specifics['site-inspiration'])): ?>
     <p>
         <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="<?php if(empty($specifics['site-inspiration'])) echo 'placeholder'?>  specific-prop"><?=$specifics['site-inspiration']?></textarea>
+        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="specific-prop"><?=$specifics['site-inspiration']?></textarea>
     </p>
+    <?php endif; ?>
 
 </div>

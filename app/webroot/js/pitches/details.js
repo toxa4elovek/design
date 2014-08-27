@@ -1,21 +1,4 @@
 $(document).ready(function() {
-    $(".slider").each(function(index, object) {
-        var value = logoProperties[index];
-        $(object).slider({
-            disabled: true,
-            value: value,
-            min: 1,
-            max: 9,
-            step: 1,
-            slide: function(event, ui) {
-                var rightOpacity = (((ui.value - 1) * 0.08) + 0.36).toFixed(2);
-                var leftOpacity = (1 - ((ui.value - 1) * 0.08)).toFixed(2);
-                $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
-                $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
-            }
-        })
-    });
-
     $('.order1').on('mouseover', function() {
         $('img', this).attr('src', '/img/order1_hover.png');
     })

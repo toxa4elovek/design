@@ -11,12 +11,12 @@
                         <section class="howitworks">
                             <h1 style="color:#bebebe">Напишите нам</h1>
                         </section>
-                        <form action="" method="post">
+                        <form action="/pages/contacts" method="post" class="contacts-form">
                             <input class="i1" name="name" style="margin-top:30px;" type="text" placeholder="ВАШЕ ИМЯ" />
                             <input class="i1" name="email" type="text" placeholder="ВАШ EMAIL" />
                             <input class="i1" name="subject" type="text" placeholder="ТЕМА СООБЩЕНИЯ" />
                             <textarea name="message" placeholder="ВАШЕ СООБЩЕНИЕ"></textarea>
-                            <center><input type="submit" style="margin-bottom: 20px; width: 200px; margin-left: -20px; color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);" value="Отправить" class="button steps-link" data-step="2"></center>
+                            <input type="submit" style="display: block; margin: 0 auto 20px 168px; width: 200px;color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);" value="Отправить" class="button steps-link" data-step="2">
                         </form>
                         <div class="margins-1">
 
@@ -28,12 +28,12 @@
                             <div class="w100"  style="text-align:center;">
                                 <div class="bigletters largest-header">
                                     <a href="mailto:team@godesigner.ru">team@godesigner.ru</a><br/>
-                                    (812) 648 2412
+                                    +7 (812) 648 2412
                                 </div>
 
                                 <img src="/img/map.png" alt="" style="margin-left:auto;
                                 margin-right:auto; display:block; margin-top: 20px;">
-                                <a class="regular" target="_blank" style="text-align: center;" href="http://maps.google.ru/maps?client=safari&rls=en&oe=UTF-8&redir_esc=&q=галерная+55&um=1&ie=UTF-8&hq=&hnear=0x469630e01f3c5137:0x32c7e2d0479f34ce,Галерная+ул.,+55,+Санкт-Петербург&gl=ru&ei=iQljT_LCF5L44QStgf34Bw&sa=X&oi=geocode_result&ct=image&resnum=1&ved=0CCIQ8gEwAA">карта проезда</a>
+                                <a class="regular" target="_blank" style="text-align: center;" href="http://maps.google.ru/maps?client=safari&amp;rls=en&amp;oe=UTF-8&amp;redir_esc=&amp;q=инженерная+7&amp;um=1&amp;ie=UTF-8&amp;hq=&amp;hnear=0x469630e01f3c5137:0x32c7e2d0479f34ce,Инженерная+ул.,+7,+Санкт-Петербург&amp;gl=ru&amp;ei=iQljT_LCF5L44QStgf34Bw&amp;sa=X&amp;oi=geocode_result&amp;ct=image&amp;resnum=1&amp;ved=0CCIQ8gEwAA">карта проезда</a>
 
                             </div>
                         </div>
@@ -53,12 +53,11 @@
                             <a href="/answers" class="av">Все вопросы</a>
                         </div>
                         <div style="margin-top:85px; position:relative; float:left;" class="regular">
-                            ООО "КРАУД МЕДИА"<br/>
-                            Галерная 55, Санкт-Петебург<br/>
-                            (812) 648 2412<br/>
-                            197 000 Россия,<br/>
-                            ИНН 7801563047<br/>
-                            ОГРН 1117847588561<br/>
+                            Наш офис:<br/>Россия, Санкт-Петербург,<br/>Инженерная 7, 3 этаж
+                            <br/><br/>
+                            Юридический адрес<br/>
+                            и адрес для документов:<br/>
+                            199397, Россия, Санкт-Петербург,<br/>ул. Беринга, д. 27
                         </div>
                         <!--div id="ap_content_r_3">
                             <h2>Популярные разделы</h2>

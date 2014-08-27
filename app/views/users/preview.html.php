@@ -23,11 +23,11 @@
                             <?=$this->avatar->show($user->data(), 'true')?>
                         </div>
                         <div class="info_profile_about">
-                            <span class="nickname"><?=$this->nameInflector->renderName($user->first_name, $user->last_name )?>!</span>
+                            <span class="nickname"><?=$this->user->getFormattedName($user->first_name, $user->last_name )?>!</span>
                             <ul class="profile-list-info">
-                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripemail($userdata['birthdate'])?></li>
-                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripemail($userdata['city'])?></li>
-                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripemail($userdata['profession'])?></li>
+                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['birthdate']))?></li>
+                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['city']))?></li>
+                                <li class="regular-small-grey" style="color:#666666;"><?=$this->brief->stripurl($this->brief->stripemail($userdata['profession']))?></li>
                             </ul>
                             <div class="pitches">
                                 <ul class="profile-list">
@@ -38,21 +38,19 @@
                             </div>
                             <div class="likes">
                                 <ul class="profile-list">
-                                    <li class="regular-small-grey" style="color:#666666;">Total Likes:<span> <?=(int)$totalLikes?></span></li>
-                                    <li class="regular-small-grey" style="color:#666666;">Просмотров решений:<span> <?=(int)$totalViews?></span></li>
+                                    <li class="regular-small-grey" style="color:#666666;">Total Likes:<span> <?=$totalLikes?></span></li>
+                                    <li class="regular-small-grey" style="color:#666666;">Просмотров решений:<span> <?=$totalViews?></span></li>
                                     <?php if($isClient):?>
-                                    <li class="regular-small-grey" style="color:#666666;">Рейтинг у заказчика:<span> <?=$averageGrade?></span></li>
+                                        <li class="regular-small-grey" style="color:#666666;">Рейтинг у дизайнеров:<span> <?=$averageGrade?></span></li>
                                     <?php else:?>
-                                    <li class="regular-small-grey" style="color:#666666;">Рейтинг у заказчика:<span> <?=$averageGrade?></span></li>
+                                        <li class="regular-small-grey" style="color:#666666;">Рейтинг у заказчика:<span> <?=$averageGrade?></span></li>
                                     <?php endif?>
                                 </ul>
                             </div>
                         </div>
                     </div>
 
-                    <img src="/img/profile-separate.png" />
-
-                    <div class="about_profile">
+                    <div class="about_profile clr">
                         <dl>
                             <dt class="greyboldheader">Обо мне:</dt>
                             <dd class="regular">
@@ -61,11 +59,12 @@
                             <div class="separate"> </div>
                         </dl>
                     </div>
+
                 </div>
 
             <?php if(count($selectedSolutions) > 0):?>
             <div class="portfolio">
-                <ul class="list_portfolio" style="margin-left:-30px;">
+                <ul class="list_portfolio" style="margin-left:-25px;">
                     <?php foreach($selectedSolutions as $solution):
                     if(($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):
                         continue;

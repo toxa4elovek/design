@@ -2,14 +2,20 @@
 
 namespace app\models;
 
+use app\extensions\mailers\SolutionsMailer;
 use \app\models\Event;
 use \app\models\Pitch;
 use \app\models\Like;
 use \app\models\Comment;
 use \app\models\Ratingchange;
+use \app\models\Solutionfile;
+use \app\models\Uploadnonce;
 use \app\models\Historysolution;
+use app\models\Task;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
+use \lithium\analysis\Logger;
+use \lithium\storage\Session;
 
 class Solution extends \app\models\AppModel {
 
@@ -25,14 +31,6 @@ class Solution extends \app\models\AppModel {
         'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/solutions/'),
         'setPermission' => array('mode' => 0644),
         'processImage' => array(
-// This param is disabled for resizing image separately
-//              //'largest' => array('image_resize' => true, 'image_ratio_crop' => true, 'image_x' => 960, 'image_y' => 740, 'file_overwrite' => true),
-//            'solutionView' => array('image_resize' => true, 'image_ratio_fill' => true, 'image_x' => 488, 'image_background_color' => '#dddddd',  'image_y' => 366, 'file_overwrite' => true),
-//            //'gallerySmallSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 99, 'image_y' => 75, 'file_overwrite' => true),
-//            'galleryLargeSize' => array('image_resize' => true, 'image_ratio_fill' => true, 'image_x' => 180, 'image_background_color' => '#ffffff', 'image_y' => 135, 'file_overwrite' => true),
-//            'gallerySiteSize' => array('image_resize' => true, 'image_x' => 800, 'image_ratio_y' => true),
-//            /*'galleryLargeSize' => array('image_resize' => true, 'image_ratio_crop' => 'TB', 'image_x' => 179, 'image_y' => 135, 'file_overwrite' => true),*/
-//            //'promoSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 259, 'image_y' => 258, 'file_overwrite' => true),
         ),
     ));
 
@@ -40,20 +38,6 @@ class Solution extends \app\models\AppModel {
         parent::__init();
         self::applyFilter('find', function($self, $params, $chain){
             $result = $chain->next($self, $params, $chain);
-            /*if(is_object($result)) {
-                $addCopyrightedText = function($record) {
-                    if($record->copyrightedMaterial == 1){
-
-                    }
-                };
-                if(get_class($result) == 'lithium\data\entity\Record') {
-                    $result = $addCopyrightedText($result);
-                }else {
-                    foreach($result as $foundItem) {
-                        $foundItem = $addCopyrightedText($foundItem);
-                    }
-                }
-            }*/
             return $result;
         });
         self::applyFilter('delete', function($self, $params, $chain){
@@ -70,6 +54,24 @@ class Solution extends \app\models\AppModel {
         self::applyFilter('uploadSolution', function($self, $params, $chain){
             $result = $chain->next($self, $params, $chain);
             if($result) {
+                if ($uploadnonce = Uploadnonce::first(array('conditions' => array('nonce' => $params->uploadnonce)))) {
+                    $nonce = $uploadnonce->id;
+                }
+                if ($files = Solutionfile::all(array('fields' => array('id', 'position'), 'conditions' => array('model' => '\app\models\Uploadnonce', 'model_id' => $nonce)))) {
+                    foreach ($files as $file) {
+                        // Change order
+                        if (!empty($params->resortable[$file->position]) && $file->position != $params->resortable[$file->position]) {
+                            $file->set(array(
+                                'position' => $params->resortable[$file->position],
+                            ));
+                        }
+                        $file->set(array(
+                            'model' => '\app\models\Solution',
+                            'model_id' => $result->id,
+                        ));
+                        $file->save();
+                    }
+                }
                 Event::createEvent($result->pitch_id, 'SolutionAdded', $result->user_id, $result->id);
                 Pitch::increaseIdeasCountOne($result->pitch_id);
                 $historySolution = Historysolution::create();
@@ -87,26 +89,23 @@ http://godesigner.ru/answers/view/78
 http://godesigner.ru/answers/view/73');
                     Comment::createComment($data);
                 }else {
-                    User::sendSpamNewsolution(array('solution_id' => $result->id));
+                    // Добавляем задание о рассылке уведомления о новом решении в очередь
+                    Task::createNewTask($result->id, 'newSolutionNotification');
                 }
             }
             return $result;
         });
         self::applyFilter('selectSolution', function($self, $params, $chain){
+            Logger::write('info', Session::read('user.id'), array('name' => 'solution'));
             Event::createEvent($params['solution']->pitch->id, 'SolutionPicked', $params['solution']->pitch->user_id, $params['solution']->id);
             $result = $chain->next($self, $params, $chain);
             if($result != false) {
                 $admin = User::getAdmin();
                 $solution = $params['solution'];
                 $pitch = Pitch::first($solution->pitch_id);
-                //if($pitch->split === 0) {
-                $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $params['solution']->id . '">Им стал</a> #' . $params['solution']->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше - все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
+                $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $params['solution']->id . '">Им стал</a> #' . $params['solution']->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
 Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
-                //}elseif($pitch->split === 1) {
-                /*$message = 'Друзья, заказчик не выбрал победителя и не отказался от предложенных решений вовремя. По регламенту проведения питча мы удерживаем 30% от суммы вознаграждения в пользу самого популярного решения, определённого с помощью 1–лайков, 2–просмотров. Оставшаяся сумма возвращается заказчику.  Мы благодарим всех за участие, и хотим напомнить, что права на свои идеи сохраняются за авторами, и вы можете адаптировать их для участия в другом питче!<br/>
-Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';*/
-                //}
-                $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message);
+                $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
                 Comment::createComment($data);
                 $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
                 $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
@@ -121,17 +120,9 @@ http://godesigner.ru/answers/view/73');
                     $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
                 }
                 User::sendTweet($tweet);
-                User::sendSpamSolutionSelected($result);
+                Task::createNewTask($solution->id, 'victoryNotification');
             }
             return $result;
-        });
-        self::applyFilter('setRating', function($self, $params, $chain){
-            $result = $chain->next($self, $params, $chain);
-            if($result->rating == 5) {
-                //$tweet = '5 звёзд поставил заказчик в питче «' . $params['pitch']->title . '» http://www.godesigner.ru/pitches/viewsolution/' . $result->id . ' #Go_Deer';
-                //User::sendTweet($tweet);
-            }
-            return $result->rating;
         });
     }
 
@@ -171,6 +162,8 @@ http://godesigner.ru/answers/view/73');
         $solution = Solution::create();
         $solution->save($data);
         $params = $solution;
+        $params->uploadnonce = $formdata['uploadnonce'];
+        $params->resortable = $formdata['reSortable'];
         return static::_filter(__FUNCTION__, $params, function($self, $params) {
             return $params;
         });
@@ -188,15 +181,27 @@ http://godesigner.ru/answers/view/73');
         return false;
     }
 
-    public static function increaseLike($solutionId, $userId) {
+    public static function increaseLike($solutionId, $userId = 0) {
         $solution = self::first($solutionId);
+        if ($userId == 0) {
+            return $solution->likes;
+        }
         $pitch = Pitch::first(array('conditions' => array('id' => $solution->pitch_id)));
-
-        if((!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) && ($userId) && ($pitch->status == 0)) {
+        $userId = (int)$userId;
+        $allowAnon = false;
+        if (!$userId && (!isset($_COOKIE['bmx_' . $solutionId]) || ($_COOKIE['bmx_' . $solutionId] == 'false'))) {
+            $allowAnon = true;
+            setcookie('bmx_' . $solutionId, 'true', strtotime('+3 month'), '/');
+        }
+        $allowUser = false;
+        if ($userId && (!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId))))) {
+            $allowUser = true;
+        }
+        if (($allowUser || $allowAnon) && ($pitch->status == 0)) {
             $solution->likes += 1;
             $solution->save();
             $like = Like::create();
-            $like->set(array('solution_id' => $solutionId, 'user_id' => $userId));
+            $like->set(array('solution_id' => $solutionId, 'user_id' => $userId, 'created' => date('Y-m-d H:i:s')));
             $like->save();
         }
         return $solution->likes;
@@ -222,9 +227,15 @@ http://godesigner.ru/answers/view/73');
         return $solution->hidden;
     }
 
-    public static function decreaseLike($solutionId, $userId) {
+    public static function decreaseLike($solutionId, $userId = 0) {
         $solution = self::first($solutionId);
-        if($like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) {
+        $userId = (int)$userId;
+        $allowAnon = false;
+        if (!$userId && (isset($_COOKIE['bmx_' . $solutionId]) && ($_COOKIE['bmx_' . $solutionId] == 'true'))) {
+            $allowAnon = true;
+            setcookie('bmx_' . $solutionId, 'false', strtotime('+3 month'), '/');
+        }
+        if(($like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) && ($userId || ($allowAnon))) {
             $solution->likes -= 1;
             $solution->save();
             $like->delete();
@@ -268,10 +279,15 @@ http://godesigner.ru/answers/view/73');
     }
 
     public static function getNextNum($pitchId) {
-        if($prevSolution = self::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('num' => 'desc')))) {
-            return ($prevSolution->num + 1);
+        $pitch = Pitch::first($pitchId);
+        if (($prevSolution = self::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('num' => 'desc')))) && (strtotime($prevSolution->created) < strtotime('2013-10-23 00:00:00'))) {
+            $res = $prevSolution->num + 1;
+        } else {
+	       $res = $pitch->last_solution + 1;
         }
-        return 1;
+        $pitch->last_solution = $res;
+        $pitch->save();
+        return $res;
     }
 
     public static function getUserSolutionGallery($userId) {
@@ -312,6 +328,16 @@ http://godesigner.ru/answers/view/73');
             $result = $solution->data();
             return compact('result');
         });
+    }
+
+    public static function getNumOfUploadedSolutionInLastDay() {
+        $count = Solution::count(array('conditions' => array('created' => array('>' => date('Y-m-d H:i:s', (time() - DAY))))));
+        return $count;
+    }
+
+    public static function getTotalParticipants() {
+        $count = self::all(array('group' => 'user_id'));
+        return count($count);
     }
 
 }

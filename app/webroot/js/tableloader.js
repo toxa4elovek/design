@@ -102,7 +102,7 @@ function TableLoader() {
             var pitchStartDate = new Date(temp.slice(0,3).join('/')+' '+temp[3]);
             var plusoneday = Math.round(pitchStartDate.getTime() / 1000) + 24 * 60 * 60;
             var currentunixtime = Math.round(new Date().getTime() / 1000);
-            if(plusoneday > currentunixtime) {
+            if(object.new_pitch == 1) {
                 rowClass += ' newpitch';
             }else {
                 if(object.pinned == 1) {
@@ -156,7 +156,7 @@ function TableLoader() {
             }
 
             var imgForDraft = '';
-            if(object.user_id == $('#user_id').val()){
+            if((object.user_id == $('#user_id').val()) && (object.awarded == '')) {
                 if (object.published == 1) {
                     imgForDraft = ' not-draft';
                 }
@@ -184,6 +184,10 @@ function TableLoader() {
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
             }
+            var pitchMultiple = '';
+            if (object.multiple) {
+                pitchMultiple = '<br>' + object.multiple;
+            }
 
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons">' + icons + '</td>' +
@@ -195,7 +199,7 @@ function TableLoader() {
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
+                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + timeleft + '</td>' +

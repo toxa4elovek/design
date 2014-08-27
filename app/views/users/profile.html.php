@@ -7,12 +7,7 @@
     <div class="middle">
         <div class="main">
             <nav class="main_nav clear" style="width:832px;margin-left:2px;">
-                <?=$this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Мои питчи</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <!--a href="#"><span>Сообщения</span></a-->
-                <?=$this->html->link('<span>Профиль</span>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'active')) ?>
-                <?=$this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Реквизиты</span>', array('controller' => 'users', 'action' => 'details'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
+                <?=$this->view()->render(array('element' => 'office/nav'));?>
             </nav>
 
             <div class="sideblock">
@@ -99,16 +94,14 @@
                         <h1 class="separator-flag">ОТКРЫТАЯ ИНФОРМАЦИЯ</h1>
                         <input type="hidden" name="userpic" value="">
                         <div class="photoselectbox qq-uploader" style="height:196px;width:196px;">
-  
+
 
                             <?=$this->avatar->show($user->data(), 'true')?>
 
 
 
                         </div>
-                        <?php if($user->facebook_uid == ''):?>
                         <span style="display: none;position:absolute;top:396px;left:79px; width:118px;" id="file-uploader-demo1"></span>
-                        <?php endif;?>
                         <div id="fieldblock1">
                             <div class="userwelcometext" style="padding-top:5px;margin-bottom: 9px">Привет, <?=$user->first_name?> <?=$user->last_name?>!</div>
                             <div style="margin-bottom: 7px"><input type="text" name="birthdate" placeholder="Дата рождения" value="<?=$userdata['birthdate']?>" ></div>
@@ -145,6 +138,9 @@
                             <?php if($passwordInfo != false):?>
                             <p class="regular"><?=$passwordInfo?></p>
                             <?php endif;?>
+                            <?php if($emailInfo != false):?>
+                            <p class="regular"><?=$emailInfo?></p>
+                            <?php endif;?>
                             <div class="fieldleft"><input type="password" placeholder="Старый пароль" name="currentpassword"></div>
                             <div><input type="email" placeholder="Email" name="email" value="<?=$user->email?>"></div>
                             <div class="fieldleft"><input type="password" placeholder="Новый пароль" name="newpassword"></div>
@@ -152,7 +148,6 @@
                             <div><a href="/users/deleteaccount" style="padding-left: 10px; width: 282px; display: block; float: left; height: 40px; margin-top: 13px;" id="deleteaccount">Удалить аккаунт</a></div>
                             <div class="fieldleft">
                                 <input type="password" placeholder="Повторите новый пароль" name="confirmpassword">
-
                             </div>
                         </div>
                         <div style="clear:both;height:1px"></div>
@@ -161,13 +156,46 @@
                         <h1 class="separator-flag">УВЕДОМЛЕНИЯ ПО E-MAIL</h1>
                         <div id="fieldblock4">
                             <!--div class="fieldleft"><label><input type="checkbox" name="asas">важные изменения на сайте</label></div-->
-                            <div class="fieldleft"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых питчах раз в день</label></div>
-                            <div class="" style="margin-bottom: 4px;"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;раз в день</label></div>
-                            <div class="fieldleft"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых питчах сразу, как они<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;публикуются на сайте</label></div>
-                            <div class="" style="margin-bottom: 14px;"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сразу, как только их выкладывают на сайт</label></div>
-                            <div class="fieldleft"><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>>комментарии к моим решениям</label></div>
-                            <div class=""><label class="regular" style="font-weight: normal"><input style="margin-top:0" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>дайджест новостей (1 раз в 3 недели)</label></div>
-
+                            <ul>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых питчах раз в день
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых питчах сразу, как они<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;публикуются на сайте
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_onlycopy" <?php if($user->email_onlycopy): echo 'checked'; endif;?>>только о новых питчах на копирайтинг
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>>комментарии к моим решениям
+                                    </label>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;раз в день
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сразу, как только их выкладывают на<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сайт
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="regular" style="font-weight: normal">
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>дайджест новостей (1 раз в 3 недели)
+                                    </label>
+                                </li>
+                            </ul>
+                            <div class="clr"></div>
                         </div>
                     </section>
 
@@ -175,7 +203,7 @@
                 </form>
                 <div id="popup-final-step" class="popup-final-step" style="display:none;">
                     <h3 style="text-transform:uppercase;font-family: RodeoC; margin-top: 140px;margin-left: 110px;font-size:28px;text-shadow: -1px 1px 2px white;margin-bottom: 30px;">Хотите удалить аккаунт?</h3>
-                    <div style="margin-bottom: 30px;">• Если вам надоела рассылка, пожалуйста, просто отпишитесь<br> от нее в один клик <a href="/users/unsubscribe?token=<?=base64_encode($this->session->read('user.id'))?>">здесь.</a><br></div>
+                    <div style="margin-bottom: 30px;">• Если вам надоела рассылка, пожалуйста, просто отпишитесь<br> от нее в один клик <a href="/users/unsubscribe?token=<?=base64_encode($this->user->getId())?>">здесь.</a><br></div>
                     <div style="margin-bottom: 50px;">• Если вы желаете навсегда стереть свой аккаунт, вы больше<br> не сможете в него зайти, а ваш профиль нельзя будет просмотреть.</div>
                     <div class="final-step-nav wrapper" style="margin-top:20px;">
                         <input type="submit" style="width: 179px" class="button second popup-close" value="Нет, отменить">
@@ -195,5 +223,5 @@
 </div><!-- .wrapper -->
 
 
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>

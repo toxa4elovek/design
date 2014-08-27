@@ -23,6 +23,16 @@
 .block-toggler .link {
 	color: #ff585d
 }
+.block-toggler.filter-steps {
+    margin: -11px 0 26px 15px;
+}
+.block-toggler.filter-steps a {
+	font: bold 11px/1 "Arial", sans-serif;
+	text-transform: uppercase;
+}
+.block-toggler.filter-steps a.link {
+    color: #648fa4;
+}
 .props {
 	height: 36px;
 	width: 209px;
@@ -202,8 +212,11 @@ select {
 	font: bold 13px/1 "RodeoC", sans-serif;
 }
 .right_block {
-	margin: 45px 0 0 32px !important;
+	margin: 45px 0 0 32px;
 	float: left;
+}
+.right_block.for-client {
+	margin-top: -37px;
 }
 .center_block {
 	width: 608px;
@@ -280,4 +293,12 @@ input.rb1{
     margin-left: 10px;
     margin-top: 9px;
     display: none;
+}
+tr.account-check {
+    opacity: 0;
+}
+tr.account-check td {
+    border: 1px solid #FF585D;
+    padding: 1em;
+    color: #FF585D;
 }

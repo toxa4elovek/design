@@ -17,6 +17,10 @@ class Post extends \app\models\AppModel {
         'фриланс',
         'интервью',
         'команда go',
+        'герой месяца',
+        'cовет в обед',
+        'топ 10',
+        'фриланс под пальмами',
     );
 
     public static function increaseCounter($id) {

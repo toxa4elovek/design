@@ -11,6 +11,7 @@ use \lithium\analysis\Logger;
 use lithium\action\Response;
 use lithium\net\http\Media;
 use \lithium\template\View;
+use \lithium\core\Environment;
 
 /**
  * Then, set up a basic logging configuration that will write to a file.
@@ -52,22 +53,13 @@ ErrorHandler::config(array(
         }
     )
 ));
-use lithium\core\Environment;
 
 ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $params) {
 	$response = new Response(array(
 		'request' => $params['request'],
 		'status' => $info['exception']->getCode()
 	));
-    //if ((Environment::is('production')) && ($info['exception']->getCode() == '404')) {
-        Media::render($response, compact('info', 'params'), array(
-            'library' => true,
-            'controller' => '_errors',
-            'template' => 'development',
-            'layout' => 'default',
-            'request' => $params['request']
-        ));
-    /*}else {
+    if (Environment::is('production')) {
         Media::render($response, compact('info', 'params'), array(
             'library' => true,
             'controller' => '_errors',
@@ -75,7 +67,15 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
             'layout' => 'default',
             'request' => $params['request']
         ));
-    }*/
+    }else {
+        Media::render($response, compact('info', 'params'), array(
+            'library' => true,
+            'controller' => '_errors',
+            'template' => 'development',
+            'layout' => 'default',
+            'request' => $params['request']
+        ));
+    }
 	return $response;
 });
 

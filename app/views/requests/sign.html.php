@@ -4,47 +4,7 @@
 
 <div class="middle">
 <div class="middle_inner_gallery" style="padding-top:25px">
-
-    <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
-        <table class="pitch-info-table" border="1">
-            <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1"><span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?></span></td>
-                <td width="15"></td>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Заказчик:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$this->html->link($this->nameInflector->renderName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'))?></td></tr>
-            <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Решений:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$pitch->ideas_count ?></span></td>
-                <td width="15"></td>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Был online:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=date('d.m.Y', strtotime($pitch->user->lastActionTime))?> в <?=date('H:i', strtotime($pitch->user->lastActionTime)) ?></span></td></tr>
-            <tr>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Просмотры брифа:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$pitch->views?></span></td>
-                <td width="15"></td>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                    <span class="regular">Срок:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($pitch->status == 0):?>
-                    <span class="pitch-info-text"><?=preg_replace('@(м).*@', '$1. ', preg_replace('@(ч).*@', '$1. ', preg_replace('@(.*)(дн).*?\s@', '$1$2. ', $pitch->startedHuman)))?></span>
-                    <?php elseif($pitch->status == 1):?>
-                    <span class="pitch-info-text">Выбор победителя</span>
-                    <?php elseif($pitch->status == 2):?>
-                    <span class="pitch-info-text">Питч завершен</span>
-                    <?php endif?>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div id="pitch-title" style="height:36px;margin-bottom:5px;">
-        <div class="breadcrumbs-view" style="width:770px;float:left;">
-            <a href="/pitches">Все питчи /</a> <a href="/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a>
-
-        </div>
-        <?php if($pitch->status == 0):?>
-        <?php if(!in_array($pitch->id, $this->session->read('user.faves'))):?>
-            <div style="width:36px;height:36px;float:right;margin-right: 20px;">
-                <a data-pitchid="<?=$pitch->id?>" id="fav" data-type="add" href="#" title="Добавить в избранное"><img class="fav-plus" alt="добавить в избранное" src="/img/plus 2.png"></a>
-            </div>
-            <?php else:?>
-            <div style="width:36px;height:36px;float:right;margin-right: 20px;">
-                <a data-pitchid="<?=$pitch->id?>" id="fav" data-type="remove" href="#" title="Удалить из избранного"><img class="fav-minus" alt="Удалить из избранного" src="/img/minus.png"></a>
-            </div>
-            <?php endif?><?php endif?>
-    </div>
+    <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
 
     <div style="float:left; width: 627px;padding-bottom: 40px;">
         <h2 class="largest-header" style="text-align: center; margin-bottom: 30px;">ЭТО <a target="_blank" href="http://www.godesigner.ru/answers/view/64">ЗАКРЫТЫЙ ПИТЧ</a><br/> И ВАМ НУЖНО ПОДПИСАТЬ<br/> СОГЛАШЕНИЕ О НЕРАЗГЛАШЕНИИ!<h2>
@@ -61,7 +21,7 @@
         <div id="tos" style="overflow: scroll; height:300px;" class="regular">
             СОГЛАШЕНИЕ О НЕРАЗГЛАШЕНИИ<br><br>
 
-            Исполнитель, в лице предварительно зарегистрированного пользователя интернет-сервиса Go Designer, акцептировавшего данное соглашение именуемый далее «Принимающая сторона», с одной стороны, и Заказчик <?=$this->NameInflector->renderName($pitch->user->first_name, $pitch->user->last_name)?> именуемый далее «Раскрывающая сторона», с другой стороны, далее именуемые совместно «Стороны», заключили настоящее Соглашение о нижеследующем:<br><br>
+            Исполнитель, в лице предварительно зарегистрированного пользователя интернет-сервиса Go Designer, акцептировавшего данное соглашение именуемый далее «Принимающая сторона», с одной стороны, и Заказчик <?=$this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name)?> именуемый далее «Раскрывающая сторона», с другой стороны, далее именуемые совместно «Стороны», заключили настоящее Соглашение о нижеследующем:<br><br>
 
             1. ОПРЕДЕЛЕНИЯ<br>
             Для целей настоящего Соглашения:<br>

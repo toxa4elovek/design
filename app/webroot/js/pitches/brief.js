@@ -1,6 +1,56 @@
 $(document).ready(function() {
-
     var pitchid = '';
+
+    $('.enable-editor').tinymce({
+       // Location of TinyMCE script
+       script_url : '/js/tiny_mce/tiny_mce.js',
+
+       // General options
+       theme : "advanced",
+       plugins : "autolink,lists,style,visualchars,paste",
+
+       // Theme options
+       theme_advanced_buttons1 : "styleselect,link,unlink,bullist,numlist,charmap",
+       theme_advanced_buttons2 : "",
+       theme_advanced_buttons3 : "",
+       theme_advanced_toolbar_location : "top",
+       theme_advanced_toolbar_align : "left",
+       theme_advanced_statusbar_location : "bottom",
+       theme_advanced_resizing : true,
+       content_css : "/css/brief_wysiwyg.css",
+       language : "ru",
+       height : "180",
+       width: '538',
+       relative_urls: false,
+       remove_script_host: false,
+       paste_auto_cleanup_on_paste : true,
+       paste_remove_styles: true,
+       paste_remove_styles_if_webkit: true,
+       paste_strip_class_attributes: true,
+       paste_preprocess : function(pl, o) {
+           if((jQuery(o.content).text() == '') && (o.content != '')) {
+               var text = o.content
+           }else {
+               var text = jQuery(o.content).text()
+           }
+           o.content = text
+       },
+       onchange_callback : function(editor) {
+           isUndo = true;
+       },
+       style_formats : [
+             {title : 'Основной текст', inline : 'span', classes: "regular"},
+             {title : 'Заголовок', inline : 'span', classes: "greyboldheader"},
+             {title : 'Дополнение', inline : 'span', classes: "supplement2"},
+         ],
+   });
+
+    /* Download Form Select */
+    if ((window.File != null) && (window.FileList != null)) {
+        $('#new-download').show();
+    } else {
+        $('#old-download').show();
+    }
 
     // steps menu
     $('.steps-link').click(function() {
@@ -14,6 +64,12 @@ $(document).ready(function() {
             }
             });
             return false;
+        }
+        if(stepNum == 3) {
+            if (false === $('input[name=tos]').prop('checked')) {
+                alert('Вы должны принять правила и условия');
+                return false;
+            }
         }
         if(Cart.validatetype == 1) {
             if((stepNum == 3) && ((notExists == true)|| (existsNotPublshed == true))) {
@@ -103,12 +159,15 @@ $(document).ready(function() {
 
     function checkPromocode() {
         var value = $('#promocode').val();
+        if ($('#promocode').prop('disabled') || value.length == 0) {
+            return false;
+        }
         $.post('/promocodes/check.json', {"code": value}, function(response){
             if(response == 'false') {
                 $('#hint').text('Промокод неверен!');
             }else{
                 $('#hint').text('Промокод активирован!');
-                if(response.type == 'pinned') {
+                if((response.type == 'pinned') || (response.type == 'misha')) {
                     Cart.addOption("“Прокачать” бриф", 0);
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
                     $('input[type=checkbox]', '#pinned-block').data('optionValue', '0');
@@ -117,12 +176,17 @@ $(document).ready(function() {
                     Cart.transferFeeDiscount = 700;
                     Cart.updateFees();
                     Cart._renderCheck();
+                }else if(response.type == 'in_twain') {
+                    Cart.feeRatesReCalc(2);
+                    Cart.updateFees();
+                    Cart._renderCheck();
                 }
+                Cart.promocodes.push(value);
             }
         });
     }
     checkPromocode();
-    
+
     $('#promocode').live('keyup', function() {
         checkPromocode();
     });
@@ -147,27 +211,19 @@ $(document).ready(function() {
         var input = $('#award');
         var minAward = input.data('minimalAward');
         $('#indicator').removeClass('low normal good');
-        //console.log('award numeric ' + minAward);
         if(minAward > input.val()) {
             input.val(minAward);
             input.addClass('initial-price');
             $('#indicator').addClass('low');
+            Cart.transferFee = feeRates.low;
         }else {
             input.removeClass('initial-price');
-            if(input.val() < input.data('normal')) {
-                $('#indicator').addClass('low');
-            }else if (input.val() < input.data('high')){
-                $('#indicator').addClass('normal');
-            }else {
-                $('#indicator').addClass('good');
-            }
+            drawIndicator(input, input.val());
         }
     });
 
     $('#award').keyup(function() {
         var input = $(this);
-        var minAward = input.data('minimalAward');
-        $('#indicator').removeClass('low normal good');
 
         input.removeClass('initial-price');
         if((input.val() == '') && (!input.is(':focus'))) {
@@ -178,13 +234,7 @@ $(document).ready(function() {
         }else {
             var value = input.val();
         }
-        if(value < input.data('normal')) {
-            $('#indicator').addClass('low');
-        }else if (value < input.data('high')){
-            $('#indicator').addClass('normal');
-        }else {
-            $('#indicator').addClass('good');
-        }
+        drawIndicator(input, value);
         Cart.updateOption($(this).data('optionTitle'), value);
     })
 
@@ -333,7 +383,7 @@ $(document).ready(function() {
         }
     }
     $('#save').click(function() {
-        if((($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length == 0)) && ($('input[name=tos]').length == 1)) {
+        if (false === $('input[name=tos]').prop('checked')) {
             alert('Вы должны принять правила и условия');
         }else {
             if(Cart.prepareData()) {
@@ -354,45 +404,10 @@ $(document).ready(function() {
         return false;
     })
 
-    /*
-    $('#fileuploadform').fileupload({
-        dataType: 'json',
-        add: function(e, data) {
-            console.log(data);
-            e.data.fileupload.myData = data;
-            $('#filename').html(data.files[0].name);
-        },
-        done: function (e, data) {
-            $.modal.close();
-            var li = '<li><a href="' + data.result.weburl + '" class="filezone-filename" target="_blank">' + data.result.basename + '</a>' +
-                '<p>' + data.result['file-description'] + '</p>' +
-                '<a href="/pitchfiles/delete/' + data.result.id + '.json" class="filezone-delete-link">удалить</a></li>';
-            $("#filezone").append(li);
-            $('#fileupload-description').val('');
-            $('#filename').html('Файл не выбран');
-            Cart.fileIds.push(data.result.id);
-        },
-        send: function(e, data) {
-            $('#loading-overlay').modal({
-                containerId: 'spinner',
-                opacity: 80,
-                close: false
-            });
-        },
-        progressall: function(e, data) {
-            if(data.total > 0) {
-                var percent = data.total / 100;
-                var completed = Math.round(data.loaded / percent);
-                $('#progressbar').text(completed + '%');
-            }
-        }
-    });*/
-
     var fileIds = [];
-    var placeholder = $('#fileupload-description').attr('placeholder');
     var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
-        onSelect: function(file) { onSelectHandler.call(this, file, placeholder, fileIds, Cart); }  // See app.js
+        onSelect: function(file) { onSelectHandler.call(this, file, fileIds, Cart); }  // See app.js
     });
 
     $('input[name="phone-brief"]').change(function() {
@@ -401,8 +416,8 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.filezone-delete-link', function() {
+        var givenId = +$(this).parent().attr('data-id');
         if (Cart.id) {
-            var givenId = +$(this).parent().attr('data-id'); 
             if (givenId) { // File came from database
                 $.post('/pitchfiles/delete', {'id': givenId}, function(response) {
                     if(response != 'true') {
@@ -417,12 +432,22 @@ $(document).ready(function() {
             }
             $(this).parent().remove();
             return false;
+        } else if ($(this).data('imfromiframe') == true) {
+            $.post('/pitchfiles/delete', {'id': givenId}, function(response) {
+                if(response != 'true') {
+                    alert('При удалении файла произошла ошибка');
+                }
+                var position = $.inArray(givenId, Cart.fileIds);
+                Cart.fileIds.splice(position, 1);
+            });
+            $(this).parent().remove();
+            return false;
         } else {
             uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
             $(this).parent().remove();
             return false;
         }
-    })
+    });
 
     $('#uploadButton').click(function() {
         //$('#fileuploadform').fileupload('uploadByClick');
@@ -437,27 +462,13 @@ $(document).ready(function() {
     })*/
 
     $('#sub-site').keyup(function() {
-        var input = $(this);
-        var award = $('#award')
-        var defLow = award.data('lowDef');
-        var defNormal = award.data('normalDef');
-        var defHigh = award.data('highDef');
-        var mult = $(this).data('mult');
-        if((typeof(mult) == undefined) || (!mult)) {
-            mult = parseInt(award.data('lowDef')) / 2;
-        }
-        var extraNormal = (defNormal - defLow);
-        var extraHigh = (defHigh - defLow);
-
-        var minValue = (($(this).val() - 1) * mult) + defLow;
-        $('#award').data('minimalAward', minValue);
-        $('#award').blur();
-    })
+        $(this).addClass('freeze');
+        $(this).change();
+    });
 
     $('input[name=package-type]').on('change', function() {
         var newMinValue = $(this).data('minValue');
         var award = $('#award');
-        var input = $('#sub-site');
         award.data('lowDef', newMinValue);
         var defLow = award.data('lowDef');
         var defNormal = award.data('normalDef');
@@ -468,11 +479,7 @@ $(document).ready(function() {
         }
         var extraNormal = (defNormal - defLow);
         var extraHigh = (defHigh - defLow);
-        var numberOfItems = input.val();
-        if(numberOfItems == '') {
-            numberOfItems = input.attr('placeholder');
-        }
-        var minValue = ((numberOfItems - 1) * mult) + defLow;
+        var minValue = defLow;
         award.data('minimalAward', minValue);
         award.blur();
     })
@@ -482,8 +489,17 @@ $(document).ready(function() {
     });
 
     $('#sub-site').change(function() {
-        if(($(this).val() == '') || ($(this).val() == 0)) {
-            $(this).val('1');
+        var value = $(this).val();
+        if ($(this).hasClass('freeze')) {
+            $(this).removeClass('freeze');
+            if(($(this).val() == '') || ($(this).val() == 0)) {
+                value = 1;
+            }
+        } else {
+            if(($(this).val() == '') || ($(this).val() == 0)) {
+                $(this).val('1');
+                value = 1;
+            }
         }
         var award = $('#award');
         var defLow = award.data('lowDef');
@@ -496,7 +512,7 @@ $(document).ready(function() {
         var extraNormal = (defNormal - defLow);
         var extraHigh = (defHigh - defLow);
 
-        var minValue = (($(this).val() - 1) * mult) + defLow;
+        var minValue = ((value - 1) * mult) + defLow;
         award.data('minimalAward', minValue);
         award.data('low', minValue);
         award.data('normal', minValue + extraNormal);
@@ -505,13 +521,12 @@ $(document).ready(function() {
         //$('#award').data('highDef', minValue + 18000);
         //$('#award').data('normalDef', minValue + 8000);
         award.blur();
-
     })
 
     $('#sub-site').focus(function(){
         $(this).removeClass('initial-price');
-    })
-
+        $(this).removeClass('freeze');
+    });
 
     $('input[name=isGuaranteed]').on('change', function() {
         var radioButton = $(this);
@@ -570,14 +585,33 @@ $(document).ready(function() {
         tooltipBGColor: 'transparent'
     })
 
+    $(document).on('click', 'td.s3_text, td.s3_h', function() {
+        $('.rb1', $(this).prevAll(':last')).click();
+    });
 
     $('.rb1').change(function() {
-        if($(this).data('pay') == 'online') {
-            $("#paybutton").removeAttr('style');
-            $('#s3_kv').hide();
-        }else {
-            $("#paybutton").css('background', '#a2b2bb');
-            $('#s3_kv').show();
+        switch ($(this).data('pay')) {
+            case 'payanyway':
+                $("#paybutton-payanyway").fadeIn(100);
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').hide();
+                break;
+            case 'paymaster':
+                $("#paybutton-paymaster").removeAttr('style');
+                $("#paybutton-payanyway").fadeOut(100);
+                $("#paymaster-images").hide();
+                $("#paymaster-select").show();
+                $('#s3_kv').hide();
+                break;
+            case 'offline':
+                $("#paybutton-payanyway").fadeOut(100);
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').show();
+                break;
         }
     });
 
@@ -631,23 +665,33 @@ $(document).ready(function() {
         }
     });
 
+    // Unpin check
+    $(window).on('scroll', function() {
+        var diff = $(window).scrollTop() - $('header').offset().top - 440;
+        if (diff > 0) {
+            $('.summary-price').offset({top: $('header').offset().top + 668});
+        }
+    });
+
     /**/
-    var Cart = new FeatureCart;
+    Cart = new FeatureCart;
     Cart.init();
 
     /* Pitch Init from various options */
-    if ((typeof(fillBrief) != 'undefined') && (fillBrief) && ($('#phonebrief').attr('checked') != 'checked')) {
-        $('#phonebrief').click();
-    }
-    var pitchInitOptions = $.deparam(window.location.search.substr(1));
-    if (pitchInitOptions.award) {
-        $('#award').focus().val(pitchInitOptions.award).blur();
-    }
-    if (pitchInitOptions.name) {
-        $('input[name=title]').focus().val(pitchInitOptions.name);
-    }
-    if ((pitchInitOptions.fillBrief == "true") && ($('#phonebrief').attr('checked') != 'checked')) {
-        $('#phonebrief').click();
+    if (window.location.pathname.indexOf('brief') != -1) { // Pitch create only
+        if ((typeof(fillBrief) != 'undefined') && (fillBrief) && ($('#phonebrief').attr('checked') != 'checked')) {
+            $('#phonebrief').click();
+        }
+        var pitchInitOptions = $.deparam(window.location.search.substr(1));
+        if (pitchInitOptions.award) {
+            $('#award').focus().val(pitchInitOptions.award).blur();
+        }
+        if (pitchInitOptions.name) {
+            $('input[name=title]').focus().val(pitchInitOptions.name);
+        }
+        if ((pitchInitOptions.fillBrief == "true") && ($('#phonebrief').attr('checked') != 'checked')) {
+            $('#phonebrief').click();
+        }
     }
 
     if($('#sub-site').val() > 1) {
@@ -669,11 +713,27 @@ $(document).ready(function() {
         award.data('high', minValue + extraHigh);
         award.blur();
     }
+
+    checkReferal();
+    drawIndicator($('#award'), $('#award').val());
+
 });
+
+function checkReferal() {
+    if (($('#referal').val() > 0) && ($('#referalId').val() != 0)) {
+        Cart.referalDiscount = $('#referal').val();
+        Cart.referalId = $('#referalId').val();
+        Cart.addOption("Скидка", -$('#referal').val());
+    }
+}
 
 function checkRequired(form) {
     var required = false;
     $.each($('[required]', form), function(index, object) {
+        if (($(this).attr('id') == 'yur-kpp') && ($('#yur-inn').val().length == 10)) {
+            $(this).val('');
+            return true;
+        }
         if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {
             $(this).addClass('wrong-input');
             required = true;
@@ -698,7 +758,7 @@ function checkRequired(form) {
             }
             if ($(this).data('content') == 'symbolic') {
                 // Symbols only
-                if (/[^a-zа-я]/i.test($(this).val())) {
+                if (/[^a-zа-я\s]/i.test($(this).val())) {
                     $(this).addClass('wrong-input');
                     required = true;
                     return true;
@@ -715,6 +775,38 @@ function checkRequired(form) {
         }
     });
     return required;
+}
+
+function drawIndicator(input, value) {
+    $('#indicator').removeClass('low normal good');
+    var fullPx = $('#indicator').width();
+    var normalPx = $('#indicator').data('normal');
+    var highPx = $('#indicator').data('high');
+    var line = $('.line', '#indicator');
+    if (value < input.data('normal')) {
+        var ratio = (input.data('normal') - input.data('low')) / (value - input.data('low'));
+        $('#indicator').addClass('low');
+        Cart.transferFee = feeRates.low;
+        var width = normalPx / ratio;
+        if (width < 10) {
+            width = 10;
+        }
+        line.width(width);
+    } else if (value < input.data('high')) {
+        var ratio = (input.data('high') - input.data('normal')) / (value - input.data('normal'));
+        $('#indicator').addClass('normal');
+        Cart.transferFee = feeRates.normal;
+        line.width(normalPx + ((highPx - normalPx) / ratio));
+    } else {
+        var ratio = (input.data('high') * 3 - input.data('high')) / (value - input.data('high'));
+        $('#indicator').addClass('good');
+        Cart.transferFee = feeRates.good;
+        var width = highPx + ((fullPx - highPx) / ratio);
+        if (width > (fullPx - 10)) {
+            width = fullPx - 10;
+        }
+        line.width(width);
+    }
 }
 
 //$('input[name=category_id]').val()
@@ -734,11 +826,14 @@ function FeatureCart() {
     this.fileIds = [];
     this.specificTemplates = [];
     this.validatetype = 1;
-    this.transferFee = 0.145;
+    this.transferFee = feeRates.low;
     this.transferFeeDiscount = 0;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
+    this.referalDiscount = 0;
+    this.referalId = 0;
     this.mode = 'add';
+    this.promocodes = [];
     this.init = function() {
         if(($('#pitch_id').length > 0) && (typeof($('#pitch_id').val()) != 'undefined')) {
             self.id = $('#pitch_id').val();
@@ -759,6 +854,10 @@ function FeatureCart() {
         if(self.mode == 'edit') {
             if(window.location.hash != '#step3') {
                 $.get('/receipts/view/' + self.id + '.json', function(response) {
+                    if ($('#referal').val() > 0) {
+                        this.referalDiscount = $('#referal').val();
+                        response.Discount = {name:"Скидка",value:-this.referalDiscount};
+                    }
                     self.fillCheck(response);
                     self._renderCheck();
                 });
@@ -775,6 +874,10 @@ function FeatureCart() {
 
         if(window.location.hash == '#step3') {
             $.get('/receipts/view/' + self.id + '.json', function(response) {
+                if ($('#referal').val() > 0) {
+                    this.referalDiscount = $('#referal').val();
+                    response.Discount = {name:"Скидка",value:-this.referalDiscount};
+                }
                 self.fillCheck(response);
                 self._renderCheck();
                 if(self.prepareData()) {
@@ -788,6 +891,16 @@ function FeatureCart() {
         $.each(data, function(index, object) {
             if(object.name == 'Экспертное мнение') {
                 $('#expert-label').html('+' + object.value + '.-');
+            }
+            var feeOption = object.name.indexOf(self.transferFeeKey);
+            if (feeOption != -1) {
+                var percent = object.name.substr(self.transferFeeKey.length + 1, object.name.length - self.transferFeeKey.length - 2);
+                if (percent.length > 0) {
+                    self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
+                } else { // For older pitches
+                    self.transferFee = feeRates.good;
+                }
+                object.name = self.transferFeeKey;
             }
             if((object.value != 0)) {
                 self.updateOption(object.name, parseInt(object.value));
@@ -853,7 +966,7 @@ function FeatureCart() {
             'id': self.id,
             'title': $('input[name=title]').val(),
             'category_id': $('input[name=category_id]').val(),
-            'industry': $('input[name=industry]').val(),
+            'industry': $('input[name=industry]').val() || '',
             'business-description': $('textarea[name=business-description]').val(),
             'description': $('textarea[name=description]').val(),
             'fileFormats': self._formatArray(),
@@ -862,7 +975,9 @@ function FeatureCart() {
             'phone-brief': $('input[name=phone-brief]').val(),
             'materials': $('input[name=materials]:checked').val(),
             'materials-limit': $('input[name=materials-limit]').val(),
-            'promocode': $('#promocode').val()
+            'promocode': $.unique(this.promocodes),
+            'referalDiscount':this.referalDiscount,
+            'referalId':this.referalId
         };
         self.data = {
             "features": features,
@@ -876,10 +991,6 @@ function FeatureCart() {
         if(self.validatetype == 1) {
             if((self.data.commonPitchData.title == '') || ($('input[name=title]').data('placeholder') == self.data.commonPitchData.title)) {
                 $('input[name=title]').addClass('wrong-input');
-                result = false;
-            }
-            if((self.data.commonPitchData.industry == '') || ($('input[name=industry]').data('placeholder') == self.data.commonPitchData.industry)) {
-                $('input[name=industry]').addClass('wrong-input');
                 result = false;
             }
             if((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
@@ -916,10 +1027,25 @@ function FeatureCart() {
                     $('.middle').not('#step3').hide();
                     $('#step3').show();
                     $.scrollTo($('#header-bg'), {duration: 600});
-                    $('#order-id').val(response.id);
-                    $('#order-total').val(response.total);
-                    $('#order-timestamp').val(response.timestamp);
-                    $('#order-sign').val(response.sign);
+                    if (response.category == 10) {
+                        $('.paymaster-section').remove();
+                    } else {
+                        // Paymaster
+                        $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
+                        if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
+                            $('input[name=LMI_PAYMENT_NO]').val(response.id);
+                        } else {
+                            $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
+                        }
+                        $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
+                        $('.pmwidget').addClass('mod');
+                        $('h1.pmheader', '.pmwidget').addClass('mod');
+                    }
+                    // Payanyway
+                    $('input[name=MNT_AMOUNT]').val(response.total)
+                    $('input[name=MNT_TRANSACTION_ID]').val(response.id)
+
+                    // Bill
                     $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');
                 })
             });
@@ -951,6 +1077,13 @@ function FeatureCart() {
     this.decoratePrice = function(price) {
         price += '.-';
         return price;
+    }
+    this.feeRatesReCalc = function(divider) {
+        feeRates.low = (Math.floor(feeRatesOrig.low * 1000 / divider) / 1000).toFixed(3);
+        feeRates.normal = (Math.floor(feeRatesOrig.normal * 1000 / divider) / 1000).toFixed(3);
+        feeRates.good = (Math.floor(feeRatesOrig.good * 1000 / divider) / 1000).toFixed(3);
+        var input = $('#award');
+        drawIndicator(input, input.val());
     }
     this._logoProperites = function() {
         var array = new Array();
@@ -1001,7 +1134,11 @@ function FeatureCart() {
     this._renderOptions = function() {
         var html = '';
         $.each(self.content, function(key, value) {
-            html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            if (key == self.transferFeeKey) {
+                html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>';
+            } else {
+                html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            }
         });
         self.container.html(html);
     };
@@ -1031,6 +1168,9 @@ function FeatureCart() {
     };
     this._calculateTotal = function() {
         self.total = self._calculateOptions();
+        if (self.total < 0) {
+            self.total = 0;
+        }
         return self.total;
     };
 

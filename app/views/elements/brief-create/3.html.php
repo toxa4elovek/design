@@ -10,22 +10,6 @@
         <textarea placeholder="" rows="5" cols="30" name="site-inspiration" class="placeholder specific-prop"></textarea>
     </p>
 
-    <p>
-        <label>Какую CMS вы предпочитаете?</label>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="0" checked="checked" class="specific-group"/><span class="radiospan">не уверен</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="1" class="specific-group"/><span class="radiospan">Wordpress</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="2" class="specific-group"/><span class="radiospan">Joomla</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="3" class="specific-group"/><span class="radiospan">DLE</span>
-    </div>
-    </p>
-
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">

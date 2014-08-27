@@ -15,7 +15,6 @@ namespace app\models\behaviors;
  * 				by packaging commmon methods, and creating callback filters that
  * 				are applied to filterable model methods
  *
- * @package 	slicedup_behaviors
  */
 class ModelBehavior extends \lithium\core\StaticObject{
 
@@ -118,7 +117,7 @@ class ModelBehavior extends \lithium\core\StaticObject{
 		$alias = isset($config['alias']) ? $config['alias'] : $model;
 		$model = "{$namespace}\\{$model}";
 		$class = get_called_class();
-		$instance = static::_instance($class, $alias);
+		$instance = static::_getInstance($class, $alias);
 		static::$_aliases[$class][$model] = $alias;
 		$instance->_model = $model;
 		$instance->config($config);
@@ -167,7 +166,7 @@ class ModelBehavior extends \lithium\core\StaticObject{
 			$instance = false;
 			return $instance;
 		}
-		return static::_instance($class, $alias);
+		return static::_getInstance($class, $alias);
 	}
 
 	/**
@@ -191,7 +190,7 @@ class ModelBehavior extends \lithium\core\StaticObject{
 	 * @param string $class class name of the behavior
 	 * @param string $alias model alias
 	 */
-	protected static function &_instance($class, $alias) {
+	protected static function &_getInstance($class, $alias) {
 		if (!isset(static::$_instances[$class][$alias])) {
 			static::$_instances[$class][$alias] = new $class();
 		}

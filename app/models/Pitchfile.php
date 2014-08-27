@@ -8,7 +8,7 @@ class Pitchfile extends \app\models\AppModel {
 
     public static $attaches = array('file' => array(
         /*'validate' => array('uploadedOnly' => true),*/
-        'moveFile' => array('preserveFileName' => true, 'path' => '/webroot/pitchfiles/'),
+        'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/pitchfiles/'),
         'setPermission' => array('mode' => 0766),
     ));
 
@@ -46,12 +46,16 @@ class Pitchfile extends \app\models\AppModel {
             };
             $attachRecord = function($record) use ($getWebUrl, $getBasename) {
                 $record->weburl = $getWebUrl($record->filename);
-                $record->basename = $getBasename($record->filename);
+                if (empty($record->originalbasename)) { // Older files fallback
+                    $record->basename = $getBasename($record->filename);
+                } else {
+                    $record->basename = $getBasename($record->originalbasename);
+                }
                 return $record;
             };
-            if(get_class($result) == 'lithium\data\entity\Record') {
+            if((is_object($result)) and (get_class($result) == 'lithium\data\entity\Record')) {
                 $result = $attachRecord($result);
-            }else {
+            }elseif(($result) and (count($result) > 0)) {
                 foreach($result as $foundItem) {
                     $foundItem = $attachRecord($foundItem);
                 }

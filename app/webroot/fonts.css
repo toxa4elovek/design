@@ -44,6 +44,11 @@
     color: #666666;
     text-shadow: -1px 0 0 #FFFFFF;
 }
+.large-regular {
+    font: 16px/22px "Arial", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
 .regular-small-grey {
     font: 11px "Arial", sans-serif;
     color: #B1B1B1;

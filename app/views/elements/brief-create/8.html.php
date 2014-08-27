@@ -1,11 +1,5 @@
 <div class="groupc">
 
-    <p>
-        <label>Укажите количество страниц, кратное 4</label>
-        <input type="text" name="booklet-pages" placeholder="20 полос, включая обложку" class="specific-prop" >
-    </p>
-
-
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">
@@ -39,11 +33,6 @@
     <p>
         <label>Какие 3 основных качества нужно донести до аудитории?</label>
         <input type="text" name="qualities" placeholder="Надежный, технологический, инновационный" class="specific-prop">
-    </p>
-
-    <p>
-        <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="placeholder specific-prop"></textarea>
     </p>
 
 </div>

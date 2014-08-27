@@ -155,14 +155,25 @@ $(document).ready(function() {
         $(this).parent().addClass('expanded');
         return false;
     })
+    
+    $(document).on('click', 'td.s3_text, td.s3_h', function() {
+        $('.rb1', $(this).prevAll(':last')).click();
+    });
 
     $('.rb1').change(function() {
-        if($(this).data('pay') == 'online') {
-            $("#paybutton").removeAttr('style');
-            $('#s3_kv').hide();
-        }else {
-            $("#paybutton").css('background', '#a2b2bb');
-            $('#s3_kv').show();
+        switch ($(this).data('pay')) {
+            case 'payanyway':
+                $("#paybutton-payanyway").removeAttr('style');
+                $("#paybutton-paymaster").css('background', '#a2b2bb');
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                break;
+            case 'paymaster':
+                $("#paybutton-paymaster").removeAttr('style');
+                $("#paybutton-payanyway").css('background', '#a2b2bb');
+                $("#paymaster-images").hide();
+                $("#paymaster-select").show();
+                break;
         }
     });
 
@@ -227,7 +238,7 @@ function FeatureCart() {
                     self.addOption('продлить срок', 1950)
                 }
                 if($('#experts-checkbox').attr('checked')) {
-                    self.addOption('экспертное мнение', 1000)
+                    self.addOption('экспертное мнение', 1500)
                 }
             }
         }else {
@@ -351,11 +362,19 @@ function FeatureCart() {
                 $.get('/transactions/getaddondata/' + response + '.json', function(response) {
                     $('.middle').not('#step3').hide();
                     $('#step3').show();
-                    $('#order-id').val(response.id);
-                    $('#order-total').val(response.total);
-                    $('#order-timestamp').val(response.timestamp);
-                    $('#order-sign').val(response.sign);
-                    $('#pdf-link').attr('href', '/addons/getpdf/godesigner-pitch-' + self.addonid + '.pdf');
+                    // Paymaster
+                    $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
+                    if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
+                        $('input[name=LMI_PAYMENT_NO]').val(response.id);
+                    } else {
+                        $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
+                    }
+                    $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
+                    $('.pmwidget').addClass('mod');
+                    $('h1.pmheader', '.pmwidget').addClass('mod');
+                    // Payanyway
+                    $('input[name=MNT_AMOUNT]').val(response.total)
+                    $('input[name=MNT_TRANSACTION_ID]').val(response.id)
                 })
 
 

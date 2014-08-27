@@ -63,20 +63,31 @@ class Promocode extends \app\models\AppModel {
             'code' => $codeString
 
         )))) {
-            if(($code->pitch_id != null) && ($code->type != 'discount')) {
+            if(($code->pitch_id != null) && (($code->type != 'discount') && ($code->type != 'misha') && ($code->type != 'in_twain'))) {
                 return $result;
             }
-            if($code->type != 'discount') {
+            if(time() > strtotime($code->expires)) {
+                return $result;
+            }
+            if(($code->type != 'discount') && ($code->type != 'misha') && ($code->type != 'in_twain')) {
                 $code->user_id = Session::read('user.id');
                 $code->save();
-            }else {
-                if(time() > strtotime($code->expires)) {
-                    return $result;
-                }
             }
             $result = $code->data();
         }
         return $result;
     }
 
+    public static function getOldPromocodes() {
+        return self::all(array(
+            'fields' => array('id'),
+            'conditions' => array(
+                'type' => 'pinned',
+                'pitch_id' => null,
+                'expires' => array(
+                    '<' => date('Y-m-d H:i:s'),
+                ),
+            ),
+        ));
+    }
 }

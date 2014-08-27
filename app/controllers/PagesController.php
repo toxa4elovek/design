@@ -14,7 +14,9 @@ use \app\models\Expert;
 use \app\models\Promo;
 use \app\models\User;
 use \app\models\Grade;
+use \app\models\Solution;
 use \app\extensions\mailers\ContactMailer;
+use app\extensions\storage\Rcache;
 
 class PagesController extends \app\controllers\AppController {
 
@@ -36,24 +38,24 @@ class PagesController extends \app\controllers\AppController {
     }
 
     public function home() {
-    	$numOfSolutionsPerProject = Pitch::getNumOfSolutionsPerProject();
-    	$numOfCurrentPitches = Pitch::getNumOfCurrentPitches();
-    	$totalAwards = Pitch::getTotalAwards();
-    	$totalWaitingForClaim = Pitch::getTotalWaitingForClaim();
-    	$totalAwardsValue = Pitch::getTotalAwardsValue();
-    	$pitches = Pitch::all(array(
-			'order' => array(
-				/*'pinned' => 'desc',
-				'started' => 'desc'*/
-                'pinned' => 'desc',
-                'ideas_count' => 'desc',
-                'price' => 'desc'
-			),
-            'conditions' => array('status' => array('<' => 1), 'published' => 1),
-			'limit' => 3,
-			'page' => 1,
-		));
-
+        $pool = array(1, 3, 7);
+        $category_id = $pool[array_rand($pool)];
+        if(!$statistic = Rcache::read('statistic')) {
+            $statistic = array(
+                'numOfSolutionsPerProject' => array(
+                    '1' => Pitch::getNumOfSolutionsPerProjectOfCategory(1),
+                    '3' => Pitch::getNumOfSolutionsPerProjectOfCategory(3),
+                    '7' => Pitch::getNumOfSolutionsPerProjectOfCategory(7),
+                ),
+                'numOfCurrentPitches' => Pitch::getNumOfCurrentPitches(),
+                'totalAwards' => Pitch::getTotalAwards(),
+                'totalWaitingForClaim' => Pitch::getTotalWaitingForClaim(),
+                'totalParticipants' => Solution::getTotalParticipants(),
+                'lastDaySolutionNum' => Solution::getNumOfUploadedSolutionInLastDay(),
+            );
+            Rcache::write('statistic', $statistic, '+1 hour');
+        }
+    	$pitches = Pitch::getPitchesForHomePage();
         $promos = Promo::all(array(
             'limit' => 2,
             'conditions' => array('enabled' => 1),
@@ -73,19 +75,13 @@ class PagesController extends \app\controllers\AppController {
             $grade->user = User::first(array('conditions' => array('id' => $grade->user_id)));
         }
         $experts = Expert::all();
-        return compact('numOfSolutionsPerProject', 'numOfCurrentPitches', 'totalAwards', 'totalWaitingForClaim', 'totalAwardsValue', 'pitches', 'promos', 'experts', 'grades');
-    }
-
-    public function cross() {
-        $url = $this->request->query['url'];
-
-        var_dump($url);
-        die();
+        return compact('category_id', 'statistic', 'pitches', 'promos', 'experts', 'grades');
     }
 
     public function contacts() {
         $success = false;
         if($this->request->data) {
+            $this->request->data['user'] = User::getUserInfo();
             ContactMailer::contact_mail($this->request->data);
             $success = true;
         }

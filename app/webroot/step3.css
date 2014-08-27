@@ -32,10 +32,14 @@ td.s3_text{
 	padding:15px 0px 0px 0px;
 	text-transform:uppercase;
 	width:100%;
-	color:#999;
+	color: #666;
+	font-size: 11px;
 	text-shadow: -1px 0 0 #FFFFFF;
+	cursor: pointer;
 }
-
+td.s3_h {
+	cursor: pointer;
+}
 #s3_kv {
 	display: none;
 	font-size: 13px;
@@ -108,4 +112,17 @@ td.s3_text{
 #P_card input.button{
 	width:190px;	
 	padding-left:25px;
+}
+/*
+ * Paymaster Widget
+ */
+.pmwidget.mod {
+	background: #e2e2e2;
+	box-shadow: none;
+}
+#step3 div.pmwidget h1.pmheader.mod {
+	font: 14px/17px Arial;
+	color: #666;
+	text-transform: none;
+	text-align: left;
 }

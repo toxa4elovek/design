@@ -9,10 +9,17 @@ use lithium\analysis\Logger;
 
 class PostsController extends \app\controllers\AppController {
 
-    public $publicActions = array('index', 'view');
+    /**
+     * @var array Массив экшенов, доступных не залогинненым пользователям
+     */
+    public $publicActions = array('index', 'view', 'search');
 
+    /**
+     * Метод показа индексной страницы, используется в html и json форматах
+     *
+     * @return array
+     */
     public function index() {
-
         $limit = 7;
         $page = 1;
         $tag = false;
@@ -25,35 +32,100 @@ class PostsController extends \app\controllers\AppController {
             $conditions += array('tags' => array('LIKE' => '%' . $tag . '%'));
         }
         if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
-
-
             setcookie('counterdata', "", time() - 3600, '/');
             Session::delete('user.blogpost');
         }
 
-        if(User::checkRole('editor')) {
+        if(User::checkRole('editor') || User::checkRole('author')) {
             $posts = Post::all(array('conditions' => $conditions, 'page' => $page, 'limit' => $limit,'order' => array('created' => 'desc'), 'with' => array('User')));
             $editor = 1;
         }else {
             $posts = Post::all(array('conditions' => array('published' => 1, 'Post.created' => array('<=' => date('Y-m-d H:i:s'))) + $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
         }
 
-        $total = Post::count(array('conditions' => $conditions));
-        $total = ceil($total / $limit);
-        $currenttag = $tag;
+        $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
 
-        return compact('posts', 'total', 'page', 'currenttag', 'editor');
+        return compact('posts', 'editor', 'search');
     }
 
+    public function search() {
+        if (isset($this->request->query['search'])) {
+            $limit = 7;
+            $page = 1;
+            if (isset($this->request->query['page'])) {
+                $page = abs(intval($this->request->query['page']));
+            }
+            $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
+            $words = explode(' ', $searchCondition);
+            foreach ($words as $index => &$searchWord) {
+                if ($searchWord == '') {
+                    unset($words[$index]);
+                    continue;
+                }
+                $searchWord = mb_eregi_replace('[^A-Za-z0-9а-яА-Я]', '', $searchWord);
+                $searchWord = trim($searchWord);
+            }
+            if (count($words) == 1) {
+                $posts = Post::all(array('conditions' => array(
+                    'OR' => array(
+                        'title' => array('LIKE' => '%' . $words[0] . '%'),
+                        'full' => array('LIKE' => '%' . $words[0] . '%'),
+                    ),
+                    'published' => 1,
+                    'Post.created' => array('<=' => date('Y-m-d H:i:s')),
+                    ),
+                    'page' => $page,
+                    'limit' => $limit,
+                    'order' => array('created' => 'desc'),
+                    'with' => array('User'),
+                ));
+            } else {
+                $posts = new \lithium\util\Collection();
+                foreach ($words as $word) {
+                    $result = Post::all(array('conditions' => array(
+                        'OR' => array(
+                            'title' => array('LIKE' => '%' . $word . '%'),
+                            'full' => array('LIKE' => '%' . $word . '%'),
+                        ),
+                        'published' => 1,
+                        'Post.created' => array('<=' => date('Y-m-d H:i:s')),
+                        ),
+                        'page' => $page,
+                        'limit' => $limit,
+                        'order' => array('created' => 'desc'),
+                        'with' => array('User'),
+                    ));
+                    foreach ($result as $post) {
+                        $posts[$post->id] = $post;
+                    }
+                }
+            }
+            $search = implode(' ', $words);
+
+            $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
+
+            if ($this->request->is('json')) {
+                return compact('posts', 'search', 'editor');
+            }
+            $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
+            return $this->render(array('template' => 'index', 'data' => compact('posts', 'search', 'editor')));
+        }
+        return $this->redirect('/posts');
+    }
+
+    /**
+     * Метод сохранения поста (нового или существующего)
+     *
+     * @return object
+     */
     public function save() {
-        if(User::checkRole('editor')) {
+        if((User::checkRole('editor')) || (User::checkRole('author'))) {
             if((!empty($this->request->data['id'])) && ($this->request->data['id'])) {
                 $post = Post::first($this->request->data['id']);
             }else {
                 unset($this->request->data['id']);
                 $post = Post::create();
                 $post->user_id = Session::read('user.id');
-                //$post->created = date('Y-m-d H:i:s');
             }
             $post->set($this->request->data);
             $tagsArray = array();
@@ -61,7 +133,7 @@ class PostsController extends \app\controllers\AppController {
                 $tagsArray[] = trim($tag);
             }
             $tagsString = implode('|', $tagsArray);
-            if((isset($this->request->data['published'])) && ($this->request->data['published'] == 'on')) {
+            if((isset($this->request->data['published'])) && (($this->request->data['published'] == 'on') || ($this->request->data['published'] == 1))) {
                 $published = '1';
             }else {
                 $published = '0';
@@ -77,8 +149,17 @@ class PostsController extends \app\controllers\AppController {
         }
     }
 
+    /**
+     * Метод просмотра поста из блога
+     *
+     * @return array|object
+     */
     public function view() {
-        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || User::checkRole('editor'))) {
+        if (!empty($this->request->query['search'])) {
+            return $this->redirect('/posts/search?search=' . $this->request->query['search']);
+        }
+
+        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
             if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
                 Session::delete('user.blogpost');
                 setcookie('counterdata', '', time() - 3600, '/');
@@ -114,16 +195,26 @@ class PostsController extends \app\controllers\AppController {
         }
     }
 
+    /**
+     * Метод показа страницы нового поста
+     *
+     * @return array|object
+     */
     public function add() {
-        if(false === User::checkRole('editor')) {
+        if(false === (User::checkRole('author') or User::checkRole('editor'))) {
             return $this->redirect('/posts');
         }
         $commonTags = Post::getCommonTags();
         return compact('commonTags');
     }
 
+    /**
+     * Метод показа страницы редактирования поста
+     *
+     * @return array|object
+     */
     public function edit() {
-        if(User::checkRole('editor')) {
+        if(User::checkRole('editor') or User::checkRole('author')) {
             if($post = Post::first($this->request->id)) {
                 return compact('post');
             }else {
@@ -132,6 +223,20 @@ class PostsController extends \app\controllers\AppController {
         }else {
             return $this->redirect('/posts');
         }
+    }
+
+    /**
+     * Метод удаления поста.
+     *
+     * @return object
+     */
+    public function delete() {
+        if(User::checkRole('editor') or User::checkRole('author')) {
+            if($post = Post::first($this->request->id)) {
+                $post->delete();
+            }
+        }
+        return $this->redirect('/posts');
     }
 
 }

@@ -26,7 +26,7 @@
     }
     ?>
 
-    <div class="conteiner" style="width:958px !important">
+    <div class="conteiner">
         <section>
 
             <div class="menu">
@@ -34,18 +34,8 @@
             </div>
 
         </section>
-        <div class="block-toggler" style="margin-left: 65px;">
-            <a href="/users/solutions">все решения</a> /
-            <?php if($solution->step == 4):?>
-            <a href="/users/awarded" class="link">награжденные</a> /
-            <?php else:?>
-            <a href="/users/awarded">награжденные</a> /
-            <?php endif?>
-            <?php if($solution->step < 4):?>
-            <a href="/users/nominated" class="link">в процессе завершения</a>
-            <?php else:?>
-            <a href="/users/nominated">в процессе завершения</a>
-            <?php endif?>
+        <div style="margin-left: 50px;">
+            <?=$this->view()->render(array('element' => 'complete-process/filtersmenu'), array('link' => ($solution->step == 4) ? 2 : 3))?>
         </div>
         <section style="min-height: 550px;">
 
@@ -76,25 +66,25 @@
                             <td colspan="4">
                                 <table id="step1table">
                                     <tr><td class="tableheader" colspan="2">ФИО</td></tr>
-                                    <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['fio']?>" name="fio" /></td></tr>
+                                    <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['fio']?>" name="fio" data-validate="fio" /></td></tr>
                                     <tr><td class="tableheader" colspan="2">Телефон для связи</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['phone']?>" name="phone" /></td></tr>
                                     <tr>
-                                        <td width="304" class="tableheader" style="padding-right:10px">Счет</td>
-                                        <td width="304" class="tableheader" style="padding-left:10px">ИНН</td></tr>
+                                        <td width="304" class="tableheader" style="padding-right:10px">Номер счета получателя</td>
+                                        <td width="304" class="tableheader" style="padding-left:10px">Ваш личный ИНН <a href="#" style="display: block; width: 10px; height: 10px; margin-left: 110px; margin-top: -25px; font: 12px Helvetica, sans-serif; color: #658fa5" class="second tooltip" title="12 цифр без пробелов">(?)</a></td></tr>
                                     <tr style="height: 80px;">
-                                        <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['accountnum']?>" name="accountnum" /></td>
+                                        <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['accountnum']?>" name="accountnum" data-validate="numeric" /></td>
                                         <td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['inn']?>" name="inn" /></td>
                                     </tr>
                                     <tr><td colspan="2"  height="60"><h1 style="font:bold 18px/1 'RodeoC',sans-serif;text-transform: uppercase;color:#c6c6c6; text-shadow:-1px 0 0 #FFFFFF">Банк получателя</h1></td></tr>
                                     <tr><td class="tableheader" colspan="2">Наименование</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['bankname']?>" name="bankname" /></td></tr>
                                     <tr>
-                                        <td width="304" class="tableheader" style="padding-right:10px">Бик</td>
-                                        <td width="304" class="tableheader" style="padding-left:10px">Корсчет</td></tr>
+                                        <td colspan="2" class="tableheader" style="padding-right:10px">Бик</td>
+                                        <!--td width="304" class="tableheader" style="padding-left:10px">Корсчет</td--></tr>
                                     <tr style="height: 80px;">
                                         <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['bik']?>" name="bik" /></td>
-                                        <td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['coraccount']?>" name="coraccount" /></td>
+                                        <!--td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['coraccount']?>" name="coraccount" /></td-->
                                     </tr>
                                     <tr><td class="tableheader" colspan="2">Примечание</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?php if(isset($paydata['extradata'])) echo $paydata['extradata']?>" name="extradata" /></td></tr>
@@ -121,7 +111,7 @@
                             <td colspan="4">
                                 <table id="step2table">
                                     <tr><td class="tableheader" colspan="3">Кошелек</td></tr>
-                                    <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-account']?>" name="wmr-account" /></td></tr>
+                                    <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-account']?>" name="wmr-account" data-validate="wmr" /></td></tr>
                                     <tr><td class="tableheader" colspan="3">ФИО</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-fio']?>" name="wmr-fio" /></td></tr>
                                     <tr><td class="tableheader" colspan="3">Телефон для связи</td></tr>
@@ -147,12 +137,8 @@
                     <span class="regular">Вы можете вернуться к этому этапу позже!</span>
                 </div>
                 <div class="proceed">
-                    <?php if(($this->session->read('user.isAdmin') == 1) || ($solution->pitch->category_id == 7 && $solution->step != 4)):?>
-
-                    <?php else:?>
                     <?=$this->html->link('<img src="/img/proceed.png" /><br />
-                            <span>Продолжить</span>', array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id), array('escape' => false, 'id' => 'step2-link-saveform'))?>
-                    <?php endif;?>
+                        <span>Продолжить</span>', array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id), array('escape' => false, 'id' => 'step2-link-saveform'))?>
                 </div>
                 <div class="clr"></div>
 
@@ -168,4 +154,4 @@
     <div class="conteiner-bottom"></div>
 </div><!-- .wrapper -->
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
-<?=$this->html->script(array('users/step1.js'), array('inline' => false))?>
+<?=$this->html->script(array('jquery.tooltip.js', 'users/step1.js'), array('inline' => false))?>

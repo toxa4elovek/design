@@ -1,5 +1,15 @@
 <div class="groupc">
 
+    <?php if($pitch->billed == 1):?>
+        <?php if ($this->user->isAdmin()):?>
+            <p><label>Ведите количество макетов/страниц</label>
+            <input type="text" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+            </p>
+        <?php else:?>
+            <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+        <?php endif;?>
+    <?php endif?>
+
     <p><label>Опишите целевую аудиторию</label></p>
 
     <ul class="logo-properties sliderul" data-name="audience">
@@ -35,9 +45,11 @@
         <input type="text" name="qualities" value="<?=$specifics['qualities']?>" placeholder="Вкусный, изысканный, современный" class="specific-prop">
     </p>
 
+    <?php if (!empty($specifics['site-inspiration'])): ?>
     <p>
         <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="<?php if(empty($specifics['site-inspiration'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-inspiration']?></textarea>
+        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="specific-prop"><?=$specifics['site-inspiration']?></textarea>
     </p>
+    <?php endif; ?>
 
 </div>

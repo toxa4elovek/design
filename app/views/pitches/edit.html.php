@@ -24,7 +24,12 @@ $specifics = unserialize($pitch->specifics);
 <div class="wrapper">
 
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
-
+<input type="hidden" id="referal" value="<?=$pitch->referal_sum;?>">
+<input type="hidden" id="referalId" value="<?=$pitch->referal;?>">
+<script>
+var feeRatesOrig = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
+var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
+</script>
 <aside class="summary-price expanded">
     <h3>Итого:</h3>
     <p class="summary"><strong id="total-tag">0.-</strong></p><!-- .summary -->
@@ -47,25 +52,41 @@ endif?>
 
     <div class="main">
 
+        <h2><?=$category->title;?></h2>
+
         <ol class="steps">
             <li class="current"><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
             <li><a href="#" class="steps-link" data-step="2">2. Бриф</a></li>
             <li class="last"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
         </ol><!-- .steps -->
 
+        <?php if($category->id == 11):?>
+        <div class="groupc">
+            <p>
+                <label>Вид упаковки</label>
+                <ul class="radiooptionssite">
+                    <li><label><input type="radio" name="package-type" <?php if($specifics['package-type'] == 0): echo 'checked'; endif;?> value="0" class="sub-radio specific-group" data-min-value="7000" checked="checked"><span class="radiospan">Этикетка и контрэтикетка (от 7000) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Этикетка — графическое или текстовое описание товара, заполняющее одну плоскость бумажной формы, наклейки и т.п. Н-р, э. пива, э. на консервы, конфетная э. и т.п.">(?)</a></span></label></li>
+                    <li><label><input type="radio" name="package-type" <?php if($specifics['package-type'] == 1): echo 'checked'; endif;?> value="1" class="sub-radio specific-group" data-min-value="13400"><span class="radiospan">Оформление коробки, развёртки, и прочее (от 13400 Р-.) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Упаковка — комплекс полиграфической продукции и материалов, в которые упаковывают товар или сырье; графическое или текстовое описание товара, которое подразумевает более одной плоскости. Например, картонная коробка, бутылка, стрейч-пленка и т.п.">(?)</a></span></label></li>
+                </ul>
+            </p>
+        </div>
+        <?php endif;?>
+
         <?php
         function renderNumBox($category, $details) {
-            $categoriesWithBox = array(3, 9, 4, 6, 2, 12, 11, 10);
+            $categoriesWithBox = array(2, 3, 4, 6, 8, 9, 10, 11, 12);
+            if (($category == 11) && empty($details['site-sub'])) { return '';}
             if(!in_array($category, $categoriesWithBox)) { return '';}
             $info = array(
+                2 => array('text' => 'Сколько макетов вам нужно создать? Мы рекомендуем учитывать и адаптации под размеры тоже. '),
                 3 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашего сайта? Внимание, только дизайн,  без кода HTML', 'mult' => 2000),
-                9 => array('text' => 'Сколько иллюстранций необходимо создать? Если серия, укажите суммарное число работ'),
                 4 => array('text' => 'Сколько макетов вам нужно создать? Если это серия, то укажите суммарное количество, даже если используется один шаблон.'),
                 6 => array('text' => 'Сколько страниц нужно создать. Если это серия, то укажите суммарное количество, даже если используется одна идея и стиль.'),
-                2 => array('text' => 'Сколько макетов вам нужно создать? Мы рекомендуем учитывать и адаптации под размеры тоже. '),
-                12 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество.'),
-                11 => array('text' => 'Сколько макетов вам нужно на выходе? Если это серия этикеток (коробок), то укажите суммарное количество.'),
+                8 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашей презентации?', 'mult' => 700),
+                9 => array('text' => 'Сколько иллюстранций необходимо создать? Если серия, укажите суммарное число работ'),
                 10 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество'),
+                11 => array('text' => 'Сколько макетов вам нужно на выходе? Если это серия этикеток (коробок), то укажите суммарное количество.'),
+                12 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество.'),
             );
 
             $chosenCategory = $info[$category];
@@ -74,10 +95,10 @@ endif?>
             if(isset($chosenCategory['mult'])) {
                 $mult = 'data-mult="' . $chosenCategory['mult'] . '"';
             }
-
+            $site_sub = (empty($details['site-sub'])) ? 1 : $details['site-sub'];
             $html = '<div class="set-price"><p>
                         <label style="width:260px;">' . $text . '</label>
-                        <input type="text" ' . $mult . ' name="site-sub" id="sub-site" placeholder="1" value="' . $details['site-sub'] . '" class="initial-price specific-prop" style="width:242px;"/>
+                        <input type="text" ' . $mult . ' name="site-sub" id="sub-site" value="' . $site_sub . '" class="specific-prop" style="width:242px;"/>
                     </p></div>';
             return $html;
         }?>
@@ -88,14 +109,13 @@ endif?>
         <div class="groupc">
             <p>
                 <label>Выберите вид копирайтинга</label>
-
-            <ul class="radiooptionssite">
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 0): echo 'checked'; endif;?> value="0" class="sub-radio specific-group" data-min-value="5000" checked="checked"><span class="radiospan">Название / слоган (от 5 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 1): echo 'checked'; endif;?> value="1" class="sub-radio specific-group" data-min-value="8000"><span class="radiospan">Идея для рекламы (от 8 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 2): echo 'checked'; endif;?> value="2" class="sub-radio specific-group" data-min-value="1200"><span class="radiospan">Наполнение сайта (от 12 000 Р-.)</span></label></li>
-                <li><label><input type="radio" name="site-sub" <?php if($specifics['site-sub'] == 3): echo 'checked'; endif;?> value="3" class="sub-radio specific-group" data-min-value="14000"><span class="radiospan">Тексты, другое (от 14 000)</span></label></li>
-            </ul>
+                <input type="hidden" id="copybaseminprice" value="<?php echo COPY_BASE_PRICE;?>"/>
             </p>
+            <ul class="radiooptionssite">
+                <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" <?php if (isset($specifics['first-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Имя / название</span></label></li>
+                <li><label><input type="checkbox" name="second-option" value="1" class="sub-check specific-group" <?php if (isset($specifics['second-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Адрес сайта</span></label></li>
+                <li><label><input type="checkbox" name="third-option" value="2" class="sub-check specific-group" <?php if (isset($specifics['third-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Слоган / лозунг</span></label></li>
+            </ul>
         </div>
         <?php endif;?>
 
@@ -103,10 +123,11 @@ endif?>
 
             <p>
                 <label>Сумма вознаграждения для дизайнера (от <?=$this->moneyFormatter->formatMoney($category->minAward, array('suffix' => 'Р.'))?>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
-                <input type="text" name="" id="award" data-low="<?=$category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=$category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=$category->minAward?>" class="initial-price placeholder" placeholder="5500" value="<?=(int)$pitch->price?>">
+                <input type="text" name="" id="award" data-low="<?=$category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=$category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=$category->minAward?>" value="<?=(int)$pitch->price?>">
             </p>
-
-            <div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите.">
+            <div class="clr"></div>
+            <!-- <div id="indicator" class="indicator low tooltip" data-normal="183" data-high="366" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
+            <div id="indicator" class="indicator low" data-normal="183" data-high="366">
                 <div class="bar">
                     <div class="line"></div>
                     <div class="shadow-b"></div>
@@ -117,20 +138,8 @@ endif?>
                     <li>самое то!</li>
                 </ul>
             </div><!-- .indicator -->
+            <img src="/img/comissions.png" style="margin-bottom: 30px;">
         </div><!-- .set-price -->
-
-        <?php if($category->id == 11):?>
-        <div class="groupc">
-            <p>
-                <label>Вид упаковки</label>
-
-            <ul class="radiooptionssite">
-                <li><label><input type="radio" name="package-type" <?php if($specifics['package-type'] == 0): echo 'checked'; endif;?> value="0" class="sub-radio specific-group" data-min-value="7000" checked="checked"><span class="radiospan">Этикетка и контрэтикетка (от 7000) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Этикетка — графическое или текстовое описание товара, заполняющее одну плоскость бумажной формы, наклейки и т.п. Н-р, э. пива, э. на консервы, конфетная э. и т.п.">(?)</a></span></label></li>
-                <li><label><input type="radio" name="package-type" <?php if($specifics['package-type'] == 1): echo 'checked'; endif;?> value="1" class="sub-radio specific-group" data-min-value="13400"><span class="radiospan">Оформление коробки, развёртки, и прочее (от 13400 Р-.) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Упаковка — комплекс полиграфической продукции и материалов, в которые упаковывают товар или сырье; графическое или текстовое описание товара, которое подразумевает более одной плоскости. Например, картонная коробка, бутылка, стрейч-пленка и т.п.">(?)</a></span></label></li>
-            </ul>
-            </p>
-        </div>
-            <?php endif;?>
 
         <div style="margin-top:5px;height:200px;">
 
@@ -159,19 +168,20 @@ endif?>
             text-align: center;
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
 
-            <script>var fillBrief = 0;</script>
-            <div class="ribbon complete-brief">
-                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
-                <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
-                <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" value="<?=$pitch->{'phone-brief'}?>" class="phone"></p>
-                <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">1750.-</p>
-            </div>
+        <script>var fillBrief = 0;</script>
+
+        <div class="ribbon complete-brief">
+            <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
+            <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
+            <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" value="<?=$pitch->{'phone-brief'}?>" class="phone"></p>
+            <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">1750.-</p>
+        </div>
 
         <div class="ribbon">
-                      <p class="option"><label><input type="checkbox" name="" <?php if($pitch->private): echo "checked"; endif;?> class="single-check" data-option-title="Закрытый питч" data-option-value="<?php if($this->session->read('user.id') == 1431):?>950<?php else:?>950<?php endif?>">Закрытый питч</label></p>
+            <p class="option"><label><input type="checkbox" name="" <?php if($pitch->private): echo "checked"; endif;?> class="single-check" data-option-title="Закрытый питч" data-option-value="3500">Закрытый питч</label></p>
             <p class="description">Питч станет не виден для поисковых систем, а идеи будут доступны для просмотра только вам и их авторам. Подробнее <a target="_blank" href="http://www.godesigner.ru/answers/view/64">тут</a> <a href="#" class="second tooltip" title="Это идеальная возможность, если вы являетесь посредником, рекламным агентством или не хотите разглашать секретов в маркетинговых целях.">(?)</a></p>
-                      <p class="label <?php if($pitch->private): echo "unfold"; endif;?>">+<?php if($this->session->read('user.id') == 1431):?>950<?php else:?>950<?php endif?>.-</p>
-                  </div>
+            <p class="label <?php if($pitch->private): echo "unfold"; endif;?>">+3500.-</p>
+        </div>
 
         <div class="ribbon">
             <p class="option"><label><input type="checkbox" name="" <?php if($pitch->social): echo "checked"; endif;?> class="single-check" data-option-title="Рекламный Кейс" data-option-value="15900">Рекламный Кейс</label></p>
@@ -198,7 +208,7 @@ endif?>
                 8 => '/img/experts/makarov_dmitry_174.png',
             );
 
-            foreach($experts as $expert):?>
+            foreach($experts as $expert): if ($expert->enabled == 0) continue; ?>
                 <li>
                     <a href="/experts/view/<?=$expert->id?>" target="_blank" class="photo"><img src="<?=$imageArray[$expert->id]?>" alt="<?=$expert->name?>"></a><!-- .photo -->
                     <p class="select"><input type="checkbox" name="" <?php if(in_array($expert->id, unserialize($pitch->{'expert-ids'}))): echo "checked"; endif;?> class="expert-check" data-id="<?=$expert->id?>" data-option-title="Экспертное мнение" data-option-value="<?=$expert->price?>"></p><!-- .select -->
@@ -220,9 +230,13 @@ endif?>
         <div class="ribbon">
             <?php
             $value = 1000;
-            if(($code) && ($code->type == 'pinned')):
-                $value = 0;
-            endif;
+            if (!empty($codes)) {
+                foreach ($codes as $code) {
+                    if (($code->type == 'pinned') || ($code->type == 'misha')) {
+                        $value = 0;
+                    }
+                }
+            }
             ?>
             <p class="option"><label><input type="checkbox" name="" <?php if($pitch->pinned): echo "checked"; endif;?>  class="single-check" data-option-title="“Прокачать” бриф" data-option-value="<?=$value?>">“Прокачать” бриф</label></p>
             <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения дизайнеров мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>
@@ -236,14 +250,11 @@ endif?>
             $disabled = '';
             if($code) {
                 $codeValue = $code->code;
-                $text = 'Промкод активирован!';
+                $text = 'Промокод активирован!';
                 $disabled = 'disabled="disabled"';
-            }
-            if($pitch->promocode) {
-                $codeValue = $pitch->promocode;
-                $text = 'Промкод активирован!';
-                $disabled = 'disabled="disabled"';
-                $fieldHidden = '<input type="hidden" value="700" name="discount" id="discount">';
+                if($code->type == 'discount') {
+                    $fieldHidden = '<input type="hidden" value="700" name="discount" id="discount">';
+                }
             }
             ?>
 
@@ -273,6 +284,9 @@ endif?>
 <div class="middle add-pitch" style="display:block;" id="step2">
 <?php endif?>
     <div class="main">
+
+        <h2><?=$category->title;?></h2>
+
         <?php if(!$onlyText):?>
         <ol class="steps">
             <li><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
@@ -285,19 +299,32 @@ endif?>
                 <label class="required">Название питча <a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
                 <input type="text" name="title" placeholder="Логотип для Star Lift" data-placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
                 <input type="hidden" name="category_id" value="<?=$category->id?>">
+                <?php if(($pitch->category_id == 7) && $onlyText): ?>
+                    <?php if (isset($specifics['first-option'])):?>
+                    <input type="hidden" data-selected="true" name="first-option" value="0" class="sub-check specific-group">
+                    <?php endif;?>
+                    <?php if (isset($specifics['second-option'])):?>
+                    <input type="hidden" data-selected="true" name="second-option" value="1" class="sub-check specific-group">
+                    <?php endif;?>
+                    <?php if (isset($specifics['third-option'])):?>
+                    <input type="hidden" data-selected="true" name="third-option" value="2" class="sub-check specific-group">
+                    <?php endif;?>
+                <?php endif?>
             </p>
+            <?php if (!empty($pitch->industry)):?>
             <p>
                 <label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-                <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
+                    <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
             </p>
+            <?php endif; ?>
 
             <?php if(!$onlyText):?>
             <div class="ribbon term" style="height: 80px;">
                 <p class="option">Установите срок</p>
                     <ul>
-                        <li><label><input type="radio" <?php if($pitch->timelimit == 0): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="0" data-option-title="Поджимают сроки" data-option-value="0" checked="checked"><?=$category->default_timelimit?> дней (бесплатно)</label></li>
-                        <li><label><input type="radio" <?php if($pitch->timelimit == 1): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="1" data-option-title="Поджимают сроки" data-option-value="950" ><?=$category->shortTimelimit?> дней (950 Р.-)</label></li>
-                        <li><label><input type="radio" <?php if($pitch->timelimit == 2): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="2" data-option-title="Поджимают сроки" data-option-value="1450" ><?=$category->shortestTimelimit?> дня (1450 Р.-)</label></li>
+                        <li><label><input type="radio" <?php if($pitch->timelimit == 0): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="0" data-option-title="Установлен срок" data-option-value="0" checked="checked"><?=$category->default_timelimit?> дней (бесплатно)</label></li>
+                        <li><label><input type="radio" <?php if($pitch->timelimit == 1): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="1" data-option-title="Установлен срок" data-option-value="950" ><?=$category->shortTimelimit?> дней (950 Р.-)</label></li>
+                        <li><label><input type="radio" <?php if($pitch->timelimit == 2): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="2" data-option-title="Установлен срок" data-option-value="1450" ><?=$category->shortestTimelimit?> дня (1450 Р.-)</label></li>
                     </ul>
                     <ul>
                         <li style="margin-top:10px"><label><input type="radio" <?php if($pitch->timelimit == 3): echo 'checked'; endif;?> class="short-time-limit" name="short-time-limit" data-option-period="3" data-option-title="Установлен срок" data-option-value="950" ><?=$category->smallIncreseTimelimit?> дней (950 Р.-)</label></li>
@@ -306,9 +333,9 @@ endif?>
                 <p style="margin-top:-34px;" class="label <?php if($pitch->timelimit > 0): echo "unfold"; endif;?>" id="timelimit-label">
                     <?php if($pitch->timelimit > 0 ):
                         if(($pitch->timelimit == 1) || ($pitch->timelimit == 3)):
-                            echo '950';
+                            echo '+950';
                         else:
-                            echo '1450';
+                            echo '+1450';
                         endif;
                     endif ?>.-</p>
             </div>
@@ -319,14 +346,14 @@ endif?>
             <p>
                 <label>Описание бизнеса/деятельности <a href="#" class="second tooltip" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
                 <?php if($category->id == 7):?>
-                <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"><?=$pitch->{'business-description'}?></textarea>
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?>  name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"><?=$pitch->{'business-description'}?></textarea>
                 <?php else:?>
-                <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"><?=$pitch->{'business-description'}?></textarea>
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?>  name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"><?=$pitch->{'business-description'}?></textarea>
                 <?php endif?>
             </p>
             <p>
                 <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
-                <textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?> id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
 Что должно быть прописано в логотипе?
 Кто ваши клиенты/потребители/покупатели?
 Где будет это размещаться?" data-placeholder="Что вы хотите получить на выходе от дизайнера?
@@ -374,7 +401,7 @@ endif?>
         <div class="groupc">
 
             <p><label>Дополнительные материалы <a href="#" class="second tooltip" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
-
+            <div id="new-download" style="display:none;">
             <p class="add-file">
             <form action="/pitchfiles/add.json" method="post" id="fileuploadform">
                 <div class="fileinputs">
@@ -382,17 +409,21 @@ endif?>
                     <span class="fakeinput" id="filename" style="display:block; float: left; height:19px; width: 450px; padding-top: 1px; margin-left:10px;">Файл не выбран</span>
                     <input type="file" name="files" id="fileupload" style="display:block; opacity:0; position:absolute;z-index:5"/>
                 </div>
-                <div clas="clr"></div>
-                <input type="text" id="fileupload-description" name="file-description" style="width:370px;margin-right: 20px;" placeholder="Пояснение"/>
-                <!--input type="button" class="button" value="Загрузить" id="uploadButton"/-->
             </form>
             </p>
+            </div>
+
+            <iframe id="old-download" src="/pitchfiles/index" seamless style="display:none;width:570px;height:100px;"></iframe>
 
             <!--p class="add-another-file">
             <a href="#">+ добавить файл</a></p--><!-- .add-another-file -->
             <ul id="filezone">
                 <?php foreach($files as $file):?>
-                <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php if (empty($file->originalbasename)):?>
+                        <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php else:?>
+                        <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=str_replace('pitchfiles/', 'pitchfiles/1', $file->weburl);?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                    <?php endif;?>
                 <?php endforeach;?>
             </ul>
             <div style="clear:both"></div>
@@ -445,6 +476,9 @@ endif?>
 <div class="middle add-pitch" style="display:none;" id="step3">
 
     <div class="main">
+
+        <h2><?=$category->title;?></h2>
+
         <form action="https://pay.masterbank.ru/acquiring" method="post">
             <input type="hidden" id="pitch-id" name="id" value=""/>
             <ol class="steps">
@@ -453,99 +487,7 @@ endif?>
                 <li class="last current"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
             </ol><!-- .steps -->
         </form>
-        <div style="padding-bottom: 50px;">
-            <h1>выберите способ оплаты</h1>
-            <div class="g_line"></div>
-            <div id="P_card">
-                <table>
-                    <tr>
-                        <td>
-                            <input type="radio" name="1" class="rb1" data-pay="online" checked>
-                        </td>
-                        <td>
-                            <img src="/img/s3_card.png" alt="">
-                        </td>
-                        <td class="s3_text">
-                            Пластиковая карта ВИЗА, МАСТЕРКАРД<br/>(VISA, MASTERCARD)
-                        </td>
-                        <td>
-                            <form action="https://pay.masterbank.ru/acquiring" method="post">
-                                <input type="HIDDEN" value="" name="ORDER" id="order-id">
-                                <input type="HIDDEN" value="" name="AMOUNT" id="order-total">
-                                <input type="HIDDEN" value="" name="TIMESTAMP" id="order-timestamp">
-                                <input type="HIDDEN" value="" NAME="SIGN" id="order-sign">
-                                <input type="HIDDEN" value="http://godesigner.ru/users/mypitches" name="MERCH_URL">
-                                <input type="HIDDEN" value="71846655" name="TERMINAL">
-                                <input type="submit" id="paybutton" value="продолжить оплату" class="button" >
-                            </form>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="radio" name="1" class="rb1" data-pay="offline">
-                        </td>
-                        <td class="s3_h">
-                            <img src="/img/s3_rsh.png" alt="">
-                        </td>
-                        <td class="s3_text">
-                            Перевод  на расчетный счёт<br/>(Безналичный платеж через банк)
-                        </td>
-                        <td></td>
-                    </tr>
-                </table>
-                <div id="s3_kv">
-                    <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-fiz"> ФИЗИЧЕСКОЕ ЛИЦО</label>
-                    <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-yur"> ЮРИДИЧЕСКОЕ ЛИЦО</label>
-                    <div class="pay-fiz">
-                        <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
-                        <form action="/bills/save" method="post" id="bill-fiz">
-                            <input type="hidden" name="fiz-id" id="fiz-id" value="<?=$pitch->id?>">
-                            <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
-                            <input type="text" name="fiz-name" id="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Федченко Максим Юрьевич" required="" data-content="symbolic">
-                            <img src="/img/arrow-bill-download.png" class="arrow-bill-download" />
-                            <input type="submit" id="button-fiz" value="Скачать счёт" class="button third" style="width:420px;">
-                            <div class="clr"></div>
-                        </form>
-                        <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
-                           Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
-                    </div>
-                    <div class="pay-yur">
-                        <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
-                        <form action="/bills/save" method="post" id="bill-yur">
-                            <input type="hidden" name="yur-id" id="yur-id" value="<?=$pitch->id?>">
-                            <input type="hidden" name="yur-individual" id="yur-individual" value="0">
-
-                            <label class="required">Наименование организации</label>
-                            <input type="text" name="yur-name" id="yur-name" placeholder="OOO «КРАУД МЕДИА»" data-placeholder="OOO «КРАУД МЕДИА»" required="" data-content="mixed">
-
-                            <label class="required">ИНН</label>
-                            <input type="text" name="yur-inn" id="yur-inn" placeholder="123456789012" data-placeholder="123456789012" required="" data-content="numeric" data-length="[10,12]">
-
-                            <label class="required">КПП</label>
-                            <input type="text" name="yur-kpp" id="yur-kpp" placeholder="123456789" data-placeholder="123456789" required="" data-content="numeric" data-length="[9]">
-
-                            <label class="required">Юридический адрес</label>
-                            <input type="text" name="yur-address" id="yur-address" placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" required="" data-content="mixed">
-
-                            <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
-                            Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
-                            <p>Закрывающие документы вы получите на e-mail сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать.
-                            Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27).
-                            В ответном письме вы получите оригиналы документов с нашей печатью.</p>
-                            <input type="submit" id="button-yur" value="Скачать счёт" class="button third" style="width:420px;">
-                            <div class="clr"></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="g_line"></div>
-            <input type="button" id="backbutton" value="Вернуться к шагу 2" class="button steps-link" data-step="2" style="width:260px;float:left;">
-            <a href="/pitches" class="button" style="width:192px;float:right;">На страницу всех питчей</a>
-            </div>
-
+        <?=$this->view()->render(array('element' => 'pitchpay'), array('pitch' => $pitch));?>
     </div><!-- .main -->
 
 </div><!-- .middle -->
@@ -564,8 +506,8 @@ endif?>
 
 
 <?php if(!$onlyText):?>
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+<?=$this->html->script(array('/js/tiny_mce/jquery.tinymce.js', 'jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php else:?>
-    <?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+    <?=$this->html->script(array('/js/tiny_mce/jquery.tinymce.js', 'jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php endif?>
 <?=$this->html->style(array('/brief', '/step3'), array('inline' => false))?>

@@ -7,5 +7,15 @@ $(document).ready(function(){
 			$('#trigger').removeClass('more_down').addClass('more');
 		}
 		return false;
-	})
+	});
+
+	$('.contacts-form').submit(function() {
+	    var info = clientInfo();
+	    var els = '';
+	    for (var key in info) {
+	        els += '<input type="hidden" name="info[' + key + ']" value="' + info[key] + '" />';
+	    }
+	    $(this).prepend(els);
+	    return true;
+	});
 })

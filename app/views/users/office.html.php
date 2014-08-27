@@ -4,13 +4,9 @@
 
 <div class="middle">
     <div class="middle_inner" style="margin-top: 0px;">
+        <input type="hidden" value="<?=$this->user->getId()?>" id="user_id">
         <nav class="main_nav clear" style="width:832px;">
-            <?=$this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false, 'class' => 'active')) ?>
-            <?=$this->html->link('<span>Мои питчи</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-            <!--a href="#"><span>Сообщения</span></a-->
-            <?=$this->html->link('<span>Профиль</span>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-            <?=$this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-            <?=$this->html->link('<span>Реквизиты</span>', array('controller' => 'users', 'action' => 'details'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
+            <?=$this->view()->render(array('element' => 'office/nav'));?>
         </nav>
 
         <!-- div class="main_carous">
@@ -57,75 +53,80 @@
 
                         }else {
                             $newclass = '';
-                        if(strtotime($object['created']) > strtotime($date)) {
-                            $newclass = ' newevent ';
-                        }
-                        if($object['type'] == 'PitchCreated') {
-                            $newclass = ' newpitchstream ';
-                        }
-                        //if(index == 0) {
-                        //    self.date = object.created;
-                        //}
-                        if(isset($object['solution']['images']['solution_galleryLargeSize'])) {
-                            if(!isset($object['solution']['images']['solution_galleryLargeSize'][0])) {
-                                $imageurl = $object['solution']['images']['solution_galleryLargeSize']['weburl'];
-                            }else {
-                                $imageurl = $object['solution']['images']['solution_galleryLargeSize'][0]['weburl'];
+                            if(strtotime($object['created']) > strtotime($date)) {
+                                $newclass = ' newevent ';
                             }
-                        if($object['type'] == 'PitchCreated') {
-                            $imageurl = '/img/zaglushka.jpg';
-                        }else {
-                            if($object['pitch']['private'] == 1) {
-                                if(($object['user_id'] != $this->session->read('user.id')) && ($object['pitch']['user_id'] != $this->session->read('user.id'))) {
-                                $imageurl = '/img/copy-inv.png';
+                            if($object['type'] == 'PitchCreated') {
+                                $newclass = ' newpitchstream ';
+                            }
+                            //if(index == 0) {
+                            //    self.date = object.created;
+                            //}
+                            if(isset($object['solution']['images']['solution_galleryLargeSize'])) {
+                                echo '<!-- loop start -->';
+                                if(!isset($object['solution']['images']['solution_galleryLargeSize'][0])) {
+                                    $imageurl = $object['solution']['images']['solution_galleryLargeSize']['weburl'];
+                                }else {
+                                    $imageurl = $object['solution']['images']['solution_galleryLargeSize'][0]['weburl'];
                                 }
+                                if($object['type'] == 'PitchCreated') {
+                                    $imageurl = '/img/zaglushka.jpg';
+                                }else {
+                                    if($object['pitch']['private'] == 1) {
+                                        if(($object['user_id'] != $this->user->getId()) && (!$this->user->isPitchOwner($object['pitch']['user_id']))) {
+                                            $imageurl = '/img/copy-inv.png';
+                                        }
+                                    }
+                                }
+                                $extraUI = '';
+                                if($object['type'] != 'PitchCreated') {
+                                    $extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;">
+                                        <div class="ratingcont" data-default="' . $object['solution']['rating'] . '" data-solutionid="' . $object['solution']['id'] . '" style="float: right; height: 9px; background: url(/img/' . $object['solution']['rating'] . '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
+                                            if($this->user->isPitchOwner($object['pitch']['user_id'])) {
+                                                $extraUI .= '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
+                                                <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
+                                                <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
+                                                <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
+                                                <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
+                                            }
+                                        $extraUI .= '</div>
+                                    </div>' .
+                                    '<p class="visit_number">' . $object['solution']['views'] . '</p>'.
+                                    '<p class="fb_like"><a href="#">' . $object['solution']['likes'] . '</a></p>';
+                                }
+                                $html .=  '<div class="obnovlenia_box ' . $newclass . 'group">'.
+                                '<section class="global_info">'.
+                                    '<p>' . $object['humanType'] . '</p>'.
+                                    '<p class="designer_name">' . $object['creator'] . '</p>'.
+                                    '<p class="add_date">' . $object['humanCreated'] . '</p>'.
+                                    $extraUI .
+                                    '</section>'.
+
+                                '<section class="global_picture">'.
+                                    '<div class="pic_wrapper">'.
+                                        '<a href="/pitches/viewsolution/' . $object['solution']['id'] . '"><img src="' . $imageurl . '" width="99" height="75" alt="" /></a>'.
+                                        '<!--img class="winning" src="/img/winner_icon.png" width="25" height="59" /-->'.
+                                        '</div>'.
+                                    '</section>'.
+
+                                '<section class="main_info">'.
+                                    '<h2><a href="/pitches/view/' . $object['pitch']['id'] . '">' . $object['pitch']['title'] . '</a></h2>'.
+                                    '<p class="subject">' . $object['pitch']['industry'] . '</p>'.
+                                    '<p class="price"><span>' . $this->moneyFormatter->formatMoney($object['pitch']['price']) . '</span> P.-</p>'.
+                                    '<p class="main_text">'.
+                                        $object['updateText'] .
+                                        '</p>'.
+                                    '<p class="full_pitch"><a href="/pitches/view/' . $object['pitch']['id'] . '"></a></p>'.
+                                    '</section>'.
+                                '</div>';
                             }
                         }
-
-                    $extraUI = '';
-                    if($object['type'] != 'PitchCreated') {
-                    $extraUI = '<ul class="group">'.
-                    '<li><a href="#"></a></li>'.
-                    '<li><a href="#"></a></li>'.
-                    '<li><a href="#"></a></li>'.
-                    '<li><a href="#"></a></li>'.
-                    '<li><a href="#"></a></li>'.
-                    '</ul>'.
-                    '<p class="visit_number">' . $object['solution']['views'] . '</p>'.
-                    '<p class="fb_like"><a href="#">' . $object['solution']['likes'] . '</a></p>';
-                    }
-                    $html .=  '<div class="obnovlenia_box ' . $newclass . 'group">'.
-                    '<section class="global_info">'.
-                        '<p>' . $object['humanType'] . '</p>'.
-                        '<p class="designer_name">' . $object['creator'] . '</p>'.
-                        '<p class="add_date">' . $object['humanCreated'] . '</p>'.
-                        $extraUI .
-                        '</section>'.
-
-                    '<section class="global_picture">'.
-                        '<div class="pic_wrapper">'.
-                            '<a href="/pitches/viewsolution/' . $object['solution']['id'] . '"><img src="' . $imageurl . '" width="99" height="75" alt="" /></a>'.
-                            '<!--img class="winning" src="/img/winner_icon.png" width="25" height="59" /-->'.
-                            '</div>'.
-                        '</section>'.
-
-                    '<section class="main_info">'.
-                        '<h2><a href="/pitches/view/' . $object['pitch']['id'] . '">' . $object['pitch']['title'] . '</a></h2>'.
-                        '<p class="subject">' . $object['pitch']['industry'] . '</p>'.
-                        '<p class="price"><span>' . $this->moneyFormatter->formatMoney($object['pitch']['price']) . '</span> P.-</p>'.
-                        '<p class="main_text">'.
-                            $object['updateText'] .
-                            '</p>'.
-                        '<p class="full_pitch"><a href="/pitches/view/' . $object['pitch']['id'] . '"></a></p>'.
-                        '</section>'.
-                    '</div>';
-                    }
-                    }
-                     endforeach;
-                    $html .= '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
+                    endforeach;
+                    $html .= '<div id="earlier_button"' . (($nextUpdates == 0) ? 'style="display: none"' : '') . '><a href="#" id="older-events">Ранее</a></div>';
                     echo $html
                     ?>
                 </div><!-- .maincontent -->
+                <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><image src="/img/blog-ajax-loader.gif"></div>
 
                 <div id="no-updates" style="display:none;">
                     <section class="post">
@@ -162,7 +163,7 @@
                 </div>
                 <?php endif;?>
                 <div id="current_pitch">
-                    <?php echo $this->stream->renderStream();?>
+                    <?php echo $this->stream->renderStream(10, false);?>
                 </div>
 
             </div><!-- /right_sidebar -->
@@ -173,5 +174,5 @@
 </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>

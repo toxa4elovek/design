@@ -48,6 +48,163 @@ input[type="radio"], input[type="checkbox"] {
 .warning {
     color: #5C0002;
 }
-#filler {
-	transition: width .5s;
+.upload-dropzone-wrapper {
+	padding-top: 1px;
+	width: 878px;
+	height: 321px;
+	background-image: url('/img/upload-dropzone.png');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.upload-dropzone-wrapper.active {
+    background-position: 0 -322px;
+}
+.upload-dropzone-wrapper.upload-empty {
+    background-position: 0 -644px;
+}
+.upload-dropzone-wrapper #scrollerarea {
+	display: none;
+    position: relative;
+    float: right;
+	right: 20px;
+	top: 20px;
+	height: 280px;
+	width: 12px;
+	background: #d7d7d7;
+	border-top: 1px solid #d2d2d2;
+	border-right: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+	border-left: 1px solid #d2d2d2;
+}
+.upload-dropzone-wrapper #scroller {
+    position: absolute;
+    height: 76px;
+    width: 10px;
+    background: #e2e2e2;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#d2d2d2));
+    background: -webkit-linear-gradient(#f5f5f5, #d2d2d2);
+    background:    -moz-linear-gradient(#f5f5f5, #d2d2d2);
+    background:     -ms-linear-gradient(#f5f5f5, #d2d2d2);
+    background:      -o-linear-gradient(#f5f5f5, #d2d2d2);
+    background:         linear-gradient(#f5f5f5, #d2d2d2);
+    border-top: 1px solid #fbfbfb;
+    border-right: 1px solid #bebebe;
+    border-left: 1px solid #fbfbfb;
+    border-bottom: 1px solid #bebebe;
+    box-shadow: 1px 0 1px rgba(0, 0, 0, .2);
+}
+.upload-dropzone {
+	width: 835px;
+	height: 290px;
+	overflow: hidden;
+    margin-top: 9px;
+    margin-left: 10px;
+}
+.upload-dropzone.active {
+	opacity: 0.2;
+}
+.upload-dropzone #truebutton,
+.upload-dropzone #fakebutton {
+    display: block;
+    position: relative;
+    top: 200px;
+    left: 290px;
+    width: 260px;
+    height: 50px;
+    opacity: 0;
+    z-index: 5;
+}
+.upload-dropzone #fakebutton {
+	top: 150px;
+    z-index: 4;
+    opacity: 1;
+}
+.upload-dropzone .uploadable-wrapper {
+	position: relative;
+    display: inline-block;
+    vertical-align: top;
+    height: 167px;
+    margin: 10px 8px 10px 8px;
+}
+.upload-dropzone .uploadable-wrapper .thumbnail-container {
+	overflow: hidden;
+	width: 180px;
+	height: 135px;
+	border-width: 6px;
+	border-style: solid;
+	border-color: rgba(223, 223, 223, 1);
+	text-align: center;
+	cursor: wait;
+	background: #fff;
+}
+.upload-dropzone .uploadable-wrapper .thumbnail-container:hover {
+	border-color: #628ba0;
+}
+.upload-dropzone .uploadable-wrapper.ready .thumbnail-container:hover {
+	cursor: move;
+}
+.upload-dropzone .uploadable-wrapper.ready:hover .thumbnail-close {
+    position: absolute;
+    display: block;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    background: url('/img/uploader-close.png');
+    cursor: pointer;
+}
+.upload-progressbar-wrapper {
+	position: relative;
+	width: 94%;
+	height: 11px;
+	margin: 4px auto 0 auto;
+	background-color: #c0c0c0;
+	border-radius: 5px;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+}
+.upload-progressbar {
+	transition: width 20s;
+	position: absolute;
+	width: 0%;
+	height: 10px;
+	border-radius: 5px;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, .2);
+	background: #5c8296;
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#6e95a9), to(#547789));
+    background: -webkit-linear-gradient(#6e95a9, #547789);
+    background:    -moz-linear-gradient(#6e95a9, #547789);
+    background:     -ms-linear-gradient(#6e95a9, #547789);
+    background:      -o-linear-gradient(#6e95a9, #547789);
+    background:         linear-gradient(#6e95a9, #547789);
+}
+.sortable-placeholder {
+	display: inline-block;
+	width: 188px;
+	height: 135px;
+	background: transparent;
+	border: 2px dashed #d0d0d0;
+	border-radius: 6px;
+	margin: 10px 8px 30px 8px;
+}
+#works input[type=text] {
+    color: #999;
+    font-size: 13px;
+    text-transform: none;
+    margin-left: 0px;
+    float: left;
+    line-height: 1em;
+}
+#works input[type=text]:focus {
+    color: #666;
+}
+#works input[name='filename[1]'] {
+    width: 138px;
+    margin-right: 14px;
+}
+#works input[name='source[1]'] {
+    width: 200px;
+    margin-right: 22px;
+}
+input[name=licensed_work] {
+	margin-bottom: 3px;
 }

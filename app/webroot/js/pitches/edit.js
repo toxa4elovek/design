@@ -1,6 +1,56 @@
 $(document).ready(function() {
 
+    $('.enable-editor').tinymce({
+       // Location of TinyMCE script
+        script_url : '/js/tiny_mce/tiny_mce.js',
 
+        // General options
+        theme : "advanced",
+        plugins : "autolink,lists,style,visualchars,paste",
+
+       // Theme options
+       theme_advanced_buttons1 : "styleselect,link,unlink,bullist,numlist,charmap",
+       theme_advanced_buttons2 : "",
+       theme_advanced_buttons3 : "",
+       theme_advanced_toolbar_location : "top",
+       theme_advanced_toolbar_align : "left",
+       theme_advanced_statusbar_location : "bottom",
+       theme_advanced_resizing : true,
+       content_css : "/css/brief_wysiwyg.css",
+       language : "ru",
+       height : "180",
+       width: '538',
+       relative_urls: false,
+       remove_script_host: false,
+        paste_auto_cleanup_on_paste : true,
+        paste_remove_styles: true,
+        paste_remove_styles_if_webkit: true,
+        paste_strip_class_attributes: true,
+        paste_preprocess : function(pl, o) {
+            console.log(o.content);
+            if((jQuery(o.content).text() == '') && (o.content != '')) {
+                var text = o.content
+            }else {
+                var text = jQuery(o.content).text()
+            }
+            o.content = text
+        },
+       onchange_callback : function(editor) {
+           isUndo = true;
+       },
+       style_formats : [
+             {title : 'Основной текст', inline : 'span', classes: "regular"},
+             {title : 'Заголовок', inline : 'span', classes: "greyboldheader"},
+             {title : 'Дополнение', inline : 'span', classes: "supplement2"},
+         ],
+   });
+
+    /* Download Form Select */
+    if ((window.File != null) && (window.FileList != null)) {
+        $('#new-download').show();
+    } else {
+        $('#old-download').show();
+    }
 
     /**/
 
@@ -81,21 +131,6 @@ $(document).ready(function() {
         $('.extensions').removeClass('wrong-input');
     });
 
-    /*
-     $( ".slider" ).slider({
-     value: 5,
-     min: 1,
-     max: 9,
-     step: 1,
-     slide: function( event, ui ) {
-
-     var rightOpacity = (((ui.value-1) * 0.08) + 0.36).toFixed(2);
-     var leftOpacity = (1 - ((ui.value-1) * 0.08)).toFixed(2);
-     $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
-     $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
-     }
-     })*/
-
     $('#save').click(function() {
         if((($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length == 0)) && ($('input[name=tos]').length == 1)) {
             alert('Вы должны принять правила и условия');
@@ -118,36 +153,10 @@ $(document).ready(function() {
         return false;
     });
 
-    /*$('#fileuploadform').fileupload({
-        dataType: 'json',
-        add: function(e, data) {
-            e.data.fileupload.myData = data;
-            $('#filename').html(data.files[0].name);
-        },
-        done: function (e, data) {
-            $.modal.close();
-            var li = '<li><a href="' + data.result.weburl + '" class="filezone-filename" target="_blank">' + data.result.basename + '</a>' +
-                '<p>' + data.result['file-description'] + '</p>' +
-                '<a href="/pitchfiles/delete/' + data.result.id + '.json" class="filezone-delete-link">удалить</a></li>';
-            $("#filezone").append(li);
-            $('#fileupload-description').val('');
-            $('#filename').html('Файл не выбран');
-            Cart.fileIds.push(data.result.id);
-        },
-        send: function(e, data) {
-            $('#loading-overlay').modal({
-                containerId: 'spinner',
-                opacity: 80,
-                close: false
-            });
-        }
-    });*/
-
     var fileIds = [];
-    var placeholder = $('#fileupload-description').attr('placeholder');
     var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
-        onSelect: function(file) { onSelectHandler.call(this, file, placeholder, fileIds, Cart); } // See app.js
+        onSelect: function(file) { onSelectHandler.call(this, file, fileIds, Cart); } // See app.js
     });
 
     $('input[name="phone-brief"]').change(function() {
@@ -221,7 +230,7 @@ $(document).ready(function() {
     });
 
     /**/
-    var Cart = new FeatureCart;
+    Cart = new FeatureCart;
     Cart.init();
 
 });
@@ -242,7 +251,7 @@ function FeatureCart() {
     this.fileIds = [];
     this.specificTemplates = [];
     this.validatetype = 1;
-    this.transferFee = 0.145;
+    this.transferFee = feeRates.low;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
     this.mode = 'add';
@@ -284,6 +293,16 @@ function FeatureCart() {
     this.fillCheck = function(data) {
         self.content = {};
         $.each(data, function(index, object) {
+            var feeOption = object.name.indexOf(self.transferFeeKey);
+            if (feeOption != -1) {
+                var percent = object.name.substr(self.transferFeeKey.length + 1, 4);
+                if (percent.length > 0) {
+                    self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
+                } else { // For older pitches
+                    self.transferFee = feeRates.good;
+                }
+                object.name = self.transferFeeKey;
+            }
             if((object.value != 0)) {
                 self.updateOption(object.name, parseInt(object.value));
             }else if((object.name == 'Заполнение брифа')) {
@@ -339,7 +358,7 @@ function FeatureCart() {
             'id': self.id,
             'title': $('input[name=title]').val(),
             'category_id': $('input[name=category_id]').val(),
-            'industry': $('input[name=industry]').val(),
+            'industry': $('input[name=industry]').val() || '',
             'business-description': $('textarea[name=business-description]').val(),
             'description': $('textarea[name=description]').val(),
             'fileFormats': self._formatArray(),
@@ -361,10 +380,6 @@ function FeatureCart() {
         if(self.validatetype == 1) {
             if((self.data.commonPitchData.title == '') || ($('input[name=title]').data('placeholder') == self.data.commonPitchData.title)) {
                 $('input[name=title]').addClass('wrong-input');
-                result = false;
-            }
-            if((self.data.commonPitchData.industry == '') || ($('input[name=industry]').data('placeholder') == self.data.commonPitchData.industry)) {
-                $('input[name=industry]').addClass('wrong-input');
                 result = false;
             }
             if((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
@@ -408,6 +423,9 @@ function FeatureCart() {
             specificPitchData[$(object).attr('name')] = $(object).val()
         });
         $('input.specific-group:checked').each(function(index, object){
+            specificPitchData[$(object).attr('name')] = $(object).val()
+        });
+        $('input.specific-group[data-selected~="true"]').each(function(index, object){
             specificPitchData[$(object).attr('name')] = $(object).val()
         });
         if($('.slider').length > 0) {
@@ -471,7 +489,11 @@ function FeatureCart() {
     this._renderOptions = function() {
         var html = '';
         $.each(self.content, function(key, value) {
-            html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            if (key == self.transferFeeKey) {
+                html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>';
+            } else {
+                html += '<li><span>' + key +'</span><small>' + value + '.-</small></li>';
+            }
         });
         self.container.html(html);
     };

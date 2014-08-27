@@ -21,9 +21,9 @@ class Event extends \app\models\AppModel {
             $result = $chain->next($self, $params, $chain);
             if(is_object($result)) {
                 $addUpdateText = function($record) {
-                    $record->updateText = ''; 
+                    $record->updateText = '';
                     if($record->type == 'SolutionAdded'){
-                        $record->updateText = ''; 
+                        $record->updateText = '';
                     }
                     if($record->type == 'SolutionPicked'){
                         $moneyFormatter = new MoneyFormatter();
@@ -35,7 +35,7 @@ class Event extends \app\models\AppModel {
                         if($record->comment) {
                             $commentText = $record->comment->text;
                         }
-                        $record->updateText = $commentText; 
+                        $record->updateText = $commentText;
                     }
                     return $record;
                 };
@@ -106,7 +106,7 @@ class Event extends \app\models\AppModel {
                     if(isset($typesMap[$record->type])) {
                         $record->humanType = $typesMap[$record->type];
                     }
-                    return $record;   
+                    return $record;
                 };
                 if(get_class($result) == 'lithium\data\entity\Record') {
                     $result = $addBindings($result);
@@ -124,12 +124,12 @@ class Event extends \app\models\AppModel {
                         $foundItem = $addUpdateText($foundItem);
                         $foundItem = $addJSDate($foundItem);
                     }
-                }               
+                }
             }
             return $result;
         });
     }
-	
+
 	public static function createEvent($pitchId, $type, $userId, $solutionId = 0, $commentId = 0) {
 		$newEvent = self::create();
 		$newEvent->created = date('Y-m-d H:i:s');
@@ -144,7 +144,6 @@ class Event extends \app\models\AppModel {
     public static function getEvents($pitchIds, $page = 1, $created = null){
         $eventList = $conditions = array();
         $limit = 10;
-        //var_dump(isset($created));
         if(isset($created)) {
             $page = 1;
             $limit = 100;
@@ -158,39 +157,21 @@ class Event extends \app\models\AppModel {
                 'page' => $page
                 )
             );
-            //echo $created;
-            //echo '<pre>';
-            //var_dump($conditions + Event::createConditions($pitchIds));
-            //var_dump($conditions);
-            //echo '</pre>';
             $i = 1;
             foreach($events as $event) {
-                if(($event->pitch->private == 1) || ($event->pitch->category_id == 7)) {
-                    if(($event->type == 'CommentAdded' || $event->type == 'CommentCreated') && ($event->user_id != Session::read('user.id')) && ($event->pitch->user_id != Session::read('user.id'))) {
-                        if(preg_match_all('@#(\d)@', $event->comment->text, $matches, PREG_PATTERN_ORDER)) {
-                            $array = array();
-                            foreach($matches[1] as $match):
-                                $array[] = $match;
-                            endforeach;
-                            $noSolutions = true;
+                if(($event->type == 'CommentAdded' || $event->type == 'CommentCreated') && ($event->user_id != Session::read('user.id')) && ($event->pitch->user_id != Session::read('user.id'))) {
 
-                            foreach($array as $num):
-                                $solution = Solution::first(array('conditions' => array(
-                                    'num' => $num,
-                                    'pitch_id' => $event->pitch->id,
-                                )));
-                                if($solution->user_id == Session::read('user.id')) {
-                                    $noSolutions = false;
-                                    break;
-                                }
-                            endforeach;
-                            //108
-                            if(($noSolutions) && ($event->user_id != '108')):
-                                $event->updateText = 'Этот комментарий закрыт для просмотра';
-                            endif;
+                    // Parent
+                    if ( ($event->comment->question_id == 0) && ($event->comment->public != 1) ) {
+                        if (Comment::find('count', array('conditions' => array('question_id' => $event->comment->id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
+                            continue;
                         }
-                        if(($event->comment->reply_to != 0) && ($event->comment->reply_to != Session::read('user.id'))) {
-                            $event->updateText = 'Этот комментарий закрыт для просмотра';
+                    }
+
+                    // Child
+                    if ( ($event->comment->question_id != 0) && ($event->comment->public != 1) && ($event->comment->reply_to != Session::read('user.id')) ) {
+                        if (Comment::find('count', array('conditions' => array('id' => $event->comment->question_id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
+                            continue;
                         }
                     }
                 }

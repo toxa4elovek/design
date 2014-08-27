@@ -16,7 +16,7 @@
                             $tagstring[] = '<a class="blogtaglink" href="/posts?tag=' . urlencode($tag) . '">' . $tag . '</a>';
                         endforeach;
                         ?>
-                            <p style="margin-bottom: 15px;margin-top:5px;text-transform:uppercase;font-size:11px;color:#666666">опубликовано: <a style="text-decoration:none;" href="/users/view/<?=$post->user->id?>"><?=$this->nameInflector->renderName($post->user->first_name, $post->user->last_name)?></a> &bull; <?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?>
+                            <p style="margin-bottom: 15px;margin-top:5px;text-transform:uppercase;font-size:11px;color:#666666">опубликовано: <a style="text-decoration:none;" href="/users/view/<?=$post->user->id?>"><?=$this->user->getFormattedName($post->user->first_name, $post->user->last_name)?></a> &bull; <?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?>
                             &bull; Просмотров: <?=$post->views?>
                             </p>
                             <div class="regular viewpost">
@@ -40,7 +40,7 @@
                                         <div class="g-plusone" data-size="medium"></div>
                                     </div>
                                     <div style="float:left;height:20px;width:70px;">
-                                        <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fposts%2Fview%2F<?=$solution->id?>&media=<?=$post->imageurl?>&description=<?=$post->title?>" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+                                        <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fposts%2Fview%2F<?=$post->id?>&media=<?=$post->imageurl?>&description=<?=$post->title?>" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
                                     </div>
                                     <div style="float:left;height:20px;width:80px;">
                                         <a target="_blank" class="surfinbird__like_button" data-surf-config="{'layout': 'common', 'width': '120', 'height': '20'}" href="http://surfingbird.ru/share">Серф</a>
@@ -64,43 +64,36 @@
 </a>
     <?php $i++;endforeach?>
                             </div><?php endif?>
-                            <!--div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:640px;margin-bottom:20px;"></div-->
-        <!--div id="disqus_thread"></div>
-        <script type="text/javascript">
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'godesigner'; // required: replace example with your forum shortname
-            var disqus_developer = 1;
-            /* * * DON'T EDIT BELOW THIS LINE * * */
-            (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a-->
-                        <!--script>
-                            var idcomments_acct = '88393bdece6b387c5d426e2998f1806a';
-                            var idcomments_post_id;
-                            var idcomments_post_url;
-                        </script>
-                        <span id="IDCommentsPostTitle" style="display:none"></span>
-                        <script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script-->
                         <!-- START: Livefyre Embed -->
-                        <script type='text/javascript' src='http://zor.livefyre.com/wjs/v1.0/javascripts/livefyre_init.js'></script>
-                        <script type='text/javascript'>
-                            var fyre = LF({
-                                site_id: 307155,
-                                article_id: <?=$post->id?>
-                            });
+                        <div id="livefyre-comments" style="margin-top: 20px"></div>
+                        <script type="text/javascript" src="http://zor.livefyre.com/wjs/v3.0/javascripts/livefyre.js"></script>
+                        <script type="text/javascript">
+                            (function () {
+                                var articleId = fyre.conv.load.makeArticleId(null, <?= $post->id ?>);
+                                fyre.conv.load({}, [{
+                                    el: 'livefyre-comments',
+                                    network: "livefyre.com",
+                                    siteId: 307155,
+                                    articleId: articleId,
+                                    signed: false,
+                                    collectionMeta: {
+                                        articleId: articleId,
+                                        url: fyre.conv.load.makeCollectionUrl()
+                                    }
+                                }], function() {});
+                            }());
                         </script>
                         <!-- END: Livefyre Embed -->
-
                     </section>
                 </div>
                 <div id="right_sidebar_help" style="width:200px;">
+                    <form id="post-search">
+                        <input type="text" id="blog-search" name="search" value="" class="text">
+                        <input type="submit" class="blog-submit" value="">
+                    </form>
+                    <?=$this->view()->render(array('element' => 'posts/categories_menu'))?>
                     <div id="current_pitch">
-                    <?php echo $this->stream->renderStream();?>
+                        <?php echo $this->stream->renderStream(10, false);?>
                     </div>
                 </div>
             </div><!-- /content -->
@@ -109,5 +102,5 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.timeago', 'posts/view'), array('inline' => false))?>
-<?=$this->html->style(array('/help', '/blog', 'disqus'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js','/js/fotorama/jquery-1.8.0.min.js','/js/fotorama/jquery.validate.min.js','/js/fotorama/jquery.countdown.min.js', 'jquery.timeago', '/js/fotorama/fotorama.js', 'posts/view'), array('inline' => false))?>
+<?=$this->html->style(array('/js/fotorama/fotorama.css', '/help', '/blog', 'disqus'), array('inline' => false))?>

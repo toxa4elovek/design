@@ -4,20 +4,15 @@
 
     <div class="middle">
         <div class="middle_inner conteiners" style="margin-top: 0px;padding-left: 0px;">
-            <input type="hidden" value="<?=$this->session->read('user.id')?>" id="user_id">
+            <input type="hidden" value="<?=$this->user->getId()?>" id="user_id">
         <section>
             <div class="menu" style="background:none;border:none;width:857px;margin-left:63px;margin-top:0;">
             <nav class="main_nav clear" style="width:832px;">
-                <?=$this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Мои питчи</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false, 'class' => 'active')) ?>
-                <!--a href="#"><span>Сообщения</span></a-->
-                <?=$this->html->link('<span>Профиль</span>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                <?=$this->html->link('<span>Реквизиты</span>', array('controller' => 'users', 'action' => 'details'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
+                <?=$this->view()->render(array('element' => 'office/nav'));?>
             </nav>
             </div>
         </section>
-        <section>
+        <section class="js-participate">
             <div class="title" style="padding-left: 0px; margin-left: 75px;">
                 <span>Участие</span>
             </div>
@@ -34,7 +29,7 @@
                 </div>
             </div>
         </section>
-        <section>
+        <section class="js-favourites">
             <div class="title" style="padding-left: 0px; margin-left: 75px;">
                 <span>Добавленные</span>
             </div>
@@ -62,5 +57,5 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>

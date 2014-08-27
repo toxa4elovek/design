@@ -1,6 +1,11 @@
 /* Main
 -----------------------------------------------------------------------------*/
-
+.profile ::-moz-selection {
+    background: none;
+    }
+.profile ::selection {
+    background: none;
+    }
 .main {
 	background: #e1e1e1;
 	position: relative;
@@ -62,9 +67,8 @@
 	margin-left: 0 !important;
 }
 .profile {
-	background: url("img/profile-bg.png") repeat-y;
 	width: 623px;
-	margin: 20px 39px 42px 0px;
+	margin: 20px 39px 10px 0;
 	display: inline-block;
 }
 .send_message {
@@ -72,7 +76,7 @@
 }
 .info_profile {
 	width: 623px;
-	margin: 23px 0 0 32px;
+	margin: 23px 0 0 0;
 }
 .main section .profile img {
 	margin: 0 0 0 26px;
@@ -82,7 +86,6 @@
 	width: 196px;
 	background: #fff;
     border-radius: 2px 2px 2px 2px;
-	margin: 0 0 28px 0;
 	float: left;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
@@ -92,7 +95,7 @@
 }
 .info_profile_about {
 	float: left;
-	margin: 0 0 0 18px;
+	margin: 0 0 0 60px;
 	color: #b1b1b1;
 	font: normal 11px/1 "HelveticaCE35", sans-serif;
 	text-transform: uppercase;
@@ -112,18 +115,19 @@
 	margin: 25px 0 0 43px;
 }
 .info_profile_about .pitches span, .info_profile_about .likes span {
-	color: #ff585d;
+ 	color: #ff585d;
 }
 .about_profile {
-	margin: 0 39px 0 32px;
+	margin: 0;
 }
 .about_profile dl dt {
 	float: left;
+	margin: 40px 0 0 0; 
 }
 .about_profile dl dd {
 	float: left;
-	width: 450px;
-	margin: 0 0 0 16px;
+	width: 360px;
+	margin: 40px 0 0 135px;
 }
 .about_profile .separate {
 	height: 69px;
@@ -255,4 +259,51 @@
 
 .profile-list-info li {
     margin-bottom: 4px;
+}
+.right-sidebar-user {
+	width: 199px;
+    float: right;
+    padding: 0;
+    margin: 0;
+}
+.right-sidebar-user a.button {
+	width: 130px;
+	margin-bottom: 10px;
+}
+.right-sidebar-user h2 {
+    font-size: 16px;
+}
+.right-sidebar-user button {
+	min-width: 90px;
+	padding: 10px;
+	font-size: 14px;
+	margin-bottom: 10px;
+    background: #64A470;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#efefef), to(#e3e3e3));
+    background: -webkit-linear-gradient(#efefef, #e3e3e3);
+    background:    -moz-linear-gradient(#efefef, #e3e3e3);
+    background:     -ms-linear-gradient(#efefef, #e3e3e3);
+    background:      -o-linear-gradient(#efefef, #e3e3e3);
+    background:         linear-gradient(#efefef, #e3e3e3);
+    border-top: 1px solid #d3d3d3;
+    border-left: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+    border-bottom: 1px solid #b1b1b1;
+    border-radius: 2px;
+}
+.right-sidebar-user button:hover {
+	background: #64A470;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#e3e3e3), to(#efefef));
+    background: -webkit-linear-gradient(#e3e3e3, #efefef);
+    background:    -moz-linear-gradient(#e3e3e3, #efefef);
+    background:     -ms-linear-gradient(#e3e3e3, #efefef);
+    background:      -o-linear-gradient(#e3e3e3, #efefef);
+    background:         linear-gradient(#e3e3e3, #efefef);
+}
+.right-sidebar-user button.odd {
+	margin-right: 10px;
+}
+hr.tiny-hr {
+	border-style: none;
+	border-top: 1px solid #C1C1C1;
 }

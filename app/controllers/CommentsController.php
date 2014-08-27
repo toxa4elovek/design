@@ -50,7 +50,7 @@ class CommentsController extends \lithium\action\Controller {
 	}
 
     public function edit() {
-        if((((Session::read('user.isAdmin') == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81)))) && ($comment = Comment::first($this->request->id))) || (($comment = Comment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
+        if((((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) && ($comment = Comment::first($this->request->id))) || (($comment = Comment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
 
             $comment = Comment::first($this->request->id);
             $comment->text = $this->request->data['text'];
@@ -64,7 +64,7 @@ class CommentsController extends \lithium\action\Controller {
     public function delete() {
         //error_reporting(E_ALL);
         //ini_set('display_errors', '1');
-        if((((Session::read('user.isAdmin') == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81)))) && ($comment = Comment::first($this->request->id))) || (($comment = Comment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
+        if((((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) && ($comment = Comment::first($this->request->id))) || (($comment = Comment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
             $comment->delete();
             if ($this->request->is('json')) {
                 return 'true';

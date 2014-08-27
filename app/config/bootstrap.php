@@ -23,6 +23,10 @@
  * @see lithium\util\collection\Filters
  */
 
+if (extension_loaded('newrelic')) {
+    newrelic_set_appname('GoDesigner');
+}
+
 /**
  * The libraries file contains the loading instructions for all plugins, frameworks and other class
  * libraries used in the application, including the Lithium core, and the application itself. These
@@ -92,6 +96,17 @@ require __DIR__ . '/bootstrap/validation.php';
 	define('WEEK', 604800);
 	define('MONTH', 2592000);
 	define('YEAR', 31536000);
+
+	define('REFERAL_DISCOUNT', 300);
+	define('REFERAL_AWARD', 500);
+
+	define('FEE_LOW', 0.245);
+	define('FEE_NORMAL', 0.195);
+	define('FEE_GOOD', 0.145);
+
+	define('COPY_BASE_PRICE', 5000);
+
+	define('WINS_FOR_VIEW', 1); // Designer`s wins for allow private pitches view
 
 date_default_timezone_set('Europe/Moscow');
 

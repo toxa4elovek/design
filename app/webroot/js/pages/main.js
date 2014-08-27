@@ -11,7 +11,7 @@ $(function(){
     preload([
         '/img/partners/logo_tutdesign_on.png',
         '/img/partners/surfinbird_on.png',
-        '/img/partners/play_on.png',
+        '/img/partners/clodo_on.png',
         '/img/partners/zucker_on.png',
         '/img/partners/trends_on.png',
     ]);
@@ -122,14 +122,13 @@ $(function(){
     });
 
     function changeBanner() {
-        $.each($('#bannerblock').children(), function(index, object) {
-            var banner = $(object);
-            if(banner.css('display') == 'none') {
-                banner.fadeIn(300);
-            }else{
-                banner.fadeOut(300);
-            }
-        })
+        var $el = $('div:visible', '#bannerblock');
+        var $elNext = $el.next();
+        if ($elNext.length == 0) {
+            $elNext = $el.prevAll().last();
+        }
+        $el.fadeOut(300);
+        $elNext.fadeIn(300);
     }
     setInterval(changeBanner, 7500);
     $('.talkhoverzone').on('mouseover', function() {
@@ -140,8 +139,6 @@ $(function(){
         $('a', $(this)).css('color', '#666666');
     })
 
-
-
     $('.front_catalog li').hover(function() {
         $('.more_info', $(this)).fadeIn(300);
     },
@@ -150,14 +147,6 @@ $(function(){
                 $(this).hide();
             });
     });
-
-    $('#special_banner').on('mouseenter', function() {
-        $('#special_link').fadeIn(300); 
-    })
-
-    $('#brief_banner').on('mouseenter', function() {
-        $('#brief_link').fadeIn(300); 
-    })
 
     $('#video').click(function() {
         $('#popup-final-step').modal({
@@ -169,23 +158,18 @@ $(function(){
     });
 
     expertsRandom();
-
 });
 
 function expertsRandom() {
-    var limit = 3,
-        amount = 8,
-        unique_random_numbers = [];
-
-    while (unique_random_numbers.length < limit) {
-        var random_number = Math.floor(Math.random()*(amount) + 1);
-        if (unique_random_numbers.indexOf(random_number) == -1) {
-            // Yay! new random number
-            unique_random_numbers.push(random_number);
-        }
-    }
-
-    for (var i = 0; i < unique_random_numbers.length; i++) {
-        $('li.expert-' + unique_random_numbers[i], '#experts-zone').show();
+    var limit = 3;
+    var expertsArray = [];
+    $('li.expert_enabled').each(function(idx, obj) {
+        expertsArray.push($(obj).data('expert_id'));
+    });
+    // Shuffle Array. Taken from http://css-tricks.com/snippets/javascript/shuffle-array
+    expertsArray.sort(function() { return 0.5 - Math.random() });
+    
+    for (var i = 0; i < limit; i++) {
+        $('li.expert-' + expertsArray[i], '#experts-zone').show();
     }
 }

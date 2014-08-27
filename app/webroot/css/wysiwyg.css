@@ -44,6 +44,25 @@ p, div, span {
     text-shadow: -1px 0 0 #FFFFFF;
 }
 
+ul {
+    list-style: none;
+}
+
+ol li {
+    font: 14px/20px "Arial", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+
+ul li:before{ content:"—"; position:relative; left:-5px;}
+ul li{
+    text-indent:-5px;
+    font: 14px/20px "Arial", sans-serif;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+
+
 a,
 a:active {
     color: #658fa5;

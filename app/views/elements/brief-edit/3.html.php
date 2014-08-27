@@ -1,7 +1,13 @@
 <div class="groupc">
 
     <?php if($pitch->billed == 1):?>
-    <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+        <?php if ($this->user->isAdmin()):?>
+            <p><label>Ведите количество макетов/страниц</label>
+            <input type="text" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+            </p>
+        <?php else:?>
+            <input type="hidden" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
+        <?php endif;?>
     <?php endif?>
 
     <p>
@@ -12,22 +18,6 @@
     <p>
         <label>Какие сайты вам нравятся? Откуда дизайнерам черпать вдохновение?</label>
         <textarea placeholder="" rows="5" cols="30" name="site-inspiration" class="<?php if(empty($specifics['site-inspiration'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-inspiration']?></textarea>
-    </p>
-
-    <p>
-        <label>Какую CMS вы предпочитаете?</label>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="0" <?php if($specifics['cms'] == '0'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">не уверен</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="1" <?php if($specifics['cms'] == '1'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">Wordpress</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="2" <?php if($specifics['cms'] == '2'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">Joomla</span>
-    </div>
-    <div class="radiodiv">
-        <input type="radio" name="cms" value="3" <?php if($specifics['cms'] == '3'): echo 'checked'; endif;?> class="specific-group"/><span class="radiospan">DLE</span>
-    </div>
     </p>
 
     <p><label>Опишите целевую аудиторию</label></p>

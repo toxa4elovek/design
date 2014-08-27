@@ -1,5 +1,4 @@
-<div class="wrapper pitchpanel" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
-     xmlns="http://www.w3.org/1999/html">
+<div class="wrapper pitchpanel">
 
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 	<div class="conteiner">
@@ -7,7 +6,7 @@
             <div class="pitches-ajax-loader">&nbsp;</div>
         </div>
 		<section>
-            <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 788px; margin-left: 77px;">
+            <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 786px; margin-left: 79px;">
                 <table><tr><td>
                 <div id="filterContainer" style="border-radius:4px 4px 4px 4px;border:4px solid #F3F3F3; height:41px;padding-top:10px;background-color:white;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset; width:618px;margin-left:25px">
                     <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
@@ -34,10 +33,10 @@
                     </ul>
                     <ul class="filterlist" style="float:left;width:85px;margin-left:25px;text-transform: none">
                         <li class="first">сроки</li>
-                        <li><a data-group="timeframe" data-value="1"href="#">до 3 дней</a></li>
-                        <li><a data-group="timeframe" data-value="2"href="#">до 7 дней</a></li>
-                        <li><a data-group="timeframe" data-value="3"href="#">до 10 дней</a></li>
-                        <li><a data-group="timeframe" data-value="4"href="#">более 14 дней</a></li>
+                        <li><a data-group="timeframe" data-value="1" href="#">до 3 дней</a></li>
+                        <li><a data-group="timeframe" data-value="2" href="#">до 7 дней</a></li>
+                        <li><a data-group="timeframe" data-value="3" href="#">до 10 дней</a></li>
+                        <li><a data-group="timeframe" data-value="4" href="#">более 14 дней</a></li>
                     </ul>
                     <ul class="filterlist" style="float:left;width:160px;margin-left:25px;text-transform: none">
                         <li class="first">гонорар</li>
@@ -87,11 +86,11 @@
 				<thead>
 					<tr>
 						<td class="icons"></td>
-						<td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" rel="asc">название питча</a></td>
-						<td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" rel="asc">Категории</a></td>
-						<td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" rel="desc">Идеи</a></td>
-						<td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" rel="asc">Срок</a></td>
-						<td style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-price" class="sort-link" rel="desc">Цена</a></td>
+						<td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" data-dir="asc">название питча</a></td>
+						<td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" data-dir="asc">Категории</a></td>
+						<td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" data-dir="desc">Идеи</a></td>
+						<td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" data-dir="asc">Срок</a></td>
+						<td style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-price" class="sort-link" data-dir="desc">Цена</a></td>
 					</tr>
 				</thead>
 				<tbody id="table-content">
@@ -162,14 +161,14 @@
                     if ($pitch['published'] == 1) {
                         $imgForDraft = ' not-draft';
                     }
-                    if($pitch['user_id'] == $this->session->read('user.id')){
+                    if(($this->user->isPitchOwner($pitch['user_id'])) && ($pitch['awarded'] == '')){
                         if($pitch['billed'] == 1) {
                             $userString = '<a title="Редактировать" href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link' . $imgForDraft . '"><img class="pitches-name-td-img" src="/img/1.gif"></a>';
                         }else {
                             $userString = '<a href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/'  . $pitch['id'] .  '" rel="' . $pitch['id']  .'" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' . $pitch['id'] . '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                         }
                     }else {
-                        $userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';
+                        $userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" alt=""/></a>';
                     }
 
                     if($pitch['private'] == 1) {
@@ -190,17 +189,18 @@
                     if($pitch['ideas_count'] == 0) {
                         $pitchPath = 'details';
                     }
+                    $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
                     $html = '<tr data-id="' . $pitch['id'] . '" class="' . $rowClass . '">' .
                         '<td class="icons">' . $icons . '</td>' .
                         '<td class="pitches-name">' .
                         $userString .
                         '<div style="padding-left: 34px; padding-right: 12px;">' .
-                        '<a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="newpitchfont" >' . $this->PitchTitleFormatter->renderTitle($pitch['title']) . '</a>' .
+                        '<a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="newpitchfont" >' . $pitch['title'] . '</a>' .
                         '<!--span style="font-size:11px;">' . $shortIndustry . '</span-->' .
                         '</div>' .
                         '</td>' .
                         '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' .
-                        '<a href="#" style="font-size:11px;">' . $pitch['category']['title'] . '</a>' .
+                        '<a href="#" style="font-size:11px;">' . $pitch['category']['title'] . $multiple . '</a>' .
                         '</td>' .
                         '<td class="idea"  style="font-size:11px;">' . $pitch['ideas_count'] . '</td>' .
                         '<td class="pitches-time"  style="font-size:11px;">' . $timeleft . '</td>' .
@@ -290,20 +290,20 @@
 					<!--a href="#">&#60;</a><a href="#" class="this-page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a> ... <a href="#">7</a><a href="#">&#62;</a-->
 				</div>
 				<ul class="icons-infomation">
-					<li class="icons-infomation-one supplement3">Мнение экспертов<br> важно для этого клиента</li>
-					<li class="icons-infomation-two supplement3">Закрытый питч</li>
+					<li class="icons-infomation-one supplement3"><a href="/answers/view/66" target="_blank">Мнение экспертов</a><br> важно для этого клиента</li>
+					<li class="icons-infomation-two supplement3"><a href="/answers/view/64" target="_blank">Закрытый питч</a></li>
 					<li class="icons-infomation-three supplement3">Идеи больше не принимаются, идет выбор победителя</li>
 					<li class="icons-infomation-four supplement3">Питч завершен,<br> победитель выбран</li>
 				</ul>
 				<div style="margin-top:70px;height:40px;background: url('/img/guarantee2.png') no-repeat scroll 0 0 transparent" class="you-profile supplement3">
-					Гарантированный питч,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
+                    <a href="/answers/view/80" target="_blank">Гарантированный питч</a>,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
 				</div>
                 <div style="margin-top:20px;height:40px;margin-right: 128px;" class="you-profile supplement3">
                     Хотите узнать о добавлении новых питчей?<br>Измените <a href="/users/profile">настройки своего профиля</a>
                 </div>
 			</div>
 			<div class="no-result">
-                <h1>Упс, мы ничего не нашли!</h2>
+                <h1>Упс, мы ничего не нашли!</h1>
                 <p class="regular">Попробуйте ввести другое слово, или используйте<br /> стрелку в поле, повторив поиск с выбранным<br /> фильтром. <a href="/answers/view/85">Подробнее…</a></p>
                 <p><img src="http://www.godesigner.ru/img/help/d3fa990a965b8ebf1cf8691586140165.jpg" alt="" width="610" height="292"></p>
 
@@ -313,9 +313,8 @@
 	</div>
 	<div class="conteiner-bottom">
 	<input type="hidden" value="<?=$selectedCategory?>" name="category">
-    <input type="hidden" value="<?=$this->session->read('user.id')?>" id="user_id">
+    <input type="hidden" value="<?=$this->user->getId()?>" id="user_id">
     </div>
-	</div>
 </div><!-- .wrapper -->
 
 <div id="popup-final-step" class="popup-final-step" style="display:none">

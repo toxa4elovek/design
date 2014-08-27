@@ -188,7 +188,14 @@
   Header
 */
 .header-menu {
-
+     display: none;
+     position: relative;
+     margin-top: 23px;
+     padding-top: 16px;
+     height: 275px;
+     width: 180px;
+     background: url(/img/menu.png) 0 16px no-repeat;
+     z-index: 120;
 }
 
 .header-menu a {
@@ -202,10 +209,16 @@
     height:25px;
     padding-top:8px;
 }
-
-.header-menu-item a {
-    text-decoration: none;
+.header-menu-item a,
+.header-menu-item-higlighted a {
+    display: block;
     color: #ffffff;
+    width: 152px;
+    height: 25px;
+    text-decoration: none;
+    margin-top: -8px;
+    padding-top: 8px;
+    padding-left: 28px;
 }
 
 .header-menu-item a:hover {

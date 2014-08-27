@@ -6,10 +6,11 @@ use \lithium\storage\Session;
 use \app\models\Solution;
 use \app\models\User;
 use \app\extensions\mailers\UserMailer;
+use \lithium\analysis\Logger;
 
 class SolutionsController extends \app\controllers\AppController {
 
-    public $publicActions = array('like');
+    public $publicActions = array('like', 'unlike');
 
     public function hide() {
         $result = $this->request;
@@ -30,7 +31,7 @@ class SolutionsController extends \app\controllers\AppController {
 	}
 
     public function unlike() {
-        $likes = Solution::decreaseLike($this->request->id, $this->request->data['uid']);
+        $likes = Solution::decreaseLike($this->request->id, Session::read('user.id'));
         return compact('likes');
     }
 
@@ -41,6 +42,10 @@ class SolutionsController extends \app\controllers\AppController {
 
     public function select() {
         if($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch')))){
+            if ((Session::read('user.id') != $solution->pitch->user_id) && (Session::read('user.isAdmin') != 1) && !User::checkRole('admin')) {
+                $result = false;
+                return compact('result');
+            }
             $nominatedSolutionOfThisPitch = Solution::first(array(
                 'conditions' => array('nominated' => 1, 'pitch_id' => $solution->pitch->id)
             ));
@@ -54,18 +59,27 @@ class SolutionsController extends \app\controllers\AppController {
     }
 
     public function delete() {
+        //error_reporting(E_ALL);
+        //ini_set('display_errors', '1');
         $result = false;
         $isAdmin = Session::read('user.isAdmin');
-        if(($solution = Solution::first($this->request->id)) && (($isAdmin == 1) || (in_array(Session::read('user.id'), array(32, 4, 5, 108, 81))) || ($solution->user_id == Session::read('user.id')))) {
+        if(($solution = Solution::first($this->request->id)) && (($isAdmin == 1) || User::checkRole('admin') || ($solution->user_id == Session::read('user.id')))) {
+            $data = array(
+                'id' => $solution->id,
+                'num' => $solution->num,
+                'user_who_deletes' => Session::read('user.id'),
+                'user_id' => $solution->user_id,
+                'date' => date('Y-m-d H:i:s'),
+                'isAdmin' => $isAdmin
+            );
+            Logger::write('info', serialize($data), array('name' => 'deleted_solutions'));
             $result = $solution->delete();
-            if($solution->user_id != Session::read('user.id')){
-                $user = User::first($solution->user_id);
-                $data = array('solution' => $solution, 'user' => $user->data());
-                UserMailer::solutiondelete($data);
-            }
-            return compact('result');
         }
-        return compact('result');
+        if ($this->request->is('json')) {
+            return compact('result');
+        }else {
+            $this->redirect(array('Pitches::view', 'id' => $solution->pitch_id));
+        }
     }
 
     public function warn() {

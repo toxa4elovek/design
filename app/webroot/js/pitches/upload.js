@@ -26,73 +26,205 @@ $(document).ready(function() {
             '</div>');
     });
 
-    $('.order1').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order1_hover.png');
-    })
-    $('.order1').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order1.png');
-    })
-
-    $('.order2').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order2_hover.png');
-    })
-    $('.order2').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order2.png');
-    })
-
-    var loadPercentage = 30; // Progressbar percentage for loading files.
-    $('#solution').fileupload({
-        dataType: 'html',
-        autoUpload: false,
-        singleFileUploads: false,
-        dropZone: $('.uploadblock'),
-        add: function(e, data) {
-            if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
-                e.data.fileupload.myData = data;
-                var html = '';
-                $.each(data.files, function(index, object) {
-                    html += '<li class="fakeinput" style="background: url(/img/attach_icon.png) no-repeat scroll 0px 0px transparent; padding-top: 1px; margin-left: 0px; height:20px; padding-left: 20px;">' + object.name + '</li>';
+    // Dropzone Scroll
+    $( "#scroller" ).draggable({
+        drag: function() {
+            var y = $('#scroller').css('top');
+            y = parseInt(y.substring(0, y.length - 2));
+            var mod = ($('.upload-dropzone', '.upload-dropzone-wrapper')[0].scrollHeight - 290) / 180;
+            $('.uploadable-wrapper', '.upload-dropzone').css('top', -Math.round(y * mod) + 'px');
+        },
+        axis: "y",
+        containment: "parent"
+    });
+    
+    // Uploader's Drag'n'drop
+    $(document).on('dragover', function(e) {
+        e.preventDefault();
+        $('.upload-dropzone-wrapper').removeClass('upload-empty');
+        $('.upload-dropzone-wrapper, .upload-dropzone').addClass('active');
+        $('#fakebutton, #truebutton').hide();
+    });
+    $(document).on('dragleave', function(e) {
+        e.preventDefault();
+        addCallback();
+    });
+    $(document).on('drop', function(e) {
+        e.preventDefault();
+        addCallback();
+    });
+    $(document).on('click', '.thumbnail-close', function() {
+        var $wrapper = $(this).closest('.uploadable-wrapper');
+        var $el = $wrapper.find('.upload-progressbar'); 
+        $el.css('transition', 'width 3s');
+        $el.css('width', '20%');
+        var data = {
+                nonce: $('#uploadnonce').val(),
+                name: $el.data('filename'),
+                position: $el.data('position'),
+            };
+            $.ajax({
+                url: '/solutionfiles/delete.json/',
+                type: 'POST',
+                data: data,
+                global: false,
+                dataType: 'json'
+            }).done(function() {
+                boxFileNames.splice($.inArray($el.data('filename'), boxFileNames), 1);
+                $wrapper.fadeOut(200, function() {
+                    reSortable[$el.data('position')] = 0;
+                    $wrapper.remove();
+                    if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
+                        $('.upload-dropzone-wrapper').removeClass('upload-empty');
+                        $('#fakebutton, #truebutton').show();
+                    }
+                    checkScrollbar();
                 });
-                $('#filelist').html(html);
+            });
+    });
+
+    var reSortable = [];
+    var startPosition = 0;
+    $('.upload-dropzone').sortable({
+        items: '> div.uploadable-wrapper.ready',
+        update: function(e, ui) {
+            var initPosition = ui.item.find('.upload-progressbar').data('position');
+            var newPosition = ui.item.index() + 1;
+            reSortable[initPosition] = newPosition;
+            // Move Up
+            if (newPosition > startPosition) {
+                $.each(reSortable, function(idx, val) {
+                    if (idx == initPosition || val == 0) {
+                        return true;
+                    }
+                    if (val > startPosition && val <= newPosition) {
+                        reSortable[idx]--;
+                    }
+                });
+            }
+            // Move Down
+            if (newPosition < startPosition) {
+                $.each(reSortable, function(idx, val) {
+                    if (idx == initPosition || val == 0) {
+                        return true;
+                    }
+                    if (val < startPosition && val >= newPosition) {
+                        reSortable[idx]++;
+                    }
+                });
+            }
+        },
+        start: function(e, ui) {
+            startPosition = ui.item.index() + 1;
+        },
+        placeholder: "sortable-placeholder",
+        scroll: false,
+        opacity: 0.8,
+        tolerance: 'pointer',
+        containment: 'parent'
+    });
+
+    function addCallback() {
+        $('.upload-dropzone-wrapper, .upload-dropzone').removeClass('active');
+        if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
+            $('#fakebutton, #truebutton').show();
+        } else {
+            $('.upload-dropzone-wrapper').addClass('upload-empty');
+            $('#fakebutton, #truebutton').hide();
+            $('.upload-progressbar').css('width', '100%');
+        }
+    }
+    
+    var loadPercentage = 30; // Progressbar percentage for loading files.
+    var filePosition = 0;
+    var nowLoading = 0;
+    var boxFileNames = [];
+    $('#solutionfiles').fileupload({
+        dataType: 'html',
+        dropZone: $('.upload-dropzone'),
+        add: function(e, data) {
+            setTimeout(function() { addCallback(); }, 200 );
+            if((data.files.length > 0) && (data.files[0].name.match(/(\.|\/)(gif|jpe?g|png)$/i))) {
+
+                // Check files already in dropbox
+                if ($.inArray(data.files[0].name, boxFileNames) == -1) {
+                    boxFileNames.push(data.files[0].name);
+                } else {
+                    return false;
+                }
+                filePosition++;
+                $('#fileposition').val(filePosition);
+                e.data.fileupload.myData = data;
+                // Check URL.createObjectURL() support
+                var URL = window.URL && window.URL.createObjectURL ? window.URL :
+                    window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
+                    null;
+                if (URL) {
+                    var $html = $('<div class="uploadable-wrapper"> \
+                                       <div class="thumbnail-container"> \
+                                           <img src="' + URL.createObjectURL(data.files[0]) + '" style="display: none;" class="thumbnail" /> \
+                                           <div class="thumbnail-close"></div> \
+                                       </div> \
+                                       <div class="upload-progressbar-wrapper"> \
+                                           <div class="upload-progressbar" data-filename="' + data.files[0].name + '" data-position="' + filePosition + '"></div> \
+                                       </div> \
+                                   </div>');
+                    $html.insertBefore('#truebutton');
+                    var $image = $html.find('.thumbnail');
+                    setTimeout(function() {
+                        if ($image.width() >= $image.height()) {
+                            $image.width('180');
+                            $image.height('auto');
+                            $image.css('margin-top', (135 - $image.height()) / 2);
+                        } else {
+                            $image.width('180');
+                            $image.height('auto');
+                        }
+                        $image.show();
+                    }, 300);
+                    reSortable[filePosition] = filePosition;
+                } else {
+                    // Not supported
+                }
+                checkScrollbar();
+                $(this).fileupload('uploadByAuto');
             }else {
                 return false;
             }
         },
-        done: function (e, data) {
-            var result = data.result;
-            result = $.parseJSON(result);
-            if ((result != false) && result.solution && result.solution.length > 0) {
-                var progressPerEach = Math.round((100 - loadPercentage) / result.solution.length);
-                var i = 0;
-                uploadCallback(result, i, loadPercentage, progressPerEach);
+        progress: function(e, data) {
+            if (data.total > 0) {
+                var percent = data.total / 100;
+                var completed = data.loaded / percent;
+                var $el = $('.upload-progressbar[data-filename="' + data.files[0].name + '"]');
+                if (completed >= 50) {
+                    $el.css('width', '80%');
+                } else {
+                    $el.css('width', Math.round(completed) / 100 * loadPercentage + '%');
+                }
+            }
+        },
+        done: function(e, data) {
+            // Done each
+            var $el = $('.upload-progressbar[data-filename="' + data.files[0].name + '"]');
+            var $wrapper = $el.closest('.uploadable-wrapper');
+            $wrapper.addClass('ready');
+            $el.css('transition', 'width .3s');
+            $el.css('width', '100%');
+            $el.parent().fadeOut();
+            nowLoading--;
+            if (nowLoading == 0) {
+                $('#uploadSolution').fadeIn();
             }
         },
         progressall: function(e, data) {
-            if(data.total > 0) {
-                var percent = data.total / loadPercentage;
-                var completed = Math.round(data.loaded / percent);
-                fillProgress(completed);
-            }
+            // Overall progress
         },
         send: function (e, data) {
-            $('#loading-overlay').modal({
-                containerId: 'spinner',
-                opacity: 80,
-                close: false
-            });
-            $('a[href="#uploading"]').click();
+            nowLoading++;
+            $('#uploadSolution').fadeOut();
         }
     });
-
-    /*
-     $('a[href="#uploading"]').fancybox({
-     'autoScale': true,
-     'speedIn': 0,
-     'speedOut': 0,
-     'autoDimensions': true,
-     'centerOnScroll': true  // as MattBall already said, remove the comma
-     });
-     */
 
     $('a[href="#invalid"]').fancybox({
         'autoScale': true,
@@ -103,6 +235,11 @@ $(document).ready(function() {
     });
 
     $('#uploadSolution').click(function() {
+        if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
+            alert('Вы не выбрали файл для загрузки!');
+            return false;
+        }
+        $('#reSortable').val(reSortable);
         // Check if copyrighted material not empty
         if (($('input[name=licensed_work][value=1]').prop('checked')) && isAddressEmpty()) {
             alert('Укажите адрес используемых допольнительных материалов!');
@@ -111,12 +248,9 @@ $(document).ready(function() {
 
         if(($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length
             == 0) && ($('#filename').html() != 'Файл не выбран')) {
-            //alert('Не все поля заполнены! (соглашение)');
             $('a[href="#invalid"]').click();
-        }else if($('#charzone').val().length > 375) {
-            alert('Вы ввели слишком длинный комментарий!');
         }else {
-            $('#solution').fileupload('uploadByClick');
+            return true;
         }
         return false;
     });
@@ -125,25 +259,25 @@ $(document).ready(function() {
         $('.fileinput-button').css('top', '525px');
     }
 
-    /*$('.uploadblock').on('mouseenter', function() {
-        $('#fakebutton').addClass('buttonhover');
-    });*/
-
     $('input[type=file]').on('mouseenter', function() {
         $('#fakebutton').addClass('buttonhover');
     });
-
-    $('.uploadblock').on('mouseout', function() {
-        $('#fakebutton').removeClass('buttonhover');
-    });
-
-    $('#charzone').charCount({
-        "counterElement": $('#charcounter'),
-        "allowed": 375,
-        "warning": 50
-    });
-
 });
+
+function checkScrollbar() {
+    var $el = $('.upload-dropzone', '.upload-dropzone-wrapper');
+    var scroll = 0;
+    setTimeout(function() {
+        scroll = ($el[0].scrollHeight - $el.height());
+        if ( scroll > 0) {
+            $('#scrollerarea', '.upload-dropzone-wrapper').fadeIn(); 
+        } else {
+            $('#scrollerarea', '.upload-dropzone-wrapper').fadeOut();
+            $('.uploadable-wrapper', '.upload-dropzone').css('top', '0');
+            $('#scroller').animate({top:0});
+        }
+    }, 500);
+}
 
 function isAddressEmpty() {
     var res = false;
@@ -154,52 +288,4 @@ function isAddressEmpty() {
         }
     });
     return res;
-}
-
-/*
- * Filling progressbar with completed value
- */
-function fillProgress(completed) {
-    completed = (completed > 95) ? 100 : completed;
-    $('#progressbar').text(completed + '%');
-    var progresspx = Math.round(3.4 * completed);
-    if(progresspx > 330) {
-        progresspx == 330;
-    }
-    $('#filler').css('width', progresspx);
-    if(completed > 95) {
-        setTimeout(function() {
-            $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
-        }, 500);
-    }
-}
-
-/*
- * Asynchronous callback for image resize
- * Synchronous is not working in Chrome (see http://bugs.jquery.com/ticket/7464)
- */
-function uploadCallback(result, i, completed, progressPerEach) {
-    if (i < result.solution.length) {
-        var query = {
-            id: result.id,
-            name: result.solution[i].name
-        };
-        $.ajax({
-            url: '/solutionfiles/resize.json/',
-            type: 'POST',
-            data: query,
-            global: false,
-            dataType: 'json'
-        }).done(function() {
-            completed += progressPerEach;
-            fillProgress(completed);
-            i++;
-            uploadCallback(result, i, completed, progressPerEach);
-        });
-    } else {
-        setTimeout(function() {
-            $('#filename').html('Файл не выбран');
-            window.location = $('#redirect-value').val();
-        }, 800);
-    }
 }

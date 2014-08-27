@@ -9,8 +9,22 @@ class MoveFileHandler extends \app\models\behaviors\handlers\StaticHandler {
             function generateHashName($base, $path) {
                 do {
                     $hashedName = md5($base . uniqid());
-                }while(file_exists($path . $hashedName));
+                    if (false !== strpos($path, '/webroot/solutions/')) {
+                        $hashedPath = substr($hashedName, 0, 1) . '/' . substr($hashedName, 0, 2) . '/' . substr($hashedName, 0, 3) . '/';
+                        createPath($path . $hashedPath);
+                        $hashedName = $hashedPath . $hashedName;
+                    }
+                } while (file_exists($path . $hashedName));
                 return $hashedName;
+            }
+            /**
+             * recursively create a long directory path
+             */
+            function createPath($path) {
+                if (is_dir($path)) return true;
+                $prev_path = substr($path, 0, strrpos($path, '/', -2) + 1 );
+                $return = createPath($prev_path);
+                return ($return && is_writable($prev_path)) ? mkdir($path) : false;
             }
 			if(isset($params['uploadedFile']['data'])){
                 if(isset($params['uploadedFile']['data'][0])) {
@@ -52,10 +66,10 @@ class MoveFileHandler extends \app\models\behaviors\handlers\StaticHandler {
                         $params['uploadedFile']['data']['newname'] = $path;
                     }
                 }
-				
+
 			}
 			return $chain->next($self, $params, $chain);
 		});
 	}
-	
+
 }

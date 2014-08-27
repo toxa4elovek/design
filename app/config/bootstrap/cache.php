@@ -15,6 +15,7 @@ use lithium\core\Libraries;
 use lithium\core\Environment;
 use lithium\action\Dispatcher;
 use lithium\storage\cache\adapter\Apc;
+use app\extensions\storage\Rcache;
 
 if (PHP_SAPI === 'cli') {
 	return;
@@ -41,6 +42,22 @@ if ($apcEnabled) {
 	$default = array('adapter' => 'Apc');
 }
 Cache::config(compact('default'));
+
+if ($apcEnabled) {
+    Cache::config(array(
+        'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+        'default' => array('adapter' => 'Apc')
+    ));
+}else {
+    Cache::config(array(
+        'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+        'default' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+    ));
+}
+
+if(Rcache::enabled()) {
+    Rcache::init();
+}
 
 /**
  * Caches paths for auto-loaded and service-located classes.

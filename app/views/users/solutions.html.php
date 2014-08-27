@@ -7,19 +7,14 @@
             <section>
                 <div class="menu" style="background:none;border:none;width:857px;margin:0 55px 36px 0px;">
                     <nav class="main_nav clear" style="width:832px;">
-                        <?=$this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                        <?=$this->html->link('<span>Мои питчи</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                        <!--a href="#"><span>Сообщения</span></a-->
-                        <?=$this->html->link('<span>Профиль</span>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
-                        <?=$this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false, 'class' => 'active')) ?>
-                        <?=$this->html->link('<span>Реквизиты</span>', array('controller' => 'users', 'action' => 'details'), array('escape' => false, 'class' => 'ajaxoffice')) ?>
+                        <?=$this->view()->render(array('element' => 'office/nav'));?>
                     </nav>
                 </div>
             </section>
             <?=$this->view()->render(array('element' => 'complete-process/filtersmenu'), array('link' => 1))?>
             <div class="portfolio" style="min-height:500px;">
                 <?php if(count($solutions) > 0):?>
-                    <p class="supplement2" style="margin-top:10px; margin-bottom: 10px;">Выберите работы для отображения портфолио в просмотре вашего <a target="_blank" href="/users/view/<?=$this->session->read('user.id')?>">профиля</a>.</p>
+                    <p class="supplement2" style="margin-top:10px; margin-bottom: 10px;">Выберите работы для отображения портфолио в просмотре вашего <a target="_blank" href="/users/view/<?=$this->user->getId()?>">профиля</a>.</p>
                     <ul class="list_portfolio">
                         <?php foreach($solutions as $solution):                    ?>
                         <li>
@@ -33,7 +28,7 @@
                                         <?php endif?>
                                     </a>
                                 <?php else:?>
-                                    <a href="/pitches/viewsolution/<?=$solution->id?>"><img src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt=""></a>
+                                    <a href="/pitches/viewsolution/<?=$solution->id?>"><img width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt=""></a>
                                 <?php endif?>
                                 <?php if($solution->awarded == 1):?>
                                 <span class="medal"></span>
@@ -46,8 +41,10 @@
                             </div>
                             </div>
                             <div class="selecting_numb">
-                                <?php if(($filterType != 'nominating') && ($solution->user_id == $this->session->read('user.id'))):?>
-                                <input type="checkbox" <?php if(($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):?>disabled="disabled"<?php endif?> <?php if($solution->selected):?>checked="checked"<?php endif?> class="select_checkbox" data-id="<?=$solution->id?>" style="margin-right: 5px;">
+                                <?php if(($filterType != 'nominating') && ($this->user->isSolutionAuthor($solution->user_id))):?>
+                                    <?php if(($solution->pitch->private != 1) && ($solution->pitch->category_id != 7)):?>
+                                        <input type="checkbox" <?php if($solution->selected):?>checked="checked"<?php endif?> class="select_checkbox" data-id="<?=$solution->id?>" style="margin-right: 5px;">
+                                    <?php endif; ?>
                                 <?php endif;?>
                                 <span class="number_img">#<?=$solution->num?></span>
                             <?=$this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false))?>   </div>
@@ -69,7 +66,7 @@
             </div>
         </div><!-- .conteiner -->
         <div id="popup-warning" class="popup-warn generic-window" style="display:none;height:300px;">
-            <p style="margin-top:120px;">Изменения, внесенные вами в список отображаемых работ в вашем профиле, сохранены!<br> Вы можете просмотреть ваш профиль по этой ссылке:<br> <a href="http://www.godesigner.ru/user/view/<?=$this->session->read('user.id')?>" target="_blank">http://www.godesigner.ru/user/view/<?=$this->session->read('user.id')?></a></p>
+            <p style="margin-top:120px;">Изменения, внесенные вами в список отображаемых работ в вашем профиле, сохранены!<br> Вы можете просмотреть ваш профиль по этой ссылке:<br> <a href="http://www.godesigner.ru/user/view/<?=$this->user->getId()?>" target="_blank">http://www.godesigner.ru/user/view/<?=$this->user->getId()?></a></p>
             <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" style="width:108px;" class="button popup-close" value="ОК"></div>
         </div>
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->
@@ -78,5 +75,5 @@
 
 
 
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>

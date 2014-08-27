@@ -3,7 +3,7 @@
     <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 
 
-    <div class="conteiner" style="width:958px !important">
+    <div class="conteiner">
         <section>
             <div class="menu">
 
@@ -12,22 +12,12 @@
             </div>
         </section>
         <section>
-            <div class="block-toggler" style="margin-left: 65px;">
-                <a href="/users/solutions">все решения</a> /
-                <?php if($solution->step == 4):?>
-                <a href="/users/awarded" class="link">награжденные</a> /
-                <?php else:?>
-                <a href="/users/awarded">награжденные</a> /
-                <?php endif?>
-                <?php if($solution->step < 4):?>
-                <a href="/users/nominated" class="link">в процессе завершения</a>
-                <?php else:?>
-                <a href="/users/nominated">в процессе завершения</a>
-                <?php endif?>
+            <div style="margin-left: 50px;">
+                <?=$this->view()->render(array('element' => 'complete-process/filtersmenu'), array('link' => ($solution->step == 4) ? 2 : 3))?>
             </div>
             <?php
             if(($solution->pitch->category_id == 7) && ($type == 'client')):?>
-
+                <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
             <?php else:?>
                 <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
             <?php endif?>
@@ -39,6 +29,9 @@
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #FF584D;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">поздравляем, питч завершен!</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">и мы будем рады видеть вас</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">снова</p>
+                    <?php if($type == 'designer'):?>
+                        <p style="margin-top: 40px; padding-top: 0; font: 16px/20px 'Arial', sans-serif;  display: block; margin-left: 0; text-align: center;" class="regular">Деньги поступят вам на счет<br> в течение 5 рабочих дней.</p>
+                    <?php endif?>
                 <?php else:?>
                 <?php if($type == 'designer'):?>
                 <span class="regular">Ура! Питч завершен. Мы поздравляем вас с отличной работой! Деньги поступят вам на счет в течение 5 рабочих дней. Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об в комментариях. Успехов!</span>
@@ -95,7 +88,8 @@
                         <div class="clr"></div>
                     </li>
                 </ul>
-
+                <h1 class="greyboldheader">Помогите Go Designer стать лучше, оставьте свой отзыв:</h1>
+                <br />
                 <form method="post" action="/users/step4/<?=$solution->id?>" id="afterPitchCommentForm">
                     <div class="comment" style="margin-left:0px;margin-top:50px">
                         <h4>Откуда вы о нас узнали?</h4>
@@ -108,7 +102,7 @@
                     </div>
 
                     <div class="buttons">
-                        <?php //if($this->session->read('user.isAdmin') != 1):
+                        <?php //if($this->user->isAdmin()):
                         if(1 == 1):
                         ?>
                         <div class="continue spanned" style="margin-bottom:10px;">

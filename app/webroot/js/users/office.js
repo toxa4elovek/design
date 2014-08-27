@@ -30,9 +30,6 @@ $(document).ready(function(){
 
     });*/
 
-
-
-
     $(document).on('click', '#older-events', function() {
         $(this).remove();
         Updater.nextPage();
@@ -45,6 +42,27 @@ $(document).ready(function(){
     }
     /*var SidebarUpdater = new SidebarStatusUpdater();
     SidebarUpdater.init();*/
+    
+    // Solution Stars
+    $(document).on('mouseenter', '.ratingchange', function(){
+        $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
+    });
+
+    $(document).on('mouseleave', '.ratingcont', function() {
+        $(this).css('background', 'url(/img/' + $(this).data('default') + '-rating.png) repeat scroll 0% 0% transparent');
+    });
+    $(document).on('click', '.ratingchange', function() {
+        var id = $(this).parent().data('solutionid');
+        var rating = $(this).data('rating');
+        var self = $(this);
+        $.post('/solutions/rating/' + id + '.json',
+            {"id": id, "rating": rating}, function(response) {
+                self.parent().data('default', rating);
+                self.parent().css('background', 'url(/img/' + rating + '-rating.png) repeat scroll 0% 0% transparent');
+            });
+        return false;
+    });
+    
 });
 
 function SidebarStatusUpdater() {
@@ -188,6 +206,7 @@ function OfficeStatusUpdater() {
     this.date = '';
     // initialisation method
     this.init = function() {
+        $('.obnovlenia_box').last().addClass('last_item');
         /*$.get('/events/updates.json', {"init": true, "page": self.page}, function(response) {
             if(response.count == 0) {
                 $('#no-updates').show();
@@ -300,24 +319,29 @@ function OfficeStatusUpdater() {
                     if(object.type == 'PitchCreated') {
                         newclass = ' newpitchstream ';
                     }
-                    console.log(object);
-                    if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
-                        var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
-                    }else{
-                        var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
+                    if (typeof(object.solution.images.solution_galleryLargeSize) != "undefined") {
+                        if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
+                            var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
+                        }else{
+                            var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
+                        }
                     }
                     if(object.type == 'PitchCreated') {
                         var imageurl = '/img/zaglushka.jpg';
                     }
                     var extraUI = '';
                     if(object.type != 'PitchCreated') {
-                        extraUI = '<ul class="group">'+
-                            '<li><a href="#"></a></li>'+
-                            '<li><a href="#"></a></li>'+
-                            '<li><a href="#"></a></li>'+
-                            '<li><a href="#"></a></li>'+
-                            '<li><a href="#"></a></li>'+
-                            '</ul>'+
+                        extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
+                                <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
+                                    if($('#user_id').val() == object.pitch.user_id) {
+                                        extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                        <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                        <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                        <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                        <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
+                                    }
+                       extraUI += '</div> \
+                            </div>'+
                             '<p class="visit_number">' + object.solution.views + '</p>'+
                             '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
                     }
@@ -348,14 +372,18 @@ function OfficeStatusUpdater() {
                         '</section>'+
                     '</div>'
                 });
-                //html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-                $('#updates-box').prepend(html);
+                var $prependEl = $(html);
+                $prependEl.hide();
+                $prependEl.prependTo('#updates-box').slideDown('slow');
             }
         });
     }
     this.nextPage = function() {
         self.page += 1;
+        $('#officeAjaxLoader').show();
+        var $formerLast = $('.obnovlenia_box').last();
         $.get('/events/updates.json', {"init": true, "page": self.page}, function(response) {
+            $('#officeAjaxLoader').hide();
             if(response.count != 0) {
                 function sortfunction(a, b){
                     return (a.sort - b.sort);
@@ -371,23 +399,22 @@ function OfficeStatusUpdater() {
                         object.solution.likes = 0;
                         object.solution.images.solution_galleryLargeSize.weburl = '';
                     }
-                    if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
-                        var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
-                    }else{
-                        var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
+                    if (typeof(object.solution.images.solution_galleryLargeSize) != "undefined") {
+                        if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
+                            var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
+                        }else{
+                            var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
+                        }
                     }
                     html +=  '<div class="obnovlenia_box group">'+
                         '<section class="global_info">'+
                             '<p>' + object.humanType + '</p>'+
                             '<p class="designer_name">' + object.creator + '</p>'+
                             '<p class="add_date">' + object.humanCreated + '</p>'+
-                            '<ul class="group">'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                            '</ul>'+
+                            '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
+                                <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;"> \
+                                </div> \
+                            </div>'+
                             '<p class="visit_number">' + object.solution.views + '</p>'+
                             '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'+
                         '</section>'+
@@ -410,8 +437,15 @@ function OfficeStatusUpdater() {
                         '</section>'+
                     '</div>'
                 });
-                //html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-                $('#updates-box').append(html + '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>');
+                if (response.nextUpdates > 0) {
+                    html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
+                }
+                var $appendEl = $(html);
+                $appendEl.hide();
+                $formerLast.removeClass('last_item');
+                $appendEl.appendTo('#updates-box').slideDown('slow', function() {
+                    $('.obnovlenia_box').last().addClass('last_item');
+                });
             }
         });
 
@@ -535,7 +569,7 @@ function ParticipateTableLoader() {
     // initialisation method
     this.init = function() {
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
-        $(document).on('click', '.nav-page', function() {
+        $(document).on('click', '.js-participate .nav-page', function() {
             var page = $(this).attr('rel');
             if(page == 'prev') {
                 page = parseInt(self.page) - 1;
@@ -618,7 +652,7 @@ function ParticipateTableLoader() {
                 }else {
                     var status = object.startedHuman;
                 }
-                if(($('#user_id').val() == object.user_id) && (object.status == 0)) {
+                if(($('#user_id').val() == object.user_id)) {
                     editLink = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link' + imgForDraft + '" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a>';
                 }
             }
@@ -638,6 +672,13 @@ function ParticipateTableLoader() {
                 }
             }else {
                 var status = 'Питч завершен';
+                if (object.hasBill == 'fiz') {
+                    status = '<a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                }
+                if (object.hasBill == 'yur') {
+                    status = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                }
+
                 if(object.winlink == true) {
                     var link = '/users/step2/' + object.awarded;
                 }else {
@@ -651,6 +692,10 @@ function ParticipateTableLoader() {
             shortIndustry = '<span style="font-size: 11px;">' + shortIndustry + '</span>';
             // Disabling Industry in Table
             shortIndustry = '';
+            var pitchMultiple = '';
+            if (object.multiple) {
+                pitchMultiple = '<br>' + object.multiple;
+            }
 
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
@@ -662,7 +707,7 @@ function ParticipateTableLoader() {
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
+                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + status + '</td>' +
@@ -784,7 +829,7 @@ function FavesTableLoader() {
     // initialisation method
     this.init = function() {
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
-        $(document).on('click', '.nav-page', function() {
+        $(document).on('click', '.js-favourites .nav-page', function() {
             var page = $(this).attr('rel');
             if(page == 'prev') {
                 page = parseInt(self.page) - 1;
@@ -870,6 +915,11 @@ function FavesTableLoader() {
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
             }
+            var pitchMultiple = '';
+            if (object.multiple) {
+                pitchMultiple = '<br>' + object.multiple;
+            }
+
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons"></td>' +
                 '<td class="pitches-name">' +
@@ -880,7 +930,7 @@ function FavesTableLoader() {
                 '</div>' +
                 '</td>' +
                 '<td class="pitches-cat">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + '</a>' +
+                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
                 '</td>' +
                 '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
                 '<td class="pitches-time" style="font-size: 11px;">' + status + '</td>' +
@@ -1090,9 +1140,14 @@ $(document).ready(function() {
 /* ============= */
 // details.js start
 $('#save').live('click', function() {
-    if(($('input[name="cashintype"]:checked').data('pay') == 'cards') && ($('input[name="accountnum"]').val().length < 20)) {
-        alert('Введите номер своего счета, он должен содержать не меньше 20 символов!');
+    if($('.wrong-input').length > 0) {
         return false;
+    }
+    if($('input[name="cashintype"]:checked').data('pay') == 'cards') {
+        accountCheck();
+        if ($('.account-check').length > 0) {
+            return false;
+        }
     }
     var href = $('#worker-payment-data').attr('action');
     $.post('/users/savePaymentData.json', $('#worker-payment-data').serialize(), function(response) {
@@ -1105,9 +1160,57 @@ $('.rb1').live('change', function() {
     if($(this).data('pay') == 'cards') {
         $('#cards').show();
         $('#wmr').hide();
+        $('.tooltip_plugin').tooltip({
+            tooltipID: 'tooltip3',
+            width: '205px',
+            correctPosX: 45,
+            positionTop: 180,
+            borderSize: '0px',
+            tooltipPadding: 0,
+            titleAttributeContent: '12 цифр без пробелов',
+            tooltipBGColor: 'transparent'
+        });
     }else {
         $('#cards').hide();
         $('#wmr').show();
+    }
+});
+
+$(document).on('focus', 'input[data-validate]', function() {
+    $(this).removeClass('wrong-input');
+});
+
+$(document).on('blur', 'input[data-validate=fio]', function() {
+    if (!/^[А-ЯЁ]{1}[а-яё]+\s[А-ЯЁ]{1}[а-яё]+\s[А-ЯЁ]{1}[а-яё]+$/.test($(this).val())) {
+        $(this).addClass('wrong-input');
+        required = true;
+        return true;
+    }
+});
+
+$(document).on('blur', 'input[data-validate=numeric]', function() {
+    if (/[\D\s]/i.test($(this).val())) {
+        $(this).addClass('wrong-input');
+        required = true;
+        return true;
+    }
+});
+
+$(document).on('blur', 'input[data-validate=wmr]', function() {
+    if (! /^R\d{12}$/.test($(this).val()) ) {
+        $(this).addClass('wrong-input');
+        required = true;
+        return true;
+    }
+});
+
+$('input[name=bik], input[name=coraccount], input[name=accountnum], input[name="inn"]').on('blur', function() {
+    accountCheck();
+});
+
+$(document).on('click', function() {
+    if ($('.account-check').hasClass('active')) {
+        $('.account-check').remove();
     }
 });
 
@@ -1132,9 +1235,220 @@ $('.rb1').live('change', function() {
          }else if(url.match(/users\/mypitches/)) {
              $('.middle', '.wrapper').html($('.middle', response).html());
              mypitchesInit();
+         }else if(url.match(/users\/referal/)) {
+             $('.middle', '.wrapper').html($('.middle', response).html());
+             Ref = new Referal;
+             Ref.reset({phone:$('#prop-phone').val(), phone_valid:$('#prop-phone_valid').val()});
          }else{
              $('.middle', '.wrapper').html($('.middle', response).html());
          }
      })
      return false;
  })
+
+/*
+ * Referal Tab
+ */
+
+/*
+ * Referal Tab Object
+ */
+function Referal() {
+    this.reset = function(data) {
+        $('.referal-block').hide();
+        $('#userPhone').val('');
+        if (data.phone == 0) {
+            $('.block-1').fadeIn(600);
+        } else if (data.phone_valid == 0) {
+            $('.block-2').fadeIn(600);
+        } else {
+            $('.block-3').fadeIn(600);
+        }
+    };
+    this.tooltipPhone = function(text) {
+        var position = $('#userPhone').position();
+        position.top += 45;
+        $('p', '#tooltip-phone').text(text);
+        $('#tooltip-phone').css(position).fadeIn(200);
+        setTimeout(function() { $('#tooltip-phone').fadeOut(200); }, 5000);
+    };
+}
+$(document).ready(function() {
+    if (window.location.pathname.match(/users\/referal/)) {
+        Ref = new Referal;
+        Ref.reset({phone:$('#prop-phone').val(), phone_valid:$('#prop-phone_valid').val()});
+    }
+
+    /*
+     * Send SMS Code
+     */
+    $(document).on('submit', '#referal-1', function(e) {
+        e.preventDefault();
+        if ($('#phone-operator').val() == 0) {
+            Ref.tooltipPhone('Выберите вашего провайдера!');
+            return false;
+        }
+        $.post($(this).attr('action') + '.json', {
+            'userPhone': $('#userPhone').val(),
+            'phoneOperator': $('#phone-operator').val()
+        }, function(result) {
+            if (result == false) {
+                Ref.tooltipPhone('К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.');
+            } else if (result == "limit") {
+                Ref.tooltipPhone('К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.');
+            } else {
+                if (result.respond.indexOf('error') != -1) {
+                    Ref.tooltipPhone('Произошел сбой доставки SMS-сообщения. Попробуйте позже.');
+                } else {
+                    $('.phone-number', '.referal-title').text(result.phone);
+                    $('.code-resend').data('phone', result.phone);
+                    Ref.reset(result);
+                }
+            }
+        }, 'json');
+    });
+
+    /*
+     * ReSend SMS Code
+     */
+    $(document).on('click', '.code-resend', function(e) {
+        e.preventDefault();
+        $.post($(this).attr('href') + '.json', {
+            'userPhone': $(this).data('phone'),
+        }, function(result) {
+            if (result == 'false') {
+                // False
+            } else {
+                if (result.respond.indexOf('error') != -1) {
+                    // Error
+                } else {
+                    // Good
+                }
+            }
+        });
+    });
+
+    /*
+     * Verify SMS Code
+     */
+    $(document).on('submit', '#referal-2', function(e) {
+        e.preventDefault();
+        $.post($(this).attr('action') + '.json', {
+            'verifyCode': $('#verifyCode').val(),
+        }, function(result) {
+            if (result == 'false') {
+                // Tooltip
+                var position = $('#verifyCode').position();
+                position.top += 55;
+                $('#tooltip-code').css(position).fadeIn(200);
+                setTimeout(function() { $('#tooltip-code').fadeOut(200); }, 5000);
+            } else {
+                Ref.reset(result);
+            }
+        });
+    });
+
+    /*
+     * Delete Phone
+     */
+    $(document).on('click', '.phone-delete', function(e) {
+        e.preventDefault();
+        $.post($(this).attr('href') + '.json', {
+
+        }, function(result) {
+            if (result.code == true) {
+                Ref.reset(result);
+            }
+        });
+    });
+
+    /*
+     * Referal Social Share Popup
+     */
+    $(document).on('click', '.social-popup', function() {
+        var width  = 575,
+        height = 400,
+        left   = ($(window).width()  - width)  / 2,
+        top    = ($(window).height() - height) / 2,
+        url    = this.href,
+        opts   = 'status=1' +
+                 ',width='  + width  +
+                 ',height=' + height +
+                 ',top='    + top    +
+                 ',left='   + left;
+
+        window.open(url, 'share', opts);
+        return false
+    });
+});
+
+function accountCheck() {
+    $('.account-check').remove();
+    var resultCor = 1; //var resultCor = (fn_checkKS($('input[name=coraccount]').val())) ? 1 : 0;
+    var resultAcc = (fn_checkRS($('input[name=accountnum]').val(), $('input[name=bik]').val())) ? 2 : 0;
+    var result = resultCor + resultAcc;
+    var message = '';
+    switch (result) {
+    case 0:
+        message = 'Неверно указан Счёт.<br>Неверно указан Корсчёт.<br>'
+        break;
+    case 1:
+        message = 'Неверно указан Счёт или БИК.<br>'
+            break;
+    case 2:
+        message = 'Неверно указан Корсчёт.<br>'
+            break;
+    default:
+        break;
+    }
+    var messageBik = (/^\d{9}$/.test($('input[name=bik]').val())) ? '' : 'Неверно указан БИК.<br>';
+    var messageInn = (/^\d{12}$/.test($('input[name="inn"]').val()) ) ? '' : 'Неверно указан ИНН.<br>';
+    message = messageBik + messageInn + message;
+    if (message) {
+        var el = $('<tr class="account-check"><td colspan="2">' + message + '</td></tr>');
+        el.appendTo($('#step1table')).animate({'opacity': 1}, 200, function() { $(this).addClass('active'); });
+    }
+}
+
+/*
+ * From http://javascript.ru/forum/misc/37373-funkciya-klyuchevaniya-scheta.html
+ */
+function fn_bank_account(Str)  
+{         
+    var result = false;
+    var Sum = 0;
+    if (Str == 0) {
+        return result;
+    }
+    
+    //весовые коэффициенты
+    var v = [7,1,3,7,1,3,7,1,3,7,1,3,7,1,3,7,1,3,7,1,3,7,1];
+    
+    for (var i = 0; i <= 22; i++) 
+    { 
+        //вычисляем контрольную сумму
+        Sum = Sum + ( Number(Str.charAt(i)) * v[i] ) % 10;
+    }
+    
+    //сравниваем остаток от деления контрольной суммы на 10 с нулём
+    if(Sum % 10 == 0)
+    {
+        result = true;
+    }
+        
+    return result;          
+}
+
+function fn_checkKS(Account)  
+{
+    return (/^\d{20}$/.test(Account));
+}
+
+/*
+Проверка правильности указания расчётного счёта:
+1. Для проверки контрольной суммы перед расчётным счётом добавляются три последние цифры БИКа банка.
+*/
+function fn_checkRS(Account,BIK)  
+{
+    return fn_bank_account(BIK.substr(-3,3)+Account);
+}

@@ -8,6 +8,11 @@
 
 			<h2>Выберите категорию</h2>
 
+            <p class="intro_text">Друзья, мы не допускаем создания одного проекта<br>
+                одновременно на логотип и фирменный стиль.<br>
+                Все виды работ должны проходить поэтапно. <a href="http://www.godesigner.ru/answers/view/95" target="_blank">Подробнее...</a>
+            </p>
+
 			<ul>
 				<li class="category-logo big">
 					<?=$this->html->link('
@@ -58,8 +63,8 @@
 				</li>
 				<li class="category-buklet">
 					<?=$this->html->link('
-						<h3>Буклет</h3>
-						<p class="description">Сетка, верстка многополосного издания</p>
+						<h3>Презентация</h3>
+						<p class="description">Буклет, верстка многополосного издания</p>
 						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[8]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 8), array('escape' => false))?>
 				</li>

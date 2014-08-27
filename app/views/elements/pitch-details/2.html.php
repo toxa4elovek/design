@@ -1,7 +1,7 @@
 <?php
 $details = unserialize($pitch->specifics);
 ?>
-<script type="text/javascript">var logoProperties = <?php echo json_encode($details["audience"])?>;</script>
+<input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["audience"])); ?>">
 
 <?php if(isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько макетов необходимо создать?</h2>

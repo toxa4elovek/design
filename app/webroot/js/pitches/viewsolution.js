@@ -15,19 +15,6 @@ $(document).ready(function() {
         preload(fileSet);
     }
 
-    $('.order1').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order1_hover.png');
-    })
-    $('.order1').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order1.png');
-    })
-
-    $('.order2').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order2_hover.png');
-    })
-    $('.order2').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order2.png');
-    })
     // gplus
     window.___gcfg = {lang: 'ru'};
 
@@ -38,105 +25,6 @@ $(document).ready(function() {
     })();
 
     var editcommentflag = false;
-
-    function inlineActions() {
-        $('.edit-link-in-comment').click(function(e) {
-            e.preventDefault();
-            var section = $(this).parent().parent().parent();
-            section.children().not('.separator').hide();
-            var hiddenform = $('.hiddenform', section);
-            hiddenform.show();
-            var text = $(this).data('text');
-            $('textarea', hiddenform).val(text);
-            editcommentflag = true;
-            return false;
-        });
-
-        $('.editcomment').click(function() {
-            var textarea = $(this).prev();
-            var newcomment = textarea.val();
-            var id = textarea.data('id');
-            $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
-                var newText = response;
-                var section = textarea.parent().parent().parent().parent();
-                $('.edit-link-in-comment', section).data('text', newcomment);
-                $('.comment-container', section).html(newText);
-                section.children().show();
-                $('.hiddenform', section).hide();
-                editcommentflag = false;
-                enableToolbar();
-            })
-            return false;
-        });
-
-        $('.replyto').click(function() {
-            if ($('.allow-comments').is(':visible')) {
-                var el = $('#newComment', '.allow-comments');
-                var anchor = $('.allow-comments');
-            } else {
-                var el = $('#newComment');
-                var anchor = $('#comment-anchor');
-            }
-            if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val($(this).data('commentId'))
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + el.val();
-                el.val(newText);
-                $.scrollTo(anchor, {duration:250});
-            }
-            return false;
-        })
-
-        $('.mention-link').click(function() {
-            if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-                $('input[name=comment_id]').val('');
-                var prepend = '@' + $(this).data('commentTo') + ', ';
-                var newText = prepend + $('#newComment').val();
-                $('#newComment').val(newText);
-            }
-            return false;
-        });
-
-        $('.createCommentForm').click(function() {
-            var position = $(this).offset();
-            position.top -= 115;
-            //$('#tooltip-bubble', $(this)).css(position).fadeIn(200);
-        });
-
-        $('textarea').blur(function() {
-            $($(this).prev('#tooltip-bubble')).fadeOut(200);
-        });
-
-        $('textarea').keydown(function() {
-            $($(this).prev('#tooltip-bubble')).fadeOut(200);
-        });
-/*
-        $('.hoverimage[data-comment-to]').tooltip({
-            tooltipID: 'tooltip',
-            tooltipSource: 'rel',
-            width: '200px',
-            correctPosX: 40,
-            //positionTop: 0,
-            borderSize: '0px',
-            tooltipPadding: 0,
-            tooltipBGColor: 'transparent'
-        });
-*/
-        solutionShowHide();
-        warningModal();
-    }
-
-    $(document).keyup(function(e) {
-
-        if ((e.keyCode == 27) && (editcommentflag == true)) {
-            editcommentflag = false;
-            $.each($('.hiddenform:visible'), function(index, object) {
-                var section = $(object).parent();
-                section.children().show();
-                $(object).hide();
-            })
-        }
-    });
 
 	$('#like').click(function(event){
         event.stopPropagation();
@@ -163,26 +51,6 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-
-    $('#newComment').click(function() {
-        var position = $(this).offset();
-        position.top -= 360;
-        position.left -= 560;
-        $('#tooltip-bubble').css(position).fadeIn(200);
-    });
-
-    $('textarea').blur(function() {
-        $('#tooltip-bubble').fadeOut(200);
-    });
-
-    $('textarea').keydown(function() {
-        $('#tooltip-bubble').fadeOut(200);
-    });
-
-    //$('form').keypress(function(e){
-        //if ( e.which == 13 ) e.preventDefault();
-    //});
-
 
     $('#solution-menu-toggle').mouseover(function(){
         $('img', $(this)).attr('src', '/img/big-arrow-hover.png');
@@ -246,6 +114,7 @@ $(document).ready(function() {
 	if($('input[name=user_id]').val() == $('input[name=pitch_user_id]').val()) {
 		$('#rating').raty({
 			path: '/img',
+            hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
 			starOn:   'rating-plus.png',
 	  		starOff:  'rating-null.png',
 	  		start: $('input[name=rating]').val(),
@@ -260,6 +129,7 @@ $(document).ready(function() {
 			path: '/img',
 			starOn:   'rating-plus.png',
 	  		starOff:  'rating-null.png',
+            hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
 	  		readOnly: true,
 	  		start: $('input[name=rating]').val()
 		});  		
@@ -287,57 +157,12 @@ $(document).ready(function() {
         return false;
     });
 
-    $('.replyto').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
-            $('input[name=comment_id]').val($(this).data('commentId'))
-            var prepend = '@' + $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $.scrollTo($('#comment-anchor'), {duration:250});
-            $('#newComment').val(newText);
-        }
-        return false;
-    })
-
-    $('#createComment').click(function() {
-        if (isCommentValid($('#newComment').val())) { // See app.js
-            return true;
-        }
-        alert('Введите текст комментария!');
-        return false;
-    });
-
-    $(document).on('click', '.select-winner', function() {
-        $('#confirmWinner').data('url', $(this).attr('href'));
-        $('#winner-num').text('#' + $(this).data('num'));
-        $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
-        $('#winner-user-link').text($(this).data('user'));
-        $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
-        $('#confirmWinner').data('url', $(this).attr('href'));
-        $('#popup-final-step').modal({
-            containerId: 'final-step',
-            opacity: 80,
-            closeClass: 'popup-close'
-        });
-
-        /*
-         $.get($(this).attr('href'), function(response) {
-         if(response.result != false) {
-         if(response.result.nominated) {
-         window.location = '/users/nominated';
-         $('.select-winner-li').remove();
-         }
-         }
-         });*/
-        return false;
-    });
-
     $(document).on('click', '#confirmWinner', function() {
         var url = $(this).data('url');
         $.get(url, function(response) {
             if(response.result != false) {
                 if(response.result.nominated) {
                     window.location = '/users/nominated';
-                    $('.select-winner-li').remove();
                 }
             }
         });
@@ -348,8 +173,52 @@ $(document).ready(function() {
     }, function() {
         $('.toolbar', this).fadeOut(150);
     });
-
-
+    
+    // Delete Solution
+    $(document).on('click', '.delete-solution', function() {
+        // Delete without Moderation
+        if (!isCurrentAdmin) {
+            return true;
+        }
+        var link = $(this);
+        if (link.attr('data-pressed') == 'on') {
+            window.location = link.attr("href");
+        }
+        
+        // Show Delete Moderation Overlay
+        $('#popup-delete-solution').modal({
+            containerId: 'final-step-clean',
+            opacity: 80,
+            closeClass: 'popup-close',
+            onShow: function() {
+                $('#model_id', '#popup-delete-solution').val(link.data('solution'));
+                link.attr('data-pressed', 'on');
+                $(document).on('click', '.popup-close', function() {
+                    link.attr('data-pressed', 'off');
+                });
+                $(document).off('click', '#sendDeleteSolution');
+            }
+        });
+        
+        // Delete Solution Popup Form
+        $(document).on('click', '#sendDeleteSolution', function() {
+            var form = $(this).parent().parent();
+            if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
+                $('#popup-delete-solution').addClass('wrong-input');
+                return false;
+            }
+            var $spinner = $(this).next();
+            $spinner.addClass('active');
+            $(document).off('click', '#sendDeleteSolution');
+            var data = form.serialize();
+            $.post(form.attr('action') + '.json', data).done(function(result) {
+                link.click();
+            });
+            return false;
+        });
+        return false;
+    });
+    
     $(document).on('click', '.hide', function() {
         var link = $(this);
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
@@ -456,22 +325,6 @@ $(document).ready(function() {
 
     }
 
-    $(document).on('click', '.client-hide', function() {
-        var link = $(this)
-        $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Показать</a>')
-        })
-        return false;
-    })
-
-    $(document).on('click', '.client-show', function() {
-        var link = $(this)
-        $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) {
-            link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">Скрыть</a>')
-        })
-        return false;
-    })
-    
     /*
      * View solution via json
      */
@@ -496,6 +349,7 @@ $(document).ready(function() {
         $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
         $('.description-more').hide();
         $('#newComment', '.solution-left-panel').val('');
+        solutionThumbnail = '';
         $.getJSON(urlJSON, function(result) {
 
             // Navigation
@@ -504,6 +358,7 @@ $(document).ready(function() {
             $('.solution-images').html('');
             // Left Panel
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
+                // Main Images
                 if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
                     work = result.solution.images.solution_solutionView
@@ -519,23 +374,42 @@ $(document).ready(function() {
                 }else {
                     $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
                 }
+                // Thumbnail Image
+                if(typeof(result.solution.images.solution_galleryLargeSize) != 'undefined') {
+                    viewsize = result.solution.images.solution_galleryLargeSize;
+                }else {
+                    // case when we don't have gallerySiteSize image size
+                    viewsize = result.solution.images.solution;
+                }
+                if ($.isArray(viewsize)) {
+                    solutionThumbnail = viewsize[0].weburl;
+                }else {
+                    solutionThumbnail = viewsize.weburl;
+                }
             }else {
                 $('.solution-images').append('<div class="preview"> \
                     <span>' + result.solution.description + '</span> \
                 </div>');
             }
             
+            var firstImage = $('.solution-image').first().parent();
             if (currentUserId == result.pitch.user_id) { // isClient
-                var firstImage = $('.solution-image').first().parent();
-                $('<div class="separator-rating"> \
-                <div class="separator-left"></div> \
-                <div class="rating-widget"><span class="left">выставьте</span> \
-                        <span id="star-widget"></span> \
-                <span class="right">рейтинг</span></div> \
-                <div class="separator-right"></div> \
-                </div>').insertAfter(firstImage);
+                var ratingWidget = $('<div class="separator-rating"> \
+                    <div class="separator-left"></div> \
+                    <div class="rating-widget"><span class="left">выставьте</span> \
+                            <span id="star-widget"></span> \
+                    <span class="right">рейтинг</span></div> \
+                    <div class="separator-right"></div> \
+                    </div>');
+                if(firstImage.length > 0){
+                    ratingWidget.insertAfter(firstImage);
+                }else {
+                    ratingWidget.insertAfter('.preview');
+                    $('.separator-rating').css({"margin-top": "20px", "margin-bottom": "20px"});
+                }
                 $("#star-widget").raty({
                     path: '/img',
+                    hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
                     starOff: 'solution-star-off.png',
                     starOn : 'solution-star-on.png',
                     start: result.solution.rating,
@@ -547,30 +421,50 @@ $(document).ready(function() {
                         });
                     }
                 });
+            } else if (currentUserId == result.solution.user_id) {
+                // Solution Author views nothing
+            } else { // Any User
+                if ((result.pitch.status != 1) && (result.pitch.status != 2)) {
+                    var already = ''
+                    if(result.likes == true) {
+                        already = ' already'
+                    }
+
+                    $('<div class="like-wrapper"><div class="left">поддержи</div> \
+                       <div class="like-widget' + already + '" data-id="' + result.solution.id + '"></div> \
+                       <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
+
+                    $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
+                        $(this).toggleClass('already');
+                        if($(this).hasClass('already')) {
+                            var counter = $('.value-likes')
+                            var solutionId = $(this).data('id')
+                            $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                                counter.html(parseInt(response.likes));
+                            });
+                        }else {
+                            var counter = $('.value-likes')
+                            var solutionId = $(this).data('id')
+                            $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                                counter.html(parseInt(response.likes));
+                            });
+                        }
+                        return false
+                    });
+                }
             }
             
             $('#newComment', '.solution-left-panel').val('#' + result.solution.num + ', ');
             solutionId = result.solution.id;
-            
-            if (result.comments) {
-                $('.solution-comments').html(fetchComments(result));
-                
-                enableToolbar();
 
-                $('.delete-link-in-comment.ajax').on('click', function(e) {
-                    e.preventDefault();
-                    var section = $(this).parent().parent().parent();
-                    $.post($(this).attr('href') + '.json', function(result) {
-                        if (result == 'true') {
-                            section.remove();
-                        }
-                    });
-                });
+            if (result.comments) {
+                $('.solution-comments').html(fetchCommentsNew(result));
+                solutionTooltip();
             }
-            
+
             // Right Panel
             $('.number', '.solution-number').text(result.solution.num || '');
-            $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating);
+            $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating).attr('data-rating', result.solution.rating);
             if (result.userAvatar) {
                 $('.author-avatar').attr('src', result.userAvatar);
             } else {
@@ -590,14 +484,14 @@ $(document).ready(function() {
                     var descBefore = desc.slice(0, viewLength - 1);
                     descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
                     var descAfter = desc.slice(descBefore.length);
-                    $('.solution-description').text(descBefore);
+                    $('.solution-description').html(descBefore);
                     $('.description-more').show(500);
                     $('.description-more').on('click', function() {
                         $('.solution-description').append(descAfter);
                         $('.description-more').hide();
                     });
                 } else {
-                    $('.solution-description').text(result.solution.description);
+                    $('.solution-description').html(result.solution.description);
                 }
                 if(result.solution.description == '') {
                     $('.solution-about').next().hide();
@@ -612,10 +506,10 @@ $(document).ready(function() {
                 if (result.solution.images.solution) {
                     if ($.isArray(result.solution.images.solution)) {
                         $.each(result.solution.images.solution, function(index, object) {
-                            html += '<a target="_blank" href="' + object.weburl + '" class="attach">' + object.originalbasename + '</a><br>'
+                            html += '<a target="_blank" href="/solutionfiles' + object.weburl + '" class="attach">' + object.originalbasename + '</a><br>'
                         })
                     }else {
-                        html = '<a href="' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
+                        html = '<a href="/solutionfiles' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
                     }
                     html += '</div>';
                     $('.solution-description').prev().html('ФАЙЛЫ')
@@ -634,21 +528,26 @@ $(document).ready(function() {
             $('.value-comments', '.solution-stat').text(result.comments.length || 0);
 
             if (currentUserId == result.pitch.user_id) {
-                var html = '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
+                var html = '';
                 if (result.solution.hidden == 1) {
-                    html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Показать</a>';
+                    html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Сделать видимой</a>';
                 }else {
-                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">Скрыть</a>';
+                    html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">С глаз долой</a>';
+                }
+                html += '<a class="client-comment" href="#">Комментировать</a>';
+                html += '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
+                if (result.selectedsolution != true) {
+                    html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>';
                 }
                 $('.solution-abuse').html(html);
             }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
-                    <a class="hide" href="/solutions/delete/' + result.solution.id + '">Удалить</a>');
+                    <a class="delete-solution" href="/solutions/delete/' + result.solution.id + '" data-solution="' + result.solution.id + '">Удалить</a>');
             }else {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
             }
             
-            inlineActions();
+            enableToolbar();
             Socialite.load($('.solution-share'), [
                                                   $('#facebook' + result.solution.id)[0],
                                                   $('#twitter' + result.solution.id)[0]

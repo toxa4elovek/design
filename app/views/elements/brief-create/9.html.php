@@ -29,10 +29,5 @@
             <span class="label-b">Пассивный</span>
         </li>
     </ul><!-- .logo-properties -->
-    
-    <p>
-        <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="placeholder specific-prop"></textarea>
-    </p>
 
 </div>

@@ -2,87 +2,17 @@
 
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
 
-	<script>var allowComments = false;</script>
-	<?php if((($pitch->status > 0) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true) && (($this->session->read('user.id') == $pitch->user_id) || (in_array($this->session->read('user.id'), $expertsIds)) || (in_array($this->session->read('user.id'), array(32, 4, 5, 108, 81))) || ($this->session->read('user.isAdmin')))) ||
-        (($pitch->status == 0) && ($pitch->published == 1) && ((strtotime($this->session->read('user.silenceUntil')) < time()) === true)) && ($this->session->read('user.id'))):?>
+    <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
+	<?php if((($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
+        (($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment())) && ($this->user->isLoggedIn())):?>
         <script>allowComments = true;</script>
     <?php endif?>
 	<div class="middle">
-        <script>
-        var pitchNumber = <?php echo $pitch->id; ?>;
-        var currentUserId = <?php echo (int) $this->session->read('user.id'); ?>;
-        var isCurrentAdmin = <?php echo ((int)$this->session->read('user.isAdmin') || \app\models\User::checkRole('admin')) ? 1 : 0 ?>;
-        </script>
         <!-- start: Solution Container -->
         <div class="solution-container page">
-            <div class="pitch-info">
-            <?php if($pitch->user_id != $this->session->read('user.id') || $pitch->status > 0): ?>
-        <table class="pitch-info-table" border="1">
-            <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1"><span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?></span></td>
-                <td width="15"></td>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Заказчик:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$this->html->link($this->nameInflector->renderName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'))?></td></tr>
-            <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Решений:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$pitch->ideas_count ?></span></td>
-                <td width="15"></td>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Был online:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=date('d.m.Y', strtotime($pitch->user->lastActionTime))?> в <?=date('H:i', strtotime($pitch->user->lastActionTime)) ?></span></td></tr>
-            <tr>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Просмотры брифа:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$pitch->views?></span></td>
-                <td width="15"></td>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                    <span class="regular">Срок:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($pitch->status == 0):?>
-                    <span class="pitch-info-text"><?=preg_replace('@(м).*@', '$1. ', preg_replace('@(ч).*@', '$1. ', preg_replace('@(.*)(дн).*?\s@', '$1$2. ', $pitch->startedHuman)))?></span>
-                    <?php elseif($pitch->status == 1):?>
-                    <span class="pitch-info-text">Выбор победителя</span>
-                    <?php elseif($pitch->status == 2):?>
-                    <span class="pitch-info-text">Питч завершен</span>
-                    <?php endif?>
-                </td>
-            </tr>
-        </table>
-        <?php else: ?>
-        <table class="pitch-info-table" border="1">
-            <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1"><span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?></span></td>
-                <td width="15"></td>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                    <table width="100%"><tr><td>
-                        <td><span class="regular">Мнение эксперта <a href="http://www.godesigner.ru/answers/view/66" target="_blank">(?)</a></span></td>
-                        <td style="width:86px"><a style="position: relative; top: -2px; left: -1;" class="order1" href="/pitches/addon/<?= $pitch->id?>?click=experts-checkbox"><img src="/img/order1.png" alt="заказать"></a></td>
-                        </td></tr></table>
-                </td></tr>
-            <tr><td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Решений:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$pitch->ideas_count ?></span></td>
-                <td width="15"></td>
-                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                    <table width="100%"><tr><td>
-
-                        <span class="regular">Заполнить бриф <a href="http://www.godesigner.ru/answers/view/68" target="_blank">(?)</a></span>
-                    </td><td style="width:86px">
-
-                        <a style="position: relative; top: -2px;" class="order1" href="/pitches/addon/<?= $pitch->id?>?click=phonebrief"><img src="/img/order1.png" alt="заказать"></a>
-                    </td></tr></table>
-            <tr>    </td></tr>
-            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;"><span class="regular">Просмотры брифа:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$pitch->views?></span></td>
-            <td width="15"></td>
-            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                <table width="100%"><tr><td>
-
-                    <span class="regular">Срок:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($pitch->status == 0):?>
-                        <span class="pitch-info-text"><?=preg_replace('@(м).*@', '$1. ', preg_replace('@(ч).*@', '$1. ', preg_replace('@(.*)(дн).*?\s@', '$1$2. ', $pitch->startedHuman)))?></span>
-
-                                </td><td style="width:86px">
-                                <a style="position: relative; top: -2px;  left: 1;" href="/pitches/addon/<?= $pitch->id?>?click=prolong" class="order2"><img src="/img/order2.png" alt="продлить"></a>
-                        <?php elseif($pitch->status == 1):?>
-                        <span class="pitch-info-text">Выбор победителя</span>
-                        <?php elseif($pitch->status == 2):?>
-                        <span class="pitch-info-text">Питч завершен</span>
-                        <?php endif?>
-
-
-                </td></tr></table>
-            </td>
-            </tr>
-        </table>
-        <?php endif ?>
+            <div style="padding: 25px 0 0 63px;">
+                <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             </div>
-            <div style="height:1px; clear:both;"></div>
             <!-- start: Solution Right Panel -->
             <div class="solution-right-panel page">
                 <div class="solution-info solution-summary">
@@ -146,7 +76,7 @@
                                     <td valign="middle">
                                         <?php
                                         if (rand(1, 100) <= 50) {
-                                            $tweetLike = 'Отличное решение на сайте GoDesigner.ru:';
+                                            $tweetLike = 'Мне нравится этот дизайн! А вам?';
                                         } else {
                                             $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
                                         }
@@ -175,47 +105,30 @@
                 </div>
                 <div class="separator"></div>
                 <div class="solution-info solution-abuse isField"><!--  --></div>
-                <div class="separator"></div>
             <!-- end: Solution Right Panel -->
             </div>
             <!-- start: Solution Left Panel -->
             <div class="solution-left-panel">
-                <h1 class="solution-title-page">
-                    <a href="/pitches">
-                        Все питчи /
-                    </a>
-                    <a href="/pitches/view/<?=$pitch->id?>">
-                        <?=$pitch->title?>
-                    </a>
-                </h1>
                 <!-- start: Soluton Images -->
                 <section class="solution-images isField bla">
                     <div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>
                 <!-- end: Solution Images -->
                 </section>
                 <section class="allow-comments">
-                    <div class="separator full"></div>
                     <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
+                    <?php if ($this->user->isPitchOwner($pitch->user->id) || $this->user->isAdmin()): ?>
+                    <div class="separator full"></div>
                     <form class="createCommentForm" method="post" action="/comments/add">
-                    	<div style="display:none; background: url(/img/tooltip-bg-top-stripe.png) no-repeat scroll 0 0 transparent !important; padding: 4px 0 0 !important; height: auto; width: 205px; position: absolute; z-index: 2147483647;" id="tooltip-bubble">
-                    		<div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;">
-                    			<div style="" id="tooltipContent" class="supplement3">
-                    				<p>Укажите номер комментируемого варианта, используя хештег #. Например:
-                    				#2, нравится!<br>
-                    				Обратитесь к автору решения, используя @. Например:<br>
-                    				@username, спасибо!
-                    				</p>
-                    			</div>
-                    		</div>
-                    	</div>
                     	<textarea id="newComment" name="text"></textarea>
                     	<input type="hidden" value="<?=$solution->id?>" name="solution_id">
                     	<input type="hidden" value="" name="comment_id">
                         <input type="hidden" value="/pitches/viewsolution/<?=$solution->id?>" name="from">
                     	<input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-                    	<input type="submit" id="createComment" class="button" value="Отправить комментарий">
+                        <input type="button" src="/img/message_button.png" value="Публиковать комментарий для всех" class="button createComment" data-is_public="1" style="margin: 15px 18px 15px 0;">
+                        <input type="button" src="/img/message_button.png" value="Отправить только дизайнеру" class="button createComment" data-is_public="0" style="margin: 15px 0 15px 18px;">
                     	<div class="clr"></div>
                     </form>
+                    <?php endif; ?>
                 </section>
                 <!-- start: Comments -->
                 <section class="solution-comments isField">
@@ -230,51 +143,44 @@
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->
 	</div><!-- /middle -->
 </div><!-- .wrapper -->
-<div id="popup-final-step" class="popup-final-step" style="display:none">
-    <h3>Убедитесь в правильном выборе!</h3>
-    <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё мнение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Вы уверены, что победителем питча становится <a id="winner-user-link" href="#" target="_blank"></a> c решением <a id="winner-num" href="#" target="_blank"></a>?</p>
-    <div class="portfolio_gallery" style="width:200px;margin-bottom:5px;">
-        <ul class="list_portfolio">
-            <li>
-                <div class="photo_block">
-                    <?php
-                        if($this->solution->getImageCount($solution->images['solution_galleryLargeSize']) > 1):?>
-                    <div style="position:absolute;color:white;font-weight:bold;font-size: 14px;padding-top:7px;top:0px;left:168px;text-align:center;width:31px;height:24px;background-image: url('/img/multifile_small.png')"><?=$this->solution->getImageCount($solution->images['solution_galleryLargeSize'])?></div>
-                    <?php endif;?>
-                    <a href="/pitches/viewsolution/<?=$solution->id?>"><img alt="" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>"></a>
-                    <div class="photo_opt">
-                        <div style="display: block; float:left;" class="">
-                            <span class="rating_block"><img alt="" src="/img/<?=$solution->rating?>-rating.png"></span>
-                                <span class="like_view"><img class="icon_looked" alt="" src="/img/looked.png"><span><?=$solution->views?></span>
-                            </span></div>
 
-                        <div style="display: block; float:left;">
-                            <a data-id="<?=$solution->id?>" class="like-small-icon" href="#"><img alt="количество лайков" src="/img/like.png"></a>
-                            <span rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-id="<?=$solution->id?>" style="color: #CDCCCC;font-size: 10px;margin-right:8px;vertical-align: middle;"><?=$solution->likes?></span>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="final-step-nav wrapper"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="confirmWinner" value="Да, подтвердить"></div>
+<?=$this->view()->render(array('element' => 'popups/warning'))?>
+
+<!-- Start: Tooltips -->
+<div style="display:none;">
+<?php if((count($solutions) > 0) && ($pitch->published == 1)):?>
+    <?php foreach($solutions as $solution):	?>
+        <?php if($pitch->private != 1):
+            if($pitch->category_id == 7):
+                //
+            ?>
+            <?php else:?>
+                <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
+                    <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
+                <?php else:?>
+                    <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
+                <?php endif?>
+            <?php endif?>
+        <?php else:?>
+            <?php if($pitch->category_id == 7):
+                //
+            ?>
+            <?php else:?>
+                <?php if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):?>
+                    <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
+                        <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
+                    <?php else:?>
+                        <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
+                    <?php endif?>
+                <?php else:?>
+                    <input type="hidden" rel="#<?=$solution->num?>" src="/img/copy-inv.png">
+                <?php endif?>
+            <?php endif?>
+        <?php endif?>
+    <?php endforeach;?>
+<?php endif;?>
 </div>
-
-<div id="popup-warning" class="popup-warn generic-window" style="display:none">
-    <p style="margin-top:120px;">Вы можете пожаловаться, если обнаружены грубые высказывания, реклама, спам, контент для взрослых, ссылки на работы, сделки вне Go Designer, копирование чужой работы или плагиат. В последнем случае важно предоставить ссылку на оригинал. Важно однако учитывать, что в питче с одним брифом некоторая степень похожести работ допускается. Подробнее <a href="http://www.godesigner.ru/answers/view/38" target="_blank">тут</a>.</p>
-    <p>Пожалуйста, прокомментируйте суть жалобы:</p>
-    <textarea id="warn-solution" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
-    <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarn" value="Да, подтвердить"></div>
-</div>
-
-<div id="popup-warning-comment" class="popup-warn generic-window" style="display:none">
-    <p style="margin-top:120px;">Вы можете пожаловаться, если обнаружены грубые высказывания, реклама, спам, контент для взрослых, ссылки на работы, сделки вне Go Designer, копирование чужой работы или плагиат. В последнем случае важно предоставить ссылку на оригинал. Важно однако учитывать, что в питче с одним брифом некоторая степень похожести работ допускается. Подробнее <a href="http://www.godesigner.ru/answers/view/38" target="_blank">тут</a></p>
-    <p>Пожалуйста, прокомментируйте суть жалобы:</p>
-    <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
-    <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
-</div>
-
-
+<!-- End: Tooltips -->
 <div id="bridge" style="display:none;"></div>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery.scrollto.min.js', 'jquery.damnUploader.js', 'socialite.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/jquery.fancybox-1.3.4.css'), array('inline' => false))?>

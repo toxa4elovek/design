@@ -7,16 +7,20 @@ use \lithium\storage\Session;
 
 use \app\models\Expert;
 use \app\models\Promocode;
+use \app\models\Option;
 use \app\models\Pitch;
 use \app\models\Favourite;
 use \app\models\Solution;
 use \app\models\Wincomment;
 use \app\models\Comment;
+use \app\models\Test;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
+use \app\extensions\smsfeedback\SmsFeedback;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
-
+use app\extensions\mailers\CommentsMailer;
+use app\extensions\storage\Rcache;
 use \DirectoryIterator;
 
 class User extends \app\models\AppModel {
@@ -29,7 +33,7 @@ class User extends \app\models\AppModel {
 	 *
 	 * @var array
 	 */
-    public static $admins = array(32, 4, 5, 108, 81);
+    public static $admins = array(32, 4, 5, 108, 81, 8472);
     public static $experts = array();
 
     /**
@@ -37,8 +41,14 @@ class User extends \app\models\AppModel {
      *
      * @var array
      */
-    private static $editors = array(32, 4, 5, 108, 81, 1773, 3049);
+    public static $editors = array(32, 4, 5, 108, 81, 3049);
 
+    /**
+     * Массив хранящий айдишники авторов блога
+     *
+     * @var array
+     */
+    public static $authors = array(8472, 17865, 18856);
 
     protected static $_behaviors = array(
         'UploadableAvatar'
@@ -191,6 +201,17 @@ class User extends \app\models\AppModel {
 		return substr(md5(rand().rand()), 0, 14);
 	}
 
+    public static function generateReferalToken($length = 4) {
+        $exists = true;
+        while ($exists == true) {
+            $token = substr(md5(rand().rand()), 0, $length);
+            if (!self::first(array('conditions' => array('referal_token' => $token)))) {
+                $exists = false;
+            }
+        }
+        return $token;
+    }
+
 	public function activateUser($entity) {
 		$entity->token = '';
 		$entity->confirmed_email = 1;
@@ -233,6 +254,9 @@ class User extends \app\models\AppModel {
                 break;
             case 'editor':
                 $res = in_array(Session::read('user.id'), self::$editors);
+                break;
+            case 'author':
+                $res = in_array(Session::read('user.id'), self::$authors);
                 break;
             default:
                 $res = false;
@@ -338,7 +362,7 @@ class User extends \app\models\AppModel {
             $users1 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    array('isDesigner' => 1, 'email_newpitch' => 1)
+                    'isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0, 'User.email' => array('!=' => ''),
                 )
             ));
             $result1 = $users1->data();
@@ -347,7 +371,7 @@ class User extends \app\models\AppModel {
         // All but pitches owners
         $users2 = self::all(array(
             'conditions' => array(
-                array('isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1)
+                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
             ),
             'with' => array('Pitch')
         ));
@@ -364,7 +388,7 @@ class User extends \app\models\AppModel {
         if(!empty($ids)) {
             $users2 = self::all(array(
                 'conditions' => array(
-                    array('id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1)
+                    'id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
                 ),
             ));
             $result2 = $users2->data();
@@ -376,7 +400,7 @@ class User extends \app\models\AppModel {
             $users3 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    array('isCopy' => 1, 'email_newpitch' => 1)
+                    'isCopy' => 1, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
                 )
             ));
             $result3 = $users3->data();
@@ -433,22 +457,6 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function sendSpamNewsolution($params) {
-        $solution = Solution::first($params['solution_id']);
-        $pitch = Pitch::first($solution->pitch_id);
-        $user = self::first(array(
-            'conditions' => array('id' => $pitch->user_id),
-        ));
-        /*$user = self::first(array(
-            'conditions' => array('email' => 'nyudmitriy@gmail.com'),
-        ));*/
-        if($user->email_newsol == 1){
-            $data = array('user' => $user, 'pitch' => $pitch, 'solution' => $solution);
-            SpamMailer::newsolution($data);
-        }
-        return true;
-    }
-
     public static function sendAdminBriefPitch($params) {
         $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
         foreach($users as $user) {
@@ -498,8 +506,16 @@ class User extends \app\models\AppModel {
             $text = 'Ваши макеты были одобрены, вы переходите на следующую стадию предоставления исходников.';
         }
         if($step == 4) {
-            $text = 'Ваши исходники одобрены заказчиком, вы переходите на стадию выставления оценок.';
+            $text = 'Ваши исходники одобрены заказчиком, вы переходите на стадию выставления оценок. Деньги поступят вам на счетв течение 5 рабочих дней.';
         }
+        $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution);
+        SpamMailer::winstep($data);
+        return true;
+    }
+
+    public static function sendSpamWinstepGo($user, $solution, $step) {
+        $pitch = Pitch::first($solution->pitch_id);
+        $text = 'Ваши исходники одобрены администрацией GoDesigner, вы переходите на стадию выставления оценок.';
         $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution);
         SpamMailer::winstep($data);
         return true;
@@ -530,34 +546,9 @@ class User extends \app\models\AppModel {
         SpamMailer::promocode($data);
     }
 
-    public static function sendDailyPitch($userId, $pitches) {
-        $user = User::first(array('conditions' => array('id' => $userId)));
-        //$user = User::first(array('conditions' => array('email' => 'nyudmitriy@gmail.com')));
+    public static function sendDailyPitch($user, $pitches) {
         $data = array('user' => $user, 'pitches' => $pitches);
         SpamMailer::dailypitch($data);
-    }
-
-    public static function sendAdminSpamComment($params) {
-        $pitch = Pitch::first($params['pitch_id']);
-        $ids = array();
-        $client = User::first($pitch->user_id);
-        if($client->email_newcomments == 1) {
-            $data = array('user' => $client, 'pitch' => $pitch, 'comment' => $params);
-            SpamMailer::newadmincomment($data);
-        }
-        $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id)));
-        $emails = array();
-        foreach($solutions as $solution) {
-            $user = User::first($solution->user_id);
-            if($user->email_newcomments == 1) {
-                $emails[$user->email] = $user;
-            }
-        }
-        foreach($emails as $email => $user) {
-            $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $params);
-            SpamMailer::newadmincomment($data);
-        }
-        return true;
     }
 
     public static function sendOpenLetter($pitch) {
@@ -581,6 +572,32 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function sendExpertReminder($pitch) {
+        $data = array('pitch' => $pitch);
+        $experts = unserialize($pitch->{'expert-ids'});
+        foreach ($experts as $expert) {
+            $expert = Expert::first(array(
+                'conditions' => array(
+                    'Expert.id' => $expert,
+                ),
+                'with' => array('User'),
+            ));
+            if ($comments = Comment::all(array('conditions' => array('pitch_id' => $pitch_id, 'user_id' => $expert->user_id)))) {
+                continue;
+            }
+            $data['user'] = $expert->user;
+            SpamMailer::expertreminder($data);
+        }
+        return true;
+    }
+
+    public static function sendSpamExpertSpeaking($params) {
+        $user = self::first($params['pitch']->user_id);
+        $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $params['text']);
+        SpamMailer::sendclientexpertspeaking($data);
+        return true;
+    }
+
     public static function sendSpamFirstSolutionForPitch($pitchId) {
         $pitch = Pitch::first($pitchId);
         $user = self::first($pitch->user_id);
@@ -589,11 +606,37 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function sendSpamSolutionSelected($solutionArray) {
-        $user = self::first($solutionArray['result']['user_id']);
-        $data = array('user' => $user, 'solution' => $solutionArray['result'], 'pitch' => $solutionArray['result']['pitch']);
-        SpamMailer::solutionselected($data);
-        return true;
+    public static function sendSpamReferal() {
+        $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
+        $sent = 0;
+        foreach ($users as $user) {
+            $data = array(
+                'email' => $user->email,
+                'subject' => 'Запуск партнёрской программы',
+            );
+            SpamMailer::referalspam($data);
+            $sent++;
+        }
+        return $sent;
+    }
+
+    public static function sendDvaSpam() {
+        $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
+        $sent = 0;
+        // Test User
+        //$user = new \stdClass();
+        //$user->email = 'nyudmitriy@godesigner.ru';
+        //$users = array($user);
+        // End Test User
+        foreach($users as $user) {
+            $data = array(
+                'email' => $user->email,
+                'subject' => 'Подарочный промо-код на скидку',
+            );
+            SpamMailer::dvaspam($data);
+            $sent++;
+        }
+        return $sent;
     }
 
     public static function getAdmin() {
@@ -615,6 +658,9 @@ class User extends \app\models\AppModel {
 
     public static function getDailyDigest($userId) {
         $user = self::first($userId);
+        if (empty($user->email)) {
+            return true;
+        }
         $pitches = Pitch::all(array('conditions' => array(
             'status' => 0,
             'published' => 1,
@@ -665,31 +711,58 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function sendSpamToLostClients() {
-        $pitches = Pitch::all(array('conditions' => array(
-            'status' => 0,
-            'published' => 1,
-        )));
-        $ids = array();
-        foreach($pitches as $pitch) {
-            $ids[] = $pitch->user_id;
-        }
-        $userArray = array();
-        foreach($ids as $id) {
-            $user = User::first($id);
-            $start = time() - (DAY * 3);
-            if(strtotime($user->lastActionTime) < $start ) {
-                $userArray[] = $user;
+    public static function sendLastDigest() {
+        if ($lastPosts = Option::first(array('conditions' => array('name' => 'last_posts')))) {
+            $ids = unserialize($lastPosts->value);
+
+            $posts = Post::all(array('conditions' => array('id' => array_values($ids)), 'order' => array('created' => 'desc')));
+            $users = User::all(array(
+                'conditions' => array(
+                    'email_digest' => 1,
+                    'created' => array(
+                        '>=' => date('Y-m-d H:i:s', time() - (DAY * 4)),
+                        '<' => date('Y-m-d H:i:s', time() - (DAY * 3)),
+                    ),
+                ),
+            ));
+            $count = count($users);
+            if(count($posts) > 0) {
+                foreach($users as $user) {
+                    $data = array(
+                        'email' => $user->email,
+                        'subject' => 'Дайджест новостей',
+                        'posts' => $posts
+                    );
+                    SpamMailer::blogdigest($data);
+                }
             }
+            return $count;
         }
-        foreach($userArray as $user) {
-            $pitch = Pitch::first(array('conditions' => array('user_id' => $user->id, 'status' => 0, 'published' => 1)));
-            $data = array('user' => $user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения питча. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
-            SpamMailer::comeback($data);
-        }
-        return count($userArray);
+        return 0;
     }
 
+    public static function sendSpamToLostClients() {
+        $pitches = Pitch::all(array(
+            'conditions' => array(
+                'ideas_count' => array('>' => 0),
+                'status' => 0,
+                'published' => 1,
+                'User.email' => array('!=' => ''),
+                'User.lastActionTime' => array('<' => date('Y-m-d H:i:s', time() - (DAY * 3))),
+            ),
+            'with' => array('User', 'Category'),
+        ));
+        $count = 0;
+        foreach ($pitches as $pitch) {
+            $pitchData = $pitch->pitchData();
+            $avgNum = $pitchData['avgNum'];
+            if ($avgNum > 3) continue;
+            $data = array('user' => $pitch->user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения питча. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
+            SpamMailer::comeback($data);
+            $count++;
+        }
+        return $count;
+    }
 
     public static function sendChooseWinnerSpam() {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
@@ -697,8 +770,21 @@ class User extends \app\models\AppModel {
         foreach($pitches as $pitch) {
             $user = User::first($pitch->user_id);
             $ids[] = $pitch->user_id;
-            $data = array('user' => $user, 'pitch' => $pitch, 'text' => 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения.<br/>
-В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 3 рабочих дней после завершения питча оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 3 рабочих дней после окончания срока питча, в противном случае такая возможность будет недоступна.');
+            if($pitch->expert == 1) {
+                $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения.<br/>
+В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 3 рабочих дней после того, как эксперты выскажут своё мнение, оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 3 рабочих дней после окончания срока питча, в противном случае такая возможность будет недоступна.';
+            }else {
+                $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения.<br/>
+В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 3 рабочих дней после завершения питча оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 3 рабочих дней после окончания срока питча, в противном случае такая возможность будет недоступна.';
+            }
+            if($pitch->guaranteed == 1) {
+                if($pitch->expert == 1) {
+                    $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения. На выбор победителя у вас есть три рабочих дня после того, как все выбранные вами эксперты выскажут своё мнение.';
+                }else {
+                    $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения. На выбор победителя у вас есть три рабочих дня с момента окончания срока питча.';
+                }
+            }
+            $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text);
             SpamMailer::choosewinner($data);
         }
         return $ids;
@@ -818,5 +904,309 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function fillBalance($userId, $sum) {
+        if ($user = self::first($userId)) {
+            $user->balance += (int) $sum;
+            $user->save(null, array('validate' => false,));
+        }
+        return true;
+    }
+
+    public static function phoneValidationStart($userId, $phone, $phoneOperator) {
+        if (($user = self::first($userId)) && !empty($phone)) {
+            $user->phone = $phone;
+            $user->phone_operator = $phoneOperator;
+            $user->phone_code = self::generatePhoneCode();
+            $user->phone_valid = 0;
+            $user->save(null, array('validate' => false));
+            $respond = SmsFeedback::send($user->phone, $user->phone_code . ' - код для проверки');
+            $phone_valid = 0;
+            return compact('respond', 'phone', 'phone_valid');
+        }
+        return false;
+    }
+
+    public static function phoneValidationFinish($userId, $code) {
+        if (($user = self::first($userId)) && !empty($user->phone) && !empty($user->phone_code)) {
+            if ($code == $user->phone_code) {
+                $user->phone_valid = 1;
+                $user->phone_code = 0;
+                $user->save(null, array('validate' => false));
+                $phone = $user->phone;
+                $phone_valid = 1;
+                return compact('phone', 'phone_valid');
+            }
+        }
+        return false;
+    }
+
+    protected static function generatePhoneCode($count = 5, $string = '0123456789') {
+        return substr(str_shuffle($string), 0, $count);
+    }
+
+    public static function sendAddonProlong($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::duration($data);
+    }
+
+    public static function sendAddonExpert($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::expertaddon($data);
+    }
+
+    public static function sendAddonBrief($pitch) {
+        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        return SpamMailer::briefaddon($data);
+    }
+
+    public static function isReferalAllowed($userId) {
+        $query = array(
+            'conditions' => array(
+                'id' => $userId,
+                'created' => array(
+                    '>' => '2013-09-25 23:59:59',
+                ),
+            ),
+        );
+        if ($user = self::first($query)) {
+            $pitches = Pitch::count(array('conditions' => array('user_id' => $user->id)));
+            return $pitches;
+        }
+        return 0;
+    }
+
+    public static function setReferalCookie($ref) {
+        $userId = Session::read('user.id');
+        if (is_null($userId)) { // User not registered
+            if (!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) {
+                setcookie('ref', $ref, strtotime('+1 month'), '/');
+                $_COOKIE['ref'] = $ref;
+            }
+        } else { // User registered
+            if (self::isReferalAllowed($userId) === 0) { // User good and no pitches. === is important!
+                if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && (self::first(array(
+                        'conditions' => array(
+                            'id' => array(
+                                '!=' => $userId,
+                            ),
+                            'referal_token' => $ref,
+                        ))))) {
+                    setcookie('ref', $ref, strtotime('+1 month'), '/');
+                    $_COOKIE['ref'] = $ref;
+                }
+            }
+        }
+    }
+
+    public function block($user) {
+        $user->banned = 1;
+        $user->save(null, array('validate' => false));
+
+        // Remove Solutions
+        $solutions = Solution::all(array(
+            'conditions' => array(
+                'Solution.user_id' => $user->id,
+                'OR' => array(
+                    '(`Pitch`.`status` = 0)',
+                    '(`Pitch`.`status` = 1 AND `Pitch`.`awarded` = 0)',
+                ),
+            ),
+            'with' => array('Pitch'),
+        ));
+        foreach ($solutions as $solution) {
+            $solution->delete();
+        }
+
+        // Remove Comments
+        $comments = Comment::all(array(
+            'conditions' => array(
+                'Comment.user_id' => $user->id,
+                'OR' => array(
+                    '(`Pitch`.`status` = 0)',
+                    '(`Pitch`.`status` = 1 AND `Pitch`.`awarded` = 0)',
+                ),
+            ),
+            'with' => array('Pitch'),
+        ));
+        foreach ($comments as $comment) {
+            $comment->delete();
+        }
+    }
+
+    /**
+     * Метод возвращает список айдишников авторов блога
+     *
+     * @return array
+     */
+    public static function getAuthorsIds() {
+        return self::$authors;
+    }
+
+    /**
+     * Метод возвращает список айдишников админов
+     *
+     * @return array
+     */
+    public static function getAdminsIds() {
+        return self::$admins;
+    }
+
+    /**
+     * Метод возвращает список айдишников редакторов блога
+     *
+     * @return array
+     */
+    public static function getEditorsIds() {
+        return self::$editors;
+    }
+
+
+    /**
+     * Метод обновляет дату последнего действия для пользователя
+     *
+     * @param $record
+     */
+    public function setLastActionTime($record) {
+        if(!Rcache::write('user_' . $record->id . '_LastActionTime', date('Y-m-d H:i:s'))) {
+            $record->lastActionTime = date('Y-m-d H:i:s');
+            $record->save(null, array('validate' => false));
+        }
+    }
+
+    /**
+     * Метод возвращается время (unix-time) последнего действия для пользователя
+     *
+     * @param $record
+     * @return int
+     */
+    public function getLastActionTime($record) {
+        if(!$lastActionTime = Rcache::read('user_' . $record->id . '_LastActionTime')) {
+            $lastActionTime = $record->lastActionTime;
+        }
+        return strtotime($lastActionTime);
+    }
+
+    public static function getReferalPayments() {
+        return self::count(array(
+            'conditions' => array(
+                'balance' => array(
+                    '>' => 0,
+                ),
+                'phone_valid' => 1,
+            ),
+        ));
+    }
+
+    /**
+     * Check User's Accounts
+     */
+    public static function accountCheck($entity) {
+        $options = unserialize($entity->paymentOptions);
+        $options = $options[0];
+        if((isset($options['coraccount'])) and (isset($options['accountnum'])) and (isset($options['bik']))) {
+            $resultCor = 1; //$resultCor = self::fn_checkKS($options['coraccount']) ? 1 : 0;
+            $resultAcc = self::fn_checkRS($options['accountnum'], $options['bik']) ? 2 : 0;
+            $result = $resultCor + $resultAcc;
+            $message = '';
+            switch ($result) {
+                case 0:
+                    $message = 'Неверно указан Счёт.<br>Неверно указан Корсчёт.<br>';
+                        break;
+                case 1:
+                    $message = 'Неверно указан Счёт.<br>';
+                        break;
+                case 2:
+                    $message = 'Неверно указан Корсчёт.<br>';
+                        break;
+                default:
+                    break;
+            }
+            $messageBik = (preg_match('/^[0-9]{9}$/', $options['bik'])) ? '' : 'Неверно указан БИК.<br>';
+            $messageInn = (preg_match('/^[0-9]{12}$/', $options['inn'])) ? '' : 'Неверно указан ИНН.<br>';
+            $message = $messageBik . $messageInn . $message;
+            return ! (bool) $message;
+        }
+        return false;
+    }
+
+    public static function designerTimeWait($user_id) {
+        $query = array(
+            'conditions' => array(
+                'first_time' => 1,
+                'user_id' => $user_id,
+                'percent' => array(
+                    '>=' => 80,
+                ),
+        ));
+
+        if ($test = Test::first($query)) {
+            return 5;
+        }
+
+        return 10;
+    }
+
+    protected static function fn_bank_account($str) {
+        $result = false;
+        $sum = 0;
+        if ($str == 0) {
+            return $result;
+        }
+
+        //весовые коэффициенты
+        $v = array(7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1);
+
+        for ($i = 0; $i <= 22; $i++) {
+            //вычисляем контрольную сумму
+            $sum = $sum + ( ((int) $str{$i}) * $v[$i] ) % 10;
+        }
+
+        //сравниваем остаток от деления контрольной суммы на 10 с нулём
+        if ($sum % 10 == 0) {
+            $result = true;
+        }
+
+        return $result;
+    }
+
+    protected static function fn_checkKS($account) {
+        return (bool) preg_match('/^[0-9]{20}$/', $account);
+    }
+
+    /*
+     * Проверка правильности указания расчётного счёта:
+     * 1. Для проверки контрольной суммы перед расчётным счётом добавляются три последние цифры БИКа банка.
+     */
+    protected function fn_checkRS($account, $BIK) {
+        return self::fn_bank_account(substr($BIK, -3, 3) . $account);
+    }
+
+    public static function getUserInfo() {
+        $res = null;
+        $currentUserId = Session::read('user.id');
+        if ((false != $currentUserId) && ($user = self::first(array('conditions' => array('User.id' => $currentUserId), 'with' => array('Pitch'))))) {
+            $res = array(
+                'id' => $user->id,
+                'firstName' => $user->first_name,
+                'lastName' => $user->last_name,
+                'pitches' => $user->pitches->data(),
+            );
+        }
+        return $res;
+    }
+	
+    /**
+     * Метод генерирует токен, если нету
+     *
+	 * @param $userid
+     * @return object
+     */
+	public static function setUserToken($userid) {
+		$user = self::first($userid);
+		if(!$user->token) {
+			$user->token = $user->generateToken();
+			$user->save(null, array('validate' => false));
+		}
+		return $user;
+	}
 }
-?>

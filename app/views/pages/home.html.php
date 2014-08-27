@@ -13,16 +13,6 @@
         <div class="slide">
             <a href="/pages/howitworks"><img src="/img/3_BANNER.png" alt="" /></a>
         </div>
-      <!--div class="slide">
-       <a href="#" class="b_img_slide"><img src="img/4.png" alt="" /></a>
-       <a href="#" class="s_img_slide"><img src="img/5.png" alt="" /></a>
-       <a href="/pages/howitworks"><img src="/img/2_BANNER.png" alt="" /></a>
-      </div>
-      <div class="slide">
-       <a href="#" class="b_img_slide"><img src="img/4.png" alt="" /></a>
-       <a href="#" class="s_img_slide"><img src="img/5.png" alt="" /></a>
-       <a href="/pages/howitworks"><img src="/img/3_BANNER.png" alt="" /></a>
-      </div-->
     </div>
     <a id="finished" href="/pitches/?type=finished" style="height:32px;width:173px;position: absolute; top: 251px; left: 79px; z-index:101;background-image:url(/img/examples_173_32_red.png)"><img src="/img/examples_173_32.png" alt="Просмотреть примеры"></a>
     <a id="video" href="#" style="height:32px;width:190px;position: absolute; top: 251px; left: 242px; z-index:101;background-image:url(/img/video_red_173_32.png)"><img src="/img/video_173_32.png" alt="Просмотреть примеры"></a>
@@ -91,29 +81,21 @@
           <?php endif?>
         </li>
       <li>
-       <!--img src="/img/special_offer_banner_260X260.jpg" alt="" /-->
-       <?php
-       if(mt_rand(0,1) == 0) {
-        $specialShow = true;
-        $briefShow = false;
-       }else {
-        $specialShow = false;
-        $briefShow = true;
-       }
-
-       ?>
-       <div style="height:261px;width:260px" id="bannerblock">
-        <div id="special_banner" style="position: absolute; <?php if($specialShow == false) echo 'display:none;'?>">
-       <img src="/img/vernem_dengi_feb-02.png" alt="" />
-       <a id="special_link" class="more_info" href="/pages/special" style="background: url(/img/banner_onpress.png) repeat scroll left top transparent">
-
-       </a></div>
-       <div id="brief_banner" style="position: absolute; <?php if($briefShow == false) echo 'display:none;'?>">
-       <img src="/img/brief.png" alt="" />
-       <a id="brief_link" class="more_info" href="/pages/brief" style="background: url(/img/banner_onpress.png) repeat scroll left top transparent">
-
-       </a>
-        </div></div>
+       <?php $randonBanner = mt_rand(1, 3);?>
+        <div style="height:261px;width:260px" id="bannerblock">
+            <div id="special_banner" style="position: absolute; <?php if($randonBanner != 1) echo 'display:none;'?>">
+                <img src="/img/vernem_dengi_feb-02.png" alt="" />
+                <a class="more_info" href="/pages/special"></a>
+            </div>
+            <div id="brief_banner" style="position: absolute; <?php if($randonBanner != 2) echo 'display:none;'?>">
+                <img src="/img/brief.png" alt="" />
+                <a class="more_info" href="/pages/brief"></a>
+            </div>
+            <div id="referal_banner" style="position: absolute; <?php if($randonBanner != 3) echo 'display:none;'?>">
+                <img src="/img/banner-referal.jpg" alt="" />
+                <a class="more_info" href="/pages/referal"></a>
+            </div>
+        </div>
       </li>
     </ul>
     <div class="take_fill_block">
@@ -130,7 +112,7 @@
     <div class="use_table">
         <div id="pitch-table" style="height:280px;">
               <div class="to_use">
-                  <?=$this->html->link('Используя<br> сообщество<br> дизайнеров<br>в сети, Создайте<br> лого, буклет,<br> упаковку, сайт, <br> визитку, etc ...', 'Pages::howitworks', array('class' => '', 'id' => 'to_use_text', 'escape' => false))?>
+                  <?=$this->html->link('Используя<br> сообщество<br> дизайнеров<br>в сети, Создайте<br> лого, название,<br> упаковку, сайт, <br> визитку, etc ...', 'Pages::howitworks', array('class' => '', 'id' => 'to_use_text', 'escape' => false))?>
               </div>
               <div class="wap_table">
                 <table class="spec_table">
@@ -156,7 +138,7 @@
                   ?>
                   <tr class="<?=$class?>">
                     <td class="pitches-name">
-                    <?=$this->html->link($pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'expand-link'))?><br>
+                    <?=$this->html->link($this->PitchTitleFormatter->renderTitle($pitch->title, 80), array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'expand-link'))?><br>
                     <!--span><?=$pitch->industry?></span-->
                     </td>
                     <td><?=$this->moneyFormatter->formatMoney($pitch->price)?></td>
@@ -191,8 +173,8 @@
 
     <div class="experts-main">
       <ul id="experts-zone">
-        <?php foreach($experts->data() as $expert):?>
-        <li class="expert-<?=$expert['id']?>" style="display:none;">
+        <?php foreach($experts->data() as $expert): if ($expert['enabled'] == 0) continue; ?>
+        <li class="expert-<?=$expert['id']?> expert_enabled" data-expert_id="<?=$expert['id']?>" style="display:none;">
             <?=$this->html->link('<img style="width: 174px; height: 174px;" src="'. $imageArray[$expert['id']] .'" alt="" />', array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id'], 'escape' => false))?>
             <p><?=$this->html->link($expert['name'], array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id']))?></p>
             <span><?php echo strip_tags($expert['title'])?></span>
@@ -253,24 +235,29 @@
 
     <div class="statistika">
       <dl class="dl_1">
-        <dt><?=$numOfSolutionsPerProject?></dt>
-        <dd>Решений <br>на проект</dd>
+        <dt><?=$statistic['numOfSolutionsPerProject'][$category_id]?></dt>
+        <?php switch($category_id):
+            case 1: $string = '<dd>решений <br>в категории <br>«логотип»</dd>'; break;
+            case 3: $string = '<dd>решений <br>в категории <br>«сайт»</dd>'; break;
+            case 7: $string = '<dd>решений <br>в категории <br>«копирайтинг»</dd>'; break;
+        endswitch?>
+        <?php echo $string; ?>
       </dl>
       <dl class="dl_2">
-        <dt><?=$numOfCurrentPitches?></dt>
+        <dt><?=$statistic['numOfCurrentPitches']?></dt>
         <dd>текущих<br> питчей</dd>
       </dl>
       <dl class="dl_3">
-        <dt><?=$this->moneyFormatter->formatMoney($totalAwards)?></dt>
+        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'])?></dt>
         <dd>заработанных<br> дизайнерами денег</dd>
       </dl>
       <dl class="dl_4">
-        <dt><?=$this->moneyFormatter->formatMoney($totalWaitingForClaim)?></dt>
-        <dd>в ожидании победителей</dd>
+        <dt><?=$statistic['totalParticipants']?></dt>
+        <dd>количество участников</dd>
       </dl>
       <dl class="dl_5">
-        <dt><?=$this->moneyFormatter->formatMoney($totalAwardsValue)?></dt>
-        <dd>общий бюджет прошедший через GoDesigner</dd>
+        <dt><?=$statistic['lastDaySolutionNum']?></dt>
+        <dd>новых работ загружено за последние 24 часа</dd>
       </dl>
     </div>
 
@@ -283,9 +270,9 @@
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird.png" alt="" /></a>
           <a target="_blank" style="opacity:0;position:relative;bottom:60px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird_on.png" alt="" /></a>
         </li>
-        <li style="width:99px;">
-          <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100075" data-off="/img/partners/play.png" data-on="/img/partners/play_on.png"><img class="yota" src="/img/partners/play.png" alt="" /></a>
-          <a target="_blank" style="opacity:0;position:relative;bottom:50px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100075" data-off="/img/partners/play.png" data-on="/img/partners/play_on.png"><img class="yota" src="/img/partners/play_on.png" alt="" /></a></li>
+        <li style="width:94px;text-align: center;">
+          <a target="_blank" style="opacity:1;position:relative;z-index:2;margin-left: auto; margin-right: auto;" class="hoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo.png" alt="" /></a>
+          <a target="_blank" style="opacity:0;position:relative;bottom:55px;z-index:1;" class="nonhoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo_on.png" alt="" /></a></li>
 
         <li style="width:253px;">
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker.png" alt="" /></a>
@@ -304,7 +291,7 @@
         <li><a href="/pitches/2?type=finished">web-баннер</a> /</li>
         <li><a href="/pitches/11?type=finished">упаковка</a> /</li>
         <li><a href="/pitches/7?type=finished">копирайтинг</a> /</li>
-        <li><a href="/pitches/8?type=finished">буклет</a> /</li>
+        <li><a href="/pitches/8?type=finished">презентация</a> /</li>
         <li><a href="/pitches/9?type=finished">иллюстрация</a> /</li>
         <li><a href="/pitches/12?type=finished">реклама</a> /</li>
         <li><a href="/pitches/4?type=finished">флаер</a> /</li>

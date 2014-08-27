@@ -1,3 +1,4 @@
+<div id="fb-root"></div>
 <footer class="footer">
 	<div class="footer-inner">
 
@@ -35,7 +36,17 @@
                 <?php else:?>
                 <a href="/pages/contacts">Контакты</a> /
                 <?php endif?>
-                <?php if(preg_match('@posts$@', $_SERVER["REQUEST_URI"])):?> 
+                <?php if(preg_match('@pages/referal$@', $_SERVER["REQUEST_URI"])):?>
+                <?=$this->html->link('Пригласи друга', 'Pages::referal', array('style' => 'color: #4a4c55'))?> /
+                <?php else:?>
+                <?=$this->html->link('Пригласи друга', 'Pages::referal')?> /
+                <?php endif?>
+                <?php if(preg_match('@questions@', $_SERVER["REQUEST_URI"])):?>
+                    <?=$this->html->link('Тест', 'Questions::index', array('style' => 'color: #4a4c55'))?> /
+                <?php else:?>
+                    <?=$this->html->link('Тест', 'Questions::index')?> /
+                <?php endif?>
+                <?php if(preg_match('@posts$@', $_SERVER["REQUEST_URI"])):?>
                 <?=$this->html->link('Блог', 'Posts::index', array('style' => 'color: #4a4c55'))?> /
             	<?php else:?>
             	<?=$this->html->link('Блог', 'Posts::index')?> /
@@ -44,6 +55,7 @@
 			</p>
 		</nav><!-- .nav -->
         <ul class="pay-systems">
+            <li style="width: 88px; padding-top: 0px; margin-right: 12px;"><a target="_blank" href="http://www.payanyway.ru"><img alt="PayAnyWay" src="/img/88_31_paw8.gif"></a></li>
             <li><img src="/img/mastercard.png" alt="MasteCard"/></li>
             <li><img src="/img/visa.png" alt="Visa" /></li>
         </ul><!-- .social -->

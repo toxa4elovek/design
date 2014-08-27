@@ -1,5 +1,15 @@
+ul li a.active {
+    background: url(img/main_nav_active.jpg) no-repeat 0 0;
+    color: #fff;
+    line-height: 39px;
+    height: 43px;
+}
 ul li a.active span {
-	color: #ff585d;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+	background: url(img/manin_nav_active_arrow.jpg) no-repeat 50% bottom;
+	color: #fff;
 }
 .solutions {
 	margin: 0 0 0 63px;
@@ -21,6 +31,9 @@ ul li a.active span {
 	color: #aaaaaa;
 	text-decoration: none;
 	font: normal 12px/1 "RodeoC", sans-serif;
+}
+.status.for-client a {
+	font-size: 11px;
 }
 .requisites {
 	width: 209px;
@@ -54,6 +67,11 @@ ul li a.active span {
 .layouts {
 	margin-left: -18px;
 }
+.layouts.for-client {
+	margin-left: 0;
+	width: 200px;
+	background-size: 100% 100%;
+}
 .source {
 	width: 277px;
 	height: 37px;
@@ -74,8 +92,18 @@ ul li a.active span {
     float: left;
     margin-left: -18px;
 }
+.source.for-client,
+.source.for-client:hover,
+.source-nonactive.for-client,
+.source_active.for-client {
+    width: 270px;
+    background-size: 100% 100%;
+}
 .source-nonactive span {
     font: 12px/1 "RodeoC",sans-serif;
+}
+.source-nonactive.for-client span {
+	font-size: 11px;
 }
 .source_active {
     width: 277px;
@@ -121,6 +149,9 @@ ul li a.active span {
 .rating-nonactive span {
     font: 12px/1 "RodeoC",sans-serif;
 }
+.rating-nonactive.for-client span {
+	font-size: 11px;
+}
 .rating:hover {
 	background: url('img/rating-hover-bg.png') no-repeat;
 }
@@ -140,6 +171,13 @@ ul li a.active span {
 .rating_active {
     color: #fff;
 }
+.rating.for-client,
+.rating.for-client:hover,
+.rating-nonactive.for-client,
+.rating_active.for-client {
+    width: 178px;
+    background-size: 100% 100%;
+}
 .center_block {
 	width: 608px;
 	margin: 25px 0 0 63px;
@@ -149,6 +187,7 @@ ul li a.active span {
 }
 .center_block span {
 	line-height: 20px;
+	word-wrap: break-word;
 	/*font: normal 12px/1 "Arial", sans-serif;     */
 }
 .comment {
@@ -293,12 +332,6 @@ ul li a.active span {
 	color: #50525a;
 }
 
-
-
-.right_block {
-	margin: 35px 0 0 32px;
-	float: left;
-}
 .user_photo {
 	width: 190px;
 	height: 164px;
@@ -313,6 +346,7 @@ ul li a.active span {
 }
 .conteiner section .info {
 	width: 187px;
+	margin-bottom: 50px;
 }
 .conteiner section .info span {
 	/*font: normal 13px/1 "RodeoC", sans-serif;
@@ -338,14 +372,25 @@ ul li a.active span {
 .photo-png img {
 	margin-left: 144px;
 }
-
 .wincommentfileupload {
-    height:23px;
-    width:237px;
     font-size:12px;
     display:block;
+    opacity: 0;
+    position: absolute;
+    z-index: 5;
+    width: 185px;
+    height: 23px;
 }
-
+.fakelist {
+    background: url('/img/attach_icon.png') no-repeat scroll 0px 0px transparent;
+    padding-top: 1px;
+    margin-left: 0px;
+    height: 20px;
+    padding-left: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #666;
+}
 .verify {
     float: right;
     width: 160px;
@@ -375,9 +420,14 @@ ul li a.active span {
     padding-left: 20px;
     margin-bottom: 15px;
 }
-
 .spanned span{
 	font: normal 18px/21px "RodeoC",sans-serif;
 	margin: 10px 0 0;
 	display: inline-block;
+}
+.comment-touch {
+	float: left;
+	margin: 0 0 0 208px;
+	padding: 3px 0 0 23px;
+	background: url('/img/viewed.png') left 5px no-repeat transparent;
 }

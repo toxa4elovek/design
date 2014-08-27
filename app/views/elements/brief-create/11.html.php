@@ -36,13 +36,6 @@
         </li>
     </ul><!-- .logo-properties -->
 
-    
-
-    <p>
-        <label>Предпочтения</label>
-        <textarea placeholder="Цвета, стилистические направления, ссылки на примеры" rows="5" cols="30" name="site-inspiration" class="placeholder specific-prop"></textarea>
-    </p>
-
     <p>
         <label>Какие 3 основных качества нужно донести до аудитории?</label>
         <input type="text" name="qualities" placeholder="Вкусный, изысканный, современный" class="specific-prop">

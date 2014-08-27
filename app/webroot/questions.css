@@ -1,0 +1,201 @@
+.content.group.narrow {
+    width: 620px;
+}
+.howitworks.quiz.result {
+	text-align: center;
+}
+.howitworks.quiz h1 {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: url("img/images/howitworks_long.png");
+    background-origin: padding-box;
+    background-position: 50% 0px;
+    background-repeat: no-repeat;
+    background-size: auto;
+    font-family: "RodeoC", serif;
+    font-size: 12px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    height: 38px;
+    line-height: 41px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+.howitworks.quiz h2 {
+	font-family: "RodeoC", serif;
+    font-size: 17px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    line-height: 30px;
+    color: #666;
+    margin-bottom: 1em;
+    text-shadow: 0 1px 0 #eee;
+}
+.howitworks.quiz h2.largest-header-blog {
+    font: normal 28px/34px "RodeoC", sans-serif;
+    color: #666666;
+    text-decoration: none;
+    text-shadow: -1px 0 0 #FFFFFF;
+    text-transform: uppercase;
+}
+.howitworks.quiz ol {
+	list-style: decimal inside;
+	font-family: "RodeoC", serif;
+    font-size: 17px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    line-height: 30px;
+    color: #666;
+}
+.howitworks.quiz ol li {
+    margin: 0 0 1.5em 0;
+}
+.howitworks.quiz label {
+	display: block;
+	font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 36px;
+    text-shadow: 0 1px 0 #eee;
+    color: #666;
+    margin-left: .3em;
+}
+.howitworks.quiz .radio-input {
+	vertical-align: middle;
+	margin-right: 12px;
+}
+.howitworks.quiz a.button,
+.howitworks.quiz .quiz_submit.button {
+	width: 180px;
+	margin: 10px 0 45px 0;
+	box-sizing: content-box;
+}
+.howitworks.quiz p {
+	width: 552px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 28px;
+    color: #666;
+    text-shadow: 0 1px 0 #eee;
+    margin: 10px 0 35px 0;
+    display: inline-block;
+}
+.howitworks.quiz.result p {
+	margin-top: 0;
+	margin-bottom: 25px;
+}
+.howitworks.quiz .bar {
+	float: left;
+	width: 431px;
+	height: 20px;
+	margin: 10px 0 0 0;
+	background-color: #eaeaea;
+    border-radius: 10px;
+}
+.howitworks.quiz .bar .line {
+	transition: width .2s;
+	min-width: 2%;
+	height: 20px;
+	background-color: #ff585d;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+.howitworks.quiz .bar .line.all-round {
+	border-radius: 10px;
+}
+.howitworks.quiz .bar .line.zero-people {
+	opacity: 0;
+}
+.howitworks.quiz .bar .shadow-b {
+	height: 20px;
+    margin-top: -20px;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.howitworks.quiz .quiz-bars {
+	width: 520px;
+	margin-bottom: 45px;
+}
+.howitworks.quiz .quiz-bars li {
+	margin: 30px 0;
+}
+.howitworks.quiz .quiz-bars h3 {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    color: #666;
+    text-shadow: 0 1px 0 #eee;
+    margin-left: 4px;
+}
+.howitworks.quiz .quiz-bars h6 {
+	display: inline-block;
+	font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    color: #666;
+    text-shadow: 0 1px 0 #efefef;
+    margin: 10px 0 0 16px;
+}
+.howitworks.quiz .share-this {
+	margin: 10px 0 40px 0;
+}
+.howitworks.quiz .share-this>span {
+    float: left;
+    margin-right: 30px;
+}
+.howitworks.quiz div.share-this:before,
+.howitworks.quiz div.share-this:after {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #cdcdcd;
+    border-bottom: 1px solid #ebebeb;
+    content: '';
+}
+.howitworks.quiz div.share-this:before {
+	margin-bottom: 14px;
+}
+.howitworks.quiz div.share-this:after {
+	margin-top: 14px;
+}
+.nicht {
+	display: none;
+}
+.right-sidebar {
+    width: 200px;
+    float: right;
+}
+.test-timer {
+	display: block;
+	position: absolute;
+	top: 65px;
+	right: 0;
+	width: 69px;
+	height: 68px;
+	background: url('img/test-timer-bg.png') left top no-repeat transparent;
+	color: #7b7b7b;
+	font-family: Arial, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	text-shadow: 0 1px 0 white;
+	text-align: center;
+	padding-top: 24px;
+}
+.test-timer.warning {
+	transition: color .6s;
+	color: #ff585d;
+}

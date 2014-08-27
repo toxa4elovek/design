@@ -82,7 +82,7 @@
 				<h2 class="or">или</h2>
 				<?php if ($this->session->read('flash.login')):?>
                     <p class="wrong-login"><?=$this->session->read('flash.login');?></p>
-                <? $this->session->delete('flash.login');
+                <?php $this->session->delete('flash.login');
                 endif;
                 ?>
 				<?=$this->form->create(null, array('action' => 'login')) ?>
@@ -103,7 +103,7 @@
 					</p><!-- .submit -->
 				<?=$this->form->end() ?>
 			</section>
-            <?php if($this->session->read('user')):?>
+            <?php if($this->user->isLoggedIn()):?>
 			<section>
 				<h2>Вы еще не зарегистрированы?</h2>
 
@@ -113,5 +113,6 @@
 		</div><!-- .main -->
 	</div><!-- .middle -->
 
+    <?=$this->view()->render(array('element' => 'popups/register'))?>
 
 </div><!-- .wrapper -->

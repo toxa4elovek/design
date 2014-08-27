@@ -6,7 +6,7 @@ if(isset($details['logo-properties'])) {
     $sliders = $details["audience"];
 }
 ?>
-<script type="text/javascript">var logoProperties = <?php echo json_encode($sliders)?>;</script>
+<input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($sliders)); ?>">
 
 <?php if(isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько иллюстранций необходимо создать?</h2>
@@ -48,5 +48,5 @@ if(isset($details['logo-properties'])) {
     <h2 class="blueheading">Предпочтения</h2>
     <p class="regular"><?=$this->brief->e($details['site-inspiration'])?></p>
     <?php endif;?>
-    
+
 </div>
