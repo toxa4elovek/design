@@ -21,47 +21,50 @@ $(document).ready(function() {
     $.each($('p'), function(idx, obj) {
         var $rama = $(obj).children('img');
         if ($rama.length > 1) {
-            $rama.wrapAll( '<div class="fotorama" data-nav="false" data-maxwidth="100%"/>');
+            $rama.wrapAll('<div class="fotorama" data-nav="false" data-maxwidth="100%" />');
+            // 1. Initialize fotorama manually.
+            var classFotorama = $(this).find('.fotorama');
+            var $fotoramaDiv = classFotorama.fotorama();
+            // 2. Get the API object.
+            var fotorama = $fotoramaDiv.data('fotorama');
+            var arrows = $(this).find('.fotorama__arr');
+            if (arrows.length > 0) {
+                arrows.remove();
+            }
+            $('<div class="fotorama_arrows"><span class="fotorama__arr--prev button round"><span class="arrow">&#9664;</span></span><span class="page">1</span> / <span class="count"></span><span class="fotorama__arr--next button round next"><span class="arrow">&#9654;</span></span></div>').insertAfter(classFotorama);
+            $(this).find('.count').append($rama.length);
         }
     });
-    // 1. Initialize fotorama manually.
-    var $fotoramaDiv = $('.fotorama').fotorama();
-    // 2. Get the API object.
-    var fotorama = $fotoramaDiv.data('fotorama');
 
-    if ($('.fotorama__arr').length > 0) {
-        $('.fotorama__arr').remove();
-    }
-    $('<div class="fotorama_arrows"><span class="fotorama__arr fotorama__arr--prev"></span><span class="page">1</span> / <span class="count"></span><span class="fotorama__arr fotorama__arr--next"></span></div>').insertAfter(".fotorama");
-	$('.count').append(fotorama.size);
-
-    $('.fotorama__arr--prev').click(function () {
-		fotorama = $(this).closest('p').find('.fotorama').data('fotorama');
+    $('.fotorama__arr--prev').click(function() {
+        fotorama = $(this).closest('p').find('.fotorama').data('fotorama');
         fotorama.show('<');
-		var pageObject=$(this).closest('div').find('.page');
-		var page=parseInt(pageObject.text());
-		if(page>1){
-			pageObject.text(page-1);
-		}
-		
+        var pageObject = $(this).closest('div').find('.page');
+        var page = parseInt(pageObject.text());
+        if (page > 1) {
+            pageObject.text(page - 1);
+        }
     });
-    $('.fotorama__arr--next').click(function () {
-		fotorama = $(this).closest('p').find('.fotorama').data('fotorama');
+    $('.fotorama__arr--next').click(function() {
+        fotorama = $(this).closest('p').find('.fotorama').data('fotorama');
         fotorama.show('>');
-		var pageObject=$(this).closest('div').find('.page');
-		var page=parseInt(pageObject.text());
-		if(page<fotorama.size){
-			pageObject.text(page+1);
-		}
+        var pageObject = $(this).closest('div').find('.page');
+        var page = parseInt(pageObject.text());
+        if (page < fotorama.size) {
+            pageObject.text(page + 1);
+        }
     });
 
     // gplus
     window.___gcfg = {lang: 'ru'};
 
     (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
         po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
     })();
 
     //vk like
