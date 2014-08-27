@@ -1341,4 +1341,17 @@ class Pitch extends \app\models\AppModel {
         }
     }
 
+    public static function activateNewWinner($pitchId) {
+        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId), 'with' => array('Solution'),))) {
+            $pitch->billed = 1;
+            $pitch->published = 1;
+            if ($pitch->save()) {
+                Task::createNewTask($pitch->solutions[0]->id, 'victoryNotification');
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }

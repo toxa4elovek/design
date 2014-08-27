@@ -9,11 +9,11 @@ use lithium\storage\Session;
 class PitchTest extends AppUnit {
 
     public function setUp() {
-        $this->rollUp(array('Pitch', 'User'));
+        $this->rollUp(array('Pitch', 'User','Solution'));
     }
 
     public function tearDown() {
-        $this->rollDown(array('Pitch', 'User'));
+        $this->rollDown(array('Pitch', 'User','Solution'));
         Session::clear();
     }
 
@@ -297,6 +297,14 @@ class PitchTest extends AppUnit {
         $this->assertEqual(0, $pitch->published);
         $this->assertEqual(1, $pitch->multiwinner);
         $this->assertEqual($pitch->awarded, $pitch->id);
+    }
+
+    public function testActivateNewWinner() {
+        $this->assertFalse(Pitch::activateNewWinner(0));
+        $this->assertTrue(Pitch::activateNewWinner(4));
+        $pitch = Pitch::first(4);
+        $this->assertEqual(1,$pitch->billed);
+        $this->assertEqual(1,$pitch->published);
     }
 
 }
