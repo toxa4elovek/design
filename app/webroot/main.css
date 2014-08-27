@@ -3520,7 +3520,7 @@ div.no-result p {
     margin: 30px auto 0 auto;
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
-#popup-email-warning p,ul {
+#popup-email-warning p,#popup-email-warning ul {
     font-family: Arial, sans-serif;
     font-size: 16px;
     font-weight: normal;
