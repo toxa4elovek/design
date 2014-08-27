@@ -431,7 +431,6 @@ span.page{
 .round .arrow{
     position: relative;
     bottom:5px;
-    left:10px;
 }
 .fotorama__arr--disabled {
     pointer-events: none;
