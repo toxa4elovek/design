@@ -45,15 +45,9 @@ class Pitchrating extends \app\models\AppModel {
         }
     }
 
-    public static function getRating($pitchId) {
-        $pitchRating = Pitchrating::find('all', array('conditions' => array('pitch_id' => $pitchId)));
-        $sum = 0;
-        foreach ($pitchRating as $rating) {
-            $sum += $rating->rating;
-        }
-        $count = count($pitchRating);
-        $average = round($sum / $count, 2);
-        return $average;
+    public static function getRating($userId) {
+        $rating = Pitchrating::first(array('conditions' => array('user_id' => $userId)));
+        $rating = (!empty($rating)) ? $rating->rating :0;
+        return $rating;
     }
-
 }
