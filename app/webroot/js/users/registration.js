@@ -1,8 +1,6 @@
 $(document).ready(function() {
     $('#UserEmail').on('focusout', function() {
-        console.log($('#UserEmail').val());
         var filter = /^([\w-\.]+@(?!mail.ru)(?!inbox.ru)(?!list.ru)(?!bk.ru)([\w-]+\.)+[\w-]{2,4})?$/
-        console.log(filter.test($('#UserEmail').val()));
         if (!filter.test($('#UserEmail').val())) {
             $('#popup-email-warning').modal({
                 containerId: 'gotest-email-warning',
