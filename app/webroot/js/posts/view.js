@@ -31,7 +31,7 @@ $(document).ready(function() {
             if (arrows.length > 0) {
                 arrows.remove();
             }
-            $('<div class="fotorama_arrows"><span class="fotorama__arr--prev button round"><span class="arrow">&#9664;</span></span><span class="page">1</span> / <span class="count"></span><span class="fotorama__arr--next button round next"><span class="arrow">&#9654;</span></span></div>').insertAfter(classFotorama);
+            $('<div class="fotorama_arrows"><span class="fotorama__arr--prev button round prev"><div class="arrow-left"></div></span><span class="page">1</span><span id="fotorama_separator">/</span><span class="count"></span><span class="fotorama__arr--next button round next"><div class="arrow-right"></div></span></div>').insertAfter(classFotorama);
             $(this).find('.count').append($rama.length);
         }
     });

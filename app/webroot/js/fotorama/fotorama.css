@@ -408,13 +408,15 @@
 }
 div.fotorama_arrows{
     padding:5px;
+    display: table;
+}
+div.fotorama_arrows span{
+  display: table-cell;
+  vertical-align: middle;
 }
 div.fotorama_arrows,span.count,span.page{
     font: bold 11pt sans-serif !important;
     text-shadow:none;
-}
-span.page{
-    margin-left:12px;
 }
 .round {
     border-radius: 32px !important;
@@ -424,13 +426,36 @@ span.page{
     cursor: pointer;
     font-size: 12px !important;
 }
-
 .next {
     margin-left:12px;
 }
-.round .arrow{
+.prev{
+   margin-right:12px; 
+}
+#fotorama_separator{
+    padding: 0 3px 0 3px;
+}
+.round .arrow-right{
     position: relative;
-    bottom:5px;
+    top:10px;
+    left:13px;
+    width: 0;
+    height: 0;
+    border: solid transparent; 
+    border-width: 6px 0 6px 8px;
+    border-left-color: #e1e1e1;  
+    border-right: 0;
+}
+.round .arrow-left{
+    position: relative;
+    top:10px;
+    left:11px;
+    width: 0;
+    height: 0;
+    border: solid transparent; 
+    border-width: 6px 8px 6px 0;
+    border-right-color: #e1e1e1;  
+    border-left: 0;
 }
 .fotorama__arr--disabled {
     pointer-events: none;
