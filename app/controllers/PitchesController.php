@@ -926,7 +926,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if(!empty($fileIds)) {
                 $files = Pitchfile::all(array('conditions' => array('id' => $fileIds)));
             }
-            $rating = Pitchrating::getRating($currentUser);
+            $rating = Pitchrating::getRating($currentUser, $pitch->id);
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
                 return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts','rating');
             }else {
