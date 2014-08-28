@@ -45,8 +45,8 @@ class Pitchrating extends \app\models\AppModel {
         }
     }
 
-    public static function getRating($userId) {
-        $rating = Pitchrating::first(array('conditions' => array('user_id' => $userId)));
+    public static function getRating($userId, $pitchId) {
+        $rating = Pitchrating::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $pitchId)));
         $rating = (!empty($rating)) ? $rating->rating :0;
         return $rating;
     }
