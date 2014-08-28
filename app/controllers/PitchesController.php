@@ -1355,4 +1355,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
         Pitch::dailypitch();
         die();
     }
+    
+    public function newwinner() {  
+        if(($pitch = Pitch::first($this->request->id)) && Session::read('user.id') == $pitch->user_id) {
+            return compact('pitch');
+        } else {
+            return $this->redirect('/pitches');
+        }
+    }
 }

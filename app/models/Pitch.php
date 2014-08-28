@@ -1330,6 +1330,8 @@ class Pitch extends \app\models\AppModel {
             $data['billed'] = 0;
             $data['published'] = 0;
             $data['multiwinner'] = 1;
+            $data['fee'] = 0;
+            $data['total'] = $data['price'] + ($data['price']*$data['fee']);
             unset($data['id']);
             $copyPitch->set($data);
             if ($copyPitch->save()) {
