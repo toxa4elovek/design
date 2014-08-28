@@ -52,6 +52,7 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 		$file = "{$config['path']}/config/routes.php";
 		file_exists($file) ? include $file : null;
 	}
+
 	return $chain->next($self, $params, $chain);
 });
 
@@ -60,6 +61,40 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 * This filters checks user's session and denies access to non-public urls
 */
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+    // Mobile Detect
+    require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'Mobile-Detect/Mobile_Detect.php');
+    $mobileDetect = new Mobile_Detect;
+    if ($mobileDetect->isMobile() && !$mobileDetect->isTablet()) {
+        $goMobile = 'http://m.godesigner.ru';
+        $routes = array(
+            'pages' => array(
+                'home' => '',
+            ),
+            'pitches' => array(
+                'index' => '',
+                'view' => 'pitches/view', // id
+                'details' => 'pitches/details', // id
+                'viewsolution' => 'viewsolution' // id
+            ),
+            'requests' => array(
+                'sign' => 'requests/sign', // id
+            ),
+            'users' => array(
+                'login' => 'users/sign_in',
+                'registration' => 'users/register',
+                'view' => 'users/view', // id
+            ),
+        );
+        $controller = strtolower($params['params']['controller']);
+        $action = strtolower($params['params']['action']);
+        if (isset($routes[$controller][$action])) {
+            $goMobile .= '/' . $routes[$controller][$action];
+            if (isset($params['params']['id'])) {
+                $goMobile .= '/' . $params['params']['id'];
+            }
+            return function() use ($goMobile) { return new Response(array('location' => $goMobile)); };
+        }
+    }
 
     $ctrl = $chain->next($self, $params, $chain);
     if((Auth::check('user')) || (($params['params']['controller'] == 'lithium\test\Controller')) || (isset($ctrl->publicActions) && in_array($params['params']['action'], $ctrl->publicActions))) {

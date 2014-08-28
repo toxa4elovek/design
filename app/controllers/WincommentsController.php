@@ -31,7 +31,11 @@ class WincommentsController extends \lithium\action\Controller {
         }
         if(((Session::read('user.isAdmin') == 1) && ($comment = Wincomment::first($this->request->id))) || (($comment = Wincomment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
             $comment->delete();
-            return $this->redirect('/users/step' . $step . '/' . $comment->solution_id);
+            if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+                return $this->redirect('/users/step' . $step . '/' . $comment->solution_id);
+            } else {
+                return json_encode('true');
+            }
         }
     }
 

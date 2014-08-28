@@ -102,5 +102,5 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js', 'jquery.timeago', 'posts/view'), array('inline' => false))?>
-<?=$this->html->style(array('/help', '/blog', 'disqus'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js','/js/fotorama/jquery-1.8.0.min.js','/js/fotorama/jquery.validate.min.js','/js/fotorama/jquery.countdown.min.js', 'jquery.timeago', '/js/fotorama/fotorama.js', 'posts/view'), array('inline' => false))?>
+<?=$this->html->style(array('/js/fotorama/fotorama.css', '/help', '/blog', 'disqus'), array('inline' => false))?>

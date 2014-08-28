@@ -113,5 +113,6 @@
 		</div><!-- .main -->
 	</div><!-- .middle -->
 
+    <?=$this->view()->render(array('element' => 'popups/register'))?>
 
 </div><!-- .wrapper -->

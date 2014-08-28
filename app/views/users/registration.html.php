@@ -104,6 +104,11 @@
 					<strong class="error" style="display:block">Подтвердите пароль</strong>
 					<?php endif?>
 				</p>
+				<p class="register_who">
+				    <label><?=$this->form->radio('who_am_i', array('value' => 'client', 'class' => 'radio-input'))?>Я — Заказчик</label>
+				    <span class="">или</span>
+				    <label><?=$this->form->radio('who_am_i', array('value' => 'designer', 'class' => 'radio-input'))?>Я — Дизайнер</label>
+				</p>
 				<p class="submit">
 					<input type="submit" value="Создать аккаунт" class="button second">
 
@@ -162,6 +167,9 @@
 
 		</div><!-- .main -->
 	</div><!-- .middle -->
+
+	<?=$this->view()->render(array('element' => 'popups/register'))?>
+
     <script type="text/javascript">
         var fb_param = {};
         fb_param.pixel_id = '6006509880528';
@@ -177,3 +185,4 @@
     <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6006509880528&amp;value=0" /></noscript>
 
 </div><!-- .wrapper -->
+<?=$this->html->script(array('users/registration.js'), array('inline' => false))?>

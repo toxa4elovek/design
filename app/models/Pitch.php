@@ -35,7 +35,7 @@ class Pitch extends \app\models\AppModel {
     /**
      * @var array Валидные строчки для определения типа сортировки решений
      */
-    public $validSorts = array('rating', 'created', 'likes');
+    public $validSorts = array('rating', 'created', 'likes', 'number');
 
     public static $attaches = array('files' => array(
         'validateFile' => array(
@@ -63,16 +63,19 @@ class Pitch extends \app\models\AppModel {
                 }
                 if(($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
-                    $queryString = '?utm_source=twitter&utm_medium=tweet&utm_content=new-pitch-tweet&utm_campaign=sharing';
-                    $pitchUrl = 'http://www.godesigner.ru/pitches/details/' . $params['pitch']->id . $queryString;
-                    $moneyFormatter = new MoneyFormatter();
-                    $winnerPrice = $moneyFormatter->formatMoney($params['pitch']->price, array('suffix' => ' р.-'));
-                    if (rand(1, 100) <= 50) {
-                        $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer';
-                    } else {
-                        $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer';
+                    // Send Tweet for Public Pitch only
+                    if ($params['pitch']->private != 1) {
+                        $queryString = '?utm_source=twitter&utm_medium=tweet&utm_content=new-pitch-tweet&utm_campaign=sharing';
+                        $pitchUrl = 'http://www.godesigner.ru/pitches/details/' . $params['pitch']->id . $queryString;
+                        $moneyFormatter = new MoneyFormatter();
+                        $winnerPrice = $moneyFormatter->formatMoney($params['pitch']->price, array('suffix' => ' р.-'));
+                        if (rand(1, 100) <= 50) {
+                            $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer';
+                        } else {
+                            $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer';
+                        }
+                        User::sendTweet($tweet);
                     }
-                    User::sendTweet($tweet);
                     Task::createNewTask($params['pitch']->id, 'newpitch');
                 }elseif(($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {
                     User::sendAdminBriefPitch($params);
@@ -106,7 +109,7 @@ class Pitch extends \app\models\AppModel {
             $client = User::first($params['pitch']->user_id);
             $nameInflector = new nameInflector();
             if($params['pitch']->expert == 0):
-                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', срок питча подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть 3 рабочих дня на выбор лучшего решения. Выбрав лучшее, у вас появится возможность внесения поправок и время на получение исходников.';
+                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', срок питча подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть 4 дня на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.';
             else:
                 $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', питч завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
             endif;
@@ -370,11 +373,11 @@ class Pitch extends \app\models\AppModel {
     public static function addEditedBrief($result) {
         if(is_object($result)) {
             $addEditedBrief = function($record) {
-                $strLengthLimit = 550;
+                $strLengthLimit = 1100;
                 if(isset($record->description)) {
                     $record->editedDescription = $record->description;
                     if(mb_strlen($record->description, 'UTF-8') > $strLengthLimit) {
-                        $record->editedDescription = mb_substr($record->description, 0, $strLengthLimit, 'UTF-8') . '...';
+                        $record->editedDescription = mb_substr($record->description, 0, $strLengthLimit, 'UTF-8') . '...</p>';
                     }
                 }
                 return $record;
@@ -427,6 +430,17 @@ class Pitch extends \app\models\AppModel {
             }
             $pitch->expert = 1;
             $pitch->{'expert-ids'} = serialize($expertsPitch);
+            $pitch->save();
+        }
+        return true;
+    }
+
+    /**
+     * Add Brief when Addon Activated
+     */
+    public static function addBrief($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $pitch->brief = 1;
             $pitch->save();
         }
         return true;
@@ -558,7 +572,7 @@ class Pitch extends \app\models\AppModel {
     public static function dailypitch() {
         $pitches = Pitch::all(array('conditions' => array('published' => 1, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
         if(count($pitches) > 0) {
-            $users = User::all(array('conditions' => array('email_newpitchonce' => 1)));
+            $users = User::all(array('conditions' => array('email_newpitchonce' => 1, 'User.email' => array('!=' => ''))));
             foreach($users as $user) {
                 User::sendDailyPitch($user, $pitches);
             }
@@ -650,6 +664,30 @@ class Pitch extends \app\models\AppModel {
                     continue;
                 }
                 if (User::sendAddonExpert($pitch)) {
+                    $res++;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public static function ExpertReminder() {
+        $conditions = array(
+            'expert' => 1,
+            'status' => 1,
+            'awarded' => 0,
+            'finishDate' => array(
+                '>=' => date('Y-m-d H:i:s', time() - 62 * HOUR),
+                '<' => date('Y-m-d H:i:s', time() - 61 * HOUR),
+            ),
+        );
+        $pitches = self::all(array(
+            'conditions' => $conditions,
+        ));
+        $res = 0;
+        if (count($pitches)) {
+            foreach ($pitches as $pitch) {
+                if (User::sendExpertReminder($pitch)) {
                     $res++;
                 }
             }
@@ -880,11 +918,13 @@ class Pitch extends \app\models\AppModel {
         if($result = $this->__getSortingString($type)){
             switch($result) {
                 case 'rating':
-                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'); break;
+                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc'); break;
                 case 'created':
                     $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'); break;
                 case 'likes':
-                    $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc'); break;
+                    $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created' => 'desc'); break;
+                default:
+                    $array =  array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'); break;
             }
             if(Session::read('user.id') == $pitch->user_id) {
                 $array = array_merge($array, array('awarded' => 'desc', 'hidden' => 'asc'));
@@ -897,7 +937,29 @@ class Pitch extends \app\models\AppModel {
             if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
                 return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             }elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc');
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc');
+            }else {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+            }
+        }
+    }
+
+    public function getDesignersSortingOrder($pitch, $type = null) {
+        if($result = $this->__getSortingString($type)){
+            switch($result) {
+                case 'rating':
+                    $array = array('rating' => 'desc', 'created' => 'desc'); break;
+                case 'created':
+                    $array =  array('created' => 'desc'); break;
+                case 'number':
+                    $array =  array('Num' => 'desc', 'created' => 'desc'); break;
+            }
+            return $array;
+        }else {
+            if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+            }elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
+                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc');
             }else {
                 return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             }
@@ -934,4 +996,318 @@ class Pitch extends \app\models\AppModel {
         }
         return false;
     }
+
+    public function pitchData($pitch) {
+        $pitchId = $pitch->id;
+        $award = $pitch->price;
+        $category = $pitch->category;
+        $money = 3;
+        if($award >= $category->normalAward) {
+            $money = 4;
+        }else if ($award >= $category->goodAward) {
+            $money = 5;
+        }
+        $begin = new \DateTime( $pitch->started );
+        if(strtotime($pitch->finishDate) > time()) {
+            $end = new \DateTime( date('Y-m-d', time() + DAY ) );
+        }else{
+            $end = new \DateTime( date('Y-m-d', strtotime($pitch->finishDate) ) );
+        }
+        $interval = \DateInterval::createFromDateString('1 day');
+        $period = new \DatePeriod($begin, $interval, $end);
+
+        $ratingArray = array();
+        $moneyArray = array();
+        $commentArray = array();
+        $dates = array();
+        $pitch->firstSolution = Solution::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('created' => 'asc')) );
+        if($pitch->firstSolution) {
+            $pitch->firstSolutionTime = strtotime($pitch->firstSolution->created);
+        }
+        foreach ( $period as $dt ) {
+            $time = strtotime($dt->format('Y-m-d'));
+            $plusDay = date('Y-m-d H:i:s', $time + DAY);
+            if(strtotime($pitch->created) > strtotime('2013-03-25 00-00-00')) {
+                $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
+            }else {
+                $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
+            }
+            $ids = array();
+            foreach($solutions as $solution) {
+                $ids[] = $solution->id;
+            }
+            $dates[] = $dt->format('d/m');
+            $moneyArray[] = $money;
+            $ratingArray[] = $this->calcRating($ids, $pitch, $plusDay, $dt);
+            $commentArray[] = $this->calcComments($ids, $pitch, $plusDay, $dt);
+        }
+
+        $ratingAverage = (empty($ratingArray)) ? 0 : round(array_sum($ratingArray) / count($ratingArray), 1);
+        $moneyAverage = (empty($moneyArray)) ? 0 : round(array_sum($moneyArray) / count($moneyArray), 1);
+        $commentAverage = (empty($commentArray)) ? 0 : round(array_sum($commentArray) / count($commentArray), 1);
+        $percentages = array(
+            'rating' => round(($ratingAverage / 15) * 100),
+            'money' => round(($moneyAverage / 15) * 100),
+            'comment' => round(($commentAverage / 15) * 100),
+        );
+        $total = 0;
+        foreach($percentages as $key => $value) {
+            $total += $value;
+        }
+        $percentages['empty'] = 100 - $total;
+        $avgArray = $this->calcAvg($ratingArray, $moneyArray, $commentArray);
+        $avgNum = (empty($avgArray)) ? 0 : round(array_sum($avgArray) / count($avgArray), 1);
+        $guaranteed = $pitch->guaranteed;
+
+        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'commentsNum');
+    }
+
+    private function calcAvg($first, $second, $third) {
+        $avgArray = array();
+        for($i=0;$i<count($first);$i++) {
+            $avg = round((($first[$i] + $second[$i] + $third[$i]) / 3), 1);
+            $avgArray[] = $avg;
+        }
+        return $avgArray;
+    }
+
+    public function calcRating($ids, $pitch, $plusDay, $dt) {
+        if(!empty($ids)) {
+            $ratingsNum = Ratingchange::all(array('conditions' => array('solution_id' => $ids ,'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+        }else {
+            $ratingsNum = array();
+        }
+        $rating = 0;
+        $percents = 0;
+        if(count($ids) > 0) {
+            $percents = (count($ratingsNum) / count($ids)) * 100;
+        }
+        if($percents > 100) {
+            $percents = 100;
+        }
+        switch($percents) {
+            case $percents < 50: $rating =1; break;
+            case $percents < 63: $rating =2; break;
+            case $percents < 79: $rating =3; break;
+            case $percents < 89: $rating =4; break;
+            case $percents <= 100: $rating =5; break;
+        }
+        $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+        if((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+            $rating = 3;
+        }
+
+        return $rating;
+    }
+
+    public function calcComments($ids, $pitch, $plusDay, $dt) {
+        if(!empty($ids)){
+            if(strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
+                $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+            }else {
+                $commentsNum = Comment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+            }
+        }else {
+            $commentsNum = array();
+        }
+
+        $comments = 0;
+        $percents = 0;
+        if(count($ids) > 0) {
+            $percents = (count($commentsNum) / count($ids)) * 100;
+        }
+
+        if($percents > 100) {
+            $percents = 100;
+        }
+        switch($percents) {
+            case $percents < 50: $comments =1; break;
+            case $percents < 63: $comments =2; break;
+            case $percents < 79: $comments =3; break;
+            case $percents < 89: $comments =4; break;
+            case $percents <= 100: $comments =5; break;
+        }
+        $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+        if((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+            $comments = 3;
+        }
+        return $comments;
+    }
+	
+	/**
+    * Метод возвращает номер страницы
+    *
+    * @param $page
+    * @return integer
+    */
+	public static function getQueryPageNum($page=1) {
+		$page = abs(intval($page));
+		if($page==0) $page=1;
+		return $page;
+	}
+	
+	/**
+    * Метод возвращает ценовой диапазон
+    *
+    * @param $priceFilter
+    * @return array
+    */
+	public static function getQueryPriceFilter($priceFilter=0) {
+		switch ($priceFilter) {
+			case 1:
+				$result = array('price' => array('>' => 3000, '<=' => 10000));
+				break;
+			case 2:
+				$result = array('price' => array('>' => 10000, '<=' => 20000));
+				break;
+			case 3:
+				$result = array('price' => array('>' => 20000));
+				break;
+			default:
+				$result =  array();
+		}
+		return $result;
+	}
+	
+	/**
+    * Метод возвращает время размещения питча
+    *
+    * @param $timeframe
+    * @return array
+    */
+	public static function getQueryTimeframe($timeframe=0) {
+		switch ($timeframe) {
+			case 1:
+				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3))));
+				break;
+			case 2:
+				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7))));
+				break;
+			case 3:
+				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10))));
+				break;
+			case 4:
+				$result = array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14))));
+				break;
+			default:
+				$result =  array();
+		}
+		return $result;
+	}
+	
+	/**
+    * Метод возвращает массив ключевых слов для поиска
+    *
+    * @param $search
+    * @return array
+    */
+	public static function getQuerySearchTerm($search='') {
+		if((is_string($search) && !empty($search)) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ'){
+			$word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
+			$firstLetter = mb_substr($word, 0, 1, 'utf-8');
+			$firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
+			$firstLower = (mb_strtolower($firstLetter, 'utf-8'));
+			$string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
+			$search = array('Pitch.title' => array('REGEXP' => $string));
+		} else {
+			$search = array();
+		}
+		return $search;
+	}
+	
+	/**
+    * Метод возвращает массив для сортировки полей
+    *
+    * @param $order
+    * @return array
+    */
+	public static function getQueryOrder($order) {
+		$allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
+		$allowedSortDirections = array('asc', 'desc');
+		$trigger = is_array($order);
+		$field = $trigger ? key($order) : '';
+		$dir = $trigger ? current($order) : '';
+		if($trigger && ((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))) {
+			switch ($field) {
+				case 'category':
+					$order = array('category_id' => $dir,'started' => 'desc');
+					break;
+				case 'finishDate':
+					$order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
+					break;
+				case 'price':
+					$order = array('free' => 'desc',$field => $dir,'started' => 'desc');
+					break;
+				default:
+					$order = array($field => $dir,'started' => 'desc');
+			}
+		} else {
+			$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
+		}
+		return $order;
+	}
+	
+	/**
+    * Метод возвращает id категории
+    *
+    * @param $category
+    * @return array
+    */
+	public static function getQueryCategory($category) {
+		$categories = Category::all();
+		foreach($categories as $cat){
+			$allowedCategories[] = $cat->id;
+		}
+		if (!empty($category) && in_array($category, $allowedCategories)){
+			$category = array('category_id' => $category);
+		} else {
+			$category = array();
+		}
+		return $category;
+	}
+	
+	/**
+    * Метод возвращает данные для поиска по типу питча
+    *
+    * @param $types
+    * @return array
+    */
+	public static function getQueryType($types) {
+		switch ($types) {
+			case 'finished':
+				$result = array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)')));
+				break;
+			case 'current':
+				$result = array('status' => array('<' => 2), 'awarded' => 0);
+				break;
+			case 'all':
+				$result = array();
+				break;
+			default:
+				$result = array(
+							'OR' => array(
+								array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+								array('status < 2 AND awarded = 0'),
+				));
+		}		
+		return $result;
+	}
+
+	/**
+    * Метод возвращает питчи для главной страницы
+    *
+    * @return array
+    */
+	public static function getPitchesForHomePage() {
+		return Pitch::all(array(
+			'order' => array(
+                'pinned' => 'desc',
+                'ideas_count' => 'desc',
+                'price' => 'desc'
+			),
+            'conditions' => array('status' => array('<' => 1), 'published' => 1),
+			'limit' => 3,
+			'page' => 1,
+		));
+	}
 }

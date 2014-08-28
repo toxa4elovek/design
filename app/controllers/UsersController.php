@@ -26,6 +26,7 @@ use app\extensions\storage\Rcache;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 use \Exception;
+use \app\extensions\helper\Avatar as AvatarHelper;
 
 class UsersController extends \app\controllers\AppController {
 
@@ -341,6 +342,12 @@ class UsersController extends \app\controllers\AppController {
                     $recipient = User::first($solution->user_id);
                 }
                 User::sendSpamWincomment($newComment, $recipient);
+                $user = User::first(Session::read('user.id'));
+                $avatarHelper = new AvatarHelper;
+                $userAvatar = $avatarHelper->show($user->data(), false, true);
+                $comment = Wincomment::first(array('conditions' => array('Wincomment.id' => $newComment->id), 'with' => array('User', 'Solution')));
+                $comment = $comment->data();
+                return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
             $files = array();
             $comments = Wincomment::all(array('conditions' => array('step' => 2, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
@@ -425,6 +432,12 @@ class UsersController extends \app\controllers\AppController {
                     $recipient = User::first($solution->user_id);
                 }
                 User::sendSpamWincomment($newComment, $recipient);
+                $user = User::first(Session::read('user.id'));
+                $avatarHelper = new AvatarHelper;
+                $userAvatar = $avatarHelper->show($user->data(), false, true);
+                $comment = Wincomment::first(array('conditions' => array('Wincomment.id' => $newComment->id), 'with' => array('User', 'Solution')));
+                $comment = $comment->data();
+                return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
             $comments = Wincomment::all(array('conditions' => array('step' => 3, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
             $files = array();
@@ -620,11 +633,11 @@ class UsersController extends \app\controllers\AppController {
                     Auth::clear('user');
                     return array('data' => true, 'redirect' => '/users/login');
                 }
-                $userToLog->token = User::generateToken();
+                $userToLog->autologin_token = User::generateToken();
                 if (isset($this->request->data['accessToken'])) {
                     $userToLog->accessToken = $this->request->data['accessToken'];
                 }
-                setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->token), time() + strtotime('+1 month'), '/');
+                setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->autologin_token), time() + strtotime('+1 month'), '/');
                 $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                 $userToLog->save(null, array('validate' => false));
                 // производим аутентификацию
@@ -648,11 +661,22 @@ class UsersController extends \app\controllers\AppController {
                 return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
             }else {
                 // обычная регистрация
-                if (!isset($this->request->data['case']) || $this->request->data['case'] != 'fu27fwkospf') { // Check for bots
+                if (!isset($this->request->data['case']) || $this->request->data['case'] != 'fu27fwkospf' || !$this->request->is('json')) { // Check for bots
                     return $this->redirect('/');
                 }
                 $user->token = User::generateToken();
                 $user->created = date('Y-m-d H:i:s');
+
+                $redirect = '/';
+                if (isset($this->request->data['who_am_i'])) {
+                    if ($this->request->data['who_am_i'] == 'client') {
+                        $this->request->data['isClient'] = 1;
+                    }
+                    if ($this->request->data['who_am_i'] == 'designer') {
+                        $this->request->data['isDesigner'] = 1;
+                        $redirect = '/pitches';
+                    }
+                }
 
                 $user->set($this->request->data) ;
 			    if(($user->validates()) && ($user->save($this->request->data))) {
@@ -670,9 +694,9 @@ class UsersController extends \app\controllers\AppController {
                            $pitch->save();
                         }
                         Session::delete('temppitch');
-                        return $this->redirect('/pitches/edit/' . $pitchId . '#step3');
+                        return array('redirect' => '/pitches/edit/' . $pitchId . '#step3', 'who_am_i' => 'client');
                     }
-                    return $this->redirect('/');
+                    return array('redirect' => $redirect, 'who_am_i' => $this->request->data['who_am_i']);
 			    }
 
             }
@@ -698,6 +722,28 @@ class UsersController extends \app\controllers\AppController {
 		return compact('user', 'invite', 'params', 'url');
 	}
 
+    public function setStatus() {
+        if (!$this->request->is('json')) {
+            return $this->redirect('/');
+        }
+
+        $redirect = '/';
+        if ($user = User::first((int) Session::read('user.id'))) {
+            if (!$this->request->data || ($this->request->data['who_am_i_fb'] == 'designer')) {
+                $user->isDesigner = 1;
+                $redirect = '/pitches';
+                $status = 'designer';
+            }
+            if ($this->request->data['who_am_i_fb'] == 'client') {
+                $user->isClient = 1;
+                $status = 'client';
+            }
+            $user->save(null, array('validate' => false));
+            return array('result' => true, 'redirect' => $redirect, 'status' => $status);
+        }
+
+        return array('result' => false, 'error' => 'no user', 'redirect' => '/');
+    }
 
     /**
      *  Метод входа, устанавлививет сессию и делает редирект в рабочий кабинет
@@ -726,8 +772,8 @@ class UsersController extends \app\controllers\AppController {
                 }
                 $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                 if((isset($this->request->data['remember'])) && ($this->request->data['remember'] == 'on')) {
-                    $userToLog->token = User::generateToken();
-                    setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->token), time() + strtotime('+1 month'), '/');
+                    $userToLog->autologin_token = User::generateToken();
+                    setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->autologin_token), time() + strtotime('+1 month'), '/');
                 }
                 $userToLog->save(null, array('validate' => false));
 
@@ -773,10 +819,8 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function resend() {
-        $user = User::first(Session::read('user.id'));
-        $user->token = User::generateToken();
-        $user->save(null, array('validate' => false));
-        UserMailer::verification_mail($user);
+		$userid = Session::read('user.id');
+        UserMailer::verification_mail(User::setUserToken($userid));
         return true;
     }
 
@@ -788,6 +832,9 @@ class UsersController extends \app\controllers\AppController {
 	public function logout() {
         setcookie("autologindata", "", time()-3600000, '/');
         Auth::clear('user');
+        if (!is_null($_SERVER['HTTP_REFERER'])) {
+            return $this->redirect($_SERVER['HTTP_REFERER']);
+        }
         return $this->redirect('/');
     }
 
@@ -804,7 +851,8 @@ class UsersController extends \app\controllers\AppController {
                 UserMailer::hi_mail($user);
                 Auth::clear('user');
                 Auth::set('user', $user->data());
-                return $this->redirect('Users::office');
+                Session::write('user.confirmed_email', 1);
+                return $this->redirect('Pitches::index');
             }else {
                 return $this->redirect('Users::registration');
             }
@@ -882,6 +930,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function profile() {
         $user = User::first(Session::read('user.id'));
+        $currentEmail = $user->email;
         $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
         $winners = array();
         foreach($winnersData as $winner) {
@@ -960,6 +1009,12 @@ class UsersController extends \app\controllers\AppController {
                 $emailInfo = 'Пользователь с таким адресом электронной почты уже существует!';
             } else {
                 $user->email = $this->request->data['email'];
+                if($currentEmail != $this->request->data['email']) {
+                    $emailInfo = 'Адрес электронной почты изменён, вам необходимо подтвердить его!';
+                    $user->confirmed_email = 0;
+                    $user->token = User::generateToken();
+                    UserMailer::verification_mail($user);
+                }
             }
 
             $user->save(null, array('validate' => false));

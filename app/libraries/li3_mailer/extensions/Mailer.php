@@ -39,6 +39,17 @@ class Mailer extends \lithium\core\StaticObject {
 	    'password' => '1407d95eb0992a1d1e84e50e3333d4ee',
 	);
 
+    /**
+     * @var array Mandrill SMTP server access details
+     */
+    protected static $smtpMandrill = array(
+        'host' => 'ssl://smtp.mandrillapp.com',
+        'port' => '465',
+        'auth' => true,
+        'username' => 'nyudmitriy@godesigner.ru',
+        'password' => 'hqzTB-srJK45y2tsSl1VaQ',
+    );
+
 	public static function __init() {
 		static::config();
 	}
@@ -90,8 +101,11 @@ class Mailer extends \lithium\core\StaticObject {
             $body = $message->get($mimeparams);
             $headers = $message->headers($headers);
 
-            if (isset($options['use-smpt']) && true == $options['use-smtp']) {
-                $mail = Mail::factory('smtp', self::$smtpMailJet);
+            if (isset($options['use-smtp']) && true == $options['use-smtp']) {
+                error_reporting(E_ALL);
+                ini_set('display_errors', '1');
+                $mail = Mail::factory('smtp', self::$smtpMandrill);
+                //$mail = Mail::factory("mail");
             } else {
                 $mail = Mail::factory("mail");
             }

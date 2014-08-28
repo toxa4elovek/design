@@ -26,7 +26,10 @@ $specifics = unserialize($pitch->specifics);
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 <input type="hidden" id="referal" value="<?=$pitch->referal_sum;?>">
 <input type="hidden" id="referalId" value="<?=$pitch->referal;?>">
-<script>var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};</script>
+<script>
+var feeRatesOrig = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
+var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
+</script>
 <aside class="summary-price expanded">
     <h3>Итого:</h3>
     <p class="summary"><strong id="total-tag">0.-</strong></p><!-- .summary -->
@@ -71,18 +74,19 @@ endif?>
 
         <?php
         function renderNumBox($category, $details) {
-            $categoriesWithBox = array(3, 9, 4, 6, 2, 12, 11, 10);
+            $categoriesWithBox = array(2, 3, 4, 6, 8, 9, 10, 11, 12);
             if (($category == 11) && empty($details['site-sub'])) { return '';}
             if(!in_array($category, $categoriesWithBox)) { return '';}
             $info = array(
+                2 => array('text' => 'Сколько макетов вам нужно создать? Мы рекомендуем учитывать и адаптации под размеры тоже. '),
                 3 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашего сайта? Внимание, только дизайн,  без кода HTML', 'mult' => 2000),
-                9 => array('text' => 'Сколько иллюстранций необходимо создать? Если серия, укажите суммарное число работ'),
                 4 => array('text' => 'Сколько макетов вам нужно создать? Если это серия, то укажите суммарное количество, даже если используется один шаблон.'),
                 6 => array('text' => 'Сколько страниц нужно создать. Если это серия, то укажите суммарное количество, даже если используется одна идея и стиль.'),
-                2 => array('text' => 'Сколько макетов вам нужно создать? Мы рекомендуем учитывать и адаптации под размеры тоже. '),
-                12 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество.'),
-                11 => array('text' => 'Сколько макетов вам нужно на выходе? Если это серия этикеток (коробок), то укажите суммарное количество.'),
+                8 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашей презентации?', 'mult' => 700),
+                9 => array('text' => 'Сколько иллюстранций необходимо создать? Если серия, укажите суммарное число работ'),
                 10 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество'),
+                11 => array('text' => 'Сколько макетов вам нужно на выходе? Если это серия этикеток (коробок), то укажите суммарное количество.'),
+                12 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество.'),
             );
 
             $chosenCategory = $info[$category];
@@ -164,13 +168,14 @@ endif?>
             text-align: center;
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
 
-            <script>var fillBrief = 0;</script>
-            <div class="ribbon complete-brief">
-                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
-                <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
-                <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" value="<?=$pitch->{'phone-brief'}?>" class="phone"></p>
-                <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">1750.-</p>
-            </div>
+        <script>var fillBrief = 0;</script>
+
+        <div class="ribbon complete-brief">
+            <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
+            <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
+            <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" value="<?=$pitch->{'phone-brief'}?>" class="phone"></p>
+            <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">1750.-</p>
+        </div>
 
         <div class="ribbon">
             <p class="option"><label><input type="checkbox" name="" <?php if($pitch->private): echo "checked"; endif;?> class="single-check" data-option-title="Закрытый питч" data-option-value="3500">Закрытый питч</label></p>
@@ -203,7 +208,7 @@ endif?>
                 8 => '/img/experts/makarov_dmitry_174.png',
             );
 
-            foreach($experts as $expert):?>
+            foreach($experts as $expert): if ($expert->enabled == 0) continue; ?>
                 <li>
                     <a href="/experts/view/<?=$expert->id?>" target="_blank" class="photo"><img src="<?=$imageArray[$expert->id]?>" alt="<?=$expert->name?>"></a><!-- .photo -->
                     <p class="select"><input type="checkbox" name="" <?php if(in_array($expert->id, unserialize($pitch->{'expert-ids'}))): echo "checked"; endif;?> class="expert-check" data-id="<?=$expert->id?>" data-option-title="Экспертное мнение" data-option-value="<?=$expert->price?>"></p><!-- .select -->
@@ -225,9 +230,13 @@ endif?>
         <div class="ribbon">
             <?php
             $value = 1000;
-            if($code && (($code->type == 'pinned') || ($code->type == 'misha'))):
-                $value = 0;
-            endif;
+            if (!empty($codes)) {
+                foreach ($codes as $code) {
+                    if (($code->type == 'pinned') || ($code->type == 'misha')) {
+                        $value = 0;
+                    }
+                }
+            }
             ?>
             <p class="option"><label><input type="checkbox" name="" <?php if($pitch->pinned): echo "checked"; endif;?>  class="single-check" data-option-title="“Прокачать” бриф" data-option-value="<?=$value?>">“Прокачать” бриф</label></p>
             <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения дизайнеров мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>
@@ -337,14 +346,14 @@ endif?>
             <p>
                 <label>Описание бизнеса/деятельности <a href="#" class="second tooltip" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
                 <?php if($category->id == 7):?>
-                <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"><?=$pitch->{'business-description'}?></textarea>
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?>  name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"><?=$pitch->{'business-description'}?></textarea>
                 <?php else:?>
-                <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"><?=$pitch->{'business-description'}?></textarea>
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?>  name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"><?=$pitch->{'business-description'}?></textarea>
                 <?php endif?>
             </p>
             <p>
                 <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
-                <textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?> id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
 Что должно быть прописано в логотипе?
 Кто ваши клиенты/потребители/покупатели?
 Где будет это размещаться?" data-placeholder="Что вы хотите получить на выходе от дизайнера?
@@ -497,8 +506,8 @@ endif?>
 
 
 <?php if(!$onlyText):?>
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+<?=$this->html->script(array('/js/tiny_mce/jquery.tinymce.js', 'jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php else:?>
-    <?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+    <?=$this->html->script(array('/js/tiny_mce/jquery.tinymce.js', 'jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php endif?>
 <?=$this->html->style(array('/brief', '/step3'), array('inline' => false))?>

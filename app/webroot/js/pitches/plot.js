@@ -1,28 +1,6 @@
-$(document).ready(function() {
-var documentHeight = $(document).height();
-//console.log(documentHeight);
-var floatingBlockHeight = $('#floatingblock').height()
-//console.log(floatingBlockHeight);
-var offset = $('#floatingblock').offset();
-//offset.top -= floatingBlockHeight;
-//console.log(offset.top);
-$(window).scroll(function() {
-    var currentPosition = $(window).scrollTop() + floatingBlockHeight;
-    /*if($('#floatingblock').hasClass('fixed')) {
-        currentPosition += floatingBlockHeight;
-    }*/
-    if ((currentPosition  < offset.top)) {
-        //console.log(currentPosition + ' vs ' + offset.top);
-        //$('#floatingblock').addClass('fixed');
-    } else {
-        //console.log('removing fixed' + currentPosition);
-        $('#floatingblock').removeClass('fixed');
-    }
+$(document).on('click', '#dinamic', function() {
+    $.scrollTo($('#floatingblock'), {duration:500});
 });
-
-})
-
-
 
 function renderFloatingBlock() {
 
@@ -502,28 +480,3 @@ function createImage(config, layer, moveToTop, storage) {
 function isInt(n) {
     return n % 1 === 0;
 }
-
-renderFloatingBlock();
-$( "#scroller" ).draggable({ drag: function() {
-    var x = $('#scroller').css('left');
-    x = parseInt(x.substring(0, x.length - 2));
-    var mod = ($('.kineticjs-content', '#container').width() - 476) / 350;
-    $('.kineticjs-content', '#container').css('right', Math.round(x * mod) + 'px');
-}, axis: "x", containment: "parent"});
-
-window.onscroll = function () {
-    var height = $(window).height();
-    var scrollTop = $(window).scrollTop();
-    var obj = $('#floatingblock')
-    var pos = obj.position();
-    if (height + scrollTop > pos.top) {
-        $('#dinamic').fadeOut(150);
-    }
-    else {
-        $('#dinamic').fadeIn(150);
-    }
-}
-
-$('#dinamic').on('click', function() {
-    $.scrollTo($('#floatingblock'), {duration:500});
-})

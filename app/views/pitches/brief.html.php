@@ -44,7 +44,7 @@ switch($category->id):
 Где, в основном, будет использоваться название и слоган?
 Что они должны отражать?
 Чего стоит избегать?'; break;
-    case 8: $word1 = 'Буклет'; $word2 = 'Что вы хотите получить на выходе от дизайнера?
+    case 8: $word1 = 'Презентация'; $word2 = 'Что вы хотите получить на выходе от дизайнера?
 Что должно быть на обложке?
 Кто ваши клиенты/потребители/покупатели? 
 Какие ассоциации должна вызывать печатная продукция?
@@ -113,16 +113,17 @@ endswitch;
 
                 <?php
                 function renderNumBox($category) {
-                    $categoriesWithBox = array(3, 9, 4, 6, 2, 12, 10);
+                    $categoriesWithBox = array(2, 3, 4, 6, 8, 9, 10, 12);
                     if(!in_array($category, $categoriesWithBox)) { return '';}
                     $info = array(
+                        2 => array('text' => 'Сколько макетов вам нужно создать? Мы рекомендуем учитывать и адаптации под размеры тоже. '),
                         3 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашего сайта? Внимание, только дизайн,  без кода HTML', 'mult' => 2000),
-                        9 => array('text' => 'Сколько иллюстранций необходимо создать? Если серия, укажите суммарное число работ'),
                         4 => array('text' => 'Сколько макетов вам нужно создать? Если это серия, то укажите суммарное количество, даже если используется один шаблон.'),
                         6 => array('text' => 'Сколько страниц нужно создать. Если это серия, то укажите суммарное количество, даже если используется одна идея и стиль.'),
-                        2 => array('text' => 'Сколько макетов вам нужно создать? Мы рекомендуем учитывать и адаптации под размеры тоже. '),
-                        12 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество.'),
+                        8 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашей презентации?', 'mult' => 700),
+                        9 => array('text' => 'Сколько иллюстранций необходимо создать? Если серия, укажите суммарное число работ'),
                         10 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество'),
+                        12 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество.'),
                     );
 
                     $chosenCategory = $info[$category];
@@ -204,15 +205,16 @@ endswitch;
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
             <script>
             var fillBrief = <?php echo ($this->session->read('fillbrief')) ? 1 : 0; ?>;
+            var feeRatesOrig = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
             var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
             </script>
-                    <div class="ribbon complete-brief">
-                        <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
-                        <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
-                        <!--p class="description">Опция недоступна до 13.08.2013</p-->
-                        <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" class="phone" value=""></p>
-                        <p class="label">1750.-</p>
-                    </div>
+
+                <div class="ribbon complete-brief">
+                    <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
+                    <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
+                    <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" class="phone" value=""></p>
+                    <p class="label">1750.-</p>
+                </div>
 
 				<div class="ribbon">
 					<p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Закрытый питч" data-option-value="3500">Закрытый питч</label></p>
@@ -245,7 +247,7 @@ endswitch;
                         8 => '/img/experts/makarov_dmitry_174.png',
                     );
 
-                    foreach($experts as $expert):?>
+                    foreach($experts as $expert): if ($expert->enabled == 0) continue;?>
                         <li>
                             <a href="/experts/view/<?=$expert->id?>" target="_blank" class="photo"><img src="<?=$imageArray[$expert->id]?>" alt="<?=$expert->name?>"></a><!-- .photo -->
                             <p class="select"><input type="checkbox" name="" class="expert-check" data-id="<?=$expert->id?>" data-option-title="экспертное мнение" data-option-value="<?=$expert->price?>"></p><!-- .select -->
@@ -332,9 +334,9 @@ endswitch;
 					<p>
 						<label>Описание бизнеса/деятельности <a href="#" class="second tooltip" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
                         <?php if($category->id == 7):?>
-                        <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"></textarea>
+                        <textarea class="enable-editor" name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"></textarea>
                         <?php else:?>
-                        <textarea name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"></textarea>
+                        <textarea class="enable-editor" name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"></textarea>
                         <?php endif?>
                     </p>
 					<p>
@@ -344,9 +346,9 @@ endswitch;
                         <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
                         <?php endif?>
                         <?php if($category->id == 7):?>
-						<textarea id="full-description" name="description" cols="30" rows="10" required placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-low="70" data-normal="140" data-high="280" ></textarea>
+						<textarea class="enable-editor" id="full-description" name="description" cols="30" rows="10" required placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-low="70" data-normal="140" data-high="280" ></textarea>
 						<?php else:?>
-						<textarea id="full-description" name="description" cols="30" rows="10" required placeholder="<?=$word2?>" data-placeholder="<?=$word2?>" data-low="70" data-normal="140" data-high="280" ></textarea>
+						<textarea class="enable-editor" id="full-description" name="description" cols="30" rows="10" required placeholder="<?=$word2?>" data-placeholder="<?=$word2?>" data-low="70" data-normal="140" data-high="280" ></textarea>
 						<?php endif?>
 					</p>
 
@@ -496,5 +498,5 @@ endswitch;
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'jquery-deparam.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false))?>
+<?=$this->html->script(array('/js/tiny_mce/jquery.tinymce.js', 'jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'jquery-deparam.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?=$this->html->style(array('/brief', '/step3'), array('inline' => false))?>

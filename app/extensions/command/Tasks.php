@@ -68,4 +68,9 @@ class Tasks extends \app\extensions\command\CronJob {
         }
     }
 
+    private function __dvaSpam($task) {
+        $count = User::sendDvaSpam();
+        $this->out('Emails has been set to ' . $count . ' users');
+    }
+
 }

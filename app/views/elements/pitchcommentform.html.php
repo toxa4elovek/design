@@ -1,14 +1,16 @@
-<?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
+<?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch));
+if (
+(($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
+(($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment()))
+
+&& ($this->user->getId())
+):?>
+    <?php $allowComments = true; ?>
+    <script>var allowComments = true;</script>
+<?php endif;
+if (isset($fromDesignersTab)) return false; ?>
 <div class="messages_gallery">
-    <?php
-    if(
-
-    (($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
-    (($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment()))
-
-    && ($this->user->getId())
-    ):?>
-        <script>var allowComments = true;</script>
+    <?php if (isset($allowComments)):?>
         <section>
             <div class="all_messages">
             <div class="clr"></div>
@@ -35,8 +37,6 @@
                 <div class="clr"></div>
             </form>
         </section>
-    <?php else:?>
-    <script>var allowComments = false;</script>
     <?php endif?>
     <!-- start: Pitch Comments -->
     <section class="pitch-comments isField">
@@ -44,7 +44,3 @@
     <!-- end: Pitch Comments -->
     </section>
 </div>
-<!-- Moderation Popups -->
-<?php if ($this->user->isAdmin()):?>
-    <?=$this->view()->render(array('element' => 'moderation'))?>
-<?php endif; ?>

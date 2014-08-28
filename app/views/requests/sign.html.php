@@ -4,20 +4,7 @@
 
 <div class="middle">
 <div class="middle_inner_gallery" style="padding-top:25px">
-
-    <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
-        <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
-    </div>
-
-    <div id="pitch-title" style="height:36px;margin-bottom:5px;">
-        <div class="breadcrumbs-view" style="width:770px;float:left;">
-            <a href="/pitches">Все питчи /</a> <a href="/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a>
-
-        </div>
-        <?php if($pitch->status == 0):?>
-            <?= $this->view()->render(array('element' => 'pitch-info/favourite_status'), array('pitch' => $pitch))?>
-        <?php endif?>
-    </div>
+    <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
 
     <div style="float:left; width: 627px;padding-bottom: 40px;">
         <h2 class="largest-header" style="text-align: center; margin-bottom: 30px;">ЭТО <a target="_blank" href="http://www.godesigner.ru/answers/view/64">ЗАКРЫТЫЙ ПИТЧ</a><br/> И ВАМ НУЖНО ПОДПИСАТЬ<br/> СОГЛАШЕНИЕ О НЕРАЗГЛАШЕНИИ!<h2>

@@ -7,11 +7,13 @@ use \lithium\storage\Session;
 
 use \app\models\Expert;
 use \app\models\Promocode;
+use \app\models\Option;
 use \app\models\Pitch;
 use \app\models\Favourite;
 use \app\models\Solution;
 use \app\models\Wincomment;
 use \app\models\Comment;
+use \app\models\Test;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\smsfeedback\SmsFeedback;
@@ -31,7 +33,7 @@ class User extends \app\models\AppModel {
 	 *
 	 * @var array
 	 */
-    public static $admins = array(32, 4, 5, 108, 81);
+    public static $admins = array(32, 4, 5, 108, 81, 8472);
     public static $experts = array();
 
     /**
@@ -46,7 +48,7 @@ class User extends \app\models\AppModel {
      *
      * @var array
      */
-    public static $authors = array(8472, 17865);
+    public static $authors = array(8472, 17865, 18856);
 
     protected static $_behaviors = array(
         'UploadableAvatar'
@@ -360,7 +362,7 @@ class User extends \app\models\AppModel {
             $users1 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    array('isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0)
+                    'isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0, 'User.email' => array('!=' => ''),
                 )
             ));
             $result1 = $users1->data();
@@ -369,7 +371,7 @@ class User extends \app\models\AppModel {
         // All but pitches owners
         $users2 = self::all(array(
             'conditions' => array(
-                array('isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1)
+                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
             ),
             'with' => array('Pitch')
         ));
@@ -386,7 +388,7 @@ class User extends \app\models\AppModel {
         if(!empty($ids)) {
             $users2 = self::all(array(
                 'conditions' => array(
-                    array('id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1)
+                    'id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
                 ),
             ));
             $result2 = $users2->data();
@@ -398,7 +400,7 @@ class User extends \app\models\AppModel {
             $users3 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    array('isCopy' => 1, 'email_newpitch' => 1)
+                    'isCopy' => 1, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
                 )
             ));
             $result3 = $users3->data();
@@ -504,7 +506,7 @@ class User extends \app\models\AppModel {
             $text = 'Ваши макеты были одобрены, вы переходите на следующую стадию предоставления исходников.';
         }
         if($step == 4) {
-            $text = 'Ваши исходники одобрены заказчиком, вы переходите на стадию выставления оценок.';
+            $text = 'Ваши исходники одобрены заказчиком, вы переходите на стадию выставления оценок. Деньги поступят вам на счетв течение 5 рабочих дней.';
         }
         $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution);
         SpamMailer::winstep($data);
@@ -570,6 +572,25 @@ class User extends \app\models\AppModel {
         return true;
     }
 
+    public static function sendExpertReminder($pitch) {
+        $data = array('pitch' => $pitch);
+        $experts = unserialize($pitch->{'expert-ids'});
+        foreach ($experts as $expert) {
+            $expert = Expert::first(array(
+                'conditions' => array(
+                    'Expert.id' => $expert,
+                ),
+                'with' => array('User'),
+            ));
+            if ($comments = Comment::all(array('conditions' => array('pitch_id' => $pitch_id, 'user_id' => $expert->user_id)))) {
+                continue;
+            }
+            $data['user'] = $expert->user;
+            SpamMailer::expertreminder($data);
+        }
+        return true;
+    }
+
     public static function sendSpamExpertSpeaking($params) {
         $user = self::first($params['pitch']->user_id);
         $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $params['text']);
@@ -586,17 +607,34 @@ class User extends \app\models\AppModel {
     }
 
     public static function sendSpamReferal() {
-        $users = self::all();
+        $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
         $sent = 0;
         foreach ($users as $user) {
-            if (!empty($user->email)) {
-                $data = array(
-                    'email' => $user->email,
-                    'subject' => 'Запуск партнёрской программы',
-                );
-                SpamMailer::referalspam($data);
-                $sent++;
-            }
+            $data = array(
+                'email' => $user->email,
+                'subject' => 'Запуск партнёрской программы',
+            );
+            SpamMailer::referalspam($data);
+            $sent++;
+        }
+        return $sent;
+    }
+
+    public static function sendDvaSpam() {
+        $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
+        $sent = 0;
+        // Test User
+        //$user = new \stdClass();
+        //$user->email = 'nyudmitriy@godesigner.ru';
+        //$users = array($user);
+        // End Test User
+        foreach($users as $user) {
+            $data = array(
+                'email' => $user->email,
+                'subject' => 'Подарочный промо-код на скидку',
+            );
+            SpamMailer::dvaspam($data);
+            $sent++;
         }
         return $sent;
     }
@@ -620,6 +658,9 @@ class User extends \app\models\AppModel {
 
     public static function getDailyDigest($userId) {
         $user = self::first($userId);
+        if (empty($user->email)) {
+            return true;
+        }
         $pitches = Pitch::all(array('conditions' => array(
             'status' => 0,
             'published' => 1,
@@ -670,31 +711,58 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function sendSpamToLostClients() {
-        $pitches = Pitch::all(array('conditions' => array(
-            'status' => 0,
-            'published' => 1,
-        )));
-        $ids = array();
-        foreach($pitches as $pitch) {
-            $ids[] = $pitch->user_id;
-        }
-        $userArray = array();
-        foreach($ids as $id) {
-            $user = User::first($id);
-            $start = time() - (DAY * 3);
-            if(strtotime($user->lastActionTime) < $start ) {
-                $userArray[] = $user;
+    public static function sendLastDigest() {
+        if ($lastPosts = Option::first(array('conditions' => array('name' => 'last_posts')))) {
+            $ids = unserialize($lastPosts->value);
+
+            $posts = Post::all(array('conditions' => array('id' => array_values($ids)), 'order' => array('created' => 'desc')));
+            $users = User::all(array(
+                'conditions' => array(
+                    'email_digest' => 1,
+                    'created' => array(
+                        '>=' => date('Y-m-d H:i:s', time() - (DAY * 4)),
+                        '<' => date('Y-m-d H:i:s', time() - (DAY * 3)),
+                    ),
+                ),
+            ));
+            $count = count($users);
+            if(count($posts) > 0) {
+                foreach($users as $user) {
+                    $data = array(
+                        'email' => $user->email,
+                        'subject' => 'Дайджест новостей',
+                        'posts' => $posts
+                    );
+                    SpamMailer::blogdigest($data);
+                }
             }
+            return $count;
         }
-        foreach($userArray as $user) {
-            $pitch = Pitch::first(array('conditions' => array('user_id' => $user->id, 'status' => 0, 'published' => 1)));
-            $data = array('user' => $user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения питча. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
-            SpamMailer::comeback($data);
-        }
-        return count($userArray);
+        return 0;
     }
 
+    public static function sendSpamToLostClients() {
+        $pitches = Pitch::all(array(
+            'conditions' => array(
+                'ideas_count' => array('>' => 0),
+                'status' => 0,
+                'published' => 1,
+                'User.email' => array('!=' => ''),
+                'User.lastActionTime' => array('<' => date('Y-m-d H:i:s', time() - (DAY * 3))),
+            ),
+            'with' => array('User', 'Category'),
+        ));
+        $count = 0;
+        foreach ($pitches as $pitch) {
+            $pitchData = $pitch->pitchData();
+            $avgNum = $pitchData['avgNum'];
+            if ($avgNum > 3) continue;
+            $data = array('user' => $pitch->user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения питча. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
+            SpamMailer::comeback($data);
+            $count++;
+        }
+        return $count;
+    }
 
     public static function sendChooseWinnerSpam() {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
@@ -1061,6 +1129,23 @@ class User extends \app\models\AppModel {
         return false;
     }
 
+    public static function designerTimeWait($user_id) {
+        $query = array(
+            'conditions' => array(
+                'first_time' => 1,
+                'user_id' => $user_id,
+                'percent' => array(
+                    '>=' => 80,
+                ),
+        ));
+
+        if ($test = Test::first($query)) {
+            return 5;
+        }
+
+        return 10;
+    }
+
     protected static function fn_bank_account($str) {
         $result = false;
         $sum = 0;
@@ -1109,4 +1194,19 @@ class User extends \app\models\AppModel {
         }
         return $res;
     }
+	
+    /**
+     * Метод генерирует токен, если нету
+     *
+	 * @param $userid
+     * @return object
+     */
+	public static function setUserToken($userid) {
+		$user = self::first($userid);
+		if(!$user->token) {
+			$user->token = $user->generateToken();
+			$user->save(null, array('validate' => false));
+		}
+		return $user;
+	}
 }

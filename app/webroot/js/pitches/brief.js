@@ -1,6 +1,50 @@
 $(document).ready(function() {
     var pitchid = '';
 
+    $('.enable-editor').tinymce({
+       // Location of TinyMCE script
+       script_url : '/js/tiny_mce/tiny_mce.js',
+
+       // General options
+       theme : "advanced",
+       plugins : "autolink,lists,style,visualchars,paste",
+
+       // Theme options
+       theme_advanced_buttons1 : "styleselect,link,unlink,bullist,numlist,charmap",
+       theme_advanced_buttons2 : "",
+       theme_advanced_buttons3 : "",
+       theme_advanced_toolbar_location : "top",
+       theme_advanced_toolbar_align : "left",
+       theme_advanced_statusbar_location : "bottom",
+       theme_advanced_resizing : true,
+       content_css : "/css/brief_wysiwyg.css",
+       language : "ru",
+       height : "180",
+       width: '538',
+       relative_urls: false,
+       remove_script_host: false,
+       paste_auto_cleanup_on_paste : true,
+       paste_remove_styles: true,
+       paste_remove_styles_if_webkit: true,
+       paste_strip_class_attributes: true,
+       paste_preprocess : function(pl, o) {
+           if((jQuery(o.content).text() == '') && (o.content != '')) {
+               var text = o.content
+           }else {
+               var text = jQuery(o.content).text()
+           }
+           o.content = text
+       },
+       onchange_callback : function(editor) {
+           isUndo = true;
+       },
+       style_formats : [
+             {title : 'Основной текст', inline : 'span', classes: "regular"},
+             {title : 'Заголовок', inline : 'span', classes: "greyboldheader"},
+             {title : 'Дополнение', inline : 'span', classes: "supplement2"},
+         ],
+   });
+
     /* Download Form Select */
     if ((window.File != null) && (window.FileList != null)) {
         $('#new-download').show();
@@ -114,10 +158,10 @@ $(document).ready(function() {
     });
 
     function checkPromocode() {
-        if ($('#promocode').prop('disabled')) {
+        var value = $('#promocode').val();
+        if ($('#promocode').prop('disabled') || value.length == 0) {
             return false;
         }
-        var value = $('#promocode').val();
         $.post('/promocodes/check.json', {"code": value}, function(response){
             if(response == 'false') {
                 $('#hint').text('Промокод неверен!');
@@ -132,7 +176,12 @@ $(document).ready(function() {
                     Cart.transferFeeDiscount = 700;
                     Cart.updateFees();
                     Cart._renderCheck();
+                }else if(response.type == 'in_twain') {
+                    Cart.feeRatesReCalc(2);
+                    Cart.updateFees();
+                    Cart._renderCheck();
                 }
+                Cart.promocodes.push(value);
             }
         });
     }
@@ -543,7 +592,7 @@ $(document).ready(function() {
     $('.rb1').change(function() {
         switch ($(this).data('pay')) {
             case 'payanyway':
-                $("#paybutton-payanyway").removeAttr('style');
+                $("#paybutton-payanyway").fadeIn(100);
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
@@ -551,13 +600,13 @@ $(document).ready(function() {
                 break;
             case 'paymaster':
                 $("#paybutton-paymaster").removeAttr('style');
-                $("#paybutton-payanyway").css('background', '#a2b2bb');
+                $("#paybutton-payanyway").fadeOut(100);
                 $("#paymaster-images").hide();
                 $("#paymaster-select").show();
                 $('#s3_kv').hide();
                 break;
             case 'offline':
-                $("#paybutton-payanyway").css('background', '#a2b2bb');
+                $("#paybutton-payanyway").fadeOut(100);
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
@@ -784,6 +833,7 @@ function FeatureCart() {
     this.referalDiscount = 0;
     this.referalId = 0;
     this.mode = 'add';
+    this.promocodes = [];
     this.init = function() {
         if(($('#pitch_id').length > 0) && (typeof($('#pitch_id').val()) != 'undefined')) {
             self.id = $('#pitch_id').val();
@@ -844,7 +894,7 @@ function FeatureCart() {
             }
             var feeOption = object.name.indexOf(self.transferFeeKey);
             if (feeOption != -1) {
-                var percent = object.name.substr(self.transferFeeKey.length + 1, 4);
+                var percent = object.name.substr(self.transferFeeKey.length + 1, object.name.length - self.transferFeeKey.length - 2);
                 if (percent.length > 0) {
                     self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
                 } else { // For older pitches
@@ -925,7 +975,7 @@ function FeatureCart() {
             'phone-brief': $('input[name=phone-brief]').val(),
             'materials': $('input[name=materials]:checked').val(),
             'materials-limit': $('input[name=materials-limit]').val(),
-            'promocode': $('#promocode').val(),
+            'promocode': $.unique(this.promocodes),
             'referalDiscount':this.referalDiscount,
             'referalId':this.referalId
         };
@@ -1027,6 +1077,13 @@ function FeatureCart() {
     this.decoratePrice = function(price) {
         price += '.-';
         return price;
+    }
+    this.feeRatesReCalc = function(divider) {
+        feeRates.low = (Math.floor(feeRatesOrig.low * 1000 / divider) / 1000).toFixed(3);
+        feeRates.normal = (Math.floor(feeRatesOrig.normal * 1000 / divider) / 1000).toFixed(3);
+        feeRates.good = (Math.floor(feeRatesOrig.good * 1000 / divider) / 1000).toFixed(3);
+        var input = $('#award');
+        drawIndicator(input, input.val());
     }
     this._logoProperites = function() {
         var array = new Array();

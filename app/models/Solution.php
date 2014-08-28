@@ -183,6 +183,9 @@ http://godesigner.ru/answers/view/73');
 
     public static function increaseLike($solutionId, $userId = 0) {
         $solution = self::first($solutionId);
+        if ($userId == 0) {
+            return $solution->likes;
+        }
         $pitch = Pitch::first(array('conditions' => array('id' => $solution->pitch_id)));
         $userId = (int)$userId;
         $allowAnon = false;

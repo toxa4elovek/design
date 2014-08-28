@@ -55,17 +55,7 @@ class PagesController extends \app\controllers\AppController {
             );
             Rcache::write('statistic', $statistic, '+1 hour');
         }
-    	$pitches = Pitch::all(array(
-			'order' => array(
-                'pinned' => 'desc',
-                'ideas_count' => 'desc',
-                'price' => 'desc'
-			),
-            'conditions' => array('status' => array('<' => 1), 'published' => 1),
-			'limit' => 3,
-			'page' => 1,
-		));
-
+    	$pitches = Pitch::getPitchesForHomePage();
         $promos = Promo::all(array(
             'limit' => 2,
             'conditions' => array('enabled' => 1),

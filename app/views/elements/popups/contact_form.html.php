@@ -1,4 +1,4 @@
-<div id="loading-overlay2" style="overflow:visible;display:none;" class="" style="display:none;text-align:center;text-shadow:none;overflow:hidden;">
+<div id="loading-overlay2" style="overflow:visible;display:none;">
     <div style="width:486px;height:690px;padding-top:7px;background:url(/img/requesthelpform2.png);">
         <div id="reqmainform">
             <a class="close-request" style="color: rgb(100, 143, 164); font-size: 12px; padding-right: 20px; background: url('/img/closerequestform.png') no-repeat scroll 50px 0px transparent; margin-top: 0px; margin-left: 405px;" href="#">закрыть</a>
@@ -8,23 +8,23 @@
                 <div>
                     <span style="margin-left: 45px; font-size: 11px; color: #666666;text-shadow: 0 1px 1px white">АДРЕСУЮ ЭТО...</span>
                     <input type="text" class="i1" style="margin-left: 43px; width: 333px; height: 43px; float: left; margin-top: 6px;" id="reqto" name="to">
-                    <a href="#" style="float: right; display: block; margin-right: 43px; margin-top: 7px;" id="requesthelpselector"><img src="/img/requestselector.png"></a>
+                    <a href="#" style="float: right; display: block; margin-right: 43px; margin-top: 7px;" id="requesthelpselector"><img src="/img/requestselector.png" alt=""></a>
                 </div>
                 <div style="height: 1px; clear: both; margin-bottom: 10px;"></div>
                 <span style="margin-left: 45px; font-size: 11px; color: #666666;text-shadow: 0 1px 1px white">ВАШ EMAIL</span><span style="text-decoration:none;margin-left:5px;color:#ff5a5e;font-size:11px;">*</span>
                 <input name="email" value="<?= $this->user->getEmail()?>" id="reqemail" type="text" style="height:43px;
-                margin-left: 43px;margin-top:5px;width:365px;" name="name" class="i1">
+                margin-left: 43px;margin-top:5px;width:365px;" class="i1">
                 <div style="height: 1px; clear: both; margin-bottom: 10px;"></div>
                 <span style="margin-left: 45px; font-size: 11px; color: #666666;text-shadow: 0 1px 1px white">ВАШЕ ИМЯ</span>
-                <input name="name" id="reqname" type="text" value="<?= $this->user->getFullname()?>" style="height:43px;margin-left: 43px;margin-top:5px;width:365px;" name="name" class="i1">
+                <input name="name" id="reqname" type="text" value="<?= $this->user->getFullname()?>" style="height:43px;margin-left: 43px;margin-top:5px;width:365px;" class="i1">
                 <input name="target" id="reqtarget" type="hidden" value="0">
                 <div style="height: 1px; clear: both; margin-bottom: 10px;"></div>
                 <span style="margin-left: 45px; font-size: 11px; color: #666666;text-shadow: 0 1px 1px white">ОПИШИТЕ ПРОБЛЕМУ И ЗАДАЙТЕ ВОПРОС</span>
                 <textarea name="message" id="reqmessage" style="margin-left: 43px;margin-top:5px;width:365px;height:240px;"></textarea>
 
-                <center>
-                    <input type="submit" id="reqsend" class="reqbutton" value="Отправить" style="margin-bottom: 20px; width: 184px; margin-top:19px; margin-right: 18px; color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);height:48px">
-                </center>
+                <div style="text-align: center;">
+                    <input type="submit" id="reqsend" class="reqbutton" value="Отправить" style="margin: 19px auto 20px auto; width: 184px; color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);height:48px">
+                </div>
             </form>
             <div id="contactlist" style="background:url('/img/requestback.png');display:none;top:-541px;margin-left:42px;width:399px;height:140px;position:relative;z-index:15">
                 <ul>

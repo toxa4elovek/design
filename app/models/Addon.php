@@ -16,6 +16,7 @@ class Addon extends \app\models\AppModel {
             if ($result) {
                 User::sendAdminNewAddon($params['addon']);
                 if ($params['addon']->brief == 1) {
+                    Pitch::addBrief($params['addon']);
                     User::sendAdminNewAddonBrief($params['addon']);
                 }
                 if ($params['addon']->experts == 1) {

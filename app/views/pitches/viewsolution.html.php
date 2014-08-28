@@ -2,19 +2,17 @@
 
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
 
-	<script>var allowComments = false;</script>
+    <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
 	<?php if((($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
         (($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment())) && ($this->user->isLoggedIn())):?>
         <script>allowComments = true;</script>
     <?php endif?>
 	<div class="middle">
-        <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
         <!-- start: Solution Container -->
         <div class="solution-container page">
-            <div class="pitch-info">
+            <div style="padding: 25px 0 0 63px;">
                 <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             </div>
-            <div style="height:1px; clear:both;"></div>
             <!-- start: Solution Right Panel -->
             <div class="solution-right-panel page">
                 <div class="solution-info solution-summary">
@@ -111,14 +109,6 @@
             </div>
             <!-- start: Solution Left Panel -->
             <div class="solution-left-panel">
-                <h1 class="solution-title-page">
-                    <a href="/pitches">
-                        Все питчи /
-                    </a>
-                    <a href="/pitches/view/<?=$pitch->id?>">
-                        <?=$pitch->title?>
-                    </a>
-                </h1>
                 <!-- start: Soluton Images -->
                 <section class="solution-images isField bla">
                     <div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>
@@ -153,54 +143,8 @@
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->
 	</div><!-- /middle -->
 </div><!-- .wrapper -->
-<div id="popup-final-step" class="popup-final-step" style="display:none">
-    <h3>Убедитесь в правильном выборе!</h3>
-    <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё мнение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Вы уверены, что победителем питча становится <a id="winner-user-link" href="#" target="_blank"></a> c решением <a id="winner-num" href="#" target="_blank"></a>?</p>
-    <div class="portfolio_gallery" style="width:200px;margin-bottom:5px;">
-        <ul class="list_portfolio">
-            <li>
-                <div class="photo_block">
-                    <?php
-                        if($this->solution->getImageCount($solution->images['solution_galleryLargeSize']) > 1):?>
-                    <div style="position:absolute;color:white;font-weight:bold;font-size: 14px;padding-top:7px;top:0px;left:168px;text-align:center;width:31px;height:24px;background-image: url('/img/multifile_small.png')"><?=$this->solution->getImageCount($solution->images['solution_galleryLargeSize'])?></div>
-                    <?php endif;?>
-                    <a href="/pitches/viewsolution/<?=$solution->id?>"><img alt="" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>"></a>
-                    <div class="photo_opt">
-                        <div style="display: block; float:left;" class="">
-                            <span class="rating_block"><img alt="" src="/img/<?=$solution->rating?>-rating.png"></span>
-                                <span class="like_view"><img class="icon_looked" alt="" src="/img/looked.png"><span><?=$solution->views?></span>
-                            </span></div>
 
-                        <div style="display: block; float:left;">
-                            <a data-id="<?=$solution->id?>" class="like-small-icon" href="#"><img alt="количество лайков" src="/img/like.png"></a>
-                            <span rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-id="<?=$solution->id?>" style="color: #CDCCCC;font-size: 10px;margin-right:8px;vertical-align: middle;"><?=$solution->likes?></span>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="final-step-nav wrapper"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="confirmWinner" value="Да, подтвердить"></div>
-</div>
-
-<div id="popup-warning" class="popup-warn generic-window" style="display:none">
-    <p style="margin-top:120px;">Вы можете пожаловаться, если обнаружены грубые высказывания, реклама, спам, контент для взрослых, ссылки на работы, сделки вне Go Designer, копирование чужой работы или плагиат. В последнем случае важно предоставить ссылку на оригинал. Важно однако учитывать, что в питче с одним брифом некоторая степень похожести работ допускается. Подробнее <a href="http://www.godesigner.ru/answers/view/38" target="_blank">тут</a>.</p>
-    <p>Пожалуйста, прокомментируйте суть жалобы:</p>
-    <textarea id="warn-solution" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
-    <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarn" value="Да, подтвердить"></div>
-</div>
-
-<div id="popup-warning-comment" class="popup-warn generic-window" style="display:none">
-    <p style="margin-top:120px;">Вы можете пожаловаться, если обнаружены грубые высказывания, реклама, спам, контент для взрослых, ссылки на работы, сделки вне Go Designer, копирование чужой работы или плагиат. В последнем случае важно предоставить ссылку на оригинал. Важно однако учитывать, что в питче с одним брифом некоторая степень похожести работ допускается. Подробнее <a href="http://www.godesigner.ru/answers/view/38" target="_blank">тут</a></p>
-    <p>Пожалуйста, прокомментируйте суть жалобы:</p>
-    <textarea id="warn-comment" class="placeholder" placeholder="ВАША ЖАЛОБА"></textarea>
-    <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="sendWarnComment" value="Да, подтвердить"></div>
-</div>
-
-<!-- Moderation Popups -->
-<?php if($this->user->isAdmin()):?>
-    <?=$this->view()->render(array('element' => 'moderation'))?>
-<?php endif; ?>
+<?=$this->view()->render(array('element' => 'popups/warning'))?>
 
 <!-- Start: Tooltips -->
 <div style="display:none;">
@@ -238,5 +182,5 @@
 </div>
 <!-- End: Tooltips -->
 <div id="bridge" style="display:none;"></div>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js', 'jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/jquery.fancybox-1.3.4.css'), array('inline' => false))?>

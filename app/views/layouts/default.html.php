@@ -2,7 +2,7 @@
 <html itemscope itemtype="http://schema.org/LocalBusiness">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# godesigner: http://ogp.me/ns/fb/godesigner#">
     <?= $this->html->charset();?>
-    <?php $vars = compact('solution', 'post', 'pitch') ?>
+    <?php $vars = compact('solution', 'post', 'pitch', 'answer') ?>
     <?= $this->HtmlExtended->title($this->_request->params, $vars)?>
     <meta name="description" content="">
     <meta name="viewport" content="width=1024"/>
@@ -27,7 +27,7 @@
     else:
         $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
     endif;
-    $description = '';
+    $description = isset($description) ? $description : '';
     ?>
     <meta property="og:image" content="<?=$url?>"/>
     <meta property="og:description" content="<?=$description?>"/>
@@ -40,22 +40,25 @@
         if (stripos($first_img, 'http://') === false) {
             $first_img = 'http://www.godesigner.ru' . $first_img;
         }
-    echo '<meta content="article" property="og:type"/>';
-    echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
-    echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
-    echo '<meta property="og:title" content="' . $post->title . '"/>';
-    echo '<meta property="og:image" content="' . $first_img . '"/>';
-    echo '<meta property="fb:admins" content="nyudmitriy"/>';
-    echo '<meta property="fb:app_id" content="202765613136579"/>';
+        echo '<meta content="article" property="og:type"/>';
+        echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
+        echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
+        echo '<meta property="og:title" content="' . $post->title . '"/>';
+        echo '<meta property="og:image" content="' . $first_img . '"/>';
+        echo '<meta property="fb:admins" content="nyudmitriy"/>';
+        echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
     <?php elseif (preg_match('@/pitches/details@', $_SERVER['REQUEST_URI'])):
-    echo '<meta content="godesigner:pitch" property="og:type"/>';
-    echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
-    echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
-    echo '<meta property="og:title" content="' . htmlspecialchars($pitch->title) . '"/>';
-    echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
-    echo '<meta property="fb:admins" content="nyudmitriy"/>';
-    echo '<meta property="fb:app_id" content="202765613136579"/>';
+        echo '<meta content="godesigner:pitch" property="og:type"/>';
+        echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
+        echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
+        echo '<meta property="og:title" content="' . htmlspecialchars($pitch->title) . '"/>';
+        echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
+        echo '<meta property="fb:admins" content="nyudmitriy"/>';
+        echo '<meta property="fb:app_id" content="202765613136579"/>';
+    elseif(preg_match('@/questions@', $_SERVER['REQUEST_URI'])):
+        echo '<meta property="og:description" content="Узнай, какой ты дизайнер на самом деле!"/>';
+        echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/general.jpg"/>';
     else:
         echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
 
@@ -67,7 +70,7 @@
     <?php echo $this->html->script('http://vk.com/js/api/openapi.js');?>
 </head>
 
-<body>
+<body class="<?=$this->_request->controller;?>_<?=$this->_request->action;?>">
 <a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;display:hidden;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
 <?php echo $this->content() ?>
 
@@ -84,7 +87,9 @@ echo  $this->html->script('app', array('inline' => false, 'weight' => 16));
 <?= $this->optimize->scripts() ?>
 <?=$this->view()->render(array('element' => 'popups/contact_form'))?>
 <?=$this->view()->render(array('element' => 'popups/social_popup'))?>
+<?=$this->view()->render(array('element' => 'popups/mobile_popup'))?>
 <?=$this->view()->render(array('element' => 'scripts/ga'))?>
+<?=$this->view()->render(array('element' => 'scripts/ua'))?>
 <?=$this->view()->render(array('element' => 'newrelic/newrelic_footer'))?>
 </body>
 </html>

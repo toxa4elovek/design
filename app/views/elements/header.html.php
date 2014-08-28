@@ -44,12 +44,19 @@
                             if($mypitch->ideas_count == 0) {
                                 $pitchPath = 'details';
                             }
+                            $step = 0;
                             if ($mypitch->awarded != 0) {
                                 $step = $mypitch->winner->step;
                             }
                             if ($step < 1) {
                                 $step = 1;
-                            } ?>
+                            }
+                            $types = array();
+                            $types['current'] = 0;
+                            $types['needpay'] = 0;
+                            $types['finish'] = 0;
+                            $types['winner'] = 0;
+                            ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
 							<td>
 							<?php if(($mypitch->status == 1) && ($mypitch->awarded != 0)):?>
@@ -210,7 +217,8 @@
                 <li class="header-menu-item"><a href="/users/profile">Профиль</a></li>
                 <li class="header-menu-item"><a href="/users/solutions">Решения</a></li>
                 <li class="header-menu-item"><a href="/users/details">Реквизиты</a></li>
-                <li class="header-menu-item"><a href="/users/referal">Партнерка</a></li>
+                <li class="header-menu-item"><a href="/questions">Тест</a></li>
+                <li class="header-menu-item"><a href="/users/referal">Пригласи друга</a></li>
                 <li class="header-menu-item"><a href="/users/logout">Выйти</a></li>
             </ul>
 	</nav><!-- .nav -->

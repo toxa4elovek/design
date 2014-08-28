@@ -44,7 +44,7 @@
                         <h1>Помощь</h1>
                     </section>
                     <div id="content_help_seach" style="background: none repeat scroll 0 0 #F3F3F3;box-shadow: 3px 3px #D2D2D2;margin:20px 0;padding:20px 30px;">
-                        <form action="" method="get">
+                        <form action="/answers" method="get">
                             <input type="text" name="search" value="<?=$search?>" class="text">
                             <input type="submit" class="button second" style="margin-left: 30px" value="Поиск">
                         </form>
@@ -54,14 +54,14 @@
 
                         <div class="content_help_line"></div>
                         <div id="ajaxzone">
-                            <?php if(($first == 0) && ($second == 0) && ($third == 0) && ($fourth == 0)):?>
+                            <?php if(($first == 0) && ($second == 0) && ($third == 0) && ($fourth == 0) && ($fifth == 0)):?>
                             <p class="regular">По вашему запросу ничего не найдено.</p>
                             <?php endif?>
                             <?php if($first > 0):?>
                             <div class="vp_one">
                                 <table>
                                     <tr>
-                                        <td><img src="/img/cont_help_data_1.gif"></td>
+                                        <td><img src="/img/cont_help_data_1.gif" alt=""></td>
                                         <td><h2>Общие вопросы</h2>
                                             <div class="answer-expand" style="overflow:hidden;height:107px;">
                                             <?php foreach($answers as $answer):
@@ -82,7 +82,7 @@
                             <div class="vp_one">
                                 <table>
                                     <tr>
-                                        <td><img src="/img/cont_help_data_2.png" style="margin-left: 14px;"></td>
+                                        <td><img src="/img/cont_help_data_2.png" style="margin-left: 14px;" alt=""></td>
                                         <td><h2>Помощь заказчикам</h2>
                                             <div class="answer-expand" style="overflow:hidden;height:107px;">
                                             <?php foreach($answers as $answer):
@@ -103,7 +103,7 @@
                             <div class="vp_one">
                                 <table>
                                     <tr>
-                                        <td><img src="/img/designers.png" style=""></td>
+                                        <td><img src="/img/designers.png" style="" alt=""></td>
                                         <td><h2>Помощь дизайнерам</h2>
                                             <div class="answer-expand" style="overflow:hidden;height:107px;">
                                             <?php foreach($answers as $answer):
@@ -124,7 +124,7 @@
                             <div class="vp_one">
                                 <table>
                                     <tr>
-                                        <td><img src="/img/cont_help_data_4.gif"></td>
+                                        <td><img src="/img/cont_help_data_4.gif" alt=""></td>
                                         <td><h2>Оплата и денежные вопросы</h2>
                                             <div class="answer-expand" style="overflow:hidden;height:107px;">
                                                 <?php foreach($answers as $answer):
@@ -146,7 +146,7 @@
                                 <div class="vp_one">
                                     <table>
                                         <tr>
-                                            <td><img src="/img/jur.png"></td>
+                                            <td><img src="/img/jur.png" alt=""></td>
                                             <td><h2>Для юридических лиц</h2>
                                                 <div class="answer-expand" style="overflow:hidden;height:107px;">
                                                     <?php foreach($answers as $answer):
@@ -170,7 +170,7 @@
                     <div id="r_h_v" class="regular">
                         <h2 class="greyboldheader">Возникли вопросы?</h2>
                         Если вы не можете найти ответ на свой вопрос - напишите нам. Мы постараемся ответить вам в течении 24 часов по рабочим дням.
-                        <?=$this->html->link('<img src="/img/otp_em.jpg">', 'Pages::contacts', array('escape' => false))?>
+                        <?=$this->html->link('<img src="/img/otp_em.jpg" alt="">', 'Pages::contacts', array('escape' => false))?>
                     </div>
                     <!--div id="tp">
                         <h2>текущие питчи</h2>

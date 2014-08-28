@@ -43,20 +43,20 @@ class PitchTest extends AppUnit {
         $pitch3 = Pitch::first(3);
         Session::write('user.id', 2);
         $result = $pitch3->getSolutionsSortingOrder();
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь не владелец питча и питч уже не проводится
         $pitch3 = Pitch::first(3);
         Session::write('user.id', 4);
         $result = $pitch3->getSolutionsSortingOrder();
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
     }
 
     public function testGetSolutionsSortingOrderWithParamNonClient() {
         // Пользователь не-владелец питча, рейтинг
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('rating');
-        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь не-владелец питча, дата создания
         $pitch1 = Pitch::first(1);
@@ -66,7 +66,7 @@ class PitchTest extends AppUnit {
         // Пользователь не-владелец питча, лайки
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('likes');
-        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь не-владелец питча, не существующий тип сортировки, питч еще идёт
         $pitch1 = Pitch::first(1);
@@ -76,7 +76,7 @@ class PitchTest extends AppUnit {
         // Пользователь не владелец питча, не существующий тип сортировки, питч уже не идет
         $pitch3 = Pitch::first(3);
         $result = $pitch3->getSolutionsSortingOrder('non-existing-type');
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
     }
 
     public function testGetSolutionsSortingOrderWithParamClient() {
@@ -84,7 +84,7 @@ class PitchTest extends AppUnit {
         // Пользователь владелец питча, рейтинг
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('rating');
-        $this->assertEqual(array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь владелец питча, дата создания
         $pitch1 = Pitch::first(1);
@@ -94,14 +94,14 @@ class PitchTest extends AppUnit {
         // Пользователь владелец питча, лайки
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('likes');
-        $this->assertEqual(array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'likes' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'hidden' => 'asc', 'nominated' => 'desc', 'likes' => 'desc', 'created'=>'desc'), $result);
     }
 
     public function testGetSolutionsSortingOrderWithArrayParam() {
         // Пользователь не-владелец питча, лайки
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder(array('sorting' => 'likes'));
-        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created'=>'desc'), $result);
 
         // Пользователь не-владелец питча, не существующий тип сортировки, питч еще идёт
         $pitch1 = Pitch::first(1);
@@ -116,7 +116,7 @@ class PitchTest extends AppUnit {
         // Пользователь не-владелец питча, не существующий тип сортировки, питч уже не идёт
         $pitch3 = Pitch::first(3);
         $result = $pitch3->getSolutionsSortingOrder(array('sorting' => 'non-existing-type'));
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc'), $result);
+        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created'=>'desc'), $result);
     }
 
     public function testGetSolutionsSortTypeWithParams() {
@@ -178,4 +178,114 @@ class PitchTest extends AppUnit {
         $this->assertEqual('created', $result);
     }
 
+    public function testGetQueryPageNum() {
+        // по умолчанию должна быть единичка
+        $pageNum = Pitch::getQueryPageNum();
+        $this->assertEqual(1, $pageNum);
+        // если входящий параметр - не число, то возвращяем значение по умолчанию
+        $pageNum = Pitch::getQueryPageNum(null);
+        $this->assertEqual(1, $pageNum);
+        $pageNum = Pitch::getQueryPageNum(false);
+        $this->assertEqual(1, $pageNum);
+        $pageNum = Pitch::getQueryPageNum('string');
+        $this->assertEqual(1, $pageNum);
+        // если вводим не целое или отрицальное число, возвращаем целое и положительно
+        $pageNum = Pitch::getQueryPageNum(-5);
+        $this->assertEqual(5, $pageNum);
+        $pageNum = Pitch::getQueryPageNum(5.25);
+        $this->assertEqual(5, $pageNum);
+        // если вводим просто страницу, возвращаем её
+        $pageNum = Pitch::getQueryPageNum(5);
+        $this->assertEqual(5, $pageNum);
+    }
+	
+	public function testGetQueryPriceFilter() {
+		// По умолчанию
+		$this->assertEqual(array(),Pitch::getQueryPriceFilter());
+		// Цена от 3000 - 10000
+		$this->assertEqual(array('price' => array('>' => 3000, '<=' => 10000)),Pitch::getQueryPriceFilter(1));
+		// Цена от 10000 - 20000
+		$this->assertEqual(array('price' => array('>' => 10000, '<=' => 20000)),Pitch::getQueryPriceFilter(2));
+		// Цена больше 20000
+		$this->assertEqual(array('price' => array('>' => 20000)),Pitch::getQueryPriceFilter(3));
+        // Неопределенный диапозон
+        $this->assertEqual(array(), Pitch::getQueryPriceFilter(200));
+	}
+	
+	public function testGetQueryTimeframe() {
+		// По умолчанию
+		$this->assertEqual(array(),Pitch::getQueryTimeframe());
+		// 3 дня
+		$this->assertEqual(array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3)))),Pitch::getQueryTimeframe(1));
+		// 7 дней
+		$this->assertEqual(array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7)))),Pitch::getQueryTimeframe(2));
+		// 10 дней
+		$this->assertEqual(array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10)))),Pitch::getQueryTimeframe(3));
+		// 14 дней
+		$this->assertEqual(array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14)))),Pitch::getQueryTimeframe(4));
+        // Неопределенный таймфрейм
+        $this->assertEqual(array(), Pitch::getQueryTimeframe(200));
+	}
+	
+	public function testGetQuerySearchTerm() {
+		$this->assertEqual(array(), Pitch::getQuerySearchTerm(array()));
+		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'тест тест тест|Тест тест тест|ТЕСТ ТЕСТ ТЕСТ')),Pitch::getQuerySearchTerm('Тест тест тест'));
+		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'тест тест тест|Тест тест тест|ТЕСТ ТЕСТ ТЕСТ')),Pitch::getQuerySearchTerm('тест тест тест'));
+		$this->assertEqual(array('Pitch.title' => array('REGEXP' => 'test test test|Test test test|TEST TEST TEST')),Pitch::getQuerySearchTerm('test test test'));
+        $this->assertEqual(array(), Pitch::getQuerySearchTerm(array('test' => 'test')));
+		$this->assertEqual(array(), Pitch::getQuerySearchTerm(''));
+        $this->assertEqual(array(), Pitch::getQuerySearchTerm(null));
+	}
+	
+	public function testGetQueryOrder() {
+		$this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(null));
+		$this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(false));
+		$this->assertEqual(array('title' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('title'=>'desc')));
+		$this->assertEqual(array('title' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('title'=>'asc')));
+		$this->assertEqual(array('category_id' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('category'=>'desc')));
+		$this->assertEqual(array('category_id' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('category'=>'asc')));
+		$this->assertEqual(array('ideas_count' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('ideas_count'=>'desc')));
+		$this->assertEqual(array('ideas_count' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('ideas_count'=>'asc')));
+		$this->assertEqual(array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => 'desc'),Pitch::getQueryOrder(array('finishDate'=>'desc')));
+		$this->assertEqual(array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => 'asc'),Pitch::getQueryOrder(array('finishDate'=>'asc')));
+		$this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'desc')));
+		$this->assertEqual(array('free' => 'desc','price' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'asc')));
+        $this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('fake'=>'desc')));
+        $this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('fake'=>'asc')));
+	}
+	
+	public function testGetQueryCategory() {
+		$this->assertEqual(array(),Pitch::getQueryCategory(null));
+		$this->assertEqual(array(),Pitch::getQueryCategory(false));
+		$this->assertEqual(array(),Pitch::getQueryCategory(''));
+		$this->assertEqual(array('category_id' => 2),Pitch::getQueryCategory(2));
+        $this->assertEqual(array(),Pitch::getQueryCategory(200));
+	}
+	
+	public function testGetQueryType() {
+		// index
+		$this->assertEqual(array('OR' => array(array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),array('status < 2 AND awarded = 0'))),Pitch::getQueryType(null));
+		// Завершенные
+		$this->assertEqual(array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)'))),Pitch::getQueryType('finished'));
+		// Текущие
+		$this->assertEqual(array('status' => array('<' => 2), 'awarded' => 0),Pitch::getQueryType('current'));
+		// Все
+		$this->assertEqual(array(),Pitch::getQueryType('all'));
+		// неопределенный параметр
+		$this->assertEqual(array('OR' => array(array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),array('status < 2 AND awarded = 0'))), Pitch::getQueryType('fakeParam'));
+	}
+	
+	public function testGetPitchesForHomePage() {
+		for ($i = 1; $i <= 3; $i++){
+			$pitch = Pitch::first($i);
+			$pitch->status = 0;
+			$pitch->published = 1;
+			$pitch->pinned = 1;
+			$pitch->price = 12500+$i;
+			$pitch->ideas_count = 10+$i;
+			$pitch->save();
+		}
+		$pitches = Pitch::getPitchesForHomePage();
+		$this->assertEqual(array(3,2,1),array_keys($pitches->data()));
+	}
 }

@@ -11,7 +11,7 @@ $(function(){
     preload([
         '/img/partners/logo_tutdesign_on.png',
         '/img/partners/surfinbird_on.png',
-        '/img/partners/play_on.png',
+        '/img/partners/clodo_on.png',
         '/img/partners/zucker_on.png',
         '/img/partners/trends_on.png',
     ]);
@@ -161,19 +161,15 @@ $(function(){
 });
 
 function expertsRandom() {
-    var limit = 3,
-        amount = 8,
-        unique_random_numbers = [];
-
-    while (unique_random_numbers.length < limit) {
-        var random_number = Math.floor(Math.random()*(amount) + 1);
-        if (unique_random_numbers.indexOf(random_number) == -1) {
-            // Yay! new random number
-            unique_random_numbers.push(random_number);
-        }
-    }
-
-    for (var i = 0; i < unique_random_numbers.length; i++) {
-        $('li.expert-' + unique_random_numbers[i], '#experts-zone').show();
+    var limit = 3;
+    var expertsArray = [];
+    $('li.expert_enabled').each(function(idx, obj) {
+        expertsArray.push($(obj).data('expert_id'));
+    });
+    // Shuffle Array. Taken from http://css-tricks.com/snippets/javascript/shuffle-array
+    expertsArray.sort(function() { return 0.5 - Math.random() });
+    
+    for (var i = 0; i < limit; i++) {
+        $('li.expert-' + expertsArray[i], '#experts-zone').show();
     }
 }

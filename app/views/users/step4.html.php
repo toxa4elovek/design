@@ -29,6 +29,9 @@
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #FF584D;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">поздравляем, питч завершен!</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">и мы будем рады видеть вас</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">снова</p>
+                    <?php if($type == 'designer'):?>
+                        <p style="margin-top: 40px; padding-top: 0; font: 16px/20px 'Arial', sans-serif;  display: block; margin-left: 0; text-align: center;" class="regular">Деньги поступят вам на счет<br> в течение 5 рабочих дней.</p>
+                    <?php endif?>
                 <?php else:?>
                 <?php if($type == 'designer'):?>
                 <span class="regular">Ура! Питч завершен. Мы поздравляем вас с отличной работой! Деньги поступят вам на счет в течение 5 рабочих дней. Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об в комментариях. Успехов!</span>

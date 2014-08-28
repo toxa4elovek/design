@@ -327,6 +327,34 @@ class User extends \app\extensions\helper\Session {
     }
 
     /**
+     * Метод возвращает временной интервал, оставшийся до активации дизайнера
+     *
+     * @return boolean|DateInterval
+     */
+    public function designerTimeRemain($pitch = false) {
+        if(($pitch) && ($pitch->free)) {
+            return false;
+        }
+
+        if (!$this->isLoggedIn()) {
+            return false;
+        }
+
+        $userModel = $this->_options['userModel'];
+        $timeWait = $userModel::designerTimeWait((int) $this->read('user.id'));
+
+        $datetime1 = new \DateTime();
+        $datetime2 = new \DateTime(date('Y-m-d H:i:s', (strtotime($this->read('user.created')) + $timeWait * DAY)));
+        $interval = $datetime2->diff($datetime1);
+
+        if ($interval->invert == 0) {
+            return false;
+        }
+
+        return $interval;
+    }
+
+    /**
      * Приватный метод помощник, сравнивает аргумент @model_id с текущим user.id, если установлен
      *
      * @param $model_id

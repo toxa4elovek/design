@@ -1,5 +1,4 @@
-<div class="wrapper pitchpanel" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
-     xmlns="http://www.w3.org/1999/html">
+<div class="wrapper pitchpanel">
 
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 	<div class="conteiner">
@@ -34,10 +33,10 @@
                     </ul>
                     <ul class="filterlist" style="float:left;width:85px;margin-left:25px;text-transform: none">
                         <li class="first">сроки</li>
-                        <li><a data-group="timeframe" data-value="1"href="#">до 3 дней</a></li>
-                        <li><a data-group="timeframe" data-value="2"href="#">до 7 дней</a></li>
-                        <li><a data-group="timeframe" data-value="3"href="#">до 10 дней</a></li>
-                        <li><a data-group="timeframe" data-value="4"href="#">более 14 дней</a></li>
+                        <li><a data-group="timeframe" data-value="1" href="#">до 3 дней</a></li>
+                        <li><a data-group="timeframe" data-value="2" href="#">до 7 дней</a></li>
+                        <li><a data-group="timeframe" data-value="3" href="#">до 10 дней</a></li>
+                        <li><a data-group="timeframe" data-value="4" href="#">более 14 дней</a></li>
                     </ul>
                     <ul class="filterlist" style="float:left;width:160px;margin-left:25px;text-transform: none">
                         <li class="first">гонорар</li>
@@ -87,11 +86,11 @@
 				<thead>
 					<tr>
 						<td class="icons"></td>
-						<td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" rel="asc">название питча</a></td>
-						<td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" rel="asc">Категории</a></td>
-						<td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" rel="desc">Идеи</a></td>
-						<td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" rel="asc">Срок</a></td>
-						<td style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-price" class="sort-link" rel="desc">Цена</a></td>
+						<td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" data-dir="asc">название питча</a></td>
+						<td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" data-dir="asc">Категории</a></td>
+						<td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" data-dir="desc">Идеи</a></td>
+						<td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" data-dir="asc">Срок</a></td>
+						<td style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-price" class="sort-link" data-dir="desc">Цена</a></td>
 					</tr>
 				</thead>
 				<tbody id="table-content">
@@ -169,7 +168,7 @@
                             $userString = '<a href="/pitches/edit/' . $pitch['id'] . '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/'  . $pitch['id'] .  '" rel="' . $pitch['id']  .'" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' . $pitch['id'] . '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                         }
                     }else {
-                        $userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';
+                        $userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" alt=""/></a>';
                     }
 
                     if($pitch['private'] == 1) {
@@ -316,7 +315,6 @@
 	<input type="hidden" value="<?=$selectedCategory?>" name="category">
     <input type="hidden" value="<?=$this->user->getId()?>" id="user_id">
     </div>
-	</div>
 </div><!-- .wrapper -->
 
 <div id="popup-final-step" class="popup-final-step" style="display:none">

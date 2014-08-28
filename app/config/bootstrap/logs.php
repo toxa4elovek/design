@@ -23,4 +23,9 @@ Logger::config(array(
         'priority' => array('info'),
         'file' => function($data, $config) { return "solution_select.log"; },
     ),
+    'deleted_solutions' => array(
+        'adapter' => 'File',
+        'priority' => array('info'),
+        'file' => function($data, $config) { return "deleted_solutions.log"; },
+    )
 ));

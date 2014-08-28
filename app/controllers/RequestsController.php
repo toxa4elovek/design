@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use \app\models\Pitch;
+use \app\models\Solution;
 use \app\models\Request;
 use \lithium\storage\Session;
 
@@ -11,6 +12,7 @@ class RequestsController extends \app\controllers\AppController {
     public function sign() {
         if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
             if($pitch->private == 1) {
+                $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
                 return compact('pitch');
             }else {
                 return $this->redirect('/pitches/view/' . $this->request->id);

@@ -5,11 +5,12 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\User;
 use app\extensions\storage\Rcache;
+use lithium\storage\Session;
 
 class UserTest extends AppUnit {
 
     public function setUp() {
-        Rcache::init();
+		Rcache::init();
         $this->rollUp(array('Pitch', 'User', 'Solution', 'Category', 'Comment'));
     }
 
@@ -18,7 +19,7 @@ class UserTest extends AppUnit {
         $this->rollDown(array('Pitch', 'User', 'Solution', 'Category', 'Comment'));
     }
 
-    public function testGetAuthorsIds() {
+	public function testGetAuthorsIds() {
         $authors = array(1, 2);
         User::$authors = $authors;
         $result = User::getAuthorsIds();
@@ -56,6 +57,33 @@ class UserTest extends AppUnit {
         $time = time();
         $result = $user->getLastActionTime();
         $this->assertEqual($time, $result);
-    }
-
+    } 
+	
+	public function testActivateUser() {
+		$user = User::first(1);
+		$user->activateUser();
+		$this->assertEqual('', $user->token);
+		$this->assertEqual(1, $user->confirmed_email);
+		$user2 = User::first(1);
+		$this->assertEqual('', $user2->token);
+		$this->assertEqual(1, $user2->confirmed_email);
+	}
+	
+	public function testSetUserToken() {
+		// Токена нету
+		$id=1;
+		$user = User::first($id);
+		$user->token = '';
+		$user->save(null, array('validate' => false));
+		$user2 = User::setUserToken($id);
+		$this->assertNotEqual($user->token, $user2->token);	
+		
+		// Токен есть
+		$id=2;
+		$user3 = User::first($id);
+		$user3->token = '52e72fbb58de8';
+		$user3->save(null, array('validate' => false));
+		$user4 = User::setUserToken($id);
+		$this->assertEqual($user3->token, $user4->token);	
+	}
 }

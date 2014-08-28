@@ -50,9 +50,9 @@
         </div>
         <?php endif ?>
         <div class="ribbon">
-            <p class="option"><label><input type="checkbox" name="" class="multi-check" data-option-title="экспертное мнение" data-option-value="1000" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'checked'; endif?> id="experts-checkbox">Экспертное мнение</label></p>
+            <p class="option"><label><input type="checkbox" name="" class="multi-check" data-option-title="экспертное мнение" data-option-value="1500" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'checked'; endif?> id="experts-checkbox">Экспертное мнение</label></p>
             <p class="description"><a href="/experts" id="expert-trigger">Наши эксперты</a> с опытом работы в ведущих рекламных агентствах помогут вам с выбором варианта <a href="#" class="second tooltip" title="Эксперт укажет   и прокомментирует 3 лучших решения, которые максимально отвечают на вашу задачу. Вы можете выбрать несколько экспертов и заручиться надёжной поддержкой.">(?)</a></p>
-            <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'unfold'; endif?>" id="expert-label">+1000.-</p>
+            <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'unfold'; endif?>" id="expert-label">+1500.-</p>
         </div>
 
         <ul class="experts" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'style="display:block"'; endif?>>
@@ -68,7 +68,7 @@
                 8 => '/img/experts/makarov_dmitry_174.png',
             );
             $i = 0;
-            foreach($experts as $expert):
+            foreach($experts as $expert): if ($expert->enabled == 0) continue;
                 if(in_array($expert->id, unserialize($pitch->{'expert-ids'}))) {
                     continue;
                 }
@@ -76,7 +76,7 @@
                 ?>
                 <li>
                     <a href="/experts/view/<?=$expert->id?>" target="_blank" class="photo"><img src="<?=$imageArray[$expert->id]?>" alt="<?=$expert->name?>"></a><!-- .photo -->
-                    <p class="select"><input type="checkbox" name="" <?php if($i == 0 && isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'checked'; endif?> class="expert-check" data-id="<?=$expert->id?>" data-option-title="экспертное мнение" data-option-value="<?=$expert->price?>"></p><!-- .select -->
+                    <p class="select"><input type="checkbox" name="" <?php if($i == 0 && isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'checked'; endif?> class="expert-check" data-id="<?=$expert->id?>" data-option-title="экспертное мнение" data-option-value="<?=($expert->price + 500)?>"></p><!-- .select -->
                     <dl>
                         <dt><strong><a href="/experts/view/<?=$expert->id?>" target="_blank"><?=$expert->name?></a></strong></dt>
                         <dd><a href="/experts/view/<?=$expert->id?>" target="_blank"><?=$expert->spec?></a></dd>

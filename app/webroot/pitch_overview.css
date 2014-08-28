@@ -1,3 +1,7 @@
+.gallery_container {
+	position: relative;
+}
+
 .blueheading {
 	color: #648FA4!important;
 	font: 17px "RodeoC", serif;
@@ -8,7 +12,6 @@
 	margin: 0 0 5px;
 	text-shadow: 1px 1px 1px white;
 }
-
 
 .separator {
 	width: auto;
@@ -21,10 +24,12 @@
 	color: #666;
 	font: 14px/20px "Arial", sans-serif;
 	margin: 0 0 20px;
+	word-break: break-word;
 }
 
 .Center {
 	width: 600px;
+	padding-top: 20px;
 }
 
 .menu ul li a.selected {
@@ -205,4 +210,91 @@ ul.social_share li {
     width:100%;
     border:1px;
 }
+body.pitches_upload .pitch-info-table,
+body.pitches_upload #pitch-title {
+	margin-left: 23px;
+}
+a.all-pitches-link {
+	display: inline-block;
+	width: 106px;
+	height: 39px;
+	margin-right: 20px;
+	background-image: url(img/all_pitches.png);
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+a.all-pitches-link:hover {
+	background-image: url(img/all_pitches_2.png);
+}
+a.fav-plus {
+	display: inline-block;
+	width: 133px;
+	height: 39px;
+	margin-right: 20px;
+	background-image: url(img/plusb.png);
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+a.fav-plus:hover {
+	background-image: url(img/plusb_2.png);
+}
+a.print-link {
+	display: inline-block;
+    width: 144px;
+    height: 37px;
+    margin-right: 20px;
+    background-image: url(img/print_brief_button.png);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+a.print-link:hover {
+	background-image: url(img/print_brief_button2.png);
+}
+a.next-pitch-link {
+	display: inline-block;
+    width: 151px;
+    height: 39px;
+    margin-right: 20px;
+    background-image: url(img/next.png);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+a.next-pitch-link:hover {
+	background-image: url(img/next_2.png);
+}
 
+.SideBarRight {width:200px; position:absolute; right:0px; top:85px; z-index:1000;margin-right: 20px;}
+.SideBarRight .zagol {font-size:18px; padding:10px;}
+.SideBarRight .batton { background: url('img/pointerBatton.png')  no-repeat top; height:50px; padding-top:44px;}
+.SideBarRight .batton:hover {background: url('img/pointerBattonRed.png') no-repeat top; font-weight:bold;}
+
+.SideBarRight .pitchs {width:170px; height:72px; margin:0; padding-left:7px;}
+.SideBarRight .pitchs.hover { background-color:#6b92a2 !important; }
+.SideBarRight .pitchs.hover p {color:#FFF !important;}
+.SideBarRight .pitchs.grey {background-color:#45464f;}
+.SideBarRight .pitchs.black {background-color:#2f313a;}
+.SideBarRight .pitchs p.data,p.info { color:#999999;}
+.SideBarRight .pitchs p.cost { color:#658fa5;}
+
+.SideBarRight div.files { width:170px; height:150px; background: url('img/files.png') no-repeat top; padding-top:80px; font-size:18px; text-align:center}
+.SideBarRight div.files p:hover {  font-weight:bold;}
+
+.gogo { width:424px; height:91px; background:url(img/gogo.png) no-repeat; position: relative ; left:485px; clear:both; text-align:center; padding-top:10px;}
+.gogo p { margin-bottom:10px;}
+.gogo a {text-decoration: none;}
+.gogo a.idea { font-size:17px; color:#444756;}
+.gogo a.go { font:32px RodeoC; color:#FFF; text-shadow: -1px -1px 0 #444756;}
+.gogo a.go:hover { text-decoration: underline}
+
+.button.add_solution {
+    font-family: Arial, sans-serif;
+    color: #fff;
+    display: block;
+    float: right;
+    margin-right: 20px;
+    margin-top: -45px;
+    width: 155px;
+}
+.button.add_solution:hover {
+	color: #fff;
+}

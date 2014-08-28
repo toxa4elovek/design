@@ -1,5 +1,4 @@
 <input type="hidden" class="solutions-count" value="<?=$solutionsCount?>">
-<script>extraimages = {}</script>
 <?php
 foreach($solutions as $solution):
     if($this->user->isSolutionAuthor($solution->user_id)) {
@@ -24,7 +23,7 @@ foreach($solutions as $solution):
         endif;
     endif;
 ?>
-<li <?php if(($picCounter2 > 1) && ($pitch->category_id != 7)): echo 'class="multiclass"'; endif;?>>
+<li <?php if(($picCounter2 > 1) && ($pitch->category_id != 7)): echo 'class="multiclass"'; endif;?> id="li_<?=$solution->num;?>">
     <!-- multisolution branch -->
     <div class="photo_block" <?php if(($picCounter2 > 1) && (($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id)))):?>style="background: url(/img/copy-inv.png) 10px 10px no-repeat white"<?php endif;?>>
         <?php
@@ -51,50 +50,30 @@ foreach($solutions as $solution):
                     $visible = true;?>
                 <div style="z-index: 2; position: absolute; color: rgb(102, 102, 102); font-weight: bold; font-size: 14px; padding-top: 7px; height: 16px; top: -34px; text-align: right; width: 18px; padding-right: 21px; background: url(/img/multi-icon.png) no-repeat scroll 22px 5px transparent; left: 169px;"><?=$picCounter2?></div>
                 <?php endif?>
-            <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
+                <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                 <a style="<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                    <?php
-                    if(!isset($solution->images['solution_galleryLargeSize'])):
-                        $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
-                        $picCounter = 0;
-                        $extra = array();
-                        if(is_array($solution->images['solution_galleryLargeSize'])):
-                            foreach($solution->images['solution_galleryLargeSize'] as $image):
-                                if($picCounter == 0):?>
-                <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
-                                <?php else:
-                                    $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
-                                endif;
-                                $picCounter++;
-                            endforeach;
-                        endif;
-                    endif;
-                     ?>
+                        <?php if(!isset($solution->images['solution_galleryLargeSize'])):
+                            $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
+                            $picCounter = 0;
+                            if(is_array($solution->images['solution_galleryLargeSize'])):
+                                foreach($solution->images['solution_galleryLargeSize'] as $image):?>
+                                    <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php echo ($picCounter > 0) ? 'display:none;' : 'opacity:1;'; ?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                                    <?php $picCounter++;
+                                endforeach;
+                            endif;
+                        endif; ?>
                         <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                     <?php else:?>
-
                         <?php
                         $picCounter = 0;
-                        $extra = array();
-                        foreach($solution->images['solution_galleryLargeSize'] as $image):
-                            if($picCounter == 0):?>
-                            <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
-                        <?php
-                            else:
-                                $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
-                            endif;
-
-                        $picCounter++;
+                        foreach($solution->images['solution_galleryLargeSize'] as $image):?>
+                            <img class="multi" width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php echo ($picCounter > 0) ? 'display:none;' : 'opacity:1;'; ?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                        <?php $picCounter++;
                         endforeach;?>
                     <?php endif?>
 
                 </a><?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?></div><?php endif?>
-
-                <?php if(isset($solution->images['solution_galleryLargeSize'][0])):?>
-                <script type="text/javascript">
-                    extraimages[<?= $solution->id?>] = <?php echo json_encode($extra)?>;</script>
-                <?php endif?>
             <?php endif?>
         <?php else:?>
             <!-- solo branch -->
@@ -122,36 +101,23 @@ foreach($solutions as $solution):
                         <?php endif?>
                         <?php
 
-
                         if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                     <a style="<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>display:block;" data-solutionid="<?=$solution->id?>" class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>">
 
-
                         <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
-                        <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                            <img rel="#<?=$solution->num?>"  width="180" height="135" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
                         <?php else:?>
                         <?php
                         $picCounter = 0;
-                        $extra = array();
-                        foreach($solution->images['solution_galleryLargeSize'] as $image):
-                            if($picCounter == 0):
-                            ?>
-                            <img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php if($picCounter > 0): echo 'display:none;'; else: echo 'opacity:1;'; endif;?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
-                            <?php
-                            else:
-                                $extra[] = $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter);
-                            endif;
-                            $picCounter++;
+                        foreach($solution->images['solution_galleryLargeSize'] as $image):?>
+                            <img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php echo ($picCounter > 0) ? 'display:none;' : 'opacity:1;'; ?>" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter)?>" alt="<?=($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : '';?>">
+                            <?php $picCounter++;
                         endforeach;?>
 
                         <?php endif?>
 
-
                     </a><?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?></div><?php endif?>
-                        <?php if(isset($solution->images['solution_galleryLargeSize'][0])):?>
-                        <script type="text/javascript">
-                            extraimages[<?= $solution->id?>] = <?php echo json_encode($extra)?>;</script>
-                        <?php endif?>
+
                     <?php else:?>
                     <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="background-image: url(/img/copy-inv.png);width:179px;height:136px;background-color:#efefef;display:block;"></a>
                     <?php endif?>
@@ -176,9 +142,12 @@ foreach($solutions as $solution):
                         <?php endif;?>
                     </div>
                 </span>
-                <span class="like_view" style="margin-top:2px;"><img src="/img/looked.png" alt="" class="icon_looked" /><span><?=$solution->views?></span>
+                <?php if (!isset($fromDesignersTab)):?>
+                    <span class="like_view" style="margin-top:2px;"><img src="/img/looked.png" alt="" class="icon_looked" /><span><?=$solution->views?></span>
+                <?php endif;?>
             </div>
             <ul style="margin-left: 78px;" class="right">
+                <?php if (!isset($fromDesignersTab)):?>
                 <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
                     <?php if ($pitch->status == 2):?>
                         <img src="/img/like.png" style="float: left;" alt="количество лайков" />
@@ -245,6 +214,11 @@ foreach($solutions as $solution):
                     </div></div>
                     <?php endif;?>
                 </li>
+                <?php else:?>
+                <li style="float: left; margin: 1px -10px 0 57px; padding: 0; width: auto;">
+                    <a href="#" class="number_img_gallery" style="color: #ccc;" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a>
+                </li>
+                <?php endif;?>
                 <li style="padding-left:0;margin-left:0;float: left; padding-top: 1px; height: 16px; margin-top: 0;width:30px">
                     <span class="bottom_arrow">
                     <?php if($this->user->isLoggedIn()):?>
@@ -259,7 +233,9 @@ foreach($solutions as $solution):
         </div>
 
     </div>
+    <?php if (!isset($fromDesignersTab)):?>
     <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
+    <?php endif; ?>
     <div class="solution_menu" style="display: none;">
         <ul class="solution_menu_list" style="position:absolute;z-index:6;">
             <?php if($this->user->isLoggedIn() && ($solution->hidden == 0) && ($this->user->isPitchOwner($pitch->user_id))): ?>
@@ -274,8 +250,8 @@ foreach($solutions as $solution):
             <?php endif;?>
     <?php
     if(
-        (($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
-        (($pitch->status == 0) && ($pitch->published == 1) && $this->user->isAllowedToComment() && ($this->user->isSolutionAuthor($solution->user_id) || $this->user->isPitchOwner($pitch->user_id)))
+        (($pitch->status > 0) && $this->user->isAllowedToComment() && ($this->user->isPitchOwner($pitch->user_id) || $this->user->isExpert() || $this->user->isAdmin())) ||
+        (($pitch->status == 0) && ($pitch->published == 1) && $this->user->isAllowedToComment() && ($this->user->isSolutionAuthor($solution->user_id) || $this->user->isPitchOwner($pitch->user_id) || $this->user->isAdmin()))
     ):?>
             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-comment-to="#<?=$solution->num?>">Комментировать</a></li>
         <?php endif;?>
@@ -290,7 +266,7 @@ foreach($solutions as $solution):
             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
             <?php endif;?>
             <?php if(($this->user->isSolutionAuthor($solution->user_id)) || ($this->user->isAdmin())):?>
-            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?=$solution->id?>" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
+            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?=$solution->id?>" data-solution_num="<?=$solution->num?>" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
             <?php endif;?>
 
         </ul>

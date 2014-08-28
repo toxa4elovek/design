@@ -173,8 +173,8 @@
 
     <div class="experts-main">
       <ul id="experts-zone">
-        <?php foreach($experts->data() as $expert):?>
-        <li class="expert-<?=$expert['id']?>" style="display:none;">
+        <?php foreach($experts->data() as $expert): if ($expert['enabled'] == 0) continue; ?>
+        <li class="expert-<?=$expert['id']?> expert_enabled" data-expert_id="<?=$expert['id']?>" style="display:none;">
             <?=$this->html->link('<img style="width: 174px; height: 174px;" src="'. $imageArray[$expert['id']] .'" alt="" />', array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id'], 'escape' => false))?>
             <p><?=$this->html->link($expert['name'], array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id']))?></p>
             <span><?php echo strip_tags($expert['title'])?></span>
@@ -270,9 +270,9 @@
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird.png" alt="" /></a>
           <a target="_blank" style="opacity:0;position:relative;bottom:60px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird_on.png" alt="" /></a>
         </li>
-        <li style="width:99px;">
-          <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100075" data-off="/img/partners/play.png" data-on="/img/partners/play_on.png"><img class="yota" src="/img/partners/play.png" alt="" /></a>
-          <a target="_blank" style="opacity:0;position:relative;bottom:50px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100075" data-off="/img/partners/play.png" data-on="/img/partners/play_on.png"><img class="yota" src="/img/partners/play_on.png" alt="" /></a></li>
+        <li style="width:94px;text-align: center;">
+          <a target="_blank" style="opacity:1;position:relative;z-index:2;margin-left: auto; margin-right: auto;" class="hoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo.png" alt="" /></a>
+          <a target="_blank" style="opacity:0;position:relative;bottom:55px;z-index:1;" class="nonhoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo_on.png" alt="" /></a></li>
 
         <li style="width:253px;">
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker.png" alt="" /></a>
@@ -291,7 +291,7 @@
         <li><a href="/pitches/2?type=finished">web-баннер</a> /</li>
         <li><a href="/pitches/11?type=finished">упаковка</a> /</li>
         <li><a href="/pitches/7?type=finished">копирайтинг</a> /</li>
-        <li><a href="/pitches/8?type=finished">буклет</a> /</li>
+        <li><a href="/pitches/8?type=finished">презентация</a> /</li>
         <li><a href="/pitches/9?type=finished">иллюстрация</a> /</li>
         <li><a href="/pitches/12?type=finished">реклама</a> /</li>
         <li><a href="/pitches/4?type=finished">флаер</a> /</li>

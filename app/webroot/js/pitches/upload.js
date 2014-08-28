@@ -26,20 +26,6 @@ $(document).ready(function() {
             '</div>');
     });
 
-    $('.order1').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order1_hover.png');
-    })
-    $('.order1').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order1.png');
-    })
-
-    $('.order2').on('mouseover', function() {
-        $('img', this).attr('src', '/img/order2_hover.png');
-    })
-    $('.order2').on('mouseout', function() {
-        $('img', this).attr('src', '/img/order2.png');
-    })
-    
     // Dropzone Scroll
     $( "#scroller" ).draggable({
         drag: function() {
@@ -191,8 +177,8 @@ $(document).ready(function() {
                             $image.height('auto');
                             $image.css('margin-top', (135 - $image.height()) / 2);
                         } else {
-                            $image.height('135');
-                            $image.width('auto');
+                            $image.width('180');
+                            $image.height('auto');
                         }
                         $image.show();
                     }, 300);

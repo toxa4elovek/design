@@ -85,4 +85,4 @@ $details = unserialize($pitch->specifics);
 </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/details', '/pitch_overview', '/print'), array('inline' => false))?>
+<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/print'), array('inline' => false))?>

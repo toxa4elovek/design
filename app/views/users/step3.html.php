@@ -2,6 +2,10 @@
 
     <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 
+    <script>
+        var currentUserId = <?= (int) $this->user->getId(); ?>;
+        var isCurrentAdmin = <?php echo $this->user->isAdmin() ? 1 : 0 ?>;
+    </script>
 
     <div class="conteiner">
         <section>
@@ -41,6 +45,7 @@
 
                 <div class="clr"></div>
                 <div class="separator" style="margin-top: 10px;"></div>
+                <section class="comments-container">
                 <?php foreach($comments as $comment):
                 if($comment->type == 'designer'):
                     $class ="message_info1";
@@ -114,17 +119,20 @@
                         <div class="comment-touch">Просмотрено <?=date('H:i, d.m.y', strtotime($comment->touch));?></div>
                         <?php endif; ?>
                         <div class="toolbar">
-                        <?php
-                        if(($this->user->isCommentAuthor($comment->user_id)) && (($solution->step == 3) && ($solution->pitch->status < 2))):?>
-                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
-                        <?php elseif(($this->user->isLoggedIn()) && (!$this->user->isCommentAuthor($comment->user_id))):?>
-                            <?php if ($this->user->isAdmin()):?>
-                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
-                            <?php endif?>
-                            <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
-                        <?php endif;?>
                         <?php if ($this->user->isAdmin()):?>
+                            <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
                             <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
+                        <?php else: ?>
+                            <?php if (($solution->step == 3) && ($solution->pitch->status < 2)):?>
+                                <?php if($this->user->isCommentAuthor($comment->user_id)): ?>
+                                    <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
+                                    <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
+                                <?php endif; ?>
+
+                                <?php if(($this->user->isLoggedIn()) && (!$this->user->isCommentAuthor($comment->user_id))):?>
+                                    <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
+                                <?php endif;?>
+                            <?php endif?>
                         <?php endif?>
                         </div>
                     </div>
@@ -144,6 +152,7 @@
                     <div class="separator" style="margin-top: 0px;"></div>
                 </section>
                 <?php endforeach;?>
+                </section><!-- /comments-container -->
                 <div class="clr"></div>
  <?php if($type == 'designer'):?>
                 <div class="buttons">

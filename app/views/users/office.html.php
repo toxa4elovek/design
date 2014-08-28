@@ -4,6 +4,7 @@
 
 <div class="middle">
     <div class="middle_inner" style="margin-top: 0px;">
+        <input type="hidden" value="<?=$this->user->getId()?>" id="user_id">
         <nav class="main_nav clear" style="width:832px;">
             <?=$this->view()->render(array('element' => 'office/nav'));?>
         </nav>
@@ -79,13 +80,17 @@
                                 }
                                 $extraUI = '';
                                 if($object['type'] != 'PitchCreated') {
-                                    $extraUI = '<ul class="group">'.
-                                    '<li><a href="#"></a></li>'.
-                                    '<li><a href="#"></a></li>'.
-                                    '<li><a href="#"></a></li>'.
-                                    '<li><a href="#"></a></li>'.
-                                    '<li><a href="#"></a></li>'.
-                                    '</ul>'.
+                                    $extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;">
+                                        <div class="ratingcont" data-default="' . $object['solution']['rating'] . '" data-solutionid="' . $object['solution']['id'] . '" style="float: right; height: 9px; background: url(/img/' . $object['solution']['rating'] . '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
+                                            if($this->user->isPitchOwner($object['pitch']['user_id'])) {
+                                                $extraUI .= '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
+                                                <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
+                                                <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
+                                                <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
+                                                <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
+                                            }
+                                        $extraUI .= '</div>
+                                    </div>' .
                                     '<p class="visit_number">' . $object['solution']['views'] . '</p>'.
                                     '<p class="fb_like"><a href="#">' . $object['solution']['likes'] . '</a></p>';
                                 }
@@ -169,5 +174,5 @@
 </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
