@@ -3517,11 +3517,19 @@ div.no-result p {
     position: relative;
     width: 480px;
     height: 420px;
+
+#popup-confirm-email-true,
+#popup-confirm-email-false {
+    position: relative;
+    width: 480px;
+    height: 460px;
     border: 1px solid #a7a7a9;
     background-color: #e1e1e1;
     text-align: center;
 }
-#popup-email-warning h2 {
+#popup-email-warning h2,
+#popup-confirm-email-true h2,
+#popup-confirm-email-false h2 {
     font-family: RodeoC, serif;
     font-size: 28px;
     font-weight: normal;
@@ -3531,7 +3539,9 @@ div.no-result p {
     margin: 30px auto 0 auto;
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
-#popup-email-warning p,#popup-email-warning ul {
+#popup-email-warning p,#popup-email-warning ul,
+#popup-confirm-email-true p,
+#popup-confirm-email-false p {
     font-family: Arial, sans-serif;
     font-size: 16px;
     font-weight: normal;
@@ -3541,8 +3551,26 @@ div.no-result p {
     margin: 12px 28px 18px 28px;
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
-#popup-email-warning ul  {
+#popup-email-warning ul {
     list-style-type: disc;
-    left:35%;
-    position:relative;
+    left: 35%;
+    position: relative;
+}
+#popup-confirm-email-true .true-close,
+#popup-confirm-email-false .false-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    margin: 12px 15px 0 0;
+    overflow: hidden;
+    background-image: url('img/popup-close-sprite.png');
+    background-repeat: none;
+    background-position: 0 -15px;
+    cursor: pointer;
+}
+#popup-confirm-email-true .true-close:hover ,
+#popup-confirm-email-false .false-close:hover{
+    background-position: 0 0;
 }

@@ -852,12 +852,12 @@ class UsersController extends \app\controllers\AppController {
                 Auth::clear('user');
                 Auth::set('user', $user->data());
                 Session::write('user.confirmed_email', 1);
-                return $this->redirect('Pitches::index');
+                return $this->redirect(array('Users::office','?' => array('success' => 'true')));
             }else {
-                return $this->redirect('Users::registration');
+                return $this->redirect(array('Users::registration','?' => array('success' => 'false')));
             }
         }else {
-            return $this->redirect('Users::registration');
+            return $this->redirect(array('Users::registration','?' => array('success' => 'false')));
         }
     }
 
