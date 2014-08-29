@@ -3513,11 +3513,7 @@ div.no-result p {
     border-bottom: 1px solid #f7f7f7;
     content: '';
 }
-#popup-email-warning {
-    position: relative;
-    width: 480px;
-    height: 420px;
-}
+#popup-email-warning,
 #popup-confirm-email-true,
 #popup-confirm-email-false {
     position: relative;

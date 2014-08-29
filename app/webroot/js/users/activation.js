@@ -13,7 +13,7 @@ var success = getUrlVar('success')
 			closeClass: 'true-close',  
 		});
 	}
-})
+});
 
 function getUrlVar(key){
 	var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
