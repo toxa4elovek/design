@@ -31,11 +31,4 @@ $(document).ready(function() {
                 break;
         }
     });
-    var amount = $("input[name='MNT_AMOUNT']").val();
-    var award_designer = $('#award-designer').val();
-    var goaward = amount - award_designer;
-    var percents = (goaward / amount * 100).toFixed(1);
-    $('#total-tag').html(parseInt(amount) + '.-');
-    $('#check-tag').append('<li><span>Награда Дизайнеру</span><small>' + parseInt(award_designer) + '.-</small></li>');
-    $('#check-tag').append('<li><span>Сбор GoDesigner ' + percents + '%</span><small>' + goaward + '.-</small></li>');
 });

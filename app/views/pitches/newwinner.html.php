@@ -4,12 +4,16 @@
     <input type="hidden" value="" id="addon_id"/>
     <input type="hidden" value="<?= $pitch->billed ?>" id="billed"/>
     <input type="hidden" value="<?= $pitch->published ?>" id="published"/>
-    <input type="hidden" value="<?=$pitch->price?>" id="award-designer"/>
-    
+    <?php $sum = ($receipt[0]->value + $receipt[1]->value)? : 0 ?>
+    <input type="hidden" value="<?= $sum ?>" id="amount"/>
+
     <aside class="summary-price expanded">
         <h3>Итого:</h3>
-        <p class="summary"><strong id="total-tag">0.-</strong></p><!-- .summary -->
+        <p class="summary"><strong id="total-tag"><?= $sum ?>.-</strong></p><!-- .summary -->
         <ul id="check-tag">
+            <?php foreach ($receipt as $v): ?>
+                <li><span><?= $v->name ?></span><small><?= $v->value ?>.-</small></li>
+            <?php endforeach; ?>
         </ul>
         <a href="#" class="show" id="show-check"><span>Подробнее</span></a>
         <a href="#" class="hide" id="hide-check"><span>Скрыть</span></a>
@@ -34,9 +38,9 @@
                             <td>
                                 <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
                                     <input type="hidden" name="MNT_ID" value="36102238">
-                                    <input type="hidden" name="MNT_TRANSACTION_ID" value="<?=$pitch->id?>">
+                                    <input type="hidden" name="MNT_TRANSACTION_ID" value="<?= $pitch->id ?>">
                                     <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
-                                    <input type="hidden" name="MNT_AMOUNT" value="<?=$pitch->total?>">
+                                    <input type="hidden" name="MNT_AMOUNT" value="<?= $sum ?>">
                                     <input type="hidden" name="MNT_TEST_MODE" value="0">
                                     <input type="hidden" name="paymentSystem.unitId" value="499669">
                                     <input type="hidden" name="followup" value="true">
@@ -70,7 +74,7 @@
                         <tr id="paymaster-select" class="paymaster-section" style="display: none;">
                             <td colspan="4">
                                 <?php echo $this->html->script(array('jquery-1.7.1.min.js')); ?>
-                                <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=<?=$pitch->total?>&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча') ?>&LMI_CURRENCY=RUB'></script>
+                                <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=<?= $sum ?>&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча') ?>&LMI_CURRENCY=RUB&LMI_PAYMENT_NO=<?= $pitch->id ?>'></script>
                             </td>
                         </tr>
                     </table>

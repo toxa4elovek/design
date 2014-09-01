@@ -1330,13 +1330,21 @@ class Pitch extends \app\models\AppModel {
             $data['billed'] = 0;
             $data['published'] = 0;
             $data['multiwinner'] = 1;
-            $data['fee'] = 0;
-            $data['total'] = $data['price'] + ($data['price']*$data['fee']);
+            //  $data['total'] = $data['price'] + ($data['price']*0);
             unset($data['id']);
             $copyPitch->set($data);
             if ($copyPitch->save()) {
-                $copyPitch->awarded = $copyPitch->id;
-                return $copyPitch->save() ? true : false;
+                $copyPitch->awarded = Solution::copy($copyPitch->id, $solution->id);
+                $receiptData = array(
+                    'features' => array(
+                        'award' => $copyPitch->price),
+                    'commonPitchData' => array(
+                        'id' => $copyPitch->id,
+                        'category_id' => $copyPitch->category_id,
+                        'promocode' => $copyPitch->promocode));
+                Receipt::createReceipt($receiptData);
+                $copyPitch->save();
+                return $copyPitch->id;
             }
         } else {
             return false;

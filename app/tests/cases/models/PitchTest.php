@@ -4,6 +4,7 @@ namespace app\tests\cases\models;
 
 use app\extensions\tests\AppUnit;
 use app\models\Pitch;
+use app\models\Solution;
 use lithium\storage\Session;
 
 class PitchTest extends AppUnit {
@@ -293,10 +294,11 @@ class PitchTest extends AppUnit {
         $this->assertFalse(Pitch::createNewWinner(0));
         $this->assertTrue(Pitch::createNewWinner(2));
         $pitch = Pitch::first(5);
+        $solution = Solution::first(array('order' => array('id' => 'DESC')));
         $this->assertEqual(0, $pitch->billed);
         $this->assertEqual(0, $pitch->published);
         $this->assertEqual(1, $pitch->multiwinner);
-        $this->assertEqual($pitch->awarded, $pitch->id);
+        $this->assertEqual($pitch->awarded, $solution->id);
     }
 
     public function testActivateNewWinner() {

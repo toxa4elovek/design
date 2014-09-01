@@ -1357,10 +1357,26 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
     
     public function newwinner() {  
-        if(($pitch = Pitch::first($this->request->id)) && Session::read('user.id') == $pitch->user_id) {
-            return compact('pitch');
+        if(($pitch = Pitch::first($this->request->id))&& Session::read('user.id') == $pitch->user_id && ($receipt = Receipt::all(array('conditions'=>array('pitch_id' => $this->request->id),'fields' => array('name','value'))))) {
+            return compact('pitch','receipt');
         } else {
             return $this->redirect('/pitches');
         }
+    }
+    
+    public function setnewwinner() {
+        $solution = Solution::first(array('conditions' => array('Solution.id'=>$this->request->id),'with'=>array('Pitch')));
+        $pitch = $solution->pitch;
+        if(!is_null($pitch->id) && $pitch->awarded != $solution->id && Session::read('user.id') == $solution->pitch_id) {
+            $copyPitch = Pitch::first(array('conditions' => array('user_id' => $pitch->user_id,'title' => $pitch->title,'multiwinner'=>1)));
+            if(!empty($copyPitch)){
+                $copyPitch->billed = 0;
+                $copyPitch->save();
+            } else {
+                $newPitchId = Pitch::createNewWinner($solution->id);
+            }
+            return $this->redirect(array('controller' => 'pitches', 'action' => 'newwinner', 'id' => $newPitchId ? $newPitchId : $copyPitch->id));
+        }
+        return $this->redirect('/pitches');
     }
 }
