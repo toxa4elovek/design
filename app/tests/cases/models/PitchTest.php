@@ -18,7 +18,8 @@ class PitchTest extends AppUnit {
     }
 
     public function testGetOwnerOfPitch() {
-        $result = Pitch::getOwnerOfPitch(4);
+        // Тут надо убедиться, что строчкой ниже айди не существующй
+        $result = Pitch::getOwnerOfPitch(10000);
         $this->assertFalse($result);
         $result = Pitch::getOwnerOfPitch(1);
         $this->assertTrue(is_object($result));
