@@ -288,4 +288,14 @@ class PitchTest extends AppUnit {
 		$pitches = Pitch::getPitchesForHomePage();
 		$this->assertEqual(array(3,2,1),array_keys($pitches->data()));
 	}
+        
+        public function testGetFreePitch() {
+            $pitch1 = Pitch::getFreePitch();
+            $pitch2 = Pitch::getFreePitch();
+            $this->assertEqual(1, count($pitch1));
+            while ($pitch1->id == $pitch2->id) {
+                $pitch2 = Pitch::getFreePitch();
+            }
+            $this->assertNotEqual($pitch2, $pitch1);
+        }
 }

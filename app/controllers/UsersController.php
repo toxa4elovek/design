@@ -718,8 +718,8 @@ class UsersController extends \app\controllers\AppController {
             'scope' => 'friends',
             'response_type' => 'code'
         );
-
-		return compact('user', 'invite', 'params', 'url');
+        $freePitch = Pitch::getFreePitch();
+		return compact('user', 'invite', 'params', 'url','freePitch');
 	}
 
     public function setStatus() {

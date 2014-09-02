@@ -66,7 +66,7 @@
 			<section>
 				<h2 class="or">или</h2>
 
-		        <?php $errors = $user->errors();                ?>
+		        <?php $errors = $user->errors();?>
 				<?php echo $this->form->create($user, array('action' => 'registration', 'id' => 'registration'))
                 /*if($invite):?>
                 <form action="/users/registration?invite=<?=$invite?>" method="post">
@@ -168,7 +168,7 @@
 		</div><!-- .main -->
 	</div><!-- .middle -->
 
-	<?=$this->view()->render(array('element' => 'popups/register'))?>
+	<?=$this->view()->render(array('element' => 'popups/register'),array('freePitch'=>$freePitch));?>
 
     <script type="text/javascript">
         var fb_param = {};
