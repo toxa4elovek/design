@@ -46,7 +46,7 @@
                     $mySolutionNumList = array();
                     if((!empty($solutions) > 0) && ($pitch->published == 1)): ?>
                     <ul class="list_portfolio main_portfolio">
-                        <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount'))?>
+                        <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount','pitchesCount'))?>
                     </ul>
                     <?php else:?>
                     <div class="bigfont">
@@ -155,7 +155,7 @@
 	</div><!-- /middle -->
 </div><!-- .wrapper -->
 
-<?=$this->view()->render(array('element' => 'popups/warning'))?>
+<?=$this->view()->render(array('element' => 'popups/warning'),array('pitchesCount' => $pitchesCount))?>
 
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>

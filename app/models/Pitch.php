@@ -1363,5 +1363,11 @@ class Pitch extends \app\models\AppModel {
             return false;
         }
     }
+    
+    public static function getCountBilledPithces($pitchId) {
+        if($pitch = self::first($pitchId)) {
+            return count(self::all(array('conditions' => array('id' => $pitchId,'user_id' => $pitch->user_id,'billed' => 1,'title' => $pitch->title))));
+        }
+    }
 
 }
