@@ -391,7 +391,7 @@ $(document).ready(function() {
                     <span>' + result.solution.description + '</span> \
                 </div>');
             }
-            
+
             var firstImage = $('.solution-image').first().parent();
             if (currentUserId == result.pitch.user_id) { // isClient
                 var ratingWidget = $('<div class="separator-rating"> \
