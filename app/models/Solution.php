@@ -339,7 +339,8 @@ http://godesigner.ru/answers/view/73');
         $count = self::all(array('group' => 'user_id'));
         return count($count);
     }
-	
+
+
     public static function copy($new_pitchId,$old_solution) {
 	if($solution = Solution::first($old_solution)){
             $copySolution = Solution::create();
@@ -354,6 +355,22 @@ http://godesigner.ru/answers/view/73');
                 return true;
             }
         } else return false;
+    }
+
+    
+    public static function getCreatedDate($solutionId) {
+        if ($solutionId && $solutionDate = Solution::first($solutionId)) {
+            $monthes = array(
+                1 => 'Января', 2 => 'Февраля', 3 => 'Марта', 4 => 'Апреля',
+                5 => 'Мая', 6 => 'Июня', 7 => 'Июля', 8 => 'Августа',
+                9 => 'Сентября', 10 => 'Октября', 11 => 'Ноября', 12 => 'Декабря'
+            );
+            $solutionDate = strtotime($solutionDate->created);
+            $date = (date('j ',$solutionDate) . $monthes[(date('n',$solutionDate))] . date(' Y, H:i',$solutionDate));
+            //d F Y, H:i
+            return $date;
+        }
+        return false;
     }
 
 }
