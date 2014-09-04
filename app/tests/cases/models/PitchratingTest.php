@@ -41,7 +41,7 @@ class PitchratingTest extends AppUnit {
     }
 
     public function testGetRating() {
-        $this->assertEqual(1, Pitchrating::getRating(User::first()->id, Pitch::first()->id));
+        $this->assertEqual(4, Pitchrating::getRating(User::first()->id, Pitch::first()->id));
         $this->assertEqual(0, Pitchrating::getRating(0, Pitch::first()->id));
         $this->assertEqual(0, Pitchrating::getRating(User::first()->id, 0));
     }
