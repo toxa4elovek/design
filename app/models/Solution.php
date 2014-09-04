@@ -339,5 +339,21 @@ http://godesigner.ru/answers/view/73');
         $count = self::all(array('group' => 'user_id'));
         return count($count);
     }
+	
+    public static function copy($new_pitchId,$old_solution) {
+	if($solution = Solution::first($old_solution)){
+            $copySolution = Solution::create();
+            $data = $solution->data();
+            $data['pitch_id'] = $new_pitchId;
+            unset($data['id']);
+            $copySolution->set($data);
+            if ($copySolution->save()) {
+                if($copySolution->images){
+                    Solutionfile::copy($solution->id, $copySolution->id);
+                }
+                return true;
+            }
+        } else return false;
+    }
 
 }
