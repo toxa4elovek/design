@@ -10,19 +10,15 @@ use \app\models\User;
 class PitchratingTest extends AppUnit {
 
     public function setUp() {
-        
+        $this->rollUp(array('Pitch', 'User', 'Pitchrating'));
     }
 
     public function tearDown() {
-        
+        $this->rollDown(array('Pitch', 'User', 'Pitchrating'));
     }
 
     public function testSetRating() {
-        $pitchRating = Pitchrating::create();
-        $pitchRating->rating = 4;
-        $pitchRating->user_id = User::first()->id;
-        $pitchRating->pitch_id = Pitch::first()->id;
-        $pitchRating->save();
+        $pitchRating = Pitchrating::first();
         $this->assertTrue(Pitchrating::setRating($pitchRating->user_id, $pitchRating->pitch_id, 3));
 
         // True при одинаковом рейтинге
