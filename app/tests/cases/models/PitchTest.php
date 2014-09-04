@@ -18,7 +18,8 @@ class PitchTest extends AppUnit {
     }
 
     public function testGetOwnerOfPitch() {
-        $result = Pitch::getOwnerOfPitch(4);
+        // Тут надо убедиться, что строчкой ниже айди не существующй
+        $result = Pitch::getOwnerOfPitch(10000);
         $this->assertFalse($result);
         $result = Pitch::getOwnerOfPitch(1);
         $this->assertTrue(is_object($result));
@@ -291,4 +292,14 @@ class PitchTest extends AppUnit {
                 $this->assertEqual(0,$pitch->multiwinner);
             }
 	}
+        
+        public function testGetFreePitch() {
+            $pitch1 = Pitch::getFreePitch();
+            $pitch2 = Pitch::getFreePitch();
+            $this->assertEqual(1, count($pitch1));
+            while ($pitch1->id == $pitch2->id) {
+                $pitch2 = Pitch::getFreePitch();
+            }
+            $this->assertNotEqual($pitch2, $pitch1);
+        }
 }

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use \app\models\Bill;
 use \app\models\Pitch;
+use \app\models\Pitchrating;
 use \app\models\Pitchfile;
 use \app\models\Category;
 use \app\models\Grade;
@@ -819,7 +820,8 @@ class PitchesController extends \app\controllers\AppController {
             }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
-			    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions');
+                    $freePitch = Pitch::getFreePitch();
+		    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions','freePitch');
             }else {
                 if (isset($this->request->query['count'])) {
                     return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount')));
@@ -925,8 +927,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if(!empty($fileIds)) {
                 $files = Pitchfile::all(array('conditions' => array('id' => $fileIds)));
             }
+            $rating = Pitchrating::getRating($currentUser, $pitch->id);
             if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-                return compact('pitch', 'files', 'comments', 'prevpitch');
+                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts','rating');
             }else {
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch')));
             }
@@ -1155,8 +1158,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
             $formatter = new MoneyFormatter;
             $description = mb_substr($pitch->description, 0, 150, 'UTF-8') . ((mb_strlen($pitch->description) > 150) ? '... ' : '. ') . 'Награда: ' . $formatter->formatMoney($pitch->price, array('suffix' => ' рублей')) . (($pitch->guaranteed == 1) ? ', гарантированы' : '');
-
-            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description');
+            setlocale(LC_ALL, "ru_RU.UTF-8");
+            $date = strftime("%d %B %Y, %H:%M", strtotime($solution->created));
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date');
 		}else {
 		    throw new Exception('Public:Такого решения не существует.', 404);
         }

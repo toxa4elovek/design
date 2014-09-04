@@ -66,7 +66,7 @@
 			<section>
 				<h2 class="or">или</h2>
 
-		        <?php $errors = $user->errors();                ?>
+		        <?php $errors = $user->errors();?>
 				<?php echo $this->form->create($user, array('action' => 'registration', 'id' => 'registration'))
                 /*if($invite):?>
                 <form action="/users/registration?invite=<?=$invite?>" method="post">
@@ -168,7 +168,7 @@
 		</div><!-- .main -->
 	</div><!-- .middle -->
 
-	<?=$this->view()->render(array('element' => 'popups/register'))?>
+	<?=$this->view()->render(array('element' => 'popups/register'),array('freePitch'=>$freePitch));?>
 
     <script type="text/javascript">
         var fb_param = {};
@@ -185,3 +185,5 @@
     <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6006509880528&amp;value=0" /></noscript>
 
 </div><!-- .wrapper -->
+<?=$this->html->script(array('users/registration.js', 'users/activation.js'), array('inline' => false))?>
+<?=$this->view()->render(array('element' => 'popups/activation_popup'))?>

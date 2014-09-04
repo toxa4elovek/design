@@ -1313,4 +1313,8 @@ class Pitch extends \app\models\AppModel {
 			'page' => 1,
 		));
 	}
+        
+        public static function getFreePitch() {
+            return Pitch::first(array('conditions'=>array('status' => 0, 'published' => 1, 'free' => 1),'order' => array('RAND()')));
+        }
 }

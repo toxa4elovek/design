@@ -58,6 +58,11 @@
                             $types['winner'] = 0;
                             ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
+							<td>
+							<?php if($mypitch->category != 7 &&($mypitch->status == 1) && ($mypitch->awarded != 0)):?>
+                                                    <img class="pitches-image" src="<?php echo isset($mypitch->winner->images['solution_tutdesign'][0]) ? $mypitch->winner->images['solution_tutdesign'][0]['weburl'] :$mypitch->winner->images['solution_tutdesign']['weburl']?>">
+							<?php endif?>
+							</td>
                                 <td class="pitches-name mypitches">
                                     <a href="/pitches/view/<?=$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
                                 </td>
@@ -182,7 +187,7 @@
 	<nav class="topnav">
         <?php if($this->user->isLoggedIn()):?>
             <div class="avatar-top" style="width: 41px; float: left; height: 50px;">
-                <img style="display:block; float:left;width:41px;"src="<?=$this->user->getAvatarUrl()?>" alt="" />
+                <img style="display:block; float:left;width:41px;" src="<?=$this->user->getAvatarUrl()?>" alt="" />
                 <script>var currentAvatar = '<?=$this->user->getAvatarUrl()?>'</script>
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">

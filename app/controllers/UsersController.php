@@ -718,8 +718,8 @@ class UsersController extends \app\controllers\AppController {
             'scope' => 'friends',
             'response_type' => 'code'
         );
-
-		return compact('user', 'invite', 'params', 'url');
+        $freePitch = Pitch::getFreePitch();
+		return compact('user', 'invite', 'params', 'url','freePitch');
 	}
 
     public function setStatus() {
@@ -852,12 +852,12 @@ class UsersController extends \app\controllers\AppController {
                 Auth::clear('user');
                 Auth::set('user', $user->data());
                 Session::write('user.confirmed_email', 1);
-                return $this->redirect('Users::office');
+                return $this->redirect(array('Users::office','?' => array('success' => 'true')));
             }else {
-                return $this->redirect('Users::registration');
+                return $this->redirect(array('Users::registration','?' => array('success' => 'false')));
             }
         }else {
-            return $this->redirect('Users::registration');
+            return $this->redirect(array('Users::registration','?' => array('success' => 'false')));
         }
     }
 

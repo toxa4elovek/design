@@ -84,9 +84,6 @@ function mb_basename($file)
                         </p>
                         <?php endif;?>
                         <p class="regular"><?=$this->brief->e($pitch->fileFormatDesc)?></p>
-
-
-
                         <?php if((!empty($files)) && (count($files) > 0)):?>
                         <div class="separator" style="width:620px; margin:0;"></div>
                         <h2 class="blueheading">Прикрепленные документы:</h2>
@@ -106,10 +103,17 @@ function mb_basename($file)
                             <?php endforeach?>
                         </ul>
                         <?php endif?>
-
+                      <?php if($this->user->isLoggedIn()):?>
+                      <div class="separator" style="width: 620px; margin:30px 0 15px;"></div>
+                      <div style="height:20px;margin-top:22px;"><span id="rating_brief">Оцените бриф:</span>
+                        <div style="position:relative;left:100px;bottom:20px;" id="pitch_rating" data-pitchid="<?=$pitch->id?>" data-read="<?php echo $this->session->read('user.id') ? 'false' : 'true' ?>" data-rating="<?=$rating?>"></div>
+                        <div id="take-part">
+                            <button class="btn btn-success" data-pitchid="<?=$pitch->id?>"><span class="glyphicon glyphicon-plus-sign"></span> Приму участие</button>
+                        </div>
+                    </div>
+                    <?php endif?>
                     </div>
                 </div>
-
                 <div class="SideBarRight">
                     <div id="current_pitch" style="margin-top: 20px;">
                         <?php echo $this->stream->renderStream(3);?>
@@ -142,8 +146,6 @@ function mb_basename($file)
                     <div style="clear:both;width:300px;height:1px;"></div>
                 </div>
                 <?php endif?>
-
-
                 <div class="separator" style="width: 620px; margin: 30px 0 15px 0;"></div>
 
                 <a href="/pitches" class="all-pitches-link"></a>
@@ -163,5 +165,5 @@ function mb_basename($file)
 </div><!-- .wrapper -->
 <?=$this->view()->render(array('element' => 'popups/warning'))?>
 
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js', 'pitches/details.js'), array('inline' => false))?>
 <?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>
