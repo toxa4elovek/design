@@ -26,7 +26,7 @@
             <div class="separator"></div>
             <div class="solution-info solution-about chapter">
                 <h2>О РЕШЕНИИ</h2>
-                <span id="date" style="color:#878787;">Опубликовано <?=$solution->created?></span><br/><br/>
+                <span id="date" style="color:#878787;">Опубликовано <?=$solution->created?></span><br/>
                 <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
