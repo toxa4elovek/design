@@ -705,7 +705,6 @@
                 } else {
                     $('.solution-description').html(result.solution.description);
                 }
-                 $('.solution-about').next().after('<br/>');
                 if(result.solution.description != '') {
                     $('span#date').after('<br />');
                 }
