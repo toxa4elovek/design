@@ -705,12 +705,9 @@
                 } else {
                     $('.solution-description').html(result.solution.description);
                 }
-                if(result.solution.description == '') {
-                    $('.solution-about').next().hide();
-                    $('.solution-about').hide();
-                }else {
-                    $('.solution-about').next().show();
-                    $('.solution-about').show();
+                 $('.solution-about').next().after('<br/>');
+                if(result.solution.description != '') {
+                    $('span#date').after('<br />');
                 }
             }else {
                 $('.solution-description').html('');
