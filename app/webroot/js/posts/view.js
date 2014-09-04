@@ -18,8 +18,8 @@ $(document).ready(function() {
         $('#post-search').removeClass('active');
     });
 
-    $.each($('p'), function(idx, obj) {
-        var $rama = $(obj).children('img');
+    $.each($('p, span'), function(idx, obj) {
+        var $rama = $(obj).find('img');
         if ($rama.length > 1) {
             $rama.wrapAll('<div class="fotorama" data-nav="false" data-maxwidth="100%" />');
             // 1. Initialize fotorama manually.
