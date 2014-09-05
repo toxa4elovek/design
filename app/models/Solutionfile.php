@@ -42,6 +42,7 @@ class Solutionfile extends \app\models\AppModel {
             'file_overwrite' => true
         ),
     );
+
     protected static $processImageWatermark = array(
         'solutionView' => array(
             'image_resize' => true,
@@ -64,6 +65,30 @@ class Solutionfile extends \app\models\AppModel {
             'image_ratio_y' => true,
             'image_watermark' => 'img/closed_pitch_watermark.png',
             'image_watermark_position' => 'TR',
+        ),
+    );
+
+    protected static $tallImageModifier = array(
+        'galleryLargeSize' => array(
+            'image_resize' => true,
+            'image_x' => 180,
+            'image_y' => 135,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true,
+        ),
+        'tutdesign' => array(
+            'image_resize' => true,
+            'image_x' => 267,
+            'image_y' => 200,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
+        'mobile' => array(
+            'image_resize' => true,
+            'image_x' => 590,
+            'image_y' => 448,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
         ),
     );
 
@@ -109,6 +134,19 @@ class Solutionfile extends \app\models\AppModel {
 
     public static function getParams() {
         return self::$processImage;
+    }
+
+    public static function paramsModify($file) {
+        $res = self::$processImage;
+        if (file_exists($file['tmp_name'])) {
+            $image_info = getimagesize($file["tmp_name"]);
+            $image_width = $image_info[0];
+            $image_height = $image_info[1];
+            if ($image_width < $image_height) {
+                $res = self::$tallImageModifier + self::$processImage;
+            }
+        }
+        return $res;
     }
 
     public static function copy($model_id, $new_model) {
