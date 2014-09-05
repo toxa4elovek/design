@@ -92,6 +92,10 @@ class PagesController extends \app\controllers\AppController {
     public function howitworks() {
 
     }
+    
+    public function fastpitch() {
+        
+    }
 }
 
 ?>
