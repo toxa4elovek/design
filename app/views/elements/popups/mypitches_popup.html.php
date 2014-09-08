@@ -33,3 +33,5 @@
     </div>
     <div class="true-close"></div>
 </div>
+<script type="text/javascript" id="share-vk" src="http://vk.com/js/api/share.js?90"></script>
+<script defer="defer" src="//assets.pinterest.com/js/pinit.js" data-pin-build="parsePins"></script>
