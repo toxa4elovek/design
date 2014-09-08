@@ -309,6 +309,7 @@ class PitchTest extends AppUnit {
         $this->assertTrue(Pitch::createNewWinner(2));
         $pitch = Pitch::first(7);
         $solution = Solution::first(array('order' => array('id' => 'DESC')));
+        $this->assertEqual('Проверка названия 2', $pitch->title);
         $this->assertEqual(0, $pitch->billed);
         $this->assertEqual(0, $pitch->published);
         $this->assertEqual(1, $pitch->multiwinner);
@@ -321,6 +322,24 @@ class PitchTest extends AppUnit {
         $pitch = Pitch::first(4);
         $this->assertEqual(1,$pitch->billed);
         $this->assertEqual(1,$pitch->published);
+    }
+
+    public function testGetCountBilledMultiwinner() {
+        // 0 результатов
+        $count = Pitch::getCountBilledMultiwinner(2);
+        $this->assertEqual(0, $count);
+        // 1 - одна копия, сначала неоплаченная, потом оплаченная
+        $firstCopyId = Pitch::createNewWinner(2);
+        $count = Pitch::getCountBilledMultiwinner(2);
+        $this->assertEqual(0, $count);
+        Pitch::activateNewWinner($firstCopyId);
+        $count = Pitch::getCountBilledMultiwinner(2);
+        $this->assertEqual(1, $count);
+        // 2 - две оплаченных копии
+        $secondCopyId = Pitch::createNewWinner(4);
+        Pitch::activateNewWinner($secondCopyId);
+        $count = Pitch::getCountBilledMultiwinner(2);
+        $this->assertEqual(2, $count);
     }
 
 }
