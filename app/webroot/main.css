@@ -3287,3 +3287,22 @@ div.no-result p {
 #popup-mypitches-true .true-close:hover {
     background-position: 0 0;
 }
+#popup-mypitches-true {
+    height:471px;
+    text-align:center;
+}
+#popup-mypitches-true #popup-social-nest {
+    background: url(img/social_nest-04.png) no-repeat;
+    height:246px;
+    width:468px;
+}
+#popup-mypitches-true:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 15px;
+    bottom: -19px;
+    width: 451px;
+    height: 19px;
+    background: url(img/popup-submit-bottom.png) 0 50% no-repeat;
+}

@@ -3,9 +3,9 @@
 ?>
 
 <div id="popup-mypitches-true" style="display: none;">
-    <h2>true!</h2>
-    <div class="share-this">
-        <span>Поделиться результатом:</span>
+    <h2>Расскажите всем,<br /> что вы создали<br /> такой замечательный проект!</h2>
+    <p>Поделитесь с друзьями новым питчем, и это поможет привлечь больше дизайнеров.</p>
+    <div class="share-this" style="margin-left:65px;">
         <div style="">
             <div style="float:left;height:20px;margin-right: 20px;">
                 <a href="#" class="post-to-facebook" data-share-text="<?php echo $shareText; ?>"><img src="/img/fb-test-share.png"></a>
@@ -31,6 +31,7 @@
             <div style="clear:both;width:300px;height:1px;"></div>
         </div>
     </div>
+    <div id="popup-social-nest"></div>
     <div class="true-close"></div>
 </div>
 <script type="text/javascript" id="share-vk" src="http://vk.com/js/api/share.js?90"></script>
