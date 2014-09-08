@@ -4,7 +4,7 @@ $details = unserialize($pitch->specifics);
 <input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["audience"])); ?>">
 <?php if(isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько страниц необходимо создать?</h2>
-<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'страница', 'second' => 'страницы', 'third' => 'страниц'))?></p>
+<p class="regular"><?php echo nl2br($details['site-sub'])?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'страница', 'second' => 'страницы', 'third' => 'страниц'))?></p>
 <?php endif?>
 
 <div class="groupc">

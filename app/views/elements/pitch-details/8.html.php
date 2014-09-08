@@ -7,12 +7,12 @@ $details = unserialize($pitch->specifics);
 
     <?php if(!empty($details['booklet-pages'])):?>
     <h2 class="blueheading">Количество страниц</h2>
-    <p class="regular"><?=$details['booklet-pages']?></p>
+    <p class="regular"><?php echo nl2br($details['booklet-pages'])?></p>
     <?php endif;?>
 
     <?php if(!empty($details['site-sub'])):?>
     <h2 class="blueheading">Количество страниц</h2>
-    <p class="regular"><?=$details['site-sub']?></p>
+    <p class="regular"><?php echo nl2br($details['site-sub'])?></p>
     <?php endif;?>
 
     <h2 class="blueheading">Целевая аудитория</h2>
