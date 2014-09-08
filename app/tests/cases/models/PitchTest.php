@@ -311,7 +311,7 @@ class PitchTest extends AppUnit {
         $solution = Solution::first(array('order' => array('id' => 'DESC')));
         $this->assertEqual(0, $pitch->billed);
         $this->assertEqual(0, $pitch->published);
-        $this->assertEqual(1, $pitch->multiwinner);
+        $this->assertEqual(2, $pitch->multiwinner);
         $this->assertEqual($pitch->awarded, $solution->id);
     }
 
