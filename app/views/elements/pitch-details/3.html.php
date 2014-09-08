@@ -59,5 +59,5 @@ endif;
 
 <?php if(!empty($details['qualities'])):?>
 <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
-<p class="regular"><?=$details['qualities']?></p>
+<p class="regular"><?php echo nl2br($details['qualities'])?></p>
 <?php endif;?>

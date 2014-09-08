@@ -16,7 +16,7 @@ if(isset($details['third-option'])):?>
 
 <?php if(!empty($details['qualities'])):?>
 <h2 class="blueheading">Какие три качества должно отражать название/слоган?</h2>
-<p class="regular"><?=$details['qualities']?></p>
+<p class="regular"><?php echo nl2br($details['qualities'])?></p>
 <?php endif?>
 
 <div class="group">
