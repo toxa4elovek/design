@@ -312,7 +312,7 @@ class PitchTest extends AppUnit {
         $this->assertEqual('Проверка названия 2', $pitch->title);
         $this->assertEqual(0, $pitch->billed);
         $this->assertEqual(0, $pitch->published);
-        $this->assertEqual(1, $pitch->multiwinner);
+        $this->assertEqual(2, $pitch->multiwinner);
         $this->assertEqual($pitch->awarded, $solution->id);
     }
 

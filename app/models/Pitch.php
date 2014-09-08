@@ -1329,15 +1329,17 @@ class Pitch extends \app\models\AppModel {
 
 
     public static function createNewWinner($solutionId) {
-        if ($solution = Solution::first(array(
+        if (($solution = Solution::first(array(
                     'conditions' => array('Solution.id' => $solutionId),
                     'with' => array('Pitch'),
-                ))) {
+                ))) && count(self::all(array('conditions' => array('user_id' => $solution->pitch->user_id,'billed' => 0,'multiwinner'=>$solution->pitch->id))))==0) {
             $copyPitch = Pitch::create();
             $data = $solution->pitch->data();
             $data['billed'] = 0;
             $data['published'] = 0;
-            $data['multiwinner'] = 1;
+            $data['multiwinner'] = $data['id'];
+            $count = self::getCountBilledPithces($data['id'])+2;
+            $data['title'] = $data['title'].' '.$count;
             //  $data['total'] = $data['price'] + ($data['price']*0);
             unset($data['id']);
             $copyPitch->set($data);
@@ -1374,7 +1376,7 @@ class Pitch extends \app\models\AppModel {
 
     public static function getCountBilledMultiwinner($pitchId) {
         if($pitch = self::first($pitchId)) {
-            return count(self::all(array('conditions' => array('id' => $pitchId,'user_id' => $pitch->user_id,'billed' => 1,'title' => $pitch->title))));
+            return count(self::all(array('conditions' => array('user_id' => $pitch->user_id,'billed' => 1,'multiwinner'=>$pitch->id))));
         }
     }
 }
