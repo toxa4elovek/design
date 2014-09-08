@@ -3234,7 +3234,8 @@ div.no-result p {
 }
 
 #popup-confirm-email-true,
-#popup-confirm-email-false {
+#popup-confirm-email-false,
+#popup-mypitches-true {
     position: relative;
     width: 480px;
     height: 460px;
@@ -3243,7 +3244,8 @@ div.no-result p {
     text-align: center;
 }
 #popup-confirm-email-true h2,
-#popup-confirm-email-false h2 {
+#popup-confirm-email-false h2,
+#popup-mypitches-true h2 {
     font-family: RodeoC, serif;
     font-size: 28px;
     font-weight: normal;
@@ -3254,7 +3256,8 @@ div.no-result p {
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
 #popup-confirm-email-true p,
-#popup-confirm-email-false p {
+#popup-confirm-email-false p,
+#popup-mypitches-true p {
     font-family: Arial, sans-serif;
     font-size: 16px;
     font-weight: normal;
@@ -3265,7 +3268,8 @@ div.no-result p {
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
 #popup-confirm-email-true .true-close,
-#popup-confirm-email-false .false-close {
+#popup-confirm-email-false .false-close,
+#popup-mypitches-true .true-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -3278,7 +3282,8 @@ div.no-result p {
     background-position: 0 -15px;
     cursor: pointer;
 }
-#popup-confirm-email-true .true-close:hover ,
-#popup-confirm-email-false .false-close:hover{
+#popup-confirm-email-true .true-close:hover,
+#popup-confirm-email-false .false-close:hover,
+#popup-mypitches-true .true-close:hover {
     background-position: 0 0;
 }
