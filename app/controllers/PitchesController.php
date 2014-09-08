@@ -819,9 +819,10 @@ class PitchesController extends \app\controllers\AppController {
                 $selectedsolution = true;
             }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+            $pitchesCount = Pitch::getCountBilledPithces($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
-                    $freePitch = Pitch::getFreePitch();
-		    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions','freePitch');
+                $freePitch = Pitch::getFreePitch();
+		        return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions','freePitch', 'pitchesCount');
             }else {
                 if (isset($this->request->query['count'])) {
                     return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount')));
@@ -1357,5 +1358,30 @@ Disallow: /pitches/upload/' . $pitch['id'];
     public function promocode() {
         Pitch::dailypitch();
         die();
+    }
+    
+    public function newwinner() {  
+        if(($pitch = Pitch::first($this->request->id))&& Session::read('user.id') == $pitch->user_id && ($receipt = Receipt::all(array('conditions'=>array('pitch_id' => $this->request->id),'fields' => array('name','value'))))) {
+            return compact('pitch','receipt');
+        } else {
+            return $this->redirect('/pitches');
+        }
+    }
+    
+    public function setnewwinner() {
+        $solution = Solution::first(array('conditions' => array('Solution.id'=>$this->request->id),'with'=>array('Pitch')));
+        $pitch = $solution->pitch;
+        if(!is_null($pitch->id) && $pitch->awarded != $solution->id && Session::read('user.id') == $pitch->user_id) {
+            $copyPitch = Pitch::first(array('conditions' => array('user_id' => $pitch->user_id,'title' => $pitch->title,'multiwinner'=>1)));
+            if(!empty($copyPitch)){
+                $copyPitch->billed = 0;
+                $copyPitch->save();
+            } else {
+                $newPitchId = Pitch::createNewWinner($solution->id);
+            }
+            return $this->redirect(array('controller' => 'pitches', 'action' => 'newwinner', 'id' => $newPitchId ? $newPitchId : $copyPitch->id));
+        } else {
+            return $this->redirect('/pitches');
+        }
     }
 }

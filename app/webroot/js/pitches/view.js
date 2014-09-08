@@ -156,14 +156,18 @@
 
     $(document).on('click', '#confirmWinner', function() {
         var url = $(this).data('url');
-        $.get(url, function(response) {
-            if(response.result != false) {
-                if(response.result.nominated) {
-                    window.location = '/users/nominated';
-                    $('.select-winner-li').remove();
+        if(!$(this).data('url')){
+            $.get(url, function(response) {
+                if(response.result != false) {
+                    if(response.result.nominated) {
+                        window.location = '/users/nominated';
+                        $('.select-winner-li').remove();
+                    }
                 }
-            }
-       });
+           });
+        } else {
+            window.location = url;
+        }
     });
 
     // Delete Solution from Solution Popup

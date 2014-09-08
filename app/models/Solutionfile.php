@@ -42,7 +42,6 @@ class Solutionfile extends \app\models\AppModel {
             'file_overwrite' => true
         ),
     );
-
     protected static $processImageWatermark = array(
         'solutionView' => array(
             'image_resize' => true,
@@ -67,7 +66,6 @@ class Solutionfile extends \app\models\AppModel {
             'image_watermark_position' => 'TR',
         ),
     );
-
     protected static $tallImageModifier = array(
         'galleryLargeSize' => array(
             'image_resize' => true,
@@ -99,11 +97,11 @@ class Solutionfile extends \app\models\AppModel {
         }
         foreach ($options as $option => $imageParams) {
             $newname = self::first(array(
-                'fields' => 'filename',
-                'conditions' => array(
-                    'model_id' => $params['solution']->id,
-                    'originalbasename' => $params['name'],
-                ),
+                        'fields' => 'filename',
+                        'conditions' => array(
+                            'model_id' => $params['solution']->id,
+                            'originalbasename' => $params['name'],
+                        ),
             ));
             $newfiledata = pathinfo($newname->filename);
             $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
@@ -186,5 +184,6 @@ class Solutionfile extends \app\models\AppModel {
         }
         return true;
     }
+
 
 }
