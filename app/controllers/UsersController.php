@@ -683,7 +683,12 @@ class UsersController extends \app\controllers\AppController {
                     $userToLog = User::first(array('conditions' => array('id' => $user->id)));
                     $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                     $userToLog->setLastActionTime();
-                    $res = UserMailer::verification_mail($userToLog);
+                    if ($user->isClient) {
+                        $post = Post::all(array('order' => array('id' => 'desc'),'conditions' => array('limit' => 2)));
+                        $res = UserMailer::verification_mail_client($userToLog,$post->data());
+                    } else {
+                        $res = UserMailer::verification_mail($userToLog);
+                    }
                     // производим аутентификацию
                     Auth::set('user', $userToLog->data());
 
