@@ -1338,7 +1338,7 @@ class Pitch extends \app\models\AppModel {
             $data['billed'] = 0;
             $data['published'] = 0;
             $data['multiwinner'] = $data['id'];
-            $count = self::getCountBilledPithces($data['id'])+2;
+            $count = self::getCountBilledMultiwinner($data['id'])+2;
             $data['title'] = $data['title'].' '.$count;
             //  $data['total'] = $data['price'] + ($data['price']*0);
             unset($data['id']);

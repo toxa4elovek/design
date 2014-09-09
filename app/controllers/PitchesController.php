@@ -819,7 +819,7 @@ class PitchesController extends \app\controllers\AppController {
                 $selectedsolution = true;
             }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
-            $pitchesCount = Pitch::getCountBilledPithces($pitch->id);
+            $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
                 $freePitch = Pitch::getFreePitch();
 		        return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions','freePitch', 'pitchesCount');

@@ -1,16 +1,16 @@
 <div id="popup-final-step" class="popup-final-step" style="display:none;<?php echo $pitchesCount>=1 ? 'font:13px/18px Arial,sans-serif;':''?>">
-    <?php if ($pitchesCount<1): ?>
+    <?php if (($pitchesCount < 1) && ($pitch->awarded == 0)): ?>
     <h3>Убедитесь в правильном выборе!</h3>
     <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё мнение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Вы уверены, что победителем питча становится <a id="winner-user-link" href="#" target="_blank"></a> c решением <a id="winner-num" href="#" target="_blank"></a>?</p>
-    <?php elseif ($pitchesCount>=1): ?>
-    <h3 style="margin: 104px 0 0.6em;">Убедитесь в правильном выборе <?=$pitchesCount+1?>-ого победителя!</h3>
+    <?php elseif ($pitch->awarded != 0): ?>
+    <h3 style="margin: 104px 0 0.6em;">Убедитесь в правильном выборе <?=$pitchesCount + 2?>-ого победителя!</h3>
     <p>Сейчас вы будете направлены на страницу оплаты. Помните, что выкупить решение можно только при первоначальном размере вознаграждения. Стоимость дополнительных опций, не взимается, если таковы были заказаны.</p>
     <br />
     <p>После завершения оплаты вы не сможете изменить своё мнение. Пожалуйста, убедитесь еще раз в верности вашего решения. Вы уверены, что <?=$pitchesCount+1?> победителем питча становится <a id="winner-user-link" href="#" target="_blank"></a> с решением <a id="winner-num" href="#" target="_blank"></a>?</p>
     <?php endif;?>
     <div class="portfolio_gallery" style="width:200px;margin-bottom:5px;">
         <ul class="list_portfolio">
-            <li <?php echo $pitchesCount>=1 ? 'style="margin-top: 2px"':''?>>
+            <li <?php echo $pitchesCount >= 1  ? 'style="margin-top: 2px"':''?>>
                 <div id="replacingblock">
                     <a href="#"><img alt="" src="#"></a>
                     <div class="photo_opt">

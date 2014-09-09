@@ -155,7 +155,7 @@
 	</div><!-- /middle -->
 </div><!-- .wrapper -->
 
-<?=$this->view()->render(array('element' => 'popups/warning'),array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount))?>
+<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
 
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
