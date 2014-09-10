@@ -9,6 +9,7 @@ use \app\models\Solution;
 use \app\models\Wincomment;
 use \app\models\Grade;
 use \app\models\Pitch;
+use app\models\Post;
 use \app\models\Event;
 use \app\models\Invite;
 use \app\models\Avatar;
