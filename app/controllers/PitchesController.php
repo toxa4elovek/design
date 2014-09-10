@@ -49,7 +49,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch'
 	);
 
     public function blank() {
@@ -1362,12 +1362,20 @@ Disallow: /pitches/upload/' . $pitch['id'];
     public function addfastpitch() {
         if ($this->request->is('json')) {
             $pitch = Pitch::create();
-            $pitch->set(array('title'=>'FastPitch','phone-brief' => $this->request->data['phone']));
+            $pitch->set(array(
+                'title'=>'FastPitch',
+                'phone-brief' => $this->request->data['phone'],
+                'price' => 14000,
+                'total' => 19600));
             if($pitch->save()) {
                 $receiptData = array(
                     'features' => array(
-                        'award' => 14000,
-                        'discount' => 2530),
+                        'award' => $pitch->price,
+                        'discount' => -2530,
+                        'brief' => 1750,
+                        'experts' => 1000,
+                        'guaranteed' => 950,
+                        'pinned' => 1000),
                         'commonPitchData' => array(
                             'id' => $pitch->id,
                             'category_id' => 0,

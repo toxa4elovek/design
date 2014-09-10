@@ -4,9 +4,12 @@
     <input type="hidden" value="" id="addon_id"/>
     <input type="hidden" value="<?= $pitch->billed ?>" id="billed"/>
     <input type="hidden" value="<?= $pitch->published ?>" id="published"/>
-    <?php $sum = ($receipt[0]->value + $receipt[1]->value)? : 0 ?>
-    <input type="hidden" value="<?= $sum ?>" id="amount"/>
-
+    <?php
+    $sum = 0;
+    foreach ($receipt as $rec) {
+        $sum += $rec->value;
+    }
+    ?>
     <aside class="summary-price expanded">
         <h3>Итого:</h3>
         <p class="summary"><strong id="total-tag"><?= $sum ?>.-</strong></p><!-- .summary -->
@@ -87,4 +90,5 @@
         </div><!-- .main -->
     </div><!-- .middle -->
     <?= $this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'pitches/newwinner.js?' . mt_rand(100, 999), 'jquery.numeric', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false)) ?>
-    <?= $this->html->style(array('/brief', '/step3'), array('inline' => false))?>
+    <?=
+    $this->html->style(array('/brief', '/step3'), array('inline' => false))?>
