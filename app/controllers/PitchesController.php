@@ -1380,7 +1380,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
         $solution = Solution::first(array('conditions' => array('Solution.id'=>$this->request->id),'with'=>array('Pitch')));
         $pitch = $solution->pitch;
         if(!is_null($pitch->id) && $pitch->awarded != $solution->id && Session::read('user.id') == $pitch->user_id) {
-            $copyPitch = Pitch::first(array('conditions' => array('user_id' => $pitch->user_id,'multiwinner'=>$pitch->id)));
+            $copyPitch = Pitch::first(array('conditions' => array('user_id' => $pitch->user_id, 'billed' => 0,'multiwinner'=>$pitch->id)));
             if(!empty($copyPitch)){
                 $copyPitch->billed = 0;
                 $copyPitch->save();
