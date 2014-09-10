@@ -6,12 +6,12 @@ $subValues = array('Этикетка и контрэтикетка', 'Оформ
 
 <?php if(isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько макетов необходимо создать?</h2>
-<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'))?></p>
+<p class="regular"><?php echo nl2br($details['site-sub'])?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'))?></p>
 <?php endif?>
 
 <?php if((isset($details['package-type'])) && (!empty($subValues[$details['package-type']]))):?>
 <h2 class="blueheading">Вид упаковки</h2>
-<p class="regular"><?=$subValues[$details['package-type']]?></p>
+<p class="regular"><?php echo nl2br($subValues[$details['package-type']])?></p>
 <?php endif?>
 
 <div class="group">
