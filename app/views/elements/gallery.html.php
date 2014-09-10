@@ -265,7 +265,7 @@ foreach($solutions as $solution):
                     </li>
                 <?php elseif (($pitch->awarded != $solution->id) && ($pitch->status == 1) && ($pitch->awarded != 0)): ?>
                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
-                        <a class="select-winner" href="/pitches/setnewwinner/<?=$solution->id?>" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить <?=$pitchesCount+2?> победителя</a>
+                        <a class="select-multiwinner" href="/pitches/setnewwinner/<?=$solution->id?>" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить <?=$pitchesCount+2?> победителя</a>
                     </li>
                 <?php endif; ?>
             <?php endif;?>
