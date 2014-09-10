@@ -11,7 +11,7 @@
                     <div id="ap_content_top_l">
                         <h1 class="head">Создай питч на логотип в один клик, остальное мы сделаем за вас.</h1>
                         <label id="phone">Номер телефона</label>
-                        <input name="phone" value="" class="input-phone" /> <span class="and_phone">и</span> <a class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo;</a>
+                        <input name="phone" value="" class="input-phone" /> <span class="and_phone">и</span> <a id="fastpitch" class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo;</a>
 
                         <h1>Что включено?</h1>
 
@@ -36,3 +36,4 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
+<?= $this->html->script(array('pages/fastpitch.js'), array('inline' => false)) ?>

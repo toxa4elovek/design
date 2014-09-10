@@ -17,6 +17,7 @@ class Receipt extends \app\models\AppModel {
         'brief' => 'Заполнение брифа',
         'guaranteed' => 'Гарантированный питч',
         'fee' => 'Сбор GoDesigner',
+        'discount' => 'Скидка'
     );
 
     public static $fee = FEE_LOW;
@@ -84,6 +85,13 @@ class Receipt extends \app\models\AppModel {
                 'pitch_id' => $data['commonPitchData']['id'],
                 'name' => self::$dict['guaranteed'],
                 'value' => $data['features']['guaranteed']
+            );
+        }
+        if(isset($data['features']['discount'])) {
+            $receiptData[] = array(
+                'pitch_id' => $data['commonPitchData']['id'],
+                'name' => self::$dict['discount'],
+                'value' => $data['features']['discount']
             );
         }
         $total = 0;

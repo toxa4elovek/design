@@ -49,7 +49,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch'
 	);
 
     public function blank() {
@@ -1357,5 +1357,33 @@ Disallow: /pitches/upload/' . $pitch['id'];
     public function promocode() {
         Pitch::dailypitch();
         die();
+    }
+    
+    public function addfastpitch() {
+        if ($this->request->is('json')) {
+            $pitch = Pitch::create();
+            $pitch->set(array('title'=>'FastPitch','phone-brief' => $this->request->data['phone']));
+            if($pitch->save()) {
+                $receiptData = array(
+                    'features' => array(
+                        'award' => 14000,
+                        'discount' => 2530),
+                        'commonPitchData' => array(
+                            'id' => $pitch->id,
+                            'category_id' => 0,
+                            'promocode' => 0));
+                return json_encode('/pitches/fastpitch/'.Receipt::createReceipt($receiptData)); 
+            } else {
+                return json_encode('false');
+            }
+        }
+    }
+    
+     public function fastpitch() {
+        if(($pitch = Pitch::first($this->request->id)) && ($receipt = Receipt::all(array('conditions'=>array('pitch_id' => $this->request->id),'fields' => array('name','value'))))) {
+            return compact('pitch','receipt');
+        } else {
+            return $this->redirect('/pitches');
+        }
     }
 }

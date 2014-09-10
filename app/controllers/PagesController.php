@@ -94,7 +94,7 @@ class PagesController extends \app\controllers\AppController {
     }
     
     public function fastpitch() {
-        
+
     }
 }
 
