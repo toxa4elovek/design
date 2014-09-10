@@ -353,7 +353,11 @@ class PitchesController extends \app\controllers\AppController {
                 $transaction->set($this->request->data);
                 $transaction->save();
                 if($pitch = Pitch::first($this->request->data['LMI_PAYMENT_NO'])) {
-                    Pitch::activate($this->request->data['LMI_PAYMENT_NO']);
+                    if ($pitch->multiwinner != 0) {
+                        Pitch::activateNewWinner($this->request->data['LMI_PAYMENT_NO']);
+                    } else {
+                        Pitch::activate($this->request->data['LMI_PAYMENT_NO']);
+                    }
                 } elseif ($addon = Addon::first($this->request->data['LMI_PAYMENT_NO'])) {
                     Addon::activate($addon);
                 }
@@ -373,7 +377,11 @@ class PitchesController extends \app\controllers\AppController {
             $transaction->set($this->request->data);
             $transaction->save();
             if(($pitch = Pitch::first($this->request->data['MNT_TRANSACTION_ID'])) && ($pitch->total == $this->request->data['MNT_AMOUNT'])) {
-                Pitch::activate($this->request->data['MNT_TRANSACTION_ID']);
+                if ($pitch->multiwinner != 0) {
+                    Pitch::activateNewWinner($this->request->data['MNT_TRANSACTION_ID']);
+                } else {
+                    Pitch::activate($this->request->data['MNT_TRANSACTION_ID']);
+                }
             } elseif ($addon = Addon::first($this->request->data['MNT_TRANSACTION_ID'])) {
                 Addon::activate($addon);
             }
