@@ -258,14 +258,16 @@ foreach($solutions as $solution):
             <?php if($this->user->isLoggedIn()):?>
             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/<?=$solution->id?>.json" class="warning" data-solution-id="<?=$solution->id?>">Пожаловаться</a></li>
             <?php endif;?>
-            <?php if($this->user->isPitchOwner($pitch->user_id)  && (!$selectedsolution)):?>
-            <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
-                <?php if ($pitchesCount<1): ?>
-                    <a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a>
+            <?php if($this->user->isPitchOwner($pitch->user_id)):?>
+                <?php if (($pitchesCount<1) && (!$selectedsolution)): ?>
+                    <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
+                        <a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a>
+                    </li>
                 <?php elseif (($pitch->awarded != $solution->id) && ($pitch->status == 1) && ($pitch->awarded != 0)): ?>
-                    <a class="select-winner" href="/pitches/setnewwinner/<?=$solution->id?>" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить <?=$pitchesCount+2?> победителя</a>
+                    <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
+                        <a class="select-winner" href="/pitches/setnewwinner/<?=$solution->id?>" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить <?=$pitchesCount+2?> победителя</a>
+                    </li>
                 <?php endif; ?>
-            </li>
             <?php endif;?>
 
             <?php if(($this->user->isLoggedIn()) && ($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))): ?>
