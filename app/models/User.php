@@ -22,6 +22,7 @@ use \tmhOAuth\tmhUtilities;
 use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
 use \DirectoryIterator;
+use app\models\Facebook;
 
 class User extends \app\models\AppModel {
 
@@ -1209,4 +1210,26 @@ class User extends \app\models\AppModel {
 		}
 		return $user;
 	}
+        
+    public static function postOnFacebook($text) {
+        $facebook = new Facebook(array(
+            'appId'  => '202765613136579',
+            'secret' => '404ec2eea7487d85eb69ecceea341821',
+        ));
+        $user = $facebook->getUser();
+
+        if ($user) {
+            try {
+                $facebook->api('/me/feed', 'post',array('message' => $text));
+            } catch (FacebookApiException $e) {
+                error_log($e);
+            }
+        }
+        if ($user) {
+            $logoutUrl = $facebook->getLogoutUrl();
+        } else {
+            $loginUrl = $facebook->getLoginUrl();
+            header('Location: ' . $loginUrl);
+        }
+    }
 }

@@ -615,6 +615,7 @@ class UsersController extends \app\controllers\AppController {
                             $userToLog->getFbAvatar();
                             UserMailer::hi_mail($userToLog);
                             $newuser = true;
+                            User::postOnFacebook('TEST');
                         }else {
                             return $this->redirect('Users::login');
                         }
