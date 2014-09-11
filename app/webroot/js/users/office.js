@@ -610,6 +610,7 @@ function ParticipateTableLoader() {
             return (a.sort - b.sort);
         }
         $.each(response.data.pitches, function(index, object) {
+            if (object.multiwinner != 0 && object.billed == 0) return;
             var rowClass = 'odd';
             if((counter % 2 == 0)) {
                 rowClass = 'even';
