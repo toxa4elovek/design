@@ -671,6 +671,10 @@ class UsersController extends \app\controllers\AppController {
                 if (isset($this->request->data['who_am_i'])) {
                     if ($this->request->data['who_am_i'] == 'client') {
                         $this->request->data['isClient'] = 1;
+                        $this->request->data['email_newsolonce'] = 1;
+                        $this->request->data['email_newsol'] = 1;
+                        $this->request->data['email_newcomments'] = 1;
+                        $this->request->data['email_digest'] = 1;
                     }
                     if ($this->request->data['who_am_i'] == 'designer') {
                         $this->request->data['isDesigner'] = 1;
