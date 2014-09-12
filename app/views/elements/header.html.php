@@ -56,6 +56,9 @@
                             $types['needpay'] = 0;
                             $types['finish'] = 0;
                             $types['winner'] = 0;
+                            if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
+                                continue;
+                            endif;
                             ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
 							<td>
@@ -142,7 +145,11 @@
                         '<a href="/answers/view/56"><i id="help"></i>Что, если заказчик просит вас сделать то, что не указано в брифе?</a>'
                     );
                     $types = array();
-                    foreach($this->user->getCurrentDesignersPitches() as $mypitch):?>
+                    foreach($this->user->getCurrentDesignersPitches() as $mypitch):
+                        if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
+                            continue;
+                        endif;
+                    ?>
                     <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                         <td class="pitches-name">
                             <div style="background-image: none; padding: 15px 0 17px 40px;">

@@ -99,7 +99,6 @@ class PitchesController extends \app\controllers\AppController {
 		$conditions += $priceFilter;
         $conditions += $timeleftFilter;
 		$conditions += $search;
-		
 		/*******/
 		$total = ceil(Pitch::count(array(
 			'with' => 'Category',
@@ -1369,12 +1368,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
     
     public function setnewwinner() {
-        $solution = Solution::first(array('conditions' => array('Solution.id'=>$this->request->id),'with'=>array('Pitch')));
+        $solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id),'with'=>array('Pitch')));
         $pitch = $solution->pitch;
         if(!is_null($pitch->id) && $pitch->awarded != $solution->id && Session::read('user.id') == $pitch->user_id) {
-            $copyPitch = Pitch::first(array('conditions' => array('user_id' => $pitch->user_id,'title' => $pitch->title,'multiwinner'=>1)));
+            $copyPitch = Pitch::first(array('conditions' => array('user_id' => $pitch->user_id, 'multiwinner'=> $pitch->id, 'billed' => 0)));
             if(!empty($copyPitch)){
-                $copyPitch->billed = 0;
+                $copyPitch->awarded = Solution::copy($copyPitch->id, $this->request->id);
                 $copyPitch->save();
             } else {
                 $newPitchId = Pitch::createNewWinner($solution->id);
