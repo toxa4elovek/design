@@ -1337,6 +1337,7 @@ class Pitch extends \app\models\AppModel {
             $data = $solution->pitch->data();
             $data['billed'] = 0;
             $data['published'] = 0;
+            $data['status'] = 1;
             $data['multiwinner'] = $data['id'];
             $count = self::getCountBilledMultiwinner($data['id'])+2;
             $data['title'] = $data['title'].' '.$count;
@@ -1365,6 +1366,9 @@ class Pitch extends \app\models\AppModel {
         if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId), 'with' => array('Solution'),))) {
             $pitch->billed = 1;
             $pitch->published = 1;
+            $pitch->finished = date('Y-m-d H:i:s');
+            $pitch->totalFinishDate = '0000-00-00 00:00:00';
+            $pitch->awardedDate = date('Y-m-d H:i:s');
             Solution::awardCopy($pitch->awarded);
             if ($pitch->save()) {
                 Task::createNewTask($pitch->awarded, 'victoryNotification');
