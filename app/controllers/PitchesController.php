@@ -1383,10 +1383,16 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if(!empty($copyPitch)){
                 $copyPitch->awarded = Solution::copy($copyPitch->id, $this->request->id);
                 $copyPitch->save();
+                if($copyPitch->free == 1) {
+                    Pitch::activateNewWinner($copyPitch->id);
+                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $copyPitch->awarded));
+                }
             } else {
                 $newPitchId = Pitch::createNewWinner($solution->id);
                 if($pitch->free == 1) {
+                    $newFreeCopy = Pitch::first($newPitchId);
                     Pitch::activateNewWinner($newPitchId);
+                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $newFreeCopy->awarded));
                 }
             }
             return $this->redirect(array('controller' => 'pitches', 'action' => 'newwinner', 'id' => $newPitchId ? $newPitchId : $copyPitch->id));
