@@ -674,6 +674,10 @@ class UsersController extends \app\controllers\AppController {
                     }
                     if ($this->request->data['who_am_i'] == 'designer') {
                         $this->request->data['isDesigner'] = 1;
+                        $this->request->data['email_newsolonce'] = 1;
+                        $this->request->data['email_newsol'] = 1;
+                        $this->request->data['email_newcomments'] = 1;
+                        $this->request->data['email_digest'] = 1;
                         $redirect = '/pitches';
                     }
                 }
