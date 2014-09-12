@@ -1385,6 +1385,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $copyPitch->save();
             } else {
                 $newPitchId = Pitch::createNewWinner($solution->id);
+                if($pitch->free == 1) {
+                    Pitch::activateNewWinner($newPitchId);
+                }
             }
             return $this->redirect(array('controller' => 'pitches', 'action' => 'newwinner', 'id' => $newPitchId ? $newPitchId : $copyPitch->id));
         } else {

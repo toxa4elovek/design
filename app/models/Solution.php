@@ -356,6 +356,14 @@ http://godesigner.ru/answers/view/73');
         } else return false;
     }
 
+    public static function awardCopy($id) {
+        if($solution = Solution::first($id)){
+            $solution->nominated = 1;
+            $solution->awarded = 1;
+            $solution->save();
+        }else return false;
+    }
+
     
     public static function getCreatedDate($solutionId) {
         if ($solutionId && $solutionDate = Solution::first($solutionId)) {

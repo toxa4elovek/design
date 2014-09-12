@@ -236,6 +236,7 @@ foreach($solutions as $solution):
     <?php if (!isset($fromDesignersTab)):?>
     <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
     <?php endif; ?>
+    <?php if(!$pitch->multiwinner):?>
     <div class="solution_menu" style="display: none;">
         <ul class="solution_menu_list" style="position:absolute;z-index:6;">
             <?php if($this->user->isLoggedIn() && ($solution->hidden == 0) && ($this->user->isPitchOwner($pitch->user_id))): ?>
@@ -279,5 +280,6 @@ foreach($solutions as $solution):
 
         </ul>
     </div>
+    <?php endif;?>
 </li>
 <?php endforeach;?>

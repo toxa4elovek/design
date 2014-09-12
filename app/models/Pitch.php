@@ -1365,8 +1365,9 @@ class Pitch extends \app\models\AppModel {
         if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId), 'with' => array('Solution'),))) {
             $pitch->billed = 1;
             $pitch->published = 1;
+            Solution::awardCopy($pitch->awarded);
             if ($pitch->save()) {
-                Task::createNewTask($pitch->solutions[0]->id, 'victoryNotification');
+                Task::createNewTask($pitch->awarded, 'victoryNotification');
                 return true;
             }
         } else {
