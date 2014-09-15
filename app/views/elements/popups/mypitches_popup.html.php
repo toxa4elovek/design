@@ -1,5 +1,5 @@
 <?php
-    $shareText = 'Тест';
+    $shareText = 'Мой новый заказ на лучший дизайн. Следите и помогайте с выбором!';
 ?>
 
 <div id="popup-mypitches-true" style="display: none;">
