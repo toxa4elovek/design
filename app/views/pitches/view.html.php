@@ -24,7 +24,7 @@
     </div>
     <?php endif?>
     <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-    <input type="hidden" value="<?=(strtotime($pitch->finishDate) < strtotime($pitch->finishDate)+4) ? 1 : 0?>" name="notFinish">
+    <input type="hidden" value="<?=(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +2 days")) ? 1 : 0?>" name="notFinish">
                 <div style="margin-left:280px;width: 560px; height:70px;margin-bottom:40px;">
                     <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
                 </div>
@@ -152,7 +152,7 @@
                             <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255);"><?php echo $this->user->isPitchOwner($pitch->user->id) ? 'Ваш питч' : 'Питч';?><br> гарантированный</h2>
 
                             <img src="/img/bigg.png" style="margin-bottom:10px;margin-top: 15px; margin-left: 54px; padding-right:50px;">
-                            <?php if(strtotime($pitch->finishDate) < strtotime($pitch->finishDate)+4): ?>
+                            <?php if(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +2 days")): ?>
                             <a href="/answers/view/53" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Регламент</a>
                             <?php else: ?>
                             <a href="/answers/view/79" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Что это такое?</a>
