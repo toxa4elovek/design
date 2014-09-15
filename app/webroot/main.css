@@ -3603,12 +3603,12 @@ div.no-result p {
     color: #666;
     text-shadow: 1px 1px 1px #FFF;
     width: 575px;
-    background-color:#E1E1E1;
-    position:absolute;
-    top:91px;
-    left:47px;
-    height:508px;
-
+    background-color: #E1E1E1;
+    position: absolute;
+    top: 91px;
+    left: 47px;
+    height: 508px;
+}
 #popup-mypitches-true {
     height:471px;
     text-align:center;
