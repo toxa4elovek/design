@@ -1340,11 +1340,14 @@ class Pitch extends \app\models\AppModel {
             $data['status'] = 1;
             $data['multiwinner'] = $data['id'];
             $count = self::getCountBilledMultiwinner($data['id'])+2;
-            $data['title'] = $data['title'].' '.$count;
+            $data['title'] = $count.'. '.$data['title'];
             //  $data['total'] = $data['price'] + ($data['price']*0);
             unset($data['id']);
             $copyPitch->set($data);
             if ($copyPitch->save()) {
+                $pitch = $solution->pitch;
+                $pitch->title = '1. '.$pitch->title;
+                $pitch->save();
                 $copyPitch->awarded = Solution::copy($copyPitch->id, $solution->id);
                 $receiptData = array(
                     'features' => array(
