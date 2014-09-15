@@ -4,6 +4,8 @@
 
 	<div class="middle">
 	   <div class="middle_inner_gallery" style="padding-top:25px">
+           <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
+           <input type="hidden" value="<?=(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +2 days")) ? 1 : 0?>" name="notFinish">
             <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             <ul class="tabs-curve group">
                 <li class="active" style="z-index: 3;">
@@ -16,7 +18,6 @@
                     <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
                 </li>
             </ul>
-
             <div class="gallery_container">
                 <nav class="other_nav_gallery clear">
                     <p class="supplement4" style="float:left;height:30px;padding-top:20px;font-weight: bold; color:#b2afaf;">
@@ -122,7 +123,11 @@
                             <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255);"><?php echo $this->user->isPitchOwner($pitch->user->id) ? 'Ваш питч' : 'Питч';?><br> гарантированный</h2>
 
                             <img src="/img/bigg.png" style="margin-bottom:10px;margin-top: 15px; margin-left: 54px; padding-right:50px;">
+                            <?php if(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +2 days")): ?>
+                            <a href="/answers/view/53" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Регламент</a>
+                            <?php else: ?>
                             <a href="/answers/view/79" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Что это такое?</a>
+                            <?php endif; ?>
                         </div>
                         <?php endif?>
                     </div>

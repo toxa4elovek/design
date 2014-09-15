@@ -42,7 +42,7 @@ $(document).ready(function(){
     }
     /*var SidebarUpdater = new SidebarStatusUpdater();
     SidebarUpdater.init();*/
-    
+
     // Solution Stars
     $(document).on('mouseenter', '.ratingchange', function(){
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
@@ -63,7 +63,73 @@ $(document).ready(function(){
         return false;
     });
     
+
+    $(document).on('click', '.post-to-facebook', function() {
+        _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания фейсбука']);
+        sendFBMessage();
+        return false;
+    });
+    var sendFBMessage = function() {
+        var dataFbWallPost = {
+            method: 'stream.publish',
+            message: "",
+            display: 'iframe',
+            caption: " ",
+            name: "Узнай, какой ты дизайнер на самом деле",
+            picture: $('.post-to-facebook').data('share-image'),
+            link: "http://www.godesigner.ru/questions/index",
+            description: $('.post-to-facebook').data('share-text')
+        };
+        FB.ui(dataFbWallPost, function() { });
+    };
+    var initShares = function() {
+        setTimeout(function() {
+            // Pinterest
+            window.parsePins($('.share-this')[0]);
+            // Vk
+            $('.vk_share_button').replaceWith(VK.Share.button(
+                {
+                    url: 'http://www.godesigner.ru/questions/index',
+                    title: 'Узнай, какой ты дизайнер на самом деле',
+                    description: $('.vk_share_button').data('share-text'),
+                    image: $('.vk_share_button').data('share-image'),
+                    noparse: true
+                },
+                {
+                    type: 'round_nocount',
+                    text: 'Поделиться'
+                }
+            ));
+        $('#vkshare1').on('click', function() {
+            _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания ВК']);
+        });
+        // Twitter
+        twttr.widgets.load();
+        twttr.events.bind('click', function (e) {
+            if(e.target.id === 'twitter-widget-1') {
+                _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания твиттера']);
+            }
+        });
+        $('.pin-share').on('click', function() {
+            _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания пинтереста']);
+        });
+    }, 2000);
+    };
+    var success = getUrlVar('success');
+    if (success) {
+        initShares();
+        $('#popup-mypitches-true').modal({  
+            containerId: 'mypitches-true',  
+            opacity: 80,  
+            closeClass: 'true-close'
+        });
+    }
 });
+
+function getUrlVar(key){
+    var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
+    return result && unescape(result[1]) || "";
+}
 
 function SidebarStatusUpdater() {
     var self = this;
@@ -1315,7 +1381,7 @@ $(document).ready(function() {
     $(document).on('click', '.code-resend', function(e) {
         e.preventDefault();
         $.post($(this).attr('href') + '.json', {
-            'userPhone': $(this).data('phone'),
+            'userPhone': $(this).data('phone')
         }, function(result) {
             if (result == 'false') {
                 // False
@@ -1335,7 +1401,7 @@ $(document).ready(function() {
     $(document).on('submit', '#referal-2', function(e) {
         e.preventDefault();
         $.post($(this).attr('action') + '.json', {
-            'verifyCode': $('#verifyCode').val(),
+            'verifyCode': $('#verifyCode').val()
         }, function(result) {
             if (result == 'false') {
                 // Tooltip
