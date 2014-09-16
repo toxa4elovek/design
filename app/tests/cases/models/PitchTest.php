@@ -322,6 +322,9 @@ class PitchTest extends AppUnit {
         $this->assertFalse(Pitch::activateNewWinner(0));
         $this->assertTrue(Pitch::activateNewWinner(4));
         $pitch = Pitch::first(4);
+        $solution = Solution::first(3);
+        $this->assertEqual(1,$solution->awarded);
+        $this->assertEqual(1,$solution->nominated);
         $this->assertEqual(1,$pitch->billed);
         $this->assertEqual(1,$pitch->published);
     }
