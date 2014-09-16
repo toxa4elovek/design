@@ -1377,6 +1377,9 @@ class Pitch extends \app\models\AppModel {
                 Task::createNewTask($pitch->awarded, 'victoryNotification');
                 $admin = User::getAdmin();
                 $solution = $pitch->solutions[0];
+                $solution->awarded = 1;
+                $solution->nominated = 1;
+                $solution->save();
                 $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/> Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
                 $data = array('pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
                 Comment::createComment($data);
