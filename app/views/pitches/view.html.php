@@ -115,19 +115,20 @@
                         <?php if($pitch->guaranteed == 0):?>
                         <div style="width:200px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
-                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;"><a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a><br>
+                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;">
+                                <?php if(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +2 days")): ?>
+                                <a target="_blank" href="/answers/view/53" style="margin-left:25px;">Регламент</a>
+                                <?php else: ?>
+                                <a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a>
+                                <?php endif; ?>
+                                <br />
                             </p>
                         </div>
                         <?php else:?>
                         <div style="width:200px;float:left;height:190px;text-align:center">
                             <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255);"><?php echo $this->user->isPitchOwner($pitch->user->id) ? 'Ваш питч' : 'Питч';?><br> гарантированный</h2>
-
                             <img src="/img/bigg.png" style="margin-bottom:10px;margin-top: 15px; margin-left: 54px; padding-right:50px;">
-                            <?php if(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +2 days")): ?>
-                            <a href="/answers/view/53" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Регламент</a>
-                            <?php else: ?>
                             <a href="/answers/view/79" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Что это такое?</a>
-                            <?php endif; ?>
                         </div>
                         <?php endif?>
                     </div>
