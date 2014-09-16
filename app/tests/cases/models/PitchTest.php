@@ -5,16 +5,17 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\Pitch;
 use app\models\Solution;
+use app\models\Comment;
 use lithium\storage\Session;
 
 class PitchTest extends AppUnit {
 
     public function setUp() {
-        $this->rollUp(array('Pitch', 'User','Solution'));
+        $this->rollUp(array('Pitch', 'User','Solution','Comment'));
     }
 
     public function tearDown() {
-        $this->rollDown(array('Pitch', 'User','Solution'));
+        $this->rollDown(array('Pitch', 'User','Solution','Comment'));
         Session::clear();
     }
 
@@ -323,6 +324,8 @@ class PitchTest extends AppUnit {
         $this->assertTrue(Pitch::activateNewWinner(4));
         $pitch = Pitch::first(4);
         $solution = Solution::first(3);
+        $comment = Comment::first(array('conditions'=>array('pitch_id'=>$pitch->id)));
+        $this->assertEqual('Друзья, выбран победитель',  substr($comment->text, 0, 47));
         $this->assertEqual(1,$solution->awarded);
         $this->assertEqual(1,$solution->nominated);
         $this->assertEqual(1,$pitch->billed);
