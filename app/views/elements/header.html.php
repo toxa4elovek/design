@@ -67,7 +67,7 @@
 							<?php endif?>
 							</td>
                                 <td class="pitches-name mypitches">
-                                    <a href="/pitches/view/<?=$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
+                                    <a href="/pitches/view/<?=($mypitch->multiwinner>0) ? $mypitch->multiwinner :$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
                                 </td>
                                 <td <?php echo ($mypitch->status < 1) ? '' : 'colspan="2"' ?> class="pitches-status mypitches">
                                     <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
