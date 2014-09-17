@@ -1345,9 +1345,6 @@ class Pitch extends \app\models\AppModel {
             unset($data['id']);
             $copyPitch->set($data);
             if ($copyPitch->save()) {
-                $pitch = $solution->pitch;
-                $pitch->title = '1. '.$pitch->title;
-                $pitch->save();
                 $copyPitch->awarded = Solution::copy($copyPitch->id, $solution->id);
                 $receiptData = array(
                     'features' => array(
@@ -1373,6 +1370,10 @@ class Pitch extends \app\models\AppModel {
             $pitch->totalFinishDate = '0000-00-00 00:00:00';
             $pitch->awardedDate = date('Y-m-d H:i:s');
             Solution::awardCopy($pitch->awarded);
+            $count = self::getCountBilledMultiwinner($pitch->id);
+            if ($count == 0){
+                $pitch->title = '1. '.$pitch->title;
+            }
             if ($pitch->save()) {
                 Task::createNewTask($pitch->awarded, 'victoryNotification');
                 $admin = User::getAdmin();
