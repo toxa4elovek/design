@@ -1370,9 +1370,11 @@ class Pitch extends \app\models\AppModel {
             $pitch->totalFinishDate = '0000-00-00 00:00:00';
             $pitch->awardedDate = date('Y-m-d H:i:s');
             Solution::awardCopy($pitch->awarded);
-            $count = self::getCountBilledMultiwinner($pitch->id);
+            $count = self::getCountBilledMultiwinner($pitch->multiwinner);
             if ($count == 0){
-                $pitch->title = '1. '.$pitch->title;
+                $mainPitch = self::first($pitch->multiwinner);
+                $mainPitch->title = '1. '.$mainPitch->title;
+                $mainPitch->save();
             }
             if ($pitch->save()) {
                 Task::createNewTask($pitch->awarded, 'victoryNotification');
