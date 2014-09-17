@@ -2,6 +2,7 @@
     var showSocialPopup = false;
     var needSocialWrite = false;
     var showMobilePopup = false;
+    var showMailPopup = false;
     <?php $showSocialPopup = false; ?>
     <?php if ($this->user->getId()):?>
     <?php if (!$this->user->isSocialNetworkUser()):?>
@@ -48,5 +49,9 @@
     <?php setcookie('mbl', '1', strtotime('+6 month'), '/'); ?>
     showMobilePopup = true;
     <?php endif; ?>
+    <?php endif; ?>
+    <?php if ($this->user->getId() && strtotime($this->user->getCreatedDate()) < strtotime('2014-09-01') && (!isset($_COOKIE['mail']) || $_COOKIE['mail'] == '')): ?>
+    <?php setcookie('mail', '1', strtotime('+6 month'), '/');?>
+    showMailPopup = true;
     <?php endif; ?>
 </script>
