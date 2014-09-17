@@ -1,6 +1,6 @@
 [
-    {"id": 1, "user_id": 2, "category_id": 1, "title": "Test title", "status": 0, "multiwinner": 0},
-    {"id": 2, "user_id": 2, "category_id": 1, "title": "Проверка названия", "status": 0, "multiwinner": 0, "billed": 1},
+    {"id": 1, "user_id": 2, "category_id": 1, "title": "Проверка названия", "status": 0, "multiwinner": 0},
+    {"id": 2, "user_id": 2, "category_id": 1, "title": "Test title", "status": 0, "multiwinner": 0, "billed": 1},
     {"id": 3, "user_id": 2, "category_id": 1, "title": "Test title 3", "status": 1, "multiwinner": 0},
     {"id": 4, "user_id": 2, "category_id": 1, "title": "Test title 4", "status": 0, "multiwinner": 1, "free":1, "published":1},
     {"id": 5, "user_id": 2, "category_id": 1, "title": "Test title 5", "status": 0, "free":1, "published":1},
