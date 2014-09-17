@@ -1415,7 +1415,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                         'award' => $pitch->price,
                         'discount' => -2530,
                         'brief' => 1750,
-                        'experts' => 1000,
+                        'experts' => Expert::all(),
                         'guaranteed' => 950,
                         'pinned' => 1000),
                         'commonPitchData' => array(
