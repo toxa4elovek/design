@@ -75,24 +75,31 @@ $(document).ready(function(){
             message: "",
             display: 'iframe',
             caption: " ",
-            name: "Узнай, какой ты дизайнер на самом деле",
-            picture: $('.post-to-facebook').data('share-image'),
-            link: "http://www.godesigner.ru/questions/index",
+            name: "Мой новый заказ на лучший дизайн",
+            link: 'http://www.godesigner.ru/pitches/details/'+shareid,
             description: $('.post-to-facebook').data('share-text')
         };
         FB.ui(dataFbWallPost, function() { });
     };
+    shareid = 0;
     var initShares = function() {
         setTimeout(function() {
-            // Pinterest
-            window.parsePins($('.share-this')[0]);
+            $('a.twitter-share-button').attr('data-url','http://www.godesigner.ru/pitches/details/'+shareid);
+            !function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                    if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "//platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, "script", "twitter-wjs");
             // Vk
             $('.vk_share_button').replaceWith(VK.Share.button(
                 {
-                    url: 'http://www.godesigner.ru/questions/index',
-                    title: 'Узнай, какой ты дизайнер на самом деле',
+                    url: 'http://www.godesigner.ru/pitches/details/'+shareid,
+                    title: 'Мой новый заказ на лучший дизайн',
                     description: $('.vk_share_button').data('share-text'),
-                    image: $('.vk_share_button').data('share-image'),
                     noparse: true
                 },
                 {
@@ -110,13 +117,9 @@ $(document).ready(function(){
                 _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания твиттера']);
             }
         });
-        $('.pin-share').on('click', function() {
-            _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания пинтереста']);
-        });
     }, 2000);
     };
-    var success = getUrlVar('success');
-    if (success) {
+    if (getUrlVar('success')) {
         initShares();
         $('#popup-mypitches-true').modal({  
             containerId: 'mypitches-true',  
@@ -677,6 +680,7 @@ function ParticipateTableLoader() {
         }
         $.each(response.data.pitches, function(index, object) {
             if (object.multiwinner != 0 && object.billed == 0) return;
+            shareid = object.id;
             var rowClass = 'odd';
             if((counter % 2 == 0)) {
                 rowClass = 'even';
