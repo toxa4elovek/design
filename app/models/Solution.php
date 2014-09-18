@@ -345,6 +345,7 @@ http://godesigner.ru/answers/view/73');
             $copySolution = Solution::create();
             $data = $solution->data();
             $data['pitch_id'] = $new_pitchId;
+            $data['multiwinner'] = $solution->id;
             unset($data['id']);
             $copySolution->set($data);
             if ($copySolution->save()) {
