@@ -14,6 +14,10 @@ $(function(){
         '/img/partners/clodo_on.png',
         '/img/partners/zucker_on.png',
         '/img/partners/trends_on.png',
+        '/img/fb_on.png',
+        '/img/tw_on.png',
+        '/img/vk_on.png',
+        '/img/instagram_on.png'
     ]);
 
     $('.take, .fill').click(function(){
