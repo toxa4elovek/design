@@ -11,7 +11,6 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
         $('.kineticjs-content', '#container').css('left', x);
         hscrollArea.setX(-100);
     };
-
     if((parseFloat(response.avgNum) < 3) || (response.guaranteed == '1')) {
         //$('#switch').attr('src', '/img/off.png');
         $('#refundLabel').text('Нельзя вернуть деньги.').css('color', '#ed6567');
@@ -20,6 +19,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
         if(response.guaranteed == '0') {
             if (($('input[name="notFinish"]').val() == '1') && (parseFloat(response.avgNum) >= 3))  {
                 $('#refundLabel').text('Победитель будет выбран автоматически согласно регламенту');
+                $('#whatIsIt').attr('href','/answers/view/53').html('Регламент').css('margin-left','25px');
             } else {
                 $('#refundLabel').text('Возможность вернуть деньги доступна.');
             }

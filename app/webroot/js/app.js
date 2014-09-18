@@ -1,4 +1,23 @@
 $(document).ready(function() {
+    function preload(arrayOfImages) {
+        $(arrayOfImages).each(function(){
+            $('<img/>')[0].src = this;
+            // Alternatively you could use:
+            // (new Image()).src = this;
+        });
+    }
+
+    preload([
+        '/img/partners/logo_tutdesign_on.png',
+        '/img/partners/surfinbird_on.png',
+        '/img/partners/clodo_on.png',
+        '/img/partners/zucker_on.png',
+        '/img/partners/trends_on.png',
+        '/img/fb_on.png',
+        '/img/tw_on.png',
+        '/img/vk_on.png',
+        '/img/instagram_on.png'
+    ]);
 	$("#registration").validate({
         /*debug: true,*/
    		rules: {
