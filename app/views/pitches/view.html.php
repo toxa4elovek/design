@@ -5,7 +5,11 @@
 	<div class="middle">
 	   <div class="middle_inner_gallery" style="padding-top:25px">
            <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-           <input type="hidden" value="<?=(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +2 days")) ? 1 : 0?>" name="notFinish">
+           <?php if($pitch->status == 1): ?>
+               <input type="hidden" value="<?=(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +4 days")) ? 1 : 0?>" name="notFinish">
+           <?php else: ?>
+               <input type="hidden" value="0" name="notFinish">
+           <?php endif ?>
             <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             <ul class="tabs-curve group">
                 <li class="active" style="z-index: 3;">
