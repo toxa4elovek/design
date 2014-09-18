@@ -321,9 +321,9 @@ class PitchTest extends AppUnit {
         $this->assertFalse(Pitch::activateNewWinner(0));
         $this->assertTrue(Pitch::activateNewWinner(4));
         $pitch = Pitch::first(4);
-        $solution = Solution::first(3);
+        $solution = Solution::first(1);
         $pitch2 = Pitch::first(1);
-        $comment = Comment::first(array('conditions'=>array('pitch_id'=>$pitch->id)));
+        $comment = Comment::first(array('conditions'=>array('pitch_id'=>$pitch->multiwinner),'order'=>(array('id'=>'desc'))));
         $this->assertEqual('Друзья, выбран победитель',  substr($comment->text, 0, 47));
         $this->assertEqual('1. Проверка названия', $pitch2->title);
         $this->assertEqual(1,$solution->awarded);
