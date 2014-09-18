@@ -21,6 +21,7 @@ use \app\models\Transaction;
 use \app\models\Paymaster;
 use \app\models\Receipt;
 use \app\models\Wincomment;
+use \app\models\Historysolution;
 use \app\extensions\helper\NumInflector;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
@@ -1018,7 +1019,7 @@ class Pitch extends \app\models\AppModel {
         $moneyArray = array();
         $commentArray = array();
         $dates = array();
-        $pitch->firstSolution = Solution::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('created' => 'asc')));
+        $pitch->firstSolution = Historysolution::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('created' => 'asc')));
         if ($pitch->firstSolution) {
             $pitch->firstSolutionTime = strtotime($pitch->firstSolution->created);
         }
