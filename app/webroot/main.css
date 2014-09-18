@@ -2785,6 +2785,12 @@ ul.social li#vkontakte {
 ul.social li#vkontakte:hover {
     background-image: url("img/vk_on.png");
 }
+ul.social li#instagram {
+    background-image: url("img/instagram.png");
+}
+ul.social li#instagram:hover {
+    background-image: url("img/instagram_on.png");
+}
 
 ul.social li#rss {
     background-image: url("img/rss.png");
