@@ -6,7 +6,8 @@
 	   <div class="middle_inner_gallery" style="padding-top:25px">
            <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
            <?php if($pitch->status == 1): ?>
-               <input type="hidden" value="<?=(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +4 days")) ? 1 : 0?>" name="notFinish">
+           <?php $days = ($pitch->experts) ? 6 : 4;?>
+               <input type="hidden" value="<?=(time() > strtotime($pitch->finishDate.' +'.$days.' days')) ? 1 : 0?>" name="notFinish">
            <?php else: ?>
                <input type="hidden" value="0" name="notFinish">
            <?php endif ?>
@@ -120,11 +121,7 @@
                         <div style="width:200px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
                             <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;">
-                                <?php if(strtotime($pitch->finishDate) < strtotime($pitch->finishDate." +2 days")): ?>
-                                <a target="_blank" href="/answers/view/53" style="margin-left:25px;">Регламент</a>
-                                <?php else: ?>
-                                <a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a>
-                                <?php endif; ?>
+                                <a target="_blank" id="whatIsIt" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a>
                                 <br />
                             </p>
                         </div>
