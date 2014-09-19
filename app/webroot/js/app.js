@@ -122,6 +122,9 @@ $(document).ready(function() {
         if (showMobilePopup) {
             setTimeout(function() { appendMobile(); }, 5000);
         }
+        if (showMailPopup) {
+        setTimeout(function() { appendEmailConfirm(); }, 1000);
+        }
         $('#feedback-link').show();
         $('#feedback-link').live('mouseover', function() {
             $(this).css('left', '0');
@@ -397,7 +400,19 @@ $(document).ready(function() {
         format: "on",
         showEmptyDays: 'off'
     });
-
+    $('#confirmEmail').on('click', function() {
+        var filter = /^([\w-\.]+@(?!mail.ru)(?!inbox.ru)(?!list.ru)(?!bk.ru)([\w-]+\.)+[\w-]{2,4})?$/
+        if (($('input[name="emails"]').val()) && ($('input[name="emails"]').val() == $('input[name="confirmEmail"]').val())) {
+            if (filter.test($('input[name="emails"]').val()) || filter.test($('input[name="confirmEmail"]').val())) {
+                $.post("/users/profile.json", { email:$('input[name="emails"]').val() },function(data){
+                    $('.simplemodal-container').fadeOut(800);
+                    $('#simplemodal-overlay').fadeOut(800, function() {
+                        $.modal.close();
+                    });
+                });
+            }
+        }
+    });
 });
 
 window.fbAsyncInit = function() {
@@ -1136,6 +1151,26 @@ function appendMobile() {
         closeClass: 'mobile-close',
         onShow: function() {
             $('#mobile-popup').fadeTo(600, 1);
+        },
+        onClose: function() {
+            $('.simplemodal-container').fadeOut(800);
+            $('#simplemodal-overlay').fadeOut(800, function() {
+                $.modal.close();
+            });
+        }
+    });
+}
+
+/*
+ * Append EmailConfirm Modal
+ */
+function appendEmailConfirm() {
+    $('#popup-email-change').modal({
+        containerId: 'gotest-email-warning',
+        opacity: 80,
+        closeClass: 'emailChange-close',
+        onShow: function() {
+            $('#popup-email-change').fadeTo(600, 1);
         },
         onClose: function() {
             $('.simplemodal-container').fadeOut(800);

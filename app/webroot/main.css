@@ -3520,6 +3520,7 @@ div.no-result p {
     content: '';
 }
 #popup-email-warning,
+#popup-email-change,
 #popup-confirm-email-true,
 #popup-confirm-email-false,
 #popup-mypitches-true {
@@ -3531,6 +3532,7 @@ div.no-result p {
     text-align: center;
 }
 #popup-email-warning h2,
+#popup-email-change h2,
 #popup-confirm-email-true h2,
 #popup-confirm-email-false h2,
 #popup-mypitches-true h2 {
@@ -3544,6 +3546,7 @@ div.no-result p {
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
 #popup-email-warning p,#popup-email-warning ul,
+#popup-email-change p,#popup-email-change ul,
 #popup-confirm-email-true p,
 #popup-confirm-email-false p,
 #popup-mypitches-true p {
@@ -3556,10 +3559,27 @@ div.no-result p {
     margin: 12px 28px 18px 28px;
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
-#popup-email-warning ul {
+#popup-email-warning ul,
+#popup-email-change ul {
     list-style-type: disc;
     left: 35%;
     position: relative;
+}
+#popup-email-change label,#popup-email-change input {
+    display:block;
+    margin-left: 20px;
+}
+#popup-email-change input {
+    width:407px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+#popup-email-change {
+    height: 593px;
+}
+#popup-email-change label{
+    text-align: left;
+    padding-top: 5px;
 }
 #popup-confirm-email-true .true-close,
 #popup-confirm-email-false .false-close,
