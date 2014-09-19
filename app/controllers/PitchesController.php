@@ -1405,17 +1405,20 @@ Disallow: /pitches/upload/' . $pitch['id'];
         if ($this->request->is('json')) {
             $pitch = Pitch::create();
             $pitch->set(array(
-                'title'=>'FastPitch',
+                'title'=>'Логотип в один клик ('. $this->request->data['phone'] . ')',
                 'phone-brief' => $this->request->data['phone'],
                 'price' => 14000,
                 'total' => 19600));
+            if(Session::read('user.id')) {
+                $pitch->user_id = Session::read('user.id');
+            }
             if($pitch->save()) {
                 $receiptData = array(
                     'features' => array(
                         'award' => $pitch->price,
                         'discount' => -2530,
                         'brief' => 1750,
-                        'experts' => Expert::all(),
+                        'experts' => array(1),
                         'guaranteed' => 950,
                         'pinned' => 1000),
                         'commonPitchData' => array(
