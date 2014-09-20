@@ -615,6 +615,15 @@ class UsersController extends \app\controllers\AppController {
                             $userToLog->getFbAvatar();
                             UserMailer::hi_mail($userToLog);
                             $newuser = true;
+                            
+                            if (isset($_COOKIE['fastpitch'])) {
+                                $fastId = unserialize($_COOKIE['fastpitch']);
+                                $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
+                                foreach ($fastPitches as $fastPitch) {
+                                    $fastPitch->user_id = $user->id;
+                                }
+                                $fastPitches->save();
+                            }
                         }else {
                             return $this->redirect('Users::login');
                         }
@@ -683,7 +692,7 @@ class UsersController extends \app\controllers\AppController {
                 }
 
                 $user->set($this->request->data) ;
-			    if(($user->validates()) && ($user->save($this->request->data))) {
+                if(($user->validates()) && ($user->save($this->request->data))) {
                     $userToLog = User::first(array('conditions' => array('id' => $user->id)));
                     $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                     $userToLog->setLastActionTime();
@@ -692,6 +701,16 @@ class UsersController extends \app\controllers\AppController {
                     Auth::set('user', $userToLog->data());
 
                     $pitchId = Session::read('temppitch');
+                    
+                    if (isset($_COOKIE['fastpitch'])) {
+                        $fastId = unserialize($_COOKIE['fastpitch']);
+                        $fastPitches=Pitch::all(array('conditions' => array('id' => $fastId)));
+                        foreach ($fastPitches as $fastPitch) {
+                            $fastPitch->user_id = $user->id;
+                        }
+                        $fastPitches->save();
+                    }
+                    
                     if(!is_null($pitchId)) {
                         if($pitch = Pitch::first($pitchId)) {
                            $pitch->user_id = $userToLog->id;

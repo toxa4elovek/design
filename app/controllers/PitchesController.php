@@ -1425,6 +1425,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
                             'id' => $pitch->id,
                             'category_id' => 0,
                             'promocode' => 0));
+                if (isset($_COOKIE['fastpitch'])) {
+                    $cookies = unserialize($_COOKIE['fastpitch']);
+                    $cookies[] = $pitch->id;
+                    setcookie('fastpitch', serialize($cookies), strtotime('+2 month'), '/');
+                } else {
+                    setcookie('fastpitch', serialize(array($pitch->id)), strtotime('+2 month'), '/');
+                }
                 return json_encode('/pitches/fastpitch/'.Receipt::createReceipt($receiptData)); 
             } else {
                 return json_encode('false');
