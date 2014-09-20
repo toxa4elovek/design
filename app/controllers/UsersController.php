@@ -620,7 +620,7 @@ class UsersController extends \app\controllers\AppController {
                                 $fastId = unserialize($_COOKIE['fastpitch']);
                                 $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
                                 foreach ($fastPitches as $fastPitch) {
-                                    $fastPitch->user_id = $user->id;
+                                    $fastPitch->user_id = $userToLog->id;
                                 }
                                 $fastPitches->save();
                             }
