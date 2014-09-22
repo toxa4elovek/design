@@ -2,7 +2,7 @@
     var showSocialPopup = false;
     var needSocialWrite = false;
     var showMobilePopup = false;
-    var showMailPopup = false;
+    var showMailPopup = true;
     <?php $showSocialPopup = false; ?>
     <?php if ($this->user->getId()):?>
     <?php if (!$this->user->isSocialNetworkUser()):?>
