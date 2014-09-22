@@ -400,11 +400,44 @@ $(document).ready(function() {
         format: "on",
         showEmptyDays: 'off'
     });
-    $('#confirmEmail').on('click', function() {
-        var filter = /^([\w-\.]+@(?!mail.ru)(?!inbox.ru)(?!list.ru)(?!bk.ru)([\w-]+\.)+[\w-]{2,4})?$/
-        if (($('input[name="emails"]').val()) && ($('input[name="emails"]').val() == $('input[name="confirmEmail"]').val())) {
-            if (filter.test($('input[name="emails"]').val()) || filter.test($('input[name="confirmEmail"]').val())) {
-                $.post("/users/profile.json", { email:$('input[name="emails"]').val() },function(data){
+    $('#changeEmail').validate({
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                equalTo: "#conf_email",
+                remote: {
+                    url:"/users/checkform.json",
+                    type:"post",
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        if(json.data === false) {
+                            return '"true"';
+                        }
+                        return '"Email уже используется"';
+                    }
+                }
+            },
+            confirmEmail: {
+                required: true,
+            }
+        },
+        messages: {
+            email: {
+                required: "Email обязателен",
+                email: "Email обязателен",
+                equalTo: "Адреса не совпадают",
+            }
+        },
+        highlight: function(element, errorClass) {
+            $(element).fadeOut(function() {
+                $(element).fadeIn();
+            });
+        },
+        submitHandler: function(form) {
+            var filter = /^([\w-\.]+@(?!mail.ru)(?!inbox.ru)(?!list.ru)(?!bk.ru)([\w-]+\.)+[\w-]{2,4})?$/
+            if (filter.test($('#first_email').val()) || filter.test($('input[name="confirmEmail"]').val())) {
+                $.post("/users/profile.json", { email:$('#first_email').val() },function(data){
                     $('.simplemodal-container').fadeOut(800);
                     $('#simplemodal-overlay').fadeOut(800, function() {
                         $.modal.close();
@@ -413,6 +446,18 @@ $(document).ready(function() {
             }
         }
     });
+//    $('#confirmEmail').on('click', function() {
+//        if (($('input[name="emails"]').val()) && ($('input[name="emails"]').val() == $('input[name="confirmEmail"]').val())) {
+//            if (filter.test($('input[name="emails"]').val()) || filter.test($('input[name="confirmEmail"]').val())) {
+//                $.post("/users/profile.json", { email:$('input[name="emails"]').val() },function(data){
+//                    $('.simplemodal-container').fadeOut(800);
+//                    $('#simplemodal-overlay').fadeOut(800, function() {
+//                        $.modal.close();
+//                    });
+//                });
+//            }
+//        }
+//    });
 });
 
 window.fbAsyncInit = function() {
