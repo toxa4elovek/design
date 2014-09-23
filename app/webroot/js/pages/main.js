@@ -1,22 +1,6 @@
 $(function(){
 
-    function preload(arrayOfImages) {
-        $(arrayOfImages).each(function(){
-            $('<img/>')[0].src = this;
-            // Alternatively you could use:
-            // (new Image()).src = this;
-        });
-    }
-
-    preload([
-        '/img/partners/logo_tutdesign_on.png',
-        '/img/partners/surfinbird_on.png',
-        '/img/partners/clodo_on.png',
-        '/img/partners/zucker_on.png',
-        '/img/partners/trends_on.png',
-    ]);
-
-    $('.take, .fill').click(function(){
+     $('.take, .fill').click(function(){
         window.location = $(this).children('a').attr('href')
     });
 

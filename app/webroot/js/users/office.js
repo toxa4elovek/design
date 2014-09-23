@@ -42,7 +42,7 @@ $(document).ready(function(){
     }
     /*var SidebarUpdater = new SidebarStatusUpdater();
     SidebarUpdater.init();*/
-    
+
     // Solution Stars
     $(document).on('mouseenter', '.ratingchange', function(){
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
@@ -63,7 +63,76 @@ $(document).ready(function(){
         return false;
     });
     
+
+    $(document).on('click', '.post-to-facebook', function() {
+        _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания фейсбука']);
+        sendFBMessage();
+        return false;
+    });
+    var sendFBMessage = function() {
+        var dataFbWallPost = {
+            method: 'stream.publish',
+            message: "",
+            display: 'iframe',
+            caption: " ",
+            name: "Мой новый заказ на лучший дизайн",
+            link: 'http://www.godesigner.ru/pitches/details/'+shareid,
+            description: $('.post-to-facebook').data('share-text')
+        };
+        FB.ui(dataFbWallPost, function() { });
+    };
+    shareid = 0;
+    var initShares = function() {
+        setTimeout(function() {
+            $('a.twitter-share-button').attr('data-url','http://www.godesigner.ru/pitches/details/'+shareid);
+            !function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                    if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "//platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, "script", "twitter-wjs");
+            // Vk
+            $('.vk_share_button').replaceWith(VK.Share.button(
+                {
+                    url: 'http://www.godesigner.ru/pitches/details/'+shareid,
+                    title: 'Мой новый заказ на лучший дизайн',
+                    description: $('.vk_share_button').data('share-text'),
+                    noparse: true
+                },
+                {
+                    type: 'round_nocount',
+                    text: 'Поделиться'
+                }
+            ));
+        $('#vkshare1').on('click', function() {
+            _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания ВК']);
+        });
+        // Twitter
+        twttr.widgets.load();
+        twttr.events.bind('click', function (e) {
+            if(e.target.id === 'twitter-widget-1') {
+                _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания твиттера']);
+            }
+        });
+    }, 2000);
+    };
+    if (getUrlVar('success')) {
+        initShares();
+        $('#popup-mypitches-true').modal({  
+            containerId: 'mypitches-true',  
+            opacity: 80,  
+            closeClass: 'true-close'
+        });
+    }
 });
+
+function getUrlVar(key){
+    var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
+    return result && unescape(result[1]) || "";
+}
 
 function SidebarStatusUpdater() {
     var self = this;
@@ -610,6 +679,8 @@ function ParticipateTableLoader() {
             return (a.sort - b.sort);
         }
         $.each(response.data.pitches, function(index, object) {
+            if (object.multiwinner != 0 && object.billed == 0) return;
+            shareid = object.id;
             var rowClass = 'odd';
             if((counter % 2 == 0)) {
                 rowClass = 'even';
@@ -1314,7 +1385,7 @@ $(document).ready(function() {
     $(document).on('click', '.code-resend', function(e) {
         e.preventDefault();
         $.post($(this).attr('href') + '.json', {
-            'userPhone': $(this).data('phone'),
+            'userPhone': $(this).data('phone')
         }, function(result) {
             if (result == 'false') {
                 // False
@@ -1334,7 +1405,7 @@ $(document).ready(function() {
     $(document).on('submit', '#referal-2', function(e) {
         e.preventDefault();
         $.post($(this).attr('action') + '.json', {
-            'verifyCode': $('#verifyCode').val(),
+            'verifyCode': $('#verifyCode').val()
         }, function(result) {
             if (result == 'false') {
                 // Tooltip

@@ -40,6 +40,9 @@ $(document).ready(function() {
     $('#prolong-checkbox').click(function() {
         if($('#prolong-checkbox').attr('checked')) {
             $('#sub-prolong').show();
+            if(!$('#sub-prolong').attr('placeholder')) {
+                $('#sub-prolong').attr('placeholder', 1)
+            }
         }else {
             $('#sub-prolong').hide();
         }

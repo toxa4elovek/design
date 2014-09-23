@@ -126,3 +126,11 @@ td.s3_h {
 	text-transform: none;
 	text-align: left;
 }
+p#top-pay{
+    color: #666;
+    font-size: 14px;
+    text-shadow: -1px 0 0 #ffffff;
+    line-height: 2em;
+    text-align: center; 
+    margin-bottom: 26px;
+}
