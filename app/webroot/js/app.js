@@ -401,6 +401,11 @@ $(document).ready(function() {
         showEmptyDays: 'off'
     });
     $('#changeEmail').validate({
+    errorPlacement: function(error, element) {
+        if($('input[name="email"]').val() && $('input[name="confirmEmail"]').val()){
+            element.after(error);
+        }
+    },
         rules: {
             email: {
                 required: true,
@@ -419,14 +424,17 @@ $(document).ready(function() {
                 }
             },
             confirmEmail: {
-                required: true,
+                required: true
             }
         },
         messages: {
             email: {
                 required: "Email обязателен",
                 email: "Email обязателен",
-                equalTo: "Адреса не совпадают",
+                equalTo: "Адреса не совпадают"
+            },
+            confirmEmail: {
+                required: "Email обязателен"
             }
         },
         highlight: function(element, errorClass) {
@@ -435,15 +443,12 @@ $(document).ready(function() {
             });
         },
         submitHandler: function(form) {
-            var filter = /^([\w-\.]+@(?!mail.ru)(?!inbox.ru)(?!list.ru)(?!bk.ru)([\w-]+\.)+[\w-]{2,4})?$/
-            if (filter.test($('#first_email').val()) || filter.test($('input[name="confirmEmail"]').val())) {
-                $.post("/users/profile.json", { email:$('#first_email').val() },function(data){
-                    $('.simplemodal-container').fadeOut(800);
-                    $('#simplemodal-overlay').fadeOut(800, function() {
-                        $.modal.close();
-                    });
+            $.post("/users/profile.json", { email:$('#first_email').val() },function(data){
+                $('.simplemodal-container').fadeOut(800);
+                $('#simplemodal-overlay').fadeOut(800, function() {
+                    $.modal.close();
                 });
-            }
+            });
         }
     });
 //    $('#confirmEmail').on('click', function() {
