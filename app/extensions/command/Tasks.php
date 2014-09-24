@@ -5,7 +5,6 @@ namespace app\extensions\command;
 use app\extensions\mailers\CommentsMailer;
 use \app\models\Task;
 use \app\models\Pitch;
-use \app\models\Solution;
 use \app\models\User;
 use app\extensions\mailers\SolutionsMailer;
 
