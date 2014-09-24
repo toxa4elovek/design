@@ -239,6 +239,18 @@ class User extends \app\extensions\helper\Session {
         }
         return $this->read('user.email');
     }
+    
+    /**
+     * Метод возвращает дату создания аккаунта или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getCreatedDate() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->read('user.created');
+    }
 
     /**
      * Метод возвращает отформатированное имя в формате "Дмитрий Н."
