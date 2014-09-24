@@ -632,6 +632,14 @@ class UsersController extends \app\controllers\AppController {
                         // если он уже у нас есть, то вытаскиваем все его данные по айди
                         $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
                         $newuser = false;
+                        if (isset($_COOKIE['fastpitch'])) {
+                            $fastId = unserialize($_COOKIE['fastpitch']);
+                            $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
+                            foreach ($fastPitches as $fastPitch) {
+                                $fastPitch->user_id = $userToLog->id;
+                            }
+                            $fastPitches->save();
+                        }
                     }
                 }
                 if($userToLog->banned) {
@@ -799,7 +807,16 @@ class UsersController extends \app\controllers\AppController {
                     setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->autologin_token), time() + strtotime('+1 month'), '/');
                 }
                 $userToLog->save(null, array('validate' => false));
-
+                /// FastPitches
+                if (isset($_COOKIE['fastpitch'])) {
+                    $fastId = unserialize($_COOKIE['fastpitch']);
+                    $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
+                    foreach ($fastPitches as $fastPitch) {
+                        $fastPitch->user_id = $userToLog->id;
+                    }
+                    $fastPitches->save();
+                }
+                ///
                 $redirect = false;
                 $pitchId = Session::read('temppitch');
                 if(!is_null($pitchId)) {
