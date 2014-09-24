@@ -119,7 +119,7 @@ $(document).ready(function(){
         });
     }, 2000);
     };
-    if (getUrlVar('success')) {
+    if (location.pathname == '/users/mypitches' && getUrlVar('success')) {
         initShares();
         $('#popup-mypitches-true').modal({  
             containerId: 'mypitches-true',  
