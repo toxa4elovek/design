@@ -79,13 +79,20 @@
 <p style="">Всего наименований 1, на сумму <?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?>.</p>
 <p style=""><?=$money->num2str($pitch->total)?></p>
 <br /><br /><br />
+<!--<img style="" src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/godesigner_stamp_trasp.png">-->
 <table>
     <tr>
-        <td>Генеральный директор</td>
+        <td style="vertical-align:bottom;">Генеральный директор</td>
         <td style="padding:0 5em;"></td>
-        <td style="border-bottom:1px solid;text-align:center;padding:0 6em;"></td>
+        <td style="border-bottom:1px solid;text-align:center;vertical-align:bottom;"><img width="120" height="50" src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/sign.png"></td>
         <td style="padding:0 2em;"></td>
-        <td style="border-bottom:1px solid;text-align:center;padding:0 1em;">/Федченко М. Ю./</td>
+        <td style="border-bottom:1px solid;text-align:center;vertical-align:bottom;">
+            <div style="position:relative;">
+                <div style="position:absolute;right:270px;bottom:260px;">
+                    <img width="120" height="auto" src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/godesigner_stamp_trasp.png"></div>
+                <div>/Федченко М. Ю./</div>
+            </div>
+        </td>
     </tr>
     <tr>
         <td></td>
