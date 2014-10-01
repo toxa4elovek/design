@@ -10,6 +10,7 @@ namespace app\models;
 use \lithium\storage\Session;
 use \app\models\Addon;
 use \app\models\Category;
+use \app\models\Comment;
 use \app\models\Event;
 use \app\models\Expert;
 use \app\models\User;
