@@ -34,8 +34,8 @@
             <?php if ($pitch->brief == 1):?>
                 <span class="regular">Бриф заполнен:</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="client-linknew" href="/answers/view/68" target="_blank">GoDesigner</a>
             <?php else:?>
-                <span class="regular">Заполнить бриф <a href="http://www.godesigner.ru/answers/view/68" target="_blank">(?)</a></span>
-                <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=phonebrief">Заказать</a>
+                <!--span class="regular">Заполнить бриф <a href="http://www.godesigner.ru/answers/view/68" target="_blank">(?)</a></span>
+                <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=phonebrief">Заказать</a-->
             <?php endif;?>
         </td>
         <?php else: ?>
