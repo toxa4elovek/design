@@ -536,6 +536,8 @@ class UsersController extends \app\controllers\AppController {
     public function mypitches() {
         if(!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
             return $this->render(array('layout' => false));
+        } else {
+            return $this->render(array('layout' => 'default', 'data' => array('categories'=>Category::all())));
         }
     }
 
