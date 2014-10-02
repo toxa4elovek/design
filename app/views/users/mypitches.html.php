@@ -13,7 +13,7 @@
                 </div>
             </section>
             <section>
-                <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 786px; margin-left: 79px;">
+                <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 825px; margin-left: 60px;">
                     <table>
                         <tr>
                             <td>
