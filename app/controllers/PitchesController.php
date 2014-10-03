@@ -159,7 +159,7 @@ class PitchesController extends \app\controllers\AppController {
 
     public function participate() {
         $categories = Category::all();
-        $pitchesId = User::getParticipatePitches(Session::read('user.id'));
+        $pitchesId = $this->request->query['type'] == 'favourites' ? User::getFavouritePitches(Session::read('user.id')) : User::getParticipatePitches(Session::read('user.id'));
         $data = array(
             'pitches' => array(),
             'info' => array(
@@ -173,17 +173,25 @@ class PitchesController extends \app\controllers\AppController {
             foreach($categories as $catI) {
                 $allowedCategories[] = $catI->id;
             }
-            $limit = 5;
+            $limit = 15;
             $page = 1;
-            $types = array(
-                'finished' => array('status' => 2),
-                'current' => array()
-            );
+            $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
+            $order = Pitch::getQueryOrder($this->request->query['order']);
+            $category = Pitch::getQueryCategory($this->request->query['category']);
+            $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
+            $conditions = array('Pitch.id' => $pitchesId);
+            if ($this->request->query['type'] != 'favourites'){
+                $type = Pitch::getQueryType($this->request->query['type']);
+                $conditions += $type;
+            }
+            $conditions += $category;
+            $conditions += $priceFilter;
+            $conditions += $search;
+
             if(isset($this->request->query['page'])) {
                 $page = abs(intval($this->request->query['page']));
             }
-            $conditions = array('Pitch.id' => $pitchesId);
-            $conditions += $types['current'];
+
             /*******/
             $total = ceil(Pitch::count(array(
                 'conditions' => $conditions,
@@ -191,7 +199,7 @@ class PitchesController extends \app\controllers\AppController {
             $pitches = Pitch::all(array(
                 'with' => 'Category',
                 'conditions' => $conditions,
-                'order' => array('started' => 'desc'),
+                'order' => $order
             ));
             foreach($pitches as $pitch) {
                 $pitch->winlink = false;

@@ -1171,6 +1171,18 @@ class Pitch extends \app\models\AppModel {
 			case 3:
 				$result = array('price' => array('>' => 20000));
 				break;
+                        case 4:
+				$result = array('price' => array('<=' => 3000));
+				break;
+                        case 5:
+				$result = array('price' => array('>' => 5000, '<=' => 8000));
+				break;
+                        case 6:
+				$result = array('price' => array('>' => 8000, '<=' => 16000));
+				break;
+                        case 7:
+				$result = array('price' => array('>' => 16000, '<=' => 25000));
+				break;
 			default:
 				$result =  array();
 		}
@@ -1292,11 +1304,17 @@ class Pitch extends \app\models\AppModel {
 			case 'all':
 				$result = array();
 				break;
+                        case 'completion-stage':
+                            $result = array('status' => 1, 'awarded' => array('>' => 0));
+                            break;
+                        case 'awarded':
+                            $result = array('status' => 2);
+                            break;
 			default:
 				$result = array(
-							'OR' => array(
-								array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
-								array('status < 2 AND awarded = 0'),
+                                    'OR' => array(
+                                                    array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+                                                    array('status < 2 AND awarded = 0'),
 				));
 		}		
 		return $result;

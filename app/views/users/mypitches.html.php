@@ -49,10 +49,10 @@
                         </ul>
                         <ul class="filterlist" style="float:left;width:160px;margin-left:25px;text-transform: none">
                             <li class="first">гонорар</li>
-                            <li style="width:130px"><a data-group="priceFilter" data-value="3" href="#">до 3 000 Р.-</a></li>
-                            <li style="width:130px"><a data-group="priceFilter" data-value="2" href="#">от 5 000 - 8 000 Р.-</a></li>
-                            <li style="width:130px"><a data-group="priceFilter" data-value="1" href="#">от 8 000 - 16 000 Р.-</a></li>
-                            <li style="width:130px"><a data-group="priceFilter" data-value="4" href="#">от 16 000 - 25 000 Р.-</a></li>
+                            <li style="width:130px"><a data-group="priceFilter" data-value="4" href="#">до 3 000 Р.-</a></li>
+                            <li style="width:130px"><a data-group="priceFilter" data-value="5" href="#">от 5 000 - 8 000 Р.-</a></li>
+                            <li style="width:130px"><a data-group="priceFilter" data-value="6" href="#">от 8 000 - 16 000 Р.-</a></li>
+                            <li style="width:130px"><a data-group="priceFilter" data-value="7" href="#">от 16 000 - 25 000 Р.-</a></li>
                         </ul>
                         <div style="clear:both"></div>
                     </div>
@@ -91,6 +91,6 @@
 
 </div><!-- .wrapper -->
 <?= $this->view()->render(array('element' => 'popups/mypitches_popup')); ?>
-<?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js', 'jquery.keyboard.js', 'tableloader.js', 'pitches/index.js'), array('inline' => false)) ?>
+<?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js', 'jquery.keyboard.js', 'users/mypitches_loader.js', 'pitches/index.js'), array('inline' => false)) ?>
 <?=
 $this->html->style(array('/main2.css', '/pitches2.css', '/edit', '/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css'), array('inline' => false))?>

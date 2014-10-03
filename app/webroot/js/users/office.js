@@ -605,11 +605,11 @@ $(document).ready(function() {
 })
 
 function mypitchesInit() {
-    var PTable = new ParticipateTableLoader;
-    PTable.init();
-
-    var FTable = new FavesTableLoader;
-    FTable.init();
+//    var PTable = new ParticipateTableLoader;
+//    PTable.init();
+//
+//    var FTable = new FavesTableLoader;
+//    FTable.init();
 }
 
 /* Class */
