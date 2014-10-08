@@ -436,7 +436,20 @@ function OfficeStatusUpdater() {
                                 <a href="/users/view/'+ object.user_id+'">'+ object.creator +'</a> предложил решение для питча <a href="/pitches/view/'+ object.pitch_id +'">'+ object.pitch.title +'</a>: \
                             </div> \
                             <a href="'+object.solution.id+'"><img class="sol" src="'+ object.solution.images.solution_solutionView[0].weburl +'"></a> \
-                        </div>';
+                            <div data-id="'+ object.solution.id +'" class="likes">';
+                            id = object.solution.id;
+                            $.each(response.updates, function(index, object) {
+                                if (object.type == 'LikeAdded' && object.solution_id == id) {
+                                   avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png'; 
+                                   html += '<div> \
+                                    <div class="l-img"> \
+                                        <img class="avatar" src="'+ avatar +'"> \
+                                    </div> \
+                                    <span><a href="/users/view/'+ object.user_id+'">'+object.creator+'</a> лайкнул ваше решение</span> \
+                                </div>';
+                                }
+                            });
+                       html += '</div></div>';
                     }
                     
                     if (object.type == 'LikeAdded') {
