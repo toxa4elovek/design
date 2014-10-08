@@ -427,41 +427,64 @@ function OfficeStatusUpdater() {
                             </p> \
                         </div> \
                     </div>';
+                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                        html += '<div class="box"> \
+                            <div class="l-img"> \
+                                <img class="avatar" src="'+ avatar +'"> \
+                            </div> \
+                            <div class="r-content"> \
+                                <a href="/users/view/'+ object.user_id+'">'+ object.creator +'</a> предложил решение для питча <a href="/pitches/view/'+ object.pitch_id +'">'+ object.pitch.title +'</a>: \
+                            </div> \
+                            <a href="'+object.solution.id+'"><img class="sol" src="'+ object.solution.images.solution_solutionView[0].weburl +'"></a> \
+                        </div>';
                     }
                     
                     if (object.type == 'LikeAdded') {
                         $('a#'+object.solution_id).text(object.solution.likes);
                     }
+                    
+                    if (object.type == 'CommentAdded') {
+                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                        html += '<div class="box"> \
+                            <div class="l-img"> \
+                                <img class="avatar" src="'+ avatar +'"> \
+                            </div> \
+                            <div class="r-content"> \
+                                <a href="/users/view/'+ object.user_id+'">'+ object.creator +'</a> прокомментировал ваше <a href="/pitches/viewsolution/'+ object.solution.id +'">решение #'+ object.solution.num +'</a> для питча <a href="/pitches/view/'+ object.pitch_id +'">'+ object.pitch.title +'</a>: &laquo;'+ object.updateText +'&raquo; \
+                            </div> \
+                            <img class="sol" src="'+ object.solution.images.solution_solutionView[0].weburl +'"> \
+                        </div>';
+                    }
 
-                    html +=  '<div class="obnovlenia_box ' + newclass  + ' group">'+
-                        '<section class="global_info">'+
-                            '<p>' + object.humanType + '</p>'+
-                            '<p class="designer_name">' + object.creator + '</p>'+
-                            '<p class="add_date">' + object.humanCreated + '</p>'+
-                            extraUI +
-                        '</section>'+
-
-                        '<section class="global_picture">'+
-                            '<div class="pic_wrapper">'+
-                                '<a href="/pitches/viewsolution/' + object.solution.id + '"><img src="' + imageurl + '" width="99" height="75" alt="" /></a>'+
-                                '<!--img class="winning" src="/img/winner_icon.png" width="25" height="59" /-->'+
-                            '</div>'+
-                        '</section>'+
-
-                        '<section class="main_info">'+
-                            '<h2><a href="/pitches/view/' + object.pitch.id + '">' + object.pitch.title + '</a></h2>'+
-                            '<p class="subject">' + object.pitch.industry + '</p>'+
-                            '<p class="price"><span>' + self._priceDecorator(object.pitch.price) + '</span> P.-</p>'+
-                            '<p class="main_text">'+
-                               object.updateText +
-                            '</p>'+
-                            '<p class="full_pitch"><a href="/pitches/view/' + object.pitch.id + '"></a></p>'+
-                        '</section>'+
-                    '</div>'
+//                    html +=  '<div class="box ' + newclass  + ' group">'+
+//                        '<section class="global_info">'+
+//                            '<p>' + object.humanType + '</p>'+
+//                            '<p class="designer_name">' + object.creator + '</p>'+
+//                            '<p class="add_date">' + object.humanCreated + '</p>'+
+//                            extraUI +
+//                        '</section>'+
+//
+//                        '<section class="global_picture">'+
+//                            '<div class="pic_wrapper">'+
+//                                '<a href="/pitches/viewsolution/' + object.solution.id + '"><img src="' + imageurl + '" width="99" height="75" alt="" /></a>'+
+//                                '<!--img class="winning" src="/img/winner_icon.png" width="25" height="59" /-->'+
+//                            '</div>'+
+//                        '</section>'+
+//
+//                        '<section class="main_info">'+
+//                            '<h2><a href="/pitches/view/' + object.pitch.id + '">' + object.pitch.title + '</a></h2>'+
+//                            '<p class="subject">' + object.pitch.industry + '</p>'+
+//                            '<p class="price"><span>' + self._priceDecorator(object.pitch.price) + '</span> P.-</p>'+
+//                            '<p class="main_text">'+
+//                               object.updateText +
+//                            '</p>'+
+//                            '<p class="full_pitch"><a href="/pitches/view/' + object.pitch.id + '"></a></p>'+
+//                        '</section>'+
+//                    '</div>'
                 });
                 var $prependEl = $(html);
                 $prependEl.hide();
-                $prependEl.prependTo('#updates-box').slideDown('slow');
+                $prependEl.prependTo('#updates-box-').slideDown('slow');
                 $prependEl = $(solutions);
                 $prependEl.hide();
                 $prependEl.prependTo('#l-sidebar-office').slideDown('slow');

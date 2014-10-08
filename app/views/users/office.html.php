@@ -20,46 +20,6 @@
                             </p>
                         </div>
                     </div>
-                    <div class="solutions-block">
-                        <a href=""><img width="260" src="http://www.godesigner.ru/solutions/89ea1168f9a0f4150a33782fd1be3cbf_solutionView.png"></a>
-                        <div>
-                            <span>Вася Т.</span>
-                            <img class="rat" src="/img/rating.png">
-                            <span class="txt-blue">
-                                <img src="/img/like_hover.png"> 18
-                            </span>
-                        </div>
-                    </div>
-                    <div class="solutions-block">
-                        <a href=""><img width="260" src="http://www.godesigner.ru/solutions/89ea1168f9a0f4150a33782fd1be3cbf_solutionView.png"></a>
-                        <div>
-                            <span>Вася Т.</span>
-                            <img class="rat" src="/img/rating.png">
-                            <span class="txt-blue">
-                                <img src="/img/like_hover.png"> 18
-                            </span>
-                        </div>
-                    </div>
-                    <div class="solutions-block">
-                        <a href=""><img width="260" src="http://www.godesigner.ru/solutions/89ea1168f9a0f4150a33782fd1be3cbf_solutionView.png"></a>
-                        <div>
-                            <span>Вася Т.</span>
-                            <img class="rat" src="/img/rating.png">
-                            <span class="txt-blue">
-                                <img src="/img/like_hover.png"> 18
-                            </span>
-                        </div>
-                    </div>
-                    <div class="solutions-block">
-                        <a href=""><img width="260" src="http://www.godesigner.ru/solutions/89ea1168f9a0f4150a33782fd1be3cbf_solutionView.png"></a>
-                        <div>
-                            <span>Вася Т.</span>
-                            <img class="rat" src="/img/rating.png">
-                            <span class="txt-blue">
-                                <img src="/img/like_hover.png"> 18
-                            </span>
-                        </div>
-                    </div>
                 </div>
                 <div id="r-sidebar-office">
                     <div id="container-job-designers">
