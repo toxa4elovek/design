@@ -67,11 +67,15 @@
     width: 260px;
 }
 
-.txt-blue {
+.fb_like {
     color: #648fa4;
     margin-left: 40px;
+    display: inline !important;
+    font: 14px OfficinaSansC Bold, serif !important;
 }
-
+.fb_like a {
+    font: 14px OfficinaSansC Bold, serif !important;
+}
 #l-sidebar-office .solutions-block div > img {
     margin-top: 5px;
     margin-left: 40px;

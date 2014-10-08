@@ -367,6 +367,7 @@ function OfficeStatusUpdater() {
                 }
                 response.updates.sort(sortfunction);
                 var html = '';
+                var solutions = '';
                 $.each(response.updates, function(index, object) {
                     if(index == 0) {
                         self.date = object.created;
@@ -414,6 +415,23 @@ function OfficeStatusUpdater() {
                             '<p class="visit_number">' + object.solution.views + '</p>'+
                             '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
                     }
+                    
+                    if (object.type == 'SolutionAdded') {
+                        solutions += '<div class="solutions-block"> \
+                        <a href="/pitches/viewsolution/'+ object.solution.id +'"><img width="260" src="'+object.solution.images.solution_solutionView[0].weburl+'"></a> \
+                        <div> \
+                            <span>'+object.creator+'</span> \
+                            <img class="rat" src="/img/rating.png"> \
+                            <p class="fb_like"> \
+                                <a id="'+object.solution.id+'" href="#">'+object.solution.likes+'</a> \
+                            </p> \
+                        </div> \
+                    </div>';
+                    }
+                    
+                    if (object.type == 'LikeAdded') {
+                        $('a#'+object.solution_id).text(object.solution.likes);
+                    }
 
                     html +=  '<div class="obnovlenia_box ' + newclass  + ' group">'+
                         '<section class="global_info">'+
@@ -444,6 +462,9 @@ function OfficeStatusUpdater() {
                 var $prependEl = $(html);
                 $prependEl.hide();
                 $prependEl.prependTo('#updates-box').slideDown('slow');
+                $prependEl = $(solutions);
+                $prependEl.hide();
+                $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
             }
         });
     }

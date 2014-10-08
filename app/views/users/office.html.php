@@ -15,9 +15,9 @@
                         <div>
                             <span>Вася Т.</span>
                             <img class="rat" src="/img/rating.png">
-                            <span class="txt-blue">
-                                <img src="/img/like_hover.png"> 18
-                            </span>
+                            <p class="fb_like">
+                                <a href="#">0</a>
+                            </p>
                         </div>
                     </div>
                     <div class="solutions-block">
@@ -64,7 +64,7 @@
                 <div id="r-sidebar-office">
                     <div id="container-job-designers">
                         <div class="rs-header">Работа для дизайнера</div>
-                        <?php echo $this->stream->renderStream(10);?>
+                        <?php echo $this->stream->renderStream(10); ?>
                     </div>
                     <div id="container-new-pitches">
                         <div class="rs-header">Новые питчи</div>
