@@ -43,9 +43,9 @@
                     </div>
                     <div id="container-design-news">
                         <div class="rs-header">Новости дизайна</div>
-                        <div class="design-news">Русская симфония в Милане <br><a href="">tutdesign</a></div>
-                        <div class="design-news">Памяти Гигера: от "Чужого" до дизайнера гитар <br><a href="">tutdesign</a></div>
-                        <div class="design-news">Памяти Гигера: от "Чужого" до дизайнера гитар <br><a href="">tutdesign</a></div>
+                        <?php foreach ($news as $n): $host = parse_url($n->link); ?>
+                        <div class="design-news" data-id="<?=$n->id?>"><?=$n->title?> <br><a href="<?=$n->link?>"><?=$host['host']?></a></div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div id="center_sidebar">

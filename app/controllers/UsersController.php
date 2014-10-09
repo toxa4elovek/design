@@ -132,6 +132,7 @@ class UsersController extends \app\controllers\AppController {
         }
         $gallery = Solution::getUserSolutionGallery(Session::read('user.id'));
         $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
+        $news = \app\models\News::all(array('limit' => 10, 'order' => array('created' => 'desc')));
         $winners = array();
         foreach($winnersData as $winner) {
             if($winner->pitch->category_id != 7) {
@@ -142,7 +143,7 @@ class UsersController extends \app\controllers\AppController {
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
         if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-            return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates');
+            return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates', 'news');
         }else {
             return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates')));
         }
