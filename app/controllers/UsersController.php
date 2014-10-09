@@ -1430,6 +1430,14 @@ class UsersController extends \app\controllers\AppController {
         }
         $this->redirect('/');
     }
+    
+    public function click() {
+        $news = \app\models\News::first($this->request->id);
+        if($news){
+            $news->views += 1;
+            $news->save();
+        }
+    }
 }
 
 

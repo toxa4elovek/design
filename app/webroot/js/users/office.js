@@ -14,6 +14,9 @@ $(document).ready(function () {
         });
     }
     
+    $('a.clicks').on('click', function() {
+        $.post('/users/click/'+$(this).data('id')+'.json');
+    });
 
 
     function TopTip() {

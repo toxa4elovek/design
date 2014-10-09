@@ -44,7 +44,7 @@
                     <div id="container-design-news">
                         <div class="rs-header">Новости дизайна</div>
                         <?php foreach ($news as $n): $host = parse_url($n->link); ?>
-                        <div class="design-news" data-id="<?=$n->id?>"><?=$n->title?> <br><a href="<?=$n->link?>"><?=$host['host']?></a></div>
+                        <div class="design-news"><?=$n->title?> <br><a class="clicks" data-id="<?=$n->id?>" href="<?=$n->link?>"><?=$host['host']?></a></div>
                         <?php endforeach; ?>
                     </div>
                 </div>
