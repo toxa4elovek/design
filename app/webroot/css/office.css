@@ -269,3 +269,8 @@
     background:      -o-linear-gradient(#51895C, #64A470);
     background:         linear-gradient(#51895C, #64A470);
 }
+
+.onTopMiddle { 
+   right: 640px !important;
+   bottom: -100px !important;
+}

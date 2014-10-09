@@ -106,12 +106,13 @@
                     </div>
                     <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><image src="/img/blog-ajax-loader.gif"></div>
                 </div>
+                
             </div>
-
+            <div class="onTopMiddle">&nbsp;</div>
         </div><!-- /middle_inner -->
     </div><!-- /middle -->
-
 </div><!-- .wrapper -->
+<div class="onTop">&nbsp;</div>
 <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js', 'users/activation.js'), array('inline' => false)) ?>
-<?= $this->html->style(array('/main2.css', '/pitches2.css', '/edit', '/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', '/css/office.css'), array('inline' => false)) ?>
+<?= $this->html->style(array('/main2.css', '/pitches2.css', '/edit', '/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/blog', '/portfolio.css', '/css/office.css'), array('inline' => false)) ?>
 <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
