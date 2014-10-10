@@ -24,7 +24,9 @@
                 <div id="r-sidebar-office">
                     <div id="container-job-designers">
                         <div class="rs-header">Работа для дизайнера</div>
-                        <?php echo $this->stream->renderStream(10); ?>
+                        <div id="content-job">
+                            <?php echo $this->stream->renderStream(10); ?>
+                        </div>
                     </div>
                     <div id="container-new-pitches">
                         <div class="rs-header">Новые питчи</div>

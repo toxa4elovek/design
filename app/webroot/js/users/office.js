@@ -363,6 +363,11 @@ function OfficeStatusUpdater() {
                             $prependEl.hide();
                             $prependEl.prependTo('#content-news').slideDown('slow');
                         }
+                        if (response.twitter != '') {
+                            var $prependEl = $(response.twitter);
+                            $prependEl.hide();
+                            $prependEl.prependTo('#content-job').slideDown('slow');
+                        }
                     }
                     self.started = 1;
                     if (response.count != 0) {

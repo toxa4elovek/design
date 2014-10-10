@@ -5,6 +5,7 @@ namespace app\controllers;
 use \app\models\User;
 use \app\models\Event;
 use \lithium\storage\Session;
+use \app\extensions\helper\Stream;
 
 class EventsController extends \app\controllers\AppController {
 
@@ -35,7 +36,8 @@ class EventsController extends \app\controllers\AppController {
             }
             $news = $news->data();
         }
-        return compact('updates', 'count', 'nextUpdates', 'post', 'news');
+        $twitter = Stream::renderStream(10,$this->request->query['created']);
+        return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter');
     }
 
     public function sidebar() {
