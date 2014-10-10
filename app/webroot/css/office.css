@@ -197,11 +197,19 @@
     display: table-cell;
 }
 
-.center-boxes .box span.back-time {
+.center-boxes .box time.timeago {
     color: #c8c8c8;
     font-style: italic;
     display: block;
-    margin-top: 10px;
+    margin: 10px 0;
+}
+
+.center-boxes .box img.img-post {
+    height: auto;
+    max-width: 600px;
+    max-height: 500px;
+    display: block;
+    margin: 0 auto;
 }
 
 .center-boxes .box .sol {
@@ -271,6 +279,11 @@
 }
 
 .onTopMiddle { 
-   right: 640px !important;
-   bottom: -100px !important;
+    right: 640px !important;
+    bottom: -100px !important;
+}
+
+.box h2,.box a h2 {
+    font-size: 18px;
+    color: #2d2d2d;
 }

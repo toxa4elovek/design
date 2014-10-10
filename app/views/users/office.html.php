@@ -43,9 +43,11 @@
                     </div>
                     <div id="container-design-news">
                         <div class="rs-header">Новости дизайна</div>
+                        <div id="content-news">
                         <?php foreach ($news as $n): $host = parse_url($n->link); ?>
-                        <div class="design-news"><?=$n->title?> <br><a class="clicks" data-id="<?=$n->id?>" href="<?=$n->link?>"><?=$host['host']?></a></div>
+                                <div class="design-news"><?= $n->title ?> <br><a class="clicks" data-id="<?= $n->id ?>" href="<?= $n->link ?>"><?= $host['host'] ?></a></div>
                         <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
                 <div id="center_sidebar">
@@ -103,10 +105,17 @@
                             </div>
                         </div>
                         <div class="box"></div>
+                        <div class="box">
+                            <img src="http://tutdesign.ru/wp-content/uploads/2014/10/16.jpg">
+                            <div class="r-content">
+                                <h2>Розовый как признак неповиновения: новый бренд «Русская принцесса»</h2>
+                                <time class="timeago" datetime="2013-05-15T18:20:00">20 мая 2013 18:20:20</time>
+                            </div>
+                        </div>
                     </div>
-                    <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><image src="/img/blog-ajax-loader.gif"></div>
+                    <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="/img/blog-ajax-loader.gif"></div>
                 </div>
-                
+
             </div>
             <div class="onTopMiddle">&nbsp;</div>
         </div><!-- /middle_inner -->

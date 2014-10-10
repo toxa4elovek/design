@@ -340,94 +340,31 @@ function OfficeStatusUpdater() {
     this.storage = {};
     this.page = 1;
     this.date = '';
+    this.started = 0;
     // initialisation method
     this.init = function () {
         $('.obnovlenia_box').last().addClass('last_item');
-        /*$.get('/events/updates.json', {"init": true, "page": self.page}, function(response) {
-         if(response.count == 0) {
-         $('#no-updates').show();
-         $('#updates-box').hide();
-         }else {
-         
-         function sortfunction(a, b){
-         return (a.sort - b.sort);
-         }
-         response.updates.sort(sortfunction);
-         var html = '';
-         $.each(response.updates, function(index, object) {
-         if(object.solution == null) {
-         
-         }else {
-         var newclass = '';
-         if(Date.parse(object.jsCreated) > offsetDate) {
-         newclass = ' newevent ';
-         }
-         if(object.type == 'PitchCreated') {
-         newclass = ' newpitchstream ';
-         }
-         if(index == 0) {
-         self.date = object.created;
-         }
-         if(typeof(object.solution.images.solution_galleryLargeSize) != "undefined") {
-         if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
-         var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
-         }else{
-         var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
-         }
-         if(object.type == 'PitchCreated') {
-         var imageurl = '/img/zaglushka.jpg';
-         }
-         var extraUI = '';
-         if(object.type != 'PitchCreated') {
-         extraUI = '<ul class="group">'+
-         '<li><a href="#"></a></li>'+
-         '<li><a href="#"></a></li>'+
-         '<li><a href="#"></a></li>'+
-         '<li><a href="#"></a></li>'+
-         '<li><a href="#"></a></li>'+
-         '</ul>'+
-         '<p class="visit_number">' + object.solution.views + '</p>'+
-         '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
-         }
-         html +=  '<div class="obnovlenia_box ' + newclass + 'group">'+
-         '<section class="global_info">'+
-         '<p>' + object.humanType + '</p>'+
-         '<p class="designer_name">' + object.creator + '</p>'+
-         '<p class="add_date">' + object.humanCreated + '</p>'+
-         extraUI +
-         '</section>'+
-         
-         '<section class="global_picture">'+
-         '<div class="pic_wrapper">'+
-         '<a href="/pitches/viewsolution/' + object.solution.id + '"><img src="' + imageurl + '" width="99" height="75" alt="" /></a>'+
-         '<!--img class="winning" src="/img/winner_icon.png" width="25" height="59" /-->'+
-         '</div>'+
-         '</section>'+
-         
-         '<section class="main_info">'+
-         '<h2><a href="/pitches/view/' + object.pitch.id + '">' + object.pitch.title + '</a></h2>'+
-         '<p class="subject">' + object.pitch.industry + '</p>'+
-         '<p class="price"><span>' + self._priceDecorator(object.pitch.price) + '</span> P.-</p>'+
-         '<p class="main_text">'+
-         object.updateText +
-         '</p>'+
-         '<p class="full_pitch"><a href="/pitches/view/' + object.pitch.id + '"></a></p>'+
-         '</section>'+
-         '</div>'
-         }
-         }
-         });
-         html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-         //$('#updates-box').html(html);
-         
-         }
-         });*/
-        $(document).everyTime(10000, function (i) {
             self.autoupdate();
-        });
+            $(document).everyTime(10000, function (i) {
+                if (self.started) {
+                    self.autoupdate();
+                }
+            });
     },
             this.autoupdate = function () {
                 $.get('/events/updates.json', {"init": true, "created": self.date}, function (response) {
+                    if (self.started) {
+                        news = '';
+                        $.each(response.news, function (index, object) {
+                            news += '<div class="design-news">'+ object.title +' <br><a class="clicks" data-id="'+object.id+'" href="'+object.link+'">'+object.host+'</a></div>';
+                        });
+                        if (news != '') {
+                            var $prependEl = $(news);
+                            $prependEl.hide();
+                            $prependEl.prependTo('#content-news').slideDown('slow');
+                        }
+                    }
+                    self.started = 1;
                     if (response.count != 0) {
                         function sortfunction(a, b) {
                             return (a.sort - b.sort);
@@ -435,6 +372,19 @@ function OfficeStatusUpdater() {
                         response.updates.sort(sortfunction);
                         var html = '';
                         var solutions = '';
+                        if (typeof (response.post) != "undefined") {
+                            var $prependEl = $('<div class="box"> \
+                            <a href="'+response.post.link+'"><img class="img-post" src="'+response.post.imageurl+'"></a> \
+                            <div class="r-content"> \
+                                <a href="'+response.post.link+'"><h2>'+response.post.title+'</h2></a> \
+                                <time class="timeago" datetime="'+response.post.created+'">'+response.post.created+'</time> \
+                            </div> \
+                            </div>');
+                            $prependEl.hide();
+                            
+                            $prependEl.prependTo('#updates-box-').slideDown('slow');  
+                            $('time.timeago').timeago();
+                        }
                         $.each(response.updates, function (index, object) {
                             if (index == 0) {
                                 self.date = object.created;
@@ -557,7 +507,8 @@ function OfficeStatusUpdater() {
                 }
                 response.updates.sort(sortfunction);
                 var html = '';
-                                        $.each(response.updates, function (index, object) {
+                var solutions = '';
+                $.each(response.updates, function (index, object) {
                             if (index == 0) {
                                 self.date = object.created;
                             }

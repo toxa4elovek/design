@@ -18,12 +18,13 @@ class ParseGodesigner extends \app\extensions\command\CronJob {
             }
             if (!$trigger) {
                 $date = new \DateTime($item->pubDate);
+                preg_match('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $item->asXML(), $matches);
                 News::create(array(
                     'title' => $item->title,
                     'tags' => $item->category,
                     'created' => $date->format('Y-m-d H:i:s'),
                     'link' => $item->link,
-                    'imageurl' => $item->imageurl
+                    'imageurl' => $matches[1]
                 ))->save();
             }
         }

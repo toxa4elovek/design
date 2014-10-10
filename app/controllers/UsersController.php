@@ -10,6 +10,7 @@ use \app\models\Wincomment;
 use \app\models\Grade;
 use \app\models\Pitch;
 use \app\models\Event;
+use \app\models\News;
 use \app\models\Invite;
 use \app\models\Avatar;
 use \app\models\Moderation;
@@ -1432,7 +1433,7 @@ class UsersController extends \app\controllers\AppController {
     }
     
     public function click() {
-        $news = \app\models\News::first($this->request->id);
+        $news = News::first($this->request->id);
         if($news){
             $news->views += 1;
             $news->save();
