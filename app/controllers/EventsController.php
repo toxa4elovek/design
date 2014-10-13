@@ -19,7 +19,7 @@ class EventsController extends \app\controllers\AppController {
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created']);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
         $count = count($updates);
-        $news = \app\models\News::all(array('conditions' => array('created' => array('>' => $this->request->query['created'])), 'limit' => 10, 'order' => array('created' => 'desc')));
+        $news = \app\models\News::all(array('conditions' => array('created' => array('>' => $this->request->query['created'])), 'limit' => 8, 'order' => array('created' => 'desc')));
         if ($news) {
             $all_views = 0;
             foreach ($news as $n) {
@@ -34,7 +34,6 @@ class EventsController extends \app\controllers\AppController {
                     $post->created = date('Y-m-d H:i:s', strtotime($post->created));
                 }
             }
-            $news = $news->data();
         }
         $twitter = Stream::renderStream(10,$this->request->query['created']);
         return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter');
