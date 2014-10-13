@@ -19,7 +19,12 @@ class AddonsController extends \app\controllers\AppController {
             }else {
                 $expert = 1;
                 $expertId = serialize($featuresData['experts']);
-                $total += count($featuresData['experts']) * 1000;
+                $expertsAll = \app\models\Expert::all();
+                foreach ($expertsAll as $v) {
+                    if (in_array($v->id, $featuresData['experts'])) {
+                        $total += $v->price + 500; 
+                    }
+                }  
             }
             if(!isset($featuresData['prolong'])) {
                 $prolong = 0;

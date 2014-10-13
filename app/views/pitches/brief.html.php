@@ -158,8 +158,8 @@ endswitch;
 
 				<div class="set-price">
 					<p>
-						<label>Сумма вознаграждения для дизайнера (от <?=$this->moneyFormatter->formatMoney($category->minAward, array('suffix' => 'Р.'))?>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
-						<input type="text" name="" id="award" data-low="<?=$category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=$category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=$category->minAward?>" class="initial-price placeholder" placeholder="<?=$category->minAward?>" value="<?=$category->minAward?>">
+						<label>Сумма вознаграждения для дизайнера (от <?=$this->moneyFormatter->formatMoney((date('N')>5) ? $category->discountPrice : $category->minAward, array('suffix' => 'Р.'))?>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
+						<input type="text" name="" id="award" data-low="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>" class="initial-price placeholder" placeholder="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>" value="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>">
 					</p>
                     <div class="clr"></div>
 					<!-- <div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
@@ -209,12 +209,12 @@ endswitch;
             var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
             </script>
 
-                <div class="ribbon complete-brief">
+                <!--div class="ribbon complete-brief">
                     <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
                     <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
                     <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" class="phone" value=""></p>
                     <p class="label">1750.-</p>
-                </div>
+                </div-->
 
 				<div class="ribbon">
 					<p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Закрытый питч" data-option-value="3500">Закрытый питч</label></p>

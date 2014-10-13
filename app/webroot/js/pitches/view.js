@@ -153,6 +153,23 @@
        });*/
        return false;
    });
+   
+    $(document).on('click', '.select-multiwinner', function() {
+       var num = $(this).data('num');
+       var item = $('.photo_block', '#li_' + num).clone();
+       $('#winner-num-multi').text('#' + num);
+       $('#winner-num-multi').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+       $('#winner-user-link-multi').text($(this).data('user'));
+       $('#winner-user-link-multi').attr('href', '/users/view/' + $(this).data('userid'));
+       $('#confirmWinner-multi').data('url', $(this).attr('href'));
+       $('#multi-replacingblock').replaceWith(item);
+       $('#popup-final-step-multi').modal({
+           containerId: 'final-step-multi',
+           opacity: 80,
+           closeClass: 'popup-close'
+       });
+       return false;
+   });
 
     $(document).on('click', '#confirmWinner', function() {
         var url = $(this).data('url');
@@ -163,7 +180,14 @@
                     $('.select-winner-li').remove();
                 }
             }
-       });
+        });
+    });
+    
+    $(document).on('click', '#confirmWinner-multi', function() {
+        var url = $(this).data('url');
+        if($(this).data('url')){
+            window.location = url;
+        }
     });
 
     // Delete Solution from Solution Popup

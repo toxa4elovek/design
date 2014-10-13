@@ -18,35 +18,35 @@
 					<?=$this->html->link('
 						<h3>Лого</h3>
 						<p class="description">Знак, лого, персонаж, фирм. написание</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[1]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[1]->discountPrice : $categories[1]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 1), array('escape' => false))?>
 				</li>
 				<li class="category-site big">
 					<?=$this->html->link('
 						<h3>Сайт</h3>
 						<p class="description">Приложения iOS, Android, Landing page</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[3]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[3]->discountPrice : $categories[3]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 3), array('escape' => false))?>
 				</li>
 				<li class="category-flaer big">
 					<?=$this->html->link('
 						<h3>Флаер</h3>
 						<p class="description">Визитка, листовка, брошюра</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[4]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[4]->discountPrice : $categories[4]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 4), array('escape' => false))?>
 				</li>
 				<li class="category-firmstyle">
 					<?=$this->html->link('
 						<h3>Фирмен. стиль</h3>
 						<p class="description">Без логотипа</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[5]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[5]->discountPrice : $categories[5]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 5), array('escape' => false))?>
 				</li>
 				<li class="category-socialpage">
 					<?=$this->html->link('
 						<h3>Страница для соц. сетей</h3>
 						<p class="description">Страница Fb, Vk, Twitter</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[6]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[6]->discountPrice : $categories[6]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 6), array('escape' => false))?>
 				</li>
 				<li class="category-copyrighting">
@@ -58,49 +58,49 @@
 					<?= $this->html->link('
 						<h3>Копирайтинг</h3>
 						<p class="description">Название, тексты, слоганы, хэдлайны</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[7]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[7]->discountPrice : $categories[7]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 7), array('escape' => false))?>
 				</li>
 				<li class="category-buklet">
 					<?=$this->html->link('
 						<h3>Презентация</h3>
 						<p class="description">Буклет, верстка многополосного издания</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[8]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[8]->discountPrice : $categories[8]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 8), array('escape' => false))?>
 				</li>
 				<li class="category-webban">
 					<?=$this->html->link('
 						<h3>Web-баннер</h3>
 						<p class="description">Cтатичный баннер или раскадровка для Flash</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[2]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[2]->discountPrice : $categories[2]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 2), array('escape' => false))?>
 				</li>
 				<li class="category-illustration">
 					<?=$this->html->link('
 						<h3>Иллюстрация</h3>
 						<p class="description">Для журнала, футболки, сайта, etc</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[9]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[9]->discountPrice : $categories[9]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 9), array('escape' => false))?>
 				</li>
 				<li class="category-upakovka">
 					<?=$this->html->link('
 						<h3>Упаковка</h3>
 						<p class="description">Этикетка, оформление коробки</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[11]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[11]->discountPrice : $categories[11]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 11), array('escape' => false))?>
 				</li>
 				<li class="category-icons">
 					<?=$this->html->link('
 						<h3>Реклама</h3>
 						<p class="description">полоса в журнале, билборд, сити-формат</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[12]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[12]->discountPrice : $categories[12]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 12), array('escape' => false))?>
 				</li>
 				<li class="category-otherdesign">
 					<?=$this->html->link('
 						<h3>Другое</h3>
 						<p class="description">Что-то не указано в списке? Опишите…</p>
-						<p class="price">от ' . $this->moneyFormatter->formatMoney($categories[10]->minAward, array('suffix' => 'Р.-')) . '</p>
+						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N')>5) ? $categories[10]->discountPrice : $categories[10]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 10), array('escape' => false))?>
 				</li>
 			</ul>

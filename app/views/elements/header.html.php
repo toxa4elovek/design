@@ -56,6 +56,9 @@
                             $types['needpay'] = 0;
                             $types['finish'] = 0;
                             $types['winner'] = 0;
+                            if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
+                                continue;
+                            endif;
                             ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
 							<td>
@@ -64,7 +67,7 @@
 							<?php endif?>
 							</td>
                                 <td class="pitches-name mypitches">
-                                    <a href="/pitches/view/<?=$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
+                                    <a href="/pitches/view/<?=($mypitch->multiwinner>0) ? $mypitch->multiwinner :$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
                                 </td>
                                 <td <?php echo ($mypitch->status < 1) ? '' : 'colspan="2"' ?> class="pitches-status mypitches">
                                     <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
@@ -142,7 +145,11 @@
                         '<a href="/answers/view/56"><i id="help"></i>Что, если заказчик просит вас сделать то, что не указано в брифе?</a>'
                     );
                     $types = array();
-                    foreach($this->user->getCurrentDesignersPitches() as $mypitch):?>
+                    foreach($this->user->getCurrentDesignersPitches() as $mypitch):
+                        if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
+                            continue;
+                        endif;
+                    ?>
                     <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                         <td class="pitches-name">
                             <div style="background-image: none; padding: 15px 0 17px 40px;">

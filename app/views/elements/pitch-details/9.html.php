@@ -10,7 +10,7 @@ if(isset($details['logo-properties'])) {
 
 <?php if(isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько иллюстранций необходимо создать?</h2>
-<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'иллюстрация', 'second' => 'иллюстрации', 'third' => 'иллюстраций'))?></p>
+<p class="regular"><?php echo nl2br($details['site-sub'])?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'иллюстрация', 'second' => 'иллюстрации', 'third' => 'иллюстраций'))?></p>
 <?php endif?>
 
 <div class="groupc">

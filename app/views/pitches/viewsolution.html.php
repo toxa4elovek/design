@@ -145,7 +145,7 @@
 	</div><!-- /middle -->
 </div><!-- .wrapper -->
 
-<?=$this->view()->render(array('element' => 'popups/warning'))?>
+<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
 
 <!-- Start: Tooltips -->
 <div style="display:none;">

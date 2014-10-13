@@ -99,7 +99,6 @@ class PitchesController extends \app\controllers\AppController {
 		$conditions += $priceFilter;
         $conditions += $timeleftFilter;
 		$conditions += $search;
-		
 		/*******/
 		$total = ceil(Pitch::count(array(
 			'with' => 'Category',
@@ -353,7 +352,11 @@ class PitchesController extends \app\controllers\AppController {
                 $transaction->set($this->request->data);
                 $transaction->save();
                 if($pitch = Pitch::first($this->request->data['LMI_PAYMENT_NO'])) {
-                    Pitch::activate($this->request->data['LMI_PAYMENT_NO']);
+                    if ($pitch->multiwinner != 0) {
+                        Pitch::activateNewWinner($this->request->data['LMI_PAYMENT_NO']);
+                    } else {
+                        Pitch::activate($this->request->data['LMI_PAYMENT_NO']);
+                    }
                 } elseif ($addon = Addon::first($this->request->data['LMI_PAYMENT_NO'])) {
                     Addon::activate($addon);
                 }
@@ -373,7 +376,11 @@ class PitchesController extends \app\controllers\AppController {
             $transaction->set($this->request->data);
             $transaction->save();
             if(($pitch = Pitch::first($this->request->data['MNT_TRANSACTION_ID'])) && ($pitch->total == $this->request->data['MNT_AMOUNT'])) {
-                Pitch::activate($this->request->data['MNT_TRANSACTION_ID']);
+                if ($pitch->multiwinner != 0) {
+                    Pitch::activateNewWinner($this->request->data['MNT_TRANSACTION_ID']);
+                } else {
+                    Pitch::activate($this->request->data['MNT_TRANSACTION_ID']);
+                }
             } elseif ($addon = Addon::first($this->request->data['MNT_TRANSACTION_ID'])) {
                 Addon::activate($addon);
             }
@@ -819,9 +826,10 @@ class PitchesController extends \app\controllers\AppController {
                 $selectedsolution = true;
             }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
+            $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
-                    $freePitch = Pitch::getFreePitch();
-		    return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions','freePitch');
+                $freePitch = Pitch::getFreePitch();
+		        return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions','freePitch', 'pitchesCount');
             }else {
                 if (isset($this->request->query['count'])) {
                     return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount')));
@@ -1357,5 +1365,39 @@ Disallow: /pitches/upload/' . $pitch['id'];
     public function promocode() {
         Pitch::dailypitch();
         die();
+    }
+    
+    public function newwinner() {  
+        if(($pitch = Pitch::first($this->request->id))&& Session::read('user.id') == $pitch->user_id && ($receipt = Receipt::all(array('conditions'=>array('pitch_id' => $this->request->id),'fields' => array('name','value'))))) {
+            return compact('pitch','receipt');
+        } else {
+            return $this->redirect('/pitches');
+        }
+    }
+    
+    public function setnewwinner() {
+        $solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id),'with'=>array('Pitch')));
+        $pitch = $solution->pitch;
+        if(!is_null($pitch->id) && $pitch->awarded != $solution->id && Session::read('user.id') == $pitch->user_id) {
+            $copyPitch = Pitch::first(array('conditions' => array('user_id' => $pitch->user_id, 'multiwinner'=> $pitch->id, 'billed' => 0)));
+            if(!empty($copyPitch)){
+                $copyPitch->awarded = Solution::copy($copyPitch->id, $this->request->id);
+                $copyPitch->save();
+                if($copyPitch->free == 1) {
+                    Pitch::activateNewWinner($copyPitch->id);
+                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $copyPitch->awarded));
+                }
+            } else {
+                $newPitchId = Pitch::createNewWinner($solution->id);
+                if($pitch->free == 1) {
+                    $newFreeCopy = Pitch::first($newPitchId);
+                    Pitch::activateNewWinner($newPitchId);
+                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $newFreeCopy->awarded));
+                }
+            }
+            return $this->redirect(array('controller' => 'pitches', 'action' => 'newwinner', 'id' => $newPitchId ? $newPitchId : $copyPitch->id));
+        } else {
+            return $this->redirect('/pitches');
+        }
     }
 }

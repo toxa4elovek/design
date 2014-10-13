@@ -4,6 +4,13 @@
 
 	<div class="middle">
 	   <div class="middle_inner_gallery" style="padding-top:25px">
+           <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
+           <?php if($pitch->status == 1): ?>
+           <?php $days = ($pitch->experts) ? 6 : 4;?>
+               <input type="hidden" value="<?=(time() > strtotime($pitch->finishDate.' +'.$days.' days')) ? 1 : 0?>" name="notFinish">
+           <?php else: ?>
+               <input type="hidden" value="0" name="notFinish">
+           <?php endif ?>
             <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
             <ul class="tabs-curve group">
                 <li class="active" style="z-index: 3;">
@@ -16,7 +23,6 @@
                     <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
                 </li>
             </ul>
-
             <div class="gallery_container">
                 <nav class="other_nav_gallery clear">
                     <p class="supplement4" style="float:left;height:30px;padding-top:20px;font-weight: bold; color:#b2afaf;">
@@ -44,9 +50,9 @@
                     <?php
                     $mySolutionList = array();
                     $mySolutionNumList = array();
-                    if((!empty($solutions) > 0) && ($pitch->published == 1)): ?>
+                    if(((!empty($solutions) > 0) && ($pitch->published == 1)) || ($pitch->multiwinner != 0) && (!empty($solutions) > 0)): ?>
                     <ul class="list_portfolio main_portfolio">
-                        <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount'))?>
+                        <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount','pitchesCount'))?>
                     </ul>
                     <?php else:?>
                     <div class="bigfont">
@@ -114,13 +120,14 @@
                         <?php if($pitch->guaranteed == 0):?>
                         <div style="width:200px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
-                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;"><a target="_blank" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a><br>
+                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;">
+                                <a target="_blank" id="whatIsIt" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a>
+                                <br />
                             </p>
                         </div>
                         <?php else:?>
                         <div style="width:200px;float:left;height:190px;text-align:center">
                             <h2 style="margin-top: 11px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255);"><?php echo $this->user->isPitchOwner($pitch->user->id) ? 'Ваш питч' : 'Питч';?><br> гарантированный</h2>
-
                             <img src="/img/bigg.png" style="margin-bottom:10px;margin-top: 15px; margin-left: 54px; padding-right:50px;">
                             <a href="/answers/view/79" target="_blank" style="margin-left:10px;text-decoration: underline;margin-top: 23px;">Что это такое?</a>
                         </div>
@@ -155,7 +162,7 @@
 	</div><!-- /middle -->
 </div><!-- .wrapper -->
 
-<?=$this->view()->render(array('element' => 'popups/warning'),array('freePitch' => $freePitch))?>
+<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
 
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>

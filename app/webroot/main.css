@@ -2785,6 +2785,12 @@ ul.social li#vkontakte {
 ul.social li#vkontakte:hover {
     background-image: url("img/vk_on.png");
 }
+ul.social li#instagram {
+    background-image: url("img/instagram.png");
+}
+ul.social li#instagram:hover {
+    background-image: url("img/instagram_on.png");
+}
 
 ul.social li#rss {
     background-image: url("img/rss.png");
@@ -3514,8 +3520,10 @@ div.no-result p {
     content: '';
 }
 #popup-email-warning,
+#popup-email-change,
 #popup-confirm-email-true,
-#popup-confirm-email-false {
+#popup-confirm-email-false,
+#popup-mypitches-true {
     position: relative;
     width: 480px;
     height: 460px;
@@ -3524,8 +3532,10 @@ div.no-result p {
     text-align: center;
 }
 #popup-email-warning h2,
+#popup-email-change h2,
 #popup-confirm-email-true h2,
-#popup-confirm-email-false h2 {
+#popup-confirm-email-false h2,
+#popup-mypitches-true h2 {
     font-family: RodeoC, serif;
     font-size: 28px;
     font-weight: normal;
@@ -3536,8 +3546,10 @@ div.no-result p {
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
 #popup-email-warning p,#popup-email-warning ul,
+#popup-email-change p,#popup-email-change ul,
 #popup-confirm-email-true p,
-#popup-confirm-email-false p {
+#popup-confirm-email-false p,
+#popup-mypitches-true p {
     font-family: Arial, sans-serif;
     font-size: 16px;
     font-weight: normal;
@@ -3547,13 +3559,57 @@ div.no-result p {
     margin: 12px 28px 18px 28px;
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
-#popup-email-warning ul {
+#popup-email-warning ul,
+#popup-email-change ul {
     list-style-type: disc;
     left: 35%;
     position: relative;
 }
+#popup-email-change label,#popup-email-change input {
+    display:block;
+    margin-left: 20px;
+}
+#popup-email-change input {
+    width:407px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+#popup-email-change {
+    height: 593px;
+}
+#popup-email-change label{
+    text-align: left;
+    padding-top: 5px;
+}
+
+#popup-email-change .error:before {
+    background: url("img/form-error-arrow.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    content: "";
+    height: 22px;
+    position: absolute;
+    right: -15px;
+    top: 14px;
+    width: 15px;
+}
+#popup-email-change .error {
+    background: none repeat scroll 0 0 #ff585d;
+    color: #fff;
+    display: none;
+    font-size: 12px;
+    font-weight: bold;
+    height: 52px;
+    left: -240px;
+    line-height: 54px;
+    padding-left: 38px;
+    position: absolute;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    bottom: 143px;
+    width: 182px;
+}
 #popup-confirm-email-true .true-close,
-#popup-confirm-email-false .false-close {
+#popup-confirm-email-false .false-close,
+#popup-mypitches-true .true-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -3566,7 +3622,61 @@ div.no-result p {
     background-position: 0 -15px;
     cursor: pointer;
 }
-#popup-confirm-email-true .true-close:hover ,
-#popup-confirm-email-false .false-close:hover{
+#popup-confirm-email-true .true-close:hover,
+#popup-confirm-email-false .false-close:hover,
+#popup-mypitches-true .true-close:hover {
     background-position: 0 0;
+}
+#final-step-multi:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 739px;
+    height: 91px;
+    background: url(img/popup-submit-top-header.png) 0 100% no-repeat;
+}
+#final-step-multi {
+    position: relative;
+    height: 560px;
+}
+#final-step-multi:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 62px;
+    bottom: -58px;
+    width: 645px;
+    height: 19px;
+    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+}
+.popup-final-multi {
+    padding: 0 47px 0 58px;
+    font: 14px/1.5em Arial, Helvetica, sans-serif;
+    color: #666;
+    text-shadow: 1px 1px 1px #FFF;
+    width: 575px;
+    background-color: #E1E1E1;
+    position: absolute;
+    top: 91px;
+    left: 47px;
+    height: 508px;
+}
+#popup-mypitches-true {
+    height:471px;
+    text-align:center;
+}
+#popup-mypitches-true #popup-social-nest {
+    background: url(img/social_nest-04.png) no-repeat;
+    height:246px;
+    width:468px;
+}
+#popup-mypitches-true:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 15px;
+    bottom: -19px;
+    width: 451px;
+    height: 19px;
+    background: url(img/popup-submit-bottom.png) 0 50% no-repeat;
 }

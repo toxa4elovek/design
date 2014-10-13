@@ -1,4 +1,23 @@
 $(document).ready(function() {
+    function preload(arrayOfImages) {
+        $(arrayOfImages).each(function(){
+            $('<img/>')[0].src = this;
+            // Alternatively you could use:
+            // (new Image()).src = this;
+        });
+    }
+
+    preload([
+        '/img/partners/logo_tutdesign_on.png',
+        '/img/partners/surfinbird_on.png',
+        '/img/partners/clodo_on.png',
+        '/img/partners/zucker_on.png',
+        '/img/partners/trends_on.png',
+        '/img/fb_on.png',
+        '/img/tw_on.png',
+        '/img/vk_on.png',
+        '/img/instagram_on.png'
+    ]);
 	$("#registration").validate({
         /*debug: true,*/
    		rules: {
@@ -102,6 +121,9 @@ $(document).ready(function() {
         // Mobile Popup
         if (showMobilePopup) {
             setTimeout(function() { appendMobile(); }, 5000);
+        }
+        if (showMailPopup) {
+        setTimeout(function() { appendEmailConfirm(); }, 1000);
         }
         $('#feedback-link').show();
         $('#feedback-link').live('mouseover', function() {
@@ -378,7 +400,69 @@ $(document).ready(function() {
         format: "on",
         showEmptyDays: 'off'
     });
-
+    $('#changeEmail').validate({
+    errorPlacement: function(error, element) {
+        if($('input[name="email"]').val() && $('input[name="confirmEmail"]').val()){
+            element.after(error);
+        }
+    },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                equalTo: "#conf_email",
+                remote: {
+                    url:"/users/checkform.json",
+                    type:"post",
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        if(json.data === false) {
+                            return '"true"';
+                        }
+                        return '"Email уже используется"';
+                    }
+                }
+            },
+            confirmEmail: {
+                required: true
+            }
+        },
+        messages: {
+            email: {
+                required: "Email обязателен",
+                email: "Email обязателен",
+                equalTo: "Адреса не совпадают"
+            },
+            confirmEmail: {
+                required: "Email обязателен"
+            }
+        },
+        highlight: function(element, errorClass) {
+            $(element).fadeOut(function() {
+                $(element).fadeIn();
+            });
+        },
+        submitHandler: function(form) {
+            $.post("/users/profile.json", { email:$('#first_email').val() },function(data){
+                $('.simplemodal-container').fadeOut(800);
+                $('#simplemodal-overlay').fadeOut(800, function() {
+                    $.modal.close();
+                });
+            });
+        }
+    });
+//    $('#confirmEmail').on('click', function() {
+//        if (($('input[name="emails"]').val()) && ($('input[name="emails"]').val() == $('input[name="confirmEmail"]').val())) {
+//            if (filter.test($('input[name="emails"]').val()) || filter.test($('input[name="confirmEmail"]').val())) {
+//                $.post("/users/profile.json", { email:$('input[name="emails"]').val() },function(data){
+//                    $('.simplemodal-container').fadeOut(800);
+//                    $('#simplemodal-overlay').fadeOut(800, function() {
+//                        $.modal.close();
+//                    });
+//                });
+//            }
+//        }
+//    });
 });
 
 window.fbAsyncInit = function() {
@@ -1117,6 +1201,26 @@ function appendMobile() {
         closeClass: 'mobile-close',
         onShow: function() {
             $('#mobile-popup').fadeTo(600, 1);
+        },
+        onClose: function() {
+            $('.simplemodal-container').fadeOut(800);
+            $('#simplemodal-overlay').fadeOut(800, function() {
+                $.modal.close();
+            });
+        }
+    });
+}
+
+/*
+ * Append EmailConfirm Modal
+ */
+function appendEmailConfirm() {
+    $('#popup-email-change').modal({
+        containerId: 'gotest-email-warning',
+        opacity: 80,
+        closeClass: 'emailChange-close',
+        onShow: function() {
+            $('#popup-email-change').fadeTo(600, 1);
         },
         onClose: function() {
             $('.simplemodal-container').fadeOut(800);
