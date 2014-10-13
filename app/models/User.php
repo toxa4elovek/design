@@ -22,6 +22,7 @@ use \tmhOAuth\tmhUtilities;
 use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
 use \DirectoryIterator;
+use \app\extensions\helper\MoneyFormatter;
 
 class User extends \app\models\AppModel {
 
@@ -889,6 +890,29 @@ class User extends \app\models\AppModel {
         }else {
             return false;
         }
+    }
+    
+    public function sendTweetWinner($solution,$pitch,$comment = false) {
+        if ($comment) {
+            $admin = User::getAdmin();
+            $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
+    Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
+            $data = array('pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
+            Comment::createComment($data);
+        }
+        $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
+        $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
+        $winner = self::first($solution->user_id);
+        $nameInflector = new nameInflector();
+        $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
+        $moneyFormatter = new MoneyFormatter();
+        $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
+        if (rand(1, 100) <= 50) {
+            $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
+        } else {
+            $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
+        }
+        self::sendTweet($tweet);
     }
 
     public static function sendFinishReports($pitch) {

@@ -100,26 +100,9 @@ http://godesigner.ru/answers/view/73');
             Event::createEvent($params['solution']->pitch->id, 'SolutionPicked', $params['solution']->pitch->user_id, $params['solution']->id);
             $result = $chain->next($self, $params, $chain);
             if($result != false) {
-                $admin = User::getAdmin();
                 $solution = $params['solution'];
                 $pitch = Pitch::first($solution->pitch_id);
-                $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $params['solution']->id . '">Им стал</a> #' . $params['solution']->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
-Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
-                $data = array('pitch_id' => $params['solution']->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
-                Comment::createComment($data);
-                $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
-                $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
-                $winner = User::first($solution->user_id);
-                $nameInflector = new nameInflector();
-                $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
-                $moneyFormatter = new MoneyFormatter();
-                $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
-                if (rand(1, 100) <= 50) {
-                    $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
-                } else {
-                    $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
-                }
-                User::sendTweet($tweet);
+                User::sendTweetWinner($solution,$pitch, true);
                 Task::createNewTask($solution->id, 'victoryNotification');
             }
             return $result;
