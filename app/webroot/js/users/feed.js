@@ -390,6 +390,43 @@ function OfficeStatusUpdater() {
                             $prependEl.prependTo('#updates-box-').slideDown('slow');  
                             $('time.timeago').timeago();
                         }
+                        if (typeof (response.pitches) != "undefined") {
+                            var pitches = '';
+                            $.each(response.pitches, function (index, pitch) {
+                                pitches += '<div class="new-pitches"> \
+                                    <div class="new-price">'+pitch.price+'</div> \
+                                    <div class="new-title">'+pitch.title+'</div> \
+                                </div>'
+                            });
+                            var $prependEl = $(pitches);
+                            $prependEl.hide();
+                            $prependEl.prependTo('#content-pitches').slideDown('slow');  
+                        }
+                        if (typeof (response.solutions) != "undefined") {
+                            var solutions = '';
+                            $.each(response.solutions, function (index, solution) {
+                            if (typeof (solution.solution.images.solution_tutdesign) != "undefined") {
+                                if (typeof (solution.solution.images.solution_tutdesign.length) == "undefined") {
+                                    var imageurl = solution.solution.images.solution_tutdesign.weburl;
+                                } else {
+                                    var imageurl = solution.solution.images.solution_tutdesign[0].weburl;
+                                }
+                            }
+                                solutions += '<div class="solutions-block"> \
+                                    <a href="/pitches/viewsolution/' + solution.id + '"><img width="260" src="' + imageurl + '"></a> \
+                                    <div> \
+                                        <span>' + solution.creator + '</span> \
+                                        <img class="rat" src="/img/rating.png"> \
+                                        <p class="fb_like"> \
+                                            <a id="' + solution.id + '" href="#">' + solution.solution.likes + '</a> \
+                                        </p> \
+                                    </div> \
+                                </div>';
+                            });
+                           var $prependEl = $(solutions);
+                            $prependEl.hide();
+                            $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
+                        }
                         $.each(response.updates, function (index, object) {
                             if (index == 0) {
                                 self.date = object.created;
@@ -439,16 +476,16 @@ function OfficeStatusUpdater() {
                             }
 
                             if (object.type == 'SolutionAdded') {
-                                solutions += '<div class="solutions-block"> \
-                        <a href="/pitches/viewsolution/' + object.solution.id + '"><img width="260" src="' + imageurl + '"></a> \
-                        <div> \
-                            <span>' + object.creator + '</span> \
-                            <img class="rat" src="/img/rating.png"> \
-                            <p class="fb_like"> \
-                                <a id="' + object.solution.id + '" href="#">' + object.solution.likes + '</a> \
-                            </p> \
-                        </div> \
-                    </div>';
+//                                solutions += '<div class="solutions-block"> \
+//                        <a href="/pitches/viewsolution/' + object.solution.id + '"><img width="260" src="' + imageurl + '"></a> \
+//                        <div> \
+//                            <span>' + object.creator + '</span> \
+//                            <img class="rat" src="/img/rating.png"> \
+//                            <p class="fb_like"> \
+//                                <a id="' + object.solution.id + '" href="#">' + object.solution.likes + '</a> \
+//                            </p> \
+//                        </div> \
+//                    </div>';
                                 avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                 html += '<div class="box"> \
                             <div class="l-img"> \
@@ -487,16 +524,16 @@ function OfficeStatusUpdater() {
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo; \
                             </div> \
-                            <img class="sol" src="' + object.solution.images.solution_solutionView[0].weburl + '"> \
+                            <img class="sol" src="' + imageurl + '"> \
                         </div>';
                             }
                         });
                         var $prependEl = $(html);
                         $prependEl.hide();
                         $prependEl.prependTo('#updates-box-').slideDown('slow');
-                        $prependEl = $(solutions);
-                        $prependEl.hide();
-                        $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
+                       // $prependEl = $(solutions);
+                       // $prependEl.hide();
+                       // $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
                     }
                 });
             }

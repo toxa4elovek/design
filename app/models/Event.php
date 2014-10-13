@@ -41,7 +41,7 @@ class Event extends \app\models\AppModel {
                 };
                 $addBindings = function($record) {
                     if((isset($record->solution_id)) && ($record->solution_id > 0)) {
-                        $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id)));
+                        $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id,'category_id'=>array('!='=>7),'private'=>0)));
                     }else {
                         $record->solution = Solution::getBestSolution($record->pitch_id);
                     }
