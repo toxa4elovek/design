@@ -29,7 +29,7 @@ class Stream extends \lithium\template\Helper {
                         }
                         foreach ($tweet['entities']['urls'] as $url) {
 
-                            $text = str_replace($url['url'], '<a style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a>', $text);
+                            $text = str_replace($url['url'], '<a class="url-twitter" style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a>', $text);
                         }
                         foreach ($tweet['entities']['user_mentions'] as $user) {
 
