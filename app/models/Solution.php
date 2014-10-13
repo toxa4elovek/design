@@ -203,6 +203,7 @@ http://godesigner.ru/answers/view/73');
             $like = Like::create();
             $like->set(array('solution_id' => $solutionId, 'user_id' => $userId, 'created' => date('Y-m-d H:i:s')));
             $like->save();
+            Event::createEvent($solution->pitch_id, 'LikeAdded', $userId, $solution->id);
         }
         return $solution->likes;
     }
