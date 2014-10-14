@@ -66,7 +66,6 @@
                         foreach ($updates as $object):
                             if ($count == 0) {
                                 $dateEvent = $object['created'];
-                                var_dump($dateEvent);
                             }
                             $count++;
                             $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';

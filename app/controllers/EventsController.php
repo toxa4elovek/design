@@ -35,8 +35,10 @@ class EventsController extends \app\controllers\AppController {
                     $n->host = $host['host'];
                 }
                 $av_views = round($all_views / count($news));
+                $max = 0;
                 foreach ($news as $n) {
-                    if ($n->views > $av_views * 2 && $post->views < $n->views) {
+                    if ($n->views > $av_views * 2 && $max < $n->views) {
+                        $max = $n->views;
                         $post = $n;
                         $post->created = date('Y-m-d H:i:s', strtotime($post->created));
                     }

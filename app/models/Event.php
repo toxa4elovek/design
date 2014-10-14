@@ -7,6 +7,7 @@ use \app\extensions\helper\NameInflector;
 use \app\models\Pitch;
 use \app\models\User;
 use \app\models\Comment;
+use \app\models\Category;
 use \app\models\Solution;
 use \app\extensions\helper\MoneyFormatter;
 use \lithium\storage\Session;
