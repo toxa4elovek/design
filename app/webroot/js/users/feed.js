@@ -342,6 +342,7 @@ function OfficeStatusUpdater() {
     this.date = '';
     this.dateTwitter;
     this.newsDate;
+    this.solutionDate;
     this.started = 0;
     // initialisation method
     this.init = function () {
@@ -354,7 +355,7 @@ function OfficeStatusUpdater() {
         });
     },
             this.autoupdate = function () {
-                $.get('/events/updates.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate}, function (response) {
+                $.get('/events/updates.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate}, function (response) {
                     if (self.started) {
                         if (typeof (response.news) != "undefined") {
                             news = '';
@@ -431,9 +432,14 @@ function OfficeStatusUpdater() {
                                     </div> \
                                 </div>';
                         });
-                        var $prependEl = $(solutions);
-                        $prependEl.hide();
-                        $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
+                        if (solutions != '') {
+                            var $prependEl = $(solutions);
+                            $prependEl.hide();
+                            $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
+                        }
+                    } else {
+                        self.solutionDate = solutionDate;
+                        console.log(solutionDate);
                     }
                     if (typeof (response.updates) != "undefined") {
                         if (response.count != 0) {

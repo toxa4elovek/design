@@ -183,6 +183,10 @@ class Event extends \app\models\AppModel {
         }
         return $eventList;
     }
+    
+    public function getEventSolutions() {
+        return Event::all(array('conditions' => array('type' => 'SolutionAdded'),'order' => array('Event.created' => 'desc'), 'limit' => 10));
+    }
 
     public static function getSidebarEvents($created, $limit = null) {
         $eventList = $conditions = array();
