@@ -1,9 +1,9 @@
 // office.js start
 
 $(document).ready(function () {
-    
+
     var Tip = new TopTip;
-    
+
     function scrollInit() {
         $(window).on('scroll', function () {
             if ($(document).height() - $(window).scrollTop() - $(window).height() < 200) {
@@ -13,9 +13,9 @@ $(document).ready(function () {
             }
         });
     }
-    
-    $('a.clicks').on('click', function() {
-        $.post('/users/click/'+$(this).data('id')+'.json');
+
+    $('a.clicks').on('click', function () {
+        $.post('/users/click/' + $(this).data('id') + '.json');
     });
 
 
@@ -340,117 +340,168 @@ function OfficeStatusUpdater() {
     this.storage = {};
     this.page = 1;
     this.date = '';
+    this.dateTwitter;
+    this.newsDate;
     this.started = 0;
     // initialisation method
     this.init = function () {
         $('.obnovlenia_box').last().addClass('last_item');
-            self.autoupdate();
-            $(document).everyTime(10000, function (i) {
-                if (self.started) {
-                    self.autoupdate();
-                }
-            });
+        self.autoupdate();
+        $(document).everyTime(10000, function (i) {
+            if (self.started) {
+                self.autoupdate();
+            }
+        });
     },
             this.autoupdate = function () {
-                $.get('/events/updates.json', {"init": true, "created": self.date}, function (response) {
+                $.get('/events/updates.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate}, function (response) {
                     if (self.started) {
-                        news = '';
-                        $.each(response.news, function (index, object) {
-                            news += '<div class="design-news">'+ object.title +' <br><a class="clicks" data-id="'+object.id+'" href="'+object.link+'">'+object.host+'</a></div>';
-                        });
-                        if (news != '') {
-                            var $prependEl = $(news);
-                            $prependEl.hide();
-                            $prependEl.prependTo('#content-news').slideDown('slow');
+                        if (typeof (response.news) != "undefined") {
+                            news = '';
+                            first_el = 0;
+                            $.each(response.news, function (index, object) {
+                                if (first_el == 0) {
+                                    self.newsDate = object.created;
+                                }
+                                news += '<div class="design-news">' + object.title + ' <br><a class="clicks" data-id="' + object.id + '" href="' + object.link + '">' + object.host + '</a></div>';
+                            });
+                            if (news != '') {
+                                var $prependEl = $(news);
+                                $prependEl.hide();
+                                $prependEl.prependTo('#content-news').slideDown('slow');
+                            }
+                        } else {
+                            self.newsDate = newsDate;
                         }
-                        if (response.twitter != '') {
+                        if (typeof (response.twitter) != "undefined" && response.twitter != '') {
                             var $prependEl = $(response.twitter);
                             $prependEl.hide();
+                            self.dateTwitter = $prependEl.first().data('date');
                             $prependEl.prependTo('#content-job').slideDown('slow');
+                        } else {
+                            self.dateTwitter = $('#twitterDate').data('date');
                         }
                     }
                     self.started = 1;
-                    if (response.count != 0) {
-                        function sortfunction(a, b) {
-                            return (a.sort - b.sort);
-                        }
-                        response.updates.sort(sortfunction);
-                        var html = '';
-                        var solutions = '';
-                        if (typeof (response.post) != "undefined") {
-                            var $prependEl = $('<div class="box"> \
-                            <a href="'+response.post.link+'"><img class="img-post" src="'+response.post.imageurl+'"></a> \
+                    var html = '';
+                    var solutions = '';
+                    if (typeof (response.post) != "undefined") {
+                        var $prependEl = $('<div class="box"> \
+                            <a href="' + response.post.link + '"><img class="img-post" src="' + response.post.imageurl + '"></a> \
                             <div class="r-content"> \
-                                <a href="'+response.post.link+'"><h2>'+response.post.title+'</h2></a> \
-                                <time class="timeago" datetime="'+response.post.created+'">'+response.post.created+'</time> \
+                                <a href="' + response.post.link + '"><h2>' + response.post.title + '</h2></a> \
+                                <time class="timeago" datetime="' + response.post.created + '">' + response.post.created + '</time> \
                             </div> \
                             </div>');
-                            $prependEl.hide();
-                            
-                            $prependEl.prependTo('#updates-box-').slideDown('slow');  
-                            $('time.timeago').timeago();
-                        }
-                        $.each(response.updates, function (index, object) {
-                            if (index == 0) {
-                                self.date = object.created;
-                            }
-                            if (!object.solution) {
-                                object.solution = {};
-                                object.solution.images = {};
-                                object.solution.images.solution_galleryLargeSize = {};
-                                object.solution.views = 0;
-                                object.solution.likes = 0;
-                                object.solution.images.solution_galleryLargeSize.weburl = '';
-                            }
+                        $prependEl.hide();
 
-                            var newclass = '';
-                            if (Date.parse(object.jsCreated) > offsetDate) {
-                                newclass = ' newevent ';
-                            }
-
-                            if (object.type == 'PitchCreated') {
-                                newclass = ' newpitchstream ';
-                            }
-                            if (typeof (object.solution.images.solution_solutionView) != "undefined") {
-                                if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
-                                    var imageurl = object.solution.images.solution_solutionView.weburl;
+                        $prependEl.prependTo('#updates-box-').slideDown('slow');
+                        $('time.timeago').timeago();
+                    }
+                    if (typeof (response.pitches) != "undefined") {
+                        var pitches = '';
+                        $.each(response.pitches, function (index, pitch) {
+                            pitches += '<div class="new-pitches"> \
+                                    <div class="new-price">' + pitch.price + '</div> \
+                                    <div class="new-title">' + pitch.title + '</div> \
+                                </div>'
+                        });
+                        var $prependEl = $(pitches);
+                        $prependEl.hide();
+                        $prependEl.prependTo('#content-pitches').slideDown('slow');
+                    }
+                    if (typeof (response.solutions) != "undefined") {
+                        var solutions = '';
+                        $.each(response.solutions, function (index, solution) {
+                            if (typeof (solution.solution.images.solution_tutdesign) != "undefined") {
+                                if (typeof (solution.solution.images.solution_tutdesign.length) == "undefined") {
+                                    var imageurl = solution.solution.images.solution_tutdesign.weburl;
                                 } else {
-                                    var imageurl = object.solution.images.solution_solutionView[0].weburl;
+                                    var imageurl = solution.solution.images.solution_tutdesign[0].weburl;
                                 }
                             }
-                            if (object.type == 'PitchCreated') {
-                                var imageurl = '/img/zaglushka.jpg';
+                            solutions += '<div class="solutions-block"> \
+                                    <a href="/pitches/viewsolution/' + solution.id + '"><img width="260" src="' + imageurl + '"></a> \
+                                    <div> \
+                                        <span>' + solution.creator + '</span> \
+                                        <img class="rat" src="/img/rating.png"> \
+                                        <p class="fb_like"> \
+                                            <a id="' + solution.id + '" href="#">' + solution.solution.likes + '</a> \
+                                        </p> \
+                                    </div> \
+                                </div>';
+                        });
+                        var $prependEl = $(solutions);
+                        $prependEl.hide();
+                        $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
+                    }
+                    if (typeof (response.updates) != "undefined") {
+                        if (response.count != 0) {
+                            function sortfunction(a, b) {
+                                return (a.sort - b.sort);
                             }
-                            var extraUI = '';
-                            if (object.type != 'PitchCreated') {
-                                extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
+                            response.updates.sort(sortfunction);
+                            $.each(response.updates, function (index, object) {
+                                if (index == 0) {
+                                    self.date = object.created;
+                                }
+                                if (!object.solution) {
+                                    object.solution = {};
+                                    object.solution.images = {};
+                                    object.solution.images.solution_galleryLargeSize = {};
+                                    object.solution.views = 0;
+                                    object.solution.likes = 0;
+                                    object.solution.images.solution_galleryLargeSize.weburl = '';
+                                }
+
+                                var newclass = '';
+                                if (Date.parse(object.jsCreated) > offsetDate) {
+                                    newclass = ' newevent ';
+                                }
+
+                                if (object.type == 'PitchCreated') {
+                                    newclass = ' newpitchstream ';
+                                }
+                                if (typeof (object.solution.images.solution_solutionView) != "undefined") {
+                                    if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
+                                        var imageurl = object.solution.images.solution_solutionView.weburl;
+                                    } else {
+                                        var imageurl = object.solution.images.solution_solutionView[0].weburl;
+                                    }
+                                }
+                                if (object.type == 'PitchCreated') {
+                                    var imageurl = '/img/zaglushka.jpg';
+                                }
+                                var extraUI = '';
+                                if (object.type != 'PitchCreated') {
+                                    extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
                                 <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
-                                if ($('#user_id').val() == object.pitch.user_id) {
-                                    extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                                    if ($('#user_id').val() == object.pitch.user_id) {
+                                        extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
                                         <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
                                         <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
                                         <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
                                         <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
-                                }
-                                extraUI += '</div> \
+                                    }
+                                    extraUI += '</div> \
                             </div>' +
-                                        '<p class="visit_number">' + object.solution.views + '</p>' +
-                                        '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
-                            }
+                                            '<p class="visit_number">' + object.solution.views + '</p>' +
+                                            '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
+                                }
 
-                            if (object.type == 'SolutionAdded') {
-                                solutions += '<div class="solutions-block"> \
-                        <a href="/pitches/viewsolution/' + object.solution.id + '"><img width="260" src="' + imageurl + '"></a> \
-                        <div> \
-                            <span>' + object.creator + '</span> \
-                            <img class="rat" src="/img/rating.png"> \
-                            <p class="fb_like"> \
-                                <a id="' + object.solution.id + '" href="#">' + object.solution.likes + '</a> \
-                            </p> \
-                        </div> \
-                    </div>';
-                                avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                html += '<div class="box"> \
+                                if (object.type == 'SolutionAdded') {
+//                                solutions += '<div class="solutions-block"> \
+//                        <a href="/pitches/viewsolution/' + object.solution.id + '"><img width="260" src="' + imageurl + '"></a> \
+//                        <div> \
+//                            <span>' + object.creator + '</span> \
+//                            <img class="rat" src="/img/rating.png"> \
+//                            <p class="fb_like"> \
+//                                <a id="' + object.solution.id + '" href="#">' + object.solution.likes + '</a> \
+//                            </p> \
+//                        </div> \
+//                    </div>';
+                                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                    html += '<div class="box"> \
                             <div class="l-img"> \
                                 <img class="avatar" src="' + avatar + '"> \
                             </div> \
@@ -459,44 +510,47 @@ function OfficeStatusUpdater() {
                             </div> \
                             <a href="' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
                             <div data-id="' + object.solution.id + '" class="likes">';
-                                id = object.solution.id;
-                                $.each(response.updates, function (index, object) {
-                                    if (object.type == 'LikeAdded' && object.solution_id == id) {
-                                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                        html += '<div> \
+                                    id = object.solution.id;
+                                    $.each(response.updates, function (index, object) {
+                                        if (object.type == 'LikeAdded' && object.solution_id == id) {
+                                            avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                            html += '<div> \
                                     <div class="l-img"> \
                                         <img class="avatar" src="' + avatar + '"> \
                                     </div> \
                                     <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ваше решение</span> \
                                 </div>';
-                                    }
-                                });
-                                html += '</div></div>';
-                            }
+                                        }
+                                    });
+                                    html += '</div></div>';
+                                }
 
-                            if (object.type == 'LikeAdded') {
-                                $('a#' + object.solution_id).text(object.solution.likes);
-                            }
+                                if (object.type == 'LikeAdded') {
+                                    $('a#' + object.solution_id).text(object.solution.likes);
+                                }
 
-                            if (object.type == 'CommentAdded') {
-                                avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                html += '<div class="box"> \
+                                if (object.type == 'CommentAdded') {
+                                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                    html += '<div class="box"> \
                             <div class="l-img"> \
                                 <img class="avatar" src="' + avatar + '"> \
                             </div> \
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo; \
                             </div> \
-                            <img class="sol" src="' + object.solution.images.solution_solutionView[0].weburl + '"> \
+                            <img class="sol" src="' + imageurl + '"> \
                         </div>';
-                            }
-                        });
-                        var $prependEl = $(html);
-                        $prependEl.hide();
-                        $prependEl.prependTo('#updates-box-').slideDown('slow');
-                        $prependEl = $(solutions);
-                        $prependEl.hide();
-                        $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
+                                }
+                            });
+                            var $prependEl = $(html);
+                            $prependEl.hide();
+                            $prependEl.prependTo('#updates-box-').slideDown('slow');
+                            // $prependEl = $(solutions);
+                            // $prependEl.hide();
+                            // $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
+                        }
+                    } else {
+                        self.date = eventsDate;
                     }
                 });
             }
@@ -514,55 +568,55 @@ function OfficeStatusUpdater() {
                 var html = '';
                 var solutions = '';
                 $.each(response.updates, function (index, object) {
-                            if (index == 0) {
-                                self.date = object.created;
-                            }
-                            if (!object.solution) {
-                                object.solution = {};
-                                object.solution.images = {};
-                                object.solution.images.solution_galleryLargeSize = {};
-                                object.solution.views = 0;
-                                object.solution.likes = 0;
-                                object.solution.images.solution_galleryLargeSize.weburl = '';
-                            }
+                    if (index == 0) {
+                        self.date = object.created;
+                    }
+                    if (!object.solution) {
+                        object.solution = {};
+                        object.solution.images = {};
+                        object.solution.images.solution_galleryLargeSize = {};
+                        object.solution.views = 0;
+                        object.solution.likes = 0;
+                        object.solution.images.solution_galleryLargeSize.weburl = '';
+                    }
 
-                            var newclass = '';
-                            if (Date.parse(object.jsCreated) > offsetDate) {
-                                newclass = ' newevent ';
-                            }
+                    var newclass = '';
+                    if (Date.parse(object.jsCreated) > offsetDate) {
+                        newclass = ' newevent ';
+                    }
 
-                            if (object.type == 'PitchCreated') {
-                                newclass = ' newpitchstream ';
-                            }
-                            if (typeof (object.solution.images.solution_solutionView) != "undefined") {
-                                if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
-                                    var imageurl = object.solution.images.solution_solutionView.weburl;
-                                } else {
-                                    var imageurl = object.solution.images.solution_solutionView[0].weburl;
-                                }
-                            }
-                            if (object.type == 'PitchCreated') {
-                                var imageurl = '/img/zaglushka.jpg';
-                            }
-                            var extraUI = '';
-                            if (object.type != 'PitchCreated') {
-                                extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
+                    if (object.type == 'PitchCreated') {
+                        newclass = ' newpitchstream ';
+                    }
+                    if (typeof (object.solution.images.solution_solutionView) != "undefined") {
+                        if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
+                            var imageurl = object.solution.images.solution_solutionView.weburl;
+                        } else {
+                            var imageurl = object.solution.images.solution_solutionView[0].weburl;
+                        }
+                    }
+                    if (object.type == 'PitchCreated') {
+                        var imageurl = '/img/zaglushka.jpg';
+                    }
+                    var extraUI = '';
+                    if (object.type != 'PitchCreated') {
+                        extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
                                 <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
-                                if ($('#user_id').val() == object.pitch.user_id) {
-                                    extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+                        if ($('#user_id').val() == object.pitch.user_id) {
+                            extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
                                         <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
                                         <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
                                         <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
                                         <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
-                                }
-                                extraUI += '</div> \
+                        }
+                        extraUI += '</div> \
                             </div>' +
-                                        '<p class="visit_number">' + object.solution.views + '</p>' +
-                                        '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
-                            }
+                                '<p class="visit_number">' + object.solution.views + '</p>' +
+                                '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
+                    }
 
-                            if (object.type == 'SolutionAdded') {
-                                solutions += '<div class="solutions-block"> \
+                    if (object.type == 'SolutionAdded') {
+                        solutions += '<div class="solutions-block"> \
                         <a href="/pitches/viewsolution/' + object.solution.id + '"><img width="260" src="' + imageurl + '"></a> \
                         <div> \
                             <span>' + object.creator + '</span> \
@@ -572,8 +626,8 @@ function OfficeStatusUpdater() {
                             </p> \
                         </div> \
                     </div>';
-                                avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                html += '<div class="box"> \
+                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                        html += '<div class="box"> \
                             <div class="l-img"> \
                                 <img class="avatar" src="' + avatar + '"> \
                             </div> \
@@ -582,28 +636,28 @@ function OfficeStatusUpdater() {
                             </div> \
                             <a href="' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
                             <div data-id="' + object.solution.id + '" class="likes">';
-                                id = object.solution.id;
-                                $.each(response.updates, function (index, object) {
-                                    if (object.type == 'LikeAdded' && object.solution_id == id) {
-                                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                        html += '<div> \
+                        id = object.solution.id;
+                        $.each(response.updates, function (index, object) {
+                            if (object.type == 'LikeAdded' && object.solution_id == id) {
+                                avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                html += '<div> \
                                     <div class="l-img"> \
                                         <img class="avatar" src="' + avatar + '"> \
                                     </div> \
                                     <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ваше решение</span> \
                                 </div>';
-                                    }
-                                });
-                                html += '</div></div>';
                             }
+                        });
+                        html += '</div></div>';
+                    }
 
-                            if (object.type == 'LikeAdded') {
-                                $('a#' + object.solution_id).text(object.solution.likes);
-                            }
+                    if (object.type == 'LikeAdded') {
+                        $('a#' + object.solution_id).text(object.solution.likes);
+                    }
 
-                            if (object.type == 'CommentAdded') {
-                                avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                html += '<div class="box"> \
+                    if (object.type == 'CommentAdded') {
+                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                        html += '<div class="box"> \
                             <div class="l-img"> \
                                 <img class="avatar" src="' + avatar + '"> \
                             </div> \
@@ -612,7 +666,7 @@ function OfficeStatusUpdater() {
                             </div> \
                             <img class="sol" src="' + object.solution.images.solution_solutionView[0].weburl + '"> \
                         </div>';
-                            }
+                    }
                 });
 //                if (response.nextUpdates > 0) {
 //                    html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
@@ -1405,7 +1459,7 @@ $(document).on('click', function () {
 // details.js end
 /* ==============*/
 $('.ajaxoffice').live('click', function () {
-   // console.log($(this).attr('href'));
+    // console.log($(this).attr('href'));
     var url = $(this).attr('href');
     $.get(url, function (response) {
         if (url.match(/users\/office/)) {
