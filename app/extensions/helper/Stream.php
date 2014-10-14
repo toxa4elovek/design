@@ -54,7 +54,7 @@ class Stream extends \lithium\template\Helper {
         }
         // $ending = '</ul><h2 style="font:20px \'RodeoC\',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-top:10px;">СЛЕДИ ЗА <a class="follow-link" style="font-size:20px;" target="_blank" href="http://www.twitter.com/#!/Go_Deer">@GO_DEER</a><br> В ТВИТТЕРЕ</h2>';
 
-        return $header . $content . $ending;
+        return $content;
     }
 
 }
