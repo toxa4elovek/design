@@ -439,7 +439,6 @@ function OfficeStatusUpdater() {
                         }
                     } else {
                         self.solutionDate = solutionDate;
-                        console.log(solutionDate);
                     }
                     if (typeof (response.updates) != "undefined") {
                         if (response.count != 0) {
