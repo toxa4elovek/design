@@ -17,8 +17,16 @@ class EventsController extends \app\controllers\AppController {
         }
 
         if (!empty($this->request->query['created'])) {
-            $news = \app\models\News::all(array('conditions' => array('created' => array('>' => $this->request->query['created'])), 'limit' => 8, 'order' => array('created' => 'desc')));
+
             $pitches = Pitch::all(array('fields' => array('title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => array('>' => $this->request->query['created'])), 'order' => array('started' => 'desc'), 'limit' => 5));
+        } elseif (!isset($this->request->query['created'])) {
+            $this->request->query['created'] = 0;
+        }
+        if (!empty($this->request->query['twitterDate'])) {
+            $twitter = Stream::renderStream(10, $this->request->query['twitterDate']);
+        }
+        if (!empty($this->request->query['newsDate'])) {
+            $news = \app\models\News::all(array('conditions' => array('created' => array('>' => $this->request->query['newsDate'])), 'limit' => 8, 'order' => array('created' => 'desc')));
             if ($news) {
                 $all_views = 0;
                 foreach ($news as $n) {
@@ -34,13 +42,7 @@ class EventsController extends \app\controllers\AppController {
                     }
                 }
             }
-        } elseif (!isset($this->request->query['created'])) {
-            $this->request->query['created'] = 0;
         }
-        if (!empty($this->request->query['twitterDate'])) {
-            $twitter = Stream::renderStream(10, $this->request->query['twitterDate']);
-        }
-
         // $solutions = Solution::all((array('fields' => array('likes', 'created', 'id', 'user_id', 'pitch_id', 'first_name','last_name'), 'conditions' => array('multiwinner' => 0, 'Solution.created' => array('>' => $this->request->query['created'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('User'))));
         $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'created' => array('>' => $this->request->query['created']))));
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created']);

@@ -42,9 +42,18 @@
                     <div id="container-design-news">
                         <div class="rs-header">Новости дизайна</div>
                         <div id="content-news">
-                            <?php foreach ($news as $n): $host = parse_url($n->link); ?>
+                            <?php
+                            $newsDate = '';
+                            foreach ($news as $n): $host = parse_url($n->link);
+                                if (strtotime($newsDate) < strtotime($n->created)) {
+                                    $newsDate = $n->created;
+                                }
+                                ?>
                                 <div class="design-news"><?= $n->title ?> <br><a class="clicks" data-id="<?= $n->id ?>" href="<?= $n->link ?>"><?= $host['host'] ?></a></div>
                             <?php endforeach; ?>
+                            <script type="text/javascript">
+                                var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
+                            </script> 
                         </div>
                     </div>
                 </div>

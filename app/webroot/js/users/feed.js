@@ -341,6 +341,7 @@ function OfficeStatusUpdater() {
     this.page = 1;
     this.date = '';
     this.dateTwitter;
+    this.newsDate;
     this.started = 0;
     // initialisation method
     this.init = function () {
@@ -353,16 +354,23 @@ function OfficeStatusUpdater() {
             });
     },
             this.autoupdate = function () {
-                $.get('/events/updates.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter}, function (response) {
+                $.get('/events/updates.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter,"newsDate": self.newsDate}, function (response) {
                     if (self.started) {
-                        news = '';
-                        $.each(response.news, function (index, object) {
-                            news += '<div class="design-news">'+ object.title +' <br><a class="clicks" data-id="'+object.id+'" href="'+object.link+'">'+object.host+'</a></div>';
-                        });
-                        if (news != '') {
-                            var $prependEl = $(news);
-                            $prependEl.hide();
-                            $prependEl.prependTo('#content-news').slideDown('slow');
+                        if (typeof (response.news) != "undefined") {
+                            news = ''; first_el = 0;
+                            $.each(response.news, function (index, object) {
+                                if (first_el == 0) {
+                                    self.newsDate = object.created;
+                                }
+                                news += '<div class="design-news">'+ object.title +' <br><a class="clicks" data-id="'+object.id+'" href="'+object.link+'">'+object.host+'</a></div>';
+                            });
+                            if (news != '') {
+                                var $prependEl = $(news);
+                                $prependEl.hide();
+                                $prependEl.prependTo('#content-news').slideDown('slow');
+                            }
+                        } else {
+                            self.newsDate = newsDate;
                         }
                         if (typeof (response.twitter) != "undefined" && response.twitter != '') {
                             var $prependEl = $(response.twitter);
