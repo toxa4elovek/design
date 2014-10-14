@@ -4,7 +4,7 @@ namespace app\extensions\command;
 
 use \app\models\News;
 
-class ParseGodesigner extends \app\extensions\command\CronJob {
+class ParseTutdesign extends \app\extensions\command\CronJob {
 
     public function run() {
         $xml = simplexml_load_file('http://tutdesign.ru/feed');
