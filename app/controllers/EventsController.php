@@ -34,12 +34,15 @@ class EventsController extends \app\controllers\AppController {
                     }
                 }
             }
-            $twitter = Stream::renderStream(10, $this->request->query['created']);
         } elseif (!isset($this->request->query['created'])) {
             $this->request->query['created'] = 0;
         }
-       // $solutions = Solution::all((array('fields' => array('likes', 'created', 'id', 'user_id', 'pitch_id', 'first_name','last_name'), 'conditions' => array('multiwinner' => 0, 'Solution.created' => array('>' => $this->request->query['created'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('User'))));
-        $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded','created' => array('>' => $this->request->query['created']))));
+        if (!empty($this->request->query['twitterDate'])) {
+            $twitter = Stream::renderStream(10, $this->request->query['twitterDate']);
+        }
+
+        // $solutions = Solution::all((array('fields' => array('likes', 'created', 'id', 'user_id', 'pitch_id', 'first_name','last_name'), 'conditions' => array('multiwinner' => 0, 'Solution.created' => array('>' => $this->request->query['created'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('User'))));
+        $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'created' => array('>' => $this->request->query['created']))));
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created']);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
         $count = count($updates);

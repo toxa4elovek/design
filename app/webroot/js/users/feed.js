@@ -340,6 +340,7 @@ function OfficeStatusUpdater() {
     this.storage = {};
     this.page = 1;
     this.date = '';
+    this.dateTwitter;
     this.started = 0;
     // initialisation method
     this.init = function () {
@@ -352,7 +353,7 @@ function OfficeStatusUpdater() {
             });
     },
             this.autoupdate = function () {
-                $.get('/events/updates.json', {"init": true, "created": self.date}, function (response) {
+                $.get('/events/updates.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter}, function (response) {
                     if (self.started) {
                         news = '';
                         $.each(response.news, function (index, object) {
@@ -363,10 +364,13 @@ function OfficeStatusUpdater() {
                             $prependEl.hide();
                             $prependEl.prependTo('#content-news').slideDown('slow');
                         }
-                        if (response.twitter != '') {
+                        if (typeof (response.twitter) != "undefined" && response.twitter != '') {
                             var $prependEl = $(response.twitter);
                             $prependEl.hide();
+                            self.dateTwitter = $prependEl.first().data('date');
                             $prependEl.prependTo('#content-job').slideDown('slow');
+                        } else {
+                            self.dateTwitter = $('#twitterDate').data('date');
                         }
                     }
                     self.started = 1;

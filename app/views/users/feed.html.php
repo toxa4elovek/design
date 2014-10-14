@@ -25,7 +25,7 @@
                     <div id="container-job-designers">
                         <div class="rs-header">Работа для дизайнера</div>
                         <div id="content-job">
-                            <?php echo $this->stream->renderStream(10); ?>
+                            <?php echo $this->stream->renderStream(6); ?>
                         </div>
                     </div>
                     <div id="container-new-pitches">
