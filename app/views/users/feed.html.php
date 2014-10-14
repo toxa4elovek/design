@@ -59,6 +59,70 @@
                 </div>
                 <div id="center_sidebar">
                     <div class="center-boxes" id="updates-box-">
+                        <?php
+                        $html = '';
+                        $dateEvent = '';
+                        $count = 0;
+                        foreach ($updates as $object):
+                            if ($count == 0) {
+                                $dateEvent = $object['created'];
+                                var_dump($dateEvent);
+                            }
+                            $count++;
+                            $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
+                            if (isset($object['solution']['images']['solution_solutionView'])) {
+                                if (isset($object['solution']['images']['solution_solutionView'][0]['weburl'])) {
+                                    $imageurl = $object['solution']['images']['solution_solutionView'][0]['weburl'];
+                                } else {
+                                    $imageurl = $object['solution']['images']['solution_solutionView']['weburl'];
+                                }
+                            }
+                            if ($object['type'] == 'CommentAdded') :
+                                ?>
+                                <div class="box"> 
+                                    <div class="l-img"> 
+                                        <img class="avatar" src="<?= $avatar ?>"> 
+                                    </div> 
+                                    <div class="r-content"> 
+                                        <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> прокомментировал ваше <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                    </div> 
+                                    <img class="sol" src="<?= $imageurl ?>">
+                                </div>
+                            <?php elseif ($object['type'] == 'SolutionAdded') : ?>
+                                <div class="box">
+                                    <div class="l-img">
+                                        <img class="avatar" src="<?= $avatar ?>">
+                                    </div>
+                                    <div class="r-content">
+                                        <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> предложил решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                    </div>
+                                    <a href="<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                    <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
+                                        <?php
+                                        $id = $object['solution']['id'];
+                                        foreach ($updates as $like):
+                                            if ($object['type'] == 'LikeAdded' && $object['solution_id'] == $id):
+                                                $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
+                                                ?>
+                                                <div>
+                                                    <div class="l-img">
+                                                        <img class="avatar" src="<?= $avatar ?>">
+                                                    </div>
+                                                    <span><a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> лайкнул ваше решение</span>
+                                                </div>
+                                                <?php
+                                            endif;
+                                        endforeach;
+                                        ?>
+                                    </div></div>
+                                <?php
+                            endif;
+                        endforeach;
+                        ?>
+                        <script type="text/javascript">
+                            var eventsDate = '<?= date('Y-m-d H:i:s', strtotime($dateEvent)) ?>';
+                        </script> 
+
                         <!--                        <div class="box">
                                                     <div class="l-img">
                                                         <img class="avatar" src="/img/default_small_avatar.png">

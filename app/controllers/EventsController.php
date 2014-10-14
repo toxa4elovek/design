@@ -17,8 +17,8 @@ class EventsController extends \app\controllers\AppController {
         }
 
         if (!empty($this->request->query['created'])) {
-
             $pitches = Pitch::all(array('fields' => array('title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => array('>' => $this->request->query['created'])), 'order' => array('started' => 'desc'), 'limit' => 5));
+            $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created']);
         } elseif (!isset($this->request->query['created'])) {
             $this->request->query['created'] = 0;
         }
@@ -45,10 +45,8 @@ class EventsController extends \app\controllers\AppController {
         }
         // $solutions = Solution::all((array('fields' => array('likes', 'created', 'id', 'user_id', 'pitch_id', 'first_name','last_name'), 'conditions' => array('multiwinner' => 0, 'Solution.created' => array('>' => $this->request->query['created'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('User'))));
         $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'created' => array('>' => $this->request->query['created']))));
-        $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created']);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
         $count = count($updates);
-        $test = $this->request->query['created'];
         return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
     }
 
