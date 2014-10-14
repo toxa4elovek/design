@@ -76,10 +76,10 @@
     </tr>
 </table>
 <p style="font-weight:bold; margin-top:20px; font-size: 20px; color:red">Внимание!<br/><span style="font-weight:bold;font-size:13px; color: black;">В назначении платежа указывайте точную фразу из столбца название услуги.</span></p>
+<p style="font-size:10px;font-weight:bold;">Закрывающие документы вы получите на e-mail сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать. Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27). В ответном письме вы получите оригиналы документов с нашей печатью.</p>
 <p style="">Всего наименований 1, на сумму <?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?>.</p>
 <p style=""><?=$money->num2str($pitch->total)?></p>
 <br /><br /><br />
-<!--<img style="" src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/godesigner_stamp_trasp.png">-->
 <table>
     <tr>
         <td style="vertical-align:bottom;">Генеральный директор</td>
@@ -88,7 +88,7 @@
         <td style="padding:0 2em;"></td>
         <td style="border-bottom:1px solid;text-align:center;vertical-align:bottom;">
             <div style="position:relative;">
-                <div style="position:absolute;right:270px;bottom:260px;">
+                <div style="position:absolute;right:270px;bottom:210px;">
                     <img width="120" height="auto" src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/godesigner_stamp_trasp.png"></div>
                 <div>/Федченко М. Ю./</div>
             </div>
