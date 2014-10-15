@@ -25,6 +25,10 @@ class EventsController extends \app\controllers\AppController {
     }
 
     public function feed() {
+        if (isset($this->request->query['page'])) {
+            $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page']);
+        }
+
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
         }

@@ -343,43 +343,49 @@ function OfficeStatusUpdater() {
     this.init = function () {
         $('.obnovlenia_box').last().addClass('last_item');
         $('time.timeago').timeago();
-        self.autoupdate();
+        //self.autoupdate();
+        self.newsDate = newsDate;
+        self.dateTwitter = $('#twitterDate').data('date');
+        self.solutionDate = solutionDate;
+        self.date = eventsDate;
+//        console.log('newsDate: '+self.newsDate);
+//        console.log('dateTwitter: '+self.dateTwitter);
+//        console.log('solutionDate: '+self.solutionDate);
+//        console.log('date: '+self.date);
         $(document).everyTime(20000, function (i) {
             if (self.started) {
                 self.autoupdate();
             }
         });
+        self.started = 1;
     },
             this.autoupdate = function () {
                 $.get('/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate}, function (response) {
-                    if (self.started) {
-                        if (typeof (response.news) != "undefined") {
-                            news = '';
-                            first_el = 0;
-                            $.each(response.news, function (index, object) {
-                                if (first_el == 0) {
-                                    self.newsDate = object.created;
-                                }
-                                news += '<div class="design-news"><a target="_blank" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.title + ' <br><a class="clicks" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.host + '</a></div>';
-                            });
-                            if (news != '') {
-                                var $prependEl = $(news);
-                                $prependEl.hide();
-                                $prependEl.prependTo('#content-news').slideDown('slow');
+                    if (typeof (response.news) != "undefined") {
+                        news = '';
+                        first_el = 0;
+                        $.each(response.news, function (index, object) {
+                            if (first_el == 0) {
+                                self.newsDate = object.created;
                             }
-                        } else {
-                            self.newsDate = newsDate;
-                        }
-                        if (typeof (response.twitter) != "undefined" && response.twitter != '') {
-                            var $prependEl = $(response.twitter);
+                            news += '<div class="design-news"><a target="_blank" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.title + ' <br><a class="clicks" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.host + '</a></div>';
+                        });
+                        if (news != '') {
+                            var $prependEl = $(news);
                             $prependEl.hide();
-                            self.dateTwitter = $prependEl.first().data('date');
-                            $prependEl.prependTo('#content-job').slideDown('slow');
-                        } else {
-                            self.dateTwitter = $('#twitterDate').data('date');
+                            $prependEl.prependTo('#content-news').slideDown('slow');
                         }
+                    } else {
+                        self.newsDate = newsDate;
                     }
-                    self.started = 1;
+                    if (typeof (response.twitter) != "undefined" && response.twitter != '') {
+                        var $prependEl = $(response.twitter);
+                        $prependEl.hide();
+                        self.dateTwitter = $prependEl.first().data('date');
+                        $prependEl.prependTo('#content-job').slideDown('slow');
+                    } else {
+                        self.dateTwitter = $('#twitterDate').data('date');
+                    }
                     var html = '';
                     var solutions = '';
                     if (typeof (response.post) != "undefined") {
@@ -420,7 +426,7 @@ function OfficeStatusUpdater() {
                             solutions += '<div class="solutions-block"> \
                                     <a href="/pitches/viewsolution/' + solution.id + '"><img width="260" src="' + imageurl + '"></a> \
                                     <div> \
-                                        <span>' + solution.creator + '</span> \
+                                        <p class="creator-name">' + solution.creator + '</p> \
                                         <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
                                         <p class="fb_like"> \
                                             <a id="' + solution.id + '" href="#">' + solution.solution.likes + '</a> \
@@ -589,34 +595,24 @@ function OfficeStatusUpdater() {
                     if (object.type == 'PitchCreated') {
                         var imageurl = '/img/zaglushka.jpg';
                     }
-                    var extraUI = '';
-                    if (object.type != 'PitchCreated') {
-                        extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
-                                <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
-                        if ($('#user_id').val() == object.pitch.user_id) {
-                            extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
-                                        <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
-                                        <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
-                                        <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
-                                        <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
-                        }
-                        extraUI += '</div> \
-                            </div>' +
-                                '<p class="visit_number">' + object.solution.views + '</p>' +
-                                '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
-                    }
+//                    var extraUI = '';
+//                    if (object.type != 'PitchCreated') {
+//                        extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
+//                                <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
+//                        if ($('#user_id').val() == object.pitch.user_id) {
+//                            extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+//                                        <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+//                                        <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+//                                        <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+//                                        <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
+//                        }
+//                        extraUI += '</div> \
+//                            </div>' +
+//                                '<p class="visit_number">' + object.solution.views + '</p>' +
+//                                '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
+//                    }
 
                     if (object.type == 'SolutionAdded') {
-                        solutions += '<div class="solutions-block"> \
-                        <a href="/pitches/viewsolution/' + object.solution.id + '"><img width="260" src="' + imageurl + '"></a> \
-                        <div> \
-                            <span>' + object.creator + '</span> \
-                            <img class="rat" src="/img/rating.png"> \
-                            <p class="fb_like"> \
-                                <a id="' + object.solution.id + '" href="#">' + object.solution.likes + '</a> \
-                            </p> \
-                        </div> \
-                    </div>';
                         avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                         html += '<div class="box"> \
                             <div class="l-img"> \
@@ -640,10 +636,6 @@ function OfficeStatusUpdater() {
                             }
                         });
                         html += '</div></div>';
-                    }
-
-                    if (object.type == 'LikeAdded') {
-                        $('a#' + object.solution_id).text(object.solution.likes);
                     }
 
                     if (object.type == 'CommentAdded') {

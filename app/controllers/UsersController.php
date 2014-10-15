@@ -162,13 +162,15 @@ class UsersController extends \app\controllers\AppController {
         if ($news) {
             $all_views = 0;
             foreach ($news as $n) {
-                $all_views += $n->views;
+                $all_views += $n->views;  
             }
             $av_views = round($all_views / count($news));
             $max = 0;
             foreach ($news as $n) {
                 if ($n->views > $av_views * 2 && $max < $n->views) {
                     $max = $n->views;
+                    $host = parse_url($n->link);
+                    $n->host = $host['host'];
                     $post = $n;
                 }
             }
