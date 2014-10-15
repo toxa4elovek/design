@@ -36,7 +36,7 @@ class EventsController extends \app\controllers\AppController {
             $this->request->query['created'] = 0;
         }
         if (!empty($this->request->query['twitterDate'])) {
-            $twitter = Stream::renderStream(10, $this->request->query['twitterDate']);
+            $twitter = Stream::renderStreamFeed(10, $this->request->query['twitterDate']);
         }
         if (!empty($this->request->query['solutionDate'])) {
             $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('created' => 'desc'), 'limit' => 10));

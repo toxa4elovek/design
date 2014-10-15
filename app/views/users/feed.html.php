@@ -68,7 +68,7 @@
                                     $newsDate = $n->created;
                                 }
                                 ?>
-                            <div class="design-news"><a href="/users/click?link=<?=$n->link?>&id=<?=$n->id?>"><?= $n->title ?></a> <br><a class="clicks" href="/users/click?link=<?=$n->link?>&id=<?=$n->id?>"><?= $host['host'] ?></a></div>
+                            <div class="design-news"><a target="_blank" href="/users/click?link=<?=$n->link?>&id=<?=$n->id?>"><?= $n->title ?></a> <br><a class="clicks" href="/users/click?link=<?=$n->link?>&id=<?=$n->id?>"><?= $host['host'] ?></a></div>
 <?php endforeach; ?>
                             <script type="text/javascript">
                                 var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';

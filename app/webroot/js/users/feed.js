@@ -359,7 +359,7 @@ function OfficeStatusUpdater() {
                                 if (first_el == 0) {
                                     self.newsDate = object.created;
                                 }
-                                news += '<div class="design-news"><a href="/users/click?link='+object.link+'&id='+object.id+'">' + object.title + ' <br><a class="clicks" href="/users/click?link='+object.link+'&id='+object.id+'">' + object.host + '</a></div>';
+                                news += '<div class="design-news"><a target="_blank" href="/users/click?link='+object.link+'&id='+object.id+'">' + object.title + ' <br><a class="clicks" href="/users/click?link='+object.link+'&id='+object.id+'">' + object.host + '</a></div>';
                             });
                             if (news != '') {
                                 var $prependEl = $(news);
