@@ -159,6 +159,20 @@ class UsersController extends \app\controllers\AppController {
         $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
         $news = \app\models\News::all(array('limit' => 10, 'order' => array('created' => 'desc')));
+        if ($news) {
+            $all_views = 0;
+            foreach ($news as $n) {
+                $all_views += $n->views;
+            }
+            $av_views = round($all_views / count($news));
+            $max = 0;
+            foreach ($news as $n) {
+                if ($n->views > $av_views * 2 && $max < $n->views) {
+                    $max = $n->views;
+                    $post = $n;
+                }
+            }
+        }
         $solutions = Event::getEventSolutions();
         $winners = array();
         foreach($winnersData as $winner) {
@@ -170,7 +184,7 @@ class UsersController extends \app\controllers\AppController {
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
         if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-            return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions');
+            return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'post');
         }else {
             return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates', 'pitches')));
         }

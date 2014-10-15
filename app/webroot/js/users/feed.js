@@ -342,6 +342,7 @@ function OfficeStatusUpdater() {
     // initialisation method
     this.init = function () {
         $('.obnovlenia_box').last().addClass('last_item');
+        $('time.timeago').timeago();
         self.autoupdate();
         $(document).everyTime(20000, function (i) {
             if (self.started) {
@@ -359,7 +360,7 @@ function OfficeStatusUpdater() {
                                 if (first_el == 0) {
                                     self.newsDate = object.created;
                                 }
-                                news += '<div class="design-news"><a target="_blank" href="/users/click?link='+object.link+'&id='+object.id+'">' + object.title + ' <br><a class="clicks" href="/users/click?link='+object.link+'&id='+object.id+'">' + object.host + '</a></div>';
+                                news += '<div class="design-news"><a target="_blank" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.title + ' <br><a class="clicks" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.host + '</a></div>';
                             });
                             if (news != '') {
                                 var $prependEl = $(news);
@@ -420,7 +421,7 @@ function OfficeStatusUpdater() {
                                     <a href="/pitches/viewsolution/' + solution.id + '"><img width="260" src="' + imageurl + '"></a> \
                                     <div> \
                                         <span>' + solution.creator + '</span> \
-                                        <img class="rat" src="/img/rating.png"> \
+                                        <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
                                         <p class="fb_like"> \
                                             <a id="' + solution.id + '" href="#">' + solution.solution.likes + '</a> \
                                         </p> \
@@ -472,34 +473,24 @@ function OfficeStatusUpdater() {
                                 if (object.type == 'PitchCreated') {
                                     var imageurl = '/img/zaglushka.jpg';
                                 }
-                                var extraUI = '';
-                                if (object.type != 'PitchCreated') {
-                                    extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
-                                <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
-                                    if ($('#user_id').val() == object.pitch.user_id) {
-                                        extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
-                                        <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
-                                        <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
-                                        <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
-                                        <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
-                                    }
-                                    extraUI += '</div> \
-                            </div>' +
-                                            '<p class="visit_number">' + object.solution.views + '</p>' +
-                                            '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
-                                }
+//                                var extraUI = '';
+//                                if (object.type != 'PitchCreated') {
+//                                    extraUI = '<div class="rating_block" style="height: 9px; margin-top: 2px;"> \
+//                                <div class="ratingcont" data-default="' + object.solution.rating + '" data-solutionid="' + object.solution.id + '" style="float: right; height: 9px; background: url(/img/' + object.solution.rating + '-rating.png) repeat scroll 0% 0% transparent; width: 56px;">';
+//                                    if ($('#user_id').val() == object.pitch.user_id) {
+//                                        extraUI += '<a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+//                                        <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+//                                        <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+//                                        <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a> \
+//                                        <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>';
+//                                    }
+//                                    extraUI += '</div> \
+//                            </div>' +
+//                                            '<p class="visit_number">' + object.solution.views + '</p>' +
+//                                            '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
+//                                }
 
                                 if (object.type == 'SolutionAdded') {
-//                                solutions += '<div class="solutions-block"> \
-//                        <a href="/pitches/viewsolution/' + object.solution.id + '"><img width="260" src="' + imageurl + '"></a> \
-//                        <div> \
-//                            <span>' + object.creator + '</span> \
-//                            <img class="rat" src="/img/rating.png"> \
-//                            <p class="fb_like"> \
-//                                <a id="' + object.solution.id + '" href="#">' + object.solution.likes + '</a> \
-//                            </p> \
-//                        </div> \
-//                    </div>';
                                     avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                     html += '<div class="box"> \
                             <div class="l-img"> \

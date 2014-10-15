@@ -88,10 +88,13 @@
 .fb_like a {
     font: 14px OfficinaSansC Book, serif !important;
 }
+#l-sidebar-office .solutions-block .creator-name {
+    display: inline-block;
+    width: 90px;
+}
 
 #l-sidebar-office .solutions-block .ratingcont {
     margin-top: 5px;
-    margin-left: 40px;
 }
 
 #center_sidebar {
@@ -137,6 +140,12 @@
 #container-new-pitches .new-pitches a {
     color: #fff;
 }
+
+#container-new-pitches .new-pitches a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
 #container-new-pitches .new-price,
 #container-new-pitches .new-title {
     font-family: OfficinaSansC Bold, serif;

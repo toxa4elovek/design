@@ -28,7 +28,7 @@
                         <div class="solutions-block">
                             <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><img width="260" src="<?= $image ?>"></a>
                             <div>
-                                <span><?= $solution->creator ?></span>
+                                <p class="creator-name"><?= $solution->creator ?></p>
                                 <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
                                 <p class="fb_like">
                                     <a href="#"><?= $solution->solution->likes ?></a>
@@ -78,7 +78,16 @@
                 </div>
                 <div id="center_sidebar">
                     <div class="center-boxes" id="updates-box-">
+                        <?php if ($post) : ?>
+                            <div class="box"> 
+                                <a href="<?= $post->link ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a> 
+                                <div class="r-content"> 
+                                    <a href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
+                                    <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time>
+                                </div>
+                            </div>
                         <?php
+                        endif;
                         $html = '';
                         $dateEvent = '';
                         $count = 0;
