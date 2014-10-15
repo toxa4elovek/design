@@ -80,9 +80,9 @@
                     <div class="center-boxes" id="updates-box-">
                         <?php if ($post) : ?>
                             <div class="box"> 
-                                <a href="<?= $post->link ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a> 
+                                <a class="post-link" href="<?= $post->link ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a> 
                                 <div class="r-content"> 
-                                    <a href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
+                                    <a img-post href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
                                     <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time>
                                 </div>
                             </div>

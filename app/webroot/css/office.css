@@ -249,6 +249,19 @@
     margin: 0 auto;
 }
 
+.center-boxes .box a.post-link {
+    position: relative
+}
+
+.center-boxes .box a.post-link:after {
+    content: url(/img/for_designers.png);
+    height: 32px;
+    width: 187px;
+    position: absolute;
+    margin-left: 200px;
+    margin-top: -17px;
+}
+
 .center-boxes .box .sol {
     margin-top: 20px;
 }
@@ -323,4 +336,5 @@
 .box h2,.box a h2 {
     font-size: 18px;
     color: #2d2d2d;
+    padding-top: 16px;
 }
