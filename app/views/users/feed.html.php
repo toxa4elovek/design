@@ -29,7 +29,7 @@
                             <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><img width="260" src="<?= $image ?>"></a>
                             <div>
                                 <span><?= $solution->creator ?></span>
-                                <img class="rat" src="/img/rating.png">
+                                <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
                                 <p class="fb_like">
                                     <a href="#"><?= $solution->solution->likes ?></a>
                                 </p>
@@ -44,18 +44,18 @@
                     <div id="container-job-designers">
                         <div class="rs-header">Работа для дизайнера</div>
                         <div id="content-job">
-<?php echo $this->stream->renderStreamFeed(6); ?>
+                            <?php echo $this->stream->renderStreamFeed(6); ?>
                         </div>
                     </div>
                     <div id="container-new-pitches">
                         <div class="rs-header">Новые питчи</div>
                         <div id="content-pitches">
-<?php foreach ($pitches as $pitch) : ?>
+                            <?php foreach ($pitches as $pitch) : ?>
                                 <div class="new-pitches">
                                     <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price) ?></div>
-                                    <div class="new-title"><a href="/pitches/view/<?=$pitch->id?>"><?= $pitch->title ?></a></div>
+                                    <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
                                 </div>
-<?php endforeach; ?>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                     <div id="container-design-news">
@@ -68,8 +68,8 @@
                                     $newsDate = $n->created;
                                 }
                                 ?>
-                            <div class="design-news"><a target="_blank" href="/users/click?link=<?=$n->link?>&id=<?=$n->id?>"><?= $n->title ?></a> <br><a class="clicks" href="/users/click?link=<?=$n->link?>&id=<?=$n->id?>"><?= $host['host'] ?></a></div>
-<?php endforeach; ?>
+                                <div class="design-news"><a target="_blank" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
+                            <?php endforeach; ?>
                             <script type="text/javascript">
                                 var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
                             </script> 
@@ -106,7 +106,7 @@
                                     </div> 
                                     <img class="sol" src="<?= $imageurl ?>">
                                 </div>
-    <?php elseif ($object['type'] == 'SolutionAdded') : ?>
+                            <?php elseif ($object['type'] == 'SolutionAdded') : ?>
                                 <div class="box">
                                     <div class="l-img">
                                         <img class="avatar" src="<?= $avatar ?>">

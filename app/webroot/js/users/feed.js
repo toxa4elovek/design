@@ -105,11 +105,11 @@ $(document).ready(function () {
 
     // Solution Stars
     $(document).on('mouseenter', '.ratingchange', function () {
-        $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
+        $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) no-repeat scroll 0% 0% transparent');
     });
 
     $(document).on('mouseleave', '.ratingcont', function () {
-        $(this).css('background', 'url(/img/' + $(this).data('default') + '-rating.png) repeat scroll 0% 0% transparent');
+        $(this).css('background', 'url(/img/' + $(this).data('default') + '-rating.png) no-repeat scroll 0% 0% transparent');
     });
     $(document).on('click', '.ratingchange', function () {
         var id = $(this).parent().data('solutionid');

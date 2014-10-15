@@ -88,7 +88,8 @@
 .fb_like a {
     font: 14px OfficinaSansC Book, serif !important;
 }
-#l-sidebar-office .solutions-block div > img {
+
+#l-sidebar-office .solutions-block .ratingcont {
     margin-top: 5px;
     margin-left: 40px;
 }
