@@ -1459,11 +1459,12 @@ class UsersController extends \app\controllers\AppController {
     }
     
     public function click() {
-        $news = News::first($this->request->id);
+        $news = News::first($this->request->query['id']);
         if($news){
             $news->views += 1;
             $news->save();
         }
+        return $this->redirect($this->request->query['link']);
     }
 }
 

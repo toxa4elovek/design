@@ -133,6 +133,9 @@
     color: #fff;
     background: #45464f;
 }
+#container-new-pitches .new-pitches a {
+    color: #fff;
+}
 #container-new-pitches .new-price,
 #container-new-pitches .new-title {
     font-family: OfficinaSansC Bold, serif;
@@ -169,6 +172,10 @@
 }
 
 #container-design-news .design-news a {
+    color: #2d2d2d;
+}
+
+#container-design-news .design-news .clicks {
     color: #f86362;
     font-family: OfficinaSansC Book, serif;
     font-weight: normal;

@@ -14,11 +14,6 @@ $(document).ready(function () {
         });
     }
 
-    $('a.clicks').on('click', function () {
-        $.post('/users/click/' + $(this).data('id') + '.json');
-    });
-
-
     function TopTip() {
         var self = this;
         this.element = $('.onTop');
@@ -348,7 +343,7 @@ function OfficeStatusUpdater() {
     this.init = function () {
         $('.obnovlenia_box').last().addClass('last_item');
         self.autoupdate();
-        $(document).everyTime(10000, function (i) {
+        $(document).everyTime(20000, function (i) {
             if (self.started) {
                 self.autoupdate();
             }
@@ -364,7 +359,7 @@ function OfficeStatusUpdater() {
                                 if (first_el == 0) {
                                     self.newsDate = object.created;
                                 }
-                                news += '<div class="design-news">' + object.title + ' <br><a class="clicks" data-id="' + object.id + '" href="' + object.link + '">' + object.host + '</a></div>';
+                                news += '<div class="design-news"><a href="/users/click?link='+object.link+'&id='+object.id+'">' + object.title + ' <br><a class="clicks" href="/users/click?link='+object.link+'&id='+object.id+'">' + object.host + '</a></div>';
                             });
                             if (news != '') {
                                 var $prependEl = $(news);
@@ -404,7 +399,7 @@ function OfficeStatusUpdater() {
                         $.each(response.pitches, function (index, pitch) {
                             pitches += '<div class="new-pitches"> \
                                     <div class="new-price">' + pitch.price + '</div> \
-                                    <div class="new-title">' + pitch.title + '</div> \
+                                    <div class="new-title"><a href="' + pitch.id + '">' + pitch.title + '</a></div> \
                                 </div>'
                         });
                         var $prependEl = $(pitches);
