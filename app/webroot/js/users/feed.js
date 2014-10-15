@@ -350,7 +350,7 @@ function OfficeStatusUpdater() {
         });
     },
             this.autoupdate = function () {
-                $.get('/events/updates.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate}, function (response) {
+                $.get('/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate}, function (response) {
                     if (self.started) {
                         if (typeof (response.news) != "undefined") {
                             news = '';
@@ -558,7 +558,7 @@ function OfficeStatusUpdater() {
         self.page += 1;
         $('#officeAjaxLoader').show();
         var $formerLast = $('.box').last();
-        $.get('/events/updates.json', {"init": true, "page": self.page}, function (response) {
+        $.get('/events/feed.json', {"init": true, "page": self.page}, function (response) {
             $('#officeAjaxLoader').hide();
             if (response.count != 0) {
                 function sortfunction(a, b) {

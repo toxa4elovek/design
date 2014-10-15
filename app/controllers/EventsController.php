@@ -15,6 +15,19 @@ class EventsController extends \app\controllers\AppController {
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
         }
+        if (!isset($this->request->query['created'])) {
+            $this->request->query['created'] = null;
+        }
+        $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created']);
+        $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
+        $count = count($updates);
+        return compact('updates', 'count', 'nextUpdates');
+    }
+
+    public function feed() {
+        if (!isset($this->request->query['page'])) {
+            $this->request->query['page'] = 1;
+        }
 
         if (!empty($this->request->query['created'])) {
             $pitches = Pitch::all(array('fields' => array('title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => array('>' => $this->request->query['created'])), 'order' => array('started' => 'desc'), 'limit' => 5));
@@ -26,7 +39,7 @@ class EventsController extends \app\controllers\AppController {
             $twitter = Stream::renderStream(10, $this->request->query['twitterDate']);
         }
         if (!empty($this->request->query['solutionDate'])) {
-            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'created' => array('>' => $this->request->query['solutionDate'])),'order' => array('created' => 'desc'), 'limit' => 10));
+            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('created' => 'desc'), 'limit' => 10));
         }
         if (!empty($this->request->query['newsDate'])) {
             $news = \app\models\News::all(array('conditions' => array('created' => array('>' => $this->request->query['newsDate'])), 'limit' => 8, 'order' => array('created' => 'desc')));
