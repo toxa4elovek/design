@@ -171,6 +171,10 @@ class UsersController extends \app\controllers\AppController {
                     $max = $n->views;
                     $host = parse_url($n->link);
                     $n->host = $host['host'];
+                    $str = strpos($n->tags, '|');
+                    if ($str) {
+                        $n->tags = substr($n->tags, 0, $str);
+                    }
                     $post = $n;
                 }
             }

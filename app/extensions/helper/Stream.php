@@ -68,10 +68,7 @@ class Stream extends \lithium\template\Helper {
             foreach ($tweets as $tweet) {
                 if (strtotime($tweet['created_at']) > strtotime($created)) {
                     $text = $tweet['text'];
-                    if (isset($tweet['type']) && $tweet['type'] == 'tutdesign') {
-                        $link = '<a style="display:inline;color:#ff585d" target="_blank" href="http://tutdesign.ru/cats/' . $tweet['category'] . '/' . $tweet['id'] . '-' . $tweet['slug'] . '.html">http://tutdesign.ru/cats/' . $tweet['category'] . '</a>';
-                        $content .= '<li style="padding-left:5px;"><p class="regular" style="line-height:20px;">' . $image . '<br>' . $text . '<br>' . $link . '</p>';
-                    } else {
+                    if (!isset($tweet['type']) && $tweet['type'] !== 'tutdesign') {
                         foreach ($tweet['entities']['hashtags'] as $hashtag) {
                             $text = str_replace('#' . $hashtag['text'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/search/%23' . $hashtag['text'] . '">' . '#' . $hashtag['text'] . '</a>', $text);
                         }
