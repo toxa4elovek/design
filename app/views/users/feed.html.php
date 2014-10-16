@@ -50,12 +50,20 @@
                     <div id="container-new-pitches">
                         <div class="rs-header">Новые питчи</div>
                         <div id="content-pitches">
-                            <?php foreach ($pitches as $pitch) : ?>
+                            <?php foreach ($pitches as $pitch) :
+                            if ($count == 0) {
+                                $pitchDate = $pitch->started;
+                            }
+                            $count++;
+                            ?>
                                 <div class="new-pitches">
                                     <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price) ?></div>
                                     <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
                                 </div>
                             <?php endforeach; ?>
+                            <script type="text/javascript">
+                                var pitchDate = '<?= date('Y-m-d H:i:s', strtotime($pitchDate)) ?>';
+                            </script> 
                         </div>
                     </div>
                     <div id="container-design-news">
@@ -84,10 +92,10 @@
                                 <div class="r-content"> 
                                     <a img-post href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
                                     <p class="timeago">
-                                    <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time> с сайта <?=$post->host?></p>
+                                        <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time> с сайта <?= $post->host ?></p>
                                 </div>
                             </div>
-                        <?php
+                            <?php
                         endif;
                         $html = '';
                         $dateEvent = '';
@@ -114,7 +122,7 @@
                                     <div class="r-content"> 
                                         <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> прокомментировал ваше <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                     </div> 
-                                    <img class="sol" src="<?= $imageurl ?>">
+                                    <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                 </div>
                             <?php elseif ($object['type'] == 'SolutionAdded') : ?>
                                 <div class="box">
@@ -124,7 +132,7 @@
                                     <div class="r-content">
                                         <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> предложил решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                     </div>
-                                    <a href="<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                    <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                         <?php
                                         $id = $object['solution']['id'];

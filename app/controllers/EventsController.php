@@ -32,9 +32,10 @@ class EventsController extends \app\controllers\AppController {
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
         }
-
+        if (!empty($this->request->query['pitchDate'])) {
+            $pitches = Pitch::all(array('fields' => array('title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => array('>' => $this->request->query['pitchDate'])), 'order' => array('started' => 'desc'), 'limit' => 5));
+        }
         if (!empty($this->request->query['created'])) {
-            $pitches = Pitch::all(array('fields' => array('title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => array('>' => $this->request->query['created'])), 'order' => array('started' => 'desc'), 'limit' => 5));
             $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created']);
         } elseif (!isset($this->request->query['created'])) {
             $this->request->query['created'] = 0;
