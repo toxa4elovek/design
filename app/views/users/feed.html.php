@@ -114,7 +114,7 @@
                                     <div class="r-content"> 
                                         <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> прокомментировал ваше <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                     </div> 
-                                    <img class="sol" src="<?= $imageurl ?>">
+                                    <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                 </div>
                             <?php elseif ($object['type'] == 'SolutionAdded') : ?>
                                 <div class="box">
@@ -124,7 +124,7 @@
                                     <div class="r-content">
                                         <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> предложил решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                     </div>
-                                    <a href="<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                    <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                         <?php
                                         $id = $object['solution']['id'];
