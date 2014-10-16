@@ -338,7 +338,7 @@ function OfficeStatusUpdater() {
     this.dateTwitter;
     this.newsDate;
     this.solutionDate;
-    this.self.pitchDate;
+    this.pitchDate;
     this.started = 0;
     // initialisation method
     this.init = function () {
