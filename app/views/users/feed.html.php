@@ -88,7 +88,7 @@
                     <div class="center-boxes" id="updates-box-">
                         <?php if ($post) : ?>
                             <div class="box"> 
-                                <a class="post-link" href="<?= $post->link ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a>
+                                <a class="post-link" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a>
                                 <p class="img-tag"><?=$post->tags?></p>
                                 <div class="r-content"> 
                                     <a class="img-post" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
