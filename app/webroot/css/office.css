@@ -2,20 +2,20 @@
     font-family: 'OfficinaSansC Bold';
     src: url('fonts/officinasansboldc.eot');
     src: url('fonts/officinasansboldc.eot') format('embedded-opentype'),
-         url('fonts/officinasansboldc.woff2') format('woff2'),
-         url('fonts/officinasansboldc.woff') format('woff'),
-         url('fonts/officinasansboldc.ttf') format('truetype'),
-         url('fonts/officinasansboldc.svg#OfficinaSansBoldCRegular') format('svg');
+        url('fonts/officinasansboldc.woff2') format('woff2'),
+        url('fonts/officinasansboldc.woff') format('woff'),
+        url('fonts/officinasansboldc.ttf') format('truetype'),
+        url('fonts/officinasansboldc.svg#OfficinaSansBoldCRegular') format('svg');
 }
 
 @font-face {
     font-family: 'OfficinaSansC Book';
     src: url('fonts/officinasansbookc.eot');
     src: url('fonts/officinasansbookc.eot') format('embedded-opentype'),
-         url('fonts/officinasansbookc.woff2') format('woff2'),
-         url('fonts/officinasansbookc.woff') format('woff'),
-         url('fonts/officinasansbookc.ttf') format('truetype'),
-         url('fonts/officinasansbookc.svg#OfficinaSansBookCRegular') format('svg');
+        url('fonts/officinasansbookc.woff2') format('woff2'),
+        url('fonts/officinasansbookc.woff') format('woff'),
+        url('fonts/officinasansbookc.ttf') format('truetype'),
+        url('fonts/officinasansbookc.svg#OfficinaSansBookCRegular') format('svg');
 }
 
 
@@ -250,13 +250,30 @@
     position: relative
 }
 
-.center-boxes .box a.post-link:after {
+/*.center-boxes .box a.post-link:after {
     content: url(/img/for_designers.png);
     height: 32px;
     width: 187px;
     position: absolute;
     margin-left: 200px;
     margin-top: -17px;
+}*/
+
+.center-boxes .box p.img-tag {
+    position: absolute;
+    height: 32px;
+    width: 193px;
+    position: absolute;
+    margin-left: 200px;
+    margin-top: -17px;
+    padding-top: 8px;
+    text-align: center;
+    background: url(/img/for_designers.png) no-repeat;
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-family: OfficinaSansC Bold, serif;
 }
 
 .center-boxes .box .sol {

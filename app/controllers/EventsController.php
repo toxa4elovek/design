@@ -60,6 +60,10 @@ class EventsController extends \app\controllers\AppController {
                 foreach ($news as $n) {
                     if ($n->views > $av_views * 2 && $max < $n->views) {
                         $max = $n->views;
+                        $str = strpos($n->tags, '|');
+                        if ($str) {
+                            $n->tags = substr($n->tags, 0, $str);
+                        }
                         $post = $n;
                         $post->created = date('Y-m-d H:i:s', strtotime($post->created));
                     }
