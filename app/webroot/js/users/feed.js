@@ -338,6 +338,7 @@ function OfficeStatusUpdater() {
     this.dateTwitter;
     this.newsDate;
     this.solutionDate;
+    this.self.pitchDate;
     this.started = 0;
     // initialisation method
     this.init = function () {
@@ -348,6 +349,7 @@ function OfficeStatusUpdater() {
         self.dateTwitter = $('#twitterDate').data('date');
         self.solutionDate = solutionDate;
         self.date = eventsDate;
+        self.pitchDate = pitchDate;
 //        console.log('newsDate: '+self.newsDate);
 //        console.log('dateTwitter: '+self.dateTwitter);
 //        console.log('solutionDate: '+self.solutionDate);
@@ -360,7 +362,7 @@ function OfficeStatusUpdater() {
         self.started = 1;
     },
             this.autoupdate = function () {
-                $.get('/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate}, function (response) {
+                $.get('/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate, "pitchDate": self.pitchDate}, function (response) {
                     if (typeof (response.news) != "undefined") {
                         news = '';
                         first_el = 0;
@@ -403,7 +405,10 @@ function OfficeStatusUpdater() {
                     }
                     if (typeof (response.pitches) != "undefined") {
                         var pitches = '';
+                        pitchesCount = 0;
                         $.each(response.pitches, function (index, pitch) {
+                            if (pitchesCount == 0) self.pitchDate = pitch.started;
+                                pitchesCount++;
                             pitches += '<div class="new-pitches"> \
                                     <div class="new-price">' + pitch.price + '</div> \
                                     <div class="new-title"><a href="' + pitch.id + '">' + pitch.title + '</a></div> \
@@ -415,7 +420,10 @@ function OfficeStatusUpdater() {
                     }
                     if (typeof (response.solutions) != "undefined") {
                         var solutions = '';
+                        solcount = 0;
                         $.each(response.solutions, function (index, solution) {
+                            if (solcount == 0) self.solutionDate = solution.created;
+                                solcount++;
                             if (typeof (solution.solution.images.solution_tutdesign) != "undefined") {
                                 if (typeof (solution.solution.images.solution_tutdesign.length) == "undefined") {
                                     var imageurl = solution.solution.images.solution_tutdesign.weburl;

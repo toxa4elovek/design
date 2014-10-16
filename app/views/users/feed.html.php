@@ -50,12 +50,20 @@
                     <div id="container-new-pitches">
                         <div class="rs-header">Новые питчи</div>
                         <div id="content-pitches">
-                            <?php foreach ($pitches as $pitch) : ?>
+                            <?php foreach ($pitches as $pitch) :
+                            if ($count == 0) {
+                                $pitchDate = $pitch->started;
+                            }
+                            $count++;
+                            ?>
                                 <div class="new-pitches">
                                     <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price) ?></div>
                                     <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
                                 </div>
                             <?php endforeach; ?>
+                            <script type="text/javascript">
+                                var pitchDate = '<?= date('Y-m-d H:i:s', strtotime($pitchDate)) ?>';
+                            </script> 
                         </div>
                     </div>
                     <div id="container-design-news">
@@ -84,10 +92,10 @@
                                 <div class="r-content"> 
                                     <a img-post href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
                                     <p class="timeago">
-                                    <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time> с сайта <?=$post->host?></p>
+                                        <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time> с сайта <?= $post->host ?></p>
                                 </div>
                             </div>
-                        <?php
+                            <?php
                         endif;
                         $html = '';
                         $dateEvent = '';
