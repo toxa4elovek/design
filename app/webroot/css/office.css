@@ -88,9 +88,13 @@
 .fb_like a {
     font: 14px OfficinaSansC Book, serif !important;
 }
-#l-sidebar-office .solutions-block div > img {
+#l-sidebar-office .solutions-block .creator-name {
+    display: inline-block;
+    width: 90px;
+}
+
+#l-sidebar-office .solutions-block .ratingcont {
     margin-top: 5px;
-    margin-left: 40px;
 }
 
 #center_sidebar {
@@ -133,6 +137,15 @@
     color: #fff;
     background: #45464f;
 }
+#container-new-pitches .new-pitches a {
+    color: #fff;
+}
+
+#container-new-pitches .new-pitches a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
 #container-new-pitches .new-price,
 #container-new-pitches .new-title {
     font-family: OfficinaSansC Bold, serif;
@@ -141,8 +154,7 @@
     vertical-align: middle;
     font-size: 16px;
     font-weight: bold;
-    padding-top: 28px;
-    padding-bottom: 25px;
+    padding: 28px 5px 25px 0;
 }
 
 #container-new-pitches .new-pitches .new-price {
@@ -169,6 +181,10 @@
 }
 
 #container-design-news .design-news a {
+    color: #2d2d2d;
+}
+
+#container-design-news .design-news .clicks {
     color: #f86362;
     font-family: OfficinaSansC Book, serif;
     font-weight: normal;
@@ -217,7 +233,7 @@
     display: table-cell;
 }
 
-.center-boxes .box time.timeago {
+.center-boxes .box p.timeago {
     color: #c8c8c8;
     font-style: italic;
     display: block;
@@ -230,6 +246,19 @@
     max-height: 500px;
     display: block;
     margin: 0 auto;
+}
+
+.center-boxes .box a.post-link {
+    position: relative
+}
+
+.center-boxes .box a.post-link:after {
+    content: url(/img/for_designers.png);
+    height: 32px;
+    width: 187px;
+    position: absolute;
+    margin-left: 200px;
+    margin-top: -17px;
 }
 
 .center-boxes .box .sol {
@@ -306,4 +335,5 @@
 .box h2,.box a h2 {
     font-size: 18px;
     color: #2d2d2d;
+    padding-top: 16px;
 }

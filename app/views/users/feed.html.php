@@ -10,22 +10,41 @@
             </script> 
             <div class="new-content group">
                 <div id="l-sidebar-office">
-                    <!--                    <div class="solutions-block">
-                                            <a href=""><img width="260" src="http://www.godesigner.ru/solutions/89ea1168f9a0f4150a33782fd1be3cbf_solutionView.png"></a>
-                                            <div>
-                                                <span>Вася Т.</span>
-                                                <img class="rat" src="/img/rating.png">
-                                                <p class="fb_like">
-                                                    <a href="#">0</a>
-                                                </p>
-                                            </div>
-                                        </div>-->
+                    <?php
+                    $solutionDate = '';
+                    foreach ($solutions as $solution):
+                        if (isset($solution->solution->images['solution_tutdesign'])) {
+                            if (isset($solution->solution->images['solution_tutdesign'][0]['weburl'])) {
+                                $image = $solution->solution->images['solution_tutdesign'][0]['weburl'];
+                            } else {
+                                $image = $solution->solution->images['solution_tutdesign']['weburl'];
+                            }
+                        }
+                        if ($count == 0) {
+                            $solutionDate = $solution->created;
+                        }
+                        $count++;
+                        ?>
+                        <div class="solutions-block">
+                            <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><img width="260" src="<?= $image ?>"></a>
+                            <div>
+                                <p class="creator-name"><?= $solution->creator ?></p>
+                                <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
+                                <p class="fb_like">
+                                    <a href="#"><?= $solution->solution->likes ?></a>
+                                </p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    <script type="text/javascript">
+                        var solutionDate = '<?= date('Y-m-d H:i:s', strtotime($solutionDate)) ?>';
+                    </script> 
                 </div>
                 <div id="r-sidebar-office">
                     <div id="container-job-designers">
                         <div class="rs-header">Работа для дизайнера</div>
                         <div id="content-job">
-                            <?php echo $this->stream->renderStream(6); ?>
+                            <?php echo $this->stream->renderStreamFeed(6); ?>
                         </div>
                     </div>
                     <div id="container-new-pitches">
@@ -34,7 +53,7 @@
                             <?php foreach ($pitches as $pitch) : ?>
                                 <div class="new-pitches">
                                     <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price) ?></div>
-                                    <div class="new-title"><?= $pitch->title ?></div>
+                                    <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -49,7 +68,7 @@
                                     $newsDate = $n->created;
                                 }
                                 ?>
-                                <div class="design-news"><?= $n->title ?> <br><a class="clicks" data-id="<?= $n->id ?>" href="<?= $n->link ?>"><?= $host['host'] ?></a></div>
+                                <div class="design-news"><a target="_blank" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
                             <?php endforeach; ?>
                             <script type="text/javascript">
                                 var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
@@ -59,7 +78,17 @@
                 </div>
                 <div id="center_sidebar">
                     <div class="center-boxes" id="updates-box-">
+                        <?php if ($post) : ?>
+                            <div class="box"> 
+                                <a class="post-link" href="<?= $post->link ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a> 
+                                <div class="r-content"> 
+                                    <a img-post href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
+                                    <p class="timeago">
+                                    <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time> с сайта <?=$post->host?></p>
+                                </div>
+                            </div>
                         <?php
+                        endif;
                         $html = '';
                         $dateEvent = '';
                         $count = 0;
