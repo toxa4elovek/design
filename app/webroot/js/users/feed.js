@@ -407,8 +407,9 @@ function OfficeStatusUpdater() {
                         var pitches = '';
                         pitchesCount = 0;
                         $.each(response.pitches, function (index, pitch) {
-                            if (pitchesCount == 0) self.pitchDate = pitch.started;
-                                pitchesCount++;
+                            if (pitchesCount == 0)
+                                self.pitchDate = pitch.started;
+                            pitchesCount++;
                             pitches += '<div class="new-pitches"> \
                                     <div class="new-price">' + parseInt(pitch.price) + 'р.</div> \
                                     <div class="new-title"><a href="/pitches/view/' + pitch.id + '">' + pitch.title + '</a></div> \
@@ -422,8 +423,9 @@ function OfficeStatusUpdater() {
                         var solutions = '';
                         solcount = 0;
                         $.each(response.solutions, function (index, solution) {
-                            if (solcount == 0) self.solutionDate = solution.created;
-                                solcount++;
+                            if (solcount == 0)
+                                self.solutionDate = solution.created;
+                            solcount++;
                             if (typeof (solution.solution.images.solution_tutdesign) != "undefined") {
                                 if (typeof (solution.solution.images.solution_tutdesign.length) == "undefined") {
                                     var imageurl = solution.solution.images.solution_tutdesign.weburl;
@@ -516,14 +518,16 @@ function OfficeStatusUpdater() {
                             <a href="' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
                             <div data-id="' + object.solution.id + '" class="likes">';
                                     id = object.solution.id;
+                                    user_id = $('#user_id').value();
                                     $.each(response.updates, function (index, object) {
                                         if (object.type == 'LikeAdded' && object.solution_id == id) {
                                             avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                            txtsol = (user_id == object.user_id) ? 'ваше ' : '';
                                             html += '<div> \
                                     <div class="l-img"> \
                                         <img class="avatar" src="' + avatar + '"> \
                                     </div> \
-                                    <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ваше решение</span> \
+                                    <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ' + txtsol + 'решение</span> \
                                 </div>';
                                         }
                                     });

@@ -140,14 +140,14 @@
                                         <?php
                                         $id = $object['solution']['id'];
                                         foreach ($updates as $like):
-                                            if ($object['type'] == 'LikeAdded' && $object['solution_id'] == $id):
-                                                $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
+                                            if ($like['type'] == 'LikeAdded' && $like['solution_id'] == $id):
+                                                $avatar = isset($like['user']['images']['avatar_small']) ? $like['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
                                                 ?>
                                                 <div>
                                                     <div class="l-img">
                                                         <img class="avatar" src="<?= $avatar ?>">
                                                     </div>
-                                                    <span><a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> лайкнул ваше решение</span>
+                                                    <span><a href="/users/view/<?= $like['user_id'] ?>"><?= $like['creator'] ?></a> лайкнул <?= ($like['user_id'] == $this->user->getId()) ? 'ваше' : ''?> решение</span>
                                                 </div>
                                                 <?php
                                             endif;
