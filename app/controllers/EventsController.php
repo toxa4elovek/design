@@ -44,7 +44,7 @@ class EventsController extends \app\controllers\AppController {
             $twitter = Stream::renderStreamFeed(10, $this->request->query['twitterDate']);
         }
         if (!empty($this->request->query['solutionDate'])) {
-            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('created' => 'desc'), 'limit' => 10));
+            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
         }
         if (!empty($this->request->query['newsDate'])) {
             $news = \app\models\News::all(array('conditions' => array('created' => array('>' => $this->request->query['newsDate'])), 'limit' => 8, 'order' => array('created' => 'desc')));
