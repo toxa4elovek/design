@@ -50,14 +50,16 @@
                     <div id="container-new-pitches">
                         <div class="rs-header">Новые питчи</div>
                         <div id="content-pitches">
-                            <?php foreach ($pitches as $pitch) :
+                            <?php 
+                            $count = 0;
+                            foreach ($pitches as $pitch) :
                             if ($count == 0) {
                                 $pitchDate = $pitch->started;
                             }
                             $count++;
                             ?>
                                 <div class="new-pitches">
-                                    <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price) ?></div>
+                                    <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.')) ?></div>
                                     <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
                                 </div>
                             <?php endforeach; ?>

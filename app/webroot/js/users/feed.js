@@ -410,8 +410,8 @@ function OfficeStatusUpdater() {
                             if (pitchesCount == 0) self.pitchDate = pitch.started;
                                 pitchesCount++;
                             pitches += '<div class="new-pitches"> \
-                                    <div class="new-price">' + pitch.price + '</div> \
-                                    <div class="new-title"><a href="' + pitch.id + '">' + pitch.title + '</a></div> \
+                                    <div class="new-price">' + parseInt(pitch.price) + 'р.</div> \
+                                    <div class="new-title"><a href="/pitches/view/' + pitch.id + '">' + pitch.title + '</a></div> \
                                 </div>'
                         });
                         var $prependEl = $(pitches);
