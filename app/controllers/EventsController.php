@@ -76,18 +76,5 @@ class EventsController extends \app\controllers\AppController {
         return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
     }
 
-    public function sidebar() {
-        $limit = null;
-        if (!isset($this->request->query['created'])) {
-            $this->request->query['created'] = false;
-            $limit = 10;
-        }
-        //$updates = Event::getSidebarEvents($this->request->query['created'], $limit);
-        $updates = array();
-        $count = count($updates);
-        return compact('updates', 'count');
-    }
-
 }
-
 ?>
