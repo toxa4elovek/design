@@ -84,8 +84,6 @@ $(document).ready(function () {
         scrollInit();
         Updater.init();
     }
-    /*var SidebarUpdater = new SidebarStatusUpdater();
-     SidebarUpdater.init();*/
 
     // Solution Stars
     $(document).on('mouseenter', '.ratingchange', function () {
@@ -186,7 +184,6 @@ function OfficeStatusUpdater() {
     this.init = function () {
         $('.obnovlenia_box').last().addClass('last_item');
         $('time.timeago').timeago();
-        //self.autoupdate();
         self.newsDate = newsDate;
         self.dateTwitter = $('#twitterDate').data('date');
         self.solutionDate = solutionDate;
@@ -216,16 +213,12 @@ function OfficeStatusUpdater() {
                             $prependEl.hide();
                             $prependEl.prependTo('#content-news').slideDown('slow');
                         }
-                    } else {
-                        self.newsDate = newsDate;
                     }
                     if (typeof (response.twitter) != "undefined" && response.twitter != '') {
                         var $prependEl = $(response.twitter);
                         $prependEl.hide();
                         self.dateTwitter = $prependEl.first().data('date');
                         $prependEl.prependTo('#content-job').slideDown('slow');
-                    } else {
-                        self.dateTwitter = $('#twitterDate').data('date');
                     }
                     var html = '';
                     var solutions = '';
@@ -288,8 +281,6 @@ function OfficeStatusUpdater() {
                             $prependEl.hide();
                             $prependEl.prependTo('#l-sidebar-office').slideDown('slow');
                         }
-                    } else {
-                        self.solutionDate = solutionDate;
                     }
                     if (typeof (response.updates) != "undefined") {
                         if (response.count != 0) {
@@ -308,15 +299,6 @@ function OfficeStatusUpdater() {
                                     object.solution.views = 0;
                                     object.solution.likes = 0;
                                     object.solution.images.solution_galleryLargeSize.weburl = '';
-                                }
-
-                                var newclass = '';
-                                if (Date.parse(object.jsCreated) > offsetDate) {
-                                    newclass = ' newevent ';
-                                }
-
-                                if (object.type == 'PitchCreated') {
-                                    newclass = ' newpitchstream ';
                                 }
                                 if (typeof (object.solution.images.solution_solutionView) != "undefined") {
                                     if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
@@ -377,8 +359,6 @@ function OfficeStatusUpdater() {
                             $prependEl.hide();
                             $prependEl.prependTo('#updates-box-').slideDown('slow');
                         }
-                    } else {
-                        self.date = eventsDate;
                     }
                 });
             }

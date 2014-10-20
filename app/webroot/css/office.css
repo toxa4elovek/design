@@ -27,6 +27,9 @@
     .new-content {
         width:958px;
     }
+    .onTopMiddle {
+        right: 405px !important;
+    }
 }
 
 @media screen and (min-width: 1280px) {
@@ -44,7 +47,7 @@
 
 
 #r-sidebar-office > div {
-    margin-top: 50px;
+    margin-top: 32px;
 }
 #r-sidebar-office {
     width: 310px;
@@ -111,6 +114,7 @@
     background: #fff;
     margin-top: 0 !important;
     font-size: 16px;
+    line-height: 23px;
     font-family: OfficinaSansC Book, serif;
 }
 #container-job-designers a {
@@ -130,9 +134,13 @@
     color: #F86362;
 }
 
+#container-new-pitches .rs-header {
+    border-bottom:1px solid #383943;
+}
+
 #container-new-pitches .new-pitches {
     color: #fff;
-    background: #45464f;
+    background: #2f313a;
 }
 #container-new-pitches .new-pitches a {
     color: #fff;
@@ -159,7 +167,7 @@
 }
 
 #container-new-pitches .new-pitches:nth-of-type(odd) {
-    background: #2f313a;
+    background: #45464f;
 }
 
 #container-design-news .rs-header {
@@ -191,6 +199,7 @@
 
 .center-boxes {
     font-size: 16px;
+    line-height: 23px;
     font-family: OfficinaSansC Book, serif;
 }
 
@@ -238,7 +247,6 @@
 .center-boxes .box img.img-post {
     height: auto;
     max-width: 600px;
-    max-height: 500px;
     display: block;
     margin: 0 auto;
 }
@@ -246,15 +254,6 @@
 .center-boxes .box a.post-link {
     position: relative
 }
-
-/*.center-boxes .box a.post-link:after {
-    content: url(/img/for_designers.png);
-    height: 32px;
-    width: 187px;
-    position: absolute;
-    margin-left: 200px;
-    margin-top: -17px;
-}*/
 
 .center-boxes .box p.img-tag {
     position: absolute;
@@ -265,6 +264,7 @@
     margin-top: -17px;
     padding-top: 8px;
     text-align: center;
+    line-height: 1;
     background: url(/img/for_designers.png) no-repeat;
     color: #fff;
     font-size: 14px;
