@@ -3,12 +3,13 @@
 $(document).ready(function () {
 
     var Tip = new TopTip;
-
+    inProgress = false;
     function scrollInit() {
         $(window).on('scroll', function () {
-            if ($(document).height() - $(window).scrollTop() - $(window).height() < 200) {
-                $(window).off('scroll');
+            if ($(document).height() - $(window).scrollTop() - $(window).height() < 200 && !inProgress) {
+                //$(window).off('scroll');
                 Tip.scrollHandler();
+                inProgress = true;
                 Updater.nextPage();
             }
         });
@@ -258,15 +259,15 @@ function OfficeStatusUpdater() {
                             if (solcount == 0)
                                 self.solutionDate = solution.created;
                             solcount++;
-                            if (typeof (solution.solution.images.solution_tutdesign) != "undefined") {
-                                if (typeof (solution.solution.images.solution_tutdesign.length) == "undefined") {
-                                    var imageurl = solution.solution.images.solution_tutdesign.weburl;
+                            if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
+                                if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
+                                    var imageurl = solution.solution.images.solution_leftFeed.weburl;
                                 } else {
-                                    var imageurl = solution.solution.images.solution_tutdesign[0].weburl;
+                                    var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
                                 }
-                            }
-                            solutions += '<div class="solutions-block"> \
-                                    <a href="/pitches/viewsolution/' + solution.solution.id + '"><img width="260" src="' + imageurl + '"></a> \
+
+                                solutions += '<div class="solutions-block"> \
+                                    <a href="/pitches/viewsolution/' + solution.solution.id + '"><img src="' + imageurl + '"></a> \
                                     <div> \
                                         <p class="creator-name">' + solution.creator + '</p> \
                                         <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
@@ -275,6 +276,7 @@ function OfficeStatusUpdater() {
                                         </p> \
                                     </div> \
                                 </div>';
+                            }
                         });
                         if (solutions != '') {
                             var $prependEl = $(solutions);
@@ -376,9 +378,6 @@ function OfficeStatusUpdater() {
                 var html = '';
                 var solutions = '';
                 $.each(response.updates, function (index, object) {
-                    if (index == 0) {
-                        self.date = object.created;
-                    }
                     if (!object.solution) {
                         object.solution = {};
                         object.solution.images = {};
@@ -453,6 +452,7 @@ function OfficeStatusUpdater() {
                 $appendEl.appendTo('#updates-box-').slideDown('slow', function () {
                     $('.box').last().addClass('last_item');
                 });
+                inProgress = false;
             }
         });
 
@@ -468,4 +468,5 @@ function OfficeStatusUpdater() {
         }
         return price;
     }
-};
+}
+;

@@ -13,20 +13,20 @@
                     <?php
                     $solutionDate = '';
                     foreach ($solutions as $solution):
-                        if (isset($solution->solution->images['solution_tutdesign'])) {
-                            if (isset($solution->solution->images['solution_tutdesign'][0]['weburl'])) {
-                                $image = $solution->solution->images['solution_tutdesign'][0]['weburl'];
+                        if (isset($solution->solution->images['solution_leftFeed'])) :
+                            if (isset($solution->solution->images['solution_leftFeed'][0]['weburl'])) {
+                                $image = $solution->solution->images['solution_leftFeed'][0]['weburl'];
                             } else {
-                                $image = $solution->solution->images['solution_tutdesign']['weburl'];
+                                $image = $solution->solution->images['solution_leftFeed']['weburl'];
                             }
-                        }
+                        
                         if ($count == 0) {
                             $solutionDate = $solution->created;
                         }
                         $count++;
                         ?>
                         <div class="solutions-block">
-                            <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><img width="260" src="<?= $image ?>"></a>
+                            <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><img src="<?= $image ?>"></a>
                             <div>
                                 <p class="creator-name"><?= $solution->creator ?></p>
                                 <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
@@ -35,7 +35,9 @@
                                 </p>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php
+                    endif;
+                    endforeach; ?>
                     <script type="text/javascript">
                         var solutionDate = '<?= date('Y-m-d H:i:s', strtotime($solutionDate)) ?>';
                     </script> 
@@ -89,8 +91,10 @@
                 <div id="center_sidebar">
                     <div class="center-boxes" id="updates-box-">
                         <?php if ($post) : ?>
-                            <div class="box"> 
-                                <a class="post-link" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a>
+                            <div class="box">
+                                <p class="img-box">
+                                    <a class="post-link" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a>
+                                </p>
                                 <p class="img-tag"><?=$post->tags?></p>
                                 <div class="r-content"> 
                                     <a class="img-post" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>

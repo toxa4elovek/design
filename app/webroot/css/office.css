@@ -32,16 +32,42 @@
     }
 }
 
+@media screen and (max-width: 960px) {
+    #l-sidebar-office {
+        display: none;
+    }
+
+    .new-content {
+        width:958px;
+    }
+    .onTopMiddle {
+        right: 405px !important;
+    }
+}
+
 @media screen and (min-width: 1280px) {
     #l-sidebar-office {
         display: block;
     }
 
     .new-content {
-        width: 1220px !important;
+        width: 1260px !important;
     }
     #center_sidebar {
-        margin-left: 284px;
+        margin-left: 328px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    #l-sidebar-office {
+        display: block;
+    }
+
+    .new-content {
+        width: 1270px !important;
+    }
+    #center_sidebar {
+        margin-left: 334px;
     }
 }
 
@@ -59,30 +85,34 @@
     overflow-wrap: break-word;
 }
 #l-sidebar-office {
-    width: 262px;
+    width: 312px;
     float: left;
 }
 
 #l-sidebar-office .solutions-block {
     background: #fff;
-    width: 260px;
+    width: 310px;
     color: #2d2d2d;
     font-family: OfficinaSansC Bold, serif;
     font-weight: normal;
     font-size: 14px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+}
+
+#l-sidebar-office .solutions-block img {
+    max-width: 310px;
 }
 
 #l-sidebar-office .solutions-block div {
     display: table-cell;
     vertical-align: middle;
-    padding: 14px 7px 15px 18px;
-    width: 260px;
+    padding: 10px 7px 10px 18px;
+    width: 310px;
 }
 
 .fb_like {
     color: #648fa4;
-    margin-left: 40px;
+    margin-left: 70px;
     display: inline !important;
     font: 14px OfficinaSansC Bold, serif !important;
 }
@@ -91,7 +121,7 @@
 }
 #l-sidebar-office .solutions-block .creator-name {
     display: inline-block;
-    width: 90px;
+    width: 110px;
 }
 
 #l-sidebar-office .solutions-block .ratingcont {
@@ -99,7 +129,7 @@
 }
 
 #center_sidebar {
-    width: 602px;
+    width: 600px;
 }
 
 .rs-header {
@@ -235,6 +265,11 @@
 
 .center-boxes .box div {
     display: table-cell;
+}
+
+.center-boxes .box p.img-box {
+    overflow: hidden;
+    max-height: 420px;
 }
 
 .center-boxes .box p.timeago {
