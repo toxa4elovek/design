@@ -1,6 +1,6 @@
 <table style="" width="550" cellspacing="0" border="0" cellpadding="1">
     <tr ><td width="275"><img src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/logo-01.png" width="180"></td>
-        <td>ООО "КРАУД МЕДИА"<br/>г. Санкт-Петербург, ул. Беринга, д. 27<br />ИНН: 7801563047<br />Телефон: +7 (812) 648 24 12</td></tr>
+        <td>ООО "КРАУД МЕДИА"<br/>г. Санкт-Петербург, ул. Беринга, д. 27<br />ИНН: 7728168971<br />Телефон: +7 (812) 648 24 12</td></tr>
     <tr ><td colspan="2" style="text-align:center"><br><br>Образец заполнения платежного поручения</td></tr>
 </table>
 <br/>
@@ -8,8 +8,8 @@
 <br/>
 <table style="" width="550" cellspacing="0" cellpadding="1">
     <tr height="25">
-        <td style="border-left:1px solid;border-top:1px solid;" width="180">ИНН 7801563047</td>
-        <td style="border-left:1px solid;border-top:1px solid;" width="180">КПП 780101001</td>
+        <td style="border-left:1px solid;border-top:1px solid;" width="180">ИНН 7728168971</td>
+        <td style="border-left:1px solid;border-top:1px solid;" width="180">КПП 783502001</td>
         <td style="border-left:1px solid;border-top:1px solid;" width="40">&nbsp;</td>
         <td style="border-left:1px solid;border-top:1px solid;border-right:1px solid;" width="100">&nbsp;</td>
     </tr>
@@ -17,18 +17,18 @@
     <tr height="100">
         <td height="25" colspan="2" style="border-left:1px solid;border-top:1px solid;">Получатель:<br>ООО "КРАУД МЕДИА"</td>
         <td height="25" style="border-left:1px solid;">Сч. №</td>
-        <td height="25" style="border-left:1px solid;border-right:1px solid;text-align:center;">40702810800010002229</td>
+        <td height="25" style="border-left:1px solid;border-right:1px solid;text-align:center;">40702810832320000346</td>
     </tr>
 
     <tr>
-        <td height="25" rowspan="2"  height="50" colspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;">Банк получателя:<br>Филиал СБ Банка (ООО) СПБ г. Санкт-Петербург</td>
+        <td height="25" rowspan="2"  height="50" colspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;">Банк получателя:<br>Филиал «Санкт-Петербургский» ОАО «АЛЬФА-БАНК» г. Санкт-Петербург</td>
         <td height="25" style="border-left:1px solid;border-top:1px solid;">БИК</td>
-        <td height="25" style="border-left:1px solid;border-top:1px solid;border-right:1px solid;text-align:center;">044030884</td>
+        <td height="25" style="border-left:1px solid;border-top:1px solid;border-right:1px solid;text-align:center;">044030786</td>
     </tr>
 
     <tr>
         <td height="25" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;">Сч. №</td>
-        <td height="25" rowspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid;text-align:center;">30101810900000000884</td>
+        <td height="25" rowspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid;text-align:center;">30101810600000000786</td>
     </tr>
 </table>
 <H2 style="margin-top:50px">СЧЕТ № <?=$pitch->id?> от <?=date('d.m.Y', strtotime($pitch->started))?></H2>
