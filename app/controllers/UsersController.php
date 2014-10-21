@@ -155,12 +155,10 @@ class UsersController extends \app\controllers\AppController {
             $date = Session::read('user.events.date');
             Session::delete('user.events');
         }
-        $gallery = Solution::getUserSolutionGallery(Session::read('user.id'));
-        $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
         $news = \app\models\News::all(array('conditions' => array('toggle' => 0),'limit' => 15, 'order' => array('created' => 'desc')));
-        $post = false;
-        if ($news) {
+        $post = Rcache::read('middle-post');
+        if ($news && !$post) {
             $all_views = 0;
             foreach ($news as $n) {
                 if ($n->middle) {
@@ -185,21 +183,15 @@ class UsersController extends \app\controllers\AppController {
                     }
                 }
             }
+            Rcache::write('middle-post', $post, '+1 hour');
         }
         $solutions = Event::getEventSolutions();
-        $winners = array();
-        foreach($winnersData as $winner) {
-            if($winner->pitch->category_id != 7) {
-                $winners[] = $winner;
-            }
-        }
-        $winners = array();
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
         if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-            return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'post');
+            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'post');
         }else {
-            return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates', 'pitches')));
+            return $this->render(array('layout' => false, 'data' => compact('date', 'updates', 'nextUpdates', 'pitches')));
         }
 	}
 

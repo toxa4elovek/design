@@ -131,7 +131,7 @@
                                     <a class="post-link" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a>
                                 </p>
                                 <p class="img-tag"><?= $post->tags ?></p>
-                                <div class="r-content"> 
+                                <div class="r-content post-content"> 
                                     <a class="img-post" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
                                     <p class="timeago">
                                         <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time> с сайта <?= $post->host ?></p>

@@ -55,7 +55,7 @@ class Event extends \app\models\AppModel {
                             //var_dump($record->solution->images['solution_solutionView']);
                         }
                     }
-                    if ((isset($record->pitch_id)) && ($record->pitch_id > 0)) {
+                    if ((isset($record->pitch_id)) && ($record->pitch_id > 0) && !isset($record->pitch)) {
                         $record->pitch = Pitch::first($record->pitch_id);
                         $category = Category::first($record->pitch->category_id);
                         $record->pitch->category = $category;
