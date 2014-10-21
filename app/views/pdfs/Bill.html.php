@@ -15,7 +15,7 @@
     </tr>
 
     <tr height="100">
-        <td height="25" colspan="2" style="border-left:1px solid;border-top:1px solid;">Получатель:<br>ООО "КРАУД МЕДИА"</td>
+        <td height="25" colspan="2" style="border-left:1px solid;border-top:1px solid;">Получатель:<br>Общество с ограниченной ответственностью «КРАУД МЕДИА»</td>
         <td height="25" style="border-left:1px solid;">Сч. №</td>
         <td height="25" style="border-left:1px solid;border-right:1px solid;text-align:center;">40702810832320000346</td>
     </tr>
