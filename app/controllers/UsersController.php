@@ -158,24 +158,31 @@ class UsersController extends \app\controllers\AppController {
         $gallery = Solution::getUserSolutionGallery(Session::read('user.id'));
         $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
-        $news = \app\models\News::all(array('limit' => 10, 'order' => array('created' => 'desc')));
+        $news = \app\models\News::all(array('conditions' => array('toggle' => 0),'limit' => 15, 'order' => array('created' => 'desc')));
+        $post = false;
         if ($news) {
             $all_views = 0;
             foreach ($news as $n) {
+                if ($n->middle) {
+                    $post = $n;
+                    break;
+                }
                 $all_views += $n->views;  
             }
-            $av_views = round($all_views / count($news));
-            $max = 0;
-            foreach ($news as $n) {
-                if ($n->views > $av_views * 2 && $max < $n->views) {
-                    $max = $n->views;
-                    $host = parse_url($n->link);
-                    $n->host = $host['host'];
-                    $str = strpos($n->tags, '|');
-                    if ($str) {
-                        $n->tags = substr($n->tags, 0, $str);
+            if (!$post) {
+                $av_views = round($all_views / count($news));
+                $max = 0;
+                foreach ($news as $n) {
+                    if ($n->views > $av_views * 2 && $max < $n->views) {
+                        $max = $n->views;
+                        $host = parse_url($n->link);
+                        $n->host = $host['host'];
+                        $str = strpos($n->tags, '|');
+                        if ($str) {
+                            $n->tags = substr($n->tags, 0, $str);
+                        }
+                        $post = $n;
                     }
-                    $post = $n;
                 }
             }
         }

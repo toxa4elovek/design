@@ -27,6 +27,7 @@ class EventsController extends \app\controllers\AppController {
     public function feed() {
         if (isset($this->request->query['page'])) {
             $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page']);
+            $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
         }
 
         if (!isset($this->request->query['page'])) {
@@ -70,11 +71,10 @@ class EventsController extends \app\controllers\AppController {
                 }
             }
         }
-        // $solutions = Solution::all((array('fields' => array('likes', 'created', 'id', 'user_id', 'pitch_id', 'first_name','last_name'), 'conditions' => array('multiwinner' => 0, 'Solution.created' => array('>' => $this->request->query['created'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('User'))));
-        $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
         $count = count($updates);
         return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
     }
 
 }
+
 ?>

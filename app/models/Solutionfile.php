@@ -89,7 +89,7 @@ class Solutionfile extends \app\models\AppModel {
             'file_overwrite' => true
         ),
         'leftFeed' => array(
-            'image_crop' => true,
+            'image_resize' => true,
             'image_x' => 310,
             'image_y' => 240,
             'image_ratio_crop' => 'T',
