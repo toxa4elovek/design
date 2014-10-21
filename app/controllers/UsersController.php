@@ -10,6 +10,7 @@ use \app\models\Wincomment;
 use \app\models\Grade;
 use \app\models\Pitch;
 use \app\models\Event;
+use \app\models\News;
 use \app\models\Invite;
 use \app\models\Avatar;
 use \app\models\Moderation;
@@ -145,6 +146,32 @@ class UsersController extends \app\controllers\AppController {
             return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates');
         }else {
             return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates')));
+        }
+	}
+        
+    public function feed() {
+        $date = date('Y-m-d H:i:s');
+        if((Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
+            $date = Session::read('user.events.date');
+            Session::delete('user.events');
+        }
+        $gallery = Solution::getUserSolutionGallery(Session::read('user.id'));
+        $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50,  'with' => array('Pitch')));
+        $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
+        $news = \app\models\News::all(array('limit' => 10, 'order' => array('created' => 'desc')));
+        $winners = array();
+        foreach($winnersData as $winner) {
+            if($winner->pitch->category_id != 7) {
+                $winners[] = $winner;
+            }
+        }
+        $winners = array();
+        $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
+        $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
+        if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates', 'news', 'pitches');
+        }else {
+            return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates', 'pitches')));
         }
 	}
 
@@ -1428,6 +1455,14 @@ class UsersController extends \app\controllers\AppController {
             return json_encode(User::phoneValidationFinish($user->id, (int) $this->request->data['verifyCode']));
         }
         $this->redirect('/');
+    }
+    
+    public function click() {
+        $news = News::first($this->request->id);
+        if($news){
+            $news->views += 1;
+            $news->save();
+        }
     }
 }
 

@@ -41,7 +41,7 @@ class Event extends \app\models\AppModel {
                 };
                 $addBindings = function($record) {
                     if((isset($record->solution_id)) && ($record->solution_id > 0)) {
-                        $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id)));
+                        $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id,'category_id'=>array('!='=>7),'private'=>0)));
                     }else {
                         $record->solution = Solution::getBestSolution($record->pitch_id);
                     }
@@ -65,7 +65,7 @@ class Event extends \app\models\AppModel {
                         $record->comment= Comment::first($record->comment_id);
                     }
                     if((isset($record->user_id)) && ($record->user_id > 0)) {
-                        $record->user= User::first($record->user_id);
+                        $record->user= User::first(array('conditions'=>array('id'=>$record->user_id),'fields'=>array('id','first_name','last_name')));
                     }
                     return $record;
                 };
@@ -212,7 +212,7 @@ class Event extends \app\models\AppModel {
     public static function createConditions($input) {
         $list = array();
         foreach($input as $pitchId => $created) {
-            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' =>$created)));
+            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' =>$created)));
         }
         $list[] = array('AND' => array('type' => 'PitchCreated', 'created' => array('>=' =>$created)));
         $output = array('OR' => $list);
