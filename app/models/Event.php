@@ -80,6 +80,7 @@ class Event extends \app\models\AppModel {
                     if (isset($record->created)) {
                         $record->jsCreated = date('Y/m/d H:i:s', strtotime($record->created));
                     }
+                    return $record;
                 };
                 $addCreator = function($record) {
                     $autoCreators = array('SolutionPicked', 'PitchFinished');

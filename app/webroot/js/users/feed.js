@@ -3,13 +3,13 @@
 $(document).ready(function () {
 
     var Tip = new TopTip;
-    inProgress = false;
+    isBusy = 0;
     function scrollInit() {
         $(window).on('scroll', function () {
-            if ($(document).height() - $(window).scrollTop() - $(window).height() < 200 && !inProgress) {
+            if (($(document).height() - $(window).scrollTop() - $(window).height() < 200) && !isBusy) {
                 //$(window).off('scroll');
+                isBusy = 1;
                 Tip.scrollHandler();
-                inProgress = true;
                 Updater.nextPage();
             }
         });
@@ -49,6 +49,7 @@ $(document).ready(function () {
                 var middleBottom = (($('.new-content').offset().top + $('.new-content').height() + 100) > ($(window).scrollTop() + $(window).height()));
                 if (!middleBottom) {
                     this.element.hide();
+                    $('.onTopMiddle').offset({left: $('.new-content').offset().left + $('.new-content').width() - 400});
                     $('.onTopMiddle').show();
                 } else {
                     $('.onTopMiddle').hide();
@@ -74,17 +75,43 @@ $(document).ready(function () {
         $(this).parent().siblings('h2').children().css('color', '#666');
     });
 
-    $(document).on('click', '#older-events', function () {
-        $(this).remove();
-        Updater.nextPage();
-        return false;
-    });
     if (window.location.pathname.match(/users\/feed/)) {
         var Updater = new OfficeStatusUpdater();
         Tip.init();
         scrollInit();
         Updater.init();
     }
+
+
+    $(document).on('click', '.like-small-icon', function () {
+        var likesNum = $(this);
+        var likeLink = $(this).next();
+        likesNum.html(parseInt(likesNum.html()));
+        var sharebar = likesNum.next();
+        var solutionId = $(this).data('id');
+        Socialite.load($(this).next(), [
+            $('#facebook' + solutionId)[0],
+            $('#twitter' + solutionId)[0]
+        ]);
+        $('body').one('click', function () {
+            $('.sharebar').fadeOut(300);
+        });
+        $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
+            likesNum.html(response.likes);
+            likeLink.off('click');
+            sharebar.fadeIn(300);
+            likeLink.off('mouseover');
+            likeLink.on('click', function () {
+                $('body').one('click', function () {
+                    sharebar.fadeOut(300);
+                });
+                sharebar.fadeIn(300);
+                return false;
+
+            });
+        });
+        return false;
+    });
 
     // Solution Stars
     $(document).on('mouseenter', '.ratingchange', function () {
@@ -269,10 +296,10 @@ function OfficeStatusUpdater() {
                                 solutions += '<div class="solutions-block"> \
                                     <a href="/pitches/viewsolution/' + solution.solution.id + '"><img src="' + imageurl + '"></a> \
                                     <div> \
-                                        <p class="creator-name">' + solution.creator + '</p> \
+                                        <p class="creator-name">><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
                                         <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
                                         <p class="fb_like"> \
-                                            <a id="' + solution.solution.id + '" href="#">' + solution.solution.likes + '</a> \
+                                            <a data-id="' + solution.solution.id + '" class="like-small-icon" href="#">' + solution.solution.likes + '</a> \
                                         </p> \
                                     </div> \
                                 </div>';
@@ -321,7 +348,7 @@ function OfficeStatusUpdater() {
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> предложил решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
                             </div> \
-                            <a href="' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
+                            <a href="/pitches/viewsolution/' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
                             <div data-id="' + object.solution.id + '" class="likes">';
                                     id = object.solution.id;
                                     user_id = $('#user_id').val();
@@ -340,21 +367,21 @@ function OfficeStatusUpdater() {
                                     html += '</div></div>';
                                 }
 
-                                if (object.type == 'LikeAdded') {
-                                    $('a#' + object.solution_id).text(object.solution.likes);
-                                }
-
                                 if (object.type == 'CommentAdded') {
                                     avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                     html += '<div class="box"> \
                             <div class="l-img"> \
                                 <img class="avatar" src="' + avatar + '"> \
                             </div> \
-                            <div class="r-content"> \
-                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo; \
-                            </div> \
-                            <img class="sol" src="' + imageurl + '"> \
-                        </div>';
+                            <div class="r-content">';
+                                    if (object.comment.public && !object.comment.reply_to) {
+                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo; </div>';
+                                    }
+                                    else {
+                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                                        html += '</div><img class="sol" src="' + imageurl + '">';
+                                    }
+                                    html += '</div>';
                                 }
                             });
                             var $prependEl = $(html);
@@ -415,7 +442,7 @@ function OfficeStatusUpdater() {
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> предложил решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
                             </div> \
-                            <a href="' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
+                            <a href="/pitches/viewsolution/' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
                             <div data-id="' + object.solution.id + '" class="likes">';
                         id = object.solution.id;
                         $.each(response.updates, function (index, object) {
@@ -438,11 +465,15 @@ function OfficeStatusUpdater() {
                             <div class="l-img"> \
                                 <img class="avatar" src="' + avatar + '"> \
                             </div> \
-                            <div class="r-content"> \
-                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo; \
-                            </div> \
-                            <img class="sol" src="' + imageurl + '"> \
-                        </div>';
+                            <div class="r-content">';
+                        if (object.comment.public == 1 && object.comment.reply_to == 0) {
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo; </div>';
+                        }
+                        else {
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                            html += '</div><img class="sol" src="' + imageurl + '">';
+                        }
+                        html += '</div>';
                     }
                 });
 
@@ -452,7 +483,12 @@ function OfficeStatusUpdater() {
                 $appendEl.appendTo('#updates-box-').slideDown('slow', function () {
                     $('.box').last().addClass('last_item');
                 });
-                inProgress = false;
+
+            }
+            if (response.nextUpdates < 1) {
+                isBusy = 1;
+            } else {
+                isBusy = 0;
             }
         });
 
