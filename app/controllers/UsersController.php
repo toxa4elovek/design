@@ -156,13 +156,13 @@ class UsersController extends \app\controllers\AppController {
             Session::delete('user.events');
         }
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
-        $post = News::getPost();
+        $middlePost = News::getPost();
         $news = News::getNews();
         $solutions = Event::getEventSolutions();
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
         if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
-            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'post');
+            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost');
         }else {
             return $this->render(array('layout' => false, 'data' => compact('date', 'updates', 'nextUpdates', 'pitches')));
         }

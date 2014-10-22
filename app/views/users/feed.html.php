@@ -125,16 +125,16 @@
                 </div>
                 <div id="center_sidebar">
                     <div class="center-boxes" id="updates-box-">
-                        <?php if ($post) : ?>
+                        <?php if ($middlePost) : ?>
                             <div class="box">
                                 <p class="img-box">
-                                    <a class="post-link" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><img class="img-post" src="<?= $post->imageurl ?>"></a>
+                                    <a class="post-link" href="/users/click?link=<?= $middlePost->link ?>&id=<?= $middlePost->id ?>"><img class="img-post" src="<?= $middlePost->imageurl ?>"></a>
                                 </p>
-                                <p class="img-tag"><?= $post->tags ?></p>
+                                <p class="img-tag"><?= $middlePost->tags ?></p>
                                 <div class="r-content post-content"> 
-                                    <a class="img-post" href="/users/click?link=<?= $post->link ?>&id=<?= $post->id ?>"><h2><?= $post->title ?></h2></a>
+                                    <a class="img-post" href="/users/click?link=<?= $middlePost->link ?>&id=<?= $middlePost->id ?>"><h2><?= $middlePost->title ?></h2></a>
                                     <p class="timeago">
-                                        <time class="timeago" datetime="<?= $post->created ?>"><?= $post->created ?></time> с сайта <?= $post->host ?></p>
+                                        <time class="timeago" datetime="<?= $middlePost->created ?>"><?= $middlePost->created ?></time> с сайта <?= $middlePost->host ?></p>
                                 </div>
                             </div>
                             <?php
