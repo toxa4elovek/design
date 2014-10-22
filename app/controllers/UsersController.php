@@ -156,35 +156,8 @@ class UsersController extends \app\controllers\AppController {
             Session::delete('user.events');
         }
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
-        $news = \app\models\News::all(array('conditions' => array('toggle' => 0),'limit' => 15, 'order' => array('created' => 'desc')));
-        $post = Rcache::read('middle-post');
-        if ($news && !$post) {
-            $all_views = 0;
-            foreach ($news as $n) {
-                if ($n->middle) {
-                    $post = $n;
-                    break;
-                }
-                $all_views += $n->views;  
-            }
-            if (!$post) {
-                $av_views = round($all_views / count($news));
-                $max = 0;
-                foreach ($news as $n) {
-                    if ($n->views > $av_views * 2 && $max < $n->views) {
-                        $max = $n->views;
-                        $host = parse_url($n->link);
-                        $n->host = $host['host'];
-                        $str = strpos($n->tags, '|');
-                        if ($str) {
-                            $n->tags = substr($n->tags, 0, $str);
-                        }
-                        $post = $n;
-                    }
-                }
-            }
-            Rcache::write('middle-post', $post, '+1 hour');
-        }
+        $post = News::getPost();
+        $news = News::getNews();
         $solutions = Event::getEventSolutions();
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));

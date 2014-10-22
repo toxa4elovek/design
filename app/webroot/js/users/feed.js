@@ -226,7 +226,7 @@ function OfficeStatusUpdater() {
     },
             this.autoupdate = function () {
                 $.get('/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate, "pitchDate": self.pitchDate}, function (response) {
-                    if (typeof (response.news) != "undefined") {
+                    if (typeof (response.news) != "undefined" && response.news != null) {
                         news = '';
                         first_el = 0;
                         $.each(response.news, function (index, object) {
@@ -250,13 +250,17 @@ function OfficeStatusUpdater() {
                     }
                     var html = '';
                     var solutions = '';
-                    if (typeof (response.post) != "undefined") {
+                    if (typeof (response.post) != "undefined" && response.post != 0) {
                         var $prependEl = $('<div class="box"> \
-                            <a href="' + response.post.link + '"><img class="img-post" src="' + response.post.imageurl + '"></a> \
-                            <div class="r-content"> \
-                                <a href="' + response.post.link + '"><h2>' + response.post.title + '</h2></a> \
-                                <time class="timeago" datetime="' + response.post.created + '">' + response.post.created + '</time> \
-                            </div> \
+                                <p class="img-box"> \
+                                    <a class="post-link" href="/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><img class="img-post" src="' + response.post.imageurl + '"></a> \
+                                </p> \
+                                <p class="img-tag">' + response.post.tags + '</p> \
+                                <div class="r-content post-content"> \
+                                    <a class="img-post" href="/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><h2>' + response.post.title + '</h2></a> \
+                                    <p class="timeago"> \
+                                        <time class="timeago" datetime="' + response.post.created + '">' + response.post.created + '</time> с сайта ' + response.post.host + '</p> \
+                                </div> \
                             </div>');
                         $prependEl.hide();
 
