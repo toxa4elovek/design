@@ -12,7 +12,7 @@ class News extends \app\models\AppModel {
         $post = 0;
         if ($newsDate < 1) {
             $post = Rcache::read('middle-post');
-            self::$news = self::all(array('conditions' => array('created' => array('>' => $newsDate)), 'limit' => 15, 'order' => array('created' => 'desc')));
+            self::$news = self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0), 'limit' => 15, 'order' => array('created' => 'desc')));
             if (self::$news && !$post) {
                 $all_views = 0;
                 foreach (self::$news as $n) {

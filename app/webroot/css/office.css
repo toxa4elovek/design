@@ -117,7 +117,7 @@
     background: url("img/fb_like.png") no-repeat scroll left top rgba(0, 0, 0, 0);
     color: #999999;
     margin-left: 70px;
-    font: 14px OfficinaSansC Bold, serif !important;
+    font: 14px OfficinaSansC Book, serif !important;
     padding: 0 0 0 20px;
     text-decoration: none;
 }
@@ -125,7 +125,9 @@
     background-position: 0 -20px;
     color: #648fa4;
 }
-
+.like-small-icon span {
+    margin-left: 5px;
+}
 #l-sidebar-office .solutions-block .creator-name {
     display: inline-block;
     width: 110px;
