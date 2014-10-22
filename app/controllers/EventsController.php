@@ -5,7 +5,7 @@ namespace app\controllers;
 use \app\models\User;
 use \app\models\Event;
 use \app\models\Pitch;
-use \app\models\Solution;
+use app\models\News;
 use \lithium\storage\Session;
 use \app\extensions\helper\Stream;
 
@@ -29,7 +29,6 @@ class EventsController extends \app\controllers\AppController {
             $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page']);
             $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
         }
-
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
         }
@@ -48,28 +47,8 @@ class EventsController extends \app\controllers\AppController {
             $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
         }
         if (!empty($this->request->query['newsDate'])) {
-            $news = \app\models\News::all(array('conditions' => array('created' => array('>' => $this->request->query['newsDate'])), 'limit' => 8, 'order' => array('created' => 'desc')));
-            if ($news) {
-                $all_views = 0;
-                foreach ($news as $n) {
-                    $host = parse_url($n->link);
-                    $all_views += $n->views;
-                    $n->host = $host['host'];
-                }
-                $av_views = round($all_views / count($news));
-                $max = 0;
-                foreach ($news as $n) {
-                    if ($n->views > $av_views * 2 && $max < $n->views) {
-                        $max = $n->views;
-                        $str = strpos($n->tags, '|');
-                        if ($str) {
-                            $n->tags = substr($n->tags, 0, $str);
-                        }
-                        $post = $n;
-                        $post->created = date('Y-m-d H:i:s', strtotime($post->created));
-                    }
-                }
-            }
+            $post = News::getPost($this->request->query['newsDate']);
+            $news = News::getNews();
         }
         $count = count($updates);
         return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
