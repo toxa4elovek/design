@@ -82,10 +82,11 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.like-small-icon', function () {
-        var likesNum = $(this);
+        console.log($(this).next());
+        var likesNum = $(this).children();
         var likeLink = $(this).next();
         likesNum.html(parseInt(likesNum.html()));
-        var sharebar = likesNum.next();
+        var sharebar = likesNum.parent().next();
         var solutionId = $(this).data('id');
         Socialite.load($(this).next(), [
             $('#facebook' + solutionId)[0],
