@@ -157,7 +157,6 @@
                                 }
                             }
                             if ($object['type'] == 'CommentAdded') :
-                                var_dump($object['comment']);
                                 ?>
                                 <div class="box"> 
                                     <div class="l-img"> 

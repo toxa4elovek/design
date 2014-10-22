@@ -144,7 +144,7 @@ class Event extends \app\models\AppModel {
 
     public static function getEvents($pitchIds, $page = 1, $created = null) {
         $eventList = $conditions = array();
-        $limit = 10;
+        $limit = 14;
         if (isset($created)) {
             $page = 1;
             $limit = 100;
