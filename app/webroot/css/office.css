@@ -114,7 +114,8 @@
 }
 
 .like-small-icon {
-    background: url("img/fb_like.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: url(img/fb_like.png) no-repeat left top;
+    height: 14px;
     color: #999999;
     margin-left: 70px;
     font: 14px OfficinaSansC Book, serif !important;

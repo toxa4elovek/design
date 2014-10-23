@@ -298,7 +298,7 @@ function OfficeStatusUpdater() {
                                     <div class="solution-info"> \
                                         <p class="creator-name"><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
                                         <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
-                                        <a data-id="' + solution.solution.id + '" class="like-small-icon" href="#">' + solution.solution.likes + '</a>\
+                                        <a data-id="' + solution.solution.id + '" class="like-small-icon" href="#"><span>' + solution.solution.likes + '</span></a>\
                                         <div class="sharebar" style="padding:0 0 4px !important;background:url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 250px; top: 27px;height: 178px;width:288px;">\
                                             <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">\
                                                 <div class="body" style="display: block;">\
