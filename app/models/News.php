@@ -23,10 +23,19 @@ class News extends \app\models\AppModel {
                     $all_views += $n->views;
                 }
                 if (!$post) {
-                    $av_views = round($all_views / count($news));
+                    $av_views = round($all_views / count(self::$news));
                     $max = 0;
                     foreach (self::$news as $n) {
                         if ($n->views > $av_views * 2 && $max < $n->views) {
+                            $max = $n->views;
+                            $host = parse_url($n->link);
+                            $n->host = $host['host'];
+                            $str = strpos($n->tags, '|');
+                            if ($str) {
+                                $n->tags = substr($n->tags, 0, $str);
+                            }
+                            $post = $n;
+                        } elseif ($max < $n->views) {
                             $max = $n->views;
                             $host = parse_url($n->link);
                             $n->host = $host['host'];
