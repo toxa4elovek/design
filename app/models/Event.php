@@ -56,10 +56,11 @@ class Event extends \app\models\AppModel {
                         }
                     }
                     if ((isset($record->pitch_id)) && ($record->pitch_id > 0) && !isset($record->pitch)) {
-                        $record->pitch = Pitch::first($record->pitch_id);
-                        $category = Category::first($record->pitch->category_id);
-                        $record->pitch->category = $category;
-                        $record->pitch->category->lcTitle = mb_strtolower($record->pitch->category->title, 'utf-8');
+                        if ($record->pitch = Pitch::first($record->pitch_id)) {
+                            $category = Category::first($record->pitch->category_id);
+                            $record->pitch->category = $category;
+                            $record->pitch->category->lcTitle = mb_strtolower($record->pitch->category->title, 'utf-8');
+                        }
                     }
                     if ((isset($record->comment_id)) && ($record->comment_id > 0)) {
                         $record->comment = Comment::first($record->comment_id);

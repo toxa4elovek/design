@@ -50,6 +50,7 @@ class NewsTest extends AppUnit {
         Rcache::delete('middle-post');
         $post5 = News::getPost();
         $this->assertEqual('Масло масляное: Ева Хан о своей картин', $post5->title);
+        Rcache::delete('middle-post');
     }
 
 }
