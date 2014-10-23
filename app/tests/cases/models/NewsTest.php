@@ -29,6 +29,18 @@ class NewsTest extends AppUnit {
         // Получаем наибольшее по просмотрам, т.к постов с av_views > views * 2 нету
         $this->assertEqual('Богатый внутренний мир', $post2->title);
 
+        // Одна новость отключена, мы поставили в центр другую новость, с малым кол-вом просмотром
+        $post5 = News::first(1);
+        $post5->middle = 1;
+        $post5->save();
+        Rcache::delete('middle-post');
+        $post5 = News::getPost();
+        $this->assertEqual('Матрешкин труд', $post5->title);
+        // возвращяем обратно, чтобы тесты проходились остальные
+        $post5->middle = 0;
+        $post5->save();
+        Rcache::delete('middle-post');
+
         // Включаем пост и выносим принудительно на центр 
         $post2->toggle = 0;
         $post2->middle = 1;
