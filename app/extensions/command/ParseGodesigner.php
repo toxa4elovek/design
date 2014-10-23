@@ -18,6 +18,7 @@ class ParseGodesigner extends \app\extensions\command\CronJob {
                 }
             }
             if (!$trigger) {
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $post->full, $matches);
                 News::create(array(
                     'title' => $post->title,
                     'tags' => $post->tags,
