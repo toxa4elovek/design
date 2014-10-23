@@ -148,7 +148,11 @@
                             }
                             $imageurl = null;
                             $count++;
-                            $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
+                            if ($object['user']['isAdmin']) {
+                                $avatar = '/img/icon_57.png';
+                            } else {
+                                $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
+                            }
                             if (isset($object['solution']['images']['solution_solutionView'])) {
                                 if (isset($object['solution']['images']['solution_solutionView'][0]['weburl'])) {
                                     $imageurl = $object['solution']['images']['solution_solutionView'][0]['weburl'];

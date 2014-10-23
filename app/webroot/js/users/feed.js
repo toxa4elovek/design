@@ -394,7 +394,11 @@ function OfficeStatusUpdater() {
                                 }
 
                                 if (object.type == 'CommentAdded') {
-                                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                    if (object.user.isAdmin) {
+                                        avatar = '/img/icon_57.png';
+                                    } else {
+                                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                    }
                                     html += '<div class="box"> \
                             <div class="l-img"> \
                                 <img class="avatar" src="' + avatar + '"> \
@@ -486,7 +490,11 @@ function OfficeStatusUpdater() {
                     }
 
                     if (object.type == 'CommentAdded') {
-                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                        if (object.user.isAdmin) {
+                            avatar = '/img/icon_57.png';
+                        } else {
+                            avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                        }
                         html += '<div class="box"> \
                             <div class="l-img"> \
                                 <img class="avatar" src="' + avatar + '"> \
