@@ -12,6 +12,7 @@ use \app\models\Solutionfile;
 use \app\models\Uploadnonce;
 use \app\models\Historysolution;
 use app\models\Task;
+use \app\extensions\storage\Rcache;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
 use \lithium\analysis\Logger;
@@ -275,7 +276,15 @@ http://godesigner.ru/answers/view/73');
     }
 
     public static function getBestSolution($pitchId) {
-        $mostLiked = self::first(array('conditions' => array('pitch_id' => $pitchId), 'with' => array('Pitch'), 'order' => array('likes' => 'desc')));
+        $pitch = Pitch::first($pitchId);
+        if ($pitch && $pitch->awarded > 0) {
+            if (!$mostLiked = Rcache::read('awarded-'.$pitchId)) {
+                $mostLiked = self::first(array('conditions' => array('pitch_id' => $pitchId)));
+                Rcache::write('awarded-'.$pitchId, $mostLiked);
+            }
+        } else {
+            $mostLiked = self::first(array('conditions' => array('pitch_id' => $pitchId), 'with' => array('Pitch'), 'order' => array('likes' => 'desc')));
+        }
         return $mostLiked;
     }
 
