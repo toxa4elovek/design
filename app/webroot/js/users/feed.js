@@ -4,10 +4,37 @@ $(document).ready(function () {
 
     var Tip = new TopTip;
     isBusy = 0;
+
     function scrollInit() {
+        var header_bg = $('#header-bg');
+        var pitch_panel = $('#pitch-panel');
+        var header_height = $('#header-bg').height();
+        var header_pos = $('#header-bg').position().top;
+        var offset = $('.new-middle_inner').offset();
+        var topPadding = 60;
+        var bar_offset = 0;
+        var r_sidebar = $('#r-sidebar-office');
         $(window).on('scroll', function () {
+            max_offset = $('.new-middle_inner').height() - $('#r-sidebar-office').height();
+            if ($(window).scrollTop() > header_pos) {
+                header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'});
+                pitch_panel.css('padding-bottom', header_height + 'px');
+            } else {
+                header_bg.css({'position': 'static'});
+                pitch_panel.css('padding-bottom', '0px');
+            }
+
+            if ($(window).scrollTop() > r_sidebar.height() + 600 && $(window).scrollTop() > offset.top) {
+                bar_offset = $(window).scrollTop() - offset.top + topPadding;
+                if (bar_offset > max_offset) {
+                    bar_offset = max_offset;
+                }
+                r_sidebar.stop().animate({marginTop: bar_offset});
+            } else {
+                r_sidebar.stop().animate({marginTop: 0});
+            }
+            ;
             if (($(document).height() - $(window).scrollTop() - $(window).height() < 200) && !isBusy) {
-                //$(window).off('scroll');
                 isBusy = 1;
                 Tip.scrollHandler();
                 Updater.nextPage();

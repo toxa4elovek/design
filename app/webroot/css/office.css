@@ -68,6 +68,9 @@
     }
 }
 
+#header-bg {
+    width: 100%;
+}
 
 #r-sidebar-office > div {
     margin-top: 32px;
@@ -339,6 +342,10 @@
 
 .center-boxes .box a {
     color: #f86362;
+}
+
+.center-boxes .box img.sol {
+    max-width: 598px;
 }
 
 .new-middle_inner {
