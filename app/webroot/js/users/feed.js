@@ -478,7 +478,6 @@ function OfficeStatusUpdater() {
                 }
                 response.updates.sort(sortfunction);
                 var html = '';
-                var solutions = '';
                 $.each(response.updates, function (index, object) {
                     if (!object.solution) {
                         object.solution = {};
@@ -489,23 +488,12 @@ function OfficeStatusUpdater() {
                         object.solution.images.solution_galleryLargeSize.weburl = '';
                     }
 
-                    var newclass = '';
-                    if (Date.parse(object.jsCreated) > offsetDate) {
-                        newclass = ' newevent ';
-                    }
-
-                    if (object.type == 'PitchCreated') {
-                        newclass = ' newpitchstream ';
-                    }
                     if (typeof (object.solution.images.solution_solutionView) != "undefined") {
                         if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
                             var imageurl = object.solution.images.solution_solutionView.weburl;
                         } else {
                             var imageurl = object.solution.images.solution_solutionView[0].weburl;
                         }
-                    }
-                    if (object.type == 'PitchCreated') {
-                        var imageurl = '/img/zaglushka.jpg';
                     }
 
                     if (object.type == 'SolutionAdded') {
@@ -547,21 +535,16 @@ function OfficeStatusUpdater() {
                             <div class="r-content">';
                         if (object.comment.public == 1 && object.comment.reply_to == 0) {
                             html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
-                            html += '</div><img class="sol" src="' + imageurl + '">';
                         }
                         else {
                             html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
-                            html += '</div><img class="sol" src="' + imageurl + '">';
                         }
-                        html += '</div>';
+                        html += '</div><img class="sol" src="' + imageurl + '"></div>';
                     }
                 });
                 var $appendEl = $(html);
                 $appendEl.hide();
-                $formerLast.removeClass('last_item');
-                $appendEl.appendTo('#updates-box-').slideDown('slow', function () {
-                    $('.box').last().addClass('last_item');
-                });
+                $appendEl.appendTo('#updates-box-').slideDown('slow');
             }
             if (response.nextUpdates < 1) {
                 isBusy = 1;

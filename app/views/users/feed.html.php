@@ -12,6 +12,7 @@
                 <div id="l-sidebar-office">
                     <?php
                     $solutionDate = '';
+                    $count = 0;
                     foreach ($solutions as $solution):
                         if (isset($solution->solution->images['solution_leftFeed'])) :
                             if (isset($solution->solution->images['solution_leftFeed'][0]['weburl'])) {

@@ -45,7 +45,7 @@ class Event extends \app\models\AppModel {
                     } else {
                         $record->solution = Solution::getBestSolution($record->pitch_id);
                     }
-                    if (($record->solution->pitch->private == 1) || ($record->solution->pitch->category_id == 7)) {
+                    if ($record->solution && ($record->solution->pitch->private == 1) || ($record->solution->pitch->category_id == 7)) {
                         if (($record->user_id != Session::read('user.id')) && ($record->solution->pitch->user_id != Session::read('user.id'))) {
                             ///img/copy-inv.png
                             $record->solution->images['solution_solutionView']['weburl'] = '/img/copy-inv.png';
@@ -185,7 +185,7 @@ class Event extends \app\models\AppModel {
         return $eventList;
     }
 
-    public function getEventSolutions() {
+    public static function getEventSolutions() {
         return Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
     }
 

@@ -61,9 +61,9 @@ class Stream extends \lithium\template\Helper {
     }
 
     public function renderStreamFeed($num = 10, $created = null) {
+        $content = '';
         if ($data = Rcache::read('twitterstream')) {
             $tweets = $data['statuses'];
-            $content = '';
             $count = 1;
             foreach ($tweets as $tweet) {
                 if (strtotime($tweet['created_at']) > strtotime($created)) {
@@ -89,7 +89,6 @@ class Stream extends \lithium\template\Helper {
                         $content .= $user . ' ' . $text . '</div><div class="sp"></div>';
                         $content = preg_replace("/<img[^>]+\>/i", '', $content);
                     }
-                    //$content .= '<p class="time" title="' . date('Y-m-d H:i:s', strtotime($tweet['created_at'])) . '">' . date('H:i:s d.m.Y', strtotime($tweet['created_at'])) . '</p><div style="height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:188px;margin-top:7px;margin-bottom:15px;"></div></div>';
                     $count++;
                     if ($count > $num) {
                         break;
@@ -97,7 +96,6 @@ class Stream extends \lithium\template\Helper {
                 }
             }
         }
-        // $ending = '</ul><h2 style="font:20px \'RodeoC\',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-top:10px;">СЛЕДИ ЗА <a class="follow-link" style="font-size:20px;" target="_blank" href="http://www.twitter.com/#!/Go_Deer">@GO_DEER</a><br> В ТВИТТЕРЕ</h2>';
 
         return $content;
     }
