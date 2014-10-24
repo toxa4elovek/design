@@ -72,8 +72,9 @@
     width: 100%;
 }
 
-#r-sidebar-office > div {
+#r-sidebar-office #floatingLayer > div {
     margin-top: 32px;
+    width: 310px;
 }
 #r-sidebar-office {
     width: 310px;
@@ -355,6 +356,7 @@
 }
 .new-content {
     width:960px;
+    position: relative;
     /*    padding: 66px 34px 20px 63px;*/
     margin: 70px auto;
 }

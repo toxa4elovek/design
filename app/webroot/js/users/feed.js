@@ -6,16 +6,18 @@ $(document).ready(function () {
     isBusy = 0;
 
     function scrollInit() {
-        var header_bg = $('#header-bg');
-        var pitch_panel = $('#pitch-panel');
-        var header_height = $('#header-bg').height();
-        var header_pos = $('#header-bg').position().top;
-        var offset = $('.new-middle_inner').offset();
-        var topPadding = 60;
-        var bar_offset = 0;
-        var r_sidebar = $('#r-sidebar-office');
+        var header_bg = $('#header-bg'),
+                pitch_panel = $('#pitch-panel'),
+                header_height = $('#header-bg').height(),
+                header_pos = $('#header-bg').position().top,
+                windowHeight = $(window).height(),
+                $box = $('#floatingLayer'),
+                $parent = $('.new-content');
         $(window).on('scroll', function () {
-            max_offset = $('.new-middle_inner').height() - $('#r-sidebar-office').height();
+            var parentAbsoluteTop = $parent.offset().top;
+            var parentAbsoluteBottom = parentAbsoluteTop + $parent.height();
+            var topStop = parentAbsoluteTop + $box.height();
+
             if ($(window).scrollTop() > header_pos) {
                 header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'});
                 pitch_panel.css('padding-bottom', header_height + 'px');
@@ -24,19 +26,34 @@ $(document).ready(function () {
                 pitch_panel.css('padding-bottom', '0px');
             }
 
-            if ($(window).scrollTop() > r_sidebar.height() + 600 && $(window).scrollTop() > offset.top) {
-                bar_offset = $(window).scrollTop() - offset.top + topPadding;
-                if (bar_offset > max_offset) {
-                    bar_offset = max_offset;
-                }
-                r_sidebar.stop().animate({marginTop: bar_offset});
-            } else {
-                r_sidebar.stop().animate({marginTop: 0});
-            }
-            ;
+            var windowBottom = $(window).scrollTop() + windowHeight;
+            if (windowBottom < topStop)
+                $box.css({
+                    position: 'absolute',
+                    top: '0px',
+                    bottom: 'auto'
+                });
+            else if (windowBottom >= topStop && windowBottom <= parentAbsoluteBottom)
+                $box.css({
+                    position: 'fixed',
+                    top: 'auto',
+                    bottom: '0px'
+                });
+            else
+                $box.css({
+                    position: 'absolute',
+                    top: 'auto',
+                    bottom: '0px'
+                });
+
             if (($(document).height() - $(window).scrollTop() - $(window).height() < 200) && !isBusy) {
                 isBusy = 1;
                 Tip.scrollHandler();
+                $box.css({
+                    position: 'fixed',
+                    top: 'auto',
+                    bottom: '0px'
+                });
                 Updater.nextPage();
             }
         });
@@ -432,7 +449,8 @@ function OfficeStatusUpdater() {
                             </div> \
                             <div class="r-content">';
                                     if (object.comment.public && !object.comment.reply_to) {
-                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo; </div>';
+                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                                        html += '</div><img class="sol" src="' + imageurl + '">';
                                     }
                                     else {
                                         html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
@@ -528,7 +546,8 @@ function OfficeStatusUpdater() {
                             </div> \
                             <div class="r-content">';
                         if (object.comment.public == 1 && object.comment.reply_to == 0) {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo; </div>';
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                            html += '</div><img class="sol" src="' + imageurl + '">';
                         }
                         else {
                             html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';

@@ -78,48 +78,50 @@
                     </script> 
                 </div>
                 <div id="r-sidebar-office">
-                    <div id="container-job-designers">
-                        <div class="rs-header">Работа для дизайнера</div>
-                        <div id="content-job">
-                            <?php echo $this->stream->renderStreamFeed(6); ?>
+                    <div id="floatingLayer">
+                        <div id="container-job-designers">
+                            <div class="rs-header">Работа для дизайнера</div>
+                            <div id="content-job">
+                                <?php echo $this->stream->renderStreamFeed(6); ?>
+                            </div>
                         </div>
-                    </div>
-                    <div id="container-new-pitches">
-                        <div class="rs-header">Новые питчи</div>
-                        <div id="content-pitches">
-                            <?php
-                            $count = 0;
-                            foreach ($pitches as $pitch) :
-                                if ($count == 0) {
-                                    $pitchDate = $pitch->started;
-                                }
-                                $count++;
-                                ?>
-                                <div class="new-pitches">
-                                    <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.')) ?></div>
-                                    <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
-                                </div>
-                            <?php endforeach; ?>
-                            <script type="text/javascript">
-                                var pitchDate = '<?= date('Y-m-d H:i:s', strtotime($pitchDate)) ?>';
-                            </script> 
+                        <div id="container-new-pitches">
+                            <div class="rs-header">Новые питчи</div>
+                            <div id="content-pitches">
+                                <?php
+                                $count = 0;
+                                foreach ($pitches as $pitch) :
+                                    if ($count == 0) {
+                                        $pitchDate = $pitch->started;
+                                    }
+                                    $count++;
+                                    ?>
+                                    <div class="new-pitches">
+                                        <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.')) ?></div>
+                                        <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
+                                    </div>
+                                <?php endforeach; ?>
+                                <script type="text/javascript">
+                                    var pitchDate = '<?= date('Y-m-d H:i:s', strtotime($pitchDate)) ?>';
+                                </script> 
+                            </div>
                         </div>
-                    </div>
-                    <div id="container-design-news">
-                        <div class="rs-header">Новости дизайна</div>
-                        <div id="content-news">
-                            <?php
-                            $newsDate = '';
-                            foreach ($news as $n): $host = parse_url($n->link);
-                                if (strtotime($newsDate) < strtotime($n->created)) {
-                                    $newsDate = $n->created;
-                                }
-                                ?>
-                                <div class="design-news"><a target="_blank" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
-                            <?php endforeach; ?>
-                            <script type="text/javascript">
-                                var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
-                            </script> 
+                        <div id="container-design-news">
+                            <div class="rs-header">Новости дизайна</div>
+                            <div id="content-news">
+                                <?php
+                                $newsDate = '';
+                                foreach ($news as $n): $host = parse_url($n->link);
+                                    if (strtotime($newsDate) < strtotime($n->created)) {
+                                        $newsDate = $n->created;
+                                    }
+                                    ?>
+                                    <div class="design-news"><a target="_blank" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
+                                <?php endforeach; ?>
+                                <script type="text/javascript">
+                                    var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
+                                </script> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -170,6 +172,7 @@
                                         <div class="r-content"> 
                                             <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> оставил комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div> 
+                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <?php else: ?>
                                         <div class="r-content"> 
                                             <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> прокомментировал ваше <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
