@@ -1528,7 +1528,8 @@ class UsersController extends \app\controllers\AppController {
             }
 
             $imageProcessor->process($newfiledata['dirname']);
-            $logs += $imageProcessor->log;
+            echo $imageProcessor->error;
+            echo $imageProcessor->log;
         }
         return json_encode($logs);
     }
