@@ -19,12 +19,16 @@ $(document).ready(function () {
             var parentAbsoluteBottom = parentAbsoluteTop + $parent.height();
             var topStop = parentAbsoluteTop + $box.height();
 
-            if ($(window).scrollTop() > header_pos) {
-                header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'});
-                pitch_panel.css('padding-bottom', header_height + 'px');
-            } else {
-                header_bg.css({'position': 'static'});
-                pitch_panel.css('padding-bottom', '0px');
+            if ($(window).scrollTop() > header_pos && !header_bg.hasClass('flow')) {
+                header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'}).addClass('flow');
+                if (pitch_panel.length) {
+                    pitch_panel.css('padding-bottom', header_height + 'px');
+                } else {
+                    $('<div id="pitch-panel"></div>').css('padding-bottom', header_height-5 + 'px').insertBefore(header_bg);
+                }
+            } else if (header_bg.hasClass('flow') && $(window).scrollTop() < header_pos) {
+                header_bg.css({'position': 'static'}).removeClass('flow');
+                $('#pitch-panel').css('padding-bottom', '0px');
             }
 
             var windowBottom = $(window).scrollTop() + windowHeight;
