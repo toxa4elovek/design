@@ -15,7 +15,7 @@ class SolutionTest extends AppUnit {
 
     public function tearDown() {
         Rcache::flushdb();
-        $this->rollDown(array('Solution', 'Solutionfile'));
+        $this->rollDown(array('Pitch', 'Solution', 'Solutionfile'));
     }
 
     public function testSave() {
@@ -31,18 +31,18 @@ class SolutionTest extends AppUnit {
         $this->assertEqual('14 Августа 2014, 21:27', Solution::getCreatedDate(1));
         $this->assertEqual('4 Августа 2014, 21:27', Solution::getCreatedDate(2));
         $this->assertFalse(Solution::getCreatedDate(false));
-        $this->assertFalse(Solution::getCreatedDate(5));
+        $this->assertFalse(Solution::getCreatedDate(50));
     }
 
     public function testGetBestSolution() {
         $solution = Solution::getBestSolution(6);
-        $this->assertEqual(6, $solution->id);
+        $this->assertEqual(8, $solution->id);
         $solution2 = Solution::getBestSolution(7);
         $this->assertEqual(7, $solution2->id);
         $solution3 = Solution::getBestSolution(6);
-        $this->assertEqual(6, $solution3->id);
+        $this->assertEqual(8, $solution3->id);
         $solution4 = Solution::getBestSolution(4);
-        $this->assertEqual(3, $solution4->id);
+        $this->assertEqual(11, $solution4->id);
     }
 
 }

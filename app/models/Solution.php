@@ -279,11 +279,11 @@ http://godesigner.ru/answers/view/73');
         $pitch = Pitch::first($pitchId);
         if ($pitch && $pitch->awarded > 0) {
             if (!$mostLiked = Rcache::read('awarded-'.$pitchId)) {
-                $mostLiked = self::first(array('conditions' => array('pitch_id' => $pitchId)));
+                $mostLiked = self::first(array('conditions' => array('pitch_id' => $pitchId, 'id' => $pitch->awarded)));
                 Rcache::write('awarded-'.$pitchId, $mostLiked);
             }
         } else {
-            $mostLiked = self::first(array('conditions' => array('pitch_id' => $pitchId), 'with' => array('Pitch'), 'order' => array('likes' => 'desc')));
+            $mostLiked = self::first(array('conditions' => array('pitch_id' => $pitchId), 'with' => array('Pitch'), 'order' => array('likes' => 'desc', 'views' => 'desc')));
         }
         return $mostLiked;
     }
