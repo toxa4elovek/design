@@ -169,7 +169,7 @@
                                     <div class="l-img"> 
                                         <img class="avatar" src="<?= $avatar ?>"> 
                                     </div>
-                                    <?php if ($object['comment']['public'] && !$object['comment']['reply_to']): ?>
+                                    <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && !$object['comment']['reply_to'])): ?>
                                         <div class="r-content"> 
                                             <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> оставил комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div> 
