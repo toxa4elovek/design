@@ -17,10 +17,17 @@ $(document).ready(function() {
     $(document).on('blur', '#blog-search', function() {
         $('#post-search').removeClass('active');
     });
-
-    $.each($('p, span'), function(idx, obj) {
+    spanlist = $('p, span');
+    $.each(spanlist, function(idx, obj) {
         var $rama = $(obj).find('img');
         if ($rama.length > 1) {
+            $.each($rama, function(idx, img) {
+                parent = $(img).parent();
+                if (parent.is('a')) {
+                    $(img).insertBefore(parent);
+                    parent.remove();
+                }
+            });
             $rama.wrapAll('<div class="fotorama" data-nav="false" data-maxwidth="100%" />');
             // 1. Initialize fotorama manually.
             var classFotorama = $(this).find('.fotorama');
