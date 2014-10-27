@@ -1,7 +1,8 @@
 // office.js start
 
+var this_user = $('#user_id').val();
+
 $(document).ready(function () {
-    var this_user = $('#user_id').val();
     var Tip = new TopTip;
     isBusy = 0;
 
