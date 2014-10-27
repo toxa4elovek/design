@@ -513,6 +513,7 @@ $(document).ready(function() {
         var extraHigh = (defHigh - defLow);
 
         var minValue = ((value - 1) * mult) + defLow;
+        $('#labelPrice').text(minValue);
         award.data('minimalAward', minValue);
         award.data('low', minValue);
         award.data('normal', minValue + extraNormal);
