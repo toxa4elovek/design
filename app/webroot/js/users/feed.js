@@ -320,7 +320,7 @@ function OfficeStatusUpdater() {
                         $prependEl.hide();
                         $prependEl.prependTo('#content-pitches').slideDown('slow');
                     }
-                    if (typeof (response.solutions) != "undefined") {
+                    if (typeof (response.solutions) != "undefined" && response.solutions.solution != null) {
                         var solutions = '';
                         solcount = 0;
                         $.each(response.solutions, function (index, solution) {
@@ -410,7 +410,7 @@ function OfficeStatusUpdater() {
                                 if (object.type == 'PitchCreated') {
                                     var imageurl = '/img/zaglushka.jpg';
                                 }
-                                if (object.type == 'SolutionAdded') {
+                                if (object.type == 'SolutionAdded' && object.solution != null && typeof object.solution.id != "undefined") {
                                     avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                     html += '<div class="box"> \
                             <div class="l-img"> \
@@ -438,7 +438,7 @@ function OfficeStatusUpdater() {
                                     html += '</div></div>';
                                 }
 
-                                if (object.type == 'CommentAdded') {
+                                if (object.type == 'CommentAdded' && object.comment != null) {
                                     if (object.user.isAdmin == 1) {
                                         avatar = '/img/icon_57.png';
                                     } else {
@@ -497,7 +497,7 @@ function OfficeStatusUpdater() {
                         }
                     }
 
-                    if (object.type == 'SolutionAdded') {
+                    if (object.type == 'SolutionAdded' && object.solution != null && typeof object.solution.id != "undefined") {
                         avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                         html += '<div class="box"> \
                             <div class="l-img"> \
@@ -523,7 +523,7 @@ function OfficeStatusUpdater() {
                         html += '</div></div>';
                     }
 
-                    if (object.type == 'CommentAdded') {
+                    if (object.type == 'CommentAdded' && object.comment != null) {
                         if (object.user.isAdmin == 1) {
                             avatar = '/img/icon_57.png';
                         } else {

@@ -163,7 +163,7 @@
                                     $imageurl = $object['solution']['images']['solution_solutionView']['weburl'];
                                 }
                             }
-                            if ($object['type'] == 'CommentAdded') :
+                            if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
                                 ?>
                                 <div class="box"> 
                                     <div class="l-img"> 
@@ -181,7 +181,7 @@
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <?php endif; ?>
                                 </div>
-                            <?php elseif ($object['type'] == 'SolutionAdded') : ?>
+                            <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) : ?>
                                 <div class="box">
                                     <div class="l-img">
                                         <img class="avatar" src="<?= $avatar ?>">
