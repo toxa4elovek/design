@@ -439,7 +439,7 @@ function OfficeStatusUpdater() {
                                 }
 
                                 if (object.type == 'CommentAdded') {
-                                    if (object.user.isAdmin) {
+                                    if (object.user.isAdmin == 1) {
                                         avatar = '/img/icon_57.png';
                                     } else {
                                         avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
@@ -524,7 +524,7 @@ function OfficeStatusUpdater() {
                     }
 
                     if (object.type == 'CommentAdded') {
-                        if (object.user.isAdmin) {
+                        if (object.user.isAdmin == 1) {
                             avatar = '/img/icon_57.png';
                         } else {
                             avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
