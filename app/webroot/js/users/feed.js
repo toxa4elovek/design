@@ -324,7 +324,7 @@ function OfficeStatusUpdater() {
                         $prependEl.hide();
                         $prependEl.prependTo('#content-pitches').slideDown('slow');
                     }
-                    if (typeof (response.solutions) != "undefined" && response.solutions.solution != null) {
+                    if (typeof (response.solutions) != "undefined" && response.solutions != null) {
                         var solutions = '';
                         solcount = 0;
                         $.each(response.solutions, function (index, solution) {
