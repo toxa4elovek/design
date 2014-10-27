@@ -4,5 +4,6 @@
     {"id": 3, "user_id": 2, "category_id": 1, "title": "Test title 3", "status": 1, "multiwinner": 0},
     {"id": 4, "user_id": 2, "category_id": 1, "title": "Test title 4", "status": 0, "multiwinner": 1, "free":1, "published":1},
     {"id": 5, "user_id": 2, "category_id": 1, "title": "Test title 5", "status": 0, "free":1, "published":1},
-    {"id": 6, "user_id": 2, "category_id": 1, "title": "Test title 6", "status": 0, "free":1, "published":1}
+    {"id": 6, "user_id": 2, "category_id": 1, "title": "Test title 6", "status": 0, "free":1, "published":1, "awarded": 8},
+    {"id": 7, "user_id": 2, "category_id": 1, "title": "Test title 6", "status": 0, "free":1, "published":1, "awarded": 7}
 ]
