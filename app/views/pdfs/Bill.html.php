@@ -15,20 +15,20 @@
     </tr>
 
     <tr height="100">
-        <td height="25" colspan="2" style="border-left:1px solid;border-top:1px solid;">Получатель:<br>ООО "КРАУД МЕДИА"</td>
+        <td height="25" colspan="2" style="border-left:1px solid;border-top:1px solid;">Получатель:<br>Общество с ограниченной ответственностью «КРАУД МЕДИА»</td>
         <td height="25" style="border-left:1px solid;">Сч. №</td>
-        <td height="25" style="border-left:1px solid;border-right:1px solid;text-align:center;">40702810800010002229</td>
+        <td height="25" style="border-left:1px solid;border-right:1px solid;text-align:center;">40702810832320000346</td>
     </tr>
 
     <tr>
-        <td height="25" rowspan="2"  height="50" colspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;">Банк получателя:<br>Филиал СБ Банка (ООО) СПБ г. Санкт-Петербург</td>
+        <td height="25" rowspan="2"  height="50" colspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;">Банк получателя:<br>Филиал «Санкт-Петербургский» ОАО «АЛЬФА-БАНК» г. Санкт-Петербург</td>
         <td height="25" style="border-left:1px solid;border-top:1px solid;">БИК</td>
-        <td height="25" style="border-left:1px solid;border-top:1px solid;border-right:1px solid;text-align:center;">044030884</td>
+        <td height="25" style="border-left:1px solid;border-top:1px solid;border-right:1px solid;text-align:center;">044030786</td>
     </tr>
 
     <tr>
         <td height="25" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;">Сч. №</td>
-        <td height="25" rowspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid;text-align:center;">30101810900000000884</td>
+        <td height="25" rowspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid;text-align:center;">30101810600000000786</td>
     </tr>
 </table>
 <H2 style="margin-top:50px">СЧЕТ № <?=$pitch->id?> от <?=date('d.m.Y', strtotime($pitch->started))?></H2>
@@ -76,16 +76,23 @@
     </tr>
 </table>
 <p style="font-weight:bold; margin-top:20px; font-size: 20px; color:red">Внимание!<br/><span style="font-weight:bold;font-size:13px; color: black;">В назначении платежа указывайте точную фразу из столбца название услуги.</span></p>
+<p style="font-size:10px;font-weight:bold;">Закрывающие документы вы получите на e-mail сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать. Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27). В ответном письме вы получите оригиналы документов с нашей печатью.</p>
 <p style="">Всего наименований 1, на сумму <?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?>.</p>
 <p style=""><?=$money->num2str($pitch->total)?></p>
 <br /><br /><br />
 <table>
     <tr>
-        <td>Генеральный директор</td>
+        <td style="vertical-align:bottom;">Генеральный директор</td>
         <td style="padding:0 5em;"></td>
-        <td style="border-bottom:1px solid;text-align:center;padding:0 6em;"></td>
+        <td style="border-bottom:1px solid;text-align:center;vertical-align:bottom;"><img width="120" height="50" src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/sign.png"></td>
         <td style="padding:0 2em;"></td>
-        <td style="border-bottom:1px solid;text-align:center;padding:0 1em;">/Федченко М. Ю./</td>
+        <td style="border-bottom:1px solid;text-align:center;vertical-align:bottom;">
+            <div style="position:relative;">
+                <div style="position:absolute;right:270px;bottom:210px;">
+                    <img width="120" height="auto" src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/godesigner_stamp_trasp.png"></div>
+                <div>/Федченко М. Ю./</div>
+            </div>
+        </td>
     </tr>
     <tr>
         <td></td>
