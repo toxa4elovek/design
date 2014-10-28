@@ -163,8 +163,7 @@
                                     $imageurl = $object['solution']['images']['solution_solutionView']['weburl'];
                                 }
                             }
-                            if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
-                                var_dump($object);
+                            if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) : 
                                 ?>
                                 <div class="box"> 
                                     <div class="l-img"> 
@@ -172,12 +171,12 @@
                                     </div>
                                     <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
                                         <div class="r-content"> 
-                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> оставил комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('оставил',$object['user']['gender'])?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div> 
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <?php else: ?>
                                         <div class="r-content"> 
-                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> прокомментировал <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('прокомментировал',$object['user']['gender'])?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <?php endif; ?>
@@ -188,7 +187,7 @@
                                         <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                     </div>
                                     <div class="r-content">
-                                        <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> предложил решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                        <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('предложил',$object['user']['gender'])?> решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                     </div>
                                     <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
@@ -202,7 +201,7 @@
                                                     <div class="l-img">
                                                         <a target="_blank" href="/users/view/<?= $like['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                                     </div>
-                                                    <span><a href="/users/view/<?= $like['user_id'] ?>"><?= $like['creator'] ?></a> лайкнул <?= ($like['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение</span>
+                                                    <span><a href="/users/view/<?= $like['user_id'] ?>"><?= $like['creator'] ?></a> <?=$this->user->getGenderTxt('лайкнул',$like['user']['gender'])?> <?= ($like['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение</span>
                                                 </div>
                                                 <?php
                                             endif;

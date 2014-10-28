@@ -407,5 +407,12 @@ class User extends \app\extensions\helper\Session {
             return $pitches;
         }
     }
+    
+    public function getGenderTxt($txt,$gender=0) {
+        if ($gender) {
+            $txt .='а';
+        }
+        return $txt;
+    }
 
 }
