@@ -418,7 +418,7 @@ function OfficeStatusUpdater() {
                                     avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                     html += '<div class="box"> \
                             <div class="l-img"> \
-                                <a href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> предложил решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
@@ -433,7 +433,7 @@ function OfficeStatusUpdater() {
                                             txtsol = (user_id == object.user_id) ? 'ваше ' : '';
                                             html += '<div> \
                                     <div class="l-img"> \
-                                        <a href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
                                     <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ' + txtsol + 'решение</span> \
                                 </div>';
@@ -450,7 +450,7 @@ function OfficeStatusUpdater() {
                                     }
                                     html += '<div class="box"> \
                             <div class="l-img"> \
-                                <a href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content">';
                                     if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to == 0)) {
@@ -505,7 +505,7 @@ function OfficeStatusUpdater() {
                         avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                         html += '<div class="box"> \
                             <div class="l-img"> \
-                                <a href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> предложил решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
@@ -518,7 +518,7 @@ function OfficeStatusUpdater() {
                                 avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                 html += '<div> \
                                     <div class="l-img"> \
-                                        <a href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
                                     <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ваше решение</span> \
                                 </div>';
@@ -535,7 +535,7 @@ function OfficeStatusUpdater() {
                         }
                         html += '<div class="box"> \
                             <div class="l-img"> \
-                                <a href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content">';
                         if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to == 0)) {
