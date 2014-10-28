@@ -14,6 +14,10 @@ $(document).ready(function () {
                 windowHeight = $(window).height(),
                 $box = $('#floatingLayer'),
                 $parent = $('.new-content');
+        if (!pitch_panel.length) {
+            $('<div id="pitch-panel"></div>').insertBefore(header_bg);
+            pitch_panel = $('#pitch-panel');
+        }
         $(window).on('scroll', function () {
             var parentAbsoluteTop = $parent.offset().top;
             var parentAbsoluteBottom = parentAbsoluteTop + $parent.height();
@@ -21,14 +25,10 @@ $(document).ready(function () {
 
             if ($(window).scrollTop() > header_pos && !header_bg.hasClass('flow')) {
                 header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'}).addClass('flow');
-                if (pitch_panel.length) {
-                    pitch_panel.css('padding-bottom', header_height + 'px');
-                } else {
-                    $('<div id="pitch-panel"></div>').css('padding-bottom', header_height-5 + 'px').insertBefore(header_bg);
-                }
+                pitch_panel.css('padding-bottom', header_height + 'px');
             } else if (header_bg.hasClass('flow') && $(window).scrollTop() < header_pos) {
                 header_bg.css({'position': 'static'}).removeClass('flow');
-                $('#pitch-panel').css('padding-bottom', '0px');
+                pitch_panel.css('padding-bottom', '0px');
             }
 
             var windowBottom = $(window).scrollTop() + windowHeight;
