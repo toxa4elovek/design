@@ -488,7 +488,7 @@ function OfficeStatusUpdater() {
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content">';
-                                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to == 0)) {
+                                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
                                         html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
                                         html += '</div><img class="sol" src="' + imageurl + '">';
                                     }
@@ -573,7 +573,7 @@ function OfficeStatusUpdater() {
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content">';
-                        if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to == 0)) {
+                        if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
                             html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
                         }
                         else {

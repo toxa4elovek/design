@@ -164,19 +164,20 @@
                                 }
                             }
                             if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
+                                var_dump($object);
                                 ?>
                                 <div class="box"> 
                                     <div class="l-img"> 
                                         <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                     </div>
-                                    <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && !$object['comment']['reply_to'])): ?>
+                                    <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
                                         <div class="r-content"> 
                                             <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> оставил комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div> 
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <?php else: ?>
                                         <div class="r-content"> 
-                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> прокомментировал ваше <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> прокомментировал <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
                                     <?php endif; ?>
