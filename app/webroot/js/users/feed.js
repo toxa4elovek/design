@@ -1,7 +1,32 @@
 // office.js start
 
 var this_user = $('#user_id').val();
+var newMessages = 0,
+        isWinActive = true;
+function onBlur() {
+    isWinActive = false;
+}
+function onFocus() {
+    isWinActive = true;
+}
 
+if (/*@cc_on!@*/false) { // check for Internet Explorer
+    document.onfocusin = onFocus;
+    document.onfocusout = onBlur;
+} else {
+    window.onfocus = onFocus;
+    window.onblur = onBlur;
+}
+
+doc_title = $('title');
+window.onfocus = function () {
+    if (doc_title.text().charAt(0) == '(') {
+        erase_title = doc_title.text().split(')')[1];
+        erase_title = erase_title.trim();
+        doc_title.text(erase_title);
+    }
+    newMessages = 0;
+}
 $(document).ready(function () {
     var Tip = new TopTip;
     isBusy = 0;
@@ -387,6 +412,16 @@ function OfficeStatusUpdater() {
                         }
                     }
                     if (typeof (response.updates) != "undefined") {
+                        newMessages += response.count;
+                        if (!isWinActive && newMessages != 0) {
+                            if (doc_title.text().charAt(0) == '(') {
+                                erase_title = doc_title.text().split(')')[1];
+                                erase_title = erase_title.trim();
+                                doc_title.text('(' + newMessages + ') ' + erase_title);
+                            } else {
+                                doc_title.text('(' + newMessages + ') ' + doc_title.text());
+                            }
+                        }
                         if (response.count != 0) {
                             function sortfunction(a, b) {
                                 return (a.sort - b.sort);
