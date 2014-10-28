@@ -167,7 +167,7 @@
                                 ?>
                                 <div class="box"> 
                                     <div class="l-img"> 
-                                        <img class="avatar" src="<?= $avatar ?>"> 
+                                        <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                     </div>
                                     <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && !$object['comment']['reply_to'])): ?>
                                         <div class="r-content"> 
@@ -184,7 +184,7 @@
                             <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) : ?>
                                 <div class="box">
                                     <div class="l-img">
-                                        <img class="avatar" src="<?= $avatar ?>">
+                                        <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                     </div>
                                     <div class="r-content">
                                         <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> предложил решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
@@ -199,7 +199,7 @@
                                                 ?>
                                                 <div>
                                                     <div class="l-img">
-                                                        <img class="avatar" src="<?= $avatar ?>">
+                                                        <a target="_blank" href="/users/view/<?= $like['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                                     </div>
                                                     <span><a href="/users/view/<?= $like['user_id'] ?>"><?= $like['creator'] ?></a> лайкнул <?= ($like['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение</span>
                                                 </div>

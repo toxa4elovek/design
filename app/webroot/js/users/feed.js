@@ -14,6 +14,10 @@ $(document).ready(function () {
                 windowHeight = $(window).height(),
                 $box = $('#floatingLayer'),
                 $parent = $('.new-content');
+        if (!pitch_panel.length) {
+            $('<div id="pitch-panel"></div>').insertBefore(header_bg);
+            pitch_panel = $('#pitch-panel');
+        }
         $(window).on('scroll', function () {
             var parentAbsoluteTop = $parent.offset().top;
             var parentAbsoluteBottom = parentAbsoluteTop + $parent.height();
@@ -21,14 +25,10 @@ $(document).ready(function () {
 
             if ($(window).scrollTop() > header_pos && !header_bg.hasClass('flow')) {
                 header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'}).addClass('flow');
-                if (pitch_panel.length) {
-                    pitch_panel.css('padding-bottom', header_height + 'px');
-                } else {
-                    $('<div id="pitch-panel"></div>').css('padding-bottom', header_height-5 + 'px').insertBefore(header_bg);
-                }
+                pitch_panel.css('padding-bottom', header_height + 'px');
             } else if (header_bg.hasClass('flow') && $(window).scrollTop() < header_pos) {
                 header_bg.css({'position': 'static'}).removeClass('flow');
-                $('#pitch-panel').css('padding-bottom', '0px');
+                pitch_panel.css('padding-bottom', '0px');
             }
 
             var windowBottom = $(window).scrollTop() + windowHeight;
@@ -418,7 +418,7 @@ function OfficeStatusUpdater() {
                                     avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                     html += '<div class="box"> \
                             <div class="l-img"> \
-                                <img class="avatar" src="' + avatar + '"> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> предложил решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
@@ -433,7 +433,7 @@ function OfficeStatusUpdater() {
                                             txtsol = (user_id == object.user_id) ? 'ваше ' : '';
                                             html += '<div> \
                                     <div class="l-img"> \
-                                        <img class="avatar" src="' + avatar + '"> \
+                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
                                     <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ' + txtsol + 'решение</span> \
                                 </div>';
@@ -450,7 +450,7 @@ function OfficeStatusUpdater() {
                                     }
                                     html += '<div class="box"> \
                             <div class="l-img"> \
-                                <img class="avatar" src="' + avatar + '"> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content">';
                                     if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to == 0)) {
@@ -505,7 +505,7 @@ function OfficeStatusUpdater() {
                         avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                         html += '<div class="box"> \
                             <div class="l-img"> \
-                                <img class="avatar" src="' + avatar + '"> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> предложил решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
@@ -518,7 +518,7 @@ function OfficeStatusUpdater() {
                                 avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                 html += '<div> \
                                     <div class="l-img"> \
-                                        <img class="avatar" src="' + avatar + '"> \
+                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
                                     <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ваше решение</span> \
                                 </div>';
@@ -535,7 +535,7 @@ function OfficeStatusUpdater() {
                         }
                         html += '<div class="box"> \
                             <div class="l-img"> \
-                                <img class="avatar" src="' + avatar + '"> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content">';
                         if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to == 0)) {
