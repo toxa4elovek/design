@@ -642,6 +642,15 @@ class UsersController extends \app\controllers\AppController {
                     }else {
                         // если он уже у нас есть, то вытаскиваем все его данные по айди
                         $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                        if (!$userToLog->gender) {
+                            $gender = 0;
+                            if ($this->request->data['gender'] == 'male') {
+                                $gender = 1;
+                            } elseif ($this->request->data['gender'] == 'female') {
+                                $gender = 2;
+                            }
+                            $userToLog->gender = $gender;
+                        }
                         $newuser = false;
                     }
                 }
