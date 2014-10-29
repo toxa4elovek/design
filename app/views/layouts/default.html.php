@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html itemscope itemtype="http://schema.org/LocalBusiness">
+<html itemscope itemtype="http://schema.org/LocalBusiness" lang="ru">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# godesigner: http://ogp.me/ns/fb/godesigner#">
     <?= $this->html->charset();?>
     <?php $vars = compact('solution', 'post', 'pitch', 'answer') ?>

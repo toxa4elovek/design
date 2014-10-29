@@ -32,7 +32,7 @@
         <?php if ($pitch->status == 0):?>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
             <?php if ($pitch->brief == 1):?>
-                <span class="regular">Бриф заполнен:</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="client-linknew" href="/answers/view/68" target="_blank">GoDesigner</a>
+                <span class="regular">Бриф заполнен:</span>&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'));?>
             <?php else:?>
                 <span class="regular">Заполнить бриф <a href="http://www.godesigner.ru/answers/view/68" target="_blank">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=phonebrief">Заказать</a>

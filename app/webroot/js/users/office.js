@@ -15,21 +15,6 @@ $(document).ready(function(){
         $(this).parent().siblings('h2').children().css('color','#666');
     });
 
-    //Добавление оценки(звездочки)
-    /*$('.global_info ul li a').toggle(function(){
-        $(this).css({backgroundPosition: '0 -9px'});
-    },function(){
-        $(this).css({backgroundPosition: 'left top'});
-    });*/
-
-
-    // Появление блока с инфой, при наведении на элементы главной карусели
-    /*$('.group li').hover(function(){
-        //$(this).html('<div class="info_block"></div>')
-    },function(){
-
-    });*/
-
     $(document).on('click', '#older-events', function() {
         $(this).remove();
         Updater.nextPage();
@@ -40,8 +25,6 @@ $(document).ready(function(){
         Updater.init();
         officeInit();
     }
-    /*var SidebarUpdater = new SidebarStatusUpdater();
-    SidebarUpdater.init();*/
 
     // Solution Stars
     $(document).on('mouseenter', '.ratingchange', function(){
@@ -75,24 +58,31 @@ $(document).ready(function(){
             message: "",
             display: 'iframe',
             caption: " ",
-            name: "Узнай, какой ты дизайнер на самом деле",
-            picture: $('.post-to-facebook').data('share-image'),
-            link: "http://www.godesigner.ru/questions/index",
+            name: "Мой новый заказ на лучший дизайн",
+            link: 'http://www.godesigner.ru/pitches/details/'+shareid,
             description: $('.post-to-facebook').data('share-text')
         };
         FB.ui(dataFbWallPost, function() { });
     };
+    shareid = 0;
     var initShares = function() {
         setTimeout(function() {
-            // Pinterest
-            window.parsePins($('.share-this')[0]);
+            $('a.twitter-share-button').attr('data-url','http://www.godesigner.ru/pitches/details/'+shareid);
+            !function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                    if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "//platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, "script", "twitter-wjs");
             // Vk
             $('.vk_share_button').replaceWith(VK.Share.button(
                 {
-                    url: 'http://www.godesigner.ru/questions/index',
-                    title: 'Узнай, какой ты дизайнер на самом деле',
+                    url: 'http://www.godesigner.ru/pitches/details/'+shareid,
+                    title: 'Мой новый заказ на лучший дизайн',
                     description: $('.vk_share_button').data('share-text'),
-                    image: $('.vk_share_button').data('share-image'),
                     noparse: true
                 },
                 {
@@ -110,13 +100,9 @@ $(document).ready(function(){
                 _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания твиттера']);
             }
         });
-        $('.pin-share').on('click', function() {
-            _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания пинтереста']);
-        });
     }, 2000);
     };
-    var success = getUrlVar('success');
-    if (success) {
+    if (location.pathname == '/users/mypitches' && getUrlVar('success')) {
         initShares();
         $('#popup-mypitches-true').modal({  
             containerId: 'mypitches-true',  
@@ -129,98 +115,6 @@ $(document).ready(function(){
 function getUrlVar(key){
     var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
     return result && unescape(result[1]) || "";
-}
-
-function SidebarStatusUpdater() {
-    var self = this;
-    this.init = function() {
-        $.get('/events/sidebar.json', {"init": true}, function(response) {
-            if(response.count == 0) {
-            }else {
-
-                function sortfunction(a, b){
-                    return (a.sort - b.sort);
-                }
-                response.updates.sort(sortfunction);
-                var html = '';
-                $.each(response.updates, function(index, object) {
-                    if(index == 0) {
-                        self.date = object.created;
-                    }
-                    var info = '';
-                    if(object.pitch.private == 1) {
-                        info = '<img src="/img/private_pitch.png" width="16" height="25" alt="" />';
-                    }
-                    if(object.pitch.expert == 1) {
-                        info = '<img src="/img/expert_opinion.png" width="16" height="25" alt="" />';
-                    }
-                    html +=  '<li>' +
-                            '<a href="/pitches/view/' + object.pitch_id + '">' +
-                                '<p class="date">' + object.humanCreatedShort + '</p>' +
-                                '<p class="price"><span>' + self._priceDecorator(object.pitch.price) + '</span> P.-</p>' +
-                                '<p>' + object.pitch.title + ', ' + object.pitch.category.lcTitle + '</p>' +
-                                info +
-                            '</a>'+
-                        '</li>';
-                });
-                //html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-                $('#sidebar-content').html(html);
-                $('#current_pitch ul li').css({backgroundColor: '#e7e7e7'});
-                $(document).everyTime(10000, function(i) {
-                    self.autoupdate();
-                });
-            }
-        });
-    },
-    this.autoupdate = function() {
-        $.get('/events/sidebar.json', {"init": true, "created": self.date}, function(response) {
-            if(response.count != 0) {
-                function sortfunction(a, b){
-                    return (a.sort - b.sort);
-                }
-                response.updates.sort(sortfunction);
-                var html = '';
-                $.each(response.updates, function(index, object) {
-                    if(index == 0) {
-                        self.date = object.created;
-                    }
-                    var info = '';
-                    if(object.pitch.private == 1) {
-                        info = '<img src="/img/private_pitch.png" width="16" height="25" alt="" />';
-                    }
-                    if(object.pitch.expert == 1) {
-                        info = '<img src="/img/expert_opinion.png" width="16" height="25" alt="" />';
-                    }
-                    html +=  '<li>' +
-                            '<a href="/pitches/view/' + object.pitch_id + '">' +
-                                '<p class="date">' + object.humanCreatedShort + '</p>' +
-                                '<p class="price"><span>' + self._priceDecorator(object.pitch.price) + '</span> P.-</p>' +
-                                '<p>' + object.pitch.title + ', ' + object.pitch.category.lcTitle + '</p>' +
-                                info +
-                            '</a>'+
-                        '</li>';
-                });
-                //html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-                $('#sidebar-content').prepend(html);
-                $('#current_pitch ul li').removeAttr('style');
-                $('#current_pitch ul li').css({backgroundColor: '#e7e7e7'});
-
-                /*$(document).everyTime(10000, function(i) {
-                    self.autoupdate();
-                });*/
-            }
-        });
-    },
-    this._priceDecorator = function(price) {
-        price = price.replace(/(.*)\.00/g, "$1");
-        counter = 1;
-        while(price.match(/\w\w\w\w/)) {
-            price = price.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
-            counter ++;
-            if(counter > 6) break;
-        }
-        return price;
-    }
 }
 
 function officeInit() {
@@ -273,85 +167,6 @@ function OfficeStatusUpdater() {
     // initialisation method
     this.init = function() {
         $('.obnovlenia_box').last().addClass('last_item');
-        /*$.get('/events/updates.json', {"init": true, "page": self.page}, function(response) {
-            if(response.count == 0) {
-                $('#no-updates').show();
-                $('#updates-box').hide();
-            }else {
-
-                function sortfunction(a, b){
-                    return (a.sort - b.sort);
-                }
-                response.updates.sort(sortfunction);
-                var html = '';
-                $.each(response.updates, function(index, object) {
-                    if(object.solution == null) {
-
-                    }else {
-                        var newclass = '';
-                        if(Date.parse(object.jsCreated) > offsetDate) {
-                            newclass = ' newevent ';
-                        }
-                        if(object.type == 'PitchCreated') {
-                            newclass = ' newpitchstream ';
-                        }
-                        if(index == 0) {
-                            self.date = object.created;
-                        }
-                        if(typeof(object.solution.images.solution_galleryLargeSize) != "undefined") {
-                            if(typeof(object.solution.images.solution_galleryLargeSize.length) == "undefined") {
-                                var imageurl = object.solution.images.solution_galleryLargeSize.weburl;
-                            }else{
-                                var imageurl = object.solution.images.solution_galleryLargeSize[0].weburl;
-                            }
-                            if(object.type == 'PitchCreated') {
-                                var imageurl = '/img/zaglushka.jpg';
-                            }
-                            var extraUI = '';
-                            if(object.type != 'PitchCreated') {
-                                extraUI = '<ul class="group">'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '<li><a href="#"></a></li>'+
-                                '</ul>'+
-                                '<p class="visit_number">' + object.solution.views + '</p>'+
-                                '<p class="fb_like"><a href="#">' + object.solution.likes + '</a></p>'
-                            }
-                            html +=  '<div class="obnovlenia_box ' + newclass + 'group">'+
-                                '<section class="global_info">'+
-                                    '<p>' + object.humanType + '</p>'+
-                                    '<p class="designer_name">' + object.creator + '</p>'+
-                                    '<p class="add_date">' + object.humanCreated + '</p>'+
-                                    extraUI +
-                                '</section>'+
-
-                                '<section class="global_picture">'+
-                                    '<div class="pic_wrapper">'+
-                                        '<a href="/pitches/viewsolution/' + object.solution.id + '"><img src="' + imageurl + '" width="99" height="75" alt="" /></a>'+
-                                        '<!--img class="winning" src="/img/winner_icon.png" width="25" height="59" /-->'+
-                                    '</div>'+
-                                '</section>'+
-
-                                '<section class="main_info">'+
-                                    '<h2><a href="/pitches/view/' + object.pitch.id + '">' + object.pitch.title + '</a></h2>'+
-                                    '<p class="subject">' + object.pitch.industry + '</p>'+
-                                    '<p class="price"><span>' + self._priceDecorator(object.pitch.price) + '</span> P.-</p>'+
-                                    '<p class="main_text">'+
-                                        object.updateText +
-                                    '</p>'+
-                                    '<p class="full_pitch"><a href="/pitches/view/' + object.pitch.id + '"></a></p>'+
-                                '</section>'+
-                            '</div>'
-                        }
-                    }
-                });
-                html += '<div id="earlier_button"><a href="#" id="older-events">Ранее</a></div>';
-                //$('#updates-box').html(html);
-
-            }
-        });*/
         $(document).everyTime(10000, function(i) {
             self.autoupdate();
         });
@@ -570,38 +385,6 @@ $(document).ready(function() {
         })
 
     })
-
-    /* Zebra */
-
-    $(document).on('mouseenter', '.highlighted, .even, .odd', function() {
-        //if($('.pitches-name-td-img', this).hasClass('expand-link')) {
-        //$('.pitches-name-td-img', this).attr('src', '/img/arrow_grey.png')
-
-        /*var row = $(this);
-        if($(this).hasClass('highlighted')) {
-            var classToSave = 'highlighted';
-        }else if($(this).hasClass('even')) {
-            var classToSave = 'even';
-        }else if($(this).hasClass('odd')) {
-            var classToSave = 'odd';
-        }
-
-        row.attr('rel', classToSave);
-        row.removeClass(row.attr('rel'));
-        row.addClass('pitch-mouseover');*/
-        //}
-    });
-
-    $(document).on('mouseleave', '.pitch-mouseover', function() {
-        //var row = $(this);
-
-        //if(!row.hasClass('pitch-open')){
-            //$('.pitches-name-td-img', this).attr('src', '/img/arrow.png')
-            /*row.removeClass('pitch-mouseover');
-            row.addClass(row.attr('rel'));
-            row.removeAttr('rel');*/
-        //}
-    });
 })
 
 function mypitchesInit() {
@@ -677,6 +460,7 @@ function ParticipateTableLoader() {
         }
         $.each(response.data.pitches, function(index, object) {
             if (object.multiwinner != 0 && object.billed == 0) return;
+            shareid = object.id;
             var rowClass = 'odd';
             if((counter % 2 == 0)) {
                 rowClass = 'even';

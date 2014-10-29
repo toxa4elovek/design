@@ -10,6 +10,7 @@ namespace app\models;
 use \lithium\storage\Session;
 use \app\models\Addon;
 use \app\models\Category;
+use \app\models\Comment;
 use \app\models\Event;
 use \app\models\Expert;
 use \app\models\User;
@@ -21,6 +22,7 @@ use \app\models\Transaction;
 use \app\models\Paymaster;
 use \app\models\Receipt;
 use \app\models\Wincomment;
+use \app\models\Historysolution;
 use \app\extensions\helper\NumInflector;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
@@ -567,7 +569,7 @@ class Pitch extends \app\models\AppModel {
     public static function dailypitch() {
         $pitches = Pitch::all(array('conditions' => array('published' => 1, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
         if (count($pitches) > 0) {
-            $users = User::all(array('conditions' => array('email_newpitchonce' => 1, 'User.email' => array('!=' => ''))));
+            $users = User::all(array('conditions' => array('email_newpitchonce' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''))));
             foreach ($users as $user) {
                 User::sendDailyPitch($user, $pitches);
             }
@@ -1018,7 +1020,7 @@ class Pitch extends \app\models\AppModel {
         $moneyArray = array();
         $commentArray = array();
         $dates = array();
-        $pitch->firstSolution = Solution::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('created' => 'asc')));
+        $pitch->firstSolution = Historysolution::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('created' => 'asc')));
         if ($pitch->firstSolution) {
             $pitch->firstSolutionTime = strtotime($pitch->firstSolution->created);
         }
@@ -1363,9 +1365,6 @@ class Pitch extends \app\models\AppModel {
             unset($data['id']);
             $copyPitch->set($data);
             if ($copyPitch->save()) {
-                $pitch = $solution->pitch;
-                $pitch->title = '1. '.$pitch->title;
-                $pitch->save();
                 $copyPitch->awarded = Solution::copy($copyPitch->id, $solution->id);
                 $receiptData = array(
                     'features' => array(
@@ -1391,15 +1390,22 @@ class Pitch extends \app\models\AppModel {
             $pitch->totalFinishDate = '0000-00-00 00:00:00';
             $pitch->awardedDate = date('Y-m-d H:i:s');
             Solution::awardCopy($pitch->awarded);
+            $count = self::getCountBilledMultiwinner($pitch->multiwinner);
+            if ($count == 0){
+                $mainPitch = self::first($pitch->multiwinner);
+                $mainPitch->title = '1. '.$mainPitch->title;
+                $mainPitch->save();
+            }
             if ($pitch->save()) {
                 Task::createNewTask($pitch->awarded, 'victoryNotification');
                 $admin = User::getAdmin();
                 $solution = $pitch->solutions[0];
+                $solution = Solution::first($solution->multiwinner);
                 $solution->awarded = 1;
                 $solution->nominated = 1;
                 $solution->save();
                 $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/> Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
-                $data = array('pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
+                $data = array('pitch_id' => $mainPitch->id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
                 Comment::createComment($data);
                 $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
                 $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;

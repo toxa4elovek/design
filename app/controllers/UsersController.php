@@ -10,6 +10,7 @@ use \app\models\Wincomment;
 use \app\models\Grade;
 use \app\models\Pitch;
 use \app\models\Event;
+use \app\models\News;
 use \app\models\Invite;
 use \app\models\Avatar;
 use \app\models\Moderation;
@@ -145,6 +146,25 @@ class UsersController extends \app\controllers\AppController {
             return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates');
         }else {
             return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates')));
+        }
+	}
+        
+    public function feed() {
+        $date = date('Y-m-d H:i:s');
+        if((Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
+            $date = Session::read('user.events.date');
+            Session::delete('user.events');
+        }
+        $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
+        $middlePost = News::getPost();
+        $news = News::getNews();
+        $solutions = Event::getEventSolutions();
+        $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
+        $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
+        if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost');
+        }else {
+            return $this->render(array('layout' => false, 'data' => compact('date', 'updates', 'nextUpdates', 'pitches')));
         }
 	}
 
@@ -1430,6 +1450,90 @@ class UsersController extends \app\controllers\AppController {
             return json_encode(User::phoneValidationFinish($user->id, (int) $this->request->data['verifyCode']));
         }
         $this->redirect('/');
+    }
+    
+    public function click() {
+        $news = News::first($this->request->query['id']);
+        if($news){
+            $news->views += 1;
+            $news->save();
+        }
+        return $this->redirect($this->request->query['link']);
+    }
+    
+    public function cropfile() {
+        $options = array(
+            'solutionView' => array(
+                'image_resize' => true,
+                'image_x' => 600,
+                'image_ratio_y' => true,
+            ),
+            'galleryLargeSize' => array(
+                'image_resize' => true,
+                'image_ratio_fill' => true,
+                'image_x' => 180,
+                'image_background_color' => '#ffffff',
+                'image_y' => 135,
+                'file_overwrite' => true,
+            ),
+            'gallerySiteSize' => array(
+                'image_resize' => true,
+                'image_x' => 800,
+                'image_ratio_y' => true,
+            ),
+            'leftFeed' => array(
+                'image_resize' => true,
+                'image_x' => 310,
+                'image_y' => 240,
+                'image_ratio_crop' => 'T',
+                'file_overwrite' => true
+            ),
+            'tutdesign' => array(
+                'image_resize' => true,
+                'image_ratio_fill' => true,
+                'image_x' => 267,
+                'image_background_color' => '#dddddd',
+                'image_y' => 200,
+                'file_overwrite' => true
+            ),
+            'mobile' => array(
+                'image_resize' => true,
+                'image_ratio_fill' => true,
+                'image_x' => 590,
+                'image_background_color' => '#ffffff',
+                'image_y' => 448,
+                'file_overwrite' => true
+            ),
+        );
+        $logs = '';
+        foreach ($options as $option => $imageParams) {
+            $newname = \app\models\Solutionfile::first(array(
+                        'fields' => 'filename',
+                        'conditions' => array(
+                            'model_id' => $this->request->id,
+                            'filekey' => 'solution',
+                        ),
+            ));
+            //http://www.godesigner.ru/solutions/d/d9/d93/d93da6b190f7435e648f82716a17711e_leftFeed.jpg - id = 113403
+            $newfiledata = pathinfo($newname->filename);
+            $newfiledata['filename'] = 'CropTest_'.md5(uniqid('', true));
+            $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
+            $imageProcessor = new \image_manipulation\processor\Upload;
+            $imageProcessor->uploadandinit($newname->filename);
+            $imageProcessor->uploaded = true;
+            $imageProcessor->no_upload_check = true;
+            $imageProcessor->file_src_pathname = $newname->filename;
+            $imageProcessor->file_src_name_ext = $newfiledata['extension'];
+            $imageProcessor->file_new_name_body = $newfiledata['filename'] . '_' . $option;
+            foreach ($imageParams as $param => $value) {
+                $imageProcessor->{$param} = $value;
+            }
+
+            $imageProcessor->process($newfiledata['dirname']);
+            echo $imageProcessor->error;
+            echo $imageProcessor->log;
+        }
+        return json_encode($logs);
     }
 }
 
