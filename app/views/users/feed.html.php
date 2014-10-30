@@ -27,7 +27,7 @@
                             $count++;
                             ?>
                             <div class="solutions-block">
-                                <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><img src="<?= $image ?>"></a>
+                                <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><div class="left-sol" style="background: url(<?=$image?>)"></div></a>
                                 <div class="solution-info">
                                     <p class="creator-name"><a target="_blank" href="/users/view/<?= $solution->user_id ?>"><?= $solution->creator ?></a></p>
                                     <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
@@ -173,12 +173,12 @@
                                         <div class="r-content"> 
                                             <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('оставил',$object['user']['gender'])?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div> 
-                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                     <?php else: ?>
                                         <div class="r-content"> 
                                             <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('прокомментировал',$object['user']['gender'])?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div>
-                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                     <?php endif; ?>
                                 </div>
                             <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) : ?>
@@ -189,7 +189,7 @@
                                     <div class="r-content">
                                         <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('предложил',$object['user']['gender'])?> решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                     </div>
-                                    <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                    <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                     <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                         <?php
                                         $id = $object['solution']['id'];

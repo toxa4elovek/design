@@ -106,8 +106,9 @@
     color: #2d2d2d;
 }
 
-#l-sidebar-office .solutions-block img {
-    max-width: 310px;
+#l-sidebar-office .solutions-block .left-sol{
+    height: 240px;
+    width: 310px;
 }
 
 #l-sidebar-office .solutions-block > div {
@@ -295,6 +296,8 @@
 .center-boxes .box p.timeago {
     color: #c8c8c8;
     font-style: italic;
+    font-family: Georgia, serif;
+    font-size: 14px;
     display: block;
     margin: 10px 0;
 }
@@ -317,12 +320,13 @@
     position: absolute;
     margin-left: 200px;
     margin-top: -17px;
-    padding-top: 8px;
+    padding-top: 10px;
     text-align: center;
     line-height: 1;
     background: url(/img/for_designers.png) no-repeat;
     color: #fff;
     font-size: 14px;
+    font-weight: lighter;
     text-transform: uppercase;
     letter-spacing: 5px;
     font-family: OfficinaSansC Bold, serif;
@@ -345,8 +349,11 @@
     color: #f86362;
 }
 
-.center-boxes .box img.sol {
-    max-width: 598px;
+.center-boxes .box div.sol {
+    max-height: 500px;
+    width: 598px;
+    display: block;
+    overflow: hidden;
 }
 
 .new-middle_inner {
@@ -401,7 +408,9 @@
 }
 
 .box h2,.box a h2 {
-    font-size: 18px;
+    font-size: 23px;
     color: #2d2d2d;
     padding-top: 16px;
+    font-family: OfficinaSansC Bold, serif;
+    font-weight: lighter;
 }
