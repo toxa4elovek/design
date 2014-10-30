@@ -28,6 +28,22 @@ window.onfocus = function () {
     newMessages = 0;
 }
 $(document).ready(function () {
+
+    $('input[name="gender"]').on('change', function () {
+        $.post('/users/gender/' + $('#user_id').val() + '.json', {gender: $(this).attr('id')}, function (response) {
+            if (response) {
+                $('#gender-box').hide();
+                $('.new-content').css({'margin-top': '70px'});
+            }
+        });
+
+    });
+
+    $('#close-gender').on('click', function () {
+        $('#gender-box').hide();
+        $('.new-content').css({'margin-top': '70px'});
+    });
+
     var Tip = new TopTip;
     isBusy = 0;
     function scrollInit() {

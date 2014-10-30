@@ -7,8 +7,22 @@
             <input type="hidden" value="<?= $this->user->getId() ?>" id="user_id">
             <script type="text/javascript">
                 var offsetDate = Date.parse('<?= date('Y/m/d H:i:s', strtotime($date)) ?>');
-            </script> 
+            </script>
+            <?php if($this->user->getId() < 1): ?>
+            <div id="gender-box">
+                <div>
+                    <div id="close-gender"></div>
+                    <span>Укажите ваш пол, пожалуйста: 
+                        <label><input type="radio" name="gender" id="male"> Мужской</label>
+                        <label><input type="radio" name="gender" id="female"> Женский</label>
+                    </span>
+                    <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
+                </div>
+            </div>
+            <div class="new-content group" style="margin-top:10px">
+            <?php else: ?>
             <div class="new-content group">
+            <?php endif; ?>
                 <div id="l-sidebar-office">
                     <?php
                     $solutionDate = '';

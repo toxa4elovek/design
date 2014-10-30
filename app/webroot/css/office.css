@@ -414,3 +414,52 @@
     font-family: OfficinaSansC Bold, serif;
     font-weight: lighter;
 }
+
+#gender-box {
+    height: 85px;
+    width: 570px;
+    background: #fff;
+    margin: 10px auto;
+    position: relative;
+}
+
+#gender-box span {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 16px;
+    color: #333333;
+    display: inline;
+}
+
+#gender-box div {
+    padding-left: 90px;
+    padding-top: 15px;
+}
+
+#gender-box input {
+    vertical-align: middle;
+    height: 10px;
+    width: 10px;
+    margin: 0;
+}
+
+#gender-box label {
+    padding-left: 20px;
+}
+
+#gender-box #close-gender {
+    background: url(img/popup-close-sprite.png) no-repeat 0 -15px;
+    cursor: pointer;
+    width: 10px;
+    position: absolute;
+    right: -70px;
+    top: 7px;
+}
+
+#gender-box p {
+    color: #c8c8c8;
+    font-style: italic;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    display: block;
+    margin: 4px 0;
+}

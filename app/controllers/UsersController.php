@@ -1542,6 +1542,21 @@ class UsersController extends \app\controllers\AppController {
         }
         return json_encode($logs);
     }
+    
+    public function gender() {
+        $user = User::first($this->request->id);
+        if ($user){
+            $gender = 0;
+            if ($this->request->data['gender'] == 'male') {
+                $gender = 1;
+            } elseif ($this->request->data['gender'] == 'female') {
+                $gender = 2;
+            }
+            $user->gender = $gender;
+            Session::write('user.gender', $gender);
+            return json_encode($user->save(null, array('validate' => false)));
+        }
+    }
 }
 
 
