@@ -49,7 +49,7 @@ class EventsController extends \app\controllers\AppController {
         }
         if (!empty($this->request->query['newsDate'])) {
             $post = News::getPost($this->request->query['newsDate']);
-            $news = News::getNews();
+            $news = News::getNews($this->request->query['newsDate']);
         }
         $count = count($updates);
         return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions','solpages');
