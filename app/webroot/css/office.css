@@ -167,6 +167,9 @@
 #container-job-designers a {
     color: #C8C8C8;
 }
+#container-job-designers a:hover {
+    text-decoration: underline;
+}
 #container-job-designers .job {
     padding: 20px 15px 20px 25px;
     color: #2D2D2D;
@@ -234,6 +237,10 @@
 
 #container-design-news .design-news a {
     color: #2d2d2d;
+}
+
+#container-design-news .design-news a:hover {
+    text-decoration: underline;
 }
 
 #container-design-news .design-news .clicks {
