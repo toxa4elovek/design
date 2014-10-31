@@ -545,7 +545,6 @@ function OfficeStatusUpdater() {
                 if (typeof (response.solpages) != "undefined" && response.solpages != null) {
                     var solutions = '';
                     $.each(response.solpages, function (index, solution) {
-                        console.log(solution);
                         if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
                             if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
                                 var imageurl = solution.solution.images.solution_leftFeed.weburl;
@@ -599,6 +598,7 @@ function OfficeStatusUpdater() {
                         var $prependEl = $(solutions);
                         $prependEl.hide();
                         $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
+                        $('#officeAjaxLoader').appendTo($('#l-sidebar-office'));
                     }
                 }
                 $.each(response.updates, function (index, object) {
