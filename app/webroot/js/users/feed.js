@@ -52,16 +52,19 @@ $(document).ready(function () {
                 header_height = $('#header-bg').height(),
                 header_pos = $('#header-bg').position().top,
                 windowHeight = $(window).height(),
-                $box = $('#floatingLayer'),
+                $box = $('#container-design-news'),
                 $parent = $('.new-content');
+        var top = $('#container-design-news').offset().top;
         if (!pitch_panel.length) {
             $('<div id="pitch-panel"></div>').insertBefore(header_bg);
             pitch_panel = $('#pitch-panel');
         }
+
         $(window).on('scroll', function () {
             var parentAbsoluteTop = $parent.offset().top;
             var parentAbsoluteBottom = parentAbsoluteTop + $parent.height();
             var topStop = parentAbsoluteTop + $box.height();
+            
             if ($(window).scrollTop() > header_pos && !header_bg.hasClass('flow')) {
                 header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'}).addClass('flow');
                 pitch_panel.css('padding-bottom', header_height + 'px');
@@ -71,30 +74,38 @@ $(document).ready(function () {
             }
 
             var windowBottom = $(window).scrollTop() + windowHeight;
-            if (windowBottom < topStop)
-                $box.css({
-                    position: 'absolute',
-                    top: '0px',
-                    bottom: 'auto'
-                });
-            else if (windowBottom >= topStop && windowBottom <= parentAbsoluteBottom)
-                $box.css({
-                    position: 'fixed',
-                    top: 'auto',
-                    bottom: '0px'
-                });
-            else
-                $box.css({
-                    position: 'absolute',
-                    top: 'auto',
-                    bottom: '0px'
-                });
+            
+            if($(window).scrollTop() + header_height + 5 > top) {
+                $box.css({'position': 'fixed', 'top': '35px'});
+            } else if(windowBottom >= topStop && $(window).scrollTop() < top) {
+                $box.css({'position': 'static', 'top': '35px'});
+            }
+
+//            var windowBottom = $(window).scrollTop() + windowHeight;
+//            if (windowBottom < topStop)
+//                $box.css({
+//                    position: 'absolute',
+//                    top: '0px',
+//                    bottom: 'auto'
+//                });
+//            else if (windowBottom >= topStop && windowBottom <= parentAbsoluteBottom)
+//                $box.css({
+//                    position: 'fixed',
+//                    top: 'auto',
+//                    bottom: '0px'
+//                });
+//            else
+//                $box.css({
+//                    position: 'absolute',
+//                    top: 'auto',
+//                    bottom: '0px'
+//                });
             if (($(document).height() - $(window).scrollTop() - $(window).height() < 200) && !isBusy) {
                 isBusy = 1;
                 Tip.scrollHandler();
                 $box.css({
                     position: 'fixed',
-                    top: 'auto',
+                    top: '35px',
                     bottom: '0px'
                 });
                 Updater.nextPage();
