@@ -8,7 +8,7 @@
             <script type="text/javascript">
                 var offsetDate = Date.parse('<?= date('Y/m/d H:i:s', strtotime($date)) ?>');
             </script>
-            <?php if($this->user->read('user.gender') < 1): ?>
+            <?php if($this->user->getGender() < 1): ?>
             <div id="gender-box">
                 <div>
                     <div id="close-gender"></div>
