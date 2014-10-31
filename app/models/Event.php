@@ -66,7 +66,7 @@ class Event extends \app\models\AppModel {
                         $record->comment = Comment::first($record->comment_id);
                     }
                     if ((isset($record->user_id)) && ($record->user_id > 0)) {
-                        $record->user = User::first(array('conditions' => array('id' => $record->user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin')));
+                        $record->user = User::first(array('conditions' => array('id' => $record->user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin','gender')));
                     }
                     return $record;
                 };

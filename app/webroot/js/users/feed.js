@@ -28,9 +28,24 @@ window.onfocus = function () {
     newMessages = 0;
 }
 $(document).ready(function () {
+
+    $('input[name="gender"]').on('change', function () {
+        $.post('/users/gender/' + $('#user_id').val() + '.json', {gender: $(this).attr('id')}, function (response) {
+            if (response) {
+                $('#gender-box').hide();
+                $('.new-content').css({'margin-top': '70px'});
+            }
+        });
+
+    });
+
+    $('#close-gender').on('click', function () {
+        $('#gender-box').hide();
+        $('.new-content').css({'margin-top': '70px'});
+    });
+
     var Tip = new TopTip;
     isBusy = 0;
-
     function scrollInit() {
         var header_bg = $('#header-bg'),
                 pitch_panel = $('#pitch-panel'),
@@ -47,7 +62,6 @@ $(document).ready(function () {
             var parentAbsoluteTop = $parent.offset().top;
             var parentAbsoluteBottom = parentAbsoluteTop + $parent.height();
             var topStop = parentAbsoluteTop + $box.height();
-
             if ($(window).scrollTop() > header_pos && !header_bg.hasClass('flow')) {
                 header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'}).addClass('flow');
                 pitch_panel.css('padding-bottom', header_height + 'px');
@@ -75,7 +89,6 @@ $(document).ready(function () {
                     top: 'auto',
                     bottom: '0px'
                 });
-
             if (($(document).height() - $(window).scrollTop() - $(window).height() < 200) && !isBusy) {
                 isBusy = 1;
                 Tip.scrollHandler();
@@ -368,7 +381,7 @@ function OfficeStatusUpdater() {
                                     tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
                                 }
                                 solutions += '<div class="solutions-block"> \
-                                    <a href="/pitches/viewsolution/' + solution.solution.id + '"><img src="' + imageurl + '"></a> \
+                                    <a href="/pitches/viewsolution/' + solution.solution.id + '"><div class="left-sol" style="background: url(' + imageurl + ')"></div></a> \
                                     <div class="solution-info"> \
                                         <p class="creator-name"><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
                                         <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
@@ -456,9 +469,9 @@ function OfficeStatusUpdater() {
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content"> \
-                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> предложил решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
+                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
                             </div> \
-                            <a href="/pitches/viewsolution/' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
+                            <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a> \
                             <div data-id="' + object.solution.id + '" class="likes">';
                                     id = object.solution.id;
                                     user_id = $('#user_id').val();
@@ -470,7 +483,7 @@ function OfficeStatusUpdater() {
                                     <div class="l-img"> \
                                         <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
-                                    <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ' + txtsol + 'решение</span> \
+                                    <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ' + txtsol + 'решение < /span> \
                                 </div>';
                                         }
                                     });
@@ -488,13 +501,13 @@ function OfficeStatusUpdater() {
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content">';
-                                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to == 0)) {
-                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
-                                        html += '</div><img class="sol" src="' + imageurl + '">';
+                                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
+                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                                        html += '</div><div class="sol"><img src="' + imageurl + '"></div';
                                     }
                                     else {
-                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
-                                        html += '</div><img class="sol" src="' + imageurl + '">';
+                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                                        html += '</div><div class="sol"><img src="' + imageurl + '"></div>';
                                     }
                                     html += '</div>';
                                 }
@@ -543,9 +556,9 @@ function OfficeStatusUpdater() {
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content"> \
-                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> предложил решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
+                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
                             </div> \
-                            <a href="/pitches/viewsolution/' + object.solution.id + '"><img class="sol" src="' + imageurl + '"></a> \
+                            <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a> \
                             <div data-id="' + object.solution.id + '" class="likes">';
                         id = object.solution.id;
                         $.each(response.updates, function (index, object) {
@@ -555,7 +568,7 @@ function OfficeStatusUpdater() {
                                     <div class="l-img"> \
                                         <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
-                                    <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> лайкнул ваше решение</span> \
+                                    <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ваше решение</span> \
                                 </div>';
                             }
                         });
@@ -573,13 +586,13 @@ function OfficeStatusUpdater() {
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content">';
-                        if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to == 0)) {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> оставил комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                        if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
                         }
                         else {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> прокомментировал ваше <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
                         }
-                        html += '</div><img class="sol" src="' + imageurl + '"></div>';
+                        html += '</div><div class="sol"><img src="' + imageurl + '"></div></div>';
                     }
                 });
                 var $appendEl = $(html);
@@ -603,6 +616,12 @@ function OfficeStatusUpdater() {
                 break;
         }
         return price;
+    }
+    this.getGenderTxt = function (txt, gender) {
+        if (gender == 1) {
+            txt += 'а';
+        }
+        return txt;
     }
 }
 ;

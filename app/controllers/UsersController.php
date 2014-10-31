@@ -644,6 +644,15 @@ class UsersController extends \app\controllers\AppController {
                     }else {
                         // если он уже у нас есть, то вытаскиваем все его данные по айди
                         $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                        if (!$userToLog->gender) {
+                            $gender = 0;
+                            if ($this->request->data['gender'] == 'male') {
+                                $gender = 1;
+                            } elseif ($this->request->data['gender'] == 'female') {
+                                $gender = 2;
+                            }
+                            $userToLog->gender = $gender;
+                        }
                         $newuser = false;
                     }
                 }
@@ -1534,6 +1543,21 @@ class UsersController extends \app\controllers\AppController {
             echo $imageProcessor->log;
         }
         return json_encode($logs);
+    }
+    
+    public function gender() {
+        $user = User::first($this->request->id);
+        if ($user){
+            $gender = 0;
+            if ($this->request->data['gender'] == 'male') {
+                $gender = 1;
+            } elseif ($this->request->data['gender'] == 'female') {
+                $gender = 2;
+            }
+            $user->gender = $gender;
+            Session::write('user.gender', $gender);
+            return json_encode($user->save(null, array('validate' => false)));
+        }
     }
 }
 

@@ -128,6 +128,12 @@ class User extends \app\models\AppModel {
     }
 
     public function saveFacebookUser($entity, $data) {
+        $gender = 0;
+        if ($this->request->data['gender'] == 'male') {
+            $gender = 1;
+        } elseif ($this->request->data['gender'] == 'female') {
+            $gender = 2;
+        }
         $saveData = array(
             'email' => $data['email'],
             'last_name' => $data['last_name'],
@@ -135,6 +141,7 @@ class User extends \app\models\AppModel {
             'facebook_uid'=> $data['facebook_uid'],
             'confirmed_email' => 1,
             'created' => date('Y-m-d H:i:s'),
+            'gender' => $gender
         );
         if($entity->save($saveData, array(
             'first_name' => array(

@@ -7,8 +7,22 @@
             <input type="hidden" value="<?= $this->user->getId() ?>" id="user_id">
             <script type="text/javascript">
                 var offsetDate = Date.parse('<?= date('Y/m/d H:i:s', strtotime($date)) ?>');
-            </script> 
+            </script>
+            <?php if($this->user->getId() < 1): ?>
+            <div id="gender-box">
+                <div>
+                    <div id="close-gender"></div>
+                    <span>Укажите ваш пол, пожалуйста: 
+                        <label><input type="radio" name="gender" id="male"> Мужской</label>
+                        <label><input type="radio" name="gender" id="female"> Женский</label>
+                    </span>
+                    <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
+                </div>
+            </div>
+            <div class="new-content group" style="margin-top:10px">
+            <?php else: ?>
             <div class="new-content group">
+            <?php endif; ?>
                 <div id="l-sidebar-office">
                     <?php
                     $solutionDate = '';
@@ -27,7 +41,7 @@
                             $count++;
                             ?>
                             <div class="solutions-block">
-                                <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><img src="<?= $image ?>"></a>
+                                <a href="/pitches/viewsolution/<?= $solution->solution_id ?>"><div class="left-sol" style="background: url(<?=$image?>)"></div></a>
                                 <div class="solution-info">
                                     <p class="creator-name"><a target="_blank" href="/users/view/<?= $solution->user_id ?>"><?= $solution->creator ?></a></p>
                                     <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
@@ -163,22 +177,22 @@
                                     $imageurl = $object['solution']['images']['solution_solutionView']['weburl'];
                                 }
                             }
-                            if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
+                            if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) : 
                                 ?>
                                 <div class="box"> 
                                     <div class="l-img"> 
                                         <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                     </div>
-                                    <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && !$object['comment']['reply_to'])): ?>
+                                    <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
                                         <div class="r-content"> 
-                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> оставил комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('оставил',$object['user']['gender'])?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div> 
-                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                     <?php else: ?>
                                         <div class="r-content"> 
-                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> прокомментировал ваше <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                            <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('прокомментировал',$object['user']['gender'])?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                         </div>
-                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                     <?php endif; ?>
                                 </div>
                             <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) : ?>
@@ -187,9 +201,9 @@
                                         <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                     </div>
                                     <div class="r-content">
-                                        <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> предложил решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                        <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?=$this->user->getGenderTxt('предложил',$object['user']['gender'])?> решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                     </div>
-                                    <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><img class="sol" src="<?= $imageurl ?>"></a>
+                                    <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                     <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                         <?php
                                         $id = $object['solution']['id'];
@@ -201,7 +215,7 @@
                                                     <div class="l-img">
                                                         <a target="_blank" href="/users/view/<?= $like['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                                     </div>
-                                                    <span><a href="/users/view/<?= $like['user_id'] ?>"><?= $like['creator'] ?></a> лайкнул <?= ($like['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение</span>
+                                                    <span><a href="/users/view/<?= $like['user_id'] ?>"><?= $like['creator'] ?></a> <?=$this->user->getGenderTxt('лайкнул',$like['user']['gender'])?> <?= ($like['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение</span>
                                                 </div>
                                                 <?php
                                             endif;
