@@ -106,8 +106,9 @@
     color: #2d2d2d;
 }
 
-#l-sidebar-office .solutions-block img {
-    max-width: 310px;
+#l-sidebar-office .solutions-block .left-sol{
+    height: 240px;
+    width: 310px;
 }
 
 #l-sidebar-office .solutions-block > div {
@@ -166,8 +167,11 @@
 #container-job-designers a {
     color: #C8C8C8;
 }
+#container-job-designers a:hover {
+    text-decoration: underline;
+}
 #container-job-designers .job {
-    padding: 22px 15px 18px 25px;
+    padding: 20px 15px 20px 25px;
     color: #2D2D2D;
 }
 #container-job-designers .sp {
@@ -204,7 +208,7 @@
     display: table-cell;
     vertical-align: middle;
     font-size: 16px;
-    padding: 28px 5px 25px 0;
+    padding: 20px 5px 20px 0;
     line-height: 23px;
 }
 
@@ -227,12 +231,16 @@
     font-size: 16px;
     font-family: OfficinaSansC Bold, serif;
     color: #2d2d2d;
-    padding: 28px 15px 18px 20px;
+    padding: 20px 15px 20px 20px;
     line-height: 23px;
 }
 
 #container-design-news .design-news a {
     color: #2d2d2d;
+}
+
+#container-design-news .design-news a:hover {
+    text-decoration: underline;
 }
 
 #container-design-news .design-news .clicks {
@@ -295,6 +303,8 @@
 .center-boxes .box p.timeago {
     color: #c8c8c8;
     font-style: italic;
+    font-family: Georgia, serif;
+    font-size: 14px;
     display: block;
     margin: 10px 0;
 }
@@ -317,12 +327,13 @@
     position: absolute;
     margin-left: 200px;
     margin-top: -17px;
-    padding-top: 8px;
+    padding-top: 10px;
     text-align: center;
     line-height: 1;
     background: url(/img/for_designers.png) no-repeat;
     color: #fff;
     font-size: 14px;
+    font-weight: lighter;
     text-transform: uppercase;
     letter-spacing: 5px;
     font-family: OfficinaSansC Bold, serif;
@@ -345,8 +356,11 @@
     color: #f86362;
 }
 
-.center-boxes .box img.sol {
-    max-width: 598px;
+.center-boxes .box div.sol {
+    max-height: 500px;
+    width: 598px;
+    display: block;
+    overflow: hidden;
 }
 
 .new-middle_inner {
@@ -401,7 +415,58 @@
 }
 
 .box h2,.box a h2 {
-    font-size: 18px;
+    font-size: 23px;
     color: #2d2d2d;
     padding-top: 16px;
+    font-family: OfficinaSansC Bold, serif;
+    font-weight: lighter;
+}
+
+#gender-box {
+    height: 85px;
+    width: 570px;
+    background: #fff;
+    margin: 10px auto;
+    position: relative;
+}
+
+#gender-box span {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 16px;
+    color: #333333;
+    display: inline;
+}
+
+#gender-box div {
+    padding-left: 90px;
+    padding-top: 15px;
+}
+
+#gender-box input {
+    vertical-align: middle;
+    height: 10px;
+    width: 10px;
+    margin: 0;
+}
+
+#gender-box label {
+    padding-left: 20px;
+}
+
+#gender-box #close-gender {
+    background: url(img/popup-close-sprite.png) no-repeat 0 -15px;
+    cursor: pointer;
+    width: 10px;
+    position: absolute;
+    right: -70px;
+    top: 7px;
+}
+
+#gender-box p {
+    color: #c8c8c8;
+    font-style: italic;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    display: block;
+    margin: 4px 0;
 }
