@@ -28,6 +28,7 @@ class EventsController extends \app\controllers\AppController {
         if (isset($this->request->query['page'])) {
             $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page']);
             $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null));
+            $solpages = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 30, 'page' => $this->request->query['page'], 'with' => array('Pitch')));
         }
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
@@ -44,14 +45,14 @@ class EventsController extends \app\controllers\AppController {
             $twitter = Stream::renderStreamFeed(10, $this->request->query['twitterDate']);
         }
         if (!empty($this->request->query['solutionDate'])) {
-            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
         }
         if (!empty($this->request->query['newsDate'])) {
             $post = News::getPost($this->request->query['newsDate']);
             $news = News::getNews();
         }
         $count = count($updates);
-        return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
+        return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions','solpages');
     }
 
 }
