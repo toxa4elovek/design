@@ -11,6 +11,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingGodesigner();
         self::ParsingTutdesign();
         self::ParsingVozduhAfisha();
+        self::ParsingColta();
     }
 
     private function ParsingGodesigner() {
@@ -84,6 +85,49 @@ class ParsingSites extends \app\extensions\command\CronJob {
                         'link' => $item->link,
                         'imageurl' => $matches[1]
                     ))->save();
+                }
+            }
+        }
+    }
+
+    private function ParsingColta() {
+        $xml = simplexml_load_file('http://www.colta.ru/feed');
+        $news = News::all();
+        foreach ($xml->channel->item as $item) {
+            if ($item->category != 'Новости' && $item->category != 'Swiss Made') {
+                $trigger = false;
+                foreach ($news as $n) {
+                    if ((string) $item->title === (string) $n->title) {
+                        $trigger = true;
+                    }
+                }
+                if (!$trigger) {
+                    $content = file_get_contents($item->link);
+                    $doc = new \DOMDocument();
+                    libxml_use_internal_errors(true);
+                    $doc->loadHTML($content);
+                    $xml = simplexml_import_dom($doc);
+                    libxml_clear_errors();
+                    $images = $xml->xpath('//img');
+                    $imgurl = '';
+                    foreach ($images as $img) {
+                        echo '<img src="http://www.colta.ru' . $img['src'] . '">' . "<br />";
+                        if (strpos($img['src'], '/storage') !== false && !strpos($img['src'], 'preview') && !strpos($img['src'], 'cover')) {
+                            $imgurl = $img['src'];
+                            echo '<img src="http://www.colta.ru' . $img['src'] . '">' . "<br />";
+                            break;
+                        }
+                    }
+                    $date = new \DateTime($item->pubDate);
+                    if (!empty($imgurl)) {
+                        News::create(array(
+                            'title' => $item->title,
+                            'tags' => $item->category,
+                            'created' => $date->format('Y-m-d H:i:s'),
+                            'link' => $item->link,
+                            'imageurl' => $imgurl
+                        ))->save();
+                    }
                 }
             }
         }
