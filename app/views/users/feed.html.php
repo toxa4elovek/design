@@ -91,7 +91,7 @@
                     <script type="text/javascript">
                         var solutionDate = '<?= date('Y-m-d H:i:s', strtotime($solutionDate)) ?>';
                     </script>
-                    <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="/img/blog-ajax-loader.gif"></div>
+                    <div id="SolutionAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="/img/blog-ajax-loader.gif"></div>
                 </div>
                 <div id="r-sidebar-office">
                     <div id="floatingLayer">

@@ -46,6 +46,7 @@ $(document).ready(function () {
 
     var Tip = new TopTip;
     isBusy = 0;
+    isBusySolution = 0;
     function scrollInit() {
         var header_bg = $('#header-bg'),
                 pitch_panel = $('#pitch-panel'),
@@ -53,7 +54,9 @@ $(document).ready(function () {
                 header_pos = $('#header-bg').position().top,
                 windowHeight = $(window).height(),
                 $box = $('#container-design-news'),
-                $parent = $('.new-content');
+                $parent = $('.new-content'),
+                leftSidebar = $('#l-sidebar-office'),
+                leftSidebarTop = leftSidebar.offset().top;
         var top = $('#container-design-news').offset().top;
         if (!pitch_panel.length) {
             $('<div id="pitch-panel"></div>').insertBefore(header_bg);
@@ -110,6 +113,11 @@ $(document).ready(function () {
                 });
                 Updater.nextPage();
             }
+            if ((leftSidebarTop + leftSidebar.height() - $(window).scrollTop() - $(window).height() < 50) && !isBusySolution) {
+                isBusySolution = 1;
+                Updater.getSolutions();
+            }
+
         });
     }
 
@@ -293,6 +301,7 @@ function OfficeStatusUpdater() {
     // storage object for saving data
     this.storage = {};
     this.page = 1;
+    this.solPage = 1;
     this.date = '';
     this.dateTwitter;
     this.newsDate;
@@ -542,65 +551,6 @@ function OfficeStatusUpdater() {
                 }
                 response.updates.sort(sortfunction);
                 var html = '';
-                if (typeof (response.solpages) != "undefined" && response.solpages != null) {
-                    var solutions = '';
-                    $.each(response.solpages, function (index, solution) {
-                        if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
-                            if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
-                                var imageurl = solution.solution.images.solution_leftFeed.weburl;
-                            } else {
-                                var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
-                            }
-                            if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                                tweetLike = 'Мне нравится этот дизайн! А вам?';
-                            } else {
-                                tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
-                            }
-                            solutions += '<div class="solutions-block"> \
-                                    <a href="/pitches/viewsolution/' + solution.solution.id + '"><div class="left-sol" style="background: url(' + imageurl + ')"></div></a> \
-                                    <div class="solution-info"> \
-                                        <p class="creator-name"><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
-                                        <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
-                                        <a data-id="' + solution.solution.id + '" class="like-small-icon" href="#"><span>' + solution.solution.likes + '</span></a>\
-                                        <div class="sharebar" style="padding:0 0 4px !important;background:url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 250px; top: 27px;height: 178px;width:288px;">\
-                                            <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">\
-                                                <div class="body" style="display: block;">\
-                                                    <table  width="100%">\
-                                                        <tr height="35">\
-                                                            <td width="137" valign="middle">\
-                                                                <a id="facebook' + solution.solution.id + '" class="socialite facebook-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/' + solution.solution.id + '" data-href="http://www.godesigner.ru/pitches/viewsolution/' + solution.solution.id + '" data-send="false" data-layout="button_count">\
-                                                                    Share on Facebook\
-                                                                </a>\
-                                                            </td>\
-                                                            <td width="137" valign="middle">\
-                                                                <a id="twitter' + solution.solution.id + '" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/' + solution.solution.id + '?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="' + tweetLike + '" data-lang="ru" data-hashtags="Go_Deer">\
-                                                                    Share on Twitter \
-                                                                </a>\
-                                                            </td>\
-                                                        </tr>\
-                                                        <tr height="35">\
-                                                            <td valign="middle">\
-                                                                <a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url(http://platform.tumblr.com/v1/share_1.png) top left no-repeat transparent;">Share on Tumblr</a> \
-                                                            </td>\
-                                                            <td valign="middle">\
-                                                                <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + solution.solution.id + '&media=' + encodeURIComponent('http://www.godesigner.ru' + solution.solution.images['solution_solutionView'][0]) + '&description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>\
-                                                            </td>\
-                                                        </tr>\
-                                                    </table>\
-                                                </div>\
-                                            </div>\
-                                        </div>\
-                                    </div> \
-                                </div>';
-                        }
-                    });
-                    if (solutions != '') {
-                        var $prependEl = $(solutions);
-                        $prependEl.hide();
-                        $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
-                        $('#officeAjaxLoader').appendTo($('#l-sidebar-office'));
-                    }
-                }
                 $.each(response.updates, function (index, object) {
                     if (!object.solution) {
                         object.solution = {};
@@ -693,5 +643,71 @@ function OfficeStatusUpdater() {
         }
         return txt;
     }
+    this.getSolutions = function () {
+        self.solPage += 1;
+        $('#SolutionAjaxLoader').show();
+        $.get('/events/getsol.json', {"init": true, "page": self.solPage}, function (response) {
+            $('#SolutionAjaxLoader').hide();
+            if (typeof (response.solpages) != "undefined" && response.solpages != null) {
+                var solutions = '';
+                $.each(response.solpages, function (index, solution) {
+                    if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
+                        if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
+                            var imageurl = solution.solution.images.solution_leftFeed.weburl;
+                        } else {
+                            var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
+                        }
+                        if (Math.floor((Math.random() * 100) + 1) <= 50) {
+                            tweetLike = 'Мне нравится этот дизайн! А вам?';
+                        } else {
+                            tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
+                        }
+                        solutions += '<div class="solutions-block"> \
+                                    <a href="/pitches/viewsolution/' + solution.solution.id + '"><div class="left-sol" style="background: url(' + imageurl + ')"></div></a> \
+                                    <div class="solution-info"> \
+                                        <p class="creator-name"><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
+                                        <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
+                                        <a data-id="' + solution.solution.id + '" class="like-small-icon" href="#"><span>' + solution.solution.likes + '</span></a>\
+                                        <div class="sharebar" style="padding:0 0 4px !important;background:url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 250px; top: 27px;height: 178px;width:288px;">\
+                                            <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">\
+                                                <div class="body" style="display: block;">\
+                                                    <table  width="100%">\
+                                                        <tr height="35">\
+                                                            <td width="137" valign="middle">\
+                                                                <a id="facebook' + solution.solution.id + '" class="socialite facebook-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/' + solution.solution.id + '" data-href="http://www.godesigner.ru/pitches/viewsolution/' + solution.solution.id + '" data-send="false" data-layout="button_count">\
+                                                                    Share on Facebook\
+                                                                </a>\
+                                                            </td>\
+                                                            <td width="137" valign="middle">\
+                                                                <a id="twitter' + solution.solution.id + '" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/' + solution.solution.id + '?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="' + tweetLike + '" data-lang="ru" data-hashtags="Go_Deer">\
+                                                                    Share on Twitter \
+                                                                </a>\
+                                                            </td>\
+                                                        </tr>\
+                                                        <tr height="35">\
+                                                            <td valign="middle">\
+                                                                <a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url(http://platform.tumblr.com/v1/share_1.png) top left no-repeat transparent;">Share on Tumblr</a> \
+                                                            </td>\
+                                                            <td valign="middle">\
+                                                                <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + solution.solution.id + '&media=' + encodeURIComponent('http://www.godesigner.ru' + solution.solution.images['solution_solutionView'][0]) + '&description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>\
+                                                            </td>\
+                                                        </tr>\
+                                                    </table>\
+                                                </div>\
+                                            </div>\
+                                        </div>\
+                                    </div> \
+                                </div>';
+                    }
+                });
+                if (solutions != '') {
+                    var $prependEl = $(solutions);
+                    $prependEl.hide();
+                    $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
+                    $('#SolutionAjaxLoader').appendTo($('#l-sidebar-office'));
+                    isBusySolution = 0;
+                }
+            }
+        })
+    };
 }
-;
