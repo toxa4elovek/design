@@ -111,10 +111,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $images = $xml->xpath('//img');
                     $imgurl = '';
                     foreach ($images as $img) {
-                        echo '<img src="http://www.colta.ru' . $img['src'] . '">' . "<br />";
                         if (strpos($img['src'], '/storage') !== false && !strpos($img['src'], 'preview') && !strpos($img['src'], 'cover')) {
                             $imgurl = $img['src'];
-                            echo '<img src="http://www.colta.ru' . $img['src'] . '">' . "<br />";
                             break;
                         }
                     }
