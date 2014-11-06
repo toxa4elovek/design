@@ -334,7 +334,8 @@ function OfficeStatusUpdater() {
                                 self.newsDate = object.created;
                             }
                             first_el++;
-                            news += '<div class="design-news"><a target="_blank" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.title + ' <br><a class="clicks" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.host + '</a></div>';
+                            host = parse_url_regex(object.link);
+                            news += '<div class="design-news"><a target="_blank" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + object.title + ' <br><a class="clicks" href="/users/click?link=' + object.link + '&id=' + object.id + '">' + host[3] + '</a></div>';
                         });
                         if (news != '') {
                             var $prependEl = $(news);
@@ -710,4 +711,9 @@ function OfficeStatusUpdater() {
             }
         })
     };
+}
+function parse_url_regex(url) {
+    var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+    var result = parse_url.exec(url);
+    return result;
 }
