@@ -363,7 +363,7 @@
 .center-boxes .box .likes > div {
     display: block;
     border-bottom: 1px solid #e8e4e5;
-    padding: 7px 3px 7px 22px;
+    padding: 7px 3px 7px 0;
     width: 575px;
 }
 
