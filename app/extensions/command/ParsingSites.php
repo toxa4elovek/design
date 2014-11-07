@@ -5,6 +5,7 @@ namespace app\extensions\command;
 use \app\models\Post;
 use \app\models\News;
 use \app\models\Solution;
+use \app\models\Event;
 
 class ParsingSites extends \app\extensions\command\CronJob {
 
@@ -36,7 +37,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'imageurl' => $matches[1]
                 ));
                 $news->save();
-                Event::createEventNewsAdded($news->id, $pitch_id, $date->format('Y-m-d H:i:s'));
+                Event::createEventNewsAdded($news->id, $pitch_id, $post->created);
             }
         }
     }
@@ -63,7 +64,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     'imageurl' => $matches[1]
                 ));
                 $news->save();
-                Event::createEventNewsAdded($news->id, $pitch_id, $post->created);
+                Event::createEventNewsAdded($news->id, $pitch_id, $date->format('Y-m-d H:i:s'));
             }
         }
     }
