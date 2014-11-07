@@ -645,9 +645,9 @@ class UsersController extends \app\controllers\AppController {
                         $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
                         if (!$userToLog->gender) {
                             $gender = 0;
-                            if ($this->request->data['gender'] == 'male') {
+                            if (isset($this->request->data['gender']) && $this->request->data['gender']  == 'male') {
                                 $gender = 1;
-                            } elseif ($this->request->data['gender'] == 'female') {
+                            } elseif (isset($this->request->data['gender']) && $this->request->data['gender'] == 'female') {
                                 $gender = 2;
                             }
                             $userToLog->gender = $gender;

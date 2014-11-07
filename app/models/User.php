@@ -129,9 +129,9 @@ class User extends \app\models\AppModel {
 
     public function saveFacebookUser($entity, $data) {
         $gender = 0;
-        if ($this->request->data['gender'] == 'male') {
+        if (isset($this->request->data['gender']) && $this->request->data['gender'] == 'male') {
             $gender = 1;
-        } elseif ($this->request->data['gender'] == 'female') {
+        } elseif (isset($this->request->data['gender']) && $this->request->data['gender'] == 'female') {
             $gender = 2;
         }
         $saveData = array(
