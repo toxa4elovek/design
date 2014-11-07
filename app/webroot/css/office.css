@@ -61,6 +61,12 @@
     #l-sidebar-office {
         display: block;
     }
+    #r-sidebar-office {
+        width: 310px;
+    }
+    #r-sidebar-office > div {
+        width: 310px;
+    }
 
     .new-content {
         width: 1260px !important;
