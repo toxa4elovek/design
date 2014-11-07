@@ -37,7 +37,7 @@ class UsersController extends \app\controllers\AppController {
      * @var array
      */
 	public $publicActions = array(
-		'vklogin', 'unsubscribe', 'registration', 'login', /*'info', 'sendmail', */'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail'
+		'vklogin', 'unsubscribe', 'registration', 'login', /*'info', 'sendmail', */'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail'
 	);
 
     public $nominatedCount = false;
@@ -1217,7 +1217,7 @@ class UsersController extends \app\controllers\AppController {
             'https://api.twitter.com/1.1/search/tweets.json',
             $params,
             false
-        );
+        );       
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
             $censoredTweets = array();
@@ -1257,6 +1257,99 @@ class UsersController extends \app\controllers\AppController {
             uasort($censoredTweets['statuses'], function($a, $b) { return ($a['timestamp'] > $b['timestamp']) ? -1 : 1; });
 
             $res = Rcache::write('twitterstream', $censoredTweets);
+            echo '<pre>';
+            var_dump($censoredTweets['statuses']);
+            die();
+        }else {
+            echo '<pre>';
+            var_dump($tmhOAuth->response);
+            echo '</pre>';
+            die();
+        }
+    }
+    
+    public function updatetwitterfeed() {
+        $string = base64_encode('8r9SEMoXAacbpnpjJ5v64A:I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk');
+        $tmhOAuth = new tmhOAuth(array(
+            'consumer_key'    => '8r9SEMoXAacbpnpjJ5v64A',
+            'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
+            'user_token'      => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
+            'user_secret'     => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
+        ));
+        $tmhOAuth->headers['Authorization'] = 'Basic ' . $string;
+        $params = array('grant_type' => 'client_credentials');
+        $response = $tmhOAuth->request('POST',
+            'https://api.twitter.com/oauth2/token',
+            $params,
+            false
+        );
+        $data = json_decode($tmhOAuth->response['response'], true);
+        $bearerToken = $data['access_token'];
+        $tmhOAuth->headers['Authorization'] = 'Bearer ' . $bearerToken;
+        
+        //https://api.twitter.com/1.1/search/tweets.json?q=%23twitterapi
+        $hashTags = array('работадлядизайнеров');
+        $x=0;
+        $url='';
+        $countTags = count($hashTags);
+        foreach ($hashTags as $tag) {
+            ++$x;
+            $url .= $countTags > $x ? '%23'.urlencode($tag) . '+' : '%23'.urlencode($tag);
+        }
+        
+        $params = array('rpp' => 5, 'q' => 'godesigner.ru', 'include_entities' => true);
+        $code = $tmhOAuth->request('GET',
+            'https://api.twitter.com/1.1/search/tweets.json',
+            $params,
+            false
+        );
+        if ($code == 200) {
+            $data = json_decode($tmhOAuth->response['response'], true);
+        }
+        $paramsSearch = array('rpp' => 5, 'q' => $url, 'include_entities' => true);
+        $codeSearch = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/search/tweets.json',$paramsSearch, false);
+        
+        if ($code == 200 && $codeSearch == 200) {
+            //var_dump($data);
+            $dataSearch = json_decode($tmhOAuth->response['response'], true);
+            $data += $dataSearch;
+            $censoredTweets = array();
+            $censoredTweets['statuses'] = array();
+            $minTimestamp = 1893355200;
+            foreach($data['statuses'] as $key => &$tweet) {
+                $delete = false;
+                if(isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
+                    foreach($tweet['entities']['urls'] as $url) {
+                        if($matches = preg_match('*godesigners.ru/\?ref\=*', $url['expanded_url'])) {
+                            $delete = true;
+                        }
+                    }
+                }
+                if($delete == false) {
+                    $tweet['timestamp'] = strtotime($tweet['created_at']);
+                    $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
+                    $censoredTweets['statuses'][$key] = $tweet;
+                }
+            }
+
+            if (($tutPosts = Wp_post::getPostsForStream($minTimestamp)) && (count($tutPosts) > 0)) {
+                foreach ($tutPosts as $post) {
+                    $censoredTweets['statuses'][] = array(
+                        'type' => 'tutdesign',
+                        'text' => $post->post_title,
+                        'timestamp' => strtotime($post->post_modified),
+                        'created_at' => $post->post_modified,
+                        'slug' => $post->post_name,
+                        'category' => $post->category,
+                        'id' => $post->ID,
+                        'thumbnail' => $post->thumbnail,
+                    );
+                }
+            }
+
+            uasort($censoredTweets['statuses'], function($a, $b) { return ($a['timestamp'] > $b['timestamp']) ? -1 : 1; });
+
+            $res = Rcache::write('twitterstreamFeed', $censoredTweets);
             echo '<pre>';
             var_dump($censoredTweets['statuses']);
             die();

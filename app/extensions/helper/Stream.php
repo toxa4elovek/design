@@ -62,7 +62,7 @@ class Stream extends \lithium\template\Helper {
 
     public function renderStreamFeed($num = 10, $created = null) {
         $content = '';
-        if ($data = Rcache::read('twitterstream')) {
+        if ($data = Rcache::read('twitterstreamFeed')) {
             $tweets = $data['statuses'];
             $count = 1;
             foreach ($tweets as $tweet) {
