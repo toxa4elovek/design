@@ -223,8 +223,20 @@
                                         endforeach;
                                         ?>
                                     </div></div>
-                                <?php
-                            endif;
+                                <?php elseif($object['type'] == 'newsAdded'): ?>
+                                    <div class="box">
+                                        <p class="img-box">
+                                            <a class="post-link" href="/users/click?link=<?= $object['news']['link'] ?>&id=<?= $object['news']['id'] ?>"><img class="img-post" src="<?= $object['news']['imageurl'] ?>"></a>
+                                        </p>
+                                        <p class="img-tag"><?= $object['news']['tags'] ?></p>
+                                        <div class="r-content post-content"> 
+                                            <a class="img-post" href="/users/click?link=<?= $object['news']['link'] ?>&id=<?= $object['news']['id'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
+                                            <p class="timeago">
+                                                <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                            <?php endif;
                         endforeach;
                         ?>
                         <script type="text/javascript">

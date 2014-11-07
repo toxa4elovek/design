@@ -66,7 +66,17 @@ class Event extends \app\models\AppModel {
                         $record->comment = Comment::first($record->comment_id);
                     }
                     if ((isset($record->user_id)) && ($record->user_id > 0)) {
-                        $record->user = User::first(array('conditions' => array('id' => $record->user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin','gender')));
+                        $record->user = User::first(array('conditions' => array('id' => $record->user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));
+                    }
+                    if ($record->type == 'newsAdded') {
+                        $news = News::first($record->news_id);
+                        $str = strpos($news->tags, '|');
+                        if ($str) {
+                            $news->tags = substr($news->tags, 0, $str);
+                        }
+                        $host = parse_url($news->link);
+                        $record->host = $host['host'];
+                        $record->news = $news;
                     }
                     return $record;
                 };
@@ -104,6 +114,7 @@ class Event extends \app\models\AppModel {
                         'PitchFinished' => 'Питч завершён',
                         'SolutionAdded' => 'Добавлено решение',
                         'PitchCreated' => 'Новый питч',
+                        'newsAdded' => 'Добавлена новость'
                     );
                     if (isset($typesMap[$record->type])) {
                         $record->humanType = $typesMap[$record->type];
@@ -132,7 +143,7 @@ class Event extends \app\models\AppModel {
         });
     }
 
-    public static function createEvent($pitchId, $type, $userId, $solutionId = 0, $commentId = 0) {
+    public static function createEvent($pitchId, $type, $userId, $solutionId = 0, $commentId = 0, $news_id = 0) {
         $newEvent = self::create();
         $newEvent->created = date('Y-m-d H:i:s');
         $newEvent->pitch_id = $pitchId;
@@ -140,6 +151,16 @@ class Event extends \app\models\AppModel {
         $newEvent->solution_id = $solutionId;
         $newEvent->comment_id = $commentId;
         $newEvent->type = $type;
+        $newEvent->news_id = $news_id;
+        return $newEvent->save();
+    }
+
+    public function createEventNewsAdded($news_id, $pitch_id, $created) {
+        $newEvent = Event::create();
+        $newEvent->created = $created;
+        $newEvent->pitch_id = $pitch_id;
+        $newEvent->type = 'newsAdded';
+        $newEvent->news_id = $news_id;
         return $newEvent->save();
     }
 
@@ -218,7 +239,7 @@ class Event extends \app\models\AppModel {
     public static function createConditions($input) {
         $list = array();
         foreach ($input as $pitchId => $created) {
-            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
+            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded', 'newsAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
         }
         $list[] = array('AND' => array('type' => 'PitchCreated', 'created' => array('>=' => $created)));
         $output = array('OR' => $list);

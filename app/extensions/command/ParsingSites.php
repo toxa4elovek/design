@@ -4,6 +4,7 @@ namespace app\extensions\command;
 
 use \app\models\Post;
 use \app\models\News;
+use \app\models\Solution;
 
 class ParsingSites extends \app\extensions\command\CronJob {
 
@@ -17,6 +18,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
     private function ParsingGodesigner() {
         $posts = Post::all(array('conditions' => array('published' => 1, 'created' => array('<=' => date('Y-m-d H:i:s'))), 'limit' => 5, 'order' => array('created' => 'desc')));
         $news = News::all();
+        $pitch_id = Solution::first()->pitch_id;
         foreach ($posts as $post) {
             $trigger = false;
             foreach ($news as $n) {
@@ -26,13 +28,15 @@ class ParsingSites extends \app\extensions\command\CronJob {
             }
             if (!$trigger) {
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $post->full, $matches);
-                News::create(array(
-                    'title' => $post->title,
-                    'tags' => $post->tags,
-                    'created' => $post->created,
-                    'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
-                    'imageurl' => $post->imageurl
-                ))->save();
+                $news = News::create(array(
+                            'title' => $post->title,
+                            'tags' => $post->tags,
+                            'created' => $post->created,
+                            'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
+                            'imageurl' => $matches[1]
+                ));
+                $news->save();
+                Event::createEventNewsAdded($news->id, $pitch_id, $date->format('Y-m-d H:i:s'));
             }
         }
     }
@@ -40,6 +44,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
     private function ParsingTutdesign() {
         $xml = simplexml_load_file('http://tutdesign.ru/feed');
         $news = News::all();
+        $pitch_id = Solution::first()->pitch_id;
         foreach ($xml->channel->item as $item) {
             $trigger = false;
             foreach ($news as $n) {
@@ -50,13 +55,15 @@ class ParsingSites extends \app\extensions\command\CronJob {
             if (!$trigger) {
                 $date = new \DateTime($item->pubDate);
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->asXML(), $matches);
-                News::create(array(
+                $news = News::create(array(
                     'title' => $item->title,
                     'tags' => $item->category,
                     'created' => $date->format('Y-m-d H:i:s'),
                     'link' => $item->link,
                     'imageurl' => $matches[1]
-                ))->save();
+                ));
+                $news->save();
+                Event::createEventNewsAdded($news->id, $pitch_id, $post->created);
             }
         }
     }

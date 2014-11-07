@@ -532,9 +532,25 @@ function OfficeStatusUpdater() {
                                     }
                                     html += '</div>';
                                 }
+
+                                if (object.type == 'newsAdded' && object.news != null) {
+                                    html += '<div class="box"> \
+                                <p class="img-box"> \
+                                    <a class="post-link" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
+                                </p> \
+                                <p class="img-tag">' + object.news.tags + '</p> \
+                                <div class="r-content post-content"> \
+                                    <a class="img-post" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><h2>' + object.news.title + '</h2></a> \
+                                    <p class="timeago"> \
+                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
+                                </div> \
+                            </div>';
+                                }
+
                             });
                             var $prependEl = $(html);
                             $prependEl.hide();
+                            $('time.timeago').timeago();
                             $prependEl.prependTo('#updates-box-').slideDown('slow');
                         }
                     }
@@ -596,6 +612,20 @@ function OfficeStatusUpdater() {
                         html += '</div></div>';
                     }
 
+                    if (object.type == 'newsAdded' && object.news != null) {
+                        html += '<div class="box"> \
+                                <p class="img-box"> \
+                                    <a class="post-link" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
+                                </p> \
+                                <p class="img-tag">' + object.news.tags + '</p> \
+                                <div class="r-content post-content"> \
+                                    <a class="img-post" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><h2>' + object.news.title + '</h2></a> \
+                                    <p class="timeago"> \
+                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
+                                </div> \
+                            </div>';
+                    }
+
                     if (object.type == 'CommentAdded' && object.comment != null) {
                         if (object.user.isAdmin == 1) {
                             avatar = '/img/icon_57.png';
@@ -618,6 +648,7 @@ function OfficeStatusUpdater() {
                 });
                 var $appendEl = $(html);
                 $appendEl.hide();
+                $('time.timeago').timeago();
                 $appendEl.appendTo('#updates-box-').slideDown('slow');
             }
             if (response.nextUpdates < 1) {
