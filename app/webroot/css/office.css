@@ -387,7 +387,6 @@
 }
 
 .new-middle_inner {
-    margin-top: -89px;
     /*    padding: 66px 34px 20px 63px;*/
     position: relative;
 }
@@ -447,7 +446,7 @@
 
 #gender-box {
     height: 85px;
-    width: 570px;
+    width: 597px;
     background: #fff;
     margin: 10px auto;
     position: relative;
@@ -465,15 +464,38 @@
     padding-top: 15px;
 }
 
-#gender-box input {
-    vertical-align: middle;
-    height: 10px;
-    width: 10px;
-    margin: 0;
+#gender-box input[type="radio"] {
+    display:none;
 }
-
+#gender-box span span {
+    margin-right:20px;
+}
 #gender-box label {
-    padding-left: 20px;
+    display: inline-block;  
+    cursor: pointer;  
+    position: relative;  
+    padding-left: 25px;  
+    margin-right: 15px;  
+}
+#gender-box label:before {  
+    content: "";  
+    display: inline-block;  
+    width: 16px;  
+    height: 16px;  
+    margin-right: 10px;  
+    position: absolute;  
+    left: 0;  
+    bottom: 1px;
+    border-radius: 8px; 
+    background-color: #aaa;  
+    
+}
+#gender-box input[type="radio"]:checked + label:before {  
+    content: "\2022";  
+    color: #000;  
+    font-size: 17px;  
+    text-align: center;  
+    line-height: 18px;  
 }
 
 #gender-box #close-gender {
@@ -483,6 +505,11 @@
     position: absolute;
     right: -70px;
     top: 7px;
+}
+
+#gender-box #close-gender:hover {
+    background: url(img/popup-close-sprite.png) no-repeat 0 0;
+    width: 10px;
 }
 
 #gender-box p {

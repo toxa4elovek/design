@@ -3,7 +3,7 @@
     <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2', 'logo' => 'logo')) ?>
 
     <div class="new-middle">
-        <div class="new-middle_inner" style="margin-top: 0px;">
+        <div class="new-middle_inner">
             <input type="hidden" value="<?= $this->user->getId() ?>" id="user_id">
             <script type="text/javascript">
                 var offsetDate = Date.parse('<?= date('Y/m/d H:i:s', strtotime($date)) ?>');
@@ -12,9 +12,12 @@
             <div id="gender-box">
                 <div>
                     <div id="close-gender"></div>
-                    <span>Укажите ваш пол, пожалуйста: 
-                        <label><input type="radio" name="gender" id="male"> Мужской</label>
-                        <label><input type="radio" name="gender" id="female"> Женский</label>
+                    <span>
+                        <span>Укажите ваш пол, пожалуйста:</span> 
+                        <input type="radio" name="gender" id="male">
+                        <label for="male" class="genderlabel first">Мужской</label>
+                        <input type="radio" name="gender" id="female">
+                        <label for="female" class="genderlabel">Женский</label>
                     </span>
                     <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
                 </div>
