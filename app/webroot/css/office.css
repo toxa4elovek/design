@@ -27,9 +27,6 @@
     .new-content {
         width:958px;
     }
-    /*    .onTopMiddle {
-            right: 405px !important;
-        }*/
 }
 
 @media screen and (max-width: 960px) {
@@ -39,6 +36,24 @@
 
     .new-content {
         width:958px;
+    }
+}
+
+@media screen and (min-width: 1240px) {
+    #l-sidebar-office {
+        display: block;
+    }
+    #r-sidebar-office {
+        width: 300px !important;
+    }
+    #r-sidebar-office > div {
+        width: 300px !important;
+    }
+    .new-content {
+        width: 1220px !important;
+    }
+    #center_sidebar {
+        margin-left: 316px;
     }
 }
 

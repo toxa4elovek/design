@@ -96,7 +96,7 @@
                 <div id="r-sidebar-office">
                     <div id="floatingLayer">
                         <div id="container-job-designers">
-                            <div class="rs-header">Работа для дизайнера</div>
+                            <div class="rs-header">Twitter лента</div>
                             <div id="content-job">
                                 <?php echo $this->stream->renderStreamFeed(6); ?>
                             </div>
