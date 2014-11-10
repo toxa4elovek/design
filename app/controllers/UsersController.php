@@ -126,7 +126,7 @@ class UsersController extends \app\controllers\AppController {
      *
      */
 	public function office() {
-        return $this->redirect('Users::feed');
+        //return $this->redirect('Users::feed');
         $date = date('Y-m-d H:i:s');
         if((Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
             $date = Session::read('user.events.date');
