@@ -102,25 +102,6 @@ class UsersController extends \app\controllers\AppController {
         }
     }
 
-    public function sendmail() {
-        $data = array('user' => User::first(Session::read('user.id')), 'pitch' => Pitch::first());
-        $res = SpamMailer::newpitch($data);
-        $mail = Sendemail::first(array('conditions' => array('id' => $this->request->id), 'order' => array('id' => 'desc')));
-
-            echo $mail->text;
-
-        die();
-
-
-        /*if(Session::read('user.email') == $mail->email) {
-            echo $mail->text;
-            die();
-        }else {
-            return $this->redirect('Users::office');
-        }*/
-    }
-
-
     /**
      * Кабинет
      *
@@ -289,14 +270,6 @@ class UsersController extends \app\controllers\AppController {
         }else {
             return $this->render(array('layout' => false, 'data' => compact('solutions', 'filterType')));
         }
-    }
-
-    public function testemail () {
-        $email = Sendemail::all(array('fields' => array('count(id)', 'created'), 'conditions' =>  array('created' => array('>=' => '2013-02-20 00:00:00')), 'group' => array('created')));
-        echo '<pre>';
-        var_dump($email->data());
-        echo '</pre>';
-        die();
     }
 
     public function step1() {
@@ -570,13 +543,6 @@ class UsersController extends \app\controllers\AppController {
         }
     }
 
-    public function suicide() {
-        $id = Session::read('user.id');
-        User::remove($id);
-        Auth::clear('user');
-        return $this->redirect('/');
-    }
-
     public function unsubscribe() {
         if (($this->request->query) && (isset($this->request->query['token'])) && (isset($this->request->query['from']))) {
             $email = base64_decode($this->request->query['from']);
@@ -735,10 +701,6 @@ class UsersController extends \app\controllers\AppController {
 
             }
 		}
-        /*$invite = false;
-        if(isset($this->request->query['invite'])) {
-            $invite = $this->request->query['invite'];
-        }*/
         $url = 'http://oauth.vk.com/authorize';
 
         $client_id = '2950889'; // ID приложения
@@ -1130,42 +1092,6 @@ class UsersController extends \app\controllers\AppController {
         $user->paymentOptions = serialize(array($this->request->data));
         $user->save(null, array('validate' => false));
         return $user->paymentOptions;
-    }
-
-
-    public function spblist() {
-        $list = User::all(array('conditions' => array(
-            'userdata' => array('LIKE' => '%Санкт-Петербург%')
-        )));
-        $list2 = User::all(array('conditions' => array(
-            'userdata' => array('LIKE' => '%Petersburg%')
-        )));
-        $list3 = User::all(array('conditions' => array(
-            'userdata' => array('LIKE' => '%спб%')
-        )));
-        $list4 = User::all(array('conditions' => array(
-            'userdata' => array('LIKE' => '%Петербург%')
-        )));
-        header('Content-Type: text/html; charset=UTF-8');
-        $counter = 0;
-        foreach($list as $user) {
-            echo $user->email .  '</br>';
-            $counter++;
-        }
-        foreach($list2 as $user) {
-            echo $user->email .  '</br>';
-            $counter++;
-        }
-        foreach($list3 as $user) {
-            echo $user->email .  '</br>';
-            $counter++;
-        }
-        foreach($list4 as $user) {
-            echo $user->email .  '</br>';
-            $counter++;
-        }
-        echo 'Всего ' . $counter++;
-        die();
     }
 
     public function loginasadmin() {
@@ -1560,81 +1486,6 @@ class UsersController extends \app\controllers\AppController {
             $news->save();
         }
         return $this->redirect($this->request->query['link']);
-    }
-    
-    public function cropfile() {
-        $options = array(
-            'solutionView' => array(
-                'image_resize' => true,
-                'image_x' => 600,
-                'image_ratio_y' => true,
-            ),
-            'galleryLargeSize' => array(
-                'image_resize' => true,
-                'image_ratio_fill' => true,
-                'image_x' => 180,
-                'image_background_color' => '#ffffff',
-                'image_y' => 135,
-                'file_overwrite' => true,
-            ),
-            'gallerySiteSize' => array(
-                'image_resize' => true,
-                'image_x' => 800,
-                'image_ratio_y' => true,
-            ),
-            'leftFeed' => array(
-                'image_resize' => true,
-                'image_x' => 310,
-                'image_y' => 240,
-                'image_ratio_crop' => 'T',
-                'file_overwrite' => true
-            ),
-            'tutdesign' => array(
-                'image_resize' => true,
-                'image_ratio_fill' => true,
-                'image_x' => 267,
-                'image_background_color' => '#dddddd',
-                'image_y' => 200,
-                'file_overwrite' => true
-            ),
-            'mobile' => array(
-                'image_resize' => true,
-                'image_ratio_fill' => true,
-                'image_x' => 590,
-                'image_background_color' => '#ffffff',
-                'image_y' => 448,
-                'file_overwrite' => true
-            ),
-        );
-        $logs = '';
-        foreach ($options as $option => $imageParams) {
-            $newname = \app\models\Solutionfile::first(array(
-                        'fields' => 'filename',
-                        'conditions' => array(
-                            'model_id' => $this->request->id,
-                            'filekey' => 'solution',
-                        ),
-            ));
-            //http://www.godesigner.ru/solutions/d/d9/d93/d93da6b190f7435e648f82716a17711e_leftFeed.jpg - id = 113403
-            $newfiledata = pathinfo($newname->filename);
-            $newfiledata['filename'] = 'CropTest_'.md5(uniqid('', true));
-            $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
-            $imageProcessor = new \image_manipulation\processor\Upload;
-            $imageProcessor->uploadandinit($newname->filename);
-            $imageProcessor->uploaded = true;
-            $imageProcessor->no_upload_check = true;
-            $imageProcessor->file_src_pathname = $newname->filename;
-            $imageProcessor->file_src_name_ext = $newfiledata['extension'];
-            $imageProcessor->file_new_name_body = $newfiledata['filename'] . '_' . $option;
-            foreach ($imageParams as $param => $value) {
-                $imageProcessor->{$param} = $value;
-            }
-
-            $imageProcessor->process($newfiledata['dirname']);
-            echo $imageProcessor->error;
-            echo $imageProcessor->log;
-        }
-        return json_encode($logs);
     }
     
     public function gender() {

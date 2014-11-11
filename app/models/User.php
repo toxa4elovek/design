@@ -383,7 +383,7 @@ class User extends \app\models\AppModel {
         // All but pitches owners
         $users2 = self::all(array(
             'conditions' => array(
-                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
+                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''),
             ),
             'with' => array('Pitch')
         ));
@@ -412,7 +412,7 @@ class User extends \app\models\AppModel {
             $users3 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    'isCopy' => 1, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
+                    'isCopy' => 1, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''),
                 )
             ));
             $result3 = $users3->data();
