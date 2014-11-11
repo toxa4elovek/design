@@ -239,9 +239,9 @@ class Event extends \app\models\AppModel {
     public static function createConditions($input) {
         $list = array();
         foreach ($input as $pitchId => $created) {
-            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded', 'newsAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
+            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
         }
-        $list[] = array('AND' => array('type' => 'PitchCreated', 'created' => array('>=' => $created)));
+        $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded'), 'created' => array('>=' => $created)));
         $output = array('OR' => $list);
         return $output;
     }
