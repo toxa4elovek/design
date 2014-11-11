@@ -3,5 +3,11 @@
     {"id": 2, "user_id": 2, "pitch_id": 2, "description": "test solution test", "num": "3", "created": "2014-08-04 21:27:14"},
     {"id": 3, "user_id": 2, "pitch_id": 4, "description": "test solution test", "num": "3", "created": "2014-08-04 21:27:14","multiwinner": "1"},
     {"id": 4, "user_id": 2, "pitch_id": 2, "description": "test solution test 2", "num": "1", "created": "2014-08-04 21:27:14"},
-    {"id": 5, "user_id": 2, "pitch_id": 2, "description": "test solution test 3", "num": "2", "created": "2014-08-04 21:27:14"}
+    {"id": 5, "user_id": 2, "pitch_id": 2, "description": "test solution test 3", "num": "2", "created": "2014-08-04 21:27:14"},
+    {"id": 6, "user_id": 2, "pitch_id": 6, "description": "test solution test 4", "num": "3", "created": "2014-08-05 21:27:14"},
+    {"id": 7, "user_id": 2, "pitch_id": 7, "description": "test solution test 5", "num": "3", "created": "2014-08-05 21:27:14"},
+    {"id": 8, "user_id": 2, "pitch_id": 6, "description": "test solution test 4", "num": "1", "created": "2014-08-05 21:27:14"},
+    {"id": 9, "user_id": 2, "pitch_id": 7, "description": "test solution test 5", "num": "3", "created": "2014-08-05 21:27:14"},
+    {"id": 10, "user_id": 2, "pitch_id": 4, "description": "test solution test", "num": "1", "likes": 2, "views": 10, "created": "2014-08-04 21:27:14","multiwinner": "1"},
+    {"id": 11, "user_id": 2, "pitch_id": 4, "description": "test solution test", "num": "2", "likes": 2, "views": 15,"created": "2014-08-04 21:27:14","multiwinner": "1"}
 ]

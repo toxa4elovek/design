@@ -10,6 +10,7 @@ use \app\models\Wincomment;
 use \app\models\Grade;
 use \app\models\Pitch;
 use \app\models\Event;
+use \app\models\News;
 use \app\models\Invite;
 use \app\models\Avatar;
 use \app\models\Moderation;
@@ -36,7 +37,7 @@ class UsersController extends \app\controllers\AppController {
      * @var array
      */
 	public $publicActions = array(
-		'vklogin', 'unsubscribe', 'registration', 'login', /*'info', 'sendmail', */'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail'
+		'vklogin', 'unsubscribe', 'registration', 'login', /*'info', 'sendmail', */'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail'
 	);
 
     public $nominatedCount = false;
@@ -125,6 +126,7 @@ class UsersController extends \app\controllers\AppController {
      *
      */
 	public function office() {
+        //return $this->redirect('Users::feed');
         $date = date('Y-m-d H:i:s');
         if((Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
             $date = Session::read('user.events.date');
@@ -145,6 +147,25 @@ class UsersController extends \app\controllers\AppController {
             return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates');
         }else {
             return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates')));
+        }
+    }
+        
+    public function feed() {
+        $date = date('Y-m-d H:i:s');
+        if((Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
+            $date = Session::read('user.events.date');
+            Session::delete('user.events');
+        }
+        $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
+        $middlePost = News::getPost();
+        $news = News::getNews();
+        $solutions = Event::getEventSolutions();
+        $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
+        $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
+        if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
+            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost');
+        }else {
+            return $this->render(array('layout' => false, 'data' => compact('date', 'updates', 'nextUpdates', 'pitches')));
         }
 	}
 
@@ -622,6 +643,15 @@ class UsersController extends \app\controllers\AppController {
                     }else {
                         // если он уже у нас есть, то вытаскиваем все его данные по айди
                         $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                        if (!$userToLog->gender) {
+                            $gender = 0;
+                            if (isset($this->request->data['gender']) && $this->request->data['gender']  == 'male') {
+                                $gender = 1;
+                            } elseif (isset($this->request->data['gender']) && $this->request->data['gender'] == 'female') {
+                                $gender = 2;
+                            }
+                            $userToLog->gender = $gender;
+                        }
                         $newuser = false;
                     }
                 }
@@ -1187,7 +1217,7 @@ class UsersController extends \app\controllers\AppController {
             'https://api.twitter.com/1.1/search/tweets.json',
             $params,
             false
-        );
+        );       
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
             $censoredTweets = array();
@@ -1227,6 +1257,99 @@ class UsersController extends \app\controllers\AppController {
             uasort($censoredTweets['statuses'], function($a, $b) { return ($a['timestamp'] > $b['timestamp']) ? -1 : 1; });
 
             $res = Rcache::write('twitterstream', $censoredTweets);
+            echo '<pre>';
+            var_dump($censoredTweets['statuses']);
+            die();
+        }else {
+            echo '<pre>';
+            var_dump($tmhOAuth->response);
+            echo '</pre>';
+            die();
+        }
+    }
+    
+    public function updatetwitterfeed() {
+        $string = base64_encode('8r9SEMoXAacbpnpjJ5v64A:I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk');
+        $tmhOAuth = new tmhOAuth(array(
+            'consumer_key'    => '8r9SEMoXAacbpnpjJ5v64A',
+            'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
+            'user_token'      => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
+            'user_secret'     => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
+        ));
+        $tmhOAuth->headers['Authorization'] = 'Basic ' . $string;
+        $params = array('grant_type' => 'client_credentials');
+        $response = $tmhOAuth->request('POST',
+            'https://api.twitter.com/oauth2/token',
+            $params,
+            false
+        );
+        $data = json_decode($tmhOAuth->response['response'], true);
+        $bearerToken = $data['access_token'];
+        $tmhOAuth->headers['Authorization'] = 'Bearer ' . $bearerToken;
+        
+        //https://api.twitter.com/1.1/search/tweets.json?q=%23twitterapi
+        $hashTags = array('работадлядизайнеров');
+        $x=0;
+        $url='';
+        $countTags = count($hashTags);
+        foreach ($hashTags as $tag) {
+            ++$x;
+            $url .= $countTags > $x ? '%23'.urlencode($tag) . '+' : '%23'.urlencode($tag);
+        }
+        
+        $params = array('rpp' => 5, 'q' => 'godesigner.ru', 'include_entities' => true);
+        $code = $tmhOAuth->request('GET',
+            'https://api.twitter.com/1.1/search/tweets.json',
+            $params,
+            false
+        );
+        if ($code == 200) {
+            $data = json_decode($tmhOAuth->response['response'], true);
+        }
+        $paramsSearch = array('rpp' => 5, 'q' => $url, 'include_entities' => true);
+        $codeSearch = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/search/tweets.json',$paramsSearch, false);
+        
+        if ($code == 200 && $codeSearch == 200) {
+            //var_dump($data);
+            $dataSearch = json_decode($tmhOAuth->response['response'], true);
+            $data += $dataSearch;
+            $censoredTweets = array();
+            $censoredTweets['statuses'] = array();
+            $minTimestamp = 1893355200;
+            foreach($data['statuses'] as $key => &$tweet) {
+                $delete = false;
+                if(isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
+                    foreach($tweet['entities']['urls'] as $url) {
+                        if($matches = preg_match('*godesigners.ru/\?ref\=*', $url['expanded_url'])) {
+                            $delete = true;
+                        }
+                    }
+                }
+                if($delete == false) {
+                    $tweet['timestamp'] = strtotime($tweet['created_at']);
+                    $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
+                    $censoredTweets['statuses'][$key] = $tweet;
+                }
+            }
+
+            if (($tutPosts = Wp_post::getPostsForStream($minTimestamp)) && (count($tutPosts) > 0)) {
+                foreach ($tutPosts as $post) {
+                    $censoredTweets['statuses'][] = array(
+                        'type' => 'tutdesign',
+                        'text' => $post->post_title,
+                        'timestamp' => strtotime($post->post_modified),
+                        'created_at' => $post->post_modified,
+                        'slug' => $post->post_name,
+                        'category' => $post->category,
+                        'id' => $post->ID,
+                        'thumbnail' => $post->thumbnail,
+                    );
+                }
+            }
+
+            uasort($censoredTweets['statuses'], function($a, $b) { return ($a['timestamp'] > $b['timestamp']) ? -1 : 1; });
+
+            $res = Rcache::write('twitterstreamFeed', $censoredTweets);
             echo '<pre>';
             var_dump($censoredTweets['statuses']);
             die();
@@ -1428,6 +1551,105 @@ class UsersController extends \app\controllers\AppController {
             return json_encode(User::phoneValidationFinish($user->id, (int) $this->request->data['verifyCode']));
         }
         $this->redirect('/');
+    }
+    
+    public function click() {
+        $news = News::first($this->request->query['id']);
+        if($news){
+            $news->views += 1;
+            $news->save();
+        }
+        return $this->redirect($this->request->query['link']);
+    }
+    
+    public function cropfile() {
+        $options = array(
+            'solutionView' => array(
+                'image_resize' => true,
+                'image_x' => 600,
+                'image_ratio_y' => true,
+            ),
+            'galleryLargeSize' => array(
+                'image_resize' => true,
+                'image_ratio_fill' => true,
+                'image_x' => 180,
+                'image_background_color' => '#ffffff',
+                'image_y' => 135,
+                'file_overwrite' => true,
+            ),
+            'gallerySiteSize' => array(
+                'image_resize' => true,
+                'image_x' => 800,
+                'image_ratio_y' => true,
+            ),
+            'leftFeed' => array(
+                'image_resize' => true,
+                'image_x' => 310,
+                'image_y' => 240,
+                'image_ratio_crop' => 'T',
+                'file_overwrite' => true
+            ),
+            'tutdesign' => array(
+                'image_resize' => true,
+                'image_ratio_fill' => true,
+                'image_x' => 267,
+                'image_background_color' => '#dddddd',
+                'image_y' => 200,
+                'file_overwrite' => true
+            ),
+            'mobile' => array(
+                'image_resize' => true,
+                'image_ratio_fill' => true,
+                'image_x' => 590,
+                'image_background_color' => '#ffffff',
+                'image_y' => 448,
+                'file_overwrite' => true
+            ),
+        );
+        $logs = '';
+        foreach ($options as $option => $imageParams) {
+            $newname = \app\models\Solutionfile::first(array(
+                        'fields' => 'filename',
+                        'conditions' => array(
+                            'model_id' => $this->request->id,
+                            'filekey' => 'solution',
+                        ),
+            ));
+            //http://www.godesigner.ru/solutions/d/d9/d93/d93da6b190f7435e648f82716a17711e_leftFeed.jpg - id = 113403
+            $newfiledata = pathinfo($newname->filename);
+            $newfiledata['filename'] = 'CropTest_'.md5(uniqid('', true));
+            $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
+            $imageProcessor = new \image_manipulation\processor\Upload;
+            $imageProcessor->uploadandinit($newname->filename);
+            $imageProcessor->uploaded = true;
+            $imageProcessor->no_upload_check = true;
+            $imageProcessor->file_src_pathname = $newname->filename;
+            $imageProcessor->file_src_name_ext = $newfiledata['extension'];
+            $imageProcessor->file_new_name_body = $newfiledata['filename'] . '_' . $option;
+            foreach ($imageParams as $param => $value) {
+                $imageProcessor->{$param} = $value;
+            }
+
+            $imageProcessor->process($newfiledata['dirname']);
+            echo $imageProcessor->error;
+            echo $imageProcessor->log;
+        }
+        return json_encode($logs);
+    }
+    
+    public function gender() {
+        $user = User::first($this->request->id);
+        if ($user){
+            $gender = 0;
+            if ($this->request->data['gender'] == 'male') {
+                $gender = 1;
+            } elseif ($this->request->data['gender'] == 'female') {
+                $gender = 2;
+            }
+            $user->gender = $gender;
+            Session::write('user.gender', $gender);
+            return json_encode($user->save(null, array('validate' => false)));
+        }
     }
 }
 

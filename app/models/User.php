@@ -129,6 +129,12 @@ class User extends \app\models\AppModel {
     }
 
     public function saveFacebookUser($entity, $data) {
+        $gender = 0;
+        if (isset($this->request->data['gender']) && $this->request->data['gender'] == 'male') {
+            $gender = 1;
+        } elseif (isset($this->request->data['gender']) && $this->request->data['gender'] == 'female') {
+            $gender = 2;
+        }
         $saveData = array(
             'email' => $data['email'],
             'last_name' => $data['last_name'],
@@ -136,6 +142,7 @@ class User extends \app\models\AppModel {
             'facebook_uid'=> $data['facebook_uid'],
             'confirmed_email' => 1,
             'created' => date('Y-m-d H:i:s'),
+            'gender' => $gender
         );
         if($entity->save($saveData, array(
             'first_name' => array(
@@ -363,7 +370,11 @@ class User extends \app\models\AppModel {
             $users1 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    'isDesigner' => 1, 'email_newpitch' => 1, 'email_onlycopy' => 0, 'User.email' => array('!=' => ''),
+                    'isDesigner' => 1,
+                    'email_newpitch' => 1,
+                    'email_onlycopy' => 0,
+                    'User.email' => array('!=' => ''),
+                    'confirmed_email' => 1
                 )
             ));
             $result1 = $users1->data();
@@ -449,7 +460,7 @@ class User extends \app\models\AppModel {
         $pitch = Pitch::first($params['pitch_id']);
         $solution = Solution::first($params['solution_id']);
         $user = self::first(array(
-            'conditions' => array('id' => $solution->user_id),
+            'conditions' => array('id' => $solution->user_id, 'confirmed_email' => 1),
         ));
         if(($user->email_newcomments == 1) && ($params['user_id'] != $solution->user_id)){
             $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $params);
@@ -720,6 +731,7 @@ class User extends \app\models\AppModel {
             $users = User::all(array(
                 'conditions' => array(
                     'email_digest' => 1,
+                    'confirmed_email' => 1,
                     'created' => array(
                         '>=' => date('Y-m-d H:i:s', time() - (DAY * 4)),
                         '<' => date('Y-m-d H:i:s', time() - (DAY * 3)),

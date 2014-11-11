@@ -158,7 +158,7 @@ endswitch;
 
 				<div class="set-price">
 					<p>
-						<label>Сумма вознаграждения для дизайнера (от <?=$this->moneyFormatter->formatMoney((date('N')>5) ? $category->discountPrice : $category->minAward, array('suffix' => 'Р.'))?>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
+                                            <label>Сумма вознаграждения для дизайнера (от <span id="labelPrice"><?=$this->moneyFormatter->formatMoney((date('N')>5) ? $category->discountPrice : $category->minAward, array('suffix' => 'Р.'))?></span>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
 						<input type="text" name="" id="award" data-low="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>" class="initial-price placeholder" placeholder="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>" value="<?=(date('N')>5) ? $category->discountPrice : $category->minAward?>">
 					</p>
                     <div class="clr"></div>
