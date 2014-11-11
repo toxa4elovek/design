@@ -72,27 +72,30 @@ class ParsingSites extends \app\extensions\command\CronJob {
     private function ParsingVozduhAfisha() {
         $xml = file_get_contents('http://vozduh.afisha.ru/export/rss/');
         $xml = simplexml_load_string($xml);
-        $news = News::all();
-        foreach ($xml->channel->item as $item) {
-            if (strpos($item->link, '/art/') !== false || strpos($item->link, '/cinema/') !== false) {
-                $trigger = false;
-                foreach ($news as $n) {
-                    if ((string) $item->title === (string) $n->title) {
-                        $trigger = true;
+
+        if(($xml->channel->item) && (count($xml->channel->item > 0))) {
+            $news = News::all();
+            foreach ($xml->channel->item as $item) {
+                if (strpos($item->link, '/art/') !== false || strpos($item->link, '/cinema/') !== false) {
+                    $trigger = false;
+                    foreach ($news as $n) {
+                        if ((string) $item->title === (string) $n->title) {
+                            $trigger = true;
+                        }
                     }
-                }
-                if (!$trigger) {
-                    $content = file_get_contents($item->link);
-                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
-                    preg_match("/<a.*class=\"tag\".*>(.*)<\/a>/", $content, $match);
-                    $date = new \DateTime($item->pubDate);
-                    News::create(array(
-                        'title' => $item->title,
-                        'tags' => $match[1],
-                        'created' => $date->format('Y-m-d H:i:s'),
-                        'link' => $item->link,
-                        'imageurl' => $matches[1]
-                    ))->save();
+                    if (!$trigger) {
+                        $content = file_get_contents($item->link);
+                        preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+                        preg_match("/<a.*class=\"tag\".*>(.*)<\/a>/", $content, $match);
+                        $date = new \DateTime($item->pubDate);
+                        News::create(array(
+                            'title' => $item->title,
+                            'tags' => $match[1],
+                            'created' => $date->format('Y-m-d H:i:s'),
+                            'link' => $item->link,
+                            'imageurl' => $matches[1]
+                        ))->save();
+                    }
                 }
             }
         }
