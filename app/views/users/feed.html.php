@@ -10,7 +10,7 @@
                 var isCurrentAdmin = <?php echo $this->user->isAdmin() ? 1 : 0 ?>;
                 var isCurrentExpert = <?php echo $this->user->isExpert() ? 1 : 0 ?>;
                 var isClient = <?php echo ($this->user->isPitchOwner($pitch->user->id)) ? 1 : 0; ?>;
-                var isAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 );?>;
+                var isAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
             </script>
             <?php if ($this->user->getGender() < 1): ?>
@@ -179,8 +179,8 @@
                                     <p class="img-box">
                                         <a class="post-link" href="/users/click?link=<?= $middlePost->link ?>&id=<?= $middlePost->id ?>"><img class="img-post" src="<?= $middlePost->imageurl ?>"></a>
                                     </p>
-                                    <p class="img-tag"><?= $middlePost->tags ?></p>
                                     <div class="r-content post-content"> 
+                                        <p class="img-tag"><?= $middlePost->tags ?></p>
                                         <a class="img-post" href="/users/click?link=<?= $middlePost->link ?>&id=<?= $middlePost->id ?>"><h2><?= $middlePost->title ?></h2></a>
                                         <p class="timeago">
                                             <time class="timeago" datetime="<?= $middlePost->created ?>"><?= $middlePost->created ?></time> с сайта <?= $middlePost->host ?></p>
@@ -259,8 +259,8 @@
                                         <p class="img-box">
                                             <a class="post-link" href="/users/click?link=<?= $object['news']['link'] ?>&id=<?= $object['news']['id'] ?>"><img class="img-post" src="<?= $object['news']['imageurl'] ?>"></a>
                                         </p>
-                                        <p class="img-tag"><?= $object['news']['tags'] ?></p>
                                         <div class="r-content post-content"> 
+                                            <p class="img-tag"><?= $object['news']['tags'] ?></p>
                                             <a class="img-post" href="/users/click?link=<?= $object['news']['link'] ?>&id=<?= $object['news']['id'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
                                             <p class="timeago">
                                                 <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>

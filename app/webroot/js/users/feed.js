@@ -538,8 +538,8 @@ function OfficeStatusUpdater() {
                                 <p class="img-box"> \
                                     <a class="post-link" href="/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><img class="img-post" src="' + response.post.imageurl + '"></a> \
                                 </p> \
-                                <p class="img-tag">' + response.post.tags + '</p> \
                                 <div class="r-content post-content"> \
+                                    <p class="img-tag">' + response.post.tags + '</p> \
                                     <a class="img-post" href="/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><h2>' + response.post.title + '</h2></a> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + response.post.created + '">' + response.post.created + '</time> с сайта ' + response.post.host + '</p> \
@@ -743,8 +743,8 @@ function OfficeStatusUpdater() {
                                 <p class="img-box"> \
                                     <a class="post-link" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
                                 </p> \
-                                <p class="img-tag">' + object.news.tags + '</p> \
                                 <div class="r-content post-content"> \
+                                    <p class="img-tag">' + object.news.tags + '</p> \
                                     <a class="img-post" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><h2>' + object.news.title + '</h2></a> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
@@ -822,8 +822,8 @@ function OfficeStatusUpdater() {
                                 <p class="img-box"> \
                                     <a class="post-link" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
                                 </p> \
-                                <p class="img-tag">' + object.news.tags + '</p> \
                                 <div class="r-content post-content"> \
+                                    <p class="img-tag">' + object.news.tags + '</p> \
                                     <a class="img-post" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><h2>' + object.news.title + '</h2></a> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
