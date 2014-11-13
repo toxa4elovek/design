@@ -42,6 +42,17 @@ class Event extends \app\models\AppModel {
                 $addBindings = function($record) {
                     if ((isset($record->solution_id)) && ($record->solution_id > 0)) {
                         $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id, 'category_id' => array('!=' => 7), 'private' => 0)));
+                        if ($record->type == 'SolutionAdded') {
+                            $record->pitchesCount = Pitch::getCountBilledMultiwinner($record->pitch_id);
+                            $selectedsolution = false;
+                            $nominatedSolutionOfThisPitch = Solution::first(array(
+                                        'conditions' => array('nominated' => 1, 'pitch_id' => $solution->pitch->id)
+                            ));
+                            if ($nominatedSolutionOfThisPitch) {
+                                $selectedsolution = true;
+                            }
+                            $record->selectedSolutions = $selectedsolution;
+                        }
                     } else {
                         $record->solution = Solution::getBestSolution($record->pitch_id);
                     }

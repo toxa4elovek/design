@@ -147,7 +147,7 @@
     background: url(img/fb_like.png) no-repeat left top;
     height: 14px;
     color: #999999;
-    margin-left: 70px;
+    margin-left: 15px;
     font: 14px OfficinaSansC Book, serif !important;
     padding: 3px 0 0 20px;
     text-decoration: none;
@@ -161,7 +161,7 @@
 }
 #l-sidebar-office .solutions-block .creator-name {
     display: inline-block;
-    width: 110px;
+    width: 50px;
 }
 
 #l-sidebar-office .solutions-block .ratingcont {
@@ -488,7 +488,7 @@
     bottom: 1px;
     border-radius: 8px; 
     background-color: #aaa;  
-    
+
 }
 #gender-box input[type="radio"]:checked + label:before {  
     content: "\2022";  
@@ -519,4 +519,12 @@
     font-size: 14px;
     display: block;
     margin: 4px 0;
+}
+
+.bottom_arrow {
+    float: right;
+}
+
+.solution-menu-toggle img {
+    vertical-align: middle;
 }
