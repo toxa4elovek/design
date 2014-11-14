@@ -19,10 +19,8 @@
                         <div id="close-gender"></div>
                         <span>
                             <span>Укажите ваш пол, пожалуйста:</span> 
-                            <input type="radio" name="gender" id="male">
-                            <label for="male" class="genderlabel first">Мужской</label>
-                            <input type="radio" name="gender" id="female">
-                            <label for="female" class="genderlabel">Женский</label>
+                            <label><input type="radio" name="gender" id="male"> Мужской</label>
+                            <label><input type="radio" name="gender" id="female"> Женский</label>
                         </span>
                         <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
                     </div>
@@ -95,7 +93,7 @@
                                         </span>
                                         <div class="solution_menu" style="display: none;">
                                             <ul class="solution_menu_list" style="position:absolute;z-index:6;">
-                                                <?php if ($solution->pitch->user_id == $this->user->getId() &&($solution->pitchesCount < 1) && (!$record->selectedSolutions)): ?>
+                                                <?php if ($solution->pitch->user_id == $this->user->getId() && ($solution->pitchesCount < 1) && (!$record->selectedSolutions)): ?>
                                                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
                                                         <a class="select-winner" href="/solutions/select/<?= $solution->solution->id ?>.json" data-solutionid="<?= $solution->solution->id ?>" data-user="<?= $this->user->getFormattedName($solution->solution->user->first_name, $solution->solution->user->last_name) ?>" data-num="<?= $solution->solution->num ?>" data-userid="<?= $solution->solution->user_id ?>">Назначить победителем</a>
                                                     </li>
