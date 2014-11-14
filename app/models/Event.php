@@ -80,6 +80,11 @@ class Event extends \app\models\AppModel {
                     }
                     if ((isset($record->comment_id)) && ($record->comment_id > 0)) {
                         $record->comment = Comment::first($record->comment_id);
+                        $allowLike = 0;
+                        if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('solution_id' => $record->solution->id, 'user_id' => Session::read('user.id')))))) {
+                            $allowLike = 1;
+                        }
+                        $record->allowLike = $allowLike;
                     }
                     if ((isset($record->user_id)) && ($record->user_id > 0)) {
                         $record->user = User::first(array('conditions' => array('id' => $record->user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));

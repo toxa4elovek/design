@@ -746,18 +746,22 @@ function OfficeStatusUpdater() {
                                     } else {
                                         avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                                     }
-                                    html += '<div class="box"> \
-                            <div class="l-img"> \
-                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
-                            </div> \
-                            <div class="r-content">';
+                                    var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
+                                    html += '<div class="box">\
+                                    <div class="sol"><img src="' + imageurl + '"></div> \
+                                    <div class="box-info">\
+                                        <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
+                                        <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
+                                    </div>\
+                                    <div class="l-img l-img-box"> \
+                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                    </div> \
+                                    <div class="r-content box-comment">';
                                     if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
-                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
-                                        html += '</div><div class="sol"><img src="' + imageurl + '"></div';
+                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;</div>';
                                     }
                                     else {
-                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
-                                        html += '</div><div class="sol"><img src="' + imageurl + '"></div>';
+                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;</div>';
                                     }
                                     html += '</div>';
                                 }
@@ -866,18 +870,24 @@ function OfficeStatusUpdater() {
                         } else {
                             avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                         }
-                        html += '<div class="box"> \
-                            <div class="l-img"> \
-                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
-                            </div> \
-                            <div class="r-content">';
+                        var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
+                        html += '<div class="box">\
+                                    <div class="sol"><img src="' + imageurl + '"></div> \
+                                    <div class="box-info">\
+                                        <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
+                                        <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
+                                    </div>\
+                                    <div class="l-img l-img-box"> \
+                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                    </div> \
+                                    <div class="r-content box-comment">';
                         if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;</div>';
                         }
                         else {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: &laquo;' + object.updateText + '&raquo;';
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;</div>';
                         }
-                        html += '</div><div class="sol"><img src="' + imageurl + '"></div></div>';
+                        html += '</div>';
                     }
                 });
                 var $appendEl = $(html);
