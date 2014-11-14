@@ -71,9 +71,9 @@ class Pitch extends \app\models\AppModel {
                         $moneyFormatter = new MoneyFormatter();
                         $winnerPrice = $moneyFormatter->formatMoney($params['pitch']->price, array('suffix' => ' р.-'));
                         if (rand(1, 100) <= 50) {
-                            $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer';
+                            $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer #работадлядизайнеров';
                         } else {
-                            $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer';
+                            $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer #работадлядизайнеров';
                         }
                         User::sendTweet($tweet);
                     }
