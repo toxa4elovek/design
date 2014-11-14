@@ -95,16 +95,16 @@
                                         </span>
                                         <div class="solution_menu" style="display: none;">
                                             <ul class="solution_menu_list" style="position:absolute;z-index:6;">
-                                                <?php if (($solution->pitchesCount < 1) && (!$record->selectedSolutions)): ?>
+                                                <?php if ($solution->pitch->user_id == $this->user->getId() &&($solution->pitchesCount < 1) && (!$record->selectedSolutions)): ?>
                                                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
                                                         <a class="select-winner" href="/solutions/select/<?= $solution->solution->id ?>.json" data-solutionid="<?= $solution->solution->id ?>" data-user="<?= $this->user->getFormattedName($solution->solution->user->first_name, $solution->solution->user->last_name) ?>" data-num="<?= $solution->solution->num ?>" data-userid="<?= $solution->solution->user_id ?>">Назначить победителем</a>
                                                     </li>
-                                                <?php elseif (($solution->pitch->awarded != $solution->solution->id) && (($solution->pitch->status == 1) || ( $solution->pitch->status == 2)) && ($solution->pitch->awarded != 0)): ?>
+                                                <?php elseif ($solution->pitch->user_id == $this->user->getId() && ($solution->pitch->awarded != $solution->solution->id) && (($solution->pitch->status == 1) || ( $solution->pitch->status == 2)) && ($solution->pitch->awarded != 0)): ?>
                                                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
                                                         <a class="select-multiwinner" href="/pitches/setnewwinner/<?= $solution->solution->id ?>" data-solutionid="<?= $solution->solution->id ?>" data-user="<?= $this->user->getFormattedName($solution->solution->user->first_name, $solution->solution->user->last_name) ?>" data-num="<?= $solution->solution->num ?>" data-userid="<?= $solution->solution->user_id ?>">Назначить <?= $solution->pitchesCount + 2 ?> победителя</a>
                                                     </li>
                                                 <?php endif; ?>
-                                                <?php if ($this->user->isAllowedToComment()): ?>
+                                                <?php if ($solution->pitch->user_id == $this->user->getId() && $this->user->isAllowedToComment()): ?>
                                                     <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-id="<?= $solution->solution->id ?>" data-comment-to="#<?= $solution->solution->num ?>">Комментировать</a></li>
                                                 <?php endif; ?>
                                                 <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/<?= $solution->solution->id ?>.json" class="warning" data-solution-id="<?= $solution->solution->id ?>">Пожаловаться</a></li>

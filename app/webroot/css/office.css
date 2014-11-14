@@ -161,11 +161,11 @@
 }
 #l-sidebar-office .solutions-block .creator-name {
     display: inline-block;
-    width: 50px;
 }
 
 #l-sidebar-office .solutions-block .ratingcont {
     margin-top: 5px;
+    margin-left: 2px;
 }
 
 #center_sidebar {
