@@ -30,10 +30,14 @@ window.onfocus = function () {
 $(document).ready(function () {
 
     $('input[name="gender"]').on('change', function () {
-        $('#gender-box').hide();
-        $('.new-content').css({'margin-top': '70px'});
         $.post('/users/gender/' + $('#user_id').val() + '.json', {gender: $(this).attr('id')}, function (response) {
         });
+        setTimeout(
+            function() {
+                $('#gender-box').hide();
+                $('.new-content').css({'margin-top': '70px'});
+            }, 5000
+        )
     });
 
     $('#close-gender').on('click', function () {
