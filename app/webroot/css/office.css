@@ -135,10 +135,10 @@
 }
 
 #l-sidebar-office .solutions-block > div {
-    display: table-cell;
-    vertical-align: middle;
     padding: 10px 7px 10px 18px;
-    width: 310px;
+    width: 285px;
+    height: 17px;
+    display: block;
 }
 .avatar {
     width: 40px;
@@ -149,7 +149,7 @@
     color: #999999;
     margin-left: 15px;
     font: 14px OfficinaSansC Book, serif !important;
-    padding: 3px 0 0 20px;
+    padding: 1px 0 0 20px;
     text-decoration: none;
 }
 .like-small-icon:hover, .like-small-icon:active {
@@ -542,20 +542,23 @@
     padding-top: 15px;
 }
 
-#gender-box input[type="radio"] {
+/*#gender-box input[type="radio"] {
     display:none;
-}
+}*/
 #gender-box span span {
     margin-right:20px;
 }
 #gender-box label {
-    display: inline-block;  
-    cursor: pointer;  
-    position: relative;  
-    padding-left: 25px;  
-    margin-right: 15px;  
+    padding-left: 20px;
 }
-#gender-box label:before {  
+
+#gender-box input {
+    vertical-align: middle;
+    height: 10px;
+    width: 10px;
+    margin: 0;
+}
+/*#gender-box label:before {  
     content: "";  
     display: inline-block;  
     width: 16px;  
@@ -577,7 +580,7 @@
     font-size: 17px;  
     text-align: center;  
     line-height: 18px;  
-}
+}*/
 
 #gender-box #close-gender {
     background: url(img/popup-close-sprite.png) no-repeat 0 -15px;
