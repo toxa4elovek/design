@@ -216,17 +216,21 @@ $(document).ready(function () {
     $(document).on('click', '.like-small-icon-box', function () {
         var link = $(this);
         if (link.data('vote') == '1') {
+            link.html('Не нравится');
+            link.data('vote', '0');
             $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
-                if (response.result == true) {
-                    link.html('Не нравится');
-                    link.data('vote', '0');
+                if (response.result == false) {
+                    link.html('Нравится');
+                    link.data('vote', '1');
                 }
             });
         } else {
+            link.html('Нравится');
+            link.data('vote', '1');
             $.get('/solutions/unlike/' + $(this).data('id') + '.json', function (response) {
-                if (response.result == true) {
-                    link.html('Нравится');
-                    link.data('vote', '1');
+                if (response.result == false) {
+                    link.html('Не нравится');
+                    link.data('vote', '0');
                 }
             });
         }
