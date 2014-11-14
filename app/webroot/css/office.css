@@ -375,9 +375,9 @@
     text-decoration: none;
 }
 .like-small-icon-box:hover, .like-small-icon-box:active {
-/*    background-position: 100% -20px;
-    padding-right: 23px;
-    color: #648fa4;*/
+    /*    background-position: 100% -20px;
+        padding-right: 23px;
+        color: #648fa4;*/
     text-decoration: underline;
 }
 
@@ -563,7 +563,10 @@
     left: 0;  
     bottom: 1px;
     border-radius: 8px; 
-    background-color: #aaa;  
+    background-color: #aaa;
+    box-shadow: inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
+    -webkit-box-shadow: inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
 
 }
 #gender-box input[type="radio"]:checked + label:before {  
