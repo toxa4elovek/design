@@ -46,7 +46,7 @@
     #r-sidebar-office {
         width: 300px !important;
     }
-    #r-sidebar-office > div {
+    #r-sidebar-office #floatingLayer > div {
         width: 300px !important;
     }
     .new-content {
@@ -64,7 +64,7 @@
     #r-sidebar-office {
         width: 310px;
     }
-    #r-sidebar-office > div {
+    #r-sidebar-office #floatingLayer > div {
         width: 310px;
     }
 
@@ -135,10 +135,10 @@
 }
 
 #l-sidebar-office .solutions-block > div {
-    display: table-cell;
-    vertical-align: middle;
     padding: 10px 7px 10px 18px;
-    width: 310px;
+    width: 285px;
+    height: 17px;
+    display: block;
 }
 .avatar {
     width: 40px;
@@ -149,7 +149,7 @@
     color: #999999;
     margin-left: 15px;
     font: 14px OfficinaSansC Book, serif !important;
-    padding: 1px 0 0 20px;
+    padding: 3px 0 0 20px;
     text-decoration: none;
 }
 .like-small-icon:hover, .like-small-icon:active {
@@ -161,11 +161,11 @@
 }
 #l-sidebar-office .solutions-block .creator-name {
     display: inline-block;
-    width: 50px;
 }
 
 #l-sidebar-office .solutions-block .ratingcont {
     margin-top: 5px;
+    margin-left: 15px;
 }
 
 #center_sidebar {
@@ -358,6 +358,8 @@
     display: block;
     text-align: right;
     padding-right: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .center-boxes .box .box-info a {
@@ -371,7 +373,7 @@
     color: #999999;
     font: 14px OfficinaSansC Book, serif !important;
     padding-right: 23px;
-    padding-top: 2px;
+    padding-top: 4px;
     text-decoration: none;
 }
 .like-small-icon-box:hover, .like-small-icon-box:active {
@@ -386,7 +388,7 @@
     color: #648fa4;
     font: 14px OfficinaSansC Book, serif !important;
     height: 25px;
-    padding-top: 2px;
+    padding-top: 4px;
     padding-right: 25px;
 }
 .warning-box:hover {
@@ -540,20 +542,24 @@
     padding-top: 15px;
 }
 
-#gender-box input[type="radio"] {
+/*#gender-box input[type="radio"] {
     display:none;
-}
+}*/
 #gender-box span span {
     margin-right:20px;
 }
 #gender-box label {
-    display: inline-block;  
-    cursor: pointer;  
-    position: relative;  
-    padding-left: 25px;  
-    margin-right: 15px;  
+    padding-left: 20px;
 }
-#gender-box label:before {  
+
+#gender-box input {
+    vertical-align: middle;
+    height: auto;
+    width: auto;
+    margin: 0;
+    margin-top: -1px;
+}
+/*#gender-box label:before {  
     content: "";  
     display: inline-block;  
     width: 16px;  
@@ -563,10 +569,10 @@
     left: 0;  
     bottom: 1px;
     border-radius: 8px; 
-    background-color: #aaa;
-    box-shadow: inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
-    -webkit-box-shadow: inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
+    background-color: #fff;
+    box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
+    -webkit-box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
+    -moz-box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
 
 }
 #gender-box input[type="radio"]:checked + label:before {  
@@ -575,7 +581,7 @@
     font-size: 17px;  
     text-align: center;  
     line-height: 18px;  
-}
+}*/
 
 #gender-box #close-gender {
     background: url(img/popup-close-sprite.png) no-repeat 0 -15px;

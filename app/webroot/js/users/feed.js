@@ -216,17 +216,21 @@ $(document).ready(function () {
     $(document).on('click', '.like-small-icon-box', function () {
         var link = $(this);
         if (link.data('vote') == '1') {
+            link.html('Не нравится');
+            link.data('vote', '0');
             $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
-                if (response.result == true) {
-                    link.html('Не нравится');
-                    link.data('vote', '0');
+                if (response.result == false) {
+                    link.html('Нравится');
+                    link.data('vote', '1');
                 }
             });
         } else {
+            link.html('Нравится');
+            link.data('vote', '1');
             $.get('/solutions/unlike/' + $(this).data('id') + '.json', function (response) {
-                if (response.result == true) {
-                    link.html('Нравится');
-                    link.data('vote', '1');
+                if (response.result == false) {
+                    link.html('Не нравится');
+                    link.data('vote', '0');
                 }
             });
         }
@@ -977,16 +981,16 @@ function OfficeStatusUpdater() {
                                         </span>\
                                         <div class="solution_menu" style="display: none;">\
                                             <ul class="solution_menu_list" style="position:absolute;z-index:6;">';
-                        if (solution.pitchesCount < 1 && !solution.selectedSolutions) {
+                        if (solution.pitch.user_id == this_user && solution.pitchesCount < 1 && !solution.selectedSolutions) {
                             solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
                                                         <a class="select-winner" href="/solutions/select/' + solution.solution.id + '.json" data-solutionid="' + solution.solution.id + '" data-user="' + solution.creator + '" data-num="' + solution.solution.num + '" data-userid="' + solution.solution.user_id + '">Назначить победителем</a>\
                                                     </li>';
-                        } else if ((solution.solution.pitch.awarded != solution.solution.id) && ((solution.solution.pitch.status == 1) || (solution.solution.pitch.status == 2)) && solution.solution.pitch.awarded != 0) {
+                        } else if (solution.pitch.user_id == this_user && (solution.solution.pitch.awarded != solution.solution.id) && ((solution.solution.pitch.status == 1) || (solution.solution.pitch.status == 2)) && solution.solution.pitch.awarded != 0) {
                             solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
                                                         <a class="select-multiwinner" href="/pitches/setnewwinner/' + solution.solution.id + '" data-solutionid="' + solution.solution.id + '" data-user="' + solution.creator + '" data-num="' + solution.solution.num + '" data-userid="' + solution.solution.user_id + '">Назначить ' + solution.pitchesCount + 2 + ' победителя</a>\
                                                     </li>';
                         }
-                        if (isAllowedToComment) {
+                        if (solution.pitch.user_id == this_user && isAllowedToComment) {
                             solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-id="' + solution.solution.id + '" data-comment-to="#' + solution.solution.num + '">Комментировать</a></li>';
                         }
                         solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/' + solution.solution.id + '.json" class="warning" data-solution-id="' + solution.solution.id + '">Пожаловаться</a></li>';

@@ -186,7 +186,7 @@
     </div>
 </div>
 <?php endif?>
-<div id="header-bg">
+<div id="header-bg" <?php if($this->_request->action == 'feed'): echo 'style="height: 60px;"'; endif;?>>
 
     <header class="<?=$header?>">
 

@@ -1234,10 +1234,11 @@ class UsersController extends \app\controllers\AppController {
         }
         $paramsSearch = array('rpp' => 5, 'q' => $url, 'include_entities' => true);
         $codeSearch = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/search/tweets.json',$paramsSearch, false);
-        
         if ($code == 200 && $codeSearch == 200) {
-            //var_dump($data);
             $dataSearch = json_decode($tmhOAuth->response['response'], true);
+            foreach($dataSearch['statuses'] as $tweet) {
+                $data['statuses'][] = $tweet;
+            }
             $data += $dataSearch;
             $censoredTweets = array();
             $censoredTweets['statuses'] = array();
@@ -1255,21 +1256,6 @@ class UsersController extends \app\controllers\AppController {
                     $tweet['timestamp'] = strtotime($tweet['created_at']);
                     $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
                     $censoredTweets['statuses'][$key] = $tweet;
-                }
-            }
-
-            if (($tutPosts = Wp_post::getPostsForStream($minTimestamp)) && (count($tutPosts) > 0)) {
-                foreach ($tutPosts as $post) {
-                    $censoredTweets['statuses'][] = array(
-                        'type' => 'tutdesign',
-                        'text' => $post->post_title,
-                        'timestamp' => strtotime($post->post_modified),
-                        'created_at' => $post->post_modified,
-                        'slug' => $post->post_name,
-                        'category' => $post->category,
-                        'id' => $post->ID,
-                        'thumbnail' => $post->thumbnail,
-                    );
                 }
             }
 
