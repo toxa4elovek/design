@@ -563,10 +563,10 @@
     left: 0;  
     bottom: 1px;
     border-radius: 8px; 
-    background-color: #aaa;
-    box-shadow: inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
-    -webkit-box-shadow: inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    inset 0px 2px 3px 0px rgba(50, 50, 50, 0.75);
+    background-color: #fff;
+    box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
+    -webkit-box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
+    -moz-box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
 
 }
 #gender-box input[type="radio"]:checked + label:before {  
