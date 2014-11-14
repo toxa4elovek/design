@@ -152,7 +152,7 @@
                                 </div>
                             </div>
                             <div id="container-design-news">
-                                <div class="rs-header">Новости дизайна</div>
+                                <div class="rs-header">Новости дизайна и культуры</div>
                                 <div id="content-news">
                                     <?php
                                     $newsDate = '';

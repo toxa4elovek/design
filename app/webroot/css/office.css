@@ -149,7 +149,7 @@
     color: #999999;
     margin-left: 15px;
     font: 14px OfficinaSansC Book, serif !important;
-    padding: 1px 0 0 20px;
+    padding: 3px 0 0 20px;
     text-decoration: none;
 }
 .like-small-icon:hover, .like-small-icon:active {
@@ -165,7 +165,7 @@
 
 #l-sidebar-office .solutions-block .ratingcont {
     margin-top: 5px;
-    margin-left: 2px;
+    margin-left: 15px;
 }
 
 #center_sidebar {
@@ -373,7 +373,7 @@
     color: #999999;
     font: 14px OfficinaSansC Book, serif !important;
     padding-right: 23px;
-    padding-top: 5px;
+    padding-top: 4px;
     text-decoration: none;
 }
 .like-small-icon-box:hover, .like-small-icon-box:active {
@@ -388,7 +388,7 @@
     color: #648fa4;
     font: 14px OfficinaSansC Book, serif !important;
     height: 25px;
-    padding-top: 5px;
+    padding-top: 4px;
     padding-right: 25px;
 }
 .warning-box:hover {
@@ -554,9 +554,10 @@
 
 #gender-box input {
     vertical-align: middle;
-    height: 10px;
-    width: 10px;
+    height: auto;
+    width: auto;
     margin: 0;
+    margin-top: -1px;
 }
 /*#gender-box label:before {  
     content: "";  
