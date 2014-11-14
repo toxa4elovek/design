@@ -42,6 +42,22 @@ class Event extends \app\models\AppModel {
                 $addBindings = function($record) {
                     if ((isset($record->solution_id)) && ($record->solution_id > 0)) {
                         $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id, 'category_id' => array('!=' => 7), 'private' => 0)));
+                        if ($record->type == 'SolutionAdded') {
+                            $record->pitchesCount = Pitch::getCountBilledMultiwinner($record->pitch_id);
+                            $selectedsolution = false;
+                            $nominatedSolutionOfThisPitch = Solution::first(array(
+                                        'conditions' => array('nominated' => 1, 'pitch_id' => $solution->pitch->id)
+                            ));
+                            if ($nominatedSolutionOfThisPitch) {
+                                $selectedsolution = true;
+                            }
+                            $record->selectedSolutions = $selectedsolution;
+                            $allowLike = 0;
+                            if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('solution_id' => $record->solution->id, 'user_id' => Session::read('user.id')))))) {
+                                $allowLike = 1;
+                            }
+                            $record->allowLike = $allowLike;
+                        }
                     } else {
                         $record->solution = Solution::getBestSolution($record->pitch_id);
                     }
@@ -64,6 +80,11 @@ class Event extends \app\models\AppModel {
                     }
                     if ((isset($record->comment_id)) && ($record->comment_id > 0)) {
                         $record->comment = Comment::first($record->comment_id);
+                        $allowLike = 0;
+                        if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('solution_id' => $record->solution->id, 'user_id' => Session::read('user.id')))))) {
+                            $allowLike = 1;
+                        }
+                        $record->allowLike = $allowLike;
                     }
                     if ((isset($record->user_id)) && ($record->user_id > 0)) {
                         $record->user = User::first(array('conditions' => array('id' => $record->user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));

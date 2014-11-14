@@ -19,6 +19,10 @@ class ClearEvents extends \app\extensions\command\CronJob {
                 $event->delete();
             }
         }
+        $old_events = Event::all(array('order' => array('created' => array('<' => date('Y-m-d H:i:s', strtotime('-3 month', time())))), 'limit' => 100));
+        if ($old_events) {
+            $old_events->delete();
+        }
     }
 
 }
