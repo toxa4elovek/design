@@ -183,6 +183,7 @@ http://godesigner.ru/answers/view/73');
     }
 
     public static function increaseLike($solutionId, $userId = 0) {
+        $result = false;
         $solution = self::first($solutionId);
         if ($userId == 0) {
             return $solution->likes;
@@ -203,10 +204,11 @@ http://godesigner.ru/answers/view/73');
             $solution->save();
             $like = Like::create();
             $like->set(array('solution_id' => $solutionId, 'user_id' => $userId, 'created' => date('Y-m-d H:i:s')));
-            $like->save();
-            Event::createEvent($solution->pitch_id, 'LikeAdded', $userId, $solution->id);
+            if ($result = $like->save()) {
+                Event::createEvent($solution->pitch_id, 'LikeAdded', $userId, $solution->id);
+            }
         }
-        return $solution->likes;
+        return array('result'=> $result, 'likes'=> $solution->likes);
     }
 
     public static function hideimage($solutionId, $userId) {
@@ -230,6 +232,7 @@ http://godesigner.ru/answers/view/73');
     }
 
     public static function decreaseLike($solutionId, $userId = 0) {
+        $result = false;
         $solution = self::first($solutionId);
         $userId = (int)$userId;
         $allowAnon = false;
@@ -240,9 +243,13 @@ http://godesigner.ru/answers/view/73');
         if(($like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId)))) && ($userId || ($allowAnon))) {
             $solution->likes -= 1;
             $solution->save();
-            $like->delete();
+            if ($result = $like->delete()) {
+                if ($event = Event::first(array('conditions'=>array('user_id' => $userId,'solution_id' => $solutionId,'type'=> 'LikeAdded')))) {
+                    $event->delete();
+                }
+            }
         }
-        return $solution->likes;
+        return array('result'=> $result, 'likes'=> $solution->likes);
     }
 
     public static function setRating($solutionId, $rating, $userId) {

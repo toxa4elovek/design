@@ -54,7 +54,7 @@
                                         <p class="creator-name"><a target="_blank" href="/users/view/<?= $solution->user_id ?>"><?= $solution->creator ?></a></p>
                                         <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
                                         <a data-id="<?= $solution->solution->id ?>" class="like-small-icon" href="#"><span><?= $solution->solution->likes ?></span></a>
-                                        <div class="sharebar" style="padding:0 0 4px !important;background:url('/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 250px; top: 27px;height: 178px;width:288px;">
+                                        <div class="sharebar" style="padding:0 0 4px !important;background:url('/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 121px; top: 27px;height: 178px;width:288px;">
                                             <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">
                                                 <div class="body" style="display: block;">
                                                     <table  width="100%">
@@ -236,6 +236,10 @@
                                             <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('предложил', $object['user']['gender']) ?> решение для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                         </div>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
+                                        <div class="box-info">
+                                            <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
+                                            <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится'?></a>
+                                        </div>
                                         <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                             <?php
                                             $id = $object['solution']['id'];

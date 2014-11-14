@@ -185,7 +185,6 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.like-small-icon', function () {
-        console.log($(this).next());
         var likesNum = $(this).children();
         var likeLink = $(this).next();
         likesNum.html(parseInt(likesNum.html()));
@@ -211,6 +210,26 @@ $(document).ready(function () {
                 return false;
             });
         });
+        return false;
+    });
+
+    $(document).on('click', '.like-small-icon-box', function () {
+        var link = $(this);
+        if (link.data('vote') == '1') {
+            $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
+                if (response.result == true) {
+                    link.html('Не нравится');
+                    link.data('vote', '0');
+                }
+            });
+        } else {
+            $.get('/solutions/unlike/' + $(this).data('id') + '.json', function (response) {
+                if (response.result == true) {
+                    link.html('Нравится');
+                    link.data('vote', '1');
+                }
+            });
+        }
         return false;
     });
     // Solution Stars
@@ -363,7 +382,7 @@ $(document).ready(function () {
     });
 
     // Warn Solution
-    $('body, .solution-overlay').on('click', '.warning', function (e) {
+    $('body, .solution-overlay').on('click', '.warning, .warning-box', function (e) {
         e.preventDefault();
         $('#sendWarn').data('url', $(this).attr('href'));
         $('#popup-warning').modal({
@@ -589,7 +608,7 @@ function OfficeStatusUpdater() {
                                         <p class="creator-name"><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
                                         <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
                                         <a data-id="' + solution.solution.id + '" class="like-small-icon" href="#"><span>' + solution.solution.likes + '</span></a>\
-                                        <div class="sharebar" style="padding:0 0 4px !important;background:url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 250px; top: 27px;height: 178px;width:288px;">\
+                                        <div class="sharebar" style="padding:0 0 4px !important;background:url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 121px; top: 27px;height: 178px;width:288px;">\
                                             <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">\
                                                 <div class="body" style="display: block;">\
                                                     <table  width="100%">\
@@ -690,6 +709,7 @@ function OfficeStatusUpdater() {
                                 }
                                 if (object.type == 'SolutionAdded' && object.solution != null && typeof object.solution.id != "undefined") {
                                     avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                    var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
                                     html += '<div class="box"> \
                             <div class="l-img"> \
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
@@ -698,6 +718,10 @@ function OfficeStatusUpdater() {
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
                             </div> \
                             <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a> \
+                            <div class="box-info">\
+                                <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
+                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
+                            </div>\
                             <div data-id="' + object.solution.id + '" class="likes">';
                                     id = object.solution.id;
                                     user_id = $('#user_id').val();
@@ -793,6 +817,7 @@ function OfficeStatusUpdater() {
 
                     if (object.type == 'SolutionAdded' && object.solution != null && typeof object.solution.id != "undefined") {
                         avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                        var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
                         html += '<div class="box"> \
                             <div class="l-img"> \
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
@@ -800,7 +825,11 @@ function OfficeStatusUpdater() {
                             <div class="r-content"> \
                                 <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
                             </div> \
-                            <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a> \
+                            <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a>\
+                            <div class="box-info">\
+                                <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
+                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
+                            </div>\
                             <div data-id="' + object.solution.id + '" class="likes">';
                         id = object.solution.id;
                         $.each(response.updates, function (index, object) {
@@ -862,18 +891,18 @@ function OfficeStatusUpdater() {
                 isBusy = 0;
             }
         });
-    }
-    this._priceDecorator = function (price) {
-        price = price.replace(/(.*)\.00/g, "$1");
-        counter = 1;
-        while (price.match(/\w\w\w\w/)) {
-            price = price.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
-            counter++;
-            if (counter > 6)
-                break;
-        }
-        return price;
-    }
+    },
+            this._priceDecorator = function (price) {
+                price = price.replace(/(.*)\.00/g, "$1");
+                counter = 1;
+                while (price.match(/\w\w\w\w/)) {
+                    price = price.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
+                    counter++;
+                    if (counter > 6)
+                        break;
+                }
+                return price;
+            }
     this.getGenderTxt = function (txt, gender) {
         if (gender == 1) {
             txt += 'а';
@@ -905,7 +934,7 @@ function OfficeStatusUpdater() {
                                         <p class="creator-name"><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
                                         <p class="ratingcont" data-default="' + solution.solution.rating + '" data-solutionid="' + solution.solution.id + '" style="height: 9px; background: url(/img/' + solution.solution.rating + '-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p> \
                                         <a data-id="' + solution.solution.id + '" class="like-small-icon" href="#"><span>' + solution.solution.likes + '</span></a>\
-                                        <div class="sharebar" style="padding:0 0 4px !important;background:url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 250px; top: 27px;height: 178px;width:288px;">\
+                                        <div class="sharebar" style="padding:0 0 4px !important;background:url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 121px; top: 27px;height: 178px;width:288px;">\
                                             <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">\
                                                 <div class="body" style="display: block;">\
                                                     <table  width="100%">\

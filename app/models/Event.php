@@ -52,6 +52,11 @@ class Event extends \app\models\AppModel {
                                 $selectedsolution = true;
                             }
                             $record->selectedSolutions = $selectedsolution;
+                            $allowLike = 0;
+                            if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('solution_id' => $record->solution->id, 'user_id' => Session::read('user.id')))))) {
+                                $allowLike = 1;
+                            }
+                            $record->allowLike = $allowLike;
                         }
                     } else {
                         $record->solution = Solution::getBestSolution($record->pitch_id);
