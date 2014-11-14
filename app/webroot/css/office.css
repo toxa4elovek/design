@@ -46,7 +46,7 @@
     #r-sidebar-office {
         width: 300px !important;
     }
-    #r-sidebar-office > div {
+    #r-sidebar-office #floatingLayer > div {
         width: 300px !important;
     }
     .new-content {
@@ -64,7 +64,7 @@
     #r-sidebar-office {
         width: 310px;
     }
-    #r-sidebar-office > div {
+    #r-sidebar-office #floatingLayer > div {
         width: 310px;
     }
 
