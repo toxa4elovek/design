@@ -183,6 +183,7 @@ $(document).ready(function () {
         Updater.init();
     }
 
+    var clickedLikesList = []
 
     $(document).on('click', '.like-small-icon', function () {
         var likesNum = $(this).children();
@@ -190,25 +191,31 @@ $(document).ready(function () {
         likesNum.html(parseInt(likesNum.html()));
         var sharebar = likesNum.parent().next();
         var solutionId = $(this).data('id');
-        Socialite.load($(this).next(), [
+        /*Socialite.load($(this).next(), [
             $('#facebook' + solutionId)[0],
             $('#twitter' + solutionId)[0]
         ]);
         $('body').one('click', function () {
             $('.sharebar').fadeOut(300);
-        });
+        });*/
+        if($.inArray($(this).data('id'), clickedLikesList) == -1) {
+            likesNum.html(parseInt(likesNum.html()) + 1);
+            clickedLikesList.push($(this).data('id'));
+        }
         $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
             likesNum.html(response.likes);
-            likeLink.off('click');
+            /*likeLink.off('click');
             sharebar.fadeIn(300);
             likeLink.off('mouseover');
             likeLink.on('click', function () {
+                console.log('second');
+                likesNum.html(parseInt(likesNum.html()) - 1);
                 $('body').one('click', function () {
                     sharebar.fadeOut(300);
                 });
                 sharebar.fadeIn(300);
                 return false;
-            });
+            });*/
         });
         return false;
     });
