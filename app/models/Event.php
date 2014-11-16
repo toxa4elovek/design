@@ -46,7 +46,7 @@ class Event extends \app\models\AppModel {
                             $record->pitchesCount = Pitch::getCountBilledMultiwinner($record->pitch_id);
                             $selectedsolution = false;
                             $nominatedSolutionOfThisPitch = Solution::first(array(
-                                        'conditions' => array('nominated' => 1, 'pitch_id' => $solution->pitch->id)
+                                        'conditions' => array('nominated' => 1, 'pitch_id' => $record->solution->pitch->id)
                             ));
                             if ($nominatedSolutionOfThisPitch) {
                                 $selectedsolution = true;

@@ -23,7 +23,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out('Finished parsing vozduh.afisha.ru [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing colta.ru");
         self::ParsingColta();
-        $this->out('Finished parsing vozduh.afisha.ru [' . (time() - $startTimeStamp) . ' sec]');
+        $this->out('Finished parsing colta.ru [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing newgrids.fr");
         self::ParsingNewgrids();
         $this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
@@ -152,6 +152,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $imgurl = '';
                     foreach ($images as $img) {
                         if (strpos($img['src'], '/storage') !== false && !strpos($img['src'], 'preview') && !strpos($img['src'], 'cover')) {
+                            if(!preg_match('#colta.ru#', $img['src'])) {
+                                $img['src'] = 'http://www.colta.ru' . $img['src'];
+                            }
                             $imgurl = $img['src'];
                             break;
                         }
