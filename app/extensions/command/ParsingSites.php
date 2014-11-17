@@ -10,6 +10,8 @@ use \app\models\Event;
 class ParsingSites extends \app\extensions\command\CronJob {
 
     public function run() {
+        // На случай долгих таймаутов
+        set_time_limit(120);
         $startTimeStamp = time();
         $this->header('Welcome to the ParsingSites command!');
         $this->out("Starting parsing godesigner.ru");
@@ -33,8 +35,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing bpando.org");
         self::ParsingWordpress('http://bpando.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing bpando.org [' . (time() - $startTimeStamp) . ' sec]');
+        $this->out("Starting parsing love-aesthetics.nl");
         self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
+        $this->out("Starting parsing vice.com/ru");
+        self::ParsingVice();
+        $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
     }
 
     private function ParsingGodesigner() {
@@ -57,12 +63,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $image = $matches[1];
                 }
                 $news = News::create(array(
-                            'title' => $post->title,
-                            'short' => strip_tags($post->short),
-                            'tags' => $post->tags,
-                            'created' => $post->created,
-                            'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
-                            'imageurl' => $image
+                    'title' => $post->title,
+                    'short' => strip_tags($post->short),
+                    'tags' => $post->tags,
+                    'created' => $post->created,
+                    'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
+                    'imageurl' => $image
                 ));
                 $news->save();
                 Event::createEventNewsAdded($news->id, 0, $post->created);
@@ -165,12 +171,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $date = new \DateTime($item->pubDate);
                 preg_match($regexp, $item->asXML(), $matches);
                 $news = News::create(array(
-                            'title' => $item->title,
-                            'short' => strip_tags($item->description),
-                            'tags' => $item->category,
-                            'created' => $date->format('Y-m-d H:i:s'),
-                            'link' => $item->link,
-                            'imageurl' => $matches[1]
+                    'title' => $item->title,
+                    'short' => strip_tags($item->description),
+                    'tags' => $item->category,
+                    'created' => $date->format('Y-m-d H:i:s'),
+                    'link' => $item->link,
+                    'imageurl' => $matches[1]
                 ));
                 $news->save();
                 if ($event) {
@@ -191,16 +197,17 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 }
             }
             if (!$trigger) {
+                $this->out('Saving - ' . $item->title);
                 $date = new \DateTime($item->pubDate);
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
                 if (isset($matches[1])) {
                     $news = News::create(array(
-                                'title' => $item->title,
-                                'short' => strip_tags($item->description),
-                                'tags' => $item->category,
-                                'created' => $date->format('Y-m-d H:i:s'),
-                                'link' => $item->link,
-                                'imageurl' => $matches[1]
+                        'title' => $item->title,
+                        'short' => strip_tags($item->description),
+                        'tags' => $item->category,
+                        'created' => $date->format('Y-m-d H:i:s'),
+                        'link' => $item->link,
+                        'imageurl' => $matches[1]
                     ));
                     $news->save();
                 }
