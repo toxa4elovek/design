@@ -536,7 +536,9 @@
     height: 85px;
     width: 597px;
     background: #fff;
-    margin: 10px auto;
+    margin-top: 10px;
+    right: 71px;
+    overflow: hidden;
     position: relative;
 }
 
