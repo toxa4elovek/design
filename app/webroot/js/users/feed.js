@@ -34,10 +34,11 @@ $(document).ready(function () {
         });
         setTimeout(
                 function () {
-                    $('#gender-box').hide();
-                    $('.new-content').css({'margin-top': '70px'});
-                }, 5000
-                )
+                    $('#gender-box').animate({'height': 'toggle'}, function () {
+                        $('.new-content').css({'margin-top': '70px'});
+                    });
+                }, 1000
+                );
     });
 
     $('#close-gender').on('click', function () {

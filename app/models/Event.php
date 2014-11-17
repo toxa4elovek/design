@@ -193,7 +193,15 @@ class Event extends \app\models\AppModel {
             $limit = 100;
             $conditions = array('created' => array('>' => $created));
         }
-
+        if (!empty($pitchIds)) {
+            $events = Event::find('all', array(
+                        'conditions' => $conditions + Event::createConditions($pitchIds),
+                        'order' => array('created' => 'desc'),
+                        'limit' => $limit,
+                        'page' => $page
+                        )
+            );
+        } else {
             $events = Event::find('all', array(
                         'conditions' => $conditions + array('type' => 'newsAdded'),
                         'order' => array('created' => 'desc'),
@@ -201,7 +209,7 @@ class Event extends \app\models\AppModel {
                         'page' => $page
                         )
             );
-        
+        }
         $i = 1;
         foreach ($events as $event) {
             if (($event->type == 'CommentAdded' || $event->type == 'CommentCreated') && ($event->user_id != Session::read('user.id')) && ($event->pitch->user_id != Session::read('user.id'))) {
