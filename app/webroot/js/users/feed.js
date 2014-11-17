@@ -34,8 +34,9 @@ $(document).ready(function () {
         });
         setTimeout(
                 function () {
-                    $('#gender-box').animate({'height': 'toggle'}, function () {
-                        $('.new-content').css({'margin-top': '70px'});
+                    $('#gender-box').animate({'height': 'hide'}, function () {
+                        $('.new-content').removeAttr('style');
+                        $('.new-middle_inner').css({'margin-top': '70px'});
                     });
                 }, 1000
                 );
