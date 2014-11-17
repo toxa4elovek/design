@@ -1243,6 +1243,7 @@ class UsersController extends \app\controllers\AppController {
             $censoredTweets = array();
             $censoredTweets['statuses'] = array();
             $minTimestamp = 1893355200;
+            $listOfUsedIds = array();
             foreach($data['statuses'] as $key => &$tweet) {
                 $delete = false;
                 if(isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
@@ -1252,7 +1253,11 @@ class UsersController extends \app\controllers\AppController {
                         }
                     }
                 }
+                if(in_array($tweet['id_str'], $listOfUsedIds)) {
+                    $delete = true;
+                }
                 if($delete == false) {
+                    $listOfUsedIds[] = $tweet['id_str'];
                     $tweet['timestamp'] = strtotime($tweet['created_at']);
                     $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
                     $censoredTweets['statuses'][$key] = $tweet;
