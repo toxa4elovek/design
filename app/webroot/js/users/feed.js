@@ -574,7 +574,8 @@ function OfficeStatusUpdater() {
                                 </p> \
                                 <div class="r-content post-content"> \
                                     <p class="img-tag">' + response.post.tags + '</p> \
-                                    <a class="img-post" href="/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><h2>' + response.post.title + '</h2></a> \
+                                    <a class="img-post" href="' + response.post.link + '"><h2>' + response.post.title + '</h2></a> \
+                                    <p class="img-short">' + response.post.short + '</p> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + response.post.created + '">' + response.post.created + '</time> с сайта ' + response.post.host + '</p> \
                                 </div> \
@@ -789,6 +790,7 @@ function OfficeStatusUpdater() {
                                 <div class="r-content post-content"> \
                                     <p class="img-tag">' + object.news.tags + '</p> \
                                     <a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
+                                    <p class="img-short">' + object.news.short + '</p> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div> \
@@ -873,6 +875,7 @@ function OfficeStatusUpdater() {
                                 <div class="r-content post-content"> \
                                     <p class="img-tag">' + object.news.tags + '</p> \
                                     <a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
+                                    <p class="img-short">' + object.news.short + '</p> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div> \

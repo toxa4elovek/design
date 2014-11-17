@@ -180,6 +180,7 @@
                                     <div class="r-content post-content"> 
                                         <p class="img-tag"><?= $middlePost->tags ?></p>
                                         <a class="img-post" href="/users/click?link=<?= $middlePost->link ?>&id=<?= $middlePost->id ?>"><h2><?= $middlePost->title ?></h2></a>
+                                        <p class="img-short"><?= $middlePost->short ?></p>
                                         <p class="timeago">
                                             <time class="timeago" datetime="<?= $middlePost->created ?>"><?= $middlePost->created ?></time> с сайта <?= $middlePost->host ?></p>
                                     </div>
@@ -267,6 +268,7 @@
                                         <div class="r-content post-content"> 
                                             <p class="img-tag"><?= $object['news']['tags'] ?></p>
                                             <a class="img-post" href="<?= $object['news']['link'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
+                                            <p class="img-short"><?= $object['news']['short'] ?></p>
                                             <p class="timeago">
                                                 <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
                                             </p>
