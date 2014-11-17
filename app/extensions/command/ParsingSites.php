@@ -16,7 +16,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingGodesigner();
         $this->out('Finished parsing godesigner.ru [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing tutdesign.ru");
-        self::ParsingTutdesign();
+        self::ParsingWordpress('http://tutdesign.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true);
         $this->out('Finished parsing tutdesign.ru [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing vozduh.afisha.ru");
         self::ParsingVozduhAfisha();
@@ -25,14 +25,16 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingColta();
         $this->out('Finished parsing colta.ru [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing newgrids.fr");
-        self::ParsingNewgrids();
+        self::ParsingWordpress('http://newgrids.fr/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing lovelypackage.com");
-        self::ParsingLovelypackage();
+        self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing bpando.org");
-        self::ParsingBpando();
+        self::ParsingWordpress('http://bpando.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing bpando.org [' . (time() - $startTimeStamp) . ' sec]');
+        self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
     }
 
     private function ParsingGodesigner() {
@@ -40,7 +42,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $newsList = News::all();
         foreach ($posts as $post) {
             $trigger = false;
-            if(($newsList) && (count($newsList) > 0)){
+            if (($newsList) && (count($newsList) > 0)) {
                 foreach ($newsList as $n) {
                     if ((string) $post->title === (string) $n->title) {
                         $trigger = true;
@@ -51,7 +53,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $this->out('Saving - ' . $post->title . ' (' . $post->id . ')');
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $post->full, $matches);
                 $image = '';
-                if(isset($matches[1])) {
+                if (isset($matches[1])) {
                     $image = $matches[1];
                 }
                 $news = News::create(array(
@@ -68,39 +70,11 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingTutdesign() {
-        $xml = simplexml_load_file('http://tutdesign.ru/feed');
-        $newsList = News::all();
-        foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
-                    $trigger = true;
-                }
-            }
-            if (!$trigger) {
-                $this->out('Saving - ' . $item->title);
-                $date = new \DateTime($item->pubDate);
-                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->asXML(), $matches);
-                $news = News::create(array(
-                    'title' => $item->title,
-                    'short' => strip_tags($item->description),
-                    'tags' => $item->category,
-                    'created' => $date->format('Y-m-d H:i:s'),
-                    'link' => $item->link,
-                    'imageurl' => $matches[1]
-                ));
-                $news->save();
-                Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
-            }
-        }
-    }
-
     private function ParsingVozduhAfisha() {
         $xml = file_get_contents('http://vozduh.afisha.ru/export/rss/');
         $xml = simplexml_load_string($xml);
 
-        if(($xml->channel->item) && (count($xml->channel->item > 0))) {
+        if (($xml->channel->item) && (count($xml->channel->item > 0))) {
             $newsList = News::all();
             foreach ($xml->channel->item as $item) {
                 if (strpos($item->link, '/art/') !== false || strpos($item->link, '/cinema/') !== false) {
@@ -152,7 +126,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $imgurl = '';
                     foreach ($images as $img) {
                         if (strpos($img['src'], '/storage') !== false && !strpos($img['src'], 'preview') && !strpos($img['src'], 'cover')) {
-                            if(!preg_match('#colta.ru#', $img['src'])) {
+                            if (!preg_match('#colta.ru#', $img['src'])) {
                                 $img['src'] = 'http://www.colta.ru' . $img['src'];
                             }
                             $imgurl = $img['src'];
@@ -176,8 +150,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingNewgrids() {
-        $xml = simplexml_load_file('http://newgrids.fr/feed');
+    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = false) {
+        $xml = simplexml_load_file($url);
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
             $trigger = false;
@@ -189,26 +163,25 @@ class ParsingSites extends \app\extensions\command\CronJob {
             if (!$trigger) {
                 $this->out('Saving - ' . $item->title);
                 $date = new \DateTime($item->pubDate);
-                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->asXML(), $matches);
-                $image = '';
-                if(isset($matches[1])) {
-                    $image = $matches[1];
-                }
+                preg_match($regexp, $item->asXML(), $matches);
                 $news = News::create(array(
-                    'title' => $item->title,
-                    'short' => strip_tags($item->description),
-                    'tags' => $item->category,
-                    'created' => $date->format('Y-m-d H:i:s'),
-                    'link' => $item->link,
-                    'imageurl' => $image
+                            'title' => $item->title,
+                            'short' => strip_tags($item->description),
+                            'tags' => $item->category,
+                            'created' => $date->format('Y-m-d H:i:s'),
+                            'link' => $item->link,
+                            'imageurl' => $matches[1]
                 ));
                 $news->save();
+                if ($event) {
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }
             }
         }
     }
 
-    private function ParsingLovelypackage() {
-        $xml = simplexml_load_file('http://lovelypackage.com/feed/');
+    private function ParsingVice() {
+        $xml = simplexml_load_file('http://www.vice.com/ru/rss');
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
             $trigger = false;
@@ -218,53 +191,19 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 }
             }
             if (!$trigger) {
-                $this->out('Saving - ' . $item->title);
                 $date = new \DateTime($item->pubDate);
-                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->asXML(), $matches);
-                $image = '';
-                if(isset($matches[1])) {
-                    $image = $matches[1];
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                if (isset($matches[1])) {
+                    $news = News::create(array(
+                                'title' => $item->title,
+                                'short' => strip_tags($item->description),
+                                'tags' => $item->category,
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->link,
+                                'imageurl' => $matches[1]
+                    ));
+                    $news->save();
                 }
-                $news = News::create(array(
-                    'title' => $item->title,
-                    'short' => strip_tags($item->description),
-                    'tags' => $item->category,
-                    'created' => $date->format('Y-m-d H:i:s'),
-                    'link' => $item->link,
-                    'imageurl' => $image
-                ));
-                $news->save();
-            }
-        }
-    }
-
-    private function ParsingBpando() {
-        $xml = simplexml_load_file('http://bpando.org/feed/');
-        $newsList = News::all();
-        foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
-                    $trigger = true;
-                }
-            }
-            if (!$trigger) {
-                $this->out('Saving - ' . $item->title);
-                $date = new \DateTime($item->pubDate);
-                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->asXML(), $matches);
-                $image = '';
-                if(isset($matches[1])) {
-                    $image = $matches[1];
-                }
-                $news = News::create(array(
-                    'title' => $item->title,
-                    'short' => strip_tags($item->description),
-                    'tags' => $item->category,
-                    'created' => $date->format('Y-m-d H:i:s'),
-                    'link' => $item->link,
-                    'imageurl' => $image
-                ));
-                $news->save();
             }
         }
     }
