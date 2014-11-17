@@ -186,7 +186,7 @@
     </div>
 </div>
 <?php endif?>
-<div id="header-bg">
+<div id="header-bg" <?php if($this->_request->action == 'feed'): echo 'style="height: 60px;"'; endif;?>>
 
     <header class="<?=$header?>">
 
@@ -199,10 +199,10 @@
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">
             <?php if($this->user->getNewEventsCount() > 0):?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
-                <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::office', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
+                <a href="/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
+                <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::feed', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
             <?php else:?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
+                <a href="/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
             <?php endif?>
 
         <?php else:?>
@@ -219,7 +219,7 @@
                 <?php endif?>
             </div>
             <ul class="header-menu">
-                <li class="header-menu-item"><a href="/users/office">Обновления</a></li>
+                <li class="header-menu-item"><a href="/users/feed">Обновления</a></li>
                 <li class="header-menu-item"><a href="/users/mypitches">Мои питчи</a></li>
                 <li class="header-menu-item"><a href="/users/profile">Профиль</a></li>
                 <li class="header-menu-item"><a href="/users/solutions">Решения</a></li>
