@@ -195,7 +195,7 @@ class Event extends \app\models\AppModel {
         }
         if (!empty($pitchIds)) {
             $events = Event::find('all', array(
-                        'conditions' => $conditions + + Event::createConditions($pitchIds),
+                        'conditions' => $conditions + Event::createConditions($pitchIds),
                         'order' => array('created' => 'desc'),
                         'limit' => $limit,
                         'page' => $page
