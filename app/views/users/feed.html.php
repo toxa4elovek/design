@@ -179,7 +179,7 @@
                                     </p>
                                     <div class="r-content post-content"> 
                                         <p class="img-tag"><?= $middlePost->tags ?></p>
-                                        <a class="img-post" href="/users/click?link=<?= $middlePost->link ?>&id=<?= $middlePost->id ?>"><h2><?= $middlePost->title ?></h2></a>
+                                        <a class="img-post" href="<?= $middlePost->link ?>"><h2><?= $middlePost->title ?></h2></a>
                                         <p class="img-short"><?= $middlePost->short ?></p>
                                         <p class="timeago">
                                             <time class="timeago" datetime="<?= $middlePost->created ?>"><?= $middlePost->created ?></time> с сайта <?= $middlePost->host ?></p>
