@@ -107,7 +107,7 @@ class UsersController extends \app\controllers\AppController {
      *
      */
 	public function office() {
-        //return $this->redirect('Users::feed');
+        return $this->redirect('Users::feed');
         $date = date('Y-m-d H:i:s');
         if((Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
             $date = Session::read('user.events.date');
@@ -275,7 +275,7 @@ class UsersController extends \app\controllers\AppController {
     public function step1() {
         if(($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
             if((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
-                return $this->redirect('Users::office');
+                return $this->redirect('Users::feed');
             }
             if(Session::read('user.id') == $solution->pitch->user_id) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id));
@@ -298,7 +298,7 @@ class UsersController extends \app\controllers\AppController {
         \lithium\net\http\Media::type('json', array('text/html'));
         if(($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
             if((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
-                return $this->redirect('Users::office');
+                return $this->redirect('Users::feed');
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
             if($solution->user_id == Session::read('user.id')) {
@@ -382,7 +382,7 @@ class UsersController extends \app\controllers\AppController {
             }
 
             if((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
-                return $this->redirect('Users::office');
+                return $this->redirect('Users::feed');
             }
             if($solution->step < 3) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $this->request->id));
@@ -491,7 +491,7 @@ class UsersController extends \app\controllers\AppController {
             }
 
             if((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
-                return $this->redirect('Users::office');
+                return $this->redirect('Users::feed');
             }
             if($solution->step < 4) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $this->request->id));
@@ -539,7 +539,7 @@ class UsersController extends \app\controllers\AppController {
             echo $mail->text;
             die();
         }else {
-            return $this->redirect('Users::office');
+            return $this->redirect('Users::feed');
         }
     }
 
@@ -790,7 +790,7 @@ class UsersController extends \app\controllers\AppController {
                     Session::delete('redirect');
                     return $this->redirect($redirect);
                 }else {
-	                return $this->redirect('Users::office');
+	                return $this->redirect('Users::feed');
                 }
 	        }else{
 				Session::write('flash.login', 'Неверный адрес почты или пароль.');
@@ -801,7 +801,7 @@ class UsersController extends \app\controllers\AppController {
             Session::write('redirect', $_SERVER['HTTP_REFERER']);
         }
         if(!is_null(Session::read('user.id'))) {
-            return $this->redirect('Users::office');
+            return $this->redirect('Users::feed');
         }
         return compact('user');
 	}
