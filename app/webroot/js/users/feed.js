@@ -534,7 +534,7 @@ function OfficeStatusUpdater() {
         self.solutionDate = solutionDate;
         self.date = eventsDate;
         self.pitchDate = pitchDate;
-        $(document).everyTime(20000, function (i) {
+        $(document).everyTime(120000, function (i) {
             if (self.started) {
                 self.autoupdate();
             }
