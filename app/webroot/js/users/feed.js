@@ -33,11 +33,11 @@ $(document).ready(function () {
         $.post('/users/gender/' + $('#user_id').val() + '.json', {gender: $(this).attr('id')}, function (response) {
         });
         setTimeout(
-            function() {
-                $('#gender-box').hide();
-                $('.new-content').css({'margin-top': '70px'});
-            }, 5000
-        )
+                function () {
+                    $('#gender-box').hide();
+                    $('.new-content').css({'margin-top': '70px'});
+                }, 5000
+                )
     });
 
     $('#close-gender').on('click', function () {
@@ -196,30 +196,30 @@ $(document).ready(function () {
         var sharebar = likesNum.parent().next();
         var solutionId = $(this).data('id');
         /*Socialite.load($(this).next(), [
-            $('#facebook' + solutionId)[0],
-            $('#twitter' + solutionId)[0]
-        ]);
-        $('body').one('click', function () {
-            $('.sharebar').fadeOut(300);
-        });*/
-        if($.inArray($(this).data('id'), clickedLikesList) == -1) {
+         $('#facebook' + solutionId)[0],
+         $('#twitter' + solutionId)[0]
+         ]);
+         $('body').one('click', function () {
+         $('.sharebar').fadeOut(300);
+         });*/
+        if ($.inArray($(this).data('id'), clickedLikesList) == -1) {
             likesNum.html(parseInt(likesNum.html()) + 1);
             clickedLikesList.push($(this).data('id'));
         }
         $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
             likesNum.html(response.likes);
             /*likeLink.off('click');
-            sharebar.fadeIn(300);
-            likeLink.off('mouseover');
-            likeLink.on('click', function () {
-                console.log('second');
-                likesNum.html(parseInt(likesNum.html()) - 1);
-                $('body').one('click', function () {
-                    sharebar.fadeOut(300);
-                });
-                sharebar.fadeIn(300);
-                return false;
-            });*/
+             sharebar.fadeIn(300);
+             likeLink.off('mouseover');
+             likeLink.on('click', function () {
+             console.log('second');
+             likesNum.html(parseInt(likesNum.html()) - 1);
+             $('body').one('click', function () {
+             sharebar.fadeOut(300);
+             });
+             sharebar.fadeIn(300);
+             return false;
+             });*/
         });
         return false;
     });
@@ -784,11 +784,11 @@ function OfficeStatusUpdater() {
                                 if (object.type == 'newsAdded' && object.news != null) {
                                     html += '<div class="box"> \
                                 <p class="img-box"> \
-                                    <a class="post-link" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
+                                    <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
                                 </p> \
                                 <div class="r-content post-content"> \
                                     <p class="img-tag">' + object.news.tags + '</p> \
-                                    <a class="img-post" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><h2>' + object.news.title + '</h2></a> \
+                                    <a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div> \
@@ -868,11 +868,11 @@ function OfficeStatusUpdater() {
                     if (object.type == 'newsAdded' && object.news != null) {
                         html += '<div class="box"> \
                                 <p class="img-box"> \
-                                    <a class="post-link" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
+                                    <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
                                 </p> \
                                 <div class="r-content post-content"> \
                                     <p class="img-tag">' + object.news.tags + '</p> \
-                                    <a class="img-post" href="/users/click?link=' + object.news.link + '&id=' + object.news.id + '"><h2>' + object.news.title + '</h2></a> \
+                                    <a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div> \

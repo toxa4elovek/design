@@ -175,7 +175,7 @@
                             <?php if ($middlePost) : ?>
                                 <div class="box">
                                     <p class="img-box">
-                                        <a class="post-link" href="/users/click?link=<?= $middlePost->link ?>&id=<?= $middlePost->id ?>"><img class="img-post" src="<?= $middlePost->imageurl ?>"></a>
+                                        <a class="post-link" href="<?= $middlePost->link ?>"><img class="img-post" src="<?= $middlePost->imageurl ?>"></a>
                                     </p>
                                     <div class="r-content post-content"> 
                                         <p class="img-tag"><?= $middlePost->tags ?></p>
@@ -262,11 +262,11 @@
                                 <?php elseif ($object['type'] == 'newsAdded'): ?>
                                     <div class="box">
                                         <p class="img-box">
-                                            <a class="post-link" href="/users/click?link=<?= $object['news']['link'] ?>&id=<?= $object['news']['id'] ?>"><img class="img-post" src="<?= $object['news']['imageurl'] ?>"></a>
+                                            <a class="post-link" href="<?= $object['news']['link'] ?>"><img class="img-post" src="<?= $object['news']['imageurl'] ?>"></a>
                                         </p>
                                         <div class="r-content post-content"> 
                                             <p class="img-tag"><?= $object['news']['tags'] ?></p>
-                                            <a class="img-post" href="/users/click?link=<?= $object['news']['link'] ?>&id=<?= $object['news']['id'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
+                                            <a class="img-post" href="<?= $object['news']['link'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
                                             <p class="timeago">
                                                 <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
                                             </p>
