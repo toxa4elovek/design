@@ -1,9 +1,7 @@
 <div id="popup-final-step" class="popup-final-step" style="display:none;">
     <h3>Убедитесь в правильном выборе!</h3>
-    <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё мнение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Вы уверены, что победителем питча становится <a id="winner-user-link" href="#" target="_blank"></a> c решением <a id="winner-num" href="#" target="_blank"></a>?
-        <br />
-        Помните, что у вас также есть возможность выбрать <span id="roman">II</span> победителя. Подробнее <a title="Как выбрать второго победителя?" href="http://www.godesigner.ru/answers/view/97">тут</a>.
-    </p>
+    <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё мнение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Вы уверены, что победителем питча становится <a id="winner-user-link" href="#" target="_blank"></a> c решением <a id="winner-num" href="#" target="_blank"></a>?</p><br/>
+    <p>Помните, что у вас также есть возможность выбрать <span id="roman">II</span> победителя. Подробнее <a title="Как выбрать второго победителя?" href="http://www.godesigner.ru/answers/view/97">тут</a>.</p>
     <div class="portfolio_gallery" style="width:200px;margin-bottom:5px;">
         <ul class="list_portfolio">
             <li>
