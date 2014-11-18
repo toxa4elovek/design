@@ -2586,9 +2586,9 @@ td.price.mypitches {
     border-right:#575864 1px solid;
 }
 td.pitches-status.mypitches {
-	width: 135px;
-	text-align:center;
-	font-family: "Helvetica Bold", "Helvetica Neue";
+    width: 135px;
+    text-align:center;
+    font-family: "Helvetica Bold", "Helvetica Neue";
     /*width: 135px;*/
 }
 td.pitches-status.mypitches a {
@@ -2596,14 +2596,14 @@ td.pitches-status.mypitches a {
     font-size: 11px; 
 }
 td img.pitches-image{
-	height:80px;
-	width:105px
+    height:80px;
+    width:105px
 }
 td.pitches-status.mypitches a.pitches-finish {
-	color: #4f8b5c;
-	display:block;
-	padding-left:35px;
-	text-align:left;
+    color: #4f8b5c;
+    display:block;
+    padding-left:35px;
+    text-align:left;
     /*color: #ff575d;*/
 }
 td.pitches-status.mypitches a.pitches-time {
@@ -3679,4 +3679,24 @@ div.no-result p {
     width: 451px;
     height: 19px;
     background: url(img/popup-submit-bottom.png) 0 50% no-repeat;
+}
+
+#popup-final-step {
+    position: relative;
+    height: 560px;
+}
+#popup-final-step h3 {
+    margin: 45px 0 0.6em !important;
+}
+#popup-final-step {
+    padding: 0 47px 0 58px;
+    font: 14px/1.5em Arial, Helvetica, sans-serif;
+    color: #666;
+    text-shadow: 1px 1px 1px #FFF;
+    width: 575px;
+    background-color: #E1E1E1;
+    position: absolute;
+    top: 91px;
+    left: 47px;
+    height: 508px;
 }

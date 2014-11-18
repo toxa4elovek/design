@@ -137,7 +137,7 @@
        $('#confirmWinner').data('url', $(this).attr('href'));
        $('#replacingblock').replaceWith(item);
        $('#popup-final-step').modal({
-           containerId: 'final-step',
+           containerId: 'final-step-multi',
            opacity: 80,
            closeClass: 'popup-close'
        });
