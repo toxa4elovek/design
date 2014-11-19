@@ -18,7 +18,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingGodesigner();
         $this->out('Finished parsing godesigner.ru [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing tutdesign.ru");
-        self::ParsingWordpress('http://tutdesign.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true);
+        self::ParsingTutdesign();
         $this->out('Finished parsing tutdesign.ru [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing vozduh.afisha.ru");
         self::ParsingVozduhAfisha();
@@ -63,15 +63,56 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $image = $matches[1];
                 }
                 $news = News::create(array(
-                    'title' => $post->title,
-                    'short' => strip_tags($post->short),
-                    'tags' => $post->tags,
-                    'created' => $post->created,
-                    'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
-                    'imageurl' => $image
+                            'title' => $post->title,
+                            'short' => strip_tags($post->short),
+                            'tags' => $post->tags,
+                            'created' => $post->created,
+                            'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
+                            'imageurl' => $image
                 ));
                 $news->save();
                 Event::createEventNewsAdded($news->id, 0, $post->created);
+            }
+        }
+    }
+
+    private function ParsingTutdesign() {
+        $posts = Wp_post::all(array(
+                    'conditions' => array(
+                        'post_status' => 'publish',
+                        'post_type' => 'post',
+                        'post_date' => array(
+                            '<=' => date('Y-m-d H:i:s'),
+                        ),
+                        'Wp_postmeta.meta_key' => '_thumbnail_id',
+                    ),
+                    'with' => array('Wp_term_relationship', 'Wp_postmeta'),
+                    'order' => array('post_date' => 'desc'),
+                    'limit' => 300
+        ));
+        $newsList = News::all();
+
+        foreach ($posts as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->post_title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $this->out('Saving - ' . $item->post_title);
+                $date = new \DateTime($item->post_date);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->post_content, $matches);
+                $news = News::create(array(
+                            'title' => $item->post_title,
+                            'short' => strip_tags($item->post_excerpt),
+                            'tags' => $item->category_name,
+                            'created' => $date->format('Y-m-d H:i:s'),
+                            'link' => $item->guid,
+                            'imageurl' => $matches[1]
+                ));
+                $news->save();
+                Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
             }
         }
     }
@@ -171,12 +212,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $date = new \DateTime($item->pubDate);
                 preg_match($regexp, $item->asXML(), $matches);
                 $news = News::create(array(
-                    'title' => $item->title,
-                    'short' => strip_tags($item->description),
-                    'tags' => $item->category,
-                    'created' => $date->format('Y-m-d H:i:s'),
-                    'link' => $item->link,
-                    'imageurl' => $matches[1]
+                            'title' => $item->title,
+                            'short' => strip_tags($item->description),
+                            'tags' => $item->category,
+                            'created' => $date->format('Y-m-d H:i:s'),
+                            'link' => $item->link,
+                            'imageurl' => $matches[1]
                 ));
                 $news->save();
                 if ($event) {
@@ -202,12 +243,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
                 if (isset($matches[1])) {
                     $news = News::create(array(
-                        'title' => $item->title,
-                        'short' => strip_tags($item->description),
-                        'tags' => $item->category,
-                        'created' => $date->format('Y-m-d H:i:s'),
-                        'link' => $item->link,
-                        'imageurl' => $matches[1]
+                                'title' => $item->title,
+                                'short' => strip_tags($item->description),
+                                'tags' => $item->category,
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->link,
+                                'imageurl' => $matches[1]
                     ));
                     $news->save();
                 }
