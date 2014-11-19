@@ -3,8 +3,8 @@
 namespace app\extensions\command;
 
 use \app\models\Post;
+use \app\models\Wp_post;
 use \app\models\News;
-use \app\models\Solution;
 use \app\models\Event;
 
 class ParsingSites extends \app\extensions\command\CronJob {
@@ -103,13 +103,17 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $this->out('Saving - ' . $item->post_title);
                 $date = new \DateTime($item->post_date);
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->post_content, $matches);
+                $image = '';
+                if(isset($matches[1])) {
+                    $image = $matches[1];
+                }
                 $news = News::create(array(
                             'title' => $item->post_title,
                             'short' => strip_tags($item->post_excerpt),
                             'tags' => $item->category_name,
                             'created' => $date->format('Y-m-d H:i:s'),
                             'link' => $item->guid,
-                            'imageurl' => $matches[1]
+                            'imageurl' => $image
                 ));
                 $news->save();
                 Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
