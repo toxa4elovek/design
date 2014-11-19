@@ -15,6 +15,7 @@ use \app\models\Invite;
 use \app\models\Avatar;
 use \app\models\Moderation;
 use \app\models\Wp_post;
+use \app\models\Tweet;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\mailers\ContactMailer;
@@ -1221,6 +1222,7 @@ class UsersController extends \app\controllers\AppController {
         $hashTags = array('работадлядизайнеров');
         $x=0;
         $url='';
+        $tweets_list = Tweet::all();
         $countTags = count($hashTags);
         foreach ($hashTags as $tag) {
             ++$x;
@@ -1265,11 +1267,24 @@ class UsersController extends \app\controllers\AppController {
                     $tweet['timestamp'] = strtotime($tweet['created_at']);
                     $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
                     $censoredTweets['statuses'][$key] = $tweet;
+                    $trigger = true;
+                    foreach ($tweets_list as $v) {
+                        if ($v->tweet_id !== $tweet['id_str']) {
+                            $trigger = false;
+                            break;
+                        }
+                    }
+                    if ($trigger) {
+                         Tweet::create(array(
+                                'created' => date('Y-m-d H:i:s',$tweet['timestamp']),
+                                'text' => $tweet['text'],
+                                'tweet_id' => $tweet['id_str']
+                            ))->save();
+                    }
                 }
             }
 
             uasort($censoredTweets['statuses'], function($a, $b) { return ($a['timestamp'] > $b['timestamp']) ? -1 : 1; });
-
             $res = Rcache::write('twitterstreamFeed', $censoredTweets);
             echo '<pre>';
             var_dump($censoredTweets['statuses']);
