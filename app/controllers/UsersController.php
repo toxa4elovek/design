@@ -652,6 +652,10 @@ class UsersController extends \app\controllers\AppController {
                 }
                 if(!is_null(Session::read('redirect')) && false === $redirect) {
                     $redirect = Session::read('redirect');
+                    if ($redirect == 'http://'.$_SERVER['HTTP_HOST'].'/') {
+                        $redirect = '/users/feed';
+                        
+                    }
                     Session::delete('redirect');
                 }
                 return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
@@ -663,7 +667,7 @@ class UsersController extends \app\controllers\AppController {
                 $user->token = User::generateToken();
                 $user->created = date('Y-m-d H:i:s');
 
-                $redirect = '/';
+                $redirect = '/users/feed';
                 if (isset($this->request->data['who_am_i'])) {
                     if ($this->request->data['who_am_i'] == 'client') {
                         $this->request->data['isClient'] = 1;
@@ -674,7 +678,7 @@ class UsersController extends \app\controllers\AppController {
                     }
                     if ($this->request->data['who_am_i'] == 'designer') {
                         $this->request->data['isDesigner'] = 1;
-                        $redirect = '/pitches';
+                        $redirect = '/users/feed';
                     }
                 }
 
