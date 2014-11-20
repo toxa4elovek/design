@@ -125,10 +125,12 @@
                     <div id="r-sidebar-office">
                         <div id="floatingLayer">
                             <div id="container-job-designers">
-                                <div class="rs-header"><a href="https://twitter.com/go_deer" target="_blank" style="color: #fff;">Twitter лента</div>
+                                <div class="rs-header"><a href="https://twitter.com/go_deer" target="_blank" style="color: #fff;">Twitter лента</a></div>
+                                <div id="arrow-top" style="display:none"></div>
                                 <div id="content-job">
                                     <?php echo $this->stream->renderStreamFeed(6); ?>
                                 </div>
+                                <div id="arrow-bottom" style=""></div>
                             </div>
                             <div id="container-new-pitches">
                                 <div class="rs-header">Новые питчи</div>

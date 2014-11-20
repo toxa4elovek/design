@@ -189,6 +189,15 @@ $(document).ready(function () {
         Updater.init();
     }
 
+    $('#arrow-bottom').on('click', function () {
+        Updater.nextJob(true);
+        $('#arrow-top').show();
+    });
+    
+    $('#arrow-top').on('click', function () {
+        Updater.nextJob(false);
+    });
+
     var clickedLikesList = []
 
     $(document).on('click', '.like-small-icon', function () {
@@ -520,6 +529,7 @@ function OfficeStatusUpdater() {
     this.storage = {};
     this.page = 1;
     this.solPage = 1;
+    this.jobPage = 1;
     this.date = '';
     this.dateTwitter;
     this.newsDate;
@@ -932,33 +942,33 @@ function OfficeStatusUpdater() {
                         break;
                 }
                 return price;
-            }
-    this.getGenderTxt = function (txt, gender) {
-        if (gender == 1) {
-            txt += 'а';
-        }
-        return txt;
-    }
-    this.getSolutions = function () {
-        self.solPage += 1;
-        $('#SolutionAjaxLoader').show();
-        $.get('/events/getsol.json', {"init": true, "page": self.solPage}, function (response) {
-            $('#SolutionAjaxLoader').hide();
-            if (typeof (response.solpages) != "undefined" && response.solpages != null) {
-                var solutions = '';
-                $.each(response.solpages, function (index, solution) {
-                    if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
-                        if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
-                            var imageurl = solution.solution.images.solution_leftFeed.weburl;
-                        } else {
-                            var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
-                        }
-                        if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                            tweetLike = 'Мне нравится этот дизайн! А вам?';
-                        } else {
-                            tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
-                        }
-                        solutions += '<div class="solutions-block"> \
+            },
+            this.getGenderTxt = function (txt, gender) {
+                if (gender == 1) {
+                    txt += 'а';
+                }
+                return txt;
+            },
+            this.getSolutions = function () {
+                self.solPage += 1;
+                $('#SolutionAjaxLoader').show();
+                $.get('/events/getsol.json', {"init": true, "page": self.solPage}, function (response) {
+                    $('#SolutionAjaxLoader').hide();
+                    if (typeof (response.solpages) != "undefined" && response.solpages != null) {
+                        var solutions = '';
+                        $.each(response.solpages, function (index, solution) {
+                            if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
+                                if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
+                                    var imageurl = solution.solution.images.solution_leftFeed.weburl;
+                                } else {
+                                    var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
+                                }
+                                if (Math.floor((Math.random() * 100) + 1) <= 50) {
+                                    tweetLike = 'Мне нравится этот дизайн! А вам?';
+                                } else {
+                                    tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
+                                }
+                                solutions += '<div class="solutions-block"> \
                                     <a href="/pitches/viewsolution/' + solution.solution.id + '"><div class="left-sol" style="background: url(' + imageurl + ')"></div></a> \
                                     <div class="solution-info"> \
                                         <p class="creator-name"><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
@@ -997,38 +1007,55 @@ function OfficeStatusUpdater() {
                                         </span>\
                                         <div class="solution_menu" style="display: none;">\
                                             <ul class="solution_menu_list" style="position:absolute;z-index:6;">';
-                        if (solution.pitch.user_id == this_user && solution.pitchesCount < 1 && !solution.selectedSolutions) {
-                            solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
+                                if (solution.pitch.user_id == this_user && solution.pitchesCount < 1 && !solution.selectedSolutions) {
+                                    solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
                                                         <a class="select-winner" href="/solutions/select/' + solution.solution.id + '.json" data-solutionid="' + solution.solution.id + '" data-user="' + solution.creator + '" data-num="' + solution.solution.num + '" data-userid="' + solution.solution.user_id + '">Назначить победителем</a>\
                                                     </li>';
-                        } else if (solution.pitch.user_id == this_user && (solution.solution.pitch.awarded != solution.solution.id) && ((solution.solution.pitch.status == 1) || (solution.solution.pitch.status == 2)) && solution.solution.pitch.awarded != 0) {
-                            solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
+                                } else if (solution.pitch.user_id == this_user && (solution.solution.pitch.awarded != solution.solution.id) && ((solution.solution.pitch.status == 1) || (solution.solution.pitch.status == 2)) && solution.solution.pitch.awarded != 0) {
+                                    solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
                                                         <a class="select-multiwinner" href="/pitches/setnewwinner/' + solution.solution.id + '" data-solutionid="' + solution.solution.id + '" data-user="' + solution.creator + '" data-num="' + solution.solution.num + '" data-userid="' + solution.solution.user_id + '">Назначить ' + solution.pitchesCount + 2 + ' победителя</a>\
                                                     </li>';
-                        }
-                        if (solution.pitch.user_id == this_user && isAllowedToComment) {
-                            solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-id="' + solution.solution.id + '" data-comment-to="#' + solution.solution.num + '">Комментировать</a></li>';
-                        }
-                        solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/' + solution.solution.id + '.json" class="warning" data-solution-id="' + solution.solution.id + '">Пожаловаться</a></li>';
-                        if (isAdmin) {
-                            solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="' + solution.solution.id + '" data-solution_num="' + solution.solution.num + '" href="/solutions/delete/' + solution.solution.id + '.json">Удалить</a></li>';
-                        }
-                        solutions += '</ul>\
+                                }
+                                if (solution.pitch.user_id == this_user && isAllowedToComment) {
+                                    solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-id="' + solution.solution.id + '" data-comment-to="#' + solution.solution.num + '">Комментировать</a></li>';
+                                }
+                                solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/' + solution.solution.id + '.json" class="warning" data-solution-id="' + solution.solution.id + '">Пожаловаться</a></li>';
+                                if (isAdmin) {
+                                    solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="' + solution.solution.id + '" data-solution_num="' + solution.solution.num + '" href="/solutions/delete/' + solution.solution.id + '.json">Удалить</a></li>';
+                                }
+                                solutions += '</ul>\
                                         </div>\
                                     </div> \
                                 </div>';
+                            }
+                        });
+                        if (solutions != '') {
+                            var $prependEl = $(solutions);
+                            $prependEl.hide();
+                            $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
+                            $('#SolutionAjaxLoader').appendTo($('#l-sidebar-office'));
+                            isBusySolution = 0;
+                        }
                     }
                 });
-                if (solutions != '') {
-                    var $prependEl = $(solutions);
-                    $prependEl.hide();
-                    $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
-                    $('#SolutionAjaxLoader').appendTo($('#l-sidebar-office'));
-                    isBusySolution = 0;
+            },
+            this.nextJob = function (prev) {
+                if (prev) {
+                    self.jobPage += 1;
+                } else {
+                    self.jobPage -= 1;
                 }
-            }
-        })
-    };
+                $.post('/events/job.json', {"page": self.jobPage}, function (response) {
+                    var job = '';
+                    $.each(response.job, function (i, item) {
+                        job += '<div class="job">' + item.text + '</div><div class="sp"></div>';
+                    });
+                    $('#content-job').empty();
+                    var $prependEl = $(job);
+                    $prependEl.hide();
+                    $prependEl.appendTo('#content-job').slideDown('slow');
+                });
+            };
 }
 function parse_url_regex(url) {
     var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;

@@ -58,6 +58,11 @@ class EventsController extends \app\controllers\AppController {
         $solpages = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'page' => $this->request->query['page'], 'with' => array('Pitch')));
         return compact('solpages');
     }
+    
+    public function job() {
+        $job = \app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page']));
+        return compact('job');
+    }
 
 }
 
