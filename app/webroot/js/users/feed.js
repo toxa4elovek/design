@@ -27,6 +27,7 @@ window.onfocus = function () {
     }
     newMessages = 0;
 }
+var compensation = 0;
 $(document).ready(function () {
 
     $('input[name="gender"]').on('change', function () {
@@ -85,8 +86,8 @@ $(document).ready(function () {
             } else if (windowBottom >= topStop && $(window).scrollTop() < top) {
                 $box.css({'position': 'static', 'top': '35px'});
             }
-
-            if (($(document).height() - $(window).scrollTop() - $(window).height() < 200) && !isBusy) {
+            if (($(document).height() - ($(window).scrollTop() - compensation) - $('#center_sidebar').height() < 10) && !isBusy) {
+                compensation = $('#center_sidebar').height() - 2000;
                 isBusy = 1;
                 Tip.scrollHandler();
                 $box.css({
@@ -456,7 +457,6 @@ $(document).ready(function () {
     // Delete Solution
     $(document).on('click', '.delete-solution', function (e) {
         e.preventDefault();
-        console.log('111');
         // Delete without Moderation
         if (!isCurrentAdmin) {
             return true;
@@ -890,7 +890,6 @@ function OfficeStatusUpdater() {
                         if ((((!object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.pitch.private != '1')) {
                             long = true;
                         }
-                        console.log(object);
                         html = '<div class="box">';
                         if(long) {
                             html += '<div class="sol"><img src="' + imageurl + '"></div> \
