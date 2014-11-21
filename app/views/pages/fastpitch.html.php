@@ -11,7 +11,7 @@
                     <div id="ap_content_top_l">
                         <h1>Создай питч на логотип в один клик, остальное мы сделаем за вас.</h1>
                         <label id="phone" class="regular">Оставить номер телефона</label>
-                        <input name="phone" value="" class="input-phone" /> <span class="and_phone">и</span>
+                        <input name="phone" value="" class="input-phone" placeholder="+7 981 7340510" /> <span class="and_phone">и</span>
                         <label id="time-label" class="regular">Выберите удобное время для беседы</label>
                         <ul class="date">
                             <?php
@@ -38,7 +38,7 @@
                         <?php
                         $j = 1;
                         foreach ($alllow_time as $i => $v): ?>
-                                <li data-num="<?php echo $j; ?>" <?php if(($j % 3) == 0): echo 'style="padding-right: 30px;"'; else: echo 'style="padding-right: 33px;"'; endif;?>>
+                                <li data-num="<?php echo $j; ?>">
                                     <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                 </li>
                         <?php
@@ -50,7 +50,7 @@
                         </ul>
                         <a id="fastpitch" class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo;</a>
 
-                        <h1>Что включено?</h1>
+                        <h1 style="margin-top:21px">Что включено?</h1>
 
                         <ul class="oneclick regular">
                             <li>гонорар дизайнеру 14 000р.-</li>
@@ -63,7 +63,7 @@
                         <span class="regular">Запустить питч на GoDesigner стало предельно просто: оставьте свой номер телефона и оплатите его, остальное мы сделаем за вас.
                             В течении дня мы свяжемся с вами, на основе интервью сами составим тех. задание, и опубликуем проект на сайте.</span>
 
-                        <h1>Легко и выгодно!</h1>
+                        <h1 style="margin-top:44px">Легко и выгодно!</h1>
                         <span class="regular">С нашим предложением вы экономите не только 2 часа на заполнение брифа, но и 2530 рублей. Мы подобрали для вас оптимальное решение и самый популярный набор опций, чтобы обеспечить пул специалистов и подарить незабываемый опыт работы с GoDesigner.</span>
                     </div>
                 </div>
