@@ -68,7 +68,6 @@ $(document).ready(function () {
 
         $(window).on('scroll', function () {
             var parentAbsoluteTop = $parent.offset().top;
-            var parentAbsoluteBottom = parentAbsoluteTop + $parent.height();
             var topStop = parentAbsoluteTop + $box.height();
 
             if ($(window).scrollTop() > header_pos && !header_bg.hasClass('flow')) {
@@ -87,25 +86,6 @@ $(document).ready(function () {
                 $box.css({'position': 'static', 'top': '35px'});
             }
 
-//            var windowBottom = $(window).scrollTop() + windowHeight;
-//            if (windowBottom < topStop)
-//                $box.css({
-//                    position: 'absolute',
-//                    top: '0px',
-//                    bottom: 'auto'
-//                });
-//            else if (windowBottom >= topStop && windowBottom <= parentAbsoluteBottom)
-//                $box.css({
-//                    position: 'fixed',
-//                    top: 'auto',
-//                    bottom: '0px'
-//                });
-//            else
-//                $box.css({
-//                    position: 'absolute',
-//                    top: 'auto',
-//                    bottom: '0px'
-//                });
             if (($(document).height() - $(window).scrollTop() - $(window).height() < 200) && !isBusy) {
                 isBusy = 1;
                 Tip.scrollHandler();
@@ -191,7 +171,6 @@ $(document).ready(function () {
 
     $('#news-arrow-bottom').on('click', function () {
         Updater.nextNews(true);
-        $('#news-arrow-top').show();
     });
 
     $("#content-news")
@@ -1060,6 +1039,7 @@ function OfficeStatusUpdater() {
                         var $prependEl = $(news);
                         $prependEl.hide();
                         $prependEl.appendTo(content).fadeIn(200);
+                        $('#news-arrow-bottom').appendTo(content);
                     }
                 });
             };
