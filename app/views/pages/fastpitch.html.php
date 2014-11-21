@@ -1,4 +1,4 @@
-<?=$this->html->style(array('/fastpitch'), array('inline' => false)) ?>
+<?= $this->html->style(array('/fastpitch'), array('inline' => false)) ?>
 
 <div class="wrapper">
 
@@ -10,8 +10,38 @@
                 <div id="ap_content_top">
                     <div id="ap_content_top_l">
                         <h1>Создай питч на логотип в один клик, остальное мы сделаем за вас.</h1>
-                        <label id="phone" class="regular">Номер телефона</label>
-                        <input name="phone" value="" class="input-phone" /> <span class="and_phone">и</span> <a id="fastpitch" class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo;</a>
+                        <label id="phone" class="regular">Оставить номер телефона</label>
+                        <input name="phone" value="" class="input-phone" /> <span class="and_phone">и</span>
+                        <label id="time-label" class="regular">Выберите удобное время для беседы</label>
+                        <ul class="date">
+                            <?php
+                            $x = 0;
+                            foreach ($alllow_time as $i => $v):
+                                $x++;
+                                if ($x < 4):
+                                    ?>
+                                    <li>
+                                        <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
+                                    </li>
+                                    <?php unset($alllow_time[$i]);
+                                else: ?>
+                                    <li>
+                                        <label><input id="more" name="time" type="radio">Другое время</label>
+                                    </li>
+                                    <?php
+                                    break;
+                                endif;
+                                ?>
+                            <?php endforeach; ?>
+                        </ul>
+                        <ul class="date-hide">
+                        <?php foreach ($alllow_time as $i => $v): ?>
+                                <li>
+                                    <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
+                                </li>
+                        <?php endforeach; ?>
+                        </ul>
+                        <a id="fastpitch" class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo;</a>
 
                         <h1>Что включено?</h1>
 

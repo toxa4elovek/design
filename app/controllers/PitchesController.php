@@ -1413,6 +1413,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $pitch->user_id = Session::read('user.id');
             }
             if($pitch->save()) {
+                $start = new \DateTime();
+                $start->setTimestamp($this->request->data['date']);
+                \app\models\Schedule::create(array(
+                    'title' => 'Логотип в один клик ('. $this->request->data['phone'] . ')',
+                    'start' => $start->format('Y-m-d H:i:s'),
+                    'end' => $start->setTime($start->format('H') + 1, '00', '00')->format('Y-m-d H:i:s')
+                ))->save();
                 $receiptData = array(
                     'features' => array(
                         'award' => $pitch->price,
