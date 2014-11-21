@@ -8,9 +8,10 @@
     display: block;
     margin-top: 35px;
     width: 253px;
-    font: 12px 'HelveticaNeue Bold', serif;
-    padding: 18px;
-    height: auto;
+    font-size: 12px; /* 'HelveticaNeue Bold', serif;*/
+    padding: 4px 18px;
+    height: 41px;
+    line-height: 41px;
 }
 #top-logo-oneclick {
     height:322px;
@@ -33,9 +34,10 @@ label#phone:after {
 input.input-phone {
     color: #4f5159;
     float: left;
-    font: 24px "RodeoC",sans-serif !important;
+    font-size: 14px !important; /*"RodeoC",sans-serif */
     height: 40px;
-    width: 290px;
+    width: 260px;
+    padding: 0 16px;
 }
 .middle_inner_oneclick {
     background: url(/img/main_bg.jpg) repeat;
@@ -83,8 +85,9 @@ ul.date li,ul.date-hide li {
 }
 ul.date-hide {
     display: none;
-    margin-top: 37px;
+    margin-top: 40px;
     width: 750px;
+    padding-left: 4px;
 }
 ul.date-hide li {
     padding: 10px 54px 0 0;
@@ -114,4 +117,7 @@ label#time-label:after {
 }
 span {
     line-height: 28px !important;
+}
+#ap_content_top_l input {
+    margin-bottom: 3px;
 }

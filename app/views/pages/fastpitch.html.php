@@ -11,7 +11,7 @@
                     <div id="ap_content_top_l">
                         <h1>Создай питч на логотип в один клик, остальное мы сделаем за вас.</h1>
                         <label id="phone" class="regular">Оставить номер телефона</label>
-                        <input name="phone" value="" class="input-phone" placeholder="+7 981 7340510" /> <span class="and_phone">и</span>
+                        <input name="phone" value="" class="input-phone" placeholder="+7 911 1234567" /> <span class="and_phone">и</span>
                         <label id="time-label" class="regular">Выберите удобное время для беседы</label>
                         <ul class="date">
                             <?php
@@ -21,7 +21,7 @@
                                 if ($x < 4):
                                     ?>
                                     <li>
-                                        <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
+                                        <label><input <?php if($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                     </li>
                                     <?php unset($alllow_time[$i]);
                                 else: ?>
@@ -38,7 +38,7 @@
                         <?php
                         $j = 1;
                         foreach ($alllow_time as $i => $v): ?>
-                                <li data-num="<?php echo $j; ?>">
+                                <li data-num="<?php echo $j; ?>" <?php if(($j % 3) == 0): echo 'style="padding-right: 52px;"'; else: echo 'style="padding-right: 55px;"'; endif;?>>
                                     <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                 </li>
                         <?php
