@@ -103,16 +103,20 @@ class PagesController extends \app\controllers\AppController {
         $start_hours->setTime('12', '00', '00');
 
         $end_hours = new \DateTime();
-        $end_hours->setTime('16', '00', '00');
+        $end_hours->setTime('15', '00', '00');
         foreach ($schedule as $v) {
             $deny_time[] = $v->end;
         }
         //date('Y-m-d H:i:s', mktime(date("H"), 0, 0));
         $temp = new \DateTime();
-        $x = 0;
+        $x = true;
         for ($i = 1; $i <= 15;) {
-            $temp->setTime($temp->format('H') + $x, '00', '00');
-            $x++;
+            if ($x) {
+                $temp->setTime($temp->format('H'), '00', '00');
+            } else {
+                $temp->setTime($temp->format('H') + 1, '00', '00');
+            }
+            $x = false;
             if (!in_array($temp->format('Y-m-d H:i:s'), $deny_time) &&
                     $temp->getTimestamp() >= $start_hours->getTimestamp()
             ) {
@@ -125,7 +129,7 @@ class PagesController extends \app\controllers\AppController {
                     $end_hours->setDate($end_hours->format('Y'), $end_hours->format('m'), $end_hours->format('d') + 1);
                     $temp->setDate($temp->format('Y'), $temp->format('m'), $temp->format('d') + 1);
                     $temp->setTime('12', '00', '00');
-                    $x = 0;
+                    $x = true;
                 }
             }
         }
