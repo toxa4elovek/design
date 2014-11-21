@@ -1,7 +1,16 @@
+@font-face {
+    font-family: 'HelveticaNeue Bold';
+    src: url('fonts/helvetica-neue-bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 #fastpitch {
     display: block;
     margin-top: 35px;
-    width: 220px;
+    width: 253px;
+    font: 12px 'HelveticaNeue Bold', serif;
+    padding: 18px;
+    height: auto;
 }
 #top-logo-oneclick {
     height:322px;
@@ -12,9 +21,9 @@
 }
 label#phone {
     display: block;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 8px;
-    width: 190px;
+    width: 210px;
 }
 label#phone:after {
     color: #ff585d;
@@ -26,7 +35,7 @@ input.input-phone {
     float: left;
     font: 24px "RodeoC",sans-serif !important;
     height: 40px;
-    width: 220px;
+    width: 290px;
 }
 .middle_inner_oneclick {
     background: url(/img/main_bg.jpg) repeat;
@@ -37,53 +46,58 @@ span.and_phone{
     margin-right:30px;
     margin-top: 8px;
     display: inline-block;
-    font: italic 20px georgia;
-    color:#999;
+    font: 24px "RodeoC",sans-serif !important;
 }
 .middle_inner_oneclick h1.head {
     margin-bottom:30px;
 }
 .middle_inner_oneclick h1 {
-    font: 19px "RodeoC", serif;
-    margin: 30px 0 30px 0;
+    font: 24px "RodeoC", serif;
+    margin: 9px 0 30px 0;
     text-shadow: 1px 0 0 #eaeaea;
 }
 .middle_inner_oneclick ul.oneclick {
     list-style-type: disc;
-    margin-left: 13px;
+    margin-left: 15px;
+}
+ul.oneclick li {
+    padding-bottom: 5px;
 }
 ul.date {
     margin: 0;
     padding: 4px;
-    width: 330px;
-    margin-bottom:20px;
+    width: 375px;
+    margin-bottom:45px;
+    margin-left:2px;
     overflow:hidden;
     position: absolute;
-    top: 129px;
-    left: 270px;
+    top: 120px;
+    left: 317px;
 }
 ul.date li,ul.date-hide li {
     display: inline-block;
-    padding: 3px 0 3px 30px;
+    padding: 3px 0 3px 53px;
     vertical-align: middle;
-    margin-bottom: 5px;
+    margin-bottom: 16px;
+    font-size: 16px;
 }
 ul.date-hide {
     display: none;
-    margin-top: 25px;
-    width: 640px;
+    margin-top: 37px;
+    width: 750px;
 }
 ul.date-hide li {
-    margin: 0 0 7px;
-    padding: 3px 30px 3px 0;
+    padding: 10px 54px 0 0;
 }
 input[type="radio"] {
     margin-right: 10px;
 }
 #time-label {
     position: absolute;
-    top: 106px;
-    left: 258px;
+    top: 98px;
+    left: 374px;
+    font-size: 16px;
+    width: 300px;
 }
 label#time-label:after {
     color: #ff585d;
@@ -91,3 +105,13 @@ label#time-label:after {
     margin-left: 1px;
 }
 
+#ap_content_top_l {
+    width: 568px;
+}
+
+.regular {
+    font: 16px "Arial", sans-serif;
+}
+span {
+    line-height: 28px !important;
+}
