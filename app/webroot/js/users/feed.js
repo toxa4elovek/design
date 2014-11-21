@@ -885,23 +885,41 @@ function OfficeStatusUpdater() {
                             avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                         }
                         var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
-                        html += '<div class="box">\
-                                    <div class="sol"><img src="' + imageurl + '"></div> \
+                        // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
+                        var long = false;
+                        if ((((!object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.pitch.private != '1')) {
+                            long = true;
+                        }
+                        console.log(object);
+                        html = '<div class="box">';
+                        if(long) {
+                            html += '<div class="sol"><img src="' + imageurl + '"></div> \
                                     <div class="box-info">\
                                         <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
                                         <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
-                                    </div>\
-                                    <div class="l-img l-img-box"> \
+                                    </div>';
+                        }
+                        var l_img_box_style = '';
+                        var r_content = '';
+                        if(!long) {
+                            l_img_box_style = 'style="padding-top: 0;"';
+                            r_content = 'style="padding-bottom: 0;"'
+
+                        };
+                        html += '<div class="l-img l-img-box" ' + l_img_box_style + '> \
                                         <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
-                                    <div class="r-content box-comment">';
+                                    <div class="r-content box-comment" ' + r_content +'>';
                         if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;</div>';
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
                         }
                         else {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;</div>';
+                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
                         }
-                        html += '</div>';
+                        if(!long) {
+                            html += '<p class="timeago"><time class="timeago" datetime="' + object.created + '">' + object.created + '</time></p>';
+                        }
+                        html += '</div></div>';
                     }
                 });
                 var $appendEl = $(html);

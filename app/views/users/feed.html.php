@@ -214,11 +214,11 @@
                                 if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
                                     // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
                                     $long = false;
-                                    if((!$object['solution']) || ($object['pitch']['private'] != '1')):
+                                    if(((!$object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
                                         $long = true;
                                     endif;
                                     ?>
-                                    <div class="box" data-id="<?php echo $object['id']?>">
+                                    <div class="box">
                                         <?php if($long):?>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                         <div class="box-info">
@@ -230,7 +230,7 @@
                                             <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                         </div>
                                         <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
-                                            <div class="r-content box-comment"> 
+                                            <div class="r-content box-comment" <?php if(!$long): echo 'style="padding-bottom: 0;"'; endif?>>
                                                 <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:<br /> &laquo;<?php echo $object['updateText'] ?>&raquo;
                                                 <?php if(!$long):?>
                                                     <p class="timeago">
