@@ -23,9 +23,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing vozduh.afisha.ru");
         self::ParsingVozduhAfisha();
         $this->out('Finished parsing vozduh.afisha.ru [' . (time() - $startTimeStamp) . ' sec]');
-        $this->out("Starting parsing colta.ru");
-        self::ParsingColta();
-        $this->out('Finished parsing colta.ru [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing colta.ru");
+        //self::ParsingColta();
+        //$this->out('Finished parsing colta.ru [' . (time() - $startTimeStamp) . ' sec]');
         $this->out("Starting parsing newgrids.fr");
         self::ParsingWordpress('http://newgrids.fr/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
@@ -41,6 +41,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing vice.com/ru");
         self::ParsingVice();
         $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
+        $this->out("Starting parsing wtpack.ru");
+        self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing wtpack.ru [' . (time() - $startTimeStamp) . ' sec]');
     }
 
     private function ParsingGodesigner() {

@@ -1328,11 +1328,11 @@ class UsersController extends \app\controllers\AppController {
                             }
                         }
                         if ($trigger) {
-                             Tweet::create(array(
+                             /*Tweet::create(array(
                                     'created' => date('Y-m-d H:i:s', $tweet['timestamp']),
                                     'text' => $content,
                                     'tweet_id' => $tweet['id_str']
-                                ))->save();
+                                ))->save();*/
                         }
                     }
                 }
