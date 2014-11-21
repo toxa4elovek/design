@@ -53,14 +53,14 @@ $(document).ready(function () {
     function scrollInit() {
         var header_bg = $('#header-bg'),
                 pitch_panel = $('#pitch-panel'),
-                header_height = $('#header-bg').height(),
-                header_pos = $('#header-bg').position().top,
+                header_height = header_bg.height(),
+                header_pos = header_bg.position().top,
                 windowHeight = $(window).height(),
                 $box = $('#container-design-news'),
                 $parent = $('.new-content'),
                 leftSidebar = $('#l-sidebar-office'),
                 leftSidebarTop = leftSidebar.offset().top;
-        var top = $('#container-design-news').offset().top;
+        var top = $box.offset().top;
         if (!pitch_panel.length) {
             $('<div id="pitch-panel"></div>').insertBefore(header_bg);
             pitch_panel = $('#pitch-panel');
@@ -189,6 +189,31 @@ $(document).ready(function () {
         Updater.init();
     }
 
+    $('#job-arrow-bottom').on('click', function () {
+        Updater.nextJob(true);
+        $('#job-arrow-top').show();
+    });
+
+    $('#job-arrow-top').on('click', function () {
+        Updater.nextJob(false);
+        $('#job-arrow-bottom').show();
+    });
+    $('#pitches-arrow-top').on('click', function () {
+        Updater.nextPitch(false);
+        $('#pitches-arrow-bottom').show();
+    });
+    $('#pitches-arrow-bottom').on('click', function () {
+        Updater.nextPitch(true);
+        $('#pitches-arrow-top').show();
+    });
+    $('#news-arrow-top').on('click', function () {
+        Updater.nextNews(false);
+        $('#news-arrow-bottom').show();
+    });
+    $('#news-arrow-bottom').on('click', function () {
+        Updater.nextNews(true);
+        $('#news-arrow-top').show();
+    });
     var clickedLikesList = []
 
     $(document).on('click', '.like-small-icon', function () {
@@ -520,6 +545,9 @@ function OfficeStatusUpdater() {
     this.storage = {};
     this.page = 1;
     this.solPage = 1;
+    this.jobPage = 1;
+    this.pitchPage = 1;
+    this.newsPage = 1;
     this.date = '';
     this.dateTwitter;
     this.newsDate;
@@ -932,33 +960,33 @@ function OfficeStatusUpdater() {
                         break;
                 }
                 return price;
-            }
-    this.getGenderTxt = function (txt, gender) {
-        if (gender == 1) {
-            txt += 'а';
-        }
-        return txt;
-    }
-    this.getSolutions = function () {
-        self.solPage += 1;
-        $('#SolutionAjaxLoader').show();
-        $.get('/events/getsol.json', {"init": true, "page": self.solPage}, function (response) {
-            $('#SolutionAjaxLoader').hide();
-            if (typeof (response.solpages) != "undefined" && response.solpages != null) {
-                var solutions = '';
-                $.each(response.solpages, function (index, solution) {
-                    if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
-                        if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
-                            var imageurl = solution.solution.images.solution_leftFeed.weburl;
-                        } else {
-                            var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
-                        }
-                        if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                            tweetLike = 'Мне нравится этот дизайн! А вам?';
-                        } else {
-                            tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
-                        }
-                        solutions += '<div class="solutions-block"> \
+            },
+            this.getGenderTxt = function (txt, gender) {
+                if (gender == 1) {
+                    txt += 'а';
+                }
+                return txt;
+            },
+            this.getSolutions = function () {
+                self.solPage += 1;
+                $('#SolutionAjaxLoader').show();
+                $.get('/events/getsol.json', {"init": true, "page": self.solPage}, function (response) {
+                    $('#SolutionAjaxLoader').hide();
+                    if (typeof (response.solpages) != "undefined" && response.solpages != null) {
+                        var solutions = '';
+                        $.each(response.solpages, function (index, solution) {
+                            if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
+                                if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
+                                    var imageurl = solution.solution.images.solution_leftFeed.weburl;
+                                } else {
+                                    var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
+                                }
+                                if (Math.floor((Math.random() * 100) + 1) <= 50) {
+                                    tweetLike = 'Мне нравится этот дизайн! А вам?';
+                                } else {
+                                    tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
+                                }
+                                solutions += '<div class="solutions-block"> \
                                     <a href="/pitches/viewsolution/' + solution.solution.id + '"><div class="left-sol" style="background: url(' + imageurl + ')"></div></a> \
                                     <div class="solution-info"> \
                                         <p class="creator-name"><a target="_blank" href="/users/view/' + solution.user_id + '">' + solution.creator + '</a></p> \
@@ -997,38 +1025,123 @@ function OfficeStatusUpdater() {
                                         </span>\
                                         <div class="solution_menu" style="display: none;">\
                                             <ul class="solution_menu_list" style="position:absolute;z-index:6;">';
-                        if (solution.pitch.user_id == this_user && solution.pitchesCount < 1 && !solution.selectedSolutions) {
-                            solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
+                                if (solution.pitch.user_id == this_user && solution.pitchesCount < 1 && !solution.selectedSolutions) {
+                                    solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
                                                         <a class="select-winner" href="/solutions/select/' + solution.solution.id + '.json" data-solutionid="' + solution.solution.id + '" data-user="' + solution.creator + '" data-num="' + solution.solution.num + '" data-userid="' + solution.solution.user_id + '">Назначить победителем</a>\
                                                     </li>';
-                        } else if (solution.pitch.user_id == this_user && (solution.solution.pitch.awarded != solution.solution.id) && ((solution.solution.pitch.status == 1) || (solution.solution.pitch.status == 2)) && solution.solution.pitch.awarded != 0) {
-                            solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
+                                } else if (solution.pitch.user_id == this_user && (solution.solution.pitch.awarded != solution.solution.id) && ((solution.solution.pitch.status == 1) || (solution.solution.pitch.status == 2)) && solution.solution.pitch.awarded != 0) {
+                                    solutions += '<li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">\
                                                         <a class="select-multiwinner" href="/pitches/setnewwinner/' + solution.solution.id + '" data-solutionid="' + solution.solution.id + '" data-user="' + solution.creator + '" data-num="' + solution.solution.num + '" data-userid="' + solution.solution.user_id + '">Назначить ' + solution.pitchesCount + 2 + ' победителя</a>\
                                                     </li>';
-                        }
-                        if (solution.pitch.user_id == this_user && isAllowedToComment) {
-                            solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-id="' + solution.solution.id + '" data-comment-to="#' + solution.solution.num + '">Комментировать</a></li>';
-                        }
-                        solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/' + solution.solution.id + '.json" class="warning" data-solution-id="' + solution.solution.id + '">Пожаловаться</a></li>';
-                        if (isAdmin) {
-                            solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="' + solution.solution.id + '" data-solution_num="' + solution.solution.num + '" href="/solutions/delete/' + solution.solution.id + '.json">Удалить</a></li>';
-                        }
-                        solutions += '</ul>\
+                                }
+                                if (solution.pitch.user_id == this_user && isAllowedToComment) {
+                                    solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-id="' + solution.solution.id + '" data-comment-to="#' + solution.solution.num + '">Комментировать</a></li>';
+                                }
+                                solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/' + solution.solution.id + '.json" class="warning" data-solution-id="' + solution.solution.id + '">Пожаловаться</a></li>';
+                                if (isAdmin) {
+                                    solutions += '<li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="' + solution.solution.id + '" data-solution_num="' + solution.solution.num + '" href="/solutions/delete/' + solution.solution.id + '.json">Удалить</a></li>';
+                                }
+                                solutions += '</ul>\
                                         </div>\
                                     </div> \
                                 </div>';
+                            }
+                        });
+                        if (solutions != '') {
+                            var $prependEl = $(solutions);
+                            $prependEl.hide();
+                            $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
+                            $('#SolutionAjaxLoader').appendTo($('#l-sidebar-office'));
+                            isBusySolution = 0;
+                        }
                     }
                 });
-                if (solutions != '') {
-                    var $prependEl = $(solutions);
-                    $prependEl.hide();
-                    $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
-                    $('#SolutionAjaxLoader').appendTo($('#l-sidebar-office'));
-                    isBusySolution = 0;
+            },
+            this.nextJob = function (prev) {
+                var content_job = $('#content-job');
+                if (prev) {
+                    self.jobPage += 1;
+                } else {
+                    self.jobPage -= 1;
                 }
-            }
-        })
-    };
+                if (self.jobPage <= 1) {
+                    $('#job-arrow-top').hide();
+                    $('#job-arrow-bottom').show();
+                }
+                $.post('/events/job.json', {"page": self.jobPage}, function (response) {
+                    var job = '';
+                    $.each(response.job, function (i, item) {
+                        job += '<div class="job">' + item.text + '</div><div class="sp"></div>';
+                    });
+                    if (response.count < 1) {
+                        $('#job-arrow-bottom').hide();
+                    }
+                    if (job != '') {
+                        var $prependEl = $(job);
+                        $prependEl.hide();
+                        content_job.empty();
+                        $prependEl.appendTo(content_job).fadeIn(200);
+                    }
+                });
+            },
+            this.nextPitch = function (prev) {
+                var content = $('#content-pitches');
+                if (prev) {
+                    self.pitchPage += 1;
+                } else {
+                    self.pitchPage -= 1;
+                }
+                if (self.pitchPage <= 1) {
+                    $('#pitches-arrow-top').hide();
+                    $('#pitches-arrow-bottom').show();
+                }
+                $.post('/events/pitches.json', {"page": self.pitchPage}, function (response) {
+                    var pitches = '';
+                    $.each(response.pitches, function (i, item) {
+                        pitches += '<div class="new-pitches"> \
+                                    <div class="new-price">' + parseInt(item.price) + 'р.</div> \
+                                    <div class="new-title"><a href="/pitches/view/' + item.id + '">' + item.title + '</a></div> \
+                                </div>';
+                    });
+                    if (response.count < 1) {
+                        $('#pitches-arrow-bottom').hide();
+                    }
+                    if (pitches != '') {
+                        var $prependEl = $(pitches);
+                        $prependEl.hide();
+                        content.empty();
+                        $prependEl.appendTo(content).fadeIn(200);
+                    }
+                });
+            },
+            this.nextNews = function (prev) {
+                var content = $('#content-news');
+                if (prev) {
+                    self.newsPage += 1;
+                } else {
+                    self.newsPage -= 1;
+                }
+                if (self.newsPage <= 1) {
+                    $('#news-arrow-top').hide();
+                    $('#news-arrow-bottom').show();
+                }
+                $.post('/events/news.json', {"page": self.newsPage}, function (response) {
+                    var news = '';
+                    $.each(response.news, function (i, item) {
+                        host = parse_url_regex(item.link);
+                        news += '<div class="design-news"><a target="_blank" href="/users/click?link=' + item.link + '&id=' + item.id + '">' + item.title + ' <br><a class="clicks" href="/users/click?link=' + item.link + '&id=' + item.id + '">' + host[3] + '</a></div>';
+                    });
+                    if (response.count < 1) {
+                        $('#news-arrow-bottom').hide();
+                    }
+                    if (news != '') {
+                        var $prependEl = $(news);
+                        $prependEl.hide();
+                        content.empty();
+                        $prependEl.appendTo(content).fadeIn(200);
+                    }
+                });
+            };
 }
 function parse_url_regex(url) {
     var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;

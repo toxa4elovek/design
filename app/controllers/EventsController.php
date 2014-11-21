@@ -59,6 +59,27 @@ class EventsController extends \app\controllers\AppController {
         return compact('solpages');
     }
 
+    public function job() {
+        $job = \app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page']));
+        $count = count(\app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page'] + 1)));
+        return compact('job', 'count');
+    }
+
+    public function pitches() {
+        $pitches = Pitch::all(array('fields' => array('id', 'title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5, 'page' => $this->request->data['page']));
+        $count = 0;
+        if ($pitches) {
+            $count = count(Pitch::all(array('conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5, 'page' => $this->request->data['page'] + 1)));
+        }
+        return compact('pitches', 'count');
+    }
+
+    public function news() {
+        $news = News::getNews(0, $this->request->data['page']);
+        $count = count(News::getNews(0, $this->request->data['page'] + 1));
+        return compact('news', 'count');
+    }
+
 }
 
 ?>
