@@ -35,7 +35,8 @@
                             'needpay' => array('<a href="/answers/view/6"><i id="help"></i>Какие способы оплаты вы принимаете?</a>'),
                             'current' => array('<a href="/answers/view/78"><i id="help"></i>Инструменты заказчика</a>', '<a href="/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a>'),
                             'finish' => array('<a href="/answers/view/63"><i id="help"></i>Как работает завершающий этап?</a>'),
-                            'winner' => array('<a href="/answers/view/70"><i id="help"></i>Как объявить победителя или номинировать работу?</a>')
+                            'winner' => array('<a href="/answers/view/70"><i id="help"></i>Как объявить победителя или номинировать работу?</a>'),
+                            'winner' => array('<a href="/answers/view/97"><i id="help"></i>Как выбрать второго победителя?</a>'),
 
                         );
                         $types = array();
@@ -186,7 +187,7 @@
     </div>
 </div>
 <?php endif?>
-<div id="header-bg">
+<div id="header-bg" <?php if($this->_request->action == 'feed'): echo 'style="height: 60px;"'; endif;?>>
 
     <header class="<?=$header?>">
 
@@ -199,10 +200,10 @@
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">
             <?php if($this->user->getNewEventsCount() > 0):?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
-                <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::office', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
+                <a href="/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
+                <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::feed', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
             <?php else:?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
+                <a href="/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
             <?php endif?>
 
         <?php else:?>
@@ -219,7 +220,7 @@
                 <?php endif?>
             </div>
             <ul class="header-menu">
-                <li class="header-menu-item"><a href="/users/office">Обновления</a></li>
+                <li class="header-menu-item"><a href="/users/feed">Обновления</a></li>
                 <li class="header-menu-item"><a href="/users/mypitches">Мои питчи</a></li>
                 <li class="header-menu-item"><a href="/users/profile">Профиль</a></li>
                 <li class="header-menu-item"><a href="/users/solutions">Решения</a></li>

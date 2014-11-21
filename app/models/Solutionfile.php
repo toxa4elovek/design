@@ -32,6 +32,13 @@ class Solutionfile extends \app\models\AppModel {
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
         ),
+        'middleFeed' => array(
+            'image_resize' => true,
+            'image_x' => 600,
+            'image_y' => 500,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
         'tutdesign' => array(
             'image_resize' => true,
             'image_ratio_fill' => true,
@@ -92,6 +99,13 @@ class Solutionfile extends \app\models\AppModel {
             'image_resize' => true,
             'image_x' => 310,
             'image_y' => 240,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
+        'middleFeed' => array(
+            'image_resize' => true,
+            'image_x' => 600,
+            'image_y' => 500,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
         ),

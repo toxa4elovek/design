@@ -27,9 +27,6 @@
     .new-content {
         width:958px;
     }
-    /*    .onTopMiddle {
-            right: 405px !important;
-        }*/
 }
 
 @media screen and (max-width: 960px) {
@@ -42,9 +39,33 @@
     }
 }
 
+@media screen and (min-width: 1240px) {
+    #l-sidebar-office {
+        display: block;
+    }
+    #r-sidebar-office {
+        width: 300px !important;
+    }
+    #r-sidebar-office #floatingLayer > div {
+        width: 300px !important;
+    }
+    .new-content {
+        width: 1220px !important;
+    }
+    #center_sidebar {
+        margin-left: 316px;
+    }
+}
+
 @media screen and (min-width: 1280px) {
     #l-sidebar-office {
         display: block;
+    }
+    #r-sidebar-office {
+        width: 310px;
+    }
+    #r-sidebar-office #floatingLayer > div {
+        width: 310px;
     }
 
     .new-content {
@@ -105,16 +126,19 @@
 #l-sidebar-office .solutions-block .creator-name a {
     color: #2d2d2d;
 }
-
-#l-sidebar-office .solutions-block img {
-    max-width: 310px;
+#l-sidebar-office .solutions-block .creator-name a:hover {
+    color: #658fa5;
+}
+#l-sidebar-office .solutions-block .left-sol{
+    height: 240px;
+    width: 310px;
 }
 
 #l-sidebar-office .solutions-block > div {
-    display: table-cell;
-    vertical-align: middle;
     padding: 10px 7px 10px 18px;
-    width: 310px;
+    width: 285px;
+    height: 17px;
+    display: block;
 }
 .avatar {
     width: 40px;
@@ -123,7 +147,7 @@
     background: url(img/fb_like.png) no-repeat left top;
     height: 14px;
     color: #999999;
-    margin-left: 70px;
+    margin-left: 15px;
     font: 14px OfficinaSansC Book, serif !important;
     padding: 3px 0 0 20px;
     text-decoration: none;
@@ -137,11 +161,11 @@
 }
 #l-sidebar-office .solutions-block .creator-name {
     display: inline-block;
-    width: 110px;
 }
 
 #l-sidebar-office .solutions-block .ratingcont {
     margin-top: 5px;
+    margin-left: 15px;
 }
 
 #center_sidebar {
@@ -151,7 +175,7 @@
 .rs-header {
     background: #2f313a;
     color: #fff;
-    padding: 25px 0 25px 20px;
+    padding: 20px 0 20px 20px;
     font-family: OfficinaSansC Bold, serif;
     font-size: 17px;
 }
@@ -166,8 +190,11 @@
 #container-job-designers a {
     color: #C8C8C8;
 }
+#container-job-designers a:hover {
+    text-decoration: underline;
+}
 #container-job-designers .job {
-    padding: 22px 15px 18px 25px;
+    padding: 20px 15px 20px 25px;
     color: #2D2D2D;
 }
 #container-job-designers .sp {
@@ -204,7 +231,7 @@
     display: table-cell;
     vertical-align: middle;
     font-size: 16px;
-    padding: 28px 5px 25px 0;
+    padding: 20px 5px 20px 0;
     line-height: 23px;
 }
 
@@ -227,12 +254,16 @@
     font-size: 16px;
     font-family: OfficinaSansC Bold, serif;
     color: #2d2d2d;
-    padding: 28px 15px 18px 20px;
+    padding: 20px 15px 20px 20px;
     line-height: 23px;
 }
 
 #container-design-news .design-news a {
     color: #2d2d2d;
+}
+
+#container-design-news .design-news a:hover {
+    text-decoration: underline;
 }
 
 #container-design-news .design-news .clicks {
@@ -262,14 +293,24 @@
     width: 40px;
 }
 
+.center-boxes .box .l-img-box {
+    padding-top: 8px;
+}
+
 .center-boxes .box .r-content {
     padding: 16px 5px 20px 20px;
     vertical-align: top;
     width: 99%;
 }
 
+.center-boxes .box .box-comment {
+    padding-top: 5px;
+}
+
 .center-boxes .box .post-content {
     padding: 16px 5px 0 20px;
+    position: relative;
+    width: 599px;
 }
 
 .center-boxes .box .rat {
@@ -295,6 +336,8 @@
 .center-boxes .box p.timeago {
     color: #c8c8c8;
     font-style: italic;
+    font-family: Georgia, serif;
+    font-size: 14px;
     display: block;
     margin: 10px 0;
 }
@@ -306,32 +349,111 @@
     margin: 0 auto;
 }
 
+.center-boxes .box p.img-short {
+    color: #2d2d2d;
+    font: 16px/23px OfficinaSansC Book, serif !important;
+    text-decoration: none;
+    padding-top: 5px;
+}
+
 .center-boxes .box a.post-link {
     position: relative
 }
 
+.center-boxes .box .box-info {
+    width:583px;
+    display: block;
+    text-align: right;
+    padding-right: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.center-boxes .box .box-info a {
+    padding-left: 15px;
+    color: #6b92a2;
+}
+
+.like-small-icon-box {
+    background: url(img/fb_like.png) no-repeat 100% -20px;
+    height: 14px;
+    color: #999999;
+    font: 14px OfficinaSansC Book, serif !important;
+    padding-right: 23px;
+    padding-top: 4px;
+    text-decoration: none;
+}
+.like-small-icon-box:hover, .like-small-icon-box:active {
+    /*    background-position: 100% -20px;
+        padding-right: 23px;
+        color: #648fa4;*/
+    text-decoration: underline;
+}
+
+.warning-box {
+    background: url(/img/icons-solution.png) no-repeat 100% -81px;
+    color: #648fa4;
+    font: 14px OfficinaSansC Book, serif !important;
+    height: 25px;
+    padding-top: 4px;
+    padding-right: 25px;
+}
+.warning-box:hover {
+    text-decoration: underline;
+}
+
 .center-boxes .box p.img-tag {
+    display: table-cell;
+    height: 22px;
+    /*width: auto;*/
+    min-width: 193px;
+    max-width: 300px;
+    white-space: nowrap;
     position: absolute;
-    height: 32px;
-    width: 193px;
-    position: absolute;
-    margin-left: 200px;
-    margin-top: -17px;
-    padding-top: 8px;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 12px 3px 0 3px;
+    left:0; right: 0;
+    top: -17px;
     text-align: center;
     line-height: 1;
-    background: url(/img/for_designers.png) no-repeat;
+    background-color: #FF595D;
     color: #fff;
     font-size: 14px;
+    font-weight: lighter;
     text-transform: uppercase;
     letter-spacing: 5px;
-    font-family: OfficinaSansC Bold, serif;
+    font-family: OfficinaSansC Book, serif;
+}
+
+.center-boxes .box p.img-tag:before{
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 18px 0 16px 16px;
+    border-color: #FF595D #FF595D #FF595D transparent;
+    position: absolute;
+    left: -16px;
+    top: 0px;
+}
+
+.center-boxes .box p.img-tag:after{
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 18px 16px 16px 0;
+    border-color: #FF595D transparent #FF595D #FF595D;
+    position: absolute;
+    right: -16px;
+    top: 0px;
 }
 
 .center-boxes .box .likes > div {
     display: block;
     border-bottom: 1px solid #e8e4e5;
-    padding: 7px 3px 7px 22px;
+    padding: 7px 3px 7px 0;
     width: 575px;
 }
 
@@ -345,12 +467,14 @@
     color: #f86362;
 }
 
-.center-boxes .box img.sol {
-    max-width: 598px;
+.center-boxes .box div.sol {
+    max-height: 500px;
+    width: 598px;
+    display: block;
+    overflow: hidden;
 }
 
 .new-middle_inner {
-    margin-top: -89px;
     /*    padding: 66px 34px 20px 63px;*/
     position: relative;
 }
@@ -401,7 +525,103 @@
 }
 
 .box h2,.box a h2 {
-    font-size: 18px;
+    font-size: 23px;
     color: #2d2d2d;
     padding-top: 16px;
+    font-family: OfficinaSansC Bold, serif;
+    font-weight: lighter;
+}
+
+#gender-box {
+    height: 85px;
+    width: 597px;
+    background: #fff;
+    margin-top: 10px;
+    right: 71px;
+    overflow: hidden;
+    position: relative;
+}
+
+#gender-box span {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 16px;
+    color: #333333;
+    display: inline;
+}
+
+#gender-box div {
+    padding-left: 90px;
+    padding-top: 15px;
+}
+
+/*#gender-box input[type="radio"] {
+    display:none;
+}*/
+#gender-box span span {
+    margin-right:20px;
+}
+#gender-box label {
+    padding-left: 20px;
+}
+
+#gender-box input {
+    vertical-align: middle;
+    height: auto;
+    width: auto;
+    margin: 0;
+    margin-top: -1px;
+}
+/*#gender-box label:before {  
+    content: "";  
+    display: inline-block;  
+    width: 16px;  
+    height: 16px;  
+    margin-right: 10px;  
+    position: absolute;  
+    left: 0;  
+    bottom: 1px;
+    border-radius: 8px; 
+    background-color: #fff;
+    box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
+    -webkit-box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
+    -moz-box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
+
+}
+#gender-box input[type="radio"]:checked + label:before {  
+    content: "\2022";  
+    color: #000;  
+    font-size: 17px;  
+    text-align: center;  
+    line-height: 18px;  
+}*/
+
+#gender-box #close-gender {
+    background: url(img/popup-close-sprite.png) no-repeat 0 -15px;
+    cursor: pointer;
+    width: 10px;
+    position: absolute;
+    right: -70px;
+    top: 7px;
+}
+
+#gender-box #close-gender:hover {
+    background: url(img/popup-close-sprite.png) no-repeat 0 0;
+    width: 10px;
+}
+
+#gender-box p {
+    color: #c8c8c8;
+    font-style: italic;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    display: block;
+    margin: 4px 0;
+}
+
+.bottom_arrow {
+    float: right;
+}
+
+.solution-menu-toggle img {
+    vertical-align: middle;
 }

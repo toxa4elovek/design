@@ -26,13 +26,17 @@ class SolutionsController extends \app\controllers\AppController {
 
 
 	public function like() {
-		$likes = Solution::increaseLike($this->request->id, Session::read('user.id'));
-		return compact('likes');
+            $likes = Solution::increaseLike($this->request->id, Session::read('user.id'));
+            $result = $likes['result'];
+            $likes = $likes['likes'];
+            return compact('likes','result');
 	}
 
     public function unlike() {
         $likes = Solution::decreaseLike($this->request->id, Session::read('user.id'));
-        return compact('likes');
+        $result = $likes['result'];
+        $likes = $likes['likes'];
+        return compact('likes','result');
     }
 
 	public function rating() {

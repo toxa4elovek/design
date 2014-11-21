@@ -44,14 +44,19 @@ class EventsController extends \app\controllers\AppController {
             $twitter = Stream::renderStreamFeed(10, $this->request->query['twitterDate']);
         }
         if (!empty($this->request->query['solutionDate'])) {
-            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
         }
         if (!empty($this->request->query['newsDate'])) {
             $post = News::getPost($this->request->query['newsDate']);
-            $news = News::getNews();
+            $news = News::getNews($this->request->query['newsDate']);
         }
         $count = count($updates);
         return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
+    }
+
+    public function getsol() {
+        $solpages = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'page' => $this->request->query['page'], 'with' => array('Pitch')));
+        return compact('solpages');
     }
 
 }

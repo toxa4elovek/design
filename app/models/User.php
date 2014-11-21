@@ -22,6 +22,7 @@ use \tmhOAuth\tmhUtilities;
 use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
 use \DirectoryIterator;
+use \app\extensions\helper\MoneyFormatter;
 
 class User extends \app\models\AppModel {
 
@@ -128,6 +129,12 @@ class User extends \app\models\AppModel {
     }
 
     public function saveFacebookUser($entity, $data) {
+        $gender = 0;
+        if (isset($this->request->data['gender']) && $this->request->data['gender'] == 'male') {
+            $gender = 1;
+        } elseif (isset($this->request->data['gender']) && $this->request->data['gender'] == 'female') {
+            $gender = 2;
+        }
         $saveData = array(
             'email' => $data['email'],
             'last_name' => $data['last_name'],
@@ -135,6 +142,7 @@ class User extends \app\models\AppModel {
             'facebook_uid'=> $data['facebook_uid'],
             'confirmed_email' => 1,
             'created' => date('Y-m-d H:i:s'),
+            'gender' => $gender
         );
         if($entity->save($saveData, array(
             'first_name' => array(
@@ -375,7 +383,7 @@ class User extends \app\models\AppModel {
         // All but pitches owners
         $users2 = self::all(array(
             'conditions' => array(
-                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
+                'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''),
             ),
             'with' => array('Pitch')
         ));
@@ -404,7 +412,7 @@ class User extends \app\models\AppModel {
             $users3 = self::all(array(
                 'fields' => array('id'),
                 'conditions' => array(
-                    'isCopy' => 1, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
+                    'isCopy' => 1, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''),
                 )
             ));
             $result3 = $users3->data();
@@ -586,7 +594,7 @@ class User extends \app\models\AppModel {
                 ),
                 'with' => array('User'),
             ));
-            if ($comments = Comment::all(array('conditions' => array('pitch_id' => $pitch_id, 'user_id' => $expert->user_id)))) {
+            if ($comments = Comment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $expert->user_id)))) {
                 continue;
             }
             $data['user'] = $expert->user;
@@ -777,16 +785,17 @@ class User extends \app\models\AppModel {
             $ids[] = $pitch->user_id;
             if($pitch->expert == 1) {
                 $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения.<br/>
-В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 3 рабочих дней после того, как эксперты выскажут своё мнение, оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 3 рабочих дней после окончания срока питча, в противном случае такая возможность будет недоступна.';
+В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 4 дней после того, как эксперты выскажут своё мнение, оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 4 дней после окончания срока питча, в противном случае такая возможность будет недоступна.';
             }else {
                 $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения.<br/>
-В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 3 рабочих дней после завершения питча оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 3 рабочих дней после окончания срока питча, в противном случае такая возможность будет недоступна.';
+В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 4 дней после завершения питча оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 4 дней после окончания срока питча, в противном случае такая возможность будет недоступна.';
             }
             if($pitch->guaranteed == 1) {
                 if($pitch->expert == 1) {
-                    $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения. На выбор победителя у вас есть три рабочих дня после того, как все выбранные вами эксперты выскажут своё мнение.';
+                    $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения. На выбор победителя у вас есть четыре рабочих дня после того, как все выбранные вами эксперты выскажут своё мнение.';
                 }else {
-                    $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения. На выбор победителя у вас есть три рабочих дня с момента окончания срока питча.';
+                    $text = 'Срок выбора победителя, на который отводится 4 дня, подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br>
+Внести дальнейшие правки вы сможете на <a href="http://www.godesigner.ru/answers/view/63">завершающем этапе</a>. У вас также есть возможность номинировать <a href="http://www.godesigner.ru/answers/view/97">двух и более дизайнеров</a>. ';
                 }
             }
             $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text);
@@ -894,6 +903,29 @@ class User extends \app\models\AppModel {
         }else {
             return false;
         }
+    }
+    
+    public function sendTweetWinner($solution,$pitch,$comment = false) {
+        if ($comment) {
+            $admin = User::getAdmin();
+            $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
+    Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
+            $data = array('pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
+            Comment::createComment($data);
+        }
+        $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
+        $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
+        $winner = self::first($solution->user_id);
+        $nameInflector = new nameInflector();
+        $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
+        $moneyFormatter = new MoneyFormatter();
+        $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
+        if (rand(1, 100) <= 50) {
+            $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
+        } else {
+            $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
+        }
+        self::sendTweet($tweet);
     }
 
     public static function sendFinishReports($pitch) {

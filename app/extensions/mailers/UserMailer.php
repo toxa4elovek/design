@@ -19,11 +19,11 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
     }
 
     public static function warn_solution($data) {
-        return self::_mail(array('to' => 'devochkina@godesigner.ru', 'use-smtp' => true, 'subject' => 'Жалоба на решение', 'data' => array('solution' => $data['solution'], 'text' => $data['text'], 'user' => $data['user'])));
+        return self::_mail(array('to' => 'devochkina@godesigner.ru', 'reply-to' => $data['user']['email'], 'use-smtp' => true, 'subject' => 'Жалоба на решение', 'data' => array('solution' => $data['solution'], 'text' => $data['text'], 'user' => $data['user'])));
     }
 
     public static function warn_comment($data) {
-        return self::_mail(array('to' => 'devochkina@godesigner.ru', 'use-smtp' => true, 'subject' => 'Жалоба на комментарий', 'data' => array('comment' => $data['comment'], 'text' => $data['text'], 'user' => $data['user'])));
+        return self::_mail(array('to' => 'devochkina@godesigner.ru', 'reply-to' => $data['user']['email'], 'use-smtp' => true, 'subject' => 'Жалоба на комментарий', 'data' => array('comment' => $data['comment'], 'text' => $data['text'], 'user' => $data['user'])));
     }
 
     public static function ban($data) {
