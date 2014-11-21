@@ -30,7 +30,7 @@ use lithium\core\Environment;
 Router::connect('/', 'Pages::home');
 
 Router::connect('/pages/contacts', 'Pages::contacts');
-Router::connect('/pages/fastpitch', 'Pages::fastpitch');
+Router::connect('/fastpitch', 'Pages::fastpitch');
 Router::connect('/stats', 'Pages::stats');
 Router::connect('/events/updates.{:type}', 'Events::updates');
 Router::connect('/users/checkform.{:type}', 'Users::checkform');

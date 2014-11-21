@@ -35,11 +35,18 @@
                             <?php endforeach; ?>
                         </ul>
                         <ul class="date-hide">
-                        <?php foreach ($alllow_time as $i => $v): ?>
-                                <li>
+                        <?php
+                        $j = 1;
+                        foreach ($alllow_time as $i => $v): ?>
+                                <li data-num="<?php echo $j; ?>" <?php if(($j % 3) == 0): echo 'style="padding-right: 30px;"'; else: echo 'style="padding-right: 33px;"'; endif;?>>
                                     <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                 </li>
-                        <?php endforeach; ?>
+                        <?php
+                            $j += 1;
+                            if($j == 5):
+                                $j = 1;
+                            endif;
+                        endforeach; ?>
                         </ul>
                         <a id="fastpitch" class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo;</a>
 

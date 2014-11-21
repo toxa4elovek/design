@@ -5,7 +5,7 @@
 }
 #top-logo-oneclick {
     height:322px;
-    background: url(img/main_banner_logo_one_click.png) no-repeat;
+    background: url(/img/main_banner_logo_one_click.png) no-repeat;
     margin:-43px auto 0;
     width:958px;
     position:relative;
@@ -29,7 +29,7 @@ input.input-phone {
     width: 220px;
 }
 .middle_inner_oneclick {
-    background: url(img/main_bg.jpg) repeat;
+    background: url(/img/main_bg.jpg) repeat;
     padding: 0 34px 30px 63px;
 }
 span.and_phone{
