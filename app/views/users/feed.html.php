@@ -212,23 +212,40 @@
                                     }
                                 }
                                 if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
+                                    // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
+                                    $long = false;
+                                    if((!$object['solution']) || ($object['pitch']['private'] != '1')):
+                                        $long = true;
+                                    endif;
                                     ?>
-                                    <div class="box">
+                                    <div class="box" data-id="<?php echo $object['id']?>">
+                                        <?php if($long):?>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                         <div class="box-info">
                                             <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
                                             <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                         </div>
-                                        <div class="l-img l-img-box"> 
+                                        <?php endif; ?>
+                                        <div class="l-img l-img-box" <?php if(!$long): echo 'style="padding-top: 0;"'; endif?>>
                                             <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                         </div>
                                         <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
                                             <div class="r-content box-comment"> 
                                                 <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:<br /> &laquo;<?php echo $object['updateText'] ?>&raquo;
-                                            </div> 
+                                                <?php if(!$long):?>
+                                                    <p class="timeago">
+                                                        <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
+                                                    </p>
+                                                <?php endif; ?>
+                                            </div>
                                         <?php else: ?>
-                                            <div class="r-content box-comment"> 
+                                            <div class="r-content box-comment" <?php if(!$long): echo 'style="padding-bottom: 0;"'; endif?>>
                                                 <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                                <?php if(!$long):?>
+                                                    <p class="timeago">
+                                                        <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
+                                                    </p>
+                                                <?php endif; ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>

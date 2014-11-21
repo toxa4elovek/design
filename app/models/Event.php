@@ -41,7 +41,7 @@ class Event extends \app\models\AppModel {
                 };
                 $addBindings = function($record) {
                     if ((isset($record->solution_id)) && ($record->solution_id > 0)) {
-                        $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id, 'category_id' => array('!=' => 7), 'private' => 0)));
+                        $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id, 'category_id' => array('!=' => 7))));
                         if ($record->type == 'SolutionAdded') {
                             $record->pitchesCount = Pitch::getCountBilledMultiwinner($record->pitch_id);
                             $selectedsolution = false;
@@ -59,7 +59,8 @@ class Event extends \app\models\AppModel {
                             $record->allowLike = $allowLike;
                         }
                     } else {
-                        $record->solution = Solution::getBestSolution($record->pitch_id);
+                        //$record->solution = Solution::getBestSolution($record->pitch_id);
+                        $record->solution = null;
                     }
                     if ($record->solution && ($record->solution->pitch->private == 1) || ($record->solution->pitch->category_id == 7)) {
                         if (($record->user_id != Session::read('user.id')) && ($record->solution->pitch->user_id != Session::read('user.id'))) {
@@ -214,6 +215,15 @@ class Event extends \app\models\AppModel {
         foreach ($events as $event) {
             if (($event->type == 'CommentAdded' || $event->type == 'CommentCreated') && ($event->user_id != Session::read('user.id')) && ($event->pitch->user_id != Session::read('user.id'))) {
 
+
+                if ($event->type == 'SolutionAdded' && !$event->solution) {
+                    $event->delete();
+                } elseif ($event->type == 'CommentAdded' && !$event->comment) {
+                    $event->delete();
+                } elseif ($event->type == 'LikeAdded' && !$event->solution) {
+                    $event->delete();
+                }
+
                 // Parent
                 if (($event->comment->question_id == 0) && ($event->comment->public != 1)) {
                     if (Comment::find('count', array('conditions' => array('question_id' => $event->comment->id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
@@ -227,6 +237,8 @@ class Event extends \app\models\AppModel {
                         continue;
                     }
                 }
+
+
             }
             $event->sort = $i;
             $eventList[] = $event->data();
