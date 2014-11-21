@@ -49,7 +49,7 @@ class PitchesController extends \app\controllers\AppController {
      */
 	public $publicActions = array(
         'crowdsourcing', 'blank',  'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
-	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata'
+	    'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch'
 	);
 
     public function blank() {
@@ -1366,7 +1366,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
         Pitch::dailypitch();
         die();
     }
-    
+
     public function newwinner() {  
         if(($pitch = Pitch::first($this->request->id))&& Session::read('user.id') == $pitch->user_id && ($receipt = Receipt::all(array('conditions'=>array('pitch_id' => $this->request->id),'fields' => array('name','value'))))) {
             return compact('pitch','receipt');
@@ -1396,6 +1396,59 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 }
             }
             return $this->redirect(array('controller' => 'pitches', 'action' => 'newwinner', 'id' => $newPitchId ? $newPitchId : $copyPitch->id));
+        } else {
+            return $this->redirect('/pitches');
+        }
+    }
+
+    public function addfastpitch() {
+        if ($this->request->is('json')) {
+            $pitch = Pitch::create();
+            $pitch->set(array(
+                'title'=>'Логотип в один клик ('. $this->request->data['phone'] . ')',
+                'phone-brief' => $this->request->data['phone'],
+                'price' => 14000,
+                'total' => 19600));
+            if(Session::read('user.id')) {
+                $pitch->user_id = Session::read('user.id');
+            }
+            if($pitch->save()) {
+                $start = new \DateTime();
+                $start->setTimestamp($this->request->data['date']);
+                \app\models\Schedule::create(array(
+                    'title' => 'Логотип в один клик ('. $this->request->data['phone'] . ')',
+                    'start' => $start->format('Y-m-d H:i:s'),
+                    'end' => $start->setTime($start->format('H') + 1, '00', '00')->format('Y-m-d H:i:s')
+                ))->save();
+                $receiptData = array(
+                    'features' => array(
+                        'award' => $pitch->price,
+                        'discount' => -2530,
+                        'brief' => 1750,
+                        'experts' => array(1),
+                        'guaranteed' => 950,
+                        'pinned' => 1000),
+                        'commonPitchData' => array(
+                            'id' => $pitch->id,
+                            'category_id' => 0,
+                            'promocode' => 0));
+                if (isset($_COOKIE['fastpitch'])) {
+                    $cookies = unserialize($_COOKIE['fastpitch']);
+                    $cookies[] = $pitch->id;
+                    setcookie('fastpitch', serialize($cookies), strtotime('+2 month'), '/');
+                } else {
+                    setcookie('fastpitch', serialize(array($pitch->id)), strtotime('+2 month'), '/');
+                }
+                return json_encode('/pitches/fastpitch/'.Receipt::createReceipt($receiptData)); 
+            } else {
+                return json_encode('false');
+            }
+        }
+    }
+    
+     public function fastpitch() {
+        if(($pitch = Pitch::first($this->request->id)) && ($receipt = Receipt::all(array('conditions'=>array('pitch_id' => $this->request->id),'fields' => array('name','value'))))) {
+            return compact('pitch','receipt');
         } else {
             return $this->redirect('/pitches');
         }
