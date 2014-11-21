@@ -1263,23 +1263,41 @@ class UsersController extends \app\controllers\AppController {
                     $delete = true;
                 }
                 if($delete == false) {
+                    $content = '';
                     $listOfUsedIds[] = $tweet['id_str'];
                     $tweet['timestamp'] = strtotime($tweet['created_at']);
                     $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
                     $censoredTweets['statuses'][$key] = $tweet;
                     $trigger = true;
-                    foreach ($tweets_list as $v) {
-                        if ($v->tweet_id !== $tweet['id_str']) {
-                            $trigger = false;
-                            break;
+                    $text = $tweet['text'];
+                    if (!isset($tweet['type']) && $tweet['type'] !== 'tutdesign') {
+                        foreach ($tweet['entities']['hashtags'] as $hashtag) {
+                            $text = str_replace('#' . $hashtag['text'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/search/%23' . $hashtag['text'] . '">' . '#' . $hashtag['text'] . '</a>', $text);
                         }
-                    }
-                    if ($trigger) {
-                         Tweet::create(array(
-                                'created' => date('Y-m-d H:i:s',$tweet['timestamp']),
-                                'text' => $tweet['text'],
-                                'tweet_id' => $tweet['id_str']
-                            ))->save();
+                        foreach ($tweet['entities']['urls'] as $url) {
+
+                            $text = str_replace($url['url'], '<a class="url-twitter" style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a>', $text);
+                        }
+                        foreach ($tweet['entities']['user_mentions'] as $user) {
+
+                            $text = str_replace('@' . $user['screen_name'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a>', $text);
+                        }
+                        $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a>';
+                        $content .= $user . ' ' . $text;
+                        $content = preg_replace("/<img[^>]+\>/i", '', $content);
+                        foreach ($tweets_list as $v) {
+                            if ($v->tweet_id !== $tweet['id_str']) {
+                                $trigger = false;
+                                break;
+                            }
+                        }
+                        if ($trigger) {
+                             Tweet::create(array(
+                                    'created' => date('Y-m-d H:i:s', $tweet['timestamp']),
+                                    'text' => $content,
+                                    'tweet_id' => $tweet['id_str']
+                                ))->save();
+                        }
                     }
                 }
             }
