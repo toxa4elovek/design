@@ -189,31 +189,18 @@ $(document).ready(function () {
         Updater.init();
     }
 
-    $('#job-arrow-bottom').on('click', function () {
-        Updater.nextJob(true);
-        $('#job-arrow-top').show();
-    });
-
-    $('#job-arrow-top').on('click', function () {
-        Updater.nextJob(false);
-        $('#job-arrow-bottom').show();
-    });
-    $('#pitches-arrow-top').on('click', function () {
-        Updater.nextPitch(false);
-        $('#pitches-arrow-bottom').show();
-    });
-    $('#pitches-arrow-bottom').on('click', function () {
-        Updater.nextPitch(true);
-        $('#pitches-arrow-top').show();
-    });
-    $('#news-arrow-top').on('click', function () {
-        Updater.nextNews(false);
-        $('#news-arrow-bottom').show();
-    });
     $('#news-arrow-bottom').on('click', function () {
         Updater.nextNews(true);
         $('#news-arrow-top').show();
     });
+
+    $("#content-news")
+            .mouseenter(function () {
+                $(this).css('overflow-y', 'scroll');
+            })
+            .mouseleave(function () {
+                $(this).css('overflow', 'hidden');
+            });
     var clickedLikesList = []
 
     $(document).on('click', '.like-small-icon', function () {
@@ -1057,74 +1044,9 @@ function OfficeStatusUpdater() {
                     }
                 });
             },
-            this.nextJob = function (prev) {
-                var content_job = $('#content-job');
-                if (prev) {
-                    self.jobPage += 1;
-                } else {
-                    self.jobPage -= 1;
-                }
-                if (self.jobPage <= 1) {
-                    $('#job-arrow-top').hide();
-                    $('#job-arrow-bottom').show();
-                }
-                $.post('/events/job.json', {"page": self.jobPage}, function (response) {
-                    var job = '';
-                    $.each(response.job, function (i, item) {
-                        job += '<div class="job">' + item.text + '</div><div class="sp"></div>';
-                    });
-                    if (response.count < 1) {
-                        $('#job-arrow-bottom').hide();
-                    }
-                    if (job != '') {
-                        var $prependEl = $(job);
-                        $prependEl.hide();
-                        content_job.empty();
-                        $prependEl.appendTo(content_job).fadeIn(200);
-                    }
-                });
-            },
-            this.nextPitch = function (prev) {
-                var content = $('#content-pitches');
-                if (prev) {
-                    self.pitchPage += 1;
-                } else {
-                    self.pitchPage -= 1;
-                }
-                if (self.pitchPage <= 1) {
-                    $('#pitches-arrow-top').hide();
-                    $('#pitches-arrow-bottom').show();
-                }
-                $.post('/events/pitches.json', {"page": self.pitchPage}, function (response) {
-                    var pitches = '';
-                    $.each(response.pitches, function (i, item) {
-                        pitches += '<div class="new-pitches"> \
-                                    <div class="new-price">' + parseInt(item.price) + 'р.</div> \
-                                    <div class="new-title"><a href="/pitches/view/' + item.id + '">' + item.title + '</a></div> \
-                                </div>';
-                    });
-                    if (response.count < 1) {
-                        $('#pitches-arrow-bottom').hide();
-                    }
-                    if (pitches != '') {
-                        var $prependEl = $(pitches);
-                        $prependEl.hide();
-                        content.empty();
-                        $prependEl.appendTo(content).fadeIn(200);
-                    }
-                });
-            },
             this.nextNews = function (prev) {
                 var content = $('#content-news');
-                if (prev) {
-                    self.newsPage += 1;
-                } else {
-                    self.newsPage -= 1;
-                }
-                if (self.newsPage <= 1) {
-                    $('#news-arrow-top').hide();
-                    $('#news-arrow-bottom').show();
-                }
+                self.newsPage += 1;
                 $.post('/events/news.json', {"page": self.newsPage}, function (response) {
                     var news = '';
                     $.each(response.news, function (i, item) {
@@ -1137,7 +1059,6 @@ function OfficeStatusUpdater() {
                     if (news != '') {
                         var $prependEl = $(news);
                         $prependEl.hide();
-                        content.empty();
                         $prependEl.appendTo(content).fadeIn(200);
                     }
                 });

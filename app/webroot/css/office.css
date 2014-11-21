@@ -276,6 +276,11 @@
     color: #c8c8c8;
 }
 
+#content-news {
+    height: 571px;
+    overflow: hidden;
+}
+
 .center-boxes {
     font-size: 16px;
     line-height: 23px;
@@ -631,7 +636,9 @@
     cursor: pointer;
     height: 24px;
 }
-
+.arrow-bottom:hover {
+    background: url("/img/feed-arrow-active.png") no-repeat center 6px #fff;
+}
 .arrow-top {
     display: none;
     background: url("/img/feed-arrow.png") no-repeat center 6px #fff;
@@ -646,4 +653,24 @@
 
 #pitches-arrow-bottom,#pitches-arrow-top {
     background-color: #2f313a;
+}
+#all-tweets,#all-pitches {
+    text-align: center;
+    padding: 3px 3px;
+}
+#all-pitches {
+    background-color: #2f313a;
+}
+#all-pitches a {
+    color: #fff;
+    font: 16px OfficinaSansC Book,serif;
+}
+#all-pitches a:hover {
+    text-decoration: underline;
+}
+#all-tweets a {
+    color: #2d2d2d; 
+}
+#all-tweets a:hover {
+    color: #ff585d
 }
