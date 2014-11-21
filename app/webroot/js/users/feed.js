@@ -53,14 +53,14 @@ $(document).ready(function () {
     function scrollInit() {
         var header_bg = $('#header-bg'),
                 pitch_panel = $('#pitch-panel'),
-                header_height = $('#header-bg').height(),
-                header_pos = $('#header-bg').position().top,
+                header_height = header_bg.height(),
+                header_pos = header_bg.position().top,
                 windowHeight = $(window).height(),
                 $box = $('#container-design-news'),
                 $parent = $('.new-content'),
                 leftSidebar = $('#l-sidebar-office'),
                 leftSidebarTop = leftSidebar.offset().top;
-        var top = $('#container-design-news').offset().top;
+        var top = $box.offset().top;
         if (!pitch_panel.length) {
             $('<div id="pitch-panel"></div>').insertBefore(header_bg);
             pitch_panel = $('#pitch-panel');
@@ -189,15 +189,31 @@ $(document).ready(function () {
         Updater.init();
     }
 
-    $('#arrow-bottom').on('click', function () {
+    $('#job-arrow-bottom').on('click', function () {
         Updater.nextJob(true);
-        $('#arrow-top').show();
-    });
-    
-    $('#arrow-top').on('click', function () {
-        Updater.nextJob(false);
+        $('#job-arrow-top').show();
     });
 
+    $('#job-arrow-top').on('click', function () {
+        Updater.nextJob(false);
+        $('#job-arrow-bottom').show();
+    });
+    $('#pitches-arrow-top').on('click', function () {
+        Updater.nextPitch(false);
+        $('#pitches-arrow-bottom').show();
+    });
+    $('#pitches-arrow-bottom').on('click', function () {
+        Updater.nextPitch(true);
+        $('#pitches-arrow-top').show();
+    });
+    $('#news-arrow-top').on('click', function () {
+        Updater.nextNews(false);
+        $('#news-arrow-bottom').show();
+    });
+    $('#news-arrow-bottom').on('click', function () {
+        Updater.nextNews(true);
+        $('#news-arrow-top').show();
+    });
     var clickedLikesList = []
 
     $(document).on('click', '.like-small-icon', function () {
@@ -530,6 +546,8 @@ function OfficeStatusUpdater() {
     this.page = 1;
     this.solPage = 1;
     this.jobPage = 1;
+    this.pitchPage = 1;
+    this.newsPage = 1;
     this.date = '';
     this.dateTwitter;
     this.newsDate;
@@ -1040,20 +1058,88 @@ function OfficeStatusUpdater() {
                 });
             },
             this.nextJob = function (prev) {
+                var content_job = $('#content-job');
                 if (prev) {
                     self.jobPage += 1;
                 } else {
                     self.jobPage -= 1;
+                }
+                if (self.jobPage <= 1) {
+                    $('#job-arrow-top').hide();
+                    $('#job-arrow-bottom').show();
                 }
                 $.post('/events/job.json', {"page": self.jobPage}, function (response) {
                     var job = '';
                     $.each(response.job, function (i, item) {
                         job += '<div class="job">' + item.text + '</div><div class="sp"></div>';
                     });
-                    $('#content-job').empty();
-                    var $prependEl = $(job);
-                    $prependEl.hide();
-                    $prependEl.appendTo('#content-job').slideDown('slow');
+                    if (response.count < 1) {
+                        $('#job-arrow-bottom').hide();
+                    }
+                    if (job != '') {
+                        var $prependEl = $(job);
+                        $prependEl.hide();
+                        content_job.empty();
+                        $prependEl.appendTo(content_job).fadeIn(200);
+                    }
+                });
+            },
+            this.nextPitch = function (prev) {
+                var content = $('#content-pitches');
+                if (prev) {
+                    self.pitchPage += 1;
+                } else {
+                    self.pitchPage -= 1;
+                }
+                if (self.pitchPage <= 1) {
+                    $('#pitches-arrow-top').hide();
+                    $('#pitches-arrow-bottom').show();
+                }
+                $.post('/events/pitches.json', {"page": self.pitchPage}, function (response) {
+                    var pitches = '';
+                    $.each(response.pitches, function (i, item) {
+                        pitches += '<div class="new-pitches"> \
+                                    <div class="new-price">' + parseInt(item.price) + 'р.</div> \
+                                    <div class="new-title"><a href="/pitches/view/' + item.id + '">' + item.title + '</a></div> \
+                                </div>';
+                    });
+                    if (response.count < 1) {
+                        $('#pitches-arrow-bottom').hide();
+                    }
+                    if (pitches != '') {
+                        var $prependEl = $(pitches);
+                        $prependEl.hide();
+                        content.empty();
+                        $prependEl.appendTo(content).fadeIn(200);
+                    }
+                });
+            },
+            this.nextNews = function (prev) {
+                var content = $('#content-news');
+                if (prev) {
+                    self.newsPage += 1;
+                } else {
+                    self.newsPage -= 1;
+                }
+                if (self.newsPage <= 1) {
+                    $('#news-arrow-top').hide();
+                    $('#news-arrow-bottom').show();
+                }
+                $.post('/events/news.json', {"page": self.newsPage}, function (response) {
+                    var news = '';
+                    $.each(response.news, function (i, item) {
+                        host = parse_url_regex(item.link);
+                        news += '<div class="design-news"><a target="_blank" href="/users/click?link=' + item.link + '&id=' + item.id + '">' + item.title + ' <br><a class="clicks" href="/users/click?link=' + item.link + '&id=' + item.id + '">' + host[3] + '</a></div>';
+                    });
+                    if (response.count < 1) {
+                        $('#news-arrow-bottom').hide();
+                    }
+                    if (news != '') {
+                        var $prependEl = $(news);
+                        $prependEl.hide();
+                        content.empty();
+                        $prependEl.appendTo(content).fadeIn(200);
+                    }
                 });
             };
 }

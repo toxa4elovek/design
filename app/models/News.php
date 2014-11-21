@@ -44,8 +44,8 @@ class News extends \app\models\AppModel {
         return $post;
     }
 
-    public static function getNews($newsDate = 0) {
-            return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0), 'limit' => 6, 'order' => array('created' => 'desc')));
+    public static function getNews($newsDate = 0, $page = 1) {
+        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0), 'limit' => 6, 'page' => $page, 'order' => array('created' => 'desc')));
     }
 
 }

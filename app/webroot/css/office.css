@@ -626,14 +626,15 @@
     vertical-align: middle;
 }
 
-#arrow-bottom {
-    background: url("/img/feed-arrow.png") no-repeat center 6px;
+.arrow-bottom {
+    background: url("/img/feed-arrow.png") no-repeat center 6px #fff;
     cursor: pointer;
     height: 24px;
 }
 
-#arrow-top {
-    background: url("/img/feed-arrow.png") no-repeat center 6px;
+.arrow-top {
+    display: none;
+    background: url("/img/feed-arrow.png") no-repeat center 6px #fff;
     cursor: pointer;
     height: 24px;
     -webkit-transform: rotate(180deg);
@@ -641,4 +642,8 @@
     -ms-transform: rotate(180deg);
     -o-transform: rotate(180deg);
     transform: rotate(180deg);
+}
+
+#pitches-arrow-bottom,#pitches-arrow-top {
+    background-color: #2f313a;
 }

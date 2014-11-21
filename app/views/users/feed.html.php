@@ -126,14 +126,15 @@
                         <div id="floatingLayer">
                             <div id="container-job-designers">
                                 <div class="rs-header"><a href="https://twitter.com/go_deer" target="_blank" style="color: #fff;">Twitter лента</a></div>
-                                <div id="arrow-top" style="display:none"></div>
+                                <div id="job-arrow-top" class="arrow-top"></div>
                                 <div id="content-job">
                                     <?php echo $this->stream->renderStreamFeed(6); ?>
                                 </div>
-                                <div id="arrow-bottom" style=""></div>
+                                <div id="job-arrow-bottom" class="arrow-bottom"></div>
                             </div>
                             <div id="container-new-pitches">
                                 <div class="rs-header">Новые питчи</div>
+                                <div id="pitches-arrow-top" class="arrow-top"></div>
                                 <div id="content-pitches">
                                     <?php
                                     $count = 0;
@@ -152,9 +153,11 @@
                                         var pitchDate = '<?= date('Y-m-d H:i:s', strtotime($pitchDate)) ?>';
                                     </script> 
                                 </div>
+                                <div id="pitches-arrow-bottom" class="arrow-bottom"></div>
                             </div>
                             <div id="container-design-news">
                                 <div class="rs-header">Новости дизайна и культуры</div>
+                                <div id="news-arrow-top" class="arrow-top"></div>
                                 <div id="content-news">
                                     <?php
                                     $newsDate = '';
@@ -169,6 +172,7 @@
                                         var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
                                     </script> 
                                 </div>
+                                <div id="news-arrow-bottom" class="arrow-bottom"></div>
                             </div>
                         </div>
                     </div>
