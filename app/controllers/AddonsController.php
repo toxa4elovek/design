@@ -39,6 +39,16 @@ class AddonsController extends \app\controllers\AppController {
                 $phonebrief = $this->request->data['commonPitchData']['phone-brief'];
                 $total += 1750;
             }
+            $guaranteed = 0;
+            if(($featuresData['guaranteed'] > 0) && $pitch->guaranteed == 0) {
+                $guaranteed = 1;
+                $total += 1400;
+            }
+            $pinned = 0;
+            if(($featuresData['pinned'] > 0) && $pitch->pinned == 0) {
+                $pinned = 1;
+                $total += 1450;
+            }
             $data = array(
                 'pitch_id' => $this->request->data['commonPitchData']['id'],
                 'billed' => 0,
@@ -48,6 +58,8 @@ class AddonsController extends \app\controllers\AppController {
                 'prolong-days' => $prolong,
                 'brief' => $brief,
                 'phone-brief' => $phonebrief,
+                'guaranteed' => $guaranteed,
+                'pinned' => $pinned,
                 'created' => date('Y-m-d H:i:s'),
                 'total' => $total
             );

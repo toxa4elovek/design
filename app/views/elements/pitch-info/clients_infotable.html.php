@@ -25,9 +25,16 @@
             <span class="regular">Просмотры брифа:</span>&nbsp;<span class="pitch-info-text"><?=$pitch->views?></span>
         </td>
         <td width="15"></td>
-        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1">
-            <span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?><?php echo ($pitch->guaranteed == 1) ? ' гарантированы' : ''; ?></span>
+        <?php if ($pitch->pinned == 0):?>
+        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <span class="regular">Прокачать бриф <a href="http://www.godesigner.ru/answers/view/67" target="_blank">(?)</a></span>
+            <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=pinned">Заказать</a>
         </td>
+        <?php else: ?>
+            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+                <span class="regular">Бриф прокачен</span>
+            </td>
+        <?php endif; ?>
         <td width="15"></td>
         <?php if ($pitch->status == 0):?>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
@@ -50,16 +57,12 @@
         </td>
         <td width="15"></td>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-            <?php if ($pitch->published == 0 && $pitch->billed == 1 && $pitch->brief == 1): ?>
-                <span class="regular">Ожидайте звонка</span>
-            <?php else: ?>
-                <?=$this->view()->render(array('element' => 'pitch-info/timer'), array('pitch' => $pitch))?>
-            <?php endif; ?>
+            <span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?><?php echo ($pitch->guaranteed == 1) ? ' гарантированы' : ''; ?></span>
         </td>
         <td width="15"></td>
         <?php if ($pitch->status == 0):?>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-            <span class="regular">Продлить срок:</span>
+            <span class="regular">Продлить срок <a href="http://www.godesigner.ru/answers/view/88" target="_blank">(?)</a></span>
             <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=prolong">Заказать</a>
         </td>
         <?php else: ?>
@@ -67,6 +70,37 @@
             <span class="regular">Бриф заполнен:</span>&nbsp;
             <?php echo ($pitch->brief == 1) ? '<a class="client-linknew" href="/answers/view/68" target="_blank">GoDesigner</a>' : $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew')); ?>
         </td>
+        <?php endif; ?>
+    </tr>
+    <tr>
+        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <span class="regular">Спросить:</span>
+            <a class="order-button" href="mailto:?&subject=<?php echo urlencode('Нужна помощь с выбором!')?>
+&amp;body=<?php echo urlencode('Привет,
+
+я сейчас создаю ' . $pitch->title . '. Мне бы было приятно, если бы кто-то помог мне с выбором. Какие идеи тебе нравятся больше всего?
+Спасибо за ответ!
+
+' . $pitch->user->first_name . ' ' . $pitch->user->last_name .'.')?>"" style="width: 178px; top: -3px;">Совет друга (бесплатно)</a>
+        </td>
+        <td width="15"></td>
+        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <?php if ($pitch->published == 0 && $pitch->billed == 1 && $pitch->brief == 1): ?>
+                <span class="regular">Ожидайте звонка</span>
+            <?php else: ?>
+                <?=$this->view()->render(array('element' => 'pitch-info/timer'), array('pitch' => $pitch))?>
+            <?php endif; ?>
+        </td>
+        <td width="15"></td>
+        <?php if ($pitch->guaranteed == 0):?>
+            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+                <span class="regular">Гарантировать питч <a href="http://www.godesigner.ru/answers/view/79" target="_blank">(?)</a></span>
+                <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=guarantee">Заказать</a>
+            </td>
+        <?php else: ?>
+            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+                <span class="regular">Питч гарантирован</span>
+            </td>
         <?php endif; ?>
     </tr>
 </table>
