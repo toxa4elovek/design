@@ -86,8 +86,7 @@ $(document).ready(function () {
             } else if (windowBottom >= topStop && $(window).scrollTop() < top) {
                 $box.css({'position': 'static', 'top': '35px'});
             }
-            if (($(document).height() - ($(window).scrollTop() - compensation) - $('#center_sidebar').height() < 10) && !isBusy) {
-                compensation = $('#center_sidebar').height() - 2000;
+            if ((($('#center_sidebar').height() - 200) - $(window).scrollTop() < 1000) && !isBusy) {
                 isBusy = 1;
                 Tip.scrollHandler();
                 $box.css({
