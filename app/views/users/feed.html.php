@@ -214,11 +214,11 @@
                                 if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
                                     // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
                                     $long = false;
-                                    if(((!$object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
+                                    if((($object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
                                         $long = true;
                                     endif;
                                     ?>
-                                    <div class="box">
+                                    <div class="box" data-type="<?php echo $object['type']?>" data-long="<?php echo $long?>">
                                         <?php if($long):?>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                         <div class="box-info">
