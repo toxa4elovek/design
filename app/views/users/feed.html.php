@@ -214,11 +214,11 @@
                                 if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
                                     // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
                                     $long = false;
-                                    if(((!$object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
+                                    if((($object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
                                         $long = true;
                                     endif;
                                     ?>
-                                    <div class="box">
+                                    <div class="box" data-type="<?php echo $object['type']?>" data-long="<?php echo $long?>">
                                         <?php if($long):?>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                         <div class="box-info">
@@ -294,7 +294,23 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <?php
+                                    <?php elseif ($object['type'] == 'RatingAdded'): ?>
+                                    <div class="box">
+                                        <div class="l-img">
+                                            <img class="avatar" src="<?= $avatar ?>">
+                                        </div>
+                                        <div class="r-content rating-content">
+                                            <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оценил', $object['user']['gender']) ?> ваше решение
+                                            <div class="rating-image" style="background-image: url(/img/<?= $object['solution']['rating'] ?>-rating.png);"></div>
+                                            <div class="rating-block">
+                                                <img class="img-rate" src="<?= $imageurl ?>">
+                                            </div>
+                                            <p class="timeago rating-time">
+                                                <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
+                                            </p>
+                                        </div>
+                                    </div>
+                            <?php
                                 endif;
                             endforeach;
                             ?>

@@ -98,6 +98,7 @@ class Event extends \app\models\AppModel {
                         }
                         $host = parse_url($news->link);
                         $record->host = $host['host'];
+                        $news->short = html_entity_decode($news->short, ENT_COMPAT, 'UTF-8');
                         $record->news = $news;
                     }
                     return $record;
@@ -136,7 +137,8 @@ class Event extends \app\models\AppModel {
                         'PitchFinished' => 'Питч завершён',
                         'SolutionAdded' => 'Добавлено решение',
                         'PitchCreated' => 'Новый питч',
-                        'newsAdded' => 'Добавлена новость'
+                        'newsAdded' => 'Добавлена новость',
+                        'RatingAdded' => 'Добавлен рейтинг'
                     );
                     if (isset($typesMap[$record->type])) {
                         $record->humanType = $typesMap[$record->type];
@@ -200,7 +202,7 @@ class Event extends \app\models\AppModel {
                         'order' => array('created' => 'desc'),
                         'limit' => $limit,
                         'page' => $page
-                        )
+                            )
             );
         } else {
             $events = Event::find('all', array(
@@ -208,7 +210,7 @@ class Event extends \app\models\AppModel {
                         'order' => array('created' => 'desc'),
                         'limit' => $limit,
                         'page' => $page
-                        )
+                            )
             );
         }
         $i = 1;
@@ -237,8 +239,6 @@ class Event extends \app\models\AppModel {
                         continue;
                     }
                 }
-
-
             }
             $event->sort = $i;
             $eventList[] = $event->data();
@@ -280,9 +280,9 @@ class Event extends \app\models\AppModel {
     public static function createConditions($input) {
         $list = array();
         foreach ($input as $pitchId => $created) {
-            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
+            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded','RatingAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
         }
-        $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded'), 'created' => array('>=' => $created)));
+        $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded')));
         $output = array('OR' => $list);
         return $output;
     }
