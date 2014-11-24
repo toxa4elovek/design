@@ -98,6 +98,7 @@ class Event extends \app\models\AppModel {
                         }
                         $host = parse_url($news->link);
                         $record->host = $host['host'];
+                        $news->short = html_entity_decode($news->short, ENT_COMPAT, 'UTF-8');
                         $record->news = $news;
                     }
                     return $record;
@@ -200,7 +201,7 @@ class Event extends \app\models\AppModel {
                         'order' => array('created' => 'desc'),
                         'limit' => $limit,
                         'page' => $page
-                        )
+                            )
             );
         } else {
             $events = Event::find('all', array(
@@ -208,7 +209,7 @@ class Event extends \app\models\AppModel {
                         'order' => array('created' => 'desc'),
                         'limit' => $limit,
                         'page' => $page
-                        )
+                            )
             );
         }
         $i = 1;
@@ -237,8 +238,6 @@ class Event extends \app\models\AppModel {
                         continue;
                     }
                 }
-
-
             }
             $event->sort = $i;
             $eventList[] = $event->data();

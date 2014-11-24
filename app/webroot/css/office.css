@@ -359,6 +359,8 @@
     font: 16px/23px OfficinaSansC Book, serif !important;
     text-decoration: none;
     padding-top: 5px;
+    width: 570px;
+    word-wrap: break-word;
 }
 
 .center-boxes .box a.post-link {

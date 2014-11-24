@@ -98,7 +98,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($posts as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->post_title === (string) $n->title) {
+                if (((string) $item->post_title === (string) $n->title) || $item->category == 'images') {
                     $trigger = true;
                 }
             }
