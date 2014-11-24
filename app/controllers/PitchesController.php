@@ -1406,7 +1406,14 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $pitch = Pitch::create();
             $pitch->set(array(
                 'title'=>'Логотип в один клик ('. $this->request->data['phone'] . ')',
+                'category_id' => 1,
                 'phone-brief' => $this->request->data['phone'],
+                'expert-ids' => serialize(array(1)),
+                'guaranteed' => 1,
+                'pinned' => 1,
+                'brief' => 1,
+                'phone-brief' => $this->request->data['phone'],
+                'specifics' => 'a:2:{s:9:"qualities";s:64:"Прагматичный, надежный, элегантный";s:15:"logo-properties";a:7:{i:0;s:1:"5";i:1;s:1:"5";i:2;s:1:"5";i:3;s:1:"5";i:4;s:1:"5";i:5;s:1:"5";i:6;s:1:"5";}}',
                 'price' => 14000,
                 'total' => 19600));
             if(Session::read('user.id')) {
@@ -1416,6 +1423,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $start = new \DateTime();
                 $start->setTimestamp($this->request->data['date']);
                 \app\models\Schedule::create(array(
+                    'pitch_id' => $pitch->id,
                     'title' => 'Логотип в один клик ('. $this->request->data['phone'] . ')',
                     'start' => $start->format('Y-m-d H:i:s'),
                     'end' => $start->setTime($start->format('H') + 1, '00', '00')->format('Y-m-d H:i:s')

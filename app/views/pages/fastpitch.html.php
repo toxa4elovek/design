@@ -11,7 +11,7 @@
                     <div id="ap_content_top_l">
                         <h1>Создай питч на логотип в один клик, остальное мы сделаем за вас.</h1>
                         <label id="phone" class="regular">Оставить номер телефона</label>
-                        <input name="phone" value="" class="input-phone" placeholder="+7 911 1234567" /> <span class="and_phone">и</span>
+                        <input name="phone" value="" class="input-phone" placeholder="+7 911 123 45 67" /> <span class="and_phone">и</span>
                         <label id="time-label" class="regular">Выберите удобное время для беседы</label>
                         <ul class="date">
                             <?php
@@ -38,7 +38,7 @@
                         <?php
                         $j = 1;
                         foreach ($alllow_time as $i => $v): ?>
-                                <li data-num="<?php echo $j; ?>" <?php if(($j % 3) == 0): echo 'style="padding-right: 52px;"'; else: echo 'style="padding-right: 55px;"'; endif;?>>
+                                <li data-num="<?php echo $j; ?>" <?php if(($j % 3) == 0){ echo 'style="padding-right: 52px;"'; }elseif($j == 2){ echo 'style="padding-right: 72px;"'; }elseif($j == 4){ echo 'style="padding-right: 10px;"';}else{ echo 'style="padding-right: 52px;"'; }?>>
                                     <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                 </li>
                         <?php
@@ -48,7 +48,7 @@
                             endif;
                         endforeach; ?>
                         </ul>
-                        <a id="fastpitch" class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo;</a>
+                        <a id="fastpitch" class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo; ЗА 19600 РУБЛЕЙ</a>
 
                         <h1 style="margin-top:21px">Что включено?</h1>
 
