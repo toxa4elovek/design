@@ -14,12 +14,15 @@ class ParsingSites extends \app\extensions\command\CronJob {
         set_time_limit(120);
         $startTimeStamp = time();
         $this->header('Welcome to the ParsingSites command!');
+
         $this->out("Starting parsing godesigner.ru");
         self::ParsingGodesigner();
         $this->out('Finished parsing godesigner.ru [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing tutdesign.ru");
         self::ParsingTutdesign();
         $this->out('Finished parsing tutdesign.ru [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing vozduh.afisha.ru");
         self::ParsingVozduhAfisha();
         $this->out('Finished parsing vozduh.afisha.ru [' . (time() - $startTimeStamp) . ' sec]');
@@ -29,21 +32,42 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing newgrids.fr");
         self::ParsingWordpress('http://newgrids.fr/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing lovelypackage.com");
         self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing bpando.org");
         self::ParsingWordpress('http://bpando.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing bpando.org [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing love-aesthetics.nl");
         self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing vice.com/ru");
         self::ParsingVice();
         $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing wtpack.ru");
         self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing wtpack.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing royalcheese.ru");
+        self::ParsingRoyalcheese();
+        $this->out('Finished parsing royalcheese.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing lookatme.ru");
+        self::ParsingLookatme();
+        $this->out('Finished parsing lookatme.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing the-village.ru");
+        self::ParsingVillage();
+        $this->out('Finished parsing the-village.ru [' . (time() - $startTimeStamp) . ' sec]');
+        
+        $this->out("Starting parsing packaginguqam.blogspot.ru");
+        self::ParsingPackaginguqam();
+        $this->out('Finished parsing packaginguqam.blogspot.ru [' . (time() - $startTimeStamp) . ' sec]');
     }
 
     private function ParsingGodesigner() {
@@ -107,7 +131,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $date = new \DateTime($item->post_date);
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->post_content, $matches);
                 $image = '';
-                if(isset($matches[1])) {
+                if (isset($matches[1])) {
                     $image = $matches[1];
                 }
                 $news = News::create(array(
@@ -255,6 +279,180 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'tags' => $item->category,
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->link,
+                                'imageurl' => $matches[1]
+                    ));
+                    $news->save();
+                }
+            }
+        }
+    }
+
+    private function ParsingRoyalcheese() {
+        $url = 'http://www.royalcheese.ru/';
+        $xml = simplexml_load_file($url . 'rss/');
+        $newsList = News::all();
+
+        foreach ($xml->channel->item as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            $photo = false;
+            $city = false;
+            if (!$trigger && ($photo = strpos($item->link, 'photo/') || $city = strpos($item->link, 'city/'))) {
+                $this->out('Saving - ' . $item->title);
+                $content = file_get_contents($item->link);
+                $date = new \DateTime($item->pubDate);
+                preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+                $count = count($matches[1]);
+                $image = '';
+                for ($i = 0; $i < $count; $i++) {
+                    if (strpos($matches[1][$i], 'gallery/')) {
+                        $image = $matches[1][$i];
+                        break;
+                    }
+                }
+                $tag = '';
+                if ($photo) {
+                    $tag = 'Фотографии';
+                } elseif ($city) {
+                    $tag = 'Город';
+                }
+                $news = News::create(array(
+                            'title' => $item->title,
+                            'tags' => $tag,
+                            'created' => $date->format('Y-m-d H:i:s'),
+                            'link' => $item->link,
+                            'imageurl' => $url . $image
+                ));
+                $news->save();
+            }
+        }
+    }
+
+    private function ParsingLookatme() {
+        $xml = simplexml_load_file('http://www.lookatme.ru/feeds/posts.atom');
+        $newsList = News::all();
+        foreach ($xml->entry as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                $content = file_get_contents($item->id);
+                libxml_use_internal_errors(true);
+                $doc = new \DomDocument();
+                $doc->loadHTML($content);
+                $xpath = new \DOMXPath($doc);
+                $query = '//*/meta[starts-with(@property, \'article:tag\')]';
+                $metas = $xpath->query($query);
+                foreach ($metas as $meta) {
+                    $tag = $meta->getAttribute('content');
+                }
+                $cat = '';
+                if (strpos($tag, 'Дизайн')) {
+                    $cat = 'Дизайн';
+                } elseif (strpos($tag, 'Типографика')) {
+                    $cat = 'Типографика';
+                } elseif (strpos($tag, 'Шрифты')) {
+                    $cat = 'Шрифты';
+                } elseif (strpos($tag, 'Полиграфия')) {
+                    $cat = 'Полиграфия';
+                } elseif (strpos($tag, 'Интерфейс')) {
+                    $cat = 'Интерфейс';
+                }
+                preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+                $image = '';
+                $count = count($matches[1]);
+                for ($i = 0; $i < $count; $i++) {
+                    if (strpos($matches[1][$i], 'lamcdn.net')) {
+                        $image = $matches[1][$i];
+                        break;
+                    }
+                }
+                if (strlen($image) > 0 && strlen($cat) > 0) {
+                    $this->out('Saving - ' . $item->title);
+                    $news = News::create(array(
+                                'title' => $item->title,
+                                'tags' => $cat,
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->id,
+                                'imageurl' => $image
+                    ));
+                    $news->save();
+                }
+            }
+        }
+    }
+
+    private function ParsingVillage() {
+        $xml = simplexml_load_file('http://www.the-village.ru/feeds/posts.atom');
+        $newsList = News::all();
+        foreach ($xml->entry as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                $content = file_get_contents($item->id);
+                $cat = '';
+                if (strpos($item->id, 'home/')) {
+                    $cat = 'Дом';
+                } elseif (strpos($item->id, 'service-shopping/')) {
+                    $cat = 'Стиль';
+                }
+                preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+                $image = '';
+                $count = count($matches[1]);
+                for ($i = 0; $i < $count; $i++) {
+                    if (strpos($matches[1][$i], 'lamcdn.net')) {
+                        $image = $matches[1][$i];
+                        break;
+                    }
+                }
+                if (strlen($image) > 0 && strlen($cat) > 0) {
+                    $this->out('Saving - ' . $item->title);
+                    $news = News::create(array(
+                                'title' => $item->title,
+                                'tags' => $cat,
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->id,
+                                'imageurl' => $image
+                    ));
+                    $news->save();
+                }
+            }
+        }
+    }
+
+    private function ParsingPackaginguqam() {
+        $xml = simplexml_load_file('http://feeds.feedburner.com/blogspot/mzWJ?format=xml');
+        $newsList = News::all();
+        foreach ($xml->entry as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            var_dump((string) $item->title);
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->content, $matches);
+                if (isset($matches[1]) && !strpos($matches[1], 'feedburner.com/')) {
+                    $news = News::create(array(
+                                'title' => (string) $item->title,
+                                'tags' => 'Дизайн',
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => substr($item->link['href'], 0, strpos($item->link['href'], '#')),
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
