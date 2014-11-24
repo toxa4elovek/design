@@ -18,6 +18,7 @@ class News extends \app\models\AppModel {
                 foreach (self::$news as $n) {
                     if ($n->middle) {
                         $post = $n;
+                        $post->short = html_entity_decode($post->short, ENT_QUOTES, 'UTF-8');
                         break;
                     }
                     $all_views += $n->views;
@@ -33,6 +34,7 @@ class News extends \app\models\AppModel {
                             $max = $n->views;
                             $host = parse_url($n->link);
                             $n->host = $host['host'];
+                            $n->short = html_entity_decode($n->short, ENT_QUOTES, 'UTF-8');
                             $str = strpos($n->tags, '|');
                             if ($str) {
                                 $n->tags = substr($n->tags, 0, $str);
