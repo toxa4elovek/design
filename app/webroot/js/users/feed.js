@@ -754,6 +754,10 @@ function OfficeStatusUpdater() {
                                     html += self.addComment(html, object, imageurl);
                                 }
 
+                                if (object.type == 'RatingAdded' && object.solution != null) {
+                                    html += self.addRating(html, object, imageurl);
+                                }
+
                                 if (object.type == 'newsAdded' && object.news != null) {
                                     html += '<div class="box"> \
                                 <p class="img-box"> \
@@ -772,8 +776,8 @@ function OfficeStatusUpdater() {
                             });
                             var $prependEl = $(html);
                             $prependEl.hide();
-                            $('time.timeago').timeago();
                             $prependEl.prependTo('#updates-box-').slideDown('slow');
+                            $('time.timeago').timeago();
                         }
                     }
                 });
@@ -856,6 +860,10 @@ function OfficeStatusUpdater() {
 
                             if (object.type == 'CommentAdded' && object.comment != null) {
                                 html += self.addComment(html, object, imageurl);
+                            }
+
+                            if (object.type == 'RatingAdded' && object.solution != null) {
+                                html += self.addRating(html, object, imageurl);
                             }
                         });
                         var $appendEl = $(html);
@@ -1039,7 +1047,25 @@ function OfficeStatusUpdater() {
                 }
                 html += '</div></div>';
                 return html;
-            }
+            },
+            this.addRating = function (html, object, imageurl) {
+                html += '<div class="box">\
+                            <div class="l-img">\
+                                <img class="avatar" src="<?= $avatar ?>">\
+                            </div>\
+                            <div class="r-content rating-content">\
+                                <a target="_blank" href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оценил', object.user.gender) + ' ваше решение\
+                                <div class="rating-image" style="background-image: url(/img/' + object.solution.rating + '-rating.png);"></div>\
+                                <div class="rating-block">\
+                                    <img class="img-rate" src="' + imageurl + '">\
+                                </div>\
+                                <p class="timeago rating-time">\
+                                     <time class="timeago" datetime="' + object.created + '">' + object.created + '</time>\
+                                </p>\
+                                </div>\
+                        </div>';
+                return html;
+            };
 }
 function parse_url_regex(url) {
     var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;

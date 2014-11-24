@@ -326,7 +326,36 @@
 
 .center-boxes .box .img-rate {
     width: 176px;
-    height: 126px;
+}
+
+.center-boxes .box .rating-block {
+    display: block;
+    height: 130px;
+    width: 176px;
+    max-height: 130px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.center-boxes .box .rating-content {
+    position: relative;
+    padding-bottom: 0;
+}
+.center-boxes .box .rating-content .rating-image {
+    display: block;
+    background-repeat: no-repeat;
+    margin-bottom: 42px;
+    margin-top: 16px;
+    width: 56px;
+    height: 9px; 
+}
+
+.center-boxes .box p.rating-time {
+    margin-bottom: 0 !important;
+    position: relative;
+    bottom: 12px;
 }
 
 .center-boxes .box div {
