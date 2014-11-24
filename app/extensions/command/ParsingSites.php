@@ -443,7 +443,6 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $trigger = true;
                 }
             }
-            var_dump((string) $item->title);
             if (!$trigger) {
                 $date = new \DateTime($item->published);
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->content, $matches);
