@@ -26,6 +26,9 @@ class News extends \app\models\AppModel {
                     $av_views = round($all_views / count(self::$news));
                     $max = 0;
                     foreach (self::$news as $n) {
+                        if(strpos($n->link, 'tutdesign')) {
+                            continue;
+                        }
                         if (($n->views > $av_views * 2 && $max < $n->views) || $max < $n->views) {
                             $max = $n->views;
                             $host = parse_url($n->link);
