@@ -137,7 +137,8 @@ class Event extends \app\models\AppModel {
                         'PitchFinished' => 'Питч завершён',
                         'SolutionAdded' => 'Добавлено решение',
                         'PitchCreated' => 'Новый питч',
-                        'newsAdded' => 'Добавлена новость'
+                        'newsAdded' => 'Добавлена новость',
+                        'RatingAdded' => 'Добавлен рейтинг'
                     );
                     if (isset($typesMap[$record->type])) {
                         $record->humanType = $typesMap[$record->type];
@@ -279,7 +280,7 @@ class Event extends \app\models\AppModel {
     public static function createConditions($input) {
         $list = array();
         foreach ($input as $pitchId => $created) {
-            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
+            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded','RatingAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
         }
         $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded')));
         $output = array('OR' => $list);
