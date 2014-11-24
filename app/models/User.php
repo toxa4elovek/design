@@ -471,9 +471,10 @@ class User extends \app\models\AppModel {
 
     public static function sendAdminBriefPitch($params) {
         $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $schedule = \app\models\Schedule::first(array('conditions' => array('pitch_id' => $params['pitch']->id)));
         foreach($users as $user) {
             $text = 'На сайт добавлен новый питч с опцией "заполнить бриф"';
-            $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $text);
+            $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $text, 'schedule' => $schedule);
             SpamMailer::newbriefedpitch($data);
         }
     }
