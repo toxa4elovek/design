@@ -522,7 +522,6 @@ function OfficeStatusUpdater() {
     this.started = 0;
     // initialisation method
     this.init = function () {
-        $('.obnovlenia_box').last().addClass('last_item');
         $('time.timeago').timeago();
         self.newsDate = newsDate;
         self.dateTwitter = $('#twitterDate').data('date');
@@ -753,29 +752,7 @@ function OfficeStatusUpdater() {
                                 }
 
                                 if (object.type == 'CommentAdded' && object.comment != null) {
-                                    if (object.user.isAdmin == 1) {
-                                        avatar = '/img/icon_57.png';
-                                    } else {
-                                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                    }
-                                    var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
-                                    html += '<div class="box">\
-                                    <div class="sol"><img src="' + imageurl + '"></div> \
-                                    <div class="box-info">\
-                                        <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
-                                        <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
-                                    </div>\
-                                    <div class="l-img l-img-box"> \
-                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
-                                    </div> \
-                                    <div class="r-content box-comment">';
-                                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
-                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;</div>';
-                                    }
-                                    else {
-                                        html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;</div>';
-                                    }
-                                    html += '</div>';
+                                    html += self.addComment(html, object, imageurl);
                                 }
 
                                 if (object.type == 'newsAdded' && object.news != null) {
@@ -801,41 +778,41 @@ function OfficeStatusUpdater() {
                         }
                     }
                 });
-            }
-    this.nextPage = function () {
-        self.page += 1;
-        $('#officeAjaxLoader').show();
-        var $formerLast = $('.box').last();
-        $.get('/events/feed.json', {"init": true, "page": self.page}, function (response) {
-            $('#officeAjaxLoader').hide();
-            if (response.count != 0) {
-                function sortfunction(a, b) {
-                    return (a.sort - b.sort);
-                }
-                response.updates.sort(sortfunction);
-                var html = '';
-                $.each(response.updates, function (index, object) {
-                    if (!object.solution) {
-                        object.solution = {};
-                        object.solution.images = {};
-                        object.solution.images.solution_galleryLargeSize = {};
-                        object.solution.views = 0;
-                        object.solution.likes = 0;
-                        object.solution.images.solution_galleryLargeSize.weburl = '';
-                    }
-
-                    if (typeof (object.solution.images.solution_solutionView) != "undefined") {
-                        if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
-                            var imageurl = object.solution.images.solution_solutionView.weburl;
-                        } else {
-                            var imageurl = object.solution.images.solution_solutionView[0].weburl;
+            },
+            this.nextPage = function () {
+                self.page += 1;
+                $('#officeAjaxLoader').show();
+                var $formerLast = $('.box').last();
+                $.get('/events/feed.json', {"init": true, "page": self.page}, function (response) {
+                    $('#officeAjaxLoader').hide();
+                    if (response.count != 0) {
+                        function sortfunction(a, b) {
+                            return (a.sort - b.sort);
                         }
-                    }
+                        response.updates.sort(sortfunction);
+                        var html = '';
+                        $.each(response.updates, function (index, object) {
+                            if (!object.solution) {
+                                object.solution = {};
+                                object.solution.images = {};
+                                object.solution.images.solution_galleryLargeSize = {};
+                                object.solution.views = 0;
+                                object.solution.likes = 0;
+                                object.solution.images.solution_galleryLargeSize.weburl = '';
+                            }
 
-                    if (object.type == 'SolutionAdded' && object.solution != null && typeof object.solution.id != "undefined") {
-                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                        var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
-                        html += '<div class="box"> \
+                            if (typeof (object.solution.images.solution_solutionView) != "undefined") {
+                                if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
+                                    var imageurl = object.solution.images.solution_solutionView.weburl;
+                                } else {
+                                    var imageurl = object.solution.images.solution_solutionView[0].weburl;
+                                }
+                            }
+
+                            if (object.type == 'SolutionAdded' && object.solution != null && typeof object.solution.id != "undefined") {
+                                avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
+                                html += '<div class="box"> \
                             <div class="l-img"> \
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
@@ -848,23 +825,23 @@ function OfficeStatusUpdater() {
                                 <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
                             </div>\
                             <div data-id="' + object.solution.id + '" class="likes">';
-                        id = object.solution.id;
-                        $.each(response.updates, function (index, object) {
-                            if (object.type == 'LikeAdded' && object.solution_id == id) {
-                                avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                html += '<div> \
+                                id = object.solution.id;
+                                $.each(response.updates, function (index, object) {
+                                    if (object.type == 'LikeAdded' && object.solution_id == id) {
+                                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                                        html += '<div> \
                                     <div class="l-img"> \
                                         <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
                                     <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ваше решение</span> \
                                 </div>';
+                                    }
+                                });
+                                html += '</div></div>';
                             }
-                        });
-                        html += '</div></div>';
-                    }
 
-                    if (object.type == 'newsAdded' && object.news != null) {
-                        html += '<div class="box"> \
+                            if (object.type == 'newsAdded' && object.news != null) {
+                                html += '<div class="box"> \
                                 <p class="img-box"> \
                                     <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
                                 </p> \
@@ -876,63 +853,24 @@ function OfficeStatusUpdater() {
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div> \
                             </div>';
+                            }
+
+                            if (object.type == 'CommentAdded' && object.comment != null) {
+                                html += self.addComment(html, object, imageurl);
+                            }
+                        });
+                        var $appendEl = $(html);
+                        $appendEl.hide();
+                        $appendEl.appendTo('#updates-box-').slideDown('slow');
+                        $('time.timeago').timeago();
                     }
-
-                    if (object.type == 'CommentAdded' && object.comment != null) {
-                        if (object.user.isAdmin == 1) {
-                            avatar = '/img/icon_57.png';
-                        } else {
-                            avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                        }
-                        var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
-                        // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
-                        var long = false;
-                        if ((((!object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.pitch.private != '1')) {
-                            long = true;
-                        }
-                        html = '<div class="box">';
-                        if(long) {
-                            html += '<div class="sol"><img src="' + imageurl + '"></div> \
-                                    <div class="box-info">\
-                                        <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
-                                        <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
-                                    </div>';
-                        }
-                        var l_img_box_style = '';
-                        var r_content = '';
-                        if(!long) {
-                            l_img_box_style = 'style="padding-top: 0;"';
-                            r_content = 'style="padding-bottom: 0;"'
-
-                        };
-                        html += '<div class="l-img l-img-box" ' + l_img_box_style + '> \
-                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
-                                    </div> \
-                                    <div class="r-content box-comment" ' + r_content +'>';
-                        if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
-                        }
-                        else {
-                            html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
-                        }
-                        if(!long) {
-                            html += '<p class="timeago"><time class="timeago" datetime="' + object.created + '">' + object.created + '</time></p>';
-                        }
-                        html += '</div></div>';
+                    if (response.nextUpdates < 1) {
+                        isBusy = 1;
+                    } else {
+                        isBusy = 0;
                     }
                 });
-                var $appendEl = $(html);
-                $appendEl.hide();
-                $('time.timeago').timeago();
-                $appendEl.appendTo('#updates-box-').slideDown('slow');
-            }
-            if (response.nextUpdates < 1) {
-                isBusy = 1;
-            } else {
-                isBusy = 0;
-            }
-        });
-    },
+            },
             this._priceDecorator = function (price) {
                 price = price.replace(/(.*)\.00/g, "$1");
                 counter = 1;
@@ -1059,7 +997,50 @@ function OfficeStatusUpdater() {
                         $('#news-arrow-bottom').appendTo(content);
                     }
                 });
-            };
+            },
+            this.addComment = function (html, object, imageurl) {
+                if (object.user.isAdmin == 1) {
+                    avatar = '/img/icon_57.png';
+                } else {
+                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                }
+                var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
+                // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
+                var long = false;
+                if ((((!object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.pitch.private != '1')) {
+                    long = true;
+                }
+                html = '<div class="box">';
+                if (long) {
+                    html += '<div class="sol"><img src="' + imageurl + '"></div> \
+                                    <div class="box-info">\
+                                        <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
+                                        <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
+                                    </div>';
+                }
+                var l_img_box_style = '';
+                var r_content = '';
+                if (!long) {
+                    l_img_box_style = 'style="padding-top: 0;"';
+                    r_content = 'style="padding-bottom: 0;"';
+
+                }
+                html += '<div class="l-img l-img-box" ' + l_img_box_style + '> \
+                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                                    </div> \
+                                    <div class="r-content box-comment" ' + r_content + '>';
+                if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
+                    html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
+                }
+                else {
+                    html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
+                }
+                if (!long) {
+                    html += '<p class="timeago"><time class="timeago" datetime="' + object.created + '">' + object.created + '</time></p>';
+                }
+                html += '</div></div>';
+                return html;
+            }
 }
 function parse_url_regex(url) {
     var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
