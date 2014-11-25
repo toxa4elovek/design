@@ -1377,7 +1377,8 @@ class Pitch extends \app\models\AppModel {
                         'id' => $copyPitch->id,
                         'category_id' => $copyPitch->category_id,
                         'promocode' => $copyPitch->promocode));
-                Receipt::createReceipt($receiptData);
+                $comission = Receipt::createReceipt($receiptData, true);
+                $copyPitch->total = $comission + $copyPitch->price;
                 $copyPitch->save();
                 return $copyPitch->id;
             }

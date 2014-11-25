@@ -23,7 +23,7 @@ class Receipt extends \app\models\AppModel {
     public static $fee = FEE_LOW;
 
 
-    public static function createReceipt($data) {
+    public static function createReceipt($data, $returnComission = false) {
         $receiptData = array();
         if(isset($data['features']['award'])) {
             $receiptData[] = array(
@@ -124,7 +124,11 @@ class Receipt extends \app\models\AppModel {
             $receiptItem->set($row);
             $receiptItem->save();
         }
-        return $data['commonPitchData']['id'];
+        if($returnComission == true) {
+            return $comission;
+        }else {
+            return $data['commonPitchData']['id'];
+        }
     }
 
     public static function fetchReceipt($id) {
