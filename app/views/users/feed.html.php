@@ -219,34 +219,44 @@
                                     endif;
                                     ?>
                                     <div class="box" data-type="<?php echo $object['type']?>" data-long="<?php echo $long?>">
-                                        <?php if($long):?>
+                                    <?php if($long):?>
+                                        <div class="l-img l-img-box" style="padding-top: 0">
+                                            <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
+                                        </div>
+                                        <div class="r-content box-comment">
+                                            <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
+                                                <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                            <?php else: ?>
+                                                <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                            <?php endif; ?>
+                                        </div>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                         <div class="box-info">
                                             <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
                                             <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                         </div>
-                                        <?php endif; ?>
-                                        <div class="l-img l-img-box" <?php if(!$long): echo 'style="padding-top: 0;"'; endif?>>
+                                        <div class="r-content box-comment">
+                                            &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                        </div>
+                                        <?php else: ?>
+                                        <div class="l-img l-img-box" style="padding-top: 0">
                                             <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                         </div>
-                                        <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
-                                            <div class="r-content box-comment" <?php if(!$long): echo 'style="padding-bottom: 0;"'; endif?>>
-                                                <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:<br /> &laquo;<?php echo $object['updateText'] ?>&raquo;
-                                                <?php if(!$long):?>
+                                            <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
+                                                <div class="r-content box-comment">
+                                                    <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:<br /> &laquo;<?php echo $object['updateText'] ?>&raquo;
                                                     <p class="timeago">
                                                         <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
                                                     </p>
-                                                <?php endif; ?>
-                                            </div>
-                                        <?php else: ?>
-                                            <div class="r-content box-comment" <?php if(!$long): echo 'style="padding-bottom: 0;"'; endif?>>
-                                                <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
-                                                <?php if(!$long):?>
+                                                </div>
+                                            <?php else: ?>
+                                                <div class="r-content box-comment" style="padding-bottom: 0">
+                                                    <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                                     <p class="timeago">
                                                         <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
                                                     </p>
-                                                <?php endif; ?>
-                                            </div>
+                                                </div>
+                                            <?php endif; ?>
                                         <?php endif; ?>
                                     </div>
                                 <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) : ?>
