@@ -890,7 +890,7 @@ function OfficeStatusUpdater() {
                 return price;
             },
             this.getGenderTxt = function (txt, gender) {
-                if (gender == 1) {
+                if (gender > 1) {
                     txt += 'а';
                 }
                 return txt;
@@ -1049,12 +1049,13 @@ function OfficeStatusUpdater() {
                 return html;
             },
             this.addRating = function (html, object, imageurl) {
+                txtsol = (user_id == object.solution.user_id) ? 'ваше ' : '';
                 html += '<div class="box">\
                             <div class="l-img">\
                                 <img class="avatar" src="<?= $avatar ?>">\
                             </div>\
                             <div class="r-content rating-content">\
-                                <a target="_blank" href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оценил', object.user.gender) + ' ваше решение\
+                                <a target="_blank" href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оценил', object.user.gender) + txtsol +' решение\
                                 <div class="rating-image" style="background-image: url(/img/' + object.solution.rating + '-rating.png);"></div>\
                                 <div class="rating-block">\
                                     <img class="img-rate" src="' + imageurl + '">\
