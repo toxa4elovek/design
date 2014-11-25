@@ -300,7 +300,7 @@
                                             <img class="avatar" src="<?= $avatar ?>">
                                         </div>
                                         <div class="r-content rating-content">
-                                            <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оценил', $object['user']['gender']) ?> ваше решение
+                                            <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оценил', $object['user']['gender']) ?> <?= ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение
                                             <div class="rating-image" style="background-image: url(/img/<?= $object['solution']['rating'] ?>-rating.png);"></div>
                                             <div class="rating-block">
                                                 <img class="img-rate" src="<?= $imageurl ?>">
