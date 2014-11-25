@@ -77,7 +77,7 @@
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
                                         $types['needpay'] += 1?>
-                                        <a href="/pitches/edit/<?=$mypitch->id?>" >Ожидание оплаты</a>
+                                    <a href="<?= (strpos($mypitch->title, 'Логотип в один клик') !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
                                         $types['needpay'] += 1?>

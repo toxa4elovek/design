@@ -96,7 +96,7 @@ class PagesController extends \app\controllers\AppController {
     }
 
     public function fastpitch() {
-        $schedule = Schedule::all(array('conditions' => array('end' => array('>=' => time()))));
+        $schedule = Schedule::all(array('conditions' => array('start' => array('>=' => time()))));
         $alllow_time = array();
         $deny_time = array();
         $start_hours = new \DateTime();
@@ -105,7 +105,7 @@ class PagesController extends \app\controllers\AppController {
         $end_hours = new \DateTime();
         $end_hours->setTime('15', '00', '00');
         foreach ($schedule as $v) {
-            $deny_time[] = $v->end;
+            $deny_time[] = $v->start;
         }
         //date('Y-m-d H:i:s', mktime(date("H"), 0, 0));
         $temp = new \DateTime();
