@@ -820,7 +820,7 @@ class PitchesController extends \app\controllers\AppController {
 			$pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
             $selectedsolution = false;
             $nominatedSolutionOfThisPitch = Solution::first(array(
-                'conditions' => array('nominated' => 1, 'pitch_id' => $pitch->id)
+                'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
             ));
             if($nominatedSolutionOfThisPitch) {
                 $selectedsolution = true;
