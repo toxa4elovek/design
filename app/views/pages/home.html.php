@@ -5,7 +5,7 @@
   <div id="slides">
     <div class="slides_container" style="height:300px;">
         <div class="slide">
-            <a href="/pages/fastpitch"><img src="/img/main_banner_logo_one_click.png" alt="" /></a>
+            <a href="/fastpitch"><img src="/img/main_banner_logo_one_click.png" alt="" /></a>
         </div>
       <div class="slide">
       <a href="/pages/howitworks"><img src="/img/1_BANNER.png" alt="" /></a>
