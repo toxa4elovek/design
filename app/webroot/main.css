@@ -32,6 +32,15 @@ ul, ol {
 
 /* General
 -----------------------------------------------------------------------------*/
+@font-face {
+    font-family: 'OfficinaSansC Book';
+    src: url('fonts/officinasansbookc.eot');
+    src: url('fonts/officinasansbookc.eot') format('embedded-opentype'),
+        url('fonts/officinasansbookc.woff2') format('woff2'),
+        url('fonts/officinasansbookc.woff') format('woff'),
+        url('fonts/officinasansbookc.ttf') format('truetype'),
+        url('fonts/officinasansbookc.svg#OfficinaSansBookCRegular') format('svg');
+}
 
 html {
     overflow-y: scroll;
@@ -3718,3 +3727,8 @@ div.no-result p {
     top: 3px;
     left: 8px;
 }
+
+.fontBookC {
+    font: 17px/20px OfficinaSansC Book, serif;
+    text-shadow: -1px 0 0 #ffffff;
+} 
