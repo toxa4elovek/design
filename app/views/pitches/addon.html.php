@@ -87,11 +87,21 @@
             endforeach?>
         </ul><!-- .experts -->
 
-        <!--div class="ribbon">
-            <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Email рассылка" data-option-value="1000">Email рассылка</label></p>
-            <p class="description">Увеличить число креативщиков, дизайнеров или копирайтеров с помощью рассылки по email <a href="#" class="second">(?)</a></p>
-            <p class="label">+1000.-</p>
-        </div-->
+        <?php if($pitch->guaranteed == '0'): ?>
+            <div class="ribbon" id="guaranteed-block">
+                <p class="option"><label><input type="checkbox" id="guaranteed" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'checked'; endif?> class="single-check" data-option-title="Гарантировать питч" data-option-value="1400">Гарантировать питч</label></p>
+                <p class="description">Гарантировать выбор победителя <a href="#" class="second tooltip" title="Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой питч в списке. Дизайнеры увидят, что питч не останется без победителя, и вы получите больший выбор идей.">(?)</a></p>
+                <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'unfold'; endif?>">+1400.-</p>
+            </div>
+        <?php endif ?>
+
+        <?php if($pitch->pinned == '0'): ?>
+            <div class="ribbon" id="pinned-block">
+                <p class="option"><label><input type="checkbox" id="pinned" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'pinned'): echo 'checked'; endif?> class="single-check" data-option-title="“Прокачать” бриф" data-option-value="1450">“Прокачать” бриф</label></p>
+                <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения дизайнеров мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>
+                <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'pinned'): echo 'unfold'; endif?>">+1450.-</p>
+            </div>
+        <?php endif ?>
 
         <p class="submit">
             <input type="submit" value="Продолжить" id="next" class="button steps-link" data-step="3">

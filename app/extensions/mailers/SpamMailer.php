@@ -50,7 +50,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
             'use-smtp' => true,
             'to' => $data['user']->email,
-            'subject' => 'Новый питч c опцией "заполнить бриф"!',
+            'subject' => 'Заполнить бриф: ' . $data['pitch']->{'phone-brief'},
             'data' => $data
         ));
     }

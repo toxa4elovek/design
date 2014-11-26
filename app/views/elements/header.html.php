@@ -57,6 +57,14 @@
                             $types['needpay'] = 0;
                             $types['finish'] = 0;
                             $types['winner'] = 0;
+                            $fast_url = '';
+                            $fastpitch = strpos($mypitch->title, 'Логотип в один клик');
+                            if ($fastpitch !== false) {
+                                $fast_url = '/pitches/fastpitch/'. $mypitch->id;
+                            } else {
+                                $fast_url = '/pitches/edit/'. $mypitch->id;
+                            }
+                            
                             if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
                                 continue;
                             endif;
@@ -77,7 +85,7 @@
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
                                         $types['needpay'] += 1?>
-                                        <a href="/pitches/edit/<?=$mypitch->id?>" >Ожидание оплаты</a>
+                                    <a href="<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
                                         $types['needpay'] += 1?>
@@ -102,8 +110,10 @@
                                 <?php if ($mypitch->status < 1):?>
                                 <td class="pitches-edit mypitches">
                                     <?php if($mypitch->billed == 0):?>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                    <a href="<?= $fast_url ?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                    <?php if($fastpitch === false):?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                                    <?php endif; ?>
                                     <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                                     <?php else:?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>

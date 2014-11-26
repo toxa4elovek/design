@@ -3700,3 +3700,21 @@ div.no-result p {
     left: 47px;
     height: 508px;
 }
+
+.rss-img {
+    text-align: left !important;
+    margin-left: 25px;
+    width: 88% !important;
+    padding-left: 33px;
+}
+
+.rss-img:before {
+    background: url(/img/rss-on-button.png) no-repeat;
+    content: '';
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    z-index: 0;
+    top: 3px;
+    left: 8px;
+}

@@ -443,6 +443,28 @@ class Pitch extends \app\models\AppModel {
         return true;
     }
 
+    /**
+     * Add Pinned when Addon Activated
+     */
+    public static function addPinned($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $pitch->pinned = 1;
+            $pitch->save();
+        }
+        return true;
+    }
+
+    /**
+     * Add Guaranteed when Addon Activated
+     */
+    public static function addGuaranteed($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $pitch->guaranteed = 1;
+            $pitch->save();
+        }
+        return true;
+    }
+
     public static function finishPitch($pitchId) {
         $solutions = Solution::all(array(
                     'conditions' => array('pitch_id' => $pitchId, 'nominated' => 1, 'awarded' => 0),
@@ -1355,7 +1377,8 @@ class Pitch extends \app\models\AppModel {
                         'id' => $copyPitch->id,
                         'category_id' => $copyPitch->category_id,
                         'promocode' => $copyPitch->promocode));
-                Receipt::createReceipt($receiptData);
+                $comission = Receipt::createReceipt($receiptData, true);
+                $copyPitch->total = $comission + $copyPitch->price;
                 $copyPitch->save();
                 return $copyPitch->id;
             }
