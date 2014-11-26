@@ -243,3 +243,41 @@ input[name=licensed_work] {
 .error-searhTerm {
     border: 2px solid #EE8D8E;
 }
+.tt-suggestions {
+    margin-top: 35px;
+}
+.tt-suggestions:before {
+    content: "Наилучшее совпадение";
+    position: absolute;
+    font: 13px Arial,sans-serif;
+    color: #bdbdbd;
+    left: 20px;
+    top: 15px;
+    width: 200px;
+    height: 8px;
+}
+
+.tt-dropdown-menu {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 12px;
+    padding: 8px 0;
+    width: 300px;
+}
+.tt-dropdown-menu, .gist {
+    text-align: left;
+}
+
+.tt-suggestion {
+    font: 13px Arial,sans-serif;
+    line-height: 24px;
+    padding: 3px 20px;
+}
+
+.tt-suggestion.tt-cursor {
+    cursor: pointer;
+    background-color: #E9F7FB;
+    color: #51514F;
+}

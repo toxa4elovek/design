@@ -27,7 +27,7 @@
                     </ul>
                     <p class="output-p">
                         <label class="greyboldheader">Укажите 5 тегов, которые описывают логотип <a title="" class="second" href="#">(?)</a></label>
-                        <div style="overflow: hidden;padding-top: 10px; background-color: white; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) inset; margin-left: 2px; width: 585px; height: 41px;" id="filterContainer">
+                        <div style="padding-top: 10px; background-color: white; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) inset; margin-left: 2px; width: 585px; height: 41px;" id="filterContainer">
                         <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
                         <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 7px;margin-left:4px;">
                         </div>
@@ -173,5 +173,5 @@
 </div>
 
 
-<?=$this->html->script(array('jquery-ui-1.8.23.custom.min.js', 'jquery.keyboard.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.8.23.custom.min.js', 'typeahead.jquery.min.js', 'jquery.keyboard.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/upload','/jquery.fancybox-1.3.4.css'), array('inline' => false))?>
