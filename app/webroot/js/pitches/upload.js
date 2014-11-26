@@ -22,7 +22,10 @@ $(document).ready(function () {
             var box = '<li style="margin-left:6px;">' + $(this).val() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
             $(this).val('');
             $(box).appendTo('#filterbox');
-                        recalculateBox();
+            if ($('#filterbox').children().length == 5) {
+                $('#filterContainer').removeClass('error-searhTerm');
+            }
+            recalculateBox();
         }
     });
 
@@ -270,8 +273,8 @@ $(document).ready(function () {
     });
 
     $('#uploadSolution').click(function () {
-        console.log($('#filterbox').children().length);
         if ($('#filterbox').children().length < 5) {
+            $('#filterContainer').addClass('error-searhTerm');
             alert('Вы не указали 5 тегов');
             return false;
         }
