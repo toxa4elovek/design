@@ -19,6 +19,7 @@ class News extends \app\models\AppModel {
                     if ($n->middle) {
                         $post = $n;
                         $post->short = html_entity_decode($post->short, ENT_QUOTES, 'UTF-8');
+                        $post->short = mb_strimwidth($post->short, 0, 250, '...');
                         break;
                     }
                     $all_views += $n->views;

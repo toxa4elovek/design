@@ -99,6 +99,7 @@ class Event extends \app\models\AppModel {
                         $host = parse_url($news->link);
                         $record->host = $host['host'];
                         $news->short = html_entity_decode($news->short, ENT_COMPAT, 'UTF-8');
+                        $news->short = mb_strimwidth($news->short, 0, 250, '...');
                         $record->news = $news;
                     }
                     return $record;
