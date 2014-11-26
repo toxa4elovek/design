@@ -47,7 +47,7 @@ class News extends \app\models\AppModel {
     }
 
     public static function getNews($newsDate = 0, $page = 1) {
-        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
+        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0,'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%','%http://www.godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
     }
 
 }
