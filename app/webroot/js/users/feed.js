@@ -1064,7 +1064,7 @@ function OfficeStatusUpdater() {
                             </div>\
                             <div class="r-content rating-content">\
                                 <a target="_blank" href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оценил', object.user.gender) + txtsol + ' решение\
-                                <div class="rating-image" style="background-image: url(/img/' + object.solution.rating + '-rating.png);"></div>\
+                                <div class="rating-image star' + object.solution.rating + '"></div>\
                                 <div class="rating-block">\
                                     <img class="img-rate" src="' + imageurl + '">\
                                 </div>\
