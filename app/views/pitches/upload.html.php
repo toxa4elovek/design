@@ -25,16 +25,79 @@
                     <ul id="filelist" class="supplement" style="margin-top: 10px;">
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:0;"></li>
                     </ul>
+                    <p class="output-p">
+                        <label class="greyboldheader">Укажите 5 тегов, которые описывают логотип <a title="" class="second" href="#">(?)</a></label>
+                        <div style="padding-top: 10px; background-color: white; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) inset; margin-left: 2px; width: 585px; height: 41px;" id="filterContainer">
+                        <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
+                        <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 7px;margin-left:4px;">
+                        </div>
+                    </p>
+                    <p class="output-p">
+                        <label id ="show-types" class="greyboldheader"><span id="job-type">+</span>Выберите вид деятельности</label>
+                        <ul id="list-job-type">
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Недвижимость / Строительство</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Автомобили / Транспорт</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Финансы / Бизнес</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Еда / Напитки</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Реклама / Коммуникации</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Туризм / Путешествие</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Спорт</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Образование / Наука</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Красота / Мода</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Развлечение / Музыка</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Искусство / Культура</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Животные</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Дети</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Охрана / Безопасность</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" name="job-type[]"> Медицина / Здоровье</label>
+                            </li>
+                        </ul>
+                    </p>
+                    <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
                     <div class="group">
                         <p>
-                            <label class="greyboldheader">Опишите идею</label>
+                            <label class="greyboldheader">Опишите идею <a title="" class="second" href="#">(?)</a></label>
                             <textarea id="charzone" class="upload-textarea" style="height:130px; width: 557px;margin-top: 8px;" name="description"></textarea>
                         </p>
                     </div>
                 </div>
-                <div style="float:left; width: 230px; margin-bottom: 20px; margin-top: 40px;"><p class="supplement">
-                Прикрепляемые за раз файлы должны соответствовать одной концепции, быть в формате JPEG/RGB, max 800px по ширине, &lt;&nbsp;5&nbsp;МБ. Если ваше решение победит в питче, вы загрузите запрашиваемые заказчиком рабочие файлы.
+                <div style="float:left; width: 230px; margin-bottom: 20px;"><p class="supplement">
+                    Это поможет найти ваш логотип тем, кто захочет его купить. Т.о мы дарим вам возможность продать работу, если та не станет победителем с первого раза.
                 </div>
+                    <div style="float:left; width: 230px; margin-bottom: 20px;margin-top:63px;">
+                        <p class="supplement">
+                            Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате TXT, PDF или JPEG/RGB, не больше 5 Мбт, 800*800px. Если ваше решение победит в питче, вы загрузите запрашиваемые заказчиком рабочие документы.
+                        </p>
+                    </div>
                 <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
 
                 <div style="float:left; width: 627px;">
@@ -110,5 +173,5 @@
 </div>
 
 
-<?=$this->html->script(array('jquery-ui-1.8.23.custom.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.8.23.custom.min.js', 'typeahead.jquery.min.js', 'jquery.keyboard.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/upload','/jquery.fancybox-1.3.4.css'), array('inline' => false))?>

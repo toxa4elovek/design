@@ -208,3 +208,76 @@ input[type="radio"], input[type="checkbox"] {
 input[name=licensed_work] {
 	margin-bottom: 3px;
 }
+
+.output-p {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#job-type {
+    margin-right: 5px;
+}
+
+#list-job-type {
+    overflow:hidden;
+    display: none;
+}
+
+#list-job-type li {
+    display: inline-block;
+    padding: 15px 0 0 0;
+    width: 40%;
+}
+
+#list-job-type li label {
+    vertical-align: middle;
+    font: 15px Arial,sans-serif;
+    color: #666666;
+}
+
+.greyboldheader a.second {
+    color: #f66;
+    font: 14px/20px "RodeoC",sans-serif;
+}
+
+.error-searhTerm {
+    border: 2px solid #EE8D8E;
+}
+.tt-suggestions {
+    margin-top: 35px;
+}
+.tt-suggestions:before {
+    content: "Наилучшее совпадение";
+    position: absolute;
+    font: 13px Arial,sans-serif;
+    color: #bdbdbd;
+    left: 20px;
+    top: 15px;
+    width: 200px;
+    height: 8px;
+}
+
+.tt-dropdown-menu {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 12px;
+    padding: 8px 0;
+    width: 300px;
+}
+.tt-dropdown-menu, .gist {
+    text-align: left;
+}
+
+.tt-suggestion {
+    font: 13px Arial,sans-serif;
+    line-height: 24px;
+    padding: 3px 20px;
+}
+
+.tt-suggestion.tt-cursor {
+    cursor: pointer;
+    background-color: #E9F7FB;
+    color: #51514F;
+}
