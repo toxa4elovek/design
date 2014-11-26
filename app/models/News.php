@@ -19,6 +19,7 @@ class News extends \app\models\AppModel {
                     if ($n->middle) {
                         $post = $n;
                         $post->short = html_entity_decode($post->short, ENT_QUOTES, 'UTF-8');
+                        $post->short = mb_strimwidth($post->short, 0, 250, '...');
                         break;
                     }
                     $all_views += $n->views;
@@ -50,7 +51,7 @@ class News extends \app\models\AppModel {
     }
 
     public static function getNews($newsDate = 0, $page = 1) {
-        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
+        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0,'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%','%http://www.godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
     }
 
 }

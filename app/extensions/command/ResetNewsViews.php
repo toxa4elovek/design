@@ -13,11 +13,17 @@ class ResetNewsViews extends \app\extensions\command\CronJob {
         $news = News::all();
         $post = News::getPost();
         if ($post) {
-            Event::create(array(
-                'created' => $post->created,
-                'type' => 'newsAdded',
-                'news_id' => $post->id
-            ))->save();
+            $event = Event::first(array('conditions' => array('type' => 'newsAdded', 'news_id' => $post->id, 'created' => $post->created)));
+            if ($event) {
+                $event->created = $post->created;
+                $event->save();
+            } else {
+                Event::create(array(
+                    'created' => $post->created,
+                    'type' => 'newsAdded',
+                    'news_id' => $post->id
+                ))->save();
+            }
         }
         foreach ($news as $n) {
             $n->views = 0;
