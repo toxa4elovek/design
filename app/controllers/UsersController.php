@@ -38,7 +38,7 @@ class UsersController extends \app\controllers\AppController {
      * @var array
      */
 	public $publicActions = array(
-		'vklogin', 'unsubscribe', 'registration', 'login', /*'info', 'sendmail', */'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail'
+		'vklogin', 'unsubscribe', 'registration', 'login', /*'info', 'sendmail', */'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed'
 	);
 
     public $nominatedCount = false;
@@ -134,16 +134,19 @@ class UsersController extends \app\controllers\AppController {
         
     public function feed() {
         $date = date('Y-m-d H:i:s');
-        if((Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
+        if((Session::read('user')) && (Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
             $date = Session::read('user.events.date');
             Session::delete('user.events');
+            $pitchIds = User::getSubscribedPitches(Session::read('user.id'));
+        }else {
+            $pitchIds = array();
         }
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1,'multiwinner' => 0),'order' => array('started' => 'desc'),'limit' => 5));
         $middlePost = News::getPost();
         $news = News::getNews();
         $solutions = Event::getEventSolutions();
-        $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
-        $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
+        $updates = Event::getEvents($pitchIds, 1, null);
+        $nextUpdates = count(Event::getEvents($pitchIds, 2, null));
         if(is_null($this->request->env('HTTP_X_REQUESTED_WITH'))){
             return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost');
         }else {
