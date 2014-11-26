@@ -48,6 +48,12 @@ $(document).ready(function () {
         $('.new-content').css({'margin-top': '70px'});
     });
 
+    $('.img-box').hover(function () {
+        $(this).next().children('.img-post').children('h2').css('color','#ff585d');
+    }, function () {
+        $(this).next().children('.img-post').children('h2').css('color','');;
+    });
+
     var Tip = new TopTip;
     isBusy = 0;
     isBusySolution = 0;
