@@ -31,7 +31,7 @@
                                     +7 (812) 648 2412
                                 </div>
 
-                                <div class="regular">
+                                <div class="fontBookC">
                                     <br>
                                     Юридический адрес<br>
                                     и адрес для документов:<br>
