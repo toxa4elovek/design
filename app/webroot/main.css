@@ -3736,7 +3736,7 @@ div.no-result p {
 
 #fastpitch-logo {
     display: block;
-    background: url(/img/category_logo_case_banner.png) no-repeat;
+    background: url("/img/category_logo_case_banner.png") no-repeat scroll 0 8px rgba(0, 0, 0, 0);
     width: 959px;
-    height: 128px;
+    height: 136px;
 }

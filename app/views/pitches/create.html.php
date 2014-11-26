@@ -2,7 +2,7 @@
 
     <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
 
-    <div class="middle pitch-category">
+    <div class="middle pitch-category" style="padding-bottom: 0;">
 
         <div class="main">
 
