@@ -2044,7 +2044,7 @@ textarea.placeholder {
     outline:none;
 }
 .pitch-category .main {
-    padding: 60px 53px 30px;
+    padding: 20px 53px 30px;
 }
 .pitch-category h2,
 .add-pitch h2 {
@@ -3490,7 +3490,8 @@ div.no-result p {
     text-align: center;
     line-height: 22px;
     color: #666666;
-    margin-bottom: 28px;
+    margin-bottom: 18px;
+    width: 698px;
 }
 .register_who {
     text-align: center;
@@ -3732,3 +3733,10 @@ div.no-result p {
     font: 17px/20px OfficinaSansC Book, serif;
     text-shadow: -1px 0 0 #ffffff;
 } 
+
+#fastpitch-logo {
+    display: block;
+    background: url(/img/category_logo_case_banner.png) no-repeat;
+    width: 959px;
+    height: 128px;
+}
