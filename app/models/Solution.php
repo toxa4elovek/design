@@ -12,6 +12,8 @@ use \app\models\Solutionfile;
 use \app\models\Uploadnonce;
 use \app\models\Historysolution;
 use app\models\Task;
+use app\models\Tags;
+use app\models\Solutiontags;
 use \app\extensions\storage\Rcache;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
@@ -142,6 +144,54 @@ http://godesigner.ru/answers/view/73');
         );
         $solution = Solution::create();
         $solution->save($data);
+        $job_types = array(
+            'realty' => 'Недвижимость / Строительство',
+            'auto' => 'Автомобили / Транспорт',
+            'finances' => 'Финансы / Бизнес',
+            'food' => 'Еда / Напитки',
+            'adv' => 'Реклама / Коммуникации',
+            'tourism' => 'Туризм / Путешествие',
+            'sport' => 'Спорт',
+            'sci' => 'Образование / Наука',
+            'fashion' => 'Красота / Мода',
+            'music' => 'Развлечение / Музыка',
+            'culture' => 'Искусство / Культура',
+            'animals' => 'Животные',
+            'childs' => 'Дети',
+            'security' => 'Охрана / Безопасность',
+            'health' => 'Медицина / Здоровье');
+        $tags_list = Tags::all();
+        if ($tags_list) {
+            $tags_list = $tags_list->data();
+        }
+        foreach ($formdata['tags'] as $v) {
+            if ($tag_id = in_array_r($v, $tags_list)) {
+                Solutiontags::create(array(
+                    'tag_id' => $tag_id,
+                    'solution_id' => $solution->id
+                ))->save();
+            } else {
+                $tags = Tags::create(array(
+                            'name' => trim($v)
+                ));
+                $tags->save();
+                Solutiontags::create(array(
+                    'tag_id' => $tag_id,
+                    'solution_id' => $solution->id
+                ))->save();
+            }
+        }
+        $filteredTags = array_intersect_key($job_types, array_flip($formdata['job-type']));
+        foreach ($filteredTags as $v) {
+            $tags = Tags::create(array(
+                        'name' => trim($v)
+            ));
+            $tags->save();
+            Solutiontags::create(array(
+                'tag_id' => $tags->id,
+                'solution_id' => $solution->id
+            ))->save();
+        }
         $params = $solution;
         $params->uploadnonce = $formdata['uploadnonce'];
         $params->resortable = $formdata['reSortable'];
@@ -391,4 +441,13 @@ http://godesigner.ru/answers/view/73');
         return false;
     }
 
+}
+
+function in_array_r($needle, $haystack, $strict = false) {
+    foreach ($haystack as $k => $item) {
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+            return $k;
+        }
+    }
+    return false;
 }
