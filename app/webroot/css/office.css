@@ -398,7 +398,7 @@
 
 .center-boxes .box img.img-post {
     height: auto;
-    max-width: 600px;
+    width: 600px;
     display: block;
     margin: 0 auto;
 }
