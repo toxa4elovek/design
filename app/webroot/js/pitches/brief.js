@@ -197,6 +197,10 @@ $(document).ready(function() {
     $('input', '.extensions').change(function() {
         $('.extensions').removeClass('wrong-input');
     });
+    
+    $('input', '#list-job-type').change(function() {
+        $('#list-job-type').removeClass('wrong-input');
+    });
 
     $('#sliderset').show();
 
@@ -968,6 +972,7 @@ function FeatureCart() {
             'title': $('input[name=title]').val(),
             'category_id': $('input[name=category_id]').val(),
             'industry': $('input[name=industry]').val() || '',
+            'jobTypes': self._jobArray(),
             'business-description': $('textarea[name=business-description]').val(),
             'description': $('textarea[name=description]').val(),
             'fileFormats': self._formatArray(),
@@ -1000,6 +1005,10 @@ function FeatureCart() {
             }
             if(self.data.commonPitchData.fileFormats.length == 0) {
                 $('.extensions').addClass('wrong-input');
+                result = false;
+            }
+            if (self.data.commonPitchData.jobTypes.length == 0) {
+                $('#list-job-type').addClass('wrong-input');
                 result = false;
             }
         }
@@ -1100,15 +1109,23 @@ function FeatureCart() {
             array.push($(object).data('id'));
         })
         return array;
-    }
+    },
     this._formatArray = function() {
         var array = new Array();
         var checkedExperts = $('input:checked', '.extensions');
         $.each(checkedExperts, function(index, object) {
             array.push($(object).data('value'));
-        })
+        });
         return array;
-    }
+    },
+    this._jobArray = function() {
+        var array = new Array();
+        var checkedJob = $('input:checked', '#list-job-type');
+        $.each(checkedJob, function(index, object) {
+            array.push($(object).val());
+        });
+        return array;
+    },
     this._expertArray = function() {
         var array = new Array();
         var checkedExperts = $('input:checked', '.experts');
