@@ -36,6 +36,7 @@ class News extends \app\models\AppModel {
                             $host = parse_url($n->link);
                             $n->host = $host['host'];
                             $n->short = html_entity_decode($n->short, ENT_QUOTES, 'UTF-8');
+                            $n->short = mb_strimwidth($n->short, 0, 250, '...');
                             $str = strpos($n->tags, '|');
                             if ($str) {
                                 $n->tags = substr($n->tags, 0, $str);
