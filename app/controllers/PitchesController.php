@@ -1230,6 +1230,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $this->request->data['pitch_id'] = $this->request->id;
                 $this->request->data['user_id'] = Session::read('user.id');
                 $this->request->data['reSortable'] = explode(',', $this->request->data['reSortable']);
+                $this->request->data['tags'] = explode(',', $this->request->data['tags']);
                 $result = Solution::uploadSolution($this->request->data);
                 if ($result) {
                     return $this->redirect('/pitches/view/' . $pitch->id);

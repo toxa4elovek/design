@@ -47,7 +47,17 @@ $(document).ready(function () {
             baseWidth -= $(object).width() + 50;
         });
         $('#searchTerm').width(baseWidth);
+        $('.tt-hint').width(baseWidth);
     };
+
+    $('.tt-cursor').on('click', function () {
+        var box = '<li style="margin-left:6px;">' + $(this).text() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+        $(box).appendTo('#filterbox');
+        if ($('#filterbox').children().length == 5) {
+            $('#filterContainer').removeClass('error-searhTerm');
+        }
+        recalculateBox();
+    });
 
     $('#searchTerm').keyboard('space', function () {
         if ($(this).val() != '') {
@@ -305,6 +315,7 @@ $(document).ready(function () {
     });
 
     $('#uploadSolution').click(function () {
+        //return false;
         if ($('#filterbox').children().length < 5) {
             $('#filterContainer').addClass('error-searhTerm');
             alert('Вы не указали 5 тегов');
@@ -325,6 +336,15 @@ $(document).ready(function () {
                 == 0) && ($('#filename').html() != 'Файл не выбран')) {
             $('a[href="#invalid"]').click();
         } else {
+            var job = [];
+            $.each($('#filterbox').children(), function (i, v) {
+                job.push($(v).text());
+            });
+            if ($('#tags').length > 0) {
+                $('#tags').attr('value', job.join(','));
+            } else {
+                $('<input />').attr('id', 'tags').attr('type', 'hidden').attr('name', 'tags').attr('value', job.join(',')).appendTo('#solution');
+            }
             return true;
         }
         return false;

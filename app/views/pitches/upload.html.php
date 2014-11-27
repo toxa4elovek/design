@@ -55,9 +55,10 @@ $job_types = array(
                     </p>
                     <ul id="list-job-type">
                     <?php $industry = (unserialize($pitch->industry));
+                          $_empty = empty($industry);
                           foreach ($job_types as $k => $v): ?>
                             <li>
-                                <label><input type="checkbox" name="job-type[]" value="<?= $k ?>"<?= in_array($k, $industry) ? ' checked' : ''?>><?= $v ?></label>
+                                <label><input type="checkbox" name="job-type[]" value="<?= $k ?>"<?= ($_empty) ?: (in_array($k, $industry) ? ' checked' : '')?>><?= $v ?></label>
                             </li>
                     <?php endforeach; ?>
                     </ul>
