@@ -35,10 +35,18 @@ $(document).ready(function () {
         };
     };
 
+    var tags = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: '/pitches/getags/?name=%QUERY'
+    });
+
+    tags.initialize();
+
     $('#searchTerm').typeahead(null, {
-        name: 'states',
-        displayKey: 'value',
-        source: substringMatcher(states),
+        name: 'tags',
+        displayKey: 'name',
+        source: tags.ttAdapter(),
     });
 
     var recalculateBox = function () {

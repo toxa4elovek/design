@@ -153,6 +153,6 @@ $job_types = array(
 </div>
 
 
-<?= $this->html->script(array('jquery-ui-1.8.23.custom.min.js', 'typeahead.jquery.min.js', 'jquery.keyboard.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false)) ?>
+<?= $this->html->script(array('jquery-ui-1.8.23.custom.min.js', 'typeahead.jquery.min.js', 'bloodhound.min.js', 'jquery.keyboard.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false)) ?>
 <?=
 $this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/upload', '/jquery.fancybox-1.3.4.css'), array('inline' => false))?>
