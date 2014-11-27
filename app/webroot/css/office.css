@@ -398,7 +398,7 @@
 
 .center-boxes .box img.img-post {
     height: auto;
-    max-width: 600px;
+    width: 600px;
     display: block;
     margin: 0 auto;
 }
@@ -585,6 +585,7 @@
 
 .box h2,.box a h2 {
     font-size: 23px;
+    display: inline-block;
     color: #2d2d2d;
     padding-top: 16px;
     font-family: OfficinaSansC Bold, serif;
