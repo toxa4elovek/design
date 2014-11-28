@@ -47,7 +47,7 @@ $job_types = array(
                         <label class="greyboldheader">Укажите 5 тегов, которые описывают логотип <a title="" class="second" href="#">(?)</a></label>
                     <div style="padding-top: 10px; background-color: white; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) inset; margin-left: 2px; width: 585px; height: 41px;" id="filterContainer">
                         <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
-                        <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 7px;margin-left:4px;">
+                        <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 9px;margin-left:4px;">
                     </div>
                     </p>
                     <p class="output-p">
@@ -66,7 +66,7 @@ $job_types = array(
                     <div class="group">
                         <p>
                             <label class="greyboldheader">Опишите идею <a title="" class="second" href="#">(?)</a></label>
-                            <textarea id="charzone" class="upload-textarea" style="height:130px; width: 557px;margin-top: 8px;" name="description"></textarea>
+                            <textarea id="charzone" class="upload-textarea" name="description"></textarea>
                         </p>
                     </div>
                 </div>

@@ -1,41 +1,41 @@
 /*upload.css*/
 .largeHeading {
-	color: #cccccc;
-	font: bold 28px/1 "RodeoC", sans-serif;
-	text-shadow: 0 1px 1px #F1F1F1;
-	text-transform: uppercase;
+    color: #cccccc;
+    font: bold 28px/1 "RodeoC", sans-serif;
+    text-shadow: 0 1px 1px #F1F1F1;
+    text-transform: uppercase;
 }
 .upload-form {
-	margin-top: 30px;
+    margin-top: 30px;
 }
 .upload-textarea {
-	height:75px;
+    height:75px;
 }
 input[type="radio"], input[type="checkbox"] {
-  font-size: 12px;
-  margin-right:5px;
-  width: 16px;
-  vertical-align: middle;
+    font-size: 12px;
+    margin-right:5px;
+    width: 16px;
+    vertical-align: middle;
 }
 .tos-container {
-	margin-bottom:20px;
-	color:#666666;
+    margin-bottom:20px;
+    color:#666666;
 }
 .tos-container a {
-	text-decoration: none;
+    text-decoration: none;
 }
 .plusbutton {
-	float:left;
-	display:block;
-	padding-left:20px;
-	padding-right:20px;
-	font-size:20px;
+    float:left;
+    display:block;
+    padding-left:20px;
+    padding-right:20px;
+    font-size:20px;
 }
 
 .notransform {
-	color: #999999;
-	line-height: 48px;
-	text-transform: none;
+    color: #999999;
+    line-height: 48px;
+    text-transform: none;
 }
 .label-switch {
     float:left;
@@ -49,12 +49,12 @@ input[type="radio"], input[type="checkbox"] {
     color: #5C0002;
 }
 .upload-dropzone-wrapper {
-	padding-top: 1px;
-	width: 878px;
-	height: 321px;
-	background-image: url('/img/upload-dropzone.png');
-	background-repeat: no-repeat;
-	background-position: 0 0;
+    padding-top: 1px;
+    width: 878px;
+    height: 321px;
+    background-image: url('/img/upload-dropzone.png');
+    background-repeat: no-repeat;
+    background-position: 0 0;
 }
 .upload-dropzone-wrapper.active {
     background-position: 0 -322px;
@@ -63,18 +63,18 @@ input[type="radio"], input[type="checkbox"] {
     background-position: 0 -644px;
 }
 .upload-dropzone-wrapper #scrollerarea {
-	display: none;
+    display: none;
     position: relative;
     float: right;
-	right: 20px;
-	top: 20px;
-	height: 280px;
-	width: 12px;
-	background: #d7d7d7;
-	border-top: 1px solid #d2d2d2;
-	border-right: 1px solid #fff;
-	border-bottom: 1px solid #fff;
-	border-left: 1px solid #d2d2d2;
+    right: 20px;
+    top: 20px;
+    height: 280px;
+    width: 12px;
+    background: #d7d7d7;
+    border-top: 1px solid #d2d2d2;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #d2d2d2;
 }
 .upload-dropzone-wrapper #scroller {
     position: absolute;
@@ -94,14 +94,14 @@ input[type="radio"], input[type="checkbox"] {
     box-shadow: 1px 0 1px rgba(0, 0, 0, .2);
 }
 .upload-dropzone {
-	width: 835px;
-	height: 290px;
-	overflow: hidden;
+    width: 835px;
+    height: 290px;
+    overflow: hidden;
     margin-top: 9px;
     margin-left: 10px;
 }
 .upload-dropzone.active {
-	opacity: 0.2;
+    opacity: 0.2;
 }
 .upload-dropzone #truebutton,
 .upload-dropzone #fakebutton {
@@ -115,33 +115,33 @@ input[type="radio"], input[type="checkbox"] {
     z-index: 5;
 }
 .upload-dropzone #fakebutton {
-	top: 150px;
+    top: 150px;
     z-index: 4;
     opacity: 1;
 }
 .upload-dropzone .uploadable-wrapper {
-	position: relative;
+    position: relative;
     display: inline-block;
     vertical-align: top;
     height: 167px;
     margin: 10px 8px 10px 8px;
 }
 .upload-dropzone .uploadable-wrapper .thumbnail-container {
-	overflow: hidden;
-	width: 180px;
-	height: 135px;
-	border-width: 6px;
-	border-style: solid;
-	border-color: rgba(223, 223, 223, 1);
-	text-align: center;
-	cursor: wait;
-	background: #fff;
+    overflow: hidden;
+    width: 180px;
+    height: 135px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(223, 223, 223, 1);
+    text-align: center;
+    cursor: wait;
+    background: #fff;
 }
 .upload-dropzone .uploadable-wrapper .thumbnail-container:hover {
-	border-color: #628ba0;
+    border-color: #628ba0;
 }
 .upload-dropzone .uploadable-wrapper.ready .thumbnail-container:hover {
-	cursor: move;
+    cursor: move;
 }
 .upload-dropzone .uploadable-wrapper.ready:hover .thumbnail-close {
     position: absolute;
@@ -154,23 +154,23 @@ input[type="radio"], input[type="checkbox"] {
     cursor: pointer;
 }
 .upload-progressbar-wrapper {
-	position: relative;
-	width: 94%;
-	height: 11px;
-	margin: 4px auto 0 auto;
-	background-color: #c0c0c0;
-	border-radius: 5px;
-	box-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+    position: relative;
+    width: 94%;
+    height: 11px;
+    margin: 4px auto 0 auto;
+    background-color: #c0c0c0;
+    border-radius: 5px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .6);
 }
 .upload-progressbar {
-	transition: width 20s;
-	position: absolute;
-	width: 0%;
-	height: 10px;
-	border-radius: 5px;
-	box-shadow: 0 1px 0 rgba(0, 0, 0, .2);
-	background: #5c8296;
-	background: -webkit-gradient(linear, 0 0, 0 100%, from(#6e95a9), to(#547789));
+    transition: width 20s;
+    position: absolute;
+    width: 0%;
+    height: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .2);
+    background: #5c8296;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#6e95a9), to(#547789));
     background: -webkit-linear-gradient(#6e95a9, #547789);
     background:    -moz-linear-gradient(#6e95a9, #547789);
     background:     -ms-linear-gradient(#6e95a9, #547789);
@@ -178,13 +178,13 @@ input[type="radio"], input[type="checkbox"] {
     background:         linear-gradient(#6e95a9, #547789);
 }
 .sortable-placeholder {
-	display: inline-block;
-	width: 188px;
-	height: 135px;
-	background: transparent;
-	border: 2px dashed #d0d0d0;
-	border-radius: 6px;
-	margin: 10px 8px 30px 8px;
+    display: inline-block;
+    width: 188px;
+    height: 135px;
+    background: transparent;
+    border: 2px dashed #d0d0d0;
+    border-radius: 6px;
+    margin: 10px 8px 30px 8px;
 }
 #works input[type=text] {
     color: #999;
@@ -206,7 +206,7 @@ input[type="radio"], input[type="checkbox"] {
     margin-right: 22px;
 }
 input[name=licensed_work] {
-	margin-bottom: 3px;
+    margin-bottom: 3px;
 }
 
 .output-p {
@@ -214,19 +214,36 @@ input[name=licensed_work] {
     margin-top: 10px;
 }
 
+#charzone {
+    height: 130px;
+    width: 557px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
 #job-type {
-    margin-right: 5px;
+    margin-right: 7px;
 }
 
 #list-job-type {
-    overflow:hidden;
+    overflow: hidden;
     display: none;
+    margin-left: 16px;
+    margin-bottom: 14px;
 }
 
 #list-job-type li {
     display: inline-block;
     padding: 15px 0 0 0;
     width: 40%;
+}
+
+#list-job-type li input {
+    margin-bottom: 3px;
+}
+
+#searchTerm, .tags li {
+    font-size: 13px;
 }
 
 #list-job-type li label {
