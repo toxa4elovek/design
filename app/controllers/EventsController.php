@@ -79,6 +79,13 @@ class EventsController extends \app\controllers\AppController {
         $count = count(News::getNews(0, $this->request->data['page'] + 1));
         return compact('news', 'count');
     }
+    
+    public function liked() {
+        if ($this->request->id) {
+           $likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
+        }
+        return compact('likes');
+    }
 
 }
 

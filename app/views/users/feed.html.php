@@ -275,19 +275,30 @@
                                         <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                             <?php
                                             $id = $object['solution']['id'];
+                                            $likes_count = 0;
+                                            $html_likes = '';
                                             foreach ($updates as $like):
-                                                if ($like['type'] == 'LikeAdded' && $like['solution_id'] == $id):
-                                                    $avatar = isset($like['user']['images']['avatar_small']) ? $like['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
-                                                    ?>
-                                                    <div>
-                                                        <div class="l-img">
-                                                            <a target="_blank" href="/users/view/<?= $like['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
-                                                        </div>
-                                                        <span><a href="/users/view/<?= $like['user_id'] ?>"><?= $like['creator'] ?></a> <?= $this->user->getGenderTxt('лайкнул', $like['user']['gender']) ?> <?= ($like['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение</span>
-                                                    </div>
-                                                    <?php
-                                                endif;
+                                                if ($like['type'] == 'LikeAdded' && $like['solution_id'] == $id) {
+                                                    ++$likes_count;
+                                                    if ($likes_count == 1) {
+                                                        $html_likes .= '<span><a id="show-other-likes" data-solid="'. $object['solution']['id'] .'" href="#">';
+                                                    }
+                                                    if ($likes_count < 4 && $likes_count < $object['solution']['likes']) { 
+                                                        $html_likes .= $like['creator'].', ';
+                                                    } else {
+                                                        if ($likes_count > 4) {
+                                                            $other = (int)$object['solution']['likes'] - $likes_count;
+                                                            $html_likes .= $like['creator'].' и '. $other .' других</a> лайкнули ваше решение</span>';
+                                                        } elseif ($likes_count < 2) {
+                                                            $html_likes .= $like['creator'].'</a> Лайкнул ваше решение</span>';
+                                                        } elseif ($likes_count <= 4) {
+                                                            $html_likes .= $like['creator'].'</a> Лайкнуло ваше решение</span>';
+                                                        }
+                                                        break;
+                                                    }
+                                                }
                                             endforeach;
+                                            echo $html_likes;
                                             ?>
                                         </div></div>
                                 <?php elseif ($object['type'] == 'newsAdded'): ?>
@@ -398,6 +409,20 @@
         </div><!-- /middle -->
     </div><!-- .wrapper -->
     <div class="onTop">&nbsp;</div>
+    
+    <div id="popup-other-likes" style="display: none;">
+        <div class="other-header">Люди, которым это нравится</div>
+        <ul id="who-its-liked">
+            <li>
+                <img src="/img/default_small_avatar.png" class="avatar">
+                <a class="user-title" href="/users/view/202">Test T.</a>
+                <a id="fav-user" class="order-button" href="#">Подписаться</a>
+            </li>
+        </ul>
+    <div id="likedAjaxLoader" style="text-align: center; display: none; margin-top: 190px;"><img src="/img/blog-ajax-loader.gif"></div>    
+    <div class="popup-close"></div>
+</div>
+    
     <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'socialite.js', 'users/feed.js', 'users/activation.js'), array('inline' => false)) ?>
     <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css'), array('inline' => false)) ?>
     <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
