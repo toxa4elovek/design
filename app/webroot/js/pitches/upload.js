@@ -9,32 +9,6 @@ $(document).ready(function () {
         }
     });
 
-    var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-        'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-        'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-        'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-        'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-        'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-        'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-        'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-        'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-    ];
-
-    var substringMatcher = function (strs) {
-        return function findMatches(q, cb) {
-            var matches, substrRegex;
-            matches = [];
-            substrRegex = new RegExp(q, 'i');
-            $.each(strs, function (i, str) {
-                if (substrRegex.test(str)) {
-                    matches.push({value: str});
-                }
-            });
-
-            cb(matches);
-        };
-    };
-
     var tags = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -47,6 +21,14 @@ $(document).ready(function () {
         name: 'tags',
         displayKey: 'name',
         source: tags.ttAdapter(),
+    }).on('typeahead:selected', function (obj, val) {
+        var box = '<li style="margin-left:6px;">' + val.name + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+        $(box).appendTo('#filterbox');
+        $('#searchTerm').val('');
+        if ($('#filterbox').children().length == 5) {
+            $('#filterContainer').removeClass('error-searhTerm');
+        }
+        recalculateBox();
     });
 
     var recalculateBox = function () {
@@ -57,15 +39,6 @@ $(document).ready(function () {
         $('#searchTerm').width(baseWidth);
         $('.tt-hint').width(baseWidth);
     };
-
-    $('.tt-cursor').on('click', function () {
-        var box = '<li style="margin-left:6px;">' + $(this).text() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
-        $(box).appendTo('#filterbox');
-        if ($('#filterbox').children().length == 5) {
-            $('#filterContainer').removeClass('error-searhTerm');
-        }
-        recalculateBox();
-    });
 
     $('#searchTerm').keyboard('space', function () {
         if ($(this).val() != '') {
@@ -85,8 +58,14 @@ $(document).ready(function () {
     });
 
     $('#show-types').on('click', function () {
-        $('#job-type').html('-');
-        $('#list-job-type').show();
+        var job_type = $('#job-type');
+        $('#list-job-type').toggle('fast', function () {
+            if (job_type.html() == '+') {
+                job_type.html('-');
+            } else {
+                job_type.html('+');
+            }
+        });
     });
 
     $('#searchTerm').keyboard('backspace', function () {
