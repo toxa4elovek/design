@@ -214,6 +214,13 @@ input[name=licensed_work] {
     margin-top: 10px;
 }
 
+#charzone {
+    height: 130px;
+    width: 557px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
 #job-type {
     margin-right: 7px;
 }
@@ -222,6 +229,7 @@ input[name=licensed_work] {
     overflow: hidden;
     display: none;
     margin-left: 16px;
+    margin-bottom: 14px;
 }
 
 #list-job-type li {

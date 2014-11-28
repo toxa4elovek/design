@@ -66,7 +66,7 @@ $job_types = array(
                     <div class="group">
                         <p>
                             <label class="greyboldheader">Опишите идею <a title="" class="second" href="#">(?)</a></label>
-                            <textarea id="charzone" class="upload-textarea" style="height:130px; width: 557px;margin-top: 8px;" name="description"></textarea>
+                            <textarea id="charzone" class="upload-textarea" name="description"></textarea>
                         </p>
                     </div>
                 </div>
