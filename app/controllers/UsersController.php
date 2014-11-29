@@ -1443,7 +1443,7 @@ class UsersController extends \app\controllers\AppController {
             }else {
                 $this->request->data['target'] = 'team@godesigner.ru';
             }
-            $this->request->data['subject'] = 'Сообщение с сайта GoDesigner.ru';
+            $this->request->data['subject'] = 'Сообщение с сайта GoDesigner.ru: ' . $this->request->data['email'] ;
             if ($this->request->data['target'] != 'va@godesigner.ru') {
                 $this->request->data['needInfo'] = true;
                 $this->request->data['user'] = User::getUserInfo();
