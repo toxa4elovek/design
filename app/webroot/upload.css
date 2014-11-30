@@ -222,7 +222,8 @@ input[name=licensed_work] {
 }
 
 #job-type {
-    margin-right: 7px;
+    position: absolute;
+    right: 248px;
 }
 
 #list-job-type {
@@ -297,4 +298,9 @@ input[name=licensed_work] {
     cursor: pointer;
     background-color: #E9F7FB;
     color: #51514F;
+}
+
+#show-types {
+    position: relative;
+    margin-left: 23px;
 }
