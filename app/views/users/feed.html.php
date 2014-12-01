@@ -12,6 +12,8 @@
                 var isClient = <?php echo ($this->user->isPitchOwner($pitch->user->id)) ? 1 : 0; ?>;
                 var isAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
+                var userName = '<?php echo ($this->user->getId()) ? $this->user->getFormattedName($this->user->firstname, $this->user->lastname) : ''; ?>';
+                var userGender = <?php echo ($this->user->getGender() ? 1 : 0 ); ?>;
             </script>
             <?php if ($this->user->getGender() < 1 && $this->user->getId()): ?>
                 <div id="gender-box">
@@ -269,7 +271,7 @@
                                         </div>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                         <div class="box-info">
-                                            <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
+                                            <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a><span>&middot;</span>
                                             <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                         </div>
                                         <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
@@ -281,18 +283,18 @@
                                                 if ($like['type'] == 'LikeAdded' && $like['solution_id'] == $id) {
                                                     ++$likes_count;
                                                     if ($likes_count == 1) {
-                                                        $html_likes .= '<span><a id="show-other-likes" data-solid="' . $object['solution']['id'] . '" href="#">';
+                                                        $html_likes .= '<span class="who-likes"><a id="show-other-likes" data-solid="' . $object['solution']['id'] . '" href="#">';
                                                     }
                                                     if ($likes_count < 4 && $likes_count < $object['solution']['likes']) {
                                                         $html_likes .= $like['creator'] . ', ';
                                                     } else {
                                                         if ($likes_count > 4) {
                                                             $other = (int) $object['solution']['likes'] - $likes_count;
-                                                            $html_likes .= $like['creator'] . ' и ' . $other . ' других</a> лайкнули ваше решение</span>';
+                                                            $html_likes .= $like['creator'] . ' <span>и ' . $other . ' других</a> лайкнули ваше решение</span></span>';
                                                         } elseif ($likes_count < 2) {
-                                                            $html_likes .= $like['creator'] . '</a> Лайкнул ваше решение</span>';
+                                                            $html_likes .= $like['creator'] . '</a> <span>'.$this->user->getGenderTxt('лайкнул', $like['user']['gender']).' ваше решение</span></span>';
                                                         } elseif ($likes_count <= 4) {
-                                                            $html_likes .= $like['creator'] . '</a> Лайкнуло ваше решение</span>';
+                                                            $html_likes .= $like['creator'] . '</a> <span>лайкнули ваше решение</span></span>';
                                                         }
                                                         break;
                                                     }
