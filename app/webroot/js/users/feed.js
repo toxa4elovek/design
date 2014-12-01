@@ -225,14 +225,32 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.like-small-icon-box', function () {
-        var link = $(this);
+        var link = $(this),
+                span = link.parent().next().children('span'),
+                txt = span.children('span').text(),
+                like_span = span.children('span'),
+                url = span.children('a'),
+                url_backup = url.text(),
+                txt_backup = txt;
+//        } else if (txt == '') {
+//            $('<span class="who-likes"><a id="show-other-likes" data-solid="'+ $(this).data('id') +'" href="#">'+ userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ваше решение</span></span>');
+//        }
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
+            if (txt == 'лайкнул ваше решение') {
+                url.text(url.text() + ', ' + userName);
+                like_span.text('лайкнули ваше решение');
+            } else if (txt == 'лайкнули ваше решение') {
+                url.text(url.text() + ', ' + userName);
+                like_span.text('лайкнули ваше решение');
+            }
             $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Нравится');
                     link.data('vote', '1');
+                    url.text(url_backup);
+                    like_span.text(txt_backup);
                 }
             });
         } else {
@@ -1040,7 +1058,7 @@ function OfficeStatusUpdater() {
                                         <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
                                     <div class="r-content box-comment">';
-                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0) || !object.solution.id) {
+                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0) || !object.solution || !object.solution.id) {
                         html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
                     }
                     else {
@@ -1095,9 +1113,8 @@ function OfficeStatusUpdater() {
                     if (object.type == 'LikeAdded' && object.solution_id == id) {
                         likes_count++;
                         if (likes_count == 1) {
-                            html += '<span><a id="show-other-likes" href="#">';
+                            html += '<span class="who-likes"><a id="show-other-likes" href="#">';
                         }
-                        //console.log(object.solution.id + ' - ' + likes_count + ' - ' + object.solution.likes);
                         if (likes_count < 4 && likes_count < object.solution.likes) {
                             html += object.creator + ', ';
                         } else {
@@ -1105,9 +1122,9 @@ function OfficeStatusUpdater() {
                                 var other = parseInt(object.solution.likes) - likes_count;
                                 html += object.creator + ' и ' + other + ' других</a> лайкнули ваше решение</span>';
                             } else if (likes_count < 2) {
-                                html += object.creator + '</a> Лайкнул ваше решение</span>';
+                                html += object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ваше решение</span>';
                             } else if (likes_count <= 4) {
-                                html += object.creator + '</a> Лайкнуло ваше решение</span>';
+                                html += object.creator + '</a> лайкнули ваше решение</span>';
                             }
                             return false;
                         }

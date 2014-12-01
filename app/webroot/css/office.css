@@ -424,20 +424,20 @@
     display: block;
     text-align: left;
     padding-left: 20px;
-    margin-top: 2px;
+    margin-top: 4px;
     padding-bottom: 5px;
     border-bottom: 1px solid #ededed;
 }
 
-.center-boxes .box .box-info a {
+.center-boxes .box .box-info a,
+.center-boxes .box .box-info span {
     color: #f86362;
 }
 
 .like-small-icon-box {
     height: 14px;
     font: 14px OfficinaSansC Book, serif !important;
-    padding-right: 23px;
-    padding-top: 4px;
+    padding: 4px 23px 0 5px;
     text-decoration: none;
 }
 .like-small-icon-box:hover, .like-small-icon-box:active {
@@ -451,7 +451,7 @@
     font: 14px OfficinaSansC Book, serif !important;
     height: 25px;
     padding-top: 4px;
-    padding-right: 15px;
+    padding-right: 10px;
 }
 .warning-box:hover {
     text-decoration: underline;
@@ -508,14 +508,14 @@
     background: #f4f4f4;
 }
 
-.center-boxes .box .likes span {
+.center-boxes .box .likes .who-likes {
     display: block;
     vertical-align:middle;
-    width: 583px;
+    width: 549px;
     padding: 7px 3px 7px 46px;
     position: relative;
 }
-.center-boxes .box .likes span:before {
+.center-boxes .box .likes .who-likes:before {
     background: url(/img/feed-like.png) no-repeat;
     content: '';
     width: 16px;

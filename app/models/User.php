@@ -242,9 +242,9 @@ class User extends \app\models\AppModel {
             $temp[] = $f->fav_user_id;
         }
         if (count($temp) > 0) {
-            $fav_pitches = Pitch::find('all', array('conditions' => array('user_id' => $temp)));
+            $fav_pitches = Pitch::all(array('conditions' => array('user_id' => $temp)));
             foreach ($fav_pitches as $f) {
-                $pitchesIds[$f->pitch->id . ''] = $f->created;
+                $pitchesIds[$f->id . ''] = $f->started;
             }
         }
         $solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
