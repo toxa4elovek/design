@@ -181,16 +181,20 @@ http://godesigner.ru/answers/view/73');
                 ))->save();
             }
         }
-        $filteredTags = array_intersect_key($job_types, array_flip($formdata['job-type']));
-        foreach ($filteredTags as $v) {
-            $tags = Tags::create(array(
-                        'name' => trim($v)
-            ));
-            $tags->save();
-            Solutiontags::create(array(
-                'tag_id' => $tags->id,
-                'solution_id' => $solution->id
-            ))->save();
+        if(is_array($formdata['job-type'])) {
+            $filteredTags = array_intersect_key($job_types, array_flip($formdata['job-type']));
+            if(is_array($filteredTags)) {
+                foreach ($filteredTags as $v) {
+                    $tags = Tags::create(array(
+                                'name' => trim($v)
+                    ));
+                    $tags->save();
+                    Solutiontags::create(array(
+                        'tag_id' => $tags->id,
+                        'solution_id' => $solution->id
+                    ))->save();
+                }
+            }
         }
         $params = $solution;
         $params->uploadnonce = $formdata['uploadnonce'];
