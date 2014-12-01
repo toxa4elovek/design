@@ -42,7 +42,7 @@ $(document).ready(function () {
 
     $('#searchTerm').keyboard('space', function () {
         if ($(this).val() != '') {
-            var box = '<li style="margin-left:6px;">' + $(this).val() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+            var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
             $(this).val('');
             $(box).appendTo('#filterbox');
             if ($('#filterbox').children().length == 5) {
@@ -61,7 +61,7 @@ $(document).ready(function () {
         var job_type = $('#job-type');
         $('#list-job-type').toggle('fast', function () {
             if (job_type.html() == '+') {
-                job_type.html('-');
+                job_type.html('&minus;');
             } else {
                 job_type.html('+');
             }

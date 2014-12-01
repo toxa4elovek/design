@@ -18,11 +18,11 @@ $job_types = array(
 ?>
 <div class="wrapper pitchpanel login">
 
-<?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2')) ?>
+    <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2')) ?>
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px; padding-left: 40px;">
-<?= $this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch)) ?>
+            <?= $this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch)) ?>
 
             <form action="/pitches/uploadfile/<?= $pitch->id ?>.json" method="post" id="solutionfiles" class="add-pitch upload-form" enctype="multipart/form-data">
                 <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">
@@ -45,22 +45,25 @@ $job_types = array(
                     </ul>
                     <p class="output-p">
                         <label class="greyboldheader">Укажите 5 тегов, которые описывают логотип <a title="" class="second" href="#">(?)</a></label>
+                    </p>
                     <div style="padding-top: 10px; background-color: white; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) inset; margin-left: 2px; width: 585px; height: 41px;" id="filterContainer">
                         <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
                         <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 9px;margin-left:4px;">
                     </div>
-                    </p>
+
                     <p class="output-p">
-                        <label id ="show-types" class="greyboldheader"><span id="job-type">+</span>Выберите вид деятельности</label>
+                        <label id ="show-types" class="greyboldheader"><span id="job-type" class="greyboldheader">+</span>Выберите вид деятельности</label>
                     </p>
                     <ul id="list-job-type">
-                    <?php $industry = (unserialize($pitch->industry));
-                          $_empty = empty($industry);
-                          foreach ($job_types as $k => $v): ?>
+                        <?php
+                        $industry = (unserialize($pitch->industry));
+                        $_empty = empty($industry);
+                        foreach ($job_types as $k => $v):
+                            ?>
                             <li>
-                                <label><input type="checkbox" name="job-type[]" value="<?= $k ?>"<?= ($_empty) ?: (in_array($k, $industry) ? ' checked' : '')?>><?= $v ?></label>
+                                <label><input type="checkbox" name="job-type[]" value="<?= $k ?>"<?= ($_empty) ? : (in_array($k, $industry) ? ' checked' : '') ?>><?= $v ?></label>
                             </li>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </ul>
                     <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
                     <div class="group">
@@ -112,7 +115,7 @@ $job_types = array(
 
 
                 <div class="group" style="background:none;">
-<?= $this->html->link('Отмена', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'button second', 'style' => 'width:80px;margin-right:40px;')); ?>
+                    <?= $this->html->link('Отмена', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'button second', 'style' => 'width:80px;margin-right:40px;')); ?>
                     <input type="hidden" id="reSortable" name="reSortable" value="" />
                     <input id="uploadSolution" type="submit" class="button" value="Отправить"/>
                 </div>
