@@ -49,9 +49,10 @@ $(document).ready(function () {
     });
 
     $('.img-box').hover(function () {
-        $(this).next().children('.img-post').children('h2').css('color','#ff585d');
+        $(this).next().children('.img-post').children('h2').css('color', '#ff585d');
     }, function () {
-        $(this).next().children('.img-post').children('h2').css('color','');;
+        $(this).next().children('.img-post').children('h2').css('color', '');
+        ;
     });
 
     var Tip = new TopTip;
@@ -224,14 +225,32 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.like-small-icon-box', function () {
-        var link = $(this);
+        var link = $(this),
+                span = link.parent().next().children('span'),
+                txt = span.children('span').text(),
+                like_span = span.children('span'),
+                url = span.children('a'),
+                url_backup = url.text(),
+                txt_backup = txt;
+//        } else if (txt == '') {
+//            $('<span class="who-likes"><a id="show-other-likes" data-solid="'+ $(this).data('id') +'" href="#">'+ userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ваше решение</span></span>');
+//        }
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
+            if (txt == 'лайкнул ваше решение') {
+                url.text(url.text() + ', ' + userName);
+                like_span.text('лайкнули ваше решение');
+            } else if (txt == 'лайкнули ваше решение') {
+                url.text(url.text() + ', ' + userName);
+                like_span.text('лайкнули ваше решение');
+            }
             $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Нравится');
                     link.data('vote', '1');
+                    url.text(url_backup);
+                    like_span.text(txt_backup);
                 }
             });
         } else {
@@ -362,6 +381,68 @@ $(document).ready(function () {
         $('#replacingblock').replaceWith(item);
         $('#popup-final-step').modal({
             containerId: 'final-step-multi',
+            opacity: 80,
+            closeClass: 'popup-close'
+        });
+        return false;
+    });
+
+    $(document).on('click', '.fav-user', function (e) {
+        var link = $(this);
+        link.text('Отписаться');
+        link.addClass('unfav-user').removeClass('fav-user');
+        $.get('/favourites/adduser/' + $(this).data('id') + '.json', function (response) {
+            if (response.result == false) {
+                link.text('Подписаться');
+                link.addClass('fav-user').removeClass('unfav-user');
+            }
+        });
+        return false;
+    });
+
+    $(document).on('click', '.unfav-user', function (e) {
+        var link = $(this);
+        link.text('Подписаться');
+        link.addClass('fav-user').removeClass('unfav-user');
+        $.get('/favourites/adduser/' + $(this).data('id') + '.json', function (response) {
+            link.text('Отписаться');
+            link.addClass('unfav-user').removeClass('fav-user');
+        });
+        return false;
+    });
+
+    $(document).on('click', '#show-other-likes', function (e) {
+        $('#who-its-liked').empty();
+        $('#likedAjaxLoader').show();
+        $.get('/events/liked/' + $(this).data('solid') + '.json', function (response) {
+            var html = '';
+            $.each(response.likes, function (index, object) {
+                var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png',
+                        liker_id = object.user_id,
+                        trigger = false,
+                        txt_button = 'Подписаться',
+                        str_class = 'fav-user';
+                $.each(response.fav, function (index, obj) {
+                    if (liker_id == obj.fav_user_id) {
+                        trigger = true;
+                        str_class = 'unfav-user';
+                        txt_button = 'Отписаться';
+                        return false;
+                    }
+                });
+                html += '<li>\
+                            <img src="' + avatar + '" class="avatar">\
+                            <a class="user-title" href="/users/view/' + object.user_id + '">' + object.creator + '</a>\
+                            <a class="' + str_class + ' favour-user order-button" data-id="' + object.user_id + '" href="#">' + txt_button + '</a>\
+                        </li>';
+            });
+            $('#likedAjaxLoader').hide();
+            var $appendEl = $(html);
+            $appendEl.hide();
+            $appendEl.appendTo('#who-its-liked').slideDown('fast');
+        });
+        $('#popup-other-likes').modal({
+            containerId: 'other-likes',
             opacity: 80,
             closeClass: 'popup-close'
         });
@@ -705,15 +786,7 @@ function OfficeStatusUpdater() {
                                 if (index == 0) {
                                     self.date = object.created;
                                 }
-                                if (!object.solution) {
-                                    object.solution = {};
-                                    object.solution.images = {};
-                                    object.solution.images.solution_galleryLargeSize = {};
-                                    object.solution.views = 0;
-                                    object.solution.likes = 0;
-                                    object.solution.images.solution_galleryLargeSize.weburl = '';
-                                }
-                                if (typeof (object.solution.images.solution_solutionView) != "undefined") {
+                                if (object.solution && typeof (object.solution.images.solution_solutionView) != "undefined") {
                                     if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
                                         var imageurl = object.solution.images.solution_solutionView.weburl;
                                     } else {
@@ -724,44 +797,15 @@ function OfficeStatusUpdater() {
                                     var imageurl = '/img/zaglushka.jpg';
                                 }
                                 if (object.type == 'SolutionAdded' && object.solution != null && typeof object.solution.id != "undefined") {
-                                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                    var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
-                                    html += '<div class="box"> \
-                            <div class="l-img"> \
-                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
-                            </div> \
-                            <div class="r-content"> \
-                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
-                            </div> \
-                            <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a> \
-                            <div class="box-info">\
-                                <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
-                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
-                            </div>\
-                            <div data-id="' + object.solution.id + '" class="likes">';
-                                    id = object.solution.id;
-                                    user_id = $('#user_id').val();
-                                    $.each(response.updates, function (index, object) {
-                                        if (object.type == 'LikeAdded' && object.solution_id == id) {
-                                            avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                            txtsol = (user_id == object.user_id) ? 'ваше ' : '';
-                                            html += '<div> \
-                                    <div class="l-img"> \
-                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
-                                    </div> \
-                                    <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ' + txtsol + 'решение < /span> \
-                                </div>';
-                                        }
-                                    });
-                                    html += '</div></div>';
+                                    html += self.addSolution(object, imageurl, response);
                                 }
 
                                 if (object.type == 'CommentAdded' && object.comment != null) {
-                                    html += self.addComment(html, object, imageurl);
+                                    html += self.addComment(object, imageurl);
                                 }
 
                                 if (object.type == 'RatingAdded' && object.solution != null) {
-                                    html += self.addRating(html, object, imageurl);
+                                    html += self.addRating(object, imageurl);
                                 }
 
                                 if (object.type == 'newsAdded' && object.news != null) {
@@ -801,52 +845,15 @@ function OfficeStatusUpdater() {
                         response.updates.sort(sortfunction);
                         var html = '';
                         $.each(response.updates, function (index, object) {
-                            if (!object.solution) {
-                                object.solution = {};
-                                object.solution.images = {};
-                                object.solution.images.solution_galleryLargeSize = {};
-                                object.solution.views = 0;
-                                object.solution.likes = 0;
-                                object.solution.images.solution_galleryLargeSize.weburl = '';
-                            }
-
-                            if (typeof (object.solution.images.solution_solutionView) != "undefined") {
+                            if (object.solution && typeof (object.solution.images.solution_solutionView) != "undefined") {
                                 if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
                                     var imageurl = object.solution.images.solution_solutionView.weburl;
                                 } else {
                                     var imageurl = object.solution.images.solution_solutionView[0].weburl;
                                 }
                             }
-
                             if (object.type == 'SolutionAdded' && object.solution != null && typeof object.solution.id != "undefined") {
-                                avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
-                                html += '<div class="box"> \
-                            <div class="l-img"> \
-                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
-                            </div> \
-                            <div class="r-content"> \
-                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
-                            </div> \
-                            <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a>\
-                            <div class="box-info">\
-                                <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
-                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
-                            </div>\
-                            <div data-id="' + object.solution.id + '" class="likes">';
-                                id = object.solution.id;
-                                $.each(response.updates, function (index, object) {
-                                    if (object.type == 'LikeAdded' && object.solution_id == id) {
-                                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
-                                        html += '<div> \
-                                    <div class="l-img"> \
-                                        <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
-                                    </div> \
-                                    <span><a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ваше решение</span> \
-                                </div>';
-                                    }
-                                });
-                                html += '</div></div>';
+                                html += self.addSolution(object, imageurl, response);
                             }
 
                             if (object.type == 'newsAdded' && object.news != null) {
@@ -865,11 +872,11 @@ function OfficeStatusUpdater() {
                             }
 
                             if (object.type == 'CommentAdded' && object.comment != null) {
-                                html += self.addComment(html, object, imageurl);
+                                html += self.addComment(object, imageurl);
                             }
 
                             if (object.type == 'RatingAdded' && object.solution != null) {
-                                html += self.addRating(html, object, imageurl);
+                                html += self.addRating(object, imageurl);
                             }
                         });
                         var $appendEl = $(html);
@@ -1011,7 +1018,8 @@ function OfficeStatusUpdater() {
                     }
                 });
             },
-            this.addComment = function (html, object, imageurl) {
+            this.addComment = function (object, imageurl) {
+                var html = '';
                 if (object.user.isAdmin == 1) {
                     avatar = '/img/icon_57.png';
                 } else {
@@ -1020,7 +1028,7 @@ function OfficeStatusUpdater() {
                 var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
                 // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
                 var long = false;
-                if ((((!object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.pitch.private != '1')) {
+                if ((((object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.pitch.private != '1')) {
                     long = true;
                 }
                 html = '<div class="box">';
@@ -1050,7 +1058,7 @@ function OfficeStatusUpdater() {
                                         <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                                     </div> \
                                     <div class="r-content box-comment">';
-                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0) || !object.solution.id) {
+                    if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0) || !object.solution || !object.solution.id) {
                         html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
                     }
                     else {
@@ -1062,8 +1070,9 @@ function OfficeStatusUpdater() {
                 }
                 return html;
             },
-            this.addRating = function (html, object, imageurl) {
-                txtsol = (user_id == object.solution.user_id) ? 'ваше ' : '';
+            this.addRating = function (object, imageurl) {
+                var html = '';
+                var txtsol = (this_user == object.solution.user_id) ? 'ваше ' : '';
                 html += '<div class="box">\
                             <div class="l-img">\
                                 <img class="avatar" src="<?= $avatar ?>">\
@@ -1079,6 +1088,49 @@ function OfficeStatusUpdater() {
                                 </p>\
                                 </div>\
                         </div>';
+                return html;
+            },
+            this.addSolution = function (object, imageurl, response) {
+                var html = '';
+                var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
+                html += '<div class="box"> \
+                            <div class="l-img"> \
+                                <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
+                            </div> \
+                            <div class="r-content"> \
+                                <a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
+                            </div> \
+                            <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a> \
+                            <div class="box-info">\
+                                <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
+                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
+                            </div>\
+                            <div data-id="' + object.solution.id + '" class="likes">';
+                var id = object.solution.id;
+                var likes_count = 0;
+                $.each(response.updates, function (index, object) {
+                    if (object.type == 'LikeAdded' && object.solution_id == id) {
+                        likes_count++;
+                        if (likes_count == 1) {
+                            html += '<span class="who-likes"><a id="show-other-likes" href="#">';
+                        }
+                        if (likes_count < 4 && likes_count < object.solution.likes) {
+                            html += object.creator + ', ';
+                        } else {
+                            if (likes_count > 4) {
+                                var other = parseInt(object.solution.likes) - likes_count;
+                                html += object.creator + ' и ' + other + ' других</a> лайкнули ваше решение</span>';
+                            } else if (likes_count < 2) {
+                                html += object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ваше решение</span>';
+                            } else if (likes_count <= 4) {
+                                html += object.creator + '</a> лайкнули ваше решение</span>';
+                            }
+                            return false;
+                        }
+                    }
+                });
+                html += '</div></div>';
                 return html;
             };
 }

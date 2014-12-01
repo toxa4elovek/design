@@ -310,6 +310,7 @@
 
 .center-boxes .box .box-comment {
     padding-top: 5px;
+    padding-bottom: 0;
 }
 
 .center-boxes .box .post-content {
@@ -420,26 +421,23 @@
 }
 
 .center-boxes .box .box-info {
-    width:583px;
     display: block;
-    text-align: right;
-    padding-right: 15px;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    text-align: left;
+    padding-left: 20px;
+    margin-top: 4px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ededed;
 }
 
-.center-boxes .box .box-info a {
-    padding-left: 15px;
-    color: #6b92a2;
+.center-boxes .box .box-info a,
+.center-boxes .box .box-info span {
+    color: #f86362;
 }
 
 .like-small-icon-box {
-    background: url(img/fb_like.png) no-repeat 100% -20px;
     height: 14px;
-    color: #999999;
     font: 14px OfficinaSansC Book, serif !important;
-    padding-right: 23px;
-    padding-top: 4px;
+    padding: 4px 23px 0 5px;
     text-decoration: none;
 }
 .like-small-icon-box:hover, .like-small-icon-box:active {
@@ -450,12 +448,10 @@
 }
 
 .warning-box {
-    background: url(/img/icons-solution.png) no-repeat 100% -81px;
-    color: #648fa4;
     font: 14px OfficinaSansC Book, serif !important;
     height: 25px;
     padding-top: 4px;
-    padding-right: 25px;
+    padding-right: 10px;
 }
 .warning-box:hover {
     text-decoration: underline;
@@ -508,18 +504,25 @@
     right: -16px;
     top: 0px;
 }
-
-.center-boxes .box .likes > div {
-    display: block;
-    border-bottom: 1px solid #e8e4e5;
-    padding: 7px 3px 7px 0;
-    width: 575px;
+.center-boxes .box .likes {
+    background: #f4f4f4;
 }
 
-.center-boxes .box .likes span {
-    display: table-cell;
+.center-boxes .box .likes .who-likes {
+    display: block;
     vertical-align:middle;
-    padding-left: 12px;
+    width: 549px;
+    padding: 7px 3px 7px 46px;
+    position: relative;
+}
+.center-boxes .box .likes .who-likes:before {
+    background: url(/img/feed-like.png) no-repeat;
+    content: '';
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    left: 24px;
+    top: 12px;
 }
 
 .center-boxes .box a {
@@ -727,5 +730,63 @@
     color: #2d2d2d; 
 }
 #all-tweets a:hover {
-    color: #ff585d
+    color: #ff585d;
+}
+#popup-other-likes {
+    width: 450px;
+    height: 560px;
+    background: #fff;
+}
+#popup-other-likes .favour-user:before {
+    background: url("/img/rss-on-button.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    content: "";
+    height: 16px;
+    left: 8px;
+    position: absolute;
+    top: 3px;
+    width: 16px;
+    z-index: 0;
+}
+
+#popup-other-likes li a.user-title {
+    display: inline-block;
+    color: #ff585d;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+#popup-other-likes ul {
+    overflow-y: scroll;
+    height: 498px;
+}
+#popup-other-likes li {
+    display: block;
+    border-bottom: 1px solid #e8e4e5;
+    padding: 12px 28px 13px 6px;
+    vertical-align: middle;
+}
+
+#popup-other-likes .favour-user {
+    width: 135px;
+    font-size: 14px;
+    padding-left: 10px;
+    margin-top: 7px;
+}
+
+#popup-other-likes .other-header {
+    padding: 21px 0 23px 15px;
+    background: #f4f4f4;
+    font-family: OfficinaSansC Bold, serif;
+    font-size: 20px;
+}
+
+#show-other-likes:hover {
+    text-decoration: underline;
+}
+
+#likedAjaxLoader {
+    display: none;
+    position: absolute;
+    left: 200px;
+    top: 265px;
+    text-align: center;
 }

@@ -12,8 +12,10 @@
                 var isClient = <?php echo ($this->user->isPitchOwner($pitch->user->id)) ? 1 : 0; ?>;
                 var isAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
+                var userName = '<?php echo ($this->user->getId()) ? $this->user->getFormattedName($this->user->firstname, $this->user->lastname) : ''; ?>';
+                var userGender = <?php echo ($this->user->getGender() ? 1 : 0 ); ?>;
             </script>
-            <?php if ($this->user->getGender() < 1): ?>
+            <?php if ($this->user->getGender() < 1 && $this->user->getId()): ?>
                 <div id="gender-box">
                     <div>
                         <div id="close-gender"></div>
@@ -158,13 +160,14 @@
                                 <div id="content-news">
                                     <?php
                                     $newsDate = '';
+                                    if(is_array($news)):
                                     foreach ($news as $n): $host = parse_url($n->link);
                                         if (strtotime($newsDate) < strtotime($n->created)) {
                                             $newsDate = $n->created;
                                         }
                                         ?>
                                         <div class="design-news"><a target="_blank" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
-                                    <?php endforeach; ?>
+                                    <?php endforeach;endif; ?>
                                     <script type="text/javascript">
                                         var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
                                     </script> 
@@ -183,7 +186,7 @@
                                     <div class="r-content post-content"> 
                                         <p class="img-tag"><?= $middlePost->tags ?></p>
                                         <a class="img-post" href="<?= $middlePost->link ?>"><h2><?= $middlePost->title ?></h2></a>
-                                        <p class="img-short"><?= $middlePost->short ?></p>
+                                        <p class="img-short"><?php echo $middlePost->short ?></p>
                                         <p class="timeago">
                                             <time class="timeago" datetime="<?= $middlePost->created ?>"><?= $middlePost->created ?></time> с сайта <?= $middlePost->host ?></p>
                                     </div>
@@ -214,35 +217,35 @@
                                 if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
                                     // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
                                     $long = false;
-                                    if((($object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
+                                    if ((($object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
                                         $long = true;
                                     endif;
                                     ?>
-                                    <div class="box" data-type="<?php echo $object['type']?>" data-long="<?php echo $long?>">
-                                    <?php if($long):?>
-                                        <div class="l-img l-img-box" style="padding-top: 0">
-                                            <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
-                                        </div>
-                                        <div class="r-content box-comment">
-                                            <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
-                                                <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
-                                            <?php else: ?>
-                                                <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
-                                            <?php endif; ?>
-                                        </div>
-                                        <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
-                                        <div class="box-info">
-                                            <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
-                                            <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
-                                        </div>
-                                        <div class="r-content box-comment">
-                                            &laquo;<?php echo $object['updateText'] ?>&raquo;
-                                        </div>
+                                    <div class="box" data-type="<?php echo $object['type'] ?>" data-long="<?php echo $long ?>">
+                                        <?php if ($long): ?>
+                                            <div class="l-img l-img-box" style="padding-top: 0">
+                                                <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
+                                            </div>
+                                            <div class="r-content box-comment">
+                                                <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
+                                                    <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                                <?php else: ?>
+                                                    <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для питча <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                                <?php endif; ?>
+                                            </div>
+                                            <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
+                                            <div class="box-info">
+                                                <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
+                                                <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                            </div>
+                                            <div class="r-content box-comment">
+                                                &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                            </div>
                                         <?php else: ?>
-                                        <div class="l-img l-img-box" style="padding-top: 0">
-                                            <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
-                                        </div>
-                                            <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)  || !$object['solution']): ?>
+                                            <div class="l-img l-img-box" style="padding-top: 0">
+                                                <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
+                                            </div>
+                                            <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0) || !$object['solution']): ?>
                                                 <div class="r-content box-comment">
                                                     <a href="/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в питче <a href="/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:<br /> &laquo;<?php echo $object['updateText'] ?>&raquo;
                                                     <p class="timeago">
@@ -269,25 +272,36 @@
                                         </div>
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                         <div class="box-info">
-                                            <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
+                                            <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a><span>&middot;</span>
                                             <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                         </div>
                                         <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                             <?php
                                             $id = $object['solution']['id'];
+                                            $likes_count = 0;
+                                            $html_likes = '';
                                             foreach ($updates as $like):
-                                                if ($like['type'] == 'LikeAdded' && $like['solution_id'] == $id):
-                                                    $avatar = isset($like['user']['images']['avatar_small']) ? $like['user']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
-                                                    ?>
-                                                    <div>
-                                                        <div class="l-img">
-                                                            <a target="_blank" href="/users/view/<?= $like['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
-                                                        </div>
-                                                        <span><a href="/users/view/<?= $like['user_id'] ?>"><?= $like['creator'] ?></a> <?= $this->user->getGenderTxt('лайкнул', $like['user']['gender']) ?> <?= ($like['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение</span>
-                                                    </div>
-                                                    <?php
-                                                endif;
+                                                if ($like['type'] == 'LikeAdded' && $like['solution_id'] == $id) {
+                                                    ++$likes_count;
+                                                    if ($likes_count == 1) {
+                                                        $html_likes .= '<span class="who-likes"><a id="show-other-likes" data-solid="' . $object['solution']['id'] . '" href="#">';
+                                                    }
+                                                    if ($likes_count < 4 && $likes_count < $object['solution']['likes']) {
+                                                        $html_likes .= $like['creator'] . ', ';
+                                                    } else {
+                                                        if ($likes_count > 4) {
+                                                            $other = (int) $object['solution']['likes'] - $likes_count;
+                                                            $html_likes .= $like['creator'] . ' <span>и ' . $other . ' других</a> лайкнули ваше решение</span></span>';
+                                                        } elseif ($likes_count < 2) {
+                                                            $html_likes .= $like['creator'] . '</a> <span>'.$this->user->getGenderTxt('лайкнул', $like['user']['gender']).' ваше решение</span></span>';
+                                                        } elseif ($likes_count <= 4) {
+                                                            $html_likes .= $like['creator'] . '</a> <span>лайкнули ваше решение</span></span>';
+                                                        }
+                                                        break;
+                                                    }
+                                                }
                                             endforeach;
+                                            echo $html_likes;
                                             ?>
                                         </div></div>
                                 <?php elseif ($object['type'] == 'newsAdded'): ?>
@@ -298,13 +312,13 @@
                                         <div class="r-content post-content"> 
                                             <p class="img-tag"><?= $object['news']['tags'] ?></p>
                                             <a class="img-post" href="<?= $object['news']['link'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
-                                            <p class="img-short"><?= $object['news']['short'] ?></p>
+                                            <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                             <p class="timeago">
                                                 <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
                                             </p>
                                         </div>
                                     </div>
-                                    <?php elseif ($object['type'] == 'RatingAdded'): ?>
+                                <?php elseif ($object['type'] == 'RatingAdded'): ?>
                                     <div class="box">
                                         <div class="l-img">
                                             <img class="avatar" src="<?= $avatar ?>">
@@ -320,8 +334,22 @@
                                             </p>
                                         </div>
                                     </div>
-                            <?php
-                                endif;
+                                    <?php elseif ($object['type'] == 'FavUserAdded'):
+                                        $avatarFav = isset($object['user_fav']['images']['avatar_small']) ? $object['user_fav']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
+                                        ?>
+                                        <div class="box">
+                                            <div class="l-img">
+                                                <img class="avatar" src="<?=$avatar?>">
+                                                <img class="avatar" src="<?=$avatarFav?>">
+                                            </div>
+                                            <div class="r-content box-comment">
+                                                <a href="/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav']?></a> подписан на вас
+                                                <p class="timeago">
+                                                    <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
+                                                </p>
+                                            </div>
+                                        </div>    
+                               <?php endif;
                             endforeach;
                             ?>
                             <script type="text/javascript">
@@ -398,6 +426,20 @@
         </div><!-- /middle -->
     </div><!-- .wrapper -->
     <div class="onTop">&nbsp;</div>
+
+    <div id="popup-other-likes" style="display: none;">
+        <div class="other-header">Люди, которым это нравится</div>
+        <ul id="who-its-liked">
+<!--            <li>
+                <img src="/img/default_small_avatar.png" class="avatar">
+                <a class="user-title" href="/users/view/202">Test T.</a>
+                <a id="fav-user" class="order-button" href="#">Подписаться</a>
+            </li>-->
+        </ul>
+        <div id="likedAjaxLoader"><img src="/img/blog-ajax-loader.gif"></div>    
+        <div class="popup-close"></div>
+    </div>
+
     <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'socialite.js', 'users/feed.js', 'users/activation.js'), array('inline' => false)) ?>
     <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css'), array('inline' => false)) ?>
     <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>

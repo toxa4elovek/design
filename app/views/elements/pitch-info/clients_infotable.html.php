@@ -56,8 +56,11 @@
             <span class="regular">Количество участников:</span>&nbsp;<span class="pitch-info-text"><?=$pitch->applicantsCount;?></span>
         </td>
         <td width="15"></td>
-        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-            <span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?><?php echo ($pitch->guaranteed == 1) ? ' гарантированы' : ''; ?></span>
+                <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <span class="regular">Спросить:</span>
+            <a class="order-button" href="mailto:?&subject=<?php echo 'Нужна помощь с выбором!'?>
+&amp;body=<?php echo 'Привет,я сейчас создаю ' . $pitch->title . '. Мне бы было приятно, если бы кто-то помог мне с выбором. Какие идеи тебе нравятся больше всего?
+Спасибо за ответ!' . $pitch->user->first_name . ' ' . $pitch->user->last_name .'.'?>" style="width: 178px; top: -3px;">Совет друга (бесплатно)</a>
         </td>
         <td width="15"></td>
         <?php if ($pitch->status == 0):?>
@@ -74,14 +77,7 @@
     </tr>
     <tr>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-            <span class="regular">Спросить:</span>
-            <a class="order-button" href="mailto:?&subject=<?php echo urlencode('Нужна помощь с выбором!')?>
-&amp;body=<?php echo urlencode('Привет,
-
-я сейчас создаю ' . $pitch->title . '. Мне бы было приятно, если бы кто-то помог мне с выбором. Какие идеи тебе нравятся больше всего?
-Спасибо за ответ!
-
-' . $pitch->user->first_name . ' ' . $pitch->user->last_name .'.')?>"" style="width: 178px; top: -3px;">Совет друга (бесплатно)</a>
+            <span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?><?php echo ($pitch->guaranteed == 1) ? ' гарантированы' : ''; ?></span>
         </td>
         <td width="15"></td>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">

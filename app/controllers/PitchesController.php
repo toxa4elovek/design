@@ -851,7 +851,6 @@ class PitchesController extends \app\controllers\AppController {
                         'with' => array('User', 'Pitch')));
 
             $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
-
             return compact('comments', 'experts', 'pitch');
         } else {
             return false;
