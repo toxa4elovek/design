@@ -1165,206 +1165,209 @@ class Pitch extends \app\models\AppModel {
         }
         return $comments;
     }
-	
-	/**
-    * Метод возвращает номер страницы
-    *
-    * @param $page
-    * @return integer
-    */
-	public static function getQueryPageNum($page=1) {
-		$page = abs(intval($page));
-		if($page==0) $page=1;
-		return $page;
-	}
-	
-	/**
-    * Метод возвращает ценовой диапазон
-    *
-    * @param $priceFilter
-    * @return array
-    */
-	public static function getQueryPriceFilter($priceFilter=0) {
-		switch ($priceFilter) {
-			case 1:
-				$result = array('price' => array('>' => 3000, '<=' => 10000));
-				break;
-			case 2:
-				$result = array('price' => array('>' => 10000, '<=' => 20000));
-				break;
-			case 3:
-				$result = array('price' => array('>' => 20000));
-				break;
-			default:
-				$result =  array();
-		}
-		return $result;
-	}
-	
-	/**
-    * Метод возвращает время размещения питча
-    *
-    * @param $timeframe
-    * @return array
-    */
-	public static function getQueryTimeframe($timeframe=0) {
-		switch ($timeframe) {
-			case 1:
-				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3))));
-				break;
-			case 2:
-				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7))));
-				break;
-			case 3:
-				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10))));
-				break;
-			case 4:
-				$result = array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14))));
-				break;
-			default:
-				$result =  array();
-		}
-		return $result;
-	}
-	
-	/**
-    * Метод возвращает массив ключевых слов для поиска
-    *
-    * @param $search
-    * @return array
-    */
-	public static function getQuerySearchTerm($search='') {
-		if((is_string($search) && !empty($search)) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ'){
-			$word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
-			$firstLetter = mb_substr($word, 0, 1, 'utf-8');
-			$firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
-			$firstLower = (mb_strtolower($firstLetter, 'utf-8'));
-			$string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
-			$search = array('Pitch.title' => array('REGEXP' => $string));
-		} else {
-			$search = array();
-		}
-		return $search;
-	}
-	
-	/**
-    * Метод возвращает массив для сортировки полей
-    *
-    * @param $order
-    * @return array
-    */
-	public static function getQueryOrder($order) {
-		$allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
-		$allowedSortDirections = array('asc', 'desc');
-		$trigger = is_array($order);
-		$field = $trigger ? key($order) : '';
-		$dir = $trigger ? current($order) : '';
-		if($trigger && ((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))) {
-			switch ($field) {
-				case 'category':
-					$order = array('category_id' => $dir,'started' => 'desc');
-					break;
-				case 'finishDate':
-					$order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
-					break;
-				case 'price':
-					$order = array('free' => 'desc',$field => $dir,'started' => 'desc');
-					break;
-				default:
-					$order = array($field => $dir,'started' => 'desc');
-			}
-		} else {
-			$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
-		}
-		return $order;
-	}
-	
-	/**
-    * Метод возвращает id категории
-    *
-    * @param $category
-    * @return array
-    */
-	public static function getQueryCategory($category) {
-		$categories = Category::all();
-		foreach($categories as $cat){
-			$allowedCategories[] = $cat->id;
-		}
-		if (!empty($category) && in_array($category, $allowedCategories)){
-			$category = array('category_id' => $category);
-		} else {
-			$category = array();
-		}
-		return $category;
-	}
 
-
-	/**
-    * Метод возвращает данные для поиска по типу питча
-    *
-    * @param $types
-    * @return array
-    */
-	public static function getQueryType($types) {
-		switch ($types) {
-			case 'finished':
-				$result = array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)')));
-				break;
-			case 'current':
-				$result = array('status' => array('<' => 2), 'awarded' => 0);
-				break;
-			case 'all':
-				$result = array();
-				break;
-			default:
-				$result = array(
-							'OR' => array(
-								array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
-								array('status < 2 AND awarded = 0'),
-				));
-		}		
-		return $result;
-	}
-
-	/**
-    * Метод возвращает питчи для главной страницы
-    *
-    * @return array
-    */
-	public static function getPitchesForHomePage() {
-            return Pitch::all(array(
-                'order' => array(
-                'pinned' => 'desc',
-                'ideas_count' => 'desc',
-                'price' => 'desc'
-			),
-                'conditions' => array(
-                    'status' => array('<' => 1),
-                    'published' => 1,
-                    'multiwinner' => 0),
-			'limit' => 3,
-			'page' => 1,
-		));
-	}
-        
-    public static function getFreePitch() {
-        return Pitch::first(array('conditions'=>array('status' => 0, 'published' => 1, 'free' => 1),'order' => array('RAND()')));
+    /**
+     * Метод возвращает номер страницы
+     *
+     * @param $page
+     * @return integer
+     */
+    public static function getQueryPageNum($page = 1) {
+        $page = abs(intval($page));
+        if ($page == 0)
+            $page = 1;
+        return $page;
     }
 
+    /**
+     * Метод возвращает ценовой диапазон
+     *
+     * @param $priceFilter
+     * @return array
+     */
+    public static function getQueryPriceFilter($priceFilter = 0) {
+        switch ($priceFilter) {
+            case 1:
+                $result = array('price' => array('>' => 3000, '<=' => 10000));
+                break;
+            case 2:
+                $result = array('price' => array('>' => 10000, '<=' => 20000));
+                break;
+            case 3:
+                $result = array('price' => array('>' => 20000));
+                break;
+            default:
+                $result = array();
+        }
+        return $result;
+    }
+
+    /**
+     * Метод возвращает время размещения питча
+     *
+     * @param $timeframe
+     * @return array
+     */
+    public static function getQueryTimeframe($timeframe = 0) {
+        switch ($timeframe) {
+            case 1:
+                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3))));
+                break;
+            case 2:
+                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7))));
+                break;
+            case 3:
+                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10))));
+                break;
+            case 4:
+                $result = array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14))));
+                break;
+            default:
+                $result = array();
+        }
+        return $result;
+    }
+
+    /**
+     * Метод возвращает массив ключевых слов для поиска
+     *
+     * @param $search
+     * @return array
+     */
+    public static function getQuerySearchTerm($search = '') {
+        if ((is_string($search) && !empty($search)) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ') {
+            $word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
+            $firstLetter = mb_substr($word, 0, 1, 'utf-8');
+            $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
+            $firstLower = (mb_strtolower($firstLetter, 'utf-8'));
+            $string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
+            $search = array('Pitch.title' => array('REGEXP' => $string));
+            if (strlen($word) > 3) {
+                $search['Pitch.description'] = array('LIKE' => '%' . $word . '%');
+                $search['Pitch.business-description'] = array('LIKE' => '%' . $word . '%');
+            }
+        } else {
+            $search = array();
+        }
+        return $search;
+    }
+
+    /**
+     * Метод возвращает массив для сортировки полей
+     *
+     * @param $order
+     * @return array
+     */
+    public static function getQueryOrder($order) {
+        $allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
+        $allowedSortDirections = array('asc', 'desc');
+        $trigger = is_array($order);
+        $field = $trigger ? key($order) : '';
+        $dir = $trigger ? current($order) : '';
+        if ($trigger && ((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))) {
+            switch ($field) {
+                case 'category':
+                    $order = array('category_id' => $dir, 'started' => 'desc');
+                    break;
+                case 'finishDate':
+                    $order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
+                    break;
+                case 'price':
+                    $order = array('free' => 'desc', $field => $dir, 'started' => 'desc');
+                    break;
+                default:
+                    $order = array($field => $dir, 'started' => 'desc');
+            }
+        } else {
+            $order = array('free' => 'desc', 'price' => 'desc', 'started' => 'desc');
+        }
+        return $order;
+    }
+
+    /**
+     * Метод возвращает id категории
+     *
+     * @param $category
+     * @return array
+     */
+    public static function getQueryCategory($category) {
+        $categories = Category::all();
+        foreach ($categories as $cat) {
+            $allowedCategories[] = $cat->id;
+        }
+        if (!empty($category) && in_array($category, $allowedCategories)) {
+            $category = array('category_id' => $category);
+        } else {
+            $category = array();
+        }
+        return $category;
+    }
+
+    /**
+     * Метод возвращает данные для поиска по типу питча
+     *
+     * @param $types
+     * @return array
+     */
+    public static function getQueryType($types) {
+        switch ($types) {
+            case 'finished':
+                $result = array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)')));
+                break;
+            case 'current':
+                $result = array('status' => array('<' => 2), 'awarded' => 0);
+                break;
+            case 'all':
+                $result = array();
+                break;
+            default:
+                $result = array(
+                    'OR' => array(
+                        array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+                        array('status < 2 AND awarded = 0'),
+                ));
+        }
+        return $result;
+    }
+
+    /**
+     * Метод возвращает питчи для главной страницы
+     *
+     * @return array
+     */
+    public static function getPitchesForHomePage() {
+        return Pitch::all(array(
+                    'order' => array(
+                        'pinned' => 'desc',
+                        'ideas_count' => 'desc',
+                        'price' => 'desc'
+                    ),
+                    'conditions' => array(
+                        'status' => array('<' => 1),
+                        'published' => 1,
+                        'multiwinner' => 0),
+                    'limit' => 3,
+                    'page' => 1,
+        ));
+    }
+
+    public static function getFreePitch() {
+        return Pitch::first(array('conditions' => array('status' => 0, 'published' => 1, 'free' => 1), 'order' => array('RAND()')));
+    }
 
     public static function createNewWinner($solutionId) {
         if (($solution = Solution::first(array(
                     'conditions' => array('Solution.id' => $solutionId),
                     'with' => array('Pitch'),
-                ))) && count(self::all(array('conditions' => array('user_id' => $solution->pitch->user_id,'billed' => 0,'multiwinner'=>$solution->pitch->id))))==0) {
+                ))) && count(self::all(array('conditions' => array('user_id' => $solution->pitch->user_id, 'billed' => 0, 'multiwinner' => $solution->pitch->id)))) == 0) {
             $copyPitch = Pitch::create();
             $data = $solution->pitch->data();
             $data['billed'] = 0;
             $data['published'] = 0;
             $data['status'] = 1;
             $data['multiwinner'] = $data['id'];
-            $count = self::getCountBilledMultiwinner($data['id'])+2;
-            $data['title'] = $count.'. '.$data['title'];
+            $count = self::getCountBilledMultiwinner($data['id']) + 2;
+            $data['title'] = $count . '. ' . $data['title'];
             //  $data['total'] = $data['price'] + ($data['price']*0);
             unset($data['id']);
             $copyPitch->set($data);
@@ -1396,9 +1399,9 @@ class Pitch extends \app\models\AppModel {
             $pitch->awardedDate = date('Y-m-d H:i:s');
             Solution::awardCopy($pitch->awarded);
             $count = self::getCountBilledMultiwinner($pitch->multiwinner);
-            if ($count == 0){
+            if ($count == 0) {
                 $mainPitch = self::first($pitch->multiwinner);
-                $mainPitch->title = '1. '.$mainPitch->title;
+                $mainPitch->title = '1. ' . $mainPitch->title;
                 $mainPitch->save();
             }
             if ($pitch->save()) {
@@ -1408,7 +1411,7 @@ class Pitch extends \app\models\AppModel {
                 $solution->awarded = 1;
                 $solution->nominated = 1;
                 $solution->save();
-                User::sendTweetWinner($solution,$pitch, true);
+                User::sendTweetWinner($solution, $pitch, true);
                 Task::createNewTask($solution->id, 'victoryNotification');
                 return true;
             }
@@ -1418,8 +1421,9 @@ class Pitch extends \app\models\AppModel {
     }
 
     public static function getCountBilledMultiwinner($pitchId) {
-        if($pitch = self::first($pitchId)) {
-            return count(self::all(array('conditions' => array('user_id' => $pitch->user_id,'billed' => 1,'multiwinner'=>$pitch->id))));
+        if ($pitch = self::first($pitchId)) {
+            return count(self::all(array('conditions' => array('user_id' => $pitch->user_id, 'billed' => 1, 'multiwinner' => $pitch->id))));
         }
     }
+
 }
