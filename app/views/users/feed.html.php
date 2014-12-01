@@ -175,18 +175,6 @@
                     </div>
                     <div id="center_sidebar">
                         <div class="center-boxes" id="updates-box-">
-                            <div class="box">
-                                <div class="l-img">
-                                    <img class="avatar" src="/img/default_small_avatar.png">
-                                    <img class="avatar" src="/img/default_small_avatar.png">
-                                </div>
-                                <div class="r-content box-comment">
-                                    <a href="">Dima D.</a> и <a href="">Fedya T.</a> подписаны на вас
-                                    <p class="timeago">
-                                        <time class="timeago" datetime="">2 часа назад</time>
-                                    </p>
-                                </div>
-                            </div>
                             <?php if ($middlePost) : ?>
                                 <div class="box">
                                     <p class="img-box">
