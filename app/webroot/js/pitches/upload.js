@@ -325,7 +325,14 @@ $(document).ready(function () {
         } else {
             var job = [];
             $.each($('#filterbox').children(), function (i, v) {
-                job.push($(v).text());
+                var txt = $(v).text().split('/');
+                if ($.isArray(txt)) {
+                    $.each(txt, function (i, x) {
+                        job.push(x);
+                    });
+                } else {
+                    job.push($(v).text());
+                }
             });
             if ($('#tags').length > 0) {
                 $('#tags').attr('value', job.join(','));
