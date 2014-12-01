@@ -310,6 +310,7 @@
 
 .center-boxes .box .box-comment {
     padding-top: 5px;
+    padding-bottom: 0;
 }
 
 .center-boxes .box .post-content {
@@ -511,13 +512,17 @@
     display: block;
     vertical-align:middle;
     width: 583px;
-    padding: 7px 3px 7px 12px;
+    padding: 7px 3px 7px 46px;
+    position: relative;
 }
 .center-boxes .box .likes span:before {
-    background: url(img/fb_like.png) no-repeat 100% -20px;
+    background: url(/img/feed-like.png) no-repeat;
     content: '';
-    width: 10px;
-    height: 10px;
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    left: 24px;
+    top: 12px;
 }
 
 .center-boxes .box a {
@@ -732,7 +737,7 @@
     height: 560px;
     background: #fff;
 }
-#popup-other-likes #fav-user:before {
+#popup-other-likes .favour-user:before {
     background: url("/img/rss-on-button.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     content: "";
     height: 16px;
@@ -744,6 +749,7 @@
 }
 
 #popup-other-likes li a.user-title {
+    display: inline-block;
     color: #ff585d;
     margin-left: 10px;
     margin-top: 10px;
@@ -759,7 +765,7 @@
     vertical-align: middle;
 }
 
-#popup-other-likes #fav-user {
+#popup-other-likes .favour-user {
     width: 135px;
     font-size: 14px;
     padding-left: 10px;
@@ -771,4 +777,16 @@
     background: #f4f4f4;
     font-family: OfficinaSansC Bold, serif;
     font-size: 20px;
+}
+
+#show-other-likes:hover {
+    text-decoration: underline;
+}
+
+#likedAjaxLoader {
+    display: none;
+    position: absolute;
+    left: 200px;
+    top: 265px;
+    text-align: center;
 }

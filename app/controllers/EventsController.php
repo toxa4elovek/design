@@ -83,8 +83,13 @@ class EventsController extends \app\controllers\AppController {
     public function liked() {
         if ($this->request->id) {
            $likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
+           $temp = array();
+           foreach ($likes as $like) {
+               $temp[] = $like->user->id;
+           }
+           $fav = \app\models\Favourite::all(array('conditions' => array('pitch_id' => 0,'fav_user_id' => $temp)));
         }
-        return compact('likes');
+        return compact('likes','fav');
     }
 
 }

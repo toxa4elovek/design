@@ -369,18 +369,53 @@ $(document).ready(function () {
         return false;
     });
 
-    $(document).on('click', '#show-other-likes', function () {
-        e.preventDefault;
+    $(document).on('click', '.fav-user', function (e) {
+        var link = $(this);
+        link.text('Отписаться');
+        link.addClass('unfav-user').removeClass('fav-user');
+        $.get('/favourites/adduser/' + $(this).data('id') + '.json', function (response) {
+            if (response.result == false) {
+                link.text('Подписаться');
+                link.addClass('fav-user').removeClass('unfav-user');
+            }
+        });
+        return false;
+    });
+
+    $(document).on('click', '.unfav-user', function (e) {
+        var link = $(this);
+        link.text('Подписаться');
+        link.addClass('fav-user').removeClass('unfav-user');
+        $.get('/favourites/adduser/' + $(this).data('id') + '.json', function (response) {
+            link.text('Отписаться');
+            link.addClass('unfav-user').removeClass('fav-user');
+        });
+        return false;
+    });
+
+    $(document).on('click', '#show-other-likes', function (e) {
         $('#who-its-liked').empty();
         $('#likedAjaxLoader').show();
         $.get('/events/liked/' + $(this).data('solid') + '.json', function (response) {
             var html = '';
             $.each(response.likes, function (index, object) {
-                var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png',
+                        liker_id = object.user_id,
+                        trigger = false,
+                        txt_button = 'Подписаться',
+                        str_class = 'fav-user';
+                $.each(response.fav, function (index, obj) {
+                    if (liker_id == obj.fav_user_id) {
+                        trigger = true;
+                        str_class = 'unfav-user';
+                        txt_button = 'Отписаться';
+                        return false;
+                    }
+                });
                 html += '<li>\
                             <img src="' + avatar + '" class="avatar">\
                             <a class="user-title" href="/users/view/' + object.user_id + '">' + object.creator + '</a>\
-                            <a id="fav-user" class="order-button" data-id="' + object.user_id + '" href="#">Подписаться</a>\
+                            <a class="' + str_class + ' favour-user order-button" data-id="' + object.user_id + '" href="#">' + txt_button + '</a>\
                         </li>';
             });
             $('#likedAjaxLoader').hide();
@@ -393,6 +428,7 @@ $(document).ready(function () {
             opacity: 80,
             closeClass: 'popup-close'
         });
+        return false;
     });
 
     $(document).on('click', '#confirmWinner', function () {
@@ -732,7 +768,7 @@ function OfficeStatusUpdater() {
                                 if (index == 0) {
                                     self.date = object.created;
                                 }
-                                if (typeof (object.solution.images.solution_solutionView) != "undefined") {
+                                if (object.solution && typeof (object.solution.images.solution_solutionView) != "undefined") {
                                     if (typeof (object.solution.images.solution_solutionView.length) == "undefined") {
                                         var imageurl = object.solution.images.solution_solutionView.weburl;
                                     } else {
