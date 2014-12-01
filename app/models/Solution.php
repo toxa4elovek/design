@@ -176,7 +176,7 @@ http://godesigner.ru/answers/view/73');
                 ));
                 $tags->save();
                 Solutiontags::create(array(
-                    'tag_id' => $tag_id,
+                    'tag_id' => $tags->id,
                     'solution_id' => $solution->id
                 ))->save();
             }
