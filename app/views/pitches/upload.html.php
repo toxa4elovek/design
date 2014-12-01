@@ -43,7 +43,7 @@ $job_types = array(
                     <ul id="filelist" class="supplement" style="margin-top: 10px;">
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:0;"></li>
                     </ul>
-                    <p class="output-p">
+                    <p class="output-p" style="margin-top: 23px;">
                         <label class="greyboldheader">Укажите 5 тегов, которые описывают логотип <a title="" class="second" href="#">(?)</a></label>
                     </p>
                     <div style="padding-top: 10px; background-color: white; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) inset; margin-left: 2px; width: 585px; height: 41px;" id="filterContainer">
@@ -54,7 +54,7 @@ $job_types = array(
                     <p class="output-p">
                         <label id ="show-types" class="greyboldheader"><span id="job-type" class="greyboldheader">+</span>Выберите вид деятельности</label>
                     </p>
-                    <ul id="list-job-type">
+                    <ul id="list-job-type" style="margin-top: -12px;">
                         <?php
                         $industry = (unserialize($pitch->industry));
                         $_empty = empty($industry);
