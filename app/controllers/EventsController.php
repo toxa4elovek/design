@@ -79,17 +79,28 @@ class EventsController extends \app\controllers\AppController {
         $count = count(News::getNews(0, $this->request->data['page'] + 1));
         return compact('news', 'count');
     }
-    
+
     public function liked() {
         if ($this->request->id) {
-           $likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
-           $temp = array();
-           foreach ($likes as $like) {
-               $temp[] = $like->user->id;
-           }
-           $fav = \app\models\Favourite::all(array('conditions' => array('pitch_id' => 0,'fav_user_id' => $temp)));
+            $likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
+            $temp = array();
+            foreach ($likes as $like) {
+                $temp[] = $like->user->id;
+            }
+            $fav = \app\models\Favourite::all(array('conditions' => array('pitch_id' => 0, 'fav_user_id' => $temp)));
         }
-        return compact('likes','fav');
+        return compact('likes', 'fav');
+    }
+
+    public function newstags() {
+        if (isset($this->request->query['name']) && strlen($this->request->query['name']) > 0) {
+            $tags = News::all(array('fields' => array('tags'), 'conditions' => array('tags' => array('LIKE' => array('%' . $this->request->query['name'] . '%')))));
+            return json_encode($tags->data());
+        }
+    }
+    
+    public function add() {
+        var_dump($this->request->data);
     }
 
 }

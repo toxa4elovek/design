@@ -15,6 +15,22 @@
                 var userName = '<?php echo ($this->user->getId()) ? $this->user->getFormattedName($this->user->firstname, $this->user->lastname) : ''; ?>';
                 var userGender = <?php echo $this->user->getGender(); ?>;
             </script>
+            <?php if ($this->user->isAdmin()): ?>
+            <div id="news-add">
+                <input type="text" name="news-title" placeholder="Ссылка">
+                <span id="show-all-fileds">Показать все поля</span>
+                <textarea rows="4" name="news-description" placeholder="Текст поста"></textarea>
+                <input id="news-add-tag" type="text" name="news-tag">
+                <p>
+                    <input id="news-file" type="file" name="news-banner">
+                    <label for="news-file" id="news-add-photo">Добавить фотографию 620 х 415 px</label>
+                    <label><input type="checkbox" name="news-made-banner">Сделать баннером</label>
+                    <a id="submit-news" class="button" href="#">Отправить</a>
+                </p>
+            </div>
+            <div id="news-add-separator"></div>
+            <div class="new-content group" style="margin-top:10px">
+            <?php endif; ?>
             <?php if ($this->user->getGender() < 1 && $this->user->getId()): ?>
                 <div id="gender-box">
                     <div>
@@ -28,7 +44,7 @@
                     </div>
                 </div>
                 <div class="new-content group" style="margin-top:10px">
-                <?php else: ?>
+                <?php elseif (!$this->user->isAdmin()): ?>
                     <div class="new-content group">
                     <?php endif; ?>
                     <div id="l-sidebar-office">
@@ -292,7 +308,7 @@
                                                             $other = (int) $object['solution']['likes'] - $likes_count;
                                                             $html_likes .= $like['creator'] . ' <span>и ' . $other . ' других</a> лайкнули ваше решение</span></span>';
                                                         } elseif ($likes_count < 2) {
-                                                            $html_likes .= $like['creator'] . '</a> <span>'.$this->user->getGenderTxt('лайкнул', $like['user']['gender']).' ваше решение</span></span>';
+                                                            $html_likes .= $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' ваше решение</span></span>';
                                                         } elseif ($likes_count <= 4) {
                                                             $html_likes .= $like['creator'] . '</a> <span>лайкнули ваше решение</span></span>';
                                                         }
@@ -333,22 +349,24 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <?php elseif ($object['type'] == 'FavUserAdded'):
-                                        $avatarFav = isset($object['user_fav']['images']['avatar_small']) ? $object['user_fav']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
-                                        ?>
-                                        <div class="box">
-                                            <div class="l-img">
-                                                <img class="avatar" src="<?=$avatar?>">
-                                                <img class="avatar" src="<?=$avatarFav?>">
-                                            </div>
-                                            <div class="r-content box-comment">
-                                                <a href="/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav']?></a> подписан на вас
-                                                <p class="timeago">
-                                                    <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
-                                                </p>
-                                            </div>
-                                        </div>    
-                               <?php endif;
+                                <?php
+                                elseif ($object['type'] == 'FavUserAdded'):
+                                    $avatarFav = isset($object['user_fav']['images']['avatar_small']) ? $object['user_fav']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
+                                    ?>
+                                    <div class="box">
+                                        <div class="l-img">
+                                            <img class="avatar" src="<?= $avatar ?>">
+                                            <img class="avatar" src="<?= $avatarFav ?>">
+                                        </div>
+                                        <div class="r-content box-comment">
+                                            <a href="/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav'] ?></a> подписан на вас
+                                            <p class="timeago">
+                                                <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
+                                            </p>
+                                        </div>
+                                    </div>    
+                                <?php
+                                endif;
                             endforeach;
                             ?>
                             <script type="text/javascript">
@@ -429,18 +447,18 @@
     <div id="popup-other-likes" style="display: none;">
         <div class="other-header">Люди, которым это нравится</div>
         <ul id="who-its-liked">
-<!--            <li>
-                <img src="/img/default_small_avatar.png" class="avatar">
-                <a class="user-title" href="/users/view/202">Test T.</a>
-                <a id="fav-user" class="order-button" href="#">Подписаться</a>
-            </li>-->
+            <!--            <li>
+                            <img src="/img/default_small_avatar.png" class="avatar">
+                            <a class="user-title" href="/users/view/202">Test T.</a>
+                            <a id="fav-user" class="order-button" href="#">Подписаться</a>
+                        </li>-->
         </ul>
         <div id="likedAjaxLoader"><img src="/img/blog-ajax-loader.gif"></div>    
         <div class="popup-close"></div>
     </div>
 
-    <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'socialite.js', 'users/feed.js', 'users/activation.js'), array('inline' => false)) ?>
+    <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'socialite.js', 'typeahead.jquery.min.js', 'bloodhound.min.js', 'users/feed.js', 'users/activation.js'), array('inline' => false)) ?>
     <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css'), array('inline' => false)) ?>
     <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
     <?= $this->view()->render(array('element' => 'popups/warning')) ?>
-    <?= $this->view()->render(array('element' => 'moderation')) ?>
+<?= $this->view()->render(array('element' => 'moderation')) ?>

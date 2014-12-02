@@ -413,7 +413,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     float: left;
     margin-left: -8px;
     margin-top: -36px;
-    position: relative;
+    position: absolute;
     z-index: 5;
 }
 .logo a {
@@ -471,7 +471,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     float: left;
     padding-top: 10px;
     height: 44px;
-    margin-left: -128px;
+    margin-left: 128px;
     padding-left: 35px;
     position: relative;
     z-index: 6;

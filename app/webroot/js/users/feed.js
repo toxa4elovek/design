@@ -1157,6 +1157,64 @@ function OfficeStatusUpdater() {
                 html += '</div></div>';
                 return html;
             };
+    if (isAdmin) {
+
+        var fd = new FormData();
+
+        $(document).on('change', '#news-file', function (e) {
+            var files = e.target.files;
+            for (var i = 0, file; file = files[i]; i++) {
+                if (file.type.match('image.*')) {
+                    fd.append('file', file);
+                }
+            }
+        });
+
+        $('#submit-news').on('click', function () {
+            fd.append('title', $('#news-add input[name="news-title"]').val());
+            fd.append('description', $('#news-add textarea[name="news-description"]').val());
+            fd.append('tags', $('#news-add #news-add-tag').val());
+            $.ajax({
+                url: '/events/add',
+                type: 'post',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+
+                }
+            });
+            return false;
+        });
+
+        $('#show-all-fileds').on('click', function () {
+            var label = $(this);
+            $('#news-add-tag').toggle(function () {
+                if (label.text() == 'Свернуть') {
+                    label.text('Показать все поля');
+                    label.removeClass('hide');
+                    $('.tt-hint').hide();
+
+                } else {
+                    label.text('Свернуть');
+                    label.addClass('hide');
+                    $('.tt-hint').show();
+                }
+            });
+        });
+
+        var tags = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: '/events/newstags.json?name=%QUERY'
+        });
+        tags.initialize();
+        $('#news-add-tag').typeahead(null, {
+            name: 'tags',
+            displayKey: 'tags',
+            source: tags.ttAdapter()
+        });
+    }
 }
 function parse_url_regex(url) {
     var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
