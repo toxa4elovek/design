@@ -13,7 +13,7 @@
                 var isAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
                 var userName = '<?php echo ($this->user->getId()) ? $this->user->getFormattedName($this->user->firstname, $this->user->lastname) : ''; ?>';
-                var userGender = <?php echo ($this->user->getGender() ? 1 : 0 ); ?>;
+                var userGender = <?php echo $this->user->getGender(); ?>;
             </script>
             <?php if ($this->user->getGender() < 1 && $this->user->getId()): ?>
                 <div id="gender-box">

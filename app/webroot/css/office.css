@@ -506,6 +506,7 @@
 }
 .center-boxes .box .likes {
     background: #f4f4f4;
+    display: block;
 }
 
 .center-boxes .box .likes .who-likes {

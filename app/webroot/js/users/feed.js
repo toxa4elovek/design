@@ -226,24 +226,27 @@ $(document).ready(function () {
 
     $(document).on('click', '.like-small-icon-box', function () {
         var link = $(this),
-                span = link.parent().next().children('span'),
+                link_parent = link.parent(),
+                span = link.parent().closest('.box').find('.likes').children('span'),
                 txt = span.children('span').text(),
                 like_span = span.children('span'),
                 url = span.children('a'),
                 url_backup = url.text(),
                 txt_backup = txt;
-//        } else if (txt == '') {
-//            $('<span class="who-likes"><a id="show-other-likes" data-solid="'+ $(this).data('id') +'" href="#">'+ userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ваше решение</span></span>');
-//        }
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
             if (txt == 'лайкнул ваше решение') {
                 url.text(url.text() + ', ' + userName);
+                url.data('added', 1);
                 like_span.text('лайкнули ваше решение');
             } else if (txt == 'лайкнули ваше решение') {
                 url.text(url.text() + ', ' + userName);
+                url.data('added', 1);
                 like_span.text('лайкнули ваше решение');
+            } else if (!span.length) {
+                var $element = $('<div class="likes"><span class="who-likes"><a id="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ваше решение</span></span></div>');
+                $element.insertAfter(link_parent.next());
             }
             $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
@@ -256,10 +259,31 @@ $(document).ready(function () {
         } else {
             link.html('Нравится');
             link.data('vote', '1');
+            var likes_div = '';
+            if (txt == 'лайкнул ваше решение') {
+                likes_div = link_parent.closest('.box').find('.likes');
+                likes_div.hide();
+            } else if (txt == 'лайкнули ваше решение' && url.data('added')) {
+                var text_arr = url.text().split(',');
+                text_arr.pop();
+                url.text(text_arr.join(', '));
+            } else if (url.data('block')) {
+                likes_div = link_parent.closest('.box').find('.likes');
+                likes_div.hide();
+            }
             $.get('/solutions/unlike/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Не нравится');
                     link.data('vote', '0');
+                    url.text(url_backup);
+                    like_span.text(txt_backup);
+                    if (likes_div.length > 0) {
+                        likes_div.show();
+                    }
+                } else {
+                    if (likes_div.length > 0) {
+                        likes_div.remove();
+                    }
                 }
             });
         }
