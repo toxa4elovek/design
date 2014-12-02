@@ -14,6 +14,24 @@ $briefExamples = array(
     '11' => 'brief_logo.pdf',
     '12' => 'brief_logo.pdf',
 );
+
+$job_types = array(
+    'realty' => 'Недвижимость / Строительство',
+    'auto' => 'Автомобили / Транспорт',
+    'finances' => 'Финансы / Бизнес',
+    'food' => 'Еда / Напитки',
+    'adv' => 'Реклама / Коммуникации',
+    'tourism' => 'Туризм / Путешествие',
+    'sport' => 'Спорт',
+    'sci' => 'Образование / Наука',
+    'fashion' => 'Красота / Мода',
+    'music' => 'Развлечение / Музыка',
+    'culture' => 'Искусство / Культура',
+    'animals' => 'Животные',
+    'childs' => 'Дети',
+    'security' => 'Охрана / Безопасность',
+    'health' => 'Медицина / Здоровье');
+
 $specifics = unserialize($pitch->specifics);
 ?>
 <?php if(isset($specifics["audience"])):?>
@@ -311,13 +329,18 @@ endif?>
                     <?php endif;?>
                 <?php endif?>
             </p>
-            <?php if (!empty($pitch->industry)):?>
-            <p>
-                <label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-                    <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
-            </p>
-            <?php endif; ?>
-
+            <label id ="show-types" class="greyboldheader required">Выберите вид деятельности</label>
+            <ul id="list-job-type">
+                <?php
+                    $industry = (unserialize($pitch->industry));
+                    $_empty = empty($industry);
+                    foreach ($job_types as $k => $v):
+                        ?>
+                        <li>
+                            <label><input type="checkbox" name="job-type[]" value="<?= $k ?>"<?= ($_empty) ? : (in_array($k, $industry) ? ' checked' : '') ?>><?= $v ?></label>
+                        </li>
+                    <?php endforeach; ?>
+            </ul>
             <?php if(!$onlyText):?>
             <div class="ribbon term" style="height: 80px;">
                 <p class="option">Установите срок</p>
