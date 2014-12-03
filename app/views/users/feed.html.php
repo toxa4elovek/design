@@ -177,7 +177,7 @@
                                 <div id="content-news">
                                     <?php
                                     $newsDate = '';
-                                    if(is_array($news)):
+                                    if($news):
                                     foreach ($news as $n): $host = parse_url($n->link);
                                         if (strtotime($newsDate) < strtotime($n->created)) {
                                             $newsDate = $n->created;
