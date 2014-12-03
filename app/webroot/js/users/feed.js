@@ -1181,7 +1181,7 @@ function OfficeStatusUpdater() {
             var button = $(this);
             fd.append('title', $('#news-add input[name="news-title"]').val());
             fd.append('link', $('#news-add input[name="news-link"]').val());
-            fd.append('description', $('#news-add textarea[name="news-description"]').val());
+            fd.append('short', $('#news-add textarea[name="news-description"]').val());
             fd.append('tags', $('#news-add #news-add-tag').val());
             button.text('Обработка');
             $.ajax({
