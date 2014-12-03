@@ -3,10 +3,20 @@
 namespace app\models;
 
 use app\extensions\storage\Rcache;
+use \image_manipulation\processor\Upload;
 
 class News extends \app\models\AppModel {
 
     private static $news;
+    protected static $processImage = array(
+        'middleFeed' => array(
+            'image_resize' => true,
+            'image_x' => 600,
+            'image_y' => 500,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
+    );
 
     public static function getPost($newsDate = 0) {
         $post = 0;
@@ -28,7 +38,7 @@ class News extends \app\models\AppModel {
                     $av_views = round($all_views / count(self::$news));
                     $max = 0;
                     foreach (self::$news as $n) {
-                        if(strpos($n->link, 'tutdesign')) {
+                        if (strpos($n->link, 'tutdesign')) {
                             continue;
                         }
                         if (($n->views > $av_views * 2 && $max < $n->views) || $max < $n->views) {
@@ -52,7 +62,32 @@ class News extends \app\models\AppModel {
     }
 
     public static function getNews($newsDate = 0, $page = 1) {
-        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0,'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%','%http://www.godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
+        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0, 'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%', '%http://www.godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
+    }
+
+    public static function resize($file) {
+        $options = self::$processImage;
+        foreach ($options as $option => $imageParams) {
+            $newfiledata = pathinfo($file['name']);
+            $newfiledata['filename'] = md5(uniqid('', true));
+            $newfiledata['dirname'] = 'events';
+            $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
+            $imageProcessor = new Upload();
+            $imageProcessor->uploadandinit($file['tmp_name']);
+            $imageProcessor->uploaded = true;
+            $imageProcessor->no_upload_check = true;
+            $imageProcessor->file_src_pathname = $file['tmp_name'];
+            $imageProcessor->file_src_name_ext = $newfiledata['extension'];
+            $imageProcessor->file_new_name_body = $newfiledata['filename'] . '_' . $option;
+            foreach ($imageParams as $param => $value) {
+                $imageProcessor->{$param} = $value;
+            }
+            $imageProcessor->process($newfiledata['dirname']);
+            
+            return '/'.$newfilename;
+        }
+
+        return true;
     }
 
 }

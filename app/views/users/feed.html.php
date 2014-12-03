@@ -17,7 +17,8 @@
             </script>
             <?php if ($this->user->isAdmin()): ?>
             <div id="news-add">
-                <input type="text" name="news-title" placeholder="Ссылка">
+                <input type="text" name="news-title" placeholder="Заголовок">
+                <input type="text" name="news-link" placeholder="Ссылка">
                 <span id="show-all-fileds">Показать все поля</span>
                 <textarea rows="4" name="news-description" placeholder="Текст поста"></textarea>
                 <input id="news-add-tag" type="text" name="news-tag">

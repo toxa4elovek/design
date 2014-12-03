@@ -1178,17 +1178,26 @@ function OfficeStatusUpdater() {
         });
 
         $('#submit-news').on('click', function () {
+            var button = $(this);
             fd.append('title', $('#news-add input[name="news-title"]').val());
+            fd.append('link', $('#news-add input[name="news-link"]').val());
             fd.append('description', $('#news-add textarea[name="news-description"]').val());
             fd.append('tags', $('#news-add #news-add-tag').val());
+            button.text('Обработка');
             $.ajax({
-                url: '/events/add',
+                url: '/events/add.json',
                 type: 'post',
                 data: fd,
                 contentType: false,
                 processData: false,
                 success: function (result) {
-
+                    if (result.result == true) {
+                        button.text('Отправить');
+                        $('#news-add input[name="news-title"]').val('');
+                        $('#news-add input[name="news-link"]').val('');
+                        $('#news-add textarea[name="news-description"]').val('')
+                        $('#news-add #news-add-tag').val('')
+                    }
                 }
             });
             return false;
@@ -1196,7 +1205,7 @@ function OfficeStatusUpdater() {
 
         $('#show-all-fileds').on('click', function () {
             var label = $(this);
-            $('#news-add-tag').toggle(function () {
+            $('#news-add-tag').toggle('fast',function () {
                 if (label.text() == 'Свернуть') {
                     label.text('Показать все поля');
                     label.removeClass('hide');
@@ -1208,6 +1217,7 @@ function OfficeStatusUpdater() {
                     $('.tt-hint').show();
                 }
             });
+            $('#news-add input[name="news-title"]').toggle('fast');
         });
 
         var tags = new Bloodhound({
