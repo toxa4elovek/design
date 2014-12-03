@@ -1139,25 +1139,23 @@ function OfficeStatusUpdater() {
                             <div data-id="' + object.solution.id + '" class="likes">';
                 var id = object.solution.id;
                 var likes_count = 0;
-                $.each(response.updates, function (index, object) {
-                    if (object.type == 'LikeAdded' && object.solution_id == id) {
-                        likes_count++;
-                        console.log(likes_count);
-                        if (likes_count == 1) {
-                            html += '<span class="who-likes"><a id="show-other-likes" data-solid="' + id + '" href="#">';
-                        }
-                        if (likes_count < 4 && likes_count < object.solution.likes) {
-                            html += object.creator + ', ';
-                        } else {
-                            var my_solution = (object.solution.user_id == this_user) ? 'ваше' : '';
-                            if (likes_count > 4) {
-                                var other = parseInt(object.solution.likes) - likes_count;
-                                html += object.creator + ' и ' + other + ' других</a> лайкнули ' + my_solution + ' решение</span>';
-                            } else if (likes_count < 2) {
-                                html += object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ' + my_solution + 'решение</span>';
-                            } else if (likes_count <= 4) {
-                                html += object.creator + '</a> лайкнули ' + my_solution + ' решение</span>';
-                            }
+                $.each(object.likes, function (index, object) {
+                    likes_count++;
+                    console.log(likes_count);
+                    if (likes_count == 1) {
+                        html += '<span class="who-likes"><a id="show-other-likes" data-solid="' + id + '" href="#">';
+                    }
+                    if (likes_count < 4 && likes_count < object.solution.likes) {
+                        html += object.creator + ', ';
+                    } else {
+                        var my_solution = (object.solution.user_id == this_user) ? 'ваше' : '';
+                        if (likes_count > 4) {
+                            var other = parseInt(object.solution.likes) - likes_count;
+                            html += object.creator + ' и ' + other + ' других</a> лайкнули ' + my_solution + ' решение</span>';
+                        } else if (likes_count < 2) {
+                            html += object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ' + my_solution + 'решение</span>';
+                        } else if (likes_count <= 4) {
+                            html += object.creator + '</a> лайкнули ' + my_solution + ' решение</span>';
                         }
                     }
                 });
@@ -1205,7 +1203,7 @@ function OfficeStatusUpdater() {
 
         $('#show-all-fileds').on('click', function () {
             var label = $(this);
-            $('#news-add-tag').toggle('fast',function () {
+            $('#news-add-tag').toggle('fast', function () {
                 if (label.text() == 'Свернуть') {
                     label.text('Показать все поля');
                     label.removeClass('hide');
