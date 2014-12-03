@@ -251,7 +251,7 @@
                                             <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                             <div class="box-info">
                                                 <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
-                                                <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                                <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-userid="<?= $object['solution']['user_id'] ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                             </div>
                                             <div class="r-content box-comment">
                                                 &laquo;<?php echo $object['updateText'] ?>&raquo;
@@ -288,7 +288,7 @@
                                         <a href="/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="<?= $imageurl ?>"></div></a>
                                         <div class="box-info">
                                             <a href="/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a><span>&middot;</span>
-                                            <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                            <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-userid="<?= $object['solution']['user_id'] ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                         </div>
                                         <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                             <?php
@@ -304,13 +304,14 @@
                                                     if ($likes_count < 4 && $likes_count < $object['solution']['likes']) {
                                                         $html_likes .= $like['creator'] . ', ';
                                                     } else {
+                                                        $my_solution = ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '';
                                                         if ($likes_count > 4) {
                                                             $other = (int) $object['solution']['likes'] - $likes_count;
-                                                            $html_likes .= $like['creator'] . ' <span>и ' . $other . ' других</a> лайкнули ваше решение</span></span>';
+                                                            $html_likes .= $like['creator'] . ' <span>и ' . $other . ' других</a> лайкнули '. $my_solution .' решение</span></span>';
                                                         } elseif ($likes_count < 2) {
-                                                            $html_likes .= $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' ваше решение</span></span>';
+                                                            $html_likes .= $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' ' . $my_solution . ' решение</span></span>';
                                                         } elseif ($likes_count <= 4) {
-                                                            $html_likes .= $like['creator'] . '</a> <span>лайкнули ваше решение</span></span>';
+                                                            $html_likes .= $like['creator'] . '</a> <span>лайкнули '. $my_solution .' решение</span></span>';
                                                         }
                                                         break;
                                                     }
