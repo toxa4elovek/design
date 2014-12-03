@@ -98,9 +98,20 @@ class EventsController extends \app\controllers\AppController {
             return json_encode($tags->data());
         }
     }
-    
+
     public function add() {
-        var_dump($this->request->data);
+        $result = false;
+        if ($this->request->data && !empty($this->request->data['title'])) {
+            $news = News::create($this->request->data);
+            $news->created = date('Y-m-d H:i:s');
+            if (isset($this->request->data['file'])) {
+                $news->imageurl = News::resize($this->request->data['file']);
+            }
+            if ($result = $news->save()) {
+                Event::createEventNewsAdded($news->id, 0, $news->created);
+            }
+        }
+        return compact('result');
     }
 
 }

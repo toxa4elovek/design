@@ -232,22 +232,27 @@ $(document).ready(function () {
                 like_span = span.children('span'),
                 url = span.children('a'),
                 url_backup = url.text(),
-                txt_backup = txt;
+                txt_backup = txt,
+                first_txt = txt.split(' ');
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
-            if (txt == 'лайкнул ваше решение') {
+            var my_solution = ($(this).data('userid') == this_user) ? 'ваше' : '';
+            if (first_txt == 'лайкнул') {
                 url.text(url.text() + ', ' + userName);
                 url.data('added', 1);
-                like_span.text('лайкнули ваше решение');
-            } else if (txt == 'лайкнули ваше решение') {
+                like_span.text('лайкнули ' + my_solution + ' решение');
+            } else if (first_txt == 'лайкнули') {
                 url.text(url.text() + ', ' + userName);
                 url.data('added', 1);
-                like_span.text('лайкнули ваше решение');
+                like_span.text('лайкнули ' + my_solution + ' решение');
             } else if (!span.length) {
-                var $element = $('<div class="likes"><span class="who-likes"><a id="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ваше решение</span></span></div>');
+                var $element = $('<div class="likes"><span class="who-likes"><a id="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' решение</span></span></div>');
                 $element.insertAfter(link_parent.next());
+            } else if (span.length && span.parent().css('display') == 'none') {
+                span.parent().show();
             }
+            return false;
             $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Нравится');
@@ -260,10 +265,10 @@ $(document).ready(function () {
             link.html('Нравится');
             link.data('vote', '1');
             var likes_div = '';
-            if (txt == 'лайкнул ваше решение') {
+            if (first_txt == 'лайкнул') {
                 likes_div = link_parent.closest('.box').find('.likes');
                 likes_div.hide();
-            } else if (txt == 'лайкнули ваше решение' && url.data('added')) {
+            } else if (first_txt == 'лайкнули' && url.data('added')) {
                 var text_arr = url.text().split(',');
                 text_arr.pop();
                 url.text(text_arr.join(', '));
@@ -271,6 +276,7 @@ $(document).ready(function () {
                 likes_div = link_parent.closest('.box').find('.likes');
                 likes_div.hide();
             }
+            return false;
             $.get('/solutions/unlike/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Не нравится');
@@ -1071,7 +1077,7 @@ function OfficeStatusUpdater() {
                             <div class="sol"><img src="' + imageurl + '"></div> \
                             <div class="box-info">\
                                 <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
-                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
+                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-userid="' + object.solution.user_id + '" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
                             </div>\
                             <div class="r-content box-comment">\
                                 &laquo;' + object.updateText + '&raquo;\
@@ -1128,7 +1134,7 @@ function OfficeStatusUpdater() {
                             <a href="/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a> \
                             <div class="box-info">\
                                 <a href="/solutions/warn/' + object.solution.id + '.json" class="warning-box" data-solution-id="' + object.solution.id + '">Пожаловаться</a>\
-                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
+                                <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-userid="' + object.solution.user_id + '" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
                             </div>\
                             <div data-id="' + object.solution.id + '" class="likes">';
                 var id = object.solution.id;
@@ -1136,29 +1142,30 @@ function OfficeStatusUpdater() {
                 $.each(response.updates, function (index, object) {
                     if (object.type == 'LikeAdded' && object.solution_id == id) {
                         likes_count++;
+                        console.log(likes_count);
                         if (likes_count == 1) {
-                            html += '<span class="who-likes"><a id="show-other-likes" href="#">';
+                            html += '<span class="who-likes"><a id="show-other-likes" data-solid="' + id + '" href="#">';
                         }
                         if (likes_count < 4 && likes_count < object.solution.likes) {
                             html += object.creator + ', ';
                         } else {
+                            var my_solution = (object.solution.user_id == this_user) ? 'ваше' : '';
                             if (likes_count > 4) {
                                 var other = parseInt(object.solution.likes) - likes_count;
-                                html += object.creator + ' и ' + other + ' других</a> лайкнули ваше решение</span>';
+                                html += object.creator + ' и ' + other + ' других</a> лайкнули ' + my_solution + ' решение</span>';
                             } else if (likes_count < 2) {
-                                html += object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ваше решение</span>';
+                                html += object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ' + my_solution + 'решение</span>';
                             } else if (likes_count <= 4) {
-                                html += object.creator + '</a> лайкнули ваше решение</span>';
+                                html += object.creator + '</a> лайкнули ' + my_solution + ' решение</span>';
                             }
-                            return false;
                         }
                     }
                 });
                 html += '</div></div>';
                 return html;
             };
-    if (isAdmin) {
 
+    if (isAdmin) {
         var fd = new FormData();
 
         $(document).on('change', '#news-file', function (e) {
@@ -1171,17 +1178,26 @@ function OfficeStatusUpdater() {
         });
 
         $('#submit-news').on('click', function () {
+            var button = $(this);
             fd.append('title', $('#news-add input[name="news-title"]').val());
-            fd.append('description', $('#news-add textarea[name="news-description"]').val());
+            fd.append('link', $('#news-add input[name="news-link"]').val());
+            fd.append('short', $('#news-add textarea[name="news-description"]').val());
             fd.append('tags', $('#news-add #news-add-tag').val());
+            button.text('Обработка');
             $.ajax({
-                url: '/events/add',
+                url: '/events/add.json',
                 type: 'post',
                 data: fd,
                 contentType: false,
                 processData: false,
                 success: function (result) {
-
+                    if (result.result == true) {
+                        button.text('Отправить');
+                        $('#news-add input[name="news-title"]').val('');
+                        $('#news-add input[name="news-link"]').val('');
+                        $('#news-add textarea[name="news-description"]').val('')
+                        $('#news-add #news-add-tag').val('')
+                    }
                 }
             });
             return false;
@@ -1189,7 +1205,7 @@ function OfficeStatusUpdater() {
 
         $('#show-all-fileds').on('click', function () {
             var label = $(this);
-            $('#news-add-tag').toggle(function () {
+            $('#news-add-tag').toggle('fast',function () {
                 if (label.text() == 'Свернуть') {
                     label.text('Показать все поля');
                     label.removeClass('hide');
@@ -1201,6 +1217,7 @@ function OfficeStatusUpdater() {
                     $('.tt-hint').show();
                 }
             });
+            $('#news-add input[name="news-title"]').toggle('fast');
         });
 
         var tags = new Bloodhound({
