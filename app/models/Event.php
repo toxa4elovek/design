@@ -57,6 +57,7 @@ class Event extends \app\models\AppModel {
                                 $allowLike = 1;
                             }
                             $record->allowLike = $allowLike;
+                            $record->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $record->solution_id), 'order' => array('Event.created' => 'desc')));
                         }
                     } else {
                         //$record->solution = Solution::getBestSolution($record->pitch_id);
@@ -286,7 +287,7 @@ class Event extends \app\models\AppModel {
     public static function createConditions($input) {
         $list = array();
         foreach ($input as $pitchId => $created) {
-            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'LikeAdded', 'RatingAdded', 'FavUserAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
+            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'RatingAdded', 'FavUserAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
         }
         $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded')));
         $output = array('OR' => $list);
