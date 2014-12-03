@@ -64,10 +64,14 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing the-village.ru");
         self::ParsingVillage();
         $this->out('Finished parsing the-village.ru [' . (time() - $startTimeStamp) . ' sec]');
-        
+
         $this->out("Starting parsing packaginguqam.blogspot.ru");
         self::ParsingPackaginguqam();
         $this->out('Finished parsing packaginguqam.blogspot.ru [' . (time() - $startTimeStamp) . ' sec]');
+        
+        $this->out("Starting fixing tags");
+        self::fixTags();
+        $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
     }
 
     private function ParsingGodesigner() {
@@ -92,7 +96,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $news = News::create(array(
                             'title' => $post->title,
                             'short' => strip_tags($post->short),
-                            'tags' => $post->tags,
+                            'tags' => substr($post->tags, 0, strpos($post->tags, '|')),
                             'created' => $post->created,
                             'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
                             'imageurl' => $image
@@ -276,7 +280,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $news = News::create(array(
                                 'title' => $item->title,
                                 'short' => strip_tags($item->description),
-                                'tags' => $item->category,
+                                'tags' => substr($item->category, 0, strpos($item->category, ',')),
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->link,
                                 'imageurl' => $matches[1]
@@ -457,6 +461,23 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $news->save();
                 }
             }
+        }
+    }
+
+    private function fixTags() {
+        $newsList = News::all();
+        $trigger = false;
+        foreach ($newsList as $news) {
+            if ($str = strpos($news->tags, ',')) {
+                $news->tags = substr($news->tags, 0, $str);
+                $trigger = true;
+            } elseif ($str = strpos($news->tags, '|')) {
+                $news->tags = substr($news->tags, 0, $str);
+                $trigger = true;
+            }
+        }
+        if ($trigger) {
+            $newsList->save();
         }
     }
 
