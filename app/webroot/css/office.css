@@ -634,7 +634,7 @@
     margin-top: -1px;
 }
 
-#gender-box #close-gender {
+.close-gender {
     background: url(img/popup-close-sprite.png) no-repeat 0 -15px;
     cursor: pointer;
     width: 10px;
@@ -643,7 +643,7 @@
     top: 7px;
 }
 
-#gender-box #close-gender:hover {
+.close-gender:hover {
     background: url(img/popup-close-sprite.png) no-repeat 0 0;
     width: 10px;
 }
