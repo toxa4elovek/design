@@ -35,15 +35,16 @@
                 <?php if ($banner): ?>
                     <div class="banner-block">
                         <div>
+                            <div class="close-gender"></div>
                             <span><?= $banner->title ?></span> 
                             <p><?= $banner->short ?></p>
                         </div>
                     </div>
-                <?php endif; ?>
-                <?php if ($this->user->getGender() < 1 && $this->user->getId()): ?>
+                    <div class="new-content group" style="margin-top:10px">
+                <?php elseif ($this->user->getGender() < 1 && $this->user->getId()): ?>
                     <div id="gender-box">
                         <div>
-                            <div id="close-gender"></div>
+                            <div class="close-gender"></div>
                             <span>
                                 <span>Укажите ваш пол, пожалуйста:</span> 
                                 <label><input type="radio" name="gender" id="male"> Мужской</label>
@@ -53,9 +54,9 @@
                         </div>
                     </div>
                     <div class="new-content group" style="margin-top:10px">
-                    <?php elseif (!$this->user->isAdmin()): ?>
+                    <?php else: ?>
                         <div class="new-content group">
-                        <?php endif; ?>
+                    <?php endif; ?>
                         <div id="l-sidebar-office">
                             <?php
                             $solutionDate = '';
