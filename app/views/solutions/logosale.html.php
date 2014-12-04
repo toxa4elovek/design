@@ -10,7 +10,7 @@
                             <td>
                                 <div id="filterContainer">
                                     <ul style="margin-left: 9px" id="filterbox" class="tags"></ul>
-                                    <input type="text" style="padding-bottom: 10px; width: 524px; box-shadow: none; line-height: 12px; height: 13px; padding-top: 7px; margin-left: 4px;" id="searchTerm" class="placeholder">
+                                    <input type="text" id="searchTerm" class="placeholder" placeholder="Найдите себе логотип по ключевому слову или типу">
                                     <a style="float:right;" data-dir="up" id="filterToggle" href="#"><img alt="" src="/img/filter-arrow-down.png" style="padding-top:4px;margin-right:1px;"></a>
                                     <a id="filterClear" href="#"></a>
                                 </div>
@@ -71,44 +71,79 @@
                     <h2 class="greyboldheader">Внесение 3 правок бесплатно!</h2>
                 </li>
             </ul>
-                <div class="portfolio_gallery">
-                    <ul class="list_portfolio main_portfolio">
-                        <li id="li_28">
+            <div class="portfolio_gallery">
+                <ul class="list_portfolio main_portfolio">
+                    <?php
+                    foreach ($solutions as $solution):
+                        $picCounter2 = 0;
+                        if (isset($solution->images['solution_galleryLargeSize'][0])) {
+                            foreach ($solution->images['solution_galleryLargeSize'] as $image):
+                                $picCounter2++;
+                            endforeach;
+                        } else {
+                            if (!isset($solution->images['solution_galleryLargeSize'])) {
+                                $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
+                                $picCounter2 = 0;
+                                if (is_array($solution->images['solution_galleryLargeSize'])) {
+                                    foreach ($solution->images['solution_galleryLargeSize'] as $image) {
+                                        $picCounter2++;
+                                    }
+                                }
+                            }
+                        }
+                        ?>
+                        <li id="li_<?= $solution->id ?>"<?= ($picCounter2 > 1) ? 'class=multiclass' : '' ?>>
                             <div class="photo_block">
-                                <a style="display:block;" data-solutionid="94" class="imagecontainer" href="/pitches/viewsolution/94?sorting=rating">
-                                    <img width="180" height="135" rel="#28" src="/solutions/7/72/72f/72f4e373a7e30543cd84d08095590153_galleryLargeSize.jpg" alt="">
+                                <?php if ($this->solution->getImageCount($solution->images['solution_galleryLargeSize']) > 1): ?>
+                                    <div class="image-count"><?= $this->solution->getImageCount($solution->images['solution_solutionView']) ?></div>
+                                <?php endif ?>
+                                <a style="display:block;" data-solutionid="<?= $solution->id ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution->id ?>">
+                                    <?php if (!isset($solution->images['solution_galleryLargeSize'][0])): ?>
+                                        <img rel="#<?= $solution->num ?>"  width="180" height="135" src="<?= $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize']) ?>" alt="<?= ($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : ''; ?>">
+                                    <?php else: ?>
+                                        <?php
+                                        $picCounter = 0;
+                                        foreach ($solution->images['solution_galleryLargeSize'] as $image):
+                                            ?>
+                                            <img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;<?php echo ($picCounter > 0) ? 'display:none;' : 'opacity:1;'; ?>" rel="#<?= $solution->num ?>" src="<?= $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'], $picCounter) ?>" alt="<?= ($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : ''; ?>">
+                                            <?php
+                                            $picCounter++;
+                                        endforeach;
+                                        ?>
+                                    <?php endif ?>
                                 </a>                    
                                 <div class="photo_opt">
                                     <div class="" style="display: block; float:left;">
                                         <span class="rating_block">
-                                            <div class="ratingcont" data-default="4" data-solutionid="94" style="float: left; height: 9px; background: url(&quot;/img/4-rating.png&quot;) repeat scroll 0% 0% transparent; width: 56px;">
-                                                <a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
-                                                <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
-                                                <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
-                                                <a data-rating="4" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
-                                                <a data-rating="5" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
-                                            </div>
+                                            <div class="ratingcont" data-default="<?= $solution->rating ?>" data-solutionid="<?= $solution->id ?>" style="float: left; height: 9px; background: url(/img/<?= $solution->rating ?>-rating.png) repeat scroll 0% 0% transparent; width: 56px;"></div>
                                         </span>
                                         <span class="like_view" style="margin-top:2px;">
-                                            <img src="/img/looked.png" alt="" class="icon_looked"><span>3</span>
+                                            <img src="/img/looked.png" alt="" class="icon_looked"><span><?= $solution->views ?></span>
                                         </span>
                                     </div>
                                     <ul style="margin-left: 78px;" class="right">
                                         <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
-                                            <a href="#" style="float:left" class="like-small-icon" data-id="94"><img src="/img/like.png" alt="количество лайков"></a>
-                                            <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="94" rel="http://www.godesigner.ru/pitches/viewsolution/94">1</span>
+                                            <a href="#" style="float:left" class="like-small-icon" data-id="<?= $solution->id ?>"><img src="/img/like.png" alt="количество лайков"></a>
+                                            <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?= $solution->id ?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>"><?= $solution->likes ?></span>
                                             <div class="sharebar" style="padding:0 0 4px !important;background:url('/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;position:relative;z-index:10000;display: none; left: -10px; right: auto; top: 20px;height: 178px;width:288px;">
                                                 <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">
                                                     <div class="body" style="display: block;">
                                                         <table width="100%">
                                                             <tbody><tr height="35">
                                                                     <td width="137" valign="middle">
-                                                                        <a id="facebook94" class="socialite facebook-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/94" data-href="http://www.godesigner.ru/pitches/viewsolution/94" data-send="false" data-layout="button_count">
+                                                                        <a id="facebook<?= $solution->id ?>" class="socialite facebook-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>" data-href="http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>" data-send="false" data-layout="button_count">
                                                                             Share on Facebook
                                                                         </a>
                                                                     </td>
                                                                     <td width="137" valign="middle">
-                                                                        <a id="twitter94" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/94?utm_source=twitter&amp;utm_medium=tweet&amp;utm_content=like-tweet&amp;utm_campaign=sharing" data-text="Мне нравится этот дизайн! А вам?" data-lang="ru" data-hashtags="Go_Deer">
+                                                                        <?php
+                                                                        if (rand(1, 100) <= 50) {
+                                                                            $tweetLike = 'Мне нравится этот дизайн! А вам?';
+                                                                        } else {
+                                                                            $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
+                                                                        }
+                                                                        ?>
+                                                                        <a id="twitter<?= $solution->id ?>" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="<?php echo $tweetLike; ?>" data-lang="ru" data-hashtags="Go_Deer">
                                                                             Share on Twitter
                                                                         </a>
                                                                     </td>
@@ -116,10 +151,9 @@
                                                                 <tr height="35">
                                                                     <td valign="middle">
                                                                         <a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent;">Share on Tumblr</a>
-
                                                                     </td>
                                                                     <td valign="middle">
-                                                                        <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F94&amp;media=http%3A%2F%2Fwww.godesigner.ru%2Fsolutions%2F7%2F72%2F72f%2F72f4e373a7e30543cd84d08095590153_solutionView.jpg&amp;description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It"></a>
+                                                                        <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F<?= $solution->id ?>&media=<?= urlencode('http://www.godesigner.ru' . $this->solution->renderImageUrl($solution->images['solution_solutionView'])) ?>&description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -139,13 +173,14 @@
                             <div class="selecting_numb"><span class="price">19000 р.</span><span class="new-price">9500р.-</span></div>
                             <div class="solution_menu" style="display: none;">
                                 <ul class="solution_menu_list">
-                                    <li class="sol_hov"><a href="/solutions/buy/94.json" class="hide-item" data-to="28">Купить</a></li>
+                                    <li class="sol_hov"><a href="/solutions/buy/<?= $solution->id ?>.json" class="hide-item">Купить</a></li>
                                     <li class="sol_hov"><a href="/solutions/warn/94.json" class="warning" data-solution-id="94">Пожаловаться</a></li>
                                 </ul>
                             </div>
                         </li>
-                    </ul>
-                </div>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
         <div id="under_middle_inner"></div>
     </div>

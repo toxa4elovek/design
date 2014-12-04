@@ -10,7 +10,7 @@ use \lithium\analysis\Logger;
 
 class SolutionsController extends \app\controllers\AppController {
 
-    public $publicActions = array('like', 'unlike');
+    public $publicActions = array('like', 'unlike', 'logosale');
 
     public function hide() {
         $result = $this->request;
@@ -107,9 +107,10 @@ class SolutionsController extends \app\controllers\AppController {
         }
         return $this->request->data;
     }
-    
+
     public function logosale() {
-        
+        $solutions = Solution::all(array('conditions' => array('multiwinner' => 0, 'awarded' => 0, 'nominated' => 0), 'limit' => 12, 'page' => 1));
+        return compact('solutions');
     }
 
 }

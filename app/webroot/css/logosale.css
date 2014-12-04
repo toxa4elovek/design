@@ -31,6 +31,19 @@ span.new-price {
 #goSearch {
     width: 77px;
 }
+#searchTerm {
+    padding-bottom: 10px;
+    width: 524px;
+    box-shadow: none;
+    line-height: 12px;
+    height: 13px;
+    padding-top: 7px;
+    margin-left: 4px;
+}
+
+#searchTerm.placeholder {
+    font: 14px/20px "Arial", sans-serif;
+}
 
 #filterContainer {
     border-radius: 4px;
@@ -72,6 +85,31 @@ ul.marsh li {
     background: url("img/images/tick.gif") no-repeat 3px 0;
 }
 
+.multiclass {
+    background: url(/img/fon_multy2.jpg) no-repeat 2px 0;
+}
+
+li.multiclass .photo_opt {
+    padding-top: 0px;
+    margin-top: 144px;
+}
+
 ul.marsh .clear {
     margin-left: 20px;
+}
+
+.image-count {
+    z-index: 2;
+    position: absolute;
+    color: rgb(102, 102, 102);
+    font-weight: bold;
+    font-size: 14px;
+    padding-top: 7px;
+    height: 16px;
+    top: -34px;
+    text-align: right;
+    width: 18px;
+    padding-right: 21px;
+    background: url(/img/multi-icon.png) no-repeat scroll 22px 5px transparent;
+    left: 169px;
 }
