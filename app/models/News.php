@@ -22,7 +22,7 @@ class News extends \app\models\AppModel {
         $post = 0;
         if ($newsDate < 1) {
             $post = Rcache::read('middle-post');
-            self::$news = self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0), 'order' => array('created' => 'desc')));
+            self::$news = self::all(array('conditions' => array('created' => array('>' => $newsDate), 'isBanner' => 0, 'toggle' => 0), 'order' => array('created' => 'desc')));
             if (self::$news && !$post) {
                 $all_views = 0;
                 foreach (self::$news as $n) {
@@ -62,7 +62,11 @@ class News extends \app\models\AppModel {
     }
 
     public static function getNews($newsDate = 0, $page = 1) {
-        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0, 'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%', '%http://www.godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
+        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0, 'isBanner' => 0, 'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%', '%http://www.godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
+    }
+
+    public static function getBanner() {
+        return self::first(array('conditions' => array('isBanner' => 0), 'order' => array('created' => 'desc')));
     }
 
     public static function resize($file) {
@@ -83,8 +87,8 @@ class News extends \app\models\AppModel {
                 $imageProcessor->{$param} = $value;
             }
             $imageProcessor->process($newfiledata['dirname']);
-            
-            return '/'.$newfilename;
+
+            return '/' . $newfilename;
         }
 
         return true;

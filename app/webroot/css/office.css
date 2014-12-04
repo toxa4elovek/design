@@ -596,31 +596,29 @@
     font-weight: lighter;
 }
 
-#gender-box {
+#gender-box,
+.banner-block {
     height: 85px;
     width: 597px;
     background: #fff;
-    margin-top: 10px;
-    right: 71px;
-    overflow: hidden;
+    margin: 10px auto;
     position: relative;
 }
 
-#gender-box span {
+#gender-box span,
+.banner-block span{
     font-family: OfficinaSansC Book, serif;
     font-size: 16px;
     color: #333333;
     display: inline;
 }
 
-#gender-box div {
+#gender-box div,
+.banner-block div {
     padding-left: 90px;
     padding-top: 15px;
 }
 
-/*#gender-box input[type="radio"] {
-    display:none;
-}*/
 #gender-box span span {
     margin-right:20px;
 }
@@ -635,29 +633,6 @@
     margin: 0;
     margin-top: -1px;
 }
-/*#gender-box label:before {  
-    content: "";  
-    display: inline-block;  
-    width: 16px;  
-    height: 16px;  
-    margin-right: 10px;  
-    position: absolute;  
-    left: 0;  
-    bottom: 1px;
-    border-radius: 8px; 
-    background-color: #fff;
-    box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
-    -webkit-box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
-    -moz-box-shadow: 0 1px 4px 0 rgba(50, 50, 50, 0.75) inset;
-
-}
-#gender-box input[type="radio"]:checked + label:before {  
-    content: "\2022";  
-    color: #000;  
-    font-size: 17px;  
-    text-align: center;  
-    line-height: 18px;  
-}*/
 
 #gender-box #close-gender {
     background: url(img/popup-close-sprite.png) no-repeat 0 -15px;
