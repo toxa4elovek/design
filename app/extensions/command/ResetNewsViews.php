@@ -15,11 +15,13 @@ class ResetNewsViews extends \app\extensions\command\CronJob {
         if ($post) {
             $event = Event::first(array('conditions' => array('type' => 'newsAdded', 'news_id' => $post->id, 'created' => $post->created)));
             if ($event) {
+                $this->out('Event for this news exists');
                 $event->created = $post->created;
                 $event->save();
             } else {
+                $this->out('Event for this news not exists yet');
                 Event::create(array(
-                    'created' => $post->created,
+                    'created' => date('Y-m-d H:i:s'),
                     'type' => 'newsAdded',
                     'news_id' => $post->id
                 ))->save();

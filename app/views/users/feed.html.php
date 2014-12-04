@@ -16,21 +16,29 @@
                 var userGender = <?php echo $this->user->getGender(); ?>;
             </script>
             <?php if ($this->user->isAdmin()): ?>
-            <div id="news-add">
-                <input type="text" name="news-title" placeholder="Заголовок">
-                <input type="text" name="news-link" placeholder="Ссылка">
-                <span id="show-all-fileds">Показать все поля</span>
-                <textarea rows="4" name="news-description" placeholder="Текст поста"></textarea>
-                <input id="news-add-tag" type="text" name="news-tag">
-                <p>
-                    <input id="news-file" type="file" name="news-banner">
-                    <label for="news-file" id="news-add-photo">Добавить фотографию 620 х 415 px</label>
-                    <label><input type="checkbox" name="news-made-banner">Сделать баннером</label>
-                    <a id="submit-news" class="button" href="#">Отправить</a>
-                </p>
-            </div>
-            <div id="news-add-separator"></div>
-            <div class="new-content group" style="margin-top:10px">
+                <div id="news-add">
+                    <input type="text" name="news-title" placeholder="Заголовок">
+                    <input type="text" name="news-link" placeholder="Ссылка">
+                    <span id="show-all-fileds">Показать все поля</span>
+                    <textarea rows="4" name="news-description" placeholder="Текст поста"></textarea>
+                    <input id="news-add-tag" type="text" name="news-tag">
+                    <p>
+                        <input id="news-file" type="file" name="news-banner">
+                        <label for="news-file" id="news-add-photo">Добавить фотографию 620 х 415 px</label>
+                        <label><input type="checkbox" id="isBanner" name="news-made-banner">Сделать баннером</label>
+                        <a id="submit-news" class="button" href="#">Отправить</a>
+                    </p>
+                </div>
+                <div id="news-add-separator"></div>
+                <div class="new-content group" style="margin-top:10px">
+                <?php endif; ?>
+                <?php if ($banner): ?>
+                    <div class="banner-block">
+                        <div>
+                            <span><?= $banner->title ?></span> 
+                            <p><?= $banner->short ?></p>
+                        </div>
+                    </div>
                 <?php endif; ?>
                 <?php if ($this->user->getGender() < 1 && $this->user->getId()): ?>
                 <div id="gender-box">
