@@ -66,7 +66,7 @@ class News extends \app\models\AppModel {
     }
 
     public static function getBanner() {
-        return self::first(array('conditions' => array('isBanner' => 0), 'order' => array('created' => 'desc')));
+        return self::first(array('conditions' => array('isBanner' => 1), 'order' => array('created' => 'desc')));
     }
 
     public static function resize($file) {
