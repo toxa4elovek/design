@@ -1,3 +1,8 @@
+<script type="text/javascript">
+    var isCurrentAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
+    var allowComments = false;
+    var currentUserId = <?= $this->user->getId() ?>;
+</script>
 <div class="wrapper pitchpanel login">
     <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2')) ?>
     <div class="middle">
@@ -185,6 +190,6 @@
         <div id="under_middle_inner"></div>
     </div>
 </div>
-<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
-<?=
-$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css'), array('inline' => false))?>
+<?=$this->view()->render(array('element' => 'popups/solution_sale'))?>
+<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
+<?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3'), array('inline' => false))?>
