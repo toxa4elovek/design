@@ -21,7 +21,7 @@
                 <input type="text" name="news-link" placeholder="Ссылка">
                 <span id="show-all-fileds">Показать все поля</span>
                 <textarea rows="4" name="news-description" placeholder="Текст поста"></textarea>
-                <input id="news-add-tag" type="text" name="news-tag">
+                <input id="news-add-tag" type="text" name="news-tag" placeholder="Тег">
                 <p>
                     <input id="news-file" type="file" name="news-banner">
                     <label for="news-file" id="news-add-photo">Добавить фотографию 620 х 415 px</label>

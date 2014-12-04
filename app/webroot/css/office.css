@@ -568,6 +568,16 @@
     text-transform: uppercase;
 }
 
+.new-wrapper .button:hover {
+    background: #6690a6;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#6f9db5), to(#5c8296));
+    background: -webkit-linear-gradient(#6f9db5, #5c8296);
+    background:    -moz-linear-gradient(#6f9db5, #5c8296);
+    background:     -ms-linear-gradient(#6f9db5, #5c8296);
+    background:      -o-linear-gradient(#6f9db5, #5c8296);
+    background:         linear-gradient(#6f9db5, #5c8296);
+}
+
 .new-wrapper .button.third {
     background: linear-gradient(#64a470, #51895c) repeat scroll 0 0 rgba(0, 0, 0, 0);
     outline: medium none;
@@ -810,7 +820,7 @@
 
 #news-add #submit-news {
     border: none;
-    background: #58879b;
+    /*background: #58879b;*/
     font-family: OfficinaSansC Bold, serif;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
