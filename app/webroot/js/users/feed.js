@@ -43,9 +43,11 @@ $(document).ready(function () {
                 );
     });
 
-    $('#close-gender').on('click', function () {
-        $('#gender-box').hide();
-        $('.new-content').css({'margin-top': '70px'});
+    $('.close-gender').on('click', function () {
+        $(this).parent().parent().hide();
+        if (!isAdmin) {
+            $('.new-content').css({'margin-top': '70px'});
+        }
     });
 
     $('.img-box').hover(function () {
@@ -1141,7 +1143,6 @@ function OfficeStatusUpdater() {
                 var likes_count = 0;
                 $.each(object.likes, function (index, object) {
                     likes_count++;
-                    console.log(likes_count);
                     if (likes_count == 1) {
                         html += '<span class="who-likes"><a id="show-other-likes" data-solid="' + id + '" href="#">';
                     }
