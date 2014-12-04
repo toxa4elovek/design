@@ -3712,7 +3712,6 @@ div.no-result p {
 }
 
 .rss-img {
-    text-align: left !important;
     margin-left: 25px;
     width: 88% !important;
     padding-left: 33px;
@@ -3726,7 +3725,7 @@ div.no-result p {
     position:absolute;
     z-index: 0;
     top: 3px;
-    left: 8px;
+    left: 72px;
 }
 
 .fontBookC {
