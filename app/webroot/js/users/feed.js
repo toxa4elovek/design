@@ -1209,13 +1209,15 @@ function OfficeStatusUpdater() {
                 processData: false,
                 success: function (result) {
                     if (result.result == true) {
-                        button.text('Отправить');
+                        button.text('Сохранено!');
                         $('#news-add input[name="news-title"]').val('');
                         $('#news-add input[name="news-link"]').val('');
                         $('#news-add textarea[name="news-description"]').val('')
                         $('#news-add #news-add-tag').val('')
+                    }else if (result.result == false) {
+                        button.text('Ошибка');
                     }
-                }
+                },
             });
             return false;
         });

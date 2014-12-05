@@ -336,8 +336,10 @@
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>"><img class="img-post" src="<?= $object['news']['imageurl'] ?>"></a>
                                                 </p>
-                                                <div class="r-content post-content">
+                                                <div class="r-content post-content" <?php if(!$object['news']['tags']):?>style="padding-top: 0px;"<?php endif;?>>
+                                                    <?php if($object['news']['tags']):?>
                                                     <p class="img-tag"><?= $object['news']['tags'] ?></p>
+                                                    <?php endif; ?>
                                                     <a class="img-post" href="<?= $object['news']['link'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
                                                     <p class="img-short"><?= $object['news']['short'] ?></p>
                                                     <p class="timeago">
