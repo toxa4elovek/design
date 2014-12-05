@@ -1,7 +1,8 @@
 <script type="text/javascript">
     var isCurrentAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
     var allowComments = false;
-    var currentUserId = <?= $this->user->getId() ?>;
+    var currentUserId = <?= ($this->user->getId()) ? $this->user->getId() : 0 ?>;
+    var isClient = false;
 </script>
 <div class="wrapper pitchpanel login">
     <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2')) ?>
@@ -82,17 +83,13 @@
                     foreach ($solutions as $solution):
                         $picCounter2 = 0;
                         if (isset($solution->images['solution_galleryLargeSize'][0])) {
-                            foreach ($solution->images['solution_galleryLargeSize'] as $image):
-                                $picCounter2++;
-                            endforeach;
+                            $picCounter2 = count($solution->images['solution_galleryLargeSize']);
                         } else {
                             if (!isset($solution->images['solution_galleryLargeSize'])) {
                                 $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
                                 $picCounter2 = 0;
                                 if (is_array($solution->images['solution_galleryLargeSize'])) {
-                                    foreach ($solution->images['solution_galleryLargeSize'] as $image) {
-                                        $picCounter2++;
-                                    }
+                                    $picCounter2 = count($solution->images['solution_galleryLargeSize']);
                                 }
                             }
                         }
@@ -104,7 +101,7 @@
                                 <?php endif ?>
                                 <a style="display:block;" data-solutionid="<?= $solution->id ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution->id ?>">
                                     <?php if (!isset($solution->images['solution_galleryLargeSize'][0])): ?>
-                                        <img rel="#<?= $solution->num ?>"  width="180" height="135" src="<?= $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize']) ?>" alt="<?= ($pitch->status == 2) ? $this->solution->getShortDescription($solution, 80) : ''; ?>">
+                                        <img rel="#<?= $solution->num ?>"  width="180" height="135" src="<?= $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize']) ?>">
                                     <?php else: ?>
                                         <?php
                                         $picCounter = 0;
@@ -179,13 +176,14 @@
                             <div class="solution_menu" style="display: none;">
                                 <ul class="solution_menu_list">
                                     <li class="sol_hov"><a href="/solutions/buy/<?= $solution->id ?>.json" class="hide-item">Купить</a></li>
-                                    <li class="sol_hov"><a href="/solutions/warn/94.json" class="warning" data-solution-id="94">Пожаловаться</a></li>
+                                    <li class="sol_hov"><a href="/solutions/warn/<?= $solution->id ?>.json" class="warning" data-solution-id="<?= $solution->id ?>">Пожаловаться</a></li>
                                 </ul>
                             </div>
                         </li>
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="/img/blog-ajax-loader.gif"></div>
         </div>
         <div id="under_middle_inner"></div>
     </div>

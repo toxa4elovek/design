@@ -94,6 +94,10 @@ li.multiclass .photo_opt {
     margin-top: 144px;
 }
 
+ul.list_portfolio li {
+    display: inline-block !important;
+}
+
 ul.marsh .clear {
     margin-left: 20px;
 }
@@ -131,6 +135,10 @@ ul.marsh .clear {
 .solution-sale #P_card {
     padding-left: 40px;
     width: 650px;
+}
+
+.solution-sale #step3 {
+    position: relative;
 }
 
 .solution-sale #step3 h1 {

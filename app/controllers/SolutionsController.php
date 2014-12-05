@@ -109,8 +109,14 @@ class SolutionsController extends \app\controllers\AppController {
     }
 
     public function logosale() {
-        $solutions = Solution::all(array('conditions' => array('multiwinner' => 0, 'awarded' => 0, 'nominated' => 0), 'limit' => 12, 'page' => 1));
-        return compact('solutions');
+        $count = 0;
+        if ($this->request->is('json')) {
+            $solutions = Solution::all(array('conditions' => array('multiwinner' => 0, 'awarded' => 0, 'nominated' => 0), 'limit' => 12, 'page' => $this->request->id));
+            $count = count(Solution::all(array('conditions' => array('multiwinner' => 0, 'awarded' => 0, 'nominated' => 0), 'limit' => 12, 'page' => $this->request->id+1)));
+        } else {
+            $solutions = Solution::all(array('conditions' => array('multiwinner' => 0, 'awarded' => 0, 'nominated' => 0), 'limit' => 12, 'page' => 1));
+        }
+        return compact('solutions','count');
     }
 
 }
