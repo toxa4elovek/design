@@ -844,18 +844,7 @@ function OfficeStatusUpdater() {
                                 }
 
                                 if (object.type == 'newsAdded' && object.news != null) {
-                                    html += '<div class="box"> \
-                                <p class="img-box"> \
-                                    <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
-                                </p> \
-                                <div class="r-content post-content"> \
-                                    <p class="img-tag">' + object.news.tags + '</p> \
-                                    <a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
-                                    <p class="img-short">' + object.news.short + '</p> \
-                                    <p class="timeago"> \
-                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
-                                </div> \
-                            </div>';
+                                    html += self.addNews(object);
                                 }
 
                             });
@@ -892,18 +881,7 @@ function OfficeStatusUpdater() {
                             }
 
                             if (object.type == 'newsAdded' && object.news != null) {
-                                html += '<div class="box"> \
-                                <p class="img-box"> \
-                                    <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
-                                </p> \
-                                <div class="r-content post-content"> \
-                                    <p class="img-tag">' + object.news.tags + '</p> \
-                                    <a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
-                                    <p class="img-short">' + object.news.short + '</p> \
-                                    <p class="timeago"> \
-                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
-                                </div> \
-                            </div>';
+                                html += self.addNews(object);
                             }
 
                             if (object.type == 'CommentAdded' && object.comment != null) {
@@ -1123,6 +1101,29 @@ function OfficeStatusUpdater() {
                                 </p>\
                                 </div>\
                         </div>';
+                return html;
+            },
+            this.addNews = function (object) {
+                var html = '';
+                if (!object.news.tags) {
+                    var style = ' style="padding-top: 0px;"';
+                } else {
+                    var style = '';
+                }
+                html += '<div class="box"> \
+                                <p class="img-box"> \
+                                    <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
+                                </p> \
+                                <div class="r-content post-content"' + style + '>';
+                if (object.news.tags) {
+                    html += '<p class="img-tag">' + object.news.tags + '</p>';
+                }
+                html += '<a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
+                                    <p class="img-short">' + object.news.short + '</p> \
+                                    <p class="timeago"> \
+                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
+                                </div> \
+                            </div>';
                 return html;
             },
             this.addSolution = function (object, imageurl, response) {
