@@ -1240,7 +1240,7 @@ class Pitch extends \app\models\AppModel {
             $firstLetter = mb_substr($word, 0, 1, 'utf-8');
             $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
             $firstLower = (mb_strtolower($firstLetter, 'utf-8'));
-            $string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
+            $string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8') . '|' . str_replace('ё', 'е', $word);
             $search = array('Pitch.title' => array('REGEXP' => $string));
             if (strlen($word) > 3) {
                 $search['Pitch.description'] = array('LIKE' => '%' . $word . '%');
