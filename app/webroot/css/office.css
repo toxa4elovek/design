@@ -765,7 +765,7 @@
     font-size: 20px;
 }
 
-#show-other-likes:hover {
+.show-other-likes:hover {
     text-decoration: underline;
 }
 
@@ -853,6 +853,9 @@
     margin-left: 10px;
     cursor: pointer;
     font: 14px OfficinaSansC Book,serif;
+}
+#news-add #news-add-photo:hover {
+    color: #787878;
 }
 #news-add .twitter-typeahead {
     display: block !important;

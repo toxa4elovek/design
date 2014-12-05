@@ -235,21 +235,21 @@ $(document).ready(function () {
                 url = span.children('a'),
                 url_backup = url.text(),
                 txt_backup = txt,
-                first_txt = txt.split(' ');
+                first_txt = txt.split(' ')[0];
+        var my_solution = ($(this).data('userid') == this_user) ? 'ваше' : '';
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
-            var my_solution = ($(this).data('userid') == this_user) ? 'ваше' : '';
             if (first_txt == 'лайкнул') {
-                url.text(url.text() + ', ' + userName);
+                url.text(userName + ', ' + url.text());
                 url.data('added', 1);
                 like_span.text('лайкнули ' + my_solution + ' решение');
             } else if (first_txt == 'лайкнули') {
-                url.text(url.text() + ', ' + userName);
+                url.text(userName + ', ' + url.text());
                 url.data('added', 1);
                 like_span.text('лайкнули ' + my_solution + ' решение');
             } else if (!span.length) {
-                var $element = $('<div class="likes"><span class="who-likes"><a id="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' решение</span></span></div>');
+                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' решение</span></span></div>');
                 $element.insertAfter(link_parent.next());
             } else if (span.length && span.parent().css('display') == 'none') {
                 span.parent().show();
@@ -272,7 +272,10 @@ $(document).ready(function () {
                 likes_div.hide();
             } else if (first_txt == 'лайкнули' && url.data('added')) {
                 var text_arr = url.text().split(',');
-                text_arr.pop();
+                if (text_arr.length <= 2) {
+                    like_span.text(Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' решение');
+                }
+                text_arr.shift();
                 url.text(text_arr.join(', '));
             } else if (url.data('block')) {
                 likes_div = link_parent.closest('.box').find('.likes');
@@ -443,7 +446,7 @@ $(document).ready(function () {
         return false;
     });
 
-    $(document).on('click', '#show-other-likes', function (e) {
+    $(document).on('click', '.show-other-likes', function (e) {
         $('#who-its-liked').empty();
         $('#likedAjaxLoader').show();
         $.get('/events/liked/' + $(this).data('solid') + '.json', function (response) {
@@ -841,18 +844,7 @@ function OfficeStatusUpdater() {
                                 }
 
                                 if (object.type == 'newsAdded' && object.news != null) {
-                                    html += '<div class="box"> \
-                                <p class="img-box"> \
-                                    <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
-                                </p> \
-                                <div class="r-content post-content"> \
-                                    <p class="img-tag">' + object.news.tags + '</p> \
-                                    <a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
-                                    <p class="img-short">' + object.news.short + '</p> \
-                                    <p class="timeago"> \
-                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
-                                </div> \
-                            </div>';
+                                    html += self.addNews(object);
                                 }
 
                             });
@@ -889,18 +881,7 @@ function OfficeStatusUpdater() {
                             }
 
                             if (object.type == 'newsAdded' && object.news != null) {
-                                html += '<div class="box"> \
-                                <p class="img-box"> \
-                                    <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
-                                </p> \
-                                <div class="r-content post-content"> \
-                                    <p class="img-tag">' + object.news.tags + '</p> \
-                                    <a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
-                                    <p class="img-short">' + object.news.short + '</p> \
-                                    <p class="timeago"> \
-                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
-                                </div> \
-                            </div>';
+                                html += self.addNews(object);
                             }
 
                             if (object.type == 'CommentAdded' && object.comment != null) {
@@ -1122,6 +1103,29 @@ function OfficeStatusUpdater() {
                         </div>';
                 return html;
             },
+            this.addNews = function (object) {
+                var html = '';
+                if (!object.news.tags) {
+                    var style = ' style="padding-top: 0px;"';
+                } else {
+                    var style = '';
+                }
+                html += '<div class="box"> \
+                                <p class="img-box"> \
+                                    <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
+                                </p> \
+                                <div class="r-content post-content"' + style + '>';
+                if (object.news.tags) {
+                    html += '<p class="img-tag">' + object.news.tags + '</p>';
+                }
+                html += '<a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
+                                    <p class="img-short">' + object.news.short + '</p> \
+                                    <p class="timeago"> \
+                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
+                                </div> \
+                            </div>';
+                return html;
+            },
             this.addSolution = function (object, imageurl, response) {
                 var html = '';
                 var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
@@ -1141,22 +1145,30 @@ function OfficeStatusUpdater() {
                             <div data-id="' + object.solution.id + '" class="likes">';
                 var id = object.solution.id;
                 var likes_count = 0;
-                $.each(object.likes, function (index, object) {
+                $.each(object.likes, function (index, like) {
                     likes_count++;
-                    if (likes_count == 1) {
-                        html += '<span class="who-likes"><a id="show-other-likes" data-solid="' + id + '" href="#">';
-                    }
-                    if (likes_count < 4 && likes_count < object.solution.likes) {
-                        html += object.creator + ', ';
-                    } else {
-                        var my_solution = (object.solution.user_id == this_user) ? 'ваше' : '';
-                        if (likes_count > 4) {
-                            var other = parseInt(object.solution.likes) - likes_count;
-                            html += object.creator + ' и ' + other + ' других</a> лайкнули ' + my_solution + ' решение</span>';
-                        } else if (likes_count < 2) {
-                            html += object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + ' ' + my_solution + 'решение</span>';
-                        } else if (likes_count <= 4) {
-                            html += object.creator + '</a> лайкнули ' + my_solution + ' решение</span>';
+                    var my_solution = (object.solution.user_id == this_user) ? 'ваше' : '';
+                    var likes = parseInt(object.solution.likes);
+                    if (likes > 4) {
+                        if (likes_count == 1) {
+                            html += '<span class="who-likes"><a class="show-other-likes" data-solid="' + object.solution.id + '" href="#">';
+                        }
+                        if (likes_count == 4) {
+                            var other = likes - likes_count;
+                            html += like.creator + ' <span>и ' + other + ' других</a> лайкнули ' + my_solution + ' решение</span></span>';
+                            return false;
+                        } else {
+                            html += like.creator + ', ';
+                        }
+                    } else if (likes < 2) {
+                        html += '<span class="who-likes"><a target="_blank" href="/users/view/' + like.user_id + '">' + like.creator + '</a> <span>' + self.getGenderTxt('лайкнул', object.user.gender) + ' ' + my_solution + ' решение</span></span>';
+                    } else if (likes <= 4) {
+                        if (likes_count == 1) {
+                            html += '<span class="who-likes">';
+                        }
+                        html += '<a target="_blank" href="/users/view/' + like.user_id + '">' + like.creator + '</a>';
+                        if (likes_count == likes) {
+                            html += ' <span>лайкнули ' + my_solution + ' решение</span></span>';
                         }
                     }
                 });
@@ -1168,7 +1180,7 @@ function OfficeStatusUpdater() {
         var fd = new FormData();
         var reader = new FileReader();
         var form_file = false;
-        
+
         $(document).on('change', '#news-file', function (e) {
             var files = e.target.files;
             $('#previewImage').empty();
@@ -1198,7 +1210,7 @@ function OfficeStatusUpdater() {
             fd.append('tags', $('#news-add #news-add-tag').val());
             fd.append('isBanner', $('#isBanner').is(':checked') ? 1 : 0);
             if (form_file) {
-               fd.append('file', form_file);
+                fd.append('file', form_file);
             }
             button.text('Обработка');
             $.ajax({
@@ -1214,7 +1226,7 @@ function OfficeStatusUpdater() {
                         $('#news-add input[name="news-link"]').val('');
                         $('#news-add textarea[name="news-description"]').val('')
                         $('#news-add #news-add-tag').val('')
-                    }else if (result.result == false) {
+                    } else if (result.result == false) {
                         button.text('Ошибка');
                     }
                 },
