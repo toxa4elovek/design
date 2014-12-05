@@ -308,24 +308,31 @@
                                                     $id = $object['solution']['id'];
                                                     $likes_count = 0;
                                                     $html_likes = '';
+                                                    $likes = (int) $object['solution']['likes'];
                                                     foreach ($object['likes'] as $like):
                                                         ++$likes_count;
-                                                        if ($likes_count == 1) {
-                                                            $html_likes .= '<span class="who-likes"><a id="show-other-likes" data-solid="' . $object['solution']['id'] . '" href="#">';
-                                                        }
-                                                        if ($likes_count < 4 && $likes_count < $object['solution']['likes']) {
-                                                            $html_likes .= $like['creator'] . ', ';
-                                                        } else {
-                                                            $my_solution = ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '';
-                                                            if ($likes_count > 4) {
-                                                                $other = (int) $object['solution']['likes'] - $likes_count;
-                                                                $html_likes .= $like['creator'] . ' <span>и ' . $other . ' других</a> лайкнули ' . $my_solution . ' решение</span></span>';
-                                                            } elseif ($likes_count < 2) {
-                                                                $html_likes .= $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' ' . $my_solution . ' решение</span></span>';
-                                                            } elseif ($likes_count <= 4) {
-                                                                $html_likes .= $like['creator'] . '</a> <span>лайкнули ' . $my_solution . ' решение</span></span>';
+                                                        $my_solution = ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '';
+                                                        if ($likes > 4) {
+                                                            if ($likes_count == 1) {
+                                                                $html_likes .= '<span class="who-likes"><a class="show-other-likes" data-solid="' . $object['solution']['id'] . '" href="#">';
                                                             }
-                                                            break;
+                                                            if ($likes_count == 4) {
+                                                                $other = $likes - $likes_count;
+                                                                $html_likes .= $like['creator'] . ' и ' . $other . ' других</a> <span>лайкнули ' . $my_solution . ' решение</span></span>';
+                                                                break;
+                                                            } else {
+                                                                $html_likes .= $like['creator'] . ', ';
+                                                            }
+                                                        } elseif ($likes < 2) {
+                                                            $html_likes .= '<span class="who-likes"><a target="_blank" href="/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' ' . $my_solution . ' решение</span></span>';
+                                                        } elseif ($likes <= 4) {
+                                                            if ($likes_count == 1) {
+                                                                $html_likes .= '<span class="who-likes">';
+                                                            }
+                                                            $html_likes .= '<a target="_blank" href="/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
+                                                            if ($likes_count == $likes) {
+                                                                $html_likes .= ' <span>лайкнули ' . $my_solution . ' решение</span></span>';
+                                                            }
                                                         }
                                                     endforeach;
                                                     echo $html_likes;
@@ -336,9 +343,9 @@
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>"><img class="img-post" src="<?= $object['news']['imageurl'] ?>"></a>
                                                 </p>
-                                                <div class="r-content post-content" <?php if(!$object['news']['tags']):?>style="padding-top: 0px;"<?php endif;?>>
-                                                    <?php if($object['news']['tags']):?>
-                                                    <p class="img-tag"><?= $object['news']['tags'] ?></p>
+                                                <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
+                                                    <?php if ($object['news']['tags']): ?>
+                                                        <p class="img-tag"><?= $object['news']['tags'] ?></p>
                                                     <?php endif; ?>
                                                     <a class="img-post" href="<?= $object['news']['link'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
                                                     <p class="img-short"><?= $object['news']['short'] ?></p>
