@@ -110,7 +110,6 @@ class PitchesController extends \app\controllers\AppController {
                     'limit' => $limit,
                     'page' => $page,
         ));
-
         $i = 1;
         $tempPitchList = array();
         if ($pitches) {

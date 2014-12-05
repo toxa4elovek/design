@@ -1246,6 +1246,11 @@ class Pitch extends \app\models\AppModel {
                 $search['Pitch.description'] = array('LIKE' => '%' . $word . '%');
                 $search['Pitch.business-description'] = array('LIKE' => '%' . $word . '%');
             }
+            $search = array('OR' => array(
+                array("Pitch.title REGEXP '" . $string . "'"),
+                array("Pitch.description LIKE '%$word%'"),
+                array("'Pitch.business-description' LIKE '%$word%'"),
+            ));
         } else {
             $search = array();
         }
