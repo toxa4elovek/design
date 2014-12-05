@@ -16,46 +16,49 @@
                 var userGender = <?php echo $this->user->getGender(); ?>;
             </script>
             <?php if ($this->user->isAdmin()): ?>
-            <div id="news-add">
-                <input type="text" name="news-title" placeholder="Заголовок">
-                <input type="text" name="news-link" placeholder="Ссылка">
-                <span id="show-all-fileds">Показать все поля</span>
-                <textarea rows="4" name="news-description" placeholder="Текст поста"></textarea>
-                <input id="news-add-tag" type="text" name="news-tag" placeholder="Тег">
-                <p>
-                    <input id="news-file" type="file" name="news-banner">
-                    <label for="news-file" id="news-add-photo">Добавить фотографию 620 х 415 px</label>
-                    <label><input type="checkbox" id="isBanner" name="news-made-banner">Сделать баннером</label>
-                    <a id="submit-news" class="button" href="#">Отправить</a>
-                </p>
-            </div>
-            <div id="news-add-separator"></div>
-            <div class="new-content group" style="margin-top:10px">
+                <div id="news-add">
+                    <input type="text" name="news-title" placeholder="Заголовок">
+                    <input type="text" name="news-link" placeholder="Ссылка">
+                    <span id="show-all-fileds">Показать все поля</span>
+                    <div>
+                        <textarea rows="4" name="news-description" placeholder="Текст поста"></textarea>
+                        <div id="previewImage"></div>
+                    </div>
+                    <input id="news-add-tag" type="text" name="news-tag" placeholder="Тег">
+                    <p>
+                        <input id="news-file" type="file" name="news-banner">
+                        <label for="news-file" id="news-add-photo">Добавить фотографию 620 х 415 px</label>
+                        <label><input type="checkbox" id="isBanner" name="news-made-banner">Сделать баннером</label>
+                        <a id="submit-news" class="button" href="#">Отправить</a>
+                    </p>
+                </div>
+                <div id="news-add-separator"></div>
+                <div class="new-content group" style="margin-top:10px">
                 <?php endif; ?>
                 <?php if ($banner): ?>
-                <div class="banner-block">
-                    <div>
-                        <div class="close-gender"></div>
-                        <span><?= $banner->title ?></span>
-                        <p><?= $banner->short ?></p>
-                    </div>
-                </div>
-                <div class="new-content group" style="margin-top:10px">
-                    <?php elseif ($this->user->getGender() < 1 && $this->user->getId()): ?>
-                    <div id="gender-box">
+                    <div class="banner-block">
                         <div>
                             <div class="close-gender"></div>
-                            <span>
-                                <span>Укажите ваш пол, пожалуйста:</span> 
-                                <label><input type="radio" name="gender" id="male"> Мужской</label>
-                                <label><input type="radio" name="gender" id="female"> Женский</label>
-                            </span>
-                            <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
+                            <span><?= $banner->title ?></span>
+                            <p><?= $banner->short ?></p>
                         </div>
                     </div>
                     <div class="new-content group" style="margin-top:10px">
+                    <?php elseif ($this->user->getGender() < 1 && $this->user->getId()): ?>
+                        <div id="gender-box">
+                            <div>
+                                <div class="close-gender"></div>
+                                <span>
+                                    <span>Укажите ваш пол, пожалуйста:</span> 
+                                    <label><input type="radio" name="gender" id="male"> Мужской</label>
+                                    <label><input type="radio" name="gender" id="female"> Женский</label>
+                                </span>
+                                <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
+                            </div>
+                        </div>
+                        <div class="new-content group" style="margin-top:10px">
                         <?php else: ?>
-                        <div class="new-content group">
+                            <div class="new-content group">
                             <?php endif; ?>
                             <div id="l-sidebar-office">
                                 <?php
@@ -116,9 +119,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <span class="bottom_arrow">
-                                                <a href="#" class="solution-menu-toggle"><img src="/img/marker5_2.png" alt=""></a>
-                                            </span>
+                                                <span class="bottom_arrow">
+                                                    <a href="#" class="solution-menu-toggle"><img src="/img/marker5_2.png" alt=""></a>
+                                                </span>
                                                 <div class="solution_menu" style="display: none;">
                                                     <ul class="solution_menu_list" style="position:absolute;z-index:6;">
                                                         <?php if ($solution->pitch->user_id == $this->user->getId() && ($solution->pitchesCount < 1) && (!$record->selectedSolutions)): ?>
@@ -141,7 +144,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php
+                                        <?php
                                     endif;
                                 endforeach;
                                 ?>
@@ -216,7 +219,7 @@
                                                     <time class="timeago" datetime="<?= $middlePost->created ?>"><?= $middlePost->created ?></time> с сайта <?= $middlePost->host ?></p>
                                             </div>
                                         </div>
-                                    <?php
+                                        <?php
                                     endif;
                                     $html = '';
                                     $dateEvent = '';
@@ -358,7 +361,7 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                        <?php
+                                            <?php
                                         elseif ($object['type'] == 'FavUserAdded'):
                                             $avatarFav = isset($object['user_fav']['images']['avatar_small']) ? $object['user_fav']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
                                             ?>
@@ -374,7 +377,7 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                        <?php
+                                            <?php
                                         endif;
                                     endforeach;
                                     ?>

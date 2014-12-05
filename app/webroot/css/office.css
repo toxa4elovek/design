@@ -923,3 +923,20 @@
     background-color: #E9F7FB;
     color: #51514F;
 }
+
+#previewImage .imageContatiner {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    border: 1px solid #787877;
+}
+
+#previewImage .remove-image {
+    position: absolute;
+    cursor: pointer;
+    background: url(img/popup-close-sprite.png) no-repeat 0 -15px #fff;
+    width: 15px;
+    height: 15px;
+    top:0;
+    right:0;
+}
