@@ -101,9 +101,9 @@ class EventsController extends \app\controllers\AppController {
 
     public function add() {
         $result = false;
-        if ($this->request->data && !empty($this->request->data['title'])) {
+        if ($this->request->data && !empty($this->request->data['link'])) {
             $news = News::create($this->request->data);
-            $news->created = date('Y-m-d H:i:s');
+            $news->created = date('Y-m-d H:i:s', (time() - (3 * HOUR)));
             if (isset($this->request->data['file'])) {
                 $news->imageurl = News::resize($this->request->data['file']);
             }

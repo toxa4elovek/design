@@ -1166,14 +1166,28 @@ function OfficeStatusUpdater() {
 
     if (isAdmin) {
         var fd = new FormData();
-
+        var reader = new FileReader();
+        var form_file = false;
+        
         $(document).on('change', '#news-file', function (e) {
             var files = e.target.files;
+            $('#previewImage').empty();
             for (var i = 0, file; file = files[i]; i++) {
                 if (file.type.match('image.*')) {
                     fd.append('file', file);
+                    form_file = file;
+                    reader.onload = function (e) {
+                        var img = e.target.result;
+                        $('#previewImage').append('<div class="imageContatiner"><img src="' + img + '" width="100" height="100"><div class="remove-image"></div></div>');
+                    };
+                    reader.readAsDataURL(file);
                 }
             }
+        });
+
+        $(document).on('click', '.remove-image', function (e) {
+            $(this).parent().remove();
+            form_file = false;
         });
 
         $('#submit-news').on('click', function () {
@@ -1183,6 +1197,9 @@ function OfficeStatusUpdater() {
             fd.append('short', $('#news-add textarea[name="news-description"]').val());
             fd.append('tags', $('#news-add #news-add-tag').val());
             fd.append('isBanner', $('#isBanner').is(':checked') ? 1 : 0);
+            if (form_file) {
+               fd.append('file', form_file);
+            }
             button.text('Обработка');
             $.ajax({
                 url: '/events/add.json',
@@ -1192,13 +1209,15 @@ function OfficeStatusUpdater() {
                 processData: false,
                 success: function (result) {
                     if (result.result == true) {
-                        button.text('Отправить');
+                        button.text('Сохранено!');
                         $('#news-add input[name="news-title"]').val('');
                         $('#news-add input[name="news-link"]').val('');
                         $('#news-add textarea[name="news-description"]').val('')
                         $('#news-add #news-add-tag').val('')
+                    }else if (result.result == false) {
+                        button.text('Ошибка');
                     }
-                }
+                },
             });
             return false;
         });
