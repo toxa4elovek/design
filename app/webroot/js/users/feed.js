@@ -58,8 +58,7 @@ $(document).ready(function () {
     });
 
     var Tip = new TopTip;
-    isBusy = 0;
-    isBusySolution = 0;
+    isBusy = 0, isBusySolution = 0, isBusyDesNews = 0;
     function scrollInit() {
         var header_bg = $('#header-bg'),
                 pitch_panel = $('#pitch-panel'),
@@ -112,6 +111,13 @@ $(document).ready(function () {
 
         });
     }
+
+    $('#content-news').on('scroll', function () {
+        if ((($(this)[0].scrollHeight - $(this).scrollTop()) < 700) && !isBusyDesNews) {
+            isBusyDesNews = 1;
+            Updater.nextNews(true);
+        }
+    });
 
     function TopTip() {
         var self = this;
@@ -177,10 +183,6 @@ $(document).ready(function () {
         scrollInit();
         Updater.init();
     }
-
-    $('#news-arrow-bottom').on('click', function () {
-        Updater.nextNews(true);
-    });
 
     $("#content-news")
             .mouseenter(function () {
@@ -1017,17 +1019,17 @@ function OfficeStatusUpdater() {
                 $.post('/events/news.json', {"page": self.newsPage}, function (response) {
                     var news = '';
                     $.each(response.news, function (i, item) {
-                        host = parse_url_regex(item.link);
+                        var host = parse_url_regex(item.link);
                         news += '<div class="design-news"><a target="_blank" href="/users/click?link=' + item.link + '&id=' + item.id + '">' + item.title + ' <br><a class="clicks" href="/users/click?link=' + item.link + '&id=' + item.id + '">' + host[3] + '</a></div>';
                     });
                     if (response.count < 1) {
-                        $('#news-arrow-bottom').hide();
+                        isBusyDesNews = 1;
                     }
                     if (news != '') {
+                        isBusyDesNews = 0;
                         var $prependEl = $(news);
                         $prependEl.hide();
                         $prependEl.appendTo(content).fadeIn(200);
-                        $('#news-arrow-bottom').appendTo(content);
                     }
                 });
             },
