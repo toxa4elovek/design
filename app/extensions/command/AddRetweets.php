@@ -36,7 +36,7 @@ class AddRetweets extends \app\extensions\command\CronJob {
                         $params = array('rpp' => 10, 'id' => $tweet['id_str'], 'include_entities' => true);
                         $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/oembed.json', $params, false);
                         $data = json_decode($tmhOAuth->response['response'], true);
-                        $tweetsDump[$tweet['id_str']] = preg_replace('!<script[^>]*>(.)*</script>!Uis', '', $data['html']);
+                        $tweetsDump[$tweet['id_str']] = $data['html']; //preg_replace('!<script[^>]*>(.)*</script>!Uis', '', $data['html']);
                         if ($v->tweet_id == $tweet['id_str']) {
                             $trigger = false;
                         }
