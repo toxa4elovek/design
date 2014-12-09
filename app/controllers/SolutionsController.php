@@ -5,6 +5,8 @@ namespace app\controllers;
 use \lithium\storage\Session;
 use \app\models\Solution;
 use \app\models\User;
+use app\models\Tag;
+use app\models\Solutiontag;
 use \app\extensions\mailers\UserMailer;
 use \lithium\analysis\Logger;
 
@@ -110,16 +112,73 @@ class SolutionsController extends \app\controllers\AppController {
 
     public function logosale() {
         $count = 0;
+        $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'with' => array('Pitch'), 'limit' => 12, 'page' => $this->request->id);
         if ($this->request->is('json')) {
-            $solutions = Solution::all(array('conditions' => array('multiwinner' => 0, 'awarded' => 0, 'nominated' => 0), 'limit' => 12, 'page' => $this->request->id));
-            $next = Solution::all(array('conditions' => array('multiwinner' => 0, 'awarded' => 0, 'nominated' => 0), 'limit' => 12, 'page' => $this->request->id+1));
+            $solutions = Solution::all($params);
+            $params['page'] += 1;
+            $next = Solution::all($params);
             if ($next) {
                 $count = count($next);
             }
         } else {
-            $solutions = Solution::all(array('conditions' => array('multiwinner' => 0, 'awarded' => 0, 'nominated' => 0), 'limit' => 12, 'page' => 1));
+            $params['page'] = 1;
+            $solutions = Solution::all($params);
         }
-        return compact('solutions','count');
+        if ($solutions) {
+            $black_list = array();
+            foreach ($solutions as $v) {
+                if ($v->awarded) {
+                    $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
+                }
+            }
+            $solutions = $solutions->data();
+            foreach ($solutions as $k => $solution) {
+                foreach ($black_list as $v) {
+                    if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
+                        unset($solutions[$k]);
+                    }
+                }
+            }
+        } else {
+            $solutions = array();
+        }
+        return compact('solutions', 'count');
+    }
+
+    public function search_logo() {
+        if ($this->request->is('json') && isset($this->request->data['search'])) {
+            $words = explode(' ', $this->request->data['search']);
+            $tag_params = array('conditions' => array());
+            foreach ($words as $w) {
+                $tag_params['conditions']['OR'][] = array('name' => $w);
+            }
+
+            $tags = Tag::all($tag_params);
+            if (count($tags) > 0) {
+                $tags_id = array_keys($tags->data());
+            } else {
+                $tags_id = 0;
+            }
+            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.id' => $tags_id), 'with' => array('Pitch', 'Solutiontag'));
+            $solutions = Solution::all($params);
+            if (count($solutions > 0)) {
+                $black_list = array();
+                foreach ($solutions as $v) {
+                    if ($v->awarded) {
+                        $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
+                    }
+                }
+                $solutions = $solutions->data();
+                foreach ($solutions as $k => $solution) {
+                    foreach ($black_list as $v) {
+                        if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
+                            unset($solutions[$k]);
+                        }
+                    }
+                }
+            }
+        }
+        return compact('solutions');
     }
 
 }

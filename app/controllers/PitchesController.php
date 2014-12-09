@@ -1447,7 +1447,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
     public function getags() {
         if (isset($this->request->query['name']) && strlen($this->request->query['name']) > 0) {
-            $tags = \app\models\Tags::all(array('conditions' => array('name' => array('LIKE' => '%' . $this->request->query['name'] . '%'))));
+            $tags = \app\models\Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $this->request->query['name'] . '%'))));
             return json_encode($tags->data());
         }
     }

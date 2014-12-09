@@ -2,10 +2,12 @@
 
 namespace app\models;
 
-use app\models\Solutiontags;
+use app\models\Solutiontag;
 
-class Tags extends \app\models\AppModel {
-
+class Tag extends \app\models\AppModel {
+    
+    public $hasMany = array('Solutiontag');
+    
     private static $job_types = array(
         'realty' => 'Недвижимость / Строительство',
         'auto' => 'Автомобили / Транспорт',
@@ -24,22 +26,22 @@ class Tags extends \app\models\AppModel {
         'health' => 'Медицина / Здоровье');
 
     public function add($formdata, $solution_id) {
-        $tags_list = Tags::all();
+        $tags_list = Tag::all();
         if ($tags_list) {
             $tags_list = $tags_list->data();
         }
         foreach ($formdata['tags'] as $v) {
             if ($tag_id = in_array_r($v, $tags_list)) {
-                Solutiontags::create(array(
+                Solutiontag::create(array(
                     'tag_id' => $tag_id,
                     'solution_id' => $solution_id
                 ))->save();
             } else {
-                $tags = Tags::create(array(
+                $tags = Tag::create(array(
                             'name' => trim($v)
                 ));
                 $tags->save();
-                Solutiontags::create(array(
+                Solutiontag::create(array(
                     'tag_id' => $tags->id,
                     'solution_id' => $solution_id
                 ))->save();
@@ -55,13 +57,13 @@ class Tags extends \app\models\AppModel {
                             if ($temp = in_array_r(trim($value), $tags_list)) {
                                 $tag_id = $temp;
                             } else {
-                                $tags = Tags::create(array(
+                                $tags = Tag::create(array(
                                             'name' => trim($value)
                                 ));
                                 $tags->save();
                                 $tag_id = $tags->id;
                             }
-                            Solutiontags::create(array(
+                            Solutiontag::create(array(
                                 'tag_id' => $tag_id,
                                 'solution_id' => $solution_id
                             ))->save();
@@ -70,13 +72,13 @@ class Tags extends \app\models\AppModel {
                         if ($temp = in_array_r(trim($value), $tags_list)) {
                             $tag_id = $temp;
                         } else {
-                            $tags = Tags::create(array(
+                            $tags = Tag::create(array(
                                         'name' => trim($v)
                             ));
                             $tags->save();
                             $tag_id = $tags->id;
                         }
-                        Solutiontags::create(array(
+                        Solutiontag::create(array(
                             'tag_id' => $tag_id,
                             'solution_id' => $solution_id
                         ))->save();

@@ -2,49 +2,75 @@
 var isBusy = false;
 var page = 1;
 $(window).on('scroll', function () {
-    if ((($('#middle').height() - 200) - $(window).scrollTop() < 1000) && !isBusy) {
+    if ((($('#middle').height() - 200) - $(window).scrollTop() < 500) && !isBusy) {
         isBusy = true;
         $('#officeAjaxLoader').show();
         page += 1;
         $.get('/solutions/logosale/' + page + '.json', function (response) {
             var html = '';
             $.each(response.solutions, function (index, solution) {
-                var picCounter2 = 0;
-                if ($.isEmptyObject(solution.images)) {
-                    return true;
-                }
-                if (solution.images.solution_galleryLargeSize && typeof solution.images.solution_galleryLargeSize[0] != 'undefined') {
-                    picCounter2 = count(solution.images.solution_galleryLargeSize);
-                } else if (typeof solution.images.solution_galleryLargeSize == 'undefined') {
-                    solution.images.solution_galleryLargeSize = solution.images.solution;
-                    if ($.isArray(solution.images.solution_galleryLargeSize)) {
-                        picCounter2 = count(solution.images.solution_galleryLargeSize);
-                    }
-                }
-                var multiclass = (picCounter2 > 1) ? ' class=multiclass' : '';
-                html += '<li id="li_' + solution.id + '"' + multiclass + '>\
-                        <div class="photo_block">';
-                if (getImageCount(solution.images.solution_galleryLargeSize) > 1) {
-                    html += '<div class="image-count">' + getImageCount(solution.images.solution_solutionView) + '</div>'
-                }
-                html += '<a style="display:block;" data-solutionid="' + solution.id + '" class="imagecontainer" href="/pitches/viewsolution/' + solution.id + '">';
+                html += addSolution(solution);
+            });
+            var $prependEl = $(html);
+            $prependEl.hide();
+            $prependEl.appendTo('.list_portfolio').slideDown('slow');
+            $('#officeAjaxLoader').hide();
+            if (response.count > 0) {
+                isBusy = false;
+            } else {
+                isBusy = true;
+            }
+        });
+    }
+});
 
-                if (solution.images.solution_galleryLargeSize && typeof solution.images.solution_galleryLargeSize[0] == 'undefined') {
-                    html += '<img rel="#' + solution.num + '"  width="180" height="135" src="' + solution.images.solution_galleryLargeSize.weburl + '">';
-                } else {
-                    var picCounter = 0;
-                    $.each(solution.images.solution_galleryLargeSize, function (index, img) {
-                        var display = (picCounter > 0) ? 'display:none;' : 'opacity:1;';
-                        html += '<img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;' + display + '" rel="#' + solution.num + '" src="' + img.weburl + '">';
-                        picCounter++;
-                    });
-                }
-                if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                    var tweetLike = 'Мне нравится этот дизайн! А вам?';
-                } else {
-                    var tweetLike = 'Из всех мне нравится этот дизайн';
-                }
-                html += '</a>\
+function getImageCount(images) {
+    if (images && typeof (images[0]) != 'undefined') {
+        return images.length;
+    }
+    else {
+        return 1;
+    }
+}
+
+function addSolution(solution) {
+    var picCounter2 = 0;
+    var html = '';
+    if ($.isEmptyObject(solution.images)) {
+        return true;
+    }
+    if (solution.images.solution_galleryLargeSize && typeof solution.images.solution_galleryLargeSize[0] != 'undefined') {
+        picCounter2 = solution.images.solution_galleryLargeSize.length;
+    } else if (typeof solution.images.solution_galleryLargeSize == 'undefined') {
+        solution.images.solution_galleryLargeSize = solution.images.solution;
+        if ($.isArray(solution.images.solution_galleryLargeSize)) {
+            picCounter2 = solution.images.solution_galleryLargeSize.length;
+        }
+    }
+    var multiclass = (picCounter2 > 1) ? ' class=multiclass' : '';
+    html += '<li id="li_' + solution.id + '"' + multiclass + '>\
+                        <div class="photo_block">';
+    if (getImageCount(solution.images.solution_galleryLargeSize) > 1) {
+        html += '<div class="image-count">' + getImageCount(solution.images.solution_solutionView) + '</div>'
+    }
+    html += '<a style="display:block;" data-solutionid="' + solution.id + '" class="imagecontainer" href="/pitches/viewsolution/' + solution.id + '">';
+
+    if (solution.images.solution_galleryLargeSize && typeof solution.images.solution_galleryLargeSize[0] == 'undefined') {
+        html += '<img rel="#' + solution.num + '"  width="180" height="135" src="' + solution.images.solution_galleryLargeSize.weburl + '">';
+    } else {
+        var picCounter = 0;
+        $.each(solution.images.solution_galleryLargeSize, function (index, img) {
+            var display = (picCounter > 0) ? 'display:none;' : 'opacity:1;';
+            html += '<img class="multi"  width="180" height="135" style="position: absolute;left:10px;top:9px;z-index:1;' + display + '" rel="#' + solution.num + '" src="' + img.weburl + '">';
+            picCounter++;
+        });
+    }
+    if (Math.floor((Math.random() * 100) + 1) <= 50) {
+        var tweetLike = 'Мне нравится этот дизайн! А вам?';
+    } else {
+        var tweetLike = 'Из всех мне нравится этот дизайн';
+    }
+    html += '</a>\
                 <div class="photo_opt">\
                     <div class="" style="display: block; float:left;">\
                         <span class="rating_block">\
@@ -105,28 +131,8 @@ $(window).on('scroll', function () {
                     </ul>\
                 </div>\
         </li>';
-                console.log(solution.id);
-            });
-            var $prependEl = $(html);
-            $prependEl.hide();
-            $prependEl.appendTo('.list_portfolio').slideDown('slow');
-            $('#officeAjaxLoader').hide();
-            if (response.count > 0) {
-                isBusy = false;
-            } else {
-                isBusy = true;
-            }
-        });
-    }
-});
-
-function getImageCount(images) {
-    if (images && typeof (images[0]) != 'undefined') {
-        return count(images);
-    }
-    else {
-        return 1;
-    }
+    console.log(solution.id);
+    return html;
 }
 
 
@@ -186,6 +192,27 @@ $(document).on('click', '.imagecontainer', function (e) {
     }
     var urlJSON = window.location.pathname + '.json' + queryParam;
     fetchSolution(urlJSON);
+    return false;
+});
+
+
+
+$('a#goSearch').on('click', function () {
+    var search = $('#searchTerm');
+    console.log(search.val().length);
+    console.log(search.hasClass('placeholder'));
+    if (search.val().length > 0 && !search.hasClass('placeholder')) {
+        $.post('search_logo.json', {'search': search.val()}, function (response) {
+            var html = '';
+            $.each(response.solutions, function (index, solution) {
+                html += addSolution(solution);
+            });
+            $('.list_portfolio').empty();
+            var $prependEl = $(html);
+            $prependEl.hide();
+            $prependEl.appendTo('.list_portfolio').slideDown('slow');
+        });
+    }
     return false;
 });
 
