@@ -903,9 +903,14 @@ class User extends \app\models\AppModel {
         if (!empty($img)) {
             $name = basename($img);
             $extension = image_type_to_mime_type(exif_imagetype($img));
+            $code = $tmhOAuth->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', array(
+                'status' => $tweet,
+                'media' => "@{$img};type={$extension};filename={$name}"
+            ), true, true);
+            $data = json_decode($tmhOAuth->response['response'], true);
             $code = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
                 'status' => $tweet,
-                'params' => array('media[]' => "@{$img};type={$extension};filename={$name}")
+                'media_ids' => $data['media_id_string']
             ));
         } else {
             $code = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
