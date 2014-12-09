@@ -199,7 +199,6 @@
                                             <script type="text/javascript">
                                                 var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
                                             </script>
-                                            <div id="news-arrow-bottom" class="arrow-bottom"></div>
                                         </div>
                                     </div>
                                 </div>
