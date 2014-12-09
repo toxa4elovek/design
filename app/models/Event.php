@@ -63,7 +63,7 @@ class Event extends \app\models\AppModel {
                         //$record->solution = Solution::getBestSolution($record->pitch_id);
                         $record->solution = null;
                     }
-                    if ($record->solution && ($record->solution->pitch->private == 1) || ($record->solution->pitch->category_id == 7)) {
+                    if ($record->solution && ($record->solution->pitch->private == 1) || ($record->solution && $record->solution->pitch->category_id == 7)) {
                         if (($record->user_id != Session::read('user.id')) && ($record->solution->pitch->user_id != Session::read('user.id'))) {
                             ///img/copy-inv.png
                             $record->solution->images['solution_solutionView']['weburl'] = '/img/copy-inv.png';

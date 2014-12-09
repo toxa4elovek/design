@@ -4,6 +4,8 @@ namespace app\extensions\command;
 
 use app\models\Event;
 use app\extensions\storage\Rcache;
+use \tmhOAuth\tmhOAuth;
+use \tmhOAuth\tmhUtilities;
 
 class AddRetweets extends \app\extensions\command\CronJob {
 
@@ -43,6 +45,7 @@ class AddRetweets extends \app\extensions\command\CronJob {
                     }
                     if ($trigger) {
                         $date = new \DateTime($tweet['created_at']);
+                        $date->setTimeZone(new \DateTimeZone('Europe/Kaliningrad'));
                         Event::create(array(
                             'type' => 'RetweetAdded',
                             'tweet_id' => $tweet['id_str'],
