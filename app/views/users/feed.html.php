@@ -1,5 +1,5 @@
 <div class="new-wrapper login">
-
+<script id="twitter-wjs" type="text/javascript" async defer src="//platform.twitter.com/widgets.js"></script>
     <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2', 'logo' => 'logo')) ?>
 
     <div class="new-middle">
@@ -385,7 +385,8 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                            <?php
+                                            <?php elseif ($object['type'] == 'RetweetAdded'):
+                                            echo $object['html'];
                                         endif;
                                     endforeach;
                                     ?>
@@ -481,4 +482,4 @@
             <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css'), array('inline' => false)) ?>
             <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
             <?= $this->view()->render(array('element' => 'popups/warning')) ?>
-            <?= $this->view()->render(array('element' => 'moderation')) ?>
+<?= $this->view()->render(array('element' => 'moderation')) ?>
