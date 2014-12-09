@@ -686,7 +686,8 @@ function OfficeStatusUpdater() {
                     var html = '';
                     var solutions = '';
                     if (typeof (response.post) != "undefined" && response.post != 0) {
-                        var $prependEl = $('<div class="box"> \
+                        if($('.box[data-eventid="' + response.id + '"]').length == 0) {
+                            var $prependEl = $('<div class="box" data-eventid="' + response.id + '"> \
                                 <p class="img-box"> \
                                     <a class="post-link" href="/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><img class="img-post" src="' + response.post.imageurl + '"></a> \
                                 </p> \
@@ -698,9 +699,10 @@ function OfficeStatusUpdater() {
                                         <time class="timeago" datetime="' + response.post.created + '">' + response.post.created + '</time> с сайта ' + response.post.host + '</p> \
                                 </div> \
                             </div>');
-                        $prependEl.hide();
-                        $prependEl.prependTo('#updates-box-').slideDown('slow');
-                        $('time.timeago').timeago();
+                            $prependEl.hide();
+                            $prependEl.prependTo('#updates-box-').slideDown('slow');
+                            $('time.timeago').timeago();
+                        }
                     }
                     if (typeof (response.pitches) != "undefined") {
                         var pitches = '';
@@ -820,6 +822,9 @@ function OfficeStatusUpdater() {
                             }
                             response.updates.sort(sortfunction);
                             $.each(response.updates, function (index, object) {
+                                if($('.box[data-eventid="' + object.id + '"]').length > 0) {
+                                    return
+                                }
                                 if (index == 0) {
                                     self.date = object.created;
                                 }
@@ -1054,7 +1059,7 @@ function OfficeStatusUpdater() {
                 if ((((object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.pitch.private != '1')) {
                     long = true;
                 }
-                html = '<div class="box">';
+                html = '<div class="box" data-eventid="' + object.id + '">';
                 if (long) {
                     html += '<div class="l-img l-img-box" style="padding-top: 0;"> \
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
@@ -1096,7 +1101,7 @@ function OfficeStatusUpdater() {
             this.addRating = function (object, imageurl) {
                 var html = '';
                 var txtsol = (this_user == object.solution.user_id) ? 'ваше ' : '';
-                html += '<div class="box">\
+                html += '<div class="box" data-eventid="' + object.id + '">\
                             <div class="l-img">\
                                 <img class="avatar" src="<?= $avatar ?>">\
                             </div>\
@@ -1120,7 +1125,7 @@ function OfficeStatusUpdater() {
                 } else {
                     var style = '';
                 }
-                html += '<div class="box"> \
+                html += '<div class="box" data-eventid="' + object.id + '"> \
                                 <p class="img-box"> \
                                     <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + object.news.imageurl + '"></a> \
                                 </p> \
@@ -1140,7 +1145,7 @@ function OfficeStatusUpdater() {
                 var html = '';
                 var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                 var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
-                html += '<div class="box"> \
+                html += '<div class="box" data-eventid="' + object.id + '"> \
                             <div class="l-img"> \
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \

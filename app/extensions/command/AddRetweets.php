@@ -25,25 +25,21 @@ class AddRetweets extends \app\extensions\command\CronJob {
         $data = json_decode($tmhOAuth->response['response'], true);
         $bearerToken = $data['access_token'];
         $tmhOAuth->headers['Authorization'] = 'Bearer ' . $bearerToken;
-        $params = array('rpp' => 10, 'screen_name' => 'Go_Deer', 'include_entities' => false);
+        $params = array('count' => 100, 'screen_name' => 'Go_Deer', 'include_entities' => false);
         $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/user_timeline.json', $params, false);
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
-            $events = Event::all(array('conditions' => array('type' => 'RetweetAdded')));
+            //var_dump($data);
+            //$events = Event::all(array('conditions' => array('type' => 'RetweetAdded')));
             $trigger = true;
-            $tweetsDump = array();
+            $tweetsDump = Rcache::read('RetweetsFeed');
             foreach ($data as $tweet) {
                 if (isset($tweet['retweeted_status'])) {
-                    foreach ($events as $v) {
-                        $params = array('rpp' => 10, 'id' => $tweet['id_str'], 'include_entities' => true);
-                        $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/oembed.json', $params, false);
-                        $data = json_decode($tmhOAuth->response['response'], true);
-                        $tweetsDump[$tweet['id_str']] = $data['html']; //preg_replace('!<script[^>]*>(.)*</script>!Uis', '', $data['html']);
-                        if ($v->tweet_id == $tweet['id_str']) {
-                            $trigger = false;
-                        }
-                    }
-                    if ($trigger) {
+                    $this->out('Dumping tweet data...');
+                    var_dump($tweet);
+                    $this->out('checking if tweet event exists in database...');
+                    if(!$tweetEvent = Event::first(array('conditions' => array('tweet_id' => $tweet['id_str'])))) {
+                        $this->out('Tweet ' . $tweet['id_str'] . ' is not exists in database');
                         $date = new \DateTime($tweet['created_at']);
                         $date->setTimeZone(new \DateTimeZone('Europe/Kaliningrad'));
                         Event::create(array(
@@ -51,10 +47,37 @@ class AddRetweets extends \app\extensions\command\CronJob {
                             'tweet_id' => $tweet['id_str'],
                             'created' => $date->format('Y-m-d H:i:s')
                         ))->save();
+                        $this->out('Event saved');
+                    }else {
+                        $this->out('Event already in database');
+                    }
+                    $this->out('checking if cache for tweet html exists in Rcache');
+                    if(!isset($tweetsDump[$tweet['id_str']])) {
+                        $this->out('Html cache is not exists');
+                        $params = array('rpp' => 1, 'id' => $tweet['id_str'], 'include_entities' => false);
+                        $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/oembed.json', $params, false);
+                        if($code == 200) {
+                            $this->out('Got the data, saving to cache');
+                            $embeddata = json_decode($tmhOAuth->response['response'], true);
+                            $tweetsDump[$tweet['id_str']] = $embeddata['html'];
+                        }else {
+                            $this->out('Error getting embed tweet');
+                            var_dump(json_decode($tmhOAuth->response['response'], true));
+                        }
+                    }else {
+                        $this->out('Html cache already exists');
                     }
                 }
             }
-            Rcache::write('RetweetsFeed', $tweetsDump);
+            if(!empty($tweetsDump)) {
+                $this->out('Rewriting cache');
+                Rcache::write('RetweetsFeed', $tweetsDump);
+            }else {
+                $this->out('No data to write');
+            }
+        }else {
+            $this->out('Error gettings latest tweets');
+            var_dump(json_decode($tmhOAuth->response['response'], true));
         }
     }
 
