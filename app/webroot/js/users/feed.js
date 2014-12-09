@@ -849,6 +849,10 @@ function OfficeStatusUpdater() {
                                     html += self.addNews(object);
                                 }
 
+                                if (object.type == 'RetweetAdded' && object.html != null) {
+                                    html += object.html;
+                                }
+
                             });
                             var $prependEl = $(html);
                             $prependEl.hide();
@@ -892,6 +896,10 @@ function OfficeStatusUpdater() {
 
                             if (object.type == 'RatingAdded' && object.solution != null) {
                                 html += self.addRating(object, imageurl);
+                            }
+
+                            if (object.type == 'RetweetAdded' && object.html != null) {
+                                html += object.html;
                             }
                         });
                         var $appendEl = $(html);

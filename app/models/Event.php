@@ -104,6 +104,14 @@ class Event extends \app\models\AppModel {
                         $record->news = $news;
                     } elseif ($record->type == 'FavUserAdded') {
                         $record->user_fav = User::first(array('conditions' => array('id' => $record->fav_user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));
+                    } elseif ($record->type == 'RetweetAdded') {
+                        $cache = \app\extensions\storage\Rcache::read('RetweetsFeed');
+                        foreach ($cache as $k => $v) {
+                            if ($k == $record->tweet_id) {
+                                $record->html = $v;
+                                break;
+                            }
+                        }
                     }
                     return $record;
                 };
@@ -289,7 +297,7 @@ class Event extends \app\models\AppModel {
         foreach ($input as $pitchId => $created) {
             $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'RatingAdded', 'FavUserAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
         }
-        $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded')));
+        $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded', 'RetweetAdded')));
         $output = array('OR' => $list);
         return $output;
     }
