@@ -809,6 +809,10 @@
     cursor: pointer;
     font: 14px OfficinaSansC Book,serif;
 }
+#news-add #show-all-fileds:hover {
+    color: #787878;
+}
+
 #news-add #show-all-fileds.hide {
     right: -68px;
 }
@@ -865,6 +869,9 @@
 }
 #news-add #news-add-tag {
     display: none;
+}
+.twitter-typeahead {
+    margin-top: -2px;
 }
 #news-add #news-add-photo:before {
     background: url(/img/photo-icon.png) no-repeat;
@@ -931,17 +938,16 @@
     width: 100px;
     height: 100px;
     position: relative;
-    border: 1px solid #787877;
 }
 
 #previewImage .remove-image {
-    position: absolute;
+    background: url("img/image-container-close.png") no-repeat -8px -8px #fff;
     cursor: pointer;
-    background: url(img/popup-close-sprite.png) no-repeat 0 -15px #fff;
-    width: 15px;
-    height: 15px;
-    top:0;
-    right:0;
+    height: 16px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 16px;
 }
 
 .twitter-tweet {

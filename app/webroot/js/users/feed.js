@@ -686,7 +686,7 @@ function OfficeStatusUpdater() {
                     var html = '';
                     var solutions = '';
                     if (typeof (response.post) != "undefined" && response.post != 0) {
-                        if($('.box[data-eventid="' + response.id + '"]').length == 0) {
+                        if ($('.box[data-eventid="' + response.id + '"]').length == 0) {
                             var $prependEl = $('<div class="box" data-eventid="' + response.id + '"> \
                                 <p class="img-box"> \
                                     <a class="post-link" href="/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><img class="img-post" src="' + response.post.imageurl + '"></a> \
@@ -822,7 +822,7 @@ function OfficeStatusUpdater() {
                             }
                             response.updates.sort(sortfunction);
                             $.each(response.updates, function (index, object) {
-                                if($('.box[data-eventid="' + object.id + '"]').length > 0) {
+                                if ($('.box[data-eventid="' + object.id + '"]').length > 0) {
                                     return
                                 }
                                 if (index == 0) {
@@ -1251,19 +1251,20 @@ function OfficeStatusUpdater() {
 
         $('#show-all-fileds').on('click', function () {
             var label = $(this);
-            $('#news-add-tag').toggle('fast', function () {
-                if (label.text() == 'Свернуть') {
-                    label.text('Показать все поля');
-                    label.removeClass('hide');
-                    $('.tt-hint').hide();
+            if (label.text() == 'Свернуть') {
+                $('.tt-hint').hide();
+                $('#news-add input[name="news-title"]').hide();
+                label.text('Показать все поля');
+                label.removeClass('hide');
+                $('#news-add-tag').hide();
 
-                } else {
-                    label.text('Свернуть');
-                    label.addClass('hide');
-                    $('.tt-hint').show();
-                }
-            });
-            $('#news-add input[name="news-title"]').toggle('fast');
+            } else {
+                $('.tt-hint').show();
+                $('#news-add input[name="news-title"]').show();
+                $('#news-add-tag').show();
+                label.text('Свернуть');
+                label.addClass('hide');
+            }
         });
 
         var tags = new Bloodhound({
