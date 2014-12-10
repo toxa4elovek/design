@@ -238,6 +238,8 @@ $(document).ready(function () {
                 url_backup = url.text(),
                 txt_backup = txt,
                 first_txt = txt.split(' ')[0];
+
+        var type_like = ($(this).data('news')) ? 'news' : 'solutions';
         var my_solution = ($(this).data('userid') == this_user) ? 'ваше' : '';
         if (link.data('vote') == '1') {
             link.html('Не нравится');
@@ -256,8 +258,7 @@ $(document).ready(function () {
             } else if (span.length && span.parent().css('display') == 'none') {
                 span.parent().show();
             }
-            return false;
-            $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
+            $.get('/' + type_like + '/like/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Нравится');
                     link.data('vote', '1');
@@ -283,8 +284,7 @@ $(document).ready(function () {
                 likes_div = link_parent.closest('.box').find('.likes');
                 likes_div.hide();
             }
-            return false;
-            $.get('/solutions/unlike/' + $(this).data('id') + '.json', function (response) {
+            $.get('/' + type_like + '/unlike/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Не нравится');
                     link.data('vote', '0');
@@ -1138,7 +1138,37 @@ function OfficeStatusUpdater() {
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div> \
-                            </div>';
+                                <div data-id="' + object.solution.id + '" class="likes">';
+                var likes_count = 0;
+                if (object.liked) {
+                    $.each(object.likes, function (index, like) {
+                        likes_count++;
+                        var likes = parseInt(object.news.liked);
+                        if (likes > 4) {
+                            if (likes_count == 1) {
+                                html += '<span class="who-likes"><a class="show-other-likes" data-solid="' + object.news.id + '" href="#">';
+                            }
+                            if (likes_count == 4) {
+                                var other = likes - likes_count;
+                                html += like.creator + ' <span>и ' + other + ' других</a> лайкнули решение</span></span>';
+                                return false;
+                            } else {
+                                html += like.creator + ', ';
+                            }
+                        } else if (likes < 2) {
+                            html += '<span class="who-likes"><a target="_blank" href="/users/view/' + like.user_id + '">' + like.creator + '</a> <span>' + self.getGenderTxt('лайкнул', object.user.gender) + ' решение</span></span>';
+                        } else if (likes <= 4) {
+                            if (likes_count == 1) {
+                                html += '<span class="who-likes">';
+                            }
+                            html += '<a target="_blank" href="/users/view/' + like.user_id + '">' + like.creator + '</a>';
+                            if (likes_count == likes) {
+                                html += ' <span>лайкнули новость</span></span>';
+                            }
+                        }
+                    });
+                }
+                html += '</div></div>';
                 return html;
             },
             this.addSolution = function (object, imageurl, response) {
