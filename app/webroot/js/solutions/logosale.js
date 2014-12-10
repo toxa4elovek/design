@@ -260,6 +260,8 @@ function fetchSolution(urlJSON) {
     $('#newComment', '.solution-left-panel').val('');
     $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
     solutionThumbnail = '';
+    var solution_tags = $('.solution-tags .tags');
+    solution_tags.empty();
     $.getJSON(urlJSON, function (result) {
         $('span#date').text('Опубликовано ' + result.date);
         // Navigation
@@ -268,7 +270,13 @@ function fetchSolution(urlJSON) {
 
         // Left Panel
         $('.solution-images').html('');
-        console.log(result.pitch.title);
+        if (result.solution.tags) {
+            var html = '';
+            $.each(result.solution.tags, function (i, v) {
+                html += '<li><a href="#">' + v + '</a></li>';
+            });
+            solution_tags.append(html);
+        }
         $('.solution-left-panel .solution-title').children('h1').html(result.pitch.title + '<br> Цена: <span class="price"> 18000 р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
         if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
             // Main Images

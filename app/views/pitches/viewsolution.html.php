@@ -58,6 +58,16 @@
                     </table>
                 </div>
                 <div class="separator"></div>
+                <div class="solution-info solution-tags chapter">
+                    <h2>ТЕГИ</h2>
+                    <ul class="tags">
+                        <?php foreach ($solution->tags as $v) : ?>
+                        <li><a href="#"><?= $v ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <div class="separator"></div>
                 <div class="solution-info solution-share chapter">
                     <h2>ПОДЕЛИТЬСЯ</h2>
                     <div class="body" style="display: block;">

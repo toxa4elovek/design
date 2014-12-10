@@ -26,6 +26,7 @@ use app\models\Ratingchange;
 use \app\models\Avatar;
 use \app\models\Url;
 use \app\models\Like;
+use \app\models\Tag;
 use \app\models\Uploadnonce;
 use \app\models\Note;
 use \app\extensions\paymentgateways\Webgate;
@@ -1044,11 +1045,21 @@ Disallow: /pitches/upload/' . $pitch['id'];
      * @throws \Exception
      */
     public function viewsolution() {
-        if (($this->request->id) && ($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch'))))) {
+        if (($this->request->id) && ($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch', 'Solutiontag'))))) {
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
             if ($this->request->env('HTTP_X_REQUESTED_WITH')) {
                 $solution->views = Solution::increaseView($this->request->id);
             }
+            $tags = Tag::all();
+            $temp_tags = array();
+            foreach ($solution->solutiontags as $v) {
+                foreach ($tags as $tag) {
+                    if ($v->tag_id == $tag->id) {
+                        $temp_tags[$tag->id] = $tag->name;
+                    }
+                }
+            }
+            $solution->tags = $temp_tags;
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getSolutionsSortingOrder($this->request->query);
 
