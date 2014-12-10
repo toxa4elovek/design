@@ -42,21 +42,18 @@ $(document).ready(function () {
                 }, 1000
                 );
     });
-
     $('.close-gender').on('click', function () {
         $(this).parent().parent().hide();
         if (!isAdmin) {
             $('.new-content').css({'margin-top': '70px'});
         }
     });
-
     $('.img-box').hover(function () {
         $(this).next().children('.img-post').children('h2').css('color', '#ff585d');
     }, function () {
         $(this).next().children('.img-post').children('h2').css('color', '');
         ;
     });
-
     var Tip = new TopTip;
     isBusy = 0, isBusySolution = 0, isBusyDesNews = 0;
     function scrollInit() {
@@ -78,7 +75,6 @@ $(document).ready(function () {
         $(window).on('scroll', function () {
             var parentAbsoluteTop = $parent.offset().top;
             var topStop = parentAbsoluteTop + $box.height();
-
             if ($(window).scrollTop() > header_pos && !header_bg.hasClass('flow')) {
                 header_bg.css({'position': 'fixed', 'top': '0px', 'z-index': '101'}).addClass('flow');
                 pitch_panel.css('padding-bottom', header_height + 'px');
@@ -88,7 +84,6 @@ $(document).ready(function () {
             }
 
             var windowBottom = $(window).scrollTop() + windowHeight;
-
             if ($(window).scrollTop() + header_height + 5 > top) {
                 $box.css({'position': 'fixed', 'top': '35px'});
             } else if (windowBottom >= topStop && $(window).scrollTop() < top) {
@@ -118,7 +113,6 @@ $(document).ready(function () {
             Updater.nextNews(true);
         }
     });
-
     function TopTip() {
         var self = this;
         this.element = $('.onTop');
@@ -227,7 +221,6 @@ $(document).ready(function () {
         });
         return false;
     });
-
     $(document).on('click', '.like-small-icon-box', function () {
         var link = $(this),
                 link_parent = link.parent(),
@@ -237,31 +230,31 @@ $(document).ready(function () {
                 url = span.children('a'),
                 url_backup = url.text(),
                 txt_backup = txt,
-                first_txt = txt.split(' ')[0];
-
+                first_txt = txt.split(' ')[0],
+                style = span.parent().css('display');
         var type_like = ($(this).data('news')) ? 'news' : 'solutions';
         var my_solution = ($(this).data('userid') == this_user) ? 'ваше' : '';
-        if(type_like == 'news') {
+        if (type_like == 'news') {
             var word = 'новость'
             my_solution = ''
-        }else {
+        } else {
             var word = 'решение'
         }
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
-            if (first_txt == 'лайкнул') {
+            if (first_txt == 'лайкнул' && style == 'block') {
                 url.text(userName + ', ' + url.text());
                 url.data('added', 1);
                 like_span.text('лайкнули ' + my_solution + ' ' + word);
-            } else if (first_txt == 'лайкнули') {
+            } else if (first_txt == 'лайкнули' && style == 'block') {
                 url.text(userName + ', ' + url.text());
                 url.data('added', 1);
                 like_span.text('лайкнули ' + my_solution + ' ' + word);
             } else if (!span.length) {
                 var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word + '</span></span></div>');
                 $element.insertAfter(link_parent.next());
-            } else if (span.length && span.parent().css('display') == 'none') {
+            } else if (span.length > 0 && style == 'none') {
                 span.parent().show();
             }
             $.get('/' + type_like + '/like/' + $(this).data('id') + '.json', function (response) {
@@ -290,6 +283,7 @@ $(document).ready(function () {
                 likes_div = link_parent.closest('.box').find('.likes');
                 likes_div.hide();
             }
+            console.log(span.parent());
             $.get('/' + type_like + '/unlike/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Не нравится');
@@ -301,7 +295,7 @@ $(document).ready(function () {
                     }
                 } else {
                     if (likes_div.length > 0) {
-                        likes_div.remove();
+                        likes_div.hide();
                     }
                 }
             });
@@ -382,7 +376,6 @@ $(document).ready(function () {
             });
         }, 2000);
     };
-
     $(document).on('click', '.select-multiwinner', function () {
         var num = $(this).data('num');
         var item = $('.photo_block', '#li_' + num).clone();
@@ -399,7 +392,6 @@ $(document).ready(function () {
         });
         return false;
     });
-
     // Select Winner Solution
     $('body, .solution-overlay').on('click', '.select-winner', function (e) {
         e.preventDefault();
@@ -429,7 +421,6 @@ $(document).ready(function () {
         });
         return false;
     });
-
     $(document).on('click', '.fav-user', function (e) {
         var link = $(this);
         link.text('Отписаться');
@@ -442,7 +433,6 @@ $(document).ready(function () {
         });
         return false;
     });
-
     $(document).on('click', '.unfav-user', function (e) {
         var link = $(this);
         link.text('Подписаться');
@@ -453,7 +443,6 @@ $(document).ready(function () {
         });
         return false;
     });
-
     $(document).on('click', '.show-other-likes', function (e) {
         $('#who-its-liked').empty();
         $('#likedAjaxLoader').show();
@@ -491,7 +480,6 @@ $(document).ready(function () {
         });
         return false;
     });
-
     $(document).on('click', '#confirmWinner', function () {
         var url = $(this).data('url');
         $.get(url, function (response) {
@@ -503,14 +491,12 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on('click', '#confirmWinner-multi', function () {
         var url = $(this).data('url');
         if ($(this).data('url')) {
             window.location = url;
         }
     });
-
     var warnPlaceholder = 'ВАША ЖАЛОБА';
     $('#warn-comment, #warn-solution').on('focus', function () {
         $(this).removeAttr('placeholder');
@@ -518,7 +504,6 @@ $(document).ready(function () {
     $('#warn-comment, #warn-solution').on('blur', function () {
         $(this).attr('placeholder', warnPlaceholder);
     });
-
     // Warn Solution
     $('body, .solution-overlay').on('click', '.warning, .warning-box', function (e) {
         e.preventDefault();
@@ -543,7 +528,6 @@ $(document).ready(function () {
             alert('Введите текст жалобы!');
         }
     });
-
     // Comment Bubble
     $(document).on('click', '.solution-link-menu', function (e) {
         e.preventDefault();
@@ -575,11 +559,9 @@ $(document).ready(function () {
             });
         });
     });
-
     $(document).on('mouseleave', '.solution-menu-toggle', function () {
         $('img', $(this)).attr('src', '/img/marker5_2.png');
     });
-
     $(document).on('click', '.solution-menu-toggle', function () {
         return false;
     });
@@ -595,7 +577,7 @@ $(document).ready(function () {
             window.location = link.attr("href");
         }
 
-        // Show Delete Moderation Overlay
+// Show Delete Moderation Overlay
         $('#popup-delete-solution').modal({
             containerId: 'final-step-clean',
             opacity: 80,
@@ -609,7 +591,6 @@ $(document).ready(function () {
                 $(document).off('click', '#sendDeleteSolution');
             }
         });
-
         // Delete Solution Popup Form
         $(document).on('click', '#sendDeleteSolution', function () {
             var form = $(this).parent().parent();
@@ -1139,12 +1120,16 @@ function OfficeStatusUpdater() {
                 if (object.news.tags) {
                     html += '<p class="img-tag">' + object.news.tags + '</p>';
                 }
+                var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
                 html += '<a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
                                     <p class="img-short">' + object.news.short + '</p> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div> \
-                                <div data-id="' + object.solution.id + '" class="likes">';
+                                <div class="box-info" style="margin-top: 0;"> \
+                                    <a style="padding-left: 0;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>\
+                                </div>\
+                                <div data-id="' + object.news.id + '" class="likes">';
                 var likes_count = 0;
                 if (object.liked) {
                     $.each(object.likes, function (index, like) {
@@ -1226,12 +1211,10 @@ function OfficeStatusUpdater() {
                 html += '</div></div>';
                 return html;
             };
-
     if (isAdmin) {
         var fd = new FormData();
         var reader = new FileReader();
         var form_file = false;
-
         $(document).on('change', '#news-file', function (e) {
             var files = e.target.files;
             $('#previewImage').empty();
@@ -1247,12 +1230,10 @@ function OfficeStatusUpdater() {
                 }
             }
         });
-
         $(document).on('click', '.remove-image', function (e) {
             $(this).parent().remove();
             form_file = false;
         });
-
         $('#submit-news').on('click', function () {
             var button = $(this);
             fd.append('title', $('#news-add input[name="news-title"]').val());
@@ -1284,7 +1265,6 @@ function OfficeStatusUpdater() {
             });
             return false;
         });
-
         $('#show-all-fileds').on('click', function () {
             var label = $(this);
             if (label.text() == 'Свернуть') {
@@ -1293,7 +1273,6 @@ function OfficeStatusUpdater() {
                 label.text('Показать все поля');
                 label.removeClass('hide');
                 $('#news-add-tag').hide();
-
             } else {
                 $('.tt-hint').show();
                 $('#news-add input[name="news-title"]').show();
@@ -1302,7 +1281,6 @@ function OfficeStatusUpdater() {
                 label.addClass('hide');
             }
         });
-
         var tags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
