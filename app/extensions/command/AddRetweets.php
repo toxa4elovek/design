@@ -31,7 +31,6 @@ class AddRetweets extends \app\extensions\command\CronJob {
             $data = json_decode($tmhOAuth->response['response'], true);
             //var_dump($data);
             //$events = Event::all(array('conditions' => array('type' => 'RetweetAdded')));
-            $trigger = true;
             $tweetsDump = Rcache::read('RetweetsFeed');
             foreach ($data as $tweet) {
                 if (isset($tweet['retweeted_status'])) {
@@ -52,7 +51,7 @@ class AddRetweets extends \app\extensions\command\CronJob {
                         $this->out('Event already in database');
                     }
                     $this->out('checking if cache for tweet html exists in Rcache');
-                    if(!isset($tweetsDump[$tweet['id_str']])) {
+                    if(!isset($tweetsDump[$tweet['id_str']]) || (strpos($tweet['text'], ' победил в питче ') !== false || strpos($tweet['text'], ' заработал ') !== false)) {
                         $this->out('Html cache is not exists');
                         $params = array('rpp' => 1, 'id' => $tweet['id_str'], 'include_entities' => false);
                         $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/oembed.json', $params, false);
