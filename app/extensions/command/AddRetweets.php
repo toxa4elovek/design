@@ -31,10 +31,9 @@ class AddRetweets extends \app\extensions\command\CronJob {
             $data = json_decode($tmhOAuth->response['response'], true);
             //var_dump($data);
             //$events = Event::all(array('conditions' => array('type' => 'RetweetAdded')));
-            $trigger = true;
             $tweetsDump = Rcache::read('RetweetsFeed');
             foreach ($data as $tweet) {
-                if (isset($tweet['retweeted_status'])) {
+                if (isset($tweet['retweeted_status']) || (strpos($tweet['text'], ' победил в питче ') !== false || strpos($tweet['text'], ' заработал ') !== false)) {
                     $this->out('Dumping tweet data...');
                     var_dump($tweet);
                     $this->out('checking if tweet event exists in database...');

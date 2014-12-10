@@ -238,26 +238,33 @@ $(document).ready(function () {
                 url_backup = url.text(),
                 txt_backup = txt,
                 first_txt = txt.split(' ')[0];
+
+        var type_like = ($(this).data('news')) ? 'news' : 'solutions';
         var my_solution = ($(this).data('userid') == this_user) ? 'ваше' : '';
+        if(type_like == 'news') {
+            var word = 'новость'
+            my_solution = ''
+        }else {
+            var word = 'решение'
+        }
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
             if (first_txt == 'лайкнул') {
                 url.text(userName + ', ' + url.text());
                 url.data('added', 1);
-                like_span.text('лайкнули ' + my_solution + ' решение');
+                like_span.text('лайкнули ' + my_solution + ' ' + word);
             } else if (first_txt == 'лайкнули') {
                 url.text(userName + ', ' + url.text());
                 url.data('added', 1);
-                like_span.text('лайкнули ' + my_solution + ' решение');
+                like_span.text('лайкнули ' + my_solution + ' ' + word);
             } else if (!span.length) {
-                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' решение</span></span></div>');
+                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word + '</span></span></div>');
                 $element.insertAfter(link_parent.next());
             } else if (span.length && span.parent().css('display') == 'none') {
                 span.parent().show();
             }
-            return false;
-            $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
+            $.get('/' + type_like + '/like/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Нравится');
                     link.data('vote', '1');
@@ -275,7 +282,7 @@ $(document).ready(function () {
             } else if (first_txt == 'лайкнули' && url.data('added')) {
                 var text_arr = url.text().split(',');
                 if (text_arr.length <= 2) {
-                    like_span.text(Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' решение');
+                    like_span.text(Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word);
                 }
                 text_arr.shift();
                 url.text(text_arr.join(', '));
@@ -283,8 +290,7 @@ $(document).ready(function () {
                 likes_div = link_parent.closest('.box').find('.likes');
                 likes_div.hide();
             }
-            return false;
-            $.get('/solutions/unlike/' + $(this).data('id') + '.json', function (response) {
+            $.get('/' + type_like + '/unlike/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Не нравится');
                     link.data('vote', '0');
@@ -686,7 +692,7 @@ function OfficeStatusUpdater() {
                     var html = '';
                     var solutions = '';
                     if (typeof (response.post) != "undefined" && response.post != 0) {
-                        if($('.box[data-eventid="' + response.id + '"]').length == 0) {
+                        if ($('.box[data-eventid="' + response.id + '"]').length == 0) {
                             var $prependEl = $('<div class="box" data-eventid="' + response.id + '"> \
                                 <p class="img-box"> \
                                     <a class="post-link" href="/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><img class="img-post" src="' + response.post.imageurl + '"></a> \
@@ -822,7 +828,7 @@ function OfficeStatusUpdater() {
                             }
                             response.updates.sort(sortfunction);
                             $.each(response.updates, function (index, object) {
-                                if($('.box[data-eventid="' + object.id + '"]').length > 0) {
+                                if ($('.box[data-eventid="' + object.id + '"]').length > 0) {
                                     return
                                 }
                                 if (index == 0) {
@@ -1139,7 +1145,37 @@ function OfficeStatusUpdater() {
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div> \
-                            </div>';
+                                <div data-id="' + object.solution.id + '" class="likes">';
+                var likes_count = 0;
+                if (object.liked) {
+                    $.each(object.likes, function (index, like) {
+                        likes_count++;
+                        var likes = parseInt(object.news.liked);
+                        if (likes > 4) {
+                            if (likes_count == 1) {
+                                html += '<span class="who-likes"><a class="show-other-likes" data-solid="' + object.news.id + '" href="#">';
+                            }
+                            if (likes_count == 4) {
+                                var other = likes - likes_count;
+                                html += like.creator + ' <span>и ' + other + ' других</a> лайкнули новость</span></span>';
+                                return false;
+                            } else {
+                                html += like.creator + ', ';
+                            }
+                        } else if (likes < 2) {
+                            html += '<span class="who-likes"><a target="_blank" href="/users/view/' + like.user_id + '">' + like.creator + '</a> <span>' + self.getGenderTxt('лайкнул', object.user.gender) + ' решение</span></span>';
+                        } else if (likes <= 4) {
+                            if (likes_count == 1) {
+                                html += '<span class="who-likes">';
+                            }
+                            html += '<a target="_blank" href="/users/view/' + like.user_id + '">' + like.creator + '</a>';
+                            if (likes_count == likes) {
+                                html += ' <span>лайкнули новость</span></span>';
+                            }
+                        }
+                    });
+                }
+                html += '</div></div>';
                 return html;
             },
             this.addSolution = function (object, imageurl, response) {
@@ -1252,19 +1288,20 @@ function OfficeStatusUpdater() {
 
         $('#show-all-fileds').on('click', function () {
             var label = $(this);
-            $('#news-add-tag').toggle('fast', function () {
-                if (label.text() == 'Свернуть') {
-                    label.text('Показать все поля');
-                    label.removeClass('hide');
-                    $('.tt-hint').hide();
+            if (label.text() == 'Свернуть') {
+                $('.tt-hint').hide();
+                $('#news-add input[name="news-title"]').hide();
+                label.text('Показать все поля');
+                label.removeClass('hide');
+                $('#news-add-tag').hide();
 
-                } else {
-                    label.text('Свернуть');
-                    label.addClass('hide');
-                    $('.tt-hint').show();
-                }
-            });
-            $('#news-add input[name="news-title"]').toggle('fast');
+            } else {
+                $('.tt-hint').show();
+                $('#news-add input[name="news-title"]').show();
+                $('#news-add-tag').show();
+                label.text('Свернуть');
+                label.addClass('hide');
+            }
         });
 
         var tags = new Bloodhound({

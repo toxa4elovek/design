@@ -93,6 +93,12 @@ class Event extends \app\models\AppModel {
                     }
                     if ($record->type == 'newsAdded') {
                         $news = News::first($record->news_id);
+                        $news->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $record->news_id), 'order' => array('Event.created' => 'desc')));
+                        $allowLike = 0;
+                        if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('news_id' => $record->news_id, 'user_id' => Session::read('user.id')))))) {
+                            $allowLike = 1;
+                        }
+                        $record->allowLike = $allowLike;
                         $str = strpos($news->tags, '|');
                         if ($str) {
                             $news->tags = substr($news->tags, 0, $str);
