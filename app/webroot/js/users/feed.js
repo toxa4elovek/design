@@ -241,19 +241,25 @@ $(document).ready(function () {
 
         var type_like = ($(this).data('news')) ? 'news' : 'solutions';
         var my_solution = ($(this).data('userid') == this_user) ? 'ваше' : '';
+        if(type_like == 'news') {
+            var word = 'новость'
+            my_solution = ''
+        }else {
+            var word = 'решение'
+        }
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
             if (first_txt == 'лайкнул') {
                 url.text(userName + ', ' + url.text());
                 url.data('added', 1);
-                like_span.text('лайкнули ' + my_solution + ' решение');
+                like_span.text('лайкнули ' + my_solution + ' ' + word);
             } else if (first_txt == 'лайкнули') {
                 url.text(userName + ', ' + url.text());
                 url.data('added', 1);
-                like_span.text('лайкнули ' + my_solution + ' решение');
+                like_span.text('лайкнули ' + my_solution + ' ' + word);
             } else if (!span.length) {
-                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' решение</span></span></div>');
+                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word + '</span></span></div>');
                 $element.insertAfter(link_parent.next());
             } else if (span.length && span.parent().css('display') == 'none') {
                 span.parent().show();
@@ -276,7 +282,7 @@ $(document).ready(function () {
             } else if (first_txt == 'лайкнули' && url.data('added')) {
                 var text_arr = url.text().split(',');
                 if (text_arr.length <= 2) {
-                    like_span.text(Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' решение');
+                    like_span.text(Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word);
                 }
                 text_arr.shift();
                 url.text(text_arr.join(', '));
@@ -1150,7 +1156,7 @@ function OfficeStatusUpdater() {
                             }
                             if (likes_count == 4) {
                                 var other = likes - likes_count;
-                                html += like.creator + ' <span>и ' + other + ' других</a> лайкнули решение</span></span>';
+                                html += like.creator + ' <span>и ' + other + ' других</a> лайкнули новость</span></span>';
                                 return false;
                             } else {
                                 html += like.creator + ', ';
