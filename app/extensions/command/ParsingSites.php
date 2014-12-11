@@ -89,6 +89,14 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingWordpress('http://www.typeforyou.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing typeforyou.org [' . (time() - $startTimeStamp) . ' sec]');
 
+        $this->out("Starting parsing abduzeedo.com");
+        self::ParsingAbduzeedo();
+        $this->out('Finished parsing abduzeedo.com [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing underconsideration.com/fpo/");
+        self::ParsingUnderconsideration();
+        $this->out('Finished parsing underconsideration.com/fpo/ [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting fixing tags");
         self::fixTags();
         $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
@@ -267,7 +275,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $date = new \DateTime($item->pubDate);
                 preg_match($regexp, $item->asXML(), $matches);
                 $image = '';
-                if(isset($matches[1])) {
+                if (isset($matches[1])) {
                     $image = $matches[1];
                 }
                 $news = News::create(array(
@@ -480,6 +488,63 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'tags' => 'Дизайн',
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => substr($item->link['href'], 0, strpos($item->link['href'], '#')),
+                                'imageurl' => $matches[1]
+                    ));
+                    $news->save();
+                }
+            }
+        }
+    }
+
+    private function ParsingAbduzeedo() {
+        $xml = simplexml_load_file('http://feeds.feedburner.com/abduzeedo');
+        $newsList = News::all();
+        foreach ($xml->channel->item as $item) {
+            var_dump($item);
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->pubDate);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                if (isset($matches[1])) {
+                    $news = News::create(array(
+                                'title' => (string) $item->title,
+                                'tags' => 'Дизайн',
+                                'short' => strip_tags($item->description),
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->link,
+                                'imageurl' => $matches[1]
+                    ));
+                    $news->save();
+                }
+            }
+        }
+    }
+
+    private function ParsingUnderconsideration() {
+        $xml = simplexml_load_file('http://feeds.feedburner.com/ucllc/fpo');
+        $newsList = News::all();
+        foreach ($xml->entry as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->content, $matches);
+                if (isset($matches[1])) {
+                    $news = News::create(array(
+                                'title' => $item->title,
+                                'tags' => trim($item->category['term']),
+                                'short' => trim(strip_tags($item->content)),
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->link['href'],
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
