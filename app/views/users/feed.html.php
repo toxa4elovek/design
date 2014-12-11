@@ -204,7 +204,7 @@
                             <div id="center_sidebar">
                                 <div class="center-boxes" id="updates-box-">
                                     <?php if ($middlePost) : ?>
-                                        <div class="box" data-eventid="<?= $middlePost->id ?>">
+                                        <div class="box" data-middle="true" data-eventid="<?= $middlePost->id ?>">
                                             <p class="img-box">
                                                 <a class="post-link" href="<?= $middlePost->link ?>"><img class="img-post" src="<?= $middlePost->imageurl ?>"></a>
                                             </p>
@@ -284,7 +284,7 @@
                                                 $long = true;
                                             endif;
                                             ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>" data-type="<?php echo $object['type'] ?>" data-long="<?php echo $long ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>" data-type="<?php echo $object['type'] ?>" data-long="<?php echo $long ?>">
                                                 <?php if ($long): ?>
                                                     <div class="l-img l-img-box" style="padding-top: 0">
                                                         <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
@@ -326,7 +326,7 @@
                                                 <?php endif; ?>
                                             </div>
                                         <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) : ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                                 </div>
@@ -374,7 +374,7 @@
                                                     ?>
                                                 </div></div>
                                         <?php elseif ($object['type'] == 'newsAdded'): ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>"><img class="img-post" src="<?= $object['news']['imageurl'] ?>"></a>
                                                 </p>
@@ -428,7 +428,7 @@
                                                 </div>
                                             </div>
                                         <?php elseif ($object['type'] == 'RatingAdded'): ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <img class="avatar" src="<?= $avatar ?>">
                                                 </div>
@@ -447,7 +447,7 @@
                                         elseif ($object['type'] == 'FavUserAdded'):
                                             $avatarFav = isset($object['user_fav']['images']['avatar_small']) ? $object['user_fav']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
                                             ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <img class="avatar" src="<?= $avatar ?>">
                                                     <img class="avatar" src="<?= $avatarFav ?>">

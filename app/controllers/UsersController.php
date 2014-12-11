@@ -140,13 +140,14 @@ class UsersController extends \app\controllers\AppController {
             $pitchIds = array();
         }
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5));
-        $middlePost = News::getPost();
-        $middlePost->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $middlePost->id), 'order' => array('Event.created' => 'desc')));
-        $allowLike = 0;
-        if (Session::read('user.id') && (!$like = \app\models\Like::first('first', array('conditions' => array('news_id' => $middlePost->id, 'user_id' => Session::read('user.id')))))) {
-            $allowLike = 1;
+        if($middlePost = News::getPost()) {
+            $middlePost->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $middlePost->id), 'order' => array('Event.created' => 'desc')));
+            $allowLike = 0;
+            if (Session::read('user.id') && (!$like = \app\models\Like::first('first', array('conditions' => array('news_id' => $middlePost->id, 'user_id' => Session::read('user.id')))))) {
+                $allowLike = 1;
+            }
+            $middlePost->allowLike = $allowLike;
         }
-        $middlePost->allowLike = $allowLike;
         $news = News::getNews();
         $solutions = Event::getEventSolutions();
         $updates = Event::getEvents($pitchIds, 1, null);
