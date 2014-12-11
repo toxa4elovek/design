@@ -160,7 +160,7 @@
                                         </div>
                                         <div id="all-tweets"><a href="https://twitter.com/go_deer" target="_blank">Посмотреть все твиты</a></div>
                                     </div>
-                                    <div id="container-new-pitches">
+                                    <!--div id="container-new-pitches">
                                         <div class="rs-header">Новые питчи</div>
                                         <div id="content-pitches">
                                             <?php
@@ -181,7 +181,7 @@
                                             </script>
                                         </div>
                                         <div id="all-pitches"><a href="/pitches" target="_blank" title="Все питчи">Все питчи</a></div>
-                                    </div>
+                                    </div-->
                                     <div id="container-design-news">
                                         <div class="rs-header">Новости дизайна и культуры</div>
                                         <div id="content-news">

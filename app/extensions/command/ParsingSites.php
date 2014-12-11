@@ -154,7 +154,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($posts as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if (((string) $item->post_title === (string) $n->title) || $item->category == 'images') {
+                if ((((string) $item->post_title === (string) $n->title) || ($n->link == $item->guid)) || $item->category == 'images') {
                     $trigger = true;
                 }
             }
@@ -260,7 +260,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = false) {
+    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true) {
         $xml = simplexml_load_file($url);
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
@@ -318,6 +318,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
@@ -364,6 +365,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'imageurl' => $url . $image
                 ));
                 $news->save();
+                Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
             }
         }
     }
@@ -421,6 +423,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $image
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
@@ -464,6 +467,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $image
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
@@ -491,6 +495,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
@@ -500,7 +505,6 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $xml = simplexml_load_file('http://feeds.feedburner.com/abduzeedo');
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
-            var_dump($item);
             $trigger = false;
             foreach ($newsList as $n) {
                 if ((string) $item->title === (string) $n->title) {
@@ -520,6 +524,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
@@ -548,6 +553,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
