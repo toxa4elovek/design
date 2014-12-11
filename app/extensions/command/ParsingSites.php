@@ -23,9 +23,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingTutdesign();
         $this->out('Finished parsing tutdesign.ru [' . (time() - $startTimeStamp) . ' sec]');
 
-        $this->out("Starting parsing vozduh.afisha.ru");
-        self::ParsingVozduhAfisha();
-        $this->out('Finished parsing vozduh.afisha.ru [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing vozduh.afisha.ru");
+        //self::ParsingVozduhAfisha();
+        //$this->out('Finished parsing vozduh.afisha.ru [' . (time() - $startTimeStamp) . ' sec]');
         //$this->out("Starting parsing colta.ru");
         //self::ParsingColta();
         //$this->out('Finished parsing colta.ru [' . (time() - $startTimeStamp) . ' sec]');
@@ -68,7 +68,27 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing packaginguqam.blogspot.ru");
         self::ParsingPackaginguqam();
         $this->out('Finished parsing packaginguqam.blogspot.ru [' . (time() - $startTimeStamp) . ' sec]');
-        
+
+        $this->out("Starting parsing fuckingyoung.es");
+        self::ParsingWordpress('http://fuckingyoung.es/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing fuckingyoung.es [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing raneytown.com");
+        self::ParsingWordpress('http://raneytown.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing raneytown.com [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing designmadeingermany.de");
+        self::ParsingWordpress('http://www.designmadeingermany.de/2013/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing designmadeingermany.de [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing typetoken.net");
+        self::ParsingWordpress('http://www.typetoken.net/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing typetoken.net [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing typeforyou.org");
+        self::ParsingWordpress('http://www.typeforyou.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing typeforyou.org [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting fixing tags");
         self::fixTags();
         $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
@@ -246,13 +266,17 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $this->out('Saving - ' . $item->title);
                 $date = new \DateTime($item->pubDate);
                 preg_match($regexp, $item->asXML(), $matches);
+                $image = '';
+                if(isset($matches[1])) {
+                    $image = $matches[1];
+                }
                 $news = News::create(array(
                             'title' => $item->title,
                             'short' => strip_tags($item->description),
                             'tags' => $item->category,
                             'created' => $date->format('Y-m-d H:i:s'),
                             'link' => $item->link,
-                            'imageurl' => $matches[1]
+                            'imageurl' => $image
                 ));
                 $news->save();
                 if ($event) {

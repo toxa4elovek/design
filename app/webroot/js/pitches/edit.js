@@ -29,9 +29,9 @@ $(document).ready(function () {
             if ((jQuery(o.content).text() == '') && (o.content != '')) {
                 var text = o.content
             } else {
-                var text = jQuery(o.content).text()
+                //var text = jQuery(o.content).html()
             }
-            o.content = text
+            //o.content = text
         },
         onchange_callback: function (editor) {
             isUndo = true;

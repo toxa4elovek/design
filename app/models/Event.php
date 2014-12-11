@@ -63,7 +63,7 @@ class Event extends \app\models\AppModel {
                         //$record->solution = Solution::getBestSolution($record->pitch_id);
                         $record->solution = null;
                     }
-                    if ($record->solution && ($record->solution->pitch->private == 1) || ($record->solution->pitch->category_id == 7)) {
+                    if ($record->solution && ($record->solution->pitch->private == 1) || ($record->solution && $record->solution->pitch->category_id == 7)) {
                         if (($record->user_id != Session::read('user.id')) && ($record->solution->pitch->user_id != Session::read('user.id'))) {
                             ///img/copy-inv.png
                             $record->solution->images['solution_solutionView']['weburl'] = '/img/copy-inv.png';
@@ -93,6 +93,12 @@ class Event extends \app\models\AppModel {
                     }
                     if ($record->type == 'newsAdded') {
                         $news = News::first($record->news_id);
+                        $news->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $record->news_id), 'order' => array('Event.created' => 'desc')));
+                        $allowLike = 0;
+                        if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('news_id' => $record->news_id, 'user_id' => Session::read('user.id')))))) {
+                            $allowLike = 1;
+                        }
+                        $record->allowLike = $allowLike;
                         $str = strpos($news->tags, '|');
                         if ($str) {
                             $news->tags = substr($news->tags, 0, $str);
@@ -104,6 +110,14 @@ class Event extends \app\models\AppModel {
                         $record->news = $news;
                     } elseif ($record->type == 'FavUserAdded') {
                         $record->user_fav = User::first(array('conditions' => array('id' => $record->fav_user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));
+                    } elseif ($record->type == 'RetweetAdded') {
+                        $cache = \app\extensions\storage\Rcache::read('RetweetsFeed');
+                        foreach ($cache as $k => $v) {
+                            if ($k == $record->tweet_id) {
+                                $record->html = $v;
+                                break;
+                            }
+                        }
                     }
                     return $record;
                 };
@@ -289,7 +303,7 @@ class Event extends \app\models\AppModel {
         foreach ($input as $pitchId => $created) {
             $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'RatingAdded', 'FavUserAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
         }
-        $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded')));
+        $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded', 'RetweetAdded')));
         $output = array('OR' => $list);
         return $output;
     }

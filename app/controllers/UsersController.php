@@ -140,7 +140,14 @@ class UsersController extends \app\controllers\AppController {
             $pitchIds = array();
         }
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5));
-        $middlePost = News::getPost();
+        if($middlePost = News::getPost()) {
+            $middlePost->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $middlePost->id), 'order' => array('Event.created' => 'desc')));
+            $allowLike = 0;
+            if (Session::read('user.id') && (!$like = \app\models\Like::first('first', array('conditions' => array('news_id' => $middlePost->id, 'user_id' => Session::read('user.id')))))) {
+                $allowLike = 1;
+            }
+            $middlePost->allowLike = $allowLike;
+        }
         $news = News::getNews();
         $solutions = Event::getEventSolutions();
         $updates = Event::getEvents($pitchIds, 1, null);
@@ -1237,8 +1244,7 @@ class UsersController extends \app\controllers\AppController {
         ));
         $tmhOAuth->headers['Authorization'] = 'Basic ' . $string;
         $params = array('grant_type' => 'client_credentials');
-        $response = $tmhOAuth->request('POST', 'https://api.twitter.com/oauth2/token', $params, false
-        );
+        $response = $tmhOAuth->request('POST', 'https://api.twitter.com/oauth2/token', $params, false);
         $data = json_decode($tmhOAuth->response['response'], true);
         $bearerToken = $data['access_token'];
         $tmhOAuth->headers['Authorization'] = 'Bearer ' . $bearerToken;
@@ -1247,27 +1253,15 @@ class UsersController extends \app\controllers\AppController {
         $hashTags = array('работадлядизайнеров');
         $x = 0;
         $url = '';
-        $tweets_list = Tweet::all();
         $countTags = count($hashTags);
         foreach ($hashTags as $tag) {
             ++$x;
             $url .= $countTags > $x ? '%23' . urlencode($tag) . '+' : '%23' . urlencode($tag);
         }
-
-        $params = array('rpp' => 5, 'q' => 'godesigner.ru', 'include_entities' => true);
-        $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/search/tweets.json', $params, false
-        );
+        $params = array('rpp' => 5, 'q' => $url, 'include_entities' => true);
+        $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/search/tweets.json', $params, false);
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
-        }
-        $paramsSearch = array('rpp' => 5, 'q' => $url, 'include_entities' => true);
-        $codeSearch = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/search/tweets.json', $paramsSearch, false);
-        if ($code == 200 && $codeSearch == 200) {
-            $dataSearch = json_decode($tmhOAuth->response['response'], true);
-            foreach ($dataSearch['statuses'] as $tweet) {
-                $data['statuses'][] = $tweet;
-            }
-            $data += $dataSearch;
             $censoredTweets = array();
             $censoredTweets['statuses'] = array();
             $minTimestamp = 1893355200;
@@ -1290,7 +1284,6 @@ class UsersController extends \app\controllers\AppController {
                     $tweet['timestamp'] = strtotime($tweet['created_at']);
                     $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
                     $censoredTweets['statuses'][$key] = $tweet;
-                    $trigger = true;
                     $text = $tweet['text'];
                     if (!isset($tweet['type']) && $tweet['type'] !== 'tutdesign') {
                         foreach ($tweet['entities']['hashtags'] as $hashtag) {
@@ -1307,19 +1300,6 @@ class UsersController extends \app\controllers\AppController {
                         $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a>';
                         $content .= $user . ' ' . $text;
                         $content = preg_replace("/<img[^>]+\>/i", '', $content);
-                        foreach ($tweets_list as $v) {
-                            if ($v->tweet_id !== $tweet['id_str']) {
-                                $trigger = false;
-                                break;
-                            }
-                        }
-                        if ($trigger) {
-                            /* Tweet::create(array(
-                              'created' => date('Y-m-d H:i:s', $tweet['timestamp']),
-                              'text' => $content,
-                              'tweet_id' => $tweet['id_str']
-                              ))->save(); */
-                        }
                     }
                 }
             }
@@ -1428,7 +1408,7 @@ class UsersController extends \app\controllers\AppController {
             } else {
                 $this->request->data['target'] = 'team@godesigner.ru';
             }
-            $this->request->data['subject'] = 'Сообщение с сайта GoDesigner.ru: ' . $this->request->data['email'] ;
+            $this->request->data['subject'] = 'Сообщение с сайта GoDesigner.ru: ' . $this->request->data['email'];
             if ($this->request->data['target'] != 'va@godesigner.ru') {
                 $this->request->data['needInfo'] = true;
                 $this->request->data['user'] = User::getUserInfo();
