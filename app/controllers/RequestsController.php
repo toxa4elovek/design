@@ -11,7 +11,7 @@ class RequestsController extends \app\controllers\AppController {
 
     public function sign() {
         if($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
-            if($pitch->private == 1) {
+            if(($pitch->private == 1) && (Session::read('user.id') != $pitch->user_id)) {
                 $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
                 return compact('pitch');
             }else {

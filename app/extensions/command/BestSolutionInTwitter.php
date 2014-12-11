@@ -27,7 +27,17 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
         $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
         //Самое популярное решение за 24.09.2014 «Лого для сервиса Бригадир Онлайн» http://www.godesigner.ru/pitches/viewsolution/106167 #Go_Deer
         $tweet = 'Самое популярное решение за ' . date('d.m.Y', $lastday) . ' «' . $solution->pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
-        if (User::sendTweet($tweet)) {
+        if ($solution->pitch->private == 0 && $solution->pitch->category_id != 7) {
+            if (isset($solution->images['solution_solutionView'])) {
+                if (isset($solution->images['solution_solutionView'][0]['filename'])) {
+                    $imageurl = $solution->images['solution_solutionView'][0]['filename'];
+                } else {
+                    $imageurl = $solution->images['solution_solutionView']['filename'];
+                }
+            }
+        }
+
+        if (User::sendTweet($tweet, $imageurl)) {
             $this->out('The best solution for ' . $day . ' sent');
         } else {
             $this->out('Error! The best solution for ' . $day . ' was not sent');

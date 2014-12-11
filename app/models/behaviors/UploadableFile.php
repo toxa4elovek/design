@@ -116,15 +116,13 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior{
 		};
 		$fileModel = static::$fileModel;
 
-        if(!is_numeric($data)) {
+        if((!is_numeric($data)) && (is_object($data))) {
              if(get_class($data) == 'lithium\data\entity\Record') {
                  $attachRecord($fileModel, $data);
-             }else {
-                 if(is_object($data)) {
-                     foreach($data as $record) {
-                        $attachRecord($fileModel, $record);
-                     }
-                 }
+             }else{
+				 foreach($data as $record) {
+					$attachRecord($fileModel, $record);
+				 }
              }
         }
 		return $data;

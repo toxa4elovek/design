@@ -14,6 +14,24 @@ $briefExamples = array(
     '11' => 'brief_logo.pdf',
     '12' => 'brief_logo.pdf',
 );
+
+$job_types = array(
+    'realty' => 'Недвижимость / Строительство',
+    'auto' => 'Автомобили / Транспорт',
+    'finances' => 'Финансы / Бизнес',
+    'food' => 'Еда / Напитки',
+    'adv' => 'Реклама / Коммуникации',
+    'tourism' => 'Туризм / Путешествие',
+    'sport' => 'Спорт',
+    'sci' => 'Образование / Наука',
+    'fashion' => 'Красота / Мода',
+    'music' => 'Развлечение / Музыка',
+    'culture' => 'Искусство / Культура',
+    'animals' => 'Животные',
+    'childs' => 'Дети',
+    'security' => 'Охрана / Безопасность',
+    'health' => 'Медицина / Здоровье');
+
 $specifics = unserialize($pitch->specifics);
 ?>
 <?php if(isset($specifics["audience"])):?>
@@ -170,12 +188,12 @@ endif?>
 
         <script>var fillBrief = 0;</script>
 
-        <!--div class="ribbon complete-brief">
+        <div class="ribbon complete-brief">
             <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
             <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
             <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" value="<?=$pitch->{'phone-brief'}?>" class="phone"></p>
             <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>">1750.-</p>
-        </div-->
+        </div>
 
         <div class="ribbon">
             <p class="option"><label><input type="checkbox" name="" <?php if($pitch->private): echo "checked"; endif;?> class="single-check" data-option-title="Закрытый питч" data-option-value="3500">Закрытый питч</label></p>
@@ -311,13 +329,18 @@ endif?>
                     <?php endif;?>
                 <?php endif?>
             </p>
-            <?php if (!empty($pitch->industry)):?>
-            <p>
-                <label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-                    <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
-            </p>
-            <?php endif; ?>
-
+            <label id ="show-types" class="greyboldheader required">Выберите вид деятельности</label>
+            <ul id="list-job-type">
+                <?php
+                    $industry = (unserialize($pitch->industry));
+                    $_empty = empty($industry);
+                    foreach ($job_types as $k => $v):
+                        ?>
+                        <li>
+                            <label><input type="checkbox" name="job-type[]" value="<?= $k ?>"<?= ($_empty) ? : (in_array($k, $industry) ? ' checked' : '') ?>><?= $v ?></label>
+                        </li>
+                    <?php endforeach; ?>
+            </ul>
             <?php if(!$onlyText):?>
             <div class="ribbon term" style="height: 80px;">
                 <p class="option">Установите срок</p>

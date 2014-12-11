@@ -35,7 +35,8 @@
                             'needpay' => array('<a href="/answers/view/6"><i id="help"></i>Какие способы оплаты вы принимаете?</a>'),
                             'current' => array('<a href="/answers/view/78"><i id="help"></i>Инструменты заказчика</a>', '<a href="/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a>'),
                             'finish' => array('<a href="/answers/view/63"><i id="help"></i>Как работает завершающий этап?</a>'),
-                            'winner' => array('<a href="/answers/view/70"><i id="help"></i>Как объявить победителя или номинировать работу?</a>')
+                            'winner' => array('<a href="/answers/view/70"><i id="help"></i>Как объявить победителя или номинировать работу?</a>'),
+                            'winner' => array('<a href="/answers/view/97"><i id="help"></i>Как выбрать второго победителя?</a>'),
 
                         );
                         $types = array();
@@ -56,6 +57,14 @@
                             $types['needpay'] = 0;
                             $types['finish'] = 0;
                             $types['winner'] = 0;
+                            $fast_url = '';
+                            $fastpitch = strpos($mypitch->title, 'Логотип в один клик');
+                            if ($fastpitch !== false) {
+                                $fast_url = '/pitches/fastpitch/'. $mypitch->id;
+                            } else {
+                                $fast_url = '/pitches/edit/'. $mypitch->id;
+                            }
+                            
                             if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
                                 continue;
                             endif;
@@ -76,7 +85,7 @@
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
                                         $types['needpay'] += 1?>
-                                        <a href="/pitches/edit/<?=$mypitch->id?>" >Ожидание оплаты</a>
+                                    <a href="<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
                                         $types['needpay'] += 1?>
@@ -101,8 +110,10 @@
                                 <?php if ($mypitch->status < 1):?>
                                 <td class="pitches-edit mypitches">
                                     <?php if($mypitch->billed == 0):?>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                    <a href="<?= $fast_url ?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                    <?php if($fastpitch === false):?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                                    <?php endif; ?>
                                     <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                                     <?php else:?>
                                     <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
@@ -186,7 +197,7 @@
     </div>
 </div>
 <?php endif?>
-<div id="header-bg">
+<div id="header-bg" <?php if($this->_request->action == 'feed'): echo 'style="height: 60px;"'; endif;?>>
 
     <header class="<?=$header?>">
 
@@ -199,10 +210,10 @@
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">
             <?php if($this->user->getNewEventsCount() > 0):?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
-                <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::office', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
+                <a href="/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
+                <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::feed', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
             <?php else:?>
-                <a href="/users/office" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
+                <a href="/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
             <?php endif?>
 
         <?php else:?>
@@ -219,7 +230,7 @@
                 <?php endif?>
             </div>
             <ul class="header-menu">
-                <li class="header-menu-item"><a href="/users/office">Обновления</a></li>
+                <li class="header-menu-item"><a href="/users/feed">Обновления</a></li>
                 <li class="header-menu-item"><a href="/users/mypitches">Мои питчи</a></li>
                 <li class="header-menu-item"><a href="/users/profile">Профиль</a></li>
                 <li class="header-menu-item"><a href="/users/solutions">Решения</a></li>

@@ -1,0 +1,130 @@
+@font-face {
+    font-family: 'HelveticaNeue Bold';
+    src: url('fonts/helvetica-neue-bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+#fastpitch {
+    display: block;
+    margin-top: 35px;
+    width: 330px;
+    font-size: 12px; /* 'HelveticaNeue Bold', serif;*/
+    padding: 4px 18px;
+    height: 41px;
+    line-height: 41px;
+}
+#top-logo-oneclick {
+    height:322px;
+    background: url(/img/main_banner_logo_one_click.png) no-repeat;
+    margin:-43px auto 0;
+    width:958px;
+    position:relative;
+}
+label#phone {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    width: 210px;
+}
+label#phone:after {
+    color: #ff585d;
+    content: "*";
+    margin-left: 1px;
+}
+input.input-phone {
+    color: #4f5159;
+    float: left;
+    font-size: 16px !important; /*"RodeoC",sans-serif */
+    height: 50px;
+    width: 270px;
+    padding: 0 16px;
+    border: medium none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+}
+input.input-phone:focus {
+    outline: none;
+
+}
+.middle_inner_oneclick {
+    background: url(/img/main_bg.jpg) repeat;
+    padding: 0 34px 30px 63px;
+}
+span.and_phone{
+    margin-left:38px;
+    margin-right:33px;
+    margin-top: 8px;
+    display: inline-block;
+    font: 24px "RodeoC",sans-serif !important;
+}
+.middle_inner_oneclick h1.head {
+    margin-bottom:30px;
+}
+.middle_inner_oneclick h1 {
+    font: 24px "RodeoC", serif;
+    margin: 9px 0 30px 0;
+    text-shadow: 1px 0 0 #eaeaea;
+}
+.middle_inner_oneclick ul.oneclick {
+    list-style-type: disc;
+    margin-left: 17px;
+}
+ul.oneclick li {
+    padding-bottom: 5px;
+    line-height: 28px;
+}
+ul.date {
+    margin: 0;
+    padding: 4px;
+    width: 375px;
+    margin-bottom:45px;
+    margin-left:2px;
+    overflow:hidden;
+    position: absolute;
+    top: 116px;
+    left: 333px;
+}
+ul.date li,ul.date-hide li {
+    display: inline-block;
+    padding: 3px 0 3px 53px;
+    vertical-align: middle;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+ul.date-hide {
+    display: none;
+    margin-top: 38px;
+    width: 750px;
+    padding-left: 4px;
+}
+ul.date-hide li {
+    padding: 10px 54px 0 0;
+}
+input[type="radio"] {
+    margin-right: 10px;
+}
+#time-label {
+    position: absolute;
+    top: 95px;
+    left: 392px;
+    font-size: 16px;
+    width: 300px;
+}
+label#time-label:after {
+    color: #ff585d;
+    content: "*";
+    margin-left: 1px;
+}
+
+#ap_content_top_l {
+    width: 568px;
+}
+
+.regular {
+    font: 16px "Arial", sans-serif;
+}
+span {
+    line-height: 28px !important;
+}
+#ap_content_top_l input {
+    margin-bottom: 3px;
+}

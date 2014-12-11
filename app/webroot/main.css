@@ -32,6 +32,15 @@ ul, ol {
 
 /* General
 -----------------------------------------------------------------------------*/
+@font-face {
+    font-family: 'OfficinaSansC Book';
+    src: url('fonts/officinasansbookc.eot');
+    src: url('fonts/officinasansbookc.eot') format('embedded-opentype'),
+        url('fonts/officinasansbookc.woff2') format('woff2'),
+        url('fonts/officinasansbookc.woff') format('woff'),
+        url('fonts/officinasansbookc.ttf') format('truetype'),
+        url('fonts/officinasansbookc.svg#OfficinaSansBookCRegular') format('svg');
+}
 
 html {
     overflow-y: scroll;
@@ -106,25 +115,24 @@ input[type="password"] {
     -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .2);
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, .2);
 }
+input#searchTerm {
+    color: #666;
+}
 input::-webkit-input-placeholder {
-    color: #ccc;
+    color: #ccc !important;
     line-height: 48px;
-    /*text-transform: uppercase;*/
 }
 input:-moz-placeholder {
-    color: #ccc;
+    color: #ccc !important;
     line-height: 48px;
-    text-transform: uppercase;
 }
 input:-ms-input-placeholder {
-    color: #ccc;
+    color: #ccc !important;
     line-height: 48px;
-    text-transform: uppercase;
 }
 input.placeholder {
-    color: #ccc;
+    color: #ccc !important;
     line-height: 48px;
-    text-transform: uppercase; /* !important was here and I don't remember why */
     font-size: 11px;
 }
 #requesthelp input.placeholder {
@@ -413,7 +421,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     float: left;
     margin-left: -8px;
     margin-top: -36px;
-    position: relative;
+    position: absolute;
     z-index: 5;
 }
 .logo a {
@@ -471,7 +479,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     float: left;
     padding-top: 10px;
     height: 44px;
-    margin-left: -128px;
+    margin-left: 128px;
     padding-left: 35px;
     position: relative;
     z-index: 6;
@@ -1092,7 +1100,7 @@ p.full_pitch a {
 }
 .footer-inner {
     padding-top: 12px;
-    width: 914px;
+    width: 925px;
     padding-left: 40px;
 }
 .social {
@@ -2035,7 +2043,7 @@ textarea.placeholder {
     outline:none;
 }
 .pitch-category .main {
-    padding: 60px 53px 30px;
+    padding: 20px 53px 30px;
 }
 .pitch-category h2,
 .add-pitch h2 {
@@ -2586,9 +2594,9 @@ td.price.mypitches {
     border-right:#575864 1px solid;
 }
 td.pitches-status.mypitches {
-	width: 135px;
-	text-align:center;
-	font-family: "Helvetica Bold", "Helvetica Neue";
+    width: 135px;
+    text-align:center;
+    font-family: "Helvetica Bold", "Helvetica Neue";
     /*width: 135px;*/
 }
 td.pitches-status.mypitches a {
@@ -2596,14 +2604,14 @@ td.pitches-status.mypitches a {
     font-size: 11px; 
 }
 td img.pitches-image{
-	height:80px;
-	width:105px
+    height:80px;
+    width:105px
 }
 td.pitches-status.mypitches a.pitches-finish {
-	color: #4f8b5c;
-	display:block;
-	padding-left:35px;
-	text-align:left;
+    color: #4f8b5c;
+    display:block;
+    padding-left:35px;
+    text-align:left;
     /*color: #ff575d;*/
 }
 td.pitches-status.mypitches a.pitches-time {
@@ -3481,7 +3489,8 @@ div.no-result p {
     text-align: center;
     line-height: 22px;
     color: #666666;
-    margin-bottom: 28px;
+    margin-bottom: 18px;
+    width: 698px;
 }
 .register_who {
     text-align: center;
@@ -3679,4 +3688,53 @@ div.no-result p {
     width: 451px;
     height: 19px;
     background: url(img/popup-submit-bottom.png) 0 50% no-repeat;
+}
+
+#popup-final-step {
+    position: relative;
+    height: 560px;
+}
+#popup-final-step h3 {
+    margin: 45px 0 0.6em !important;
+}
+#popup-final-step {
+    padding: 0 47px 0 58px;
+    font: 14px/1.5em Arial, Helvetica, sans-serif;
+    color: #666;
+    text-shadow: 1px 1px 1px #FFF;
+    width: 575px;
+    background-color: #E1E1E1;
+    position: absolute;
+    top: 91px;
+    left: 47px;
+    height: 508px;
+}
+
+.rss-img {
+    margin-left: 25px;
+    width: 88% !important;
+    padding-left: 33px;
+}
+
+.rss-img:before {
+    background: url(/img/rss-on-button.png) no-repeat;
+    content: '';
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    z-index: 0;
+    top: 3px;
+    left: 72px;
+}
+
+.fontBookC {
+    font: 17px/20px OfficinaSansC Book, serif;
+    text-shadow: -1px 0 0 #ffffff;
+} 
+
+#fastpitch-logo {
+    display: block;
+    background: url("/img/category_logo_case_banner.png") no-repeat scroll 0 8px rgba(0, 0, 0, 0);
+    width: 959px;
+    height: 136px;
 }

@@ -46,8 +46,11 @@
                                         <input type="checkbox" <?php if($solution->selected):?>checked="checked"<?php endif?> class="select_checkbox" data-id="<?=$solution->id?>" style="margin-right: 5px;">
                                     <?php endif; ?>
                                 <?php endif;?>
-                                <span class="number_img">#<?=$solution->num?></span>
-                            <?=$this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false))?>   </div>
+                                <div style="padding-left: 20px; width: 175px;">
+                                    <span class="number_img">#<?=$solution->num?></span>
+                                    <?=$this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false))?>
+                                </div>
+                            </div>
                         </li>
                         <?php endforeach;?>
                     </ul>

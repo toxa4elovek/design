@@ -43,7 +43,8 @@ class AppController extends \lithium\action\Controller {
 
             $topPanel = Pitch::all(array(
                 'with' => array('Category'),
-                'conditions' => array('Pitch.user_id' => Session::read('user.id'), 'Pitch.status' => array('<' => 2)),
+                'conditions' => array(
+                    'Pitch.user_id' => Session::read('user.id'), 'Pitch.status' => array('<' => 2)),
 
             ));
             foreach($topPanel as $pitch):
@@ -56,7 +57,13 @@ class AppController extends \lithium\action\Controller {
             /** ** **/
             //array('conditions' => array('awarded' => array('!=' => 0), 'status' => 1))
             $topPanelDesigner = array();
-            $pitchesToCheck = Pitch::all(array('with' => array('Category'), 'conditions' => array('awarded' => array('!=' => 0), 'status' => 1)));
+            $pitchesToCheck = Pitch::all(array(
+                'with' => array('Category'),
+                'conditions' => array(
+                    'awarded' => array('!=' => 0),
+                    'status' => 1,
+                    'billed' => 1,
+                )));
             foreach($pitchesToCheck as $pitch) {
                 $solution = Solution::first($pitch->awarded);
                 if($solution->user_id == Session::read('user.id')) {
@@ -79,36 +86,36 @@ class AppController extends \lithium\action\Controller {
             }
             Session::write('user.faves', $favesPitchIds);
             if((Session::read('user.blogpost') == null) || (Session::read('user.blogpost.count') == 0)) {
-                    $lastPost = Post::first(array('conditions' => array('published' => 1), 'order' => array('created' => 'desc')));
-                    $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
+                $lastPost = Post::first(array('conditions' => array('published' => 1), 'order' => array('created' => 'desc')));
+                $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
 
-                    if(isset($_COOKIE['counterdata'])) {
-                        $counterData = unserialize($_COOKIE['counterdata']);
-                        if(isset($counterData[Session::read('user.id')])) {
-                            $date = $counterData[Session::read('user.id')]['date'];
-                        }
-                    }
-                    $count = Post::count(array('conditions' => array('created' => array('>' => $date), 'published' => 1)));
-                    Session::write('user.blogpost.count', $count);
-
-                    $counterData = array(Session::read('user.id') => array('date' => $date));
-                    setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
-                }
-
-
-                if((Session::read('user.events') == null) || (Session::read('user.events.count') == 0)) {
-                    $date = date('Y-m-d H:i:s');
-                    if(Session::read('user.events.date') != null) {
-                        $date = Session::read('user.events.date');
-                    }
-                    Session::write('user.events.date', $date);
-                    if($updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, $date)) {
-
-                        Session::write('user.events.count', count($updates));
-                    }else {
-                        Session::write('user.events.count', 0);
+                if(isset($_COOKIE['counterdata'])) {
+                    $counterData = unserialize($_COOKIE['counterdata']);
+                    if(isset($counterData[Session::read('user.id')])) {
+                        $date = $counterData[Session::read('user.id')]['date'];
                     }
                 }
+                $count = Post::count(array('conditions' => array('created' => array('>' => $date), 'published' => 1)));
+                Session::write('user.blogpost.count', $count);
+
+                $counterData = array(Session::read('user.id') => array('date' => $date));
+                setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
+            }
+
+
+            if((Session::read('user.events') == null) || (Session::read('user.events.count') == 0)) {
+                $date = date('Y-m-d H:i:s');
+                if(Session::read('user.events.date') != null) {
+                    $date = Session::read('user.events.date');
+                }
+                Session::write('user.events.date', $date);
+                if($updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, $date)) {
+
+                    Session::write('user.events.count', count($updates));
+                }else {
+                    Session::write('user.events.count', 0);
+                }
+            }
             $user->setLastActionTime();
         }else {
             if(isset($_COOKIE['autologindata'])) {
