@@ -1123,7 +1123,7 @@ function OfficeStatusUpdater() {
                 var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
                 // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
                 var long = false;
-                if ((((object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.pitch.private != '1')) {
+                if ((((object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.solution != null) && (object.pitch.private != '1')) {
                     long = true;
                 }
                 html = '<div class="box" data-eventid="' + object.id + '">';
@@ -1132,6 +1132,7 @@ function OfficeStatusUpdater() {
                                 <a target="_blank" href="/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content box-comment">';
+
                     if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
                         html += '<a href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:';
                     }
