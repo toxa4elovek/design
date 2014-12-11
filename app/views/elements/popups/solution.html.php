@@ -26,7 +26,7 @@
             <div class="separator"></div>
             <div class="solution-info solution-about chapter">
                 <h2>О РЕШЕНИИ</h2>
-                <span id="date" style="color:#878787;">Опубликовано <?=$solution->created?></span><br/>
+                <span id="date" style="color:#878787;">Опубликовано <?= $solution->created ?></span><br/>
                 <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
@@ -54,52 +54,59 @@
                 </table>
             </div>
             <div class="separator"></div>
+            <div class="solution-info solution-tags chapter">
+                <h2>ТЕГИ</h2>
+                <ul class="tags">
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="separator"></div>
             <div class="solution-info solution-share chapter">
 
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-abuse isField"><!--  --></div>
-        <!-- end: Solution Right Panel -->
+            <!-- end: Solution Right Panel -->
         </div>
         <!-- start: Solution Left Panel -->
         <div class="solution-left-panel">
-            <a class="solution-title" href="/pitches/view/<?=$pitch->id?>">
+            <a class="solution-title" href="/pitches/view/<?= $pitch->id ?>">
                 <h1>
-                    <?=$pitch->title?>
+                    <?= $pitch->title ?>
                 </h1>
             </a>
             <!-- start: Soluton Images -->
             <section class="solution-images isField">
                 <div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>
-            <!-- end: Solution Images -->
+                <!-- end: Solution Images -->
             </section>
             <section class="allow-comments">
                 <div class="all_messages">
-                	<div class="clr"></div>
+                    <div class="clr"></div>
                 </div>
-                <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
+                <input type="hidden" value="<?= $pitch->category_id ?>" name="category_id" id="category_id">
                 <?php if ($this->user->isPitchOwner($pitch->user->id) || $this->user->isAdmin()): ?>
-                <div class="separator full"></div>
-                <form class="createCommentForm" method="post" action="/comments/add">
-                	<textarea id="newComment" name="text"></textarea>
-                	<input type="hidden" value="" name="solution_id">
-                	<input type="hidden" value="" name="comment_id">
-                	<input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-                    <input type="button" src="/img/message_button.png" value="Публиковать комментарий для всех" class="button createComment" data-is_public="1" style="margin: 15px 18px 15px 0;">
-                    <input type="button" src="/img/message_button.png" value="Отправить только дизайнеру" class="button createComment" data-is_public="0" style="margin: 15px 0 15px 18px;">
-                	<div class="clr"></div>
-                </form>
+                    <div class="separator full"></div>
+                    <form class="createCommentForm" method="post" action="/comments/add">
+                        <textarea id="newComment" name="text"></textarea>
+                        <input type="hidden" value="" name="solution_id">
+                        <input type="hidden" value="" name="comment_id">
+                        <input type="hidden" value="<?= $pitch->id ?>" name="pitch_id">
+                        <input type="button" src="/img/message_button.png" value="Публиковать комментарий для всех" class="button createComment" data-is_public="1" style="margin: 15px 18px 15px 0;">
+                        <input type="button" src="/img/message_button.png" value="Отправить только дизайнеру" class="button createComment" data-is_public="0" style="margin: 15px 0 15px 18px;">
+                        <div class="clr"></div>
+                    </form>
                 <?php endif; ?>
             </section>
             <!-- start: Comments -->
             <section class="solution-comments isField">
 
-            <!-- end: Comments -->
+                <!-- end: Comments -->
             </section>
-        <!-- end: Solution Left Panel -->
+            <!-- end: Solution Left Panel -->
         </div>
         <div class="clr"></div>
-    <!-- end: Solution Container -->
+        <!-- end: Solution Container -->
     </div>
-<!-- end: Solution overlay -->
+    <!-- end: Solution overlay -->
 </div>
