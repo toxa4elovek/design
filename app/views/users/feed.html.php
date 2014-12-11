@@ -204,7 +204,7 @@
                             <div id="center_sidebar">
                                 <div class="center-boxes" id="updates-box-">
                                     <?php if ($middlePost) : ?>
-                                        <div class="box" data-eventid="<?= $middlePost->id ?>">
+                                        <div class="box" data-middle="true" data-eventid="<?= $middlePost->id ?>">
                                             <p class="img-box">
                                                 <a class="post-link" href="<?= $middlePost->link ?>"><img class="img-post" src="<?= $middlePost->imageurl ?>"></a>
                                             </p>
@@ -214,6 +214,44 @@
                                                 <p class="img-short"><?= $middlePost->short ?></p>
                                                 <p class="timeago">
                                                     <time class="timeago" datetime="<?= $middlePost->created ?>"><?= $middlePost->created ?></time> с сайта <?= $middlePost->host ?></p>
+                                            </div>
+                                            <div class="box-info" style="margin-top: 0;">
+                                                <a style="padding-left: 0;" data-news="1" data-id="<?= $middlePost->id ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $middlePost->allowLike ?>" data-likes="<?= $middlePost->liked ?>" href="#"><?= $middlePost->allowLike ? 'Нравится' : 'Не нравится' ?></a>
+                                            </div>
+                                            <div data-id="<?= $middlePost->id ?>" class="likes">
+                                                <?php
+                                                $likes_count = 0;
+                                                $html_likes = '';
+                                                $likes = (int) $middlePost->liked;
+                                                if ($likes) {
+                                                    foreach ($middlePost->likes as $like) {
+                                                        ++$likes_count;
+                                                        if ($likes > 4) {
+                                                            if ($likes_count == 1) {
+                                                                $html_likes .= '<span class="who-likes"><a class="show-other-likes" data-solid="' . $middlePost->id . '" href="#">';
+                                                            }
+                                                            if ($likes_count == 4) {
+                                                                $other = $likes - $likes_count;
+                                                                $html_likes .= $like->creator . ' и ' . $other . ' других</a> <span>лайкнули новость</span></span>';
+                                                                break;
+                                                            } else {
+                                                                $html_likes .= $like->creator . ', ';
+                                                            }
+                                                        } elseif ($likes < 2) {
+                                                            $html_likes .= '<span class="who-likes"><a target="_blank" href="/users/view/' . $like->user_id . '">' . $like->creator . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like->user->gender) . ' новость</span></span>';
+                                                        } elseif ($likes <= 4) {
+                                                            if ($likes_count == 1) {
+                                                                $html_likes .= '<span class="who-likes">';
+                                                            }
+                                                            $html_likes .= '<a target="_blank" href="/users/view/' . $like->user_id . '">' . $like->creator . '</a>';
+                                                            if ($likes_count == $likes) {
+                                                                $html_likes .= ' <span>лайкнули новость</span></span>';
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                echo $html_likes;
+                                                ?>
                                             </div>
                                         </div>
                                         <?php
@@ -246,7 +284,7 @@
                                                 $long = true;
                                             endif;
                                             ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>" data-type="<?php echo $object['type'] ?>" data-long="<?php echo $long ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>" data-type="<?php echo $object['type'] ?>" data-long="<?php echo $long ?>">
                                                 <?php if ($long): ?>
                                                     <div class="l-img l-img-box" style="padding-top: 0">
                                                         <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
@@ -288,7 +326,7 @@
                                                 <?php endif; ?>
                                             </div>
                                         <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) : ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <a target="_blank" href="/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                                 </div>
@@ -336,7 +374,7 @@
                                                     ?>
                                                 </div></div>
                                         <?php elseif ($object['type'] == 'newsAdded'): ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>"><img class="img-post" src="<?= $object['news']['imageurl'] ?>"></a>
                                                 </p>
@@ -390,7 +428,7 @@
                                                 </div>
                                             </div>
                                         <?php elseif ($object['type'] == 'RatingAdded'): ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <img class="avatar" src="<?= $avatar ?>">
                                                 </div>
@@ -409,7 +447,7 @@
                                         elseif ($object['type'] == 'FavUserAdded'):
                                             $avatarFav = isset($object['user_fav']['images']['avatar_small']) ? $object['user_fav']['images']['avatar_small']['weburl'] : '/img/default_small_avatar.png';
                                             ?>
-                                            <div class="box" data-eventid="<?= $object->id ?>">
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <img class="avatar" src="<?= $avatar ?>">
                                                     <img class="avatar" src="<?= $avatarFav ?>">
@@ -423,7 +461,7 @@
                                             </div>
                                             <?php
                                         elseif ($object['type'] == 'RetweetAdded'):
-                                            echo $object['html'];
+                                        echo $object['html'];
                                         endif;
                                     endforeach;
                                     ?>

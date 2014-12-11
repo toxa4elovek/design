@@ -40,7 +40,7 @@ class AddRetweets extends \app\extensions\command\CronJob {
                     if(!$tweetEvent = Event::first(array('conditions' => array('tweet_id' => $tweet['id_str'])))) {
                         $this->out('Tweet ' . $tweet['id_str'] . ' is not exists in database');
                         $date = new \DateTime($tweet['created_at']);
-                        $date->setTimeZone(new \DateTimeZone('Europe/Kaliningrad'));
+                        $date->setTimeZone(new \DateTimeZone('Europe/Moscow'));
                         Event::create(array(
                             'type' => 'RetweetAdded',
                             'tweet_id' => $tweet['id_str'],
