@@ -1166,11 +1166,12 @@ function OfficeStatusUpdater() {
                 return html;
             },
             this.addRating = function (object, imageurl) {
-                var html = '';
-                var txtsol = (this_user == object.solution.user_id) ? 'ваше ' : '';
+                var html = '',
+                        txtsol = (this_user == object.solution.user_id) ? 'ваше ' : '',
+                        avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                 html += '<div class="box" data-eventid="' + object.id + '">\
                             <div class="l-img">\
-                                <img class="avatar" src="<?= $avatar ?>">\
+                                <img class="avatar" src="' + avatar + '">\
                             </div>\
                             <div class="r-content rating-content">\
                                 <a target="_blank" href="/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оценил', object.user.gender) + txtsol + ' решение\
