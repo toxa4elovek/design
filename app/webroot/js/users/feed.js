@@ -171,12 +171,12 @@ $(document).ready(function () {
     $('p.full_pitch a').live('mouseout', function () {
         $(this).parent().siblings('h2').children().css('color', '#666');
     });
-    if (window.location.pathname.match(/users\/feed/)) {
-        var Updater = new OfficeStatusUpdater();
-        Tip.init();
-        scrollInit();
-        Updater.init();
-    }
+
+    var Updater = new OfficeStatusUpdater();
+    Tip.init();
+    scrollInit();
+    Updater.init();
+
 
     $("#content-news")
             .mouseenter(function () {
@@ -283,7 +283,6 @@ $(document).ready(function () {
                 likes_div = link_parent.closest('.box').find('.likes');
                 likes_div.hide();
             }
-            console.log(span.parent());
             $.get('/' + type_like + '/unlike/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {
                     link.html('Не нравится');
@@ -609,6 +608,91 @@ $(document).ready(function () {
         });
         return false;
     });
+
+
+    if (isAdmin) {
+        var fd = new FormData();
+        var reader = new FileReader();
+        var form_file = false;
+        $(document).on('change', '#news-file', function (e) {
+            var files = e.target.files;
+            $('#previewImage').empty();
+            for (var i = 0, file; file = files[i]; i++) {
+                if (file.type.match('image.*')) {
+                    fd.append('file', file);
+                    form_file = file;
+                    reader.onload = function (e) {
+                        var img = e.target.result;
+                        $('#previewImage').append('<div class="imageContatiner"><img src="' + img + '" width="100" height="100"><div class="remove-image"></div></div>');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+        $(document).on('click', '.remove-image', function (e) {
+            $(this).parent().remove();
+            form_file = false;
+        });
+        $('#submit-news').on('click', function () {
+            var button = $(this);
+            fd.append('title', $('#news-add input[name="news-title"]').val());
+            fd.append('link', $('#news-add input[name="news-link"]').val());
+            fd.append('short', $('#news-add textarea[name="news-description"]').val());
+            fd.append('tags', $('#news-add #news-add-tag').val());
+            fd.append('isBanner', $('#isBanner').is(':checked') ? 1 : 0);
+            if (form_file) {
+                fd.append('file', form_file);
+            }
+            button.text('Обработка');
+            $.ajax({
+                url: '/events/add.json',
+                type: 'post',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.result == true) {
+                        button.text('Сохранено!');
+                        $('#news-add input[name="news-title"]').val('');
+                        $('#news-add input[name="news-link"]').val('');
+                        $('#news-add textarea[name="news-description"]').val('');
+                        $('#news-add #news-add-tag').val('');
+                        Updater.autoupdate();
+                    } else if (result.result == false) {
+                        button.text('Ошибка');
+                    }
+                },
+            });
+            return false;
+        });
+        $('#show-all-fileds').on('click', function () {
+            var label = $(this);
+            if (label.text() == 'Свернуть') {
+                $('.tt-hint').hide();
+                $('#news-add input[name="news-title"]').hide();
+                label.text('Показать все поля');
+                label.removeClass('hide');
+                $('#news-add-tag').hide();
+            } else {
+                $('.tt-hint').show();
+                $('#news-add input[name="news-title"]').show();
+                $('#news-add-tag').show();
+                label.text('Свернуть');
+                label.addClass('hide');
+            }
+        });
+        var tags = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: '/events/newstags.json?name=%QUERY'
+        });
+        tags.initialize();
+        $('#news-add-tag').typeahead(null, {
+            name: 'tags',
+            displayKey: 'tags',
+            source: tags.ttAdapter()
+        });
+    }
 });
 function getUrlVar(key) {
     var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
@@ -648,8 +732,7 @@ function OfficeStatusUpdater() {
             this.autoupdate = function () {
                 $.get('/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate, "pitchDate": self.pitchDate}, function (response) {
                     if (typeof (response.news) != "undefined" && response.news != null) {
-                        news = '';
-                        first_el = 0;
+                        var news = '', first_el = 0;
                         $.each(response.news, function (index, object) {
                             if (first_el == 0) {
                                 self.newsDate = object.created;
@@ -670,8 +753,7 @@ function OfficeStatusUpdater() {
                         self.dateTwitter = $prependEl.first().data('date');
                         $prependEl.prependTo('#content-job').slideDown('slow');
                     }
-                    var html = '';
-                    var solutions = '';
+                    var html = '', solutions = '';
                     if (typeof (response.post) != "undefined" && response.post != 0) {
                         if ($('.box[data-eventid="' + response.id + '"]').length == 0) {
                             var $prependEl = $('<div class="box" data-eventid="' + response.id + '"> \
@@ -692,8 +774,7 @@ function OfficeStatusUpdater() {
                         }
                     }
                     if (typeof (response.pitches) != "undefined") {
-                        var pitches = '';
-                        pitchesCount = 0;
+                        var pitches = '', pitchesCount = 0;
                         $.each(response.pitches, function (index, pitch) {
                             if (pitchesCount == 0)
                                 self.pitchDate = pitch.started;
@@ -708,8 +789,7 @@ function OfficeStatusUpdater() {
                         $prependEl.prependTo('#content-pitches').slideDown('slow');
                     }
                     if (typeof (response.solutions) != "undefined" && response.solutions != null) {
-                        var solutions = '';
-                        solcount = 0;
+                        var solutions = '', solcount = 0;
                         $.each(response.solutions, function (index, solution) {
                             if (solcount == 0)
                                 self.solutionDate = solution.created;
@@ -721,9 +801,9 @@ function OfficeStatusUpdater() {
                                     var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
                                 }
                                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                                    tweetLike = 'Мне нравится этот дизайн! А вам?';
+                                    var tweetLike = 'Мне нравится этот дизайн! А вам?';
                                 } else {
-                                    tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
+                                    var tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
                                 }
                                 solutions += '<div class="solutions-block"> \
                                     <a href="/pitches/viewsolution/' + solution.solution.id + '"><div class="left-sol" style="background: url(' + imageurl + ')"></div></a> \
@@ -908,7 +988,7 @@ function OfficeStatusUpdater() {
             },
             this._priceDecorator = function (price) {
                 price = price.replace(/(.*)\.00/g, "$1");
-                counter = 1;
+                var counter = 1;
                 while (price.match(/\w\w\w\w/)) {
                     price = price.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
                     counter++;
@@ -938,9 +1018,9 @@ function OfficeStatusUpdater() {
                                     var imageurl = solution.solution.images.solution_leftFeed[0].weburl;
                                 }
                                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                                    tweetLike = 'Мне нравится этот дизайн! А вам?';
+                                    var tweetLike = 'Мне нравится этот дизайн! А вам?';
                                 } else {
-                                    tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
+                                    var tweetLike = 'Из всех ' + solution.pitch.ideas_count + ' мне нравится этот дизайн';
                                 }
                                 solutions += '<div class="solutions-block"> \
                                     <a href="/pitches/viewsolution/' + solution.solution.id + '"><div class="left-sol" style="background: url(' + imageurl + ')"></div></a> \
@@ -1036,9 +1116,9 @@ function OfficeStatusUpdater() {
             this.addComment = function (object, imageurl) {
                 var html = '';
                 if (object.user.isAdmin == 1) {
-                    avatar = '/img/icon_57.png';
+                    var avatar = '/img/icon_57.png';
                 } else {
-                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                    var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
                 }
                 var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
                 // Если закрытй питч, или коммент не к решению, то надо скрывать картинки
@@ -1179,7 +1259,6 @@ function OfficeStatusUpdater() {
                                 <a data-id="' + object.solution.id + '" class="like-small-icon-box" data-userid="' + object.solution.user_id + '" data-vote="' + object.allowLike + '" data-likes="' + object.solution.likes + '" href="#">' + like_txt + '</a>\
                             </div>\
                             <div data-id="' + object.solution.id + '" class="likes">';
-                var id = object.solution.id;
                 var likes_count = 0;
                 $.each(object.likes, function (index, like) {
                     likes_count++;
@@ -1211,88 +1290,6 @@ function OfficeStatusUpdater() {
                 html += '</div></div>';
                 return html;
             };
-    if (isAdmin) {
-        var fd = new FormData();
-        var reader = new FileReader();
-        var form_file = false;
-        $(document).on('change', '#news-file', function (e) {
-            var files = e.target.files;
-            $('#previewImage').empty();
-            for (var i = 0, file; file = files[i]; i++) {
-                if (file.type.match('image.*')) {
-                    fd.append('file', file);
-                    form_file = file;
-                    reader.onload = function (e) {
-                        var img = e.target.result;
-                        $('#previewImage').append('<div class="imageContatiner"><img src="' + img + '" width="100" height="100"><div class="remove-image"></div></div>');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        });
-        $(document).on('click', '.remove-image', function (e) {
-            $(this).parent().remove();
-            form_file = false;
-        });
-        $('#submit-news').on('click', function () {
-            var button = $(this);
-            fd.append('title', $('#news-add input[name="news-title"]').val());
-            fd.append('link', $('#news-add input[name="news-link"]').val());
-            fd.append('short', $('#news-add textarea[name="news-description"]').val());
-            fd.append('tags', $('#news-add #news-add-tag').val());
-            fd.append('isBanner', $('#isBanner').is(':checked') ? 1 : 0);
-            if (form_file) {
-                fd.append('file', form_file);
-            }
-            button.text('Обработка');
-            $.ajax({
-                url: '/events/add.json',
-                type: 'post',
-                data: fd,
-                contentType: false,
-                processData: false,
-                success: function (result) {
-                    if (result.result == true) {
-                        button.text('Сохранено!');
-                        $('#news-add input[name="news-title"]').val('');
-                        $('#news-add input[name="news-link"]').val('');
-                        $('#news-add textarea[name="news-description"]').val('')
-                        $('#news-add #news-add-tag').val('')
-                    } else if (result.result == false) {
-                        button.text('Ошибка');
-                    }
-                },
-            });
-            return false;
-        });
-        $('#show-all-fileds').on('click', function () {
-            var label = $(this);
-            if (label.text() == 'Свернуть') {
-                $('.tt-hint').hide();
-                $('#news-add input[name="news-title"]').hide();
-                label.text('Показать все поля');
-                label.removeClass('hide');
-                $('#news-add-tag').hide();
-            } else {
-                $('.tt-hint').show();
-                $('#news-add input[name="news-title"]').show();
-                $('#news-add-tag').show();
-                label.text('Свернуть');
-                label.addClass('hide');
-            }
-        });
-        var tags = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            remote: '/events/newstags.json?name=%QUERY'
-        });
-        tags.initialize();
-        $('#news-add-tag').typeahead(null, {
-            name: 'tags',
-            displayKey: 'tags',
-            source: tags.ttAdapter()
-        });
-    }
 }
 function parse_url_regex(url) {
     var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
