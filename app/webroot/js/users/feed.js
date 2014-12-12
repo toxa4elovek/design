@@ -721,7 +721,7 @@ function OfficeStatusUpdater() {
         self.dateTwitter = $('#twitterDate').data('date');
         self.solutionDate = solutionDate;
         self.date = eventsDate;
-        self.pitchDate = pitchDate;
+        //self.pitchDate = pitchDate;
         $(document).everyTime(90000, function (i) {
             if (self.started) {
                 self.autoupdate();
