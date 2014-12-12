@@ -27,7 +27,7 @@ class SpamDiscountWeekends extends \app\extensions\command\CronJob {
                 'sale' => $complete_hash
             );
             $cache[$complete_hash] = array('user_id' => $pitch->user->id, 'pitch_id' => $pitch->id, 'email' => $pitch->user->email);
-            SpamMailer::designerRemind($data);
+            SpamMailer::discountWeekends($data);
             $count++;
         }
         Rcache::write('SpamDsicountWeek', $cache);
