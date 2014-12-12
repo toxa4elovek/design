@@ -15,19 +15,18 @@
             </tr>
             <tr><td height="24"></td></tr>
             <tr>
-                <td align="center" style="">
-                    <img src="http://godesigner.ru/img/mail/discount_weekends.png" style="text-align: center;" alt="Скидки на выходных" />
+                <td align="center">
+                    <img src="http://godesigner.ru/img/mail/discount_weekends.png" alt="Скидки на выходных" />
                 </td>
             </tr>
             <tr><td height="51"></td></tr>
+            <tr bgcolor="#e1e1e1">
+                <td align="center" valign="top"><img width="571" src="http://godesigner.ru/img/mail/discount_weekends_big.png"/></td>
+            </tr>
             <tr>
                 <td>
                     <table cellpadding="0" cellspacing="0" width="570" align="left" style="border-collapse: collapse;" bgcolor="#e1e1e1">
-                        <tr>
-                            <td align="center">
-                                <img src="http://godesigner.ru/img/mail/discount_weekends_logo.png" style="position:relative;bottom:24px"/>
-                            </td>
-                        </tr>
+                        <tr><td height="12"></td></tr>
                         <tr>
                             <td width="530">
                                 <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
@@ -82,6 +81,7 @@
                             </td>
                         </tr>
                     </table>
+                    <img src="http://godesigner.ru/img/mail/grey_bottom_line.png" width="571" />
                 </td>
             </tr>
         </table>
