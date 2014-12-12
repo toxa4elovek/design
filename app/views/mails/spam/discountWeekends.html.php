@@ -20,12 +20,12 @@
                 </td>
             </tr>
             <tr><td height="51"></td></tr>
-            <tr bgcolor="#e1e1e1">
-                <td align="center" valign="top"><img width="571" src="http://godesigner.ru/img/mail/discount_weekends_big.png"/></td>
-            </tr>
             <tr>
                 <td>
                     <table cellpadding="0" cellspacing="0" width="570" align="left" style="border-collapse: collapse;" bgcolor="#e1e1e1">
+                        <tr>
+                            <td align="center" valign="top"><img width="571" src="http://godesigner.ru/img/mail/discount_weekends_big.png"/></td>
+                        </tr>
                         <tr><td height="12"></td></tr>
                         <tr>
                             <td width="530">
@@ -81,7 +81,7 @@
                             </td>
                         </tr>
                     </table>
-                    <img src="http://godesigner.ru/img/mail/grey_bottom_line.png" width="571" />
+                    <img src="http://godesigner.ru/img/mail/grey_bottom_line.png" width="572" />
                 </td>
             </tr>
         </table>
