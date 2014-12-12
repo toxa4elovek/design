@@ -903,3 +903,14 @@ a.order-button:hover {
     color: #666666;
     text-shadow: -1px 0 0 #FFFFFF;
 }
+.solution-info ul.tags li {
+    background: #e4e8e9;
+    margin-left: 6px;
+    margin-bottom: 7px;
+}
+.solution-info ul.tags li a {
+    margin-left: 0;
+}
+.solution-info.solution-tags .clear {
+    clear: both;
+}

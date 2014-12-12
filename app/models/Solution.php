@@ -12,8 +12,8 @@ use \app\models\Solutionfile;
 use \app\models\Uploadnonce;
 use \app\models\Historysolution;
 use app\models\Task;
-use app\models\Tags;
-use app\models\Solutiontags;
+use \app\models\Tag;
+use \app\models\Solutiontag;
 use \app\extensions\storage\Rcache;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
@@ -23,7 +23,7 @@ use \lithium\storage\Session;
 class Solution extends \app\models\AppModel {
 
     public $belongsTo = array('Pitch', 'User');
-    public $hasMany = array('Like');
+    public $hasMany = array('Like','Solutiontag');
     protected static $_behaviors = array(
         'UploadableSolution'
     );
@@ -144,7 +144,7 @@ http://godesigner.ru/answers/view/73');
         );
         $solution = Solution::create();
         $solution->save($data);
-        Tags::add($formdata,$solution->id);
+        Tag::add($formdata,$solution->id);
         $params = $solution;
         $params->uploadnonce = $formdata['uploadnonce'];
         $params->resortable = $formdata['reSortable'];

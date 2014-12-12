@@ -662,6 +662,8 @@ $(document).ready(function () {
                         $('#news-add textarea[name="news-description"]').val('');
                         $('#news-add #news-add-tag').val('');
                         Updater.autoupdate();
+                        fd = new FormData();
+                        $('#previewImage').empty();
                     } else if (result.result == false) {
                         button.text('Ошибка');
                     }

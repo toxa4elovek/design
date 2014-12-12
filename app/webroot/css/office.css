@@ -600,6 +600,7 @@
 .box h2,.box a h2 {
     font-size: 23px;
     display: inline-block;
+    line-height: 29px;
     color: #2d2d2d;
     padding-top: 16px;
     font-family: OfficinaSansC Bold, serif;
