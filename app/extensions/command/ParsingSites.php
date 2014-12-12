@@ -96,7 +96,11 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing underconsideration.com/fpo/");
         self::ParsingUnderconsideration();
         $this->out('Finished parsing underconsideration.com/fpo/ [' . (time() - $startTimeStamp) . ' sec]');
-
+        
+        $this->out("Starting parsing hel-looks.com");
+        self::hel_looks();
+        $this->out('Finished parsing hel-looks.com [' . (time() - $startTimeStamp) . ' sec]');
+        
         $this->out("Starting fixing tags");
         self::fixTags();
         $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
@@ -550,6 +554,35 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'short' => trim(strip_tags($item->content)),
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->link['href'],
+                                'imageurl' => $matches[1]
+                    ));
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }
+            }
+        }
+    }
+
+    private function hel_looks() {
+        $xml = simplexml_load_file('http://feeds.feedburner.com/hel-looks');
+        $newsList = News::all();
+        foreach ($xml->channel->item as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->pubDate);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                if (isset($matches[1])) {
+                    $news = News::create(array(
+                                'title' => (string) $item->title,
+                                'tags' => 'Мода',
+                                'short' => strip_tags($item->description),
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->link,
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
