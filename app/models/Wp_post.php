@@ -152,9 +152,10 @@ class Wp_post extends \app\models\AppModel {
                     $record->category = 'art';
                     if (isset($record->wp_term_relationships[0]->term_taxonomy_id)) {
                         $category = Wp_term::first(array(
-                            'fields' => array('term_id', 'slug'),
+                            'fields' => array('term_id', 'slug','name'),
                             'conditions' => array('term_id' => $record->wp_term_relationships[0]->term_taxonomy_id)));
                         $record->category = $category->slug;
+                        $record->category_name = $category->name;
                     }
                     if (isset($record->wp_postmeta[0]->meta_value)) {
                         $thumbnail = Wp_postmeta::first(array(

@@ -11,6 +11,7 @@ class ContactMailer extends \li3_mailer\extensions\Mailer {
             'to' => 'team@godesigner.ru',
             'subject' => $data['subject'],
             'data' => $data,
+            'reply-to' => $data['email'],
         ));
     }
 

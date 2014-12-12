@@ -137,7 +137,7 @@
        $('#confirmWinner').data('url', $(this).attr('href'));
        $('#replacingblock').replaceWith(item);
        $('#popup-final-step').modal({
-           containerId: 'final-step',
+           containerId: 'final-step-multi',
            opacity: 80,
            closeClass: 'popup-close'
        });
@@ -191,7 +191,7 @@
     });
 
     // Delete Solution from Solution Popup
-    $('.solution-overlay').on('click', '.delete-solution-popup', function(e) {
+    $(document).on('click', '.delete-solution-popup', function(e) {
         e.preventDefault();
         var item = $('.delete-solution[data-solution="' + $(this).data('solution') + '"]');
         if (item.length > 0) {

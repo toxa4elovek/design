@@ -299,10 +299,10 @@ $(document).ready(function() {
         var type= link.data('type');
         if(type == 'add') {
             var newtype = 'remove';
-            var newText = 'Убрать из избранного';
+            var newText = 'Перестать следить';
         }else{
             var newtype = 'add';
-            var newText = 'Добавить в избранное';
+            var newText = 'Следить за питчем';
         }
         $.post('/favourites/'+ type + '.json', data, function(response) {
             link.data('type', newtype);
