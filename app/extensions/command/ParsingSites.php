@@ -89,6 +89,18 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingWordpress('http://www.typeforyou.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing typeforyou.org [' . (time() - $startTimeStamp) . ' sec]');
 
+        $this->out("Starting parsing abduzeedo.com");
+        self::ParsingAbduzeedo();
+        $this->out('Finished parsing abduzeedo.com [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing underconsideration.com/fpo/");
+        self::ParsingUnderconsideration();
+        $this->out('Finished parsing underconsideration.com/fpo/ [' . (time() - $startTimeStamp) . ' sec]');
+        
+        $this->out("Starting parsing hel-looks.com");
+        self::hel_looks();
+        $this->out('Finished parsing hel-looks.com [' . (time() - $startTimeStamp) . ' sec]');
+        
         $this->out("Starting fixing tags");
         self::fixTags();
         $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
@@ -146,7 +158,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($posts as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if (((string) $item->post_title === (string) $n->title) || $item->category == 'images') {
+                if ((((string) $item->post_title === (string) $n->title) || ($n->link == $item->guid)) || $item->category == 'images') {
                     $trigger = true;
                 }
             }
@@ -252,7 +264,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = false) {
+    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true) {
         $xml = simplexml_load_file($url);
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
@@ -267,7 +279,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $date = new \DateTime($item->pubDate);
                 preg_match($regexp, $item->asXML(), $matches);
                 $image = '';
-                if(isset($matches[1])) {
+                if (isset($matches[1])) {
                     $image = $matches[1];
                 }
                 $news = News::create(array(
@@ -310,6 +322,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
@@ -356,6 +369,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'imageurl' => $url . $image
                 ));
                 $news->save();
+                Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
             }
         }
     }
@@ -413,6 +427,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $image
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
@@ -456,6 +471,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $image
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
@@ -483,6 +499,94 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'imageurl' => $matches[1]
                     ));
                     $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }
+            }
+        }
+    }
+
+    private function ParsingAbduzeedo() {
+        $xml = simplexml_load_file('http://feeds.feedburner.com/abduzeedo');
+        $newsList = News::all();
+        foreach ($xml->channel->item as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->pubDate);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                if (isset($matches[1])) {
+                    $news = News::create(array(
+                                'title' => (string) $item->title,
+                                'tags' => 'Дизайн',
+                                'short' => strip_tags($item->description),
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->link,
+                                'imageurl' => $matches[1]
+                    ));
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }
+            }
+        }
+    }
+
+    private function ParsingUnderconsideration() {
+        $xml = simplexml_load_file('http://feeds.feedburner.com/ucllc/fpo');
+        $newsList = News::all();
+        foreach ($xml->entry as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->content, $matches);
+                if (isset($matches[1])) {
+                    $news = News::create(array(
+                                'title' => $item->title,
+                                'tags' => trim($item->category['term']),
+                                'short' => trim(strip_tags($item->content)),
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->link['href'],
+                                'imageurl' => $matches[1]
+                    ));
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }
+            }
+        }
+    }
+
+    private function hel_looks() {
+        $xml = simplexml_load_file('http://feeds.feedburner.com/hel-looks');
+        $newsList = News::all();
+        foreach ($xml->channel->item as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->pubDate);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                if (isset($matches[1])) {
+                    $news = News::create(array(
+                                'title' => (string) $item->title,
+                                'tags' => 'Мода',
+                                'short' => strip_tags($item->description),
+                                'created' => $date->format('Y-m-d H:i:s'),
+                                'link' => $item->link,
+                                'imageurl' => $matches[1]
+                    ));
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
             }
         }
