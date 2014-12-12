@@ -11,23 +11,29 @@
                     <div style="line-height: 5px;">
                         <a href="http://godesigner.ru" target="_blank" style="border: none; text-decoration: none;"><span style="border: none; text-decoration: none;"></span><img src="http://godesigner.ru/img/mail/logo.png" alt="Go Designer" width="201" height="84" border="0" valign="top" /></a>
                     </div>
-                    <img src="http://godesigner.ru/img/mail/discount_weekends.png" style="display:block;margin:24px auto 27px;"  alt="Скидки на выходных" />
                 </td>
             </tr>
             <tr><td height="24"></td></tr>
             <tr>
+                <td align="center">
+                    <img src="http://godesigner.ru/img/mail/discount_weekends.png" alt="Скидки на выходных" />
+                </td>
+            </tr>
+            <tr><td height="51"></td></tr>
+            <tr bgcolor="#e1e1e1">
+                <td align="center" valign="top"><img width="571" src="http://godesigner.ru/img/mail/discount_weekends_big.png"/></td>
+            </tr>
+            <tr>
                 <td>
                     <table cellpadding="0" cellspacing="0" width="570" align="left" style="border-collapse: collapse;" bgcolor="#e1e1e1">
+                        <tr><td height="12"></td></tr>
                         <tr>
-                            <td width="20"></td>
                             <td width="530">
-                                <img src="http://godesigner.ru/img/mail/discount_weekends_logo.png" style="display: block;margin: -25px auto 0;" align="middle" />
                                 <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
-                                    <tr><td height="18"></td></tr>
                                     <tr>
-                                        <td align="center"><span style="color:#7d7c7c;line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;line-height:2">
+                                        <td align="center"><span style="color:#7d7c7c;font-size: 14px; font-family: Arial, sans-serif;line-height:2">
                                                 Мы заметили, что вы хотели создать<br />
-                                                <a style="color:#f45151;" href="http://www.godesigner.ru/users/sale?id=<?= $sale ?>"><?= $pitch->title ?></a><br />
+                                                <a style="color:#f45151;text-decoration: none;" href="http://www.godesigner.ru/users/sale?id=<?= $sale ?>"><?= $pitch->title ?></a><br />
                                                 Специально для вас у нас есть предложение:<br />
                                                 Оплатите питч в эту субботу или воскресенье, и минимальный<br />
                                                 гонорар на логотип изменится с 8000р до 6000р.,<br />
@@ -40,11 +46,11 @@
                                             <a href="http://www.godesigner.ru/users/sale?id=<?= $sale ?>" target="_blank"><img src="http://godesigner.ru/img/mail/go_to_project.png" alt="Войти и заполнить реквизиты" border="0" width="500" height="50" /></a>
                                         </td>
                                     </tr>
-                                    <tr><td height="30"></td></tr>
+                                    <tr><td height="15"></td></tr>
                                     <tr><td height="1" bgcolor="#dddddd"></td></tr>
                                     <tr><td height="1" bgcolor="#d4d4d4"></td></tr>
                                     <tr><td height="1" bgcolor="#f7f7f7"></td></tr>
-                                    <tr><td height="30"></td></tr>
+                                    <tr><td height="15"></td></tr>
                                     <tr>
                                         <td align="center">
                                             <a href="https://www.facebook.com/godesigner.ru" target="_blank"><img src="http://godesigner.ru/img/mail/facebook.png" alt="Facebook" border="0" /></a>
@@ -71,11 +77,11 @@
                                             </span>
                                         </td>
                                     </tr>
-                                    <tr><td height="15"></td></tr>
                                 </table>
                             </td>
                         </tr>
                     </table>
+                    <img src="http://godesigner.ru/img/mail/grey_bottom_line.png" width="571" />
                 </td>
             </tr>
         </table>
