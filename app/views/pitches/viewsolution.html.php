@@ -62,7 +62,7 @@
                     <h2>ТЕГИ</h2>
                     <ul class="tags">
                         <?php foreach ($solution->tags as $v) : ?>
-                        <li><a href="#"><?= $v ?></a></li>
+                        <li><?= $v ?></li>
                         <?php endforeach; ?>
                     </ul>
                     <div class="clear"></div>
