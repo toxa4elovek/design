@@ -634,11 +634,15 @@ $(document).ready(function () {
             form_file = false;
         });
         $('#submit-news').on('click', function () {
-            var button = $(this);
-            fd.append('title', $('#news-add input[name="news-title"]').val());
-            fd.append('link', $('#news-add input[name="news-link"]').val());
-            fd.append('short', $('#news-add textarea[name="news-description"]').val());
-            fd.append('tags', $('#news-add #news-add-tag').val());
+            var button = $(this),
+            news_title = $('#news-add input[name="news-title"]'),
+            news_txt = $('#news-add textarea[name="news-description"]'),
+            news_link = $('#news-add input[name="news-link"]'),
+            news_tag = $('#news-add #news-add-tag');
+            fd.append('title', news_title.hasClass('placeholder') ? '' : news_title.val());
+            fd.append('link', news_link.hasClass('placeholder') ? '' : news_link.val());
+            fd.append('short', news_txt.hasClass('placeholder') ? '' : news_txt.val());
+            fd.append('tags', news_tag.hasClass('placeholder') ? '' : news_tag.val());
             fd.append('isBanner', $('#isBanner').is(':checked') ? 1 : 0);
             if (form_file) {
                 fd.append('file', form_file);
@@ -721,7 +725,7 @@ function OfficeStatusUpdater() {
         self.dateTwitter = $('#twitterDate').data('date');
         self.solutionDate = solutionDate;
         self.date = eventsDate;
-        self.pitchDate = pitchDate;
+        //self.pitchDate = pitchDate;
         $(document).everyTime(90000, function (i) {
             if (self.started) {
                 self.autoupdate();
@@ -730,7 +734,7 @@ function OfficeStatusUpdater() {
         self.started = 1;
     },
             this.autoupdate = function () {
-                $.get('/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate, "pitchDate": self.pitchDate}, function (response) {
+                $.get('/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate}, function (response) {
                     if (typeof (response.news) != "undefined" && response.news != null) {
                         var news = '', first_el = 0;
                         $.each(response.news, function (index, object) {
