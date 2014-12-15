@@ -919,7 +919,7 @@ class User extends \app\models\AppModel {
         }
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
-            return true;
+            return $data['id_str'];
         } else {
             return false;
         }

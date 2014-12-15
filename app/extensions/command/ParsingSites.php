@@ -69,9 +69,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingPackaginguqam();
         $this->out('Finished parsing packaginguqam.blogspot.ru [' . (time() - $startTimeStamp) . ' sec]');
 
-        $this->out("Starting parsing fuckingyoung.es");
-        self::ParsingWordpress('http://fuckingyoung.es/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
-        $this->out('Finished parsing fuckingyoung.es [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing fuckingyoung.es");
+        //self::ParsingWordpress('http://fuckingyoung.es/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        //$this->out('Finished parsing fuckingyoung.es [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing raneytown.com");
         self::ParsingWordpress('http://raneytown.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
