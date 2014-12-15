@@ -27,7 +27,7 @@ use \app\extensions\helper\MoneyFormatter;
 class User extends \app\models\AppModel {
 
     public $hasOne = array();
-    public $hasMany = array('Pitch');
+    public $hasMany = array('Pitch','Solution');
 
     /**
      * Fill Admin role user's ids here

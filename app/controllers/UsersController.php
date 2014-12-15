@@ -9,6 +9,7 @@ use \app\models\Solution;
 use \app\models\Wincomment;
 use \app\models\Grade;
 use \app\models\Pitch;
+use app\models\Post;
 use \app\models\Event;
 use \app\models\News;
 use \app\models\Invite;
@@ -38,7 +39,7 @@ class UsersController extends \app\controllers\AppController {
      * @var array
      */
     public $publicActions = array(
-        'vklogin', 'unsubscribe', 'registration', 'login', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed'
+        'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed'
     );
     public $nominatedCount = false;
 
@@ -711,7 +712,12 @@ class UsersController extends \app\controllers\AppController {
                     $userToLog = User::first(array('conditions' => array('id' => $user->id)));
                     $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                     $userToLog->setLastActionTime();
-                    $res = UserMailer::verification_mail($userToLog);
+                    if ($user->isClient) {
+                        $post = Post::all(array('order' => array('id' => 'desc'), 'conditions' => array('limit' => 2)));
+                        $res = UserMailer::verification_mail_client($userToLog, $post->data());
+                    } else {
+                        $res = UserMailer::verification_mail($userToLog);
+                    }
                     // производим аутентификацию
                     Auth::set('user', $userToLog->data());
 
@@ -1533,6 +1539,25 @@ class UsersController extends \app\controllers\AppController {
         }
     }
 
+    public function sale() {
+        if (isset($this->request->query['id']) && strlen($this->request->query['id']) > 0) {
+            $cache = Rcache::read('SpamDsicountWeek');
+            $email_hash = $this->request->query['id'];
+            if (array_key_exists($email_hash, $cache)) {
+                $data = $cache[$email_hash];
+                $hash = sha1($data['user_id'] . 'spmWeek');
+                $complete_hash = sha1($hash . $data['pitch_id'] . $data['email']);
+                if ($complete_hash === $email_hash) {
+                    $user = User::first($data['user_id']);
+                    Auth::set('user', $user->data());
+                    unset($cache[$complete_hash]);
+                    Rcache::write('SpamDsicountWeek', $cache);
+                    return $this->redirect(array('controller' => 'pitches', 'action' => 'view', 'id' => $data['pitch_id']));
+                }
+            }
+        }
+        return $this->redirect('/');
+    }
 }
 
 class qqUploadedFileXhr {
