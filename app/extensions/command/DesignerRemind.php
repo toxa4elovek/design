@@ -21,7 +21,7 @@ class DesignerRemind extends \app\extensions\command\CronJob {
         $count = 0;
         foreach ($users as $user) {
             $data = array(
-                'email' => $users->email,
+                'email' => $user->email,
                 'subject' => 'Добро пожаловать!',
                 'pitches' => $pitches,
                 'posts' => $posts
