@@ -19,7 +19,7 @@ $(document).ready(function() {
        theme_advanced_resizing : true,
        content_css : "/css/brief_wysiwyg.css",
        language : "ru",
-       height : "180",
+       height : "240",
        width: '538',
        relative_urls: false,
        remove_script_host: false,
