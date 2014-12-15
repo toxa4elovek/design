@@ -98,7 +98,7 @@ endswitch;
 
 <div class="wrapper">
 
-            <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
+    <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
     <input type="hidden" id="referal" value="<?= $referal; ?>">
     <input type="hidden" id="referalId" value="<?= $referalId; ?>">
     <aside class="summary-price expanded">
@@ -167,9 +167,9 @@ endswitch;
             }
             ?>
 
-<?php echo renderNumBox($category->id) ?>
+            <?php echo renderNumBox($category->id) ?>
 
-<?php if ($category->id == 7): ?>
+            <?php if ($category->id == 7): ?>
                 <div class="groupc">
                     <p>
                         <label>Выберите вид копирайтинга</label>
@@ -181,7 +181,7 @@ endswitch;
                         <li><label><input type="checkbox" name="third-option" value="2" class="sub-check specific-group"  style="vertical-align: middle;"><span class="radiospan">Слоган / лозунг</span></label></li>
                     </ul>
                 </div>
-<?php endif; ?>
+            <?php endif; ?>
 
             <div class="set-price">
                 <p>
@@ -262,21 +262,21 @@ endswitch;
             </div>
 
             <ul class="experts">
-<?php
-$imageArray = array(
-    1 => '/img/temp/expert-1.jpg',
-    2 => '/img/temp/expert-2.jpg',
-    3 => '/img/jara_174.png',
-    4 => '/img/temp/expert-4.jpg',
-    5 => '/img/experts/nesterenko174.jpg',
-    6 => '/img/experts/efremov174.jpg',
-    7 => '/img/experts/percia_174.png',
-    8 => '/img/experts/makarov_dmitry_174.png',
-);
+                <?php
+                $imageArray = array(
+                    1 => '/img/temp/expert-1.jpg',
+                    2 => '/img/temp/expert-2.jpg',
+                    3 => '/img/jara_174.png',
+                    4 => '/img/temp/expert-4.jpg',
+                    5 => '/img/experts/nesterenko174.jpg',
+                    6 => '/img/experts/efremov174.jpg',
+                    7 => '/img/experts/percia_174.png',
+                    8 => '/img/experts/makarov_dmitry_174.png',
+                );
 
-foreach ($experts as $expert): if ($expert->enabled == 0)
-        continue;
-    ?>
+                foreach ($experts as $expert): if ($expert->enabled == 0)
+                        continue;
+                    ?>
                     <li>
                         <a href="/experts/view/<?= $expert->id ?>" target="_blank" class="photo"><img src="<?= $imageArray[$expert->id] ?>" alt="<?= $expert->name ?>"></a><!-- .photo -->
                         <p class="select"><input type="checkbox" name="" class="expert-check" data-id="<?= $expert->id ?>" data-option-title="экспертное мнение" data-option-value="<?= $expert->price ?>"></p><!-- .select -->
@@ -285,7 +285,7 @@ foreach ($experts as $expert): if ($expert->enabled == 0)
                             <dd><a href="/experts/view/<?= $expert->id ?>" target="_blank"><?= $expert->spec ?></a></dd>
                         </dl>
                     </li>
-<?php endforeach ?>
+                <?php endforeach ?>
             </ul><!-- .experts -->
 
             <!--div class="ribbon">
@@ -336,11 +336,11 @@ foreach ($experts as $expert): if ($expert->enabled == 0)
             <div class="groupc">
                 <p>
                     <label class="required">Название питча <a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
-<?php if ($category->id != 7): ?>
+                    <?php if ($category->id != 7): ?>
                         <input type="text" name="title" placeholder="<?= $word1 ?> для Star Lift" data-placeholder="<?= $word1 ?> для Star Lift" required>
-<?php else: ?>
+                    <?php else: ?>
                         <input type="text" name="title" placeholder="Название для строительной фирмы" data-placeholder="Название для строительной фирмы" required>
-<?php endif ?>
+                    <?php endif ?>
                     <input type="hidden" name="category_id" value="<?= $category->id ?>">
                 </p>
                 <label id ="show-types" class="greyboldheader required">Выберите вид деятельности</label>
@@ -408,24 +408,16 @@ foreach ($experts as $expert): if ($expert->enabled == 0)
 
             <div class="groupc">
                 <p>
-                    <label>Описание бизнеса/деятельности <a href="#" class="second tooltip" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
-<?php if ($category->id == 7): ?>
-                        <textarea class="enable-editor" name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"></textarea>
-<?php else: ?>
-                        <textarea class="enable-editor" name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"></textarea>
-            <?php endif ?>
-                </p>
-                <p>
-                <?php if ($category->id == 7): ?>
+                    <?php if ($category->id == 7): ?>
                         <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от копирайтера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
-                <?php else: ?>
+                    <?php else: ?>
                         <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
-                <?php endif ?>
-                <?php if ($category->id == 7): ?>
+                    <?php endif ?>
+                    <?php if ($category->id == 7): ?>
                         <textarea class="enable-editor" id="full-description" name="description" cols="30" rows="10" required placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-placeholder="Где, в основном, будет использоваться название и слоган? Что они должны отражать? Чего стоит избегать?" data-low="70" data-normal="140" data-high="280" ></textarea>
-<?php else: ?>
+                    <?php else: ?>
                         <textarea class="enable-editor" id="full-description" name="description" cols="30" rows="10" required placeholder="<?= $word2 ?>" data-placeholder="<?= $word2 ?>" data-low="70" data-normal="140" data-high="280" ></textarea>
-<?php endif ?>
+                    <?php endif ?>
                 </p>
 
 
@@ -442,15 +434,15 @@ foreach ($experts as $expert): if ($expert->enabled == 0)
                 </div><!-- .indicator -->
             </div><!-- .group -->
 
-<?= $this->view()->render(array('element' => 'brief-create/' . $category->id)) ?>
+            <?= $this->view()->render(array('element' => 'brief-create/' . $category->id)) ?>
 
-<?php if ($category->id != 7): ?>
+            <?php if ($category->id != 7): ?>
                 <div class="groupc">
-    <?php if ($category->id != 1) : ?>
+                    <?php if ($category->id != 1) : ?>
                         <p><label>Можно ли дополнительно использовать материал из банков с изображениями или шрифтами? <a href="#" class="second tooltip" title="Это даст возможность дизайнерам добиться лучшего результата. Профессионалы из мира рекламы часто прибегают к помощи фото-банков для экономии сил, времени или бюджета.">(?)</a></label></p>
-    <?php else: ?>
+                    <?php else: ?>
                         <p><label>Можно ли дополнительно использовать платные шрифты? <a href="#" class="second tooltip" title="Это даст возможность дизайнерам добиться лучшего результата и неповторимого типографического решения.">(?)</a></label></p>
-    <?php endif ?>
+                    <?php endif ?>
                     <div style="float:left;width:50px;height:44px;padding-top:10px;">
                         <input style="vertical-align: middle" type="radio" name="materials" value="0" checked="checked"/><span class="radiospan">Нет</span>
                     </div>
@@ -460,7 +452,7 @@ foreach ($experts as $expert): if ($expert->enabled == 0)
                     <div><input type="text" placeholder="допустимая стоимость одного изображения" style="width: 300px;" name="materials-limit" value=""></div>
 
                 </div>
-<?php endif; ?>
+            <?php endif; ?>
 
 
             <div class="groupc">
@@ -500,7 +492,7 @@ foreach ($experts as $expert): if ($expert->enabled == 0)
                     <label class="required">Формат файла <a href="#" class="second tooltip" title="Необходимо указать формат, который на выходе предоставит вам дизайнер. Мы советуем обратиться в типографию или веб-мастеру и уточнить технические требования.">(?)</a></label>
                 </p>
 
-<?php if ($category->id != 7): ?>
+                <?php if ($category->id != 7): ?>
                     <ul class="extensions">
                         <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="EPS">.EPS</label></li>
                         <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="AI">.AI (Illustrator)</label></li>
@@ -513,18 +505,18 @@ foreach ($experts as $expert): if ($expert->enabled == 0)
                         <li class="graysupplement"><label><input type="checkbox" name="" data-value="TIFF">.TIFF</label></li>
                         <li class="graysupplement"><label><input type="checkbox" name="" data-value="другие">другие</label></li>
                     </ul><!-- .extensions -->
-<?php else: ?>
+                <?php else: ?>
                     <ul class="extensions">
                         <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="DOC">.DOC</label></li>
                         <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="PDF">.PDF</label></li>
                         <li class="graysupplement"><label><input type="checkbox" name="" data-value="другие">другие</label></li>
                     </ul><!-- .extensions -->
-<?php endif; ?>
-<?php if ($category->id != 7): ?>
+                <?php endif; ?>
+                <?php if ($category->id != 7): ?>
                     <textarea name="format-description" cols="30" rows="10" placeholder="Дополнительная информация о файлах: размер, разрешение"></textarea>
-<?php else: ?>
+                <?php else: ?>
                     <textarea name="format-description" cols="30" rows="10" placeholder="Дополнительная информация о файлах: объём текстов в разделах и прочее"></textarea>
-<?php endif; ?>
+                <?php endif; ?>
             </div><!-- .group -->
 
             <div class="groupc">
@@ -559,7 +551,7 @@ foreach ($experts as $expert): if ($expert->enabled == 0)
                     <li class="last current"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
                 </ol><!-- .steps -->
             </form>
-<?= $this->view()->render(array('element' => 'pitchpay'), array('pitch' => $pitch)); ?>
+            <?= $this->view()->render(array('element' => 'pitchpay'), array('pitch' => $pitch)); ?>
         </div><!-- .main -->
 
     </div><!-- .middle -->
