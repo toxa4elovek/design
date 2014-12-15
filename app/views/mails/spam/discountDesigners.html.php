@@ -108,7 +108,7 @@
                             </td>
                         </tr>
                     </table>
-                    <img src="http://godesigner.ru/img/mail/grey_bottom_line.png" width="572" />
+                    <img src="http://godesigner.ru/img/mail/grey_bottom_line.png" width="571" />
                 </td>
             </tr>
         </table>
