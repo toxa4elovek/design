@@ -16,10 +16,10 @@
             <tr><td height="24"></td></tr>
             <tr>
                 <td align="center">
-                    <img src="http://godesigner.ru/img/mail/discount_weekends.png" alt="Скидки на выходных" />
+                    <img src="http://godesigner.ru/img/mail/logo_earn_more.jpg" alt="Скидки на выходных" />
                 </td>
             </tr>
-            <tr><td height="51"></td></tr>
+            <tr><td height="10"></td></tr>
             <tr>
                 <td>
                     <table cellpadding="0" cellspacing="0" width="570" align="left" style="border-collapse: collapse;" bgcolor="#e1e1e1">
@@ -29,12 +29,12 @@
                                 <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
                                     <tr>
                                         <td align="center">
-                                            <span style="color:#7d7c7c;font-size: 14px; font-family: Arial, sans-serif;line-height:2">Привет!</span>
+                                            <span style="color:#7d7c7c;font-size: 16px; font-family: Arial, sans-serif;line-height:2">Привет!</span>
                                         </td>
                                     </tr>
                                     <tr><td height="30"></td></tr>
                                     <tr>
-                                        <td align="center"><span style="color:#7d7c7c;font-size: 14px; font-family: Arial, sans-serif;line-height:2">
+                                        <td align="center"><span style="color:#7d7c7c;font-size: 16px; font-family: Arial, sans-serif;line-height:2">
                                                 Мы заметили, что у тебя накопилось много невостребованных<br />
                                                 идей, и мы хотим помочь их продать по цене в 6000р. Для<br />
                                                 этого зайди в &laquo;Мои решения&raquo; и поставь 5 тегов к каждой<br />
@@ -51,14 +51,20 @@
                                     <tr><td height="24"></td></tr>
                                     <tr>
                                         <td align="center">
-                                            <span style="color:#7d7c7c;font-size: 14px; font-family: Arial, sans-serif;line-height:2">
+                                            <span style="color:#7d7c7c;font-size: 16px; font-family: Arial, sans-serif;line-height:2">
                                                 Подбери 5 слов, которые лучше всего описывают логотип<br />
                                                 и которые употребляются чаще всего.</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align="center">
-                                            <a href="http://www.godesigner.ru/users/solutions" target="_blank"><img src="http://godesigner.ru/img/mail/go_to_project.png" alt="Мои решения" border="0" width="500" height="50" /></a>
+                                            <img src="http://godesigner.ru/img/mail/tags_img.jpg" />
+                                        </td>
+                                    </tr>
+                                    <tr><td height="11"></td></tr>
+                                    <tr>
+                                        <td align="center">
+                                            <a href="http://www.godesigner.ru/users/solutions" target="_blank"><img src="http://godesigner.ru/img/mail/go_to_solutions.jpg" alt="Мои решения" border="0" /></a>
                                         </td>
                                     </tr>
                                     <tr><td height="15"></td></tr>
@@ -66,6 +72,12 @@
                                     <tr><td height="1" bgcolor="#d4d4d4"></td></tr>
                                     <tr><td height="1" bgcolor="#f7f7f7"></td></tr>
                                     <tr><td height="15"></td></tr>
+                                    <tr>
+                                        <td align="center">
+                                            <span style="color: #666; text-transform: uppercase; line-height: 13px; font-size: 11px; font-family: Arial, sans-serif;">А ЕЩЕ МЫ ЧАСТО РАССКАЗЫВАЕМ, ЧТО У НАС ПРОИСХОДИТ, НА</span>
+                                        </td>
+                                    </tr>
+                                    <tr><td height="10"></td></tr>
                                     <tr>
                                         <td align="center">
                                             <a href="https://www.facebook.com/godesigner.ru" target="_blank"><img src="http://godesigner.ru/img/mail/facebook.png" alt="Facebook" border="0" /></a>
