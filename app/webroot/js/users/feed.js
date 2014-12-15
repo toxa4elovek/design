@@ -614,6 +614,12 @@ $(document).ready(function () {
         var fd = new FormData();
         var reader = new FileReader();
         var form_file = false;
+        $(document).bind('keydown', function (e) {
+            if (e.keyCode == 90 && e.shiftKey) {
+                $('#news-add').toggle('fast');
+                $('#news-add-separator').toggle('fast');
+            }
+        });
         $(document).on('change', '#news-file', function (e) {
             var files = e.target.files;
             $('#previewImage').empty();
@@ -635,10 +641,10 @@ $(document).ready(function () {
         });
         $('#submit-news').on('click', function () {
             var button = $(this),
-            news_title = $('#news-add input[name="news-title"]'),
-            news_txt = $('#news-add textarea[name="news-description"]'),
-            news_link = $('#news-add input[name="news-link"]'),
-            news_tag = $('#news-add #news-add-tag');
+                    news_title = $('#news-add input[name="news-title"]'),
+                    news_txt = $('#news-add textarea[name="news-description"]'),
+                    news_link = $('#news-add input[name="news-link"]'),
+                    news_tag = $('#news-add #news-add-tag');
             fd.append('title', news_title.hasClass('placeholder') ? '' : news_title.val());
             fd.append('link', news_link.hasClass('placeholder') ? '' : news_link.val());
             fd.append('short', news_txt.hasClass('placeholder') ? '' : news_txt.val());
