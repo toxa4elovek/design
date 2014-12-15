@@ -910,6 +910,10 @@ a.order-button:hover {
 }
 .solution-info ul.tags li a {
     margin-left: 0;
+    color: #555;
+}
+.solution-info ul.tags li a:hover {
+    text-decoration: underline;
 }
 .solution-info.solution-tags .clear {
     clear: both;

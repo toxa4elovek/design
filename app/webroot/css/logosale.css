@@ -166,3 +166,11 @@ ul.marsh .clear {
     text-transform: uppercase;
     display: none;
 }
+
+ul.tags li a {
+    color: #555;
+}
+
+ul.tags li a:hover {
+    text-decoration: underline;
+}
