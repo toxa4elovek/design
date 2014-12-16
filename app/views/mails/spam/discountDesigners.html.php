@@ -97,7 +97,7 @@
                                                 <a style="color: #999999; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="http://godesigner.ru/viewmail/<?= $hash ?>">
                                                     <span style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;">ЗДЕСЬ</span>
                                                 </a>.<br />
-                                                <a style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="http://www.godesigner.ru/users/unsubscribe<?= $pitch->user->unsubscribeToken() ?>">
+                                                <a style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="http://www.godesigner.ru/users/unsubscribe<?= $user->unsubscribeToken() ?>">
                                                     <span style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;">ОТПИСАТЬСЯ</span>
                                                 </a>
                                                 ОТ РАССЫЛКИ.ОТПРАВЛЕНО ИЗ ГОЛОВНОГО ОФИСА GO DESIGNER, САНКТ- ПЕТЕРБУРГ, РОССИЯ.

@@ -9,10 +9,11 @@ class DiscountDesigner extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the DiscountDesigner command!');
-        $users = User::all(array('conditions' => array(
+        $user = User::first(array('conditions' => array(
                         'isDesigner' => 1,
                         'confirmed_email' => 1), 'with' => 'Solution'));
         $count = 0;
+/*
         foreach ($users as $user) {
             if (count($user->solutions)) {
                 $data = array(
@@ -23,6 +24,19 @@ class DiscountDesigner extends \app\extensions\command\CronJob {
                 $count++;
             }
         }
+*/
+
+        //foreach ($users as $user) {
+            $data = array(
+                //'email' => $user->email,
+                'user' => $user,
+                'subject' => 'Зарабатывай больше!',
+                'email' => 'nyudmitriy@godesigner.ru'
+            );
+            SpamMailer::discountDesigners($data);
+            $count++;
+            //break;
+        //}
         $this->out("$count users emailed");
     }
 
