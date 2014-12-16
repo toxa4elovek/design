@@ -14,7 +14,7 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
     }
 
     public static function verification_mail_client($user,$posts) {
-         return self::_mail(array('to' => $user->email, 'use-smtp' => true, 'subject' => 'Активация аккаунта на сайте Godesigner.ru', 'data' => array('first_name' => $user->first_name, 'token' => $user->token, 'server' => $_SERVER['HTTP_HOST'])));
+         return self::_mail(array('to' => $user->email, 'use-smtp' => true, 'subject' => 'Активация аккаунта на сайте Godesigner.ru', 'data' => array('first_name' => $user->first_name, 'token' => $user->token, 'posts' => $posts,'server' => $_SERVER['HTTP_HOST'])));
     }
 
     public static function forgotpassword_mail($user) {
