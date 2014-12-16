@@ -612,7 +612,6 @@ class UsersController extends \app\controllers\AppController {
                             $userToLog->getFbAvatar();
                             UserMailer::hi_mail($userToLog);
                             $newuser = true;
-
                             if (isset($_COOKIE['fastpitch'])) {
                                 $fastId = unserialize($_COOKIE['fastpitch']);
                                 $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
@@ -621,6 +620,7 @@ class UsersController extends \app\controllers\AppController {
                                 }
                                 $fastPitches->save();
                             }
+                            User::postOnFacebook('TEST');
                         } else {
                             return $this->redirect('Users::login');
                         }

@@ -23,6 +23,7 @@ use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
 use \DirectoryIterator;
 use \app\extensions\helper\MoneyFormatter;
+use app\models\Facebook;
 
 class User extends \app\models\AppModel {
 
@@ -1269,13 +1270,34 @@ class User extends \app\models\AppModel {
      * @param $userid
      * @return object
      */
-    public static function setUserToken($userid) {
-        $user = self::first($userid);
-        if (!$user->token) {
-            $user->token = $user->generateToken();
-            $user->save(null, array('validate' => false));
-        }
-        return $user;
-    }
+	public static function setUserToken($userid) {
+		$user = self::first($userid);
+		if(!$user->token) {
+			$user->token = $user->generateToken();
+			$user->save(null, array('validate' => false));
+		}
+		return $user;
+	}
+        
+    public static function postOnFacebook($text) {
+        $facebook = new Facebook(array(
+            'appId'  => '202765613136579',
+            'secret' => '404ec2eea7487d85eb69ecceea341821',
+        ));
+        $user = $facebook->getUser();
 
+        if ($user) {
+            try {
+                $facebook->api('/me/feed', 'post',array('message' => $text));
+            } catch (FacebookApiException $e) {
+                error_log($e);
+            }
+        }
+        if ($user) {
+            $logoutUrl = $facebook->getLogoutUrl();
+        } else {
+            $loginUrl = $facebook->getLoginUrl();
+            header('Location: ' . $loginUrl);
+        }
+    }
 }
