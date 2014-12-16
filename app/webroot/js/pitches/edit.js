@@ -41,6 +41,52 @@ $(document).ready(function () {
             {title: 'Заголовок', inline: 'span', classes: "greyboldheader"},
             {title: 'Дополнение', inline: 'span', classes: "supplement2"},
         ],
+        setup: function (ed) {
+            // Set placeholder
+            var tinymce_placeholder = $('#' + ed.id);
+            var attr = tinymce_placeholder.attr('data-placeholder');
+            if (typeof attr !== 'undefined' && attr !== false) {
+                var is_default = false;
+
+                ed.onInit.add(function (ed) {
+
+                    var doc = ed.getDoc();
+
+                    tinymce.dom.Event.add(doc, 'blur', function (e) {
+                        if (ed.getContent().length === 0) {
+                            ed.setContent(attr);
+                            is_default = true;
+                        }
+                    });
+                    // get the current content
+                    var cont = ed.getContent();
+
+                    // If its empty and we have a placeholder set the value
+                    if (cont.length == 0) {
+                        ed.setContent(tinymce_placeholder.attr("data-placeholder"));
+
+                        // Get updated content
+                        cont = tinymce_placeholder.attr("data-placeholder");
+                    }
+
+                    // convert to plain text and compare strings
+                    is_default = (cont == tinymce_placeholder.attr("data-placeholder"));
+                    // nothing to do
+                    if (!is_default) {
+                        return;
+                    }
+                });
+                ed.onChange.add(function () {
+                    is_default = false;
+                });
+                ed.onMouseDown.add(function (ed, e) {
+                    if (is_default) {
+                        ed.setContent('');
+                    }
+                });
+
+            }
+        }
     });
 
     /* Download Form Select */
@@ -445,49 +491,49 @@ function FeatureCart() {
         }
         return specificPitchData;
     },
-    this.decoratePrice = function (price) {
-        price += '.-';
-        return price;
-    },
-    this._logoProperites = function () {
-        var array = new Array();
-        $.each($('.slider'), function (i, object) {
-            array.push($(object).slider('value'));
-        })
-        return array;
-    },
-    this._logoTypeArray = function () {
-        var array = new Array();
-        var checkedExperts = $('input:checked', '.look-variants');
-        $.each(checkedExperts, function (index, object) {
-            array.push($(object).data('id'));
-        })
-        return array;
-    },
-    this._formatArray = function () {
-        var array = new Array();
-        var checkedExperts = $('input:checked', '.extensions');
-        $.each(checkedExperts, function (index, object) {
-            array.push($(object).data('value'));
-        })
-        return array;
-    },
-    this._jobArray = function() {
-        var array = new Array();
-        var checkedJob = $('input:checked', '#list-job-type');
-        $.each(checkedJob, function(index, object) {
-            array.push($(object).val());
-        });
-        return array;
-    },
-    this._expertArray = function () {
-        var array = new Array();
-        var checkedExperts = $('input:checked', '.experts');
-        $.each(checkedExperts, function (index, object) {
-            array.push($(object).data('id'));
-        })
-        return array;
-    };
+            this.decoratePrice = function (price) {
+                price += '.-';
+                return price;
+            },
+            this._logoProperites = function () {
+                var array = new Array();
+                $.each($('.slider'), function (i, object) {
+                    array.push($(object).slider('value'));
+                })
+                return array;
+            },
+            this._logoTypeArray = function () {
+                var array = new Array();
+                var checkedExperts = $('input:checked', '.look-variants');
+                $.each(checkedExperts, function (index, object) {
+                    array.push($(object).data('id'));
+                })
+                return array;
+            },
+            this._formatArray = function () {
+                var array = new Array();
+                var checkedExperts = $('input:checked', '.extensions');
+                $.each(checkedExperts, function (index, object) {
+                    array.push($(object).data('value'));
+                })
+                return array;
+            },
+            this._jobArray = function () {
+                var array = new Array();
+                var checkedJob = $('input:checked', '#list-job-type');
+                $.each(checkedJob, function (index, object) {
+                    array.push($(object).val());
+                });
+                return array;
+            },
+            this._expertArray = function () {
+                var array = new Array();
+                var checkedExperts = $('input:checked', '.experts');
+                $.each(checkedExperts, function (index, object) {
+                    array.push($(object).data('id'));
+                })
+                return array;
+            };
     /*this._getTimelimitDays = function() {
      if(self.getOption('Поджимают сроки') > 0) {
      return $('.short-time-limit').data('optionPeriod');
