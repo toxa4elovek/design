@@ -29,12 +29,12 @@
                                 <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
                                     <tr>
                                         <td align="center">
-                                            <span style="color:#7d7c7c;font-size: 16px; font-family: Arial, sans-serif;line-height:2">Привет!</span>
+                                            <span style="color:#666;font-size: 17px; font-family: Arial, sans-serif;line-height:21px">Привет!</span>
                                         </td>
                                     </tr>
                                     <tr><td height="30"></td></tr>
                                     <tr>
-                                        <td align="center"><span style="color:#7d7c7c;font-size: 16px; font-family: Arial, sans-serif;line-height:2">
+                                        <td align="center"><span style="color:#666;font-size: 17px; font-family: Arial, sans-serif;line-height:21px">
                                                 Мы заметили, что у тебя накопилось много невостребованных<br />
                                                 идей, и мы хотим помочь их продать по цене в 6000р. Для<br />
                                                 этого зайди в &laquo;Мои решения&raquo; и поставь 5 тегов к каждой<br />
@@ -45,13 +45,13 @@
                                     <tr><td height="24"></td></tr>
                                     <tr>
                                         <td align="center">
-                                            <h2 style="color:#7d7c7c;font-family: Arial, sans-serif;">Как выставлять теги?</h2>
+                                            <img src="http://godesigner.ru/img/mail/how_insert_tags.jpg" />
                                         </td>
                                     </tr>
                                     <tr><td height="24"></td></tr>
                                     <tr>
                                         <td align="center">
-                                            <span style="color:#7d7c7c;font-size: 16px; font-family: Arial, sans-serif;line-height:2">
+                                            <span style="color:#666;font-size: 17px; font-family: Arial, sans-serif;line-height:21px">
                                                 Подбери 5 слов, которые лучше всего описывают логотип<br />
                                                 и которые употребляются чаще всего.</span>
                                         </td>

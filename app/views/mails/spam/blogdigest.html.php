@@ -102,7 +102,7 @@
                             <tr><td height="15"></td></tr>
                             
                             <tr>
-                                <td align="center"><span style="color: #666666; line-height: 19px; font-size: 14px; font-family: Arial, sans-serif;">Мы пишем, чтобы вам было легче воплощать все ваши задумки, проще путешествовать и интереснее работать через интернет!</td>
+                                <td align="center"><span style="color: #666666; line-height: 19px; font-size: 14px; font-family: Arial, sans-serif;">Мы пишем, чтобы вам было легче воплощать все ваши задумки, проще путешествовать и интереснее работать через интернет!</span></td>
                             </tr>
                             <tr><td height="15"></td></tr>
                             
