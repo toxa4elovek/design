@@ -50,9 +50,11 @@ $(document).ready(function () {
 
                 ed.onInit.add(function (ed) {
 
-                    var doc = ed.getDoc();
+                    var doc = ed.getDoc(),
+                            dom = ed.dom,
+                            el = doc.content_editable ? ed.getBody() : (tinymce.isGecko ? doc : ed.getWin());
 
-                    tinymce.dom.Event.add(doc, 'blur', function (e) {
+                    tinymce.dom.Event.add(el, 'blur', function (e) {
                         if (ed.getContent().length === 0) {
                             ed.setContent(attr);
                             is_default = true;

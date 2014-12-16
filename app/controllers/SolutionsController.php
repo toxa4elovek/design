@@ -168,11 +168,27 @@ class SolutionsController extends \app\controllers\AppController {
                         $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
                     }
                 }
+                $prop = array();
+                $variant = array();
+                if (isset($this->request->data['prop'])) {
+                    $prop = $this->request->data['prop'];
+                }
+                if (isset($this->request->data['variants'])) {
+                    $variant = $this->request->data['variants'];
+                }
+
                 $solutions = $solutions->data();
                 foreach ($solutions as $k => $solution) {
-                    foreach ($black_list as $v) {
-                        if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
-                            unset($solutions[$k]);
+                    $specific = unserialize($solution['pitch']['specifics']);
+                    $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
+                    $diff_variant = count(array_diff($specific['logoType'], $variant));
+                    if ($diff_prop || $diff_variant) {
+                        unset($solutions[$k]);
+                    } else {
+                        foreach ($black_list as $v) {
+                            if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
+                                unset($solutions[$k]);
+                            }
                         }
                     }
                 }
