@@ -62,7 +62,7 @@ $(document).ready(function () {
     }).keyboard('enter', function () {
         if ($(this).val() != '') {
             var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
-            $(this).val('').trim();
+            $(this).val('');
             var filter = $('#filterbox');
             $(box).appendTo(filter);
             if ($(filter).children().length == 5) {
