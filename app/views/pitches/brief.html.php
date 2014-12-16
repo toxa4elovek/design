@@ -416,7 +416,7 @@ $word2 = 'Опишите вид деятельности. Что отличае�
             <div class="groupc">
                 <p>
                     <label class="required">Описание бизнеса и что нужно получить на выходе <a href="#" class="second tooltip" title="Что вы хотите получить от исполнителя? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
-                    <textarea class="enable-editor" id="full-description" name="description" cols="40" rows="10" required placeholder="<?= $word2 ?>" data-placeholder="<?= $word2 ?>" data-low="70" data-normal="140" data-high="380" ></textarea>
+                    <textarea class="enable-editor" id="full-description" name="description" cols="40" rows="10" required data-placeholder="<?= $word2 ?>" data-low="70" data-normal="140" data-high="380" ></textarea>
                 </p>
 
                 <div id="indicator-desc" class="indicator low tooltip" title="Шкала показывает, насколько подробно вы описали то, зачем пришли. Каждое ваше слово поможет дизайнеру.">

@@ -66,6 +66,8 @@
                     <div style="clear:both"></div>
                 </div>
             </div>
+            <a id="adv_search" href="#">Расширенный поиск</a>
+            <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
             <ul class="marsh">
                 <li>
                     <h2 class="greyboldheader">Более 10 тысяч логотипов по цене 9500 рублей</h2>
@@ -78,6 +80,8 @@
                 </li>
             </ul>
             <div class="portfolio_gallery">
+                <h1 id="search_result" class="sale-head regular">Результат поиска</h1>
+                <p class="label_found">Найдено: <span id="logo_found">0</span></p>
                 <ul class="list_portfolio main_portfolio">
                     <?php
                     foreach ($solutions as $solution):
@@ -188,6 +192,7 @@
         <div id="under_middle_inner"></div>
     </div>
 </div>
-<?=$this->view()->render(array('element' => 'popups/solution_sale'))?>
+<?= $this->view()->render(array('element' => 'popups/solution_sale')) ?>
 <?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
-<?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3'), array('inline' => false))?>
+<?=
+$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3'), array('inline' => false))?>
