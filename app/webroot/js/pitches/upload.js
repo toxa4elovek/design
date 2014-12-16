@@ -31,7 +31,7 @@ $(document).ready(function () {
         recalculateBox();
     });
 
-    $('#solution').bind("keypress", function(e) {
+    $('#solution').bind("keypress", function (e) {
         if (e.keyCode == 13) {
             e.preventDefault();
             return false;
@@ -39,20 +39,22 @@ $(document).ready(function () {
     });
 
     var recalculateBox = function () {
-        var baseWidth = 524;
-        $.each($('#filterbox').children(), function (index, object) {
+        var baseWidth = 524,
+                filterbox = $('#filterbox');
+        $.each(filterbox.children(), function (index, object) {
             baseWidth -= $(object).width() + 50;
         });
         $('#searchTerm').width(baseWidth);
-        $('.tt-hint').width(baseWidth);
+        $('#filterContainer .tt-hint').width(baseWidth);
     };
 
     $('#searchTerm').keyboard('space', function () {
         if ($(this).val() != '') {
             var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
             $(this).val('');
-            $(box).appendTo('#filterbox');
-            if ($('#filterbox').children().length == 5) {
+            var filter = $('#filterbox');
+            $(box).appendTo(filter);
+            if ($(filter).children().length == 5) {
                 $('#filterContainer').removeClass('error-searhTerm');
             }
             recalculateBox();
@@ -60,9 +62,10 @@ $(document).ready(function () {
     }).keyboard('enter', function () {
         if ($(this).val() != '') {
             var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
-            $(this).val('');
-            $(box).appendTo('#filterbox');
-            if ($('#filterbox').children().length == 5) {
+            $(this).val('').trim();
+            var filter = $('#filterbox');
+            $(box).appendTo(filter);
+            if ($(filter).children().length == 5) {
                 $('#filterContainer').removeClass('error-searhTerm');
             }
             recalculateBox();
@@ -322,10 +325,10 @@ $(document).ready(function () {
     $('#uploadSolution').click(function () {
         //return false;
         /*if ($('#filterbox').children().length < 5) {
-            $('#filterContainer').addClass('error-searhTerm');
-            alert('Вы не указали 5 тегов');
-            return false;
-        }*/
+         $('#filterContainer').addClass('error-searhTerm');
+         alert('Вы не указали 5 тегов');
+         return false;
+         }*/
         if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
             alert('Вы не выбрали файл для загрузки!');
             return false;
