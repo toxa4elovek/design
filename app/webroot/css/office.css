@@ -954,4 +954,13 @@
 .twitter-tweet {
     width: 600px !important;
     margin-bottom: 20px !important;
+    color: #e0e0e0
+}
+
+.twitter-tweet p {
+    color: #e0e0e0
+}
+
+.twitter-tweet a {
+    color: #e0e0e0
 }
