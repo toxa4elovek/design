@@ -34,7 +34,7 @@
                                     </tr>
                                     <tr><td height="30"></td></tr>
                                     <tr>
-                                        <td align="center"><span style="color:#666;font-size: 17px; font-family: Arial, sans-serif;line-height:21px">
+                                        <td align="center"><span style="color:#666;font-size: 18px; font-family: Arial, sans-serif;line-height:27px">
                                                 Мы заметили, что у тебя накопилось много невостребованных<br />
                                                 идей, и мы хотим помочь их продать по цене в 6000р. Для<br />
                                                 этого зайди в &laquo;Мои решения&raquo; и поставь 5 тегов к каждой<br />
@@ -51,7 +51,7 @@
                                     <tr><td height="24"></td></tr>
                                     <tr>
                                         <td align="center">
-                                            <span style="color:#666;font-size: 17px; font-family: Arial, sans-serif;line-height:21px">
+                                            <span style="color:#666;font-size: 18px; font-family: Arial, sans-serif;line-height:27px">
                                                 Подбери 5 слов, которые лучше всего описывают логотип<br />
                                                 и которые употребляются чаще всего.</span>
                                         </td>
