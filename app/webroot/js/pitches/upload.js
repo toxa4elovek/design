@@ -31,6 +31,13 @@ $(document).ready(function () {
         recalculateBox();
     });
 
+    $('#solution').bind("keypress", function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
     var recalculateBox = function () {
         var baseWidth = 524;
         $.each($('#filterbox').children(), function (index, object) {
@@ -50,6 +57,17 @@ $(document).ready(function () {
             }
             recalculateBox();
         }
+    }).keyboard('enter', function () {
+        if ($(this).val() != '') {
+            var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+            $(this).val('');
+            $(box).appendTo('#filterbox');
+            if ($('#filterbox').children().length == 5) {
+                $('#filterContainer').removeClass('error-searhTerm');
+            }
+            recalculateBox();
+        }
+        return false;
     });
 
     $(document).on('click', '.removeTag', function (e) {
@@ -303,11 +321,11 @@ $(document).ready(function () {
 
     $('#uploadSolution').click(function () {
         //return false;
-        if ($('#filterbox').children().length < 5) {
+        /*if ($('#filterbox').children().length < 5) {
             $('#filterContainer').addClass('error-searhTerm');
             alert('Вы не указали 5 тегов');
             return false;
-        }
+        }*/
         if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
             alert('Вы не выбрали файл для загрузки!');
             return false;
