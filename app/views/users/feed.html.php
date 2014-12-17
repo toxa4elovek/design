@@ -57,12 +57,12 @@
                                 <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
                             </div>
                         </div>
-                        <nav class="main_nav clear" style="width:832px;margin:30px auto 25px;">
+                        <nav class="main_nav clear" style="width:832px;margin:66px auto -50px;">
                             <?= $this->view()->render(array('element' => 'office/nav')); ?>
                         </nav>
                         <div class="new-content group" style="margin-top:10px">
                         <?php else: ?>
-                            <nav class="main_nav clear" style="width:832px;margin:30px auto 25px;">
+                            <nav class="main_nav clear" style="width:832px;margin:66px auto -50px;">
                                 <?= $this->view()->render(array('element' => 'office/nav')); ?>
                             </nav>
                             <div class="new-content group">
