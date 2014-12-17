@@ -113,7 +113,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
             $trigger = false;
             if (($newsList) && (count($newsList) > 0)) {
                 foreach ($newsList as $n) {
-                    if ((string) $post->title === (string) $n->title) {
+                    if (((string) $post->title === (string) $n->title) || ($n->link == 'http://www.godesigner.ru/posts/view/' . $post->id)) {
                         $trigger = true;
                     }
                 }
@@ -270,7 +270,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->channel->item as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link)) {
                     $trigger = true;
                 }
             }
@@ -304,7 +304,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->channel->item as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link)) {
                     $trigger = true;
                 }
             }
@@ -336,7 +336,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->channel->item as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link)) {
                     $trigger = true;
                 }
             }
@@ -380,7 +380,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->entry as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == $item->id)) {
                     $trigger = true;
                 }
             }
@@ -439,7 +439,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->entry as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == $item->id)) {
                     $trigger = true;
                 }
             }
@@ -483,7 +483,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->entry as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == substr($item->link['href'], 0, strpos($item->link['href'], '#')))) {
                     $trigger = true;
                 }
             }
@@ -511,7 +511,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->channel->item as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link)) {
                     $trigger = true;
                 }
             }
@@ -540,7 +540,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->entry as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link['href'])) {
                     $trigger = true;
                 }
             }
@@ -569,7 +569,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         foreach ($xml->channel->item as $item) {
             $trigger = false;
             foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
+                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link)) {
                     $trigger = true;
                 }
             }
