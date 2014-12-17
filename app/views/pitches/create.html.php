@@ -6,7 +6,7 @@
 
         <div class="main">
 
-            <p class="intro_text">Мы не допускаеи создания единого проекта<br /> на логотип и фирменный стиль. <a href="http://www.godesigner.ru/answers/view/95" target="_blank">Подробнее...</a>
+            <p class="intro_text">Мы не допускаем создания единого проекта<br /> на логотип и фирменный стиль. <a href="http://www.godesigner.ru/answers/view/95" target="_blank">Подробнее...</a>
             </p>
 
             <ul>
