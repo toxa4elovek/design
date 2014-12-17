@@ -621,6 +621,7 @@ class UsersController extends \app\controllers\AppController {
                                 }
                                 $fastPitches->save();
                             }
+                            //User::postOnFacebook('TEST');
                         } else {
                             return $this->redirect('Users::login');
                         }
