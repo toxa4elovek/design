@@ -41,6 +41,9 @@
                             <p><?= $banner->short ?></p>
                         </div>
                     </div>
+                    <nav class="main_nav clear" style="width:832px;margin:30px auto 25px;">
+                        <?= $this->view()->render(array('element' => 'office/nav')); ?>
+                    </nav>
                     <div class="new-content group" style="margin-top:10px">
                     <?php elseif ($this->user->getGender() < 1 && $this->user->getId()): ?>
                         <div id="gender-box">
@@ -54,8 +57,14 @@
                                 <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
                             </div>
                         </div>
+                        <nav class="main_nav clear" style="width:832px;margin:30px auto 25px;">
+                            <?= $this->view()->render(array('element' => 'office/nav')); ?>
+                        </nav>
                         <div class="new-content group" style="margin-top:10px">
                         <?php else: ?>
+                            <nav class="main_nav clear" style="width:832px;margin:30px auto 25px;">
+                                <?= $this->view()->render(array('element' => 'office/nav')); ?>
+                            </nav>
                             <div class="new-content group">
                             <?php endif; ?>
                             <div id="l-sidebar-office">
@@ -163,19 +172,19 @@
                                     <!--div id="container-new-pitches">
                                         <div class="rs-header">Новые питчи</div>
                                         <div id="content-pitches">
-                                            <?php
-                                            $count = 0;
-                                            foreach ($pitches as $pitch) :
-                                                if ($count == 0) {
-                                                    $pitchDate = $pitch->started;
-                                                }
-                                                $count++;
-                                                ?>
-                                                <div class="new-pitches">
-                                                    <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.')) ?></div>
-                                                    <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
-                                                </div>
-                                            <?php endforeach; ?>
+                                    <?php
+                                    $count = 0;
+                                    foreach ($pitches as $pitch) :
+                                        if ($count == 0) {
+                                            $pitchDate = $pitch->started;
+                                        }
+                                        $count++;
+                                        ?>
+                                                        <div class="new-pitches">
+                                                            <div class="new-price"><?= $this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.')) ?></div>
+                                                            <div class="new-title"><a href="/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a></div>
+                                                        </div>
+                                    <?php endforeach; ?>
                                             <script type="text/javascript">
                                                 var pitchDate = '<?= date('Y-m-d H:i:s', strtotime($pitchDate)) ?>';
                                             </script>
@@ -461,7 +470,7 @@
                                             </div>
                                             <?php
                                         elseif ($object['type'] == 'RetweetAdded'):
-                                        echo $object['html'];
+                                            echo $object['html'];
                                         endif;
                                     endforeach;
                                     ?>
