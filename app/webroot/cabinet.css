@@ -67,15 +67,15 @@
     margin-left: 0 !important;
 }
 .profile {
-    width: 623px;
-    margin: 20px 39px 10px 0;
+    width: 640px;
+    margin: 20px 10px 10px 0;
     display: inline-block;
 }
 .send_message {
     display: inline;
 }
 .info_profile {
-    width: 623px;
+    width: 645px;
     margin: 23px 0 0 0;
 }
 .main section .profile img {
@@ -253,7 +253,10 @@
 
 .profile-list li {
     margin-bottom: 5px;
-    width: 181px;
+    width: 176px;
+}
+.likes .profile-list li {
+    width: 200px;
 }
 .profile-list-info {
     margin-top: 10px;
@@ -345,7 +348,7 @@ hr.tiny-hr {
     padding-left: 30px;
     float: right;
     top: -3px;
-    right: 7px;
+    right: 27px;
     position: relative;
     line-height: 24px;
 }
