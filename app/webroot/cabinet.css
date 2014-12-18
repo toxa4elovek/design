@@ -2,248 +2,249 @@
 -----------------------------------------------------------------------------*/
 .profile ::-moz-selection {
     background: none;
-    }
+}
 .profile ::selection {
     background: none;
-    }
+}
 .main {
-	background: #e1e1e1;
-	position: relative;
-	border: 1px solid #d2d3d3;
-	border-bottom: none;
-	margin: auto;
+    background: #e1e1e1;
+    position: relative;
+    border: 1px solid #d2d3d3;
+    border-bottom: none;
+    margin: auto;
 }
 .main:after {
-	position: absolute;
-	content: "";
-	height: 7px;
-	bottom: -7px;
-	left: 14px;
-	right: 14px;
-	border: solid #717275;
-	border-width: 0 1px;
-	background: #909090;
-	-webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
-	   -moz-box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
-	        box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
+    position: absolute;
+    content: "";
+    height: 7px;
+    bottom: -7px;
+    left: 14px;
+    right: 14px;
+    border: solid #717275;
+    border-width: 0 1px;
+    background: #909090;
+    -webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, .2);
 }
 .auth .main {
-	width: 953px;
+    width: 953px;
 }
 
 
 .menu {
-	margin: 65px 60px 36px 63px;
-	width: 828px;
-	height: 34px;
-	background: #eaeaea;
-	border: #bebebe 1px solid;
-	border-right: none;
-	border-bottom: none;
+    margin: 65px 60px 36px 63px;
+    width: 828px;
+    height: 34px;
+    background: #eaeaea;
+    border: #bebebe 1px solid;
+    border-right: none;
+    border-bottom: none;
 }
 .menu ul li {	
-	display: inline-block;
-	width: 138px;
-	height: 34px;
-	margin-left: -3px;	
-	vertical-align: middle;
+    display: inline-block;
+    width: 138px;
+    height: 34px;
+    margin-left: -3px;	
+    vertical-align: middle;
 }
 .menu ul li a {
-	display: inline-block;
-	width: 138px;
-	font: normal 12px/1 "RodeoC", sans-serif;
-	text-transform: uppercase;
-	text-decoration: none;
-	color: #b9b9b9;
-	text-align: center;
-	line-height: 34px;
+    display: inline-block;
+    width: 138px;
+    font: normal 12px/1 "RodeoC", sans-serif;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #b9b9b9;
+    text-align: center;
+    line-height: 34px;
 }
 .menu ul li a:hover {
-	color: #fff;
-	background: url("img/menu-hover-bg.png") no-repeat;
-	height: 43px;
+    color: #fff;
+    background: url("img/menu-hover-bg.png") no-repeat;
+    height: 43px;
 }
 .first_li {
-	margin-left: 0 !important;
+    margin-left: 0 !important;
 }
 .profile {
-	width: 623px;
-	margin: 20px 39px 10px 0;
-	display: inline-block;
+    width: 623px;
+    margin: 20px 39px 10px 0;
+    display: inline-block;
 }
 .send_message {
-	display: inline;
+    display: inline;
 }
 .info_profile {
-	width: 623px;
-	margin: 23px 0 0 0;
+    width: 623px;
+    margin: 23px 0 0 0;
 }
 .main section .profile img {
-	margin: 0 0 0 26px;
+    margin: 0 0 0 26px;
 }
 .info_profile_photo {
-	height: 196px;
-	width: 196px;
-	background: #fff;
+    height: 196px;
+    width: 196px;
+    background: #fff;
     border-radius: 2px 2px 2px 2px;
-	float: left;
+    float: left;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 .info_profile_photo img {
-	margin: auto;
+    margin: auto;
     padding: 8px;
 }
 .info_profile_about {
-	float: left;
-	margin: 0 0 0 60px;
-	color: #b1b1b1;
-	font: normal 11px/1 "HelveticaCE35", sans-serif;
-	text-transform: uppercase;
+    float: left;
+    margin: 0 0 0 22px;
+    color: #b1b1b1;
+    font: normal 11px/1 "HelveticaCE35", sans-serif;
+    text-transform: uppercase;
 }
 .info_profile_about .nickname {
-	font: normal 17px/1 "RodeoC", sans-serif;
-	color: #666666;
-	text-transform: none;
+    font: normal 18px OfficinaSansC Bold, serif;
+    color: #666666;
+    text-transform: none;
+    margin-left: 2px;
 }
 .info_profile_about .pitches, .likes {
-	font: bold 11px/1 "HelveticaCE35", sans-serif;
-	text-transform: uppercase;
-	float: left;
+    font: bold 11px/1 "HelveticaCE35", sans-serif;
+    text-transform: uppercase;
+    float: left;
     margin-top: 25px;
 }
 .info_profile_about .likes {
-	margin: 25px 0 0 43px;
+    margin: 25px 0 0 50px;
 }
 .info_profile_about .pitches span, .info_profile_about .likes span {
- 	color: #ff585d;
+    color: #ff585d;
 }
 .about_profile {
-	margin: 0;
+    margin: 0;
 }
 .about_profile dl dt {
-	float: left;
-	margin: 40px 0 0 0; 
+    float: left;
+    margin: 40px 0 0 0; 
 }
 .about_profile dl dd {
-	float: left;
-	width: 360px;
-	margin: 40px 0 0 135px;
+    float: left;
+    width: 360px;
+    margin: 40px 0 0 135px;
 }
 .about_profile .separate {
-	height: 69px;
-	width: 1px;
-	clear: both;
+    height: 34px;
+    width: 1px;
+    clear: both;
 }
 
 
 .auth h2 {
-	text-transform: uppercase;
-	text-align: center;
-	font-weight: normal;
-	margin-bottom: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: normal;
+    margin-bottom: 5px;
 }
 .auth .main .button {
-	width: 244px;
-	padding: 0;
-	display: block;
-	margin: auto;
+    width: 244px;
+    padding: 0;
+    display: block;
+    margin: auto;
 }
 .auth section {
 
 }
 .auth .or {
-	width: 50px;
-	margin: -32px auto 19px;
-	background: #e1e1e1;
+    width: 50px;
+    margin: -32px auto 19px;
+    background: #e1e1e1;
 }
 .auth form p {
-	margin-bottom: 12px;
-	position: relative;
+    margin-bottom: 12px;
+    position: relative;
 }
 .auth input[type="text"],
 .auth input[type="password"] {
-	padding-right: 40px;
-	width: 344px;
+    padding-right: 40px;
+    width: 344px;
 }
 .auth .main input.button {
-	width: 252px;
+    width: 252px;
 }
 .auth .name {
-	background: #fff url("img/form-ico-name.png") 366px 11px no-repeat;
+    background: #fff url("img/form-ico-name.png") 366px 11px no-repeat;
 }
 .auth .email {
-	background: #fff url("img/form-ico-email.png") 366px 9px no-repeat;
+    background: #fff url("img/form-ico-email.png") 366px 9px no-repeat;
 }
 .auth .password {
-	background: #fff url("img/form-ico-password.png") 366px 10px no-repeat;
+    background: #fff url("img/form-ico-password.png") 366px 10px no-repeat;
 }
 .auth .submit {
-	padding-top: 19px;
+    padding-top: 19px;
 }
 .auth .submit .button {
-	margin-bottom: 7px;
+    margin-bottom: 7px;
 }
 .auth .submit small {
-	text-transform: uppercase;
-	font-size: 10px;
-	line-height: 13px;
-	display: block;
-	text-align: center;
-	padding-bottom: 10px;
+    text-transform: uppercase;
+    font-size: 10px;
+    line-height: 13px;
+    display: block;
+    text-align: center;
+    padding-bottom: 10px;
 }
 .auth .submit small a {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 .auth .error {
-	display: none;
-	text-transform: uppercase;
-	line-height: 54px;
-	font-weight: bold;
-	font-size: 12px;
-	text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
-	color: #fff;
-	height: 52px;
-	width: 182px;
-	padding-left: 38px;
-	background: #ff585d;
-	position: absolute;
-	top: -4px;
-	left: -261px;
+    display: none;
+    text-transform: uppercase;
+    line-height: 54px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    color: #fff;
+    height: 52px;
+    width: 182px;
+    padding-left: 38px;
+    background: #ff585d;
+    position: absolute;
+    top: -4px;
+    left: -261px;
 }
 .auth .error:before {
-	content: "";
-	position: absolute;
-	right: -15px;
-	top: 14px;
-	width: 15px;
-	height: 22px;
-	background: url("img/form-error-arrow.png");
-/*	width: 0;
-	height: 0;
-	border: solid #e1e1e1;
-	border-width: 12px 15px;
-	border-left-color: #ff585d;*/
+    content: "";
+    position: absolute;
+    right: -15px;
+    top: 14px;
+    width: 15px;
+    height: 22px;
+    background: url("img/form-error-arrow.png");
+    /*	width: 0;
+            height: 0;
+            border: solid #e1e1e1;
+            border-width: 12px 15px;
+            border-left-color: #ff585d;*/
 }
 .login .submit {
-	padding-top: 4px;
+    padding-top: 4px;
 }
 .login .submit .button {
-	margin-bottom: 9px;
+    margin-bottom: 9px;
 }
 .login .submit small {
-	padding: 0;
+    padding: 0;
 }
 .login .dont-logout {
-	display: block;
-	vertical-align: middle;
-	font-size: 10px;
-	line-height: 13px;
-	margin-bottom: 5px;
-	text-align: center;
-	text-transform: uppercase;
+    display: block;
+    vertical-align: middle;
+    font-size: 10px;
+    line-height: 13px;
+    margin-bottom: 5px;
+    text-align: center;
+    text-transform: uppercase;
 }
 .login .dont-logout input {
-	margin-right: 5px;
+    margin-right: 5px;
 }
 
 .profile-list {
@@ -256,28 +257,45 @@
 .profile-list-info {
     margin-top: 10px;
 }
-
+.profile-list li.regular-small-grey,p.regular-small-grey,p .email-profile {
+    color: #666666;
+    text-shadow: none;
+    font: 17px OfficinaSansC Book, serif;
+    font-weight: normal;
+    text-transform: none;
+}
+p .email-profile {
+    color: #658fa5;
+}
+.profile-list li.regular-small-grey span,p.regular-small-grey span {
+    color: #666666;
+    font-size: 17px;
+    font-family: OfficinaSansC Bold, serif;
+}
 .profile-list-info li {
     margin-bottom: 4px;
 }
 .right-sidebar-user {
-	width: 199px;
+    width: 199px;
     float: right;
     padding: 0;
-    margin: 0;
+    margin: 45px 0 0;
+}
+.right-sidebar-user p {
+    margin-left: 6px;
 }
 .right-sidebar-user a.button {
-	width: 130px;
-	margin-bottom: 10px;
+    width: 130px;
+    margin-bottom: 10px;
 }
 .right-sidebar-user h2 {
     font-size: 16px;
 }
 .right-sidebar-user button {
-	min-width: 90px;
-	padding: 10px;
-	font-size: 14px;
-	margin-bottom: 10px;
+    min-width: 90px;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
     background: #64A470;
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#efefef), to(#e3e3e3));
     background: -webkit-linear-gradient(#efefef, #e3e3e3);
@@ -292,7 +310,7 @@
     border-radius: 2px;
 }
 .right-sidebar-user button:hover {
-	background: #64A470;
+    background: #64A470;
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#e3e3e3), to(#efefef));
     background: -webkit-linear-gradient(#e3e3e3, #efefef);
     background:    -moz-linear-gradient(#e3e3e3, #efefef);
@@ -301,9 +319,90 @@
     background:         linear-gradient(#e3e3e3, #efefef);
 }
 .right-sidebar-user button.odd {
-	margin-right: 10px;
+    margin-right: 10px;
 }
 hr.tiny-hr {
-	border-style: none;
-	border-top: 1px solid #C1C1C1;
+    border-style: none;
+    border-top: 1px solid #C1C1C1;
+}
+
+
+
+.rss-img-profile:before {
+    background: url("/img/rss-on-button.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    content: "";
+    height: 16px;
+    left: 10px;
+    position: absolute;
+    top: 3px;
+    width: 16px;
+    z-index: 0;
+}
+
+#fav-user.rss-img-profile {
+    width: 137px;
+    padding-left: 30px;
+    float: right;
+    top: -3px;
+    right: 7px;
+    position: relative;
+    line-height: 24px;
+}
+
+#enter-name {
+    padding: 5px 60px 5px 13px;
+}
+
+a.order-button,
+button.order-button {
+    text-transform: none;
+    width: 180px;
+    font: 14px Arial, serif;
+    padding: 0 0 0 13px;
+    height: 24px;
+    border-top: 1px solid #cfcfcf;
+    border-bottom: 1px solid #afafaf;
+    border-left: 1px solid #c2c2c2;
+    border-right: 1px solid #c2c2c2;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background: #eeeeee;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#f8f8f8), to(#dedede));
+    background: -webkit-linear-gradient(#f8f8f8, #dedede);
+    background:    -moz-linear-gradient(#f8f8f8, #dedede);
+    background:     -ms-linear-gradient(#f8f8f8, #dedede);
+    background:      -o-linear-gradient(#f8f8f8, #dedede);
+    background:         linear-gradient(#f8f8f8, #dedede);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    text-align: left;
+    color: #717171;
+    text-shadow: 0 1px 1px white;
+    font-size: 12px;
+    font-weight: bold;
+}
+a.order-button:hover,
+button.order-button:hover {
+    background: #efefef;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#c2c2c2), to(#e5e5e5));
+    background: -webkit-linear-gradient(#c2c2c2, #e5e5e5);
+    background:    -moz-linear-gradient(#c2c2c2, #e5e5e5);
+    background:     -ms-linear-gradient(#c2c2c2, #e5e5e5);
+    background:      -o-linear-gradient(#c2c2c2, #e5e5e5);
+    background:         linear-gradient(#c2c2c2, #e5e5e5);
+    box-shadow: 0 1px 1px rgba(100, 100, 100, .1);
+    color: #717171;
+}
+
+span.date-profile {
+    color: #666666;
+    font-family: OfficinaSansC Bold,serif;
+    font-size: 17px;
+}
+
+div.g_line {
+  background: url("img/register-login-divider.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+/*  margin: 30px 0 20px;*/
+  height: 10px;
+  text-align: center;
 }
