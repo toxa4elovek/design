@@ -26,6 +26,14 @@ span.new-price {
 
 #filtertab {
     display: none;
+    border-radius: 10px;
+    padding-top: 14px;
+    margin-left: 25px;
+    width: 617px;
+    height: 406px;
+    background-color: white;
+    z-index: 10;
+    position: absolute;
 }
 
 #goSearch {
@@ -240,4 +248,54 @@ p.label_found {
 }
 #search_result {
     display: none;
+}
+
+.filterlist {
+    float:left;
+    width:176px;
+    margin-left:16px;
+    text-transform: none;
+    height: 200px;
+    margin-top: 12px;
+}
+
+.filterlist li {
+    color: #555555;
+    font-weight: bold;
+    height: 23px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+}
+ul.bottom {
+    float: none;
+    margin-top: 0;
+    width: 100%;
+}
+ul.bottom li {
+    width: 27%;
+    display: inline-block; 
+}
+
+.activityType {
+    width: 200px;
+}
+
+.activityType li {
+    width: 196px;
+}
+.activityType.twoCollumn {
+    width: 165px;
+}
+.activityType.twoCollumn li {
+    width: 144px;
+}
+span.first {
+    display: block;
+    color: #555555;
+    font-weight: bold;
+    height: 23px;
+    margin-top: 28px;
+    padding-left: 30px;
+    padding-right: 15px;
 }

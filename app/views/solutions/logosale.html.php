@@ -27,41 +27,40 @@
                         </tr>
                     </tbody>
                 </table>
-                <div style="border-radius: 10px; padding-top: 14px; margin-left: 25px; width: 617px; height: 347px; background-color: white; z-index: 10; position: absolute;" id="filtertab">
-                    <ul style="float:left;width:105px;margin-left:25px;text-transform: none" class="filterlist">
-                        <li class="first">питчи</li>
-                        <li style="width: 85px;"><a href="#" data-value="all" data-group="type">все</a></li>
-                        <li style="width: 85px;"><a href="#" data-value="current" data-group="type">текущие</a></li>
-                        <li style="width: 85px;"><a href="#" data-value="finished" data-group="type">завершенные</a></li>
+                <div id="filtertab">
+                    <ul class="activityType filterlist">
+                        <li class="first">Вид деятельности</li>
+                        <li><a class="prepTag" href="#">Недвижимость / Строительство</a></li>
+                        <li><a class="prepTag" href="#">Автомобили / Транспорт</a></li>
+                        <li><a class="prepTag" href="#">Финансы / Бизнес</a></li>
+                        <li><a class="prepTag" href="#">Еда / Напитки</a></li>
+                        <li><a class="prepTag" href="#">Реклама / Коммуникации</a></li>
+                        <li><a class="prepTag" href="#">Туризм / Путешествие</a></li>
+                        <li><a class="prepTag" href="#">Спорт</a></li>
+                        <li><a class="prepTag" href="#">Образование / Наука</a></li>
                     </ul>
-                    <ul style="float:left;width:151px;margin-left:25px;text-transform: none" class="filterlist">
-                        <li class="first">категория</li>
-                        <li style=""><a href="#" data-value="all" data-group="category">все</a></li>
-                        <li style=""><a href="#" data-value="1" data-group="category">логотип</a></li>
-                        <li style=""><a href="#" data-value="2" data-group="category">web-баннер</a></li>
-                        <li style=""><a href="#" data-value="3" data-group="category">сайт</a></li>
-                        <li><a href="#" data-value="4" data-group="category">флаер</a></li>
-                        <li><a href="#" data-value="5" data-group="category">фирменный стиль</a></li>
-                        <li><a href="#" data-value="6" data-group="category">страница соцсети</a></li>
-                        <li><a href="#" data-value="7" data-group="category">копирайтинг</a></li>
-                        <li><a href="#" data-value="8" data-group="category">буклет</a></li>
-                        <li><a href="#" data-value="9" data-group="category">иллюстрация</a></li>
-                        <li><a href="#" data-value="10" data-group="category">другое</a></li>
-                        <li><a href="#" data-value="11" data-group="category">упаковка</a></li>
-                        <li><a href="#" data-value="12" data-group="category">реклама</a></li>
+                    <ul class="activityType twoCollumn filterlist">
+                        <li class="first"></li>
+                        <li><a class="prepTag" href="#">Красота / Мода</a></li>
+                        <li><a class="prepTag" href="#">Развлечение / Музыка</a></li>
+                        <li><a class="prepTag" href="#">Искусство / Культура</a></li>
+                        <li><a class="prepTag" href="#">Животные</a></li>
+                        <li><a class="prepTag" href="#">Дети</a></li>
+                        <li><a class="prepTag" href="#">Охрана / Безопасность</a></li>
+                        <li><a class="prepTag" href="#">Медицина / Здоровье</a></li>
                     </ul>
-                    <ul style="float:left;width:85px;margin-left:25px;text-transform: none" class="filterlist">
-                        <li class="first">сроки</li>
-                        <li><a href="#" data-value="1" data-group="timeframe">до 3 дней</a></li>
-                        <li><a href="#" data-value="2" data-group="timeframe">до 7 дней</a></li>
-                        <li><a href="#" data-value="3" data-group="timeframe">до 10 дней</a></li>
-                        <li><a href="#" data-value="4" data-group="timeframe">более 14 дней</a></li>
+                    <ul class="filterlist">
+                        <li class="first">Популярные теги</li>
+                        <?php foreach ($sort_tags as $k => $v): ?>
+                            <li><a class="prepTag" href="#"><?= $k ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
-                    <ul style="float:left;width:160px;margin-left:25px;text-transform: none" class="filterlist">
-                        <li class="first">гонорар</li>
-                        <li style="width:130px"><a href="#" data-value="3" data-group="priceFilter">от 20 000 Р.-</a></li>
-                        <li style="width:130px"><a href="#" data-value="2" data-group="priceFilter">от 10 000 - 20 000 Р.-</a></li>
-                        <li style="width:130px"><a href="#" data-value="1" data-group="priceFilter">от 3 000 - 10 000 Р.-</a></li>
+                    <div style="clear:both"></div>
+                    <span class="first">Популярные запросы</span>
+                    <ul class="bottom filterlist">
+                        <?php foreach ($search_tags as $v) : ?>
+                        <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                     <div style="clear:both"></div>
                 </div>
@@ -103,7 +102,7 @@
                                 <div class="photo_block">
                                     <?php if ($this->solution->getImageCount($solution['images']['solution_galleryLargeSize']) > 1): ?>
                                         <div class="image-count"><?= $this->solution->getImageCount($solution['images']['solution_solutionView']) ?></div>
-                                        <?php endif ?>
+                                    <?php endif ?>
                                     <a style="display:block;" data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>">
                                         <?php if (!isset($solution['images']['solution_galleryLargeSize'][0])): ?>
                                             <img rel="#<?= $solution['num'] ?>"  width="180" height="135" src="<?= $this->solution->renderImageUrl($solution['images']['solution_galleryLargeSize']) ?>">
