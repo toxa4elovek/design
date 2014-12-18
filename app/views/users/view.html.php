@@ -41,7 +41,9 @@
                     </div>
                     <div class="info_profile_about">
                         <span class="nickname"><?= $this->user->getFormattedName($user->first_name, $user->last_name) ?></span>
-                        <a id="fav-user" class="order-button rss-img-profile" data-pitchid="<?= $pitch->id ?>" href="#" title="Подписаться">Подписаться</a>
+                        <?php if ($this->user->isLoggedIn()): ?>
+                            <a id="fav-user" data-id="<?= $user->id ?>" class="order-button rss-img-profile <?= $isFav ? 'unfav-user' : 'fav-user' ?>" href="#"><?= $isFav ? 'Отписаться' : 'Подписаться' ?></a>
+                        <?php endif; ?>
                         <ul class="profile-list-info"></ul>
                         <div class="pitches">
                             <ul class="profile-list">

@@ -1115,6 +1115,7 @@ class UsersController extends \app\controllers\AppController {
             $totalSolutionNum = (int) User::getTotalSolutionNum($this->request->id);
             $totalFavoriteMe = Favourite::getCountFavoriteMe($user->id);
             $totalUserFavorite = Favourite::getCountFavoriteUser($user->id);
+            $isFav = Favourite::first(array('conditions' => array('user_id' => Session::read('user.id'),'fav_user_id' => $user->id)));
             if (User::checkRole('admin')) {
                 $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
             } else {
@@ -1139,7 +1140,7 @@ class UsersController extends \app\controllers\AppController {
                             'with' => array('Pitch')
                 ));
             }
-            return compact('user', 'pitchCount', 'totalUserFavorite', 'totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
+            return compact('user', 'pitchCount', 'totalUserFavorite', 'isFav','totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
         }
         throw new Exception('Public:Такого пользователя не существует.', 404);
     }
