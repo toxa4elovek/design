@@ -112,7 +112,7 @@ class SolutionsController extends \app\controllers\AppController {
 
     public function logosale() {
         $count = 0;
-        $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'with' => array('Pitch'), 'limit' => 12, 'page' => $this->request->id);
+        $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'), 'limit' => 24, 'page' => $this->request->id);
         if ($this->request->is('json')) {
             $solutions = Solution::all($params);
             $params['page'] += 1;
@@ -159,7 +159,7 @@ class SolutionsController extends \app\controllers\AppController {
             } else {
                 $tags_id = 0;
             }
-            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.id' => $tags_id), 'with' => array('Pitch', 'Solutiontag'));
+            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.id' => $tags_id), 'order' => array('created' => 'desc'), 'with' => array('Pitch', 'Solutiontag'));
             $solutions = Solution::all($params);
             if (count($solutions > 0)) {
                 $black_list = array();
