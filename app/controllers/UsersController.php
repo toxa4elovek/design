@@ -16,6 +16,7 @@ use \app\models\Invite;
 use \app\models\Avatar;
 use \app\models\Moderation;
 use \app\models\Wp_post;
+use \app\models\Favourite;
 use \app\models\Tweet;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SpamMailer;
@@ -142,14 +143,14 @@ class UsersController extends \app\controllers\AppController {
         }
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5));
         $middlePost = false;
-        /*if($middlePost = News::getPost()) {
-            $middlePost->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $middlePost->id), 'order' => array('Event.created' => 'desc')));
-            $allowLike = 0;
-            if (Session::read('user.id') && (!$like = \app\models\Like::first('first', array('conditions' => array('news_id' => $middlePost->id, 'user_id' => Session::read('user.id')))))) {
-                $allowLike = 1;
-            }
-            $middlePost->allowLike = $allowLike;
-        }*/
+        /* if($middlePost = News::getPost()) {
+          $middlePost->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $middlePost->id), 'order' => array('Event.created' => 'desc')));
+          $allowLike = 0;
+          if (Session::read('user.id') && (!$like = \app\models\Like::first('first', array('conditions' => array('news_id' => $middlePost->id, 'user_id' => Session::read('user.id')))))) {
+          $allowLike = 1;
+          }
+          $middlePost->allowLike = $allowLike;
+          } */
         $news = News::getNews();
         $solutions = Event::getEventSolutions();
         $updates = Event::getEvents($pitchIds, 1, null);
@@ -1079,6 +1080,8 @@ class UsersController extends \app\controllers\AppController {
             }
             $totalViews = (int) User::getTotalViews(Session::read('user.id'));
             $totalLikes = (int) User::getTotalLikes(Session::read('user.id'));
+            $totalFavoriteMe = Favourite::getCountFavoriteMe($user->id);
+            $totalUserFavorite = Favourite::getCountFavoriteUser($user->id);
             $awardedSolutionNum = (int) User::getAwardedSolutionNum(Session::read('user.id'));
             $totalSolutionNum = (int) User::getTotalSolutionNum(Session::read('user.id'));
             if (User::checkRole('admin')) {
@@ -1091,7 +1094,7 @@ class UsersController extends \app\controllers\AppController {
             if (count($userPitches) > 0) {
                 $isClient = true;
             }
-            return compact('user', 'pitchCount', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient');
+            return compact('user', 'pitchCount', 'averageGrade', 'totalUserFavorite', 'totalFavoriteMe', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient');
         }
     }
 
@@ -1110,6 +1113,8 @@ class UsersController extends \app\controllers\AppController {
             $totalLikes = (int) User::getTotalLikes($this->request->id);
             $awardedSolutionNum = (int) User::getAwardedSolutionNum($this->request->id);
             $totalSolutionNum = (int) User::getTotalSolutionNum($this->request->id);
+            $totalFavoriteMe = Favourite::getCountFavoriteMe($user->id);
+            $totalUserFavorite = Favourite::getCountFavoriteUser($user->id);
             if (User::checkRole('admin')) {
                 $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
             } else {
@@ -1134,7 +1139,7 @@ class UsersController extends \app\controllers\AppController {
                             'with' => array('Pitch')
                 ));
             }
-            return compact('user', 'pitchCount', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
+            return compact('user', 'pitchCount', 'totalUserFavorite', 'totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
         }
         throw new Exception('Public:Такого пользователя не существует.', 404);
     }
@@ -1558,6 +1563,7 @@ class UsersController extends \app\controllers\AppController {
         }
         return $this->redirect('/');
     }
+
 }
 
 class qqUploadedFileXhr {

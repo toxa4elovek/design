@@ -52,7 +52,7 @@ class Favourite extends \app\models\AppModel {
         $fav_user = User::first($favUser);
         if ((($user) && ($fav_user)) && ($fav = self::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => 0, 'fav_user_id' => $favUser))))) {
             if ($fav->delete()) {
-                if ($event = Event::first(array('conditions' => array('type'=> 'FavUserAdded', 'user_id' => $userId, 'fav_user_id' => $favUser)))) {
+                if ($event = Event::first(array('conditions' => array('type' => 'FavUserAdded', 'user_id' => $userId, 'fav_user_id' => $favUser)))) {
                     $event->delete();
                 }
             }
@@ -71,6 +71,16 @@ class Favourite extends \app\models\AppModel {
         } else {
             return false;
         }
+    }
+
+    public function getCountFavoriteMe($id) {
+        $fav = self::count(array('conditions' => array('pitch_id' => 0, 'fav_user_id' => $id)));
+        return $fav;
+    }
+
+    public function getCountFavoriteUser($id) {
+        $fav = self::count(array('conditions' => array('user_id' => $id)));
+        return $fav;
     }
 
 }
