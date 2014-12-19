@@ -7,6 +7,7 @@ use \app\models\Solution;
 use \app\models\User;
 use app\models\Tag;
 use app\models\Searchtag;
+use app\extensions\storage\Rcache;
 use app\models\Solutiontag;
 use \app\extensions\mailers\UserMailer;
 use \lithium\analysis\Logger;
@@ -126,13 +127,17 @@ class SolutionsController extends \app\controllers\AppController {
         } else {
             $params['page'] = 1;
             $solutions = Solution::all($params);
-            $tags = Tag::all(array('with' => 'Solutiontag'));
-            foreach ($tags as $v) {
-                $sort_tags[$v->name] = count($v->solutiontags);
+            $sort_tags = Rcache::read('sort_tags');
+            if ($sort_tags) {
+                $tags = Tag::all(array('with' => 'Solutiontag'));
+                foreach ($tags as $v) {
+                    $sort_tags[$v->name] = count($v->solutiontags);
+                }
+                asort($sort_tags);
+                $sort_tags = array_slice($sort_tags, 0, 7);
+                Rcache::write('sort_tags', $sort_tags, '+1 hour');
             }
-            asort($sort_tags);
-            $sort_tags = array_slice($sort_tags, 0, 7);
-            $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'),'limit' => 12));
+            $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'), 'limit' => 12));
         }
         if ($solutions) {
             $black_list = array();
@@ -152,7 +157,7 @@ class SolutionsController extends \app\controllers\AppController {
         } else {
             $solutions = array();
         }
-        return compact('solutions', 'count', 'sort_tags','search_tags');
+        return compact('solutions', 'count', 'sort_tags', 'search_tags');
     }
 
     public function search_logo() {
@@ -164,7 +169,7 @@ class SolutionsController extends \app\controllers\AppController {
                 foreach ($words as $w) {
                     $tag_params['conditions']['OR'][] = array('name' => $w);
                     $result = Searchtag::create(array(
-                        'name' => $w
+                                'name' => $w
                     ));
                     $result->save();
                 }
