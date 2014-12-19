@@ -902,6 +902,9 @@ function FeatureCart() {
         if ($('#award').val() == '') {
             initVal = $('#award').attr('value');
         }
+        self.addOption('Награда Дизайнеру', initVal);
+        var radioButton = $('input[name=isGuaranteed]');
+        Cart.addOption(radioButton.data('optionTitle'), radioButton.data('optionValue'));
         if (self.id > 0) {
             self.addOption('Награда Дизайнеру', initVal);
         } else {
