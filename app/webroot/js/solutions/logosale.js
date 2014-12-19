@@ -234,6 +234,15 @@ $(document).on('click', '.imagecontainer', function (e) {
 
 $('a#goSearch').on('click', function () {
     var search = $('#searchTerm');
+    fetchSearch(search);
+    var image = '/img/filter-arrow-down.png';
+    $('#filterToggle').data('dir', 'up');
+    $('img', '#filterToggle').attr('src', image);
+    $('#filtertab').hide();
+    return false;
+});
+
+function fetchSearch(search) {
     if (search.val().length > 0 && !search.hasClass('placeholder')) {
         if ($('.look-variants').length) {
             var variants = new Array();
@@ -263,9 +272,31 @@ $('a#goSearch').on('click', function () {
             $prependEl.appendTo('.list_portfolio').slideDown('slow');
         });
     }
-    return false;
+}
+
+$(document).on('click', function (e) {
+    if ($(e.target).is('#searchTerm')) {
+        return false;
+    }
+    var image = '/img/filter-arrow-down.png';
+    $('#filterToggle').data('dir', 'up');
+    $('img', '#filterToggle').attr('src', image);
+    $('#filtertab').hide();
 });
 
+$('.prepTag').on('click', function () {
+    var input = $('#searchTerm');
+    if (input.hasClass('placeholder')) {
+        input.removeClass('placeholder');
+    }
+    input.val($(this).text());
+    fetchSearch(input);
+    var image = '/img/filter-arrow-down.png';
+    $('#filterToggle').data('dir', 'up');
+    $('img', '#filterToggle').attr('src', image);
+    $('#filtertab').hide();
+    return false;
+});
 
 $(document).on('mouseleave', '.solution-menu-toggle', function () {
     $('img', $(this)).attr('src', '/img/marker5_2.png');
@@ -571,6 +602,20 @@ function fetchSolution(urlJSON) {
     });
 }
 
+$(document).on('click', '#filterToggle', function () {
+    var $el = $('#filterToggle');
+    var dir = $el.data('dir');
+    if (dir == 'up') {
+        var image = '/img/filter-arrow-up.png';
+        $el.data('dir', 'down');
+    } else {
+        var image = '/img/filter-arrow-down.png';
+        $el.data('dir', 'up');
+    }
+    $('img', $el).attr('src', image);
+    $('#filtertab').toggle();
+    return false;
+});
 $('body, .solution-overlay').on('click', '.solution-title, .solution-popup-close', function (e) {
     hideSolutionPopup();
     return false;
