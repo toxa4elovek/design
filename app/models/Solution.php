@@ -12,6 +12,7 @@ use \app\models\Solutionfile;
 use \app\models\Uploadnonce;
 use \app\models\Historysolution;
 use app\models\Task;
+use app\models\User;
 use \app\models\Tag;
 use \app\models\Solutiontag;
 use \app\extensions\storage\Rcache;
@@ -348,8 +349,7 @@ http://godesigner.ru/answers/view/73');
     }
 
     public static function getTotalParticipants() {
-        $count = self::all(array('group' => 'user_id'));
-        return count($count);
+        return User::count(array('conditions' => array('isClient' => 0)));
     }
 
     public static function copy($new_pitchId, $old_solution) {

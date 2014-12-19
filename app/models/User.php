@@ -1278,14 +1278,12 @@ class User extends \app\models\AppModel {
 		}
 		return $user;
 	}
-        
     public static function postOnFacebook($text) {
         $facebook = new Facebook(array(
             'appId'  => '202765613136579',
             'secret' => '404ec2eea7487d85eb69ecceea341821',
         ));
         $user = $facebook->getUser();
-
         if ($user) {
             try {
                 $facebook->api('/me/feed', 'post',array('message' => $text));

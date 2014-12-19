@@ -240,9 +240,9 @@
       <dl class="dl_1">
         <dt><?=$statistic['numOfSolutionsPerProject'][$category_id]?></dt>
         <?php switch($category_id):
-            case 1: $string = '<dd>решений <br>в категории <br>«логотип»</dd>'; break;
-            case 3: $string = '<dd>решений <br>в категории <br>«сайт»</dd>'; break;
-            case 7: $string = '<dd>решений <br>в категории <br>«копирайтинг»</dd>'; break;
+            case 1: $string = '<dd>среднее кол-во <br>идей в категории<br>«логотип»</dd>'; break;
+            case 3: $string = '<dd>среднее кол-во <br>идей в категории<br>«сайт»</dd>'; break;
+            case 7: $string = '<dd>среднее кол-во <br>идей в категории<br>«копирайтинг»</dd>'; break;
         endswitch?>
         <?php echo $string; ?>
       </dl>
@@ -256,7 +256,7 @@
       </dl>
       <dl class="dl_4">
         <dt><?=$statistic['totalParticipants']?></dt>
-        <dd>количество участников</dd>
+        <dd>дизайнеров и копирайтеров зарегистрировано на сайте</dd>
       </dl>
       <dl class="dl_5">
         <dt><?=$statistic['lastDaySolutionNum']?></dt>

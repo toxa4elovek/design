@@ -25,14 +25,18 @@
             <span class="regular">Просмотры брифа:</span>&nbsp;<span class="pitch-info-text"><?=$pitch->views?></span>
         </td>
         <td width="15"></td>
-        <?php if ($pitch->pinned == 0):?>
+        <?php if (($pitch->pinned == 0) && ($pitch->status == 0)):?>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
             <span class="regular">Прокачать бриф <a href="http://www.godesigner.ru/answers/view/67" target="_blank">(?)</a></span>
             <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=pinned">Заказать</a>
         </td>
         <?php else: ?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                <span class="regular">Бриф прокачен</span>
+                <?php if($pitch->pinned == 1): ?>
+                    <span class="regular">Бриф прокачен</span>
+                <?php else: ?>
+                    <span class="regular">Бриф не прокачен</span>
+                <?php endif;?>
             </td>
         <?php endif; ?>
         <td width="15"></td>
@@ -89,14 +93,18 @@
             <?php endif; ?>
         </td>
         <td width="15"></td>
-        <?php if ($pitch->guaranteed == 0):?>
+        <?php if (($pitch->guaranteed == 0) && ($pitch->status == 0)):?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                 <span class="regular">Гарантировать питч <a href="http://www.godesigner.ru/answers/view/79" target="_blank">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=guarantee">Заказать</a>
             </td>
         <?php else: ?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+                <?php if($pitch->guaranteed == 1):?>
                 <span class="regular">Питч гарантирован</span>
+                <?php else: ?>
+                <span class="regular">Питч не гарантирован</span>
+                <?php endif;?>
             </td>
         <?php endif; ?>
     </tr>
