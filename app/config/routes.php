@@ -56,6 +56,7 @@ Router::connect('/files/{:filename}', array('Files::download'));
 Router::connect('/pitchfiles/delete', array('Pitchfiles::delete'));
 Router::connect('/pitchfiles/addDescription', array('Pitchfiles::addDescription'));
 Router::connect('/pitchfiles/{:filename}', array('Pitchfiles::download'));
+Router::connect('/news', 'Users::feed');
 
 //Router::connect('/users/nominated', array('controller' => 'Users', 'action' => 'solutions', 'filterType' => 'nominating'));
 

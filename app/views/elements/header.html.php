@@ -230,7 +230,7 @@
                 <?php endif?>
             </div>
             <ul class="header-menu">
-                <li class="header-menu-item"><a href="/users/feed">Обновления</a></li>
+                <li class="header-menu-item"><a href="/news">Новости</a></li>
                 <li class="header-menu-item"><a href="/users/mypitches">Мои питчи</a></li>
                 <li class="header-menu-item"><a href="/users/profile">Профиль</a></li>
                 <li class="header-menu-item"><a href="/users/solutions">Решения</a></li>
