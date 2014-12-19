@@ -234,6 +234,15 @@ $(document).on('click', '.imagecontainer', function (e) {
 
 $('a#goSearch').on('click', function () {
     var search = $('#searchTerm');
+    fetchSearch(search);
+    var image = '/img/filter-arrow-down.png';
+    $('#filterToggle').data('dir', 'up');
+    $('img', '#filterToggle').attr('src', image);
+    $('#filtertab').hide();
+    return false;
+});
+
+function fetchSearch(search) {
     if (search.val().length > 0 && !search.hasClass('placeholder')) {
         if ($('.look-variants').length) {
             var variants = new Array();
@@ -263,12 +272,7 @@ $('a#goSearch').on('click', function () {
             $prependEl.appendTo('.list_portfolio').slideDown('slow');
         });
     }
-    var image = '/img/filter-arrow-down.png';
-    $('#filterToggle').data('dir', 'up');
-    $('img', '#filterToggle').attr('src', image);
-    $('#filtertab').hide();
-    return false;
-});
+}
 
 $(document).on('click', function (e) {
     if ($(e.target).is('#searchTerm')) {
@@ -286,6 +290,7 @@ $('.prepTag').on('click', function () {
         input.removeClass('placeholder');
     }
     input.val($(this).text());
+    fetchSearch(input);
     var image = '/img/filter-arrow-down.png';
     $('#filterToggle').data('dir', 'up');
     $('img', '#filterToggle').attr('src', image);
