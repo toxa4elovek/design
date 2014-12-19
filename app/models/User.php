@@ -1217,6 +1217,8 @@ class User extends \app\models\AppModel {
             'secret' => '404ec2eea7487d85eb69ecceea341821',
         ));
         $user = $facebook->getUser();
+        $accessToken = $facebook->getAccessToken();
+        $facebook->setAccessToken($accessToken);
 
         if ($user) {
             try {
