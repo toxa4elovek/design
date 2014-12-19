@@ -517,7 +517,7 @@
     position: relative;
 }
 .center-boxes .box .likes .who-likes:before {
-    background: url(/img/feed-like.png) no-repeat;
+    background: url(img/feed-like.png) no-repeat;
     content: '';
     width: 16px;
     height: 14px;
@@ -677,16 +677,16 @@
 }
 
 .arrow-bottom {
-    background: url("/img/feed-arrow.png") no-repeat center 6px #fff;
+    background: url("img/feed-arrow.png") no-repeat center 6px #fff;
     cursor: pointer;
     height: 24px;
 }
 .arrow-bottom:hover {
-    background: url("/img/feed-arrow-active.png") no-repeat center 6px #fff;
+    background: url("img/feed-arrow-active.png") no-repeat center 6px #fff;
 }
 .arrow-top {
     display: none;
-    background: url("/img/feed-arrow.png") no-repeat center 6px #fff;
+    background: url("img/feed-arrow.png") no-repeat center 6px #fff;
     cursor: pointer;
     height: 24px;
     -webkit-transform: rotate(180deg);
@@ -725,7 +725,7 @@
     background: #fff;
 }
 #popup-other-likes .favour-user:before {
-    background: url("/img/rss-on-button.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("img/rss-on-button.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     content: "";
     height: 16px;
     left: 8px;
@@ -875,7 +875,7 @@
     margin-top: -2px;
 }
 #news-add #news-add-photo:before {
-    background: url(/img/photo-icon.png) no-repeat;
+    background: url(img/photo-icon.png) no-repeat;
     color: #C8C8C8;
     content: '';
     position: absolute;
