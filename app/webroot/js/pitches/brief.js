@@ -903,7 +903,8 @@ function FeatureCart() {
             initVal = $('#award').attr('value');
         }
         self.addOption('Награда Дизайнеру', initVal);
-        var radioButton = $('input[name=isGuaranteed]');
+        var radioButton = $('#guaranteedTrue');
+        radioButton.prop("checked", true) ;
         Cart.addOption(radioButton.data('optionTitle'), radioButton.data('optionValue'));
         if (self.id > 0) {
             self.addOption('Награда Дизайнеру', initVal);
