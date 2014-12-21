@@ -103,10 +103,17 @@ class PagesController extends \app\controllers\AppController {
         $start_hours->setTime('12', '00', '00');
 
         $end_hours = new \DateTime();
-        $end_hours->setTime('15', '00', '00');
+
+        $max_time = '';
         foreach ($schedule as $v) {
             $deny_time[] = $v->start;
+            if ($max_time < $v->start) {
+                $max_time = $v->start;
+            }
         }
+        $max_hour = date('H', strtotime($max_time));
+        // var_dump($max_time,date('H',  strtotime($max_time)));
+        $end_hours->setTime('15', '00', '00');
         //date('Y-m-d H:i:s', mktime(date("H"), 0, 0));
         $temp = new \DateTime();
         $x = true;
@@ -117,10 +124,8 @@ class PagesController extends \app\controllers\AppController {
                 $temp->setTime($temp->format('H') + 1, '00', '00');
             }
             $x = false;
-            if (!in_array($temp->format('Y-m-d H:i:s'), $deny_time) &&
-                    $temp->getTimestamp() >= $start_hours->getTimestamp()
-            ) {
-                if ($temp->getTimestamp() <= $end_hours->getTimestamp() && (int)$temp->format('w') != 0 && (int)$temp->format('w') != 6) {
+            if (!in_array($temp->format('Y-m-d H:i:s'), $deny_time) && $temp->getTimestamp() >= $start_hours->getTimestamp()) {
+                if ($temp->getTimestamp() <= $end_hours->getTimestamp() && (int) $temp->format('w') != 0 && (int) $temp->format('w') != 6) {
                     //var_dump($end_hours->format('H:i d/m/y'), $temp->format('H:i d/m/y'));
                     $alllow_time[$temp->getTimestamp()] = $temp->format('H:i d/m/y');
                     $i++;
@@ -131,6 +136,10 @@ class PagesController extends \app\controllers\AppController {
                     $temp->setTime('12', '00', '00');
                     $x = true;
                 }
+            } elseif ($max_hour >= '16' && strtotime($max_time) > time()) {
+                $max_hour = '';
+                //var_dump($temp->format('H:i d/m/y'),$temp->format('H:i d/m/y'),date('H:i d/m/y',time()),date('H:i d/m/y',strtotime($max_time)));
+                $alllow_time[strtotime($max_time)] = date('H:i d/m/y', strtotime($max_time));
             }
         }
 
