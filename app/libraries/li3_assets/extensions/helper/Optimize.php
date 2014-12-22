@@ -150,7 +150,7 @@ class Optimize extends \lithium\template\Helper {
             }
             // One last safety check to ensure the file is there (reasons why it may not be: primarily, write permissions)
             if(file_exists($webroot . $output_file)) {
-                return '<script type="text/javascript" src="' . Media::asset($output_file, 'js') . '"></script>';
+                return '<script type="text/javascript" src="http://www.godesigner.ru' . Media::asset($output_file, 'js') . '"></script>';
             } else {
                 return $this->_context_scripts();
             }
@@ -315,7 +315,7 @@ class Optimize extends \lithium\template\Helper {
             }
             // One last safety check to ensure the file is there (reasons why it may not be: primarily, write permissions)
             if(file_exists($webroot . $output_file)) {
-                return '<link rel="stylesheet" type="text/css" href="' . Media::asset($output_file, 'css') . '" />';
+                return '<link rel="stylesheet" type="text/css" href="http://www.godesigner.ru' . Media::asset($output_file, 'css') . '" />';
             } else {
                 return $this->_context->styles();
             }

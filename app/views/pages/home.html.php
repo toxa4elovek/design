@@ -255,7 +255,7 @@
         <dd>заработанных<br> дизайнерами денег</dd>
       </dl>
       <dl class="dl_4">
-        <dt><?=$statistic['totalParticipants']?></dt>
+        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalParticipants'], array('suffix' => ''))?></dt>
         <dd>дизайнеров и копирайтеров зарегистрировано на сайте</dd>
       </dl>
       <dl class="dl_5">
