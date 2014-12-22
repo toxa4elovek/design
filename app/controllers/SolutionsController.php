@@ -134,16 +134,18 @@ class SolutionsController extends \app\controllers\AppController {
 
     public function search_logo() {
         if ($this->request->is('json') && isset($this->request->data['search'])) {
-            $words = explode(' ', $this->request->data['search']);
+            $words = explode(' ', preg_replace('/[^a-zа-яё]+/iu', ' ', trim($this->request->data['search'])));
             $tag_params = array('conditions' => array());
             $search_tags = Searchtag::all(array('conditions' => array('name' => $words)));
             if (count($search_tags) < 1) {
                 foreach ($words as $w) {
                     $tag_params['conditions']['OR'][] = array('name' => $w);
-                    $result = Searchtag::create(array(
-                                'name' => $w
-                    ));
-                    $result->save();
+                    if (!empty($w)) {
+                        $result = Searchtag::create(array(
+                                    'name' => $w
+                        ));
+                        $result->save();
+                    }
                 }
             } else {
                 foreach ($search_tags as $v) {
@@ -182,11 +184,15 @@ class SolutionsController extends \app\controllers\AppController {
                 $solutions = $solutions->data();
                 foreach ($solutions as $k => $solution) {
                     $specific = unserialize($solution['pitch']['specifics']);
-                    $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
-                    if (isset($specific['logoType'])) {
+                    if (count($prop) > 0) {
+                        $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
+                    } else {
+                        $diff_prop = false;
+                    }
+                    if (isset($specific['logoType']) && count($variant) > 0) {
                         $diff_variant = count(array_diff($specific['logoType'], $variant));
                     } else {
-                        $diff_variant = 0;
+                        $diff_variant = false;
                     }
                     if ($diff_prop || $diff_variant) {
                         unset($solutions[$k]);
@@ -200,7 +206,7 @@ class SolutionsController extends \app\controllers\AppController {
                 }
             }
         }
-        return compact('solutions','page');
+        return compact('solutions');
     }
 
 }

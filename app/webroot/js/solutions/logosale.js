@@ -87,7 +87,7 @@ function addSolution(solution) {
     var picCounter2 = 0;
     var html = '';
     if ($.isEmptyObject(solution.images)) {
-        return true;
+        return html;
     }
     if (solution.images.solution_galleryLargeSize && typeof solution.images.solution_galleryLargeSize[0] != 'undefined') {
         picCounter2 = solution.images.solution_galleryLargeSize.length;
@@ -286,7 +286,7 @@ function fetchSearch(search) {
             paramsSearch = params;
             page = 1;
             $.each(response.solutions, function (index, solution) {
-                html += addSolution(solution);
+                html = addSolution(solution) + html;
                 sol_count++;
             });
             $('.list_portfolio').empty();
