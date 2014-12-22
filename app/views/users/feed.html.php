@@ -539,7 +539,7 @@
                                                                 </div>
                                                             </div>-->
                                 </div>
-                                <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="/img/blog-ajax-loader.gif"></div>
+                                <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="http://www.godesigner.ru/img/blog-ajax-loader.gif"></div>
                             </div>
 
                         </div>

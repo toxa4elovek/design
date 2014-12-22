@@ -210,23 +210,23 @@
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">
             <?php if($this->user->getNewEventsCount() > 0):?>
-                <a href="/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
+                <a href="http://www.godesigner.ru/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
                 <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::feed', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
             <?php else:?>
-                <a href="/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
+                <a href="http://www.godesigner.ru/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
             <?php endif?>
 
         <?php else:?>
             <div class="topnav-menu" style="float:left;height:41px;padding-left:10px;padding-top:10px;">
-                <?=$this->html->link('Зарегистрироваться', 'Users::registration')?> /
-                <?=$this->html->link('Войти', 'Users::login', array())?> /
+                <?=$this->html->link('Зарегистрироваться', 'http://www.godesigner.ru/register')?> /
+                <?=$this->html->link('Войти', 'http://www.godesigner.ru/login', array())?> /
                 <?php endif?>
-                <a href="/pages/howitworks">Как это работает?</a> /
-                <a href="/pitches">Все питчи</a> /
+                <a href="http://www.godesigner.ru/pages/howitworks">Как это работает?</a> /
+                <a href="http://www.godesigner.ru/pitches">Все питчи</a> /
                 <?php if($this->user->getNewBlogpostCount() > 0):?>
-                <a href="/posts">Блог</a><?php echo $this->html->link('(' . $this->user->getNewBlogpostCount() . ')', 'Posts::index', array('style' => 'color: #648FA4', 'class' => 'updatecurrent', 'escape' => false))?>
+                <a href="http://www.godesigner.ru/posts">Блог</a><?php echo $this->html->link('(' . $this->user->getNewBlogpostCount() . ')', 'Posts::index', array('style' => 'color: #648FA4', 'class' => 'updatecurrent', 'escape' => false))?>
                 <?php else:?>
-                <a href="/posts">Блог</a>
+                <a href="http://www.godesigner.ru/posts">Блог</a>
                 <?php endif?>
             </div>
             <ul class="header-menu">
