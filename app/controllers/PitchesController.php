@@ -654,6 +654,7 @@ class PitchesController extends \app\controllers\AppController {
                     'started' => date('Y-m-d H:i:s'),
                     'ideas_count' => 0,
                     'price' => $featuresData['award'],
+                    'description' => $commonPitchData['description'],
                     'status' => 0,
                     'pinned' => $pinned,
                     'expert' => $expert,
