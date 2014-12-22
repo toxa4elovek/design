@@ -1,8 +1,18 @@
-var focusOut = 0,
-        paramsSearch = {};
-$('#searchTerm').blur(function () {
-    focusOut = 1;
+var paramsSearch = {};
+
+$('#searchTerm').keyup(function (event) {
+    if (event.keyCode == 13) {
+        var search = $('#searchTerm');
+        isBusy = false;
+        fetchSearch(search);
+        var image = '/img/filter-arrow-down.png';
+        $('#filterToggle').data('dir', 'up');
+        $('img', '#filterToggle').attr('src', image);
+        $('#filtertab').hide();
+        return false;
+    }
 });
+
 $(".slider").each(function (index, object) {
     var value = 5;
     if (typeof (slidersValue) != "undefined") {
@@ -45,7 +55,7 @@ $(window).on('scroll', function () {
         isBusy = true;
         $('#officeAjaxLoader').show();
         page += 1;
-        var url = ($.isEmptyObject(paramsSearch)) ?  '/solutions/logosale/' : '/solutions/search_logo/';
+        var url = ($.isEmptyObject(paramsSearch)) ? '/solutions/logosale/' : '/solutions/search_logo/';
         $.post(url + page + '.json', paramsSearch, function (response) {
             var html = '';
             $.each(response.solutions, function (index, solution) {
@@ -250,8 +260,7 @@ $('a#goSearch').on('click', function () {
 });
 
 function fetchSearch(search) {
-    if (focusOut || (search.val().length > 0 && !search.hasClass('placeholder'))) {
-        focusOut = 0;
+    if (search.val().length > 0 && !search.hasClass('placeholder')) {
         var params = {};
         if ($('#adv_search').hasClass('active')) {
             if ($('.look-variants').length) {
