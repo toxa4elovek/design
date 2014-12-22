@@ -33,10 +33,11 @@ $('#adv_search').on('click', function () {
     });
     return false;
 });
-var isBusy = false;
-var page = 1;
+var isBusy = false,
+        page = 1,
+        gallery = $('.portfolio_gallery');
 $(window).on('scroll', function () {
-    if ((($('#middle').height() - 200) - $(window).scrollTop() < 500) && !isBusy) {
+    if (((gallery.height() - 200) - $(window).scrollTop() < 200) && !isBusy) {
         isBusy = true;
         $('#officeAjaxLoader').show();
         page += 1;

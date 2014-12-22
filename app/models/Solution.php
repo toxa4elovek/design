@@ -24,7 +24,7 @@ use \lithium\storage\Session;
 class Solution extends \app\models\AppModel {
 
     public $belongsTo = array('Pitch', 'User');
-    public $hasMany = array('Like','Solutiontag');
+    public $hasMany = array('Like', 'Solutiontag');
     protected static $_behaviors = array(
         'UploadableSolution'
     );
@@ -145,7 +145,7 @@ http://godesigner.ru/answers/view/73');
         );
         $solution = Solution::create();
         $solution->save($data);
-        Tag::add($formdata,$solution->id);
+        Tag::add($formdata, $solution->id);
         $params = $solution;
         $params->uploadnonce = $formdata['uploadnonce'];
         $params->resortable = $formdata['reSortable'];
@@ -392,6 +392,28 @@ http://godesigner.ru/answers/view/73');
             return $date;
         }
         return false;
+    }
+
+    public static function filterLogoSolutions($solutions) {
+        if ($solutions) {
+            $black_list = array();
+            foreach ($solutions as $v) {
+                if ($v->awarded) {
+                    $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
+                }
+            }
+            $solutions = $solutions->data();
+            foreach ($solutions as $k => $solution) {
+                foreach ($black_list as $v) {
+                    if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
+                        unset($solutions[$k]);
+                    }
+                }
+            }
+        } else {
+            $solutions = array();
+        }
+        return $solutions;
     }
 
 }
