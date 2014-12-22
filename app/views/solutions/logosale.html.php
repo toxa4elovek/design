@@ -65,7 +65,9 @@
                     <div style="clear:both"></div>
                 </div>
             </div>
-            <a id="adv_search" href="#">Расширенный поиск</a>
+            <div class="container-adv_search">
+                <a id="adv_search" href="#">Расширенный поиск</a>
+            </div>
             <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
             <ul class="marsh">
                 <li>

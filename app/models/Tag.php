@@ -3,11 +3,11 @@
 namespace app\models;
 
 use app\models\Solutiontag;
+use app\extensions\storage\Rcache;
 
 class Tag extends \app\models\AppModel {
-    
+
     public $hasMany = array('Solutiontag');
-    
     private static $job_types = array(
         'realty' => 'Недвижимость / Строительство',
         'auto' => 'Автомобили / Транспорт',
@@ -25,7 +25,7 @@ class Tag extends \app\models\AppModel {
         'security' => 'Охрана / Безопасность',
         'health' => 'Медицина / Здоровье');
 
-    public function add($formdata, $solution_id) {
+    public static function add($formdata, $solution_id) {
         $tags_list = Tag::all();
         if ($tags_list) {
             $tags_list = $tags_list->data();
@@ -86,6 +86,20 @@ class Tag extends \app\models\AppModel {
                 }
             }
         }
+    }
+
+    public static function getPopularTags($count) {
+        $sort_tags = Rcache::read('sort_tags');
+        if (empty($sort_tags)) {
+            $tags = Tag::all(array('with' => 'Solutiontag'));
+            foreach ($tags as $v) {
+                $sort_tags[$v->name] = count($v->solutiontags);
+            }
+            asort($sort_tags);
+            $sort_tags = array_slice($sort_tags, 0, $count);
+            Rcache::write('sort_tags', $sort_tags, '+1 hour');
+        }
+        return $sort_tags;
     }
 
 }
