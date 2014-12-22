@@ -96,11 +96,11 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing underconsideration.com/fpo/");
         self::ParsingUnderconsideration();
         $this->out('Finished parsing underconsideration.com/fpo/ [' . (time() - $startTimeStamp) . ' sec]');
-        
+
         $this->out("Starting parsing hel-looks.com");
         self::hel_looks();
         $this->out('Finished parsing hel-looks.com [' . (time() - $startTimeStamp) . ' sec]');
-        
+
         $this->out("Starting fixing tags");
         self::fixTags();
         $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
@@ -454,11 +454,13 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 }
                 preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
                 $image = '';
+                $img = 0;
                 $count = count($matches[1]);
                 for ($i = 0; $i < $count; $i++) {
                     if (strpos($matches[1][$i], 'lamcdn.net')) {
                         $image = $matches[1][$i];
-                        break;
+                        ++$img;
+                        if ($img >= 2) break;
                     }
                 }
                 if (strlen($image) > 0 && strlen($cat) > 0) {
