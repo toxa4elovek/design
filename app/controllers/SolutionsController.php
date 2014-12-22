@@ -154,15 +154,16 @@ class SolutionsController extends \app\controllers\AppController {
                     $tag_params['conditions']['OR'][] = array('name' => $w);
                 }
             }
+            $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
             $tags = Tag::all($tag_params);
             if (count($tags) > 0) {
                 $tags_id = array_keys($tags->data());
             } else {
                 $tags_id = 0;
             }
-            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.id' => $tags_id), 'order' => array('created' => 'desc'), 'with' => array('Pitch', 'Solutiontag'));
+            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.tag_id' => $tags_id), 'limit' => 12, 'page' => $page, 'order' => array('created' => 'desc'), 'with' => array('Pitch', 'Solutiontag'));
             $solutions = Solution::all($params);
-            if (count($solutions > 0)) {
+            if ($solutions && count($solutions) > 0) {
                 $black_list = array();
                 foreach ($solutions as $v) {
                     if ($v->awarded) {
@@ -182,7 +183,11 @@ class SolutionsController extends \app\controllers\AppController {
                 foreach ($solutions as $k => $solution) {
                     $specific = unserialize($solution['pitch']['specifics']);
                     $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
-                    $diff_variant = count(array_diff($specific['logoType'], $variant));
+                    if (isset($specific['logoType'])) {
+                        $diff_variant = count(array_diff($specific['logoType'], $variant));
+                    } else {
+                        $diff_variant = 0;
+                    }
                     if ($diff_prop || $diff_variant) {
                         unset($solutions[$k]);
                     } else {
@@ -195,7 +200,7 @@ class SolutionsController extends \app\controllers\AppController {
                 }
             }
         }
-        return compact('solutions');
+        return compact('solutions','page');
     }
 
 }

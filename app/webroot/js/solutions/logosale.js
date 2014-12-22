@@ -1,6 +1,7 @@
-var focusOut = 0;
-$('#searchTerm').blur(function() {
-  focusOut = 1;
+var focusOut = 0,
+        paramsSearch = {};
+$('#searchTerm').blur(function () {
+    focusOut = 1;
 });
 $(".slider").each(function (index, object) {
     var value = 5;
@@ -44,7 +45,8 @@ $(window).on('scroll', function () {
         isBusy = true;
         $('#officeAjaxLoader').show();
         page += 1;
-        $.get('/solutions/logosale/' + page + '.json', function (response) {
+        var url = ($.isEmptyObject(paramsSearch)) ?  '/solutions/logosale/' : '/solutions/search_logo/';
+        $.post(url + page + '.json', paramsSearch, function (response) {
             var html = '';
             $.each(response.solutions, function (index, solution) {
                 html += addSolution(solution);
@@ -85,7 +87,7 @@ function addSolution(solution) {
             picCounter2 = solution.images.solution_galleryLargeSize.length;
         }
     }
-    if (solution.images.solution_galleryLargeSize.length > 0) {
+    if (solution.images.solution_galleryLargeSize || solution.images.solution_galleryLargeSize.length > 0) {
         var multiclass = (picCounter2 > 1) ? ' class=multiclass' : '';
         html += '<li id="li_' + solution.id + '"' + multiclass + '>\
                         <div class="photo_block">';
@@ -238,6 +240,7 @@ $(document).on('click', '.imagecontainer', function (e) {
 
 $('a#goSearch').on('click', function () {
     var search = $('#searchTerm');
+    isBusy = false;
     fetchSearch(search);
     var image = '/img/filter-arrow-down.png';
     $('#filterToggle').data('dir', 'up');
@@ -271,6 +274,8 @@ function fetchSearch(search) {
         params.search = (search.hasClass('placeholder')) ? '' : search.val();
         $.post('search_logo.json', params, function (response) {
             var html = '', sol_count = 0;
+            paramsSearch = params;
+            page = 1;
             $.each(response.solutions, function (index, solution) {
                 html += addSolution(solution);
                 sol_count++;
@@ -636,7 +641,7 @@ $('body, .solution-overlay').on('click', '.solution-title, .solution-popup-close
 
 function fetchCommentsNew(result) {
     var fetchedComments = '';
-    $.each(result.comments, function(idx, comment) {
+    $.each(result.comments, function (idx, comment) {
         var commentData = prepareCommentData(comment, result);
         fetchedComments += populateComment(commentData);
         if (comment.child) {
