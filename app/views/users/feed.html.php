@@ -16,7 +16,7 @@
                 var userGender = <?php echo $this->user->getGender(); ?>;
             </script>
             <?php if ($this->user->isAdmin()): ?>
-                <div id="news-add">
+                <div id="news-add" style="display:none;">
                     <input type="text" name="news-title" placeholder="Заголовок">
                     <input type="text" name="news-link" placeholder="Ссылка">
                     <span id="show-all-fileds">Показать все поля</span>
@@ -30,7 +30,7 @@
                     </p>
                     <div id="previewImage"></div>
                 </div>
-                <div id="news-add-separator"></div>
+                <div id="news-add-separator" style="display:none;"></div>
                 <div class="new-content group" style="margin-top:10px">
                 <?php endif; ?>
                 <?php if ($banner): ?>

@@ -32,11 +32,11 @@
                     <?php
                         $i = 0;
                         $pool = array(
-                            'needpay' => array('<a href="/answers/view/6"><i id="help"></i>Какие способы оплаты вы принимаете?</a>'),
-                            'current' => array('<a href="/answers/view/78"><i id="help"></i>Инструменты заказчика</a>', '<a href="/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a>'),
-                            'finish' => array('<a href="/answers/view/63"><i id="help"></i>Как работает завершающий этап?</a>'),
-                            'winner' => array('<a href="/answers/view/70"><i id="help"></i>Как объявить победителя или номинировать работу?</a>'),
-                            'winner' => array('<a href="/answers/view/97"><i id="help"></i>Как выбрать второго победителя?</a>'),
+                            'needpay' => array('<a href="http://www.godesigner.ru/answers/view/6"><i id="help"></i>Какие способы оплаты вы принимаете?</a>'),
+                            'current' => array('<a href="http://www.godesigner.ru/answers/view/78"><i id="help"></i>Инструменты заказчика</a>', '<a href="http://www.godesigner.ru/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a>'),
+                            'finish' => array('<a href="http://www.godesigner.ru/answers/view/63"><i id="help"></i>Как работает завершающий этап?</a>'),
+                            'winner' => array('<a href="http://www.godesigner.ru/answers/view/70"><i id="help"></i>Как объявить победителя или номинировать работу?</a>'),
+                            'winner' => array('<a href="http://www.godesigner.ru/answers/view/97"><i id="help"></i>Как выбрать второго победителя?</a>'),
 
                         );
                         $types = array();
@@ -60,9 +60,9 @@
                             $fast_url = '';
                             $fastpitch = strpos($mypitch->title, 'Логотип в один клик');
                             if ($fastpitch !== false) {
-                                $fast_url = '/pitches/fastpitch/'. $mypitch->id;
+                                $fast_url = 'http://www.godesigner.ru/pitches/fastpitch/'. $mypitch->id;
                             } else {
-                                $fast_url = '/pitches/edit/'. $mypitch->id;
+                                $fast_url = 'http://www.godesigner.ru/pitches/edit/'. $mypitch->id;
                             }
                             
                             if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
@@ -76,32 +76,32 @@
 							<?php endif?>
 							</td>
                                 <td class="pitches-name mypitches">
-                                    <a href="/pitches/view/<?=($mypitch->multiwinner>0) ? $mypitch->multiwinner :$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
+                                    <a href="http://www.godesigner.ru/pitches/view/<?=($mypitch->multiwinner>0) ? $mypitch->multiwinner :$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
                                 </td>
                                 <td <?php echo ($mypitch->status < 1) ? '' : 'colspan="2"' ?> class="pitches-status mypitches">
                                     <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
                                         $types['current'] += 1?>
-                                    <a href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a>
+                                    <a href="http://www.godesigner.ru/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
                                         $types['needpay'] += 1?>
-                                    <a href="<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
+                                    <a href="http://www.godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
                                         $types['needpay'] += 1?>
-                                        <a href="/pitches/edit/<?=$mypitch->id?>" >Ожидание модерации</a>
+                                        <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>" >Ожидание модерации</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) &&($mypitch->brief == 1) && ($mypitch->billed == 1) && ($mypitch->published == 0)):
                                         $types['needpay'] += 1?>
-                                        <a href="/pitches/edit/<?=$mypitch->id?>">Ожидайте звонка</a>
+                                        <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>">Ожидайте звонка</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->status == 1) && ($mypitch->awarded != 0)):
                                         $types['finish'] += 1?>
-                                        <a class="pitches-finish" href="/users/step<?=$step?>/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
+                                        <a class="pitches-finish" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
                                     <?php endif?>
                                     <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0)):
                                         $types['winner'] += 1?>
-                                        <a class="pitches-time" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Выбор победителя</a>
+                                        <a class="pitches-time" href="http://www.godesigner.ru/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Выбор победителя</a>
                                     <?php endif?>
                                 </td>
                                 <td class="price mypitches">
@@ -110,13 +110,13 @@
                                 <?php if ($mypitch->status < 1):?>
                                 <td class="pitches-edit mypitches">
                                     <?php if($mypitch->billed == 0):?>
-                                    <a href="<?= $fast_url ?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                    <a href="http://www.godesigner.ru/<?= $fast_url ?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
                                     <?php if($fastpitch === false):?>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                                    <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <?php endif; ?>
-                                    <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
+                                    <a data-id="<?=$mypitch->id?>" href="http://www.godesigner.ru/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                                     <?php else:?>
-                                    <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                                    <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <?php endif?>
                                 </td>
                                 <?php endif ?>
@@ -152,8 +152,8 @@
                     <?php
                     $i = 0;
                     $pool = array(
-                        '<a href="/answers/view/54"><i id="help"></i>Как работает завершающий этап?</a>',
-                        '<a href="/answers/view/56"><i id="help"></i>Что, если заказчик просит вас сделать то, что не указано в брифе?</a>'
+                        '<a href="http://www.godesigner.ru/answers/view/54"><i id="help"></i>Как работает завершающий этап?</a>',
+                        '<a href="http://www.godesigner.ru/answers/view/56"><i id="help"></i>Что, если заказчик просит вас сделать то, что не указано в брифе?</a>'
                     );
                     $types = array();
                     foreach($this->user->getCurrentDesignersPitches() as $mypitch):
@@ -173,13 +173,13 @@
                                 }
 
                                 ?>
-                                <a href="/users/step<?=$step?>/<?=$mypitch->awarded?>"><?=$mypitch->title?></a>
+                                <a href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>"><?=$mypitch->title?></a>
                                 <?php endif?>
                                 <!--span><?=$mypitch->industry?></span-->
                             </div></td>
                         <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                         <td class="idea"><?=$mypitch->ideas_count?></td>
-                        <td class="pitches-time"><a style="color:#639F6D" href="/users/step<?=$step?>/<?=$mypitch->awarded?>">Победа!<br/> Завершите питч!</a></td>
+                        <td class="pitches-time"><a style="color:#639F6D" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Победа!<br/> Завершите питч!</a></td>
                         <td class="price"><?=$this->moneyFormatter->formatMoney($mypitch->price)?></td></tr>
                         <?php
                         $i++;
@@ -201,7 +201,7 @@
 
     <header class="<?=$header?>">
 
-	<p class="<?=$logo?>"><strong><a href="/">Go Designer</a></strong></p>
+	<p class="<?=$logo?>"><strong><a href="http://www.godesigner.ru/">Go Designer</a></strong></p>
 	<nav class="topnav">
         <?php if($this->user->isLoggedIn()):?>
             <div class="avatar-top" style="width: 41px; float: left; height: 50px;">
@@ -230,14 +230,14 @@
                 <?php endif?>
             </div>
             <ul class="header-menu">
-                <li class="header-menu-item"><a href="/news">Новости</a></li>
-                <li class="header-menu-item"><a href="/users/mypitches">Мои питчи</a></li>
-                <li class="header-menu-item"><a href="/users/profile">Профиль</a></li>
-                <li class="header-menu-item"><a href="/users/solutions">Решения</a></li>
-                <li class="header-menu-item"><a href="/users/details">Реквизиты</a></li>
-                <li class="header-menu-item"><a href="/questions">Тест</a></li>
-                <li class="header-menu-item"><a href="/users/referal">Пригласи друга</a></li>
-                <li class="header-menu-item"><a href="/users/logout">Выйти</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/news">Новости</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/mypitches">Мои питчи</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/profile">Профиль</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/solutions">Решения</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/details">Реквизиты</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/questions">Тест</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/referal">Пригласи друга</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/logout">Выйти</a></li>
             </ul>
 	</nav><!-- .nav -->
 
