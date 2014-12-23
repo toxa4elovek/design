@@ -145,6 +145,10 @@ ul.marsh .clear {
     padding-left: 40px;
     width: 650px;
 }
+#P_card input.button {
+    float: none !important;
+    margin: 10px 19px 0 !important;
+}
 
 .solution-sale #step3 {
     position: relative;
