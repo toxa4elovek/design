@@ -30,7 +30,7 @@
                 <?php if (preg_match('@answers@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Помощь', 'Answers::index', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Помощь', 'http://www.godesigner.ru/pages/answers') ?> /
+                    <?= $this->html->link('Помощь', 'http://www.godesigner.ru/answers') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/contacts@', $_SERVER["REQUEST_URI"])): ?>
                     <a href="/pages/contacts" style="color:#4a4c55">Контакты</a> /
