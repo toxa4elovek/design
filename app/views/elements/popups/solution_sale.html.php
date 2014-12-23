@@ -30,43 +30,23 @@
                 <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
-            <div class="solution-copyrighted"><!--  --></div>
-            <div class="solution-info">
-                <table class="solution-stat">
-                    <col class="icon">
-                    <col class="description">
-                    <col class="value">
-                    <tr>
-                        <td class="icon icon-eye"></td>
-                        <td>Просмотры</td>
-                        <td class="value-views isField"><!--  --></td>
-                    </tr>
-                    <tr>
-                        <td class="icon icon-thumb"></td>
-                        <td>Лайки</td>
-                        <td class="value-likes isField"><!--  --></td>
-                    </tr>
-                    <tr>
-                        <td class="icon icon-comments"></td>
-                        <td>Комментарии</td>
-                        <td class="value-comments isField"><!--  --></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="separator"></div>
-            <div class="solution-info solution-tags chapter">
-                <h2>ТЕГИ</h2>
-                <ul class="tags">
-                </ul>
-                <div class="clear"></div>
-            </div>
-
-            <div class="separator"></div>
-            <div class="solution-info solution-share chapter">
-
-            </div>
-            <div class="separator"></div>
             <div class="solution-info solution-abuse isField"><!--  --></div>
+            <div>
+                <aside class="summary-price expanded">
+                    <h3>Итого:</h3>
+                    <p class="summary"><strong id="total-tag"><?= $data['total'] ?>р.-</strong></p><!-- .summary -->
+                    <ul id="check-tag">
+                        <?php foreach ($data['receipt'] as $v): ?>
+                            <li><span><?= $v['name'] ?></span><small><?= $v['value'] ?>.-</small></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <div class="hide">
+                        <span id="to-pay">Перейти к оплате</span>
+                    </div>
+                </aside><!-- .summary-price -->
+                <!-- end: Solution Left Panel -->
+            </div>
+            <div class="clr"></div>
             <!-- end: Solution Right Panel -->
         </div>
         <!-- start: Solution Left Panel -->
@@ -93,21 +73,6 @@
 
                 <!-- end: Comments -->
             </section>
-            <div>
-                <aside class="summary-price expanded">
-                    <h3>Итого:</h3>
-                    <p class="summary"><strong id="total-tag"><?= $data['total'] ?>р.-</strong></p><!-- .summary -->
-                    <ul id="check-tag">
-                        <?php foreach ($data['receipt'] as $v): ?>
-                            <li><span><?= $v['name'] ?></span><small><?= $v['value'] ?>.-</small></li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <a href="#" class="show" id="show-check"><span>Подробнее</span></a>
-                    <a href="#" class="hide" id="hide-check"><span>Скрыть</span></a>
-                </aside><!-- .summary-price -->
-                <!-- end: Solution Left Panel -->
-            </div>
-            <div class="clr"></div>
             <!-- end: Solution Container -->
         </div>
         <div id="step3">

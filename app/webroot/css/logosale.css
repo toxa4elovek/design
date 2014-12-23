@@ -303,3 +303,18 @@ span.first {
     padding-left: 30px;
     padding-right: 15px;
 }
+.summary-price {
+    position: absolute;
+    margin-left: 0;
+    left: 15%;
+    top:auto;
+}
+#to-pay {
+    background: url(/img/bottom_arrow.png) no-repeat 0 100%;
+    background-position: right;
+    display: block;
+    height: 18px;
+    padding-right: 20px;
+    text-align: right;
+    cursor: pointer;
+}
