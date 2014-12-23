@@ -8,6 +8,7 @@
     <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2')) ?>
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
+            <input type="hidden" value="<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>" id="pitch_id"/>
             <h1 class="sale-head regular">Распродажа логотипов</h1>
             <div class="filterBackground">
                 <table>
@@ -59,7 +60,7 @@
                     <span class="first">Популярные запросы</span>
                     <ul class="bottom filterlist">
                         <?php foreach ($search_tags as $v) : ?>
-                        <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
+                            <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                     <div style="clear:both"></div>
@@ -197,7 +198,7 @@
         <div id="under_middle_inner"></div>
     </div>
 </div>
-<?= $this->view()->render(array('element' => 'popups/solution_sale')) ?>
-<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
+<?= $this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data)) ?>
+<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.raty.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
 <?=
 $this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3'), array('inline' => false))?>

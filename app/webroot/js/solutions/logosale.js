@@ -670,19 +670,21 @@ function hideSolutionPopup() {
     }
 }
 
-$('.rb1').change(function () {
+$(document).on('change', '.rb1', function () {
     switch ($(this).data('pay')) {
         case 'payanyway':
-            $("#paybutton-payanyway").removeAttr('style');
+            $("#paybutton-payanyway").fadeIn(100);
             $("#paybutton-paymaster").css('background', '#a2b2bb');
             $("#paymaster-images").show();
             $("#paymaster-select").hide();
+            $('#s3_kv').hide();
             break;
         case 'paymaster':
             $("#paybutton-paymaster").removeAttr('style');
-            $("#paybutton-payanyway").css('background', '#a2b2bb');
+            $("#paybutton-payanyway").fadeOut(100);
             $("#paymaster-images").hide();
             $("#paymaster-select").show();
+            $('#s3_kv').hide();
             break;
         case 'offline':
             $("#paybutton-payanyway").fadeOut(100);
@@ -693,3 +695,4 @@ $('.rb1').change(function () {
             break;
     }
 });
+

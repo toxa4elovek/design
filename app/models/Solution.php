@@ -416,6 +416,49 @@ http://godesigner.ru/answers/view/73');
         return $solutions;
     }
 
+    public static function addBlankPitchForLogosale($user_id, $solution_id) {
+        $result = array();
+        $fee = 3500; $award = 6000; $total = $fee + $award;
+        $pitch = Pitch::first(array('conditions' => array('blank' => 1, 'user_id' => $user_id)));
+        if ($pitch) {
+            $pitch->awarded = $solution_id;
+            $pitch->save();
+            $result['receipt'] = Receipt::all(array('conditions' => array('pitch_id' => $pitch->id)))->data();
+        } else {
+            $pitch = Pitch::create(array(
+                        'category_id' => 1,
+                        'title' => 'Logosale Pitch',
+                        'price' => $award,
+                        'total' => $total,
+                        'user_id' => $user_id,
+                        'awarded' => $solution_id,
+                        'blank' => 1
+            ));
+            if ($pitch->save()) {
+                $data = array(
+                    array(
+                        'pitch_id' => $pitch->id,
+                        'name' => 'Награда Дизайнеру',
+                        'value' => $award,
+                    ),
+                    array(
+                        'pitch_id' => $pitch->id,
+                        'name' => 'Сбор GoDesigner',
+                        'value' => $fee,)
+                );
+                foreach ($data as $v) {
+                    $receipt = Receipt::create($v);
+                    if ($receipt->save()) {
+                        $result['receipt'][] = $receipt->data();
+                    }
+                }
+            }
+        }
+        $result['total'] = $total;
+        $result['pitch_id'] = $pitch->id;
+        return $result;
+    }
+
 }
 
 function in_array_r($needle, $haystack, $strict = false) {
