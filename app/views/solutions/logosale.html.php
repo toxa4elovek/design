@@ -58,18 +58,31 @@
                     </ul>
                     <div style="clear:both"></div>
                     <span class="first">Популярные запросы</span>
-                    <ul class="bottom filterlist">
-                        <?php foreach ($search_tags as $v) : ?>
-                            <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <?php
+                    $i = 0;
+                    $num = 0;
+                    foreach ($search_tags as $v):
+                        ++$i;
+                        if ($i == 1) {
+                            ++$num;
+                            echo '<ul class="bottom filterlist list' . $num . '">';
+                        }
+                        ?>
+                        <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
+                        <?php
+                        if ($i == 4) {
+                            $i = 0;
+                            echo '</ul>';
+                        }
+                    endforeach;
+                    ?>
                     <div style="clear:both"></div>
                 </div>
             </div>
             <div class="container-adv_search">
                 <a id="adv_search" href="#">Расширенный поиск</a>
             </div>
-            <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
+<?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
             <ul class="marsh">
                 <li>
                     <h2 class="greyboldheader">Более 10 тысяч логотипов по цене 9500 рублей</h2>
@@ -105,7 +118,7 @@
                                 <div class="photo_block">
                                     <?php if ($this->solution->getImageCount($solution['images']['solution_galleryLargeSize']) > 1): ?>
                                         <div class="image-count"><?= $this->solution->getImageCount($solution['images']['solution_solutionView']) ?></div>
-                                    <?php endif ?>
+                                        <?php endif ?>
                                     <a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>">
                                         <?php if (!isset($solution['images']['solution_galleryLargeSize'][0])): ?>
                                             <img rel="#<?= $solution['num'] ?>"  width="180" height="135" src="<?= $this->solution->renderImageUrl($solution['images']['solution_galleryLargeSize']) ?>">
@@ -119,7 +132,7 @@
                                                 $picCounter++;
                                             endforeach;
                                             ?>
-                                        <?php endif ?>
+        <?php endif ?>
                                     </a>                    
                                     <div class="photo_opt">
                                         <div class="" style="display: block; float:left;">
