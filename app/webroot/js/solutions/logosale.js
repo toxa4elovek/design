@@ -433,7 +433,7 @@ function fetchSolution(urlJSON) {
                 $('.separator-rating').css({"margin-top": "20px", "margin-bottom": "20px"});
             }
 
-            $("#star-widget").raty({
+            $(".solution-overlay #star-widget").raty({
                 path: '/img',
                 hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
                 starOff: 'solution-star-off.png',
@@ -528,13 +528,6 @@ function fetchSolution(urlJSON) {
         if (result.solution.description != '') {
             $('span#date').after('<br />');
         }
-
-        if ((currentUserId == result.solution.user_id) || isCurrentAdmin) {
-            $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
-                <a class="delete-solution-popup hide" data-solution="' + result.solution.id + '" href="/solutions/delete/' + result.solution.id + '.json">Удалить</a>');
-        } else {
-            $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
-        }
     });
 }
 
@@ -584,31 +577,43 @@ function hideSolutionPopup() {
 $(document).on('change', '.rb1', function () {
     switch ($(this).data('pay')) {
         case 'payanyway':
-            $("#paybutton-payanyway").fadeIn(100);
-            $("#paybutton-paymaster").css('background', '#a2b2bb');
-            $("#paymaster-images").show();
-            $("#paymaster-select").hide();
-            $('#s3_kv').hide();
+            $(".solution-overlay #paybutton-payanyway").fadeIn(100);
+            $(".solution-overlay #paybutton-paymaster").css('background', '#a2b2bb');
+            $(".solution-overlay #paymaster-images").show();
+            $(".solution-overlay #paymaster-select").hide();
+            $('.solution-overlay #s3_kv').hide();
             break;
         case 'paymaster':
-            $("#paybutton-paymaster").removeAttr('style');
-            $("#paybutton-payanyway").fadeOut(100);
-            $("#paymaster-images").hide();
-            $("#paymaster-select").show();
-            $('#s3_kv').hide();
+            $(".solution-overlay #paybutton-paymaster").removeAttr('style');
+            $(".solution-overlay #paybutton-payanyway").fadeOut(100);
+            $(".solution-overlay #paymaster-images").hide();
+            $(".solution-overlay #paymaster-select").show();
+            $('.solution-overlay #s3_kv').hide();
             break;
         case 'offline':
-            $("#paybutton-payanyway").fadeOut(100);
-            $("#paybutton-paymaster").css('background', '#a2b2bb');
-            $("#paymaster-images").show();
-            $("#paymaster-select").hide();
-            $('#s3_kv').show();
+            $(".solution-overlay #paybutton-payanyway").fadeOut(100);
+            $(".solution-overlay #paybutton-paymaster").css('background', '#a2b2bb');
+            $(".solution-overlay #paymaster-images").show();
+            $(".solution-overlay #paymaster-select").hide();
+            $('.solution-overlay #s3_kv').show();
             break;
     }
 });
 
+$(document).on('change','.solution-overlay .rb-face', '.solution-overlay #s3_kv',function () {
+    if ($(this).data('pay') == 'offline-fiz') {
+        $('.solution-overlay .pay-fiz').show();
+        $('.solution-overlay .pay-yur').hide();
+    } else {
+        $('.solution-overlay .pay-fiz').hide();
+        $('.solution-overlay .pay-yur').show();
+    }
+});
+
 $(document).on('click', '#to-pay', function () {
-    $('body').scrollTo(1000);
+    $('html, body').animate({
+        scrollTop: $('.solution-overlay #P_card').offset().top
+    }, 500);
     return false;
 });
 
