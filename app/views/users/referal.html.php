@@ -87,10 +87,10 @@
                         <form id="referal-3" action="" method="post" style="margin: 35px 0 30px 0;">
                             <span class="referal-title">Ваш телефон +<span class="phone-number"><?=$user->phone;?></span></span>
                             <a href="/users/deletephone" class="phone-delete" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
-                            <div class="clr" style="margin: 30px 0;"></div>
+                            <div class="clr" style="margin: 30px 0;clear: left"></div>
                             <input type="text" name="" value="http://www.godesigner.ru/?ref=<?=$user->referal_token;?>" style="width: 270px; float: left; margin-top: 3px; font-size: 15px; font-weight: bold; color: #999;">
                             <a href="mailto:?subject=Это новый сервис для создания дизайна" class="button" style="width: 240px; float: right;">Отправить по почте</a>
-                            <div class="clr"></div>
+                            <div class="clr" style="clear: left"></div>
                         </form>
                         <?php
                             $shareTextFacebook = 'GoDesigner, пожалуй, самый современный способ создания дизайна. Создайте питч на разработку лого или сайта по этой ссылке и получите скидку в 300 руб.';
@@ -134,6 +134,7 @@
                     </section>
                 </section>
             </section>
+            <div class="clr"></div>
         </div><!-- .main -->
     </div><!-- .middle -->
 </div><!-- .wrapper -->
