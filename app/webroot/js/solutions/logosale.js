@@ -104,7 +104,7 @@ function addSolution(solution) {
         if (getImageCount(solution.images.solution_galleryLargeSize) > 1) {
             html += '<div class="image-count">' + getImageCount(solution.images.solution_solutionView) + '</div>'
         }
-        html += '<a style="display:block;" data-solutionid="' + solution.id + '" class="imagecontainer" href="/pitches/viewsolution/' + solution.id + '">';
+        html += '<a data-solutionid="' + solution.id + '" class="imagecontainer" href="/pitches/viewsolution/' + solution.id + '">';
 
         if (solution.images.solution_galleryLargeSize && typeof solution.images.solution_galleryLargeSize[0] == 'undefined') {
             html += '<img rel="#' + solution.num + '"  width="180" height="135" src="' + solution.images.solution_galleryLargeSize.weburl + '">';
@@ -177,7 +177,7 @@ function addSolution(solution) {
             <div class="selecting_numb"><span class="price">19000 р.</span><span class="new-price">9500р.-</span></div>\
                 <div class="solution_menu" style="display: none;">\
                     <ul class="solution_menu_list">\
-                        <li class="sol_hov"><a href="/solutions/buy/' + solution.id + '.json" class="hide-item">Купить</a></li>\
+                        <li class="sol_hov"><a data-solutionid="' + solution.id + '" class="imagecontainer" href="/pitches/viewsolution/' + solution.id + '">Купить</a></li>\
                         <li class="sol_hov"><a href="/solutions/warn/' + solution.id + '.json" class="warning" data-solution-id="' + solution.id + '">Пожаловаться</a></li>\
                     </ul>\
                 </div>\
@@ -214,6 +214,11 @@ $(document).on('mouseover', '.solution-menu-toggle', function () {
     });
 });
 
+$(document).keyup(function (e) {
+    if (e.which == 27 && $('.solution-sale').is(":visible")) {
+        window.history.back();
+    }
+});
 
 $(document).on('click', '.imagecontainer', function (e) {
     if (/designers/.test(window.location.pathname)) {
@@ -530,12 +535,6 @@ function fetchSolution(urlJSON) {
         } else {
             $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
         }
-        FB.XFBML.parse();
-        $.getScript('/js/pitches/gallery.twitter.js', function () {
-            if (typeof (twttr) != 'undefined') {
-                twttr.widgets.load();
-            }
-        });
     });
 }
 
