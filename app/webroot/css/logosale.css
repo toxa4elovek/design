@@ -274,12 +274,17 @@ p.label_found {
 ul.bottom {
     float: none;
     margin-top: 0;
-    width: 100%;
-}
-ul.bottom li {
     width: 27%;
+    height: auto;
     display: inline-block; 
 }
+ul.bottom.list2 {
+    margin-left: 49px;
+}
+/*ul.bottom li {
+    width: 27%;
+    display: inline-block; 
+}*/
 
 .activityType {
     width: 200px;
@@ -302,4 +307,19 @@ span.first {
     margin-top: 28px;
     padding-left: 30px;
     padding-right: 15px;
+}
+.summary-price {
+    position: absolute;
+    margin-left: 0;
+    left: 15%;
+    top:auto;
+}
+#to-pay {
+    background: url(/img/bottom_arrow.png) no-repeat 0 100%;
+    background-position: right;
+    display: block;
+    height: 18px;
+    padding-right: 20px;
+    text-align: right;
+    cursor: pointer;
 }

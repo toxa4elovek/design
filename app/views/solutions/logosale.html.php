@@ -58,18 +58,31 @@
                     </ul>
                     <div style="clear:both"></div>
                     <span class="first">Популярные запросы</span>
-                    <ul class="bottom filterlist">
-                        <?php foreach ($search_tags as $v) : ?>
-                            <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <?php
+                    $i = 0;
+                    $num = 0;
+                    foreach ($search_tags as $v):
+                        ++$i;
+                        if ($i == 1) {
+                            ++$num;
+                            echo '<ul class="bottom filterlist list' . $num . '">';
+                        }
+                        ?>
+                        <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
+                        <?php
+                        if ($i == 4) {
+                            $i = 0;
+                            echo '</ul>';
+                        }
+                    endforeach;
+                    ?>
                     <div style="clear:both"></div>
                 </div>
             </div>
             <div class="container-adv_search">
                 <a id="adv_search" href="#">Расширенный поиск</a>
             </div>
-            <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
+<?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
             <ul class="marsh">
                 <li>
                     <h2 class="greyboldheader">Более 10 тысяч логотипов по цене 9500 рублей</h2>
@@ -105,8 +118,8 @@
                                 <div class="photo_block">
                                     <?php if ($this->solution->getImageCount($solution['images']['solution_galleryLargeSize']) > 1): ?>
                                         <div class="image-count"><?= $this->solution->getImageCount($solution['images']['solution_solutionView']) ?></div>
-                                    <?php endif ?>
-                                    <a style="display:block;" data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>">
+                                        <?php endif ?>
+                                    <a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>">
                                         <?php if (!isset($solution['images']['solution_galleryLargeSize'][0])): ?>
                                             <img rel="#<?= $solution['num'] ?>"  width="180" height="135" src="<?= $this->solution->renderImageUrl($solution['images']['solution_galleryLargeSize']) ?>">
                                         <?php else: ?>
@@ -119,7 +132,7 @@
                                                 $picCounter++;
                                             endforeach;
                                             ?>
-                                        <?php endif ?>
+        <?php endif ?>
                                     </a>                    
                                     <div class="photo_opt">
                                         <div class="" style="display: block; float:left;">
@@ -182,7 +195,7 @@
                                 <div class="selecting_numb"><span class="price"><?= $solution['pitch']['price'] ?> р.</span><span class="new-price">9500р.-</span></div>
                                 <div class="solution_menu" style="display: none;">
                                     <ul class="solution_menu_list">
-                                        <li class="sol_hov"><a href="/solutions/buy/<?= $solution['id'] ?>.json" class="hide-item">Купить</a></li>
+                                        <li class="sol_hov"><a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>" class="imagecontainer">Купить</a></li>
                                         <li class="sol_hov"><a href="/solutions/warn/<?= $solution['id'] ?>.json" class="warning" data-solution-id="<?= $solution['id'] ?>">Пожаловаться</a></li>
                                     </ul>
                                 </div>
@@ -199,6 +212,7 @@
     </div>
 </div>
 <?= $this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data)) ?>
+<?= $this->view()->render(array('element' => 'popups/warning')) ?>
 <?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.raty.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
 <?=
 $this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3'), array('inline' => false))?>
