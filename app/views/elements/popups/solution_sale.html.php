@@ -31,12 +31,14 @@
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-abuse isField"><!--  --></div>
+            <?php if (isset($data['receipt'])) : ?>
             <div>
                 <aside class="summary-price expanded">
                     <h3>Итого:</h3>
                     <p class="summary"><strong id="total-tag"><?= $data['total'] ?>р.-</strong></p><!-- .summary -->
                     <ul id="check-tag">
-                        <?php foreach ($data['receipt'] as $v): ?>
+                        <?php
+                        foreach ($data['receipt'] as $v): ?>
                             <li><span><?= $v['name'] ?></span><small><?= $v['value'] ?>.-</small></li>
                         <?php endforeach; ?>
                     </ul>
@@ -46,6 +48,7 @@
                 </aside><!-- .summary-price -->
                 <!-- end: Solution Left Panel -->
             </div>
+            <?php endif; ?>
             <div class="clr"></div>
             <!-- end: Solution Right Panel -->
         </div>
@@ -75,6 +78,7 @@
             </section>
             <!-- end: Solution Container -->
         </div>
+        <?php if (isset($data['receipt'])) : ?>
         <div id="step3">
             <div class="g_line first"></div>
             <h1>выберите способ оплаты</h1>
@@ -195,6 +199,7 @@
             </div>
             <div class="g_line"></div>
         </div>
+        <?php endif; ?>
     </div><!-- .main -->  
     <!-- end: Solution overlay -->
 </div>
