@@ -26,7 +26,7 @@
             <div class="separator"></div>
             <div class="solution-info solution-about chapter">
                 <h2>О РЕШЕНИИ</h2>
-                <span id="date" style="color:#878787;">Опубликовано <?= $solution->created ?></span><br/>
+                <span id="date" style="color:#878787;">Опубликовано </span><br/>
                 <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
@@ -71,9 +71,9 @@
         </div>
         <!-- start: Solution Left Panel -->
         <div class="solution-left-panel">
-            <a class="solution-title" href="/pitches/view/<?= $pitch->id ?>">
+            <a class="solution-title" href="#">
                 <h1>
-                    <?= $pitch->title ?>
+
                 </h1>
             </a>
             <!-- start: Soluton Images -->
@@ -96,9 +96,11 @@
             <div>
                 <aside class="summary-price expanded">
                     <h3>Итого:</h3>
-                    <p class="summary"><strong id="total-tag">9500р.-</strong></p><!-- .summary -->
+                    <p class="summary"><strong id="total-tag"><?= $data['total'] ?>р.-</strong></p><!-- .summary -->
                     <ul id="check-tag">
-
+                        <?php foreach ($data['receipt'] as $v): ?>
+                            <li><span><?= $v['name'] ?></span><small><?= $v['value'] ?>.-</small></li>
+                        <?php endforeach; ?>
                     </ul>
                     <a href="#" class="show" id="show-check"><span>Подробнее</span></a>
                     <a href="#" class="hide" id="hide-check"><span>Скрыть</span></a>
@@ -123,9 +125,9 @@
                         <td>
                             <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
                                 <input type="hidden" name="MNT_ID" value="36102238">
-                                <input type="hidden" name="MNT_TRANSACTION_ID" value="<?= $pitch->id ?>">
+                                <input type="hidden" name="MNT_TRANSACTION_ID" value="<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>">
                                 <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
-                                <input type="hidden" name="MNT_AMOUNT" value="">
+                                <input type="hidden" name="MNT_AMOUNT" value="<?= $data['total'] ?>">
                                 <input type="hidden" name="MNT_TEST_MODE" value="0">
                                 <input type="hidden" name="paymentSystem.unitId" value="499669">
                                 <input type="hidden" name="followup" value="true">
@@ -161,7 +163,7 @@
                                 <div class="pay-fiz">
                                     <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
                                     <form action="/bills/save" method="post" id="bill-fiz">
-                                        <input type="hidden" name="fiz-id" id="fiz-id" value="<?= $pitch->id ?>">
+                                        <input type="hidden" name="fiz-id" id="fiz-id" value="<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>">
                                         <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
                                         <input type="text" name="fiz-name" id="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Иванов Иван Иванович" required="" data-content="symbolic">
                                         <img src="/img/arrow-bill-download.png" class="arrow-bill-download" />
@@ -174,7 +176,7 @@
                                 <div class="pay-yur">
                                     <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
                                     <form action="/bills/save" method="post" id="bill-yur">
-                                        <input type="hidden" name="yur-id" id="yur-id" value="<?= $pitch->id ?>">
+                                        <input type="hidden" name="yur-id" id="yur-id" value="<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>">
                                         <input type="hidden" name="yur-individual" id="yur-individual" value="0">
 
                                         <label class="required">Наименование организации</label>
@@ -221,7 +223,7 @@
                     </tr>
                     <tr id="paymaster-select" class="paymaster-section" style="display: none;">
                         <td colspan="4">
-                            <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60'></script>
+<!--                            <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=<?= $data['total'] ?>&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча') ?>&LMI_CURRENCY=RUB&LMI_PAYMENT_NO=<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>'></script>-->
                         </td>
                     </tr>
                 </table>
