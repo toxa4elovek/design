@@ -75,7 +75,8 @@ class PitchesController extends \app\controllers\AppController {
             $usersPitches = Pitch::all(array('conditions' => array(
                             'user_id' => Session::read('user.id'),
                             'published' => 0,
-                            'status' => 0
+                            'status' => 0,
+                            'blank' => 0
                         ), 'with' => array('Category')));
             if ($usersPitches) {
                 $hasOwnHiddenPitches = true;
@@ -90,7 +91,7 @@ class PitchesController extends \app\controllers\AppController {
         $timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
         $type = Pitch::getQueryType($this->request->query['type']);
         $category = Pitch::getQueryCategory($this->request->query['category']);
-        $conditions = array('published' => 1, 'multiwinner' => 0);
+        $conditions = array('published' => 1, 'multiwinner' => 0, 'blank' => 0);
         $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
 
         $conditions += $type;

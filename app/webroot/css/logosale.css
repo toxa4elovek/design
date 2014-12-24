@@ -65,7 +65,7 @@ span.new-price {
 }
 
 .filterBackground {
-    margin: 40px auto 0;
+    margin: 27px auto 0;
     height: 75px;
     padding-top: 15px;
     background-color: rgb(243, 243, 243);
@@ -231,6 +231,16 @@ ul.tags li a:hover {
     padding: 4px 20px 4px 20px;
 }
 
+#adv_search:hover {
+    text-decoration: underline;
+}
+
+.sale-str.regular {
+    font-size: 15px;
+    text-align: center;
+    margin-top: 19px;
+}
+
 #adv_search.active {
     color: #959595;
     background: #d6d6d6;
@@ -245,6 +255,9 @@ ul.tags li a:hover {
 #groups {
     display: none;
 }
+#not-found-container {
+    display: none;
+}
 p.label_found {
     color: #959595;
     text-shadow: -1px 0 0 #ffffff;
@@ -252,7 +265,13 @@ p.label_found {
     font-family: Arial, sans-serif;
     text-align: center;
     margin-top: 18px;
-    display: none;
+}
+.not-found-background {
+    background: url(/img/logo_sale_search.jpg) no-repeat;
+    width: 687px;
+    height: 985px;
+    margin: 14px auto;
+    
 }
 #search_result {
     display: none;
