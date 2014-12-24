@@ -299,6 +299,7 @@ function FeatureCart() {
     this.priceTag = $('#total-tag');
     this.award = $('#award');
     this.awardKey = 'Награда Дизайнеру';
+    this.category = $('input[name=category_id]').val();
     this.data = {};
     this.fileIds = [];
     this.specificTemplates = [];
@@ -554,6 +555,9 @@ function FeatureCart() {
     this._renderOptions = function () {
         var html = '';
         $.each(self.content, function (key, value) {
+            if (self.category == 7 && self.awardKey == key) {
+               key = 'Награда копирайтеру';
+            }
             if (key == self.transferFeeKey) {
                 html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>';
             } else {

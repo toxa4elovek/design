@@ -880,7 +880,7 @@ function FeatureCart() {
     this.container = $('#check-tag');
     this.priceTag = $('#total-tag');
     this.award = $('#award');
-    this.awardKey = 'Награда Дизайнеру';
+    this.awardKey = ($('input[name=category_id]').val() == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру';
     this.data = {};
     this.fileIds = [];
     this.specificTemplates = [];
@@ -902,7 +902,7 @@ function FeatureCart() {
         if ($('#award').val() == '') {
             initVal = $('#award').attr('value');
         }
-        self.addOption('Награда Дизайнеру', initVal);
+        self.addOption(self.awardKey, initVal);
         var radioButton = $('#guaranteedTrue');
         radioButton.prop("checked", true) ;
         Cart.addOption(radioButton.data('optionTitle'), radioButton.data('optionValue'));
