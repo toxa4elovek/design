@@ -283,7 +283,7 @@ class User extends \app\models\AppModel {
 
     public static function getParticipatePitches($userId) {
         $pitches = Pitch::find('all', array('conditions' =>
-                    array('user_id' => $userId),
+                    array('user_id' => $userId,'blank' => 0),
         ));
         $pitchesIds = array();
         foreach ($pitches as $pitch) {

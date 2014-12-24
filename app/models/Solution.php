@@ -24,7 +24,7 @@ use \lithium\storage\Session;
 class Solution extends \app\models\AppModel {
 
     public $belongsTo = array('Pitch', 'User');
-    public $hasMany = array('Like','Solutiontag');
+    public $hasMany = array('Like', 'Solutiontag');
     protected static $_behaviors = array(
         'UploadableSolution'
     );
@@ -145,7 +145,7 @@ http://godesigner.ru/answers/view/73');
         );
         $solution = Solution::create();
         $solution->save($data);
-        Tag::add($formdata,$solution->id);
+        Tag::add($formdata, $solution->id);
         $params = $solution;
         $params->uploadnonce = $formdata['uploadnonce'];
         $params->resortable = $formdata['reSortable'];
@@ -392,6 +392,71 @@ http://godesigner.ru/answers/view/73');
             return $date;
         }
         return false;
+    }
+
+    public static function filterLogoSolutions($solutions) {
+        if ($solutions) {
+            $black_list = array();
+            foreach ($solutions as $v) {
+                if ($v->awarded) {
+                    $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
+                }
+            }
+            $solutions = $solutions->data();
+            foreach ($solutions as $k => $solution) {
+                foreach ($black_list as $v) {
+                    if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
+                        unset($solutions[$k]);
+                    }
+                }
+            }
+        } else {
+            $solutions = array();
+        }
+        return $solutions;
+    }
+
+    public static function addBlankPitchForLogosale($user_id, $solution_id) {
+        $result = array();
+        $fee = 3500; $award = 6000; $total = $fee + $award;
+        $pitch = Pitch::first(array('conditions' => array('blank' => 1, 'user_id' => $user_id)));
+        if ($pitch) {
+            $pitch->awarded = $solution_id;
+            $pitch->save();
+            $result['receipt'] = Receipt::all(array('conditions' => array('pitch_id' => $pitch->id)))->data();
+        } else {
+            $pitch = Pitch::create(array(
+                        'category_id' => 1,
+                        'title' => 'Logosale Pitch',
+                        'price' => $award,
+                        'total' => $total,
+                        'user_id' => $user_id,
+                        'awarded' => $solution_id,
+                        'blank' => 1
+            ));
+            if ($pitch->save()) {
+                $data = array(
+                    array(
+                        'pitch_id' => $pitch->id,
+                        'name' => 'Награда Дизайнеру',
+                        'value' => $award,
+                    ),
+                    array(
+                        'pitch_id' => $pitch->id,
+                        'name' => 'Сбор GoDesigner',
+                        'value' => $fee,)
+                );
+                foreach ($data as $v) {
+                    $receipt = Receipt::create($v);
+                    if ($receipt->save()) {
+                        $result['receipt'][] = $receipt->data();
+                    }
+                }
+            }
+        }
+        $result['total'] = $total;
+        $result['pitch_id'] = $pitch->id;
+        return $result;
     }
 
 }

@@ -8,6 +8,7 @@ use \app\models\User;
 use app\models\Tag;
 use app\models\Searchtag;
 use app\models\Solutiontag;
+use \app\extensions\helper\User as UserHelper;
 use \app\extensions\mailers\UserMailer;
 use \lithium\analysis\Logger;
 
@@ -115,7 +116,7 @@ class SolutionsController extends \app\controllers\AppController {
         $count = 0;
         $sort_tags = array();
         $search_tags = array();
-        $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'), 'limit' => 24, 'page' => $this->request->id);
+        $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'), 'limit' => 12, 'page' => $this->request->id);
         if ($this->request->is('json')) {
             $solutions = Solution::all($params);
             $params['page'] += 1;
@@ -125,48 +126,31 @@ class SolutionsController extends \app\controllers\AppController {
             }
         } else {
             $params['page'] = 1;
-            $solutions = Solution::all($params);
-            $tags = Tag::all(array('with' => 'Solutiontag'));
-            foreach ($tags as $v) {
-                $sort_tags[$v->name] = count($v->solutiontags);
-            }
-            asort($sort_tags);
-            $sort_tags = array_slice($sort_tags, 0, 7);
-            $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'),'limit' => 12));
+            $sort_tags = Tag::getPopularTags(7);
+            $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'), 'limit' => 12));
         }
-        if ($solutions) {
-            $black_list = array();
-            foreach ($solutions as $v) {
-                if ($v->awarded) {
-                    $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
-                }
-            }
-            $solutions = $solutions->data();
-            foreach ($solutions as $k => $solution) {
-                foreach ($black_list as $v) {
-                    if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
-                        unset($solutions[$k]);
-                    }
-                }
-            }
-        } else {
-            $solutions = array();
+        $userHelper = new UserHelper(array());
+        if ($userHelper->isLoggedIn()) {
+            $data = Solution::addBlankPitchForLogosale($userHelper->getId(), 0);
         }
-        return compact('solutions', 'count', 'sort_tags','search_tags');
+        $solutions = Solution::filterLogoSolutions(Solution::all($params));
+        return compact('solutions', 'count', 'sort_tags', 'search_tags', 'data');
     }
 
     public function search_logo() {
         if ($this->request->is('json') && isset($this->request->data['search'])) {
-            $words = explode(' ', $this->request->data['search']);
+            $words = explode(' ', preg_replace('/[^a-zа-яё]+/iu', ' ', trim($this->request->data['search'])));
             $tag_params = array('conditions' => array());
             $search_tags = Searchtag::all(array('conditions' => array('name' => $words)));
             if (count($search_tags) < 1) {
                 foreach ($words as $w) {
                     $tag_params['conditions']['OR'][] = array('name' => $w);
-                    $result = Searchtag::create(array(
-                        'name' => $w
-                    ));
-                    $result->save();
+                    if (!empty($w)) {
+                        $result = Searchtag::create(array(
+                                    'name' => $w
+                        ));
+                        $result->save();
+                    }
                 }
             } else {
                 foreach ($search_tags as $v) {
@@ -177,15 +161,16 @@ class SolutionsController extends \app\controllers\AppController {
                     $tag_params['conditions']['OR'][] = array('name' => $w);
                 }
             }
+            $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
             $tags = Tag::all($tag_params);
             if (count($tags) > 0) {
                 $tags_id = array_keys($tags->data());
             } else {
                 $tags_id = 0;
             }
-            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.id' => $tags_id), 'order' => array('created' => 'desc'), 'with' => array('Pitch', 'Solutiontag'));
+            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.tag_id' => $tags_id), 'limit' => 12, 'page' => $page, 'order' => array('created' => 'desc'), 'with' => array('Pitch', 'Solutiontag'));
             $solutions = Solution::all($params);
-            if (count($solutions > 0)) {
+            if ($solutions && count($solutions) > 0) {
                 $black_list = array();
                 foreach ($solutions as $v) {
                     if ($v->awarded) {
@@ -204,8 +189,16 @@ class SolutionsController extends \app\controllers\AppController {
                 $solutions = $solutions->data();
                 foreach ($solutions as $k => $solution) {
                     $specific = unserialize($solution['pitch']['specifics']);
-                    $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
-                    $diff_variant = count(array_diff($specific['logoType'], $variant));
+                    if (count($prop) > 0) {
+                        $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
+                    } else {
+                        $diff_prop = false;
+                    }
+                    if (isset($specific['logoType']) && count($variant) > 0) {
+                        $diff_variant = count(array_diff($specific['logoType'], $variant));
+                    } else {
+                        $diff_variant = false;
+                    }
                     if ($diff_prop || $diff_variant) {
                         unset($solutions[$k]);
                     } else {

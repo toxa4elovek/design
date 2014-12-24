@@ -8,7 +8,13 @@
     <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2')) ?>
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
+            <input type="hidden" value="<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>" id="pitch_id"/>
             <h1 class="sale-head regular">Распродажа логотипов</h1>
+            <p class="sale-str regular">
+                Тут вы найдете готовые решения для вашего бизнеса: выберите логотип, и<br />
+                дизайнер доделает его согласно вашим комментариям. Это самый быстрый<br />
+                и экономичный способ получить результат на GoDesigner. <a href="#" title="Подробнее">Подробнее..</a>
+            </p>
             <div class="filterBackground">
                 <table>
                     <tbody>
@@ -57,15 +63,30 @@
                     </ul>
                     <div style="clear:both"></div>
                     <span class="first">Популярные запросы</span>
-                    <ul class="bottom filterlist">
-                        <?php foreach ($search_tags as $v) : ?>
+                    <?php
+                    $i = 0;
+                    $num = 0;
+                    foreach ($search_tags as $v):
+                        ++$i;
+                        if ($i == 1) {
+                            ++$num;
+                            echo '<ul class="bottom filterlist list' . $num . '">';
+                        }
+                        ?>
                         <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
-                        <?php endforeach; ?>
-                    </ul>
+                        <?php
+                        if ($i == 4) {
+                            $i = 0;
+                            echo '</ul>';
+                        }
+                    endforeach;
+                    ?>
                     <div style="clear:both"></div>
                 </div>
             </div>
-            <a id="adv_search" href="#">Расширенный поиск</a>
+            <div class="container-adv_search">
+                <a id="adv_search" href="#">Расширенный поиск</a>
+            </div>
             <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
             <ul class="marsh">
                 <li>
@@ -79,8 +100,15 @@
                 </li>
             </ul>
             <div class="portfolio_gallery">
-                <h1 id="search_result" class="sale-head regular">Результат поиска</h1>
-                <p class="label_found">Найдено: <span id="logo_found">0</span></p>
+                <h1 id="search_result" class="sale-head regular">Результат поиска: <span id="logo_found">0</span></h1>
+                <div id="not-found-container">
+                    <p class="sale-str regular">
+                        К сожалению, мы ничего не нашли.<br />
+                        Попробуйте уточнить по виду деятельности, синонимам или характеристикам логотипа,<br />
+                        используя все инструменты расширенного поиска:
+                    </p>
+                    <div class="not-found-background"></div>
+                </div>
                 <ul class="list_portfolio main_portfolio">
                     <?php
                     foreach ($solutions as $solution):
@@ -103,7 +131,7 @@
                                     <?php if ($this->solution->getImageCount($solution['images']['solution_galleryLargeSize']) > 1): ?>
                                         <div class="image-count"><?= $this->solution->getImageCount($solution['images']['solution_solutionView']) ?></div>
                                     <?php endif ?>
-                                    <a style="display:block;" data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>">
+                                    <a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>">
                                         <?php if (!isset($solution['images']['solution_galleryLargeSize'][0])): ?>
                                             <img rel="#<?= $solution['num'] ?>"  width="180" height="135" src="<?= $this->solution->renderImageUrl($solution['images']['solution_galleryLargeSize']) ?>">
                                         <?php else: ?>
@@ -179,7 +207,7 @@
                                 <div class="selecting_numb"><span class="price"><?= $solution['pitch']['price'] ?> р.</span><span class="new-price">9500р.-</span></div>
                                 <div class="solution_menu" style="display: none;">
                                     <ul class="solution_menu_list">
-                                        <li class="sol_hov"><a href="/solutions/buy/<?= $solution['id'] ?>.json" class="hide-item">Купить</a></li>
+                                        <li class="sol_hov"><a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>" class="imagecontainer">Купить</a></li>
                                         <li class="sol_hov"><a href="/solutions/warn/<?= $solution['id'] ?>.json" class="warning" data-solution-id="<?= $solution['id'] ?>">Пожаловаться</a></li>
                                     </ul>
                                 </div>
@@ -195,7 +223,8 @@
         <div id="under_middle_inner"></div>
     </div>
 </div>
-<?= $this->view()->render(array('element' => 'popups/solution_sale')) ?>
-<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
+<?= $this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data)) ?>
+<?= $this->view()->render(array('element' => 'popups/warning')) ?>
+<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.raty.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
 <?=
 $this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3'), array('inline' => false))?>

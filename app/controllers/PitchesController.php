@@ -75,7 +75,8 @@ class PitchesController extends \app\controllers\AppController {
             $usersPitches = Pitch::all(array('conditions' => array(
                             'user_id' => Session::read('user.id'),
                             'published' => 0,
-                            'status' => 0
+                            'status' => 0,
+                            'blank' => 0
                         ), 'with' => array('Category')));
             if ($usersPitches) {
                 $hasOwnHiddenPitches = true;
@@ -90,7 +91,7 @@ class PitchesController extends \app\controllers\AppController {
         $timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
         $type = Pitch::getQueryType($this->request->query['type']);
         $category = Pitch::getQueryCategory($this->request->query['category']);
-        $conditions = array('published' => 1, 'multiwinner' => 0);
+        $conditions = array('published' => 1, 'multiwinner' => 0, 'blank' => 0);
         $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
 
         $conditions += $type;
@@ -654,6 +655,7 @@ class PitchesController extends \app\controllers\AppController {
                     'started' => date('Y-m-d H:i:s'),
                     'ideas_count' => 0,
                     'price' => $featuresData['award'],
+                    'description' => $commonPitchData['description'],
                     'status' => 0,
                     'pinned' => $pinned,
                     'expert' => $expert,
@@ -1106,9 +1108,17 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::filterCommentsTree($comments, $pitch->user_id);
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             $expertsIds = array();
-            foreach ($experts as $expert) :
+            foreach ($experts as $expert) {
                 $expertsIds[] = $expert->user_id;
-            endforeach;
+            }
+            if (isset($this->request->query['exp'])) {
+                $comments = $comments->data();
+                foreach ($comments as $k => $v) {
+                    if (!in_array($v['user_id'], $expertsIds)) {
+                        unset($comments[$k]);
+                    }
+                }
+            }
             // Forbid Copywrited
             if ($pitch->category_id == 7) {
                 if ((Session::read('user') == null) || ($solution->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), $expertsIds)) && (!in_array(Session::read('user.id'), User::$admins)) && ($pitch->user_id != Session::read('user.id'))) {
