@@ -655,7 +655,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#to-pay', function () {
         $('html, body').animate({
-            scrollTop: $('.solution-overlay #P_card').offset().top
+            scrollTop: $('.solution-overlay #step3').offset().top
         }, 500);
         return false;
     });
