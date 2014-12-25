@@ -288,6 +288,8 @@ jQuery(document).ready(function ($) {
 
     function fetchSearch(search) {
         if (search.val().length > 0) {
+            $('.marsh').hide();
+            $('#logosaleAjaxLoader').show();
             var params = {},
                     adv_search = $('#adv_search');
             if (adv_search.hasClass('active')) {
@@ -319,9 +321,9 @@ jQuery(document).ready(function ($) {
                     sol_count++;
                 });
                 $('.list_portfolio').empty();
-                $('.marsh').hide();
                 var $prependEl = $(html);
                 $prependEl.hide();
+                $('#logosaleAjaxLoader').hide();
                 $('#logo_found').text(sol_count);
                 $('#search_result').show();
                 if (sol_count < 1) {
@@ -336,6 +338,17 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', function (e) {
         if ($(e.target).is('#searchTerm')) {
+            var $el = $('#filterToggle');
+            var dir = $el.data('dir');
+            if (dir == 'up') {
+                var image = '/img/filter-arrow-up.png';
+                $el.data('dir', 'down');
+            } else {
+                var image = '/img/filter-arrow-down.png';
+                $el.data('dir', 'up');
+            }
+            $('img', $el).attr('src', image);
+            $('#filtertab').toggle();
             return false;
         }
         var image = '/img/filter-arrow-down.png';
@@ -410,7 +423,7 @@ jQuery(document).ready(function ($) {
             // Left Panel
             $('.solution-images').html('');
 
-            $('.solution-left-panel .solution-title').children('h1').html(result.pitch.title + '<br> Цена: <span class="price"> 18000 р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
+            $('.solution-left-panel .solution-title').children('h1').html(result.pitch.title + '<br> Новая цена: <span class="price"> ' + result.pitch.total + ' р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
                 // Main Images
                 if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {

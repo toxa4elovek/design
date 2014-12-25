@@ -87,10 +87,11 @@
             <div class="container-adv_search">
                 <a id="adv_search" href="#">Расширенный поиск</a>
             </div>
+            <div id="logosaleAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="/img/blog-ajax-loader.gif"></div>
             <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
             <ul class="marsh">
                 <li>
-                    <h2 class="greyboldheader">Более 10 тысяч логотипов по цене 9500 рублей</h2>
+                    <h2 class="greyboldheader"><?=$total_count?> логотипов по цене 9500 рублей</h2>
                 </li>
                 <li>
                     <h2 class="greyboldheader">Уникальность: каждый лого продается только один раз</h2>
@@ -204,7 +205,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="selecting_numb"><span class="price"><?= $solution['pitch']['price'] ?> р.</span><span class="new-price">9500р.-</span></div>
+                                <div class="selecting_numb"><span class="price"><?= $solution['pitch']['total'] ?> р.</span><span class="new-price">9500р.-</span></div>
                                 <div class="solution_menu" style="display: none;">
                                     <ul class="solution_menu_list">
                                         <li class="sol_hov"><a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>" class="imagecontainer">Купить</a></li>

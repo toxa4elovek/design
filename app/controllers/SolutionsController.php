@@ -128,13 +128,15 @@ class SolutionsController extends \app\controllers\AppController {
             $params['page'] = 1;
             $sort_tags = Tag::getPopularTags(7);
             $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'), 'limit' => 12));
+            unset($params['page']);
+            $total_count = Solution::count($params);
         }
         $userHelper = new UserHelper(array());
         if ($userHelper->isLoggedIn()) {
             $data = Solution::addBlankPitchForLogosale($userHelper->getId(), 0);
         }
         $solutions = Solution::filterLogoSolutions(Solution::all($params));
-        return compact('solutions', 'count', 'sort_tags', 'search_tags', 'data');
+        return compact('solutions', 'count', 'sort_tags', 'search_tags', 'data', 'total_count');
     }
 
     public function search_logo() {
