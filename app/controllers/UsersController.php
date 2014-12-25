@@ -590,9 +590,13 @@ class UsersController extends \app\controllers\AppController {
         $user = User::create();
         if ($this->request->data) {
             // фейсбук регисстрация
-            if ((isset($this->request->data['id'])) && (isset($this->request->data['name']))) {
+            if ((isset($this->request->data['id']) && isset($this->request->data['name']) || (isset($this->request->data['session']) && isset($this->request->data['session']['user'])))) {
                 // регился ли пользователей через обычную регистрацию?
-                if ($isUserExists = $user->isUserExistsByEmail($this->request->data['email'])) {
+                $isUserExists = false;
+                if (!isset($this->request->data['session'])) {
+                    $isUserExists = $user->isUserExistsByEmail($this->request->data['email']);
+                }
+                if ($isUserExists) {
                     // если он уже регился обычным способом, сохраняем его фейсбук айди
                     $userToLog = User::first(array('conditions' => array('email' => $this->request->data['email'])));
                     $userToLog->facebook_uid = $this->request->data['id'];
@@ -602,13 +606,26 @@ class UsersController extends \app\controllers\AppController {
                     $userToLog->save();
                 } else {
                     // регился ли пользователей через фейсбук?
-                    $this->request->data['facebook_uid'] = $this->request->data['id'];
-                    unset($this->request->data['id']);
-                    $isFBUserExists = $user->checkFacebookUser($this->request->data);
+                    $fb = false;
+                    if (isset($this->request->data['session'])) {
+                        $this->request->data['vkontakte_uid'] = $this->request->data['session']['mid'];
+                        $isFBUserExists = $user->checkVkontakteUser($this->request->data);
+                    } else {
+                        $this->request->data['facebook_uid'] = $this->request->data['id'];
+                        unset($this->request->data['id']);
+                        $isFBUserExists = $user->checkFacebookUser($this->request->data);
+                        $fb = true;
+                    }
+
                     if (!$isFBUserExists) {
                         // если пользователей фейсбука у нас отсутствует, то сохраняем его в базу
-                        if ($user->saveFacebookUser($this->request->data)) {
-                            $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                        if (($fb && $user->saveFacebookUser($this->request->data)) || (!$fb && $user->saveVkontakteUser($this->request->data))) {
+                            if ($fb) {
+                                $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                            } else {
+                                $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['vkontakte_uid'])));
+                            }
+                            $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['vkontakte_uid'])));
                             $userToLog->setLastActionTime();
                             $userToLog->getFbAvatar();
                             UserMailer::hi_mail($userToLog);
@@ -628,7 +645,11 @@ class UsersController extends \app\controllers\AppController {
                         }
                     } else {
                         // если он уже у нас есть, то вытаскиваем все его данные по айди
-                        $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                        if ($fb) {
+                            $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                        } else {
+                            $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['vkontakte_uid'])));
+                        }
                         if (!$userToLog->gender) {
                             $gender = 0;
                             if (isset($this->request->data['gender']) && $this->request->data['gender'] == 'male') {
@@ -1116,7 +1137,7 @@ class UsersController extends \app\controllers\AppController {
             $totalSolutionNum = (int) User::getTotalSolutionNum($this->request->id);
             $totalFavoriteMe = Favourite::getCountFavoriteMe($user->id);
             $totalUserFavorite = Favourite::getCountFavoriteUser($user->id);
-            $isFav = Favourite::first(array('conditions' => array('user_id' => Session::read('user.id'),'fav_user_id' => $user->id)));
+            $isFav = Favourite::first(array('conditions' => array('user_id' => Session::read('user.id'), 'fav_user_id' => $user->id)));
             if (User::checkRole('admin')) {
                 $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
             } else {
@@ -1141,7 +1162,7 @@ class UsersController extends \app\controllers\AppController {
                             'with' => array('Pitch')
                 ));
             }
-            return compact('user', 'pitchCount', 'totalUserFavorite', 'isFav','totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
+            return compact('user', 'pitchCount', 'totalUserFavorite', 'isFav', 'totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
         }
         throw new Exception('Public:Такого пользователя не существует.', 404);
     }
