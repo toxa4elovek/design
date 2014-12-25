@@ -7,9 +7,11 @@ app/resources/tmp/*
 session/*
 app/webroot/avatars/*
 app/webroot/files/*
+app/webroot/events/*
 app/webroot/pitchfiles/*
 app/webroot/solutions/*
 app/webroot/js/minified/*
 app/libraries/MPDF54/MPDF54/tmp/*
 app/webroot/????????????????????????????????.css
 app/config/bootstrap/connections.php
+dump.rdb

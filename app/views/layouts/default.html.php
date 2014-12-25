@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html itemscope itemtype="http://schema.org/LocalBusiness">
+<html itemscope itemtype="http://schema.org/LocalBusiness" lang="ru">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# godesigner: http://ogp.me/ns/fb/godesigner#">
     <?= $this->html->charset();?>
     <?php $vars = compact('solution', 'post', 'pitch', 'answer') ?>
@@ -71,7 +71,9 @@
 </head>
 
 <body class="<?=$this->_request->controller;?>_<?=$this->_request->action;?>">
+<?php if($this->_request->action != 'feed'): ?>
 <a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;display:hidden;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
+<?php endif?>
 <?php echo $this->content() ?>
 
 <?=$this->view()->render(array('element' => 'footer'))?>
@@ -88,6 +90,7 @@ echo  $this->html->script('app', array('inline' => false, 'weight' => 16));
 <?=$this->view()->render(array('element' => 'popups/contact_form'))?>
 <?=$this->view()->render(array('element' => 'popups/social_popup'))?>
 <?=$this->view()->render(array('element' => 'popups/mobile_popup'))?>
+<?=$this->view()->render(array('element' => 'popups/email_change'))?>
 <?=$this->view()->render(array('element' => 'scripts/ga'))?>
 <?=$this->view()->render(array('element' => 'scripts/ua'))?>
 <?=$this->view()->render(array('element' => 'newrelic/newrelic_footer'))?>

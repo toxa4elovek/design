@@ -14,6 +14,24 @@ $briefExamples = array(
     '11' => 'brief_logo.pdf',
     '12' => 'brief_logo.pdf',
 );
+
+$job_types = array(
+    'realty' => 'Недвижимость / Строительство',
+    'auto' => 'Автомобили / Транспорт',
+    'finances' => 'Финансы / Бизнес',
+    'food' => 'Еда / Напитки',
+    'adv' => 'Реклама / Коммуникации',
+    'tourism' => 'Туризм / Путешествие',
+    'sport' => 'Спорт',
+    'sci' => 'Образование / Наука',
+    'fashion' => 'Красота / Мода',
+    'music' => 'Развлечение / Музыка',
+    'culture' => 'Искусство / Культура',
+    'animals' => 'Животные',
+    'childs' => 'Дети',
+    'security' => 'Охрана / Безопасность',
+    'health' => 'Медицина / Здоровье');
+
 $specifics = unserialize($pitch->specifics);
 ?>
 <?php if(isset($specifics["audience"])):?>
@@ -311,13 +329,18 @@ endif?>
                     <?php endif;?>
                 <?php endif?>
             </p>
-            <?php if (!empty($pitch->industry)):?>
-            <p>
-                <label class="required">Вид деятельности <a href="#" class="second tooltip" title="Тут необходимо указать отрасль, для которой вы создаете питч. (прим.: кондитерские изделия, строительная компания)">(?)</a></label>
-                    <input type="text" name="industry" value="<?=$pitch->industry?>" placeholder="Подъемники для строительства в аренду и продажу" data-placeholder="Подъемники для строительства в аренду и продажу" required>
-            </p>
-            <?php endif; ?>
-
+            <label id ="show-types" class="greyboldheader required">Выберите вид деятельности</label>
+            <ul id="list-job-type">
+                <?php
+                    $industry = (unserialize($pitch->industry));
+                    $_empty = empty($industry);
+                    foreach ($job_types as $k => $v):
+                        ?>
+                        <li>
+                            <label><input type="checkbox" name="job-type[]" value="<?= $k ?>"<?= ($_empty) ? : (in_array($k, $industry) ? ' checked' : '') ?>><?= $v ?></label>
+                        </li>
+                    <?php endforeach; ?>
+            </ul>
             <?php if(!$onlyText):?>
             <div class="ribbon term" style="height: 80px;">
                 <p class="option">Установите срок</p>
@@ -341,27 +364,20 @@ endif?>
             </div>
             <?php endif?>
         </div><!-- .group -->
-
+<?php
+$str = ($pitch->category_id == 1) ? ' в логотипе' : '';
+$word2 = 'Опишите вид деятельности. Что отличает вас от конкурентов?<br>
+Кто ваши клиенты/потребители/покупатели?<br>
+<br>
+Что вы хотите получить на выходе от дизайнера?<br>
+Что должно быть прописано' . $str . '?<br>
+Где будет это размещаться?';
+?>
         <div class="groupc">
             <p>
-                <label>Описание бизнеса/деятельности <a href="#" class="second tooltip" title="Укажите название компании, чем она занимается или что создает. Чем вы отличаетесь от конкурентов. ">(?)</a></label>
-                <?php if($category->id == 7):?>
-                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?>  name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Чем вы уникальны и чем вы отличаетесь от конкурентов? Кто ваша целевая аудитория и какова ваша бизнес-мечта"><?=$pitch->{'business-description'}?></textarea>
-                <?php else:?>
-                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?>  name="business-description" cols="30" rows="10" placeholder="Опишите в двух словах ваш род деятельности. Какие качества отличают ваш бизнес от конкурентов?"><?=$pitch->{'business-description'}?></textarea>
-                <?php endif?>
+                <label class="required">Описание бизнеса и что нужно получить на выходе <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
+                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?> id="full-description" name="description" cols="40" rows="10" required data-placeholder="<?= $word2 ?>" data-low="70" data-normal="140" data-high="380" ><?=$pitch->description?></textarea>
             </p>
-            <p>
-                <label class="required">Опишите, что вам нужно и для каких целей <a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a></label>
-                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?> id="full-description" name="description" cols="30" rows="10" required placeholder="Что вы хотите получить на выходе от дизайнера?
-Что должно быть прописано в логотипе?
-Кто ваши клиенты/потребители/покупатели?
-Где будет это размещаться?" data-placeholder="Что вы хотите получить на выходе от дизайнера?
-Что должно быть прописано в логотипе?
-Кто ваши клиенты/потребители/покупатели?
-Где будет это размещаться?" data-low="70" data-normal="140" data-high="280" ><?=$pitch->description?></textarea>
-            </p>
-
 
             <div id="indicator-desc" class="indicator low tooltip" title="Шкала показывает, насколько подробно вы описали то, зачем пришли. Каждое ваше слово поможет дизайнеру.">
                 <div class="bar">

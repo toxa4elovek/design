@@ -14,14 +14,11 @@
     </td></tr>
     <tr><td colspan="3" height="40"></td></tr>
     <tr><td width="5"></td><td valign="top">
-
-
-
     </td>
         <td>
             <a style="color: #648fa4; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$text?></span><br/>
+            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$text?>. <?php if($schedule):?><?php echo date('j F Y H:i'); ?> (московское время)<?php endif;?></span><br/>
         </td></tr>
     <tr>
         <td colspan="3" height="40"></td>

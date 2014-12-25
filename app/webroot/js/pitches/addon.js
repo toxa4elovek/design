@@ -40,6 +40,9 @@ $(document).ready(function() {
     $('#prolong-checkbox').click(function() {
         if($('#prolong-checkbox').attr('checked')) {
             $('#sub-prolong').show();
+            if(!$('#sub-prolong').attr('placeholder')) {
+                $('#sub-prolong').attr('placeholder', 1)
+            }
         }else {
             $('#sub-prolong').hide();
         }
@@ -240,6 +243,12 @@ function FeatureCart() {
                 if($('#experts-checkbox').attr('checked')) {
                     self.addOption('экспертное мнение', 1500)
                 }
+                if($('#guaranteed').attr('checked')) {
+                    self.addOption('Гарантировать питч', 1400)
+                }
+                if($('#pinned').attr('checked')) {
+                    self.addOption('“Прокачать” бриф', 1450)
+                }
             }
         }else {
             self._renderCheck();
@@ -318,7 +327,9 @@ function FeatureCart() {
         var features = {
             'experts': self._expertArray(),
             'prolong': self._getProlong(),
-            'brief': self.getOption('Заполнение брифа')
+            'brief': self.getOption('Заполнение брифа'),
+            'pinned': self.getOption('“Прокачать” бриф'),
+            'guaranteed': self.getOption('Гарантировать питч')
         };
         var commonPitchData = {
             'id': self.id,
@@ -434,7 +445,11 @@ function FeatureCart() {
         return array;
     };
     this._getProlong = function() {
-        return $('#sub-prolong').val();
+        var value = $('#sub-prolong').val();
+        if(($('#prolong-checkbox').attr('checked') == 'checked') && (value == '')) {
+            value = $('#sub-prolong').attr('placeholder');
+        }
+        return value;
     }
     /*this._getTimelimitDays = function() {
      if(self.getOption('Поджимают сроки') > 0) {

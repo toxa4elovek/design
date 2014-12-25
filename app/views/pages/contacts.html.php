@@ -31,10 +31,30 @@
                                     +7 (812) 648 2412
                                 </div>
 
-                                <img src="/img/map.png" alt="" style="margin-left:auto;
-                                margin-right:auto; display:block; margin-top: 20px;">
-                                <a class="regular" target="_blank" style="text-align: center;" href="http://maps.google.ru/maps?client=safari&amp;rls=en&amp;oe=UTF-8&amp;redir_esc=&amp;q=инженерная+7&amp;um=1&amp;ie=UTF-8&amp;hq=&amp;hnear=0x469630e01f3c5137:0x32c7e2d0479f34ce,Инженерная+ул.,+7,+Санкт-Петербург&amp;gl=ru&amp;ei=iQljT_LCF5L44QStgf34Bw&amp;sa=X&amp;oi=geocode_result&amp;ct=image&amp;resnum=1&amp;ved=0CCIQ8gEwAA">карта проезда</a>
+                                <div class="fontBookC">
+                                    <br>
+                                    Россия<br>
+                                    ООО "КРАУД МЕДИА"<br>
+                                    Юридический адрес<br>
+                                    и адрес для документов:<br>
+                                    199397, Россия, Санкт-Петербург,<br>
+                                    ул. Беринга, д. 27<br><br>
 
+                                    Адрес бухгалтерии, <a href="http://www.godesigner.ru/posts/view/62" target="_blank">Вячеслав Афанасьев</a>:<br>
+                                    190000, Россия, Санкт-Петербург,<br>ул. Малая Морская, д. 16, оф. 28
+                                    <br>
+                                    <br>
+                                    Венгрия<br>
+                                    TUTDESIGN Kft<br>
+                                    1061 Budapest, 
+                                    Paulay ede utca 16<br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                </div>
                             </div>
                         </div>
                         <div class="clear"></div>
@@ -52,23 +72,7 @@
 
                             <a href="/answers" class="av">Все вопросы</a>
                         </div>
-                        <div style="margin-top:85px; position:relative; float:left;" class="regular">
-                            Наш офис:<br/>Россия, Санкт-Петербург,<br/>Инженерная 7, 3 этаж
-                            <br/><br/>
-                            Юридический адрес<br/>
-                            и адрес для документов:<br/>
-                            199397, Россия, Санкт-Петербург,<br/>ул. Беринга, д. 27
-                        </div>
-                        <!--div id="ap_content_r_3">
-                            <h2>Популярные разделы</h2>
-                            <ul>
-                                <li><a href="#">Помощь дизайнерам</a></li>
-                                <li><a href="#">Помощь заказщчикам</a></li>
 
-                                <li><a href="#">Помощь при оплате ( для заказчиков)</a></li>
-                                <li><a href="#">Перевод средств дизайнерам</a></li>
-                            </ul>
-                        </div-->
                     </div>
                 </div>
             </div><!-- /content -->

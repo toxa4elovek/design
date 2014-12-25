@@ -25,6 +25,20 @@ class Solutionfile extends \app\models\AppModel {
             'image_x' => 800,
             'image_ratio_y' => true,
         ),
+        'leftFeed' => array(
+            'image_resize' => true,
+            'image_x' => 310,
+            'image_y' => 240,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
+        'middleFeed' => array(
+            'image_resize' => true,
+            'image_x' => 600,
+            'image_y' => 500,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
         'tutdesign' => array(
             'image_resize' => true,
             'image_ratio_fill' => true,
@@ -42,7 +56,6 @@ class Solutionfile extends \app\models\AppModel {
             'file_overwrite' => true
         ),
     );
-
     protected static $processImageWatermark = array(
         'solutionView' => array(
             'image_resize' => true,
@@ -67,7 +80,6 @@ class Solutionfile extends \app\models\AppModel {
             'image_watermark_position' => 'TR',
         ),
     );
-
     protected static $tallImageModifier = array(
         'galleryLargeSize' => array(
             'image_resize' => true,
@@ -80,6 +92,20 @@ class Solutionfile extends \app\models\AppModel {
             'image_resize' => true,
             'image_x' => 267,
             'image_y' => 200,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
+        'leftFeed' => array(
+            'image_resize' => true,
+            'image_x' => 310,
+            'image_y' => 240,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
+        'middleFeed' => array(
+            'image_resize' => true,
+            'image_x' => 600,
+            'image_y' => 500,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
         ),
@@ -99,11 +125,11 @@ class Solutionfile extends \app\models\AppModel {
         }
         foreach ($options as $option => $imageParams) {
             $newname = self::first(array(
-                'fields' => 'filename',
-                'conditions' => array(
-                    'model_id' => $params['solution']->id,
-                    'originalbasename' => $params['name'],
-                ),
+                        'fields' => 'filename',
+                        'conditions' => array(
+                            'model_id' => $params['solution']->id,
+                            'originalbasename' => $params['name'],
+                        ),
             ));
             $newfiledata = pathinfo($newname->filename);
             $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
@@ -152,7 +178,7 @@ class Solutionfile extends \app\models\AppModel {
     public static function copy($model_id, $new_model) {
         $files = self::all(array('conditions' => array('model_id' => $model_id, 'originalbasename' => array('!=' => ''))));
         $options = self::$processImage;
-        if (count($files)>0) {
+        if (count($files) > 0) {
             foreach ($files as $file) {
                 $newfiledata = pathinfo($file->filename);
                 $newfiledata['filename'] = md5(uniqid('', true));

@@ -23,6 +23,12 @@ class Addon extends \app\models\AppModel {
                     Pitch::addExpert($params['addon']);
                     User::sendExpertMail($params['addon']);
                 }
+                if ($params['addon']->guaranteed == 1) {
+                    Pitch::addGuaranteed($params['addon']);
+                }
+                if ($params['addon']->pinned == 1) {
+                    Pitch::addPinned($params['addon']);
+                }
                 if ($params['addon']->prolong == 1 && $params['addon']->{'prolong-days'} > 0) {
                     Pitch::addProlong($params['addon']);
                 }

@@ -6,6 +6,7 @@
 			<li id="facebook"><a href="http://www.facebook.com/pages/Go-Designer/160482360714084" target="_blank">Facebook</a></li>
 			<li id="twitter"><a href="https://twitter.com/#!/Go_Deer" target="_blank">Twitter</a></li>
 			<li id="vkontakte"><a href="http://vk.com/public36153921" target="_blank">Vkontakte</a></li>
+                        <li id="instagram"><a href="http://instagram.com/godesigner.ru" target="_blank">Instagram</a></li>
 			<!--li id="rss"><a href="#">RSS</a></li-->
 		</ul><!-- .social -->
 

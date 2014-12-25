@@ -42,9 +42,35 @@ function mb_basename($file)
                         <h2 class="blueheading">Название</h2>
                         <p class="regular"><?=$pitch->title?></p>
 
-                        <?php if(!empty($pitch->industry)):?>
+                        <?php if(!empty($pitch->industry)):
+                            if($unserialized = unserialize($pitch->industry)):
+                                $job_types = array(
+                                    'realty' => 'Недвижимость / Строительство',
+                                    'auto' => 'Автомобили / Транспорт',
+                                    'finances' => 'Финансы / Бизнес',
+                                    'food' => 'Еда / Напитки',
+                                    'adv' => 'Реклама / Коммуникации',
+                                    'tourism' => 'Туризм / Путешествие',
+                                    'sport' => 'Спорт',
+                                    'sci' => 'Образование / Наука',
+                                    'fashion' => 'Красота / Мода',
+                                    'music' => 'Развлечение / Музыка',
+                                    'culture' => 'Искусство / Культура',
+                                    'animals' => 'Животные',
+                                    'childs' => 'Дети',
+                                    'security' => 'Охрана / Безопасность',
+                                    'health' => 'Медицина / Здоровье');
+                                $selected = array();
+                                foreach ($job_types as $k => $v):
+                                    if(in_array($k, $unserialized)):
+                                        $selected[] = $v;
+                                    endif;
+                                endforeach;
+                                $pitch->industry = implode($selected, '<br>');
+                            endif;
+                            ?>
                         <h2 class="blueheading">Вид деятельности</h2>
-                        <p class="regular"><?=$pitch->industry?></p>
+                        <p class="regular"><?php echo $pitch->industry?></p>
                         <?php endif;?>
 
                         <?php if(!empty($pitch->{'business-description'})):?>
@@ -163,7 +189,7 @@ function mb_basename($file)
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->
     </div><!-- /middle -->
 </div><!-- .wrapper -->
-<?=$this->view()->render(array('element' => 'popups/warning'))?>
+<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
 
 <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js', 'pitches/details.js'), array('inline' => false))?>
 <?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>
