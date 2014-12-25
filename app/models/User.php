@@ -120,7 +120,7 @@ class User extends \app\models\AppModel {
 
     public function checkVkontakteUser($entity, $data) {
         $conditions = array(
-            'vkontakte_uid' => $data['vkontakte_uid']
+            'vkontakte_uid' => $data['uid']
         );
         return (bool) (self::first(array('conditions' => $conditions)));
     }
@@ -140,11 +140,12 @@ class User extends \app\models\AppModel {
         } elseif (isset($data['gender']) && $data['gender'] == 1) {
             $gender = 2;
         }
+        $screen_name = explode(' ', $data['screen_name']);
         $saveData = array(
-            'email' => '',
-            'last_name' => $data['session']['user']['last_name'],
-            'first_name' => $data['session']['user']['first_name'],
-            'vkontakte_uid' => $data['vkontakte_uid'],
+            'email' => $data['email'],
+            'last_name' => $screen_name[1],
+            'first_name' => $screen_name[0],
+            'vkontakte_uid' => $data['uid'],
             'confirmed_email' => 1,
             'created' => date('Y-m-d H:i:s'),
             'gender' => $gender
