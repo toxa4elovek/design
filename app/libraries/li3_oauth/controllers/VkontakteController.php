@@ -36,6 +36,10 @@ class VkontakteController extends \li3_oauth\controllers\ClientController {
         Session::write('user.social.service', 'Vkontakte');
         Session::write('user.social.screen_name', $user['response'][0]['first_name'] . ' ' . $user['response'][0]['last_name']);
         Session::write('user.social.uid', $user['response'][0]['uid']);
+        Session::write('user.email', Session::read('oauth.access.email'));
+        var_dump(Session::read('user'));
+        var_dump(Session::read('oauth'));
+        die();
         return $this->redirect('Users::socialconnect');
     }
 
@@ -46,7 +50,7 @@ class VkontakteController extends \li3_oauth\controllers\ClientController {
     public function access() {
         $code = Session::read('oauth2.code');
         $response = json_decode(VkontakteConsumer::access($code), true);
-        if (isset($response['error'])) {
+        if ((!isset($response['access_token'])) && (isset($response['error']))) {
             return $this->redirect('Vkontakte::authorize');
         }
         Session::write('oauth.access', $response);
