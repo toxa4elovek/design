@@ -587,19 +587,23 @@ class UsersController extends \app\controllers\AppController {
         /* if(((!isset($this->request->query['invite'])) && (!isset($this->request->data['id']))) || ((isset($this->request->query['invite'])) && (!$isValid = Invite::isValidInvite($this->request->query['invite'])))) {
           return $this->redirect('Invites::index');
           } */
+        if ($vk_auth = Session::read('vk_data')) {
+            $this->request->data = $vk_auth;
+        }
         $user = User::create();
         if ($this->request->data) {
             // фейсбук регисстрация
-            if ((isset($this->request->data['id']) && isset($this->request->data['name']) || (isset($this->request->data['session']) && isset($this->request->data['session']['user'])))) {
+            if ((isset($this->request->data['id']) && isset($this->request->data['name']) || (isset($this->request->data['service']) && isset($this->request->data['email'])))) {
                 // регился ли пользователей через обычную регистрацию?
-                $isUserExists = false;
-                if (!isset($this->request->data['session'])) {
-                    $isUserExists = $user->isUserExistsByEmail($this->request->data['email']);
-                }
+                $isUserExists = $user->isUserExistsByEmail($this->request->data['email']);
                 if ($isUserExists) {
                     // если он уже регился обычным способом, сохраняем его фейсбук айди
                     $userToLog = User::first(array('conditions' => array('email' => $this->request->data['email'])));
-                    $userToLog->facebook_uid = $this->request->data['id'];
+                    if (isset($this->request->data['service'])) {
+                        $userToLog->vkontakte_uid = $this->request->data['uid'];
+                    } else {
+                        $userToLog->facebook_uid = $this->request->data['id'];
+                    }
                     if (!Avatar::first(array('conditions' => array('model_id' => $userToLog->id)))) {
                         $userToLog->getFbAvatar();
                     }
@@ -607,8 +611,7 @@ class UsersController extends \app\controllers\AppController {
                 } else {
                     // регился ли пользователей через фейсбук?
                     $fb = false;
-                    if (isset($this->request->data['session'])) {
-                        $this->request->data['vkontakte_uid'] = $this->request->data['session']['mid'];
+                    if (isset($this->request->data['service'])) {
                         $isFBUserExists = $user->checkVkontakteUser($this->request->data);
                     } else {
                         $this->request->data['facebook_uid'] = $this->request->data['id'];
@@ -623,9 +626,9 @@ class UsersController extends \app\controllers\AppController {
                             if ($fb) {
                                 $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
                             } else {
-                                $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['vkontakte_uid'])));
+                                $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['uid'])));
+                                Session::delete('vk_data');
                             }
-                            $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['vkontakte_uid'])));
                             $userToLog->setLastActionTime();
                             $userToLog->getFbAvatar();
                             UserMailer::hi_mail($userToLog);
@@ -648,7 +651,7 @@ class UsersController extends \app\controllers\AppController {
                         if ($fb) {
                             $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
                         } else {
-                            $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['vkontakte_uid'])));
+                            $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['uid'])));
                         }
                         if (!$userToLog->gender) {
                             $gender = 0;
@@ -705,6 +708,9 @@ class UsersController extends \app\controllers\AppController {
                         $redirect = '/users/feed';
                     }
                     Session::delete('redirect');
+                }
+                if (isset($this->request->data['service'])) {
+                    $this->redirect($redirect);
                 }
                 return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
             } else {

@@ -12,7 +12,7 @@ class VkontakteController extends \li3_oauth\controllers\ClientController {
         parent::_init();
         VkontakteConsumer::config(array(
             'client_id' => 2950889, //2305673
-            'redirect_uri' => 'http://godesigner.ru/vkontakte', // http://94.127.68.233/vkontakte'
+            'redirect_uri' => 'http://www.godesigner.ru/vkontakte', // http://94.127.68.233/vkontakte'
             'display' => 'page',
             'scheme' => 'https',
             'host' => 'api.vkontakte.ru',
@@ -32,15 +32,15 @@ class VkontakteController extends \li3_oauth\controllers\ClientController {
         if (empty($token)) {
             return $this->redirect('Vkontakte::authorize');
         }
-        $user = json_decode(VkontakteConsumer::getUser(Session::read('oauth.access.user_id'), Session::read('oauth.access.access_token')), true);
-        Session::write('user.social.service', 'Vkontakte');
-        Session::write('user.social.screen_name', $user['response'][0]['first_name'] . ' ' . $user['response'][0]['last_name']);
-        Session::write('user.social.uid', $user['response'][0]['uid']);
-        Session::write('user.email', Session::read('oauth.access.email'));
-        var_dump(Session::read('user'));
+        $user = json_decode(VkontakteConsumer::getUser(Session::read('oauth.access.user_id'), Session::read('oauth.access.access_token'),'sex'), true);
+        Session::write('vk_data.service', 'Vkontakte');
+        Session::write('vk_data.screen_name', $user['response'][0]['first_name'] . ' ' . $user['response'][0]['last_name']);
+        Session::write('vk_data.gender', $user['response'][0]['sex']);
+        Session::write('vk_data.uid', $user['response'][0]['uid']);
+        Session::write('vk_data.email', Session::read('oauth.access.email'));
+        var_dump(Session::read('vk_data'));
         var_dump(Session::read('oauth'));
-        die();
-        return $this->redirect('Users::socialconnect');
+        return $this->redirect('Users::registration');
     }
 
     public function authorize() {

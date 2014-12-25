@@ -214,42 +214,7 @@ $(document).ready(function () {
     });
 
     $('.vkontakte-logon').click(function () {
-        VK.init({apiId: 2950889}, '5.27');
-        VK.Auth.login(function (response) {
-            if (response.session) {
-                console.log(response);
-                VK.Api.call('users.get', {uids: response.session.user.id, fields: 'sex,photo_big'}, function (r) {
-                    if (r.response) {
-                        console.log(r.response);
-                        response.gender = r.response[0].sex;
-                        response.avatar = r.response[0].photo_big
-                        var registerUrl = '/register.json';
-                        if (($('#invite').length == 1) && ($('#invite').val() != '')) {
-                            registerUrl += '?invite=' + $('#invite').val();
-                        }
-//                        $.post(registerUrl, response, function (response) {
-//                            var ourResponse = response;
-//                            if (ourResponse.newuser == true) {
-//                                $('#popup-after-facebook').modal({
-//                                    containerId: 'after-fb-popup',
-//                                    opacity: 80,
-//                                    closeClass: 'gotest-close',
-//                                    onClose: function () {
-//                                        user_set_status($('#setStatus'));
-//                                    }
-//                                });
-//                            } else {
-//                                if (ourResponse.redirect != false) {
-//                                    window.location = ourResponse.redirect;
-//                                } else {
-//                                    window.location = '/';
-//                                }
-//                            }
-//                        });
-                    }
-                });
-            }
-        }, 4194304);
+        window.location.href = '/vkontakte';
     });
 
     $('.facebook-logon').click(function () {
