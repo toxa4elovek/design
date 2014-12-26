@@ -65,7 +65,7 @@
                         <div class="new-content group" style="margin-top:10px">
                         <?php else: ?>
                             <?php if($this->user->getId()): ?>
-                            <nav class="main_nav clear" style="width:832px;margin:66px auto -50px;">
+                            <nav class="main_nav clear" style="width:832px;margin:56px auto -50px;">
                                 <?= $this->view()->render(array('element' => 'office/nav')); ?>
                             </nav>
                             <?php endif; ?>

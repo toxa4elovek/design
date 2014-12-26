@@ -1069,7 +1069,7 @@ $(document).on('click', function() {
 /* ==============*/
  $('.ajaxoffice').live('click', function() {
      var url = $(this).attr('href');
-     if (url == '/news' || url == '/users/feed') {
+     if (url == 'http://www.godesigner.ru/news/' || url == 'http://www.godesigner.ru/users/feed') {
          window.location.href = url;
          return false;
      }
