@@ -1068,9 +1068,8 @@ $(document).on('click', function() {
 // details.js end
 /* ==============*/
  $('.ajaxoffice').live('click', function() {
-     //console.log($(this).attr('href'));
      var url = $(this).attr('href');
-     if (url == '/users/feed') {
+     if (url == '/news' || url == '/users/feed') {
          window.location.href = url;
          return false;
      }
