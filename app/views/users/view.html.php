@@ -12,16 +12,17 @@
                 <div class="right-sidebar-user">
                     <a id="enter-name" class="order-button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=http://www.godesigner.ru/users/loginasuser/<?= $user->id ?>">Войти под именем</a>
                     <p style="margin-top:41px"><a class="email-profile" href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
-                    <div class="g_line"></div>
+                    <div class="g_line" style="margin-top: 8px;"></div>
                     <p class="regular-small-grey">Online: <span class="date-profile"><?= date('d.m.Y H:i', strtotime($user->lastTimeOnline)) ?></span></p>
-                    <div class="g_line"></div>
+                    <div class="g_line" style="margin-top: 5px;"></div>
                     <?php if ($user->silenceCount > 0): ?>
-                        <p style="margin-top:10px">Запретов на общение: <?= $user->silenceCount ?></p>
-                        <p style="margin-top:10px">Молчит до: <?= date('d.m.Y H:i:s', strtotime($user->silenceUntil)) ?></p>
+                        <p class="regular-small-grey">Запретов на общение: <?= $user->silenceCount ?></p>
+                        <div class="g_line" style="margin-top: 7px;"></div>
+                        <p class="regular-small-grey">Молчит до: <?= date('d.m.Y H:i:s', strtotime($user->silenceUntil)) ?></p>
+                        <div class="g_line" style="margin-top: 8px;"></div>
                         <?php if (($user->silenceCount > 0) && (strtotime($user->silenceUntil) > strtotime(date('Y-m-d H:i:s')))): ?>
-                            <button style="margin-top:10px" class="allowcomment" data-term=""/>Разрешить комментарии</button>
+                            <button class="order-button" style="margin-top:10px" class="allowcomment" data-term=""/>Разрешить комментарии</button>
                         <?php endif ?>
-                        <div class="g_line"></div>
                     <?php endif ?>
                     <input type="hidden" value="<?= $user->id ?>" id="user_id"/>
                     <button class="order-button banhammer" data-term="10" />Бан на 10 дней</button>
@@ -63,9 +64,9 @@
                             <ul class="profile-list">
                                 <li class="regular-small-grey" style="color:#666666;">Дата рожд:<span> <?= $this->brief->stripurl($this->brief->removeEmailClean($userdata['birthdate'])) ?></span></li>
                                 <div class="g_line"></div>
-                                <li class="regular-small-grey" style="color:#666666;">Total Likes:<span> <?= $totalLikes ?></span></li>
+                                <li class="regular-small-grey" style="color:#666666;">Лайков:<span> <?= $totalLikes ?></span></li>
                                 <div class="g_line"></div>
-                                <li class="regular-small-grey" style="color:#666666;">Просмотров решений:<span> <?= $totalViews ?></span></li>
+                                <li class="regular-small-grey" style="color:#666666;">Просмотров:<span> <?= $totalViews ?></span></li>
                                 <div class="g_line"></div>
                                 <?php if ($isClient): ?>
                                     <li class="regular-small-grey" style="color:#666666;">Рейтинг у дизайнеров:<span> <?= $averageGrade ?></span></li>
@@ -160,4 +161,4 @@
 </div><!-- .wrapper -->
 <?= $this->html->script(array('users/view'), array('inline' => false)) ?>
 <?=
-$this->html->style(array('/cabinet', '/portfolio.css', '/messages12'), array('inline' => false))?>
+$this->html->style(array('/cabinet', '/portfolio', '/messages12'), array('inline' => false))?>
