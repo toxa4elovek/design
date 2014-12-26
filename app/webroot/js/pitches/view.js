@@ -1,5 +1,6 @@
 ;
 $(document).ready(function () {
+    $('#social-likes').socialLikes();
 
     // Preload Images
     (function (arrayOfImages) {

@@ -1358,6 +1358,7 @@ class User extends \app\models\AppModel {
 		}
 		return $user;
 	}
+
     public static function postOnFacebook($text) {
         $facebook = new Facebook(array(
             'appId'  => '202765613136579',
