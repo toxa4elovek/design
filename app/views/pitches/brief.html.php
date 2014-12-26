@@ -101,6 +101,16 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 Что вы хотите получить на выходе от дизайнера?<br>
 Что должно быть прописано' . $str . '?<br>
 Где будет это размещаться?';
+if($category->id == 7):
+    $word2 = 'Опишите вид деятельности. Что отличает вас от конкурентов?<br>
+Кто ваши клиенты/потребители/покупатели?<br>
+<br>
+Где, в основном, будет использоваться название и слоган? <br>Что они должны отражать?
+ Чего стоит избегать?<br> Кириллица или латиница? <br>
+ Хотите ли вы описательное название («Северо-западный GSM» )<br> или яркое («Мегафон» )? <br>
+ Укажите количество букв и слов.
+';
+endif;
 ?>
 
 <div class="wrapper">
@@ -192,8 +202,8 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 
             <div class="set-price">
                 <p>
-                    <label>Сумма вознаграждения для дизайнера (от <span id="labelPrice"><?= $this->moneyFormatter->formatMoney((date('N') > 5) ? $category->discountPrice : $category->minAward, array('suffix' => 'Р.')) ?></span>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
-                    <input type="text" name="" id="award" data-low="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" data-normal="<?= $category->normalAward ?>" data-high="<?= $category->goodAward ?>" data-low-def="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" data-normal-def="<?= $category->normalAward ?>" data-high-def="<?= $category->goodAward ?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" class="initial-price placeholder" placeholder="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" value="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>">
+                    <label>Сумма вознаграждения для <?php if($category->id == 7): echo 'копирайтера'; else: 'дизайнера'; endif;?> (от <span id="labelPrice"><?= $this->moneyFormatter->formatMoney((date('N') > 5) ? $category->discountPrice : $category->minAward, array('suffix' => 'Р.')) ?></span>) <a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a></label>
+                    <input type="text" name="" id="award" data-low="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" data-normal="<?= $category->normalAward ?>" data-high="<?= $category->goodAward ?>" data-low-def="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" data-normal-def="<?= $category->normalAward ?>" data-high-def="<?= $category->goodAward ?>" data-option-title="<?php echo ($category->id == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру' ?>" data-minimal-award="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" class="initial-price placeholder" placeholder="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" value="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>">
                 </p>
                 <div class="clr"></div>
                 <!-- <div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
@@ -216,13 +226,13 @@ $word2 = 'Опишите вид деятельности. Что отличае�
                 <div style="margin-bottom:20px">
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedTrue" type="radio" name="isGuaranteed" value="1" data-option-title="Гарантированный питч" data-option-value="950">
                     <label for="guaranteedTrue" style="font-size: 30px; color:#6ca475; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Гарантированный питч!&nbsp;&nbsp;&nbsp;+950.-</label>
-                    <p style="font-size:13px; color:#6f6f6f;padding-left:23px;margin-top:5px">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой питч в списке. Дизайнеры увидят, что питч не останется без победителя, и вы получите больший выбор идей.</p>
+                    <p style="font-size:13px; color:#6f6f6f;padding-left:23px;margin-top:5px">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой питч в списке. <?php if($category->id == 7): echo 'Копирайтеры'; else: 'Дизайнеры'; endif;?> увидят, что питч не останется без победителя, и вы получите больший выбор идей.</p>
                 </div>
 
                 <div>
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedFalse" type="radio" name="isGuaranteed" value="0" data-option-title="Гарантированный питч">
                     <label for="guaranteedFalse" style="font-size: 30px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Питч без гарантий&nbsp;&nbsp;&nbsp;0р.-</label>
-                    <p style="font-size:13px; color:#6f6f6f;padding-left:23px;margin-top:5px">При активном взаимодействии с дизайнерами вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
+                    <p style="font-size:13px; color:#6f6f6f;padding-left:23px;margin-top:5px">При активном взаимодействии с <?php if($category->id == 7): echo 'копирайтерами'; else: 'дизайнерами'; endif;?> вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
                 </div>
 
             </div>
@@ -305,7 +315,7 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 
                 <div class="ribbon" id="pinned-block">
                     <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="“Прокачать” бриф" data-option-value="1000">“Прокачать” бриф</label></p>
-                    <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения дизайнеров мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>
+                    <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения <?php if($category->id == 7): echo 'копирайтеров'; else: 'дизайнеров'; endif;?> мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>
                     <p class="label">+1000.-</p>
                 </div>
 

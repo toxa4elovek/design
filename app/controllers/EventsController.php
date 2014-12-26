@@ -11,6 +11,8 @@ use \app\extensions\helper\Stream;
 
 class EventsController extends \app\controllers\AppController {
 
+    public $publicActions = array('feed', 'getsol');
+
     public function updates() {
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;

@@ -28,7 +28,7 @@ use app\models\Facebook;
 class User extends \app\models\AppModel {
 
     public $hasOne = array();
-    public $hasMany = array('Pitch','Solution');
+    public $hasMany = array('Pitch', 'Solution');
 
     /**
      * Fill Admin role user's ids here
@@ -119,12 +119,65 @@ class User extends \app\models\AppModel {
         return (bool) (self::find('first', array('conditions' => $conditions)));
     }
 
+    public function checkVkontakteUser($entity, $data) {
+        $conditions = array(
+            'vkontakte_uid' => $data['uid']
+        );
+        return (bool) (self::first(array('conditions' => $conditions)));
+    }
+
     public function isUserExistsByEmail($entity, $email) {
         $conditions = array(
             'email' => $email,
             'facebook_uid' => ''
         );
-        return (bool) (self::find('first', array('conditions' => $conditions)));
+        $fbUser = self::find('first', array('conditions' => $conditions));
+        $conditions = array(
+            'email' => $email,
+            'vkontakte_uid' => ''
+        );
+        $vkUser = self::find('first', array('conditions' => $conditions));
+        if((!$fbUser) && (!$vkUser)) {
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    public function saveVkontakteUser($entity, $data) {
+        $gender = 0;
+        if (isset($data['gender']) && $data['gender'] == 2) {
+            $gender = 1;
+        } elseif (isset($data['gender']) && $data['gender'] == 1) {
+            $gender = 2;
+        }
+        $screen_name = explode(' ', $data['screen_name']);
+        $saveData = array(
+            'email' => $data['email'],
+            'last_name' => $screen_name[1],
+            'first_name' => $screen_name[0],
+            'vkontakte_uid' => $data['uid'],
+            'confirmed_email' => 1,
+            'created' => date('Y-m-d H:i:s'),
+            'gender' => $gender
+        );
+        if ($entity->save($saveData, array(
+                    'first_name' => array(
+                        array('notEmpty', 'message' => 'Имя обязательно'),
+                    ),
+                    'last_name' => array(
+                        array('notEmpty', 'message' => 'Фамилия обязетальна'),
+                    ),
+                    'email' => array(
+                        array('userUniqueEmail', 'message' => 'Email уже занят'),
+                        array('notEmpty', 'message' => 'Email обязателен'),
+                        array('email', 'message' => 'Email обязателен'),
+                    )
+                ))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function saveFacebookUser($entity, $data) {
@@ -160,6 +213,33 @@ class User extends \app\models\AppModel {
         } else {
             return false;
         }
+    }
+
+    public function getVkAvatar($entity, $imagelink) {
+        $data = json_decode(file_get_contents($imagelink), true);
+        $userpic = file_get_contents($data['response'][0]['photo_max_orig']);
+        $tmp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()] = tmpfile())));
+
+        file_put_contents($tmp, $userpic);
+        $imageData = getimagesize($tmp);
+        switch ($imageData['mime']) {
+            case 'image/gif':
+                $filename = uniqid() . '.gif';
+                break;
+            case 'image/jpeg':
+                $filename = uniqid() . '.jpg';
+                break;
+            case 'image/png':
+                $filename = uniqid() . '.png';
+                break;
+            default:
+                return array('error' => 'nouserpic set');
+                break;
+        }
+        Avatar::clearOldAvatars(Session::read('user.id'));
+        $entity->set(array('avatar' => array('name' => $filename, 'tmp_name' => $tmp, 'error' => 0)));
+        $entity->save();
+        return array('result' => 'true');
     }
 
     /**
@@ -284,7 +364,7 @@ class User extends \app\models\AppModel {
 
     public static function getParticipatePitches($userId) {
         $pitches = Pitch::find('all', array('conditions' =>
-                    array('user_id' => $userId),
+                    array('user_id' => $userId,'blank' => 0),
         ));
         $pitchesIds = array();
         foreach ($pitches as $pitch) {
@@ -907,7 +987,7 @@ class User extends \app\models\AppModel {
             $code = $tmhOAuth->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', array(
                 'status' => $tweet,
                 'media' => "@{$img};type={$extension};filename={$name}"
-            ), true, true);
+                    ), true, true);
             $data = json_decode($tmhOAuth->response['response'], true);
             $code = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
                 'status' => $tweet,

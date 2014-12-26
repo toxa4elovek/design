@@ -86,7 +86,7 @@ class VkontakteConsumer extends \lithium\core\StaticObject {
 		$config = static::$_service->config(); 
 		$fullUrl = $baseUrl . '?client_id=' . $config['client_id'] 
 		. '&redirect_uri=' . $config['redirect_uri'] 
-		. '&display=page';
+		. '&display=page&scope=email';
 		return $fullUrl;
 	}
 	
@@ -98,8 +98,8 @@ class VkontakteConsumer extends \lithium\core\StaticObject {
 		return static::$_service->send('GET', $url, array(), array('port' => 443));
 	}
 	
-	public static function getUser($uid, $access_token) {
-		$url = '/method/getProfiles?uid='. $uid . '&access_token=' . $access_token;
+	public static function getUser($uid ,$access_token, $fields) {
+		$url = '/method/getProfiles?uid='. $uid . '&access_token=' . $access_token . '&fields=' . $fields;
 		return static::$_service->send('GET', $url, array(), array('port' => 443));
 	}
 

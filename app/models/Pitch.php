@@ -789,7 +789,7 @@ class Pitch extends \app\models\AppModel {
             if ($option->name == 'Сбор GoDesigner') {
                 $options['commission'] = $option->value;
             }
-            if (($option->name != 'Награда Дизайнеру') && ($option->name != 'Сбор GoDesigner')) {
+            if (($option->name != 'Награда копирайтеру') &&  ($option->name != 'Награда Дизайнеру') && ($option->name != 'Сбор GoDesigner')) {
                 $totalfees += $option->value;
             }
         }

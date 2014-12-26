@@ -264,7 +264,7 @@
 .profile-list li.regular-small-grey,p.regular-small-grey,p .email-profile {
     color: #666666;
     text-shadow: none;
-    font: 17px OfficinaSansC Book, serif;
+    font: 15px OfficinaSansC Book, serif;
     font-weight: normal;
     text-transform: none;
 }
@@ -274,7 +274,7 @@ p .email-profile {
 .profile-list li.regular-small-grey span,p.regular-small-grey span {
     color: #666666;
     font-size: 17px;
-    font-family: OfficinaSansC Bold, serif;
+    font-family: OfficinaSansC Book, serif;
 }
 .profile-list-info li {
     margin-bottom: 4px;
@@ -347,7 +347,7 @@ hr.tiny-hr {
     width: 137px;
     padding-left: 30px;
     float: right;
-    top: -3px;
+    top: -2px;
     right: 27px;
     position: relative;
     line-height: 24px;

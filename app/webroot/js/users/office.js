@@ -1068,9 +1068,8 @@ $(document).on('click', function() {
 // details.js end
 /* ==============*/
  $('.ajaxoffice').live('click', function() {
-     //console.log($(this).attr('href'));
      var url = $(this).attr('href');
-     if (url == '/users/feed') {
+     if (url == 'http://www.godesigner.ru/news/' || url == 'http://www.godesigner.ru/users/feed') {
          window.location.href = url;
          return false;
      }
