@@ -907,7 +907,8 @@ function FeatureCart() {
         radioButton.prop("checked", true) ;
         Cart.addOption(radioButton.data('optionTitle'), radioButton.data('optionValue'));
         if (self.id > 0) {
-            self.addOption('Награда Дизайнеру', initVal);
+            var awardName = ($('input[name=category_id]').val() == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру';
+            self.addOption(awardName, initVal);
         } else {
             //self.updateOption('Заполнение брифа', 0);
         }

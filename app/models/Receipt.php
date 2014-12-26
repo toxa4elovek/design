@@ -23,7 +23,10 @@ class Receipt extends \app\models\AppModel {
     public static $fee = FEE_LOW;
 
 
-    public static function createReceipt($data, $returnComission = false) {
+    public static function createReceipt($data, $returnComission = false, $copyright = false) {
+        if($copyright == true) {
+            self::$dict['award'] = 'Награда копирайтеру';
+        }
         $receiptData = array();
         if(isset($data['features']['award'])) {
             $receiptData[] = array(

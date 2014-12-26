@@ -708,7 +708,7 @@ class PitchesController extends \app\controllers\AppController {
                 if ($pitch->referal_sum > 0) {
                     $this->request->data['commonPitchData']['referalDiscount'] = $pitch->referal_sum;
                 }
-                Receipt::createReceipt($this->request->data);
+                Receipt::createReceipt($this->request->data, false, (bool) ($commonPitchData['category_id'] == 7));
                 $total = Receipt::findTotal($pitch->id);
                 $pitch->total = $total;
             }
