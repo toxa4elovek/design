@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
     function preload(arrayOfImages) {
-        $(arrayOfImages).each(function(){
+        $(arrayOfImages).each(function () {
             $('<img/>')[0].src = this;
             // Alternatively you could use:
             // (new Image()).src = this;
@@ -18,88 +18,88 @@ $(document).ready(function() {
         '/img/vk_on.png',
         '/img/instagram_on.png'
     ]);
-	$("#registration").validate({
+    $("#registration").validate({
         /*debug: true,*/
-   		rules: {
- 		    // simple rule, converted to {required:true}
-  		    first_name: "required",
-   		 	// compound rule
-   			email: {
-       			required: true,
+        rules: {
+            // simple rule, converted to {required:true}
+            first_name: "required",
+            // compound rule
+            email: {
+                required: true,
                 email: true
-     		},
-     		password: {
-     			required: true,
-     			minlength: 5
-     		},
-     		confirm_password: {
-     			required: true,
-     			minlength: 5,
-     			equalTo: "#UserConfirmPassword"
-     		}
+            },
+            password: {
+                required: true,
+                minlength: 5
+            },
+            confirm_password: {
+                required: true,
+                minlength: 5,
+                equalTo: "#UserConfirmPassword"
+            }
 
-   		},
-   		messages: {
-     		first_name: {
-       			required: "Имя обязательно"
-     		},
-     		last_name: {
-       			required: "Фамилия обязательна"
-     		},
-     		email: {
-       			required: "Email обязателен",
-       			email: "Email обязателен"
-     		},
-     		password: {
-       			required: "Пароль обязателен",
-       			minlength: "Надо больше символов"
-     		},
-     		confirm_password: {
-       			required: "Подтвердите пароль",
-       			minlength: "Надо больше символов",
-				equalTo: "Пароли не совпадают"
-     		}
-   		},
-   		highlight: function(element, errorClass) {
-     		$(element).fadeOut(function() {
-       			$(element).fadeIn();
-     		});
-  		}
-	});
+        },
+        messages: {
+            first_name: {
+                required: "Имя обязательно"
+            },
+            last_name: {
+                required: "Фамилия обязательна"
+            },
+            email: {
+                required: "Email обязателен",
+                email: "Email обязателен"
+            },
+            password: {
+                required: "Пароль обязателен",
+                minlength: "Надо больше символов"
+            },
+            confirm_password: {
+                required: "Подтвердите пароль",
+                minlength: "Надо больше символов",
+                equalTo: "Пароли не совпадают"
+            }
+        },
+        highlight: function (element, errorClass) {
+            $(element).fadeOut(function () {
+                $(element).fadeIn();
+            });
+        }
+    });
 
-	$('#registration').on('submit', function(e) {
-	    e.preventDefault();
-	    $.post($(this).attr('action') + '.json', $(this).serialize(), function(response) {
-	        if (response.who_am_i == 'designer') {
-	            user_popup_register();
-	        } else {
-	            window.location.href = response.redirect;
-	        }
-	    });
-	});
+    $('#registration').on('submit', function (e) {
+        e.preventDefault();
+        $.post($(this).attr('action') + '.json', $(this).serialize(), function (response) {
+            if (response.who_am_i == 'designer') {
+                user_popup_register();
+            } else {
+                window.location.href = response.redirect;
+            }
+        });
+    });
 
-    $('#UserEmail').blur(function(){
-        $.post('/users/checkform.json', {"email": this.value}, function(response) {
+    $('#UserEmail').blur(function () {
+        $.post('/users/checkform.json', {"email": this.value}, function (response) {
             return (response.data);
         })
     });
 
-  $('#login-button').click(function() {
-      $("#reg-section").fadeOut(100, function () {
-          $("#login-section").fadeIn(100);
-      });
+    $('#login-button').click(function () {
+        $("#reg-section").fadeOut(100, function () {
+            $("#login-section").fadeIn(100);
+        });
 
-      return false;
-  });
+        return false;
+    });
 
-  $('#reg-button').click(function() {
-      $("#login-section").fadeOut(100, function () {
-          $("#reg-section").fadeIn(100);
-      });
-      return false;
-  });
+    $('#reg-button').click(function () {
+        $("#login-section").fadeOut(100, function () {
+            $("#reg-section").fadeIn(100);
+        });
+        return false;
+    });
 
-    $('#requesthelplink').on('click', function() {
+    $('#requesthelplink').on('click', function () {
         $('#loading-overlay2').modal({
             containerId: 'spinner',
             opacity: 80,
@@ -113,42 +113,48 @@ $(document).ready(function() {
     /* Social networks widgets modal*/
     if (!$.browser.mobile) {
         if (showSocialPopup) {
-            setTimeout(function() { appendSocials(); }, 5000);
+            setTimeout(function () {
+                appendSocials();
+            }, 5000);
         }
         if (needSocialWrite) {
             $.post('/users/addsocial/' + needSocialWrite + '.json');
         }
         // Mobile Popup
         if (showMobilePopup) {
-            setTimeout(function() { appendMobile(); }, 5000);
+            setTimeout(function () {
+                appendMobile();
+            }, 5000);
         }
         if (showMailPopup) {
-        setTimeout(function() { appendEmailConfirm(); }, 1000);
+            setTimeout(function () {
+                appendEmailConfirm();
+            }, 1000);
         }
         $('#feedback-link').show();
-        $('#feedback-link').live('mouseover', function() {
+        $('#feedback-link').live('mouseover', function () {
             $(this).css('left', '0');
         })
 
-        $('#feedback-link').live('mouseout', function() {
+        $('#feedback-link').live('mouseout', function () {
             $(this).css('left', '-5px');
         })
-    }else {
+    } else {
         $('#feedback-link').hide();
     }
 
     $('input[name=case]').val('fu27fwkospf');
 
-    $('#reqsend').on('click', function() {
+    $('#reqsend').on('click', function () {
         $('#reqmessage').text()
-        if($('#reqtarget').val() == '0') {
+        if ($('#reqtarget').val() == '0') {
             alert('Выберите адресата!');
-        }else if(($('#reqemail').val() == '') || ($('#reqemail').val() == 'ВАШ EMAIL')) {
+        } else if (($('#reqemail').val() == '') || ($('#reqemail').val() == 'ВАШ EMAIL')) {
             alert('Укажите email для связи!');
-        }else if(($('#reqmessage').val() == '') || ($('#reqmessage').val() == 'ОПИШИТЕ ПРОБЛЕМУ И ЗАДАЙТЕ ВОПРОС')) {
+        } else if (($('#reqmessage').val() == '') || ($('#reqmessage').val() == 'ОПИШИТЕ ПРОБЛЕМУ И ЗАДАЙТЕ ВОПРОС')) {
             alert('Введите ваше сообщение!');
         } else {
-        //var sendobj = {"name": $('#reqname').val(), "email": $('#email').val(), "message": $('#reqmessage').val()}
+            //var sendobj = {"name": $('#reqname').val(), "email": $('#email').val(), "message": $('#reqmessage').val()}
 
             var sendobj = {
                 "name": $('#reqname').val(),
@@ -159,24 +165,24 @@ $(document).ready(function() {
                 "to": $('#reqto').val(),
                 "info": clientInfo()
             };
-            $.post('/users/requesthelp.json', sendobj, function(response) {
-                if(response.success == 'true') {
+            $.post('/users/requesthelp.json', sendobj, function (response) {
+                if (response.success == 'true') {
                     $('#reqmainform').hide();
                     $('#reqformthankyou').show();
-                }else {
+                } else {
                 }
             })
         }
         return false;
     })
 
-    $('#reqto').on('keyup', function() {
+    $('#reqto').on('keyup', function () {
 
         $('#contactlist').show();
         return false;
     })
 
-    $(".reqlink").on('click', function() {
+    $(".reqlink").on('click', function () {
         $('#reqtarget').val($(this).data('id'));
         $('#reqto').val($(this).text());
         $('#reqto').removeClass('placeholder');
@@ -184,48 +190,52 @@ $(document).ready(function() {
         return false;
     })
 
-    $('html:not(#contactlist)').on('click', function() {
-        if($('#loading-overlay2').is(':visible')) {
+    $('html:not(#contactlist)').on('click', function () {
+        if ($('#loading-overlay2').is(':visible')) {
             $('#contactlist').hide();
         }
     })
 
-    $('.close-request').on('click', function() {
+    $('.close-request').on('click', function () {
         $.modal.close();
         return false;
     })
 
-    $('#requesthelpselector, .requestli, #reqto').on('mouseover', function() {
+    $('#requesthelpselector, .requestli, #reqto').on('mouseover', function () {
         $('img', '#requesthelpselector').attr('src', '/img/request_help_menu_button_hover.png')
         $('#contactlist').show();
         return false;
     })
 
-    $('#requesthelpselector, .requestli, #reqto').on('mouseout', function() {
+    $('#requesthelpselector, .requestli, #reqto').on('mouseout', function () {
         $('img', '#requesthelpselector').attr('src', '/img/requestselector.png')
         $('#contactlist').hide();
         return false;
-    })
-    
-	$('.facebook-logon').click(function() {
-		FB.login(function(response) {
-	    	if (response.authResponse) {
-	    	    var accessToken = response.authResponse.accessToken; 
-	     		FB.api('/me', function(response) {
+    });
+
+    $('.vkontakte-logon').click(function () {
+        window.location.href = '/vkontakte';
+    });
+
+    $('.facebook-logon').click(function () {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                var accessToken = response.authResponse.accessToken;
+                FB.api('/me', function (response) {
                     var fbResponse = response;
                     var registerUrl = '/register.json';
                     response.accessToken = accessToken;
-                    if(($('#invite').length == 1) && ($('#invite').val() != '')) {
+                    if (($('#invite').length == 1) && ($('#invite').val() != '')) {
                         registerUrl += '?invite=' + $('#invite').val();
                     }
-                    $.post(registerUrl, response, function(response) {
+                    $.post(registerUrl, response, function (response) {
                         var ourResponse = response;
                         if (ourResponse.newuser == true) {
                             $('#popup-after-facebook').modal({
                                 containerId: 'after-fb-popup',
                                 opacity: 80,
                                 closeClass: 'gotest-close',
-                                onClose: function() {
+                                onClose: function () {
                                     user_set_status($('#setStatus'));
                                 }
                             });
@@ -237,41 +247,41 @@ $(document).ready(function() {
                             }
                         }
                         /*if(ourResponse.newuser == false) {
-                            var params = {};
-                            params['message'] = 'Test Message';
-                            params['name'] = 'Dmitriy';
-                            params['description'] = 'My test message';
-                            params['link'] = 'http://godesigner.ru/';
-                            params['picture'] = 'http://summer-mourning.zoocha.com/uploads/thumb.png';
-                            params['caption'] = 'My Label';
-                            FB.api('/me/feed', 'post', params, function(response) {
-                                if (!response || response.error) {
-                                    console.log(response);
-                                    alert('Error occured - ' + response.error);
-
-                                } else {
-                                    alert('Published to stream - you might want to delete it now!');
-                                }
-                            });
-                        }*/
+                         var params = {};
+                         params['message'] = 'Test Message';
+                         params['name'] = 'Dmitriy';
+                         params['description'] = 'My test message';
+                         params['link'] = 'http://godesigner.ru/';
+                         params['picture'] = 'http://summer-mourning.zoocha.com/uploads/thumb.png';
+                         params['caption'] = 'My Label';
+                         FB.api('/me/feed', 'post', params, function(response) {
+                         if (!response || response.error) {
+                         console.log(response);
+                         alert('Error occured - ' + response.error);
+                         
+                         } else {
+                         alert('Published to stream - you might want to delete it now!');
+                         }
+                         });
+                         }*/
                     });
-	       			/*FB.logout(function(response) {
-	         			console.log('Logged out.');
-	       			});*/
-	     		});
-	   		}
-	 	}, {scope: 'email,publish_stream,publish_actions'});
-	});
+                    /*FB.logout(function(response) {
+                     console.log('Logged out.');
+                     });*/
+                });
+            }
+        }, {scope: 'email,publish_stream,publish_actions'});
+    });
 
-    $('#setStatus').on('submit', function(e) {
+    $('#setStatus').on('submit', function (e) {
         e.preventDefault();
         user_set_status($(this));
     });
 
-    var user_set_status = function($form) {
+    var user_set_status = function ($form) {
         $('.simplemodal-container, .simplemodal-overlay').fadeOut();
         $.modal.close();
-        $.post($form.attr('action') + '.json', $form.serialize(), function(response) {
+        $.post($form.attr('action') + '.json', $form.serialize(), function (response) {
             if ((response.result === true) && (response.status == 'designer')) {
                 user_popup_register();
             } else {
@@ -280,12 +290,12 @@ $(document).ready(function() {
         }, 'json');
     };
 
-    var user_popup_register = function() {
+    var user_popup_register = function () {
         $('#popup-register').modal({
             containerId: 'gotest-popup',
             opacity: 80,
             closeClass: 'gotest-close',
-            onClose: function() {
+            onClose: function () {
                 $('.simplemodal-container, .simplemodal-overlay').fadeOut();
                 $.modal.close();
                 window.location.href = '/pitches';
@@ -293,104 +303,104 @@ $(document).ready(function() {
         });
     };
 
-    $(document).on('click', '#fav', function() {
+    $(document).on('click', '#fav', function () {
         var link = $(this)
-        var data = { "pitch_id": link.data('pitchid')};
-        var type= link.data('type');
-        if(type == 'add') {
+        var data = {"pitch_id": link.data('pitchid')};
+        var type = link.data('type');
+        if (type == 'add') {
             var newtype = 'remove';
             var newText = 'Перестать следить';
-        }else{
+        } else {
             var newtype = 'add';
             var newText = 'Следить за питчем';
         }
-        $.post('/favourites/'+ type + '.json', data, function(response) {
+        $.post('/favourites/' + type + '.json', data, function (response) {
             link.data('type', newtype);
-            if($('img', link).attr('src') != '/img/plusb.png' && $('img', link).attr('src') != '/img/plusb_2.png') {
+            if ($('img', link).attr('src') != '/img/plusb.png' && $('img', link).attr('src') != '/img/plusb_2.png') {
                 link.text(newText);
             }
         });
         return false;
     })
 
-    $('.deleteheader').click(function(){
+    $('.deleteheader').click(function () {
         var id = $(this).data('id');
-        $.post('/pitches/delete/' + id + '.json', function() {
+        $.post('/pitches/delete/' + id + '.json', function () {
             $('tr[data-id="' + id + '"]').hide();
             var visibleRows = $('tr:visible', '#header-table').length
-            if(visibleRows == 0) {
+            if (visibleRows == 0) {
                 $('#pitch-panel').hide();
             }
         })
         return false;
     })
 
-    $('.favourites').hover(function() {
+    $('.favourites').hover(function () {
         $(this).attr('src', '/img/social_plus.png');
-    }, function() {
+    }, function () {
         $(this).attr('src', '/img/1.gif');
     })
 
-    $('.facebook').hover(function() {
+    $('.facebook').hover(function () {
         $(this).attr('src', '/img/social_fb.png');
-    }, function() {
+    }, function () {
         $(this).attr('src', '/img/1.gif');
     })
 
-    $('.twitter').hover(function() {
+    $('.twitter').hover(function () {
         $(this).attr('src', '/img/social_twitter.png');
-    }, function() {
+    }, function () {
         $(this).attr('src', '/img/1.gif');
     })
 
-    $('#closepanel').click(function() {
+    $('#closepanel').click(function () {
         $('#panel').hide();
         $('.conteiner').css('margin-top', 0);
         $('.main').css('margin-top', 0);
         $('.conteiners').css('margin-top', 0);
         $('.middle_inner').css('margin-top', 0);
-        if(($('#slides').length > 0) || ($('.conteiner').length > 0)){
+        if (($('#slides').length > 0) || ($('.conteiner').length > 0)) {
             $('header').css('margin-bottom', '89px');
-        }else {
+        } else {
             $('header').css('margin-bottom', '0');
         }
         $('body').removeClass('show-panel');
     })
 
-    $('#closepanel').mouseover(function() {
+    $('#closepanel').mouseover(function () {
         $(this).css('background', 'url("/img/panel/close-btn2.png") repeat scroll 0 0 transparent');
     })
 
-    $('#closepanel').mouseout(function() {
+    $('#closepanel').mouseout(function () {
         $(this).css('background', 'url("/img/panel/close-btn.png") repeat scroll 0 0 transparent');
     })
 
-    $('.header-menu-item').on('mouseover', function() {
+    $('.header-menu-item').on('mouseover', function () {
         $(this).removeClass('header-menu-item').addClass('header-menu-item-higlighted');
     })
-    $('.header-menu-item').on('mouseout', function() {
+    $('.header-menu-item').on('mouseout', function () {
         $(this).removeClass('header-menu-item-higlighted').addClass('header-menu-item');
     })
     var menuOpen = false;
-    $('.avatar-top, .name-top').on('mouseover', function(){
+    $('.avatar-top, .name-top').on('mouseover', function () {
         menuOpen = true;
         $('#menu_arrow').css('padding-top', '5px').attr('src', '/img/arrow_down_header.png');
         $('.header-menu').fadeIn(300);
     })
-    $('.header-menu').on('mouseenter', function() {
+    $('.header-menu').on('mouseenter', function () {
         menuOpen = true;
     });
-    $('.avatar-top, .name-top, .header-menu').on('mouseleave', function() {
+    $('.avatar-top, .name-top, .header-menu').on('mouseleave', function () {
         menuOpen = false;
-        setTimeout(function() {
-            if(menuOpen == false){
-                $('.header-menu').fadeOut(300, function() {
+        setTimeout(function () {
+            if (menuOpen == false) {
+                $('.header-menu').fadeOut(300, function () {
                     $('#menu_arrow').css('padding-top', '3px').attr('src', '/img/arrow_header_up.png');
                 });
             }
         }, 100);
     });
-    if($('.breadcrumbs-view', $('#pitch-title')).height() > 36) {
+    if ($('.breadcrumbs-view', $('#pitch-title')).height() > 36) {
         $('#pitch-title').height($('.breadcrumbs-view', $('#pitch-title')).height() + 10)
     }
 
@@ -401,22 +411,22 @@ $(document).ready(function() {
         showEmptyDays: 'off'
     });
     $('#changeEmail').validate({
-    errorPlacement: function(error, element) {
-        if($('input[name="email"]').val() && $('input[name="confirmEmail"]').val()){
-            element.after(error);
-        }
-    },
+        errorPlacement: function (error, element) {
+            if ($('input[name="email"]').val() && $('input[name="confirmEmail"]').val()) {
+                element.after(error);
+            }
+        },
         rules: {
             email: {
                 required: true,
                 email: true,
                 equalTo: "#conf_email",
                 remote: {
-                    url:"/users/checkform.json",
-                    type:"post",
-                    dataFilter: function(data) {
+                    url: "/users/checkform.json",
+                    type: "post",
+                    dataFilter: function (data) {
                         var json = JSON.parse(data);
-                        if(json.data === false) {
+                        if (json.data === false) {
                             return '"true"';
                         }
                         return '"Email уже используется"';
@@ -437,15 +447,15 @@ $(document).ready(function() {
                 required: "Email обязателен"
             }
         },
-        highlight: function(element, errorClass) {
-            $(element).fadeOut(function() {
+        highlight: function (element, errorClass) {
+            $(element).fadeOut(function () {
                 $(element).fadeIn();
             });
         },
-        submitHandler: function(form) {
-            $.post("/users/profile.json", { email:$('#first_email').val() },function(data){
+        submitHandler: function (form) {
+            $.post("/users/profile.json", {email: $('#first_email').val()}, function (data) {
                 $('.simplemodal-container').fadeOut(800);
-                $('#simplemodal-overlay').fadeOut(800, function() {
+                $('#simplemodal-overlay').fadeOut(800, function () {
                     $.modal.close();
                 });
             });
@@ -465,52 +475,57 @@ $(document).ready(function() {
 //    });
 });
 
-window.fbAsyncInit = function() {
+window.fbAsyncInit = function () {
     FB.init({
-    	appId      : '202765613136579', // App ID
-        channelUrl : '//godesigner.ru/channel.html', // Channel File
-        status     : true, // check login status
-        cookie     : true, // enable cookies to allow the server to access the session
-        oauth      : true, // enable OAuth 2.0
-        xfbml      : true  // parse XFBML
+        appId: '202765613136579', // App ID
+        channelUrl: '//godesigner.ru/channel.html', // Channel File
+        status: true, // check login status
+        cookie: true, // enable cookies to allow the server to access the session
+        oauth: true, // enable OAuth 2.0
+        xfbml: true  // parse XFBML
     });
     /*
-    FB.Event.subscribe('edge.create',
-        function(response) {
-            var uid = '';
-            FB.getLoginStatus(function(response) {
-                if (response.status === 'connected') {
-                    uid = response.authResponse.userID;
-                }
-            });
-            var solutionId = $('#solution_id').val();
-            $.post('/solutions/like/' + solutionId + '.json', {"uid": uid}, function(response) {
-            });
-        }
-    );
-    FB.Event.subscribe('edge.remove',
-        function(response) {
-            var uid = '';
-            FB.getLoginStatus(function(response) {
-                if (response.status === 'connected') {
-                    uid = response.authResponse.userID;
-                }
-            });
-            var solutionId = $('#solution_id').val();
-            if(solutionId) {
-                $.post('/solutions/unlike/' + solutionId + '.json', {"uid": uid}, function(response) {
-                });
-            }
-        }
-    );*/
+     FB.Event.subscribe('edge.create',
+     function(response) {
+     var uid = '';
+     FB.getLoginStatus(function(response) {
+     if (response.status === 'connected') {
+     uid = response.authResponse.userID;
+     }
+     });
+     var solutionId = $('#solution_id').val();
+     $.post('/solutions/like/' + solutionId + '.json', {"uid": uid}, function(response) {
+     });
+     }
+     );
+     FB.Event.subscribe('edge.remove',
+     function(response) {
+     var uid = '';
+     FB.getLoginStatus(function(response) {
+     if (response.status === 'connected') {
+     uid = response.authResponse.userID;
+     }
+     });
+     var solutionId = $('#solution_id').val();
+     if(solutionId) {
+     $.post('/solutions/unlike/' + solutionId + '.json', {"uid": uid}, function(response) {
+     });
+     }
+     }
+     );*/
 };
 
 // Load the SDK Asynchronously
 //var testLoc = window.location.pathname.match(/\/pitches\/view\//);
 //if(testLoc != null) {
-(function(d){
-    var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-    js = d.createElement('script'); js.id = id; js.async = true;
+(function (d) {
+    var js, id = 'facebook-jssdk';
+    if (d.getElementById(id)) {
+        return;
+    }
+    js = d.createElement('script');
+    js.id = id;
+    js.async = true;
     js.src = "//connect.facebook.net/en_US/all.js";
     d.getElementsByTagName('head')[0].appendChild(js);
 }(document));
@@ -520,45 +535,45 @@ window.fbAsyncInit = function() {
  * Pitch files upload/delete handler
  */
 function onSelectHandler(file, fileIds, Cart) {
-    if($('#filename').html() != 'Файл не выбран') {
+    if ($('#filename').html() != 'Файл не выбран') {
         $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px" class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div></li>');
-    }else {
+    } else {
         $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div></li>');
     }
-    
+
     var self = this;
     var uploadId = this.damnUploader('addItem', {
         file: file,
-            onProgress: function(percents) {
-                $('#progressbar').text(percents + '%');
-                var progresspx = Math.round(3.4 * percents);
-                if(progresspx > 330) {
-                    progresspx == 330;
-                }
-                $('#filler').css('width', progresspx);
-                if(percents > 95) {
-                    $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
-                }else {
-                    $('#progressbarimage').css('background', 'url(/img/indicator_empty.png)');
-                }
-            },
-            onComplete: function(successfully, data, errorCode) {
-                var dataObj = $.parseJSON(data);
-                fileIds.push(dataObj.id);
-                if ((successfully) && (data.match(/(\d*)/))) {
-                    //alert('Файл '+file.name+' загружен, полученные данные: '+data);
-                } else {
-                    alert('Ошибка при загрузке. Код ошибки: '+errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
-                }
-                if(self.damnUploader('itemsCount') == 0) {
-                    $.merge(Cart.fileIds, fileIds);
-                    Cart.saveData();
-                    $.modal.close();
-                }
+        onProgress: function (percents) {
+            $('#progressbar').text(percents + '%');
+            var progresspx = Math.round(3.4 * percents);
+            if (progresspx > 330) {
+                progresspx == 330;
             }
+            $('#filler').css('width', progresspx);
+            if (percents > 95) {
+                $('#progressbarimage').css('background', 'url(/img/indicator_full.png)');
+            } else {
+                $('#progressbarimage').css('background', 'url(/img/indicator_empty.png)');
+            }
+        },
+        onComplete: function (successfully, data, errorCode) {
+            var dataObj = $.parseJSON(data);
+            fileIds.push(dataObj.id);
+            if ((successfully) && (data.match(/(\d*)/))) {
+                //alert('Файл '+file.name+' загружен, полученные данные: '+data);
+            } else {
+                alert('Ошибка при загрузке. Код ошибки: ' + errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
+            }
+            if (self.damnUploader('itemsCount') == 0) {
+                $.merge(Cart.fileIds, fileIds);
+                Cart.saveData();
+                $.modal.close();
+            }
+        }
     });
-    
-    var lastChild = $('#filezone').children(':last');            
+
+    var lastChild = $('#filezone').children(':last');
     var link = $('.filezone-delete-link', lastChild).attr('data-delete-id', uploadId);
 
     return false; // отменить стандартную обработку выбора файла
@@ -570,11 +585,11 @@ function onSelectHandler(file, fileIds, Cart) {
 function isCommentValid(text) {
     var regex = '#\\d+,'; // #15,
     regex += '|#\\d+\\s{1},', // #15 ,
-    regex += '|#\\d+', // #15
-    regex += '|@\\S+\\s{1}\\S{1}\\.,', // @Дмитрий Н.,
-    regex += '|@\\S+\\s\\S{1}\\. ,', // @Дмитрий Н. ,
-    regex += '|@\\S+\\s\\S{1}', // @Дмитрий Н
-    re = new RegExp(regex, 'g');
+            regex += '|#\\d+', // #15
+            regex += '|@\\S+\\s{1}\\S{1}\\.,', // @Дмитрий Н.,
+            regex += '|@\\S+\\s\\S{1}\\. ,', // @Дмитрий Н. ,
+            regex += '|@\\S+\\s\\S{1}', // @Дмитрий Н
+            re = new RegExp(regex, 'g');
     var newString = text.replace(re, '');
     if (newString.match(/\S/)) {
         return true;
@@ -588,60 +603,60 @@ function isCommentValid(text) {
 function warningModal() {
     // Warn Placeholder behavior
     var warnPlaceholder = 'ВАША ЖАЛОБА';
-    $('#warn-comment, #warn-solution').on('focus', function() {
+    $('#warn-comment, #warn-solution').on('focus', function () {
         $(this).removeAttr('placeholder');
     });
-    $('#warn-comment, #warn-solution').on('blur', function() {
-        $(this).attr('placeholder', warnPlaceholder); 
+    $('#warn-comment, #warn-solution').on('blur', function () {
+        $(this).attr('placeholder', warnPlaceholder);
     });
-    
+
     // Warn Comment
-    $('body, .solution-overlay').on('click', '.warning-comment', function() {
+    $('body, .solution-overlay').on('click', '.warning-comment', function () {
         $('#sendWarnComment').data('url', $(this).data('url'));
         $('#sendWarnComment').data('commentId', $(this).data('commentId'));
         $('#popup-warning-comment').modal({
             containerId: 'final-step',
             opacity: 80,
             closeClass: 'popup-close',
-            onShow: function() {
+            onShow: function () {
                 $('#warn-comment').val('');
             }
         });
         return false;
     });
-    $('#sendWarnComment').on('click', function() {
+    $('#sendWarnComment').on('click', function () {
         var url = $(this).data('url');
         var id = $(this).data('commentId');
-        if(($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
-            $.post(url, {"text": $('#warn-comment').val(), "id": id}, function(response) {
+        if (($('#warn-comment').val().length > 0) && ($('#warn-comment').val() != warnPlaceholder)) {
+            $.post(url, {"text": $('#warn-comment').val(), "id": id}, function (response) {
                 warningThanks();
             });
-        }else {
+        } else {
             alert('Введите текст жалобы!');
         }
     });
 
     // Warn Solution
-    $('body, .solution-overlay').on('click', '.warning', function(e) {
+    $('body, .solution-overlay').on('click', '.warning', function (e) {
         e.preventDefault();
         $('#sendWarn').data('url', $(this).attr('href'));
         $('#popup-warning').modal({
             containerId: 'final-step',
             opacity: 80,
             closeClass: 'popup-close',
-            onShow: function() {
+            onShow: function () {
                 $('#warn-solution').val('');
             }
         });
         return false;
     });
-    $('#sendWarn').on('click', function() {
+    $('#sendWarn').on('click', function () {
         var url = $(this).data('url');
-        if(($('#warn-solution').val().length > 0) && ($('#warn-solution').val() != warnPlaceholder)) {
-            $.post(url, {"text": $('#warn-solution').val()}, function(response) {
+        if (($('#warn-solution').val().length > 0) && ($('#warn-solution').val() != warnPlaceholder)) {
+            $.post(url, {"text": $('#warn-solution').val()}, function (response) {
                 warningThanks();
             });
-        }else {
+        } else {
             alert('Введите текст жалобы!');
         }
     });
@@ -652,7 +667,7 @@ function warningModal() {
  */
 function fetchCommentsNew(result) {
     var fetchedComments = '';
-    $.each(result.comments, function(idx, comment) {
+    $.each(result.comments, function (idx, comment) {
         var commentData = prepareCommentData(comment, result);
         fetchedComments += populateComment(commentData);
         if (comment.child) {
@@ -673,8 +688,8 @@ function prepareCommentData(comment, result) {
     commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
     commentData.isExpert = isExpert(comment.user_id, expertsObj);
     commentData.isClosedPitch = (result.pitch.status != 0) ? 1 : 0;
-    commentData.publicClass = (comment.public == 1) ? ' public-comment' : ' private-comment'; 
-    
+    commentData.publicClass = (comment.public == 1) ? ' public-comment' : ' private-comment';
+
     if (result.pitch.user_id == comment.user_id) {
         commentData.messageInfo = 'message_info2';
     } else if (comment.user.isAdmin == "1") {
@@ -682,14 +697,14 @@ function prepareCommentData(comment, result) {
         commentData.isAdmin = comment.user.isAdmin;
     } else if (commentData.isExpert) {
         commentData.messageInfo = 'message_info5';
-    }else {
+    } else {
         commentData.messageInfo = 'message_info1';
     }
-    
+
     commentData.userAvatar = comment.avatar;
     commentData.commentAuthor = comment.user.first_name + (((comment.user.last_name == null) || (comment.user.last_name.length == 0)) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
     commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
-    
+
     // Date Time
     var postDateObj = getProperDate(comment.created);
     commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
@@ -736,11 +751,11 @@ function populateComment(data) {
     }
     var avatarElement = '';
     if (!data.isAdmin) {
-        if(!data.isExpert) {
+        if (!data.isExpert) {
             avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
                             <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
                             </a>';
-        }else {
+        } else {
             avatarElement = '<a href="/experts/view/' + data.isExpert + '"> \
                             <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
                             </a>';
@@ -753,8 +768,8 @@ function populateComment(data) {
     return '<section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                 <div class="separator"></div> \
                 <div class="' + data.messageInfo + '">'
-                + avatarElement +
-                '<a href="/users/view/' + data.commentUserId + '" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '"> \
+            + avatarElement +
+            '<a href="/users/view/' + data.commentUserId + '" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '"> \
                     <span>' + data.commentAuthor + '</span><br /> \
                     <span style="font-weight: normal;">' + data.postDate + ' ' + data.postTime + '</span> \
                 </a> \
@@ -762,12 +777,12 @@ function populateComment(data) {
                 </div> \
                 <div data-id="' + data.commentId + '" class="message_text' + data.publicClass + '"> \
                     <span class="regular comment-container">'
-                        + data.commentText +
-                    '</span> \
+            + data.commentText +
+            '</span> \
                 </div> \
                 <div class="toolbar-wrapper"><div class="toolbar">'
-                    + toolbar +
-                '</div></div> \
+            + toolbar +
+            '</div></div> \
                 <div class="clr"></div> \
                 <div class="hiddenform" style="display:none"> \
                     <section> \
@@ -787,7 +802,7 @@ function populateComment(data) {
  */
 function copyrightedInfo(data) {
     var res = '';
-    $.each(data.filename, function(idx, filename) {
+    $.each(data.filename, function (idx, filename) {
         res += '<p>' + filename + '<br />';
         res += (data.source[idx]) ? '<a href="/urls/' + data.source[idx] + '">http://godesigner.ru/urls/' + data.source[idx] + '</a><br />' : '';
         res += (data.needtobuy[idx] == 'on') ? '<span class="alert">нужно покупать</span>' : 'не нужно покупать';
@@ -795,8 +810,8 @@ function copyrightedInfo(data) {
     });
     res = '<div class="solution-info solution-copyrighted chapter"> \
                <h2>ДОП. МАТЕРИАЛЫ</h2>'
-               + res +
-               '<div class="separator"></div> \
+            + res +
+            '<div class="separator"></div> \
           </div>';
     return res;
 }
@@ -816,7 +831,7 @@ function isExpert(user, expertsObj) {
  * Fetch and populate Comments via AJAX on the pitch solutions gallery page
  */
 function fetchPitchComments() {
-    $.getJSON('/pitches/getcommentsnew/' + pitchNumber + '.json', function(result) {
+    $.getJSON('/pitches/getcommentsnew/' + pitchNumber + '.json', function (result) {
         if (result.comments) {
             var $commentsTitle = $('<div class="separator" style="width: 810px; margin-left: 30px; margin-top: 25px;"></div>');
             if ($('#newComment').length == 0 && $('.gallery_postload').is(':visible')) {
@@ -836,34 +851,34 @@ function fetchPitchComments() {
  * Comments Toolbar
  */
 function enableToolbar() {
-    $(document).on('mouseenter', '.pitch-comments section, .solution-comments section', function() {
+    $(document).on('mouseenter', '.pitch-comments section, .solution-comments section', function () {
         $('.toolbar', this).fadeIn(200);
     });
-    $(document).on('mouseleave', '.pitch-comments section, .solution-comments section', function() {
+    $(document).on('mouseleave', '.pitch-comments section, .solution-comments section', function () {
         $('.toolbar', this).fadeOut(200);
     });
-    
+
     // Reply to Question
-    $('body, .solution-overlay').on('click', '.replyto', function() {
+    $('body, .solution-overlay').on('click', '.replyto', function () {
         toggleAnswer($(this));
         return false;
     });
-    
+
     // Send Answer Comment
-    $('body, .solution-overlay').on('click', '.answercomment', function(event) {
+    $('body, .solution-overlay').on('click', '.answercomment', function (event) {
         addAnswerComment($(event.target));
     });
 
     // Delete Comment
-    $('body, .solution-overlay').on('click', '.delete-link-in-comment.ajax', function(e) {
+    $('body, .solution-overlay').on('click', '.delete-link-in-comment.ajax', function (e) {
         e.preventDefault();
         commentDeleteHandler($(e.target));
         return false;
     });
-    
+
     // Edit Comment
     var editcommentflag = false;
-    $('body, .solution-overlay').on('click', '.edit-link-in-comment', function(e) {
+    $('body, .solution-overlay').on('click', '.edit-link-in-comment', function (e) {
         e.preventDefault();
         var section = $(this).parent().parent().parent();
         section.children().not('.separator').hide();
@@ -874,12 +889,12 @@ function enableToolbar() {
         editcommentflag = true;
         return false;
     });
-    $('body, .solution-overlay').on('click', '.editcomment', function() {
+    $('body, .solution-overlay').on('click', '.editcomment', function () {
         var section = $(this).closest('section[data-id]');
         var textarea = section.find('textarea');
         var newcomment = textarea.val();
         var id = textarea.data('id');
-        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function(response) {
+        $.post('/comments/edit/' + id + '.json', {"text": newcomment}, function (response) {
             var newText = response;
             $('.edit-link-in-comment', 'section[data-id=' + id + ']').data('text', newcomment);
             $('.comment-container', 'section[data-id=' + id + ']').html(newText);
@@ -889,14 +904,14 @@ function enableToolbar() {
         });
         return false;
     });
-    
+
     // Escaping
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
         if (e.keyCode == 27) {
             if (editcommentflag == true) {
                 e.stopPropagation();
                 editcommentflag = false;
-                $.each($('.hiddenform:visible'), function(index, object) {
+                $.each($('.hiddenform:visible'), function (index, object) {
                     var section = $(object).parent();
                     section.children().show();
                     $(object).hide();
@@ -907,9 +922,9 @@ function enableToolbar() {
             }
         }
     });
-    
+
     // Select Winner Solution
-    $('body, .solution-overlay').on('click', '.select-winner-popup', function() {
+    $('body, .solution-overlay').on('click', '.select-winner-popup', function () {
         $('#winner-num').text('#' + $(this).data('num'));
         $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
         $('#winner-user-link').text($(this).data('user'));
@@ -936,41 +951,43 @@ function enableToolbar() {
         });
         return false;
     });
-    
+
     // Solution Actions for Pitch owner
-    $('body, .solution-overlay').on('click', '.client-hide', function(e) {
+    $('body, .solution-overlay').on('click', '.client-hide', function (e) {
         e.preventDefault();
         var link = $(this);
         var underlyingHide = $('.hide-item[data-to=' + $('.isField.number', '.solution-overlay').text() + ']');
         if (underlyingHide.length > 0) {
             underlyingHide.click();
         } else {
-            $.get('/solutions/hide/' + $(this).data('id') + '.json', function(response) { });
+            $.get('/solutions/hide/' + $(this).data('id') + '.json', function (response) {
+            });
         }
         link.replaceWith('<a class="client-show" href="#" data-id="' + link.data('id') + '">Сделать видимой</a>');
         return false;
     });
-    
-    $('body, .solution-overlay').on('click', '.client-show', function(e) {
+
+    $('body, .solution-overlay').on('click', '.client-show', function (e) {
         e.preventDefault();
         var link = $(this);
         var underlyingUnhide = $('.unhide-item[data-to=' + $('.isField.number', '.solution-overlay').text() + ']');
         if (underlyingUnhide.length > 0) {
             underlyingUnhide.click();
         } else {
-            $.get('/solutions/unhide/' + $(this).data('id') + '.json', function(response) { });
+            $.get('/solutions/unhide/' + $(this).data('id') + '.json', function (response) {
+            });
         }
-        link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id')  + '">С глаз долой</a>');
+        link.replaceWith('<a class="client-hide" href="#" data-id="' + link.data('id') + '">С глаз долой</a>');
         return false;
     });
-    
+
     // Add New Comment Form Handler
-    $('body, .solution-overlay').on('click', '.createComment, #rating_comment_send', function(e) {
+    $('body, .solution-overlay').on('click', '.createComment, #rating_comment_send', function (e) {
         e.preventDefault();
         var textarea = $(this).closest('form').find('textarea');
         var addSolution = $(this).data('solution_id');
-        addSolution = (typeof(addSolution) != 'undefined') ? addSolution + ', ' : '';
-        if (typeof(solutionId) == 'undefined') {
+        addSolution = (typeof (addSolution) != 'undefined') ? addSolution + ', ' : '';
+        if (typeof (solutionId) == 'undefined') {
             var solutionId = 0;
         }
         if (isCommentValid(textarea.val())) {
@@ -982,7 +999,7 @@ function enableToolbar() {
                 'pitch_id': pitchNumber,
                 'public': is_public,
                 'fromAjax': 1
-            }, function(result) {
+            }, function (result) {
                 var commentData = preparePitchCommentData(result);
                 // ViewSolution or Popup
                 if ($('.solution-comments').length > 0) {
@@ -1008,7 +1025,7 @@ function enableToolbar() {
 
     // Comment Textarea Tooltip
     if (isClient) {
-        $('.createCommentForm').on('focus', '#newComment', function() {
+        $('.createCommentForm').on('focus', '#newComment', function () {
             var el = $('<div id="tooltip-bubble"> \
                             <div style="background:url(/img/tooltip-bottom-bg2.png) no-repeat scroll 0 100% transparent; padding: 10px 10px 22px 16px;height:100px;"> \
                                 <div style="" id="tooltipContent" class="supplement3"> \
@@ -1025,24 +1042,28 @@ function enableToolbar() {
             el.insertBefore($(this));
             el.css(position).fadeIn(200);
         });
-    
-        $('.createCommentForm').on('blur', 'textarea', function() {
-            $('#tooltip-bubble').fadeOut(200, function() { $(this).remove(); });
+
+        $('.createCommentForm').on('blur', 'textarea', function () {
+            $('#tooltip-bubble').fadeOut(200, function () {
+                $(this).remove();
+            });
         });
-    
-        $('.createCommentForm').on('keydown', 'textarea', function() {
-            $('#tooltip-bubble').fadeOut(200, function() { $(this).remove(); });
+
+        $('.createCommentForm').on('keydown', 'textarea', function () {
+            $('#tooltip-bubble').fadeOut(200, function () {
+                $(this).remove();
+            });
         });
     }
-    
+
     // Enable Comment-to Action
-    $('body, .solution-overlay').on('click', '.mention-link', function(e) {
+    $('body, .solution-overlay').on('click', '.mention-link', function (e) {
         e.preventDefault();
         var el = $('#newComment');
         if ($('.allow-comments').is(':visible')) {
             el = $('#newComment', '.allow-comments');
         }
-        if((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
+        if ((el.val().match(/^#\d/ig) == null) && (el.val().match(/@\W*\s\W\.,/) == null)) {
             $('input[name=comment_id]').val('');
             var prepend = '@' + $(this).data('commentTo') + ', ';
             var newText = prepend + el.val();
@@ -1050,13 +1071,13 @@ function enableToolbar() {
         }
         return false;
     });
-    
+
     // Scroll to Comment Form on Viewsolution Panel
-    $('body, .solution-overlay').on('click', '.client-comment', function() {
-        $.scrollTo($('#newComment', '.allow-comments'), {duration:250});
+    $('body, .solution-overlay').on('click', '.client-comment', function () {
+        $.scrollTo($('#newComment', '.allow-comments'), {duration: 250});
         return false;
     });
-    
+
     warningModal();
 }
 
@@ -1077,28 +1098,28 @@ function solutionTooltip() {
 function commentDeleteHandler(link) {
     var section = link.closest('section');
     var id = $(section).attr('data-id');
-    
-    
+
+
     // Delete without Moderation
     if (!isCurrentAdmin) {
         commentDelete(link, section, id);
         return false;
     }
-    
+
     $('#model_id', '#popup-delete-comment').val(id);
-    
+
     // Show Delete Moderation Overlay
     $('#popup-delete-comment').modal({
         containerId: 'final-step-clean',
         opacity: 80,
         closeClass: 'popup-close',
-        onShow: function() {
+        onShow: function () {
             $(document).off('click', '#sendDeleteComment');
         }
     });
-    
- // Delete Comment Popup Form
-    $(document).on('click', '#sendDeleteComment', function() {
+
+    // Delete Comment Popup Form
+    $(document).on('click', '#sendDeleteComment', function () {
         var form = $(this).parent().parent();
         if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
             $('#popup-delete-comment').addClass('wrong-input');
@@ -1108,7 +1129,7 @@ function commentDeleteHandler(link) {
         $spinner.addClass('active');
         $(document).off('click', '#sendDeleteComment');
         var data = form.serialize();
-        $.post(form.attr('action') + '.json', data).done(function(result) {
+        $.post(form.attr('action') + '.json', data).done(function (result) {
             commentDelete(link, section, id);
             $spinner.removeClass('active');
             $('.popup-close').click();
@@ -1119,7 +1140,7 @@ function commentDeleteHandler(link) {
 
 // Instant Delete Comment
 function commentDelete(link, section, id) {
-    $.post(link.attr('href') + '.json', function(result) {
+    $.post(link.attr('href') + '.json', function (result) {
         if (result == 'true') {
             if ($('.solution-overlay').is(':visible')) {
                 var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
@@ -1167,7 +1188,7 @@ function getProperDate(dateStr) {
     var a = dateStr.split(' ');
     var d = a[0].split('-');
     var t = a[1].split(':');
-    return new Date(d[0], (d[1]-1), d[2], t[0], t[1], t[2]);
+    return new Date(d[0], (d[1] - 1), d[2], t[0], t[1], t[2]);
 }
 
 /*
@@ -1178,13 +1199,17 @@ function appendSocials() {
         containerId: 'spinner',
         opacity: 80,
         close: false,
-        onShow: function() {
+        onShow: function () {
             $('#socials-modal').fadeTo(600, 1);
             VK.Widgets.Group("vk_groups", {mode: 0, width: '300', height: '290', color1: 'FFFFFF', color2: '2B587A', color3: '5B7FA6'}, 36153921);
         },
-        onClose: function() {
-            $('.simplemodal-container').fadeOut(800, function() { $(this).remove(); });
-            $('#simplemodal-overlay').fadeOut(800, function() { $(this).remove(); });
+        onClose: function () {
+            $('.simplemodal-container').fadeOut(800, function () {
+                $(this).remove();
+            });
+            $('#simplemodal-overlay').fadeOut(800, function () {
+                $(this).remove();
+            });
             $('#socials-modal').removeClass('simplemodal-data');
             $.modal.impl.d = {};
         }
@@ -1199,12 +1224,12 @@ function appendMobile() {
         containerId: 'spinner',
         opacity: 80,
         closeClass: 'mobile-close',
-        onShow: function() {
+        onShow: function () {
             $('#mobile-popup').fadeTo(600, 1);
         },
-        onClose: function() {
+        onClose: function () {
             $('.simplemodal-container').fadeOut(800);
-            $('#simplemodal-overlay').fadeOut(800, function() {
+            $('#simplemodal-overlay').fadeOut(800, function () {
                 $.modal.close();
             });
         }
@@ -1219,12 +1244,12 @@ function appendEmailConfirm() {
         containerId: 'gotest-email-warning',
         opacity: 80,
         closeClass: 'emailChange-close',
-        onShow: function() {
+        onShow: function () {
             $('#popup-email-change').fadeTo(600, 1);
         },
-        onClose: function() {
+        onClose: function () {
             $('.simplemodal-container').fadeOut(800);
-            $('#simplemodal-overlay').fadeOut(800, function() {
+            $('#simplemodal-overlay').fadeOut(800, function () {
                 $.modal.close();
             });
         }
@@ -1236,7 +1261,7 @@ function appendEmailConfirm() {
  */
 function toggleAnswer(link) {
     if (link.hasClass('active')) {
-        link.closest('section').next('.answer-section').slideUp(600, function() {
+        link.closest('section').next('.answer-section').slideUp(600, function () {
             $(this).remove();
             link.text('Ответить');
             link.removeClass('active');
@@ -1271,8 +1296,8 @@ function toggleAnswer(link) {
     var el = $('<section style="display: none; position: relative;" class="answer-section"> \
                     <div class="separator"></div> \
                     <div class="' + messageInfo + '">'
-                        + avatarElement +
-                        '<a href="#" onClick="return false;"> \
+            + avatarElement +
+            '<a href="#" onClick="return false;"> \
                             <span>' + currentUserName + '</span><br /> \
                             <span style="font-weight: normal;">' + postDate + ' ' + postTime + '</span> \
                         </a> \
@@ -1283,8 +1308,8 @@ function toggleAnswer(link) {
                             <section> \
                                 <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
                                     <textarea name="text" data-question-id="' + link.data('comment-id') + '"></textarea><br>'
-                                    + answerButtons +
-                                    '<div class="clr"></div> \
+            + answerButtons +
+            '<div class="clr"></div> \
                                 </form> \
                             </section> \
                         </div> \
@@ -1292,7 +1317,7 @@ function toggleAnswer(link) {
                     <div class="clr"></div> \
                 </section>');
     var section = link.closest('section');
-    el.insertAfter(section).slideDown(600, function() {
+    el.insertAfter(section).slideDown(600, function () {
         link.text('Не отвечать');
         link.addClass('active');
     });
@@ -1317,7 +1342,7 @@ function preparePitchCommentData(result) {
         commentData.isAdmin = result.comment.user.isAdmin;
     } else if (commentData.isExpert) {
         commentData.messageInfo = 'message_info5';
-    }else {
+    } else {
         commentData.messageInfo = 'message_info1';
     }
 
@@ -1326,7 +1351,7 @@ function preparePitchCommentData(result) {
     } else {
         commentData.userAvatar = '/img/default_small_avatar.png';
     }
-    
+
     if (result.comment.question_id != 0) {
         commentData.isChild = 1;
     }
@@ -1344,13 +1369,13 @@ function preparePitchCommentData(result) {
 function addAnswerComment(button) {
     var textarea = button.closest('section').find('textarea');
     var is_public = button.data('is_public');
-    if (typeof(solutionId) == 'undefined') {
+    if (typeof (solutionId) == 'undefined') {
         var solutionId = 0;
     }
     if (isCommentValid(textarea.val())) {
         var currentSection = button.closest('.answer-section');
         var answerLink = currentSection.prev().find('.reply-link-in-comment');
-        currentSection.animate({opacity: .3}, 500, function() {
+        currentSection.animate({opacity: .3}, 500, function () {
             var el = $('<div class="ajax-loader"></div>');
             $(this).append(el);
         });
@@ -1361,10 +1386,10 @@ function addAnswerComment(button) {
             'pitch_id': pitchNumber,
             'public': is_public,
             'fromAjax': 1
-        }).done(function(result) {
+        }).done(function (result) {
             var commentData = preparePitchCommentData(result);
             var el = populateComment(commentData);
-            currentSection.animate({opacity: 0}, 500, function() {
+            currentSection.animate({opacity: 0}, 500, function () {
                 $(this).replaceWith(el);
                 answerLink.removeClass('active').text('Ответить');
                 if ($('.solution-overlay').is(':visible')) {
@@ -1449,9 +1474,9 @@ function clientInfo() {
         }
         // IE 11
         else if (browser == 'Netscape') {
-            var re  = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+            var re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
             if (re.exec(nAgt) != null) {
-                version = parseFloat( RegExp.$1 ).toString();
+                version = parseFloat(RegExp.$1).toString();
                 browser = 'Internet Explorer';
             }
         }
@@ -1464,8 +1489,10 @@ function clientInfo() {
             }
         }
         // trim the version string
-        if ((ix = version.indexOf(';')) != -1) version = version.substring(0, ix);
-        if ((ix = version.indexOf(' ')) != -1) version = version.substring(0, ix);
+        if ((ix = version.indexOf(';')) != -1)
+            version = version.substring(0, ix);
+        if ((ix = version.indexOf(' ')) != -1)
+            version = version.substring(0, ix);
 
         majorVersion = parseInt('' + version, 10);
         if (isNaN(majorVersion)) {
@@ -1487,32 +1514,32 @@ function clientInfo() {
         // system
         var os = unknown;
         var clientStrings = [
-            {s:'Windows 3.11', r:/Win16/},
-            {s:'Windows 95', r:/(Windows 95|Win95|Windows_95)/},
-            {s:'Windows ME', r:/(Win 9x 4.90|Windows ME)/},
-            {s:'Windows 98', r:/(Windows 98|Win98)/},
-            {s:'Windows CE', r:/Windows CE/},
-            {s:'Windows 2000', r:/(Windows NT 5.0|Windows 2000)/},
-            {s:'Windows XP', r:/(Windows NT 5.1|Windows XP)/},
-            {s:'Windows Server 2003', r:/Windows NT 5.2/},
-            {s:'Windows Vista', r:/Windows NT 6.0/},
-            {s:'Windows 7', r:/(Windows 7|Windows NT 6.1)/},
-            {s:'Windows 8.1', r:/(Windows 8.1|Windows NT 6.3)/},
-            {s:'Windows 8', r:/(Windows 8|Windows NT 6.2)/},
-            {s:'Windows NT 4.0', r:/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
-            {s:'Windows ME', r:/Windows ME/},
-            {s:'Android', r:/Android/},
-            {s:'Open BSD', r:/OpenBSD/},
-            {s:'Sun OS', r:/SunOS/},
-            {s:'Linux', r:/(Linux|X11)/},
-            {s:'iOS', r:/(iPhone|iPad|iPod)/},
-            {s:'Mac OS X', r:/Mac OS X/},
-            {s:'Mac OS', r:/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
-            {s:'QNX', r:/QNX/},
-            {s:'UNIX', r:/UNIX/},
-            {s:'BeOS', r:/BeOS/},
-            {s:'OS/2', r:/OS\/2/},
-            {s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
+            {s: 'Windows 3.11', r: /Win16/},
+            {s: 'Windows 95', r: /(Windows 95|Win95|Windows_95)/},
+            {s: 'Windows ME', r: /(Win 9x 4.90|Windows ME)/},
+            {s: 'Windows 98', r: /(Windows 98|Win98)/},
+            {s: 'Windows CE', r: /Windows CE/},
+            {s: 'Windows 2000', r: /(Windows NT 5.0|Windows 2000)/},
+            {s: 'Windows XP', r: /(Windows NT 5.1|Windows XP)/},
+            {s: 'Windows Server 2003', r: /Windows NT 5.2/},
+            {s: 'Windows Vista', r: /Windows NT 6.0/},
+            {s: 'Windows 7', r: /(Windows 7|Windows NT 6.1)/},
+            {s: 'Windows 8.1', r: /(Windows 8.1|Windows NT 6.3)/},
+            {s: 'Windows 8', r: /(Windows 8|Windows NT 6.2)/},
+            {s: 'Windows NT 4.0', r: /(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
+            {s: 'Windows ME', r: /Windows ME/},
+            {s: 'Android', r: /Android/},
+            {s: 'Open BSD', r: /OpenBSD/},
+            {s: 'Sun OS', r: /SunOS/},
+            {s: 'Linux', r: /(Linux|X11)/},
+            {s: 'iOS', r: /(iPhone|iPad|iPod)/},
+            {s: 'Mac OS X', r: /Mac OS X/},
+            {s: 'Mac OS', r: /(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
+            {s: 'QNX', r: /QNX/},
+            {s: 'UNIX', r: /UNIX/},
+            {s: 'BeOS', r: /BeOS/},
+            {s: 'OS/2', r: /OS\/2/},
+            {s: 'Search Bot', r: /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
         ];
         for (var id in clientStrings) {
             var cs = clientStrings[id];
@@ -1562,69 +1589,69 @@ function clientInfo() {
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
+            results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 // Countdown
 (function (e) {
     e.fn.countdown = function (t, n) {
-    function i() {
-        eventDate = r.date;
-        currentDate = Math.floor(e.now() / 1e3);
-        seconds = eventDate - currentDate;
-        days = Math.floor(seconds / 86400);
-        seconds -= days * 60 * 60 * 24;
-        hours = Math.floor(seconds / 3600);
-        seconds -= hours * 60 * 60;
-        minutes = Math.floor(seconds / 60);
-        seconds -= minutes * 60;
-        thisEl.find(".timeRefDays").text("дн");
-        thisEl.find(".timeRefHours").text(":");
-        thisEl.find(".timeRefMinutes").text(":");
-        thisEl.find(".timeRefSeconds").text("");
-        if (eventDate <= currentDate) {
-            days = 0;
-            hours = 0;
-            minutes = 0;
-            seconds = 0;
-            clearInterval(interval)
-        }
-        if (r["format"] == "on") {
-            //days = String(days).length >= 2 ? days : "0" + days;
-            hours = String(hours).length >= 2 ? hours : "0" + hours;
-            minutes = String(minutes).length >= 2 ? minutes : "0" + minutes;
-            seconds = String(seconds).length >= 2 ? seconds : "0" + seconds
-        }
-        if ((r['showEmptyDays'] != 'on') && ((days == '0') || (days == '00'))) {
-            thisEl.find(".timeRefDays").text('');
-            days = '';
-        }
-        if ((r['isTest'] == 'on') && ((hours == '0') || (hours == '00')) && ((minutes == '0') || (minutes == '00')) && (seconds < 30)) {
-            $('.test-timer').addClass('warning');
-            if (seconds == '0' || seconds == '00') {
-                testSubmitForce = true;
-                $('#quiz_form').trigger('submit');
+        function i() {
+            eventDate = r.date;
+            currentDate = Math.floor(e.now() / 1e3);
+            seconds = eventDate - currentDate;
+            days = Math.floor(seconds / 86400);
+            seconds -= days * 60 * 60 * 24;
+            hours = Math.floor(seconds / 3600);
+            seconds -= hours * 60 * 60;
+            minutes = Math.floor(seconds / 60);
+            seconds -= minutes * 60;
+            thisEl.find(".timeRefDays").text("дн");
+            thisEl.find(".timeRefHours").text(":");
+            thisEl.find(".timeRefMinutes").text(":");
+            thisEl.find(".timeRefSeconds").text("");
+            if (eventDate <= currentDate) {
+                days = 0;
+                hours = 0;
+                minutes = 0;
+                seconds = 0;
+                clearInterval(interval)
             }
+            if (r["format"] == "on") {
+                //days = String(days).length >= 2 ? days : "0" + days;
+                hours = String(hours).length >= 2 ? hours : "0" + hours;
+                minutes = String(minutes).length >= 2 ? minutes : "0" + minutes;
+                seconds = String(seconds).length >= 2 ? seconds : "0" + seconds
+            }
+            if ((r['showEmptyDays'] != 'on') && ((days == '0') || (days == '00'))) {
+                thisEl.find(".timeRefDays").text('');
+                days = '';
+            }
+            if ((r['isTest'] == 'on') && ((hours == '0') || (hours == '00')) && ((minutes == '0') || (minutes == '00')) && (seconds < 30)) {
+                $('.test-timer').addClass('warning');
+                if (seconds == '0' || seconds == '00') {
+                    testSubmitForce = true;
+                    $('#quiz_form').trigger('submit');
+                }
+            }
+            if (!isNaN(eventDate)) {
+                thisEl.find(".days").text(days);
+                thisEl.find(".hours").text(hours);
+                thisEl.find(".minutes").text(minutes);
+                thisEl.find(".seconds").text(seconds)
+            } else {
+                //alert("Invalid date. Example: 30 Tuesday 2013 15:50:00");
+                //clearInterval(interval)
+            }
+            thisEl.css({opacity: 1});
         }
-        if (!isNaN(eventDate)) {
-            thisEl.find(".days").text(days);
-            thisEl.find(".hours").text(hours);
-            thisEl.find(".minutes").text(minutes);
-            thisEl.find(".seconds").text(seconds)
-        } else {
-            //alert("Invalid date. Example: 30 Tuesday 2013 15:50:00");
-            //clearInterval(interval)
-        }
-        thisEl.css({opacity:1});
-    }
-    thisEl = e(this);
-    var r = {
-        date: null,
-        format: null
-    };
-    t && e.extend(r, t);
-    //i();
-    interval = setInterval(i, 1e3)
+        thisEl = e(this);
+        var r = {
+            date: null,
+            format: null
+        };
+        t && e.extend(r, t);
+        //i();
+        interval = setInterval(i, 1e3)
     }
 })(jQuery);
 

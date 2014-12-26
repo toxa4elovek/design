@@ -267,13 +267,13 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     margin: 6px 14px 0 8px;
 }
 .wrapper .button.vkontakte {
-    background: #435f9d;
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#577da6), to(#40668e));
-    background: -webkit-linear-gradient(#577da6, #40668e);
-    background:    -moz-linear-gradient(#577da6, #40668e);
-    background:     -ms-linear-gradient(#577da6, #40668e);
-    background:      -o-linear-gradient(#577da6, #40668e);
-    background:         linear-gradient(#577da6, #40668e);
+    background: #56779a;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#5b7da0), to(#507194));
+    background: -webkit-linear-gradient(#5b7da0, #507194);
+    background:    -moz-linear-gradient(#5b7da0, #507194);
+    background:     -ms-linear-gradient(#5b7da0, #507194);
+    background:      -o-linear-gradient(#5b7da0, #507194);
+    background:         linear-gradient(#5b7da0, #507194);
     text-align: left;
 }
 .wrapper .button.vkontakte:hover {
@@ -286,13 +286,13 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     background:         linear-gradient(#5f87b8, #4870a0);
 }
 .wrapper .button.vkontakte:before {
-    content: "";
-    width: 30px;
-    height: 30px;
-    background: url("img/button-facebook-ico.png");
-    display: block;
-    float: left;
-    margin: 6px 14px 0 8px;
+	content: "";
+	width: 27px;
+	height: 16px;
+	background: url("img/vk-icon.png");
+	display: block;
+	float: left;
+	margin: 13px 8px 0 12px;
 }
 .wrapper .button.twitter {
     background: #435f9d;
@@ -502,11 +502,10 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 }
 .middle > h1 {
     color: #fff;
-    font: bold 56px/1 "RodeoC", sans-serif;
+    font: bold 44px/1 "RodeoC", sans-serif;
     text-align: center;
     margin-bottom: 25px;
     text-shadow: 1px 1px 5px #333;
-    padding-top: 89px;
 }
 
 
@@ -590,6 +589,15 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 }
 .auth .main input.button {
     width: 252px;
+}
+#reg-section input[type="text"],#login-section input[type="text"] {
+    font: 14px/1 "HelveticaNeue", sans-serif;
+}
+#reg-section .facebook-logon {
+    margin-top: 16px;
+}
+#reg-section .vkontakte-logon {
+    margin-top: 7px;
 }
 .auth .name {
     background: #fff url("img/form-ico-name.png") 366px 11px no-repeat;
@@ -3495,17 +3503,7 @@ div.no-result p {
 .register_who {
     text-align: center;
     text-transform: uppercase;
-    margin-top: 38px;
-}
-.register_who:after {
-    display: block;
-    margin: 38px auto 28px auto;
-    width: 100%;
-    height: 1px;
-    background-color: #d5d5d5;
-    border-top: 1px solid #dddddd;
-    border-bottom: 1px solid #f7f7f7;
-    content: '';
+    margin: 38px auto 21px !important;
 }
 .register_who label {
     color: #666;

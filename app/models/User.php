@@ -27,7 +27,7 @@ use \app\extensions\helper\MoneyFormatter;
 class User extends \app\models\AppModel {
 
     public $hasOne = array();
-    public $hasMany = array('Pitch','Solution');
+    public $hasMany = array('Pitch', 'Solution');
 
     /**
      * Fill Admin role user's ids here
@@ -118,12 +118,55 @@ class User extends \app\models\AppModel {
         return (bool) (self::find('first', array('conditions' => $conditions)));
     }
 
+    public function checkVkontakteUser($entity, $data) {
+        $conditions = array(
+            'vkontakte_uid' => $data['uid']
+        );
+        return (bool) (self::first(array('conditions' => $conditions)));
+    }
+
     public function isUserExistsByEmail($entity, $email) {
         $conditions = array(
             'email' => $email,
             'facebook_uid' => ''
         );
         return (bool) (self::find('first', array('conditions' => $conditions)));
+    }
+
+    public function saveVkontakteUser($entity, $data) {
+        $gender = 0;
+        if (isset($data['gender']) && $data['gender'] == 2) {
+            $gender = 1;
+        } elseif (isset($data['gender']) && $data['gender'] == 1) {
+            $gender = 2;
+        }
+        $screen_name = explode(' ', $data['screen_name']);
+        $saveData = array(
+            'email' => $data['email'],
+            'last_name' => $screen_name[1],
+            'first_name' => $screen_name[0],
+            'vkontakte_uid' => $data['uid'],
+            'confirmed_email' => 1,
+            'created' => date('Y-m-d H:i:s'),
+            'gender' => $gender
+        );
+        if ($entity->save($saveData, array(
+                    'first_name' => array(
+                        array('notEmpty', 'message' => 'Имя обязательно'),
+                    ),
+                    'last_name' => array(
+                        array('notEmpty', 'message' => 'Фамилия обязетальна'),
+                    ),
+                    'email' => array(
+                        array('userUniqueEmail', 'message' => 'Email уже занят'),
+                        array('notEmpty', 'message' => 'Email обязателен'),
+                        array('email', 'message' => 'Email обязателен'),
+                    )
+                ))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function saveFacebookUser($entity, $data) {
@@ -906,7 +949,7 @@ class User extends \app\models\AppModel {
             $code = $tmhOAuth->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', array(
                 'status' => $tweet,
                 'media' => "@{$img};type={$extension};filename={$name}"
-            ), true, true);
+                    ), true, true);
             $data = json_decode($tmhOAuth->response['response'], true);
             $code = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
                 'status' => $tweet,
