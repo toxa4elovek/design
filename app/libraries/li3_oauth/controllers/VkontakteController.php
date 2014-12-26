@@ -38,6 +38,7 @@ class VkontakteController extends \li3_oauth\controllers\ClientController {
         Session::write('vk_data.gender', $user['response'][0]['sex']);
         Session::write('vk_data.uid', $user['response'][0]['uid']);
         Session::write('vk_data.email', Session::read('oauth.access.email'));
+        Session::write('vk_data.image_link', 'https://api.vk.com/method/users.get?user_id=' . $user['response'][0]['uid'] . '&fields=photo_max_orig&v=5.27&access_token=' . Session::read('oauth.access.access_token'));
         return $this->redirect('Users::registration');
     }
 

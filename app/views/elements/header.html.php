@@ -218,9 +218,8 @@
 
         <?php else:?>
             <div class="topnav-menu" style="float:left;height:41px;padding-left:10px;padding-top:10px;">
-                <?=$this->html->link('Зарегистрироваться', 'http://www.godesigner.ru/register')?> /
-                <?=$this->html->link('Войти', 'http://www.godesigner.ru/login', array())?> /
                 <?php endif?>
+                <a href="http://www.godesigner.ru/news">Лента</a> /
                 <a href="http://www.godesigner.ru/pages/howitworks">Как это работает?</a> /
                 <a href="http://www.godesigner.ru/pitches">Все питчи</a> /
                 <?php if($this->user->getNewBlogpostCount() > 0):?>
@@ -228,9 +227,12 @@
                 <?php else:?>
                 <a href="http://www.godesigner.ru/posts">Блог</a>
                 <?php endif?>
+                <?php if(!$this->user->isLoggedIn()):?>
+                    /  <a href="http://www.godesigner.ru/login">Вход</a>
+                <?php endif?>
             </div>
             <ul class="header-menu">
-                <li class="header-menu-item"><a href="http://www.godesigner.ru/news">Новости</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/news">Лента</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/mypitches">Мои питчи</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/profile">Профиль</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/solutions">Решения</a></li>

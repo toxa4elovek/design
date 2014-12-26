@@ -130,7 +130,17 @@ class User extends \app\models\AppModel {
             'email' => $email,
             'facebook_uid' => ''
         );
-        return (bool) (self::find('first', array('conditions' => $conditions)));
+        $fbUser = self::find('first', array('conditions' => $conditions));
+        $conditions = array(
+            'email' => $email,
+            'vkontakte_uid' => ''
+        );
+        $vkUser = self::find('first', array('conditions' => $conditions));
+        if((!$fbUser) && (!$vkUser)) {
+            return false;
+        }else {
+            return true;
+        }
     }
 
     public function saveVkontakteUser($entity, $data) {
@@ -202,6 +212,33 @@ class User extends \app\models\AppModel {
         } else {
             return false;
         }
+    }
+
+    public function getVkAvatar($entity, $imagelink) {
+        $data = json_decode(file_get_contents($imagelink), true);
+        $userpic = file_get_contents($data['response'][0]['photo_max_orig']);
+        $tmp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()] = tmpfile())));
+
+        file_put_contents($tmp, $userpic);
+        $imageData = getimagesize($tmp);
+        switch ($imageData['mime']) {
+            case 'image/gif':
+                $filename = uniqid() . '.gif';
+                break;
+            case 'image/jpeg':
+                $filename = uniqid() . '.jpg';
+                break;
+            case 'image/png':
+                $filename = uniqid() . '.png';
+                break;
+            default:
+                return array('error' => 'nouserpic set');
+                break;
+        }
+        Avatar::clearOldAvatars(Session::read('user.id'));
+        $entity->set(array('avatar' => array('name' => $filename, 'tmp_name' => $tmp, 'error' => 0)));
+        $entity->save();
+        return array('result' => 'true');
     }
 
     /**

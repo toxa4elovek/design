@@ -601,11 +601,13 @@ class UsersController extends \app\controllers\AppController {
                     $userToLog = User::first(array('conditions' => array('email' => $this->request->data['email'])));
                     if (isset($this->request->data['service'])) {
                         $userToLog->vkontakte_uid = $this->request->data['uid'];
+
+
                     } else {
                         $userToLog->facebook_uid = $this->request->data['id'];
-                    }
-                    if (!Avatar::first(array('conditions' => array('model_id' => $userToLog->id)))) {
-                        $userToLog->getFbAvatar();
+                        if (!Avatar::first(array('conditions' => array('model_id' => $userToLog->id)))) {
+                            $userToLog->getFbAvatar();
+                        }
                     }
                     $userToLog->save();
                 } else {
@@ -613,6 +615,7 @@ class UsersController extends \app\controllers\AppController {
                     $fb = false;
                     if (isset($this->request->data['service'])) {
                         $isFBUserExists = $user->checkVkontakteUser($this->request->data);
+                        $vk = true;
                     } else {
                         $this->request->data['facebook_uid'] = $this->request->data['id'];
                         unset($this->request->data['id']);
@@ -627,10 +630,14 @@ class UsersController extends \app\controllers\AppController {
                                 $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
                             } else {
                                 $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['uid'])));
-                                Session::delete('vk_data');
                             }
                             $userToLog->setLastActionTime();
-                            $userToLog->getFbAvatar();
+                            if($fb) {
+                                $userToLog->getFbAvatar();
+                            }else {
+                                $userToLog->getVkAvatar(Session::read('vk_data.image_link'));
+                                Session::delete('vk_data');
+                            }
                             UserMailer::hi_mail($userToLog);
                             $newuser = true;
 
@@ -710,6 +717,9 @@ class UsersController extends \app\controllers\AppController {
                     Session::delete('redirect');
                 }
                 if (isset($this->request->data['service'])) {
+                    if(!$redirect) {
+                        $redirect = '/users/feed';
+                    }
                     $this->redirect($redirect);
                 }
                 return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
