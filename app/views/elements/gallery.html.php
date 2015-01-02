@@ -164,7 +164,7 @@ foreach($solutions as $solution):
                     ?>
                     <div class="sharebar">
                         <div class="tooltip-block">
-                            <div id="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
+                            <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                 <div class="twitter" data-via="Go_Deer" title="Поделиться ссылкой в Твиттере">TWITT</div>
                                 <div class="vkontakte" title="Поделиться ссылкой во Вконтакте">SHARE</div>

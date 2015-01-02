@@ -1,6 +1,6 @@
 ;
 $(document).ready(function () {
-    $('#social-likes').socialLikes();
+    $('.social-likes').socialLikes();
 
     // Preload Images
     (function (arrayOfImages) {
@@ -316,6 +316,8 @@ $(document).ready(function () {
         likesNum.html(parseInt(likesNum.html()));
         var sharebar = likesNum.next();
         var solutionId = $(this).data('id');
+        console.log($(this).next().next());
+        console.log($(this).next().next().length)
         Socialite.load($(this).next().next(), [
             $('#facebook' + solutionId)[0],
             $('#twitter' + solutionId)[0]
