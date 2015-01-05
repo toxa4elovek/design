@@ -128,47 +128,53 @@ class SolutionsController extends \app\controllers\AppController {
             $params['page'] = 1;
             $sort_tags = Tag::getPopularTags(7);
             $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'), 'limit' => 12));
+            unset($params['page']);
+            $total_count = Solution::count($params);
         }
         $userHelper = new UserHelper(array());
         if ($userHelper->isLoggedIn()) {
             $data = Solution::addBlankPitchForLogosale($userHelper->getId(), 0);
         }
         $solutions = Solution::filterLogoSolutions(Solution::all($params));
-        return compact('solutions', 'count', 'sort_tags', 'search_tags', 'data');
+        return compact('solutions', 'count', 'sort_tags', 'search_tags', 'data', 'total_count');
     }
 
     public function search_logo() {
-        if ($this->request->is('json') && isset($this->request->data['search'])) {
-            $words = explode(' ', preg_replace('/[^a-zа-яё]+/iu', ' ', trim($this->request->data['search'])));
-            $tag_params = array('conditions' => array());
-            $search_tags = Searchtag::all(array('conditions' => array('name' => $words)));
-            if (count($search_tags) < 1) {
-                foreach ($words as $w) {
-                    $tag_params['conditions']['OR'][] = array('name' => $w);
-                    if (!empty($w)) {
-                        $result = Searchtag::create(array(
-                                    'name' => $w
-                        ));
-                        $result->save();
+        if ($this->request->is('json') && (isset($this->request->data['search_list']) || (isset($this->request->data['prop'])))) {
+            //$words = explode(' ', preg_replace('/[^a-zа-яё]+/iu', ' ', trim($this->request->data['search'])));
+            $words = $this->request->data['search_list'];
+            $tags_id = 0;
+            if (!is_null($words)) {
+                $tag_params = array('conditions' => array());
+                $search_tags = Searchtag::all(array('conditions' => array('name' => $words)));
+                if (count($search_tags) < 1) {
+                    foreach ($words as $w) {
+                        $tag_params['conditions']['OR'][] = array('name' => $w);
+                        if (!empty($w)) {
+                            $result = Searchtag::create(array(
+                                        'name' => $w
+                            ));
+                            $result->save();
+                        }
+                    }
+                } else {
+                    foreach ($search_tags as $v) {
+                        $v->searches += 1;
+                    }
+                    $search_tags->save();
+                    foreach ($words as $w) {
+                        $tag_params['conditions']['OR'][] = array('name' => $w);
                     }
                 }
-            } else {
-                foreach ($search_tags as $v) {
-                    $v->searches += 1;
-                }
-                $search_tags->save();
-                foreach ($words as $w) {
-                    $tag_params['conditions']['OR'][] = array('name' => $w);
+                $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
+                $tags = Tag::all($tag_params);
+                if (count($tags) > 0) {
+                    $tags_id = array_keys($tags->data());
+                } else {
+                    $tags_id = 0;
                 }
             }
-            $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
-            $tags = Tag::all($tag_params);
-            if (count($tags) > 0) {
-                $tags_id = array_keys($tags->data());
-            } else {
-                $tags_id = 0;
-            }
-            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.tag_id' => $tags_id), 'limit' => 12, 'page' => $page, 'order' => array('created' => 'desc'), 'with' => array('Pitch', 'Solutiontag'));
+            $params = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3), 'Solutiontag.tag_id' => $tags_id), 'limit' => 30, 'page' => $page, 'order' => array('created' => 'desc'), 'with' => array('Pitch', 'Solutiontag'));
             $solutions = Solution::all($params);
             if ($solutions && count($solutions) > 0) {
                 $black_list = array();

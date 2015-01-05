@@ -21,7 +21,7 @@
                         <p class="regular-small-grey">Молчит до: <?= date('d.m.Y H:i:s', strtotime($user->silenceUntil)) ?></p>
                         <div class="g_line" style="margin-top: 8px;"></div>
                         <?php if (($user->silenceCount > 0) && (strtotime($user->silenceUntil) > strtotime(date('Y-m-d H:i:s')))): ?>
-                            <button class="order-button" style="margin-top:10px" class="allowcomment" data-term=""/>Разрешить комментарии</button>
+                            <button class="order-button allowcomment" style="margin-top:10px" data-term=""/>Разрешить комментарии</button>
                         <?php endif ?>
                     <?php endif ?>
                     <input type="hidden" value="<?= $user->id ?>" id="user_id"/>
