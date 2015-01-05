@@ -87,10 +87,11 @@
             <div class="container-adv_search">
                 <a id="adv_search" href="#">Расширенный поиск</a>
             </div>
+            <div id="logosaleAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="/img/blog-ajax-loader.gif"></div>
             <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
             <ul class="marsh">
                 <li>
-                    <h2 class="greyboldheader">Более 10 тысяч логотипов по цене 9500 рублей</h2>
+                    <h2 class="greyboldheader"><?=$total_count?> логотипов по цене 9500 рублей</h2>
                 </li>
                 <li>
                     <h2 class="greyboldheader">Уникальность: каждый лого продается только один раз</h2>
@@ -204,7 +205,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="selecting_numb"><span class="price"><?= $solution['pitch']['price'] ?> р.</span><span class="new-price">9500р.-</span></div>
+                                <div class="selecting_numb"><span class="price"><?= $solution['pitch']['total'] ?> р.</span><span class="new-price">9500р.-</span></div>
                                 <div class="solution_menu" style="display: none;">
                                     <ul class="solution_menu_list">
                                         <li class="sol_hov"><a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>" class="imagecontainer">Купить</a></li>
@@ -225,6 +226,6 @@
 </div>
 <?= $this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data)) ?>
 <?= $this->view()->render(array('element' => 'popups/warning')) ?>
-<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.raty.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
+<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.keyboard.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.raty.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'pitches/gallery.js'), array('inline' => false)) ?>
 <?=
 $this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3'), array('inline' => false))?>

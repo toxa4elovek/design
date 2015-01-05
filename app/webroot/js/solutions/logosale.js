@@ -264,7 +264,7 @@ jQuery(document).ready(function ($) {
 
 
 
-    $('a#goSearch').on('click', function () {
+    $('#goSearch, #goSearchAplly').on('click', function () {
         var search = $('#searchTerm');
         isBusy = false;
         fetchSearch(search);
@@ -278,7 +278,7 @@ jQuery(document).ready(function ($) {
     $('.look-variants').on('change', function () {
         var search = $('#searchTerm');
         isBusy = false;
-        fetchSearch(search);
+        fetchSearch(search, false);
         var image = '/img/filter-arrow-down.png';
         $('#filterToggle').data('dir', 'up');
         $('img', '#filterToggle').attr('src', image);
@@ -286,10 +286,22 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    function fetchSearch(search) {
-        if (search.val().length > 0) {
-            var params = {},
-                    adv_search = $('#adv_search');
+    function fetchSearch(search,close) {
+        close || (close = false);
+        var filterbox = $('#filterbox');
+        if (search.val().trim().length > 0 && !search.hasClass('placeholder')) {
+            var box = '<li style="margin-left:6px;">' + search.val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+            search.val('');
+            var filter = $('#filterbox');
+            $(box).appendTo(filter);
+            recalculateBox();
+        }
+        var params = {},
+                adv_search = $('#adv_search'),
+                search_list = [];
+        if (filterbox.children().length > 0 || adv_search.hasClass('active')) {
+            $('.marsh').hide();
+            $('#logosaleAjaxLoader').show();
             if (adv_search.hasClass('active')) {
                 if ($('.look-variants').length) {
                     var variants = new Array();
@@ -307,21 +319,31 @@ jQuery(document).ready(function ($) {
                     });
                     params.prop = prop;
                 }
-                adv_search.click();
             }
+            $.each(filterbox.children(), function (i, v) {
+                search_list.push($(v).text());
+            });
+            if (close && adv_search.hasClass('active')) {
+                $('#groups').toggle('fast');
+                adv_search.removeClass('active')
+            }
+            params.search_list = search_list;
             params.search = (search.hasClass('placeholder')) ? '' : search.val();
             $.post('search_logo.json', params, function (response) {
-                var html = '', sol_count = 0;
+                var html = '', sol_count = 0, hash = '';
                 paramsSearch = params;
                 page = 1;
                 $.each(response.solutions, function (index, solution) {
+                    hash = html;
                     html = addSolution(solution) + html;
-                    sol_count++;
+                    if (hash != html) {
+                        sol_count++;
+                    }
                 });
                 $('.list_portfolio').empty();
-                $('.marsh').hide();
                 var $prependEl = $(html);
                 $prependEl.hide();
+                $('#logosaleAjaxLoader').hide();
                 $('#logo_found').text(sol_count);
                 $('#search_result').show();
                 if (sol_count < 1) {
@@ -334,8 +356,59 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    $('#searchTerm').keyboard('space', function () {
+        if ($(this).val().trim() != '') {
+            var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+            $(this).val('');
+            var filter = $('#filterbox');
+            $(box).appendTo(filter);
+            recalculateBox();
+        }
+    }).keyboard('enter', function () {
+        if ($(this).val().trim() != '') {
+            var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+            $(this).val('');
+            var filter = $('#filterbox');
+            $(box).appendTo(filter);
+            recalculateBox();
+        }
+        return false;
+    });
+
+    $(document).on('click', '.removeTag', function (e) {
+        e.preventDefault();
+        $(this).parent().remove();
+    });
+
+    var recalculateBox = function () {
+        var baseWidth = 524,
+                filterbox = $('#filterbox');
+        $.each(filterbox.children(), function (index, object) {
+            baseWidth -= $(object).width() + 100;
+        });
+        $('#searchTerm').width(baseWidth);
+        $('#filterContainer .tt-hint').width(baseWidth);
+    };
+
+    $('#searchTerm').keyboard('backspace', function () {
+        if (($('#filterbox li').length > 0) && ($('#searchTerm').val() == '')) {
+            $('.removeTag', '#filterbox li:last').click()
+        }
+    });
+
     $(document).on('click', function (e) {
         if ($(e.target).is('#searchTerm')) {
+            var $el = $('#filterToggle');
+            var dir = $el.data('dir');
+            if (dir == 'up') {
+                var image = '/img/filter-arrow-up.png';
+                $el.data('dir', 'down');
+            } else {
+                var image = '/img/filter-arrow-down.png';
+                $el.data('dir', 'up');
+            }
+            $('img', $el).attr('src', image);
+            $('#filtertab').toggle();
             return false;
         }
         var image = '/img/filter-arrow-down.png';
@@ -410,7 +483,7 @@ jQuery(document).ready(function ($) {
             // Left Panel
             $('.solution-images').html('');
 
-            $('.solution-left-panel .solution-title').children('h1').html(result.pitch.title + '<br> Цена: <span class="price"> 18000 р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
+            $('.solution-left-panel .solution-title').children('h1').html(result.pitch.title + '<br> Новая цена: <span class="price"> ' + result.pitch.total + ' р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
                 // Main Images
                 if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
@@ -652,6 +725,16 @@ jQuery(document).ready(function ($) {
             tooltipBGColor: 'transparent'
         });
     }
+
+    $('#clear-options').on('click', function () {
+        var checked = $('input:checked', '.look-variants');
+        checked.prop('checked', false);
+        var slider = $('.slider');
+        if (slider.length > 0) {
+            slider.slider('value', 5);
+        }
+        return false;
+    });
 
     $(document).on('click', '#to-pay', function () {
         $('html, body').animate({

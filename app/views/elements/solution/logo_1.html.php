@@ -1,4 +1,5 @@
 <div id="groups">
+    <a href="#" id="clear-options">Сбросить настройки</a>
     <div class="groupc first">
         <p><label>Какими свойствами должен обладать ваш логотип?</label></p>
 
@@ -72,6 +73,9 @@
             <li>
                 <span class="photo"><img src="/img/logo-looks/logo-looks-07.jpg" alt="Вэб-кнопка"></span>
                 <label class="supplement"><input type="checkbox" name="" data-id="7">Вэб-кнопка</label>
+            </li>
+            <li>
+                <a href="#" id="goSearchAplly" class="button">Применить</a>
             </li>
         </ul><!-- .look-variants -->
     </div><!-- .group -->

@@ -37,9 +37,6 @@
                         <h3>Итого:</h3>
                         <p class="summary"><strong id="total-tag"><?= $data['total'] ?>р.-</strong></p><!-- .summary -->
                         <ul id="check-tag">
-                            <?php foreach ($data['receipt'] as $v): ?>
-                                <li><span><?= $v['name'] ?></span><small><?= $v['value'] ?>.-</small></li>
-                            <?php endforeach; ?>
                         </ul>
                         <div class="hide">
                             <span id="to-pay">Перейти к оплате</span>
