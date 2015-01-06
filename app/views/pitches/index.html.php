@@ -32,11 +32,11 @@
                         <?php endforeach?>
                     </ul>
                     <ul class="filterlist" style="float:left;width:85px;margin-left:25px;text-transform: none">
-                        <li class="first">сроки</li>
-                        <li><a data-group="timeframe" data-value="1" href="#">до 3 дней</a></li>
-                        <li><a data-group="timeframe" data-value="2" href="#">до 7 дней</a></li>
-                        <li><a data-group="timeframe" data-value="3" href="#">до 10 дней</a></li>
-                        <li><a data-group="timeframe" data-value="4" href="#">более 14 дней</a></li>
+                        <li class="first" style="width: 90px">сроки</li>
+                        <li style="width: 90px"><a data-group="timeframe" data-value="1" href="#">до 3 дней</a></li>
+                        <li style="width: 90px"><a data-group="timeframe" data-value="2" href="#">до 7 дней</a></li>
+                        <li style="width: 90px"><a data-group="timeframe" data-value="3" href="#">до 10 дней</a></li>
+                        <li style="width: 90px"><a data-group="timeframe" data-value="4" href="#">более 14 дней</a></li>
                     </ul>
                     <ul class="filterlist" style="float:left;width:160px;margin-left:25px;text-transform: none">
                         <li class="first">гонорар</li>

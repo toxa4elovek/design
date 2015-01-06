@@ -3299,7 +3299,8 @@ ul.social li#rss {
 }
 .filterlist li {
     width: 115px;
-    height: 23px;
+    height: 22px;
+    padding-top: 1px;
     padding-left:15px;
     padding-right:15px;
     color: #555555;
@@ -3310,7 +3311,7 @@ ul.social li#rss {
     color: #555555;
     font-size: 13px;
 }
-.filterlist li a:hover {
+.filterlist li:hover {
     background-color: #ebf8fc;
 }
 .tags li {

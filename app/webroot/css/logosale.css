@@ -314,10 +314,11 @@ p.label_found {
 .filterlist li {
     color: #555555;
     font-weight: bold;
-    height: 23px;
     padding-left: 15px;
     padding-right: 15px;
-
+    padding-top: 2px;
+    height: 22px;
+    margin-bottom: 2px;
 }
 ul.bottom {
     float: none;
@@ -352,7 +353,7 @@ span.first {
     color: #555555;
     font-weight: bold;
     height: 23px;
-    margin-top: 28px;
+    margin-top: 48px;
     padding-left: 30px;
     padding-right: 15px;
 }
