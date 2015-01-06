@@ -54,7 +54,9 @@ span.new-price {
 }
 
 #searchTerm.placeholder {
-    font: 14px/20px "Arial", sans-serif;
+    font: 13px/20px "Arial", sans-serif;
+    padding-top: 9px;
+    padding-left: 5px;
 }
 
 #filterContainer {
@@ -79,6 +81,10 @@ span.new-price {
 }
 #filterbox li {
     margin-top: 3px;
+    margin-left: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 13px;
 }
 
 .filterBackground {
@@ -199,6 +205,7 @@ ul.marsh .clear {
 
 ul.tags li a {
     color: #555;
+    margin-left: 10px;
 }
 
 ul.tags li a:hover {

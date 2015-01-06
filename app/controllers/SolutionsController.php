@@ -14,7 +14,7 @@ use \lithium\analysis\Logger;
 
 class SolutionsController extends \app\controllers\AppController {
 
-    public $publicActions = array('like', 'unlike', 'logosale');
+    public $publicActions = array('like', 'unlike', 'logosale', 'search_logo');
 
     public function hide() {
         $result = $this->request;
@@ -128,8 +128,8 @@ class SolutionsController extends \app\controllers\AppController {
             $params['page'] = 1;
             $sort_tags = Tag::getPopularTags(7);
             $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'), 'limit' => 12));
-            unset($params['page']);
-            $total_count = Solution::count($params);
+            $countParams = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'));
+            $total_count = Solution::count($countParams);
         }
         $userHelper = new UserHelper(array());
         if ($userHelper->isLoggedIn()) {

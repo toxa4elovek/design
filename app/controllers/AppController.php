@@ -63,6 +63,7 @@ class AppController extends \lithium\action\Controller {
                     'awarded' => array('!=' => 0),
                     'status' => 1,
                     'billed' => 1,
+                    'blank' => 0
                 )));
             foreach($pitchesToCheck as $pitch) {
                 $solution = Solution::first($pitch->awarded);

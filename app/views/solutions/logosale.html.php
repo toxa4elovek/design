@@ -101,7 +101,7 @@
                 </li>
             </ul>
             <div class="portfolio_gallery">
-                <h1 id="search_result" class="sale-head regular">Результат поиска: <span id="logo_found">0</span></h1>
+                <h1 id="search_result" class="sale-head regular" style="padding-bottom: 30px;">Результат поиска: <span id="logo_found">0</span></h1>
                 <div id="not-found-container">
                     <p class="sale-str regular">
                         К сожалению, мы ничего не нашли.<br />
