@@ -28,7 +28,7 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                     'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
                     'with' => array('Pitch')
         ));
-        if(!$solution) {
+        if($solution) {
             $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
             $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
             //Самое популярное решение за 24.09.2014 «Лого для сервиса Бригадир Онлайн» http://www.godesigner.ru/pitches/viewsolution/106167 #Go_Deer

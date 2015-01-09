@@ -14,6 +14,16 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    $('#searchTerm').on('focus', function() {
+        $('#filterContainer').css('border', '4px solid rgb(231, 231, 231)');
+        $('#filterContainer').css('box-shadow', 'none');
+    });
+
+    $(document).on('blur', '#searchTerm', function() {
+        $('#filterContainer').css('box-shadow', '0 1px 2px rgba(0, 0, 0, 0.2) inset');
+        $('#filterContainer').css('border', '4px solid #F3F3F3');
+    })
+
     $(".slider").each(function (index, object) {
         var value = 5;
         if (typeof (slidersValue) != "undefined") {
@@ -50,7 +60,7 @@ jQuery(document).ready(function ($) {
         $('#groups').toggle('fast', function () {
             if (button.hasClass('active')) {
                 button.removeClass('active');
-                $('ul.marsh').show();
+                //$('ul.marsh').show();
             } else {
                 $('ul.marsh').hide();
                 button.addClass('active');
@@ -67,16 +77,31 @@ jQuery(document).ready(function ($) {
             $('#officeAjaxLoader').show();
             page += 1;
             var url = ($.isEmptyObject(paramsSearch)) ? '/solutions/logosale/' : '/solutions/search_logo/';
+            if(url != '/solutions/logosale/') {
+                $('ul.marsh').hide();
+                $('.portfolio_gallery').css('margin-top', '40px');
+            }
             $.post(url + page + '.json', paramsSearch, function (response) {
                 var html = '';
+                keys = [];
                 $.each(response.solutions, function (index, solution) {
+                    keys.push(solution)
+                });
+                keys = keys.sort(function(obj1, obj2) {
+                    if(obj2.likes > obj1.likes){ return 1;}
+                    if(obj2.likes < obj1.likes){ return -1;}
+                    if(obj2.views > obj1.views){ return 1;}
+                    if(obj2.views < obj1.views){ return -1;}
+                    return 0;
+                });
+                $.each(keys, function (index, solution) {
                     html += addSolution(solution);
                 });
                 var $prependEl = $(html);
                 $prependEl.hide();
                 $prependEl.appendTo('.list_portfolio').slideDown('slow');
                 $('#officeAjaxLoader').hide();
-                if (response.count > 0) {
+                if (Object.keys(response.solutions).length > 0) {
                     isBusy = false;
                 } else {
                     isBusy = true;
@@ -265,6 +290,8 @@ jQuery(document).ready(function ($) {
 
 
     $('#goSearch, #goSearchAplly').on('click', function () {
+        $('#adv_search').click();
+        $('ul.marsh').hide();
         var search = $('#searchTerm');
         isBusy = false;
         fetchSearch(search);
@@ -286,11 +313,15 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    function fetchSearch(search,close) {
+    function fetchSearch(search,close, isClicked) {
         close || (close = false);
         var filterbox = $('#filterbox');
         if (search.val().trim().length > 0 && !search.hasClass('placeholder')) {
-            var box = '<li style="margin-left:6px;">' + search.val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+            if(typeof(isClicked) == 'undefined') {
+                var box = '<li style="margin-left:6px;">' + search.val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+            }else if (isClicked) {
+                var box = '<li style="margin-left:6px;">' + search.val().replace(/[^A-Za-zА-Яа-яЁё0-9-\/\s]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+            }
             search.val('');
             var filter = $('#filterbox');
             $(box).appendTo(filter);
@@ -302,6 +333,7 @@ jQuery(document).ready(function ($) {
         if (filterbox.children().length > 0 || adv_search.hasClass('active')) {
             $('.marsh').hide();
             $('#logosaleAjaxLoader').show();
+            $('ul.marsh').hide();
             if (adv_search.hasClass('active')) {
                 if ($('.look-variants').length) {
                     var variants = new Array();
@@ -327,30 +359,48 @@ jQuery(document).ready(function ($) {
                 $('#groups').toggle('fast');
                 adv_search.removeClass('active')
             }
+            $('ul.marsh').hide();
             params.search_list = search_list;
             params.search = (search.hasClass('placeholder')) ? '' : search.val();
-            $.post('search_logo.json', params, function (response) {
+            $.post('/solutions/search_logo.json', params, function (response) {
                 var html = '', sol_count = 0, hash = '';
                 paramsSearch = params;
                 page = 1;
+                keys = [];
                 $.each(response.solutions, function (index, solution) {
+                    keys.push(solution)
+                });
+                keys = keys.sort(function(obj1, obj2) {
+                    // Ascending: first age less than the previous
+                    if(obj2.likes > obj1.likes){ return 1;}
+                    if(obj2.likes < obj1.likes){ return -1;}
+                    if(obj2.views > obj1.views){ return 1;}
+                    if(obj2.views < obj1.views){ return -1;}
+                    return 0;
+                });
+                $.each(keys, function(index, solution) {
                     hash = html;
-                    html = addSolution(solution) + html;
+                    html = html + addSolution(solution);
                     if (hash != html) {
                         sol_count++;
                     }
-                });
+                })
                 $('.list_portfolio').empty();
                 var $prependEl = $(html);
                 $prependEl.hide();
                 $('#logosaleAjaxLoader').hide();
-                $('#logo_found').text(sol_count);
+                $('#logo_found').text(response.total_solutions);
+                if(response.total_solutions == 0) {
+                    $('#search_result').css('padding-bottom', '0');
+                }
+                $('ul.marsh').hide();
                 $('#search_result').show();
                 if (sol_count < 1) {
                     $('#not-found-container').show();
                 } else {
                     $('#not-found-container').hide()
                 }
+                $('ul.marsh').hide();
                 $prependEl.appendTo('.list_portfolio').slideDown('slow');
             });
         }
@@ -423,7 +473,7 @@ jQuery(document).ready(function ($) {
             input.removeClass('placeholder');
         }
         input.val($(this).text());
-        fetchSearch(input);
+        fetchSearch(input, false, true);
         var image = '/img/filter-arrow-down.png';
         $('#filterToggle').data('dir', 'up');
         $('img', '#filterToggle').attr('src', image);
