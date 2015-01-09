@@ -44,9 +44,6 @@
                         <li><a class="prepTag" href="#">Туризм / Путешествие</a></li>
                         <li><a class="prepTag" href="#">Спорт</a></li>
                         <li><a class="prepTag" href="#">Образование / Наука</a></li>
-                    </ul>
-                    <ul class="activityType twoCollumn filterlist">
-                        <li class="first"></li>
                         <li><a class="prepTag" href="#">Красота / Мода</a></li>
                         <li><a class="prepTag" href="#">Развлечение / Музыка</a></li>
                         <li><a class="prepTag" href="#">Искусство / Культура</a></li>
@@ -55,32 +52,18 @@
                         <li><a class="prepTag" href="#">Охрана / Безопасность</a></li>
                         <li><a class="prepTag" href="#">Медицина / Здоровье</a></li>
                     </ul>
-                    <ul class="filterlist">
+                    <ul class="activityType twoCollumn filterlist">
                         <li class="first">Популярные теги</li>
                         <?php foreach ($sort_tags as $k => $v): ?>
                             <li><a class="prepTag" href="#"><?= $k ?></a></li>
                         <?php endforeach; ?>
                     </ul>
-                    <div style="clear:both"></div>
-                    <span class="first">Популярные запросы</span>
-                    <?php
-                    $i = 0;
-                    $num = 0;
-                    foreach ($search_tags as $v):
-                        ++$i;
-                        if ($i == 1) {
-                            ++$num;
-                            echo '<ul class="bottom filterlist list' . $num . '">';
-                        }
-                        ?>
-                        <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
-                        <?php
-                        if ($i == 4) {
-                            $i = 0;
-                            echo '</ul>';
-                        }
-                    endforeach;
-                    ?>
+                    <ul class="filterlist">
+                        <li class="first">Популярные запросы</li>
+                        <?php foreach ($search_tags as $v):?>
+                            <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
                     <div style="clear:both"></div>
                 </div>
             </div>

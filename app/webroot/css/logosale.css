@@ -28,9 +28,9 @@ span.new-price {
     display: none;
     border-radius: 10px;
     padding-top: 14px;
-    margin-left: 25px;
+    margin-left: 33px;
     width: 617px;
-    height: 406px;
+    height: 435px;
     background-color: white;
     z-index: 10;
     position: absolute;
@@ -67,7 +67,7 @@ span.new-price {
     padding-bottom: 10px;
     background-color: white;
     width: 618px;
-    margin-left: 25px;
+    margin-left: 29px;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) inset;
     position: relative;
 }
@@ -319,6 +319,7 @@ p.label_found {
     padding-top: 2px;
     height: 22px;
     margin-bottom: 2px;
+    width: 135px;
 }
 ul.bottom {
     float: none;

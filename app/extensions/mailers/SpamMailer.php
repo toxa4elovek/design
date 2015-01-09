@@ -80,6 +80,14 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
             $addonsCount++;
             $addonsList .= 'заполнение брифа<br />';
         }
+        if ($data['addon']->pinned == 1) {
+            $addonsCount++;
+            $addonsList .= 'прокачать бриф<br />';
+        }
+        if ($data['addon']->guaranteed == 1) {
+            $addonsCount++;
+            $addonsList .= 'гарантированный питч<br />';
+        }
         $stringSubject = 'Новая доп. опция!';
         $data['stringAddons'] = 'КУПЛЕНА ДОПОЛНИТЕЛЬНАЯ ОПЦИЯ:' . $addonsList;
         if ($addonsCount > 1) {
