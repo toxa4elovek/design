@@ -617,6 +617,7 @@ $(document).ready(function () {
         $(document).bind('keydown', function (e) {
             if (e.keyCode == 90 && e.shiftKey) {
                 $('#news-add').toggle('fast');
+                $('.logo').css('width', '187px');
                 $('#news-add-separator').toggle('fast');
             }
         });
@@ -768,7 +769,7 @@ function OfficeStatusUpdater() {
                     var html = '', solutions = '';
                     if (typeof (response.post) != "undefined" && response.post != 0) {
                         if ($('.box[data-eventid="' + response.id + '"]').length == 0) {
-                            var img = (response.post.imageurl.indexOf('/', 0)) ? 'http://www.godesigner.ru' : response.post.imageurl;
+                            var img = (response.post.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' : response.post.imageurl;
                             var $prependEl = $('<div class="box" data-eventid="' + response.id + '"> \
                                 <p class="img-box"> \
                                     <a class="post-link" href="http://www.godesigner.ru/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><img class="img-post" src="' + img + '"></a> \
@@ -1204,7 +1205,7 @@ function OfficeStatusUpdater() {
                 } else {
                     var style = '';
                 }
-                var img = (object.news.imageurl.indexOf('/', 0)) ? 'http://www.godesigner.ru' : object.news.imageurl;
+                var img = (object.news.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' : object.news.imageurl;
                 html += '<div class="box" data-eventid="' + object.id + '"> \
                                 <p class="img-box"> \
                                     <a class="post-link" href="' + object.news.link + '"><img class="img-post" src="' + img + '"></a> \
