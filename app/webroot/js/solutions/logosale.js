@@ -11,6 +11,10 @@ jQuery(document).ready(function ($) {
             $('img', '#filterToggle').attr('src', image);
             $('#filtertab').hide();
             return false;
+        }else if (event.keyCode == 8) {
+            if (($('#filterbox li').length > 0) && ($('#searchTerm').val() == '')) {
+                $('.removeTag', '#filterbox li:last').click()
+            }
         }
     });
 
@@ -22,7 +26,9 @@ jQuery(document).ready(function ($) {
     $(document).on('blur', '#searchTerm', function() {
         $('#filterContainer').css('box-shadow', '0 1px 2px rgba(0, 0, 0, 0.2) inset');
         $('#filterContainer').css('border', '4px solid #F3F3F3');
-    })
+    });
+
+
 
     $(".slider").each(function (index, object) {
         var value = 5;
@@ -53,6 +59,14 @@ jQuery(document).ready(function ($) {
                 return false;
             }
         })
+    });
+
+    $(document).on('mouseover', '.removeTag', function() {
+        $('img', this).attr('src', '/img/delete-tag-hover.png');
+    });
+
+    $(document).on('mouseout', '.removeTag', function() {
+        $('img', this).attr('src', '/img/delete-tag.png');
     });
 
     $('#adv_search').on('click', function () {
@@ -88,6 +102,8 @@ jQuery(document).ready(function ($) {
                     keys.push(solution)
                 });
                 keys = keys.sort(function(obj1, obj2) {
+                    if(obj2.rating > obj1.rating){ return 1;}
+                    if(obj2.rating < obj1.rating){ return -1;}
                     if(obj2.likes > obj1.likes){ return 1;}
                     if(obj2.likes < obj1.likes){ return -1;}
                     if(obj2.views > obj1.views){ return 1;}
@@ -101,7 +117,7 @@ jQuery(document).ready(function ($) {
                 $prependEl.hide();
                 $prependEl.appendTo('.list_portfolio').slideDown('slow');
                 $('#officeAjaxLoader').hide();
-                if (Object.keys(response.solutions).length > 0) {
+                if((typeof(response.solutions) == 'object') && (Object.keys(response.solutions).length > 0)) {
                     isBusy = false;
                 } else {
                     isBusy = true;
@@ -210,7 +226,7 @@ jQuery(document).ready(function ($) {
                     </ul>\
                 </div>\
             </div>\
-            <div class="selecting_numb"><span class="price">19000 р.</span><span class="new-price">9500р.-</span></div>\
+            <div class="selecting_numb"><span class="price">' + solution.pitch.total.replace(/(\.00)/, '') + ' р.</span><span class="new-price">9500р.-</span></div>\
                 <div class="solution_menu" style="display: none;">\
                     <ul class="solution_menu_list">\
                         <li class="sol_hov"><a data-solutionid="' + solution.id + '" class="imagecontainer" href="/pitches/viewsolution/' + solution.id + '">Купить</a></li>\
@@ -372,6 +388,8 @@ jQuery(document).ready(function ($) {
                 });
                 keys = keys.sort(function(obj1, obj2) {
                     // Ascending: first age less than the previous
+                    if(obj2.rating > obj1.rating){ return 1;}
+                    if(obj2.rating < obj1.rating){ return -1;}
                     if(obj2.likes > obj1.likes){ return 1;}
                     if(obj2.likes < obj1.likes){ return -1;}
                     if(obj2.views > obj1.views){ return 1;}
@@ -532,8 +550,8 @@ jQuery(document).ready(function ($) {
 
             // Left Panel
             $('.solution-images').html('');
-
-            $('.solution-left-panel .solution-title').children('h1').html(result.pitch.title + '<br> Новая цена: <span class="price"> ' + result.pitch.total + ' р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
+            $('.solution-left-panel .solution-title').addClass('nodecoration').data('href', '/pitches/view/' + result.pitch.id);
+            $('.solution-left-panel .solution-title').children('h1').html(result.pitch.title + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
                 // Main Images
                 if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
@@ -698,9 +716,14 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    $('body, .solution-overlay').on('click', '.solution-title, .solution-popup-close', function (e) {
+    $('body, .solution-overlay').on('click', '.solution-popup-close', function (e) {
         window.history.back();
         hideSolutionPopup();
+        return false;
+    });
+
+    $('body, .solution-overlay').on('click', '.solution-title', function (e) {
+        window.location = $(this).data('href')
         return false;
     });
 

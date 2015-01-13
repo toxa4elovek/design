@@ -188,7 +188,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="selecting_numb"><span class="price"><?= $solution['pitch']['total'] ?> р.</span><span class="new-price">9500р.-</span></div>
+                                <div class="selecting_numb"><span class="price"><?= round($solution['pitch']['total']) ?> р.</span><span class="new-price">9500р.-</span></div>
                                 <div class="solution_menu" style="display: none;">
                                     <ul class="solution_menu_list">
                                         <li class="sol_hov"><a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>" class="imagecontainer">Купить</a></li>

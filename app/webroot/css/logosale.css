@@ -16,12 +16,14 @@
 span.price {
     text-decoration: line-through;
     font: 14px/20px "Arial", sans-serif;
+    font-weight: bold;
 }
 
 span.new-price {
     margin-left: 4px;
     color: #ff585d;
     font: 14px/20px "Arial", sans-serif;
+    font-weight: bold;
 }
 
 #filtertab {
@@ -380,4 +382,7 @@ span.first {
 }
 #clear-options:hover {
     text-decoration: underline;
+}
+.solution-left-panel .nodecoration:hover {
+    text-decoration: none;
 }

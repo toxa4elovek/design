@@ -232,6 +232,8 @@ class SolutionsController extends \app\controllers\AppController {
                 array('OR' => array(
                     array("Pitch.title REGEXP '" . $regexp . "'"),
                     array("Pitch.description LIKE '%$descriptionWord%'"),
+                    array("'Pitch.business-description' LIKE '%$descriptionWord%'"),
+                    array("Solutiontag.tag_id IN(1695)")
                 )),
                 'Solution.multiwinner' => 0,
                 'Solution.awarded' => 0,
@@ -239,38 +241,19 @@ class SolutionsController extends \app\controllers\AppController {
                 'Pitch.status' => array('>' => 0),
                 'private' => 0,
                 'category_id' => 1,
-                'rating' => array('>=' => 3)
+                //'rating' => array('>=' => 3)
             ),
-            'limit' => 30,
-            'page' => $page,
-            'order' => array('likes' => 'desc', 'views' => 'desc', 'rating' => 'desc'),
-            'with' => array('Pitch'));
+            'order' => array('rating' => 'desc', 'likes' => 'desc', 'views' => 'desc'),
+            'with' => array('Pitch', 'Solutiontag'));
 
             if(!empty($industries)) {
                 $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industries[0] . "%'");
             }
+            $pageParams = $totalParams = $params;
+            $pageParams['limit'] = 30;
+            $pageParams['page'] = $page;
 
-            $totalParams = array('conditions' => array(
-                array('OR' => array(
-                    array("Pitch.title REGEXP '" . $regexp . "'"),
-                    array("Pitch.description LIKE '%$descriptionWord%'"),
-                )),
-                'Solution.multiwinner' => 0,
-                'Solution.awarded' => 0,
-                'Pitch.awarded' => array('>' => date('Y-m-d H:i:s', time() - MONTH)),
-                'Pitch.status' => array('>' => 0),
-                'private' => 0,
-                'category_id' => 1,
-                'rating' => array('>=' => 3)
-            ),
-            'order' => array('likes' => 'desc', 'views' => 'desc', 'rating' => 'desc'),
-            'with' => array('Pitch'));
-
-            if(!empty($totalParams)) {
-                $totalParams['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industries[0] . "%'");
-            }
-
-            $solutions = Solution::all($params);
+            $solutions = Solution::all($pageParams);
             if($page == 1) {
                 $total_solutions = Solution::all($totalParams);
             }
@@ -360,7 +343,6 @@ class SolutionsController extends \app\controllers\AppController {
                     }
                 }*/
             }
-
             if($page == 1) {
                 if ($total_solutions && count($total_solutions) > 0) {
                     $black_list = array();
