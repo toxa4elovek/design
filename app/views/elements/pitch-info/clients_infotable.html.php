@@ -62,7 +62,7 @@
         <td width="15"></td>
                 <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
             <span class="regular">Спросить:</span>
-            <a class="order-button" href="mailto:?&subject=<?php echo 'Нужна помощь с выбором!'?>
+            <a class="order-button" href="mailto:?&subject=<?php echo $pitch->title?>
 &amp;body=<?php echo 'Привет,%0D%0A%0D%0Aя сейчас создаю ' . $pitch->title . ' (http://www.godesigner.ru/pitches/view/' . $pitch->id . '). Мне бы было приятно, если бы кто-то помог мне с выбором. Какие идеи тебе нравятся больше всего?%0D%0A
 Спасибо за ответ!%0D%0A%0D%0A
 ' . $pitch->user->first_name . ' ' . $pitch->user->last_name .'.'?>" style="width: 178px; top: -3px;">Совет друга (бесплатно)</a>
