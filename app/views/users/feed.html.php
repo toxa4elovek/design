@@ -310,10 +310,12 @@
                                                         <?php endif; ?>
                                                     </div>
                                                     <a href="http://www.godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="http://www.godesigner.ru<?= $imageurl ?>"></div></a>
+                                                    <?php if($this->user->getId()):?>
                                                     <div class="box-info">
                                                         <a href="http://www.godesigner.ru/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
                                                         <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-userid="<?= $object['solution']['user_id'] ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                                     </div>
+                                                    <?php endif; ?>
                                                     <div class="r-content box-comment">
                                                         &laquo;<?php echo $object['updateText'] ?>&raquo;
                                                     </div>
@@ -347,10 +349,12 @@
                                                     <a href="http://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('предложил', $object['user']['gender']) ?> решение для питча <a href="http://www.godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                                 </div>
                                                 <a href="http://www.godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="http://www.godesigner.ru<?= $imageurl ?>"></div></a>
+                                                <?php if($this->user->getId()): ?>
                                                 <div class="box-info">
                                                     <a href="http://www.godesigner.ru/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a><span>&middot;</span>
                                                     <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-userid="<?= $object['solution']['user_id'] ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                                 </div>
+                                                <?php endif;?>
                                                 <div id="likes-<?= $object['solution']['id'] ?>" data-id="<?= $object['solution']['id'] ?>" class="likes">
                                                     <?php
                                                     $id = $object['solution']['id'];
@@ -401,9 +405,11 @@
                                                         <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
                                                     </p>
                                                 </div>
+                                                <?php if($this->user->getId()):?>
                                                 <div class="box-info" style="margin-top: 0;">
                                                     <a style="padding-left: 0;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                                 </div>
+                                                <?php endif?>
                                                 <div data-id="<?= $object['news']['id'] ?>" class="likes">
                                                     <?php
                                                     $likes_count = 0;

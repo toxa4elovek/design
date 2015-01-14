@@ -1214,16 +1214,20 @@ function OfficeStatusUpdater() {
                 if (object.news.tags) {
                     html += '<p class="img-tag">' + object.news.tags + '</p>';
                 }
+
                 var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
+
                 html += '<a class="img-post" href="' + object.news.link + '"><h2>' + object.news.title + '</h2></a> \
                                     <p class="img-short">' + object.news.short + '</p> \
                                     <p class="timeago"> \
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
-                                </div> \
-                                <div class="box-info" style="margin-top: 0;"> \
+                                </div>';
+                if(this_user != '') {
+                    html += '<div class="box-info" style="margin-top: 0;"> \
                                     <a style="padding-left: 0;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>\
-                                </div>\
-                                <div data-id="' + object.news.id + '" class="likes">';
+                                </div>'
+                }
+                html += '<div data-id="' + object.news.id + '" class="likes">';
                 var likes_count = 0;
                 if (object.liked) {
                     $.each(object.likes, function (index, like) {
