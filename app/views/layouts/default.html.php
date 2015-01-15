@@ -23,14 +23,19 @@
     <!--[if lte IE 7]><?= $this->html->style(array('/ie7.css')); ?><![endif]-->
     <?php if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView']))):
     if(!isset($solution->images['solution_galleryLargeSize'][0])):
-        $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
+        $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
     else:
-        $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
+        $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
     endif;
     $description = isset($description) ? $description : '';
     ?>
+    <meta name="twitter:card" content="photo" />
+    <meta name="twitter:site" content="@Go_Deer" />
+    <meta name="twitter:title" content="<?=$this->HtmlExtended->title($this->_request->params, $vars)?>" />
+    <meta name="twitter:image" content="<?= $url ?>" />
+    <meta name="twitter:url" content='http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>' />
     <meta property="og:image" content="<?=$url?>"/>
-    <meta property="og:description" content="<?=$description?>"/>
+    <meta property="og:description" content="<?=strip_tags($description)?>"/>
     <?php elseif(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
         $first_img = $post->imageurl;
         preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->full, $matches);

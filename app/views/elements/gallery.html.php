@@ -161,12 +161,17 @@ foreach($solutions as $solution):
                     } else {
                             $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
                     }
+                        if(!isset($solution->images['solution_galleryLargeSize'][0])):
+                            $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
+                        else:
+                            $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
+                        endif;
                     ?>
                     <div class="sharebar">
                         <div class="tooltip-block">
                             <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
-                                <div class="twitter" data-via="Go_Deer" title="Поделиться ссылкой в Твиттере">TWITT</div>
+                                <div class="twitter" data-via="Go_Deer">TWITT</div>
                                 <div class="vkontakte" title="Поделиться ссылкой во Вконтакте">SHARE</div>
                                 <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
                             </div>
