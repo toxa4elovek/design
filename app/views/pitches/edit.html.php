@@ -315,7 +315,7 @@ endif?>
         <div class="groupc">
             <p>
                 <label class="required">Название питча <a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a></label>
-                <input type="text" name="title" placeholder="Логотип для Star Lift" data-placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
+                <input id="pitch-title" type="text" name="title" placeholder="Логотип для Star Lift" data-placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
                 <input type="hidden" name="category_id" value="<?=$category->id?>">
                 <?php if(($pitch->category_id == 7) && $onlyText): ?>
                     <?php if (isset($specifics['first-option'])):?>

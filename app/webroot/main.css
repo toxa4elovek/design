@@ -1804,6 +1804,16 @@ p.full_pitch a {
     color: #ff585d;
     margin-left: 1px;
 }
+#pitch-title.placeholder {
+    padding-top: 0;
+    height: 44px;
+    padding-left: 11px;
+}
+#pitch-title {
+    padding-top: 4px;
+    height: 40px;
+    padding-left: 11px;
+}
 .ribbon.term {
     padding-left: 100px;
     padding-right: 40px;
