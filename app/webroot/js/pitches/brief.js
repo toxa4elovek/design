@@ -98,6 +98,11 @@ $(document).ready(function () {
         $('#old-download').show();
     }
 
+    var input = $('#searchTerm');
+    if (input.hasClass('placeholder')) {
+        input.removeClass('placeholder');
+    }
+
     // steps menu
     $('.steps-link').click(function () {
         var stepNum = $(this).data('step');
