@@ -106,7 +106,9 @@ class Event extends \app\models\AppModel {
                         $host = parse_url($news->link);
                         $record->host = $host['host'];
                         $news->short = html_entity_decode($news->short, ENT_COMPAT, 'UTF-8');
-                        $news->short = mb_strimwidth($news->short, 0, 250, '...');
+                        if($news->admin == 0) {
+                            $news->short = mb_strimwidth($news->short, 0, 250, '...');
+                        }
                         $record->news = $news;
                     } elseif ($record->type == 'FavUserAdded') {
                         $record->user_fav = User::first(array('conditions' => array('id' => $record->fav_user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));

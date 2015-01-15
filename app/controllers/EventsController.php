@@ -109,6 +109,7 @@ class EventsController extends \app\controllers\AppController {
             if (isset($this->request->data['file'])) {
                 $news->imageurl = News::resize($this->request->data['file']);
             }
+            $news->admin = 1;
             if ($result = $news->save()) {
                 if (!$news->isBanner) {
                     Event::createEventNewsAdded($news->id, 0, $news->created);
