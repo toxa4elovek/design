@@ -395,9 +395,9 @@
     color: #c8c8c8;
     font-style: italic;
     font-family: Georgia, serif;
-    font-size: 14px;
+    font-size: 13px;
     display: block;
-    margin: 10px 0;
+    margin: -4px 0 10px 0;
 }
 
 .center-boxes .box img.img-post {
@@ -427,8 +427,9 @@
     display: block;
     text-align: left;
     padding-left: 20px;
-    margin-top: 4px;
     padding-bottom: 5px;
+    margin-bottom: 6px;
+    margin-top: -2px;
 /*    border-bottom: 1px solid #ededed;*/
 }
 
