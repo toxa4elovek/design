@@ -216,59 +216,7 @@
                             </div>
                             <div id="center_sidebar">
                                 <div class="center-boxes" id="updates-box-">
-                                    <?php if ($middlePost) : ?>
-                                        <div class="box" data-middle="true" data-eventid="<?= $middlePost->id ?>">
-                                            <p class="img-box">
-                                                <a class="post-link" href="<?= $middlePost->link ?>"><img class="img-post" src="http://www.godesigner.ru<?= $middlePost->imageurl ?>"></a>
-                                            </p>
-                                            <div class="r-content post-content" <?php if (!$middlePost->tags): ?>style="padding-top: 0px;"<?php endif ?>>
-                                                <?php if ($middlePost->tags): ?><p class="img-tag"><?= $middlePost->tags ?></p><?php endif; ?>
-                                                <a class="img-post" href="<?= $middlePost->link ?>"><h2><?= $middlePost->title ?></h2></a>
-                                                <p class="img-short"><?= $middlePost->short ?></p>
-                                                <p class="timeago">
-                                                    <time class="timeago" datetime="<?= $middlePost->created ?>"><?= $middlePost->created ?></time> с сайта <?= $middlePost->host ?></p>
-                                            </div>
-                                            <div class="box-info" style="margin-top: 0;">
-                                                <a style="padding-left: 0;" data-news="1" data-id="<?= $middlePost->id ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $middlePost->allowLike ?>" data-likes="<?= $middlePost->liked ?>" href="#"><?= $middlePost->allowLike ? 'Нравится' : 'Не нравится' ?></a>
-                                            </div>
-                                            <div data-id="<?= $middlePost->id ?>" class="likes">
-                                                <?php
-                                                $likes_count = 0;
-                                                $html_likes = '';
-                                                $likes = (int) $middlePost->liked;
-                                                if ($likes) {
-                                                    foreach ($middlePost->likes as $like) {
-                                                        ++$likes_count;
-                                                        if ($likes > 4) {
-                                                            if ($likes_count == 1) {
-                                                                $html_likes .= '<span class="who-likes"><a class="show-other-likes" data-solid="' . $middlePost->id . '" href="#">';
-                                                            }
-                                                            if ($likes_count == 4) {
-                                                                $other = $likes - $likes_count;
-                                                                $html_likes .= $like->creator . ' и ' . $other . ' других</a> <span>лайкнули новость</span></span>';
-                                                                break;
-                                                            } else {
-                                                                $html_likes .= $like->creator . ', ';
-                                                            }
-                                                        } elseif ($likes < 2) {
-                                                            $html_likes .= '<span class="who-likes"><a target="_blank" href="http://www.godesigner.ru/users/view/' . $like->user_id . '">' . $like->creator . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like->user->gender) . ' новость</span></span>';
-                                                        } elseif ($likes <= 4) {
-                                                            if ($likes_count == 1) {
-                                                                $html_likes .= '<span class="who-likes">';
-                                                            }
-                                                            $html_likes .= '<a target="_blank" href="http://www.godesigner.ru/users/view/' . $like->user_id . '">' . $like->creator . '</a>';
-                                                            if ($likes_count == $likes) {
-                                                                $html_likes .= ' <span>лайкнули новость</span></span>';
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                echo $html_likes;
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <?php
-                                    endif;
+                                    <?php
                                     $html = '';
                                     $dateEvent = '';
                                     $count = 0;
@@ -361,32 +309,37 @@
                                                     $likes_count = 0;
                                                     $html_likes = '';
                                                     $likes = (int) $object['solution']['likes'];
-                                                    foreach ($object['likes'] as $like):
-                                                        ++$likes_count;
-                                                        $my_solution = ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '';
-                                                        if ($likes > 4) {
-                                                            if ($likes_count == 1) {
-                                                                $html_likes .= '<span class="who-likes"><a class="show-other-likes" data-solid="' . $object['solution']['id'] . '" href="#">';
-                                                            }
-                                                            if ($likes_count == 4) {
-                                                                $other = $likes - $likes_count;
-                                                                $html_likes .= $like['creator'] . ' и ' . $other . ' других</a> <span>лайкнули ' . $my_solution . ' решение</span></span>';
-                                                                break;
-                                                            } else {
-                                                                $html_likes .= $like['creator'] . ', ';
-                                                            }
-                                                        } elseif ($likes < 2) {
-                                                            $html_likes .= '<span class="who-likes"><a target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' ' . $my_solution . ' решение</span></span>';
-                                                        } elseif ($likes <= 4) {
-                                                            if ($likes_count == 1) {
-                                                                $html_likes .= '<span class="who-likes">';
-                                                            }
-                                                            $html_likes .= '<a target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
-                                                            if ($likes_count == $likes) {
-                                                                $html_likes .= ' <span>лайкнули ' . $my_solution . ' решение</span></span>';
+                                                    if ($likes) {
+                                                        foreach ($object['solution']['likes'] as $like) {
+                                                            ++$likes_count;
+                                                            if ($likes > 4) {
+                                                                if ($likes_count == 1) {
+                                                                    $html_likes .= '<span class="who-likes">';
+                                                                }
+                                                                if ($likes_count == 4) {
+                                                                    $other = $likes - $likes_count;
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
+                                                                      и <a class="show-other-likes" data-solid="' . $object['solution']['id'] . '" href="#">' . $other . ' других</a> <span>лайкнули решение</span></span>';
+                                                                    break;
+                                                                } else {
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                }
+                                                            } elseif (($likes >= 2) && ($likes <= 4)) {
+                                                                if ($likes_count == 1) {
+                                                                    $html_likes .= '<span class="who-likes">';
+                                                                }
+                                                                if ($likes_count != $likes) {
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                }
+                                                                if ($likes_count == $likes) {
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
+                                                                    $html_likes .= ' <span>лайкнули решение</span></span>';
+                                                                }
+                                                            } elseif ($likes < 2) {
+                                                                $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' решение</span></span>';
                                                             }
                                                         }
-                                                    endforeach;
+                                                    }
                                                     echo $html_likes;
                                                     ?>
                                                 </div></div>
@@ -420,25 +373,29 @@
                                                             ++$likes_count;
                                                             if ($likes > 4) {
                                                                 if ($likes_count == 1) {
-                                                                    $html_likes .= '<span class="who-likes"><a class="show-other-likes" data-solid="' . $object['news']['id'] . '" href="#">';
+                                                                    $html_likes .= '<span class="who-likes">';
                                                                 }
                                                                 if ($likes_count == 4) {
                                                                     $other = $likes - $likes_count;
-                                                                    $html_likes .= $like['creator'] . ' и ' . $other . ' других</a> <span>лайкнули новость</span></span>';
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
+                                                                      и <a class="show-other-likes" data-solid="' . $object['news']['id'] . '" href="#">' . $other . ' других</a> <span>лайкнули новость</span></span>';
                                                                     break;
                                                                 } else {
-                                                                    $html_likes .= $like['creator'] . ', ';
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
                                                                 }
-                                                            } elseif ($likes < 2) {
-                                                                $html_likes .= '<span class="who-likes"><a target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
-                                                            } elseif ($likes <= 4) {
+                                                            } elseif (($likes >= 2) && ($likes <= 4)) {
                                                                 if ($likes_count == 1) {
                                                                     $html_likes .= '<span class="who-likes">';
                                                                 }
-                                                                $html_likes .= '<a target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
+                                                                if ($likes_count != $likes) {
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                }
                                                                 if ($likes_count == $likes) {
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
                                                                     $html_likes .= ' <span>лайкнули новость</span></span>';
                                                                 }
+                                                            } elseif ($likes < 2) {
+                                                                $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
                                                             }
                                                         }
                                                     }

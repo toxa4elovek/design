@@ -232,6 +232,7 @@ $(document).ready(function () {
                 txt_backup = txt,
                 first_txt = txt.split(' ')[0],
                 style = span.parent().css('display');
+        console.log(txt);
         var type_like = ($(this).data('news')) ? 'news' : 'solutions';
         var my_solution = ($(this).data('userid') == this_user) ? 'ваше' : '';
         if (type_like == 'news') {
@@ -243,18 +244,27 @@ $(document).ready(function () {
         if (link.data('vote') == '1') {
             link.html('Не нравится');
             link.data('vote', '0');
-            if (first_txt == 'лайкнул' && style == 'block') {
-                url.text(userName + ', ' + url.text());
-                url.data('added', 1);
+            if ((first_txt == 'лайкнул' || first_txt == 'лайкнула') && style == 'block') {
+                console.log('single person');
+                url.last().text(url.last().text() + ', ');
+                var $element = $('<a href="/users/view/' + this_user + '" data-added="1">' + userName + '</a>');
+                $element.insertAfter(url.last());
+                //url.text(userName + ', ' + url.text());
+                //url.data('added', 1);
                 like_span.text('лайкнули ' + my_solution + ' ' + word);
             } else if (first_txt == 'лайкнули' && style == 'block') {
-                url.text(userName + ', ' + url.text());
-                url.data('added', 1);
+                var filteredLast = url.filter(':not(.show-other-likes)').last();
+                console.log('multiple people');
+                filteredLast.text(filteredLast.text() + ', ');
+                var $element = $('<a href="/users/view/' + this_user + '" data-added="1">' + userName + '</a>');
+                $element.insertAfter(filteredLast);
                 like_span.text('лайкнули ' + my_solution + ' ' + word);
             } else if (!span.length) {
-                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> ' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word + '</span></span></div>');
+                console.log('span not exists');
+                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + userName + '</a> <span>' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word + '</span></span></div>');
                 $element.insertAfter(link_parent.next());
             } else if (span.length > 0 && style == 'none') {
+                console.log('span exists');
                 span.parent().show();
             }
             $.get('http://www.godesigner.ru/' + type_like + '/like/' + $(this).data('id') + '.json', function (response) {
@@ -269,19 +279,29 @@ $(document).ready(function () {
             link.html('Нравится');
             link.data('vote', '1');
             var likes_div = '';
-            if (first_txt == 'лайкнул') {
+            console.log(first_txt);
+            if ((first_txt == 'лайкнул') || (first_txt == 'лайкнула')) {
+                console.log('single');
                 likes_div = link_parent.closest('.box').find('.likes');
                 likes_div.hide();
-            } else if (first_txt == 'лайкнули' && url.data('added')) {
-                var text_arr = url.text().split(',');
-                if (text_arr.length <= 2) {
+            } else if (first_txt == 'лайкнули' && (url.filter('[data-id=' + this_user + ']').length > 0 || url.filter('[data-added=1]').length > 0)) {
+                console.log('multiple');
+                url.filter('[data-added=1]').remove();
+                url.filter('[data-id=' + this_user + ']').remove();
+                url = span.children('a');
+                var filteredLast = url.filter(':not(.show-other-likes)').last();
+                console.log(filteredLast.text());
+                filteredLast.text(filteredLast.text().replace(/,\s/, ''));
+                if (url.length <= 2) {
                     like_span.text(Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word);
                 }
-                text_arr.shift();
-                url.text(text_arr.join(', '));
-            } else if (url.data('block')) {
+            } else if (url.filter('.show-other-likes').length > 1) {
+                console.log('block with more');
                 likes_div = link_parent.closest('.box').find('.likes');
                 likes_div.hide();
+            } else {
+
+                console.log('else');
             }
             $.get('http://www.godesigner.ru/' + type_like + '/unlike/' + $(this).data('id') + '.json', function (response) {
                 if (response.result == false) {

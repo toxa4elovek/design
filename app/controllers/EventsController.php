@@ -84,7 +84,13 @@ class EventsController extends \app\controllers\AppController {
 
     public function liked() {
         if ($this->request->id) {
-            $likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
+
+
+            if(!$likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')))) {
+
+            }else {
+                $likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
+            }
             $temp = array();
             foreach ($likes as $like) {
                 $temp[] = $like->user->id;
