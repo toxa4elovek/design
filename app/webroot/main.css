@@ -2178,8 +2178,11 @@ textarea.placeholder {
 .pitch-category .category-firmstyle a {
     background: url("img/category/category-firmstyle.png") 14px 14px no-repeat;
 }
+.pitch-category .category-firmstyle2 a {
+    background: url("img/category/category-firmstyle2.png") 14px 14px no-repeat;
+}
 .pitch-category .category-flaer a {
-    background: url("img/category/category-flaer.png") 17px 20px no-repeat;
+    background: url("img/category/category-flaer2.png") 17px 13px no-repeat;
 }
 .pitch-category .category-icons a {
     background: url("img/category/category-icons.png") 18px 14px no-repeat;
@@ -2215,7 +2218,7 @@ textarea.placeholder {
     background-image: url("img/category/category-firmstyle-hover.png");
 }
 .pitch-category .category-flaer a:hover {
-    background-image: url("img/category/category-flaer-hover.png");
+    background-image: url("img/category/category-flaer2.png");
 }
 .pitch-category .category-icons a:hover {
     background-image: url("img/category/category-icons-hover.png");
