@@ -197,7 +197,7 @@
     <div class="conteiner-bottom"></div>
 </div><!-- .wrapper -->
 <div id="important-confirm" class="popup-final-step" style="display:none">
-    <h3>Вы уверены, что одобряете макеты?</h3>
+    <h3>Вы уверены, что одобряете исходники?</h3>
     <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё решение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Нажав «Да, одобряю», вы подтверждаете, что получили все конечные файлы. Этот выбор нельзя отменить и ваш питч переместится в завершённые. За справкой обратитесь <a href="/answers/view/63" target="_blank">к разделу помощи</a> или <a href="/pages/contacts" target="_blank">напишите нам.</a></p>
     <div style="margin-top: 40px;" class="final-step-nav wrapper">
         <input style="width:167px" type="submit" class="button second popup-close" value="Нет, отменить">
