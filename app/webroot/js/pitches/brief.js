@@ -453,7 +453,8 @@ $(document).ready(function () {
                     Cart.saveData();
                 }
             } else {
-                $.scrollTo($('.wrong-input').parent(), {duration: 600});
+                var offset = $('.wrong-input').parent().offset()
+                $.scrollTo(offset.top - 10, {duration: 600});
             }
         }
         return false;
