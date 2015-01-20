@@ -408,6 +408,7 @@ span.date-profile {
 div.g_line {
   background: url("img/register-login-divider.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
 /*  margin: 30px 0 20px;*/
+    padding-bottom: 4px;
   height: 7px;
   text-align: center;
 }
