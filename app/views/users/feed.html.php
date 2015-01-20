@@ -309,7 +309,7 @@
                                                     $likes_count = 0;
                                                     $html_likes = '';
                                                     $likes = (int) $object['solution']['likes'];
-                                                    if ($likes) {
+                                                    if (($likes) && (is_array($object['solution']['likes']))) {
                                                         foreach ($object['solution']['likes'] as $like) {
                                                             ++$likes_count;
                                                             if ($likes > 4) {
@@ -343,11 +343,20 @@
                                                     echo $html_likes;
                                                     ?>
                                                 </div></div>
-                                        <?php elseif ($object['type'] == 'newsAdded'): ?>
-                                            <div class="box" data-eventid="<?= $object['id'] ?>">
+                                        <?php elseif ($object['type'] == 'newsAdded'):
+                                            $isValidImage = function($url){
+                                                if(empty($url)):
+                                                    return false;
+                                                endif;
+                                                return true;
+                                            }
+                                            ?>
+                                            <div class="box" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($object['news']['imageurl'])): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
+                                                <?php if($isValidImage($object['news']['imageurl'])):?>
                                                 <p class="img-box">
-                                                    <a class="post-link" href="<?= $object['news']['link'] ?>"><img class="img-post" src="<?= (strpos($object['news']['imageurl'],'/events/') !== false) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
+                                                    <a class="post-link" href="<?= $object['news']['link'] ?>"><img onerror="imageLoadError(this);" class="img-post" src="<?= (strpos($object['news']['imageurl'],'/events/') !== false) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
                                                 </p>
+                                                <?php endif?>
                                                 <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
                                                     <?php if ($object['news']['tags']): ?>
                                                         <p class="img-tag"><?= $object['news']['tags'] ?></p>
@@ -425,13 +434,19 @@
                                             ?>
                                             <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
-                                                    <img class="avatar" src="<?= $avatar ?>">
-                                                    <img class="avatar" src="<?= $avatarFav ?>">
+                                                    <a href="http://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
+                                                    <a href="http://www.godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><img class="avatar" src="<?= $avatarFav ?>"></a>
                                                 </div>
                                                 <div class="r-content box-comment">
-                                                    <a href="http://www.godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav'] ?></a> подписан на вас
+                                                    <?php if($this->user->getId() == $object['user_id']):?>
+                                                        Вы подписались на <a href="http://www.godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav'] ?></a>
+                                                    <?php elseif($this->user->getId() == $object['fav_user_id']): ?>
+                                                        <a href="http://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> подписан<?php if($object['user']['gender'] == 2): echo 'а'; endif?> на вас
+                                                    <?php else:?>
+                                                        <a href="http://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> подписан<?php if($object['user']['gender'] == 2): echo 'а'; endif?> на <a href="http://www.godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav'] ?></a>
+                                                    <?php endif; ?>
                                                     <p class="timeago">
-                                                        <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
+                                                        <time class="timeago" datetime="<?= date('Y-m-d H:i:s', strtotime($object['created']) - 3 * HOUR) ?>"><?= $object['created'] ?></time>
                                                     </p>
                                                 </div>
                                             </div>
@@ -443,6 +458,7 @@
                                     ?>
                                     <script type="text/javascript">
                                         var eventsDate = '<?= date('Y-m-d H:i:s', strtotime($dateEvent)) ?>';
+                                        var likesDate = '<?= date('Y-m-d H:i:s', time() - (2 * HOUR)) ?>';
                                     </script>
 
                                     <!--                        <div class="box">

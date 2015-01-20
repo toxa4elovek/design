@@ -93,7 +93,7 @@ class Event extends \app\models\AppModel {
                     }
                     if ($record->type == 'newsAdded') {
                         $news = News::first($record->news_id);
-                        $news->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $record->news_id), 'order' => array('Event.created' => 'desc')));
+                        $news->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $record->news_id), 'order' => array('Event.created' => 'asc')));
                         $allowLike = 0;
                         if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('news_id' => $record->news_id, 'user_id' => Session::read('user.id')))))) {
                             $allowLike = 1;
@@ -211,7 +211,7 @@ class Event extends \app\models\AppModel {
         return $newEvent->save();
     }
 
-    public static function getEvents($pitchIds, $page = 1, $created = null) {
+    public static function getEvents($pitchIds, $page = 1, $created = null, $user = false) {
         $eventList = $conditions = array();
         $limit = 14;
         if (isset($created)) {
@@ -220,8 +220,12 @@ class Event extends \app\models\AppModel {
             $conditions = array('created' => array('>' => $created));
         }
         if (!empty($pitchIds)) {
+            if(($user == 32) || ($user == '858')) {
+                //echo '<pre>';
+                //var_dump($pitchIds);
+            }
             $events = Event::find('all', array(
-                        'conditions' => $conditions + Event::createConditions($pitchIds),
+                        'conditions' => $conditions + Event::createConditions($pitchIds, $user),
                         'order' => array('created' => 'desc'),
                         'limit' => $limit,
                         'page' => $page
@@ -229,7 +233,7 @@ class Event extends \app\models\AppModel {
             );
         } else {
             $events = Event::find('all', array(
-                        'conditions' => $conditions + array('type' => 'newsAdded'),
+                        'conditions' => $conditions + array('type' => array('RetweetAdded', 'newsAdded')),
                         'order' => array('created' => 'desc'),
                         'limit' => $limit,
                         'page' => $page
@@ -300,12 +304,15 @@ class Event extends \app\models\AppModel {
         return $eventList;
     }
 
-    public static function createConditions($input) {
+    public static function createConditions($input, $user = false) {
         $list = array();
         foreach ($input as $pitchId => $created) {
             $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'RatingAdded', 'FavUserAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
         }
         $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded', 'RetweetAdded')));
+        if($user) {
+            $list[] = array('AND' => array('type' => array('FavUserAdded'), 'OR' => array(array('user_id' => $user), array('fav_user_id' => $user))));
+        }
         $output = array('OR' => $list);
         return $output;
     }

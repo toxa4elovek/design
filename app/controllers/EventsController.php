@@ -26,6 +26,32 @@ class EventsController extends \app\controllers\AppController {
         return compact('updates', 'count', 'nextUpdates');
     }
 
+    public function autolikes() {
+        if(isset($this->request->query['created'])) {
+            $offsetDate = date('Y-m-d H:i:s', strtotime($this->request->query['created']) + (2 * HOUR));
+            $events = Event::all(array('conditions' => array(
+                'type' => 'LikeAdded',
+                'created' => array('>=' => $offsetDate),
+
+            ), 'order' => array('created' => 'desc')));
+            $eventsCount = 0;
+            if($events) {
+                $newLatestDate = $this->request->query['created'];
+                $eventsCount = (int) count($events->data());
+                foreach($events as $event) {
+                    $newLatestDate = date('Y-m-d H:i:s', (strtotime($event->created) - (2 * HOUR) +  SECOND));
+                    break;
+                }
+            }else {
+                $newLatestDate = $this->request->query['created'];
+            }
+            return compact('events', 'offsetDate', 'newLatestDate', 'eventsCount', 'first');
+        }else {
+            $pong = 'pong';
+            return compact($pong);
+        }
+    }
+
     public function feed() {
         if (isset($this->request->query['page'])) {
             $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page']);

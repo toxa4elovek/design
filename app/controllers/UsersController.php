@@ -153,7 +153,7 @@ class UsersController extends \app\controllers\AppController {
           } */
         $news = News::getNews();
         $solutions = Event::getEventSolutions();
-        $updates = Event::getEvents($pitchIds, 1, null);
+        $updates = Event::getEvents($pitchIds, 1, null, Session::read('user.id'));
         $nextUpdates = count(Event::getEvents($pitchIds, 2, null));
         $banner = News::getBanner();
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {

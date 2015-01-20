@@ -45,9 +45,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
 
-        $this->out("Starting parsing vice.com/ru");
-        self::ParsingVice();
-        $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing vice.com/ru");
+        //self::ParsingVice();
+        //$this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing wtpack.ru");
         self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
@@ -315,7 +315,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 if (isset($matches[1])) {
                     $news = News::create(array(
                                 'title' => $item->title,
-                                'short' => strip_tags($item->description),
+                                'short' => preg_replace('@\[.*\]@', '', strip_tags($item->description)),
                                 'tags' => substr($item->category, 0, strpos($item->category, ',')),
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->link,

@@ -85,7 +85,7 @@
         width: 1270px !important;
     }
     #center_sidebar {
-        margin-left: 334px;
+        margin-left: 340px;
     }
 }
 
@@ -532,6 +532,10 @@
 
 .center-boxes .box a {
     color: #f86362;
+}
+
+.center-boxes .box a:hover {
+    text-decoration: underline;
 }
 
 .center-boxes .box div.sol {

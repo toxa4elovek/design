@@ -273,7 +273,8 @@ p .email-profile {
 }
 .profile-list li.regular-small-grey span,p.regular-small-grey span {
     color: #666666;
-    font-size: 17px;
+    font-weight: bold;
+    font-size: 15px;
     font-family: OfficinaSansC Book, serif;
 }
 .profile-list-info li {
