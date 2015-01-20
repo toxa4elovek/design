@@ -710,7 +710,9 @@ $(document).ready(function () {
                     } else if (result.result == false) {
                         button.text('Ошибка');
                     }
-                },
+                    $('#news-add').toggle('fast');
+                    $('#news-add-separator').toggle('fast');
+                }
             });
             return false;
         });
