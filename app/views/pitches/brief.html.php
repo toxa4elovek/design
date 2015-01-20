@@ -417,7 +417,7 @@ endif;
                     </ul>
                     <ul>
                         <li style="margin-top:10px"><label><input type="radio" class="short-time-limit" name="short-time-limit" data-option-period="3" data-option-title="Установлен срок" data-option-value="950" ><?= $category->smallIncreseTimelimit ?> дней (950 Р.-)</label></li>
-                        <li style="margin-top: 10px; margin-left: 64px;"><label><input type="radio" class="short-time-limit" name="short-time-limit" data-option-period="4" data-option-title="Установлен срок" data-option-value="1450" ><?= $category->largeIncreaseTimelimit ?> дня (1450 Р.-)</label></li>
+                        <li style="margin-top: 10px; margin-left: 64px;"><label><input type="radio" class="short-time-limit" name="short-time-limit" data-option-period="4" data-option-title="Установлен срок" data-option-value="1450" ><?= $category->largeIncreaseTimelimit ?> дней (1450 Р.-)</label></li>
                     </ul>
                     <p style="margin-top:-34px;" class="label" id="timelimit-label">+500.-</p>
                 </div>
