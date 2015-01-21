@@ -317,17 +317,21 @@ class User extends \app\models\AppModel {
         foreach ($fav as $f) {
             $pitchesIds[$f->pitch->id . ''] = $f->created;
         }
+        /*
         $fav_user = Favourite::all(array('conditions' => array('Favourite.user_id' => $userId, 'Favourite.pitch_id' => 0), 'order' => array('id' => 'desc')));
         $temp = array();
         foreach ($fav_user as $f) {
             $temp[] = $f->fav_user_id;
         }
+
+
         if (count($temp) > 0) {
             $fav_pitches = Pitch::all(array('conditions' => array('user_id' => $temp)));
             foreach ($fav_pitches as $f) {
                 $pitchesIds[$f->id . ''] = $f->started;
             }
         }
+        */
         $solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
         foreach ($solutions as $s) {
             $pitchesIds[$s->pitch->id . ''] = $s->created;

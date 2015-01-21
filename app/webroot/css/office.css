@@ -334,9 +334,9 @@
 
 .center-boxes .box .rating-block {
     display: block;
-    height: 130px;
+    height: 126px;
     width: 176px;
-    max-height: 130px;
+    max-height: 126px;
     overflow: hidden;
     position: absolute;
     top: 0;
