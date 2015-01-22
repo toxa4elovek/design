@@ -1429,11 +1429,12 @@ function OfficeStatusUpdater() {
                 return html;
             },
             this.addLikes = function(object, imageurl) {
-                console.log(imageurl)
-                console.log(object)
                 var html = '';
                 txtsol = (this_user == object.solution.user_id) ? 'ваше ' : '',
-                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : 'http://www.godesigner.ru/img/default_small_avatar.png';
+                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : '/img/default_small_avatar.png';
+                if (object.user.isAdmin == 1) {
+                    var avatar = '/img/icon_57.png';
+                }
                 html += '<div class="box" data-eventid="' + object.id + '">\
                             <div class="l-img">\
                                 <img class="avatar" src="http://www.godesigner.ru' + avatar + '">\

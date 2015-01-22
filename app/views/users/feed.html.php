@@ -33,12 +33,12 @@
                 <div id="news-add-separator" style="display:none;"></div>
                 <div class="new-content group" style="margin-top:10px">
                 <?php endif; ?>
-                <?php if ($banner): ?>
+                <?php if (($banner) && ($this->user->getId())): ?>
                     <div class="banner-block">
                         <div>
                             <div class="close-gender"></div>
                             <span><?= $banner->title ?></span>
-                            <p><?= $banner->short ?></p>
+                            <p><?= $this->brief->ee($banner->short) ?></p>
                         </div>
                     </div>
                     <nav class="main_nav clear" style="width:832px;margin:30px auto 25px;">
