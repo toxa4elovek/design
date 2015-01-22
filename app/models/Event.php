@@ -333,6 +333,7 @@ class Event extends \app\models\AppModel {
                 $idsOfFollowing[] = $favourite->fav_user_id;
             }
             $idsOfFollowing[] = $user;
+            $idsOfFollowing[] = '108';
             //var_dump($idsOfFollowing);
 
             //$list[] = array('type' => 'FavUserAdded', 'user_id' => $idsOfFollowing);

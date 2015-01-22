@@ -1322,10 +1322,20 @@ function OfficeStatusUpdater() {
             },
             this.addFavUserAdded = function(object) {
                 var html = '';
+                if(typeof(object.user.images.avatar_small) == 'undefined') {
+                    var avatar = 'http://www.godesigner.ru/img/icon_57.png';
+                } else {
+                    var avatar = object.user.images.avatar_small.weburl;
+                }
+                if(typeof(object.user_fav.images.avatar_small) == 'undefined') {
+                    var avatarFav = 'http://www.godesigner.ru/img/icon_57.png';
+                } else {
+                    var avatarFav = object.user_fav.images.avatar_small.weburl;
+                }
                 html += '<div data-eventid="' + object.id + '" class="box"> \
                 <div class="l-img"> \
-                <a href="http://www.godesigner.ru/users/view/' + object.user.id + '"><img src="' + object.user.images.avatar_small.weburl + '" class="avatar"></a> \
-                <a href="http://www.godesigner.ru/users/view/' + object.user_fav.id + '"><img src="' + object.user_fav.images.avatar_small.weburl + '" class="avatar"></a> \
+                <a href="http://www.godesigner.ru/users/view/' + object.user.id + '"><img src="' + avatar + '" class="avatar"></a> \
+                <a href="http://www.godesigner.ru/users/view/' + object.user_fav.id + '"><img src="' + avatarFav + '" class="avatar"></a> \
                 </div> \
                 <div class="r-content box-comment">';
 
