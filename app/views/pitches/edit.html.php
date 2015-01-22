@@ -30,7 +30,8 @@ $job_types = array(
     'animals' => 'Животные',
     'childs' => 'Дети',
     'security' => 'Охрана / Безопасность',
-    'health' => 'Медицина / Здоровье');
+    'health' => 'Медицина / Здоровье',
+    'it' => 'Интернет / Компьютеры');
 
 $specifics = unserialize($pitch->specifics);
 ?>
