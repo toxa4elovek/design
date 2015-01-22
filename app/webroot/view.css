@@ -903,3 +903,71 @@ a.order-button:hover {
     color: #666666;
     text-shadow: -1px 0 0 #FFFFFF;
 }
+.solution-info ul.tags li {
+    background: #e4e8e9;
+    margin-left: 6px;
+    margin-bottom: 7px;
+}
+.solution-info ul.tags li a {
+    margin-left: 0;
+    color: #555;
+}
+.solution-info ul.tags li a:hover {
+    text-decoration: underline;
+}
+.solution-info.solution-tags .clear {
+    clear: both;
+}
+.sharebar {
+    padding:0 0 4px !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    /*    background:url('/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;*/
+    position:relative;
+    z-index:10000;
+    display: none;
+    left: -10px; 
+    right: auto; 
+    top: 30px;
+    height: 104px;
+    width:225px;
+}
+.tooltip-block {
+    height: 140px;
+    /*    background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;*/
+    padding:20px 10px 18px 19px !important
+}
+.sharebar:after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 7%;
+    margin-left: -8px;
+    width: 0;
+    height: 0;
+    border-bottom: 8px solid rgba(255, 255, 255, 0.5);
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+}
+#social-likes .social-likes__button {
+    width: 92px;
+    height: 32px;
+    padding: 0.34em 0.7em 0.18em 2.65em;
+}
+
+#social-likes .social-likes__icon_twitter {
+    left: 0.85em;
+    top: 13%;
+}
+#social-likes .social-likes__icon_facebook {
+    font-size: 1.1em;
+    left: 0.75em;
+    top: 0.25em;
+}
+#social-likes .social-likes__icon_vkontakte {
+    left: 0.65em;
+    top: 0.4em;
+}
+#social-likes .social-likes__icon_pinterest {
+    top: 0.25em;
+    left: 0.71em;
+}

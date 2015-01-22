@@ -407,5 +407,22 @@ class User extends \app\extensions\helper\Session {
             return $pitches;
         }
     }
+    
+    public function getGenderTxt($txt,$gender=0) {
+        // 0 - не установлен
+        // 1 - м
+        // 2 - ж
+        if ($gender > 1) {
+            $txt .='а';
+        }
+        return $txt;
+    }
+    
+    public function getGender() {
+        if(!$this->isLoggedIn()) {
+            return 0;
+        }
+        return (int) $this->read('user.gender');
+    }
 
 }

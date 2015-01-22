@@ -30,6 +30,7 @@ use lithium\core\Environment;
 Router::connect('/', 'Pages::home');
 
 Router::connect('/pages/contacts', 'Pages::contacts');
+Router::connect('/fastpitch', 'Pages::fastpitch');
 Router::connect('/stats', 'Pages::stats');
 Router::connect('/events/updates.{:type}', 'Events::updates');
 Router::connect('/users/checkform.{:type}', 'Users::checkform');
@@ -55,6 +56,8 @@ Router::connect('/files/{:filename}', array('Files::download'));
 Router::connect('/pitchfiles/delete', array('Pitchfiles::delete'));
 Router::connect('/pitchfiles/addDescription', array('Pitchfiles::addDescription'));
 Router::connect('/pitchfiles/{:filename}', array('Pitchfiles::download'));
+Router::connect('/news', 'Users::feed');
+Router::connect('/logosale', 'Solutions::logosale');
 
 //Router::connect('/users/nominated', array('controller' => 'Users', 'action' => 'solutions', 'filterType' => 'nominating'));
 

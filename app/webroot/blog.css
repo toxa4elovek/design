@@ -135,3 +135,8 @@ a.more-editor:hover {
 .blog-submit:hover {
 	background-position: left bottom;
 }
+.nodecoration {
+}
+.nodecoration:hover {
+    text-decoration: none !important;
+}

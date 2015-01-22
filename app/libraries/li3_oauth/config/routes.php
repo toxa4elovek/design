@@ -8,9 +8,10 @@ use \lithium\net\http\Router;
 /*Router::connect('/twitter/{:action}/{:args}', array(
 	'library' => 'li3_oauth', 'controller' => 'li3_oauth.tweet', 'action' => 'index'
 ));
+ */
 Router::connect('/vkontakte/{:action}/{:args}', array(
 	'library' => 'li3_oauth', 'controller' => 'li3_oauth.vkontakte', 'action' => 'index'
-));*/
+));
 Router::connect('/facebook/{:action}/{:args}', array(
 	'library' => 'li3_oauth', 'controller' => 'li3_oauth.facebook', 'action' => 'index'
 ));

@@ -35,7 +35,7 @@
                 <a href="/answers/view/63">инструкциями</a>
             <?php endif?>
     заключительного этапа.</span>
-        <span class="supplement">Со дня определения победителя, у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты (3 поправки) и исходники.<?php
+        <span class="supplement">Со дня определения победителя у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты <?php if($solution->pitch->category_id == 1):?>(3 поправки)<?php endif?> и исходники.<?php
             if(($step < 3) && ($this->user->isPitchOwner($solution->pitch->user_id))): echo ' Для начала вам нужно получить джипеги, внести правки и одобрить макеты.'; endif;?></span>
         <?php endif; ?>
     </div>

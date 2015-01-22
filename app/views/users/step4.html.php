@@ -51,6 +51,8 @@
                             <?php else:?>
                                 <p class="steptitle">Общее впечатление от копирайтера</p>
                             <?php endif?>
+                        <?php else:?>
+                            <p class="steptitle">Вы используете аккаунт с правами админа</p>
                         <?php endif?>
                         <span class="stepspan" style="margin-left: 20px;font:10px/1 'Arial',sans-serif">0</span>
                         <span class="stepspan" style="font:10px/1 'Arial',sans-serif">1</span>
