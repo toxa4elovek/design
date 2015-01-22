@@ -313,7 +313,7 @@
 
 .center-boxes .box .box-comment {
     padding-top: 5px;
-    padding-bottom: 0;
+    padding-bottom: 6px;
 }
 
 .center-boxes .box .post-content {
@@ -334,9 +334,9 @@
 
 .center-boxes .box .rating-block {
     display: block;
-    height: 130px;
+    height: 126px;
     width: 176px;
-    max-height: 130px;
+    max-height: 126px;
     overflow: hidden;
     position: absolute;
     top: 0;
@@ -428,8 +428,8 @@
     text-align: left;
     padding-left: 20px;
     padding-bottom: 5px;
-    margin-bottom: 6px;
-    margin-top: -2px;
+    margin-top: 8px;
+    margin-bottom: 2px;
 /*    border-bottom: 1px solid #ededed;*/
 }
 
@@ -746,8 +746,10 @@
 #popup-other-likes li a.user-title {
     display: inline-block;
     color: #ff585d;
-    margin-left: 10px;
+    margin-left: 18px;
     margin-top: 10px;
+    font-size: 16px;
+    font-family: OfficinaSansC Book, serif;
 }
 #popup-other-likes ul {
     overflow-y: scroll;
@@ -756,7 +758,7 @@
 #popup-other-likes li {
     display: block;
     border-bottom: 1px solid #e8e4e5;
-    padding: 12px 28px 13px 6px;
+    padding: 12px 28px 13px 16px;
     vertical-align: middle;
 }
 
@@ -768,10 +770,11 @@
 }
 
 #popup-other-likes .other-header {
-    padding: 21px 0 23px 15px;
+    padding: 21px 0 23px 20px;
     background: #f4f4f4;
-    font-family: OfficinaSansC Bold, serif;
-    font-size: 20px;
+    font-family: OfficinaSansC Book, serif;
+    color: #666666;
+    font-size: 21px;
 }
 
 .show-other-likes:hover {

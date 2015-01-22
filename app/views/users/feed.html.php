@@ -231,11 +231,21 @@
                                         } else {
                                             $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : 'http://www.godesigner.ru/img/default_small_avatar.png';
                                         }
-                                        if (isset($object['solution']['images']['solution_solutionView'])) {
-                                            if (isset($object['solution']['images']['solution_solutionView'][0]['weburl'])) {
-                                                $imageurl = $object['solution']['images']['solution_solutionView'][0]['weburl'];
-                                            } else {
-                                                $imageurl = $object['solution']['images']['solution_solutionView']['weburl'];
+                                        if($object['type'] != 'LikeAdded') {
+                                            if (isset($object['solution']['images']['solution_solutionView'])) {
+                                                if (isset($object['solution']['images']['solution_solutionView'][0]['weburl'])) {
+                                                    $imageurl = $object['solution']['images']['solution_solutionView'][0]['weburl'];
+                                                } else {
+                                                    $imageurl = $object['solution']['images']['solution_solutionView']['weburl'];
+                                                }
+                                            }
+                                        }else{
+                                            if (isset($object['solution']['images']['solution_leftFeed'])) {
+                                                if (isset($object['solution']['images']['solution_leftFeed'][0]['weburl'])) {
+                                                    $imageurl = $object['solution']['images']['solution_leftFeed'][0]['weburl'];
+                                                } else {
+                                                    $imageurl = $object['solution']['images']['solution_leftFeed']['weburl'];
+                                                }
                                             }
                                         }
                                         if ($object['type'] == 'CommentAdded' && !is_null($object['comment'])) :
@@ -288,7 +298,11 @@
                                                     <?php endif; ?>
                                                 <?php endif; ?>
                                             </div>
-                                        <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) : ?>
+                                        <?php elseif ($object['type'] == 'SolutionAdded' && !is_null($object['solution'])) :
+                                            if($object['pitch']['private'] == 1):
+                                                continue;
+                                            endif;
+                                            ?>
                                             <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <a target="_blank" href="http://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
@@ -451,7 +465,23 @@
                                                 </div>
                                             </div>
                                             <?php
-                                        elseif ($object['type'] == 'RetweetAdded'):
+                                        elseif ($object['type'] == 'LikeAdded'):?>
+                                            <div class="box" data-eventid="<?= $object['id'] ?>">
+                                                <div class="l-img">
+                                                    <img class="avatar" src="<?= $avatar ?>">
+                                                </div>
+                                                <div class="r-content rating-content">
+                                                    <a target="_blank" href="http://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('лайкнул', $object['user']['gender']) ?> <?= ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение
+                                                    <div style="background: none;" class="rating-image star<?= $object['solution']['rating'] ?>"></div>
+                                                    <div class="rating-block">
+                                                        <img class="img-rate" src="http://www.godesigner.ru<?= $imageurl ?>">
+                                                    </div>
+                                                    <p class="timeago rating-time">
+                                                        <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        <?php elseif ($object['type'] == 'RetweetAdded'):
                                             echo $object['html'];
                                         endif;
                                     endforeach;

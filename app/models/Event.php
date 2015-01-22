@@ -8,6 +8,7 @@ use \app\models\User;
 use \app\models\Comment;
 use \app\models\Category;
 use \app\models\Solution;
+use \app\models\Favourite;
 use \app\extensions\helper\MoneyFormatter;
 use \lithium\storage\Session;
 
@@ -220,10 +221,10 @@ class Event extends \app\models\AppModel {
             $conditions = array('created' => array('>' => $created));
         }
         if (!empty($pitchIds)) {
-            if(($user == 32) || ($user == '858')) {
+            //if($user == 32) {
                 //echo '<pre>';
-                //var_dump($pitchIds);
-            }
+                //var_dump(Event::createConditions($pitchIds, $user));
+            //}
             $events = Event::find('all', array(
                         'conditions' => $conditions + Event::createConditions($pitchIds, $user),
                         'order' => array('created' => 'desc'),
@@ -231,6 +232,14 @@ class Event extends \app\models\AppModel {
                         'page' => $page
                             )
             );
+            /*if($user == 32) {
+                foreach($events as $event) {
+                    if($event->type == 'FavUserAdded') {
+                        //var_dump($event->id);
+                    }
+                }
+                //die();
+            }*/
         } else {
             $events = Event::find('all', array(
                         'conditions' => $conditions + array('type' => array('RetweetAdded', 'newsAdded')),
@@ -307,11 +316,36 @@ class Event extends \app\models\AppModel {
     public static function createConditions($input, $user = false) {
         $list = array();
         foreach ($input as $pitchId => $created) {
-            $list[] = array('AND' => array('type' => array('SolutionPicked', 'CommentAdded', 'CommentCreated', 'PitchFinished', 'SolutionAdded', 'RatingAdded', 'FavUserAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
+            //if($user != '32') {
+                $list[] = array('AND' => array('type' => array('CommentAdded', 'CommentCreated', 'SolutionAdded', 'RatingAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
+            //}
         }
-        $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded', 'RetweetAdded')));
+        //if($user != '32') {
+            $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded', 'RetweetAdded')));
+        //}
         if($user) {
-            $list[] = array('AND' => array('type' => array('FavUserAdded'), 'OR' => array(array('user_id' => $user), array('fav_user_id' => $user))));
+            // заволловили меня или я кого-то
+            // смотрим, кого зафоловили те, кого зафоловил я
+
+            $favourites = Favourite::all(array('conditions' => array('pitch_id' => 0, 'user_id' => $user)));
+            $idsOfFollowing = array();
+            foreach($favourites as $favourite) {
+                $idsOfFollowing[] = $favourite->fav_user_id;
+            }
+            $idsOfFollowing[] = $user;
+            $idsOfFollowing[] = '108';
+            //var_dump($idsOfFollowing);
+
+            //$list[] = array('type' => 'FavUserAdded', 'user_id' => $idsOfFollowing);
+            $list[] = array('AND' => array('type' => array('FavUserAdded'), 'OR' => array(array('user_id' => $idsOfFollowing), array('fav_user_id' => $user))));
+            $list[] = array('AND' => array('type' => array('CommentAdded', 'CommentCreated', 'SolutionAdded'), 'user_id' => $idsOfFollowing));
+            $list[] = array('AND' => array('type' => 'LikeAdded', 'user_id' => $idsOfFollowing, 'news_id' => 0));
+
+/*            if($user == '858') {
+                echo '<pre>';
+var_dump($list);
+                die();
+            }*/
         }
         $output = array('OR' => $list);
         return $output;

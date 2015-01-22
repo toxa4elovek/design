@@ -774,12 +774,12 @@ function OfficeStatusUpdater() {
         self.date = eventsDate;
         self.likesdate = likesDate;
         //self.pitchDate = pitchDate;
-        $(document).everyTime(90000, function (i) {
+        $(document).everyTime(80000, function (i) {
             if (self.started) {
                 self.autoupdate();
             }
         });
-        $(document).everyTime(15000, function (i) {
+        $(document).everyTime(7500, function (i) {
             if (self.started) {
                 self.autolikes();
             }
@@ -787,7 +787,6 @@ function OfficeStatusUpdater() {
         self.started = 1;
     },
             this.autolikes = function() {
-                console.log(self.likesdate)
                 $.get('http://www.godesigner.ru/events/autolikes.json', {"created": self.likesdate}, function (response) {
                     self.likesdate = response.newLatestDate;
                     $.each(response.events, function(index, object) {
@@ -838,7 +837,7 @@ function OfficeStatusUpdater() {
                                     like_span.text('лайкнули ' + my_solution + ' ' + word);
                                 }
                             } else if (!span.length) {
-                                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + $(this).data('id') + '" href="#">' + object.creator + '</a> <span>' + Updater.getGenderTxt('лайкнул', userGender) + ' ' + my_solution + ' ' + word + '</span></span></div>');
+                                var $element = $('<div class="likes"><span class="who-likes"><a class="show-other-likes" data-block="1" data-solid="' + object.news_id + '" href="#">' + object.creator + '</a> <span>' + self.getGenderTxt('лайкнул', object.user.gender) + ' ' + my_solution + ' ' + word + '</span></span></div>');
                                 $element.insertAfter(link_parent.next());
                             } else if (span.length > 0 && style == 'none') {
                                 span.parent().show();
@@ -1041,7 +1040,12 @@ function OfficeStatusUpdater() {
                                 if (object.type == 'RetweetAdded' && object.html != null) {
                                     html += object.html;
                                 }
-
+                                if (object.type == 'FavUserAdded' && object.user_fav != null && object.user != null) {
+                                    html += self.addFavUserAdded(object);
+                                }
+                                if (object.type == 'LikeAdded' && object.solution != null) {
+                                    html += self.addLikes(object, imageurl);
+                                }
                             });
                             var $prependEl = $(html);
                             $prependEl.hide();
@@ -1089,6 +1093,12 @@ function OfficeStatusUpdater() {
 
                             if (object.type == 'RetweetAdded' && object.html != null) {
                                 html += object.html;
+                            }
+                            if (object.type == 'FavUserAdded' && object.user_fav != null && object.user != null) {
+                                html += self.addFavUserAdded(object);
+                            }
+                            if (object.type == 'LikeAdded' && object.solution != null) {
+                                html += self.addLikes(object, imageurl);
                             }
                         });
                         var $appendEl = $(html);
@@ -1310,6 +1320,39 @@ function OfficeStatusUpdater() {
                         </div>';
                 return html;
             },
+            this.addFavUserAdded = function(object) {
+                var html = '';
+                if(typeof(object.user.images.avatar_small) == 'undefined') {
+                    var avatar = 'http://www.godesigner.ru/img/icon_57.png';
+                } else {
+                    var avatar = object.user.images.avatar_small.weburl;
+                }
+                if(typeof(object.user_fav.images.avatar_small) == 'undefined') {
+                    var avatarFav = 'http://www.godesigner.ru/img/icon_57.png';
+                } else {
+                    var avatarFav = object.user_fav.images.avatar_small.weburl;
+                }
+                html += '<div data-eventid="' + object.id + '" class="box"> \
+                <div class="l-img"> \
+                <a href="http://www.godesigner.ru/users/view/' + object.user.id + '"><img src="' + avatar + '" class="avatar"></a> \
+                <a href="http://www.godesigner.ru/users/view/' + object.user_fav.id + '"><img src="' + avatarFav + '" class="avatar"></a> \
+                </div> \
+                <div class="r-content box-comment">';
+
+                if(this_user == object.user.id) {
+                    html += 'Вы подписались на <a href="http://www.godesigner.ru/users/view/' + object.user_fav.id + '">' + object.creator_fav + '</a>';
+                }else if(this_user == object.user_fav.id) {
+                    html += '<a href="http://www.godesigner.ru/users/view/' + object.user.id + '">' + object.creator + '</a> ' + self.getGenderTxt('подписан', object.user.gender) + ' на вас';
+                } else{
+                    html += '<a href="http://www.godesigner.ru/users/view/' + object.user.id + '">' + object.creator + '</a> ' + self.getGenderTxt('подписан', object.user.gender) + ' на <a href="http://www.godesigner.ru/users/view/' + object.user_fav + '">' + object.creator_fav + '</a>';
+                }
+                html += '<p class="timeago"> \
+                <time datetime="' + object.created + '" class="timeago" title="' + object.created + '"></time> \
+                </p> \
+                </div>  \
+                </div>';
+                return html;
+            },
             this.addNews = function (object) {
                 var html = '';
                 if (!object.news.tags) {
@@ -1385,8 +1428,34 @@ function OfficeStatusUpdater() {
                 html += '</div></div>';
                 return html;
             },
+            this.addLikes = function(object, imageurl) {
+                console.log(imageurl)
+                console.log(object)
+                var html = '';
+                txtsol = (this_user == object.solution.user_id) ? 'ваше ' : '',
+                    avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : 'http://www.godesigner.ru/img/default_small_avatar.png';
+                html += '<div class="box" data-eventid="' + object.id + '">\
+                            <div class="l-img">\
+                                <img class="avatar" src="http://www.godesigner.ru' + avatar + '">\
+                            </div>\
+                            <div class="r-content rating-content">\
+                                <a target="_blank" href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('лайкнул', object.user.gender) + txtsol + ' решение\
+                                <div class="rating-image" style="background: none;"></div>\
+                                <div class="rating-block">\
+                                    <img class="img-rate" src="http://www.godesigner.ru' + imageurl + '">\
+                                </div>\
+                                <p class="timeago rating-time">\
+                                     <time class="timeago" datetime="' + object.created + '">' + object.created + '</time>\
+                                </p>\
+                                </div>\
+                        </div>';
+                return html;
+            },
             this.addSolution = function (object, imageurl, response) {
                 var html = '';
+                if((object.pitch.private == 1) && (this_user != object.solution.user_id)) {
+                    return html;
+                }
                 var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : 'http://www.godesigner.ru/img/default_small_avatar.png';
                 var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
                 html += '<div class="box" data-eventid="' + object.id + '"> \
