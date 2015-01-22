@@ -23,7 +23,8 @@ class Tag extends \app\models\AppModel {
         'animals' => 'Животные',
         'childs' => 'Дети',
         'security' => 'Охрана / Безопасность',
-        'health' => 'Медицина / Здоровье');
+        'health' => 'Медицина / Здоровье',
+        'it' => 'Интернет / Компьютеры');
 
     public static function add($formdata, $solution_id) {
         $tags_list = Tag::all();
