@@ -49,9 +49,6 @@
                   'third' => 'ей'
               ))?></p>
           </a>
-          <?php else:?>
-            <img src="/img/banner_mison.png" alt="" />
-            <a class="more_info" href="/pitches/view/100043" style="background: url('/img/banner_mison_press.png') repeat scroll left top transparent"></a>
         <?php endif?>
         </li>
       <li style="height:259px;">
@@ -78,9 +75,6 @@
                   'third' => 'ей'
               ))?></p>
           </a>
-    <?php else:?>
-          <img src="/img/visitcard_parsuna.png" alt="" />
-       <a class="more_info" href="/pitches/view/45" style="background: url(/img/visitcard_parsuna_banner_onpress.png) repeat scroll left top transparent"></a>
           <?php endif?>
         </li>
       <li>
