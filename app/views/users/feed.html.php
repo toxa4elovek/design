@@ -33,10 +33,11 @@
                 <div id="news-add-separator" style="display:none;"></div>
                 <div class="new-content group" style="margin-top:10px">
                 <?php endif; ?>
-                <?php if (($banner) && ($this->user->getId())): ?>
+                <?php
+                if (($banner) && ($this->user->getId()) && (!$_COOKIE['closedbanner' . $banner->id])): ?>
                     <div class="banner-block">
                         <div>
-                            <div class="close-gender"></div>
+                            <div data-bannerid="<?= $banner->id ?>" class="close-gender"></div>
                             <span><?= $banner->title ?></span>
                             <p><?= $this->brief->ee($banner->short) ?></p>
                         </div>

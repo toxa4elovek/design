@@ -57,6 +57,14 @@ $(document).ready(function () {
         if (!isAdmin) {
             $('.new-content').css({'margin-top': '70px'});
         }
+        var bannerid = $(this).data('bannerid');
+        if (typeof bannerid !== typeof undefined && bannerid !== false) {
+            var now = new Date();
+            var time = now.getTime();
+            time += 3600 * 1000 * 24 * 30 * 6;
+            now.setTime(time);
+            document.cookie = 'closedbanner' + bannerid + '=1; expires=' + now.toUTCString() + '; path=/';
+        }
     });
     $('.img-box').hover(function () {
         $(this).next().children('.img-post').children('h2').css('color', '#ff585d');
