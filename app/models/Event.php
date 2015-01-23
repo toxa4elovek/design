@@ -283,8 +283,12 @@ class Event extends \app\models\AppModel {
         return $eventList;
     }
 
-    public static function getEventSolutions() {
-        return Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+    public static function getEventSolutions($user = null) {
+        if($user) {
+            return Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+        } else {
+            return Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+        }
     }
 
     public static function getSidebarEvents($created, $limit = null) {
