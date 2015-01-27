@@ -215,14 +215,14 @@ $(document).ready(function () {
         }
         $.post('/promocodes/check.json', {"code": value}, function (response) {
             if (response == 'false') {
-                $('#hint').text('Промокод неверен!');
+                //$('#hint').text('Промокод неверен!');
             } else {
-                $('#hint').text('Промокод активирован!');
+                //$('#hint').text('Промокод активирован!');
                 if ((response.type == 'pinned') || (response.type == 'misha')) {
                     Cart.addOption("“Прокачать” бриф", 0);
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
                     $('input[type=checkbox]', '#pinned-block').data('optionValue', '0');
-                    $('.label', '#pinned-block').text('+0.-').addClass('unfold');
+                    $('.label', '#pinned-block').text('0р.').addClass('unfold');
                 } else if (response.type == 'discount') {
                     Cart.transferFeeDiscount = 700;
                     Cart.updateFees();
@@ -237,6 +237,16 @@ $(document).ready(function () {
         });
     }
     checkPromocode();
+
+    $('.expand_extra').on('click', function() {
+        $('.extra_options').toggle();
+        if($('.extra_options').is(":visible")) {
+            $(this).text('– Дополнительная информация')
+        }else {
+            $(this).text('+ Дополнительная информация')
+        }
+        return false;
+    });
 
     $('#promocode').live('keyup', function () {
         checkPromocode();
@@ -333,7 +343,7 @@ $(document).ready(function () {
         $(firstCheckbox).attr('checked', 'checked');
         if ($(this).is(':checked')) {
             Cart.addOption('экспертное мнение', $(firstCheckbox).data('optionValue'));
-            $('#expert-label').html('+' + $(firstCheckbox).data('optionValue') + '.-');
+            $('#expert-label').html($(firstCheckbox).data('optionValue') + 'р.');
         } else {
             Cart.removeOption('экспертное мнение');
             $('.expert-check', '.experts').removeAttr('checked');
@@ -591,8 +601,12 @@ $(document).ready(function () {
         var radioButton = $(this);
         if (radioButton.val() == 1) {
             Cart.addOption(radioButton.data('optionTitle'), radioButton.data('optionValue'));
+            $('#guaranteedTooltip').show();
+            $('#nonguaranteedTooltip').hide();
         } else {
             Cart.removeOption(radioButton.data('optionTitle'));
+            $('#nonguaranteedTooltip').show();
+            $('#guaranteedTooltip').hide();
         }
     })
 
@@ -635,8 +649,42 @@ $(document).ready(function () {
     $('#phonebrief').change(function () {
         if ($(this).attr('checked') == 'checked') {
             Cart.validatetype = 2;
+            $('#explanation_brief').show();
         } else {
             Cart.validatetype = 1;
+            $('#explanation_brief').hide();
+        }
+    });
+
+    $('#hideproject').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#explanation_closed').show();
+        } else {
+            $('#explanation_closed').hide();
+        }
+    });
+
+    $('#pinproject').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#explanation_pinned').show();
+        } else {
+            $('#explanation_pinned').hide();
+        }
+    });
+
+    $('#promocodecheck').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#explanation_promo').show();
+        } else {
+            $('#explanation_promo').hide();
+        }
+    });
+
+    $('#createad').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#explanation_ad').show();
+        } else {
+            $('#explanation_ad').hide();
         }
     });
 
@@ -733,9 +781,9 @@ $(document).ready(function () {
     // Unpin check
     $(window).on('scroll', function () {
         var diff = $(window).scrollTop() - $('header').offset().top - 440;
-        if (diff > 0) {
+        /*if (diff > 0) {
             $('.summary-price').offset({top: $('header').offset().top + 668});
-        }
+        }*/
     });
 
     /**/
@@ -1022,14 +1070,14 @@ function FeatureCart() {
     this.prepareData = function () {
         var features = {
             'award': self.getOption(self.awardKey),
-            'private': self.getOption('Закрытый питч'),
+            'private': self.getOption('Скрыть проект'),
             'social': self.getOption('Рекламный Кейс'),
             'experts': self._expertArray(),
             'email': self.getOption('Email рассылка'),
-            'pinned': self.getOption('“Прокачать” бриф'),
+            'pinned': self.getOption('«Прокачать» проект'),
             'timelimit': self.getOption('Установлен срок'),
             'brief': self.getOption('Заполнение брифа'),
-            'guaranteed': self.getOption('Гарантированный питч'),
+            'guaranteed': self.getOption('Гарантированный проект'),
             'timelimitOption': self.getTimelimit()
         };
         var commonPitchData = {
@@ -1064,6 +1112,7 @@ function FeatureCart() {
                 $('input[name=title]').addClass('wrong-input');
                 result = false;
             }
+            /*
             if ((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
                 $('textarea[name=description]').addClass('wrong-input');
                 result = false;
@@ -1076,6 +1125,7 @@ function FeatureCart() {
                 $('#list-job-type').addClass('wrong-input');
                 result = false;
             }
+            */
         }
         return result;
     };

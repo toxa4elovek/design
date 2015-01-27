@@ -1,33 +1,42 @@
 <div class="groupc">
 
-    <p><label>Опишите целевую аудиторию</label></p>
+    <p style="margin-top: 24px; margin-bottom: 38px;">
+        <label><a href="#" class="expand_extra">+ Дополнительная информация</a></label>
+    </p>
 
-    <ul class="logo-properties sliderul" data-name="audience">
-        <li>
-            <span class="label-a">Женщины</span>
-            <span class="slider-wrapper"><span class="slider"></span></span>
-            <span class="label-b">Мужчины</span>
-        </li>
-        <li>
-            <span class="label-a">Молодой</span>
-            <span class="slider-wrapper"><span class="slider"></span></span>
-            <span class="label-b">Зрелый</span>
-        </li>
-        <li>
-            <span class="label-a">Богатый</span>
-            <span class="slider-wrapper"><span class="slider"></span></span>
-            <span class="label-b">Экономный</span>
-        </li>
-        <li>
-            <span class="label-a">Современный</span>
-            <span class="slider-wrapper"><span class="slider"></span></span>
-            <span class="label-b">Консервативный</span>
-        </li>
-        <li>
-            <span class="label-a">Энергичный</span>
-            <span class="slider-wrapper"><span class="slider"></span></span>
-            <span class="label-b">Пассивный</span>
-        </li>
-    </ul><!-- .logo-properties -->
+    <div class="extra_options" style="display: none">
 
-</div>
+        <div class="groupc">
+
+            <p><label>Опишите целевую аудиторию</label></p>
+
+            <ul class="logo-properties sliderul" data-name="audience">
+                <li>
+                    <span class="label-a">Женщины</span>
+                    <span class="slider-wrapper"><span class="slider"></span></span>
+                    <span class="label-b">Мужчины</span>
+                </li>
+                <li>
+                    <span class="label-a">Молодой</span>
+                    <span class="slider-wrapper"><span class="slider"></span></span>
+                    <span class="label-b">Зрелый</span>
+                </li>
+                <li>
+                    <span class="label-a">Богатый</span>
+                    <span class="slider-wrapper"><span class="slider"></span></span>
+                    <span class="label-b">Экономный</span>
+                </li>
+                <li>
+                    <span class="label-a">Современный</span>
+                    <span class="slider-wrapper"><span class="slider"></span></span>
+                    <span class="label-b">Консервативный</span>
+                </li>
+                <li>
+                    <span class="label-a">Энергичный</span>
+                    <span class="slider-wrapper"><span class="slider"></span></span>
+                    <span class="label-b">Пассивный</span>
+                </li>
+            </ul><!-- .logo-properties -->
+
+        </div>
+        <!-- brief.html -->

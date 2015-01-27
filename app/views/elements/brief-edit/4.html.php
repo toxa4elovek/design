@@ -1,5 +1,20 @@
 <div class="groupc">
 
+<p>
+    <label>Какие 3 основных качества нужно донести до аудитории?</label>
+    <input type="text" name="qualities" value="<?=$specifics['qualities']?>" placeholder="Вкусный, изысканный, современный" class="specific-prop">
+</p>
+</div>
+
+<div class="groupc">
+
+    <p style="margin-top: 24px; margin-bottom: 38px;">
+        <label><a href="#" class="expand_extra">+ Дополнительная информация</a></label>
+    </p>
+
+    <div class="extra_options" style="display: none">
+        <div class="groupc">
+
     <?php if($pitch->billed == 1):?>
         <?php if ($this->user->isAdmin()):?>
             <p><label>Ведите количество макетов/страниц</label>
@@ -40,10 +55,6 @@
         </li>
     </ul><!-- .logo-properties -->
 
-    <p>
-        <label>Какие 3 основных качества нужно донести до аудитории?</label>
-        <input type="text" name="qualities" value="<?=$specifics['qualities']?>" placeholder="Вкусный, изысканный, современный" class="specific-prop">
-    </p>
 
     <?php if (!empty($specifics['site-inspiration'])): ?>
     <p>

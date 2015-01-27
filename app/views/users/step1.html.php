@@ -57,7 +57,7 @@
                                 <img alt="" src="/img/visa_mastercard.png">
                             </td>
                             <td class="s3_text">
-                                Получить вознагреждение <br>на банковскую карту VISA, MASTERCARD
+                                Получить вознаграждение <br>на банковскую карту VISA, MASTERCARD
                             </td>
                             <td>
                             </td>
@@ -103,7 +103,7 @@
                                 <img alt="" src="/img/wmr.png">
                             </td>
                             <td class="s3_text" style="margin-top: 14px;">
-                                Получить вознагреждение в wmr (webmoney.ru)
+                                Получить вознаграждение в wmr (webmoney.ru)
                             </td>
                             <td></td>
                         </tr>
