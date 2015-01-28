@@ -9,13 +9,13 @@ class Receipt extends \app\models\AppModel {
 
     public static $dict = array(
         'award' => 'Награда Дизайнеру',
-        'private' => 'Закрытый питч',
+        'private' => 'Скрыть проект',
         'social' => 'Рекламный Кейс',
         'experts' => 'Экспертное мнение',
-        'pinned' => '“Прокачать” бриф',
+        'pinned' => '«Прокачать» проект',
         'timelimit' => 'Установлен срок',
         'brief' => 'Заполнение брифа',
-        'guaranteed' => 'Гарантированный питч',
+        'guaranteed' => 'Гарантированный проект',
         'fee' => 'Сбор GoDesigner',
         'discount' => 'Скидка'
     );

@@ -1138,7 +1138,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
             $selectedsolution = false;
             $nominatedSolutionOfThisPitch = Solution::first(array(
-                        'conditions' => array('nominated' => 1, 'pitch_id' => $pitch->id)
+                        'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
             ));
             if ($nominatedSolutionOfThisPitch) {
                 $selectedsolution = true;
@@ -1148,6 +1148,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             foreach ($copyrightedInfo['source'] as $key => $value) {
                 $copyrightedInfo['source'][$key] = Url::view($value);
             }
+            $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             $avatarHelper = new AvatarHelper;
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
             $likes = false;
@@ -1166,7 +1167,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $formatter = new MoneyFormatter;
             $description = mb_substr($pitch->description, 0, 150, 'UTF-8') . ((mb_strlen($pitch->description) > 150) ? '... ' : '. ') . 'Награда: ' . $formatter->formatMoney($pitch->price, array('suffix' => ' рублей')) . (($pitch->guaranteed == 1) ? ', гарантированы' : '');
             $date = Solution::getCreatedDate($solution->id);
-            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date');
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount');
         } else {
             throw new Exception('Public:Такого решения не существует.', 404);
         }

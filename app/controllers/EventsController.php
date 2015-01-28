@@ -135,7 +135,7 @@ class EventsController extends \app\controllers\AppController {
 
     public function add() {
         $result = false;
-        if ($this->request->data && !empty($this->request->data['link'])) {
+        if ($this->request->data) {
             $news = News::create($this->request->data);
             $news->created = date('Y-m-d H:i:s', (time() - (HOUR)));
             if (isset($this->request->data['file'])) {

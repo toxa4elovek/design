@@ -60,6 +60,11 @@ class SolutionsController extends \app\controllers\AppController {
                 $result = false;
                 return compact('result');
             }
+            // Already has selected winner, need buy second winner
+            if($solution->pitch->awarded > 0) {
+                $result = false;
+                return compact('result');
+            }
             $result = Solution::selectSolution($solution);
             return $result;
         }
@@ -173,7 +178,8 @@ class SolutionsController extends \app\controllers\AppController {
                 'animals' => 'Животные',
                 'childs' => 'Дети',
                 'security' => 'Охрана / Безопасность',
-                'health' => 'Медицина / Здоровье'
+                'health' => 'Медицина / Здоровье',
+                'it' => 'Интернет / Компьютеры'
             );
             $flippedDict = array_flip($dict);
             foreach($words as $key => $word) {

@@ -59,7 +59,8 @@ function mb_basename($file)
                                     'animals' => 'Животные',
                                     'childs' => 'Дети',
                                     'security' => 'Охрана / Безопасность',
-                                    'health' => 'Медицина / Здоровье');
+                                    'health' => 'Медицина / Здоровье',
+                                    'it' => 'Интернет / Компьютеры');
                                 $selected = array();
                                 foreach ($job_types as $k => $v):
                                     if(in_array($k, $unserialized)):
