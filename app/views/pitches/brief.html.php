@@ -518,31 +518,7 @@ endif;
                 <p class="brief-example"><a href="/docs/<?= $briefExamples[$category->id] ?>" target="_blank"></a></p><!-- .brief-example -->
            </div>
            <div class="groupc" style="margin-bottom: 19px; padding-bottom: 13px;">
-                <p>
-                    <label class="">Формат файла <a href="#" class="second tooltip" title="Необходимо указать формат, который на выходе предоставит вам дизайнер. Мы советуем обратиться в типографию или веб-мастеру и уточнить технические требования.">(?)</a></label>
-                </p>
-
-                <?php if ($category->id != 7): ?>
-                    <ul class="extensions">
-                        <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="EPS">.EPS</label></li>
-                        <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="AI">.AI (Illustrator)</label></li>
-                        <li class="graysupplement"><label><input type="checkbox" name="" data-value="JPG">.JPG</label></li>
-                        <li class="graysupplement"><label><input type="checkbox" name="" data-value="PNG">.PNG</label></li>
-                        <li class="graysupplement"><label><input type="checkbox" name="" data-value="PDF">.PDF</label></li>
-                        <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="PSD">.PSD (Photoshop)</label></li>
-                        <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="Innd">.Innd (In Design)</label></li>
-                        <li class="graysupplement"><label><input type="checkbox" name="" data-value="GIF">.GIF</label></li>
-                        <li class="graysupplement"><label><input type="checkbox" name="" data-value="TIFF">.TIFF</label></li>
-                        <li class="graysupplement"><label><input type="checkbox" name="" data-value="другие">другие</label></li>
-                    </ul><!-- .extensions -->
-                <?php else: ?>
-                    <ul class="extensions">
-                        <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="DOC">.DOC</label></li>
-                        <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="PDF">.PDF</label></li>
-                        <li class="graysupplement"><label><input type="checkbox" name="" data-value="другие">другие</label></li>
-                    </ul><!-- .extensions -->
-                <?php endif; ?>
-                </div>
+                <?= $this->view()->render(array('element' => 'newbrief/fileformat'), array('pitch' => $pitch, 'category' => $category)); ?>
             <!--div class="groupc">
                 <?php if ($category->id != 7): ?>
                     <textarea name="format-description" cols="30" rows="10" placeholder="Дополнительная информация о файлах: размер, разрешение"></textarea>

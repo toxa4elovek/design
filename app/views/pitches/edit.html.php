@@ -522,30 +522,8 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 
         <div class="groupc" style="margin-bottom: 19px; padding-bottom: 13px;">
             <p class="brief-example"><a href="/docs/<?=$briefExamples[$category->id]?>" target="_blank"></a></p><!-- .brief-example -->
-            <p>
-                <label class="required">Формат файла <a href="#" class="second tooltip" title="Необходимо указать формат, который на выходе предоставит вам дизайнер. Мы советуем обратиться в типографию или веб-мастеру и уточнить технические требования.">(?)</a></label>
-            </p>
+            <?= $this->view()->render(array('element' => 'newbrief/fileformat'), array('pitch' => $pitch, 'category' => $category)); ?>
 
-            <?php if($category->id != 7):?>
-            <ul class="extensions">
-                <li class="wide graysupplement"><label><input type="checkbox" name="" <?php if(in_array('EPS', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> data-value="EPS">.EPS</label></li>
-                <li class="wide graysupplement"><label><input type="checkbox" name="" <?php if(in_array('AI', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> data-value="AI">.AI (Illustrator)</label></li>
-                <li class="graysupplement"><label><input type="checkbox" name="" data-value="JPG" <?php if(in_array('JPG', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.JPG</label></li>
-                <li class="graysupplement"><label><input type="checkbox" name="" data-value="PNG" <?php if(in_array('PNG', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.PNG</label></li>
-                <li class="graysupplement"><label><input type="checkbox" name="" data-value="PDF" <?php if(in_array('PDF', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.PDF</label></li>
-                <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="PSD" <?php if(in_array('PSD', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.PSD (Photoshop)</label></li>
-                <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="Innd" <?php if(in_array('Innd', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.Innd (In Design)</label></li>
-                <li class="graysupplement"><label><input type="checkbox" name="" data-value="GIF" <?php if(in_array('GIF', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.GIF</label></li>
-                <li class="graysupplement"><label><input type="checkbox" name="" data-value="TIFF" <?php if(in_array('TIFF', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.TIFF</label></li>
-                <li class="graysupplement"><label><input type="checkbox" name="" data-value="другие" <?php if(in_array('другие', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >другие</label></li>
-            </ul><!-- .extensions -->
-            <?php else: ?>
-            <ul class="extensions">
-                <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="DOC" <?php if(in_array('DOC', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.DOC</label></li>
-                <li class="wide graysupplement"><label><input type="checkbox" name="" data-value="PDF" <?php if(in_array('PDF', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >.PDF</label></li>
-                <li class="graysupplement"><label><input type="checkbox" name="" data-value="другие" <?php if(in_array('другие', unserialize($pitch->fileFormats))): echo 'checked'; endif; ?> >другие</label></li>
-            </ul><!-- .extensions -->
-            <?php endif;?>
         </div></div><!-- .group -->
 
         <p class="submit submit-brief">
