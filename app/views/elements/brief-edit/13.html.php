@@ -20,7 +20,7 @@
 Папка А4
 Шаблон для рекламы 6X3" rows="5" cols="30" name="site-units" class="<?php if(empty($specifics['site-units'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-units']?></textarea>
     </p>
-
+    </div><div class="groupc">
 
     <p><label>Опишите целевую аудиторию</label></p>
 

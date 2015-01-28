@@ -69,9 +69,9 @@ endif?>
 <?php if(!$onlyText):?>
 <div class="middle add-pitch" id="step1">
 
-    <div class="main">
+    <div class="main" style="padding-top: 35px;">
 
-        <h2><?=$category->title;?></h2>
+        <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
         <ol class="steps">
             <li class="current"><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
@@ -130,10 +130,10 @@ endif?>
                 <label>Выберите вид копирайтинга</label>
                 <input type="hidden" id="copybaseminprice" value="<?php echo COPY_BASE_PRICE;?>"/>
             </p>
-            <ul class="radiooptionssite">
-                <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" <?php if (isset($specifics['first-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Имя / название</span></label></li>
-                <li><label><input type="checkbox" name="second-option" value="1" class="sub-check specific-group" <?php if (isset($specifics['second-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Адрес сайта</span></label></li>
-                <li><label><input type="checkbox" name="third-option" value="2" class="sub-check specific-group" <?php if (isset($specifics['third-option'])): echo 'checked'; endif;?> style="vertical-align: middle;"><span class="radiospan">Слоган / лозунг</span></label></li>
+            <ul class="radiooptionssite" style="margin-bottom: 11px;">
+                <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" <?php if (isset($specifics['first-option'])): echo 'checked'; endif;?> style="vertical-align: top;"><span class="radiospan">Имя / название</span></label></li>
+                <li style="margin-top: 4px;"><label><input type="checkbox" name="second-option" value="1" class="sub-check specific-group" <?php if (isset($specifics['second-option'])): echo 'checked'; endif;?> style="vertical-align: top;"><span class="radiospan">Адрес сайта</span></label></li>
+                <li style="margin-top: 4px;"><label><input type="checkbox" name="third-option" value="2" class="sub-check specific-group" <?php if (isset($specifics['third-option'])): echo 'checked'; endif;?> style="vertical-align: top;"><span class="radiospan">Слоган / лозунг</span></label></li>
             </ul>
         </div>
         <?php endif;?>
@@ -395,9 +395,9 @@ endif?>
 <?php else:?>
 <div class="middle add-pitch" style="display:block;" id="step2">
 <?php endif?>
-    <div class="main">
+        <div class="main" style="padding-top: 35px;">
 
-        <h2><?=$category->title;?></h2>
+            <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
         <?php if(!$onlyText):?>
         <ol class="steps">
@@ -520,7 +520,7 @@ $word2 = 'Опишите вид деятельности. Что отличае�
             <div style="clear:both"></div>
         </div><!-- .group -->
 
-        <div class="groupc">
+        <div class="groupc" style="margin-bottom: 19px; padding-bottom: 13px;">
             <p class="brief-example"><a href="/docs/<?=$briefExamples[$category->id]?>" target="_blank"></a></p><!-- .brief-example -->
             <p>
                 <label class="required">Формат файла <a href="#" class="second tooltip" title="Необходимо указать формат, который на выходе предоставит вам дизайнер. Мы советуем обратиться в типографию или веб-мастеру и уточнить технические требования.">(?)</a></label>
@@ -564,9 +564,9 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 <?php if(!$onlyText):?>
 <div class="middle add-pitch" style="display:none;" id="step3">
 
-    <div class="main">
+    <div class="main" style="padding-top: 35px;">
 
-        <h2><?=$category->title;?></h2>
+        <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
         <form action="https://pay.masterbank.ru/acquiring" method="post">
             <input type="hidden" id="pitch-id" name="id" value=""/>

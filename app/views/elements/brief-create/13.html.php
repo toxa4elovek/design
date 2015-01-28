@@ -24,7 +24,7 @@
 Шаблон для рекламы 6X3" rows="5" cols="30" name="site-units" class="placeholder specific-prop"></textarea>
             </p>
 
-
+</div><div class="groupc">
             <p><label>Опишите целевую аудиторию</label></p>
 
             <ul class="logo-properties sliderul" data-name="audience">

@@ -1324,7 +1324,7 @@ p.full_pitch a {
 
 .steps {
     height: 42px;
-    margin-bottom: 46px;
+    margin-bottom: 30px;
     width: 580px;
 }
 .steps li {
@@ -1785,7 +1785,7 @@ p.full_pitch a {
     margin-bottom: 20px;
 }
 .add-pitch .groupc > p > label:first-child {
-    font: bold 17px/1 "RodeoC", sans-serif;
+    font: bold 17px/23px "RodeoC", sans-serif;
     display: block;
     color: #666;
     text-shadow: 0 1px 1px #FFFFFF;
@@ -2885,7 +2885,9 @@ ul.social li#rss {
 }
 .radiospan {
     margin-left: 5px;
-    font-size:14px;
+    font-size:16px;
+    font-family: OfficinaSansC Book,serif;
+    color: #666;
 }
 .radiooptionssite {
 

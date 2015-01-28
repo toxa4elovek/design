@@ -129,9 +129,9 @@ endif;
 
     <div class="middle add-pitch" id="step1">
 
-        <div class="main">
+        <div class="main" style="padding-top: 35px;">
 
-            <h2><?= $category->title; ?></h2>
+            <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
             <ol class="steps">
                 <li class="current"><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
@@ -143,7 +143,7 @@ endif;
                 <div class="groupc">
                     <p>
                         <label>Вид упаковки</label>
-                    <ul class="radiooptionssite">
+                    <ul class="radiooptionssite" style="margin-bottom: 11px;">
                         <li><label><input type="radio" name="package-type" value="0" class="sub-radio specific-group" data-min-value="7000" checked="checked"><span class="radiospan">Этикетка и контрэтикетка (от 7000) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Этикетка — графическое или текстовое описание товара, заполняющее одну плоскость бумажной формы, наклейки и т.п. Н-р, э. пива, э. на консервы, конфетная э. и т.п.">(?)</a></span></label></li>
                         <li><label><input type="radio" name="package-type" value="1" class="sub-radio specific-group" data-min-value="13400"><span class="radiospan">Оформление коробки, развёртки, и прочее (от 13400 Р-.) <a href="#" style="color:#658FA5;font-size:11px" class="second tooltip" title="Упаковка — комплекс полиграфической продукции и материалов, в которые упаковывают товар или сырье; графическое или текстовое описание товара, которое подразумевает более одной плоскости. Например, картонная коробка, бутылка, стрейч-пленка и т.п.">(?)</a></span></label></li>
                     </ul>
@@ -192,10 +192,10 @@ endif;
                         <label>Выберите вид копирайтинга</label>
                         <input type="hidden" id="copybaseminprice" value="<?php echo COPY_BASE_PRICE; ?>"/>
                     </p>
-                    <ul class="radiooptionssite">
-                        <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" checked="checked" style="vertical-align: middle;"><span class="radiospan">Имя / название</span></label></li>
-                        <li><label><input type="checkbox" name="second-option" value="1" class="sub-check specific-group"  style="vertical-align: middle;"><span class="radiospan">Адрес сайта</span></label></li>
-                        <li><label><input type="checkbox" name="third-option" value="2" class="sub-check specific-group"  style="vertical-align: middle;"><span class="radiospan">Слоган / лозунг</span></label></li>
+                    <ul class="radiooptionssite" style="margin-bottom: 11px;">
+                        <li><label><input type="checkbox" name="first-option" value="0" class="sub-check specific-group" checked="checked" style="vertical-align: top;"><span class="radiospan">Имя / название</span></label></li>
+                        <li style="margin-top: 4px;"><label><input type="checkbox" name="second-option" value="1" class="sub-check specific-group"  style="vertical-align: top;"><span class="radiospan">Адрес сайта</span></label></li>
+                        <li style="margin-top: 4px;"><label><input type="checkbox" name="third-option" value="2" class="sub-check specific-group"  style="vertical-align: top;"><span class="radiospan">Слоган / лозунг</span></label></li>
                     </ul>
                 </div>
             <?php endif; ?>
@@ -423,9 +423,9 @@ endif;
 
     <div class="middle add-pitch" style="display:none;" id="step2">
 
-        <div class="main">
+        <div class="main" style="padding-top: 35px;">
 
-            <h2><?= $category->title; ?></h2>
+            <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
             <ol class="steps">
                 <li><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
@@ -469,8 +469,8 @@ endif;
 
             <div class="groupc" style="margin-top: 34px; margin-bottom: 25px;">
             <label id ="show-types" class="greyboldheader">Выберите вид деятельности</label> <ul id="list-job-type" style="margin-bottom: 20px;">     <li>         <label><input type="checkbox" name="job-type[]" value="realty"> Недвижимость / Строительство</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="auto"> Автомобили / Транспорт</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="finances"> Финансы / Бизнес</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="food"> Еда / Напитки</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="adv"> Реклама / Коммуникации</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="tourism"> Туризм / Путешествие</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="sport"> Спорт</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="sci"> Образование / Наука</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="fashion"> Красота / Мода</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="music"> Развлечение / Музыка</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="culture"> Искусство / Культура</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="animals"> Животные</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="childs"> Дети</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="security"> Охрана / Безопасность</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="health"> Медицина / Здоровье</label>     </li> </ul>
-</div><div class="groupc">
-            <?php if ($category->id != 7): ?>
+</div>            <?php if ($category->id != 7): ?><div class="groupc">
+
                     <?php if ($category->id != 1) : ?>
                         <p><label>Можно ли дополнительно использовать материал из банков с изображениями или шрифтами? <a href="#" class="second tooltip" title="Это даст возможность дизайнерам добиться лучшего результата. Профессионалы из мира рекламы часто прибегают к помощи фото-банков для экономии сил, времени или бюджета.">(?)</a></label></p>
                     <?php else: ?>
@@ -483,8 +483,8 @@ endif;
                         <input style="vertical-align: middle" type="radio" name="materials" value="1" /><span class="radiospan">Да</span>
                     </div>
                     <div style="margin-bottom: 15px;"><input type="text" placeholder="допустимая стоимость одного изображения" style="width: 300px;" name="materials-limit" value=""></div>
-            <?php endif; ?>
-            </div>
+
+            </div>            <?php endif; ?>
 
             <div class="groupc" style="margin-bottom: 30px; padding-bottom: 0px;">
                 <p><label>Дополнительные материалы <a href="#" class="second tooltip" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
@@ -517,7 +517,7 @@ endif;
 
                 <p class="brief-example"><a href="/docs/<?= $briefExamples[$category->id] ?>" target="_blank"></a></p><!-- .brief-example -->
            </div>
-           <div class="groupc">
+           <div class="groupc" style="margin-bottom: 19px; padding-bottom: 13px;">
                 <p>
                     <label class="">Формат файла <a href="#" class="second tooltip" title="Необходимо указать формат, который на выходе предоставит вам дизайнер. Мы советуем обратиться в типографию или веб-мастеру и уточнить технические требования.">(?)</a></label>
                 </p>
@@ -570,9 +570,9 @@ endif;
     </div><!-- .middle -->
     <div class="middle add-pitch" style="display:none;" id="step3">
 
-        <div class="main">
+        <div class="main" style="padding-top: 35px;">
 
-            <h2><?= $category->title; ?></h2>
+            <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
             <form action="" method="post">
                 <input type="hidden" id="pitch-id" name="id" value=""/>

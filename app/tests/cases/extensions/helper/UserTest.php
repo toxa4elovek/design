@@ -129,6 +129,10 @@ class UserTest extends \lithium\test\Unit {
         $this->user->write('user.first_name', 'Дмитрий');
         $this->user->write('user.last_name', 'Васильев');
         $this->assertEqual('Дмитрий В.', $this->user->getFormattedName());
+        // Составные имена вроде: Вячеслав Инвест-резерв
+        $this->user->write('user.first_name', 'Вячеслав');
+        $this->user->write('user.last_name', 'Инвест-резерв');
+        $this->assertEqual('Вячеслав И.', $this->user->getFormattedName());
     }
 
     public function testGetFormattedNameWithParams() {

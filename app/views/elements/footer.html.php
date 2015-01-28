@@ -52,7 +52,7 @@
                 <?php else: ?>
                     <?= $this->html->link('Блог', 'http://www.godesigner.ru/posts') ?> /
                 <?php endif ?>
-                <strong><?= $this->html->link('Создать питч', 'http://www.godesigner.ru/pitches/create') ?></strong>
+                <strong><?= $this->html->link('Создать проект', 'http://www.godesigner.ru/pitches/create') ?></strong>
             </p>
         </nav><!-- .nav -->
         <ul class="pay-systems">
