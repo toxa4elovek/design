@@ -78,4 +78,59 @@ $(document).ready(function() {
     VK.init({apiId: 2950889, onlyWidgets: true});
     VK.Widgets.Like("vk_like", {type: "mini"});
 
+    (function($){
+
+        $.fn.ctrlCmd = function(key) {
+
+            var allowDefault = true;
+
+            if (!$.isArray(key)) {
+                key = [key];
+            }
+
+            return this.keydown(function(e) {
+                for (var i = 0, l = key.length; i < l; i++) {
+                    if(e.keyCode === key[i].toUpperCase().charCodeAt(0) && e.metaKey) {
+                        allowDefault = false;
+                    }
+                };
+                return allowDefault;
+            });
+        };
+
+
+        $.fn.disableSelection = function() {
+
+            this.ctrlCmd(['a', 'c']);
+
+            return this.attr('unselectable', 'on')
+                .css({'-moz-user-select':'-moz-none',
+                    '-moz-user-select':'none',
+                    '-o-user-select':'none',
+                    '-khtml-user-select':'none',
+                    '-webkit-user-select':'none',
+                    '-ms-user-select':'none',
+                    'user-select':'none'})
+                .bind('selectstart', false);
+        };
+
+    })(jQuery);
+
+    $('#content_help').disableSelection();
+
+    $('img', '#content_help').bind('contextmenu', function(e) {
+        return false;
+    });
+
 })
+
+function clearData(){
+    window.clipboardData.setData('text','')
+}
+function cldata(){
+    if(window.clipboardData){
+        window.clipboardData.clearData();
+    }
+}
+
+setInterval("cldata();", 1000);
