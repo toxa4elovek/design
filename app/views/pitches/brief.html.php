@@ -408,8 +408,7 @@ endif;
             <div class="groupc" style="margin-bottom: 30px; padding-bottom: 0px;">
                 <p><label>Дополнительные материалы <a href="#" class="second tooltip" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
                 <div id="new-download" style="display:none;">
-                    <p class="add-file">
-                    <form action="/pitchfiles/add.json" method="post" id="fileuploadform">
+                    <form class="add-file" action="/pitchfiles/add.json" method="post" id="fileuploadform">
                         <div class="fileinputs">
                             <img style="display:block; height:20px; float:left;" class="fakeinput" src="/img/choosefile.png"/>
                             <span class="fakeinput supplement" id="filename" style="display:block; float: left; height:19px; width: 450px; padding-top: 1px; margin-left:10px;">Файл не выбран</span>
@@ -424,7 +423,6 @@ endif;
                             <div class="progress-extended">&nbsp;</div>
                         </div>
                     </form>
-                    </p>
                 </div>
 
                 <iframe id="old-download" src="/pitchfiles/index" seamless style="display:none;width:570px;height:100px;"></iframe>
@@ -445,6 +443,7 @@ endif;
                     <textarea name="format-description" cols="30" rows="10" placeholder="Дополнительная информация о файлах: объём текстов в разделах и прочее"></textarea>
                 <?php endif; ?>
             </div-->
+            </div>
             <div class="groupc" style="background: none repeat scroll 0% 0% transparent; margin-bottom: 7px;">
                 <p>
                     <label class="">Ваш контактный телефон <a href="#" class="second tooltip" title="Мы убедительно просим вас оставить ваш номер телефона для экстренных случаев, и если возникнут вопросы с оплатой.">(?)</a></label>
@@ -453,11 +452,10 @@ endif;
             </div></div>
             <div class="tos-container supplement" style="margin-bottom: 20px; position: relative;">
                 <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
-                <span style="position: absolute; top:0;right:0" class="require_mark">*</span>
+                <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('style' => "position: absolute; top:0;right:0")) ?>
             </div>
             <p class="submit submit-brief">
-                <input type="button" value="Вернуться к шагу 1" class="button steps-link" data-step="1">
-                <input type="button" id="save" value="Сохранить и продолжить" class="button" data-step="3">
+                <?= $this->view()->render(array('element' => 'newbrief/step2fullbuttons')); ?>
             </p><!-- .submit -->
 
         </div><!-- .main -->

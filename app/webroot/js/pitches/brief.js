@@ -133,7 +133,9 @@ $(document).ready(function () {
             }
         } else if (Cart.validatetype == 2) {
             if (($('#phonenumber').val() == '') || ($('#phonenumber').val() == '+7 XXX XXX XX XX') || ($('#phonenumber').val() == '+7 ХХХ ХХХ ХХ ХХ')) {
-                alert('Оставьте свой телефон, чтобы мы могли с вами связаться');
+                $('#phonenumber').addClass('wrong-input');
+                var offset = $('#explanation_brief').prev().offset()
+                $.scrollTo(offset.top - 20, {duration: 600});
                 return false;
             } else {
                 if ((stepNum == 3) && ((notExists == true) || (existsNotPublshed == true))) {
@@ -156,7 +158,6 @@ $(document).ready(function () {
             $('#step' + stepNum).show();
             $.scrollTo($('#header-bg'), {duration: 600});
             if (stepNum == 2) {
-                //console.log($('#sliderset').length);
                 /*sliders*/
                 $(".slider").each(function (index, object) {
                     var value = 5;
@@ -344,6 +345,8 @@ $(document).ready(function () {
         if ($(this).is(':checked')) {
             Cart.addOption('экспертное мнение', $(firstCheckbox).data('optionValue'));
             $('#expert-label').html($(firstCheckbox).data('optionValue') + 'р.');
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
         } else {
             Cart.removeOption('экспертное мнение');
             $('.expert-check', '.experts').removeAttr('checked');
@@ -367,12 +370,7 @@ $(document).ready(function () {
             $('#expert-label').html('+' + newValue + '.-');
             Cart.addOption($(this).data('optionTitle'), newValue);
         } else {
-            console.log($(this).data('optionTitle'))
-            console.log($(this).data('optionValue'));
-            console.log(Cart.getOption($(this).data('optionTitle')))
-            console.log(Cart.content);
             var newValue = Cart.getOption($(this).data('optionTitle')) - $(this).data('optionValue');
-            console.log(newValue);
             $('#expert-label').html('+' + newValue + '.-');
             Cart.updateOption($(this).data('optionTitle'), newValue);
             if ($('.expert-check:checked', '.experts').length == 0) {
@@ -447,6 +445,30 @@ $(document).ready(function () {
             }
         }
     }
+
+    $('.savedraft').click(function () {
+        if (false === $('input[name=tos]').prop('checked')) {
+            alert('Вы должны принять правила и условия');
+        } else {
+            if (Cart.prepareData()) {
+                if (uploader.damnUploader('itemsCount') > 0) {
+                    $('#loading-overlay').modal({
+                        containerId: 'spinner',
+                        opacity: 80,
+                        close: false
+                    });
+                    uploader.damnUploader('startUpload')
+                } else {
+                    Cart.saveData(false);
+                }
+            } else {
+                var offset = $('.wrong-input').parent().offset()
+                $.scrollTo(offset.top - 10, {duration: 600});
+            }
+        }
+        return false;
+    })
+
     $('#save').click(function () {
         if (false === $('input[name=tos]').prop('checked')) {
             alert('Вы должны принять правила и условия');
@@ -648,6 +670,8 @@ $(document).ready(function () {
 
     $('#phonebrief').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
             Cart.validatetype = 2;
             $('#explanation_brief').show();
         } else {
@@ -658,6 +682,8 @@ $(document).ready(function () {
 
     $('#hideproject').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
             $('#explanation_closed').show();
         } else {
             $('#explanation_closed').hide();
@@ -666,6 +692,8 @@ $(document).ready(function () {
 
     $('#pinproject').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
             $('#explanation_pinned').show();
         } else {
             $('#explanation_pinned').hide();
@@ -674,6 +702,8 @@ $(document).ready(function () {
 
     $('#promocodecheck').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
             $('#explanation_promo').show();
         } else {
             $('#explanation_promo').hide();
@@ -682,6 +712,8 @@ $(document).ready(function () {
 
     $('#createad').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
             $('#explanation_ad').show();
         } else {
             $('#explanation_ad').hide();
@@ -1004,6 +1036,17 @@ function FeatureCart() {
             });
         }
     };
+    this._priceDecorator = function(price) {
+        price = price.toString()
+        price = price.replace(/(.*)\.00/g, "$1");
+        counter = 1;
+        while(price.match(/\w\w\w\w/)) {
+            price = price.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
+            counter ++;
+            if(counter > 6) break;
+        }
+        return price;
+    }
     this.fillCheck = function (data) {
         self.content = {};
         $.each(data, function (index, object) {
@@ -1129,50 +1172,91 @@ function FeatureCart() {
         }
         return result;
     };
-    this.saveData = function () {
+    this.saveData = function (simplesave) {
         if (self.data.features.award == 0) {
             alert('Укажите награду для дизайнера!');
         } else {
             $.post('/pitches/add.json', self.data, function (response) {
-                if (response == 'redirect') {
-                    window.location = '/users/registration';
-                }
-                if (response == 'noaward') {
-                    alert('Укажите награду для дизайнера!');
-                    return false;
-                }
-                self.id = response;
-                $('#pitch-id').val(self.id);
-                $('#fiz-id').val(self.id);
-                $('#yur-id').val(self.id);
-
-                pitchid = self.id;
-
-                $.get('/transactions/getsigndata/' + self.id + '.json', function (response) {
-                    $('.middle').not('#step3').hide();
-                    $('#step3').show();
-                    $.scrollTo($('#header-bg'), {duration: 600});
-                    if (response.category == 10) {
-                        $('.paymaster-section').remove();
-                    } else {
-                        // Paymaster
-                        $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
-                        if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
-                            $('input[name=LMI_PAYMENT_NO]').val(response.id);
-                        } else {
-                            $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
-                        }
-                        $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
-                        $('.pmwidget').addClass('mod');
-                        $('h1.pmheader', '.pmwidget').addClass('mod');
+                if(typeof(simplesave) == 'undefined') {
+                    if (response == 'redirect') {
+                        window.location = '/users/registration';
                     }
-                    // Payanyway
-                    $('input[name=MNT_AMOUNT]').val(response.total)
-                    $('input[name=MNT_TRANSACTION_ID]').val(response.id)
+                    if (response == 'noaward') {
+                        alert('Укажите награду для дизайнера!');
+                        return false;
+                    }
+                    self.id = response;
+                    $('#pitch-id').val(self.id);
+                    $('#fiz-id').val(self.id);
+                    $('#yur-id').val(self.id);
 
-                    // Bill
-                    $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');
-                })
+                    pitchid = self.id;
+
+                    $.get('/transactions/getsigndata/' + self.id + '.json', function (response) {
+                        $('.middle').not('#step3').hide();
+                        $('#step3').show();
+                        $.scrollTo($('#header-bg'), {duration: 600});
+                        if (response.category == 10) {
+                            $('.paymaster-section').remove();
+                        } else {
+                            // Paymaster
+                            $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
+                            if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
+                                $('input[name=LMI_PAYMENT_NO]').val(response.id);
+                            } else {
+                                $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
+                            }
+                            $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
+                            $('.pmwidget').addClass('mod');
+                            $('h1.pmheader', '.pmwidget').addClass('mod');
+                        }
+                        // Payanyway
+                        $('input[name=MNT_AMOUNT]').val(response.total)
+                        $('input[name=MNT_TRANSACTION_ID]').val(response.id)
+
+                        // Bill
+                        $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');
+                    })
+                }else {
+                    var title = Cart.data.commonPitchData.title;
+                    var award = Cart._priceDecorator(Cart.data.features.award);
+                    var id = response;
+                    if($('#pitch-panel').length == 1) {
+                        if($('tr', '#pitch-panel').length % 2 == 0) {
+                            var evenClass = 'even';
+                        }else {
+                            var evenClass = ''
+                        }
+                        var row =
+                        '<tr data-id="' + id + '" class="selection ' + evenClass + ' coda"><td></td> \
+                        <td class="pitches-name mypitches"><a href="http://www.godesigner.ru/pitches/view/' + id + '">' + title + '</a></td> \
+                        <td class="pitches-status mypitches"><a href="http://www.godesigner.ru/pitches/edit/' + id + '">Ожидание оплаты</a></td> \
+                        <td class="price mypitches">' + award +'.-</td>\
+                        <td class="pitches-edit mypitches"> \
+                        <a href="http://www.godesigner.ru/pitches/edit/' + id + '#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a> \
+                        <a href="http://www.godesigner.ru/pitches/edit/' + id + '" class="edit mypitch_edit_link" title="редактировать">редактировать</a> \
+                        <a data-id="' + id + '" href="http://www.godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
+                        </td></tr>';
+                        $('#header-table').append(row);
+                    }else {
+                        var panel =
+                            '<div id="pitch-panel"><div class="conteiner"><div class="content"> \
+                            <table class="all-pitches" id="header-table"><tbody> \
+                            <tr data-id="' + id + '" class="selection even coda"><td></td> \
+                        <td class="pitches-name mypitches"><a href="http://www.godesigner.ru/pitches/view/' + id + '">' + title + '</a></td> \
+                        <td class="pitches-status mypitches"><a href="http://www.godesigner.ru/pitches/edit/' + id + '">Ожидание оплаты</a></td> \
+                        <td class="price mypitches">' + award +'.-</td>\
+                        <td class="pitches-edit mypitches"> \
+                        <a href="http://www.godesigner.ru/pitches/edit/' + id + '#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a> \
+                        <a href="http://www.godesigner.ru/pitches/edit/' + id + '" class="edit mypitch_edit_link" title="редактировать">редактировать</a> \
+                        <a data-id="' + id + '" href="http://www.godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
+                        </td></tr></tbody></table> \
+                        <p class="pitch-buttons-legend"><a href="http://www.godesigner.ru/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a></p> \
+                        </div></div></div>';
+                        $('.wrapper').first().prepend(panel);
+                    }
+                    $.scrollTo($('#pitch-panel'), {duration: 600});
+                }
             });
         }
     }

@@ -127,6 +127,7 @@
         </table>
     </div>
     <div class="g_line"></div>
-    <input type="button" id="backbutton" value="Вернуться к шагу 2" class="button steps-link" data-step="2" style="width:260px;float:left;">
-    <a href="/pitches" class="button" style="width:192px;float:right;">На страницу всех питчей</a>
+    <input type="button" id="backbutton" style="width: 175px; margin-right: 12px;" value="<< Вернуться" class="button steps-link" data-step="2">
+    <input type="button" style="width: 175px; margin-right: 12px; padding-left: 0; padding-right: 0" value="Сохранить черновик" class="savedraft button">
+    <a href="/pitches" class="button" style="width: 167px; padding-left: 0; padding-right: 0; margin-right: 0;">Все питчи >></a>
 </div>

@@ -420,15 +420,13 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 
             <p><label>Дополнительные материалы <a href="#" class="second tooltip" title="Присоедините все материалы, которые могут помочь креативщику. Это могут быть фотографии, приглянувшиеся аналоги, существующие логотипы, технические требования и т.д.">(?)</a></label></p>
             <div id="new-download" style="display:none;">
-            <p class="add-file">
-            <form action="/pitchfiles/add.json" method="post" id="fileuploadform">
+            <form class="add-file" action="/pitchfiles/add.json" method="post" id="fileuploadform">
                 <div class="fileinputs">
                     <img style="display:block; height:20px; float:left;" class="fakeinput" src="/img/choosefile.png"/>
                     <span class="fakeinput" id="filename" style="display:block; float: left; height:19px; width: 450px; padding-top: 1px; margin-left:10px;">Файл не выбран</span>
                     <input type="file" name="files" id="fileupload" style="display:block; opacity:0; position:absolute;z-index:5"/>
                 </div>
             </form>
-            </p>
             </div>
 
             <iframe id="old-download" src="/pitchfiles/index" seamless style="display:none;width:570px;height:100px;"></iframe>
@@ -455,8 +453,7 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 
         <p class="submit submit-brief">
             <?php if(!$onlyText):?>
-            <input type="button" value="Вернуться к шагу 1" class="button steps-link" data-step="1">
-            <input type="button" id="save" value="Сохранить и продолжить" class="button" data-step="3">
+            <?= $this->view()->render(array('element' => 'newbrief/step2fullbuttons')); ?>
             <?php else:?>
             <input type="button" id="save" value="Сохранить и просмотреть бриф" class="button">
             <?php endif?>
