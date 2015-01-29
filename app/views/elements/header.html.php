@@ -221,7 +221,7 @@
                 <?php endif?>
                 <a href="http://www.godesigner.ru/news">Лента</a> /
                 <a href="http://www.godesigner.ru/pages/howitworks">Как это работает?</a> /
-                <a href="http://www.godesigner.ru/pitches">Все питчи</a> /
+                <a href="http://www.godesigner.ru/pitches">Все проекты</a> /
                 <?php if($this->user->getNewBlogpostCount() > 0):?>
                 <a href="http://www.godesigner.ru/posts">Блог</a><?php echo $this->html->link('(' . $this->user->getNewBlogpostCount() . ')', 'Posts::index', array('style' => 'color: #648FA4', 'class' => 'updatecurrent', 'escape' => false))?>
                 <?php else:?>
@@ -233,7 +233,7 @@
             </div>
             <ul class="header-menu">
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/news">Лента</a></li>
-                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/mypitches">Мои питчи</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/mypitches">Мои проекты</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/profile">Профиль</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/solutions">Решения</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/details">Реквизиты</a></li>
