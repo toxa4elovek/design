@@ -200,26 +200,7 @@ endif;
                 </div>
             <?php endif; ?>
 
-            <div class="set-price">
-                <p>
-                    <label>Сумма вознаграждения победителю (от <span id="labelPrice"><?= $this->moneyFormatter->formatMoney((date('N') > 5) ? $category->discountPrice : $category->minAward, array('suffix' => 'Р.')) ?></span>) <span class="require_mark">*</span><!--a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a--></label>
-                    <input type="text" name="" id="award" data-low="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" data-normal="<?= $category->normalAward ?>" data-high="<?= $category->goodAward ?>" data-low-def="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" data-normal-def="<?= $category->normalAward ?>" data-high-def="<?= $category->goodAward ?>" data-option-title="<?php echo ($category->id == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру' ?>" data-minimal-award="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" class="initial-price placeholder" placeholder="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>" value="<?= (date('N') > 5) ? $category->discountPrice : $category->minAward ?>">
-                </p>
-                <div class="clr"></div>
-                <!-- <div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
-                <div id="indicator" class="indicator low" data-normal="183" data-high="366">
-                    <div class="bar">
-                        <div class="line"></div>
-                        <div class="shadow-b"></div>
-                    </div><!-- .bar -->
-                    <ul>
-                        <li>мало</li>
-                        <li>хорошо</li>
-                        <li>самое то!</li>
-                    </ul>
-                </div><!-- .indicator -->
-                <img src="/img/comissions.png" style="margin-bottom: 30px;">
-            </div><!-- .set-price -->
+            <?= $this->view()->render(array('element' => 'newbrief/setprice_block'), array('pitch' => $pitch, 'category' => $category)); ?>
 
             <div style="margin-top:5px;height:200px;">
 
@@ -433,37 +414,9 @@ endif;
                 <li class="last"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
             </ol><!-- .steps -->
 
-            <div class="groupc">
-                <p>
-                    <label class="required">Название проекта <span class="require_mark">*</span><!--a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a--></label>
-                    <?php if ($category->id != 7): ?>
-                        <input id="pitch-title" type="text" name="title" placeholder="<?= $word1 ?> для Star Lift" data-placeholder="<?= $word1 ?> для Star Lift" required>
-                    <?php else: ?>
-                        <input id="pitch-title" type="text" name="title" placeholder="Название для строительной фирмы" data-placeholder="Название для строительной фирмы" required>
-                    <?php endif ?>
-                    <input type="hidden" name="category_id" value="<?= $category->id ?>">
-                </p>
+            <?= $this->view()->render(array('element' => 'newbrief/pitchtitle_block'), compact('pitch', 'category', 'word1')) ?>
 
-            </div><!-- .group -->
-
-            <div class="groupc" style="background: none;">
-                <p>
-                    <label>Описание бизнеса и что нужно получить на выходе <!--a href="#" class="second tooltip" title="Что вы хотите получить от исполнителя? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a--></label>
-                    <textarea class="enable-editor" id="full-description" name="description" cols="40" rows="10" data-placeholder="<?= $word2 ?>" data-low="70" data-normal="140" data-high="380" ></textarea>
-                </p>
-
-                <div id="indicator-desc" class="indicator low tooltip" title="Шкала показывает, насколько подробно вы описали то, зачем пришли. Каждое ваше слово поможет дизайнеру.">
-                    <div class="bar">
-                        <div class="line"></div>
-                        <div class="shadow-b"></div>
-                    </div><!-- .bar -->
-                    <ul>
-                        <li>недостаточно подробно…</li>
-                        <li>вполне понятно</li>
-                        <li>самое то!</li>
-                    </ul>
-                </div><!-- .indicator -->
-            </div><!-- .group -->
+            <?= $this->view()->render(array('element' => 'newbrief/description_block'), compact('pitch', 'category', 'word2'))?>
 
             <?= $this->view()->render(array('element' => 'brief-create/' . $category->id)) ?>
 

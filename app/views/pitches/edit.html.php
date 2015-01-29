@@ -138,27 +138,7 @@ endif?>
         </div>
         <?php endif;?>
 
-        <div class="set-price">
-
-            <p>
-                <label>Сумма вознаграждения для дизайнера (от <?=$this->moneyFormatter->formatMoney($category->minAward, array('suffix' => 'Р.'))?>) <!--a href="#" class="second tooltip" title="Здесь вам нужно указать, сколько заработает победитель. Эта сумма не включает сбора Go Designer и стоимость опций.">(?)</a--></label>
-                <input type="text" name="" id="award" data-low="<?=$category->minAward?>" data-normal="<?=$category->normalAward?>" data-high="<?=$category->goodAward?>" data-low-def="<?=$category->minAward?>" data-normal-def="<?=$category->normalAward?>" data-high-def="<?=$category->goodAward?>" data-option-title="Награда Дизайнеру" data-minimal-award="<?=$category->minAward?>" value="<?=(int)$pitch->price?>">
-            </p>
-            <div class="clr"></div>
-            <!-- <div id="indicator" class="indicator low tooltip" data-normal="183" data-high="366" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
-            <div id="indicator" class="indicator low" data-normal="183" data-high="366">
-                <div class="bar">
-                    <div class="line"></div>
-                    <div class="shadow-b"></div>
-                </div><!-- .bar -->
-                <ul>
-                    <li>мало</li>
-                    <li>хорошо</li>
-                    <li>самое то!</li>
-                </ul>
-            </div><!-- .indicator -->
-            <img src="/img/comissions.png" style="margin-bottom: 30px;">
-        </div><!-- .set-price -->
+        <?= $this->view()->render(array('element' => 'newbrief/setprice_block'), array('pitch' => $pitch, 'category' => $category)); ?>
 
         <div style="margin-top:5px;height:200px;">
 
@@ -406,24 +386,20 @@ endif?>
             <li class="last"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
         </ol><!-- .steps -->
         <?php endif?>
-        <div class="groupc">
-            <p>
-                <label class="required">Название проекта<span class="require_mark">*</span> <!--a href="#" class="second tooltip" title="Кратко напишите, что вам необходимо создать и для какого бренда. (прим.: обёртка для шоколада “Мишка на севере”) Подробнее о брифе в разделе “Помощь”.">(?)</a--></label>
-                <input id="pitch-title" type="text" name="title" placeholder="Логотип для Star Lift" data-placeholder="Логотип для Star Lift" value="<?=$pitch->title?>" required>
-                <input type="hidden" name="category_id" value="<?=$category->id?>">
-                <?php if(($pitch->category_id == 7) && $onlyText): ?>
-                    <?php if (isset($specifics['first-option'])):?>
-                    <input type="hidden" data-selected="true" name="first-option" value="0" class="sub-check specific-group">
-                    <?php endif;?>
-                    <?php if (isset($specifics['second-option'])):?>
-                    <input type="hidden" data-selected="true" name="second-option" value="1" class="sub-check specific-group">
-                    <?php endif;?>
-                    <?php if (isset($specifics['third-option'])):?>
-                    <input type="hidden" data-selected="true" name="third-option" value="2" class="sub-check specific-group">
-                    <?php endif;?>
-                <?php endif?>
-            </p>
-        </div><!-- .group -->
+
+        <?= $this->view()->render(array('element' => 'newbrief/pitchtitle_block'), compact('pitch', 'category', 'word1')) ?>
+
+        <?php if(($pitch->category_id == 7) && $onlyText): ?>
+            <?php if (isset($specifics['first-option'])):?>
+                <input type="hidden" data-selected="true" name="first-option" value="0" class="sub-check specific-group">
+            <?php endif;?>
+            <?php if (isset($specifics['second-option'])):?>
+                <input type="hidden" data-selected="true" name="second-option" value="1" class="sub-check specific-group">
+            <?php endif;?>
+            <?php if (isset($specifics['third-option'])):?>
+                <input type="hidden" data-selected="true" name="third-option" value="2" class="sub-check specific-group">
+            <?php endif;?>
+        <?php endif?>
 <?php
 $str = ($pitch->category_id == 1) ? ' в логотипе' : '';
 $word2 = 'Опишите вид деятельности. Что отличает вас от конкурентов?<br>
@@ -433,26 +409,10 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 Что должно быть прописано' . $str . '?<br>
 Где будет это размещаться?';
 ?>
-        <div class="groupc">
-            <p>
-                <label class="required">Описание бизнеса и что нужно получить на выходе <!--a href="#" class="second tooltip" title="Что вы хотите получить от дизайнера? Кто ваши клиенты/потребители, их вкусы и предпочтения. Что они должны понять или сделать? ">(?)</a--></label>
-                <textarea <?php if(!$this->brief->isUsingPlainText($pitch)) { echo 'class="enable-editor"';}?> id="full-description" name="description" cols="40" rows="10" required data-placeholder="<?= $word2 ?>" data-low="70" data-normal="140" data-high="380" ><?=$pitch->description?></textarea>
-            </p>
 
-            <div id="indicator-desc" class="indicator low tooltip" title="Шкала показывает, насколько подробно вы описали то, зачем пришли. Каждое ваше слово поможет дизайнеру.">
-                <div class="bar">
-                    <div class="line"></div>
-                    <div class="shadow-b"></div>
-                </div><!-- .bar -->
-                <ul>
-                    <li>недостаточно подробно…</li>
-                    <li>вполне понятно</li>
-                    <li>самое то!</li>
-                </ul>
-            </div><!-- .indicator -->
-        </div><!-- .group -->
+        <?= $this->view()->render(array('element' => 'newbrief/description_block'), compact('pitch', 'category', 'word2'))?>
 
-        <?=$this->view()->render(array('element' => 'brief-edit/' . $category->id), array('specifics' => $specifics, 'pitch' => $pitch))?>
+        <?= $this->view()->render(array('element' => 'brief-edit/' . $category->id), array('specifics' => $specifics, 'pitch' => $pitch))?>
 
         <div class="groupc" style="margin-top: 34px; margin-bottom: 25px;">
             <label id ="show-types" class="greyboldheader required">Выберите вид деятельности</label>
