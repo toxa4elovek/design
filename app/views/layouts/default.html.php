@@ -35,6 +35,8 @@
     <meta name="twitter:image" content="<?= $url ?>" />
     <meta name="twitter:url" content='http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>' />
     <meta property="og:image" content="<?=$url?>"/>
+    <meta property="og:url" content='http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>' />
+    <meta property="og:title" content="<?= $this->HtmlExtended->title($this->_request->params, $vars, true)?>"/>
     <meta property="og:description" content="<?=strip_tags($description)?>"/>
     <?php elseif(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
         $first_img = $post->imageurl;

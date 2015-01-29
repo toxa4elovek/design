@@ -9,7 +9,7 @@ class HtmlExtended extends \lithium\template\helper\Html {
         parent::_init();
     }
 
-    public function title($params, $vars) {
+    public function title($params, $vars, $notags = false) {
         extract($vars);
         $title = 'Лого, сайт и дизайн от всего креативного интернет сообщества';
         if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView'])) && (is_object($solution->pitch)) && (is_object($solution->user))):
@@ -58,7 +58,11 @@ class HtmlExtended extends \lithium\template\helper\Html {
             $title = 'О проекте';
         endif;
         $title .= ' | GoDesigner';
-        return '<title>' . $title . '</title>';
+        if($notags) {
+            return $title;
+        }else {
+            return '<title>' . $title . '</title>';
+        }
     }
 
 
