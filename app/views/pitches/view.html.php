@@ -56,7 +56,13 @@
                     </ul>
                     <?php else:?>
                     <div class="bigfont">
-                        <h2 class="title">Ещё никто не выложил свои идеи.</h2>
+                        <h2 class="title">
+                            <?php if($pitch->billed == 1):?>
+                            Ещё никто не выложил свои идеи.
+                            <?php else: ?>
+                            Проект будет запущен после <a href="http://www.godesigner.ru/pitches/edit/<?= $pitch->id?>#step3">оплаты.</a>
+                            <?php endif;?>
+                        </h2>
                         <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
                         <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
                         <h2 class="title">и стань первым!</h2>

@@ -88,6 +88,8 @@
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
             <?php if ($pitch->published == 0 && $pitch->billed == 1 && $pitch->brief == 1): ?>
                 <span class="regular">Ожидайте звонка</span>
+            <?php elseif ($pitch->published == 0 && $pitch->billed == 0 && $pitch->brief == 0): ?>
+                <span class="regular">Ожидание оплаты</span>
             <?php else: ?>
                 <?=$this->view()->render(array('element' => 'pitch-info/timer'), array('pitch' => $pitch))?>
             <?php endif; ?>
