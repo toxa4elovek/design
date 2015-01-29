@@ -156,40 +156,7 @@ endif?>
 
         </div>
 
-        <h1 style="background: url('/img/images/faq.png') no-repeat scroll 55% 0 transparent;	font-family: 'RodeoC', serif;
-                font-size: 12px;
-                font-style: normal;
-                font-variant: normal;
-                font-weight: 400;
-                height: 38px;
-                line-height: 41px;
-                text-align: center;
-                text-transform: uppercase; margin-bottom: 50px; margin-top: 20px;">Срок</h1>
-
-        <table style="padding-bottom: 0; margin-bottom: 50px;">
-            <tr>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: -8px; top: -3px;"><?= $category->shortestTimelimit ?> дня</span></td>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 20px; top: -3px;"><?= $category->shortTimelimit ?> дней</span></td>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 47px; top: -3px;"><?= $category->default_timelimit ?> дней</span></td>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 33px; top: -3px;"><?= $category->smallIncreseTimelimit ?> дней</span></td>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 55px; top: -3px;"><?= $category->largeIncreaseTimelimit ?> дней</span></td>
-            </tr>
-            <tr>
-                <td><input style="position: relative; left: 7px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="2" <?php if($pitch->timelimit == 2): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>
-                <td><input style="position: relative; left: 39px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="1" <?php if($pitch->timelimit == 1): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="950" ></td>
-                <td><input style="position: relative; left: 73px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="0" <?php if($pitch->timelimit == 0): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="0" checked="checked"></td>
-                <td><input style="position: relative; left: 57px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="3" <?php if($pitch->timelimit == 3): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="950" ></td>
-                <td><input style="position: relative; left: 80px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="4" <?php if($pitch->timelimit == 4): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>
-            </tr>
-            <tr><td colspan="5"><img style="padding-top: 7px; padding-bottom: 7px;" src="/img/brief/timeline.png" alt="шкала сроков"/></td></tr>
-            <tr>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: -12px;">+1450р.</span></td>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 23px;">+950р.</span></td>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 45px;">бесплатно</span></td>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 42px;">+950р.</span></td>
-                <td style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 62px;">+1450р.</span></td>
-            </tr>
-        </table>
+        <?= $this->view()->render(array('element' => 'newbrief/time_block'), compact('category', 'pitch')); ?>
 
         <h1 style="background: url('/img/images/faq.png') no-repeat scroll 55% 0 transparent;	font-family: 'RodeoC', serif;
                 font-size: 12px;
