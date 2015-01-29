@@ -8,13 +8,13 @@
             <a href="/fastpitch"><img src="/img/main_banner_logo_one_click.png" alt="" /></a>
         </div>
       <div class="slide">
-      <a href="/pages/howitworks"><img src="/img/1_BANNER.png" alt="" /></a>
+      <a href="/pages/howitworks"><img src="/img/main_banner1.png" alt="" /></a>
       </div>
       <div class="slide">
-          <a href="/pages/howitworks"><img src="/img/2_BANNER.png" alt="" /></a>
+          <a href="/pages/howitworks"><img src="/img/main_banner2.png" alt="" /></a>
       </div>
         <div class="slide">
-            <a href="/pages/howitworks"><img src="/img/3_BANNER.png" alt="" /></a>
+            <a href="/pages/howitworks"><img src="/img/main_banner3.png" alt="" /></a>
         </div>
     </div>
     <a id="finished" href="/pitches/?type=finished" style="height:32px;width:173px;position: absolute; top: 251px; left: 79px; z-index:101;background-image:url(/img/examples_173_32_red.png)"><img src="/img/examples_173_32.png" alt="Просмотреть примеры"></a>
