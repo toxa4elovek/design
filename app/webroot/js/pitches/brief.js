@@ -696,10 +696,10 @@ $(document).ready(function () {
 
     $('#phonebrief').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            $('#explanation_brief').show();
             var offset = $(this).closest('.ribbon').offset();
             $.scrollTo(offset.top - 20, {duration: 600});
             Cart.validatetype = 2;
-            $('#explanation_brief').show();
         } else {
             Cart.validatetype = 1;
             $('#explanation_brief').hide();
@@ -718,9 +718,9 @@ $(document).ready(function () {
 
     $('#pinproject').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            $('#explanation_pinned').show();
             var offset = $(this).closest('.ribbon').offset();
             $.scrollTo(offset.top - 20, {duration: 600});
-            $('#explanation_pinned').show();
         } else {
             $('#explanation_pinned').hide();
         }
@@ -728,9 +728,9 @@ $(document).ready(function () {
 
     $('#promocodecheck').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            $('#explanation_promo').show();
             var offset = $(this).closest('.ribbon').offset();
             $.scrollTo(offset.top - 20, {duration: 600});
-            $('#explanation_promo').show();
         } else {
             $('#explanation_promo').hide();
         }
@@ -738,9 +738,9 @@ $(document).ready(function () {
 
     $('#createad').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            $('#explanation_ad').show();
             var offset = $(this).closest('.ribbon').offset();
             $.scrollTo(offset.top - 20, {duration: 600});
-            $('#explanation_ad').show();
         } else {
             $('#explanation_ad').hide();
         }
