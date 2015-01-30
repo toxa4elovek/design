@@ -118,7 +118,7 @@ $(document).ready(function () {
         }
         if (stepNum == 3) {
             if (false === $('input[name=tos]').prop('checked')) {
-                alert('Вы должны принять правила и условия');
+                appendTosCheck()
                 return false;
             }
         }
@@ -446,9 +446,35 @@ $(document).ready(function () {
         }
     }
 
+    /*
+     * Append Mobile Modal
+     */
+    function appendTosCheck() {
+        $('#popup-need-agree-tos').modal({
+            containerId: 'spinner',
+            opacity: 80,
+            closeClass: 'mobile-close',
+            onShow: function () {
+                $('#popup-need-agree-tos').fadeTo(600, 1);
+            }
+        });
+    }
+
+    $('#close_tos').on('click', function() {
+        $('.mobile-close').click();
+        return false;
+    })
+
+    $('#agree').on('click', function() {
+        $('.mobile-close').click();
+        $('input[name=tos]').prop('checked', 'checked');
+        $('#save').click();
+        return false;
+    })
+
     $('.savedraft').click(function () {
         if (false === $('input[name=tos]').prop('checked')) {
-            alert('Вы должны принять правила и условия');
+            appendTosCheck()
         } else {
             if (Cart.prepareData()) {
                 if (uploader.damnUploader('itemsCount') > 0) {
@@ -467,7 +493,7 @@ $(document).ready(function () {
             }
         }
         return false;
-    })
+    });
 
     $('#save').click(function () {
         if (false === $('input[name=tos]').prop('checked')) {
@@ -476,7 +502,7 @@ $(document).ready(function () {
             if (Cart.prepareData()) {
                 if (uploader.damnUploader('itemsCount') > 0) {
                     $('#loading-overlay').modal({
-                        containerId: 'spinner',
+                        containerId: 'gotest-popup_gallery',
                         opacity: 80,
                         close: false
                     });
