@@ -36,7 +36,7 @@ $details = unserialize($pitch->specifics);
                                 'childs' => 'Дети',
                                 'security' => 'Охрана / Безопасность',
                                 'health' => 'Медицина / Здоровье',
-                                'it' => 'Интернет / Компьютеры');
+                                'it' => 'Компьютеры / IT');
                             $selected = array();
                             foreach ($job_types as $k => $v):
                                 if(in_array($k, $unserialized)):

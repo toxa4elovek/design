@@ -179,7 +179,7 @@ class SolutionsController extends \app\controllers\AppController {
                 'childs' => 'Дети',
                 'security' => 'Охрана / Безопасность',
                 'health' => 'Медицина / Здоровье',
-                'it' => 'Интернет / Компьютеры'
+                'it' => 'Компьютеры / IT'
             );
             $flippedDict = array_flip($dict);
             foreach($words as $key => $word) {

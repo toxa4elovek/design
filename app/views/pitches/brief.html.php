@@ -371,8 +371,27 @@ endif;
             <?= $this->view()->render(array('element' => 'brief-create/' . $category->id)) ?>
 
             <div class="groupc" style="margin-top: 34px; margin-bottom: 25px;">
-            <label id ="show-types" class="greyboldheader">Выберите вид деятельности</label> <ul id="list-job-type" style="margin-bottom: 20px;">     <li>         <label><input type="checkbox" name="job-type[]" value="realty"> Недвижимость / Строительство</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="auto"> Автомобили / Транспорт</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="finances"> Финансы / Бизнес</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="food"> Еда / Напитки</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="adv"> Реклама / Коммуникации</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="tourism"> Туризм / Путешествие</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="sport"> Спорт</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="sci"> Образование / Наука</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="fashion"> Красота / Мода</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="music"> Развлечение / Музыка</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="culture"> Искусство / Культура</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="animals"> Животные</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="childs"> Дети</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="security"> Охрана / Безопасность</label>     </li>     <li>         <label><input type="checkbox" name="job-type[]" value="health"> Медицина / Здоровье</label>     </li> </ul>
-</div>            <?php if ($category->id != 7): ?><div class="groupc">
+                <label id ="show-types" class="greyboldheader">Выберите вид деятельности</label> 
+                <ul id="list-job-type" style="margin-bottom: 20px;"> 
+                    <li><label><input type="checkbox" name="job-type[]" value="realty"> Недвижимость / Строительство</label></li> 
+                    <li> <label><input type="checkbox" name="job-type[]" value="auto"> Автомобили / Транспорт</label>     </li> 
+                    <li> <label><input type="checkbox" name="job-type[]" value="finances"> Финансы / Бизнес</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="food"> Еда / Напитки</label>     </li> 
+                    <li> <label><input type="checkbox" name="job-type[]" value="adv"> Реклама / Коммуникации</label></li> 
+                    <li> <label><input type="checkbox" name="job-type[]" value="tourism"> Туризм / Путешествие</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="sport"> Спорт</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="sci"> Образование / Наука</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="fashion"> Красота / Мода</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="music"> Развлечение / Музыка</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="culture"> Искусство / Культура</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="animals"> Животные</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="childs"> Дети</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="security"> Охрана / Безопасность</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="health"> Медицина / Здоровье</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="it"> Компьютеры / IT</label>     </li>
+                 </ul>
+            </div>
+                    <?php if ($category->id != 7): ?><div class="groupc">
 
                     <?php if ($category->id != 1) : ?>
                         <p><label>Можно ли дополнительно использовать материал из банков с изображениями или шрифтами? <a href="#" class="second tooltip" title="Это даст возможность дизайнерам добиться лучшего результата. Профессионалы из мира рекламы часто прибегают к помощи фото-банков для экономии сил, времени или бюджета.">(?)</a></label></p>
