@@ -255,6 +255,17 @@
                                             if ((($object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
                                                 $long = true;
                                             endif;
+                                            if(
+                                                (preg_match("/Дизайнеры больше не могут/", $object['updateText']))
+                                                ||
+                                                (preg_match("/питч завершен и ожидает/", $object['updateText']))
+                                                ||
+                                                (preg_match("/Друзья, выбран победитель/", $object['updateText']))
+                                                ||
+                                                (preg_match("/Друзья, в брифе возникли изменения/", $object['updateText']))
+                                            ):
+                                                continue;
+                                            endif;
                                             ?>
                                             <div class="box" data-eventid="<?= $object['id'] ?>" data-type="<?php echo $object['type'] ?>" data-long="<?php echo $long ?>">
                                                 <?php if ($long): ?>

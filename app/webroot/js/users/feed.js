@@ -1267,6 +1267,17 @@ function OfficeStatusUpdater() {
                 if ((((object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.solution != null) && (object.pitch.private != '1')) {
                     long = true;
                 }
+                if (
+                    (object.updateText.match(/Дизайнеры больше не могут/))
+                    ||
+                    (object.updateText.match(/питч завершен и ожидает/))
+                    ||
+                    (object.updateText.match(/Друзья, выбран победитель/))
+                    ||
+                    (object.updateText.match(/Друзья, в брифе возникли изменения/))
+                ){
+                    return '';
+                };
                 html = '<div class="box" data-eventid="' + object.id + '">';
                 if (long) {
                     html += '<div class="l-img l-img-box" style="padding-top: 0;"> \
