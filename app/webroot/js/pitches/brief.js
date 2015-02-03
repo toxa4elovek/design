@@ -118,7 +118,7 @@ $(document).ready(function () {
         }
         if (stepNum == 3) {
             if (false === $('input[name=tos]').prop('checked')) {
-                alert('Вы должны принять правила и условия');
+                appendTosCheck()
                 return false;
             }
         }
@@ -133,7 +133,9 @@ $(document).ready(function () {
             }
         } else if (Cart.validatetype == 2) {
             if (($('#phonenumber').val() == '') || ($('#phonenumber').val() == '+7 XXX XXX XX XX') || ($('#phonenumber').val() == '+7 ХХХ ХХХ ХХ ХХ')) {
-                alert('Оставьте свой телефон, чтобы мы могли с вами связаться');
+                $('#phonenumber').addClass('wrong-input');
+                var offset = $('#explanation_brief').prev().offset()
+                $.scrollTo(offset.top - 20, {duration: 600});
                 return false;
             } else {
                 if ((stepNum == 3) && ((notExists == true) || (existsNotPublshed == true))) {
@@ -156,7 +158,6 @@ $(document).ready(function () {
             $('#step' + stepNum).show();
             $.scrollTo($('#header-bg'), {duration: 600});
             if (stepNum == 2) {
-                //console.log($('#sliderset').length);
                 /*sliders*/
                 $(".slider").each(function (index, object) {
                     var value = 5;
@@ -215,14 +216,14 @@ $(document).ready(function () {
         }
         $.post('/promocodes/check.json', {"code": value}, function (response) {
             if (response == 'false') {
-                $('#hint').text('Промокод неверен!');
+                //$('#hint').text('Промокод неверен!');
             } else {
-                $('#hint').text('Промокод активирован!');
+                //$('#hint').text('Промокод активирован!');
                 if ((response.type == 'pinned') || (response.type == 'misha')) {
                     Cart.addOption("“Прокачать” бриф", 0);
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
                     $('input[type=checkbox]', '#pinned-block').data('optionValue', '0');
-                    $('.label', '#pinned-block').text('+0.-').addClass('unfold');
+                    $('.label', '#pinned-block').text('0р.').addClass('unfold');
                 } else if (response.type == 'discount') {
                     Cart.transferFeeDiscount = 700;
                     Cart.updateFees();
@@ -237,6 +238,16 @@ $(document).ready(function () {
         });
     }
     checkPromocode();
+
+    $('.expand_extra').on('click', function() {
+        $('.extra_options').toggle();
+        if($('.extra_options').is(":visible")) {
+            $(this).text('– Дополнительная информация')
+        }else {
+            $(this).text('+ Дополнительная информация')
+        }
+        return false;
+    });
 
     $('#promocode').live('keyup', function () {
         checkPromocode();
@@ -333,7 +344,9 @@ $(document).ready(function () {
         $(firstCheckbox).attr('checked', 'checked');
         if ($(this).is(':checked')) {
             Cart.addOption('экспертное мнение', $(firstCheckbox).data('optionValue'));
-            $('#expert-label').html('+' + $(firstCheckbox).data('optionValue') + '.-');
+            $('#expert-label').html($(firstCheckbox).data('optionValue') + 'р.');
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
         } else {
             Cart.removeOption('экспертное мнение');
             $('.expert-check', '.experts').removeAttr('checked');
@@ -357,12 +370,7 @@ $(document).ready(function () {
             $('#expert-label').html('+' + newValue + '.-');
             Cart.addOption($(this).data('optionTitle'), newValue);
         } else {
-            console.log($(this).data('optionTitle'))
-            console.log($(this).data('optionValue'));
-            console.log(Cart.getOption($(this).data('optionTitle')))
-            console.log(Cart.content);
             var newValue = Cart.getOption($(this).data('optionTitle')) - $(this).data('optionValue');
-            console.log(newValue);
             $('#expert-label').html('+' + newValue + '.-');
             Cart.updateOption($(this).data('optionTitle'), newValue);
             if ($('.expert-check:checked', '.experts').length == 0) {
@@ -437,6 +445,56 @@ $(document).ready(function () {
             }
         }
     }
+
+    /*
+     * Append Mobile Modal
+     */
+    function appendTosCheck() {
+        $('#popup-need-agree-tos').modal({
+            containerId: 'spinner',
+            opacity: 80,
+            closeClass: 'mobile-close',
+            onShow: function () {
+                $('#popup-need-agree-tos').fadeTo(600, 1);
+            }
+        });
+    }
+
+    $('#close_tos').on('click', function() {
+        $('.mobile-close').click();
+        return false;
+    })
+
+    $('#agree').on('click', function() {
+        $('.mobile-close').click();
+        $('input[name=tos]').prop('checked', 'checked');
+        $('#save').click();
+        return false;
+    })
+
+    $('.savedraft').click(function () {
+        if (false === $('input[name=tos]').prop('checked')) {
+            appendTosCheck()
+        } else {
+            if (Cart.prepareData()) {
+                if (uploader.damnUploader('itemsCount') > 0) {
+                    $('#loading-overlay').modal({
+                        containerId: 'spinner',
+                        opacity: 80,
+                        close: false
+                    });
+                    uploader.damnUploader('startUpload')
+                } else {
+                    Cart.saveData(false);
+                }
+            } else {
+                var offset = $('.wrong-input').parent().offset()
+                $.scrollTo(offset.top - 10, {duration: 600});
+            }
+        }
+        return false;
+    });
+
     $('#save').click(function () {
         if (false === $('input[name=tos]').prop('checked')) {
             alert('Вы должны принять правила и условия');
@@ -444,7 +502,7 @@ $(document).ready(function () {
             if (Cart.prepareData()) {
                 if (uploader.damnUploader('itemsCount') > 0) {
                     $('#loading-overlay').modal({
-                        containerId: 'spinner',
+                        containerId: 'gotest-popup_gallery',
                         opacity: 80,
                         close: false
                     });
@@ -591,8 +649,12 @@ $(document).ready(function () {
         var radioButton = $(this);
         if (radioButton.val() == 1) {
             Cart.addOption(radioButton.data('optionTitle'), radioButton.data('optionValue'));
+            $('#guaranteedTooltip').show();
+            $('#nonguaranteedTooltip').hide();
         } else {
             Cart.removeOption(radioButton.data('optionTitle'));
+            $('#nonguaranteedTooltip').show();
+            $('#guaranteedTooltip').hide();
         }
     })
 
@@ -634,9 +696,53 @@ $(document).ready(function () {
 
     $('#phonebrief').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            $('#explanation_brief').show();
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
             Cart.validatetype = 2;
         } else {
             Cart.validatetype = 1;
+            $('#explanation_brief').hide();
+        }
+    });
+
+    $('#hideproject').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
+            $('#explanation_closed').show();
+        } else {
+            $('#explanation_closed').hide();
+        }
+    });
+
+    $('#pinproject').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#explanation_pinned').show();
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
+        } else {
+            $('#explanation_pinned').hide();
+        }
+    });
+
+    $('#promocodecheck').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#explanation_promo').show();
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
+        } else {
+            $('#explanation_promo').hide();
+        }
+    });
+
+    $('#createad').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#explanation_ad').show();
+            var offset = $(this).closest('.ribbon').offset();
+            $.scrollTo(offset.top - 20, {duration: 600});
+        } else {
+            $('#explanation_ad').hide();
         }
     });
 
@@ -733,9 +839,9 @@ $(document).ready(function () {
     // Unpin check
     $(window).on('scroll', function () {
         var diff = $(window).scrollTop() - $('header').offset().top - 440;
-        if (diff > 0) {
+        /*if (diff > 0) {
             $('.summary-price').offset({top: $('header').offset().top + 668});
-        }
+        }*/
     });
 
     /**/
@@ -956,6 +1062,17 @@ function FeatureCart() {
             });
         }
     };
+    this._priceDecorator = function(price) {
+        price = price.toString()
+        price = price.replace(/(.*)\.00/g, "$1");
+        counter = 1;
+        while(price.match(/\w\w\w\w/)) {
+            price = price.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
+            counter ++;
+            if(counter > 6) break;
+        }
+        return price;
+    }
     this.fillCheck = function (data) {
         self.content = {};
         $.each(data, function (index, object) {
@@ -1022,14 +1139,14 @@ function FeatureCart() {
     this.prepareData = function () {
         var features = {
             'award': self.getOption(self.awardKey),
-            'private': self.getOption('Закрытый питч'),
+            'private': self.getOption('Скрыть проект'),
             'social': self.getOption('Рекламный Кейс'),
             'experts': self._expertArray(),
             'email': self.getOption('Email рассылка'),
-            'pinned': self.getOption('“Прокачать” бриф'),
+            'pinned': self.getOption('«Прокачать» проект'),
             'timelimit': self.getOption('Установлен срок'),
             'brief': self.getOption('Заполнение брифа'),
-            'guaranteed': self.getOption('Гарантированный питч'),
+            'guaranteed': self.getOption('Гарантированный проект'),
             'timelimitOption': self.getTimelimit()
         };
         var commonPitchData = {
@@ -1064,6 +1181,7 @@ function FeatureCart() {
                 $('input[name=title]').addClass('wrong-input');
                 result = false;
             }
+            /*
             if ((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
                 $('textarea[name=description]').addClass('wrong-input');
                 result = false;
@@ -1076,53 +1194,100 @@ function FeatureCart() {
                 $('#list-job-type').addClass('wrong-input');
                 result = false;
             }
+            */
         }
         return result;
     };
-    this.saveData = function () {
+    this.saveData = function (simplesave) {
         if (self.data.features.award == 0) {
             alert('Укажите награду для дизайнера!');
         } else {
             $.post('/pitches/add.json', self.data, function (response) {
-                if (response == 'redirect') {
-                    window.location = '/users/registration';
-                }
-                if (response == 'noaward') {
-                    alert('Укажите награду для дизайнера!');
-                    return false;
-                }
-                self.id = response;
-                $('#pitch-id').val(self.id);
-                $('#fiz-id').val(self.id);
-                $('#yur-id').val(self.id);
-
-                pitchid = self.id;
-
-                $.get('/transactions/getsigndata/' + self.id + '.json', function (response) {
-                    $('.middle').not('#step3').hide();
-                    $('#step3').show();
-                    $.scrollTo($('#header-bg'), {duration: 600});
-                    if (response.category == 10) {
-                        $('.paymaster-section').remove();
-                    } else {
-                        // Paymaster
-                        $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
-                        if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
-                            $('input[name=LMI_PAYMENT_NO]').val(response.id);
-                        } else {
-                            $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
-                        }
-                        $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
-                        $('.pmwidget').addClass('mod');
-                        $('h1.pmheader', '.pmwidget').addClass('mod');
+                if(typeof(simplesave) == 'undefined') {
+                    if (response == 'redirect') {
+                        window.location = '/users/registration';
                     }
-                    // Payanyway
-                    $('input[name=MNT_AMOUNT]').val(response.total)
-                    $('input[name=MNT_TRANSACTION_ID]').val(response.id)
+                    if (response == 'noaward') {
+                        alert('Укажите награду для дизайнера!');
+                        return false;
+                    }
+                    self.id = response;
+                    $('#pitch-id').val(self.id);
+                    $('#fiz-id').val(self.id);
+                    $('#yur-id').val(self.id);
 
-                    // Bill
-                    $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');
-                })
+                    pitchid = self.id;
+
+                    $.get('/transactions/getsigndata/' + self.id + '.json', function (response) {
+                        $('.middle').not('#step3').hide();
+                        $('#step3').show();
+                        $.scrollTo($('#header-bg'), {duration: 600});
+                        if (response.category == 10) {
+                            $('.paymaster-section').remove();
+                        } else {
+                            // Paymaster
+                            $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
+                            if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
+                                $('input[name=LMI_PAYMENT_NO]').val(response.id);
+                            } else {
+                                $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
+                            }
+                            $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
+                            $('.pmwidget').addClass('mod');
+                            $('h1.pmheader', '.pmwidget').addClass('mod');
+                        }
+                        // Payanyway
+                        $('input[name=MNT_AMOUNT]').val(response.total)
+                        $('input[name=MNT_TRANSACTION_ID]').val(response.id)
+
+                        // Bill
+                        $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');
+                    })
+                }else {
+                    var title = Cart.data.commonPitchData.title;
+                    var award = Cart._priceDecorator(Cart.data.features.award);
+                    var id = response;
+                    var scroll = false;
+                    if(($('#pitch-panel').length == 1) && ($('tr[data-id="103056"]', '#pitch-panel').length == 0)) {
+                        if($('tr', '#pitch-panel').length % 2 == 0) {
+                            var evenClass = 'even';
+                        }else {
+                            var evenClass = ''
+                        }
+                        var row =
+                        '<tr data-id="' + id + '" class="selection ' + evenClass + ' coda"><td></td> \
+                        <td class="pitches-name mypitches"><a href="http://www.godesigner.ru/pitches/view/' + id + '">' + title + '</a></td> \
+                        <td class="pitches-status mypitches"><a href="http://www.godesigner.ru/pitches/edit/' + id + '">Ожидание оплаты</a></td> \
+                        <td class="price mypitches">' + award +'.-</td>\
+                        <td class="pitches-edit mypitches"> \
+                        <a href="http://www.godesigner.ru/pitches/edit/' + id + '#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a> \
+                        <a href="http://www.godesigner.ru/pitches/edit/' + id + '" class="edit mypitch_edit_link" title="редактировать">редактировать</a> \
+                        <a data-id="' + id + '" href="http://www.godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
+                        </td></tr>';
+                        $('#header-table').append(row);
+                        scroll = true;
+                    }else if ($('tr[data-id="103056"]', '#pitch-panel').length == 0) {
+                        var panel =
+                            '<div id="pitch-panel"><div class="conteiner"><div class="content"> \
+                            <table class="all-pitches" id="header-table"><tbody> \
+                            <tr data-id="' + id + '" class="selection even coda"><td></td> \
+                        <td class="pitches-name mypitches"><a href="http://www.godesigner.ru/pitches/view/' + id + '">' + title + '</a></td> \
+                        <td class="pitches-status mypitches"><a href="http://www.godesigner.ru/pitches/edit/' + id + '">Ожидание оплаты</a></td> \
+                        <td class="price mypitches">' + award +'.-</td>\
+                        <td class="pitches-edit mypitches"> \
+                        <a href="http://www.godesigner.ru/pitches/edit/' + id + '#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a> \
+                        <a href="http://www.godesigner.ru/pitches/edit/' + id + '" class="edit mypitch_edit_link" title="редактировать">редактировать</a> \
+                        <a data-id="' + id + '" href="http://www.godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
+                        </td></tr></tbody></table> \
+                        <p class="pitch-buttons-legend"><a href="http://www.godesigner.ru/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a></p> \
+                        </div></div></div>';
+                        $('.wrapper').first().prepend(panel);
+                        scroll = true;
+                    }
+                    if(scroll) {
+                        $.scrollTo($('#pitch-panel'), {duration: 600});
+                    }
+                }
             });
         }
     }

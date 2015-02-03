@@ -15,7 +15,7 @@ $job_types = array(
     'childs' => 'Дети',
     'security' => 'Охрана / Безопасность',
     'health' => 'Медицина / Здоровье',
-    'it' => 'Интернет / Компьютеры');
+    'it' => 'Компьютеры / IT');
 ?>
 <div class="wrapper pitchpanel login">
 

@@ -5,7 +5,7 @@
     <div class="middle">
         <div class="middle_inner">
             <div class="content group">
-                <div id="content_help" style="width: 605px">
+                <div id="content_help" style="width: 605px" onload="clearData();" onblur="clearData();">
                     <section class="howitworks">
                         <h1 class="h2link"><a href="/posts">Наш блог</a></h1>
                             <h2 class="largest-header-blog" style="text-transform:uppercase;margin-top:40px;"><?=$post->title?></h2>

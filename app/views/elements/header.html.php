@@ -213,7 +213,7 @@
                 <a href="http://www.godesigner.ru/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
                 <?=$this->html->link('(' . $this->user->getNewEventsCount() . ')', 'Users::feed', array('style' => 'color: #648FA4', 'class' => 'updatecurrent'))?><img class="name-top" id="menu_arrow" src="/img/arrow_down_header.png" alt="" style="padding-top:5px;"> /
             <?php else:?>
-                <a href="http://www.godesigner.ru/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFullname()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
+                <a href="http://www.godesigner.ru/users/feed" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a><img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
             <?php endif?>
 
         <?php else:?>
@@ -221,7 +221,7 @@
                 <?php endif?>
                 <a href="http://www.godesigner.ru/news">Лента</a> /
                 <a href="http://www.godesigner.ru/pages/howitworks">Как это работает?</a> /
-                <a href="http://www.godesigner.ru/pitches">Все питчи</a> /
+                <a href="http://www.godesigner.ru/pitches">Все проекты</a> /
                 <?php if($this->user->getNewBlogpostCount() > 0):?>
                 <a href="http://www.godesigner.ru/posts">Блог</a><?php echo $this->html->link('(' . $this->user->getNewBlogpostCount() . ')', 'Posts::index', array('style' => 'color: #648FA4', 'class' => 'updatecurrent', 'escape' => false))?>
                 <?php else:?>
@@ -233,7 +233,7 @@
             </div>
             <ul class="header-menu">
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/news">Лента</a></li>
-                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/mypitches">Мои питчи</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/mypitches">Мои проекты</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/profile">Профиль</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/solutions">Решения</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/details">Реквизиты</a></li>
@@ -248,7 +248,7 @@
             <span style="text-decoration: none; font-weight: bold; font-size: 12px; margin-left: 12px;" class="current">+7 (812) 648 24 12</span>
             <br><a style="background: url(/img/smallmailicon.png) no-repeat 0 3px;padding-left:20px;font-size:11px;margin-right:10px;" href="#" id="requesthelplink">запросить помощь</a>
         </div>
-        <?=$this->html->link('Cоздать питч', 'Pitches::create', array('class' => 'button third'))?>
+        <?=$this->html->link('Cоздать проект', 'Pitches::create', array('class' => 'button third'))?>
     </div>
 
 </header><!-- .header -->

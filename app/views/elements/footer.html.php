@@ -13,9 +13,9 @@
         <nav class="nav">
             <p>
                 <?php if (preg_match('@pages/about@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('О проекте', 'Pages::about', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('О нас', 'Pages::about', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('О проекте', 'http://www.godesigner.ru/pages/about') ?> /
+                    <?= $this->html->link('О нас', 'http://www.godesigner.ru/pages/about') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/howitworks@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Как это работает', 'Pages::howitworks', array('style' => 'color: #4a4c55')) ?> /
@@ -52,7 +52,7 @@
                 <?php else: ?>
                     <?= $this->html->link('Блог', 'http://www.godesigner.ru/posts') ?> /
                 <?php endif ?>
-                <strong><?= $this->html->link('Создать питч', 'http://www.godesigner.ru/pitches/create') ?></strong>
+                <strong><?= $this->html->link('Создать проект', 'http://www.godesigner.ru/pitches/create') ?></strong>
             </p>
         </nav><!-- .nav -->
         <ul class="pay-systems">

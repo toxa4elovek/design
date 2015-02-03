@@ -309,16 +309,18 @@ $(document).ready(function () {
         var type = link.data('type');
         if (type == 'add') {
             var newtype = 'remove';
-            var newText = 'Перестать следить';
         } else {
             var newtype = 'add';
-            var newText = 'Следить за питчем';
+        }
+        if(link.css('background-image').match(/follow_the_pitch/)) {
+            link.addClass('fav-minus');
+            link.css('background-image', 'http://www.godesigner.ru/img/stop_follow.png');
+        }else if (link.css('background-image').match(/stop_follow/)) {
+            link.removeClass('fav-minus');
+            link.css('background-image', 'http://www.godesigner.ru/img/follow_the_pitch.png');
         }
         $.post('/favourites/' + type + '.json', data, function (response) {
             link.data('type', newtype);
-            if ($('img', link).attr('src') != '/img/plusb.png' && $('img', link).attr('src') != '/img/plusb_2.png') {
-                link.text(newText);
-            }
         });
         return false;
     })

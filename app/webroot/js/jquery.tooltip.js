@@ -132,7 +132,7 @@
 				}
 				
 				if($(this).attr('title')){
-					s.titleAttributeContent = $(this).attr('title');
+					s.titleAttributeContent = $(this).attr('title').replace(/(?:\r\n|\r|\n)/g, '<br />');;
 					$(this).attr('title','');
 				}
 				
@@ -151,7 +151,7 @@
 				
 				switch(s.tooltipSource){
 					case 'attribute':/*/////////////////////////////// attribute //////////////////////////////////////////*/
-						$ttContent.text(s.titleAttributeContent);
+						$ttContent.html(s.titleAttributeContent);
 						showTooltip();
 					break;
 					case 'inline':/*/////////////////////////////// inline //////////////////////////////////////////*/

@@ -277,6 +277,9 @@ class PitchesController extends \app\controllers\AppController {
             if (($pitch->user_id == Session::read('user.id')) && ($pitch->published == 0) && ($pitch->billed == 0) && ($pitch->ideas_count == 0)) {
                 $pitch->delete();
             }
+            if (!$this->request->is('json')) {
+                return $this->redirect('/pitches');
+            }
             return $pitch->data();
         }
     }

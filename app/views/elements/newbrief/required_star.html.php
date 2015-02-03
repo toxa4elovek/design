@@ -1,0 +1,1 @@
+<a class="require_mark tooltip" <?php if($style):?>style="<?=$style?>"<?php endif;?> title="Это поле обязательно для заполнения.">*</a>
