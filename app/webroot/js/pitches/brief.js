@@ -1247,7 +1247,8 @@ function FeatureCart() {
                     var title = Cart.data.commonPitchData.title;
                     var award = Cart._priceDecorator(Cart.data.features.award);
                     var id = response;
-                    if($('#pitch-panel').length == 1) {
+                    var scroll = false;
+                    if(($('#pitch-panel').length == 1) && ($('tr[data-id="103056"]', '#pitch-panel').length == 0)) {
                         if($('tr', '#pitch-panel').length % 2 == 0) {
                             var evenClass = 'even';
                         }else {
@@ -1264,7 +1265,8 @@ function FeatureCart() {
                         <a data-id="' + id + '" href="http://www.godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
                         </td></tr>';
                         $('#header-table').append(row);
-                    }else {
+                        scroll = true;
+                    }else if ($('tr[data-id="103056"]', '#pitch-panel').length == 0) {
                         var panel =
                             '<div id="pitch-panel"><div class="conteiner"><div class="content"> \
                             <table class="all-pitches" id="header-table"><tbody> \
@@ -1280,8 +1282,11 @@ function FeatureCart() {
                         <p class="pitch-buttons-legend"><a href="http://www.godesigner.ru/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a></p> \
                         </div></div></div>';
                         $('.wrapper').first().prepend(panel);
+                        scroll = true;
                     }
-                    $.scrollTo($('#pitch-panel'), {duration: 600});
+                    if(scroll) {
+                        $.scrollTo($('#pitch-panel'), {duration: 600});
+                    }
                 }
             });
         }
