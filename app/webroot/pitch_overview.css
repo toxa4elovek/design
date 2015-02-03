@@ -228,15 +228,21 @@ a.all-pitches-link:hover {
 }
 a.fav-plus {
 	display: inline-block;
-	width: 133px;
+	width: 160px;
 	height: 39px;
 	margin-right: 20px;
-	background-image: url(img/plusb.png);
+	background-image: url(img/follow_the_pitch.png);
 	background-position: 0 0;
 	background-repeat: no-repeat;
 }
 a.fav-plus:hover {
-	background-image: url(img/plusb_2.png);
+	background-image: url(img/follow_the_pitch_hover.png);
+}
+a.fav-minus {
+    background-image: url(img/stop_follow.png);
+}
+a.fav-minus:hover {
+    background-image: url(img/stop_follow_hover.png);
 }
 a.print-link {
 	display: inline-block;
