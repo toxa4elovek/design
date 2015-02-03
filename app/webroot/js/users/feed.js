@@ -117,7 +117,7 @@ $(document).ready(function () {
                 });
                 Updater.nextPage();
             }
-            if ((leftSidebarTop + leftSidebar.height() - $(window).scrollTop() - $(window).height() < 50) && !isBusySolution) {
+            if (((leftSidebar.height() - 200) - $(window).scrollTop() < 1000) && !isBusySolution) {
                 isBusySolution = 1;
                 Updater.getSolutions();
             }
@@ -1226,8 +1226,7 @@ function OfficeStatusUpdater() {
                         });
                         if (solutions != '') {
                             var $prependEl = $(solutions);
-                            $prependEl.hide();
-                            $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
+                            $prependEl.appendTo('#l-sidebar-office');
                             $('#SolutionAjaxLoader').appendTo($('#l-sidebar-office'));
                             isBusySolution = 0;
                         }
