@@ -395,7 +395,11 @@
                                                 </div>
                                                 <?php if($this->user->getId()):?>
                                                 <div class="box-info" style="margin-top: 0;">
-                                                    <a style="padding-left: 0;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                                    <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                                    <?php if($this->user->isAdmin()):?>
+                                                        <span>·</span>
+                                                        <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>
+                                                    <?php endif?>
                                                 </div>
                                                 <?php endif?>
                                                 <div data-id="<?= $object['news']['id'] ?>" class="likes">

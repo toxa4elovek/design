@@ -205,6 +205,14 @@ $(document).ready(function () {
             });
     var clickedLikesList = []
 
+    $(document).on('click', '.hide-news', function() {
+        var newsId = $(this).data('id');
+        $.get('http://www.godesigner.ru/news/hide/' + $(this).data('id') + '.json', function (response) {
+            $('.box[data-newsid=' + newsId + ']').hide();
+        });
+        return false;
+    })
+
     $(document).on('click', '.like-small-icon', function () {
         var likesNum = $(this).children();
         var likeLink = $(this).next();
@@ -1404,9 +1412,13 @@ function OfficeStatusUpdater() {
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div>';
                 if(this_user != '') {
-                    html += '<div class="box-info" style="margin-top: 0;"> \
-                                    <a style="padding-left: 0;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>\
-                                </div>'
+                    html += '<div class="box-info" style="margin-top: 0;">';
+                    html += '<a style="padding-left: 0;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>';
+                    if(isAdmin) {
+                        html += '<span>·</span> \
+                        <a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';
+                    }
+                    html += '</div>';
                 }
                 html += '<div data-id="' + object.news.id + '" class="likes">';
                 var likes_count = 0;
