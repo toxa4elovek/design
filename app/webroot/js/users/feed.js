@@ -795,7 +795,7 @@ function OfficeStatusUpdater() {
                 self.autoupdate();
             }
         });
-        $(document).everyTime(7500, function (i) {
+        $(document).everyTime(20000, function (i) {
             if (self.started) {
                 self.autolikes();
             }

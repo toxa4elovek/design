@@ -201,13 +201,14 @@
                                         <div id="content-news">
                                             <?php
                                             $newsDate = '';
+                                            if($news) :
                                             foreach ($news as $n): $host = parse_url($n->link);
                                                 if (strtotime($newsDate) < strtotime($n->created)) {
                                                     $newsDate = $n->created;
                                                 }
                                                 ?>
                                                 <div class="design-news"><a target="_blank" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
-                                            <?php endforeach; ?>
+                                            <?php endforeach;endif; ?>
                                             <script type="text/javascript">
                                                 var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
                                             </script>

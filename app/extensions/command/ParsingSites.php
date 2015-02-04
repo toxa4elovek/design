@@ -266,33 +266,36 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true) {
         $xml = simplexml_load_file($url);
-        $newsList = News::all();
-        foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link)) {
-                    $trigger = true;
+        if (($xml->channel->item) && (count($xml->channel->item > 0))) {
+
+            $newsList = News::all();
+            foreach ($xml->channel->item as $item) {
+                $trigger = false;
+                foreach ($newsList as $n) {
+                    if (((string)$item->title === (string)$n->title) || ($n->link == $item->link)) {
+                        $trigger = true;
+                    }
                 }
-            }
-            if (!$trigger) {
-                $this->out('Saving - ' . $item->title);
-                $date = new \DateTime($item->pubDate);
-                preg_match($regexp, $item->asXML(), $matches);
-                $image = '';
-                if (isset($matches[1])) {
-                    $image = $matches[1];
-                }
-                $news = News::create(array(
-                            'title' => $item->title,
-                            'short' => strip_tags($item->description),
-                            'tags' => $item->category,
-                            'created' => $date->format('Y-m-d H:i:s'),
-                            'link' => $item->link,
-                            'imageurl' => $image
-                ));
-                $news->save();
-                if ($event) {
-                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                if (!$trigger) {
+                    $this->out('Saving - ' . $item->title);
+                    $date = new \DateTime($item->pubDate);
+                    preg_match($regexp, $item->asXML(), $matches);
+                    $image = '';
+                    if (isset($matches[1])) {
+                        $image = $matches[1];
+                    }
+                    $news = News::create(array(
+                        'title' => $item->title,
+                        'short' => strip_tags($item->description),
+                        'tags' => $item->category,
+                        'created' => $date->format('Y-m-d H:i:s'),
+                        'link' => $item->link,
+                        'imageurl' => $image
+                    ));
+                    $news->save();
+                    if ($event) {
+                        Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                    }
                 }
             }
         }
