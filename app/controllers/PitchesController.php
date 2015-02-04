@@ -38,6 +38,8 @@ use \app\extensions\helper\PdfGetter;
 use \app\extensions\helper\Avatar as AvatarHelper;
 use \app\extensions\helper\User as UserHelper;
 use \Exception;
+use app\extensions\storage\Rcache;
+
 
 class PitchesController extends \app\controllers\AppController {
 
@@ -1055,16 +1057,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if ($this->request->env('HTTP_X_REQUESTED_WITH')) {
                 $solution->views = Solution::increaseView($this->request->id);
             }
-            $tags = Tag::all();
-            $temp_tags = array();
-            foreach ($solution->solutiontags as $v) {
-                foreach ($tags as $tag) {
-                    if ($v->tag_id == $tag->id) {
-                        $temp_tags[$tag->id] = $tag->name;
-                    }
-                }
-            }
-            $solution->tags = $temp_tags;
+            $solution->tags = Solution::getTagsArrayForSolution($solution);
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getSolutionsSortingOrder($this->request->query);
 

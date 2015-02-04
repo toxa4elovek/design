@@ -459,6 +459,24 @@ http://godesigner.ru/answers/view/73');
         return $result;
     }
 
+    public function getTagsArrayForSolution($solution) {
+        $cacheKey = 'tags_for_solutions_' . $solution->id;
+        if(!$temp_tags = Rcache::read($cacheKey)) {
+            $temp_tags = array();
+            if(count($solution->solutiontags) > 0) {
+                foreach ($solution->solutiontags as $v) {
+                    if($v->tag_id) {
+                        if($tag = Tag::first($v->tag_id)) {
+                            $temp_tags[$tag->id] = $tag->name;
+                        }
+                    }
+                }
+            }
+            Rcache::write($cacheKey, $temp_tags);
+        }
+        return $temp_tags;
+    }
+
 }
 
 function in_array_r($needle, $haystack, $strict = false) {
