@@ -144,7 +144,7 @@ class Comment extends \app\models\AppModel {
         });
         self::applyFilter('find', function($self, $params, $chain){
             $result = $chain->next($self, $params, $chain);
-            if(is_object($result)) {
+            if((!isset($params['options']['nofilters'])) && (is_object($result))) {
                 $addMentionLink = function($record) {
                     if(isset($record->text)) {
                         $record->text = nl2br($record->text);

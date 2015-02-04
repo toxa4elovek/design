@@ -453,7 +453,12 @@ class PitchesController extends \app\controllers\AppController {
     public function getpitchdata() {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
-        if (!empty($this->request->data['pitch_id']) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->data['pitch_id']), 'with' => array('Category'))))) {
+        if(isset($this->request->query['pitch_id'])) {
+            $id = $this->request->query['pitch_id'];
+        }else {
+            $id = $this->request->data['pitch_id'];
+        }
+        if (!empty($id) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $id), 'with' => array('Category'))))) {
             $res = $pitch->pitchData();
             $res['needRatingPopup'] = $pitch->ratingPopup($res['avgArray']);
             $res['needWinnerPopup'] = $pitch->winnerPopup();

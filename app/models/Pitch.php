@@ -7,6 +7,7 @@ namespace app\models;
   use \lithium\util\String;
  */
 
+use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
 use \app\models\Addon;
 use \app\models\Category;
@@ -1046,24 +1047,30 @@ class Pitch extends \app\models\AppModel {
         if ($pitch->firstSolution) {
             $pitch->firstSolutionTime = strtotime($pitch->firstSolution->created);
         }
+        set_time_limit(120);
         foreach ($period as $dt) {
             $time = strtotime($dt->format('Y-m-d'));
             $plusDay = date('Y-m-d H:i:s', $time + DAY);
-            if (strtotime($pitch->created) > strtotime('2013-03-25 00-00-00')) {
-                $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
-            } else {
-                $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
-            }
-            $ids = array();
-            foreach ($solutions as $solution) {
-                $ids[] = $solution->id;
+            $cacheKey = 'calc_ids_' . $pitchId . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
+            if(!$ids = Rcache::read($cacheKey)) {
+                if (strtotime($pitch->created) > strtotime('2013-03-25 00-00-00')) {
+                    $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
+                } else {
+                    $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
+                }
+                $ids = array();
+                foreach ($solutions as $solution) {
+                    $ids[] = $solution->id;
+                }
+                if(strtotime($plusDay) < time()) {
+                    Rcache::write($cacheKey, $ids);
+                }
             }
             $dates[] = $dt->format('d/m');
             $moneyArray[] = $money;
             $ratingArray[] = $this->calcRating($ids, $pitch, $plusDay, $dt);
             $commentArray[] = $this->calcComments($ids, $pitch, $plusDay, $dt);
         }
-
         $ratingAverage = (empty($ratingArray)) ? 0 : round(array_sum($ratingArray) / count($ratingArray), 1);
         $moneyAverage = (empty($moneyArray)) ? 0 : round(array_sum($moneyArray) / count($moneyArray), 1);
         $commentAverage = (empty($commentArray)) ? 0 : round(array_sum($commentArray) / count($commentArray), 1);
@@ -1094,74 +1101,90 @@ class Pitch extends \app\models\AppModel {
     }
 
     public function calcRating($ids, $pitch, $plusDay, $dt) {
-        if (!empty($ids)) {
-            $ratingsNum = Ratingchange::all(array('conditions' => array('solution_id' => $ids, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
-        } else {
-            $ratingsNum = array();
+        $cacheKey = 'calc_rating_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
+        if(!$rating = Rcache::read($cacheKey)) {
+            if (!empty($ids)) {
+                $ratingsNum = Ratingchange::all(array('conditions' => array('solution_id' => $ids, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+            } else {
+                $ratingsNum = array();
+            }
+            $rating = 0;
+            $percents = 0;
+            if (count($ids) > 0) {
+                $percents = (count($ratingsNum) / count($ids)) * 100;
+            }
+            if ($percents > 100) {
+                $percents = 100;
+            }
+            switch ($percents) {
+                case $percents < 50:
+                    $rating = 1;
+                    break;
+                case $percents < 63:
+                    $rating = 2;
+                    break;
+                case $percents < 79:
+                    $rating = 3;
+                    break;
+                case $percents < 89:
+                    $rating = 4;
+                    break;
+                case $percents <= 100:
+                    $rating = 5;
+                    break;
+            }
+            $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+            if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+                $rating = 3;
+            }
+            if(strtotime($plusDay) < time()) {
+                Rcache::write($cacheKey, $rating);
+            }
         }
-        $rating = 0;
-        $percents = 0;
-        if (count($ids) > 0) {
-            $percents = (count($ratingsNum) / count($ids)) * 100;
-        }
-        if ($percents > 100) {
-            $percents = 100;
-        }
-        switch ($percents) {
-            case $percents < 50: $rating = 1;
-                break;
-            case $percents < 63: $rating = 2;
-                break;
-            case $percents < 79: $rating = 3;
-                break;
-            case $percents < 89: $rating = 4;
-                break;
-            case $percents <= 100: $rating = 5;
-                break;
-        }
-        $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-        if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
-            $rating = 3;
-        }
-
         return $rating;
     }
 
     public function calcComments($ids, $pitch, $plusDay, $dt) {
-        if (!empty($ids)) {
-            if (strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
-                $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+        $cacheKey = 'calc_comments_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
+        if(!$comments = Rcache::read($cacheKey)) {
+            if (!empty($ids)) {
+                if (strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
+                    $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                } else {
+                    $commentsNum = Comment::all(array('nofilters' => true, 'conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                }
             } else {
-                $commentsNum = Comment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                $commentsNum = array();
             }
-        } else {
-            $commentsNum = array();
-        }
 
-        $comments = 0;
-        $percents = 0;
-        if (count($ids) > 0) {
-            $percents = (count($commentsNum) / count($ids)) * 100;
-        }
+            $comments = 0;
+            $percents = 0;
+            if (count($ids) > 0) {
+                $percents = (count($commentsNum) / count($ids)) * 100;
+            }
 
-        if ($percents > 100) {
-            $percents = 100;
-        }
-        switch ($percents) {
-            case $percents < 50: $comments = 1;
-                break;
-            case $percents < 63: $comments = 2;
-                break;
-            case $percents < 79: $comments = 3;
-                break;
-            case $percents < 89: $comments = 4;
-                break;
-            case $percents <= 100: $comments = 5;
-                break;
-        }
-        $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-        if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
-            $comments = 3;
+            if ($percents > 100) {
+                $percents = 100;
+            }
+            switch ($percents) {
+                case $percents < 50: $comments = 1;
+                    break;
+                case $percents < 63: $comments = 2;
+                    break;
+                case $percents < 79: $comments = 3;
+                    break;
+                case $percents < 89: $comments = 4;
+                    break;
+                case $percents <= 100: $comments = 5;
+                    break;
+            }
+            $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+            if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+                $comments = 3;
+            }
+            if(strtotime($plusDay) < time()) {
+                Rcache::write($cacheKey, $comments);
+            }
         }
         return $comments;
     }
