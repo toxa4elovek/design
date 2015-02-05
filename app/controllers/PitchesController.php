@@ -1096,8 +1096,17 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 );
             }
 
-            $solutions = Solution::all(array('conditions' => array('pitch_id' => $solution->pitch_id), 'order' => $order));
-            $results = getArrayNeighborsByKey($solutions->data(), (int) $solution->id);
+            $cacheKey = md5(serialize($order)) . '_' . $solution->pitch_id;
+            if(!$results = Rcache::read($cacheKey)) {
+                $solutions = Solution::all(array(
+                    'conditions' => array(
+                        'pitch_id' => $solution->pitch_id
+                    ),
+                    'order' => $order)
+                );
+                $results = getArrayNeighborsByKey($solutions->data(), (int) $solution->id);
+                Rcache::write($cacheKey, $results, array(), '+4 hours');
+            }
             if ($this->request->is('json')) {
                 $solutions = array();
             }
@@ -1106,11 +1115,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.id' => 'desc'), 'with' => array('User', 'Pitch')));
             $comments = Comment::filterComments($solution->num, $comments);
             $comments = Comment::filterCommentsTree($comments, $pitch->user_id);
-            $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
-            $expertsIds = array();
-            foreach ($experts as $expert) {
-                $expertsIds[] = $expert->user_id;
-            }
+            $expertsIds = Expert::getExperts();
             if (isset($this->request->query['exp'])) {
                 $comments = $comments->data();
                 foreach ($comments as $k => $v) {
