@@ -37,9 +37,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
 
-        $this->out("Starting parsing bpando.org");
-        self::ParsingWordpress('http://bpando.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
-        $this->out('Finished parsing bpando.org [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing bpando.org");
+        //self::ParsingWordpress('http://bpando.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        //$this->out('Finished parsing bpando.org [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing love-aesthetics.nl");
         self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
