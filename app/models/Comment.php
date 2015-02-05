@@ -11,6 +11,7 @@ use \app\extensions\helper\Solution as SolutionHelper;
 use \app\extensions\helper\NameInflector;
 use \lithium\storage\Session;
 use app\extensions\mailers\CommentsMailer;
+use app\extensions\storage\Rcache;
 
 class Comment extends \app\models\AppModel {
 
