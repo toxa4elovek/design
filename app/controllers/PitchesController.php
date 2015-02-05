@@ -1115,7 +1115,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.id' => 'desc'), 'with' => array('User', 'Pitch')));
             $comments = Comment::filterComments($solution->num, $comments);
             $comments = Comment::filterCommentsTree($comments, $pitch->user_id);
-            $expertsIds = Expert::getExperts();
+            $expertsIds = Expert::getExpertUserIds();
             if (isset($this->request->query['exp'])) {
                 $comments = $comments->data();
                 foreach ($comments as $k => $v) {
