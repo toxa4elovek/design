@@ -1021,7 +1021,7 @@ class Pitch extends \app\models\AppModel {
     }
 
     public function pitchData($pitch) {
-        $pitchId = $pitch->id;
+        set_time_limit(120);
         $award = $pitch->price;
         $category = $pitch->category;
         $money = 3;
@@ -1043,30 +1043,12 @@ class Pitch extends \app\models\AppModel {
         $moneyArray = array();
         $commentArray = array();
         $dates = array();
-        $pitch->firstSolution = Historysolution::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('created' => 'asc')));
-        if ($pitch->firstSolution) {
-            $pitch->firstSolutionTime = strtotime($pitch->firstSolution->created);
-        }
-        set_time_limit(120);
+        $pitch->firstSolutionTime = self::__getFirstSolutionTime($pitch);
         foreach ($period as $dt) {
             $time = strtotime($dt->format('Y-m-d'));
             $plusDay = date('Y-m-d H:i:s', $time + DAY);
-            $cacheKey = 'calc_ids_' . $pitchId . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
-            if(!$ids = Rcache::read($cacheKey)) {
-                if (strtotime($pitch->created) > strtotime('2013-03-25 00-00-00')) {
-                    $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
-                } else {
-                    $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
-                }
-                $ids = array();
-                foreach ($solutions as $solution) {
-                    $ids[] = $solution->id;
-                }
-                if(strtotime($plusDay) < time()) {
-                    Rcache::write($cacheKey, $ids);
-                }
-            }
             $dates[] = $dt->format('d/m');
+            $ids = self::__getSolutionIds($pitch, $plusDay);
             $moneyArray[] = $money;
             $ratingArray[] = $this->calcRating($ids, $pitch, $plusDay, $dt);
             $commentArray[] = $this->calcComments($ids, $pitch, $plusDay, $dt);
@@ -1089,6 +1071,56 @@ class Pitch extends \app\models\AppModel {
         $guaranteed = $pitch->guaranteed;
 
         return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'commentsNum');
+    }
+
+    /**
+     * Возвращает айдишники решений из питча до определенной даты
+     *
+     * @param $pitch
+     * @param $plusDay
+     * @return array|bool|mixed
+     */
+    private function __getSolutionIds($pitch, $plusDay) {
+        $cacheKey = 'calc_ids_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
+        if(!$ids = Rcache::read($cacheKey)) {
+            if (strtotime($pitch->started) > strtotime('2013-03-25 00:00:00')) {
+                $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitch->id, 'date(created)' => array('<' => $plusDay))));
+            } else {
+                $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id, 'date(created)' => array('<' => $plusDay))));
+            }
+            $ids = array();
+            foreach ($solutions as $solution) {
+                $ids[] = $solution->id;
+            }
+            if(strtotime($plusDay) < time()) {
+                Rcache::write($cacheKey, $ids);
+            }
+        }
+        return $ids;
+    }
+
+    /**
+     * Метод возвращает время создания самого первого решения в питча, если есть
+     *
+     * @param $pitch - объект питча
+     * @return bool|int|mixed|null
+     */
+    private function __getFirstSolutionTime($pitch) {
+        $cacheKey = 'calc_firstSolutionTime_' . $pitch->id;
+        $time = null;
+        if(!$time = Rcache::read($cacheKey)) {
+            $pitch->firstSolution = Historysolution::first(array(
+                'conditions' => array(
+                    'pitch_id' => $pitch->id),
+                'order' => array(
+                    'created' => 'asc')
+            ));
+            if ($pitch->firstSolution) {
+                $time = strtotime($pitch->firstSolution->created);
+                Rcache::write($cacheKey, $time);
+            }
+        }
+        return $time;
     }
 
     private function calcAvg($first, $second, $third) {
