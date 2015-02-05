@@ -70,7 +70,9 @@ class Comment extends \app\models\AppModel {
 
 			if($params) {
 				Event::createEvent($params['pitch_id'], 'CommentAdded', $params['user_id'], $params['solution_id'], $params['id']);
-			}
+			    $cacheKey = 'commentlistfull_' . $params['pitch_id'];
+                Rcache::delete($cacheKey);
+            }
             preg_match_all('@(#\d*).@', $params['text'], $matches);
             $nums = array();
             foreach($matches[1] as $hashtag){
@@ -256,7 +258,7 @@ class Comment extends \app\models\AppModel {
                 $parent->current()->public = 1;
             }
             // Child
-            if ($comment->user_id == $comment->pitch->user_id) {
+            if ($comment->user_id == $pitchUserId) {
                 $comment_id = $comment->id;
                 $child = $commentsFiltered->find(function($comm) use ($comment_id) {
                     if ($comm->question_id == $comment_id) {
@@ -273,7 +275,7 @@ class Comment extends \app\models\AppModel {
         if ((true == $isUserClient) || (true == $isUserAdmin)) {
             foreach ($commentsFiltered as $comment) {
                 $comment->needAnswer = '';
-                if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
+                if (($comment->user->isAdmin != 1) && ($comment->user->id != $pitchUserId) && (!in_array($comment->user->id, User::$admins))) {
                     $comment->needAnswer = 1;
                 }
                 if (true == $isUserAdmin) {
@@ -334,7 +336,7 @@ class Comment extends \app\models\AppModel {
                 'conditions' => array(
                     'question_id' => $comment->id,
                 ),
-                'with' => array('User', 'Pitch'),
+                'with' => array('User'),
                 'order' => array('id' => 'desc'),
             ));
             if (count($children) > 0) {

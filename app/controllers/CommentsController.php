@@ -57,6 +57,8 @@ class CommentsController extends \lithium\action\Controller {
             $comment->save();
             $comment = Comment::first($this->request->id);
             $brief = new Brief();
+            $cacheKey = 'commentlistfull_' . $comment->pitch_id;
+            Rcache::delete($cacheKey);
             return $brief->stripemail($comment->text);
         }
     }
@@ -65,6 +67,8 @@ class CommentsController extends \lithium\action\Controller {
         //error_reporting(E_ALL);
         //ini_set('display_errors', '1');
         if((((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) && ($comment = Comment::first($this->request->id))) || (($comment = Comment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
+            $cacheKey = 'commentlistfull_' . $comment->pitch_id;
+            Rcache::delete($cacheKey);
             $comment->delete();
             if ($this->request->is('json')) {
                 return 'true';

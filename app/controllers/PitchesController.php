@@ -843,22 +843,21 @@ class PitchesController extends \app\controllers\AppController {
                 return false;
             }
 
-            $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
-            $expertsIds = array();
-            foreach ($experts as $expert) {
-                $expertsIds[] = $expert->user_id;
-            }
+            $experts = Expert::getExperts();
 
             // Fetch Top Level Comments
-            $commentsRaw = Comment::all(array(
-                        'conditions' => array(
-                            'pitch_id' => $pitch->id,
-                            'question_id' => 0,
-                        ),
-                        'order' => array('Comment.id' => 'desc'),
-                        'with' => array('User', 'Pitch')));
-
-            $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
+            $cacheKey = 'commentlistfull_' . $pitch->id;
+            if(!$comments = Rcache::read($cacheKey)) {
+                $commentsRaw = Comment::all(array(
+                            'conditions' => array(
+                                'pitch_id' => $pitch->id,
+                                'question_id' => 0,
+                            ),
+                            'order' => array('Comment.id' => 'desc'),
+                            'with' => array('User')));
+                $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
+                Rcache::write($cacheKey, $comments, array(), '+4 hours');
+            }
             return compact('comments', 'experts', 'pitch');
         } else {
             return false;
