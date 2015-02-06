@@ -785,6 +785,9 @@
     font-size: 16px;
     font-family: OfficinaSansC Book, serif;
 }
+#popup-other-likes li a.user-title:hover {
+    text-decoration: underline;
+}
 #popup-other-likes ul {
     overflow-y: scroll;
     height: 498px;

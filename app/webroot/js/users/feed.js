@@ -107,7 +107,7 @@ $(document).ready(function () {
             } else if (windowBottom >= topStop && $(window).scrollTop() < top) {
                 $box.css({'position': 'static', 'top': '35px'});
             }
-            if ((($('#center_sidebar').height() - 200) - $(window).scrollTop() < 1000) && !isBusy) {
+            if ((($('#center_sidebar').height() - 200) - $(window).scrollTop() < 1500) && !isBusy) {
                 isBusy = 1;
                 Tip.scrollHandler();
                 $box.css({
@@ -117,7 +117,7 @@ $(document).ready(function () {
                 });
                 Updater.nextPage();
             }
-            if (((leftSidebar.height() - 200) - $(window).scrollTop() < 1000) && !isBusySolution) {
+            if (((leftSidebar.height() - 200) - $(window).scrollTop() < 1500) && !isBusySolution) {
                 isBusySolution = 1;
                 Updater.getSolutions();
             }
@@ -790,12 +790,12 @@ function OfficeStatusUpdater() {
         self.date = eventsDate;
         self.likesdate = likesDate;
         //self.pitchDate = pitchDate;
-        $(document).everyTime(80000, function (i) {
+        $(document).everyTime(60000, function (i) {
             if (self.started) {
                 self.autoupdate();
             }
         });
-        $(document).everyTime(20000, function (i) {
+        $(document).everyTime(7000, function (i) {
             if (self.started) {
                 self.autolikes();
             }
