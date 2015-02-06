@@ -10,6 +10,7 @@ use \app\extensions\mailers\UserMailer;
 use \app\extensions\helper\Brief;
 use \app\models\Avatar;
 use \app\extensions\helper\Avatar as AvatarHelper;
+use app\extensions\storage\Rcache;
 
 class CommentsController extends \lithium\action\Controller {
 
