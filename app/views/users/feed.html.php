@@ -72,7 +72,7 @@
                             <?php endif; ?>
                             <div class="new-content group">
                             <?php endif; ?>
-                            <div id="l-sidebar-office">
+                            <div id="l-sidebar-office" data-count="<?= count($solutions->data());?>">
                                 <?php
                                 $solutionDate = '';
                                 $count = 0;
@@ -157,6 +157,8 @@
                                             </div>
                                         </div>
                                         <?php
+                                    else:
+                                        //var_dump($solution->solution->data());
                                     endif;
                                 endforeach;
                                 ?>

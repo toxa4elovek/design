@@ -929,7 +929,7 @@ function OfficeStatusUpdater() {
                             if (solcount == 0)
                                 self.solutionDate = solution.created;
                             solcount++;
-                            if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
+                            if ((typeof (solution.solution.images.solution_leftFeed) != "undefined") && (this_user != '')) {
                                 if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
                                     var imageurl = solution.solution.images.solution_leftFeed.weburl;
                                 } else {

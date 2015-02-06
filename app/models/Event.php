@@ -11,6 +11,7 @@ use \app\models\Solution;
 use \app\models\Favourite;
 use \app\extensions\helper\MoneyFormatter;
 use \lithium\storage\Session;
+use app\extensions\storage\Rcache;
 
 class Event extends \app\models\AppModel {
 
@@ -283,11 +284,43 @@ class Event extends \app\models\AppModel {
         return $eventList;
     }
 
-    public static function getEventSolutions($user = null) {
+    public static function getEventSolutions($user = null, $page = 1) {
         if($user) {
-            return Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+            return Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'page' => $page, 'with' => array('Pitch')));
         } else {
-            return Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+            $solutions = Solution::all(array(
+                'conditions' => array(
+                    'Pitch.private' => 0,
+                    'Pitch.category_id' => array('!=' => 7),
+                    'Pitch.multiwinner' => 0,
+                    'Solution.created' => array('>' => date('Y-m-d H:i:s', time() - 2 * DAY))
+                ),
+                'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+                'limit' => 10,
+                'page' => $page,
+                'with' => array('Pitch')
+            ));
+            $solutionHolder = array();
+            foreach($solutions as $solution) {
+                $solutionHolder[$solution->id] = $solution->images;
+            }
+            $keys = array_keys($solutions->data());
+            $cacheKey = 'geteventssolutionguest_' .serialize($keys);
+            if(!$solpages = Rcache::read($cacheKey)) {
+                $solpages = Event::all(array(
+                    'conditions' => array(
+                        'type' => 'SolutionAdded',
+                        'Event.solution_id' => $keys
+                    ),
+                    'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+                    'with' => array('Pitch', 'Solution')
+                ));
+                foreach($solpages as $event) {
+                    $event->solution->images = $solutionHolder[$event->solution->id];
+                }
+                Rcache::write($cacheKey, $solpages, array(), '+1 hour');
+            }
+            return $solpages;
         }
     }
 
