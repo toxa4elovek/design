@@ -226,7 +226,7 @@ $(document).ready(function () {
          $('body').one('click', function () {
          $('.sharebar').fadeOut(300);
          });*/
-        if ($.inArray($(this).data('id'), clickedLikesList) == -1) {
+        if (($.inArray($(this).data('id'), clickedLikesList) == -1) && (this_user != '')) {
             likesNum.html(parseInt(likesNum.html()) + 1);
             clickedLikesList.push($(this).data('id'));
         }
@@ -1349,12 +1349,22 @@ function OfficeStatusUpdater() {
             this.addFavUserAdded = function(object) {
                 var html = '';
                 if(typeof(object.user.images.avatar_small) == 'undefined') {
-                    var avatar = 'http://www.godesigner.ru/img/icon_57.png';
+                    console.log(object.user.isAdmin);
+                    if(object.user.isAdmin == '1') {
+                        var avatar = 'http://www.godesigner.ru/img/icon_57.png';
+                    }else {
+                        var avatar = 'http://www.godesigner.ru/img/default_small_avatar.png';
+                    }
                 } else {
                     var avatar = object.user.images.avatar_small.weburl;
                 }
                 if(typeof(object.user_fav.images.avatar_small) == 'undefined') {
-                    var avatarFav = 'http://www.godesigner.ru/img/icon_57.png';
+                    console.log(object.user.isAdmin)
+                    if(object.user_fav.isAdmin == '1') {
+                        var avatar = 'http://www.godesigner.ru/img/icon_57.png';
+                    }else {
+                        var avatar = 'http://www.godesigner.ru/img/default_small_avatar.png';
+                    }
                 } else {
                     var avatarFav = object.user_fav.images.avatar_small.weburl;
                 }
