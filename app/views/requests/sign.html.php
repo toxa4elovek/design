@@ -70,7 +70,8 @@
         <a style="display: none;" id="shrink">свернуть</a>
         </div>
         <div style="height:2px;clear:both;width:580px;background: url(/img/obnovleniya_line.jpg) repeat-x scroll 0 100% transparent; margin-bottom: 15px;margin-top:15px;"></div>
-        <h3 class="greyboldheader" style="margin-bottom:10px;">Оставьте свои настоящие имя и фамилию</h3>
+        <h3 class="greyboldheader" style="margin-bottom:10px;">Оставьте свои настоящие имя и фамилию <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('tooltipClass' => "tooltip3")) ?>
+        </h3>
         <form action="/requests/create" method="post">
             <input type="hidden" name="pitch_id" value="<?=$pitch->id?>">
             <input style="width: 580px; margin-bottom: 15px;" type="text" name="first_name" placeholder="Имя"/>
@@ -102,5 +103,5 @@
 </div><!-- .wrapper -->
 
 <div id="bridge" style="display:none;"></div>
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'requests/sign.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'jquery.tooltip.js', 'requests/sign.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview'), array('inline' => false))?>
