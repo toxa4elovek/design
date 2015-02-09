@@ -323,8 +323,8 @@
                                                     $likes_count = 0;
                                                     $html_likes = '';
                                                     $likes = (int) $object['solution']['likes'];
-                                                    if (($likes) && (is_array($object['solution']['likes']))) {
-                                                        foreach ($object['solution']['likes'] as $like) {
+                                                    if ($likes) {
+                                                        foreach ($object['likes'] as $like) {
                                                             ++$likes_count;
                                                             if ($likes > 4) {
                                                                 if ($likes_count == 1) {
