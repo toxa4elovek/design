@@ -17,9 +17,9 @@
             <div class="mainblock">
                 <section class="referal-section">
                     <h1 class="separator-flag">ПРИГЛАШАЙ ДРУЗЕЙ</h1>
-                    <span class="referal-title">Вы получите 500 рублей на телефон<span style="color: #FF585D;">*</span>,<br /> когда ваши друзья создадут питч на GoDesigner</span>
+                    <span class="referal-title">Вы получите 500 рублей на телефон<span style="color: #FF585D;">*</span>,<br /> когда ваши друзья создадут проект на GoDesigner</span>
                     <a href="#">Правила и условия</a>
-                    <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут питч на GoDesigner" style="margin: 30px 0;" />
+                    <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут проект на GoDesigner" style="margin: 30px 0;" />
                     <?php if (!$this->user->isLoggedIn()):?>
                     <span class="referal-title">Зарегистрируйтесь,<br /> чтобы  принять участие в акции!</span>
                     <a href="/register" class="button third" style="width: 180px; text-decoration: none; margin: 20px 0 10px 0;">Зарегистрироваться</a>

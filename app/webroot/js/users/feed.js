@@ -57,6 +57,14 @@ $(document).ready(function () {
         if (!isAdmin) {
             $('.new-content').css({'margin-top': '70px'});
         }
+        var bannerid = $(this).data('bannerid');
+        if (typeof bannerid !== typeof undefined && bannerid !== false) {
+            var now = new Date();
+            var time = now.getTime();
+            time += 3600 * 1000 * 24 * 30 * 6;
+            now.setTime(time);
+            document.cookie = 'closedbanner' + bannerid + '=1; expires=' + now.toUTCString() + '; path=/';
+        }
     });
     $('.img-box').hover(function () {
         $(this).next().children('.img-post').children('h2').css('color', '#ff585d');
@@ -99,7 +107,7 @@ $(document).ready(function () {
             } else if (windowBottom >= topStop && $(window).scrollTop() < top) {
                 $box.css({'position': 'static', 'top': '35px'});
             }
-            if ((($('#center_sidebar').height() - 200) - $(window).scrollTop() < 1000) && !isBusy) {
+            if ((($('#center_sidebar').height() - 200) - $(window).scrollTop() < 1500) && !isBusy) {
                 isBusy = 1;
                 Tip.scrollHandler();
                 $box.css({
@@ -109,7 +117,7 @@ $(document).ready(function () {
                 });
                 Updater.nextPage();
             }
-            if ((leftSidebarTop + leftSidebar.height() - $(window).scrollTop() - $(window).height() < 50) && !isBusySolution) {
+            if (((leftSidebar.height() - 200) - $(window).scrollTop() < 1500) && !isBusySolution) {
                 isBusySolution = 1;
                 Updater.getSolutions();
             }
@@ -197,6 +205,14 @@ $(document).ready(function () {
             });
     var clickedLikesList = []
 
+    $(document).on('click', '.hide-news', function() {
+        var newsId = $(this).data('id');
+        $.get('http://www.godesigner.ru/news/hide/' + $(this).data('id') + '.json', function (response) {
+            $('.box[data-newsid=' + newsId + ']').hide();
+        });
+        return false;
+    })
+
     $(document).on('click', '.like-small-icon', function () {
         var likesNum = $(this).children();
         var likeLink = $(this).next();
@@ -210,7 +226,7 @@ $(document).ready(function () {
          $('body').one('click', function () {
          $('.sharebar').fadeOut(300);
          });*/
-        if ($.inArray($(this).data('id'), clickedLikesList) == -1) {
+        if (($.inArray($(this).data('id'), clickedLikesList) == -1) && (this_user != '')) {
             likesNum.html(parseInt(likesNum.html()) + 1);
             clickedLikesList.push($(this).data('id'));
         }
@@ -778,12 +794,12 @@ function OfficeStatusUpdater() {
         self.date = eventsDate;
         self.likesdate = likesDate;
         //self.pitchDate = pitchDate;
-        $(document).everyTime(80000, function (i) {
+        $(document).everyTime(60000, function (i) {
             if (self.started) {
                 self.autoupdate();
             }
         });
-        $(document).everyTime(7500, function (i) {
+        $(document).everyTime(7000, function (i) {
             if (self.started) {
                 self.autolikes();
             }
@@ -917,7 +933,7 @@ function OfficeStatusUpdater() {
                             if (solcount == 0)
                                 self.solutionDate = solution.created;
                             solcount++;
-                            if (typeof (solution.solution.images.solution_leftFeed) != "undefined") {
+                            if ((typeof (solution.solution.images.solution_leftFeed) != "undefined") && (this_user != '')) {
                                 if (typeof (solution.solution.images.solution_leftFeed.length) == "undefined") {
                                     var imageurl = solution.solution.images.solution_leftFeed.weburl;
                                 } else {
@@ -1222,8 +1238,7 @@ function OfficeStatusUpdater() {
                         });
                         if (solutions != '') {
                             var $prependEl = $(solutions);
-                            $prependEl.hide();
-                            $prependEl.appendTo('#l-sidebar-office').slideDown('slow');
+                            $prependEl.appendTo('#l-sidebar-office');
                             $('#SolutionAjaxLoader').appendTo($('#l-sidebar-office'));
                             isBusySolution = 0;
                         }
@@ -1263,6 +1278,17 @@ function OfficeStatusUpdater() {
                 if ((((object.solution) && (object.solution.id)) || (object.solution_id != 0)) && (object.solution != null) && (object.pitch.private != '1')) {
                     long = true;
                 }
+                if (
+                    (object.updateText.match(/Дизайнеры больше не могут/))
+                    ||
+                    (object.updateText.match(/питч завершен и ожидает/))
+                    ||
+                    (object.updateText.match(/Друзья, выбран победитель/))
+                    ||
+                    (object.updateText.match(/Друзья, в брифе возникли изменения/))
+                ){
+                    return '';
+                };
                 html = '<div class="box" data-eventid="' + object.id + '">';
                 if (long) {
                     html += '<div class="l-img l-img-box" style="padding-top: 0;"> \
@@ -1327,12 +1353,22 @@ function OfficeStatusUpdater() {
             this.addFavUserAdded = function(object) {
                 var html = '';
                 if(typeof(object.user.images.avatar_small) == 'undefined') {
-                    var avatar = 'http://www.godesigner.ru/img/icon_57.png';
+                    console.log(object.user.isAdmin);
+                    if(object.user.isAdmin == '1') {
+                        var avatar = 'http://www.godesigner.ru/img/icon_57.png';
+                    }else {
+                        var avatar = 'http://www.godesigner.ru/img/default_small_avatar.png';
+                    }
                 } else {
                     var avatar = object.user.images.avatar_small.weburl;
                 }
                 if(typeof(object.user_fav.images.avatar_small) == 'undefined') {
-                    var avatarFav = 'http://www.godesigner.ru/img/icon_57.png';
+                    console.log(object.user.isAdmin)
+                    if(object.user_fav.isAdmin == '1') {
+                        var avatar = 'http://www.godesigner.ru/img/icon_57.png';
+                    }else {
+                        var avatar = 'http://www.godesigner.ru/img/default_small_avatar.png';
+                    }
                 } else {
                     var avatarFav = object.user_fav.images.avatar_small.weburl;
                 }
@@ -1390,9 +1426,13 @@ function OfficeStatusUpdater() {
                                         <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p> \
                                 </div>';
                 if(this_user != '') {
-                    html += '<div class="box-info" style="margin-top: 0;"> \
-                                    <a style="padding-left: 0;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>\
-                                </div>'
+                    html += '<div class="box-info" style="margin-top: 0;">';
+                    html += '<a style="padding-left: 0;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>';
+                    if(isAdmin) {
+                        html += '<span>·</span> \
+                        <a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';
+                    }
+                    html += '</div>';
                 }
                 html += '<div data-id="' + object.news.id + '" class="likes">';
                 var likes_count = 0;

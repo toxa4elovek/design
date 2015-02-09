@@ -8,6 +8,7 @@ use \app\models\Pitch;
 use app\models\News;
 use \lithium\storage\Session;
 use \app\extensions\helper\Stream;
+use app\extensions\storage\Rcache;
 
 class EventsController extends \app\controllers\AppController {
 
@@ -83,7 +84,7 @@ class EventsController extends \app\controllers\AppController {
     }
 
     public function getsol() {
-        $solpages = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'page' => $this->request->query['page'], 'with' => array('Pitch')));
+        $solpages = Event::getEventSolutions(Session::read('user'), $this->request->query['page']);
         return compact('solpages');
     }
 

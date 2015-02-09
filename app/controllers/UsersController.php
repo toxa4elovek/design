@@ -152,7 +152,7 @@ class UsersController extends \app\controllers\AppController {
           $middlePost->allowLike = $allowLike;
           } */
         $news = News::getNews();
-        $solutions = Event::getEventSolutions();
+        $solutions = Event::getEventSolutions(Session::read('user.id'));
         $updates = Event::getEvents($pitchIds, 1, null, Session::read('user.id'));
         $nextUpdates = count(Event::getEvents($pitchIds, 2, null, Session::read('user.id')));
         $banner = News::getBanner();

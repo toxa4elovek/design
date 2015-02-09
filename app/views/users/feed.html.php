@@ -33,10 +33,11 @@
                 <div id="news-add-separator" style="display:none;"></div>
                 <div class="new-content group" style="margin-top:10px">
                 <?php endif; ?>
-                <?php if (($banner) && ($this->user->getId())): ?>
+                <?php
+                if (($banner) && ($this->user->getId()) && (!$_COOKIE['closedbanner' . $banner->id])): ?>
                     <div class="banner-block">
                         <div>
-                            <div class="close-gender"></div>
+                            <div data-bannerid="<?= $banner->id ?>" class="close-gender"></div>
                             <span><?= $banner->title ?></span>
                             <p><?= $this->brief->ee($banner->short) ?></p>
                         </div>
@@ -71,7 +72,7 @@
                             <?php endif; ?>
                             <div class="new-content group">
                             <?php endif; ?>
-                            <div id="l-sidebar-office">
+                            <div id="l-sidebar-office" data-count="<?= count($solutions->data());?>">
                                 <?php
                                 $solutionDate = '';
                                 $count = 0;
@@ -156,6 +157,8 @@
                                             </div>
                                         </div>
                                         <?php
+                                    else:
+                                        //var_dump($solution->solution->data());
                                     endif;
                                 endforeach;
                                 ?>
@@ -200,13 +203,14 @@
                                         <div id="content-news">
                                             <?php
                                             $newsDate = '';
+                                            if($news) :
                                             foreach ($news as $n): $host = parse_url($n->link);
                                                 if (strtotime($newsDate) < strtotime($n->created)) {
                                                     $newsDate = $n->created;
                                                 }
                                                 ?>
                                                 <div class="design-news"><a target="_blank" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
-                                            <?php endforeach; ?>
+                                            <?php endforeach;endif; ?>
                                             <script type="text/javascript">
                                                 var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
                                             </script>
@@ -253,6 +257,17 @@
                                             $long = false;
                                             if ((($object['solution']) || ($object['solution_id'] != 0)) && ($object['pitch']['private'] != '1')):
                                                 $long = true;
+                                            endif;
+                                            if(
+                                                (preg_match("/Дизайнеры больше не могут/", $object['updateText']))
+                                                ||
+                                                (preg_match("/питч завершен и ожидает/", $object['updateText']))
+                                                ||
+                                                (preg_match("/Друзья, выбран победитель/", $object['updateText']))
+                                                ||
+                                                (preg_match("/Друзья, в брифе возникли изменения/", $object['updateText']))
+                                            ):
+                                                continue;
                                             endif;
                                             ?>
                                             <div class="box" data-eventid="<?= $object['id'] ?>" data-type="<?php echo $object['type'] ?>" data-long="<?php echo $long ?>">
@@ -383,7 +398,11 @@
                                                 </div>
                                                 <?php if($this->user->getId()):?>
                                                 <div class="box-info" style="margin-top: 0;">
-                                                    <a style="padding-left: 0;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                                    <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                                    <?php if($this->user->isAdmin()):?>
+                                                        <span>·</span>
+                                                        <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>
+                                                    <?php endif?>
                                                 </div>
                                                 <?php endif?>
                                                 <div data-id="<?= $object['news']['id'] ?>" class="likes">

@@ -1,6 +1,7 @@
 <?php
 
 namespace app\extensions\command;
+use app\extensions\storage\Rcache;
 
 class CronJob extends \lithium\console\Command {
 
@@ -10,6 +11,7 @@ class CronJob extends \lithium\console\Command {
         if (extension_loaded('newrelic')) {
             newrelic_background_job(true);
         }
+        Rcache::init();
         $this->out('Initialization complete');
     }
 

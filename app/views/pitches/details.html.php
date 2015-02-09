@@ -176,8 +176,12 @@ function mb_basename($file)
                 <div class="separator" style="width: 620px; margin: 30px 0 15px 0;"></div>
 
                 <a href="/pitches" class="all-pitches-link"></a>
-                <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
-                <a href="/pitches/printpitch/<?=$pitch->id?>" class="print-link"></a>
+                <?php if(($this->user->isLoggedIn()) && ($this->user->hasFavouritePitches()) && (!$this->user->isPitchFavourite($pitch->id))):?>
+                    <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
+                <?php elseif($this->user->isLoggedIn()):?>
+                    <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
+                <?php endif?>
+                    <a href="/pitches/printpitch/<?=$pitch->id?>" class="print-link"></a>
                 <a href="/pitches/details/<?= $prevpitch->id?>" class="next-pitch-link"></a>
 
                 <div style="margin-top:15px;">
