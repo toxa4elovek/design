@@ -920,7 +920,7 @@ a.order-button:hover {
 }
 .sharebar {
     padding:0 0 4px !important;
-    background: rgba(255, 255, 255, 0.5) !important;
+    background: rgba(255, 255, 255, 0.28) !important;
     /*    background:url('/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;*/
     position:relative;
     z-index:10000;
@@ -944,7 +944,7 @@ a.order-button:hover {
     margin-left: -8px;
     width: 0;
     height: 0;
-    border-bottom: 8px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 8px solid rgba(255, 255, 255, 0.28);
     border-right: 8px solid transparent;
     border-left: 8px solid transparent;
 }
