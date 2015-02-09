@@ -761,9 +761,13 @@
 #all-tweets a:hover {
     color: #ff585d;
 }
+#other-likes {
+    top: 100px;
+}
 #popup-other-likes {
     width: 450px;
-    height: 560px;
+    max-height: 560px;
+    height: auto;
     background: #fff;
 }
 #popup-other-likes .favour-user:before {
@@ -787,7 +791,8 @@
 }
 #popup-other-likes ul {
     overflow-y: scroll;
-    height: 498px;
+    height: auto;
+    max-height: 498px;
 }
 #popup-other-likes li {
     display: block;
@@ -806,7 +811,7 @@
 #popup-other-likes .other-header {
     padding: 21px 0 23px 20px;
     background: #f4f4f4;
-    font-family: OfficinaSansC Book, serif;
+    font-family: OfficinaSansC Bold, serif;
     color: #666666;
     font-size: 21px;
 }

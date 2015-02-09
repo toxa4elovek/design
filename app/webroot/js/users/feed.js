@@ -511,7 +511,11 @@ $(document).ready(function () {
         $('#popup-other-likes').modal({
             containerId: 'other-likes',
             opacity: 80,
-            closeClass: 'popup-close'
+            closeClass: 'popup-close',
+            onShow: function() {
+                $('#other-likes').css('top', '100px');
+                return true;
+            }
         });
         return false;
     });
