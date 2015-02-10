@@ -102,6 +102,8 @@
 
 </div><!-- .wrapper -->
 
+<?= $this->view()->render(array('element' => 'popups/request_sign')); ?>
+
 <div id="bridge" style="display:none;"></div>
 <?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'jquery.tooltip.js', 'requests/sign.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview'), array('inline' => false))?>
