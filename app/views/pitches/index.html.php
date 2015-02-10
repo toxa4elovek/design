@@ -261,11 +261,11 @@
                         if((($data['info']['page'] - 3) > 0) && ($data['info']['total'] > ($data['info']['page'] + 2))) {
                             $navBar .= '<a href="#" class="nav-page" rel="1">1</a>';
                             $navBar .= ' ... ';
-                            for($i = $data['info']['page'] - 1 ; i <= $data['info']['page'] + 1; $i++) {
+                            for($i = $data['info']['page'] - 1 ; $i <= $data['info']['page'] + 1; $i++) {
                                 if($data['info']['page'] == $i) {
                                     $navBar .= '<a href="#" class="this-page nav-page" rel="' . $i . '">' . $i . '</a>';
                                 }else {
-                                    $navBar .= '<a href="#" class="nav-page" rel="' . i . '">' . $i . '</a>';
+                                    $navBar .= '<a href="#" class="nav-page" rel="' . $i . '">' . $i . '</a>';
                                 }
                             }
                             $navBar .= ' ... ';
