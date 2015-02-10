@@ -1022,3 +1022,8 @@
 .who-likes a:hover {
     text-decoration: underline;
 }
+
+.sharebar {
+    left: 151px;
+    top: 13px;
+}

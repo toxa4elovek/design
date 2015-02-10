@@ -95,42 +95,29 @@
                                                 <p class="creator-name"><a target="_blank" href="http://www.godesigner.ru/users/view/<?= $solution->user_id ?>"><?= $solution->creator ?></a></p>
                                                 <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(http://www.godesigner.ru/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
                                                 <a data-id="<?= $solution->solution->id ?>" class="like-small-icon" href="#"><span><?= $solution->solution->likes ?></span></a>
-                                                <div class="sharebar" style="padding:0 0 4px !important;background:url('http://www.godesigner.ru/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;position:absolute;z-index:10000;display: none; left: 121px; top: 27px;height: 178px;width:288px;">
-                                                    <div class="tooltip-wrap" style="height: 140px; background: url(http://www.godesigner.ru/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">
-                                                        <div class="body" style="display: block;">
-                                                            <table  width="100%">
-                                                                <tr height="35">
-                                                                    <td width="137" valign="middle">
-                                                                        <a id="facebook<?= $solution->solution->id ?>" class="socialite facebook-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/<?= $solution->solution->id ?>" data-href="http://www.godesigner.ru/pitches/viewsolution/<?= $solution->solution->id ?>" data-send="false" data-layout="button_count">
-                                                                            Share on Facebook
-                                                                        </a>
-                                                                    </td>
-                                                                    <td width="137" valign="middle">
-                                                                        <?php
-                                                                        if (rand(1, 100) <= 50) {
-                                                                            $tweetLike = 'Мне нравится этот дизайн! А вам?';
-                                                                        } else {
-                                                                            $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
-                                                                        }
-                                                                        ?>
-                                                                        <a id="twitter<?= $solution->solution->id ?>" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/<?= $solution->solution->id ?>?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="<?php echo $tweetLike; ?>" data-lang="ru" data-hashtags="Go_Deer">
-                                                                            Share on Twitter
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr height="35">
-                                                                    <td valign="middle">
-                                                                        <a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent;">Share on Tumblr</a>
-
-                                                                    </td>
-                                                                    <td valign="middle">
-                                                                        <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F<?= $solution->solution->id ?>&media=<?= urlencode('http://www.godesigner.ru' . $this->solution->renderImageUrl($solution->solution->images['solution_solutionView'])) ?>&description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
+                                                <?php if((($solution->pitch->private != 1) && ($solution->pitch->category_id != 7))):
+                                                    if (rand(1, 100) <= 50) {
+                                                        $tweetLike = 'Мне нравится этот дизайн! А вам?';
+                                                    } else {
+                                                        $tweetLike = 'Из всех ' . $solution->pitch->ideas_count . ' мне нравится этот дизайн';
+                                                    }
+                                                    if(!isset($solution->solution->images['solution_galleryLargeSize'][0])):
+                                                        $url = 'http://www.godesigner.ru' . $solution->solution->images['solution_gallerySiteSize']['weburl'];
+                                                    else:
+                                                        $url = 'http://www.godesigner.ru' . $solution->solution->images['solution_gallerySiteSize'][0]['weburl'];
+                                                    endif;
+                                                    ?>
+                                                    <div class="sharebar" style="position: absolute; display: block; top: 40px; left: 165px;">
+                                                        <div class="tooltip-block">
+                                                            <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->solution->id?>" data-title="<?= $tweetLike ?>">
+                                                                <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
+                                                                <div class="twitter" data-via="Go_Deer">TWITT</div>
+                                                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте">SHARE</div>
+                                                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->solution->images['solution_solutionView'])?>">PIN</div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                <?php endif;?>
                                                 <span class="bottom_arrow">
                                                     <a href="#" class="solution-menu-toggle"><img src="http://www.godesigner.ru/img/marker5_2.png" alt=""></a>
                                                 </span>
@@ -594,8 +581,8 @@
                 <div class="popup-close"></div>
             </div>
 
-            <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'socialite.js', 'typeahead.jquery.min.js', 'bloodhound.min.js', 'users/feed.js', 'users/activation.js'), array('inline' => false)) ?>
-            <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css'), array('inline' => false)) ?>
+            <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'social-likes.min.js', 'typeahead.jquery.min.js', 'bloodhound.min.js', 'users/feed.js', 'users/activation.js'), array('inline' => false)) ?>
+            <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css', '/css/social-likes_flat'), array('inline' => false)) ?>
             <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
             <?= $this->view()->render(array('element' => 'popups/warning')) ?>
             <?= $this->view()->render(array('element' => 'moderation')) ?>

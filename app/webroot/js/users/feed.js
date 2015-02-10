@@ -40,6 +40,8 @@ function imageLoadError(image) {
 
 $(document).ready(function () {
 
+    $('.social-likes').socialLikes();
+
     $('input[name="gender"]').on('change', function () {
         $.post('http://www.godesigner.ru/users/gender/' + $('#user_id').val() + '.json', {gender: $(this).attr('id')}, function (response) {
         });
@@ -226,6 +228,11 @@ $(document).ready(function () {
          $('body').one('click', function () {
          $('.sharebar').fadeOut(300);
          });*/
+        sharebar.fadeIn(300);
+        $('body').one('click', function () {
+            sharebar.fadeOut(300);
+        });
+
         if (($.inArray($(this).data('id'), clickedLikesList) == -1) && (this_user != '')) {
             likesNum.html(parseInt(likesNum.html()) + 1);
             clickedLikesList.push($(this).data('id'));
