@@ -67,7 +67,7 @@ class News extends \app\models\AppModel {
     }
 
     public static function getBanner() {
-        return self::first(array('conditions' => array('isBanner' => 1), 'order' => array('created' => 'desc')));
+        return self::first(array('conditions' => array('isBanner' => 1, 'hidden' => 0), 'order' => array('created' => 'desc')));
     }
 
     public static function resize($file) {
@@ -119,7 +119,7 @@ class News extends \app\models\AppModel {
         }
         $userId = (int) $userId;
         $allowUser = false;
-        if ($userId && (!$like = Like::find('first', array('conditions' => array('news_id' => $solutionId, 'user_id' => $userId))))) {
+        if ($userId && (!$like = Like::find('first', array('conditions' => array('news_id' => $newsId, 'user_id' => $userId))))) {
             $allowUser = true;
         }
         if ($allowUser) {

@@ -56,16 +56,20 @@ $(document).ready(function () {
     });
     $('.close-gender').on('click', function () {
         $(this).parent().parent().hide();
+        var bannerid = $(this).data('bannerid');
         if (!isAdmin) {
             $('.new-content').css({'margin-top': '70px'});
-        }
-        var bannerid = $(this).data('bannerid');
-        if (typeof bannerid !== typeof undefined && bannerid !== false) {
-            var now = new Date();
-            var time = now.getTime();
-            time += 3600 * 1000 * 24 * 30 * 6;
-            now.setTime(time);
-            document.cookie = 'closedbanner' + bannerid + '=1; expires=' + now.toUTCString() + '; path=/';
+            if (typeof bannerid !== typeof undefined && bannerid !== false) {
+                var now = new Date();
+                var time = now.getTime();
+                time += 3600 * 1000 * 24 * 30 * 6;
+                now.setTime(time);
+                document.cookie = 'closedbanner' + bannerid + '=1; expires=' + now.toUTCString() + '; path=/';
+            }
+        }else {
+            $.post('http://www.godesigner.ru/news/hide/' + bannerid + '.json', function(response) {
+                console.log(response);
+            })
         }
     });
     $('.img-box').hover(function () {
