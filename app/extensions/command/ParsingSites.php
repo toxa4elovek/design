@@ -9,10 +9,14 @@ use \app\models\Event;
 
 class ParsingSites extends \app\extensions\command\CronJob {
 
+    public static $debug = false;
+
     public function run() {
         // На случай долгих таймаутов
         set_time_limit(120);
         $startTimeStamp = time();
+        //self::$debug = true;
+
         $this->header('Welcome to the ParsingSites command!');
 
         $this->out("Starting parsing godesigner.ru");
@@ -100,6 +104,13 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing hel-looks.com");
         self::hel_looks();
         $this->out('Finished parsing hel-looks.com [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing monsterchildren");
+        self::ParsingWordpress('http://www.monsterchildren.com/feed/');
+
+        $this->out('Finished parsing monsterchildren [' . (time() - $startTimeStamp) . ' sec]');
+
+        //self::ParsingWordpress('http://illusion.scene360.com/feed/');
 
         $this->out("Starting fixing tags");
         self::fixTags();
@@ -292,9 +303,13 @@ class ParsingSites extends \app\extensions\command\CronJob {
                         'link' => $item->link,
                         'imageurl' => $image
                     ));
-                    $news->save();
-                    if ($event) {
-                        Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                    if(self::$debug == false) {
+                        $news->save();
+                        if ($event) {
+                            Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                        }
+                    }else {
+                        var_dump($news->data());
                     }
                 }
             }
