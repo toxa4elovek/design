@@ -20,73 +20,6 @@
                 <div style="width:200px">
                     <?php echo $this->stream->renderStream(3);?>
                 </div>
-                <div class="block">
-                    <!--div class="blocktitle">Текущие питчи</div>
-                    <div id="block2">
-                        <div id="block2content">
-                            <div class="block2pitch" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"><img src="/img/pitch-lock.png" alt="Some text"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                            <div class="block2pitchdark" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                            <div class="block2pitch" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"><img src="/img/pitch-dialog.png" alt="Some text"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                            <div class="block2pitchdark" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"><img src="/img/pitch-medal.png" alt="Some text"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                            <div class="block2pitch" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                            <div class="block2pitchdark" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"></div>
-                                <div class="block2pitchdate">3 часа 25 мин</div>
-                                <div class="block2pitchprice">25000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль, баннер, сайт, футболка</div>
-                            </div>
-                            <div class="block2pitch" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                            <div class="block2pitchdark" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                            <div class="block2pitch" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                            <div class="block2pitchdark" onclick="document.location.href = '#'">
-                                <div class="block2pitchpic"></div>
-                                <div class="block2pitchdate">21.11.11</div>
-                                <div class="block2pitchprice">21000 Р.-</div>
-                                <div class="block2pitchdescr">Лого для ООО "Громпушка", фирменный стиль</div>
-                            </div>
-                        </div>
-                    </div-->
-                </div>
             </div>
             <section class="mainblock">
                 <form action="/users/profile" method="post">
@@ -95,10 +28,7 @@
                         <input type="hidden" name="userpic" value="">
                         <div class="photoselectbox qq-uploader" style="height:196px;width:196px;">
 
-
                             <?=$this->avatar->show($user->data(), 'true')?>
-
-
 
                         </div>
                         <span style="display: none;position:absolute;top:396px;left:79px; width:118px;" id="file-uploader-demo1"></span>
@@ -120,18 +50,6 @@
                             <button id="profselect3" class="changeStatus <?php if($user->isCopy): echo 'profselectbtnpressed'; endif; ?>" name="iscopyrighter" value="false" >Я - КОПИРАЙТЕР</button>
                         </div>
                     </section>
-                    <!--section>
-                        <h1 class="separator">ЗАКРЫТАЯ ИНФОРМАЦИЯ</h1>
-                        <div id="fieldblock2">
-                            <div class="fieldleft"><input placeholder="Имя"></div>
-                            <div><input placeholder="Фамилия"></div>
-                            <div class="fieldwide"><input placeholder="Адрес"></div>
-                            <div class="fieldleft"><input placeholder="Страна"></div>
-                            <div><input placeholder="Индекс"></div>
-                            <div class="fieldleft"><input placeholder="Телефон"></div>
-                            <div><input placeholder="Вэб-сайт"></div>
-                        </div>
-                    </section-->
                     <section style="height: 230px;">
                         <h1 class="separator-flag">НАСТРОЙКИ</h1>
                         <div id="fieldblock3">
@@ -155,38 +73,48 @@
                     <section>
                         <h1 class="separator-flag">УВЕДОМЛЕНИЯ ПО E-MAIL</h1>
                         <div id="fieldblock4">
-                            <!--div class="fieldleft"><label><input type="checkbox" name="asas">важные изменения на сайте</label></div-->
+                            <?php
+                                $labels = array(
+                                    'client' => array('email_newcomments' => 'комментарии к моим проектам'),
+                                    'other' => array('email_newcomments' => 'комментарии к моим решениям'),
+                                );
+                                if($user->isClient) {
+                                    $email_newcomments = $labels['client']['email_newcomments'];
+                                }else {
+                                    $email_newcomments = $labels['other']['email_newcomments'];
+                                }
+                            ?>
                             <ul>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых питчах раз в день
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых проектах раз в день
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых питчах сразу, как они<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;публикуются на сайте
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых проектах сразу, как они<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;публикуются на сайте
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_onlycopy" <?php if($user->email_onlycopy): echo 'checked'; endif;?>>только о новых питчах на копирайтинг
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_onlycopy" <?php if($user->email_onlycopy): echo 'checked'; endif;?>>только о новых проектах на копирайтинг
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>>комментарии к моим решениям
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>><?= $email_newcomments?>
                                     </label>
                                 </li>
                             </ul>
                             <ul>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;раз в день
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моим проектам<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;раз в день
                                     </label>
                                 </li>
                                 <li>
                                     <label class="regular" style="font-weight: normal">
-                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моему питчу<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сразу, как только их выкладывают на<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сайт
+                                        <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моим проектам<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сразу, как только их выкладывают на<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;сайт
                                     </label>
                                 </li>
                                 <li>
