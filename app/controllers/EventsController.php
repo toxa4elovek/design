@@ -146,6 +146,7 @@ class EventsController extends \app\controllers\AppController {
             if ($result = $news->save()) {
                 if (!$news->isBanner) {
                     Event::createEventNewsAdded($news->id, 0, $news->created);
+                    $result = Event::first(array('conditions' => array('news_id' => $news->id)));
                 }
             }
         }

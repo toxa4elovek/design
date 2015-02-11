@@ -68,7 +68,6 @@ $(document).ready(function () {
             }
         }else {
             $.post('http://www.godesigner.ru/news/hide/' + bannerid + '.json', function(response) {
-                console.log(response);
             })
         }
     });
@@ -733,6 +732,7 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false,
                 success: function (result) {
+                    console.log(result.result);
                     if (result.result == true) {
                         button.text('Сохранено!');
                         $('#news-add input[name="news-title"]').val('');
@@ -744,6 +744,20 @@ $(document).ready(function () {
                         $('#previewImage').empty();
                     } else if (result.result == false) {
                         button.text('Ошибка');
+                    } else if (typeof(result.result.news) != 'undefined') {
+                        button.text('Сохранено!');
+                        $('#news-add input[name="news-title"]').val('');
+                        $('#news-add input[name="news-link"]').val('');
+                        $('#news-add textarea[name="news-description"]').val('');
+                        $('#news-add #news-add-tag').val('');
+                        fd = new FormData();
+                        $('#previewImage').empty();
+                        html = Updater.addNews(result.result);
+                        var $prependEl = $(html);
+                        $prependEl.css('margin-top', '0');
+                        $prependEl.hide();
+                        $prependEl.prependTo('#updates-box-').slideDown('slow');
+                        $('time.timeago').timeago();
                     }
                     $('#news-add').toggle('fast');
                     $('#news-add-separator').toggle('fast');
@@ -825,7 +839,6 @@ function OfficeStatusUpdater() {
                 $.get('http://www.godesigner.ru/events/autolikes.json', {"created": self.likesdate}, function (response) {
                     self.likesdate = response.newLatestDate;
                     $.each(response.events, function(index, object) {
-                        console.log('looking for ' + object.news_id)
                         if(this_user == object.user.id) {
                             return false;
                         }
@@ -1368,7 +1381,6 @@ function OfficeStatusUpdater() {
             this.addFavUserAdded = function(object) {
                 var html = '';
                 if(typeof(object.user.images.avatar_small) == 'undefined') {
-                    console.log(object.user.isAdmin);
                     if(object.user.isAdmin == '1') {
                         var avatar = 'http://www.godesigner.ru/img/icon_57.png';
                     }else {
@@ -1378,7 +1390,6 @@ function OfficeStatusUpdater() {
                     var avatar = object.user.images.avatar_small.weburl;
                 }
                 if(typeof(object.user_fav.images.avatar_small) == 'undefined') {
-                    console.log(object.user.isAdmin)
                     if(object.user_fav.isAdmin == '1') {
                         var avatar = 'http://www.godesigner.ru/img/icon_57.png';
                     }else {
