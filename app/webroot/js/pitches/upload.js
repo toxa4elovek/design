@@ -229,6 +229,7 @@ $(document).ready(function () {
         dataType: 'html',
         dropZone: $('.upload-dropzone'),
         add: function (e, data) {
+            $('.upload-dropzone-wrapper').css('border', '');
             setTimeout(function () {
                 addCallback();
             }, 200);
@@ -322,17 +323,31 @@ $(document).ready(function () {
         'centerOnScroll': true  // as MattBall already said, remove the comma
     });
 
+    $(document).on('focus', '.wrong-input', function () {
+        $(this).removeClass('wrong-input');
+    });
+
+    $(document).on('focus', '.error-searhTerm', function () {
+        $(this).removeClass('error-searhTerm');
+    });
+
     $('#uploadSolution').click(function () {
         //return false;
-        /*if ($('#filterbox').children().length < 5) {
-         $('#filterContainer').addClass('error-searhTerm');
-         alert('Вы не указали 5 тегов');
-         return false;
-         }*/
+
         if ($('.uploadable-wrapper', '.upload-dropzone').length == 0) {
-            alert('Вы не выбрали файл для загрузки!');
+            var offset = $('.upload-dropzone').offset();
+            $('.upload-dropzone-wrapper').css('border', '1px solid red');
+            $.scrollTo(offset.top - 30, {duration: 600});
             return false;
         }
+
+        if ($('#filterbox').children().length < 5) {
+            $('#filterContainer').addClass('error-searhTerm');
+            var offset = $('#searchTerm').offset()
+            $.scrollTo(offset.top - 30, {duration: 600});
+            return false;
+        }
+
         $('#reSortable').val(reSortable);
         // Check if copyrighted material not empty
         if (($('input[name=licensed_work][value=1]').prop('checked')) && isAddressEmpty()) {
@@ -340,9 +355,32 @@ $(document).ready(function () {
             return false;
         }
 
-        if (($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length
-                == 0) && ($('#filename').html() != 'Файл не выбран')) {
+        if(($('input[type=radio]:checked').length
+            == 0)) {
             $('a[href="#invalid"]').click();
+        }
+
+        $('#close_tos').on('click', function() {
+            $('.mobile-close').click();
+            return false;
+        })
+
+        $('#agree').on('click', function() {
+            $('.mobile-close').click();
+            $('input[name=tos]').prop('checked', 'checked');
+            $('#uploadSolution').click();
+            return false;
+        })
+
+        if (($('input[name=tos]').attr('checked') != 'checked') && ($('#filename').html() != 'Файл не выбран')) {
+            $('#popup-need-agree-tos').modal({
+                containerId: 'spinner',
+                opacity: 80,
+                closeClass: 'mobile-close',
+                onShow: function () {
+                    $('#popup-need-agree-tos').fadeTo(600, 1);
+                }
+            });
         } else {
             var job = [];
             $.each($('#filterbox').children(), function (i, v) {
@@ -393,6 +431,7 @@ function isAddressEmpty() {
     var res = false;
     $('input[name^=source]').each(function () {
         if ($(this).val() == '' || $(this).val() == 'http://') {
+            $(this).addClass('wrong-input');
             res = true;
             return false;
         }
