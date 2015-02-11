@@ -55,7 +55,9 @@
                     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
                     <form id="quiz_form" action="/questions/validate" method="post">
                     <ol>
-                    <?php foreach ($questions as $question):?>
+                    <?php
+                    $i = 1;
+                    foreach ($questions as $question):?>
                         <li>
                             <h2><?=$question['title'];?></h2>
                             <?php foreach ($question['variants'] as $variant): ?>
@@ -65,7 +67,12 @@
                                 </label>
                             <?php endforeach; ?>
                         </li>
-                    <?php endforeach?>
+                    <?php
+                        if($i >= $limit):
+                            break;
+                        endif;
+                        $i++;
+                    endforeach?>
                     </ol>
                     <input type="submit" class="button quiz_submit" value="Отправить">
                     </form>
