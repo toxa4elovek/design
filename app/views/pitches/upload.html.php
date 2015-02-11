@@ -45,7 +45,7 @@ $job_types = array(
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:0;"></li>
                     </ul>
                     <p class="output-p">
-                        <label class="greyboldheader">Укажите 5 тегов, которые описывают логотип <a title="" class="second" href="#">(?)</a></label>
+                        <label class="greyboldheader">Укажите 5 тегов, которые описывают логотип <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('tooltipClass' => "tooltip3")) ?></label>
                     </p>
                     <div id="filterContainer">
                         <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
@@ -69,7 +69,7 @@ $job_types = array(
                     <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
                     <div class="group">
                         <p>
-                            <label class="greyboldheader">Опишите идею <a title="" class="second" href="#">(?)</a></label>
+                            <label class="greyboldheader">Опишите идею</label>
                             <textarea id="charzone" class="upload-textarea" name="description"></textarea>
                         </p>
                     </div>
@@ -156,7 +156,8 @@ $job_types = array(
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
+<?= $this->view()->render(array('element' => 'popups/brief_tos')); ?>
 
-<?= $this->html->script(array('jquery-ui-1.8.23.custom.min.js', 'typeahead.jquery.min.js', 'bloodhound.min.js', 'jquery.keyboard.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false)) ?>
+<?= $this->html->script(array('jquery-ui-1.8.23.custom.min.js', 'typeahead.jquery.min.js', 'bloodhound.min.js', 'jquery.keyboard.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'jquery.scrollto.min.js','fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false)) ?>
 <?=
 $this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/upload', '/jquery.fancybox-1.3.4.css'), array('inline' => false))?>
