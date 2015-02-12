@@ -1436,7 +1436,7 @@ function OfficeStatusUpdater() {
 
                 if(validUrl) {
                     html += '<p class="img-box"> \
-                                    <a class="post-link" href="' + object.news.link + '" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="' + img + '></a> \
+                                    <a class="post-link" href="' + object.news.link + '"><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
                                 </p>'
                 }
                 html +='<div class="r-content post-content"' + style + '>';
