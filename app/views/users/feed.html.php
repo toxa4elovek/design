@@ -107,7 +107,7 @@
                                                         $url = 'http://www.godesigner.ru' . $solution->solution->images['solution_gallerySiteSize'][0]['weburl'];
                                                     endif;
                                                     ?>
-                                                    <div class="sharebar" style="position: absolute; display: block; top: 40px; left: 165px;">
+                                                    <div class="sharebar" style="position: absolute; display: none; top: 40px; left: 165px;">
                                                         <div class="tooltip-block">
                                                             <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->solution->id?>" data-title="<?= $tweetLike ?>">
                                                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
@@ -370,7 +370,7 @@
                                             <div class="box" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($object['news']['imageurl'])): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                                 <?php if($isValidImage($object['news']['imageurl'])):?>
                                                 <p class="img-box">
-                                                    <a class="post-link" href="<?= $object['news']['link'] ?>"><img onerror="imageLoadError(this);" class="img-post" src="<?= (strpos($object['news']['imageurl'],'/events/') !== false) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
+                                                    <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= (strpos($object['news']['imageurl'],'/events/') !== false) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
                                                 </p>
                                                 <?php endif?>
                                                 <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>

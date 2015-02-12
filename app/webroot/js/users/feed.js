@@ -925,7 +925,7 @@ function OfficeStatusUpdater() {
                             var img = (response.post.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' : response.post.imageurl;
                             var $prependEl = $('<div class="box" data-eventid="' + response.id + '"> \
                                 <p class="img-box"> \
-                                    <a class="post-link" href="http://www.godesigner.ru/users/click?link=' + response.post.link + '&id=' + response.post.id + '"><img class="img-post" src="' + img + '"></a> \
+                                    <a class="post-link" href="http://www.godesigner.ru/users/click?link=' + response.post.link + '&id=' + response.post.id + '" target="_blank"><img class="img-post" src="' + img + '"></a> \
                                 </p> \
                                 <div class="r-content post-content"> \
                                     <p class="img-tag">' + response.post.tags + '</p> \
@@ -1436,7 +1436,7 @@ function OfficeStatusUpdater() {
 
                 if(validUrl) {
                     html += '<p class="img-box"> \
-                                    <a class="post-link" href="' + object.news.link + '"><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
+                                    <a class="post-link" href="' + object.news.link + '" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="' + img + '></a> \
                                 </p>'
                 }
                 html +='<div class="r-content post-content"' + style + '>';
