@@ -1,9 +1,5 @@
 $(document).ready(function() {
 
-    //vk like
-    VK.init({apiId: 2950889, onlyWidgets: true});
-    VK.Widgets.Like("vk_like", {type: "mini"});
-
     function preload(arrayOfImages) {
         $(arrayOfImages).each(function(){
             $('<img/>')[0].src = this;
@@ -14,15 +10,6 @@ $(document).ready(function() {
     if(typeof(fileSet) != 'undefined') {
         preload(fileSet);
     }
-
-    // gplus
-    window.___gcfg = {lang: 'ru'};
-
-    (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-    })();
 
     var editcommentflag = false;
 
@@ -545,11 +532,7 @@ $(document).ready(function() {
             }
             
             enableToolbar();
-            Socialite.load($('.solution-share'), [
-                                                  $('#facebook' + result.solution.id)[0],
-                                                  $('#twitter' + result.solution.id)[0]
-                                              ]);
-
+            $('.social-likes').socialLikes();
         });
     }
     
