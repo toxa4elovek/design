@@ -208,6 +208,10 @@ $(document).ready(function () {
         }
     });
 
+    $('.social-likes__button').on('click', function() {
+        $(this).closest('.sharebar').fadeOut(300);
+    })
+
     // Delete Solution
     $(document).on('click', '.delete-solution', function () {
         var num = $(this).data('solution_num');
@@ -310,18 +314,11 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.like-small-icon', function () {
-
         var likesNum = $(this).next();
         var likeLink = $(this);
         likesNum.html(parseInt(likesNum.html()));
         var sharebar = likesNum.next();
         var solutionId = $(this).data('id');
-        console.log($(this).next().next());
-        console.log($(this).next().next().length)
-        Socialite.load($(this).next().next(), [
-            $('#facebook' + solutionId)[0],
-            $('#twitter' + solutionId)[0]
-        ]);
         $('body').one('click', function () {
             $('.sharebar').fadeOut(300);
         });

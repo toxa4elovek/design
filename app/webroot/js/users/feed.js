@@ -217,6 +217,10 @@ $(document).ready(function () {
         return false;
     })
 
+    $('.social-likes__button').on('click', function() {
+        $(this).closest('.sharebar').fadeOut(300);
+    })
+
     $(document).on('click', '.like-small-icon', function () {
         var likesNum = $(this).children();
         var likeLink = $(this).next();
