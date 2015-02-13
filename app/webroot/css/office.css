@@ -295,6 +295,7 @@
     background: #fff;
     color: #2d2d2d;
     border: #e3e4e5 1px solid;
+    position: relative;
 }
 
 .center-boxes .box .l-img {
@@ -386,6 +387,10 @@
     display: table-cell;
 }
 
+.center-boxes .box .social-likes div {
+    float: left;
+}
+
 .center-boxes .box p.img-box {
     overflow: hidden;
     max-height: 420px;
@@ -430,12 +435,16 @@
     padding-bottom: 5px;
     margin-top: 8px;
     margin-bottom: 2px;
+    position: relative;
 /*    border-bottom: 1px solid #ededed;*/
 }
 
 .center-boxes .box .box-info a,
 .center-boxes .box .box-info span {
     color: #f86362;
+}
+.center-boxes .box .sharebar span {
+    color: #ffffff;
 }
 
 .like-small-icon-box {

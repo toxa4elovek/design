@@ -151,13 +151,17 @@ class UsersController extends \app\controllers\AppController {
           }
           $middlePost->allowLike = $allowLike;
           } */
+        $shareEvent = null;
+        if((isset($this->request->query['event'])) && (is_numeric($this->request->query['event']))) {
+            $shareEvent = Event::first($this->request->query['event']);
+        }
         $news = News::getNews();
         $solutions = Event::getEventSolutions(Session::read('user.id'));
         $updates = Event::getEvents($pitchIds, 1, null, Session::read('user.id'));
         $nextUpdates = count(Event::getEvents($pitchIds, 2, null, Session::read('user.id')));
         $banner = News::getBanner();
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner');
+            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent');
         } else {
             return $this->render(array('layout' => false, 'data' => compact('date', 'updates', 'nextUpdates', 'pitches')));
         }

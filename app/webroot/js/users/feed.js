@@ -261,6 +261,16 @@ $(document).ready(function () {
         }
         return false;
     });
+
+    $(document).on('click', '.share-news-center', function() {
+        var sharebar = $(this).next();
+        sharebar.fadeIn(300);
+        $('body').one('click', function () {
+            sharebar.fadeOut(300);
+        });
+        return false;
+    })
+
     $(document).on('click', '.like-small-icon-box', function () {
         var link = $(this),
                 link_parent = link.parent(),

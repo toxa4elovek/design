@@ -208,6 +208,103 @@
                             <div id="center_sidebar">
                                 <div class="center-boxes" id="updates-box-">
                                     <?php
+                                    if (($shareEvent) && ($shareEvent->type == 'newsAdded')):
+                                    $object = $shareEvent->data();
+                                    $isValidImage = function($url){
+                                    if(empty($url)):
+                                    return false;
+                                    endif;
+                                    return true;
+                                    }
+                                    ?>
+                                    <div class="box" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($object['news']['imageurl'])): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
+                                        <?php if($isValidImage($object['news']['imageurl'])):?>
+                                            <p class="img-box">
+                                                <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= (strpos($object['news']['imageurl'],'/events/') !== false) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
+                                            </p>
+                                        <?php endif?>
+                                        <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
+                                            <?php if ($object['news']['tags']): ?>
+                                                <p class="img-tag"><?= $object['news']['tags'] ?></p>
+                                            <?php endif; ?>
+                                            <a class="img-post" href="<?= $object['news']['link'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
+                                            <p class="img-short"><?php echo $object['news']['short'] ?></p>
+                                            <p class="timeago">
+                                                <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
+                                            </p>
+                                        </div>
+                                        <?php if($this->user->getId()):?>
+                                            <div class="box-info" style="margin-top: 0;">
+                                                <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                                <span>·</span>
+                                                <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
+                                                <?php
+                                                $tweetLike = $object['news']['title'];
+                                                $url = 'http://www.godesigner.ru/users/feed?event=' . $object['id'];
+                                                ?>
+                                                <div class="sharebar" style="position: absolute; display: none; top: 30px; left: 120px;">
+                                                    <div class="tooltip-block">
+                                                        <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/users/feed?event=<?= $object['id']?>" data-title="<?= $tweetLike ?>">
+                                                            <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="http://www.godesigner.ru/users/feed?event=<?= $object['id']?>">SHARE</div>
+                                                            <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div>
+                                                            <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-url="http://www.godesigner.ru/users/feed?event=<?= $object['id']?>">SHARE</div>
+                                                            <?php if($isValidImage($object['news']['imageurl'])):?>
+                                                            <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="http://www.godesigner.ru/users/feed?event=<?= $object['id']?>" data-media="<?= $object['news']['imageurl']?>">PIN</div>
+                                                            <?php endif?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php if($this->user->isAdmin()):?>
+                                                    <span>·</span>
+                                                    <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>
+                                                <?php endif?>
+                                            </div>
+                                        <?php endif?>
+                                        <div data-id="<?= $object['news']['id'] ?>" class="likes">
+                                            <?php
+                                            $likes_count = 0;
+                                            $html_likes = '';
+                                            $likes = (int) $object['news']['liked'];
+                                            if ($likes) {
+                                                foreach ($object['news']['likes'] as $like) {
+                                                    ++$likes_count;
+                                                    if ($likes > 4) {
+                                                        if ($likes_count == 1) {
+                                                            $html_likes .= '<span class="who-likes">';
+                                                        }
+                                                        if ($likes_count == 4) {
+                                                            $other = $likes - $likes_count;
+                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
+                                                                      и <a class="show-other-likes" data-solid="' . $object['news']['id'] . '" href="#">' . $other . ' других</a> <span>лайкнули новость</span></span>';
+                                                            break;
+                                                        } else {
+                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                        }
+                                                    } elseif (($likes >= 2) && ($likes <= 4)) {
+                                                        if ($likes_count == 1) {
+                                                            $html_likes .= '<span class="who-likes">';
+                                                        }
+                                                        if ($likes_count != $likes) {
+                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                        }
+                                                        if ($likes_count == $likes) {
+                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
+                                                            $html_likes .= ' <span>лайкнули новость</span></span>';
+                                                        }
+                                                    } elseif ($likes < 2) {
+                                                        $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
+                                                    }
+                                                }
+                                            }
+                                            echo $html_likes;
+                                            ?>
+                                        </div>
+                                    </div>
+<?php endif ?>
+
+
+
+                                    <?php
                                     $html = '';
                                     $dateEvent = '';
                                     $count = 0;
