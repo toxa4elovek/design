@@ -25,6 +25,8 @@ class Comment extends \app\models\AppModel {
         self::applyFilter('save', function($self, $params, $chain){
             if(($params['entity']->data()) && (isset($params['entity']->id) && $params['entity']->id > 0) && (isset($params['entity']->text))) {
                 $comment = $params['entity'];
+                $cacheKey = 'commentsraw_' . $comment->pitch_id;
+                Rcache::delete($cacheKey);
                 if($original = Comment::first($comment->id)) {
                     $comment = $params['entity'];
                     $historyArchive = $comment->history;
@@ -71,7 +73,7 @@ class Comment extends \app\models\AppModel {
 
 			if($params) {
 				Event::createEvent($params['pitch_id'], 'CommentAdded', $params['user_id'], $params['solution_id'], $params['id']);
-			    $cacheKey = 'commentlistfull_' . $params['pitch_id'];
+			    $cacheKey = 'commentsraw_' . $params['pitch_id'];
                 Rcache::delete($cacheKey);
             }
             preg_match_all('@(#\d*).@', $params['text'], $matches);

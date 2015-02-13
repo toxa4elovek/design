@@ -1182,7 +1182,7 @@ class User extends \app\models\AppModel {
                     'with' => array('Pitch'),
         ));
         foreach ($comments as $comment) {
-            $cacheKey = 'commentlistfull_' . $comment->pitch_id;
+            $cacheKey = 'commentsraw_' . $comment->pitch_id;
             Rcache::delete($cacheKey);
             $comment->delete();
         }

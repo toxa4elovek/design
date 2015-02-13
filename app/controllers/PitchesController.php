@@ -846,8 +846,8 @@ class PitchesController extends \app\controllers\AppController {
             $experts = Expert::getExperts();
 
             // Fetch Top Level Comments
-            $cacheKey = 'commentlistfull_' . $pitch->id;
-            if(!$comments = Rcache::read($cacheKey)) {
+            $cacheKey = 'commentsraw_' . $pitch->id;
+            if(!$commentsRaw = Rcache::read($cacheKey)) {
                 $commentsRaw = Comment::all(array(
                             'conditions' => array(
                                 'pitch_id' => $pitch->id,
@@ -855,9 +855,10 @@ class PitchesController extends \app\controllers\AppController {
                             ),
                             'order' => array('Comment.id' => 'desc'),
                             'with' => array('User')));
-                $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
-                Rcache::write($cacheKey, $comments, array(), '+4 hours');
+                Rcache::write($cacheKey, $commentsRaw, array(), '+4 hours');
             }
+            $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
+
             return compact('comments', 'experts', 'pitch');
         } else {
             return false;
