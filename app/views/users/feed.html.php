@@ -227,7 +227,7 @@
                                             <?php if ($object['news']['tags']): ?>
                                                 <p class="img-tag"><?= $object['news']['tags'] ?></p>
                                             <?php endif; ?>
-                                            <a class="img-post" href="<?= $object['news']['link'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
+                                            <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
                                             <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                             <p class="timeago">
                                                 <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
@@ -474,7 +474,7 @@
                                                     <?php if ($object['news']['tags']): ?>
                                                         <p class="img-tag"><?= $object['news']['tags'] ?></p>
                                                     <?php endif; ?>
-                                                    <a class="img-post" href="<?= $object['news']['link'] ?>"><h2><?= $object['news']['title'] ?></h2></a>
+                                                    <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
                                                     <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                                     <p class="timeago">
                                                         <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
