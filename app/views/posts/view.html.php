@@ -29,8 +29,8 @@
                                     <div style="margin-top: -20px;" class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/posts/view/<?=$post->id?>">
                                         <div style="margin: 7px 0 0 9px;" class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                         <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
-                                        <div style="margin: 7px 0 0 7px;" class="vkontakte" title="Поделиться ссылкой во Вконтакте">SHARE</div>
-                                        <div style="margin: 7px 0 0 7px;" class="pinterest" title="Поделиться картинкой на Пинтересте">PIN</div>
+                                        <div style="margin: 7px 0 0 7px;" class="vkontakte" data-image="<?=$post->imageurl?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>
+                                        <div style="margin: 7px 0 0 7px;" class="pinterest" data-media="<?=$post->imageurl?>" title="Поделиться картинкой на Пинтересте">PIN</div>
                                     </div>
                                     <div style="clear:both;width:300px;height:1px;"></div>
                                 </div>
