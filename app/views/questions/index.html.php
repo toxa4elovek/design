@@ -28,27 +28,17 @@
                     <a href="#" class="button" onclick="window.history.back();return false;">Отказаться от теста</a>
 
                     <div class="share-this" style="margin-top: -20px;">
-                        <div style="">
-                            <?php $shareImage = 'http://www.godesigner.ru/img/icon_512.png'; ?>
-                            <div style="float:left;height:20px;margin-right: 20px;">
-                                <a href="#" class="post-to-facebook" data-share-text="Тест на знание основ графического дизайна" data-share-image="<?php echo $shareImage; ?>"><img src="/img/fb-test-share.png" alt=""></a>
+                        <?php $shareImage = 'http://www.godesigner.ru/img/icon_512.png'; ?>
+                        <div style="margin-top: -5px; margin-bottom: 20px;">
+                            <div class="social-likes" data-counters="no" data-title="Узнай, какой ты дизайнер на самом деле" data-url="http://www.godesigner.ru/questions/index">
+                                <div style="margin: 7px 0 0 9px;" class="facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
+                                <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
+                                <div style="margin: 7px 0 0 7px;" class="vkontakte" data-image="<?=$shareImage ?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>
+                                <div style="margin: 7px 0 0 7px;" class="pinterest" data-media="<?=$shareImage ?>" title="Поделиться картинкой на Пинтересте">PIN</div>
                             </div>
-
-                            <div style="float:left;height:20px;margin-right: 20px;">
-                                <div class="vk_share_button" style="display: inline-block;" data-share-text="Тест на знание основ графического дизайна" data-share-image="<?php echo $shareImage; ?>"></div>
-                            </div>
-
-                            <div style="float:left;height:20px;margin-right: 20px;">
-                                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.godesigner.ru/questions/index" data-text="Узнай, какой ты дизайнер на самом деле" data-lang="en" data-hashtags="Go_Deer" data-count="none">Tweet</a>
-                                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                            </div>
-
-                            <div style="float:left;height:20px;margin-right: 5px;">
-                                <a href="//ru.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fquestions%2Findex&amp;media=<?php echo urlencode($shareImage); ?>&amp;description=<?php echo urlencode('Узнай, какой ты дизайнер на самом деле'); ?>" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" alt=""/></a>
-                            </div>
-
                             <div style="clear:both;width:300px;height:1px;"></div>
                         </div>
+
                     </div>
                 </section>
                 <section class="nicht" style="display: none; position: relative;">
@@ -88,7 +78,5 @@
 
 </div><!-- .wrapper -->
 <div class="onTop">&nbsp;</div>
-<script defer="defer" src="//assets.pinterest.com/js/pinit.js" data-pin-build="parsePins"></script>
-<script type="text/javascript" id="share-vk" src="http://vk.com/js/api/share.js?90"></script>
-<?=$this->html->script(array('jquery.scrollto.min.js', 'questions/index'), array('inline' => false))?>
-<?=$this->html->style(array('/questions'), array('inline' => false))?>
+<?=$this->html->script(array('jquery.scrollto.min.js', 'questions/index', 'social-likes.min.js'), array('inline' => false))?>
+<?=$this->html->style(array('/questions', '/css/social-likes_flat'), array('inline' => false))?>
