@@ -315,7 +315,7 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.share-news-center', function() {
-        var sharebar = $(this).next();
+        var sharebar = $(this).siblings('.sharebar');
         sharebar.fadeIn(300);
         $('body').one('click', function () {
             sharebar.fadeOut(300);
@@ -1483,10 +1483,14 @@ function OfficeStatusUpdater() {
                 }
                 html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>';
                 html += '<span>·</span>';
-                html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>';
                 var shareTitle = object.news.title;
                 var url = 'http://www.godesigner.ru/news?event=' + object.id;
-                html += '<div class="sharebar" style="position: absolute; display: none; top: 30px; left: 120px;"> \
+                if(this_user != '') {
+                    var left = '120px';
+                }else {
+                    var left = '50px';
+                }
+                html += '<div class="sharebar" style="position: absolute; display: none; top: 30px; left: ' + left + ';"> \
                     <div class="tooltip-block"> \
                     <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
                     <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
@@ -1498,6 +1502,7 @@ function OfficeStatusUpdater() {
                 html += '</div> \
                     </div> \
                     </div>';
+                html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>';
                 if(isAdmin) {
                     html += '<span>·</span>';
                     html += '<a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';

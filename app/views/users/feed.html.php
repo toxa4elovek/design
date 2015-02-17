@@ -488,13 +488,11 @@
                                                     <span>·</span>
                                                     <?php endif?>
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
-                                                    <span>·</span>
-                                                    <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>
                                                     <?php
                                                     $tweetLike = $object['news']['title'];
                                                     $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
                                                     ?>
-                                                    <div class="sharebar" style="position: absolute; display: none; top: 30px; left: 120px;">
+                                                    <div class="sharebar" style="position: absolute; display: none; top: 30px;<?php if($this->user->getId()):?> left: 120px; <?php else:?> left : 50px;<?php endif?>">
                                                         <div class="tooltip-block">
                                                             <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>" data-title="<?= $tweetLike ?>">
                                                                 <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>">SHARE</div>
@@ -506,6 +504,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <span>·</span>
+                                                    <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>
                                                     <?php if($this->user->isAdmin()):?>
                                                         <span>·</span>
                                                         <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>
