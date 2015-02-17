@@ -161,7 +161,8 @@ class UsersController extends \app\controllers\AppController {
         $nextUpdates = count(Event::getEvents($pitchIds, 2, null, Session::read('user.id')));
         $banner = News::getBanner();
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent');
+            $accessToken = Event::getBingAccessToken();
+            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent', 'accessToken');
         } else {
             return $this->render(array('layout' => false, 'data' => compact('date', 'updates', 'nextUpdates', 'pitches')));
         }

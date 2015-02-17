@@ -12,7 +12,7 @@ use app\extensions\storage\Rcache;
 
 class EventsController extends \app\controllers\AppController {
 
-    public $publicActions = array('feed', 'getsol');
+    public $publicActions = array('feed', 'getsol', 'autolikes', 'getaccesstoken');
 
     public function updates() {
         if (!isset($this->request->query['page'])) {
@@ -46,7 +46,8 @@ class EventsController extends \app\controllers\AppController {
             }else {
                 $newLatestDate = $this->request->query['created'];
             }
-            return compact('events', 'offsetDate', 'newLatestDate', 'eventsCount', 'first');
+            $accessToken = Event::getBingAccessToken();
+            return compact('events', 'offsetDate', 'newLatestDate', 'eventsCount', 'first', 'accessToken');
         }else {
             $pong = 'pong';
             return compact($pong);
@@ -151,6 +152,10 @@ class EventsController extends \app\controllers\AppController {
             }
         }
         return compact('result');
+    }
+
+    public function getaccesstoken() {
+        return Event::getBingAccessToken();
     }
 
 }

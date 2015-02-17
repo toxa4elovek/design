@@ -14,6 +14,7 @@
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
                 var userName = '<?php echo ($this->user->getId()) ? $this->user->getFormattedName($this->user->firstname, $this->user->lastname) : ''; ?>';
                 var userGender = <?php echo $this->user->getGender(); ?>;
+                var accessToken = '<?php echo str_replace('&amp;', '&', $accessToken); ?>';
             </script>
             <?php if ($this->user->isAdmin()): ?>
                 <div id="news-add" style="display:none;">
@@ -487,6 +488,8 @@
                                                     <span>·</span>
                                                     <?php endif?>
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
+                                                    <span>·</span>
+                                                    <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>
                                                     <?php
                                                     $tweetLike = $object['news']['title'];
                                                     $url = 'http://www.godesigner.ru/news?event=' . $object['id'];

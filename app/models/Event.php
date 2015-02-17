@@ -388,4 +388,17 @@ var_dump($list);
         return $output;
     }
 
+    public function getBingAccessToken() {
+        if(!$accesstoken = Rcache::read('bingaccesstoken')) {
+            $url = 'http://www.godesigner.ru/microsoft.php';
+            $response = file_get_contents($url, false);
+            $decoded = json_decode($response, true);
+            $accesstoken = $decoded['access_token'];
+            if(isset($decoded['expires_in']) and (isset($accesstoken))) {
+                Rcache::write('bingaccesstoken', $accesstoken, '+' . ($decoded['expires_in'] - 100) . ' seconds');
+            }
+        }
+        return $accesstoken;
+    }
+
 }

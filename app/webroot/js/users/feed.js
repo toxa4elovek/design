@@ -37,6 +37,19 @@ function imageLoadError(image) {
     return true;
 }
 
+var originalTexts = {};
+var translatedTexts = {};
+
+var idOfNewsToTranslate = null;
+
+function mycallback(response) {
+    console.log(response)
+    var box = $('.box[data-newsid="' + idOfNewsToTranslate + '"]');
+    translatedTexts[idOfNewsToTranslate] = response;
+    $('.img-short', box).text(response);
+    $('.translate', box).text('Показать оригинал');
+    $('.translate', box).data('translated', true);
+}
 
 $(document).ready(function () {
     $('.social-likes').socialLikes();
@@ -264,6 +277,42 @@ $(document).ready(function () {
         }
         return false;
     });
+
+
+
+    $(document).on('click', '.translate', function() {
+        if($(this).data('translated') != true) {
+            var box = $(this).closest('.box');
+            var id = box.data('newsid');
+            var text = $('.img-short', box).text()
+            $('.translate', box).text('Идёт перевод...');
+            if(typeof(translatedTexts[id]) == 'undefined') {
+                var s = document.createElement("script");
+                var from = 'en';
+                var to = 'ru';
+                originalTexts[id] = text;
+                idOfNewsToTranslate = id;
+                s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Translate" +
+                "?appId=Bearer " + encodeURIComponent(accessToken) +
+                "&from=" + encodeURIComponent(from) +
+                "&to=" + encodeURIComponent(to) +
+                "&text=" + encodeURIComponent(text) +
+                "&oncomplete=mycallback";
+                document.body.appendChild(s);
+            }else {
+                mycallback(translatedTexts[id]);
+            }
+        }else {
+            var box = $(this).closest('.box');
+            var id = box.data('newsid');
+            var text = $('.img-short', box).text()
+            $('.img-short', box).text(originalTexts[id]);
+            $('.translate', box).text('Перевести');
+            $('.translate', box).data('translated', false);
+        }
+        return false;
+    })
+
 
     $(document).on('click', '.share-news-center', function() {
         var sharebar = $(this).next();
@@ -847,6 +896,7 @@ function OfficeStatusUpdater() {
             this.autolikes = function() {
                 $.get('http://www.godesigner.ru/events/autolikes.json', {"created": self.likesdate}, function (response) {
                     self.likesdate = response.newLatestDate;
+                    accessToken = response.accessToken;
                     $.each(response.events, function(index, object) {
                         if(this_user == object.user.id) {
                             return false;
@@ -1432,6 +1482,8 @@ function OfficeStatusUpdater() {
                     html += '<span>·</span>';
                 }
                 html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>';
+                html += '<span>·</span>';
+                html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>';
                 var shareTitle = object.news.title;
                 var url = 'http://www.godesigner.ru/news?event=' + object.id;
                 html += '<div class="sharebar" style="position: absolute; display: none; top: 30px; left: 120px;"> \
