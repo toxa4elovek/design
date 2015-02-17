@@ -504,8 +504,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <?php if(($object['news']['lang'] != '') && ($object['news']['lang'] != 'ru')):?>
                                                     <span>·</span>
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>
+                                                    <?php endif?>
                                                     <?php if($this->user->isAdmin()):?>
                                                         <span>·</span>
                                                         <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>

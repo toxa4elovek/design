@@ -1482,7 +1482,6 @@ function OfficeStatusUpdater() {
                     html += '<span>·</span>';
                 }
                 html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>';
-                html += '<span>·</span>';
                 var shareTitle = object.news.title;
                 var url = 'http://www.godesigner.ru/news?event=' + object.id;
                 if(this_user != '') {
@@ -1502,7 +1501,10 @@ function OfficeStatusUpdater() {
                 html += '</div> \
                     </div> \
                     </div>';
-                html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>';
+                if((object.news.lang != '') && (object.news.lang != 'ru')) {
+                    html += '<span>·</span>';
+                    html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>';
+                }
                 if(isAdmin) {
                     html += '<span>·</span>';
                     html += '<a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';

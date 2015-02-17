@@ -54,7 +54,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         //$this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing wtpack.ru");
-        self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing wtpack.ru [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing royalcheese.ru");
@@ -142,7 +142,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'tags' => substr($post->tags, 0, strpos($post->tags, '|')),
                             'created' => $post->created,
                             'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
-                            'imageurl' => $image
+                            'imageurl' => $image,
+                            'lang' => 'ru'
                 ));
                 $news->save();
                 Event::createEventNewsAdded($news->id, 0, $post->created);
@@ -187,7 +188,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'tags' => $item->category_name,
                             'created' => $date->format('Y-m-d H:i:s'),
                             'link' => $item->guid,
-                            'imageurl' => $image
+                            'imageurl' => $image,
+                            'lang' => 'ru'
                 ));
                 $news->save();
                 Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
@@ -275,7 +277,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true) {
+    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true, $lang = 'en') {
         $xml = simplexml_load_file($url);
         if (($xml->channel->item) && (count($xml->channel->item > 0))) {
 
@@ -301,7 +303,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                         'tags' => $item->category,
                         'created' => $date->format('Y-m-d H:i:s'),
                         'link' => $item->link,
-                        'imageurl' => $image
+                        'imageurl' => $image,
+                        'lang' => $lang
                     ));
                     if(self::$debug == false) {
                         $news->save();
@@ -384,7 +387,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'tags' => $tag,
                             'created' => $date->format('Y-m-d H:i:s'),
                             'link' => $item->link,
-                            'imageurl' => $url . $image
+                            'imageurl' => $url . $image,
+                            'lang' => 'ru'
                 ));
                 $news->save();
                 Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
@@ -442,7 +446,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'tags' => $cat,
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->id,
-                                'imageurl' => $image
+                                'imageurl' => $image,
+                                'lang' => 'ru'
                     ));
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
@@ -488,7 +493,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'tags' => $cat,
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->id,
-                                'imageurl' => $image
+                                'imageurl' => $image,
+                        'lang' => 'ru'
                     ));
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
@@ -516,7 +522,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'tags' => 'Дизайн',
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => substr($item->link['href'], 0, strpos($item->link['href'], '#')),
-                                'imageurl' => $matches[1]
+                                'imageurl' => $matches[1],
+                        'lang' => 'ru'
                     ));
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
@@ -545,7 +552,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'short' => strip_tags($item->description),
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->link,
-                                'imageurl' => $matches[1]
+                                'imageurl' => $matches[1],
+                                'lang' => 'en'
                     ));
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
@@ -574,7 +582,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'short' => trim(strip_tags($item->content)),
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->link['href'],
-                                'imageurl' => $matches[1]
+                                'imageurl' => $matches[1],
+                        'lang' => 'en'
                     ));
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
@@ -603,7 +612,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'short' => strip_tags($item->description),
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->link,
-                                'imageurl' => $matches[1]
+                                'imageurl' => $matches[1],
+                                'lang' => 'en'
                     ));
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
