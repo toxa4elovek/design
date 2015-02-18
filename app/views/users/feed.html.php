@@ -207,6 +207,9 @@
                             </div>
                             <div id="center_sidebar">
                                 <div class="center-boxes" id="updates-box-">
+
+                                    
+
                                     <?php
                                     if (($shareEvent) && ($shareEvent->type == 'newsAdded')):
                                     $object = $shareEvent->data();
