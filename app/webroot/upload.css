@@ -317,3 +317,6 @@ input[name=licensed_work] {
 #filterbox li {
     margin-top: 3px;
 }
+.tt-hint {
+    display: none;
+}
