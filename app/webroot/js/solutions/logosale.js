@@ -61,14 +61,6 @@ jQuery(document).ready(function ($) {
         })
     });
 
-    $(document).on('mouseover', '.removeTag', function() {
-        $('img', this).attr('src', '/img/delete-tag-hover.png');
-    });
-
-    $(document).on('mouseout', '.removeTag', function() {
-        $('img', this).attr('src', '/img/delete-tag.png');
-    });
-
     $('#adv_search').on('click', function () {
         var button = $(this);
         $('#groups').toggle('fast', function () {

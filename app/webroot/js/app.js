@@ -303,6 +303,14 @@ $(document).ready(function () {
         });
     };
 
+    $(document).on('mouseover', '.removeTag', function() {
+        $('img', this).attr('src', '/img/delete-tag-hover.png');
+    });
+
+    $(document).on('mouseout', '.removeTag', function() {
+        $('img', this).attr('src', '/img/delete-tag.png');
+    });
+
     $(document).on('click', '#fav', function () {
         var link = $(this)
         var data = {"pitch_id": link.data('pitchid')};
