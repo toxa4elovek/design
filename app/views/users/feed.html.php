@@ -14,7 +14,6 @@
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
                 var userName = '<?php echo ($this->user->getId()) ? $this->user->getFormattedName($this->user->firstname, $this->user->lastname) : ''; ?>';
                 var userGender = <?php echo $this->user->getGender(); ?>;
-                var accessToken = '<?php echo str_replace('&amp;', '&', $accessToken); ?>';
             </script>
             <?php if ($this->user->isAdmin()): ?>
                 <div id="news-add" style="display:none;">
@@ -504,9 +503,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <?php if(($object['news']['lang'] != '') && ($object['news']['lang'] != 'ru')):?>
+                                                    <?php if($object['news']['original_title'] != ''):?>
                                                     <span>·</span>
-                                                    <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>
+                                                    <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#" data-translated="true" data-original-short="<?= $object['news']['original_short']?>" data-original-title="<?= $object['news']['original_title']?>">Показать оригинал</a>
                                                     <?php endif?>
                                                     <?php if($this->user->isAdmin()):?>
                                                         <span>·</span>

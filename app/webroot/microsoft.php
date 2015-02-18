@@ -120,6 +120,7 @@ Class HTTPTranslator {
     }
 }
 try {
+    set_time_limit(4);
     //Client ID of the application.
     $clientID       = "6446969i";
     //Client Secret key of the application.

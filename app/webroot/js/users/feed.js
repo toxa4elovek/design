@@ -38,15 +38,18 @@ function imageLoadError(image) {
 }
 
 var originalTexts = {};
+var originalTitles = {};
 var translatedTexts = {};
+var translatedTitles = {};
 
 var idOfNewsToTranslate = null;
 
-function mycallback(response) {
-    console.log(response)
+function mycallback(text, title) {
+    console.log(idOfNewsToTranslate);
+    console.log(title)
     var box = $('.box[data-newsid="' + idOfNewsToTranslate + '"]');
-    translatedTexts[idOfNewsToTranslate] = response;
-    $('.img-short', box).text(response);
+    $('.img-short', box).text(text);
+    $('h2', box).text(title);
     $('.translate', box).text('Показать оригинал');
     $('.translate', box).data('translated', true);
 }
@@ -285,8 +288,8 @@ $(document).ready(function () {
             var box = $(this).closest('.box');
             var id = box.data('newsid');
             var text = $('.img-short', box).text()
-            $('.translate', box).text('Идёт перевод...');
-            if(typeof(translatedTexts[id]) == 'undefined') {
+
+            /*if(typeof(translatedTexts[id]) == 'undefined') {
                 var s = document.createElement("script");
                 var from = 'en';
                 var to = 'ru';
@@ -301,12 +304,18 @@ $(document).ready(function () {
                 document.body.appendChild(s);
             }else {
                 mycallback(translatedTexts[id]);
-            }
+            }*/
+            mycallback(translatedTexts[id], translatedTitles[id]);
         }else {
             var box = $(this).closest('.box');
             var id = box.data('newsid');
-            var text = $('.img-short', box).text()
-            $('.img-short', box).text(originalTexts[id]);
+            idOfNewsToTranslate = id
+            var title = $('h2', box).text()
+            var text = $('.img-short', box).text();
+            translatedTexts[id] = text;
+            translatedTitles[id] = title;
+            $('h2', box).text($(this).data('original-title'));
+            $('.img-short', box).text($(this).data('original-short'));
             $('.translate', box).text('Перевести');
             $('.translate', box).data('translated', false);
         }
@@ -896,7 +905,6 @@ function OfficeStatusUpdater() {
             this.autolikes = function() {
                 $.get('http://www.godesigner.ru/events/autolikes.json', {"created": self.likesdate}, function (response) {
                     self.likesdate = response.newLatestDate;
-                    accessToken = response.accessToken;
                     $.each(response.events, function(index, object) {
                         if(this_user == object.user.id) {
                             return false;
@@ -1501,9 +1509,9 @@ function OfficeStatusUpdater() {
                 html += '</div> \
                     </div> \
                     </div>';
-                if((object.news.lang != '') && (object.news.lang != 'ru')) {
+                if(object.news.original_title != '') {
                     html += '<span>·</span>';
-                    html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Перевести</a>';
+                    html += '<a data-translated="true" data-original-title="' + object.news.original_title + '" data-original-short="' + object.news.original_short + '" style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Показать оригинал</a>';
                 }
                 if(isAdmin) {
                     html += '<span>·</span>';
