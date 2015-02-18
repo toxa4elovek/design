@@ -1487,7 +1487,7 @@ function OfficeStatusUpdater() {
                     html += '<div class="box-info" style="margin-top: 0;">';
                 if(this_user != '') {
                     html += '<a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>';
-                    html += '<span>·</span>';
+                    html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
                 }
                 html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>';
                 var shareTitle = object.news.title;
@@ -1510,11 +1510,11 @@ function OfficeStatusUpdater() {
                     </div> \
                     </div>';
                 if(object.news.original_title != '') {
-                    html += '<span>·</span>';
+                    html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
                     html += '<a data-translated="true" data-original-title="' + object.news.original_title + '" data-original-short="' + object.news.original_short + '" style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Показать оригинал</a>';
                 }
                 if(isAdmin) {
-                    html += '<span>·</span>';
+                    html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
                     html += '<a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';
                 }
                 html += '</div>';
