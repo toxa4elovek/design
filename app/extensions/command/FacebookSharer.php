@@ -11,10 +11,10 @@ class FacebookSharer extends \app\extensions\command\CronJob {
         $events = Event::all(array(
             'conditions' => array(
                 'type' => array('SolutionAdded', 'newsAdded'),
-                'created' => array('>' => date('Y-m-d H:i', time() - HOUR))
+                'created' => array('>' => date('Y-m-d H:i', time() - 5 * HOUR))
             ),
             'order' => array('created' => 'desc'),
-            'limit' => 5)
+            'limit' => 100)
         );
         foreach ($events as $event) {
             $this->out($event->created);
