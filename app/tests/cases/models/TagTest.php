@@ -88,4 +88,19 @@ class TagTest extends AppUnit {
         $this->assertEqual($solutionId, $solutionTag2->solution_id);
     }
 
+    public function testGetags() {
+        $result = Tag::getSuggest('Тег');
+        $data = $result->data();
+        $this->assertEqual(2, count($data));
+        $this->assertEqual('Тег', $data[1]['name']);
+        $this->assertEqual('Тегирование', $data[4]['name']);
+        Tag::saveTag('Теги');
+        $result = Tag::getSuggest('Тег');
+        $data = $result->data();
+        $this->assertEqual(3, count($data));
+        $this->assertEqual('Тег', $data[1]['name']);
+        $this->assertEqual('Тегирование', $data[4]['name']);
+        $this->assertEqual('Теги', $data[5]['name']);
+    }
+
 }

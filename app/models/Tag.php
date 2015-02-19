@@ -98,6 +98,10 @@ class Tag extends \app\models\AppModel {
         return $id;
     }
 
+    public static function getSuggest($string) {
+        return Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
+    }
+
     public static function getPopularTags($count) {
         $sort_tags = Rcache::read('sort_tags');
         if (empty($sort_tags)) {
