@@ -27,10 +27,12 @@ class Tag extends \app\models\AppModel {
         'it' => 'Компьютеры / IT');
 
     public static function add($formdata, $solution_id) {
-        foreach ($formdata['tags'] as $v) {
-            Tag::saveSolutionTag($v, $solution_id);
+        if(isset($formdata['tags']) && (is_array($formdata['tags']))) {
+            foreach ($formdata['tags'] as $v) {
+                Tag::saveSolutionTag($v, $solution_id);
+            }
         }
-        if (is_array($formdata['job-type'])) {
+        if((isset($formdata['job-type'])) && (is_array($formdata['job-type']))) {
             $filteredTags = array_intersect_key(self::$job_types, array_flip($formdata['job-type']));
             if (is_array($filteredTags)) {
                 foreach ($filteredTags as $v) {
@@ -47,6 +49,13 @@ class Tag extends \app\models\AppModel {
         }
     }
 
+    /**
+     * Метод сохраняет указанный тег $string для решения с айди $solutionId
+     *
+     * @param $string
+     * @param $solutionId
+     * @return object
+     */
     public static function saveSolutionTag($string, $solutionId) {
         if (!Tag::isTagExists($string)) {
             Tag::saveTag($string);
@@ -98,10 +107,32 @@ class Tag extends \app\models\AppModel {
         return $id;
     }
 
-    public static function getSuggest($string) {
-        return Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
+    /**
+     * Метод возвращяет все теги с подстрокой $string
+     *
+     * @param $string
+     * @return mixed
+     */
+    public static function getSuggest($string, $cleanCache = false) {
+        $cacheKey = 'suggest_tags_' . $string;
+        if($cleanCache) {
+            Rcache::delete($cacheKey);
+        }
+        if (!$tags = Rcache::read($cacheKey)) {
+            $tags = Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
+            Rcache::write($cacheKey, $tags->data(), '+2 hours');
+            return $tags->data();
+        }
+        return $tags;
     }
 
+
+    /**
+     * Метод возвращяет самые популярные теги
+     *
+     * @param $count
+     * @return array|bool|mixed
+     */
     public static function getPopularTags($count) {
         $sort_tags = Rcache::read('sort_tags');
         if (empty($sort_tags)) {
