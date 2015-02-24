@@ -27,10 +27,12 @@ class Tag extends \app\models\AppModel {
         'it' => 'Компьютеры / IT');
 
     public static function add($formdata, $solution_id) {
-        foreach ($formdata['tags'] as $v) {
-            Tag::saveSolutionTag($v, $solution_id);
+        if(isset($formdata['tags']) && (is_array($formdata['tags']))) {
+            foreach ($formdata['tags'] as $v) {
+                Tag::saveSolutionTag($v, $solution_id);
+            }
         }
-        if (is_array($formdata['job-type'])) {
+        if((isset($formdata['job-type'])) && (is_array($formdata['job-type']))) {
             $filteredTags = array_intersect_key(self::$job_types, array_flip($formdata['job-type']));
             if (is_array($filteredTags)) {
                 foreach ($filteredTags as $v) {
