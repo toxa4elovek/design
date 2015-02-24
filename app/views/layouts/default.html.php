@@ -68,10 +68,15 @@
         echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/general.jpg"/>';
     elseif(isset($shareEvent)):
         echo '<meta property="og:url" content="http://www.godesigner.ru/news?event=' . $shareEvent->id . '"/>';
+        echo '<meta property="og:type" content="website"/>';
         if(!empty($shareEvent->news->imageurl)):
             echo '<meta property="og:title" content="' . htmlspecialchars($shareEvent->news->title) . '"/>';
             echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($shareEvent->news->short, 0, 100, 'UTF-8') . '...'))))  . '"/>';
-            echo '<meta property="og:image" content="' . $shareEvent->news->imageurl . '"/>';
+            $url = $shareEvent->news->imageurl;
+            if(!preg_match('/http/', $url)) {
+                $url = 'http://www.godesigner.ru' . $url;
+            }
+            echo '<meta property="og:image" content="' . $url . '"/>';
         endif;
     else:
         echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
