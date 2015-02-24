@@ -481,6 +481,9 @@
                                                     <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                                     <p class="timeago">
                                                         <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
+                                                        <?php if($object['news']['original_title'] != ''):?>
+                                                            <span style="font-size: 20px;position: relative;top: 2px;margin-left: 2px;margin-right: 2px;">·</span> переведено автоматически
+                                                        <?php endif;?>
                                                     </p>
                                                 </div>
 
