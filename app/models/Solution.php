@@ -93,6 +93,25 @@ http://godesigner.ru/answers/view/73');
                     // Добавляем задание о рассылке уведомления о новом решении в очередь
                     Task::createNewTask($result->id, 'newSolutionNotification');
                 }
+                try {
+                    $pitch = Pitch::first($result->pitch_id);
+                    if(($pitch->category_id != 7) && ($pitch->private != 1)) {
+                        $id = 'http://www.godesigner.ru/pitches/viewsolution/' . $result->id;
+                        $url = 'https://graph.facebook.com';
+                        $data = array('id' => $id, 'scrape' => 'true');
+                        $options = array(
+                            'http' => array(
+                                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                                'method'  => 'POST',
+                                'content' => http_build_query($data),
+                            ),
+                        );
+                        $context  = stream_context_create($options);
+                        $result = file_get_contents($url, false, $context);
+                    }
+                } catch(Exception $e) {
+
+                }
             }
             return $result;
         });

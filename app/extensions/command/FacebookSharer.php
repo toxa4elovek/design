@@ -10,7 +10,7 @@ class FacebookSharer extends \app\extensions\command\CronJob {
         $this->out(date('Y-m-d H:i', time() - HOUR));
         $events = Event::all(array(
             'conditions' => array(
-                'type' => array('SolutionAdded', 'newsAdded'),
+                'type' => array('newsAdded'),
                 'created' => array('>' => date('Y-m-d H:i', time() - 5 * HOUR))
             ),
             'order' => array('created' => 'desc'),
@@ -18,12 +18,7 @@ class FacebookSharer extends \app\extensions\command\CronJob {
         );
         foreach ($events as $event) {
             $this->out($event->created);
-
-            if($event->type == 'newsAdded') {
-                $id = 'http://www.godesigner.ru/news?event=' . $event->id;
-            }elseif($event->type == 'SolutionAdded') {
-                $id = 'http://www.godesigner.ru/pitches/viewsolution/' . $event->solution->id;
-            }
+            $id = 'http://www.godesigner.ru/news?event=' . $event->id;
             $this->out($id);
             $url = 'https://graph.facebook.com';
             $data = array('id' => $id, 'scrape' => 'true');
