@@ -49,6 +49,13 @@ class Tag extends \app\models\AppModel {
         }
     }
 
+    /**
+     * Метод сохраняет указанный тег $string для решения с айди $solutionId
+     *
+     * @param $string
+     * @param $solutionId
+     * @return object
+     */
     public static function saveSolutionTag($string, $solutionId) {
         if (!Tag::isTagExists($string)) {
             Tag::saveTag($string);
@@ -100,10 +107,32 @@ class Tag extends \app\models\AppModel {
         return $id;
     }
 
-    public static function getSuggest($string) {
-        return Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
+    /**
+     * Метод возвращяет все теги с подстрокой $string
+     *
+     * @param $string
+     * @return mixed
+     */
+    public static function getSuggest($string, $cleanCache = false) {
+        $cacheKey = 'suggest_tags_' . $string;
+        if($cleanCache) {
+            Rcache::delete($cacheKey);
+        }
+        if (!$tags = Rcache::read($cacheKey)) {
+            $tags = Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
+            Rcache::write($cacheKey, $tags->data(), '+2 hours');
+            return $tags->data();
+        }
+        return $tags;
     }
 
+
+    /**
+     * Метод возвращяет самые популярные теги
+     *
+     * @param $count
+     * @return array|bool|mixed
+     */
     public static function getPopularTags($count) {
         $sort_tags = Rcache::read('sort_tags');
         if (empty($sort_tags)) {
