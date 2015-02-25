@@ -42,7 +42,7 @@ function mb_basename($file)
                         <h2 class="blueheading">Название</h2>
                         <p class="regular"><?=$pitch->title?></p>
 
-                        <?php if(!empty($pitch->industry)):
+                        <?php if((!empty($pitch->industry)) && ($pitch->industry != 'N;')):
                             if($unserialized = unserialize($pitch->industry)):
                                 $job_types = array(
                                     'realty' => 'Недвижимость / Строительство',
