@@ -159,7 +159,11 @@ class SolutionsController extends \app\controllers\AppController {
     }
 
     public function search_logo() {
+        if((!empty($this->request->query)) && (count($this->request->query) > 1)) {
+            $this->request->data = $this->request->query;
+        }
         if ($this->request->is('json') && (isset($this->request->data['search_list']) || (isset($this->request->data['prop'])))) {
+
             //$words = explode(' ', preg_replace('/[^a-zа-яё]+/iu', ' ', trim($this->request->data['search'])));
             $words = $this->request->data['search_list'];
             $industries = array();
@@ -196,9 +200,11 @@ class SolutionsController extends \app\controllers\AppController {
                     unset($words[$key]);
                 }
             }
+
             $tags_id = 0;
             if (!is_null($words)) {
                 $tag_params = array('conditions' => array());
+                // сохранение поиска в статистику
                 $search_tags = Searchtag::all(array('conditions' => array('name' => $words)));
                 if (count($search_tags) < 1) {
                     foreach ($words as $w) {
@@ -219,7 +225,9 @@ class SolutionsController extends \app\controllers\AppController {
                         $tag_params['conditions']['OR'][] = array('name' => $w);
                     }
                 }
+                // конец страницы поика в статистику
                 $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
+                // поиск существующих тегов
                 $tags = Tag::all($tag_params);
                 if (count($tags) > 0) {
                     $tags_id = array_keys($tags->data());
@@ -227,41 +235,43 @@ class SolutionsController extends \app\controllers\AppController {
                     $tags_id = 0;
                 }
             }
-            $regexp = implode($words, '|');
-            //$descriptionWord = array();
-            //foreach($words as $word) {
-            //    $descriptionWord[] = '%' . $word . '%';
-            //}
-            $descriptionWord = implode($words, ' ');
 
+            // Ищем указанную страницу результатов
+            $regexp = implode($words, '|');
+            $descriptionWord = implode($words, ' ');
             $params = array('conditions' => array(
                 array('OR' => array(
                     array("Pitch.title REGEXP '" . $regexp . "'"),
                     array("Pitch.description LIKE '%$descriptionWord%'"),
                     array("'Pitch.business-description' LIKE '%$descriptionWord%'"),
-                    array("Solutiontag.tag_id IN(1695)")
+                    //array("Solutiontag.tag_id IN($tags)")
                 )),
                 'Solution.multiwinner' => 0,
                 'Solution.awarded' => 0,
                 'Pitch.awarded' => array('>' => date('Y-m-d H:i:s', time() - MONTH)),
                 'Pitch.status' => array('>' => 0),
-                'private' => 0,
-                'category_id' => 1,
-                //'rating' => array('>=' => 3)
+                'Pitch.private' => 0,
+                'Pitch.category_id' => 1,
+                'Solution.rating' => array('>=' => 3)
             ),
-            'order' => array('rating' => 'desc', 'likes' => 'desc', 'views' => 'desc'),
+            'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
             'with' => array('Pitch', 'Solutiontag'));
-
             if(!empty($industries)) {
                 $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industries[0] . "%'");
+            }
+            if($tags_id) {
+                $tags = implode($tags_id, ', ');
+                $params['conditions'][0]['OR'][] = array("Solutiontag.tag_id IN($tags)");
             }
             $pageParams = $totalParams = $params;
             $pageParams['limit'] = 30;
             $pageParams['page'] = $page;
 
             $solutions = Solution::all($pageParams);
+
             if($page == 1) {
-                $total_solutions = Solution::all($totalParams);
+                //$totalParams['fields'] = 'Solution.id';
+                //$total_solutions = Solution::count($totalParams);
             }
             if ($solutions && count($solutions) > 0) {
                 $black_list = array();
@@ -349,6 +359,7 @@ class SolutionsController extends \app\controllers\AppController {
                     }
                 }*/
             }
+/*
             if($page == 1) {
                 if ($total_solutions && count($total_solutions) > 0) {
                     $black_list = array();
@@ -391,9 +402,6 @@ class SolutionsController extends \app\controllers\AppController {
                         } else {
                             $diff_variant = false;
                         }
-                        //var_dump($specific['logoType']);
-                        //var_dump($variant);
-                        //var_dump($diff_variant);die();
                         if ($diff_prop > 3 || $diff_variant == count($specific['logoType'])) {
                             $removeCount++;
                             unset($total_solutions[$k]);
@@ -416,8 +424,9 @@ class SolutionsController extends \app\controllers\AppController {
                     }
                 }
             }
+*/
         }
-        $total_solutions = count($total_solutions);
+        $total_solutions = count($solutions);
         return compact('solutions', 'total_solutions');
     }
 
