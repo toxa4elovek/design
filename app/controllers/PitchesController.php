@@ -1471,7 +1471,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
     public function getags() {
         if (isset($this->request->query['name']) && strlen($this->request->query['name']) > 0) {
             $tags = Tag::getSuggest($this->request->query['name']);
-            return json_encode($tags->data());
+            return json_encode($tags);
         }
     }
 
