@@ -19,6 +19,13 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
         $this->header('Welcome to the ParsingSites command!');
 
+        //self::ParsingDesnewsru();
+        //die();
+
+        $this->out("Starting parsing pixelgene.ru");
+        self::ParsingWordpress('http://pixelgene.ru/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', false, 'ru');
+        $this->out('Finished parsing pixelgene.ru [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing godesigner.ru");
         self::ParsingGodesigner();
         $this->out('Finished parsing godesigner.ru [' . (time() - $startTimeStamp) . ' sec]');
@@ -65,9 +72,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingLookatme();
         $this->out('Finished parsing lookatme.ru [' . (time() - $startTimeStamp) . ' sec]');
 
-        $this->out("Starting parsing the-village.ru");
-        self::ParsingVillage();
-        $this->out('Finished parsing the-village.ru [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing the-village.ru");
+        //self::ParsingVillage();
+        //$this->out('Finished parsing the-village.ru [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing packaginguqam.blogspot.ru");
         self::ParsingPackaginguqam();
@@ -399,6 +406,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $news = News::create(array(
                             'title' => $item->title,
                             'tags' => $tag,
+                            'short' => '',
                             'created' => $date->format('Y-m-d H:i:s'),
                             'link' => $item->link,
                             'imageurl' => $url . $image,
@@ -458,6 +466,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $news = News::create(array(
                                 'title' => $item->title,
                                 'tags' => $cat,
+                                'short' => '',
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->id,
                                 'imageurl' => $image,
@@ -505,6 +514,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $news = News::create(array(
                                 'title' => $item->title,
                                 'tags' => $cat,
+                                'short' => '',
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => $item->id,
                                 'imageurl' => $image,
@@ -513,6 +523,48 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
                 }
+            }
+        }
+    }
+
+    private function ParsingDesnewsru() {
+        $xml = simplexml_load_file('http://feeds.feedburner.com/Desnewsru');
+        $newsList = News::all();
+        foreach ($xml->channel->item as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            var_dump($trigger);
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                var_dump($item);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                //if (isset($matches[1]) && !strpos($matches[1], 'feedburner.com/')) {
+                    var_dump(array(
+                        'title' => (string) $item->title,
+                        'short' => strip_tags($item->description),
+                        'tags' => 'Дизайн',
+                        'created' => $date->format('Y-m-d H:i:s'),
+                        'link' => substr($item->link['href'], 0, strpos($item->link['href'], '#')),
+                        'imageurl' => $matches[1],
+                        'lang' => 'ru'
+                    ));
+                    die();
+                    $news = News::create(array(
+                        'title' => (string) $item->title,
+                        'tags' => 'Дизайн',
+                        'short' => '',
+                        'created' => $date->format('Y-m-d H:i:s'),
+                        'link' => substr($item->link['href'], 0, strpos($item->link['href'], '#')),
+                        'imageurl' => $matches[1],
+                        'lang' => 'ru'
+                    ));
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                //}
             }
         }
     }
@@ -534,6 +586,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $news = News::create(array(
                                 'title' => (string) $item->title,
                                 'tags' => 'Дизайн',
+                                'short' => '',
                                 'created' => $date->format('Y-m-d H:i:s'),
                                 'link' => substr($item->link['href'], 0, strpos($item->link['href'], '#')),
                                 'imageurl' => $matches[1],
@@ -731,7 +784,11 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $xml = simplexml_load_string($strResponse);
         $json = json_encode($xml);
         $array = json_decode($json, true);
-        return $array[0];
+        if(isset($array[0])) {
+            return $array[0];
+        }else {
+            return '';
+        }
     }
 
 }
