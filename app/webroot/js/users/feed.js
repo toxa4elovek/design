@@ -1481,10 +1481,11 @@ function OfficeStatusUpdater() {
                 html += '<a class="img-post" href="' + object.news.link + '" target="_blank"><h2>' + object.news.title + '</h2></a> \
                                     <p class="img-short">' + object.news.short + '</p> \
                                     <p class="timeago"> \
-                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host + '</p>';
+                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host;
                 if(object.news.original_title != '') {
                     html += '<span style="font-size: 20px;position: relative;top: 2px;margin-left: 2px;margin-right: 2px;">·</span> переведено автоматически';
                 }
+                html += '</p>'
                 html +=                '</div>';
 
                     html += '<div class="box-info" style="margin-top: 0;">';
