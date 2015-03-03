@@ -362,19 +362,19 @@ tr.select-vin{
 	font-size:18px;
 }
 .pitch-end .icons{
-	background:#e0e0e0 url(img/icon-2.png) no-repeat 1px 10px;
+	/*background:#e0e0e0 url(img/icon-2.png) no-repeat 1px 10px;*/
 }
 .select-vin td a, .pitch-end td a{
 	color:#fff;
 }
 .close-and-expert .icons{
-	background:#e0e0e0 url(img/icon-3.png) no-repeat 1px 5px;
+	/*background:#e0e0e0 url(img/icon-3.png) no-repeat 1px 5px;*/
 }
 .close .icons{
-	background:#e0e0e0 url(img/icon-4.png) no-repeat 1px 5px;
+	/*background:#e0e0e0 url(img/icon-4.png) no-repeat 1px 5px;*/
 }
 .expert .icons{
-	background:#e0e0e0 url(img/icon-5.png) no-repeat 1px 5px;
+	/*background:#e0e0e0 url(img/icon-5.png) no-repeat 1px 5px;*/
 }
 tr.chetn{
 	background:#2f313a;

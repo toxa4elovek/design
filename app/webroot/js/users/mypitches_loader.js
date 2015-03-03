@@ -10,14 +10,14 @@ function TableLoader() {
     this.navNeub = 2;
     this.options = {
         "page": 1,
-        "type": "current",
+        "type": "all",
         "category": "all",
         "order": {"price": "desc"},
         "priceFilter": "all",
         "searchTerm": ""
     }
     this.page = 1;
-    this.type = 'current';
+    this.type = 'all';
     this.magePage = null;
     // initialisation method
     this.init = function() {
@@ -69,7 +69,7 @@ function TableLoader() {
             self.renderNav(response);
             $('.pitches-ajax-wrapper').fadeOut(50);
             if (!options.fromQuery) { // Came Back - No Scroll
-                $('html, body').animate({ scrollTop: 0 }, 600 );
+                //$('html, body').animate({ scrollTop: 0 }, 600 );
             }
             if (response.data.pitches.length == 0) {
                 $('.all-pitches, .foot-content').hide();
@@ -146,6 +146,12 @@ function TableLoader() {
                 icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
                 if(object.status == 2) {
                     timeleft = 'Питч завершен';
+                    if (object.hasBill == 'fiz') {
+                        timeleft = '<a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                    }
+                    if (object.hasBill == 'yur') {
+                        timeleft = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                    }
                 }else if((object.status == 1) && (object.awarded > 0)) {
                     timeleft = 'Победитель выбран';
                 }else if((object.status == 1) && (object.awarded == 0)) {

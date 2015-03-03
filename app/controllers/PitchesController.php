@@ -258,7 +258,7 @@ class PitchesController extends \app\controllers\AppController {
             );
         }
         $query = $this->request->query;
-        return compact('data', 'categories', 'query', 'selectedCategory');
+        return compact('data', 'categories', 'query', 'selectedCategory', 'conditions');
     }
 
     public function updatefiles() {

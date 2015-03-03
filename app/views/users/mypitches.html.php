@@ -12,24 +12,27 @@
                     </nav>
                 </div>
             </section>
+            <div class="pitches-ajax-wrapper" style="top:122px">
+                <div class="pitches-ajax-loader">&nbsp;</div>
+            </div>
             <section>
                 <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 825px; margin-left: 60px;">
                     <table>
                         <tr>
                             <td>
-                                <div id="filterContainer" style="border-radius:4px 4px 4px 4px;border:4px solid #F3F3F3; height:41px;padding-top:10px;background-color:white;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset; width:618px;margin-left:25px">
+                                <div id="filterContainer" style="border-radius:4px 4px 4px 4px;border:4px solid #F3F3F3; height:41px;padding-top:10px;background-color:white;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset; width:638px;margin-left:25px">
                                     <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
-                                    <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 7px;margin-left:4px;">
+                                    <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 3px;margin-left:4px;">
                                     <a href="#" id="filterToggle" data-dir="up" style="float:right;"><img style="padding-top:4px;margin-right:1px;" src="/img/filter-arrow-down.png" alt=""></a>
                                     <a href="#" id="filterClear"></a>
                                 </div>
                             </td>
                             <td>
-                                <a style="margin-left:15px;margin-top:4px" href="#" id="goSearch" class="button primary">Поиск</a>
+                                <a style="margin-left:15px;margin-top:4px" href="#" id="goSearch" class="button second primary">Поиск</a>
                             </td>
                         </tr>
                     </table>
-                    <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:25px;width: 617px;height:347px;background-color: white;z-index:10;position:absolute;">
+                    <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:25px;width: 637px;height:347px;background-color: white;z-index:10;position:absolute;">
                         <ul class="filterlist" style="float:left;width:140px;margin-left:25px;text-transform: none">
                             <li class="first">питчи</li>
                             <li style="width:85px"><a data-group="type" data-value="all" href="#">все</a></li>
@@ -37,22 +40,21 @@
                             <li style="width:85px"><a data-group="type" data-value="current" href="#">текущие</a></li>
                             <li style="width:85px"><a data-group="type" data-value="finished" href="#">завершенные</a></li>
                             <li style="width:85px"><a data-group="type" data-value="favourites" href="#">избранные</a></li>
-                            <li style="width:136px"><a data-group="type" data-value="completion-stage" href="#">на стадии завершения</a></li>
+                            <li style="width:140px"><a data-group="type" data-value="completion-stage" href="#">на стадии завершения</a></li>
                             <li style="width:85px"><a data-group="type" data-value="awarded" href="#">награжденные</a></li>
                         </ul>
-                        <ul class="filterlist" style="float:left;width:151px;margin-left:25px;text-transform: none">
+                        <ul class="filterlist" style="float:left;width:151px;margin-left:45px;text-transform: none">
                             <li class="first">категория</li>
                             <li><a data-group="category" data-value="all" href="#">все</a></li>
                             <?php foreach ($categories as $category): ?>
-                                <li><a data-group="category" data-value="<?= $category->id ?>" href="#"><?= mb_strtolower($category->title, 'utf-8') ?></a></li>
+                                <li style="width: 175px;"><a data-group="category" data-value="<?= $category->id ?>" href="#"><?= mb_strtolower($category->title, 'utf-8') ?></a></li>
                             <?php endforeach ?>
                         </ul>
-                        <ul class="filterlist" style="float:left;width:160px;margin-left:25px;text-transform: none">
+                        <ul class="filterlist" style="float:left;width:160px;margin-left:65px;text-transform: none">
                             <li class="first">гонорар</li>
-                            <li style="width:130px"><a data-group="priceFilter" data-value="4" href="#">до 3 000 Р.-</a></li>
-                            <li style="width:130px"><a data-group="priceFilter" data-value="5" href="#">от 5 000 - 8 000 Р.-</a></li>
-                            <li style="width:130px"><a data-group="priceFilter" data-value="6" href="#">от 8 000 - 16 000 Р.-</a></li>
-                            <li style="width:130px"><a data-group="priceFilter" data-value="7" href="#">от 16 000 - 25 000 Р.-</a></li>
+                            <li style="width:130px"><a data-group="priceFilter" data-value="3" href="#">от 20 000 Р.-</a></li>
+                            <li style="width:130px"><a data-group="priceFilter" data-value="2" href="#">от 10 000 - 20 000 Р.-</a></li>
+                            <li style="width:130px"><a data-group="priceFilter" data-value="1" href="#">от 5 000 - 10 000 Р.-</a></li>
                         </ul>
                         <div style="clear:both"></div>
                     </div>
@@ -75,6 +77,11 @@
 
                     </tbody>
                 </table>
+                <div class="no-result">
+                    <h1>Упс, мы ничего не нашли!</h1>
+                    <p class="regular">Попробуйте ввести другое слово, или используйте<br /> стрелку в поле, повторив поиск с выбранным<br /> фильтром. <a href="/answers/view/85">Подробнее…</a></p>
+                    <p><img src="http://www.godesigner.ru/img/help/d3fa990a965b8ebf1cf8691586140165.jpg" alt="" width="610" height="292"></p>
+                </div>
                 <div class="foot-content">
                     <div class="page-nambe-nav" id="topnav">
                     </div>

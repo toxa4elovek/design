@@ -1243,7 +1243,7 @@ class Pitch extends \app\models\AppModel {
     public static function getQueryPriceFilter($priceFilter = 0) {
         switch ($priceFilter) {
             case 1:
-                $result = array('price' => array('>' => 3000, '<=' => 10000));
+                $result = array('price' => array('>' => 5000, '<=' => 10000));
                 break;
             case 2:
                 $result = array('price' => array('>' => 10000, '<=' => 20000));
@@ -1455,11 +1455,11 @@ class Pitch extends \app\models\AppModel {
                             $result = array('status' => 2);
                             break;
 			default:
-				$result = array(
-                                    'OR' => array(
-                                                    array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
-                                                    array('status < 2 AND awarded = 0'),
-				));
+                $result = array(
+                    'OR' => array(
+                        array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
+                        array('status < 2 AND awarded = 0'),
+                    ));
 		}		
 		return $result;
 	}
