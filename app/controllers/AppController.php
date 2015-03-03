@@ -19,7 +19,9 @@ class AppController extends \lithium\action\Controller {
     public function _init() {
         parent::_init();
         if(Session::read('user.id')) {
-            newrelic_add_custom_parameter('userId', Session::read('user.id'));
+            if(function_exists('newrelic_add_custom_parameter')) {
+                newrelic_add_custom_parameter('userId', Session::read('user.id'));
+            }
             Session::write('user.attentionpitch', null);
             Session::write('user.attentionsolution', null);
             Session::write('user.timeoutpitch', null);
