@@ -202,7 +202,7 @@
     <header class="<?=$header?>">
 
 	<p class="<?=$logo?>"><strong><a href="http://www.godesigner.ru/"
-        <?php if(($this->_request->action == 'feed') && (!$this->user->getId())):?>
+        <?php if(!$this->user->getId()):?>
              style="background: url(/img/logo2.png) 0 0 no-repeat"
         <?php endif?>>Go Designer</a></strong></p>
 	<nav class="topnav">
