@@ -11,6 +11,7 @@ use \app\extensions\helper\Solution as SolutionHelper;
 use \app\extensions\helper\NameInflector;
 use \lithium\storage\Session;
 use app\extensions\mailers\CommentsMailer;
+use app\extensions\storage\Rcache;
 
 class Comment extends \app\models\AppModel {
 
@@ -24,6 +25,8 @@ class Comment extends \app\models\AppModel {
         self::applyFilter('save', function($self, $params, $chain){
             if(($params['entity']->data()) && (isset($params['entity']->id) && $params['entity']->id > 0) && (isset($params['entity']->text))) {
                 $comment = $params['entity'];
+                $cacheKey = 'commentsraw_' . $comment->pitch_id;
+                Rcache::delete($cacheKey);
                 if($original = Comment::first($comment->id)) {
                     $comment = $params['entity'];
                     $historyArchive = $comment->history;
@@ -70,7 +73,9 @@ class Comment extends \app\models\AppModel {
 
 			if($params) {
 				Event::createEvent($params['pitch_id'], 'CommentAdded', $params['user_id'], $params['solution_id'], $params['id']);
-			}
+			    $cacheKey = 'commentsraw_' . $params['pitch_id'];
+                Rcache::delete($cacheKey);
+            }
             preg_match_all('@(#\d*).@', $params['text'], $matches);
             $nums = array();
             foreach($matches[1] as $hashtag){
@@ -144,7 +149,7 @@ class Comment extends \app\models\AppModel {
         });
         self::applyFilter('find', function($self, $params, $chain){
             $result = $chain->next($self, $params, $chain);
-            if(is_object($result)) {
+            if((!isset($params['options']['nofilters'])) && (is_object($result))) {
                 $addMentionLink = function($record) {
                     if(isset($record->text)) {
                         $record->text = nl2br($record->text);
@@ -256,7 +261,7 @@ class Comment extends \app\models\AppModel {
                 $parent->current()->public = 1;
             }
             // Child
-            if ($comment->user_id == $comment->pitch->user_id) {
+            if ($comment->user_id == $pitchUserId) {
                 $comment_id = $comment->id;
                 $child = $commentsFiltered->find(function($comm) use ($comment_id) {
                     if ($comm->question_id == $comment_id) {
@@ -273,7 +278,7 @@ class Comment extends \app\models\AppModel {
         if ((true == $isUserClient) || (true == $isUserAdmin)) {
             foreach ($commentsFiltered as $comment) {
                 $comment->needAnswer = '';
-                if (($comment->user->isAdmin != 1) && ($comment->user->id != $comment->pitch->user_id) && (!in_array($comment->user->id, User::$admins))) {
+                if (($comment->user->isAdmin != 1) && ($comment->user->id != $pitchUserId) && (!in_array($comment->user->id, User::$admins))) {
                     $comment->needAnswer = 1;
                 }
                 if (true == $isUserAdmin) {
@@ -334,7 +339,7 @@ class Comment extends \app\models\AppModel {
                 'conditions' => array(
                     'question_id' => $comment->id,
                 ),
-                'with' => array('User', 'Pitch'),
+                'with' => array('User'),
                 'order' => array('id' => 'desc'),
             ));
             if (count($children) > 0) {

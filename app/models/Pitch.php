@@ -7,6 +7,7 @@ namespace app\models;
   use \lithium\util\String;
  */
 
+use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
 use \app\models\Addon;
 use \app\models\Category;
@@ -71,9 +72,9 @@ class Pitch extends \app\models\AppModel {
                         $moneyFormatter = new MoneyFormatter();
                         $winnerPrice = $moneyFormatter->formatMoney($params['pitch']->price, array('suffix' => ' р.-'));
                         if (rand(1, 100) <= 50) {
-                            $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer';
+                            $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer #работадлядизайнеров';
                         } else {
-                            $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer';
+                            $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer #работадлядизайнеров';
                         }
                         User::sendTweet($tweet);
                     }
@@ -443,6 +444,28 @@ class Pitch extends \app\models\AppModel {
         return true;
     }
 
+    /**
+     * Add Pinned when Addon Activated
+     */
+    public static function addPinned($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $pitch->pinned = 1;
+            $pitch->save();
+        }
+        return true;
+    }
+
+    /**
+     * Add Guaranteed when Addon Activated
+     */
+    public static function addGuaranteed($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $pitch->guaranteed = 1;
+            $pitch->save();
+        }
+        return true;
+    }
+
     public static function finishPitch($pitchId) {
         $solutions = Solution::all(array(
                     'conditions' => array('pitch_id' => $pitchId, 'nominated' => 1, 'awarded' => 0),
@@ -767,7 +790,7 @@ class Pitch extends \app\models\AppModel {
             if ($option->name == 'Сбор GoDesigner') {
                 $options['commission'] = $option->value;
             }
-            if (($option->name != 'Награда Дизайнеру') && ($option->name != 'Сбор GoDesigner')) {
+            if (($option->name != 'Награда копирайтеру') &&  ($option->name != 'Награда Дизайнеру') && ($option->name != 'Сбор GoDesigner')) {
                 $totalfees += $option->value;
             }
         }
@@ -998,7 +1021,7 @@ class Pitch extends \app\models\AppModel {
     }
 
     public function pitchData($pitch) {
-        $pitchId = $pitch->id;
+        set_time_limit(120);
         $award = $pitch->price;
         $category = $pitch->category;
         $money = 3;
@@ -1020,28 +1043,16 @@ class Pitch extends \app\models\AppModel {
         $moneyArray = array();
         $commentArray = array();
         $dates = array();
-        $pitch->firstSolution = Historysolution::first(array('conditions' => array('pitch_id' => $pitchId), 'order' => array('created' => 'asc')));
-        if ($pitch->firstSolution) {
-            $pitch->firstSolutionTime = strtotime($pitch->firstSolution->created);
-        }
+        $pitch->firstSolutionTime = self::__getFirstSolutionTime($pitch);
         foreach ($period as $dt) {
             $time = strtotime($dt->format('Y-m-d'));
             $plusDay = date('Y-m-d H:i:s', $time + DAY);
-            if (strtotime($pitch->created) > strtotime('2013-03-25 00-00-00')) {
-                $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
-            } else {
-                $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitchId, 'date(created)' => array('<' => $plusDay))));
-            }
-            $ids = array();
-            foreach ($solutions as $solution) {
-                $ids[] = $solution->id;
-            }
             $dates[] = $dt->format('d/m');
+            $ids = self::__getSolutionIds($pitch, $plusDay);
             $moneyArray[] = $money;
             $ratingArray[] = $this->calcRating($ids, $pitch, $plusDay, $dt);
             $commentArray[] = $this->calcComments($ids, $pitch, $plusDay, $dt);
         }
-
         $ratingAverage = (empty($ratingArray)) ? 0 : round(array_sum($ratingArray) / count($ratingArray), 1);
         $moneyAverage = (empty($moneyArray)) ? 0 : round(array_sum($moneyArray) / count($moneyArray), 1);
         $commentAverage = (empty($commentArray)) ? 0 : round(array_sum($commentArray) / count($commentArray), 1);
@@ -1062,6 +1073,56 @@ class Pitch extends \app\models\AppModel {
         return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'commentsNum');
     }
 
+    /**
+     * Возвращает айдишники решений из питча до определенной даты
+     *
+     * @param $pitch
+     * @param $plusDay
+     * @return array|bool|mixed
+     */
+    private function __getSolutionIds($pitch, $plusDay) {
+        $cacheKey = 'calc_ids_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
+        if(!$ids = Rcache::read($cacheKey)) {
+            if (strtotime($pitch->started) > strtotime('2013-03-25 00:00:00')) {
+                $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitch->id, 'date(created)' => array('<' => $plusDay))));
+            } else {
+                $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id, 'date(created)' => array('<' => $plusDay))));
+            }
+            $ids = array();
+            foreach ($solutions as $solution) {
+                $ids[] = $solution->id;
+            }
+            if(strtotime($plusDay) < time()) {
+                Rcache::write($cacheKey, $ids);
+            }
+        }
+        return $ids;
+    }
+
+    /**
+     * Метод возвращает время создания самого первого решения в питча, если есть
+     *
+     * @param $pitch - объект питча
+     * @return bool|int|mixed|null
+     */
+    private function __getFirstSolutionTime($pitch) {
+        $cacheKey = 'calc_firstSolutionTime_' . $pitch->id;
+        $time = null;
+        if(!$time = Rcache::read($cacheKey)) {
+            $pitch->firstSolution = Historysolution::first(array(
+                'conditions' => array(
+                    'pitch_id' => $pitch->id),
+                'order' => array(
+                    'created' => 'asc')
+            ));
+            if ($pitch->firstSolution) {
+                $time = strtotime($pitch->firstSolution->created);
+                Rcache::write($cacheKey, $time);
+            }
+        }
+        return $time;
+    }
+
     private function calcAvg($first, $second, $third) {
         $avgArray = array();
         for ($i = 0; $i < count($first); $i++) {
@@ -1072,89 +1133,236 @@ class Pitch extends \app\models\AppModel {
     }
 
     public function calcRating($ids, $pitch, $plusDay, $dt) {
-        if (!empty($ids)) {
-            $ratingsNum = Ratingchange::all(array('conditions' => array('solution_id' => $ids, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
-        } else {
-            $ratingsNum = array();
+        $cacheKey = 'calc_rating_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
+        if(!$rating = Rcache::read($cacheKey)) {
+            if (!empty($ids)) {
+                $ratingsNum = Ratingchange::all(array('conditions' => array('solution_id' => $ids, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+            } else {
+                $ratingsNum = array();
+            }
+            $rating = 0;
+            $percents = 0;
+            if (count($ids) > 0) {
+                $percents = (count($ratingsNum) / count($ids)) * 100;
+            }
+            if ($percents > 100) {
+                $percents = 100;
+            }
+            switch ($percents) {
+                case $percents < 50:
+                    $rating = 1;
+                    break;
+                case $percents < 63:
+                    $rating = 2;
+                    break;
+                case $percents < 79:
+                    $rating = 3;
+                    break;
+                case $percents < 89:
+                    $rating = 4;
+                    break;
+                case $percents <= 100:
+                    $rating = 5;
+                    break;
+            }
+            $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+            if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+                $rating = 3;
+            }
+            if(strtotime($plusDay) < time()) {
+                Rcache::write($cacheKey, $rating);
+            }
         }
-        $rating = 0;
-        $percents = 0;
-        if (count($ids) > 0) {
-            $percents = (count($ratingsNum) / count($ids)) * 100;
-        }
-        if ($percents > 100) {
-            $percents = 100;
-        }
-        switch ($percents) {
-            case $percents < 50: $rating = 1;
-                break;
-            case $percents < 63: $rating = 2;
-                break;
-            case $percents < 79: $rating = 3;
-                break;
-            case $percents < 89: $rating = 4;
-                break;
-            case $percents <= 100: $rating = 5;
-                break;
-        }
-        $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-        if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
-            $rating = 3;
-        }
-
         return $rating;
     }
 
     public function calcComments($ids, $pitch, $plusDay, $dt) {
-        if (!empty($ids)) {
-            if (strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
-                $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+        $cacheKey = 'calc_comments_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
+        if(!$comments = Rcache::read($cacheKey)) {
+            if (!empty($ids)) {
+                if (strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
+                    $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                } else {
+                    $commentsNum = Comment::all(array('nofilters' => true, 'conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                }
             } else {
-                $commentsNum = Comment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                $commentsNum = array();
             }
-        } else {
-            $commentsNum = array();
-        }
 
-        $comments = 0;
-        $percents = 0;
-        if (count($ids) > 0) {
-            $percents = (count($commentsNum) / count($ids)) * 100;
-        }
+            $comments = 0;
+            $percents = 0;
+            if (count($ids) > 0) {
+                $percents = (count($commentsNum) / count($ids)) * 100;
+            }
 
-        if ($percents > 100) {
-            $percents = 100;
-        }
-        switch ($percents) {
-            case $percents < 50: $comments = 1;
-                break;
-            case $percents < 63: $comments = 2;
-                break;
-            case $percents < 79: $comments = 3;
-                break;
-            case $percents < 89: $comments = 4;
-                break;
-            case $percents <= 100: $comments = 5;
-                break;
-        }
-        $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-        if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
-            $comments = 3;
+            if ($percents > 100) {
+                $percents = 100;
+            }
+            switch ($percents) {
+                case $percents < 50: $comments = 1;
+                    break;
+                case $percents < 63: $comments = 2;
+                    break;
+                case $percents < 79: $comments = 3;
+                    break;
+                case $percents < 89: $comments = 4;
+                    break;
+                case $percents <= 100: $comments = 5;
+                    break;
+            }
+            $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+            if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+                $comments = 3;
+            }
+            if(strtotime($plusDay) < time()) {
+                Rcache::write($cacheKey, $comments);
+            }
         }
         return $comments;
     }
-	
-	/**
-    * Метод возвращает номер страницы
-    *
-    * @param $page
-    * @return integer
-    */
-	public static function getQueryPageNum($page=1) {
-		$page = abs(intval($page));
-		if($page==0) $page=1;
-		return $page;
-	}
+
+    /**
+     * Метод возвращает номер страницы
+     *
+     * @param $page
+     * @return integer
+     */
+    public static function getQueryPageNum($page = 1) {
+        $page = abs(intval($page));
+        if ($page == 0)
+            $page = 1;
+        return $page;
+    }
+
+    /**
+     * Метод возвращает ценовой диапазон
+     *
+     * @param $priceFilter
+     * @return array
+     */
+    public static function getQueryPriceFilter($priceFilter = 0) {
+        switch ($priceFilter) {
+            case 1:
+                $result = array('price' => array('>' => 3000, '<=' => 10000));
+                break;
+            case 2:
+                $result = array('price' => array('>' => 10000, '<=' => 20000));
+                break;
+            case 3:
+                $result = array('price' => array('>' => 20000));
+                break;
+            default:
+                $result = array();
+        }
+        return $result;
+    }
+
+    /**
+     * Метод возвращает время размещения питча
+     *
+     * @param $timeframe
+     * @return array
+     */
+    public static function getQueryTimeframe($timeframe = 0) {
+        switch ($timeframe) {
+            case 1:
+                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3))));
+                break;
+            case 2:
+                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7))));
+                break;
+            case 3:
+                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10))));
+                break;
+            case 4:
+                $result = array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14))));
+                break;
+            default:
+                $result = array();
+        }
+        return $result;
+    }
+
+    /**
+     * Метод возвращает массив ключевых слов для поиска
+     *
+     * @param $search
+     * @return array
+     */
+    public static function getQuerySearchTerm($search = '') {
+        if ((is_string($search) && !empty($search)) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ') {
+            $word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
+            $firstLetter = mb_substr($word, 0, 1, 'utf-8');
+            $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
+            $firstLower = (mb_strtolower($firstLetter, 'utf-8'));
+            $string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8') . '|' . str_replace('ё', 'е', $word);
+            $search = array('Pitch.title' => array('REGEXP' => $string));
+            if (strlen($word) > 3) {
+                $search['Pitch.description'] = array('LIKE' => '%' . $word . '%');
+                $search['Pitch.business-description'] = array('LIKE' => '%' . $word . '%');
+            }
+            $search = array('OR' => array(
+                array("Pitch.title REGEXP '" . $string . "'"),
+                array("Pitch.description LIKE '%$word%'"),
+                array("'Pitch.business-description' LIKE '%$word%'"),
+            ));
+        } else {
+            $search = array();
+        }
+        return $search;
+    }
+
+    /**
+     * Метод возвращает массив для сортировки полей
+     *
+     * @param $order
+     * @return array
+     */
+    /*public static function getQueryOrder($order) {
+        $allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
+        $allowedSortDirections = array('asc', 'desc');
+        $trigger = is_array($order);
+        $field = $trigger ? key($order) : '';
+        $dir = $trigger ? current($order) : '';
+        if ($trigger && ((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))) {
+            switch ($field) {
+                case 'category':
+                    $order = array('category_id' => $dir, 'started' => 'desc');
+                    break;
+                case 'finishDate':
+                    $order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
+                    break;
+                case 'price':
+                    $order = array('free' => 'desc', $field => $dir, 'started' => 'desc');
+                    break;
+                default:
+                    $order = array($field => $dir, 'started' => 'desc');
+            }
+        } else {
+            $order = array('free' => 'desc', 'price' => 'desc', 'started' => 'desc');
+        }
+        return $order;
+    }*/
+
+    /**
+     * Метод возвращает id категории
+     *
+     * @param $category
+     * @return array
+     */
+    public static function getQueryCategory($category) {
+        $categories = Category::all();
+        foreach ($categories as $cat) {
+            $allowedCategories[] = $cat->id;
+        }
+        if (!empty($category) && in_array($category, $allowedCategories)) {
+            $category = array('category_id' => $category);
+        } else {
+            $category = array();
+        }
+        return $category;
+    }
+
 	
 	/**
     * Метод возвращает ценовой диапазон
@@ -1162,7 +1370,7 @@ class Pitch extends \app\models\AppModel {
     * @param $priceFilter
     * @return array
     */
-	public static function getQueryPriceFilter($priceFilter=0) {
+	/*public static function getQueryPriceFilter($priceFilter=0) {
 		switch ($priceFilter) {
 			case 1:
 				$result = array('price' => array('>' => 3000, '<=' => 10000));
@@ -1189,53 +1397,7 @@ class Pitch extends \app\models\AppModel {
 				$result =  array();
 		}
 		return $result;
-	}
-	
-	/**
-    * Метод возвращает время размещения питча
-    *
-    * @param $timeframe
-    * @return array
-    */
-	public static function getQueryTimeframe($timeframe=0) {
-		switch ($timeframe) {
-			case 1:
-				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3))));
-				break;
-			case 2:
-				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7))));
-				break;
-			case 3:
-				$result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10))));
-				break;
-			case 4:
-				$result = array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14))));
-				break;
-			default:
-				$result =  array();
-		}
-		return $result;
-	}
-	
-	/**
-    * Метод возвращает массив ключевых слов для поиска
-    *
-    * @param $search
-    * @return array
-    */
-	public static function getQuerySearchTerm($search='') {
-		if((is_string($search) && !empty($search)) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ'){
-			$word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
-			$firstLetter = mb_substr($word, 0, 1, 'utf-8');
-			$firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
-			$firstLower = (mb_strtolower($firstLetter, 'utf-8'));
-			$string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8');
-			$search = array('Pitch.title' => array('REGEXP' => $string));
-		} else {
-			$search = array();
-		}
-		return $search;
-	}
+	}*/
 	
 	/**
     * Метод возвращает массив для сортировки полей
@@ -1268,26 +1430,6 @@ class Pitch extends \app\models\AppModel {
 		}
 		return $order;
 	}
-	
-	/**
-    * Метод возвращает id категории
-    *
-    * @param $category
-    * @return array
-    */
-	public static function getQueryCategory($category) {
-		$categories = Category::all();
-		foreach($categories as $cat){
-			$allowedCategories[] = $cat->id;
-		}
-		if (!empty($category) && in_array($category, $allowedCategories)){
-			$category = array('category_id' => $category);
-		} else {
-			$category = array();
-		}
-		return $category;
-	}
-
 
 	/**
     * Метод возвращает данные для поиска по типу питча
@@ -1342,25 +1484,24 @@ class Pitch extends \app\models\AppModel {
 			'page' => 1,
 		));
 	}
-        
-    public static function getFreePitch() {
-        return Pitch::first(array('conditions'=>array('status' => 0, 'published' => 1, 'free' => 1),'order' => array('RAND()')));
-    }
 
+    public static function getFreePitch() {
+        return Pitch::first(array('conditions' => array('status' => 0, 'published' => 1, 'free' => 1), 'order' => array('RAND()')));
+    }
 
     public static function createNewWinner($solutionId) {
         if (($solution = Solution::first(array(
                     'conditions' => array('Solution.id' => $solutionId),
                     'with' => array('Pitch'),
-                ))) && count(self::all(array('conditions' => array('user_id' => $solution->pitch->user_id,'billed' => 0,'multiwinner'=>$solution->pitch->id))))==0) {
+                ))) && count(self::all(array('conditions' => array('user_id' => $solution->pitch->user_id, 'billed' => 0, 'multiwinner' => $solution->pitch->id)))) == 0) {
             $copyPitch = Pitch::create();
             $data = $solution->pitch->data();
             $data['billed'] = 0;
             $data['published'] = 0;
             $data['status'] = 1;
             $data['multiwinner'] = $data['id'];
-            $count = self::getCountBilledMultiwinner($data['id'])+2;
-            $data['title'] = $count.'. '.$data['title'];
+            $count = self::getCountBilledMultiwinner($data['id']) + 2;
+            $data['title'] = $count . '. ' . $data['title'];
             //  $data['total'] = $data['price'] + ($data['price']*0);
             unset($data['id']);
             $copyPitch->set($data);
@@ -1373,7 +1514,8 @@ class Pitch extends \app\models\AppModel {
                         'id' => $copyPitch->id,
                         'category_id' => $copyPitch->category_id,
                         'promocode' => $copyPitch->promocode));
-                Receipt::createReceipt($receiptData);
+                $comission = Receipt::createReceipt($receiptData, true);
+                $copyPitch->total = $comission + $copyPitch->price;
                 $copyPitch->save();
                 return $copyPitch->id;
             }
@@ -1391,35 +1533,19 @@ class Pitch extends \app\models\AppModel {
             $pitch->awardedDate = date('Y-m-d H:i:s');
             Solution::awardCopy($pitch->awarded);
             $count = self::getCountBilledMultiwinner($pitch->multiwinner);
-            if ($count == 0){
+            if ($count == 0) {
                 $mainPitch = self::first($pitch->multiwinner);
-                $mainPitch->title = '1. '.$mainPitch->title;
+                $mainPitch->title = '1. ' . $mainPitch->title;
                 $mainPitch->save();
             }
             if ($pitch->save()) {
                 Task::createNewTask($pitch->awarded, 'victoryNotification');
-                $admin = User::getAdmin();
                 $solution = $pitch->solutions[0];
                 $solution = Solution::first($solution->multiwinner);
                 $solution->awarded = 1;
                 $solution->nominated = 1;
                 $solution->save();
-                $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/> Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
-                $data = array('pitch_id' => $mainPitch->id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
-                Comment::createComment($data);
-                $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
-                $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
-                $winner = User::first($solution->user_id);
-                $nameInflector = new nameInflector();
-                $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
-                $moneyFormatter = new MoneyFormatter();
-                $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
-                if (rand(1, 100) <= 50) {
-                    $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
-                } else {
-                    $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
-                }
-                User::sendTweet($tweet);
+                User::sendTweetWinner($solution, $pitch, true);
                 Task::createNewTask($solution->id, 'victoryNotification');
                 return true;
             }
@@ -1429,8 +1555,9 @@ class Pitch extends \app\models\AppModel {
     }
 
     public static function getCountBilledMultiwinner($pitchId) {
-        if($pitch = self::first($pitchId)) {
-            return count(self::all(array('conditions' => array('user_id' => $pitch->user_id,'billed' => 1,'multiwinner'=>$pitch->id))));
+        if ($pitch = self::first($pitchId)) {
+            return count(self::all(array('conditions' => array('user_id' => $pitch->user_id, 'billed' => 1, 'multiwinner' => $pitch->id))));
         }
     }
+
 }

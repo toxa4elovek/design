@@ -1,9 +1,5 @@
 $(document).ready(function() {
 
-    //vk like
-    VK.init({apiId: 2950889, onlyWidgets: true});
-    VK.Widgets.Like("vk_like", {type: "mini"});
-
     function preload(arrayOfImages) {
         $(arrayOfImages).each(function(){
             $('<img/>')[0].src = this;
@@ -14,15 +10,6 @@ $(document).ready(function() {
     if(typeof(fileSet) != 'undefined') {
         preload(fileSet);
     }
-
-    // gplus
-    window.___gcfg = {lang: 'ru'};
-
-    (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-    })();
 
     var editcommentflag = false;
 
@@ -532,6 +519,7 @@ $(document).ready(function() {
                 }
                 html += '<a class="client-comment" href="#">Комментировать</a>';
                 html += '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>';
+                console.log(result.selectedsolution);
                 if (result.selectedsolution != true) {
                     html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>';
                 }
@@ -544,11 +532,15 @@ $(document).ready(function() {
             }
             
             enableToolbar();
-            Socialite.load($('.solution-share'), [
-                                                  $('#facebook' + result.solution.id)[0],
-                                                  $('#twitter' + result.solution.id)[0]
-                                              ]);
-
+            $('.social-likes').socialLikes();
         });
+    }
+    
+    function getUrlVar(key) {
+        var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
+        return result && unescape(result[1]) || "";
+    }
+    if (getUrlVar('to_comment')) {
+        $.scrollTo('#newComment');
     }
 });

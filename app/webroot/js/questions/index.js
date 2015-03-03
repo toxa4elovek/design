@@ -61,7 +61,7 @@ $(document).ready(function() {
 
     $(document).on('click', '.post-to-facebook', function() {
         _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания фейсбука']);
-        sendFBMessage();
+        //sendFBMessage();
         return false;
     });
 
@@ -80,38 +80,22 @@ $(document).ready(function() {
     }
 
     var initShares = function() {
-
+        $('.social-likes').socialLikes();
         setTimeout(function() {
-            // Pinterest
-            window.parsePins($('.share-this')[0]);
-
-            // Vk
-            $('.vk_share_button').replaceWith(VK.Share.button(
-            {
-              url: 'http://www.godesigner.ru/questions/index',
-              title: 'Узнай, какой ты дизайнер на самом деле',
-              description: $('.vk_share_button').data('share-text'),
-              image: $('.vk_share_button').data('share-image'),
-              noparse: true
-            },
-            {
-                type: 'round_nocount',
-                text: 'Поделиться'
-            }
-            ));
-            $('#vkshare1').on('click', function() {
+            $('.social-likes__button_vkontakte').on('click', function() {
                 _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания ВК']);
             })
-            // Twitter
-            twttr.widgets.load();
-            twttr.events.bind('click', function (e) {
-                if(e.target.id == 'twitter-widget-1') {
-                    _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания твиттера']);
-                }
+
+            $('.social-likes__button_twitter').on('click', function() {
+                _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания твиттера']);
             })
 
-            $('.pin-share').on('click', function() {
+            $('.social-likes__button_pinterest').on('click', function() {
                 _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания пинтереста']);
+            })
+
+            $('.social-likes__button_facebook').on('click', function() {
+                _gaq.push(['_trackEvent', 'Тест', 'Пользователь нажал кнопку расшаривания фейсбука']);
             })
         }, 2000);
     }

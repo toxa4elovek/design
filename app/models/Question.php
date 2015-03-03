@@ -9,6 +9,8 @@ class Question extends \app\models\AppModel {
 
     public $hasMany = array('Variant');
 
+    public static $questionsLimit = 15;
+
     public static function getStats() {
         $usersTotal = User::count();
         $usersTested = Test::count(array(

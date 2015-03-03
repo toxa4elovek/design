@@ -1,4 +1,18 @@
 <div class="groupc">
+    <p>
+        <label>Какие 3 качества нужно донести через логотип? <a href="#" class="second tooltip" title="Прилагательные, ассоциации, которые должны возникнуть у потребителя."></a></label>
+        <input type="text" name="qualities" placeholder="Прагматичный, надежный, элегантный" class="specific-prop">
+    </p>
+</div>
+
+<div class="groupc">
+    <p style="margin-top: 24px; margin-bottom: 38px;">
+        <label><a href="#" class="expand_extra">+ Дополнительная информация</a></label>
+    </p>
+
+    <div class="extra_options" style="display: none">
+
+    <div class="groupc">
     <p><label>Какими свойствами должен обладать ваш логотип?</label></p>
 
     <ul class="logo-properties sliderul" data-name="logo-properties">
@@ -38,15 +52,9 @@
             <span class="label-b">Заметный</span>
         </li>
     </ul><!-- .logo-properties -->
+    </div>
 
-    <p>
-        <label>Какие 3 качества нужно донести через логотип? <a href="#" class="second tooltip" title="Прилагательные, ассоциации, которые должны возникнуть у потребителя."></a></label>
-        <input type="text" name="qualities" placeholder="Прагматичный, надежный, элегантный" class="specific-prop">
-    </p>
-</div><!-- .group -->
-
-
-<div class="groupc">
+    <div class="groupc">
     <p><label class="regular">Какой вид логотипа вы бы хотели?</label></p>
     <ul class="look-variants">
         <li>
@@ -85,4 +93,5 @@
             <span class="graysupplement">Тренды интернета, градиенты, закругления</span>
         </li>
     </ul><!-- .look-variants -->
-</div><!-- .group -->
+    </div>
+        <!-- brief.html -->

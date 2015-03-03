@@ -56,7 +56,13 @@
                     </ul>
                     <?php else:?>
                     <div class="bigfont">
-                        <h2 class="title">Ещё никто не выложил свои идеи.</h2>
+                        <h2 class="title">
+                            <?php if($pitch->billed == 1):?>
+                            Ещё никто не выложил свои идеи.
+                            <?php else: ?>
+                            Проект будет запущен после <a href="http://www.godesigner.ru/pitches/edit/<?= $pitch->id?>#step3">оплаты.</a>
+                            <?php endif;?>
+                        </h2>
                         <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
                         <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
                         <h2 class="title">и стань первым!</h2>
@@ -80,7 +86,7 @@
                     <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
                 </section>
 
-                <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
+                <?php if(((strtotime($pitch->started) > strtotime('2013-01-31'))) && ($pitch->published == 1)):?>
                 <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
                 <div style="display:none;" id="floatingblock" class="floatingblock">
                     <table style="width:500px;float:left">
@@ -166,8 +172,8 @@
 
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'social-likes.min.js' ,'kinetic-v4.5.4.min.js', 'social-likes.min.js',  'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php else:?>
-    <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
+    <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'http://surfingbird.ru/share/share.min.js?v=5', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'social-likes.min.js',  'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php endif?>
-<?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>
+<?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/social-likes_flat'), array('inline' => false))?>

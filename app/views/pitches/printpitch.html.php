@@ -18,9 +18,36 @@ $details = unserialize($pitch->specifics);
                         <h2 class="blueheading">Название</h2>
                         <p class="regular"><?=$pitch->title?></p>
 
-                        <?php if(!empty($pitch->industry)):?>
+                        <?php if(!empty($pitch->industry)):
+                        if($unserialized = unserialize($pitch->industry)):
+                            $job_types = array(
+                                'realty' => 'Недвижимость / Строительство',
+                                'auto' => 'Автомобили / Транспорт',
+                                'finances' => 'Финансы / Бизнес',
+                                'food' => 'Еда / Напитки',
+                                'adv' => 'Реклама / Коммуникации',
+                                'tourism' => 'Туризм / Путешествие',
+                                'sport' => 'Спорт',
+                                'sci' => 'Образование / Наука',
+                                'fashion' => 'Красота / Мода',
+                                'music' => 'Развлечение / Музыка',
+                                'culture' => 'Искусство / Культура',
+                                'animals' => 'Животные',
+                                'childs' => 'Дети',
+                                'security' => 'Охрана / Безопасность',
+                                'health' => 'Медицина / Здоровье',
+                                'it' => 'Компьютеры / IT');
+                            $selected = array();
+                            foreach ($job_types as $k => $v):
+                                if(in_array($k, $unserialized)):
+                                    $selected[] = $v;
+                                endif;
+                            endforeach;
+                            $pitch->industry = implode($selected, '<br>');
+                        endif;
+                        ?>
                         <h2 class="blueheading">Вид деятельности</h2>
-                        <p class="regular"><?=$pitch->industry?></p>
+                        <p class="regular"><?php echo $pitch->industry?></p>
                         <?php endif;?>
 
                         <?php if(!empty($pitch->{'business-description'})):?>

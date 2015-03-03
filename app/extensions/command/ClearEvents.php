@@ -15,9 +15,13 @@ class ClearEvents extends \app\extensions\command\CronJob {
                 $event->delete();
             } elseif ($event->type == 'CommentAdded' && !$event->comment) {
                 $event->delete();
-            } elseif ($event->type == 'LikeAdded' && !$event->solution) {
+            } elseif ($event->type == 'LikeAdded' && !$event->solution && $event->news_id == 0) {
                 $event->delete();
             }
+        }
+        $old_events = Event::all(array('conditions' => array('type' => array('!=' => 'newsAdded'), 'created' => array('<' => date('Y-m-d H:i:s', strtotime('-3 month', time())))), 'limit' => 100));
+        if ($old_events) {
+            $old_events->delete();
         }
     }
 

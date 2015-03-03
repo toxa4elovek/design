@@ -31,7 +31,7 @@ class ChangeUserGender extends \app\extensions\command\CronJob {
                 }
             }
         }
-        $users->save();
+        $users->save(null, array('validate' => false));
     }
 
 }

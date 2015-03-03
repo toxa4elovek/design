@@ -4,14 +4,17 @@
   <div style="clear:both"></div>
   <div id="slides">
     <div class="slides_container" style="height:300px;">
+        <div class="slide">
+            <a href="/fastpitch"><img src="/img/main_banner_logo_one_click.png" alt="" /></a>
+        </div>
       <div class="slide">
-      <a href="/pages/howitworks"><img src="/img/1_BANNER.png" alt="" /></a>
+      <a href="/pages/howitworks"><img src="/img/main_banner1.png" alt="" /></a>
       </div>
       <div class="slide">
-          <a href="/pages/howitworks"><img src="/img/2_BANNER.png" alt="" /></a>
+          <a href="/pages/howitworks"><img src="/img/main_banner2.png" alt="" /></a>
       </div>
         <div class="slide">
-            <a href="/pages/howitworks"><img src="/img/3_BANNER.png" alt="" /></a>
+            <a href="/pages/howitworks"><img src="/img/main_banner3.png" alt="" /></a>
         </div>
     </div>
     <a id="finished" href="/pitches/?type=finished" style="height:32px;width:173px;position: absolute; top: 251px; left: 79px; z-index:101;background-image:url(/img/examples_173_32_red.png)"><img src="/img/examples_173_32.png" alt="Просмотреть примеры"></a>
@@ -46,9 +49,6 @@
                   'third' => 'ей'
               ))?></p>
           </a>
-          <?php else:?>
-            <img src="/img/banner_mison.png" alt="" />
-            <a class="more_info" href="/pitches/view/100043" style="background: url('/img/banner_mison_press.png') repeat scroll left top transparent"></a>
         <?php endif?>
         </li>
       <li style="height:259px;">
@@ -75,9 +75,6 @@
                   'third' => 'ей'
               ))?></p>
           </a>
-    <?php else:?>
-          <img src="/img/visitcard_parsuna.png" alt="" />
-       <a class="more_info" href="/pitches/view/45" style="background: url(/img/visitcard_parsuna_banner_onpress.png) repeat scroll left top transparent"></a>
           <?php endif?>
         </li>
       <li>
@@ -237,9 +234,9 @@
       <dl class="dl_1">
         <dt><?=$statistic['numOfSolutionsPerProject'][$category_id]?></dt>
         <?php switch($category_id):
-            case 1: $string = '<dd>решений <br>в категории <br>«логотип»</dd>'; break;
-            case 3: $string = '<dd>решений <br>в категории <br>«сайт»</dd>'; break;
-            case 7: $string = '<dd>решений <br>в категории <br>«копирайтинг»</dd>'; break;
+            case 1: $string = '<dd>среднее кол-во <br>идей в категории<br>«логотип»</dd>'; break;
+            case 3: $string = '<dd>среднее кол-во <br>идей в категории<br>«сайт»</dd>'; break;
+            case 7: $string = '<dd>среднее кол-во <br>идей в категории<br>«копирайтинг»</dd>'; break;
         endswitch?>
         <?php echo $string; ?>
       </dl>
@@ -252,8 +249,8 @@
         <dd>заработанных<br> дизайнерами денег</dd>
       </dl>
       <dl class="dl_4">
-        <dt><?=$statistic['totalParticipants']?></dt>
-        <dd>количество участников</dd>
+        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalParticipants'], array('suffix' => ''))?></dt>
+        <dd>дизайнеров и копирайтеров зарегистрировано на сайте</dd>
       </dl>
       <dl class="dl_5">
         <dt><?=$statistic['lastDaySolutionNum']?></dt>

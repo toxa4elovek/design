@@ -62,9 +62,23 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 */
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     // Mobile Detect
+    $controller = strtolower($params['params']['controller']);
+    if($controller == 'undefined') {
+        header('Location: /news');
+        die();
+    }
     require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'Mobile-Detect/Mobile_Detect.php');
     $mobileDetect = new Mobile_Detect;
-    if ($mobileDetect->isMobile() && !$mobileDetect->isTablet()) {
+    $bypass = false;
+    if((isset($params['request']->query)) && (isset($params['request']->query['mobile'])) && ($params['request']->query['mobile'] == 'true')) {
+        setcookie('bypassmobile', 1, time() + (90 * DAY));
+        $bypass = true;
+    }
+    if((isset($_COOKIE['bypassmobile'])) && ($_COOKIE['bypassmobile'] == 1)) {
+        $bypass = true;
+    }
+
+    if (($mobileDetect->isMobile() && !$mobileDetect->isTablet()) && (!$bypass)) {
         $goMobile = 'http://m.godesigner.ru';
         $routes = array(
             'pages' => array(

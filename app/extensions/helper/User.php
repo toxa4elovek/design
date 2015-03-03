@@ -420,7 +420,7 @@ class User extends \app\extensions\helper\Session {
     
     public function getGender() {
         if(!$this->isLoggedIn()) {
-            return false;
+            return 0;
         }
         return (int) $this->read('user.gender');
     }

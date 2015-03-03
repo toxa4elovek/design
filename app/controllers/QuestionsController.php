@@ -30,15 +30,15 @@ class QuestionsController extends \app\controllers\AppController {
 
         $stats = Option::first(array('conditions' => array('name' => 'quiz_stats')));
         $stats = unserialize($stats->value);
-
-        return compact('stats', 'questions');
+        $limit = Question::$questionsLimit;
+        return compact('stats', 'questions', 'limit');
     }
 
     public function validate() {
         $result = array(
             'correct' => 0,
             'percent' => 0,
-            'total' => Question::count(),
+            'total' => Question::$questionsLimit,
         );
         $firstTime = false;
 

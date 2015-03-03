@@ -9,20 +9,24 @@ class Receipt extends \app\models\AppModel {
 
     public static $dict = array(
         'award' => 'Награда Дизайнеру',
-        'private' => 'Закрытый питч',
+        'private' => 'Скрыть проект',
         'social' => 'Рекламный Кейс',
         'experts' => 'Экспертное мнение',
-        'pinned' => '“Прокачать” бриф',
+        'pinned' => '«Прокачать» проект',
         'timelimit' => 'Установлен срок',
         'brief' => 'Заполнение брифа',
-        'guaranteed' => 'Гарантированный питч',
+        'guaranteed' => 'Гарантированный проект',
         'fee' => 'Сбор GoDesigner',
+        'discount' => 'Скидка'
     );
 
     public static $fee = FEE_LOW;
 
 
-    public static function createReceipt($data) {
+    public static function createReceipt($data, $returnComission = false, $copyright = false) {
+        if($copyright == true) {
+            self::$dict['award'] = 'Награда копирайтеру';
+        }
         $receiptData = array();
         if(isset($data['features']['award'])) {
             $receiptData[] = array(
@@ -86,6 +90,13 @@ class Receipt extends \app\models\AppModel {
                 'value' => $data['features']['guaranteed']
             );
         }
+        if(isset($data['features']['discount'])) {
+            $receiptData[] = array(
+                'pitch_id' => $data['commonPitchData']['id'],
+                'name' => self::$dict['discount'],
+                'value' => $data['features']['discount']
+            );
+        }
         $total = 0;
         foreach($receiptData as $row) {
             $total += $row['value'];
@@ -116,7 +127,11 @@ class Receipt extends \app\models\AppModel {
             $receiptItem->set($row);
             $receiptItem->save();
         }
-        return $data['commonPitchData']['id'];
+        if($returnComission == true) {
+            return $comission;
+        }else {
+            return $data['commonPitchData']['id'];
+        }
     }
 
     public static function fetchReceipt($id) {

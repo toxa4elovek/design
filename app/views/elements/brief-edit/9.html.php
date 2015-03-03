@@ -1,4 +1,20 @@
 <div class="groupc">
+    <p>
+        <label>Какие 3 качества нужно донести через иллюстрацию? <a href="#" class="second tooltip" title="Прилагательные, ассоциации, которые должны возникнуть у потребителя."></a></label>
+        <input type="text" name="qualities" value="<?=$specifics['qualities']?>" placeholder="Прагматичный, надежный, элегантный" class="specific-prop">
+    </p>
+</div>
+
+
+<div class="groupc">
+
+    <p style="margin-top: 24px; margin-bottom: 38px;">
+        <label><a href="#" class="expand_extra">+ Дополнительная информация</a></label>
+    </p>
+
+    <div class="extra_options" style="display: none">
+
+        <div class="groupc">
 
     <?php if($pitch->billed == 1):?>
         <?php if ($this->user->isAdmin()):?>

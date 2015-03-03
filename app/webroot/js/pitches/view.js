@@ -1,8 +1,10 @@
-;$(document).ready(function(){
+;
+$(document).ready(function () {
+    $('.social-likes').socialLikes();
 
     // Preload Images
-    (function(arrayOfImages) {
-        $(arrayOfImages).each(function(){
+    (function (arrayOfImages) {
+        $(arrayOfImages).each(function () {
             $('<img/>')[0].src = this;
             // Alternatively you could use:
             // (new Image()).src = this;
@@ -18,15 +20,15 @@
         '/img/like_hover.png'
     ]);
 
-    $(document).on('mouseenter', '.ratingchange', function(){
+    $(document).on('mouseenter', '.ratingchange', function () {
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
     })
 
-    $(document).on('mouseleave', '.ratingcont', function() {
+    $(document).on('mouseleave', '.ratingcont', function () {
         $(this).css('background', 'url(/img/' + $(this).data('default') + '-rating.png) repeat scroll 0% 0% transparent');
     })
 
-    $(document).on('click', '.ratingchange', function() {
+    $(document).on('click', '.ratingchange', function () {
         var id = $(this).parent().data('solutionid');
         var rating = $(this).data('rating');
         var self = $(this);
@@ -45,23 +47,27 @@
             $('textarea', $newEl).focus();
         }
         $.post('/solutions/rating/' + id + '.json',
-            {"id": id, "rating": rating}, function(response) {
-                self.parent().data('default', rating);
-                self.parent().css('background', 'url(/img/' + rating + '-rating.png) repeat scroll 0% 0% transparent');
-            });
+                {"id": id, "rating": rating}, function (response) {
+            self.parent().data('default', rating);
+            self.parent().css('background', 'url(/img/' + rating + '-rating.png) repeat scroll 0% 0% transparent');
+        });
         return false;
     })
 
-    $(document).on('click', '#rating-close', function() {
-        $(this).closest('.ratingcomment').fadeOut(200, function() { $(this).remove(); });
+    $(document).on('click', '#rating-close', function () {
+        $(this).closest('.ratingcomment').fadeOut(200, function () {
+            $(this).remove();
+        });
     });
-    $(document).on('click', '#rating_comment_send', function(e) {
+    $(document).on('click', '#rating_comment_send', function (e) {
         e.preventDefault();
-        $(this).closest('.ratingcomment').fadeOut(200, function() { $(this).remove(); });
+        $(this).closest('.ratingcomment').fadeOut(200, function () {
+            $(this).remove();
+        });
     });
 
     // Gallery buttons
-    $(document).on('click', '.next_part', function(e) {
+    $(document).on('click', '.next_part', function (e) {
         e.preventDefault();
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
@@ -72,18 +78,18 @@
         if (gallerySorting.length > 0) {
             data.sorting = gallerySorting;
         }
-        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), data, function(response) {
+        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), data, function (response) {
             var solutionsCount = $($(response)[0]).val();
             obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
-            obj.each(function(index) {
+            obj.each(function (index) {
                 if ($(this).is('li')) {
                     $(this).css('opacity', '0');
                 }
             });
             obj.appendTo('.list_portfolio.main_portfolio');
-            obj.each(function(index) {
+            obj.each(function (index) {
                 if ($(this).is('li')) {
-                    $(this).animate({opacity:1}, 500);
+                    $(this).animate({opacity: 1}, 500);
                 }
             });
             $('.gallery_postload_loader').hide();
@@ -96,7 +102,7 @@
             }
         });
     });
-    $(document).on('click', '.rest_part', function(e) {
+    $(document).on('click', '.rest_part', function (e) {
         e.preventDefault();
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
@@ -108,17 +114,17 @@
         if (gallerySorting.length > 0) {
             data.sorting = gallerySorting;
         }
-        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), data, function(response) {
+        $.get('/pitches/view/' + $('input[name=pitch_id]').val(), data, function (response) {
             obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
-            obj.each(function(index) {
+            obj.each(function (index) {
                 if ($(this).is('li')) {
                     $(this).css('opacity', '0');
                 }
             });
             obj.appendTo('.list_portfolio.main_portfolio');
-            obj.each(function(index) {
+            obj.each(function (index) {
                 if ($(this).is('li')) {
-                    $(this).animate({opacity:1}, 500);
+                    $(this).animate({opacity: 1}, 500);
                 }
             });
             $('.gallery_postload').hide();
@@ -127,71 +133,71 @@
         });
     });
 
-   $(document).on('click', '.select-winner', function() {
-       var num = $(this).data('num');
-       var item = $('.photo_block', '#li_' + num).clone();
-       $('#winner-num').text('#' + num);
-       $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
-       $('#winner-user-link').text($(this).data('user'));
-       $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
-       $('#confirmWinner').data('url', $(this).attr('href'));
-       $('#replacingblock').replaceWith(item);
-       $('#popup-final-step').modal({
-           containerId: 'final-step',
-           opacity: 80,
-           closeClass: 'popup-close'
-       });
+    $(document).on('click', '.select-winner', function () {
+        var num = $(this).data('num');
+        var item = $('.photo_block', '#li_' + num).clone();
+        $('#winner-num').text('#' + num);
+        $('#winner-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+        $('#winner-user-link').text($(this).data('user'));
+        $('#winner-user-link').attr('href', '/users/view/' + $(this).data('userid'));
+        $('#confirmWinner').data('url', $(this).attr('href'));
+        $('#replacingblock').replaceWith(item);
+        $('#popup-final-step').modal({
+            containerId: 'final-step-multi',
+            opacity: 80,
+            closeClass: 'popup-close'
+        });
 
-       /*
-       $.get($(this).attr('href'), function(response) {
-           if(response.result != false) {
-               if(response.result.nominated) {
-                   window.location = '/users/nominated';
-                   $('.select-winner-li').remove();
-               }
-           }
-       });*/
-       return false;
-   });
-   
-    $(document).on('click', '.select-multiwinner', function() {
-       var num = $(this).data('num');
-       var item = $('.photo_block', '#li_' + num).clone();
-       $('#winner-num-multi').text('#' + num);
-       $('#winner-num-multi').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
-       $('#winner-user-link-multi').text($(this).data('user'));
-       $('#winner-user-link-multi').attr('href', '/users/view/' + $(this).data('userid'));
-       $('#confirmWinner-multi').data('url', $(this).attr('href'));
-       $('#multi-replacingblock').replaceWith(item);
-       $('#popup-final-step-multi').modal({
-           containerId: 'final-step-multi',
-           opacity: 80,
-           closeClass: 'popup-close'
-       });
-       return false;
-   });
+        /*
+         $.get($(this).attr('href'), function(response) {
+         if(response.result != false) {
+         if(response.result.nominated) {
+         window.location = '/users/nominated';
+         $('.select-winner-li').remove();
+         }
+         }
+         });*/
+        return false;
+    });
 
-    $(document).on('click', '#confirmWinner', function() {
+    $(document).on('click', '.select-multiwinner', function () {
+        var num = $(this).data('num');
+        var item = $('.photo_block', '#li_' + num).clone();
+        $('#winner-num-multi').text('#' + num);
+        $('#winner-num-multi').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+        $('#winner-user-link-multi').text($(this).data('user'));
+        $('#winner-user-link-multi').attr('href', '/users/view/' + $(this).data('userid'));
+        $('#confirmWinner-multi').data('url', $(this).attr('href'));
+        $('#multi-replacingblock').replaceWith(item);
+        $('#popup-final-step-multi').modal({
+            containerId: 'final-step-multi',
+            opacity: 80,
+            closeClass: 'popup-close'
+        });
+        return false;
+    });
+
+    $(document).on('click', '#confirmWinner', function () {
         var url = $(this).data('url');
-        $.get(url, function(response) {
-            if(response.result != false) {
-                if(response.result.nominated) {
+        $.get(url, function (response) {
+            if (response.result != false) {
+                if (response.result.nominated) {
                     window.location = '/users/nominated';
                     $('.select-winner-li').remove();
                 }
             }
         });
     });
-    
-    $(document).on('click', '#confirmWinner-multi', function() {
+
+    $(document).on('click', '#confirmWinner-multi', function () {
         var url = $(this).data('url');
-        if($(this).data('url')){
+        if ($(this).data('url')) {
             window.location = url;
         }
     });
 
     // Delete Solution from Solution Popup
-    $('.solution-overlay').on('click', '.delete-solution-popup', function(e) {
+    $(document).on('click', '.delete-solution-popup', function (e) {
         e.preventDefault();
         var item = $('.delete-solution[data-solution="' + $(this).data('solution') + '"]');
         if (item.length > 0) {
@@ -201,9 +207,13 @@
             window.location = '/solutions/delete/' + $(this).data('solution');
         }
     });
-    
+
+    $('.social-likes__button').on('click', function() {
+        $(this).closest('.sharebar').fadeOut(300);
+    })
+
     // Delete Solution
-    $(document).on('click', '.delete-solution', function() {
+    $(document).on('click', '.delete-solution', function () {
         var num = $(this).data('solution_num');
         var link = $('a.delete-solution', '#li_' + num);
 
@@ -212,21 +222,21 @@
             solutionDelete(link);
             return false;
         }
-        
+
         $('#model_id', '#popup-delete-solution').val($(this).data('solution'));
-        
+
         // Show Delete Moderation Overlay
         $('#popup-delete-solution').modal({
             containerId: 'final-step-clean',
             opacity: 80,
             closeClass: 'popup-close',
-            onShow: function() {
+            onShow: function () {
                 $(document).off('click', '#sendDeleteSolution');
             }
         });
-        
+
         // Delete Solution Popup Form
-        $(document).on('click', '#sendDeleteSolution', function() {
+        $(document).on('click', '#sendDeleteSolution', function () {
             var form = $(this).parent().parent();
             if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
                 $('#popup-delete-solution').addClass('wrong-input');
@@ -236,10 +246,10 @@
             $spinner.addClass('active');
             $(document).off('click', '#sendDeleteSolution');
             var data = form.serialize();
-            $.post(form.attr('action') + '.json', data).done(function(result) {
-                if($('input[name=penalty]:checked', '#delete-solution-form').val() == '1') {
+            $.post(form.attr('action') + '.json', data).done(function (result) {
+                if ($('input[name=penalty]:checked', '#delete-solution-form').val() == '1') {
                     softSolutionDelete(link);
-                }else {
+                } else {
                     solutionDelete(link);
                 }
                 $spinner.removeClass('active');
@@ -252,20 +262,20 @@
 
     function softSolutionDelete(link) {
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
-        var word = formatString(newSolutionCount, {'string':'решен', 'first':'ие', 'second':'ия', 'third':'ий'});
+        var word = formatString(newSolutionCount, {'string': 'решен', 'first': 'ие', 'second': 'ия', 'third': 'ий'});
         var newString = newSolutionCount + ' ' + word;
         link.parent().parent().parent().parent().remove();
         $('#solutions', 'ul').html(newString);
         $('#hidden-solutions-count').val(newSolutionCount);
     }
-    
+
     // Instant Delete Solution
     function solutionDelete(link) {
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
-        var word = formatString(newSolutionCount, {'string':'решен', 'first':'ие', 'second':'ия', 'third':'ий'});
+        var word = formatString(newSolutionCount, {'string': 'решен', 'first': 'ие', 'second': 'ия', 'third': 'ий'});
         var newString = newSolutionCount + ' ' + word;
-        $.get(link.attr('href'), function(response) {
-            if(response.result != false) {
+        $.get(link.attr('href'), function (response) {
+            if (response.result != false) {
                 link.parent().parent().parent().parent().remove();
                 $('#solutions', 'ul').html(newString);
                 $('#hidden-solutions-count').val(newSolutionCount);
@@ -273,14 +283,14 @@
         });
         return true;
     }
-    
+
     function formatString(value, strings) {
         root = strings['string'];
-        if((value == 1) || (value.toString().match(/[^1]1$/))) {
+        if ((value == 1) || (value.toString().match(/[^1]1$/))) {
             var index = 'first';
-        }else if ((value >= 2) && (value <= 4)) {
+        } else if ((value >= 2) && (value <= 4)) {
             var index = 'second';
-        }else {
+        } else {
             var index = 'third';
         }
         var string = root + strings[index];
@@ -288,7 +298,7 @@
     }
 
     // Keys navigation
-    $(document).keydown(function(e) {
+    $(document).keydown(function (e) {
         if ($('.solution-overlay').is(':hidden')) {
             return true;
         }
@@ -303,27 +313,22 @@
         }
     });
 
-    $(document).on('click', '.like-small-icon', function(){
-
+    $(document).on('click', '.like-small-icon', function () {
         var likesNum = $(this).next();
         var likeLink = $(this);
         likesNum.html(parseInt(likesNum.html()));
         var sharebar = likesNum.next();
         var solutionId = $(this).data('id');
-        Socialite.load($(this).next().next(), [
-            $('#facebook' + solutionId)[0],
-            $('#twitter' + solutionId)[0]
-        ]);
-        $('body').one('click',function() {
+        $('body').one('click', function () {
             $('.sharebar').fadeOut(300);
         });
-        $.get('/solutions/like/' + $(this).data('id') + '.json', function(response) {
+        $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
             likesNum.html(response.likes);
             likeLink.off('click');
             sharebar.fadeIn(300);
             likeLink.off('mouseover');
-            likeLink.on('click', function() {
-                $('body').one('click',function() {
+            likeLink.on('click', function () {
+                $('body').one('click', function () {
                     sharebar.fadeOut(300);
                 });
                 sharebar.fadeIn(300);
@@ -334,18 +339,20 @@
         return false;
     });
 
-    $(document).on('mouseenter', '.like-hoverbox', function(){
+    $(document).on('mouseenter', '.like-hoverbox', function () {
         $('img:first', $(this)).attr('src', '/img/like_hover.png');
     });
 
-    $(document).on('mouseleave', '.like-hoverbox', function() {
+    $(document).on('mouseleave', '.like-hoverbox', function () {
         $('img:first', $(this)).attr('src', '/img/like.png');
     });
 
-    $(document).on('mouseover', '.solution-menu-toggle', function(){
+    $(document).on('mouseover', '.solution-menu-toggle', function () {
         $('img', $(this)).attr('src', '/img/marker5_2_hover.png');
-        $('body').one('click',function() {
-            $('.solution_menu.temp').fadeOut(200, function() { $(this).remove(); });
+        $('body').one('click', function () {
+            $('.solution_menu.temp').fadeOut(200, function () {
+                $(this).remove();
+            });
         });
         var container = $(this).closest('.photo_block');
         var menu = container.siblings('.solution_menu');
@@ -355,27 +362,31 @@
         $('body').append(menu);
         menu.offset({top: offset.top + 155, left: offset.left + 47});
         menu.fadeIn(200);
-        $(menu).on('mouseleave', function() {
-            $(this).fadeOut(200, function() { $(this).remove(); });
+        $(menu).on('mouseleave', function () {
+            $(this).fadeOut(200, function () {
+                $(this).remove();
+            });
         });
-        $('.photo_block').on('mouseenter', function() {
-            $('.solution_menu.temp').fadeOut(200, function() { $(this).remove(); });
+        $('.photo_block').on('mouseenter', function () {
+            $('.solution_menu.temp').fadeOut(200, function () {
+                $(this).remove();
+            });
         });
     });
 
-    $(document).on('mouseleave', '.solution-menu-toggle', function() {
+    $(document).on('mouseleave', '.solution-menu-toggle', function () {
         $('img', $(this)).attr('src', '/img/marker5_2.png');
     });
 
-    $(document).on('click', '.solution-menu-toggle', function() {
+    $(document).on('click', '.solution-menu-toggle', function () {
         return false;
     })
 
     // Comment Bubble
-    $(document).on('click', '.solution-link-menu, .solution-link, .number_img_gallery', function(e) {
+    $(document).on('click', '.solution-link-menu, .solution-link, .number_img_gallery', function (e) {
         e.preventDefault();
         if ($('#newComment').length > 0) { // View Tab
-            if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
+            if (($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)) {
                 var prepend = $(this).data('commentTo') + ', ';
                 var newText = prepend + $('#newComment').val();
                 $('#newComment').val(newText);
@@ -397,32 +408,32 @@
         }
     });
 
-    $(document).on('mouseover', '.hidedummy', function() {
+    $(document).on('mouseover', '.hidedummy', function () {
         $(this).css('background-image', '');
         var $imagecontainer = $(this).find('a');
         $imagecontainer.css('opacity', '1');
-        if($('.imagecontainer', this).children().length > 1) {
+        if ($('.imagecontainer', this).children().length > 1) {
             $(this).parent().css('background-image', '')
         }
     })
 
-    $(document).on('mouseout', '.hidedummy', function() {
+    $(document).on('mouseout', '.hidedummy', function () {
         $(this).css('background-image', 'url(/img/copy-inv.png)');
         $(this).find('a').css('opacity', '.1');
-        if($('.imagecontainer', this).children().length > 1) {
+        if ($('.imagecontainer', this).children().length > 1) {
             $(this).parent().css('background-image', 'url(/img/copy-inv.png)')
         }
     })
 
-    $(document).on('click', '.hide-item', function() {
+    $(document).on('click', '.hide-item', function () {
         var link = $(this);
         var num = link.data('to');
         var block = $('#li_' + num);
         var listofitems = $('.list_portfolio');
-        $.get($(this).attr('href'), function(response) {
-            if($('.imagecontainer', block).children().length == 1) {
+        $.get($(this).attr('href'), function (response) {
+            if ($('.imagecontainer', block).children().length == 1) {
                 $('.imagecontainer', block).wrap('<div class="hidedummy" style="background-image: url(/img/copy-inv.png)"/>');
-            }else {
+            } else {
                 $('.photo_block', block).css('background', 'url(/img/copy-inv.png) 10px 10px no-repeat white');
             }
             $('.imagecontainer', block).css('opacity', 0.1)
@@ -432,18 +443,18 @@
         return false;
     })
 
-    $(document).on('click', '.unhide-item', function() {
+    $(document).on('click', '.unhide-item', function () {
         var link = $(this);
         var num = link.data('to');
         var block = $('#li_' + num);
         var listofitems = $('.list_portfolio');
-        $.get($(this).attr('href'), function(response) {
-            if($('.imagecontainer', block).children().length == 1) {
+        $.get($(this).attr('href'), function (response) {
+            if ($('.imagecontainer', block).children().length == 1) {
                 var dummy = $('.hidedummy', block)
                 var child = dummy.children(':first')
                 child.css('opacity', 1)
                 dummy.replaceWith(child)
-            }else {
+            } else {
                 $('.photo_block', block).css('background', '');
                 $('.imagecontainer', block).css('opacity', 1)
             }
@@ -454,27 +465,27 @@
     })
 
     var cycle = {};
-    $(document).on('mouseenter', '.photo_block', function() {
-        if($(this).children('.imagecontainer').children().length > 1) {
+    $(document).on('mouseenter', '.photo_block', function () {
+        if ($(this).children('.imagecontainer').children().length > 1) {
             cycle[$(this).children('.imagecontainer').data('solutionid')] = true;
             var image = $(this).children('.imagecontainer').children(':visible');
             cycleImage(image, $(this).children('.imagecontainer'));
         }
     })
 
-    $(document).on('mouseleave', '.photo_block', function() {
+    $(document).on('mouseleave', '.photo_block', function () {
         cycle[$(this).children('.imagecontainer').data('solutionid')] = false;
     })
 
     function cycleImage(image, parent, prev) {
-        if(cycle[parent.data('solutionid')] == true) {
+        if (cycle[parent.data('solutionid')] == true) {
             image.fadeOut(300);
             var nextImage = image.next();
-            if(nextImage.length == 0) {
+            if (nextImage.length == 0) {
                 nextImage = parent.children().first();
             }
             nextImage.fadeIn(300);
-            setTimeout(function() {
+            setTimeout(function () {
                 cycleImage(nextImage, parent, image)
             }, 1500);
             //    cycleImage(nextImage, parent, image)
@@ -482,22 +493,22 @@
         }
     }
 
-    $(document).on('change', '#client-only-toggle', function() {
-        if($(this).attr('checked')) {
-            $.each($('section[data-type="designer"]', '.messages_gallery'), function(index, object) {
+    $(document).on('change', '#client-only-toggle', function () {
+        if ($(this).attr('checked')) {
+            $.each($('section[data-type="designer"]', '.messages_gallery'), function (index, object) {
                 var comment = $(object);
                 comment.hide();
                 var separator = comment.next('.separator');
-                if((separator) && (separator.length == 1)) {
+                if ((separator) && (separator.length == 1)) {
                     separator.hide();
                 }
             })
-        }else {
-            $.each($('section[data-type="designer"]', '.messages_gallery'), function(index, object) {
+        } else {
+            $.each($('section[data-type="designer"]', '.messages_gallery'), function (index, object) {
                 var comment = $(object);
                 comment.show();
                 var separator = comment.next('.separator');
-                if((separator) && (separator.length == 1)) {
+                if ((separator) && (separator.length == 1)) {
                     separator.show();
                 }
             })
@@ -508,7 +519,7 @@
      * View Solution Overlay
      */
     var solutionId = '';
-    $(document).on('click', '.imagecontainer', function(e) {
+    $(document).on('click', '.imagecontainer', function (e) {
         if (/designers/.test(window.location.pathname)) {
             return true;
         }
@@ -525,7 +536,7 @@
         beforeScrollTop = $(window).scrollTop();
         $('.wrapper', 'body').first().addClass('wrapper-frozen');
         $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
-        if(!$.browser.chrome){
+        if (!$.browser.chrome) {
             $('.solution-overlay').css('z-index', '50');
         }
         $('.solution-overlay').show();
@@ -540,24 +551,25 @@
         fetchSolution(urlJSON);
         return false;
     });
-    $(document).on('click', '.solution-overlay', function(e) {
+    $(document).on('click', '.solution-overlay', function (e) {
         e.stopPropagation();
-        if (!$(e.target).is('.solution-overlay')) return;
+        if (!$(e.target).is('.solution-overlay'))
+            return;
         hideSolutionPopup();
         return false;
     });
-    $('body, .solution-overlay').on('click', '.solution-title, .solution-popup-close', function(e) {
+    $('body, .solution-overlay').on('click', '.solution-title, .solution-popup-close', function (e) {
         e.preventDefault();
         hideSolutionPopup();
         return false;
     });
-    $('body, .solution-overlay').on('mouseover', '.solution-prev-area, .solution-next-area', function(e) {
+    $('body, .solution-overlay').on('mouseover', '.solution-prev-area, .solution-next-area', function (e) {
         $(this).prev().addClass('active');
     });
-    $('body, .solution-overlay').on('mouseout', '.solution-prev-area, .solution-next-area', function(e) {
+    $('body, .solution-overlay').on('mouseout', '.solution-prev-area, .solution-next-area', function (e) {
         $(this).prev().removeClass('active');
     });
-    $('body, .solution-overlay').on('click', '.solution-prev-area, .solution-next-area', function(e) {
+    $('body, .solution-overlay').on('click', '.solution-prev-area, .solution-next-area', function (e) {
         e.preventDefault();
         e.stopPropagation();
         window.history.pushState('object or string', 'Title', this.href); // @todo Check params
@@ -578,44 +590,56 @@
         $('#newComment', '.solution-left-panel').val('');
         $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         solutionThumbnail = '';
-        $.getJSON(urlJSON, function(result) {
-            $('span#date').text('Опубликовано '+result.date);
+        var solution_tags = $('.solution-tags .tags');
+        solution_tags.empty();
+        $.getJSON(urlJSON, function (result) {
+            $('span#date').text('Опубликовано ' + result.date);
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
 
             // Left Panel
             $('.solution-images').html('');
+
+            if (result.solution.tags) {
+                var html = '';
+                $.each(result.solution.tags, function (i, v) {
+                    //html += '<li><a href="#">' + v + '</a></li>';
+                    html += '<li>' + v + '</li>';
+                });
+                solution_tags.append(html);
+            }
+
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
                 // Main Images
-                if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
+                if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
                     work = result.solution.images.solution_solutionView
-                }else {
+                } else {
                     // case when we don't have gallerySiteSize image size
                     viewsize = result.solution.images.solution;
                     work = result.solution.images.solution
                 }
                 if ($.isArray(result.solution.images.solution)) {
-                    $.each(work, function(idx, field) {
+                    $.each(work, function (idx, field) {
                         $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
                     });
-                }else {
+                } else {
                     $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
                 }
                 // Thumbnail Image
-                if(typeof(result.solution.images.solution_galleryLargeSize) != 'undefined') {
+                if (typeof (result.solution.images.solution_galleryLargeSize) != 'undefined') {
                     viewsize = result.solution.images.solution_galleryLargeSize;
-                }else {
+                } else {
                     // case when we don't have gallerySiteSize image size
                     viewsize = result.solution.images.solution;
                 }
                 if ($.isArray(viewsize)) {
                     solutionThumbnail = viewsize[0].weburl;
-                }else {
+                } else {
                     solutionThumbnail = viewsize.weburl;
                 }
-            }else {
+            } else {
                 $('.solution-images').append('<div class="preview"> \
                     <span>' + result.solution.description + '</span> \
                 </div>');
@@ -630,9 +654,9 @@
                     <span class="right">рейтинг</span></div> \
                     <div class="separator-right"></div> \
                     </div>');
-                if(firstImage.length > 0){
+                if (firstImage.length > 0) {
                     ratingWidget.insertAfter(firstImage);
-                }else {
+                } else {
                     ratingWidget.insertAfter('.preview:visible');
                     $('.separator-rating').css({"margin-top": "20px", "margin-bottom": "20px"});
                 }
@@ -641,11 +665,11 @@
                     path: '/img',
                     hintList: ['не то!', 'так себе', 'возможно', 'хорошо', 'отлично'],
                     starOff: 'solution-star-off.png',
-                    starOn : 'solution-star-on.png',
+                    starOn: 'solution-star-on.png',
                     start: result.solution.rating,
-                    click: function(score, evt) {
+                    click: function (score, evt) {
                         $.post('/solutions/rating/' + $('input[name=solution_id]').val() + '.json',
-                        {"id": result.solution.id, "rating": score}, function(response) {
+                                {"id": result.solution.id, "rating": score}, function (response) {
                             $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
                             $('.rating-image', '.solution-rating').addClass('star' + score);
                             var $underlyingRating = $('.ratingcont', '#li_' + $('.isField.number', '.solution-overlay').text());
@@ -658,28 +682,28 @@
                 });
 
             } else if (currentUserId == result.solution.user_id) {
-             // Solution Author views nothing
+                // Solution Author views nothing
             } else { // Any User
                 if ((result.pitch.status != 1) && (result.pitch.status != 2)) {
                     var already = ''
-                    if(result.likes == true) {
+                    if (result.likes == true) {
                         already = ' already'
                     }
                     $('<div class="like-wrapper"><div class="left">поддержи</div> \
-                       <a class="like-widget'+ already + '" data-id="' + result.solution.id + '"></a> \
+                       <a class="like-widget' + already + '" data-id="' + result.solution.id + '"></a> \
                        <div class="right">автора</div></div>').insertAfter($('.solution-image').last().parent());
 
-                    $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
+                    $('.like-widget[data-id=' + result.solution.id + ']').click(function () {
                         $(this).toggleClass('already');
                         var counter = $('.value-likes')
                         var solutionId = $(this).data('id')
-                        if($(this).hasClass('already')) {
-                            $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                        if ($(this).hasClass('already')) {
+                            $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function (response) {
                                 counter.text(parseInt(response.likes));
                                 $('.underlying-likes[data-id=' + result.solution.id + ']').text(parseInt(response.likes));
                             });
-                        }else {
-                            $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
+                        } else {
+                            $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function (response) {
                                 counter.text(parseInt(response.likes));
                                 $('.underlying-likes[data-id=' + result.solution.id + ']').text(parseInt(response.likes));
                             });
@@ -721,7 +745,7 @@
                     var descAfter = desc.slice(descBefore.length);
                     $('.solution-description').html(descBefore);
                     $('.description-more').show(500);
-                    $('.description-more').on('click', function() {
+                    $('.description-more').on('click', function () {
                         $('.solution-description').append(descAfter);
                         descAfter = '';
                         $('.description-more').hide();
@@ -729,10 +753,10 @@
                 } else {
                     $('.solution-description').html(result.solution.description);
                 }
-                if(result.solution.description != '') {
+                if (result.solution.description != '') {
                     $('span#date').after('<br />');
                 }
-            }else {
+            } else {
                 $('.solution-description').html('');
                 $('.solution-about').next().hide();
                 $('.solution-about').hide();
@@ -741,10 +765,10 @@
                 var html = '<div class="attach-wrapper">';
                 if (result.solution.images.solution) {
                     if ($.isArray(result.solution.images.solution)) {
-                        $.each(result.solution.images.solution, function(index, object) {
+                        $.each(result.solution.images.solution, function (index, object) {
                             html += '<a target="_blank" href="/solutionfiles' + object.weburl + '" class="attach">' + object.originalbasename + '</a><br>'
                         })
-                    }else {
+                    } else {
                         html += '<a href="/solutionfiles' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
                     }
                     html += '</div>';
@@ -766,59 +790,36 @@
 
             if (result.pitch.category_id != 7) {
 
-            var media = '';
-            if ($.isArray(result.solution.images.solution_solutionView)) {
-                media = result.solution.images.solution_solutionView[0].weburl
-            }else {
-                media = result.solution.images.solution_solutionView.weburl
-            }
-            // Twitter like solution message
-            var tweetLike = 'Мне нравится этот дизайн! А вам?';
-            if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
-            }
-            $('.solution-share').html('<h2>ПОДЕЛИТЬСЯ</h2> \
-                <div class="body" style="display: block;"> \
-                <table width="100%"> \
-                    <tbody> \
-                        <tr height="35"> \
-                            <td width="137" valign="middle">\
-                                <a id="facebook_pop' + result.solution.id + '" class="socialite facebook-like fb-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '" data-href="http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '" data-send="false" data-layout="button_count"> \
-                                    Share on Facebook \
-                                </a> \
-                            </td> \
-                            <td width="137" valign="middle"> \
-                                <div id="vk_like" style="height: 22px; width: 100px; background-image: none; position: relative; clear: both; background-position: initial initial; background-repeat: initial initial;"><iframe name="fXD5a766" frameborder="0" src="http://vk.com/widget_like.php?app=2950889&amp;width=100%&amp;_ver=1&amp;page=0&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;type=mini&amp;verb=0&amp;title=%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%22%D0%9F%D1%80%D0%BE%D1%84%D0%B5%D1%81%D1%81%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B0%22%20%7C%20GoDesigner&amp;description=&amp;image=http%3A%2F%2Fwww.godesigner.ru%2Fsolutions%2Fd8e8955043c662a8f8144674efa995f6_galleryLargeSize.jpg&amp;text=&amp;h=22&amp;13fa381efb0" width="100%" height="22" scrolling="no" id="vkwidget1" style="overflow: hidden; height: 22px; width: 100px; z-index: 150;"></iframe></div> \
-                            </td> \
-                        </tr> \
-                        <tr height="35"> \
-                            <td valign="middle"> \
-                                <a id="twitter_pop' + result.solution.id + '" class="socialite twitter-share twitter-share-button" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id + '?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="' + tweetLike + '" data-lang="ru" data-hashtags="Go_Deer"> \
-                                    Share on Twitter \
-                                </a> \
-                            </td> \
-                            <td valign="middle"> \
-                                <a href="//pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '&amp;media=http%3A%2F%2Fwww.godesigner.ru%2F' + media + '&amp;description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" target="_blank" data-pin-log="button_pinit" data-pin-config="beside"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a> \
-                            </td> \
-                        </tr> \
-                        <tr height="35"> \
-                            <td valign="middle"><iframe frameborder="0" scrolling="no" class="surfinbird__like_iframe" src="//surfingbird.ru/button?layout=common&amp;url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated&amp;caption=%D0%A1%D0%B5%D1%80%D1%84&amp;referrer=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fview%2F101057&amp;current_url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F' + result.solution.id + '%3Fsorting%3Dcreated" style="width: 120px; height: 20px;"></iframe><a target="_blank" class="surfinbird__like_button __sb_parsed__" data-surf-config="{layout: "common", width: "120", height: 20}" href="http://surfingbird.ru/share"></a></td> \
-                        </tr> \
-                        <tr height="35"> \
-                            <!--td valign="middle"><script src="//platform.linkedin.com/in.js" type="text/javascript"></script> \
-                                <span class="IN-widget" style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1372837769632_0"><a id="li_ui_li_gen_1372837769632_0-link" href="javascript:void(0);"><span id="li_ui_li_gen_1372837769632_0-logo">in</span><span id="li_ui_li_gen_1372837769632_0-title"><span id="li_ui_li_gen_1372837769632_0-mark"></span><span id="li_ui_li_gen_1372837769632_0-title-text">Share</span></span></a></span></span><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1372837769647_1-container" class="IN-right IN-hidden"><span id="li_ui_li_gen_1372837769647_1" class="IN-right"><span id="li_ui_li_gen_1372837769647_1-inner" class="IN-right"><span id="li_ui_li_gen_1372837769647_1-content" class="IN-right">0</span></span></span></span></span></span><script type="IN/Share+init" data-counter="right"></script></td--> \
-                            <td valign="middle"><a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url(http://platform.tumblr.com/v1/share_1.png) top left no-repeat transparent;">Share on Tumblr</a></td><td></td> \
-                        </tr> \
-                    </tbody> \
-                </table> \
-                </div>');
+                var media = '';
+                if ($.isArray(result.solution.images.solution_solutionView)) {
+                    media = result.solution.images.solution_solutionView[0].weburl
+                } else {
+                    media = result.solution.images.solution_solutionView.weburl
+                }
+                // Twitter like solution message
+                var tweetLike = 'Мне нравится этот дизайн! А вам?';
+                if (Math.floor((Math.random() * 100) + 1) <= 50) {
+                    tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
+                }
+
+                var shareTitle = tweetLike;
+                var url = 'http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id
+                var sharebar = '<div style="display: block; height: 75px"> \
+                <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
+                <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
+                <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div> \
+                <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="' + media + '" data-url="' + url + '">SHARE</div> \
+                <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="' + url + '" data-media="' + media + '">PIN</div></div></div>';
+                var fullshareblock = '<h2>ПОДЕЛИТЬСЯ</h2><div class="body" style="display: block;">' + sharebar + '</div>';
+                $('.solution-share').html(fullshareblock);
+                $('.social-likes').socialLikes();
             }
 
             if (currentUserId == result.pitch.user_id) {
                 var html = '';
                 if (result.solution.hidden == 1) {
                     html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Сделать видимой</a>';
-                }else {
+                } else {
                     html += '<a class="client-hide" href="#" data-id="' + result.solution.id + '">С глаз долой</a>';
                 }
                 html += '<a class="client-comment" href="#">Комментировать</a>';
@@ -827,21 +828,21 @@
                     html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>';
                 }
                 $('.solution-abuse').html(html);
-            }else if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
+            } else if ((currentUserId == result.solution.user_id) || isCurrentAdmin) {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
                     <a class="delete-solution-popup hide" data-solution="' + result.solution.id + '" href="/solutions/delete/' + result.solution.id + '.json">Удалить</a>');
-            }else {
+            } else {
                 $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
             }
             FB.XFBML.parse();
-            $.getScript('/js/pitches/gallery.twitter.js', function() {
-                if (typeof(twttr) != 'undefined') {
+            $.getScript('/js/pitches/gallery.twitter.js', function () {
+                if (typeof (twttr) != 'undefined') {
                     twttr.widgets.load();
                 }
             });
         });
     }
-    
+
 });
 
 // Rating Popup
@@ -858,7 +859,7 @@ function fireRatingPopup() {
         containerId: 'popup-rating-box',
         opacity: 80,
         closeClass: 'popup-rating-close',
-        onShow: function() {
+        onShow: function () {
             $('#popup-rating-box').animate({opacity: 1}, 800);
         }
     });
@@ -886,7 +887,7 @@ function fireWinnerPopup(whom) {
         containerId: 'popup-rating-box',
         opacity: 80,
         closeClass: 'popup-rating-close',
-        onShow: function() {
+        onShow: function () {
             $('#popup-rating-box').animate({opacity: 1}, 800);
         }
     });

@@ -32,11 +32,11 @@
                         <?php endforeach?>
                     </ul>
                     <ul class="filterlist" style="float:left;width:85px;margin-left:25px;text-transform: none">
-                        <li class="first">сроки</li>
-                        <li><a data-group="timeframe" data-value="1" href="#">до 3 дней</a></li>
-                        <li><a data-group="timeframe" data-value="2" href="#">до 7 дней</a></li>
-                        <li><a data-group="timeframe" data-value="3" href="#">до 10 дней</a></li>
-                        <li><a data-group="timeframe" data-value="4" href="#">более 14 дней</a></li>
+                        <li class="first" style="width: 90px">сроки</li>
+                        <li style="width: 90px"><a data-group="timeframe" data-value="1" href="#">до 3 дней</a></li>
+                        <li style="width: 90px"><a data-group="timeframe" data-value="2" href="#">до 7 дней</a></li>
+                        <li style="width: 90px"><a data-group="timeframe" data-value="3" href="#">до 10 дней</a></li>
+                        <li style="width: 90px"><a data-group="timeframe" data-value="4" href="#">более 14 дней</a></li>
                     </ul>
                     <ul class="filterlist" style="float:left;width:160px;margin-left:25px;text-transform: none">
                         <li class="first">гонорар</li>
@@ -131,7 +131,7 @@
                                     $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-3.png" title="Закрытый питч. Важно мнение эксперта." alt="Закрытый питч. Важно мнение эксперта.">';
                                 }
                         if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] != 1)) {
-                            $timeleft = 'Ожидание оплаты';
+                            $timeleft = '<a href="/pitches/edit/' . $pitch['id'] . '#step3">Ожидание оплаты</a>';
                         } else if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] == 1)) {
                             $timeleft = 'Ожидание<br />модерации';
                         } else if (($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
@@ -261,11 +261,11 @@
                         if((($data['info']['page'] - 3) > 0) && ($data['info']['total'] > ($data['info']['page'] + 2))) {
                             $navBar .= '<a href="#" class="nav-page" rel="1">1</a>';
                             $navBar .= ' ... ';
-                            for($i = $data['info']['page'] - 1 ; i <= $data['info']['page'] + 1; $i++) {
+                            for($i = $data['info']['page'] - 1 ; $i <= $data['info']['page'] + 1; $i++) {
                                 if($data['info']['page'] == $i) {
                                     $navBar .= '<a href="#" class="this-page nav-page" rel="' . $i . '">' . $i . '</a>';
                                 }else {
-                                    $navBar .= '<a href="#" class="nav-page" rel="' . i . '">' . $i . '</a>';
+                                    $navBar .= '<a href="#" class="nav-page" rel="' . $i . '">' . $i . '</a>';
                                 }
                             }
                             $navBar .= ' ... ';

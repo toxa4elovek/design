@@ -5,6 +5,17 @@
         <input type="text" name="qualities" placeholder="Мужественность, уверенность в себе, традиционность" class="<?php if(empty($specifics['copy-difference'])) echo 'placeholder'?> specific-prop" value="<?=$specifics['qualities']?>">
     </p>
 
+</div>
+
+<div class="groupc">
+
+    <p style="margin-top: 24px; margin-bottom: 38px;">
+        <label><a href="#" class="expand_extra">+ Дополнительная информация</a></label>
+    </p>
+
+    <div class="extra_options" style="display: none">
+
+        <div class="groupc">
 
     <p><label>Критерии</label></p>
 

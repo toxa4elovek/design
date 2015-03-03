@@ -155,63 +155,28 @@ foreach($solutions as $solution):
                         <a href="#" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
                     <?php endif;?>
                     <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
-                    <?php if((($pitch->private != 1) && ($pitch->category_id != 7))):?>
-                    <div class="sharebar" style="padding:0 0 4px !important;background:url('/img/tooltip-bg-bootom-stripe.png') no-repeat scroll 0 100% transparent !important;position:relative;z-index:10000;display: none; left: -10px; right: auto; top: 20px;height: 178px;width:288px;">
-                        <div class="tooltip-wrap" style="height: 140px; background: url(/img/tooltip-top-bg.png) no-repeat scroll 0 0 transparent !important;padding:39px 10px 0 16px !important">
-                        <div class="body" style="display: block;">
-                            <table  width="100%">
-                                <tr height="35">
-                                    <td width="137" valign="middle">
-                                        <a id="facebook<?=$solution->id?>" class="socialite facebook-like" href="http://www.facebook.com/sharer.php?u=http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-href="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-send="false" data-layout="button_count">
-                                            Share on Facebook
-                                        </a>
-                                        <!--div class="fb-like" data-href="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-send="false" data-layout="button_count" data-width="120" style="" data-show-faces="false" data-font="arial">
-
-                                        </div--></td>
-                                    <td width="137" valign="middle">
-                                        <?php
-                                        if (rand(1, 100) <= 50) {
-                                            $tweetLike = 'Мне нравится этот дизайн! А вам?';
-                                        } else {
-                                            $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
-                                        }
-                                        ?>
-                                        <a id="twitter<?=$solution->id?>" class="socialite twitter-share" href="" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>?utm_source=twitter&utm_medium=tweet&utm_content=like-tweet&utm_campaign=sharing" data-text="<?php echo $tweetLike; ?>" data-lang="ru" data-hashtags="Go_Deer">
-                                            Share on Twitter
-                                        </a>
-                                        <!--div id="vk_like<?=$solution->id?>"></div>
-                                        <script type="text/javascript">
-                                            window.onload = function () {
-                                                console.log('load widgit');
-                                                console.log($('#vk_like<?=$solution->id?>'));
-                                                VK.Widgets.Like("vk_like<?=$solution->id?>", {type: "mini"});
-                                            }
-                                        </script--></td>
-                                </tr>
-                                <tr height="35">
-                                    <td valign="middle">
-                                        <a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent;">Share on Tumblr</a>
-
-                                    </td>
-                                    <td valign="middle">
-                                        <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F<?=$solution->id?>&media=<?=urlencode('http://www.godesigner.ru' . $this->solution->renderImageUrl($solution->images['solution_solutionView']))?>&description=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
-                                    </td>
-                                </tr>
-                                <!--tr height="35">
-                                    <td valign="middle"><a href="http://www.tumblr.com/share?v=3&u=http%3A%2F%2Fwww.godesigner.ru%2Fpitches%2Fviewsolution%2F<?=$solution->id?>&t=%D0%9E%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B5%20GoDesigner.ru" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent;">Share on Tumblr</a></td>
-                                    <td valign="middle"><div class="g-plusone" data-href="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"></div></td>
-                                </tr-->
-                                <!--tr height="35">
-                                    <td valign="middle"><script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
-                                        <script type="IN/Share" data-counter="right"></script></td>
-                                    <td valign="middle"><a target="_blank" class="surfinbird__like_button" data-surf-config="{'url': 'http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>', 'layout': 'common', 'width': '120', 'height': '20'}" href="http://surfingbird.ru/share">Серф</a></td>
-                                </tr-->
-                            </table>
-
-
+                    <?php if((($pitch->private != 1) && ($pitch->category_id != 7))):
+                    if (rand(1, 100) <= 50) {
+                            $tweetLike = 'Мне нравится этот дизайн! А вам?';
+                    } else {
+                            $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
+                    }
+                        if(!isset($solution->images['solution_galleryLargeSize'][0])):
+                            $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
+                        else:
+                            $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
+                        endif;
+                    ?>
+                    <div class="sharebar">
+                        <div class="tooltip-block">
+                            <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
+                                <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
+                                <div class="twitter" data-via="Go_Deer">TWITT</div>
+                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">SHARE</div>
+                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
+                            </div>
                         </div>
-                        <!--div class="url" style="display: block;">#</div-->
-                    </div></div>
+                    </div>
                     <?php endif;?>
                 </li>
                 <?php else:?>
