@@ -310,7 +310,9 @@ var gallerySwitch = (function() {
         fetchPitchComments();
         // Pancake
         try {
-            renderFloatingBlock();
+            if($('#placeholder').length > 0) {
+                renderFloatingBlock();
+            }
         }catch(err) {
 
         }

@@ -86,7 +86,7 @@
                     <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
                 </section>
 
-                <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
+                <?php if(((strtotime($pitch->started) > strtotime('2013-01-31'))) && ($pitch->published == 1)):?>
                 <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
                 <div style="display:none;" id="floatingblock" class="floatingblock">
                     <table style="width:500px;float:left">

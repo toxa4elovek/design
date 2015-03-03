@@ -47,7 +47,7 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                 Event::create(array(
                     'type' => 'RetweetAdded',
                     'tweet_id' => $id,
-                    'created' => date('Y-m-d H:i:s')
+                    'created' => date('Y-m-d H:i:s', time() - HOUR)
                 ))->save();
                 $string = base64_encode('8r9SEMoXAacbpnpjJ5v64A:I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk');
                 $tmhOAuth = new tmhOAuth(array(
