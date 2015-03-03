@@ -86,6 +86,8 @@
                     <div class="page-nambe-nav" id="topnav">
                     </div>
                 </div>
+                <input type="hidden" value="<?=$selectedCategory?>" name="category">
+                <input type="hidden" value="<?=$this->user->getId()?>" id="user_id">
             </section>
         </div><!-- /middle_inner -->
         <div id="popup-final-step" class="popup-final-step" style="display:none">

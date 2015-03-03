@@ -22,7 +22,7 @@ function TableLoader() {
     // initialisation method
     this.init = function() {
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
-        
+
         $(document).on('click', '.nav-page', function() {
             var page = $(this).attr('rel');
             if(page == 'prev') {
@@ -146,11 +146,13 @@ function TableLoader() {
                 icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
                 if(object.status == 2) {
                     timeleft = 'Питч завершен';
-                    if (object.hasBill == 'fiz') {
-                        timeleft = '<a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
-                    }
-                    if (object.hasBill == 'yur') {
-                        timeleft = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                    if(object.user_id == $('#user_id').val()) {
+                        if (object.hasBill == 'fiz') {
+                            timeleft = '<a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                        }
+                        if (object.hasBill == 'yur') {
+                            timeleft = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                        }
                     }
                 }else if((object.status == 1) && (object.awarded > 0)) {
                     timeleft = 'Победитель выбран';

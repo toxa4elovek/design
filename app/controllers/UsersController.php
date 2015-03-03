@@ -547,7 +547,11 @@ class UsersController extends \app\controllers\AppController {
         if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return $this->render(array('layout' => false));
         } else {
-            return $this->render(array('layout' => 'default', 'data' => array('categories'=>Category::all())));
+            $categories = Category::all();
+            if(isset($this->request->query['category'])) {
+                $selectedCategory = $this->request->query['category'];
+            }
+            return compact('categories', 'selectedCategory');
         }
     }
 
