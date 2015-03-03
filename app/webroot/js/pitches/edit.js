@@ -181,11 +181,24 @@ $(document).ready(function () {
         $('#list-job-type').removeClass('wrong-input');
     });
 
+    $('.expand_extra').on('click', function() {
+        $('.extra_options').toggle();
+        if($('.extra_options').is(":visible")) {
+            $(this).text('– Дополнительная информация')
+        }else {
+            $(this).text('+ Дополнительная информация')
+        }
+        return false;
+    });
+
     $('#save').click(function () {
+        console.log('saving');
         if ((($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length == 0)) && ($('input[name=tos]').length == 1)) {
+            console.log('tos')
             alert('Вы должны принять правила и условия');
         } else {
             if (Cart.prepareData()) {
+                console.log('prep success')
                 if (uploader.damnUploader('itemsCount') > 0) {
                     $('#loading-overlay').modal({
                         containerId: 'spinner',
@@ -194,9 +207,11 @@ $(document).ready(function () {
                     });
                     uploader.damnUploader('startUpload');
                 } else {
+                    console.log('save');
                     Cart.saveData();
                 }
             } else {
+                console.log('prep wrong')
                 $.scrollTo($('.wrong-input').parent(), {duration: 600});
             }
         }
@@ -436,6 +451,7 @@ function FeatureCart() {
                 $('input[name=title]').addClass('wrong-input');
                 result = false;
             }
+            /*
             if ((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
                 $('textarea[name=description]').addClass('wrong-input');
                 result = false;
@@ -447,7 +463,7 @@ function FeatureCart() {
             if (self.data.commonPitchData.jobTypes.length == 0) {
                 $('#list-job-type').addClass('wrong-input');
                 result = false;
-            }
+            }*/
         }
         return result;
     }

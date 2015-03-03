@@ -935,6 +935,7 @@
 }
 .twitter-typeahead {
     margin-top: -2px;
+    float: left;
 }
 #news-add #news-add-photo:before {
     background: url(img/photo-icon.png) no-repeat;

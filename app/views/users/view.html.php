@@ -91,7 +91,7 @@
                                 <?php endif; ?>
                                 </dt>
                                 <dd class="regular">
-                                    <?= $this->brief->stripemail(nl2br($userdata['about'])) ?>
+                                    <?php echo nl2br($userdata['about']) ?>
                                 </dd>
                             <?php endif ?>
                             <div class="separate"> </div>

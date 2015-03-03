@@ -27,68 +27,112 @@ class Tag extends \app\models\AppModel {
         'it' => 'Компьютеры / IT');
 
     public static function add($formdata, $solution_id) {
-        $tags_list = Tag::all();
-        if ($tags_list) {
-            $tags_list = $tags_list->data();
-        }
-        foreach ($formdata['tags'] as $v) {
-            if ($tag_id = in_array_r($v, $tags_list)) {
-                Solutiontag::create(array(
-                    'tag_id' => $tag_id,
-                    'solution_id' => $solution_id
-                ))->save();
-            } else {
-                $tags = Tag::create(array(
-                            'name' => trim($v)
-                ));
-                $tags->save();
-                Solutiontag::create(array(
-                    'tag_id' => $tags->id,
-                    'solution_id' => $solution_id
-                ))->save();
+        if(isset($formdata['tags']) && (is_array($formdata['tags']))) {
+            foreach ($formdata['tags'] as $v) {
+                Tag::saveSolutionTag($v, $solution_id);
             }
         }
-        if (is_array($formdata['job-type'])) {
+        if((isset($formdata['job-type'])) && (is_array($formdata['job-type']))) {
             $filteredTags = array_intersect_key(self::$job_types, array_flip($formdata['job-type']));
             if (is_array($filteredTags)) {
                 foreach ($filteredTags as $v) {
                     $multi_tag = explode('/', $v);
                     if (is_array($multi_tag)) {
                         foreach ($multi_tag as $value) {
-                            if ($temp = in_array_r(trim($value), $tags_list)) {
-                                $tag_id = $temp;
-                            } else {
-                                $tags = Tag::create(array(
-                                            'name' => trim($value)
-                                ));
-                                $tags->save();
-                                $tag_id = $tags->id;
-                            }
-                            Solutiontag::create(array(
-                                'tag_id' => $tag_id,
-                                'solution_id' => $solution_id
-                            ))->save();
+                            Tag::saveSolutionTag($value, $solution_id);
                         }
                     } else {
-                        if ($temp = in_array_r(trim($value), $tags_list)) {
-                            $tag_id = $temp;
-                        } else {
-                            $tags = Tag::create(array(
-                                        'name' => trim($v)
-                            ));
-                            $tags->save();
-                            $tag_id = $tags->id;
-                        }
-                        Solutiontag::create(array(
-                            'tag_id' => $tag_id,
-                            'solution_id' => $solution_id
-                        ))->save();
+                        Tag::saveSolutionTag($value, $solution_id);
                     }
                 }
             }
         }
     }
 
+    /**
+     * Метод сохраняет указанный тег $string для решения с айди $solutionId
+     *
+     * @param $string
+     * @param $solutionId
+     * @return object
+     */
+    public static function saveSolutionTag($string, $solutionId) {
+        if (!Tag::isTagExists($string)) {
+            Tag::saveTag($string);
+        }
+        $solutionTag = Solutiontag::create(array(
+            'tag_id' => Tag::getTagId($string),
+            'solution_id' => $solutionId
+        ));
+        $solutionTag->save();
+        return $solutionTag;
+    }
+
+    /**
+     * Метод проверяет, существует ли в базе тегов аргумент
+     *
+     * @param $string
+     * @return bool
+     */
+    public static function isTagExists($string) {
+        return (bool) self::count(array('conditions' => array('name' => trim($string))));
+    }
+
+    /**
+     * Метод сохраняет и возвращяет объект
+     * (или просто возвращяет объект, если тег уже есть в базе)
+     *
+     * @param $string
+     * @return object
+     */
+    public static function saveTag($string) {
+        if(!$tag = self::first(array('conditions' => array('name' => trim($string))))) {
+            $tag = self::create(array('name' => trim($string)));
+            $tag->save();
+        }
+        return $tag;
+    }
+
+    /**
+     * Метод возващяет айди тега или false, если тега в базе нет
+     *
+     * @param $string
+     * @return bool
+     */
+    public static function getTagId($string) {
+        $id = false;
+        if($tag = self::first(array('fields' => array('id'), 'conditions' => array('name' => trim($string))))) {
+            $id = $tag->id;
+        }
+        return $id;
+    }
+
+    /**
+     * Метод возвращяет все теги с подстрокой $string
+     *
+     * @param $string
+     * @return mixed
+     */
+    public static function getSuggest($string, $cleanCache = false) {
+        $cacheKey = 'suggest_tags_' . $string;
+        if($cleanCache) {
+            Rcache::delete($cacheKey);
+        }
+        if (!$tags = Rcache::read($cacheKey)) {
+            $tags = Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
+            Rcache::write($cacheKey, $tags->data(), '+2 hours');
+            return $tags->data();
+        }
+        return $tags;
+    }
+
+
+    /**
+     * Метод возвращяет самые популярные теги
+     *
+     * @param $count
+     * @return array|bool|mixed
+     */
     public static function getPopularTags($count) {
         $sort_tags = Rcache::read('sort_tags');
         if (empty($sort_tags)) {

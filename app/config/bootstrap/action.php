@@ -62,6 +62,11 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 */
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     // Mobile Detect
+    $controller = strtolower($params['params']['controller']);
+    if($controller == 'undefined') {
+        header('Location: /news');
+        die();
+    }
     require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'Mobile-Detect/Mobile_Detect.php');
     $mobileDetect = new Mobile_Detect;
     $bypass = false;

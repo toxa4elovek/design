@@ -160,7 +160,7 @@ class PitchesController extends \app\controllers\AppController {
 
     public function participate() {
         $categories = Category::all();
-        $pitchesId = User::getParticipatePitches(Session::read('user.id'));
+        $pitchesId = $this->request->query['type'] == 'favourites' ? User::getFavouritePitches(Session::read('user.id')) : User::getParticipatePitches(Session::read('user.id'));
         $data = array(
             'pitches' => array(),
             'info' => array(
@@ -174,18 +174,26 @@ class PitchesController extends \app\controllers\AppController {
             foreach ($categories as $catI) {
                 $allowedCategories[] = $catI->id;
             }
-            $limit = 5;
+            $limit = 15;
             $page = 1;
-            $types = array(
-                'finished' => array('status' => 2),
-                'current' => array()
-            );
-            if (isset($this->request->query['page'])) {
+            $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
+            $order = Pitch::getQueryOrder($this->request->query['order']);
+            $category = Pitch::getQueryCategory($this->request->query['category']);
+            $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
+            $conditions = array('Pitch.id' => $pitchesId);
+            if ($this->request->query['type'] != 'favourites'){
+                $type = Pitch::getQueryType($this->request->query['type']);
+                $conditions += $type;
+            }
+            $conditions += $category;
+            $conditions += $priceFilter;
+            $conditions += $search;
+
+            if(isset($this->request->query['page'])) {
                 $page = abs(intval($this->request->query['page']));
             }
-            $conditions = array('Pitch.id' => $pitchesId);
-            $conditions += $types['current'];
-            /*             * **** */
+
+            /*******/
             $total = ceil(Pitch::count(array(
                         'conditions' => $conditions,
                     )) / $limit);
@@ -250,7 +258,7 @@ class PitchesController extends \app\controllers\AppController {
             );
         }
         $query = $this->request->query;
-        return compact('data', 'categories', 'query', 'selectedCategory');
+        return compact('data', 'categories', 'query', 'selectedCategory', 'conditions');
     }
 
     public function updatefiles() {
@@ -1470,8 +1478,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
     public function getags() {
         if (isset($this->request->query['name']) && strlen($this->request->query['name']) > 0) {
-            $tags = \app\models\Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $this->request->query['name'] . '%'))));
-            return json_encode($tags->data());
+            $tags = Tag::getSuggest($this->request->query['name']);
+            return json_encode($tags);
         }
     }
 

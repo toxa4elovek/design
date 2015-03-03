@@ -1248,7 +1248,7 @@ function FeatureCart() {
                     var award = Cart._priceDecorator(Cart.data.features.award);
                     var id = response;
                     var scroll = false;
-                    if(($('#pitch-panel').length == 1) && ($('tr[data-id="103056"]', '#pitch-panel').length == 0)) {
+                    if(($('#pitch-panel').length == 1) && ($('tr[data-id="' + id + '"]', '#pitch-panel').length == 0)) {
                         if($('tr', '#pitch-panel').length % 2 == 0) {
                             var evenClass = 'even';
                         }else {
@@ -1266,7 +1266,7 @@ function FeatureCart() {
                         </td></tr>';
                         $('#header-table').append(row);
                         scroll = true;
-                    }else if ($('tr[data-id="103056"]', '#pitch-panel').length == 0) {
+                    }else if ($('tr[data-id="' + id + '"]', '#pitch-panel').length == 0) {
                         var panel =
                             '<div id="pitch-panel"><div class="conteiner"><div class="content"> \
                             <table class="all-pitches" id="header-table"><tbody> \

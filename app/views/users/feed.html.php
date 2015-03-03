@@ -239,7 +239,7 @@
                                             <div class="box-info" style="margin-top: 0;">
                                                 <?php if($this->user->getId()):?>
                                                 <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
-                                                <span>·</span>
+                                                <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                 <?php endif?>
                                                 <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                 <?php
@@ -259,7 +259,7 @@
                                                     </div>
                                                 </div>
                                                 <?php if($this->user->isAdmin()):?>
-                                                    <span>·</span>
+                                                    <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                     <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>
                                                 <?php endif?>
                                             </div>
@@ -481,13 +481,16 @@
                                                     <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                                     <p class="timeago">
                                                         <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
+                                                        <?php if($object['news']['original_title'] != ''):?>
+                                                            <span style="font-size: 20px;position: relative;top: 2px;margin-left: 2px;margin-right: 2px;">·</span> переведено автоматически
+                                                        <?php endif;?>
                                                     </p>
                                                 </div>
 
                                                 <div class="box-info" style="margin-top: 0;">
                                                     <?php if($this->user->getId()):?>
                                                     <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
-                                                    <span>·</span>
+                                                    <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                     <?php endif?>
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                     <?php
@@ -507,11 +510,11 @@
                                                         </div>
                                                     </div>
                                                     <?php if($object['news']['original_title'] != ''):?>
-                                                    <span>·</span>
+                                                    <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#" data-translated="true" data-original-short="<?= $object['news']['original_short']?>" data-original-title="<?= $object['news']['original_title']?>">Показать оригинал</a>
                                                     <?php endif?>
                                                     <?php if($this->user->isAdmin()):?>
-                                                        <span>·</span>
+                                                        <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                         <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>
                                                     <?php endif?>
                                                 </div>

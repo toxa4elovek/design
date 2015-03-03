@@ -399,7 +399,7 @@ jQuery(document).ready(function ($) {
                 var $prependEl = $(html);
                 $prependEl.hide();
                 $('#logosaleAjaxLoader').hide();
-                $('#logo_found').text(response.total_solutions);
+                $('#logo_found').text('');
                 if(response.total_solutions == 0) {
                     $('#search_result').css('padding-bottom', '0');
                 }

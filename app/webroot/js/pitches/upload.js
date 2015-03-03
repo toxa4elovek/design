@@ -39,13 +39,20 @@ $(document).ready(function () {
     });
 
     var recalculateBox = function () {
+
         var baseWidth = 524,
                 filterbox = $('#filterbox');
+        if(filterbox.children().length == 5) {
+            $('#searchTerm').attr("disabled", "disabled");
+            return false
+        }
         $.each(filterbox.children(), function (index, object) {
             baseWidth -= $(object).width() + 50;
         });
+        if(baseWidth < 144) {
+            baseWidth = 144;
+        }
         $('#searchTerm').width(baseWidth);
-        $('#filterContainer .tt-hint').width(baseWidth);
     };
 
     $('#searchTerm').keyboard('space', function () {
@@ -75,6 +82,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.removeTag', function (e) {
         e.preventDefault();
+        $('#searchTerm').removeAttr("disabled");
         $(this).parent().remove();
     });
 
@@ -92,6 +100,7 @@ $(document).ready(function () {
     $('#searchTerm').keyboard('backspace', function () {
         if (($('#filterbox li').length > 0) && ($('#searchTerm').val() == '')) {
             $('.removeTag', '#filterbox li:last').click()
+            $('#searchTerm').removeAttr("disabled");
         }
     })
 

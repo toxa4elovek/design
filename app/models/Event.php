@@ -210,7 +210,26 @@ class Event extends \app\models\AppModel {
         $newEvent->pitch_id = $pitch_id;
         $newEvent->type = 'newsAdded';
         $newEvent->news_id = $news_id;
-        return $newEvent->save();
+        $result =  $newEvent->save();
+        if($result) {
+            $id = 'http://www.godesigner.ru/news?event=' . $newEvent->id;
+            try {
+                $url = 'https://graph.facebook.com';
+                $data = array('id' => $id, 'scrape' => 'true');
+                $options = array(
+                    'http' => array(
+                        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method'  => 'POST',
+                        'content' => http_build_query($data),
+                    ),
+                );
+                $context  = stream_context_create($options);
+                $postResult = file_get_contents($url, false, $context);
+            } catch (Exception $e) {
+
+            }
+        }
+        return $result;
     }
 
     public static function getEvents($pitchIds, $page = 1, $created = null, $user = false) {

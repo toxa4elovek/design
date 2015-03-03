@@ -42,7 +42,7 @@
                         <li class="first">гонорар</li>
                         <li style="width:130px"><a data-group="priceFilter" data-value="3" href="#">от 20 000 Р.-</a></li>
                         <li style="width:130px"><a data-group="priceFilter" data-value="2" href="#">от 10 000 - 20 000 Р.-</a></li>
-                        <li style="width:130px"><a data-group="priceFilter" data-value="1" href="#">от 3 000 - 10 000 Р.-</a></li>
+                        <li style="width:130px"><a data-group="priceFilter" data-value="1" href="#">от 5 000 - 10 000 Р.-</a></li>
                     </ul>
                     <div style="clear:both"></div>
                 </div>
@@ -306,7 +306,6 @@
                 <h1>Упс, мы ничего не нашли!</h1>
                 <p class="regular">Попробуйте ввести другое слово, или используйте<br /> стрелку в поле, повторив поиск с выбранным<br /> фильтром. <a href="/answers/view/85">Подробнее…</a></p>
                 <p><img src="http://www.godesigner.ru/img/help/d3fa990a965b8ebf1cf8691586140165.jpg" alt="" width="610" height="292"></p>
-
 			</div>
 			<div class="clr"></div>
 		</section>

@@ -1243,7 +1243,7 @@ class Pitch extends \app\models\AppModel {
     public static function getQueryPriceFilter($priceFilter = 0) {
         switch ($priceFilter) {
             case 1:
-                $result = array('price' => array('>' => 3000, '<=' => 10000));
+                $result = array('price' => array('>' => 5000, '<=' => 10000));
                 break;
             case 2:
                 $result = array('price' => array('>' => 10000, '<=' => 20000));
@@ -1318,7 +1318,7 @@ class Pitch extends \app\models\AppModel {
      * @param $order
      * @return array
      */
-    public static function getQueryOrder($order) {
+    /*public static function getQueryOrder($order) {
         $allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
         $allowedSortDirections = array('asc', 'desc');
         $trigger = is_array($order);
@@ -1342,7 +1342,7 @@ class Pitch extends \app\models\AppModel {
             $order = array('free' => 'desc', 'price' => 'desc', 'started' => 'desc');
         }
         return $order;
-    }
+    }*/
 
     /**
      * Метод возвращает id категории
@@ -1363,53 +1363,127 @@ class Pitch extends \app\models\AppModel {
         return $category;
     }
 
-    /**
-     * Метод возвращает данные для поиска по типу питча
-     *
-     * @param $types
-     * @return array
-     */
-    public static function getQueryType($types) {
-        switch ($types) {
-            case 'finished':
-                $result = array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)')));
-                break;
-            case 'current':
-                $result = array('status' => array('<' => 2), 'awarded' => 0);
-                break;
-            case 'all':
-                $result = array();
-                break;
-            default:
+	
+	/**
+    * Метод возвращает ценовой диапазон
+    *
+    * @param $priceFilter
+    * @return array
+    */
+	/*public static function getQueryPriceFilter($priceFilter=0) {
+		switch ($priceFilter) {
+			case 1:
+				$result = array('price' => array('>' => 3000, '<=' => 10000));
+				break;
+			case 2:
+				$result = array('price' => array('>' => 10000, '<=' => 20000));
+				break;
+			case 3:
+				$result = array('price' => array('>' => 20000));
+				break;
+                        case 4:
+				$result = array('price' => array('<=' => 3000));
+				break;
+                        case 5:
+				$result = array('price' => array('>' => 5000, '<=' => 8000));
+				break;
+                        case 6:
+				$result = array('price' => array('>' => 8000, '<=' => 16000));
+				break;
+                        case 7:
+				$result = array('price' => array('>' => 16000, '<=' => 25000));
+				break;
+			default:
+				$result =  array();
+		}
+		return $result;
+	}*/
+	
+	/**
+    * Метод возвращает массив для сортировки полей
+    *
+    * @param $order
+    * @return array
+    */
+	public static function getQueryOrder($order) {
+		$allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
+		$allowedSortDirections = array('asc', 'desc');
+		$trigger = is_array($order);
+		$field = $trigger ? key($order) : '';
+		$dir = $trigger ? current($order) : '';
+		if($trigger && ((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))) {
+			switch ($field) {
+				case 'category':
+					$order = array('category_id' => $dir,'started' => 'desc');
+					break;
+				case 'finishDate':
+					$order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
+					break;
+				case 'price':
+					$order = array('free' => 'desc',$field => $dir,'started' => 'desc');
+					break;
+				default:
+					$order = array($field => $dir,'started' => 'desc');
+			}
+		} else {
+			$order = array('free' => 'desc','price' => 'desc','started' => 'desc');
+		}
+		return $order;
+	}
+
+	/**
+    * Метод возвращает данные для поиска по типу питча
+    *
+    * @param $types
+    * @return array
+    */
+	public static function getQueryType($types) {
+		switch ($types) {
+			case 'finished':
+				$result = array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)')));
+				break;
+			case 'current':
+				$result = array('status' => array('<' => 2), 'awarded' => 0);
+				break;
+			case 'all':
+				$result = array();
+				break;
+                        case 'completion-stage':
+                            $result = array('status' => 1, 'awarded' => array('>' => 0));
+                            break;
+                        case 'awarded':
+                            $result = array('status' => 2);
+                            break;
+			default:
                 $result = array(
                     'OR' => array(
                         array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
                         array('status < 2 AND awarded = 0'),
-                ));
-        }
-        return $result;
-    }
+                    ));
+		}		
+		return $result;
+	}
 
-    /**
-     * Метод возвращает питчи для главной страницы
-     *
-     * @return array
-     */
-    public static function getPitchesForHomePage() {
-        return Pitch::all(array(
-                    'order' => array(
-                        'pinned' => 'desc',
-                        'ideas_count' => 'desc',
-                        'price' => 'desc'
-                    ),
-                    'conditions' => array(
-                        'status' => array('<' => 1),
-                        'published' => 1,
-                        'multiwinner' => 0),
-                    'limit' => 3,
-                    'page' => 1,
-        ));
-    }
+	/**
+    * Метод возвращает питчи для главной страницы
+    *
+    * @return array
+    */
+	public static function getPitchesForHomePage() {
+            return Pitch::all(array(
+                'order' => array(
+                'pinned' => 'desc',
+                'ideas_count' => 'desc',
+                'price' => 'desc'
+			),
+                'conditions' => array(
+                    'status' => array('<' => 1),
+                    'published' => 1,
+                    'multiwinner' => 0),
+			'limit' => 3,
+			'page' => 1,
+		));
+	}
 
     public static function getFreePitch() {
         return Pitch::first(array('conditions' => array('status' => 0, 'published' => 1, 'free' => 1), 'order' => array('RAND()')));
