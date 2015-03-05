@@ -65,20 +65,20 @@
                                 $fast_url = 'http://www.godesigner.ru/pitches/edit/'. $mypitch->id;
                             }
                             
-                            if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
+                            /*if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
                                 continue;
-                            endif;
+                            endif;*/
                             ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
 							<td>
-							<?php if($mypitch->category != 7 &&($mypitch->status == 1) && ($mypitch->awarded != 0)):?>
-                                                    <img class="pitches-image" src="<?php echo isset($mypitch->winner->images['solution_tutdesign'][0]) ? $mypitch->winner->images['solution_tutdesign'][0]['weburl'] :$mypitch->winner->images['solution_tutdesign']['weburl']?>">
+							<?php if($mypitch->category_id != 7 &&($mypitch->status == 1) && ($mypitch->awarded != 0)):?>
+                                                    <img data="<?= $mypitch->category_id ?>" class="pitches-image" src="<?php echo isset($mypitch->winner->images['solution_tutdesign'][0]) ? $mypitch->winner->images['solution_tutdesign'][0]['weburl'] :$mypitch->winner->images['solution_tutdesign']['weburl']?>">
 							<?php endif?>
 							</td>
                                 <td class="pitches-name mypitches">
-                                    <a href="http://www.godesigner.ru/pitches/view/<?=($mypitch->multiwinner>0) ? $mypitch->multiwinner :$mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
+                                    <a href="http://www.godesigner.ru/pitches/view/<?= $mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
                                 </td>
-                                <td <?php echo ($mypitch->status < 1) ? '' : 'colspan="2"' ?> class="pitches-status mypitches">
+                                <td <?php echo (($mypitch->status < 1) || ($mypitch->multiwinner > 0 && $mypitch->billed == 0)) ? '' : 'colspan="2"' ?> class="pitches-status mypitches">
                                     <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
                                         $types['current'] += 1?>
                                     <a href="http://www.godesigner.ru/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a>
@@ -86,6 +86,10 @@
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
                                         $types['needpay'] += 1?>
                                     <a href="http://www.godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
+                                    <?php endif;?>
+                                    <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status > 0) && ($mypitch->multiwinner != 0)):
+                                        $types['needpay'] += 1?>
+                                        <a href="http://www.godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
                                         $types['needpay'] += 1?>
@@ -95,7 +99,7 @@
                                         $types['needpay'] += 1?>
                                         <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>">Ожидайте звонка</a>
                                     <?php endif;?>
-                                    <?php if(($mypitch->status == 1) && ($mypitch->awarded != 0)):
+                                    <?php if(($mypitch->status == 1) && ($pitch->billed == 1) &&  ($mypitch->awarded != 0)):
                                         $types['finish'] += 1?>
                                         <a class="pitches-finish" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
                                     <?php endif?>
@@ -107,16 +111,18 @@
                                 <td class="price mypitches">
                                     <?=$this->moneyFormatter->formatMoney($mypitch->price)?>
                                 </td>
-                                <?php if ($mypitch->status < 1):?>
+                                <?php if (($mypitch->status < 1) || ($mypitch->multiwinner > 0)):?>
                                 <td class="pitches-edit mypitches">
                                     <?php if($mypitch->billed == 0):?>
                                     <a href="<?= $fast_url ?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
-                                    <?php if($fastpitch === false):?>
-                                    <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
-                                    <?php endif; ?>
-                                    <a data-id="<?=$mypitch->id?>" href="http://www.godesigner.ru/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
-                                    <?php else:?>
-                                    <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                                        <?php if(($fastpitch === false) && ($mypitch->multiwinner == 0)):?>
+                                            <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                                        <?php endif; ?>
+                                        <?php if($mypitch->multiwinner == 0):?>
+                                        <a data-id="<?=$mypitch->id?>" href="http://www.godesigner.ru/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
+                                        <?php endif; ?>
+                                    <?php elseif($mypitch->multiwinner == 0):?>
+                                        <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <?php endif?>
                                 </td>
                                 <?php endif ?>
