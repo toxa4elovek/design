@@ -511,7 +511,7 @@
                                                     </div>
                                                     <?php if($object['news']['original_title'] != ''):?>
                                                     <span style="font-size: 28px;position: relative;top: 4px;">·</span>
-                                                    <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#" data-translated="true" data-original-short="<?= $object['news']['original_short']?>" data-original-title="<?= $object['news']['original_title']?>">Показать оригинал</a>
+                                                    <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#" data-translated="true" data-original-short="<?= $object['news']['original_short']?>" data-original-title="<?= $object['news']['original_title']?>">Показать оригинальный текст</a>
                                                     <?php endif?>
                                                     <?php if($this->user->isAdmin()):?>
                                                         <span style="font-size: 28px;position: relative;top: 4px;">·</span>

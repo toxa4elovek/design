@@ -50,7 +50,7 @@ function mycallback(text, title) {
     var box = $('.box[data-newsid="' + idOfNewsToTranslate + '"]');
     $('.img-short', box).text(text);
     $('h2', box).text(title);
-    $('.translate', box).text('Показать оригинал');
+    $('.translate', box).text('Показать оригинальный текст');
     $('.translate', box).data('translated', true);
 }
 
@@ -1468,7 +1468,7 @@ function OfficeStatusUpdater() {
 
                 if(validUrl) {
                     html += '<p class="img-box"> \
-                                    <a class="post-link" href="' + object.news.link + '"><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
+                                    <a class="post-link" href="' + object.news.link + '" target="_blank" ><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
                                 </p>'
                 }
                 html +='<div class="r-content post-content"' + style + '>';
@@ -1515,7 +1515,7 @@ function OfficeStatusUpdater() {
                     </div>';
                 if(object.news.original_title != '') {
                     html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
-                    html += '<a data-translated="true" data-original-title="' + object.news.original_title + '" data-original-short="' + object.news.original_short + '" style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Показать оригинал</a>';
+                    html += '<a data-translated="true" data-original-title="' + object.news.original_title + '" data-original-short="' + object.news.original_short + '" style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Показать оригинальный текст</a>';
                 }
                 if(isAdmin) {
                     html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
