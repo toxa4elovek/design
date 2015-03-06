@@ -9,7 +9,7 @@
         <div class="middle_inner">
             <nav class="main_nav clear">
                 <?= $this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false)) ?>
-                <?= $this->html->link('<span>Мои питчи</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false)) ?>
+                <?= $this->html->link('<span>Мои проекты</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false)) ?>
                 <!--a href="#"><span>Сообщения</span></a-->
                 <?= $this->html->link('<span>Профиль</span>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'active')) ?>
                 <?= $this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false)) ?>
