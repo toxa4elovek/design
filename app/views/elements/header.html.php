@@ -99,7 +99,7 @@
                                         $types['needpay'] += 1?>
                                         <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>">Ожидайте звонка</a>
                                     <?php endif;?>
-                                    <?php if(($mypitch->status == 1) && ($pitch->billed == 1) &&  ($mypitch->awarded != 0)):
+                                    <?php if(($mypitch->status == 1) && ($mypitch->billed == 1) &&  ($mypitch->awarded != 0)):
                                         $types['finish'] += 1?>
                                         <a class="pitches-finish" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
                                     <?php endif?>
