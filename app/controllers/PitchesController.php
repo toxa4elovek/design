@@ -160,7 +160,13 @@ class PitchesController extends \app\controllers\AppController {
 
     public function participate() {
         $categories = Category::all();
-        $pitchesId = $this->request->query['type'] == 'favourites' ? User::getFavouritePitches(Session::read('user.id')) : User::getParticipatePitches(Session::read('user.id'));
+        if($this->request->query['type'] == 'favourites') {
+            $pitchesId = User::getFavouritePitches(Session::read('user.id'));
+        }elseif(($this->request->query['type'] == 'awarded') || ($this->request->query['type'] == 'completion-stage')) {
+            $pitchesId = User::getUserRelatedPitches(Session::read('user.id'), true);
+        }else {
+            $pitchesId = User::getUserRelatedPitches(Session::read('user.id'));
+        }
         $data = array(
             'pitches' => array(),
             'info' => array(
@@ -174,7 +180,7 @@ class PitchesController extends \app\controllers\AppController {
             foreach ($categories as $catI) {
                 $allowedCategories[] = $catI->id;
             }
-            $limit = 15;
+            $limit = 50;
             $page = 1;
             $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
             $order = Pitch::getQueryOrder($this->request->query['order']);
@@ -200,7 +206,7 @@ class PitchesController extends \app\controllers\AppController {
             $pitches = Pitch::all(array(
                         'with' => 'Category',
                         'conditions' => $conditions,
-                        'order' => array('started' => 'desc'),
+                        'order' => $order,
             ));
             foreach ($pitches as $pitch) {
                 $pitch->winlink = false;
@@ -231,13 +237,14 @@ class PitchesController extends \app\controllers\AppController {
             $i = 1;
             $tempPitchList = $pitches->data();
             // Winner Pitch Sort
+            /*
             usort($tempPitchList, function($a, $b) {
                 if ((int) $a['winlink'] == (int) $b['winlink']) {
                     return 0;
                 }
                 return ((int) $a['winlink'] > (int) $b['winlink']) ? -1 : 1;
             });
-
+            */
             $tempPitchList = array_slice($tempPitchList, ($page - 1) * $limit, $limit, true);
 
             $pitchList = array();
@@ -392,7 +399,8 @@ class PitchesController extends \app\controllers\AppController {
         die();
     }
 
-    public function favourites() {
+
+    /*public function favourites() {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
         $categories = Category::all();
@@ -413,7 +421,6 @@ class PitchesController extends \app\controllers\AppController {
             }
             $conditions = array('Pitch.id' => $pitchesId);
             //$conditions += array('status' => array('<' => 2));
-            /*             * **** */
             $total = ceil(Pitch::count(array(
                         'conditions' => $conditions,
                     )) / $limit);
@@ -449,7 +456,7 @@ class PitchesController extends \app\controllers\AppController {
         }
         $query = $this->request->query;
         return compact('data', 'categories', 'query', 'selectedCategory');
-    }
+    }*/
 
     public function create() {
         $temp = Category::all();
@@ -828,7 +835,7 @@ class PitchesController extends \app\controllers\AppController {
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
                 $freePitch = Pitch::getFreePitch();
-                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount');
+                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount');
             } else {
                 if (isset($this->request->query['count'])) {
                     return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount')));

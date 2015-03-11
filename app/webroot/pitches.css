@@ -194,9 +194,6 @@ tr.select-vin{
 .pitch-end .icons{
 	background:#e0e0e0 url(img/icon-2.png) no-repeat 1px 10px;
 }
-.select-vin td a, .pitch-end td a{
-	color:#fff;
-}
 .close-and-expert .icons{
 	/*background:#e0e0e0 url(img/icon-3.png) no-repeat 1px 5px;*/
 }
@@ -220,7 +217,7 @@ td.pitches-name{
 }
 .pitches-name div{
 	padding:15px 0 0 40px;
-	background:url(img/marker.png) no-repeat 10px 16px;
+	/*background:url(img/marker.png) no-repeat 10px 16px;*/
 }
 .pitches-name a{
 	color:#e3e3e3;

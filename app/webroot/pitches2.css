@@ -70,7 +70,7 @@ td.pitches-name {
 }
 .pitches-name div {
 	padding: 15px 0 0 40px;
-	background: none;url(img/marker6.png) no-repeat 10px 18px;
+	/*background: none;url(img/marker6.png) no-repeat 10px 18px;*/
 }
 .pitches-name span {
 	display: block;

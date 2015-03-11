@@ -12,11 +12,11 @@
                     </nav>
                 </div>
             </section>
-            <div class="pitches-ajax-wrapper" style="top:122px">
+            <!--div class="pitches-ajax-wrapper" style="top:122px">
                 <div class="pitches-ajax-loader">&nbsp;</div>
-            </div>
+            </div-->
             <section>
-                <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 825px; margin-left: 60px;">
+                <div style="margin-top:-12px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 825px; margin-left: 60px;">
                     <table>
                         <tr>
                             <td>
@@ -39,7 +39,7 @@
                             <!--li><a href="#">по новизне</a></li-->
                             <li style="width:85px"><a data-group="type" data-value="current" href="#">текущие</a></li>
                             <li style="width:85px"><a data-group="type" data-value="finished" href="#">завершенные</a></li>
-                            <li style="width:85px"><a data-group="type" data-value="favourites" href="#">избранные</a></li>
+                            <li style="width:85px"><a data-group="type" data-value="favourites" href="#">отслеживаемые</a></li>
                             <li style="width:140px"><a data-group="type" data-value="completion-stage" href="#">на стадии завершения</a></li>
                             <li style="width:85px"><a data-group="type" data-value="awarded" href="#">награжденные</a></li>
                         </ul>
@@ -65,7 +65,7 @@
                     <thead>
                         <tr>
                             <td class="icons"></td>
-                            <td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" data-dir="asc">название питча</a></td>
+                            <td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" data-dir="asc">название проекта</a></td>
                             <td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" data-dir="asc">Категории</a></td>
                             <td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" data-dir="desc">Идеи</a></td>
                             <td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" data-dir="asc">Срок</a></td>

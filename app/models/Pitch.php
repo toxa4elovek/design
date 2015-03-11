@@ -959,7 +959,7 @@ class Pitch extends \app\models\AppModel {
             } elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
                 return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc');
             } else {
-                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                return array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             }
         }
     }

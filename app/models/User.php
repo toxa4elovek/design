@@ -366,19 +366,45 @@ class User extends \app\models\AppModel {
         return $res;
     }
 
-    public static function getParticipatePitches($userId) {
+    public static function getUserRelatedPitches($userId, $awarded = false) {
+        // сначала ищем созданные пользователем питчи
         $pitches = Pitch::find('all', array('conditions' =>
-                    array('user_id' => $userId,'blank' => 0),
+            array('user_id' => $userId,'blank' => 0),
         ));
         $pitchesIds = array();
         foreach ($pitches as $pitch) {
             $pitchesIds[$pitch->id . ''] = $pitch->started;
         }
-        //var_dump($pitches->data());die();
-        $solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
+        // затем ищем питчи, где пользователь выложил решения
+        if($awarded) {
+            /*$solutions = Solution::find('count', array(
+                'conditions' => array(
+                    'Solution.user_id' => $userId,
+                    'OR' => array(array('Solution.awarded' => 1), array('Solution.nominated' => 1))
+                ),
+                'order' => array('Solution.id' => 'desc'),
+            ));*/
+            $solutions = Solution::all(array('conditions' => array('user_id' => $userId, 'OR' => array(array('awarded' => 1), array('nominated' => 1)))));
+            //$solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
+        }else {
+            $solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
+        }
+
         foreach ($solutions as $s) {
-            //$pitchesIds[$s->pitch->id . ''] = $s->created;
-            $pitchesIds[$s->pitch->id . ''] = $s->pitch->started;
+            $pitchesIds[$s->pitch_id . ''] = date('Y-m-d H:i:s');
+        }
+
+        // затем ищем питчи, которые пользователь добавил в избранное
+        if(!$awarded) {
+            $fav = Favourite::find('all', array('conditions' => array('Favourite.user_id' => $userId), 'with' => array('Pitch')));
+            foreach ($fav as $f) {
+                // нет смысла добавлять повторно, если мы в них уже участвуем
+                // @TODO: наверное тут можно прооптимизировать, не ищя уже найденные айдишки (на этапе поиска решений),
+                // но вряд ли выигрыш будет большой
+                if(!isset($pitchesIds[$f->pitch->id . ''])) {
+                    $pitchesIds[$f->pitch->id . ''] = $f->created;
+                }
+            }
         }
         ksort($pitchesIds);
         return $pitchesIds;

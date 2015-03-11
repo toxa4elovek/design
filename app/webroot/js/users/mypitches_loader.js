@@ -12,7 +12,7 @@ function TableLoader() {
         "page": 1,
         "type": "all",
         "category": "all",
-        "order": {"price": "desc"},
+        "order": {"finishDate": "desc"},
         "priceFilter": "all",
         "searchTerm": ""
     }
@@ -21,6 +21,7 @@ function TableLoader() {
     this.magePage = null;
     // initialisation method
     this.init = function() {
+        console.log('mypitches');
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
 
         $(document).on('click', '.nav-page', function() {
@@ -174,7 +175,7 @@ function TableLoader() {
                     var userString = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                 }
             }else {
-                var userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';
+                var userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" style="display: none;"/></a>';
             }
 
             if(object.private == 1) {
@@ -196,7 +197,8 @@ function TableLoader() {
             if (object.multiple) {
                 pitchMultiple = '<br>' + object.multiple;
             }
-
+            // прячем иконки
+            var icons = '';
             html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
                 '<td class="icons">' + icons + '</td>' +
                 '<td class="pitches-name">' +

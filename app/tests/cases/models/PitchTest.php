@@ -32,7 +32,7 @@ class PitchTest extends AppUnit {
         // Пользователь не-владелец питча
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder();
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'), $result);
 
         // Пользователь владелец и питч еще проводится
         $pitch2 = Pitch::first(2);
@@ -74,7 +74,7 @@ class PitchTest extends AppUnit {
         // Пользователь не-владелец питча, не существующий тип сортировки, питч еще идёт
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder('non-existing-type');
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'), $result);
 
         // Пользователь не владелец питча, не существующий тип сортировки, питч уже не идет
         $pitch3 = Pitch::first(3);
@@ -109,12 +109,12 @@ class PitchTest extends AppUnit {
         // Пользователь не-владелец питча, не существующий тип сортировки, питч еще идёт
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder(array('sorting' => 'non-existing-type'));
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'), $result);
 
         // Пользователь не-владелец питча, не существующий тип сортировки, питч еще идёт
         $pitch1 = Pitch::first(1);
         $result = $pitch1->getSolutionsSortingOrder(array('no-sorting-key' => false));
-        $this->assertEqual(array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'), $result);
+        $this->assertEqual(array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'), $result);
 
         // Пользователь не-владелец питча, не существующий тип сортировки, питч уже не идёт
         $pitch3 = Pitch::first(3);
@@ -206,7 +206,7 @@ class PitchTest extends AppUnit {
         // По умолчанию
         $this->assertEqual(array(), Pitch::getQueryPriceFilter());
         // Цена от 3000 - 10000
-        $this->assertEqual(array('price' => array('>' => 3000, '<=' => 10000)), Pitch::getQueryPriceFilter(1));
+        $this->assertEqual(array('price' => array('>' => 5000, '<=' => 10000)), Pitch::getQueryPriceFilter(1));
         // Цена от 10000 - 20000
         $this->assertEqual(array('price' => array('>' => 10000, '<=' => 20000)), Pitch::getQueryPriceFilter(2));
         // Цена больше 20000
@@ -304,7 +304,7 @@ class PitchTest extends AppUnit {
             $this->assertEqual(0,$pitch->multiwinner);
         }
     }
-
+/*
     public function testCreateNewWinner() {
         $this->assertFalse(Pitch::createNewWinner(0));
         $this->assertTrue(Pitch::createNewWinner(2));
@@ -349,5 +349,5 @@ class PitchTest extends AppUnit {
         $count = Pitch::getCountBilledMultiwinner(2);
         $this->assertEqual(2, $count);
     }
-
+*/
 }

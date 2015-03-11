@@ -5,6 +5,7 @@
 	<div class="middle">
 	   <div class="middle_inner_gallery" style="padding-top:25px">
            <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
+           <input type="hidden" value="<?= serialize($order) ?>">
            <?php if($pitch->status == 1): ?>
            <?php $days = ($pitch->experts) ? 6 : 4;?>
                <input type="hidden" value="<?=(time() > strtotime($pitch->finishDate.' +'.$days.' days')) ? 1 : 0?>" name="notFinish">
