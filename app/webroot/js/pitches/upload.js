@@ -419,6 +419,17 @@ $(document).ready(function () {
     $('input[type=file]').on('mouseenter', function () {
         $('#fakebutton').addClass('buttonhover');
     });
+
+    $('.tooltip').tooltip({
+        tooltipID: 'tooltip',
+        width: '282px',
+        correctPosX: 45,
+        positionTop: -180,
+        borderSize: '0px',
+        tooltipPadding: 0,
+        tooltipBGColor: 'transparent'
+    })
+    
 });
 
 function checkScrollbar() {
