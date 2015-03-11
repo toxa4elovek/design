@@ -255,6 +255,9 @@ class PitchTest extends AppUnit {
 		$this->assertEqual(array('free' => 'desc','price' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'asc')));
         $this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('fake'=>'desc')));
         $this->assertEqual(array('free' => 'desc','price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('fake'=>'asc')));
+        // если у нас просмотр не текущих питчей, то бесплатные - вниз
+        $this->assertEqual(array('price' => 'desc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'desc'), 'all'));
+        $this->assertEqual(array('price' => 'asc','started' => 'desc'),Pitch::getQueryOrder(array('price'=>'asc'), 'all'));
     }
 
     public function testGetQueryCategory() {

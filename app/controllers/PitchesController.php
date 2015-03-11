@@ -89,7 +89,7 @@ class PitchesController extends \app\controllers\AppController {
         $limit = 50;
         $page = Pitch::getQueryPageNum($this->request->query['page']);
         $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
-        $order = Pitch::getQueryOrder($this->request->query['order']);
+        $order = Pitch::getQueryOrder($this->request->query['order'], $this->request->query['type']);
         $timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
         $type = Pitch::getQueryType($this->request->query['type']);
         $category = Pitch::getQueryCategory($this->request->query['category']);
