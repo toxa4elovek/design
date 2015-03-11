@@ -21,7 +21,6 @@ function TableLoader() {
     this.magePage = null;
     // initialisation method
     this.init = function() {
-        console.log('mypitches');
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
 
         $(document).on('click', '.nav-page', function() {
