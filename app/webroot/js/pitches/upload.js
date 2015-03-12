@@ -20,7 +20,7 @@ $(document).ready(function () {
     $('#searchTerm').typeahead(null, {
         name: 'tags',
         displayKey: 'name',
-        source: tags.ttAdapter(),
+        source: tags.ttAdapter()
     }).on('typeahead:selected', function (obj, val) {
         var box = '<li style="margin-left:6px;">' + val.name + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
         $(box).appendTo('#filterbox');
@@ -29,7 +29,7 @@ $(document).ready(function () {
             $('#filterContainer').removeClass('error-searhTerm');
         }
         recalculateBox();
-    });
+    })
 
     $('#solution').bind("keypress", function (e) {
         if (e.keyCode == 13) {
@@ -43,7 +43,9 @@ $(document).ready(function () {
         var baseWidth = 524,
                 filterbox = $('#filterbox');
         if(filterbox.children().length == 5) {
+            $('#searchTerm').val('');
             $('#searchTerm').attr("disabled", "disabled");
+            $('#searchTerm').css("opacity", "0");
             return false
         }
         $.each(filterbox.children(), function (index, object) {
@@ -56,6 +58,7 @@ $(document).ready(function () {
     };
 
     $('#searchTerm').keyboard('space', function () {
+        $('#searchTerm').typeahead('close');
         if ($(this).val() != '') {
             var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
             $(this).val('');
@@ -64,9 +67,11 @@ $(document).ready(function () {
             if ($(filter).children().length == 5) {
                 $('#filterContainer').removeClass('error-searhTerm');
             }
+            $('.tt-dropdown-menu').hide();
             recalculateBox();
         }
     }).keyboard('enter', function () {
+        $('#searchTerm').typeahead('close');
         if ($(this).val() != '') {
             var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
             $(this).val('');
@@ -75,6 +80,7 @@ $(document).ready(function () {
             if ($(filter).children().length == 5) {
                 $('#filterContainer').removeClass('error-searhTerm');
             }
+            $('.tt-dropdown-menu').hide();
             recalculateBox();
         }
         return false;
@@ -83,6 +89,9 @@ $(document).ready(function () {
     $(document).on('click', '.removeTag', function (e) {
         e.preventDefault();
         $('#searchTerm').removeAttr("disabled");
+        $('#searchTerm').css("opacity", "1");
+        $('#searchTerm').val('');
+        $('#searchTerm').focus();
         $(this).parent().remove();
     });
 
@@ -101,6 +110,9 @@ $(document).ready(function () {
         if (($('#filterbox li').length > 0) && ($('#searchTerm').val() == '')) {
             $('.removeTag', '#filterbox li:last').click()
             $('#searchTerm').removeAttr("disabled");
+            $('#searchTerm').css("opacity", "1");
+            $('#searchTerm').val('');
+            $('#searchTerm').focus();
         }
     })
 
