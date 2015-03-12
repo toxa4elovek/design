@@ -321,7 +321,13 @@ $(document).ready(function () {
         if ($(this).val() == $(this).data('minimalAward')) {
             //$(this).addClass('initial-price');
         }
-        Cart.updateOption($(this).data('optionTitle'), $('#award').val());
+        var award = 0;
+        if($('#award').val() == '') {
+            award = $(this).data('minimalAward');
+        }else {
+            award = $('#award').val();
+        }
+        Cart.updateOption($(this).data('optionTitle'), award);
     });
 
     // simple options
