@@ -246,7 +246,20 @@ input[name=licensed_work] {
 #searchTerm, .tags li {
     font-size: 13px;
 }
-
+.tags li {
+    background-color: #ebf8fc;
+    border: 1px solid #cbe6f5;
+    height: 23px;
+    padding-top:4px;
+    padding-left:10px;
+    padding-right:10px;
+    float:left;
+    text-transform: none;
+}
+.tags li a {
+    margin-left:9px;
+}
+#needa
 #list-job-type li label {
     vertical-align: middle;
     font: 15px Arial,sans-serif;
