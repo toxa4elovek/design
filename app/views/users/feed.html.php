@@ -157,11 +157,11 @@
                             <div id="r-sidebar-office">
                                 <div id="floatingLayer">
                                     <div id="container-job-designers">
-                                        <div class="rs-header"><a href="https://twitter.com/go_deer" target="_blank" style="color: #fff;">Twitter #работадлядизайнеров</a></div>
+                                        <div class="rs-header"><a href="https://twitter.com/hashtag/%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B4%D0%BB%D1%8F%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80%D0%BE%D0%B2?f=realtime&src=hash" target="_blank" style="color: #fff;">Twitter #работадлядизайнеров</a></div>
                                         <div id="content-job">
                                             <?php echo $this->stream->renderStreamFeed(6); ?>
                                         </div>
-                                        <div id="all-tweets"><a href="https://twitter.com/go_deer" target="_blank">Посмотреть все твиты</a></div>
+                                        <div id="all-tweets"><a href="https://twitter.com/hashtag/%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B4%D0%BB%D1%8F%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80%D0%BE%D0%B2?f=realtime&src=hash" target="_blank">Посмотреть все твиты</a></div>
                                     </div>
                                     <!--div id="container-new-pitches">
                                         <div class="rs-header">Новые питчи</div>
