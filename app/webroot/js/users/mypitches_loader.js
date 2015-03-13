@@ -114,6 +114,10 @@ function TableLoader() {
                 icons = '<img style="width:30px; margin-top:4px;float:left;" src="/img/guarantee.png" alt="Награда гарантирована">';
             }
             var timeleft = '';
+            var pitchPath = 'view';
+            if (object.ideas_count == 0) {
+                pitchPath = 'details';
+            }
             if(object.status == 0) {
                 if((object.private == 1) && (object.expert == 0)){
                     rowClass += ' close';
@@ -152,6 +156,12 @@ function TableLoader() {
                         }
                         if (object.hasBill == 'yur') {
                             timeleft = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                        }
+                    }else {
+                        if(object.winlink == true) {
+                            var link = '/users/step2/' + object.awarded;
+                        }else {
+                            var link = '/pitches/' + pitchPath + '/' + object.id;
                         }
                     }
                 }else if((object.status == 1) && (object.awarded > 0)) {
@@ -203,7 +213,7 @@ function TableLoader() {
                 '<td class="pitches-name">' +
                 userString +
                 '<div style="padding-left: 34px; padding-right: 12px;">' +
-                '<a href="/pitches/' + pitchPath + '/' + object.id + '" class="">' + object.title + '</a>' +
+                '<a href="' + link + '" class="">' + object.title + '</a>' +
                 '<!--span style="font-size: 11px;">' + shortIndustry + '</span-->' +
                 '</div>' +
                 '</td>' +
