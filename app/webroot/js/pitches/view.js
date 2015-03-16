@@ -790,12 +790,13 @@ $(document).ready(function () {
 
             if (result.pitch.category_id != 7) {
 
-                var media = '';
+                var media = 'http://www.godesigner.ru';
                 if ($.isArray(result.solution.images.solution_solutionView)) {
-                    media = result.solution.images.solution_solutionView[0].weburl
+                    media += result.solution.images.solution_solutionView[0].weburl
                 } else {
-                    media = result.solution.images.solution_solutionView.weburl
+                    media += result.solution.images.solution_solutionView.weburl
                 }
+                console.log(media)
                 // Twitter like solution message
                 var tweetLike = 'Мне нравится этот дизайн! А вам?';
                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
