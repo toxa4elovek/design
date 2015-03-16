@@ -57,6 +57,17 @@ function mycallback(text, title) {
 $(document).ready(function () {
     $('.social-likes').socialLikes();
 
+    $( ".sharebar" ).hover(
+        function() {
+            $( this )
+        }, function() {
+            var sharebar = $( this );
+            setTimeout(function(){
+                sharebar.fadeOut(300);
+            }, 500);
+        }
+    );
+
     $('input[name="gender"]').on('change', function () {
         $.post('http://www.godesigner.ru/users/gender/' + $('#user_id').val() + '.json', {gender: $(this).attr('id')}, function (response) {
         });
