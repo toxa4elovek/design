@@ -796,7 +796,6 @@ $(document).ready(function () {
                 } else {
                     media += result.solution.images.solution_solutionView.weburl
                 }
-                console.log(media)
                 // Twitter like solution message
                 var tweetLike = 'Мне нравится этот дизайн! А вам?';
                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
