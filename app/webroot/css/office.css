@@ -124,7 +124,7 @@
     position: relative;
 }
 #l-sidebar-office .solutions-block .creator-name a {
-    color: #2d2d2d;
+    color: #666;
 }
 #l-sidebar-office .solutions-block .creator-name a:hover {
     color: #658fa5;
@@ -149,7 +149,7 @@
     color: #999999;
     margin-left: 15px;
     font: 14px OfficinaSansC Book, serif !important;
-    padding: 3px 0 0 20px;
+    padding: 4px 0 0 20px;
     text-decoration: none;
 }
 .like-small-icon:hover, .like-small-icon:active {
@@ -157,7 +157,9 @@
     color: #648fa4;
 }
 .like-small-icon span {
-    margin-left: 5px;
+    font-family: OfficinaSansC Bold, serif;
+    margin-left: 2px;
+    color: #cccccc;
 }
 #l-sidebar-office .solutions-block .creator-name {
     display: inline-block;
@@ -402,7 +404,8 @@
     font-family: Georgia, serif;
     font-size: 13px;
     display: block;
-    margin: -4px 0 10px 0;
+    margin-top: -2px;
+    margin-bottom: 3px;
 }
 
 .center-boxes .box img.img-post {
