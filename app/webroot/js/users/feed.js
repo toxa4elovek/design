@@ -45,8 +45,6 @@ var translatedTitles = {};
 var idOfNewsToTranslate = null;
 
 function mycallback(text, title) {
-    console.log(idOfNewsToTranslate);
-    console.log(title)
     var box = $('.box[data-newsid="' + idOfNewsToTranslate + '"]');
     $('.img-short', box).text(text);
     $('h2', box).text(title);
@@ -57,9 +55,8 @@ function mycallback(text, title) {
 $(document).ready(function () {
     $('.social-likes').socialLikes();
 
-    $( ".sharebar" ).hover(
+    $(".sharebar").hover(
         function() {
-            $( this )
         }, function() {
             var sharebar = $( this );
             setTimeout(function(){
@@ -261,9 +258,10 @@ $(document).ready(function () {
          $('body').one('click', function () {
          $('.sharebar').fadeOut(300);
          });*/
-        sharebar.fadeIn(300);
-        $('body').one('click', function () {
-            sharebar.fadeOut(300);
+        sharebar.fadeIn(300, function() {
+            $('body').one('click', function () {
+                sharebar.fadeOut(300);
+            });
         });
 
         if (($.inArray($(this).data('id'), clickedLikesList) == -1) && (this_user != '')) {
