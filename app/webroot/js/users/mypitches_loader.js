@@ -118,6 +118,7 @@ function TableLoader() {
             if (object.ideas_count == 0) {
                 pitchPath = 'details';
             }
+            var link = '/pitches/' + pitchPath + '/' + object.id;
             if(object.status == 0) {
                 if((object.private == 1) && (object.expert == 0)){
                     rowClass += ' close';
