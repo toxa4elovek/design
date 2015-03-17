@@ -55,7 +55,7 @@
         echo '<meta property="fb:admins" content="nyudmitriy"/>';
         echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
-    <?php elseif (preg_match('@/pitches/details@', $_SERVER['REQUEST_URI'])):
+    <?php elseif (preg_match('@/pitches/(details|view)@', $_SERVER['REQUEST_URI'])):
         echo '<meta content="godesigner:pitch" property="og:type"/>';
         echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
         echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
