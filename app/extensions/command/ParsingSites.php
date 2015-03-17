@@ -23,7 +23,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         //die();
 
         $this->out("Starting parsing pixelgene.ru");
-        self::ParsingWordpress('http://pixelgene.ru/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', false, 'ru');
+        self::ParsingWordpress('http://pixelgene.ru/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing pixelgene.ru [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing godesigner.ru");
@@ -143,11 +143,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 if (isset($matches[1])) {
                     $image = $matches[1];
                 }
+                $date = new \DateTime($item->pubDate);
                 $news = News::create(array(
                             'title' => $post->title,
                             'short' => strip_tags($post->short),
                             'tags' => substr($post->tags, 0, strpos($post->tags, '|')),
-                            'created' => $post->created,
+                            'created' => $date->format('Y-m-d H:i:s'),
                             'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
                             'imageurl' => $image,
                             'lang' => 'ru'
