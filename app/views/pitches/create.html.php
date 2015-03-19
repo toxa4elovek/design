@@ -18,7 +18,7 @@
                 <li class="category-logo big">
                     <?= $this->html->link('
 						<h3 style="font-size: 28px">Лого</h3>
-						<p class="description">Знак, лого, персонаж, фирм. написание</p>
+						<p class="description">Знак, лого, персонаж, написание, иконка</p>
 						<p class="price">от ' . $this->moneyFormatter->formatMoney((date('N') > 5) ? $categories[1]->discountPrice : $categories[1]->minAward, array('suffix' => 'Р.-')) . '</p>
 					', array('controller' => 'Pitches', 'action' => 'brief', 'category' => 1), array('escape' => false)) ?>
                 </li>
