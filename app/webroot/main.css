@@ -1118,7 +1118,7 @@ p.full_pitch a {
 .pay-systems {
     float: right;
     margin-right: 20px;
-    margin-top: 20px;
+    margin-top: 0;
 }
 .pay-systems li {
     float: left;

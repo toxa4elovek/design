@@ -149,9 +149,9 @@
 
               </div>
         </div>
-        <div style="margin-left: 61px;">
-            <?=$this->html->link('Как это работает?', 'Pages::howitworks', array('class' => 'more', 'id' => 'to_use_link'))?>
-            <?=$this->html->link('показать все питчи', 'Pitches::index', array('class' => 'more', 'style' => 'float: right; border-right-width: 22px; margin-right: 52px;'))?>
+        <div style="margin-left: 61px; margin-top: -55px;">
+            <?=$this->html->link('Подробнее', 'Pages::howitworks', array('class' => 'new_more', 'id' => 'to_use_link'))?>
+            <?php //$this->html->link('показать все питчи', 'Pitches::index', array('class' => 'more', 'style' => 'float: right; border-right-width: 22px; margin-right: 52px;'))?>
         </div>
     </div>
     <?php
@@ -168,7 +168,7 @@
     $expertsDB = $experts->data();
     ?>
 
-    <div class="experts-main">
+    <div class="experts-main" <?php if(!$this->user->isAdmin()):?>style="background: url(img/sep.png) no-repeat scroll 62px bottom rgba(0, 0, 0, 0); margin-bottom: 30px;"<?php endif?>>
       <ul id="experts-zone">
         <?php foreach($experts->data() as $expert): if ($expert['enabled'] == 0) continue; ?>
         <li class="expert-<?=$expert['id']?> expert_enabled" data-expert_id="<?=$expert['id']?>" style="display:none;">
@@ -181,10 +181,25 @@
       <div class="about_ex">
           <?=$this->html->link('Опытные эксперты будут рады помочь вам с выбором варианта...', 'Experts::index', array('class' => 'experts_text','id' => 'experts_text', 'style' => 'color: #666666;'));?>
           <div style="margin-top:10px">
-            <?=$this->html->link('подробнее', 'Experts::index', array('class' => 'more', 'id' => 'experts_link'))?>
+            <?=$this->html->link('подробнее', 'Experts::index', array('class' => 'new_more', 'id' => 'experts_link'))?>
           </div>
       </div>
     </div>
+
+    <?php if(($this->user->getId()) && ($this->user->isAdmin())): ?>
+    <div class="logosale">
+        <div class="logosale_content">
+            <h3>Купи лого за 9500 р.-</h3>
+            <p><span class="highlight">17625</span> отборных логотипов<br> из завершенных проектов в распродаже</p>
+            <div class="logosale_search-block">
+                <form id="logosale_form" method="get" action="/logosale">
+                    <input type="text" name='search' placeholder="Найдите логотип по ключевому слову" class="">
+                    <a style="margin-left:15px;margin-top:4px" href="#" class="button third clean-style-button">Поиск</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif ?>
         <?php
           $grade1 = $grades->first();
           $grade2 = $grades->next();
@@ -201,33 +216,33 @@
     ?>
     <div>
         <h2 class="largest-header" style="text-align: left; margin-left:64px;">Отзывы</h2>
-        <div style="width:959px;height:166px;background-image:url(/img/peopletalk.png);margin-bottom:18px;margin-top:12px;">
+        <div style="width:959px;height:166px;margin-bottom:18px;margin-top:12px;">
 
-          <div class="talkhoverzone" style="float:left;height:144px;width:398px;padding-left:81px;padding-top:22px">
+          <div class="talkhoverzone" style="float:left;height:144px;width:398px;padding-left:66px;padding-top:22px">
             <div style="float:left;width:50px;height:142px;padding-top: 2px;">
-            <img src="<?=$avatar1?>" alt="" style="border: 4px solid #a7a7a7;">
+            <img src="<?= $avatar1 ?>" alt="" style="border: 4px solid #cecece;">
             </div>
             <div  style="float:left;width:320px;padding-left:12px;height:142px;">
-                <p class="regular" style=""><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="font: 15px RodeoC;color:#666666;text-decoration:none;"><?=$grade1->user->first_name . ' ' . $grade1->user->last_name?></a></p>
-                <p class="regular" style="font-style:italic;font-size:14px;"><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade1->pitch->title?></a></p>
-                <p class="regular" style="font-size:14px;color:#666666;margin-top:4px;">«<?php if($grade1->short != ''): echo $grade1->short; else: echo $grade1->text; endif?>»</p>
+                <p class="regular" style=""><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="font: 17px RodeoC;color:#666666;text-decoration:none;"><?=$grade1->user->first_name . ' ' . $grade1->user->last_name?></a></p>
+                <p class="regular" style="font-style:italic; font-size:14px; font-family: Georgia;"><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade1->pitch->title?></a></p>
+                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade1->short != ''): echo $grade1->short; else: echo $grade1->text; endif?>»</p>
             </div>
 
           </div>
           <div class="talkhoverzone" style="float:left;height:144px;width:398px;padding-left:22px;padding-top:22px">
             <div  style="float:left;width:50px;height:142px;padding-top: 2px;">
-            <img src="<?=$avatar2?>" alt="" style="border: 4px solid #a7a7a7;">
+            <img src="<?= $avatar2 ?>" alt="" style="border: 4px solid #cecece;">
             </div>
             <div style="float:left;width:320px;padding-left:12px;height:142px;">
-                <p class="regular" style=""><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="font:15px RodeoC;color:#666666;text-decoration:none;"><?=$grade2->user->first_name . ' ' . $grade2->user->last_name?></a></p>
-                <p class="regular" style="font-style:italic;font-size:14px;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade2->pitch->title?></a></p>
-                <p class="regular" style="font-size:14px;color:#666666;margin-top:4px;">«<?php if($grade2->short != ''): echo $grade2->short; else: echo $grade2->text; endif?>»</p>
+                <p class="regular" style="font-size: 17px;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="font:17px RodeoC;color:#666666;text-decoration:none;"><?=$grade2->user->first_name . ' ' . $grade2->user->last_name?></a></p>
+                <p class="regular" style="font-style:italic; font-size:14px; font-family: Georgia;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade2->pitch->title?></a></p>
+                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade2->short != ''): echo $grade2->short; else: echo $grade2->text; endif?>»</p>
             </div>
 
           </div>
         </div>
     </div>
-    <div class="clear" style="clear:both; height:3px; background:url('/img/sep.png') no-repeat scroll 62px bottom transparent;margin-bottom:12px;"></div>
+    <div class="clear" style="clear:both; height:3px; margin-bottom:12px;"></div>
     <?php endif?>
 
     <div class="statistika">
@@ -242,11 +257,11 @@
       </dl>
       <dl class="dl_2">
         <dt><?=$statistic['numOfCurrentPitches']?></dt>
-        <dd>текущих<br> питчей</dd>
+        <dd>текущих<br> проектов</dd>
       </dl>
       <dl class="dl_3">
-        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'])?></dt>
-        <dd>заработанных<br> дизайнерами денег</dd>
+        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'], array('suffix' => ''))?></dt>
+        <dd>заработанных<br> дизайнерами рублей</dd>
       </dl>
       <dl class="dl_4">
         <dt><?=$this->moneyFormatter->formatMoney($statistic['totalParticipants'], array('suffix' => ''))?></dt>
@@ -254,9 +269,10 @@
       </dl>
       <dl class="dl_5">
         <dt><?=$statistic['lastDaySolutionNum']?></dt>
-        <dd>новых работ загружено за последние 24 часа</dd>
+        <dd>новых идей загружено за последние 24 часа</dd>
       </dl>
     </div>
+      <div style="height: 4px; background-color: rgb(204, 204, 204); clear: both; margin-top: -15px; margin-left: 0px;"></div>
 
     <ul class="logos">
         <li style="width:128px;">

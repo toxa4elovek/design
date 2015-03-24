@@ -160,6 +160,9 @@ ul.marsh .clear {
 .solution-sale .solution-title h1 {
     color: #606060;
 }
+.solution-sale .solution-title a:hover {
+    text-decoration: underline;
+}
 .solution-sale .solution-title h1 .price,
 .solution-sale .solution-title h1 .new-price {
     font-size: 17px;

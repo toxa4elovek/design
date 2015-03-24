@@ -82,11 +82,23 @@ jQuery(document).ready(function ($) {
             isBusy = true;
             $('#officeAjaxLoader').show();
             page += 1;
+            var queryDict = {}
+            location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]})
+            console.log(paramsSearch)
+            console.log(typeof(queryDict['search']));
+            if(typeof(queryDict['search']) != "undefined") {
+                var search_list = [];
+                search_list.push(decodeURIComponent(queryDict['search']));
+                var search = $('#searchTerm');
+                paramsSearch.search = (search.hasClass('placeholder')) ? '' : search.val();
+                paramsSearch.search_list = search_list;
+            }
             var url = ($.isEmptyObject(paramsSearch)) ? '/solutions/logosale/' : '/solutions/search_logo/';
             if(url != '/solutions/logosale/') {
                 $('ul.marsh').hide();
                 $('.portfolio_gallery').css('margin-top', '40px');
             }
+            console.log(paramsSearch)
             $.post(url + page + '.json', paramsSearch, function (response) {
                 var html = '';
                 keys = [];
@@ -94,6 +106,8 @@ jQuery(document).ready(function ($) {
                     keys.push(solution)
                 });
                 keys = keys.sort(function(obj1, obj2) {
+                    if(obj2.sort > obj1.sort){ return -1;}
+                    if(obj2.sort < obj1.sort){ return 1;}
                     if(obj2.rating > obj1.rating){ return 1;}
                     if(obj2.rating < obj1.rating){ return -1;}
                     if(obj2.likes > obj1.likes){ return 1;}
@@ -380,6 +394,8 @@ jQuery(document).ready(function ($) {
                 });
                 keys = keys.sort(function(obj1, obj2) {
                     // Ascending: first age less than the previous
+                    if(obj2.sort > obj1.sort){ return -1;}
+                    if(obj2.sort < obj1.sort){ return 1;}
                     if(obj2.rating > obj1.rating){ return 1;}
                     if(obj2.rating < obj1.rating){ return -1;}
                     if(obj2.likes > obj1.likes){ return 1;}
@@ -388,6 +404,7 @@ jQuery(document).ready(function ($) {
                     if(obj2.views < obj1.views){ return -1;}
                     return 0;
                 });
+                console.log(keys)
                 $.each(keys, function(index, solution) {
                     hash = html;
                     html = html + addSolution(solution);
@@ -542,8 +559,8 @@ jQuery(document).ready(function ($) {
 
             // Left Panel
             $('.solution-images').html('');
-            $('.solution-left-panel .solution-title').addClass('nodecoration').data('href', '/pitches/view/' + result.pitch.id);
-            $('.solution-left-panel .solution-title').children('h1').html(result.pitch.title + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
+            //$('.solution-left-panel .solution-title').addClass('nodecoration').data('href', '/pitches/view/' + result.pitch.id);
+            $('.solution-left-panel .solution-title').children('h1').html('<a href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price">9500 р.-</span>');
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
                 // Main Images
                 if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
@@ -711,11 +728,6 @@ jQuery(document).ready(function ($) {
     $('body, .solution-overlay').on('click', '.solution-popup-close', function (e) {
         window.history.back();
         hideSolutionPopup();
-        return false;
-    });
-
-    $('body, .solution-overlay').on('click', '.solution-title', function (e) {
-        window.location = $(this).data('href')
         return false;
     });
 

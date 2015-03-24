@@ -121,23 +121,51 @@ class SolutionsController extends \app\controllers\AppController {
         $count = 0;
         $sort_tags = array();
         $search_tags = array();
-        $params = array(
-            'conditions' =>
-                array(
-                    'Solution.multiwinner' => 0,
-                    'Solution.awarded' => 0,
-                    'Pitch.awarded' => array('>' => date('Y-m-d H:i:s', time() - MONTH)),
-                    'Pitch.status' => array('>' => 0),
-                    'private' => 0,
-                    'category_id' => 1,
-                    'rating' => array('>=' => 3)
-                ),
-            'order' => array('likes' => 'desc', 'views' => 'desc', 'rating' => 'desc'),
-            'with' => array('Pitch'),
-            'limit' => 12,
-            'page' => $this->request->id);
+        if(($this->request->query['search']) && (!empty($this->request->query['search']))) {
+            $words = Solution::stringToWordsForSearchQuery($this->request->query['search']);
+            $industries = Solution::getListOfIndustryKeys($words);
+            $words = Solution::injectIndustryWords($words);
+
+            $tags_id = 0;
+            if (!is_null($words)) {
+                $tag_params = array('conditions' => array());
+                // сохранение поиска в статистику
+                $search_tags = Searchtag::all(array('conditions' => array('name' => $words)));
+                if (count($search_tags) < 1) {
+                    foreach ($words as $w) {
+                        $tag_params['conditions']['OR'][] = array('name' => $w);
+                        if (!empty($w)) {
+                            $result = Searchtag::create(array(
+                                'name' => $w
+                            ));
+                            $result->save();
+                        }
+                    }
+                } else {
+                    foreach ($search_tags as $v) {
+                        $v->searches += 1;
+                    }
+                    $search_tags->save();
+                    foreach ($words as $w) {
+                        $tag_params['conditions']['OR'][] = array('name' => $w);
+                    }
+                }
+                // конец страницы поика в статистику
+                // поиск существующих тегов
+                $tags = Tag::all($tag_params);
+                if (count($tags) > 0) {
+                    $tags_id = array_keys($tags->data());
+                } else {
+                    $tags_id = 0;
+                }
+            }
+            $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
+            // Ищем указанную страницу результатов
+            $params = Solution::buildSearchQuery($words, $industries, $tags_id, $page);
+        }else {
+            $params = Solution::buildStreamQuery($this->request->id);
+        }
         if ($this->request->is('json')) {
-            $solutions = Solution::all($params);
             $params['page'] += 1;
             $next = Solution::all($params);
             if ($next) {
@@ -154,7 +182,26 @@ class SolutionsController extends \app\controllers\AppController {
         if ($userHelper->isLoggedIn()) {
             $data = Solution::addBlankPitchForLogosale($userHelper->getId(), 0);
         }
-        $solutions = Solution::filterLogoSolutions(Solution::all($params));
+
+        $solutions = Solution::all($params);
+        if(count($solutions) != 30) {
+            $needToAddSolution = true;
+        }
+        if($needToAddSolution) {
+            $params = Solution::buildStreamQuery();
+            $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
+        }
+
+        $solutions = Solution::filterLogoSolutions($solutions);
+        $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
+
+        if($needToAddSolution) {
+            foreach($addedSolutions as $key => $addedSolution) {
+                $solutions[$key] = $addedSolution;
+                $solutions[$key]['sort'] = 1;
+            }
+        }
+
         return compact('solutions', 'count', 'sort_tags', 'search_tags', 'data', 'total_count');
     }
 
@@ -164,42 +211,9 @@ class SolutionsController extends \app\controllers\AppController {
         }
         if ($this->request->is('json') && (isset($this->request->data['search_list']) || (isset($this->request->data['prop'])))) {
 
-            //$words = explode(' ', preg_replace('/[^a-zа-яё]+/iu', ' ', trim($this->request->data['search'])));
-            $words = $this->request->data['search_list'];
-            $industries = array();
-            $dict = array(
-                'realty' => 'Недвижимость / Строительство',
-                'auto' => 'Автомобили / Транспорт',
-                'finances' => 'Финансы / Бизнес',
-                'food' => 'Еда / Напитки',
-                'adv' => 'Реклама / Коммуникации',
-                'tourism' => 'Туризм / Путешествие',
-                'sport' => 'Спорт',
-                'sci' => 'Образование / Наука',
-                'fashion' => 'Красота / Мода',
-                'music' => 'Развлечение / Музыка',
-                'culture' => 'Искусство / Культура',
-                'animals' => 'Животные',
-                'childs' => 'Дети',
-                'security' => 'Охрана / Безопасность',
-                'health' => 'Медицина / Здоровье',
-                'it' => 'Компьютеры / IT'
-            );
-            $flippedDict = array_flip($dict);
-            foreach($words as $key => $word) {
-                if(preg_match('@\/@', $word)) {
-                    if(isset($flippedDict[$word])) {
-                        $industries[] = $flippedDict[$word];
-                    }
-                    $exploded = explode('/', $word);
-                    foreach($exploded as $newWord) {
-                        $newWord = trim($newWord);
-                        $newWord = (mb_strtolower($newWord, 'utf-8'));
-                        $words[] = $newWord;
-                    }
-                    unset($words[$key]);
-                }
-            }
+            $words = Solution::stringToWordsForSearchQuery($this->request->data['search_list']);
+            $industries = Solution::getListOfIndustryKeys($words);
+            $words = Solution::injectIndustryWords($words);
 
             $tags_id = 0;
             if (!is_null($words)) {
@@ -226,7 +240,6 @@ class SolutionsController extends \app\controllers\AppController {
                     }
                 }
                 // конец страницы поика в статистику
-                $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
                 // поиск существующих тегов
                 $tags = Tag::all($tag_params);
                 if (count($tags) > 0) {
@@ -236,198 +249,51 @@ class SolutionsController extends \app\controllers\AppController {
                 }
             }
 
+            $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
             // Ищем указанную страницу результатов
-            $regexp = implode($words, '|');
-            $descriptionWord = implode($words, ' ');
-            $params = array('conditions' => array(
-                array('OR' => array(
-                    array("Pitch.title REGEXP '" . $regexp . "'"),
-                    array("Pitch.description LIKE '%$descriptionWord%'"),
-                    array("'Pitch.business-description' LIKE '%$descriptionWord%'"),
-                    //array("Solutiontag.tag_id IN($tags)")
-                )),
-                'Solution.multiwinner' => 0,
-                'Solution.awarded' => 0,
-                'Pitch.awarded' => array('>' => date('Y-m-d H:i:s', time() - MONTH)),
-                'Pitch.status' => array('>' => 0),
-                'Pitch.private' => 0,
-                'Pitch.category_id' => 1,
-                'Solution.rating' => array('>=' => 3)
-            ),
-            'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
-            'with' => array('Pitch', 'Solutiontag'));
-            if(!empty($industries)) {
-                $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industries[0] . "%'");
-            }
-            if($tags_id) {
-                $tags = implode($tags_id, ', ');
-                $params['conditions'][0]['OR'][] = array("Solutiontag.tag_id IN($tags)");
-            }
-            $pageParams = $totalParams = $params;
-            $pageParams['limit'] = 30;
-            $pageParams['page'] = $page;
+            $params = Solution::buildSearchQuery($words, $industries, $tags_id, $page);
 
-            $solutions = Solution::all($pageParams);
 
-            if($page == 1) {
-                //$totalParams['fields'] = 'Solution.id';
-                //$total_solutions = Solution::count($totalParams);
-            }
+            $solutions = Solution::all($params);
+            $needToAddSolution = false;
             if ($solutions && count($solutions) > 0) {
-                $black_list = array();
-                $winnersArray = array();
-                $solutionsArray = array();
-                foreach ($solutions as $v) {
-                    if(!in_array($v->pitch->awarded, $winnersArray)) {
-                        $solutionsArray[] = $v->pitch->awarded;
-                    }
-                    if ($v->awarded) {
-                        $winnersArray[] = $v->user_id;
-                        $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
-                    }
+                if(count($solutions) != 30) {
+                    $needToAddSolution = true;
                 }
-                foreach($solutionsArray as $winnerSolution) {
-                    $sol = Solution::first($winnerSolution);
-                    if(!in_array($sol->user_id, $winnersArray)) {
-                        $winnersArray[] = $sol->user_id;
-                    }
+                if($needToAddSolution) {
+                    $params = Solution::buildStreamQuery();
+                    $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
                 }
-                $prop = array();
-                $variant = array();
-                if (isset($this->request->data['prop'])) {
-                    $prop = $this->request->data['prop'];
-                }
-                if (isset($this->request->data['variants'])) {
-                    $variant = $this->request->data['variants'];
-                }
-                $solutions = $solutions->data();
-                $removeCount = 0;
-                foreach ($solutions as $k => $solution) {
-                    $specific = unserialize($solution['pitch']['specifics']);
-                    if (count($prop) > 0) {
-                        $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
-                    } else {
-                        $diff_prop = false;
-                    }
-                    if (isset($specific['logoType']) && count($variant) > 0) {
-                        $diff_variant = count(array_diff($specific['logoType'], $variant));
-                    } else {
-                        $diff_variant = false;
-                    }
-                    if ($diff_prop > 3 || $diff_variant == count($specific['logoType'])) {
-                        $removeCount++;
-                        unset($solutions[$k]);
-                    } else {
-                        foreach ($black_list as $v) {
-                            if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
-                                $removeCount++;
-                                unset($solutions[$k]);
-                            }
-                        }
-                    }
-                    if(in_array($solution['user_id'], $winnersArray)) {
-                        $removeCount++;
-                        unset($solutions[$k]);
-                    }
-                    if(in_array($solution['id'], $solutionsArray)) {
-                        $removeCount++;
-                        unset($solutions[$k]);
-                    }
-                }
-            }
 
-            if($page == 1) {
-                /*$solutionTags = Solutiontag::all(array('conditions' => array('tag_id' => $tags_id)));
-                foreach($solutionTags as $tag) {
-                    if(!isset($solutions[$tag->solution_id])) {
-                        $temp = Solution::first(array(
-                            'conditions' => array(
-                                'Solution.id' => $tag->solution_id,
-                                'Solution.multiwinner' => 0,
-                                'Solution.awarded' => 0,
-                                'Pitch.awarded' => array('>' => date('Y-m-d H:i:s', time() - MONTH)),
-                                'Pitch.status' => array('>' => 0),
-                                'Pitch.private' => 0,
-                                'Pitch.category_id' => 1,
-                                'Solution.rating' => array('>=' => 3)
-                            ),
-                            'with' => array('Pitch')
-                        ));
-                        if($temp) {
-                            $solutions[$tag->solution_id] = $temp->data();
-                        }
-                    }
-                }*/
-            }
-/*
-            if($page == 1) {
-                if ($total_solutions && count($total_solutions) > 0) {
-                    $black_list = array();
-                    $winnersArray = array();
-                    $solutionsArray = array();
-                    foreach ($total_solutions as $v) {
-                        if(!in_array($v->pitch->awarded, $winnersArray)) {
-                            $solutionsArray[] = $v->pitch->awarded;
-                        }
-                        if ($v->awarded) {
-                            $winnersArray[] = $v->user_id;
-                            $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
-                        }
-                    }
-                    foreach($solutionsArray as $winnerSolution) {
-                        $sol = Solution::first($winnerSolution);
-                        if(!in_array($sol->user_id, $winnersArray)) {
-                            $winnersArray[] = $sol->user_id;
-                        }
-                    }
-                    $prop = array();
-                    $variant = array();
-                    if (isset($this->request->data['prop'])) {
-                        $prop = $this->request->data['prop'];
-                    }
-                    if (isset($this->request->data['variants'])) {
-                        $variant = $this->request->data['variants'];
-                    }
-                    $total_solutions = $total_solutions->data();
-                    $removeCount = 0;
-                    foreach ($total_solutions as $k => $solution) {
-                        $specific = unserialize($solution['pitch']['specifics']);
-                        if (count($prop) > 0) {
-                            $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
-                        } else {
-                            $diff_prop = false;
-                        }
-                        if (isset($specific['logoType']) && count($variant) > 0) {
-                            $diff_variant = count(array_diff($specific['logoType'], $variant));
-                        } else {
-                            $diff_variant = false;
-                        }
-                        if ($diff_prop > 3 || $diff_variant == count($specific['logoType'])) {
-                            $removeCount++;
-                            unset($total_solutions[$k]);
-                        } else {
-                            foreach ($black_list as $v) {
-                                if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
-                                    $removeCount++;
-                                    unset($total_solutions[$k]);
-                                }
-                            }
-                        }
-                        if(in_array($solution['user_id'], $winnersArray)) {
-                            $removeCount++;
-                            unset($total_solutions[$k]);
-                        }
-                        if(in_array($solution['id'], $total_solutions)) {
-                            $removeCount++;
-                            unset($total_solutions[$k]);
-                        }
+                $solutions = Solution::filterLogoSolutions($solutions);
+                $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
+
+                if($needToAddSolution) {
+                    foreach($addedSolutions as $key => $addedSolution) {
+                        $solutions[$key] = $addedSolution;
+                        $solutions[$key]['sort'] = 1;
                     }
                 }
+
+            }elseif($page > 1) {
+                $totalParams = Solution::buildSearchQuery($words, $industries, $tags_id, false, false);
+                $totalSolutions = Solution::all($totalParams);
+                if ($totalSolutions && count($totalSolutions) > 0) {
+                    $totalSolutions = Solution::filterLogoSolutions($totalSolutions);
+                    $totalSolutions = Solution::applyUserFilters($totalSolutions, $this->request->data['prop'], $this->request->data['variants']);
+                }
+                $totalPages = ceil(count($totalSolutions) / 4);
+                $filteredPage = $page - $totalPages + 1;
+                $params = Solution::buildStreamQuery($filteredPage);
+                $solutions = Solution::filterLogoSolutions(Solution::all($params));
+                $solutions = Solution::applyUserFilters($solutions);
+                foreach($solutions as $key => $solution) {
+                    $solution['sort'] = 1;
+                }
             }
-*/
         }
         $total_solutions = count($solutions);
-        return compact('solutions', 'total_solutions');
+        return compact('solutions', 'total_solutions', 'page', 'pageParams');
     }
 
 }

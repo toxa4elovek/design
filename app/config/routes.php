@@ -58,6 +58,7 @@ Router::connect('/pitchfiles/addDescription', array('Pitchfiles::addDescription'
 Router::connect('/pitchfiles/{:filename}', array('Pitchfiles::download'));
 Router::connect('/news', 'Users::feed');
 Router::connect('/logosale', 'Solutions::logosale');
+Router::connect('/payture_callback', 'Payments::payture_callback');
 
 //Router::connect('/users/nominated', array('controller' => 'Users', 'action' => 'solutions', 'filterType' => 'nominating'));
 

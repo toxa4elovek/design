@@ -50,11 +50,11 @@
         </div>
         <!-- start: Solution Left Panel -->
         <div class="solution-left-panel">
-            <a class="solution-title" href="#">
+            <div class="solution-title" href="#">
                 <h1>
 
                 </h1>
-            </a>
+            </div>
             <!-- start: Soluton Images -->
             <section class="solution-images isField">
                 <div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>

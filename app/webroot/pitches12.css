@@ -718,7 +718,7 @@ h1.solution-title-page  {
 }
 .solution-left-panel .solution-title:hover {
 	cursor: pointer;
-	text-decoration: underline;
+	/*text-decoration: underline;*/
 }
 .solution-left-panel .solution-title h1 {
 	color: #ffffff;
