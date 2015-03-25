@@ -10,11 +10,17 @@ use app\models\Searchtag;
 use app\models\Solutiontag;
 use \app\extensions\helper\User as UserHelper;
 use \app\extensions\mailers\UserMailer;
+use \app\extensions\mailers\SolutionsMailer;
 use \lithium\analysis\Logger;
 
 class SolutionsController extends \app\controllers\AppController {
 
-    public $publicActions = array('like', 'unlike', 'logosale', 'search_logo');
+    public $publicActions = array('like', 'unlike', 'logosale', 'search_logo', 'testmail');
+
+    public function testmail() {
+        SolutionsMailer::sendSolutionBoughtNotification(139860);
+        die();
+    }
 
     public function hide() {
         $result = $this->request;

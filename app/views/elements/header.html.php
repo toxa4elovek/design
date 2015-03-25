@@ -101,7 +101,12 @@
                                     <?php endif;?>
                                     <?php if(($mypitch->status == 1) && ($mypitch->billed == 1) &&  ($mypitch->awarded != 0)):
                                         $types['finish'] += 1?>
+                                        <?php if(($mypitch->blank == 1) && ($mypitch->confirmed == 0)):?>
+                                        <span style="text-transform: uppercase; font-size: 11px;color:#639F6D;padding-left: 14px;" >Ожидание подтверждения</span><br>
+                                        <span style="text-transform: uppercase; font-size: 11px;color:#639F6D;padding-left: 14px;" class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span>
+                                        <?php else:?>
                                         <a class="pitches-finish" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
+                                        <?php endif?>
                                     <?php endif?>
                                     <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0)):
                                         $types['winner'] += 1?>
@@ -168,6 +173,11 @@
                         endif;
                     ?>
                     <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
+                        <td width="105" style="text-align: left; border: 0;">
+                            <?php if($mypitch->category_id != 7 &&($mypitch->status == 1) && ($mypitch->awarded != 0)):?>
+                                <img data="<?= $mypitch->category_id ?>" class="pitches-image" src="<?php echo isset($mypitch->winner->images['solution_tutdesign'][0]) ? $mypitch->winner->images['solution_tutdesign'][0]['weburl'] :$mypitch->winner->images['solution_tutdesign']['weburl']?>">
+                            <?php endif?>
+                        </td>
                         <td class="pitches-name">
                             <div style="background-image: none; padding: 15px 0 17px 40px;">
                                 <?php if($mypitch->awarded != 0):
@@ -183,9 +193,16 @@
                                 <?php endif?>
                                 <!--span><?=$mypitch->industry?></span-->
                             </div></td>
+                        <?php if($mypitch->blank != 1 ):?>
                         <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                         <td class="idea"><?=$mypitch->ideas_count?></td>
                         <td class="pitches-time"><a style="color:#639F6D" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Победа!<br/> Завершите питч!</a></td>
+                        <?php else: ?>
+                        <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
+                            <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="#">Подтвердить &nbsp;&nbsp;<span class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span></a><br><br>
+                            <a style="font-size: 11px;color:#666666;background: url(/img/header/header_cross.png) 0 2px no-repeat;padding-left: 14px;" href="#">Отказать</a>
+                        </td>
+                        <?php endif ?>
                         <td class="price"><?=$this->moneyFormatter->formatMoney($mypitch->price)?></td></tr>
                         <?php
                         $i++;

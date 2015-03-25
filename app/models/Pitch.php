@@ -29,6 +29,7 @@ use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\PdfGetter;
+use app\extensions\mailers\SolutionsMailer;
 
 class Pitch extends \app\models\AppModel {
 
@@ -1488,6 +1489,33 @@ class Pitch extends \app\models\AppModel {
         } else {
             return false;
         }
+    }
+
+    public static function activateLogoSalePitch($pitchId) {
+        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+            if($pitch->awarded == 0) {
+                return false;
+            }else {
+                if($originalSolution = Solution::first($pitch->awarded)) {
+                    $copyId = Solution::copy($pitch->id, $originalSolution->id);
+                    Solution::awardCopy($copyId);
+                    $originalPitch = Pitch::first($originalSolution->pitch_id);
+                    $pitch->awarded = $copyId;
+                    $pitch->billed = 1;
+                    $pitch->published = 1;
+                    $pitch->status = 1;
+                    $pitch->confirmed = 0;
+                    $pitch->title = $originalPitch->title;
+                    $pitch->started = date('Y-m-d H:i:s');
+                    $pitch->finishDate = date('Y-m-d H:i:s', time() + 10 * DAY);
+                    $pitch->save();
+                    //SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
     }
 
     public static function getCountBilledMultiwinner($pitchId) {

@@ -15,11 +15,12 @@ class PaymentsController extends \app\controllers\AppController {
      *
      */
     public function payture_callback() {
-        Payture::ping();
+        $result = Pitch::activateLogoSalePitch(102936);
+        var_dump($result);
         if (!empty($this->request->data)) {
             Logger::write('info', serialize($this->request->data), array('name' => 'payture'));
         }
-        header("HTTP/1.0 200 OK");
+        //header("HTTP/1.0 200 OK");
         die();
     }
 

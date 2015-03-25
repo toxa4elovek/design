@@ -19,14 +19,21 @@ class SolutionsMailerTest extends  AppUnit {
         $html = SolutionsMailer::sendNewSolutionNotification(1);
         $this->assertPattern("/ДОБАВЛЕНО НОВОЕ РЕШЕНИЕ/", $html);
         $this->assertPattern("/ДМИТРИЙ/", $html);
-        $this->assertPattern("/Test title/", $html);
+        $this->assertPattern("/TEST TITLE/", $html);
     }
 
     public function testSendVictoryNotification() {
         $html = SolutionsMailer::sendVictoryNotification(1);
         $this->assertPattern("/ВАШЕ РЕШЕНИЕ СТАЛО ПОБЕДИТЕЛЕМ!/", $html);
         $this->assertPattern("/АЛЕКСЕЙ/", $html);
-        $this->assertPattern("/Test title/", $html);
+        $this->assertPattern("/TEST TITLE/", $html);
+        $this->assertPattern("/#5/", $html);
+    }
+
+    public function testSendSolutionBoughtNotification() {
+        $html = SolutionsMailer::sendSolutionBoughtNotification(1);
+        $this->assertPattern("/Ваше решение/", $html);
+        $this->assertPattern("/Проверка названия/", $html);
         $this->assertPattern("/#5/", $html);
     }
 

@@ -189,7 +189,6 @@
     <?php if(($this->user->getId()) && ($this->user->isAdmin())): ?>
     <div class="logosale">
         <div class="logosale_content">
-            <h3>Купи лого за 9500 р.-</h3>
             <p><span class="highlight">17625</span> отборных логотипов<br> из завершенных проектов в распродаже</p>
             <div class="logosale_search-block">
                 <form id="logosale_form" method="get" action="/logosale">

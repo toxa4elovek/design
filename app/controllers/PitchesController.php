@@ -1072,6 +1072,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if ($this->request->env('HTTP_X_REQUESTED_WITH')) {
                 $solution->views = Solution::increaseView($this->request->id);
             }
+            if((isset($this->request->query['exp'])) && ($this->request->query['exp'] == 1)) {
+                $userHelper = new UserHelper(array());
+                if ($userHelper->isLoggedIn()) {
+                    Solution::addBlankPitchForLogosale($userHelper->getId(), $solution->id);
+                }
+            }
             $solution->tags = Solution::getTagsArrayForSolution($solution);
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getSolutionsSortingOrder($this->request->query);

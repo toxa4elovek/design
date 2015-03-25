@@ -116,14 +116,14 @@
 .new_more:hover {color: #666666}
 .logosale {
     display: block;
-    background-image: url(/img/main/logosale_bg.gif);
+    background-image: url(/img/main/logosale_bg.png);
     background-size: 958px 360px;
     width: 958px;
     height: 360px;
     margin-bottom: 34px;
 }
 .logosale_content {
-    padding-top: 80px;
+    padding-top: 100px;
     margin-left: 72px;
 }
 .logosale_content h3 {

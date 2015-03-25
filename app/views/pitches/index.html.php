@@ -18,7 +18,7 @@
                 </td></tr></table>
                 <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:25px;width: 617px;height:347px;background-color: white;z-index:10;position:absolute;">
                     <ul class="filterlist" style="float:left;width:105px;margin-left:25px;text-transform: none">
-                        <li class="first">питчи</li>
+                        <li class="first">проекты</li>
                         <li style="width:85px"><a data-group="type" data-value="all" href="#">все</a></li>
                         <!--li><a href="#">по новизне</a></li-->
                         <li style="width:85px"><a data-group="type" data-value="current" href="#">текущие</a></li>
@@ -119,7 +119,7 @@
 
                         if(($pitch['private'] == 1) && ($pitch['expert'] == 0)){
                                     $rowClass .= ' close';
-                                    $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-4.png" title="Закрытый питч." alt="Закрытый питч.">';
+                                    $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-4.png" title="Закрытый проект." alt="Закрытый проект.">';
                                 }
                         if(($pitch['private'] == 0) && ($pitch['expert'] == 1)){
                                     $rowClass .= ' expert';
@@ -128,7 +128,7 @@
                                 }
                         if(($pitch['private'] == 1) && ($pitch['expert'] == 1)){
                                     $rowClass .= ' close-and-expert';
-                                    $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-3.png" title="Закрытый питч. Важно мнение эксперта." alt="Закрытый питч. Важно мнение эксперта.">';
+                                    $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-3.png" title="Закрытый проект. Важно мнение эксперта." alt="Закрытый проект. Важно мнение эксперта.">';
                                 }
                         if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] != 1)) {
                             $timeleft = '<a href="/pitches/edit/' . $pitch['id'] . '#step3">Ожидание оплаты</a>';
@@ -145,9 +145,9 @@
                         $timeleft = 'Выбор победителя';
                     } else if (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))) {
                         $rowClass .= ' pitch-end';
-                        $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Питч завершён, победитель выбран" alt="Закрытый питч. Важно мнение эксперта.">';
+                        $icons .= '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Проект завершён, победитель выбран" alt="Закрытый проект. Важно мнение эксперта.">';
                         if ($pitch['status'] == 2) {
-                            $timeleft = 'Питч завершен';
+                            $timeleft = 'Проект завершен';
                         }else if(($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
                             $timeleft = 'Победитель выбран';
                         }else if(($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
@@ -172,7 +172,7 @@
                     }
 
                     if($pitch['private'] == 1) {
-                            $pitch['editedDescription'] = 'Это закрытый питч и вам нужно подписать соглашение о неразглашении.';
+                            $pitch['editedDescription'] = 'Это закрытый проект и вам нужно подписать соглашение о неразглашении.';
                         }
                     $shortIndustry = $pitch['industry'];
                     $shortIndustry = (iconv('UTF-8', 'Windows-1251', $shortIndustry));
@@ -211,7 +211,7 @@
                         '<tr class="pitch-collapsed">' .
                         '<td class="icons"></td>' .
                         '<td colspan="3" class="al-info-pitch"><p>' . $pitch['editedDescription'] .
-                        '</p><a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="go-pitch">Перейти к питчу</a>' .
+                        '</p><a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="go-pitch">Перейти к проекту</a>' .
                         '</td>' .
                         '<td></td>' .
                         '<td></td>' .
@@ -291,15 +291,15 @@
 				</div>
 				<ul class="icons-infomation">
 					<li class="icons-infomation-one supplement3"><a href="/answers/view/66" target="_blank">Мнение экспертов</a><br> важно для этого клиента</li>
-					<li class="icons-infomation-two supplement3"><a href="/answers/view/64" target="_blank">Закрытый питч</a></li>
+					<li class="icons-infomation-two supplement3"><a href="/answers/view/64" target="_blank">Закрытый проект</a></li>
 					<li class="icons-infomation-three supplement3">Идеи больше не принимаются, идет выбор победителя</li>
-					<li class="icons-infomation-four supplement3">Питч завершен,<br> победитель выбран</li>
+					<li class="icons-infomation-four supplement3">Проект завершен,<br> победитель выбран</li>
 				</ul>
 				<div style="margin-top:70px;height:40px;background: url('/img/guarantee2.png') no-repeat scroll 0 0 transparent" class="you-profile supplement3">
-                    <a href="/answers/view/80" target="_blank">Гарантированный питч</a>,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
+                    <a href="/answers/view/80" target="_blank">Гарантированный проект</a>,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
 				</div>
                 <div style="margin-top:20px;height:40px;margin-right: 128px;" class="you-profile supplement3">
-                    Хотите узнать о добавлении новых питчей?<br>Измените <a href="/users/profile">настройки своего профиля</a>
+                    Хотите узнать о добавлении новых проектов?<br>Измените <a href="/users/profile">настройки своего профиля</a>
                 </div>
 			</div>
 			<div class="no-result">
@@ -317,7 +317,7 @@
 </div><!-- .wrapper -->
 
 <div id="popup-final-step" class="popup-final-step" style="display:none">
-    <h3>Вы уверены, что хотите удалить этот питч?</h3>
+    <h3>Вы уверены, что хотите удалить этот проект?</h3>
     <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить свое решение. Нажав "Да, одобряю", вы подтверждаете, что хотите удалить его из списка. Убедитесь, что это черновой вариант и не ждет поступления оплаты на наш счет. За справкой <a href="/pages/contacts">обратитесь к нам</a>.</p>
     <div class="final-step-nav wrapper" style="margin-top: 180px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="confirmDelete" value="Да, одобряю"></div>
 </div>

@@ -421,11 +421,21 @@ $(document).ready(function () {
     }
 
     // Countdown
-    $("#countdown").countdown({
-        date: $("#countdown").data('deadline'), // Change this to your desired date to countdown to
-        format: "on",
-        showEmptyDays: 'off'
-    });
+    if($("#countdown").length > 0) {
+        $("#countdown").countdown({
+            date: $("#countdown").data('deadline'), // Change this to your desired date to countdown to
+            format: "on",
+            showEmptyDays: 'off'
+        });
+    }
+
+    if($(".countdown").length > 0) {
+        $(".countdown").countdownheader({
+            format: "on",
+            showEmptyDays: 'off'
+        });
+    }
+
     $('#changeEmail').validate({
         errorPlacement: function (error, element) {
             if ($('input[name="email"]').val() && $('input[name="confirmEmail"]').val()) {
@@ -1611,15 +1621,15 @@ function getParameterByName(name) {
 // Countdown
 (function (e) {
     e.fn.countdown = function (t, n) {
-        function i() {
-            eventDate = r.date;
-            currentDate = Math.floor(e.now() / 1e3);
-            seconds = eventDate - currentDate;
-            days = Math.floor(seconds / 86400);
+        function io() {
+            var eventDate = r.date;
+            var currentDate = Math.floor(e.now() / 1e3);
+            var seconds = eventDate - currentDate;
+            var days = Math.floor(seconds / 86400);
             seconds -= days * 60 * 60 * 24;
-            hours = Math.floor(seconds / 3600);
+            var hours = Math.floor(seconds / 3600);
             seconds -= hours * 60 * 60;
-            minutes = Math.floor(seconds / 60);
+            var minutes = Math.floor(seconds / 60);
             seconds -= minutes * 60;
             thisEl.find(".timeRefDays").text("дн");
             thisEl.find(".timeRefHours").text(":");
@@ -1655,19 +1665,67 @@ function getParameterByName(name) {
                 thisEl.find(".minutes").text(minutes);
                 thisEl.find(".seconds").text(seconds)
             } else {
-                //alert("Invalid date. Example: 30 Tuesday 2013 15:50:00");
-                //clearInterval(interval)
+
             }
             thisEl.css({opacity: 1});
         }
-        thisEl = e(this);
+        var thisEl = e(this);
         var r = {
             date: null,
             format: null
         };
         t && e.extend(r, t);
         //i();
-        interval = setInterval(i, 1e3)
+        var interval = setInterval(io, 1e3);
+    }
+})(jQuery);
+
+// Countdown
+(function (e) {
+    e.fn.countdownheader = function (t, n) {
+        function i() {
+            var eventDate = thisEl.data('deadline')
+            var currentDate = Math.floor(e.now() / 1e3);
+            var seconds = eventDate - currentDate;
+            var days = Math.floor(seconds / 86400);
+            seconds -= days * 60 * 60 * 24;
+            var hours = Math.floor(seconds / 3600);
+            seconds -= hours * 60 * 60;
+            var minutes = Math.floor(seconds / 60);
+            seconds -= minutes * 60;
+            if (eventDate <= currentDate) {
+                days = 0;
+                hours = 0;
+                minutes = 0;
+                seconds = 0;
+                clearInterval(interval_header)
+            }
+            if (r["format"] == "on") {
+                //days = String(days).length >= 2 ? days : "0" + days;
+                hours = String(hours).length >= 2 ? hours : "0" + hours;
+                minutes = String(minutes).length >= 2 ? minutes : "0" + minutes;
+                seconds = String(seconds).length >= 2 ? seconds : "0" + seconds
+            }
+            if ((r['showEmptyDays'] != 'on') && ((days == '0') || (days == '00'))) {
+                days = '';
+            }else {
+                days = String(days) + ' дн.';
+            }
+            if (!isNaN(eventDate)) {
+                var string = days + ' ' + hours + ':' + minutes + ':' + seconds
+                thisEl.text(string);
+            } else {
+            }
+            thisEl.css({opacity: 1});
+        }
+        var thisEl = e(this);
+        var r = {
+            date: null,
+            format: null
+        };
+        t && e.extend(r, t);
+        //i();
+        var interval_header = setInterval(i, 1e3);
     }
 })(jQuery);
 
