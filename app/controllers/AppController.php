@@ -47,7 +47,15 @@ class AppController extends \lithium\action\Controller {
             $topPanel = Pitch::all(array(
                 'with' => array('Category'),
                 'conditions' => array(
-                    'Pitch.user_id' => Session::read('user.id'), 'Pitch.blank' => 0, 'Pitch.status' => array('<' => 2)),
+                    'Pitch.user_id' => Session::read('user.id'),
+                    'OR' => array(
+                        array('Pitch.blank' => 0,
+                            'Pitch.status' => array('<' => 2)),
+                        array('Pitch.blank' => 1,
+                            'Pitch.billed' => 1,
+                            'Pitch.status' => array('<' => 2)),
+                    )
+                ),
 
             ));
             foreach($topPanel as $pitch):
