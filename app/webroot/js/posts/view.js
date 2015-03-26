@@ -50,6 +50,9 @@ $(document).ready(function() {
         var page = parseInt(pageObject.text());
         if (page > 1) {
             pageObject.text(page - 1);
+        }else {
+            fotorama.show('>>');
+            pageObject.text(fotorama.size);
         }
     });
     $('.fotorama__arr--next').click(function() {
@@ -59,6 +62,9 @@ $(document).ready(function() {
         var page = parseInt(pageObject.text());
         if (page < fotorama.size) {
             pageObject.text(page + 1);
+        }else {
+            fotorama.show('0');
+            pageObject.text(1);
         }
     });
 
