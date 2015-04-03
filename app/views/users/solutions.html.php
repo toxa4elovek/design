@@ -18,6 +18,19 @@
                     <ul class="list_portfolio">
                         <?php foreach($solutions as $solution):                    ?>
                         <li>
+                            <div class="selecting_numb">
+                                <?php if(($filterType != 'nominating') && ($this->user->isSolutionAuthor($solution->user_id))):?>
+                                    <?php if(($solution->pitch->private != 1) && ($solution->pitch->category_id != 7)):?>
+                                        <input type="checkbox" <?php if($solution->selected):?>checked="checked"<?php endif?> class="select_checkbox" data-id="<?=$solution->id?>" style="margin-right: 5px;">
+                                    <?php endif; ?>
+                                <?php endif;?>
+                                <div style="
+                                <?php if(($solution->pitch->private != 1) && ($solution->pitch->category_id != 7)):?>
+                                    padding-left: 20px; <?php endif?>  width: 175px;">
+                                    <span class="number_img_new">#<?=$solution->num?></span>
+                                    <?=$this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false, 'style' => 'width: 147px;display: inline-block'))?>
+                                </div>
+                            </div>
                             <div class="photo_block">
                                 <?php if($solution->pitch->category_id == 7):?>
                                     <a href="/pitches/viewsolution/<?=$solution->id?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
@@ -40,16 +53,28 @@
                                     <!--span class="bottom_arrow"><a href="#"><img src="/img/marker5_2.png" alt=""></a></span-->
                             </div>
                             </div>
-                            <div class="selecting_numb">
-                                <?php if(($filterType != 'nominating') && ($this->user->isSolutionAuthor($solution->user_id))):?>
-                                    <?php if(($solution->pitch->private != 1) && ($solution->pitch->category_id != 7)):?>
-                                        <input type="checkbox" <?php if($solution->selected):?>checked="checked"<?php endif?> class="select_checkbox" data-id="<?=$solution->id?>" style="margin-right: 5px;">
-                                    <?php endif; ?>
-                                <?php endif;?>
-                                <div style="padding-left: 20px; width: 175px;">
-                                    <span class="number_img">#<?=$solution->num?></span>
-                                    <?=$this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false))?>
-                                </div>
+                            <div style="padding-top: 16px;">
+                                <form class="tag_submit" data-solutionid="<?= $solution->id ?>">
+                                    <input type="text" name="tag" style="
+                                        width: 180px;
+                                        margin-bottom: 15px;
+                                        height: 30px;
+                                    <?php if(count($solution->tags) > 4):?>
+                                        display: none;
+                                    <?php endif?>
+                                        ">
+                                </form>
+                                <ul class="tags" data-solutionid="<?= $solution->id ?>">
+                                    <?php
+                                    if(is_array($solution->tags)):
+                                    foreach($solution->tags as $tag):?>
+                                        <li style="padding-left: 10px; padding-right: 10px; margin-right:6px; height: 21px; padding-top: 5px; margin-bottom:3px;"><?= $tag?>
+                                            <a class="removeTag" href="#" style="margin-left: 10px;">
+                                                <img src="/img/delete-tag.png" alt="" style="padding-top: 2px;">
+                                            </a>
+                                        </li>
+                                    <?php endforeach;endif;?>
+                                </ul>
                             </div>
                         </li>
                         <?php endforeach;?>
@@ -78,5 +103,5 @@
 
 
 
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js', 'users/preview.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>

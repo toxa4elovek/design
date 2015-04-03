@@ -1496,4 +1496,23 @@ Disallow: /pitches/upload/' . $pitch['id'];
         }
     }
 
+    public function accept() {
+        if(Pitch::acceptLogosalePitch($this->request->id, Session::read('user.id'))) {
+            $logosalePitch = Pitch::first($this->request->id);
+            $this->request('/users/step2/' . $logosalePitch->awarded);
+        }else {
+            $this->redirect('/');
+        }
+    }
+
+    public function decline() {
+        $result = Pitch::declineLogosalePitch($this->request->id, Session::read('user.id'));
+        if(!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+            return compact('result');
+        }else {
+            $this->redirect('/');
+        }
+
+    }
+
 }

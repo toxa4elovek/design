@@ -19,16 +19,16 @@
 .portfolio ul.list_portfolio{
 	list-style-type:none;
 	margin-left:-13px;}
-.portfolio ul.list_portfolio li{
+.portfolio ul.list_portfolio > li{
 	width:197px;
-	margin-left:13px;
+	margin-left:12px;
 	vertical-align:top;
 	margin-top:12px;
 	margin-bottom:5px;}
 .portfolio ul.list_portfolio li a{
 	text-decoration:none;
-	color:#b9b9b9;
-	font-weight:bold;
+	color:#666666;
+	font-family: OfficinaSansC Bold, serif;
 	font-size:13px;}
 .portfolio ul.list_portfolio li a:hover{
 	color:#666666;}
@@ -85,6 +85,11 @@
 	float:right;
 	font-weight:bold;
 	font-size:13px;}
+.portfolio .number_img_new{
+    float:right;
+    color: #666666;
+    font-family: OfficinaSansC Bold, serif;
+    font-size:13px;}
 .portfolio .link_block{
 	display:block;
 	text-align:center;

@@ -145,6 +145,7 @@ $(function(){
 
     $('a', '.logosale_search-block').click(function() {
         $('#logosale_form').submit();
+        return false;
     });
 });
 

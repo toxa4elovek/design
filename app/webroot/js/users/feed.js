@@ -904,7 +904,7 @@ function OfficeStatusUpdater() {
                 self.autoupdate();
             }
         });
-        $(document).everyTime(7000, function (i) {
+        $(document).everyTime(120000, function (i) {
             if (self.started) {
                 self.autolikes();
             }

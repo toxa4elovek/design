@@ -87,7 +87,7 @@
                     <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
                 </section>
 
-                <?php if(((strtotime($pitch->started) > strtotime('2013-01-31'))) && ($pitch->published == 1)):?>
+                <?php if(((strtotime($pitch->started) > strtotime('2013-01-31'))) && ($pitch->published == 1) && ($pitch->id != 103263)):?>
                 <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
                 <div style="display:none;" id="floatingblock" class="floatingblock">
                     <table style="width:500px;float:left">
@@ -143,7 +143,7 @@
                 </div>
                 <?php endif?>
                 <!-- Solution Popup Dummy --><?=$this->view()->render(array('element' => 'popups/solution'), array('pitch' => $pitch))?>
-                <?php if($this->user->isPitchOwner($pitch->user_id)):?>
+                <?php if(($this->user->isPitchOwner($pitch->user_id)) && ($pitch->id != 103263)):?>
                 <!-- Rating Pancake -->
                 <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
                     <div class="bubble">

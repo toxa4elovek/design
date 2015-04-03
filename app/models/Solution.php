@@ -125,7 +125,7 @@ http://godesigner.ru/answers/view/73');
                             ),
                         );
                         $context  = stream_context_create($options);
-                        $result = file_get_contents($url, false, $context);
+                        //$result = file_get_contents($url, false, $context);
                     }
                 } catch(Exception $e) {
 
@@ -501,7 +501,7 @@ http://godesigner.ru/answers/view/73');
     public static function addBlankPitchForLogosale($user_id, $solution_id) {
         $result = array();
         $fee = 3500; $award = 6000; $total = $fee + $award;
-        $pitch = Pitch::first(array('conditions' => array('blank' => 1, 'user_id' => $user_id)));
+        $pitch = Pitch::first(array('conditions' => array('blank' => 1, 'user_id' => $user_id, 'billed' => 0)));
         if ($pitch) {
             $pitch->awarded = $solution_id;
             $pitch->save();
@@ -541,7 +541,7 @@ http://godesigner.ru/answers/view/73');
         return $result;
     }
 
-    public function getTagsArrayForSolution($solution) {
+    public static function getTagsArrayForSolution($solution) {
         $cacheKey = 'tags_for_solutions_' . $solution->id;
         if(!$temp_tags = Rcache::read($cacheKey)) {
             $temp_tags = array();
@@ -669,7 +669,7 @@ http://godesigner.ru/answers/view/73');
             )),
             'Solution.multiwinner' => 0,
             'Solution.awarded' => 0,
-            'Pitch.awarded' => array('>' => date('Y-m-d H:i:s', time() - MONTH)),
+            'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
             'Pitch.status' => array('>' => 0),
             'Pitch.private' => 0,
             'Pitch.category_id' => 1,
@@ -706,7 +706,7 @@ http://godesigner.ru/answers/view/73');
                 array(
                     'Solution.multiwinner' => 0,
                     'Solution.awarded' => 0,
-                    'Pitch.awarded' => array('>' => date('Y-m-d H:i:s', time() - MONTH)),
+                    'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
                     'Pitch.status' => array('>' => 0),
                     'private' => 0,
                     'category_id' => 1,

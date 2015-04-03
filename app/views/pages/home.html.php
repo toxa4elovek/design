@@ -312,7 +312,7 @@
   </div>
 </div><!-- .wrapper -->
 
-<div id="popup-final-step" class="popup-final-step" style="display:none">
+<div id="popup-final-step" class="popup-final-step" style="display:none; padding-left: 0px; height: 390px;">
     <div id="ytplayer"></div>
     <script>
         var tag = document.createElement('script');

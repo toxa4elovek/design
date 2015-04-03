@@ -68,6 +68,23 @@ class Tag extends \app\models\AppModel {
         return $solutionTag;
     }
 
+    public static function removeTag($string, $solutionId) {
+        if (!Tag::isTagExists($string)) {
+            Tag::saveTag($string);
+        }
+        if(Solutiontag::remove(array('tag_id' => array(
+            'tag_id' => Tag::getTagId($string),
+            'solution_id' => $solutionId
+        )))) {
+            $cacheKey = 'tags_for_solutions_' . $solutionId;
+            Rcache::delete($cacheKey);
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
     /**
      * Метод проверяет, существует ли в базе тегов аргумент
      *

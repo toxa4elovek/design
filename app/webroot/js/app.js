@@ -499,6 +499,41 @@ $(document).ready(function () {
 //            }
 //        }
 //    });
+    $(document).on('click', '.popup-decline', function() {
+        $('#popup-title').text('«' + $(this).data('title') + '»');
+        $('#popup-title').attr('href', '/pitches/view/' + $(this).data('pitchid'));
+        $('#popup-num').text('#' + $(this).data('solutionnum'));
+        $('#popup-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+        $('#popip-active-id').val($(this).data('pitchid'));
+        $('#popup-decline-warning').modal({
+            containerId: 'spinner',
+            opacity: 80,
+            closeClass: 'mobile-close'
+        });
+        return false;
+    })
+
+    $('.accept-confirm').on('click', function() {
+        $('.mobile-close').click();
+        $.get('/pitches/decline.json', function(response) {
+        });
+        var id = $('#popip-active-id').val();
+        $('tr[data-id="' + id + '"]', '#pitch-panel').hide();
+        if($('tr:visible', '#pitch-panel').length == 0) {
+            $('#pitch-panel').hide();
+        }
+        if(window.location.href.indexOf("users/step2") > -1) {
+            window.location.href = 'http://www.godesigner.ru/users/mypitches';
+        }
+        $('.mobile-close').click();
+        return false;
+    })
+
+    $('.change-mind').on('click', function() {
+        $('.mobile-close').click();
+        return false;
+    })
+
 });
 
 window.fbAsyncInit = function () {

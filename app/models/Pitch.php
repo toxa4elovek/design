@@ -1070,8 +1070,8 @@ class Pitch extends \app\models\AppModel {
         $avgArray = $this->calcAvg($ratingArray, $moneyArray, $commentArray);
         $avgNum = (empty($avgArray)) ? 0 : round(array_sum($avgArray) / count($avgArray), 1);
         $guaranteed = $pitch->guaranteed;
-
-        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'commentsNum');
+        $firstSolutionTime = $pitch->firstSolutionTime;
+        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'commentsNum', 'firstSolutionTime');
     }
 
     /**
@@ -1109,7 +1109,7 @@ class Pitch extends \app\models\AppModel {
     private function __getFirstSolutionTime($pitch) {
         $cacheKey = 'calc_firstSolutionTime_' . $pitch->id;
         $time = null;
-        if(!$time = Rcache::read($cacheKey)) {
+        //if(!$time = Rcache::read($cacheKey)) {
             $pitch->firstSolution = Historysolution::first(array(
                 'conditions' => array(
                     'pitch_id' => $pitch->id),
@@ -1118,9 +1118,9 @@ class Pitch extends \app\models\AppModel {
             ));
             if ($pitch->firstSolution) {
                 $time = strtotime($pitch->firstSolution->created);
-                Rcache::write($cacheKey, $time);
+        //        Rcache::write($cacheKey, $time);
             }
-        }
+        //}
         return $time;
     }
 
@@ -1517,6 +1517,40 @@ class Pitch extends \app\models\AppModel {
         }
         return false;
     }
+
+    public static function declineLogosalePitch($pitchId, $designerId) {
+        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+            $solutionCopy = Solution::first($pitch->awarded);
+            if($designerId == $solutionCopy->user_id) {
+                $pitch->awarded = 0;
+                $pitch->billed = 0;
+                $pitch->published = 0;
+                $pitch->status = 0;
+                $pitch->confirmed = 0;
+                $pitch->title = 'Logosale Pitch';
+                $pitch->started = '0000-00-00 00:00:00';
+                $pitch->finishDate = '0000-00-00 00:00:00';
+                $pitch->save();
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
+
+    public static function acceptLogosalePitch($pitchId, $designerId) {
+        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+            $solutionCopy = Solution::first($pitch->awarded);
+            if ($designerId == $solutionCopy->user_id) {
+                $pitch->confirmed = 1;
+                $pitch->save();
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
+
 
     public static function getCountBilledMultiwinner($pitchId) {
         if ($pitch = self::first($pitchId)) {

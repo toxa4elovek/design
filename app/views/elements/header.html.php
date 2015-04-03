@@ -65,9 +65,9 @@
                                 $fast_url = 'http://www.godesigner.ru/pitches/edit/'. $mypitch->id;
                             }
                             
-                            /*if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
+                            if(($mypitch->blank == 1) && ($mypitch->billed == 0)):
                                 continue;
-                            endif;*/
+                            endif;
                             ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
 							<td>
@@ -199,8 +199,8 @@
                         <td class="pitches-time"><a style="color:#639F6D" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Победа!<br/> Завершите питч!</a></td>
                         <?php else: ?>
                         <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
-                            <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="#">Подтвердить &nbsp;&nbsp;<span class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span></a><br><br>
-                            <a style="font-size: 11px;color:#666666;background: url(/img/header/header_cross.png) 0 2px no-repeat;padding-left: 14px;" href="#">Отказать</a>
+                            <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="/pitches/accept/<?=$mypitch->id?>">Подтвердить &nbsp;&nbsp;<span class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span></a><br><br>
+                            <a style="font-size: 11px;color:#666666;background: url(/img/header/header_cross.png) 0 2px no-repeat;padding-left: 14px;" class="popup-decline" data-title="<?=$mypitch->title?>" data-solutionid="<?=$mypitch->awarded?>" data-solutionnum="<?=$mypitch->winner->num?>" data-pitchid="<?=$mypitch->id?>" href="/pitches/decline/<?=$mypitch->id?>">Отказать</a>
                         </td>
                         <?php endif ?>
                         <td class="price"><?=$this->moneyFormatter->formatMoney($mypitch->price)?></td></tr>
@@ -260,9 +260,10 @@
             <ul class="header-menu">
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/news">Лента</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/mypitches">Мои проекты</a></li>
-                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/profile">Профиль</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/profile">Настройки</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/preview/<?=$this->user->getId()?>">Профиль</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/solutions">Решения</a></li>
-                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/details">Реквизиты</a></li>
+                <!--li class="header-menu-item"><a href="http://www.godesigner.ru/users/details">Реквизиты</a></li-->
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/questions">Тест</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/referal">Пригласи друга</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/logout">Выйти</a></li>

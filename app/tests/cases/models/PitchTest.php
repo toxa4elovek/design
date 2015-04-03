@@ -374,6 +374,37 @@ class PitchTest extends AppUnit {
     }
 
     public function testDeclineLogosalePitch() {
+        $data = Solution::addBlankPitchForLogosale(2, 0);
+        $id = $data['pitch_id'];
+        $this->assertEqual(8, $id);
+        $logosalePitch = Pitch::first($id);
+        $logosalePitch->awarded = 3;
+        $logosalePitch->save();
+        $this->assertTrue(Pitch::activateLogoSalePitch($id));
+        $this->assertFalse(Pitch::declineLogosalePitch($id, 1));
+        $this->assertTrue(Pitch::declineLogosalePitch($id, 2));
+        $logosalePitch = Pitch::first($id);
+        $this->assertEqual(0, $logosalePitch->awarded);
+        $this->assertEqual(0, $logosalePitch->billed);
+        $this->assertEqual(0, $logosalePitch->published);
+        $this->assertEqual(0, $logosalePitch->status);
+        $this->assertEqual(0, $logosalePitch->confirmed);
+        $this->assertEqual('0000-00-00 00:00:00', $logosalePitch->started);
+        $this->assertEqual('0000-00-00 00:00:00', $logosalePitch->finishDate);
+        $this->assertEqual('Logosale Pitch', $logosalePitch->title);
+    }
 
+    public function testAcceptLogosalePitch() {
+        $data = Solution::addBlankPitchForLogosale(2, 0);
+        $id = $data['pitch_id'];
+        $this->assertEqual(8, $id);
+        $logosalePitch = Pitch::first($id);
+        $logosalePitch->awarded = 3;
+        $logosalePitch->save();
+        $this->assertTrue(Pitch::activateLogoSalePitch($id));
+        $this->assertFalse(Pitch::acceptLogosalePitch($id, 1));
+        $this->assertTrue(Pitch::acceptLogosalePitch($id, 2));
+        $logosalePitch = Pitch::first($id);
+        $this->assertEqual(1, $logosalePitch->confirmed);
     }
 }

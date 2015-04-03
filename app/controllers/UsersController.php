@@ -1120,6 +1120,9 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function preview() {
+        if($this->request->id != Session::read('user.id')) {
+            $this->redirect('/users/view/' . $this->request->id);
+        }
         if ($user = User::first(Session::read('user.id'))) {
             $pitchCount = User::getPitchCount(Session::read('user.id'));
             $averageGrade = User::getAverageGrade(Session::read('user.id'));
@@ -1133,9 +1136,12 @@ class UsersController extends \app\controllers\AppController {
             $awardedSolutionNum = (int) User::getAwardedSolutionNum(Session::read('user.id'));
             $totalSolutionNum = (int) User::getTotalSolutionNum(Session::read('user.id'));
             if (User::checkRole('admin')) {
-                $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+                $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch', 'Solutiontag')));
             } else {
-                $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+                $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch', 'Solutiontag')));
+            }
+            foreach($selectedSolutions as $solution) {
+                $solution->tags = Solution::getTagsArrayForSolution($solution);
             }
             $isClient = false;
             $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));

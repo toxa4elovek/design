@@ -84,8 +84,6 @@ jQuery(document).ready(function ($) {
             page += 1;
             var queryDict = {}
             location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]})
-            console.log(paramsSearch)
-            console.log(typeof(queryDict['search']));
             if(typeof(queryDict['search']) != "undefined") {
                 var search_list = [];
                 search_list.push(decodeURIComponent(queryDict['search']));
@@ -98,7 +96,6 @@ jQuery(document).ready(function ($) {
                 $('ul.marsh').hide();
                 $('.portfolio_gallery').css('margin-top', '40px');
             }
-            console.log(paramsSearch)
             $.post(url + page + '.json', paramsSearch, function (response) {
                 var html = '';
                 keys = [];
@@ -278,7 +275,22 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    var prev = null;
+    var next = null;
+
     $(document).on('click', '.imagecontainer', function (e) {
+        var parent = $(this).parent().parent()
+        var prevLi = parent.prev();
+        var nextLi = parent.next();
+        if(prevLi.length == 0) {
+            prevLi = $('.main_portfolio').children().last()
+            console.log(prevLi)
+        }
+        if(nextLi.length == 0) {
+            nextLi = $('.main_portfolio').children().first()
+        }
+        prev = $('.imagecontainer', prevLi).data('solutionid');
+        next = $('.imagecontainer', nextLi).data('solutionid');
         if (/designers/.test(window.location.pathname)) {
             return true;
         }
@@ -312,7 +324,7 @@ jQuery(document).ready(function ($) {
 
 
     $('#goSearch, #goSearchAplly').on('click', function () {
-        $('#adv_search').click();
+        //$('#adv_search').click();
         $('ul.marsh').hide();
         var search = $('#searchTerm');
         isBusy = false;
@@ -404,7 +416,6 @@ jQuery(document).ready(function ($) {
                     if(obj2.views < obj1.views){ return -1;}
                     return 0;
                 });
-                console.log(keys)
                 $.each(keys, function(index, solution) {
                     hash = html;
                     html = html + addSolution(solution);

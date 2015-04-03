@@ -201,7 +201,7 @@ class SolutionsController extends \app\controllers\AppController {
         $solutions = Solution::filterLogoSolutions($solutions);
         $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
 
-        if($needToAddSolution) {
+        if(($needToAddSolution) && ($params['page'] != 1)) {
             foreach($addedSolutions as $key => $addedSolution) {
                 $solutions[$key] = $addedSolution;
                 $solutions[$key]['sort'] = 1;
@@ -266,15 +266,15 @@ class SolutionsController extends \app\controllers\AppController {
                 if(count($solutions) != 30) {
                     $needToAddSolution = true;
                 }
-                if($needToAddSolution) {
-                    $params = Solution::buildStreamQuery();
+                if(($needToAddSolution) && ($page != 1)) {
+                    $params = Solution::buildStreamQuery($page);
                     $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
                 }
 
                 $solutions = Solution::filterLogoSolutions($solutions);
                 $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
 
-                if($needToAddSolution) {
+                if(($needToAddSolution) && ($page != 1)) {
                     foreach($addedSolutions as $key => $addedSolution) {
                         $solutions[$key] = $addedSolution;
                         $solutions[$key]['sort'] = 1;
@@ -288,18 +288,37 @@ class SolutionsController extends \app\controllers\AppController {
                     $totalSolutions = Solution::filterLogoSolutions($totalSolutions);
                     $totalSolutions = Solution::applyUserFilters($totalSolutions, $this->request->data['prop'], $this->request->data['variants']);
                 }
-                $totalPages = ceil(count($totalSolutions) / 4);
+                $totalPages = ceil(count($totalSolutions) / 28);
                 $filteredPage = $page - $totalPages + 1;
                 $params = Solution::buildStreamQuery($filteredPage);
+                //Solution::all($params);
                 $solutions = Solution::filterLogoSolutions(Solution::all($params));
                 $solutions = Solution::applyUserFilters($solutions);
-                foreach($solutions as $key => $solution) {
-                    $solution['sort'] = 1;
+                if($solutions) {
+                    foreach($solutions as $key => $solution) {
+                        $solution['sort'] = 1;
+                    }
                 }
             }
         }
         $total_solutions = count($solutions);
-        return compact('solutions', 'total_solutions', 'page', 'pageParams');
+        return compact('solutions', 'total_solutions', 'page', 'pageParams', 'params');
+    }
+
+    public function add_tag() {
+        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
+            $result = Tag::saveSolutionTag($this->request->data['tag'], $solution->id);
+            return compact($result);
+        }
+        return $this->request->data;
+    }
+
+    public function remove_tag() {
+        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
+            $result = Tag::removeTag($this->request->data['tag'], $solution->id);
+            return compact($result);
+        }
+        return $this->request->data;
     }
 
 }
