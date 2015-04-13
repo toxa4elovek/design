@@ -292,6 +292,10 @@
     font-family: OfficinaSansC Book, serif;
 }
 
+.center-boxes > div {
+    margin-bottom: 17px;
+}
+
 .center-boxes .box {
     margin-bottom: 17px;
     background: #fff;

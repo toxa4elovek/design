@@ -197,6 +197,9 @@
                                                 if (strtotime($newsDate) < strtotime($n->created)) {
                                                     $newsDate = $n->created;
                                                 }
+                                                if($n->title == '') {
+                                                    continue;
+                                                }
                                                 ?>
                                                 <div class="design-news"><a target="_blank" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
                                             <?php endforeach;endif; ?>
@@ -462,6 +465,19 @@
                                                     ?>
                                                 </div></div>
                                         <?php elseif ($object['type'] == 'newsAdded'):
+                                            if((preg_match('@fb-xfbml-parse-ignore@', $object['news']['short'])) || (preg_match('@vk_post@', $object['news']['short']))):
+                                                if(preg_match('@vk_post@', $object['news']['short'])) {
+                                                    $text = str_replace('{width: 500}', '{width: 600}', $object['news']['short']);
+                                                }else {
+                                                    $text = str_replace('data-width="500"', 'data-width="600"', $object['news']['short']);
+                                                    $text = str_replace('<div id="fb-root"></div>', '', $text);
+                                                }
+                                                ?>
+                                                <div data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>">
+                                                    <?php echo $text ?>
+                                                </div>
+                                            <?php
+                                            else:
                                             $isValidImage = function($url){
                                                 if(empty($url)):
                                                     return false;
@@ -561,7 +577,9 @@
                                                     ?>
                                                 </div>
                                             </div>
-                                        <?php elseif ($object['type'] == 'RatingAdded'): ?>
+                                        <?php
+                                            endif;
+                                        elseif ($object['type'] == 'RatingAdded'): ?>
                                             <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <img class="avatar" src="<?= $avatar ?>">

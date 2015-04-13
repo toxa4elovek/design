@@ -1116,6 +1116,9 @@ function OfficeStatusUpdater() {
                                 if ($('.box[data-eventid="' + object.id + '"]').length > 0) {
                                     return
                                 }
+                                if ($('div[data-eventid="' + object.id + '"]', '.center-boxes').length > 0) {
+                                    return
+                                }
                                 if (index == 0) {
                                     self.date = object.created;
                                 }
@@ -1462,112 +1465,125 @@ function OfficeStatusUpdater() {
             },
             this.addNews = function (object) {
                 var html = '';
-                if (!object.news.tags) {
-                    var style = ' style="padding-top: 0px;"';
-                } else {
-                    var style = '';
-                }
-                var validUrl = self.isValidImage(object.news.imageurl);
-                var boxStyle = '';
-                if(!validUrl) {
-                    boxStyle = " style='margin-top: 34px'; ";
-                }
-                var img = (object.news.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' + object.news.imageurl  : object.news.imageurl;
-                html += '<div class="box" ' + boxStyle + 'data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">';
 
-                if(validUrl) {
-                    html += '<p class="img-box"> \
-                                    <a class="post-link" href="' + object.news.link + '" target="_blank" ><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
-                                </p>'
-                }
-                html +='<div class="r-content post-content"' + style + '>';
-                if (object.news.tags) {
-                    html += '<p class="img-tag">' + object.news.tags + '</p>';
-                }
+                if((object.news.short.match(/fb-xfbml-parse-ignore/g)) || (object.news.short.match(/vk_post/g))) {
+                    if((object.news.short.match(/vk_post/g))) {
+                        var text = object.news.short.replace(/width: 500/i, "width: 600");
+                    }else {
+                        var text = object.news.short.replace(/data-width="500"/i, 'data-width="600"');
+                        console.log(text);
+                        text.replace('<div id="fb-root"></div>', '');
+                    }
+                    html = '<div data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">' + text + '</div>';
+                }else{
 
-                var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
+                    if (!object.news.tags) {
+                        var style = ' style="padding-top: 0px;"';
+                    } else {
+                        var style = '';
+                    }
+                    var validUrl = self.isValidImage(object.news.imageurl);
+                    var boxStyle = '';
+                    if(!validUrl) {
+                        boxStyle = " style='margin-top: 34px'; ";
+                    }
+                    var img = (object.news.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' + object.news.imageurl  : object.news.imageurl;
+                    html += '<div class="box" ' + boxStyle + 'data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">';
 
-                html += '<a class="img-post" href="' + object.news.link + '" target="_blank"><h2>' + object.news.title + '</h2></a> \
-                                    <p class="img-short">' + object.news.short + '</p> \
-                                    <p class="timeago"> \
-                                        <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host;
-                if(object.news.original_title != '') {
-                    html += '<span style="font-size: 20px;position: relative;top: 2px;margin-left: 2px;margin-right: 2px;">·</span> переведено автоматически';
-                }
-                html += '</p>'
-                html +=                '</div>';
+                    if(validUrl) {
+                        html += '<p class="img-box"> \
+                                        <a class="post-link" href="' + object.news.link + '" target="_blank" ><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
+                                    </p>'
+                    }
+                    html +='<div class="r-content post-content"' + style + '>';
+                    if (object.news.tags) {
+                        html += '<p class="img-tag">' + object.news.tags + '</p>';
+                    }
 
-                    html += '<div class="box-info" style="margin-top: 0;">';
-                if(this_user != '') {
-                    html += '<a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>';
-                    html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
-                }
-                html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>';
-                var shareTitle = object.news.title;
-                var url = 'http://www.godesigner.ru/news?event=' + object.id;
-                if(this_user != '') {
-                    var left = '120px';
-                }else {
-                    var left = '50px';
-                }
-                html += '<div class="sharebar" style="position: absolute; display: none; top: 30px; left: ' + left + ';"> \
-                    <div class="tooltip-block"> \
-                    <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
-                    <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
-                    <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div> \
-                    <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="' + object.news.imageurl + '" data-url="' + url + '">SHARE</div>';
-                if(validUrl) {
-                    html += '<div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="' + url + '" data-media="' + object.news.imageurl + '">PIN</div>';
-                }
-                html += '</div> \
-                    </div> \
-                    </div>';
-                if(object.news.original_title != '') {
-                    html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
-                    html += '<a data-translated="true" data-original-title="' + object.news.original_title + '" data-original-short="' + object.news.original_short + '" style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Показать оригинальный текст</a>';
-                }
-                if(isAdmin) {
-                    html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
-                    html += '<a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';
-                }
-                html += '</div>';
+                    var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
 
-                html += '<div data-id="' + object.news.id + '" class="likes">';
-                var likes_count = 0;
+                    html += '<a class="img-post" href="' + object.news.link + '" target="_blank"><h2>' + object.news.title + '</h2></a> \
+                                        <p class="img-short">' + object.news.short + '</p> \
+                                        <p class="timeago"> \
+                                            <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time> с сайта ' + object.host;
+                    if(object.news.original_title != '') {
+                        html += '<span style="font-size: 20px;position: relative;top: 2px;margin-left: 2px;margin-right: 2px;">·</span> переведено автоматически';
+                    }
+                    html += '</p>'
+                    html +=                '</div>';
 
-                if (object.news.liked) {
-                    $.each(object.news.likes, function (index, like) {
-                        likes_count++;
-                        var likes = parseInt(object.news.liked);
-                        if (likes > 4) {
-                            if (likes_count == 1) {
-                                html += '<span class="who-likes">';
+                        html += '<div class="box-info" style="margin-top: 0;">';
+                    if(this_user != '') {
+                        html += '<a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="' + object.news.id + '" class="like-small-icon-box" data-userid="' + this_user + '" data-vote="' + object.allowLike + '" data-likes="' + object.news.liked + '" href="#">' + like_txt + '</a>';
+                        html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
+                    }
+                    html += '<a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>';
+                    var shareTitle = object.news.title;
+                    var url = 'http://www.godesigner.ru/news?event=' + object.id;
+                    if(this_user != '') {
+                        var left = '120px';
+                    }else {
+                        var left = '50px';
+                    }
+                    html += '<div class="sharebar" style="position: absolute; display: none; top: 30px; left: ' + left + ';"> \
+                        <div class="tooltip-block"> \
+                        <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
+                        <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
+                        <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div> \
+                        <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="' + object.news.imageurl + '" data-url="' + url + '">SHARE</div>';
+                    if(validUrl) {
+                        html += '<div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="' + url + '" data-media="' + object.news.imageurl + '">PIN</div>';
+                    }
+                    html += '</div> \
+                        </div> \
+                        </div>';
+                    if(object.news.original_title != '') {
+                        html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
+                        html += '<a data-translated="true" data-original-title="' + object.news.original_title + '" data-original-short="' + object.news.original_short + '" style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Показать оригинальный текст</a>';
+                    }
+                    if(isAdmin) {
+                        html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
+                        html += '<a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';
+                    }
+                    html += '</div>';
+
+                    html += '<div data-id="' + object.news.id + '" class="likes">';
+                    var likes_count = 0;
+
+                    if (object.news.liked) {
+                        $.each(object.news.likes, function (index, like) {
+                            likes_count++;
+                            var likes = parseInt(object.news.liked);
+                            if (likes > 4) {
+                                if (likes_count == 1) {
+                                    html += '<span class="who-likes">';
+                                }
+                                if (likes_count == 4) {
+                                    var other = likes - likes_count;
+                                    html += '<a data-id="' + like.user_id + '" target="_blank" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + '</a>' + ' и <a class="show-other-likes" data-solid="' + object.news.id + '" href="#">' + other + ' других</a> <span>лайкнули новость</span></span>';
+                                    return false;
+                                } else {
+                                    html += '<a data-id="' + like.user_id + '" target="_blank" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + ', </a>';
+                                }
+                            } else if ((likes >= 2) && (likes <= 4)) {
+                                if (likes_count == 1) {
+                                    html += '<span class="who-likes">';
+                                }
+                                if (likes_count != likes) {
+                                    html += '<a data-id="' + like.user_id + '" target="_blank" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + ', </a>';
+                                }
+                                if (likes_count == likes) {
+                                    html += '<a data-id="' + like.user_id + '" target="_blank" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + '</a>';
+                                    html += ' <span>лайкнули новость</span></span>';
+                                }
+                            } else if (likes < 2) {
+                                html += '<span class="who-likes"><a target="_blank" data-id="' + like.user_id + '" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + '</a> <span>' + self.getGenderTxt('лайкнул', like.user.gender) + ' новость</span></span>';
                             }
-                            if (likes_count == 4) {
-                                var other = likes - likes_count;
-                                html += '<a data-id="' + like.user_id + '" target="_blank" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + '</a>' + ' и <a class="show-other-likes" data-solid="' + object.news.id + '" href="#">' + other + ' других</a> <span>лайкнули новость</span></span>';
-                                return false;
-                            } else {
-                                html += '<a data-id="' + like.user_id + '" target="_blank" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + ', </a>';
-                            }
-                        } else if ((likes >= 2) && (likes <= 4)) {
-                            if (likes_count == 1) {
-                                html += '<span class="who-likes">';
-                            }
-                            if (likes_count != likes) {
-                                html += '<a data-id="' + like.user_id + '" target="_blank" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + ', </a>';
-                            }
-                            if (likes_count == likes) {
-                                html += '<a data-id="' + like.user_id + '" target="_blank" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + '</a>';
-                                html += ' <span>лайкнули новость</span></span>';
-                            }
-                        } else if (likes < 2) {
-                            html += '<span class="who-likes"><a target="_blank" data-id="' + like.user_id + '" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + '</a> <span>' + self.getGenderTxt('лайкнул', like.user.gender) + ' новость</span></span>';
-                        }
 
-                    });
-                }
+                        });
+                    }
                 html += '</div></div>';
+                }
                 return html;
             },
             this.addLikes = function(object, imageurl) {
