@@ -24,6 +24,12 @@ span.new-price {
     color: #ff585d;
     font: 14px/20px "Arial", sans-serif;
     font-weight: bold;
+    cursor: pointer;
+}
+
+span.new-price:hover {
+    text-decoration: underline;
+    color: #658fa5;
 }
 
 #filtertab {
