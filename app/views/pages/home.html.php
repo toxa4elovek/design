@@ -4,17 +4,17 @@
   <div style="clear:both"></div>
   <div id="slides">
     <div class="slides_container" style="height:300px;">
+      <div class="slide">
+      <a href="/pages/howitworks"><img src="/img/main/1.png" alt="" /></a>
+      </div>
+      <div class="slide">
+          <a href="/pages/howitworks"><img src="/img/main/2.png" alt="" /></a>
+      </div>
         <div class="slide">
-            <a href="/fastpitch"><img src="/img/main_banner_logo_one_click.png" alt="" /></a>
+            <a href="/pages/howitworks"><img src="/img/main/3.png" alt="" /></a>
         </div>
-      <div class="slide">
-      <a href="/pages/howitworks"><img src="/img/main_banner1.png" alt="" /></a>
-      </div>
-      <div class="slide">
-          <a href="/pages/howitworks"><img src="/img/main_banner2.png" alt="" /></a>
-      </div>
         <div class="slide">
-            <a href="/pages/howitworks"><img src="/img/main_banner3.png" alt="" /></a>
+            <a href="/fastpitch"><img src="/img/main/4.png" alt="" /></a>
         </div>
     </div>
     <a id="finished" href="/pitches/?type=finished" style="height:32px;width:173px;position: absolute; top: 251px; left: 79px; z-index:101;background-image:url(/img/examples_173_32_red.png)"><img src="/img/examples_173_32.png" alt="Просмотреть примеры"></a>
@@ -24,6 +24,17 @@
   </div>
 
   <div class="main_page_content">
+      <div class="take_fill_block">
+          <div class="take">
+              <?=$this->html->link('Дизайнеру', 'Pitches::index')?><br>
+              <span>предложите идею заказчику</span>
+          </div>
+          <div class="fill">
+              <?=$this->html->link('Заказчику', 'Pitches::create')?><br>
+              <span>создайте питч для дизайнеров</span>
+          </div>
+      </div>
+
     <ul class="front_catalog">
       <li>
           <?php if(count($promos) > 0):
@@ -95,16 +106,6 @@
         </div>
       </li>
     </ul>
-    <div class="take_fill_block">
-      <div class="take">
-        <?=$this->html->link('Дизайнеру', 'Pitches::index')?><br>
-        <span>предложите идею заказчику</span>
-      </div>
-      <div class="fill">
-        <?=$this->html->link('Заказчику', 'Pitches::create')?><br>
-        <span>создайте питч для дизайнеров</span>
-      </div>
-    </div>
 
     <div class="use_table">
         <div id="pitch-table" style="height:280px;">
@@ -168,7 +169,7 @@
     $expertsDB = $experts->data();
     ?>
 
-    <div class="experts-main" <?php if(!$this->user->isAdmin()):?>style="background: url(img/sep.png) no-repeat scroll 62px bottom rgba(0, 0, 0, 0); margin-bottom: 30px;"<?php endif?>>
+    <div class="experts-main">
       <ul id="experts-zone">
         <?php foreach($experts->data() as $expert): if ($expert['enabled'] == 0) continue; ?>
         <li class="expert-<?=$expert['id']?> expert_enabled" data-expert_id="<?=$expert['id']?>" style="display:none;">
@@ -186,10 +187,10 @@
       </div>
     </div>
 
-    <?php if(($this->user->getId()) && ($this->user->isAdmin())): ?>
+
     <div class="logosale">
         <div class="logosale_content">
-            <p><span class="highlight">17625</span> отборных логотипов<br> из завершенных проектов в распродаже</p>
+            <p><span class="highlight">17826</span> отборных логотипов<br> из завершенных проектов в распродаже</p>
             <div class="logosale_search-block">
                 <form id="logosale_form" method="get" action="/logosale">
                     <input type="text" name='search' placeholder="Найдите логотип по ключевому слову" class="">
@@ -198,7 +199,7 @@
             </div>
         </div>
     </div>
-    <?php endif ?>
+
         <?php
           $grade1 = $grades->first();
           $grade2 = $grades->next();

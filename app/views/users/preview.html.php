@@ -8,13 +8,7 @@
 
         <div class="middle_inner">
             <nav class="main_nav clear">
-                <?= $this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false)) ?>
-                <?= $this->html->link('<span>Мои проекты</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false)) ?>
-                <!--a href="#"><span>Сообщения</span></a-->
-                <?= $this->html->link('<span>Настройки</span>', 'http://www.godesigner.ru/users/profile', array('escape' => false))?>
-                <?= $this->html->link('<span>Профиль</span>', 'http://www.godesigner.ru/users/preview/' . $this->user->getId(), array('escape' => false, 'class' => ($this->_request->action == 'preview') ? 'active' : 'active')) ?>
-                <?= $this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false)) ?>
-                <?= $this->html->link('<span>Реквизиты</span>', array('controller' => 'users', 'action' => 'details'), array('escape' => false)) ?>
+                <?= $this->view()->render(array('element' => 'office/nav')); ?>
             </nav>
             <div class="profile">
 
@@ -72,9 +66,9 @@
                 </div>
 
             </div>
-            <h3 style="text-shadow: 0 1px 1px #FFFFFF;
+            <!--h3 style="text-shadow: 0 1px 1px #FFFFFF;
 margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; font-weight: normal; color: #666666;">Укажите 5 тегов, которые описывают ваше решение</h3>
-            <p style="text-shadow: 0 1px 1px #FFFFFF; margin-top: 20px;font-family: OfficinaSansC Book, serif; font-size: 17px; text-align: center; color: #666; margin-bottom: 40px;">Это поможет найти вашу идею тем, кто захочет его<br> купить. Т. о. мы дарим вам возможность продать работу,<br> если та не станет победителем с первого раза.</p>
+            <p style="text-shadow: 0 1px 1px #FFFFFF; margin-top: 20px;font-family: OfficinaSansC Book, serif; font-size: 17px; text-align: center; color: #666; margin-bottom: 40px;">Это поможет найти вашу идею тем, кто захочет его<br> купить. Т. о. мы дарим вам возможность продать работу,<br> если та не станет победителем с первого раза.</p-->
 
             <?php if (count($selectedSolutions) > 0): ?>
                 <div class="portfolio">
@@ -111,7 +105,7 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
                                 <!--span class="bottom_arrow"><a href="#"><img src="/img/marker5_2.png" alt=""></a></span-->
                                     </div>
                                 </div>
-                                <div style="padding-top: 16px;">
+                                <!--div style="padding-top: 16px;">
                                     <form class="tag_submit" data-solutionid="<?= $solution->id ?>">
                                     <input type="text" name="tag" style="
                                         width: 168px;
@@ -133,7 +127,7 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
                                         </li>
                                         <?php endforeach;endif;?>
                                     </ul>
-                                </div>
+                                </div-->
                             </li>
     <?php endforeach; ?>
                     </ul>

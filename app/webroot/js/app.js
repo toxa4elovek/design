@@ -504,6 +504,7 @@ $(document).ready(function () {
         $('#popup-title').attr('href', '/pitches/view/' + $(this).data('pitchid'));
         $('#popup-num').text('#' + $(this).data('solutionnum'));
         $('#popup-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+        $('.change-mind').data('solutionid', $(this).data('solutionid'))
         $('#popip-active-id').val($(this).data('pitchid'));
         $('#popup-decline-warning').modal({
             containerId: 'spinner',
@@ -514,15 +515,18 @@ $(document).ready(function () {
     })
 
     $('.accept-confirm').on('click', function() {
-        $('.mobile-close').click();
-        $.get('/pitches/decline.json', function(response) {
-        });
+        // пользователь отказался
         var id = $('#popip-active-id').val();
+        $.get('/pitches/decline/' + id + '.json', function(response) {
+        });
+        // убираем строчку в верхней панели
         $('tr[data-id="' + id + '"]', '#pitch-panel').hide();
+        // убираем всю панель, если в ней не осталось видимых строчек
         if($('tr:visible', '#pitch-panel').length == 0) {
             $('#pitch-panel').hide();
         }
-        if(window.location.href.indexOf("users/step2") > -1) {
+        // если мы находимы на странице заверешния, делаем редирект
+        if(window.location.href.indexOf("users/step") > -1) {
             window.location.href = 'http://www.godesigner.ru/users/mypitches';
         }
         $('.mobile-close').click();
@@ -530,6 +534,16 @@ $(document).ready(function () {
     })
 
     $('.change-mind').on('click', function() {
+        // пользователь согласился продать
+        var id = $('#popip-active-id').val();
+        var solutionid = $(this).data('solutionid')
+        $.get('/pitches/accept/' + id + '.json', function(response) {
+            // переносим его на завершение
+            if(window.location.href.indexOf("users/step2") > -1) {
+            }else {
+                window.location.href = 'http://www.godesigner.ru/users/step2/' + solutionid;
+            }
+        });
         $('.mobile-close').click();
         return false;
     })

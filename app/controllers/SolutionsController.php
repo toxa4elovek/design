@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
 use \app\models\Solution;
 use \app\models\User;
@@ -263,18 +264,19 @@ class SolutionsController extends \app\controllers\AppController {
             $solutions = Solution::all($params);
             $needToAddSolution = false;
             if ($solutions && count($solutions) > 0) {
-                if(count($solutions) != 30) {
-                    $needToAddSolution = true;
-                }
-                if(($needToAddSolution) && ($page != 1)) {
-                    $params = Solution::buildStreamQuery($page);
-                    $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
-                }
 
+                $initialCount = count($solutions->data());
                 $solutions = Solution::filterLogoSolutions($solutions);
                 $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
+                $afterFilterCount = count($solutions);
 
-                if(($needToAddSolution) && ($page != 1)) {
+                if((count($solutions) != 28) && ($initialCount == $afterFilterCount)) {
+                    $needToAddSolution = true;
+                }
+
+                if($needToAddSolution) {
+                    $params = Solution::buildStreamQuery($page);
+                    $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
                     foreach($addedSolutions as $key => $addedSolution) {
                         $solutions[$key] = $addedSolution;
                         $solutions[$key]['sort'] = 1;
@@ -283,12 +285,16 @@ class SolutionsController extends \app\controllers\AppController {
 
             }elseif($page > 1) {
                 $totalParams = Solution::buildSearchQuery($words, $industries, $tags_id, false, false);
-                $totalSolutions = Solution::all($totalParams);
-                if ($totalSolutions && count($totalSolutions) > 0) {
-                    $totalSolutions = Solution::filterLogoSolutions($totalSolutions);
-                    $totalSolutions = Solution::applyUserFilters($totalSolutions, $this->request->data['prop'], $this->request->data['variants']);
+                $cacheKey = 'totalSolutions' . serialize($words) . '_' . serialize($industries) . '_' . serialize($tags_id);
+                if(!$totalPages = Rcache::read($cacheKey)) {
+                    $totalSolutions = Solution::all($totalParams);
+                    if ($totalSolutions && count($totalSolutions) > 0) {
+                        $totalSolutions = Solution::filterLogoSolutions($totalSolutions);
+                        $totalSolutions = Solution::applyUserFilters($totalSolutions, $this->request->data['prop'], $this->request->data['variants']);
+                    }
+                    $totalPages = ceil(count($totalSolutions) / 28);
+                    Rcache::write($cacheKey, $totalPages);
                 }
-                $totalPages = ceil(count($totalSolutions) / 28);
                 $filteredPage = $page - $totalPages + 1;
                 $params = Solution::buildStreamQuery($filteredPage);
                 //Solution::all($params);

@@ -591,7 +591,7 @@ class Pitch extends \app\models\AppModel {
     }
 
     public static function dailypitch() {
-        $pitches = Pitch::all(array('conditions' => array('published' => 1, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
+        $pitches = Pitch::all(array('conditions' => array('published' => 1, 'blank' => 0, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
         if (count($pitches) > 0) {
             $users = User::all(array('conditions' => array('email_newpitchonce' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''))));
             foreach ($users as $user) {
@@ -607,6 +607,7 @@ class Pitch extends \app\models\AppModel {
         $pitches = Pitch::all(array(
                     'conditions' => array(
                         'published' => 1,
+                        'blank' => 0,
                         'started' => array(
                             '>=' => date('Y-m-d H:i:s', time() - DAY - HOUR),
                             '<=' => date('Y-m-d H:i:s', time() - DAY),
@@ -746,6 +747,7 @@ class Pitch extends \app\models\AppModel {
 
         $conditions = array(
             'published' => 1,
+            'blank' => 0,
             'status' => 0,
         );
         $conditions += $timeCond;
@@ -1509,7 +1511,7 @@ class Pitch extends \app\models\AppModel {
                     $pitch->started = date('Y-m-d H:i:s');
                     $pitch->finishDate = date('Y-m-d H:i:s', time() + 10 * DAY);
                     $pitch->save();
-                    //SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
+                    SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
                     return true;
                 }
             }

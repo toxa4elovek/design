@@ -47,7 +47,7 @@
                                 </td></tr>
                             <tr><td height="40"></td></tr>
                             <tr><td align="center">
-                                    <a href="http://godesigner.ru">
+                                    <a href="http://godesigner.ru/users/step2/<?= $solution->id?>">
                                         <img src="http://godesigner.ru/img/mail/spam_logo_sale.png" alt="Подтвердить">
                                     </a>
                                 </td></tr>

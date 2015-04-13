@@ -55,8 +55,9 @@ class EventsController extends \app\controllers\AppController {
 
     public function feed() {
         if (isset($this->request->query['page'])) {
-            $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], null, Session::read('user.id'));
-            $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'] + 1, null, Session::read('user.id')));
+            $subscribed = User::getSubscribedPitches(Session::read('user.id'));
+            $updates = Event::getEvents($subscribed, $this->request->query['page'], null, Session::read('user.id'));
+            $nextUpdates = count(Event::getEvents($subscribed, $this->request->query['page'] + 1, null, Session::read('user.id')));
         }
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
@@ -80,7 +81,7 @@ class EventsController extends \app\controllers\AppController {
             $news = News::getNews($this->request->query['newsDate']);
         }
         $count = count($updates);
-        return compact('updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
+        return compact('subscribed', 'updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
     }
 
     public function getsol() {

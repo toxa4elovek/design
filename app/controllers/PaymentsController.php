@@ -15,7 +15,7 @@ class PaymentsController extends \app\controllers\AppController {
      *
      */
     public function payture_callback() {
-        $result = Pitch::activateLogoSalePitch(102936);
+        $result = Pitch::activateLogoSalePitch(103588);
         var_dump($result);
         if (!empty($this->request->data)) {
             Logger::write('info', serialize($this->request->data), array('name' => 'payture'));

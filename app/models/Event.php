@@ -241,10 +241,6 @@ class Event extends \app\models\AppModel {
             $conditions = array('created' => array('>' => $created));
         }
         if (!empty($pitchIds)) {
-            //if($user == 32) {
-                //echo '<pre>';
-                //var_dump(Event::createConditions($pitchIds, $user));
-            //}
             $events = Event::find('all', array(
                         'conditions' => $conditions + Event::createConditions($pitchIds, $user),
                         'order' => array('created' => 'desc'),
@@ -252,14 +248,7 @@ class Event extends \app\models\AppModel {
                         'page' => $page
                             )
             );
-            /*if($user == 32) {
-                foreach($events as $event) {
-                    if($event->type == 'FavUserAdded') {
-                        //var_dump($event->id);
-                    }
-                }
-                //die();
-            }*/
+
         } else {
             $events = Event::find('all', array(
                         'conditions' => $conditions + array('type' => array('RetweetAdded', 'newsAdded')),
@@ -272,7 +261,6 @@ class Event extends \app\models\AppModel {
         $i = 1;
         foreach ($events as $event) {
             if (($event->type == 'CommentAdded' || $event->type == 'CommentCreated') && ($event->user_id != Session::read('user.id')) && ($event->pitch->user_id != Session::read('user.id'))) {
-
 
                 if ($event->type == 'SolutionAdded' && !$event->solution) {
                     $event->delete();
@@ -389,19 +377,20 @@ class Event extends \app\models\AppModel {
                 $idsOfFollowing[] = $favourite->fav_user_id;
             }
             $idsOfFollowing[] = $user;
-            $idsOfFollowing[] = '108';
-            //var_dump($idsOfFollowing);
-
-            //$list[] = array('type' => 'FavUserAdded', 'user_id' => $idsOfFollowing);
+            //$idsOfFollowing[] = '108';
+            if($user == '4') {
+                //var_dump($idsOfFollowing);
+            }
+            $list[] = array('type' => 'FavUserAdded', 'user_id' => $idsOfFollowing);
             $list[] = array('AND' => array('type' => array('FavUserAdded'), 'OR' => array(array('user_id' => $idsOfFollowing), array('fav_user_id' => $user))));
             $list[] = array('AND' => array('type' => array('CommentAdded', 'CommentCreated', 'SolutionAdded'), 'user_id' => $idsOfFollowing));
             $list[] = array('AND' => array('type' => 'LikeAdded', 'user_id' => $idsOfFollowing, 'news_id' => 0));
 
-/*            if($user == '858') {
-                echo '<pre>';
-var_dump($list);
-                die();
-            }*/
+            if($user == '4') {
+                //echo '<pre>';
+//var_dump($list);
+                //die();
+            }
         }
         $output = array('OR' => $list);
         return $output;

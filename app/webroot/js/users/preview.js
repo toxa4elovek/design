@@ -25,11 +25,9 @@ $(document).ready(function() {
 
     $(document).on('click', '.removeTag', function() {
         $(this).parent().fadeOut(300, function() {
-            var tag = $(this).parent().text()
+            var tag = $(this).text();
             tag = tag.trim();
-            console.log({"tag": tag, "id": $(this).parent().data('solutionid') })
             $.post('/solutions/remove_tag.json', {"tag": tag, "id": $(this).parent().data('solutionid') }, function(response) {
-                console.log(response);
             });
             if($(this).parent().children(':visible').length < 5) {
                 var solutionid =  $(this).parent().data('solutionid');
@@ -42,7 +40,6 @@ $(document).ready(function() {
     $(document).on('submit', '.tag_submit', function() {
         var input = $('input', this);
         var tag = input.val();
-        console.log(tag);
         $.post('/solutions/add_tag.json', {"tag": tag, "id": $(this).data('solutionid') }, function(response) {
         });
         var html = '<li style="padding-left: 10px; padding-right: 10px; margin-right:6px; height: 21px; padding-top: 5px; margin-bottom:3px;">' + tag + '<a class="removeTag" href="#" style="margin-left: 10px;"> <img src="/img/delete-tag.png" alt="" style="padding-top: 2px;"></a></li>';

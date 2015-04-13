@@ -6,37 +6,35 @@
     <div class="g_line"></div>
     <div id="P_card">
         <table>
-        <?php if ($pitch->category_id != 10):?>
-            <tr>
-                <td style="width: 25px;">
-                    <input type="radio" name="1" class="rb1" data-pay="payanyway">
-                </td>
-                <td colspan="2" class="s3_text" style="padding-left: 20px;">
-                    Оплата пластиковыми картами <br>через Payanyway<br><br>
-                </td>
-                <td style="width: 190px;">
-                    <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
-                        <input type="hidden" name="MNT_ID" value="36102238">
-                        <input type="hidden" name="MNT_TRANSACTION_ID" value="">
-                        <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
-                        <input type="hidden" name="MNT_AMOUNT" value="">
-                        <input type="hidden" name="MNT_TEST_MODE" value="0">
-                        <input type="hidden" name="paymentSystem.unitId" value="499669">
-                        <input type="hidden" name="followup" value="true">
-                        <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="display: none;">
-                    </form>
-                </td>
-            </tr>
-            <tr id="online-images">
-                <td colspan="4" style="padding: 20px 0 0 40px;">
-                    <img src="/img/s3_master.png" alt="">
-                </td>
-            </tr>
+            <?php if ($pitch->category_id != 10):?>
+
+                <tr class="paymaster-section">
+                    <td>
+                        <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
+                    </td>
+                    <td colspan="3" class="s3_text" style="padding-left: 20px;">
+                        Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
+                        <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
+                    </td>
+                </tr>
+                <tr id="paymaster-images" class="paymaster-section">
+                    <td colspan="4" class="s3_text" style="padding: 20px 0 0 40px; text-transform: uppercase;">
+                        <img src="/img/s3_paymaster.png" alt="">
+                        <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
+                    </td>
+                </tr>
+                <tr id="paymaster-select" class="paymaster-section" style="display: none;">
+                    <td colspan="4">
+                        <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
+                        <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
+                    </td>
+                </tr>
+            <?php endif;?>
 
             <tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
             </tr>
-        <?php endif;?>
+
             <tr>
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="offline">
@@ -97,33 +95,42 @@
                     </div>
                 </td>
             </tr>
-        <?php if ($pitch->category_id != 10):?>
-            <tr class="paymaster-section">
-                <td colspan="4"><div class="g_line"><i>или</i></div></td>
-            </tr>
 
-            <tr class="paymaster-section">
-                <td>
-                    <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
-                </td>
-                <td colspan="3" class="s3_text" style="padding-left: 20px;">
-                    Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
-                    <p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p>
-                </td>
-            </tr>
-            <tr id="paymaster-images" class="paymaster-section">
-                <td colspan="4" class="s3_text" style="padding: 20px 0 0 40px; text-transform: uppercase;">
-                    <img src="/img/s3_paymaster.png" alt="">
-                    <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
-                </td>
-            </tr>
-            <tr id="paymaster-select" class="paymaster-section" style="display: none;">
-                <td colspan="4">
-                    <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
-                    <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
-                </td>
-            </tr>
-        <?php endif;?>
+            <!--tr>
+                <td colspan="4"><div class="g_line"><i>или</i></div></td>
+            </tr-->
+
+            <?php if ($pitch->category_id == 1000):?>
+                <tr>
+                    <td style="width: 25px;">
+                        <input type="radio" name="1" class="rb1" data-pay="payanyway">
+                    </td>
+                    <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                        Оплата пластиковыми картами <br>через Payanyway<br><br>
+                    </td>
+                    <td style="width: 190px;">
+                        <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
+                            <input type="hidden" name="MNT_ID" value="36102238">
+                            <input type="hidden" name="MNT_TRANSACTION_ID" value="">
+                            <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
+                            <input type="hidden" name="MNT_AMOUNT" value="">
+                            <input type="hidden" name="MNT_TEST_MODE" value="0">
+                            <input type="hidden" name="paymentSystem.unitId" value="499669">
+                            <input type="hidden" name="followup" value="true">
+                            <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="display: none;">
+                        </form>
+                    </td>
+                </tr>
+                <tr id="online-images">
+                    <td colspan="4" style="padding: 20px 0 0 40px;">
+                        <img src="/img/s3_master.png" alt="">
+                    </td>
+                </tr>
+
+
+            <?php endif;?>
+
+
         </table>
     </div>
     <div class="g_line"></div>

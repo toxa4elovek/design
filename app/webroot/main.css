@@ -136,10 +136,14 @@ input.placeholder {
     font-size: 11px;
 }
 #requesthelp input.placeholder {
-    font-size: 11px;
+    font-size: 14px;
+}
+#requesthelp input, #requesthelp textarea {
+    color: #777676;
+    font-size: 14px;
 }
 #requesthelp textarea.placeholder {
-    font-size: 11px;
+    font-size: 14px;
 }
 img {
     vertical-align: top;
@@ -218,7 +222,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     background:      -o-linear-gradient(#fc5d5d, #e95151);
     background:         linear-gradient(#fc5d5d, #e95151);
 }
-.wrapper .button.third {
+.wrapper .button.third, .reqbutton.third {
     outline-width: 0;
     outline: none;
     background: #64A470;
@@ -229,7 +233,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     background:      -o-linear-gradient(#64A470, #51895C);
     background:         linear-gradient(#64A470, #51895C);
 }
-.wrapper .button.third:hover {
+.wrapper .button.third:hover, .reqbutton.third:hover {
     background: #51895C;
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#51895C), to(#e95151));
     background: -webkit-linear-gradient(#51895C, #64A470);

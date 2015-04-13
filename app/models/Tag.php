@@ -65,9 +65,18 @@ class Tag extends \app\models\AppModel {
             'solution_id' => $solutionId
         ));
         $solutionTag->save();
+        $cacheKey = 'tags_for_solutions_' . $solutionId;
+        Rcache::delete($cacheKey);
         return $solutionTag;
     }
 
+    /**
+     * Метод удаляет указанный тег $string для решени с айди $solutionId
+     *
+     * @param $string
+     * @param $solutionId
+     * @return bool
+     */
     public static function removeTag($string, $solutionId) {
         if (!Tag::isTagExists($string)) {
             Tag::saveTag($string);

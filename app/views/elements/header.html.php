@@ -197,10 +197,14 @@
                         <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                         <td class="idea"><?=$mypitch->ideas_count?></td>
                         <td class="pitches-time"><a style="color:#639F6D" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Победа!<br/> Завершите питч!</a></td>
-                        <?php else: ?>
+                        <?php elseif (($mypitch->blank == 1) && ($mypitch->confirmed == 0)): ?>
                         <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
                             <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="/pitches/accept/<?=$mypitch->id?>">Подтвердить &nbsp;&nbsp;<span class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span></a><br><br>
                             <a style="font-size: 11px;color:#666666;background: url(/img/header/header_cross.png) 0 2px no-repeat;padding-left: 14px;" class="popup-decline" data-title="<?=$mypitch->title?>" data-solutionid="<?=$mypitch->awarded?>" data-solutionnum="<?=$mypitch->winner->num?>" data-pitchid="<?=$mypitch->id?>" href="/pitches/decline/<?=$mypitch->id?>">Отказать</a>
+                        </td>
+                        <?php elseif (($mypitch->blank == 1) && ($mypitch->confirmed == 1)): ?>
+                        <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
+                            <a style="font-size: 11px;color:#639F6D;" class="pitches-finish" href="http://www.godesigner.ru/users/step2/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
                         </td>
                         <?php endif ?>
                         <td class="price"><?=$this->moneyFormatter->formatMoney($mypitch->price)?></td></tr>

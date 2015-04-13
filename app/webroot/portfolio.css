@@ -25,13 +25,22 @@
 	vertical-align:top;
 	margin-top:12px;
 	margin-bottom:5px;}
+
+.tagname {
+    margin: 0 !important;
+    font-family: Arial, sans-serif !important;
+    color:#999 !important;
+}
+.tagname:hover {
+    text-decoration: underline !important;
+}
 .portfolio ul.list_portfolio li a{
 	text-decoration:none;
 	color:#666666;
 	font-family: OfficinaSansC Bold, serif;
 	font-size:13px;}
 .portfolio ul.list_portfolio li a:hover{
-	color:#666666;}
+	color:#658fa5;}
 .portfolio ul.list_portfolio li, .portfolio .rating_block, .portfolio .like_view, .portfolio .bottom_arrow, .portfolio a.add_pdf_link{
 	display:-moz-inline-stack; /* для FF2 */
 	display:inline-block; /* для других */

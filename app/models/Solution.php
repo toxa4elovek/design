@@ -125,7 +125,7 @@ http://godesigner.ru/answers/view/73');
                             ),
                         );
                         $context  = stream_context_create($options);
-                        //$result = file_get_contents($url, false, $context);
+                        file_get_contents($url, false, $context);
                     }
                 } catch(Exception $e) {
 
@@ -659,16 +659,24 @@ http://godesigner.ru/answers/view/73');
      * @return array
      */
     public static function buildSearchQuery($wordsArray, $industiesArray, $tagsIds, $page = 1, $limit = 28) {
+        // Разделенные поиск
         $regexp = implode($wordsArray, '|');
         $descriptionWord = implode($wordsArray, ' ');
+        // точный поиск
+        $regexpFull = '[[:<:]]' . implode($wordsArray, ' ') . '[[:>:]]';
+        $narrow = false;
+        if(in_array('it', $wordsArray)) {
+            $narrow = true;
+        }
         $params = array('conditions' => array(
             array('OR' => array(
-                array("Pitch.title REGEXP '" . $regexp . "'"),
-                array("Pitch.description LIKE '%$descriptionWord%'"),
-                array("'Pitch.business-description' LIKE '%$descriptionWord%'"),
+                array("Pitch.title REGEXP '" . $regexpFull . "'"),
+                array("Pitch.description REGEXP '$regexpFull'"),
+                array("'Pitch.business-description' REGEXP '$regexpFull'"),
             )),
             'Solution.multiwinner' => 0,
             'Solution.awarded' => 0,
+            'Solution.selected' => 1,
             'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
             'Pitch.status' => array('>' => 0),
             'Pitch.private' => 0,
@@ -679,6 +687,13 @@ http://godesigner.ru/answers/view/73');
             'with' => array('Pitch', 'Solutiontag'));
         if(!empty($industiesArray)) {
             $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industiesArray[0] . "%'");
+        }
+        if(!$narrow) {
+            $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '" . $regexp . "'");
+            $params['conditions'][0]['OR'][] = array("Pitch.description LIKE '%$descriptionWord%'");
+            $params['conditions'][0]['OR'][] = array("'Pitch.business-description' LIKE '%$descriptionWord%'");
+        }else {
+
         }
         if($tagsIds) {
             $tags = implode($tagsIds, ', ');
@@ -706,6 +721,7 @@ http://godesigner.ru/answers/view/73');
                 array(
                     'Solution.multiwinner' => 0,
                     'Solution.awarded' => 0,
+                    'Solution.selected' => 1,
                     'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
                     'Pitch.status' => array('>' => 0),
                     'private' => 0,

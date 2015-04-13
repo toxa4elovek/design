@@ -164,7 +164,7 @@ class UsersController extends \app\controllers\AppController {
             $accessToken = Event::getBingAccessToken();
             return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent', 'accessToken');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('date', 'updates', 'nextUpdates', 'pitches')));
+            return $this->render(array('layout' => false, 'data' => compact('pitchIds', 'date', 'updates', 'nextUpdates', 'pitches')));
         }
     }
 
@@ -209,7 +209,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function solutions() {
         $conditions = array('Solution.user_id' => Session::read('user.id'));
-        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch', 'Solutiontag')));
         $nominatedCount = $this->nominatedCount;
         $myPitches = Pitch::all(array('conditions' => array('user_id' => Session::read('user.id'), 'published' => 1, 'billed' => 1)));
 
@@ -218,7 +218,10 @@ class UsersController extends \app\controllers\AppController {
             foreach ($myPitches as $pitch) {
                 $idList[] = $pitch->id;
             }
-            $solutions = Solution::all(array('conditions' => array('pitch_id' => $idList), 'order' => array('Solution.id' => 'desc'), 'with' => array('Pitch')));
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $idList), 'order' => array('Solution.id' => 'desc'), 'with' => array('Pitch', 'Solutiontag')));
+        }
+        foreach($solutions as $solution) {
+            $solution->tags = Solution::getTagsArrayForSolution($solution);
         }
         $filterType = 'solutions';
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {

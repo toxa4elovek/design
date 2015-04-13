@@ -307,7 +307,7 @@ class User extends \app\models\AppModel {
 
     public static function getSubscribedPitches($userId) {
         $pitches = Pitch::find('all', array('conditions' =>
-                    array('user_id' => $userId),
+                    array('user_id' => $userId, 'blank' => 0, 'status' => array('<' => 2)),
         ));
         $pitchesIds = array();
         foreach ($pitches as $pitch) {
