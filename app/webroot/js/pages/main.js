@@ -1,7 +1,12 @@
 $(function(){
 
      $('.take, .fill').click(function(){
-        window.location = $(this).children('a').attr('href')
+         var link = $(this).children('a').attr('href');
+         if(link == '/pitches/create') {
+             _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заказчику" на главной']);
+         }
+
+        window.location = link;
     });
 
     $('#to_use_text').hover(function() {

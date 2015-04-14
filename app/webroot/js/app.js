@@ -588,6 +588,29 @@ window.fbAsyncInit = function () {
      }
      }
      );*/
+
+    $(document).on('click', '.top-button', function() {
+        _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Кнопка "Создать проект"']);
+        return true;
+    });
+
+    $(document).on('click', '.bottom-link-footer', function() {
+        _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Создать проект" в футере']);
+        return true;
+    });
+
+    $(document).on('click', '.mainpage-create-project', function() {
+        _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заказчику" на главной']);
+        return true;
+    })
+
+    $(document).on('click', '.create-project-how-it-works', function() {
+        _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заполнить бриф" на странице "Как это работает?"']);
+        return true;
+    })
+
+
+
 };
 
 // Load the SDK Asynchronously

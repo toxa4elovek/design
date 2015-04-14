@@ -279,7 +279,7 @@
             <span style="text-decoration: none; font-weight: bold; font-size: 12px; margin-left: 12px;" class="current">+7 (812) 648 24 12</span>
             <br><a style="background: url(/img/smallmailicon.png) no-repeat 0 3px;padding-left:20px;font-size:11px;margin-right:10px;" href="#" id="requesthelplink">запросить помощь</a>
         </div>
-        <?=$this->html->link('Cоздать проект', 'Pitches::create', array('class' => 'button third'))?>
+        <?=$this->html->link('Cоздать проект', 'Pitches::create', array('class' => 'top-button button third'))?>
     </div>
 
 </header><!-- .header -->

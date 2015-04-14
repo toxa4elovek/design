@@ -30,7 +30,7 @@
               <span>предложите идею заказчику</span>
           </div>
           <div class="fill">
-              <?=$this->html->link('Заказчику', 'Pitches::create')?><br>
+              <?=$this->html->link('Заказчику', 'Pitches::create', array('class' => 'mainpage-create-project'))?><br>
               <span>создайте питч для дизайнеров</span>
           </div>
       </div>

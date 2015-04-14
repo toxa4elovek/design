@@ -58,7 +58,7 @@
                     <a href="http://www.godesigner.ru/pages/contacts">Контакты</a>
                 <?php endif ?>
                 <br>
-                <?= $this->html->link('Создать проект', 'http://www.godesigner.ru/pitches/create', array('style' => 'margin-left: 0;')) ?> /
+                <?= $this->html->link('Создать проект', 'http://www.godesigner.ru/pitches/create', array('class' => 'bottom-link-footer', 'style' => 'margin-left: 0;')) ?> /
                     <strong>&nbsp;<?= $this->html->link('Распродажа логотипов', 'http://www.godesigner.ru/logosale', array('style' => 'margin-left: 0;color: #5c9263')) ?></strong>
             </p>
         </nav><!-- .nav -->
