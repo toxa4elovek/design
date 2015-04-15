@@ -25,6 +25,9 @@ class Solution extends \app\models\AppModel {
 
     public $belongsTo = array('Pitch', 'User');
     public $hasMany = array('Like', 'Solutiontag');
+    public static $logosaleNarrowSearches = array(
+        'it'
+    );
     protected static $_behaviors = array(
         'UploadableSolution'
     );
@@ -666,17 +669,11 @@ http://godesigner.ru/answers/view/73');
         $regexpFull = '[[:<:]]' . implode($wordsArray, ' ') . '[[:>:]]';
         $narrow = false;
         // если слово - исключение, делаем точный поиск
-        if(in_array('it', $wordsArray)) {
+        if(in_array(mb_strtolower($regexp, 'UTF-8'), self::$logosaleNarrowSearches)) {
             $narrow = true;
         }
         $params = array('conditions' => array(
             array('OR' => array(
-                //array("Pitch.title REGEXP '" . $regexpFull . "'"),
-                //array("Pitch.description REGEXP '$regexpFull'"),
-                //array("'Pitch.business-description' REGEXP '$regexpFull'"),
-                array("Pitch.title REGEXP '" . $regexp . "'"),
-                array("Pitch.description LIKE '%$descriptionWord%'"),
-                array("'Pitch.business-description' LIKE '%$descriptionWord%'")
             )),
             'Solution.multiwinner' => 0,
             'Solution.awarded' => 0,
@@ -689,19 +686,21 @@ http://godesigner.ru/answers/view/73');
         ),
             'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
             'with' => array('Pitch', 'Solutiontag'));
+        if(!$narrow) {
+            $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '" . $regexp . "'");
+            $params['conditions'][0]['OR'][] = array("Pitch.description LIKE '%$descriptionWord%'");
+            $params['conditions'][0]['OR'][] = array("'Pitch.business-description' LIKE '%$descriptionWord%'");
+        }else {
+            $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '$regexpFull'");
+            $params['conditions'][0]['OR'][] = array("Pitch.description REGEXP '$regexpFull'");
+            $params['conditions'][0]['OR'][] = array("'Pitch.business-description' REGEXP '$regexpFull'");
+        }
         if(!empty($industiesArray)) {
             $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industiesArray[0] . "%'");
         }
         if($tagsIds) {
             $tags = implode($tagsIds, ', ');
             $params['conditions'][0]['OR'][] = array("Solutiontag.tag_id IN($tags)");
-        }
-        if(!$narrow) {
-            //$params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '" . $regexp . "'");
-            //$params['conditions'][0]['OR'][] = array("Pitch.description LIKE '%$descriptionWord%'");
-            //$params['conditions'][0]['OR'][] = array("'Pitch.business-description' LIKE '%$descriptionWord%'");
-        }else {
-
         }
         if($page) {
             $params['page'] = $page;

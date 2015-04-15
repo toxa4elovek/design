@@ -17,7 +17,7 @@ class SolutionTest extends AppUnit {
         Rcache::flushdb();
         $this->rollDown(array('Pitch', 'Solution', 'Solutionfile'));
     }
-/*
+
     public function testSave() {
         $this->assertFalse(Solution::copy(0, 0));
         $this->assertFalse(Solution::copy(100076, ''));
@@ -121,7 +121,7 @@ class SolutionTest extends AppUnit {
         $result = array();
         $this->assertEqual($result, Solution::getListOfIndustryKeys($words));
     }
-*/
+
     public function testBuildSearchQuery() {
         $string = array('мясокомбинат');
         $industries = array('finances');
@@ -150,9 +150,7 @@ class SolutionTest extends AppUnit {
             'with' => array('Pitch', 'Solutiontag'),
             'limit' => 16,
             'page' => 2);
-        //echo '<pre>';
-        //var_dump($expected);
-        //var_dump(Solution::buildSearchQuery($string, $industries, $tags_id, $page, $limit));
+
         $this->assertEqual($expected, Solution::buildSearchQuery($string, $industries, $tags_id, $page, $limit));
 
         $string = array('мясокомбинат', 'транспорт');
@@ -184,11 +182,38 @@ class SolutionTest extends AppUnit {
         $industries = array();
         $tags_id = 0;
 
-        $result = array('conditions' => array(
+        $expected = array('conditions' => array(
             array('OR' => array(
                 array("Pitch.title REGEXP '" . 'мясокомбинат|транспорт' . "'"),
                 array("Pitch.description LIKE '%мясокомбинат транспорт%'"),
                 array("'Pitch.business-description' LIKE '%мясокомбинат транспорт%'"),
+            )),
+            'Solution.multiwinner' => 0,
+            'Solution.awarded' => 0,
+            'Solution.selected' => 1,
+            'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
+            'Pitch.status' => array('>' => 0),
+            'Pitch.private' => 0,
+            'Pitch.category_id' => 1,
+            'Solution.rating' => array('>=' => 3)
+        ),
+            'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+            'with' => array('Pitch', 'Solutiontag'));
+        $this->assertEqual($expected, Solution::buildSearchQuery($string, $industries, $tags_id, false, false));
+        //echo '<pre>';
+        //var_dump($expected);
+        //var_dump(Solution::buildSearchQuery($string, $industries, $tags_id, $page, $limit));
+
+        // Проверяем исключения
+        $string = array('IT');
+        $industries = array();
+        $tags_id = 0;
+
+        $result = array('conditions' => array(
+            array('OR' => array(
+                array("Pitch.title REGEXP '[[:<:]]IT[[:>:]]'"),
+                array("Pitch.description REGEXP '[[:<:]]IT[[:>:]]'"),
+                array("'Pitch.business-description' REGEXP '[[:<:]]IT[[:>:]]'"),
             )),
             'Solution.multiwinner' => 0,
             'Solution.awarded' => 0,
