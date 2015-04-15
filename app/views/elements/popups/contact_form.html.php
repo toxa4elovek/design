@@ -20,11 +20,13 @@
                 <input name="target" id="reqtarget" type="hidden" value="0">
                 <div style="height: 1px; clear: both; margin-bottom: 10px;"></div>
                 <span style="margin-left: 45px; font-size: 11px; color: #666666;text-shadow: 0 1px 1px white">ОПИШИТЕ ПРОБЛЕМУ И ЗАДАЙТЕ ВОПРОС</span>
-                <textarea name="message" id="reqmessage" style="margin-left: 43px;margin-top:5px;width:365px;height:240px;"></textarea>
+                <textarea name="message" id="reqmessage" style="margin-left: 43px;margin-top:5px;width:365px;height:170px;"></textarea>
 
                 <div style="text-align: center;">
                     <input type="submit" id="reqsend" class="reqbutton" value="Отправить" style="margin: 19px auto 20px auto; width: 184px; color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);height:48px">
                 </div>
+                <a href="http://www.godesigner.ru/answers/view/96" target="_blank" style="font-size: 14px;margin-left: 40px;">Почему не сокращается срок после теста?</a><br>
+                <a href="http://www.godesigner.ru/answers/view/96" target="_blank" style="font-size: 14px;margin-left: 40px;">Можно ли загрузить решение раньше срока?</a>
             </form>
             <div id="contactlist" style="background:url('/img/requestback.png');display:none;top:-541px;margin-left:42px;width:399px;height:140px;position:relative;z-index:15">
                 <ul>
