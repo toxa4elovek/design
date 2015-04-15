@@ -1183,7 +1183,7 @@ class UsersController extends \app\controllers\AppController {
                 $moderations = Moderation::all(array('conditions' => array('model_user' => $user->id)));
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
+            $userPitches = Pitch::all(array('conditions' => array('billed' => 1, 'user_id' => $user->id)));
             if (count($userPitches) > 0) {
                 $isClient = true;
                 $ids = array();
