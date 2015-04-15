@@ -182,8 +182,7 @@ class SolutionsController extends \app\controllers\AppController {
             $params['page'] = 1;
             $sort_tags = Tag::getPopularTags(15);
             $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'), 'limit' => 15));
-            $countParams = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'));
-            $total_count = Solution::count($countParams);
+            $total_count = Solution::solutionsForSaleCount();
         }
         $userHelper = new UserHelper(array());
         if ($userHelper->isLoggedIn()) {

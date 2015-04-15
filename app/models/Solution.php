@@ -665,14 +665,18 @@ http://godesigner.ru/answers/view/73');
         // точный поиск
         $regexpFull = '[[:<:]]' . implode($wordsArray, ' ') . '[[:>:]]';
         $narrow = false;
+        // если слово - исключение, делаем точный поиск
         if(in_array('it', $wordsArray)) {
             $narrow = true;
         }
         $params = array('conditions' => array(
             array('OR' => array(
-                array("Pitch.title REGEXP '" . $regexpFull . "'"),
-                array("Pitch.description REGEXP '$regexpFull'"),
-                array("'Pitch.business-description' REGEXP '$regexpFull'"),
+                //array("Pitch.title REGEXP '" . $regexpFull . "'"),
+                //array("Pitch.description REGEXP '$regexpFull'"),
+                //array("'Pitch.business-description' REGEXP '$regexpFull'"),
+                array("Pitch.title REGEXP '" . $regexp . "'"),
+                array("Pitch.description LIKE '%$descriptionWord%'"),
+                array("'Pitch.business-description' LIKE '%$descriptionWord%'")
             )),
             'Solution.multiwinner' => 0,
             'Solution.awarded' => 0,
@@ -688,16 +692,16 @@ http://godesigner.ru/answers/view/73');
         if(!empty($industiesArray)) {
             $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industiesArray[0] . "%'");
         }
-        if(!$narrow) {
-            $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '" . $regexp . "'");
-            $params['conditions'][0]['OR'][] = array("Pitch.description LIKE '%$descriptionWord%'");
-            $params['conditions'][0]['OR'][] = array("'Pitch.business-description' LIKE '%$descriptionWord%'");
-        }else {
-
-        }
         if($tagsIds) {
             $tags = implode($tagsIds, ', ');
             $params['conditions'][0]['OR'][] = array("Solutiontag.tag_id IN($tags)");
+        }
+        if(!$narrow) {
+            //$params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '" . $regexp . "'");
+            //$params['conditions'][0]['OR'][] = array("Pitch.description LIKE '%$descriptionWord%'");
+            //$params['conditions'][0]['OR'][] = array("'Pitch.business-description' LIKE '%$descriptionWord%'");
+        }else {
+
         }
         if($page) {
             $params['page'] = $page;
@@ -733,6 +737,20 @@ http://godesigner.ru/answers/view/73');
             'page' => $page,
             'limit' => $limit);
         return $params;
+    }
+
+    /**
+     * Метод считает количество логотипов, доступных для распродажи, хранит информацию в кэше 1 день
+     *
+     * @return bool|mixed
+     */
+    public static function solutionsForSaleCount() {
+        if(!$totalCount = Rcache::read('logosale_totalcount')) {
+            $countParams = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'Solution.selected' => 1, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'));
+            $totalCount =  Solution::count($countParams);
+            Rcache::write('logosale_totalcount', $totalCount, '+1 day');
+        }
+        return $totalCount;
     }
 
 }
