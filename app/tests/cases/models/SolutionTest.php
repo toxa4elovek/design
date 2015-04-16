@@ -228,6 +228,54 @@ class SolutionTest extends AppUnit {
             'with' => array('Pitch', 'Solutiontag'));
         $this->assertEqual($result, Solution::buildSearchQuery($string, $industries, $tags_id, false, false));
 
+        $string = array('IT');
+        $industries = array();
+        $tags_id = 0;
+
+        $result = array('conditions' => array(
+            array('OR' => array(
+                array("Pitch.title REGEXP '[[:<:]]IT[[:>:]]'"),
+                array("Pitch.description REGEXP '[[:<:]]IT[[:>:]]'"),
+                array("'Pitch.business-description' REGEXP '[[:<:]]IT[[:>:]]'"),
+            )),
+            'Solution.multiwinner' => 0,
+            'Solution.awarded' => 0,
+            'Solution.selected' => 1,
+            'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
+            'Pitch.status' => array('>' => 0),
+            'Pitch.private' => 0,
+            'Pitch.category_id' => 1,
+            'Solution.rating' => array('>=' => 3)
+        ),
+            'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+            'with' => array('Pitch', 'Solutiontag'));
+        $this->assertEqual($result, Solution::buildSearchQuery($string, $industries, $tags_id, false, false, array('Solution.rating' => 'desc')));
+
+        $string = array('IT');
+        $industries = array();
+        $tags_id = 0;
+
+        $expected = array('conditions' => array(
+            array('OR' => array(
+                array("Pitch.title REGEXP '[[:<:]]IT[[:>:]]'"),
+                array("Pitch.description REGEXP '[[:<:]]IT[[:>:]]'"),
+                array("'Pitch.business-description' REGEXP '[[:<:]]IT[[:>:]]'"),
+            )),
+            'Solution.multiwinner' => 0,
+            'Solution.awarded' => 0,
+            'Solution.selected' => 1,
+            'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
+            'Pitch.status' => array('>' => 0),
+            'Pitch.private' => 0,
+            'Pitch.category_id' => 1,
+            'Solution.rating' => array('>=' => 3)
+        ),
+            'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc', 'Solution.rating' => 'desc'),
+            'with' => array('Pitch', 'Solutiontag'));
+        $result = Solution::buildSearchQuery($string, $industries, $tags_id, false, false, array('likes', 'views', 'rating'));
+        $result = $expected['order'] === $result['order'];
+        $this->assertTrue($result);
+
     }
 
     public function testBuildStreamQuery() {
@@ -265,6 +313,34 @@ class SolutionTest extends AppUnit {
             'page' => 1,
             'limit' => 28);
         $this->assertEqual($result, Solution::buildStreamQuery());
+        $expected = array(
+            'conditions' =>
+                array(
+                    'Solution.multiwinner' => 0,
+                    'Solution.awarded' => 0,
+                    'Solution.selected' => 1,
+                    'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
+                    'Pitch.status' => array('>' => 0),
+                    'private' => 0,
+                    'category_id' => 1,
+                    'rating' => array('>=' => 3)
+                ),
+            'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc', 'Solution.rating' => 'desc'),
+            'with' => array('Pitch'),
+            'page' => 1,
+            'limit' => 28);
+        $result = Solution::buildStreamQuery(1, 28, array('likes', 'views', 'rating'));
+        $result = ($result['order'] === $expected['order']);
+        $this->assertTrue($result);
+    }
+
+    public function testRandomizeStreamOrder() {
+        $result = Solution::randomizeStreamOrder();
+        $this->assertTrue(is_array($result));
+        $this->assertTrue(count($result) == 3);
+        $this->assertTrue(in_array('likes', $result));
+        $this->assertTrue(in_array('views', $result));
+        $this->assertTrue(in_array('rating', $result));
     }
 
     public function testSolutionsForSaleCount() {

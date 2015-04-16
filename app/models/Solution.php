@@ -661,7 +661,7 @@ http://godesigner.ru/answers/view/73');
      * @param int $limit
      * @return array
      */
-    public static function buildSearchQuery($wordsArray, $industiesArray, $tagsIds, $page = 1, $limit = 28) {
+    public static function buildSearchQuery($wordsArray, $industiesArray, $tagsIds, $page = 1, $limit = 28, $orderArgument = null) {
         // Разделенные поиск
         $regexp = implode($wordsArray, '|');
         $descriptionWord = implode($wordsArray, ' ');
@@ -671,6 +671,14 @@ http://godesigner.ru/answers/view/73');
         // если слово - исключение, делаем точный поиск
         if(in_array(mb_strtolower($regexp, 'UTF-8'), self::$logosaleNarrowSearches)) {
             $narrow = true;
+        }
+        if((!$orderArgument) || (count($orderArgument) != 3)) {
+            $order = array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc');
+        }else {
+            $order = array();
+            foreach($orderArgument as $field) {
+                $order['Solution.' . $field] = 'desc';
+            }
         }
         $params = array('conditions' => array(
             array('OR' => array(
@@ -684,7 +692,7 @@ http://godesigner.ru/answers/view/73');
             'Pitch.category_id' => 1,
             'Solution.rating' => array('>=' => 3)
         ),
-            'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+            'order' => $order,
             'with' => array('Pitch', 'Solutiontag'));
         if(!$narrow) {
             $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '" . $regexp . "'");
@@ -716,9 +724,18 @@ http://godesigner.ru/answers/view/73');
      *
      * @param int $page
      * @param int $limit
+     * @param array|null $orderArgument
      * @return array
      */
-    public static function buildStreamQuery($page = 1, $limit = 28) {
+    public static function buildStreamQuery($page = 1, $limit = 28, $orderArgument = null) {
+        if((!$orderArgument) || (count($orderArgument) != 3)) {
+            $order = array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc');
+        }else {
+            $order = array();
+            foreach($orderArgument as $field) {
+                $order['Solution.' . $field] = 'desc';
+            }
+        }
         $params = array(
             'conditions' =>
                 array(
@@ -731,7 +748,7 @@ http://godesigner.ru/answers/view/73');
                     'category_id' => 1,
                     'rating' => array('>=' => 3)
                 ),
-            'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+            'order' => $order,
             'with' => array('Pitch'),
             'page' => $page,
             'limit' => $limit);
@@ -750,6 +767,12 @@ http://godesigner.ru/answers/view/73');
             Rcache::write('logosale_totalcount', $totalCount, '+1 day');
         }
         return $totalCount;
+    }
+
+    public static function randomizeStreamOrder() {
+        $array = array('likes', 'views', 'rating');
+        shuffle($array);
+        return $array;
     }
 
 }
