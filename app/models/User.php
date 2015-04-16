@@ -1317,6 +1317,7 @@ class User extends \app\models\AppModel {
                 'percent' => array(
                     '>=' => 80,
                 ),
+                'active' => 1
         ));
 
         if ($test = Test::first($query)) {

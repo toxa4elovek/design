@@ -17,7 +17,7 @@ class QuestionsController extends \app\controllers\AppController {
      *
      * @var array
      */
-    public $publicActions = array('index', 'validate');
+    public $publicActions = array('index', 'validate', 'activate');
 
     public function index() {
 
@@ -41,6 +41,7 @@ class QuestionsController extends \app\controllers\AppController {
             'total' => Question::$questionsLimit,
         );
         $firstTime = false;
+        $test = null;
 
         $variants = Variant::all(array('conditions' => array('correct' => 1)));
         $variants = $variants->data();
@@ -76,7 +77,16 @@ class QuestionsController extends \app\controllers\AppController {
         return $this->render(array(
             'layout' => false,
             'template' => '_result',
-            'data' => compact('result', 'firstTime'),
+            'data' => compact('result', 'firstTime', 'test'),
         ));
     }
+
+    /**
+     *  Метод для активации результата теста
+     */
+    public function activate() {
+        $result = Test::activate($this->request->id);
+        return compact('result');
+    }
+
 }

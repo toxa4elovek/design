@@ -126,10 +126,10 @@
     <div class="share-this">
         <div style="display: block; float: left; margin-top: 8px; margin-bottom: 10px;">
             <div class="social-likes" data-counters="no" data-title="<?= $shareText ?>" data-url="http://www.godesigner.ru/questions/index" style="padding-left: 230px;">
-                <div style="margin: 7px 0 0 9px;" class="facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
-                <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
-                <div style="margin: 7px 0 0 7px;" class="vkontakte" data-image="<?=$shareImage ?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>
-                <div style="margin: 7px 0 0 7px;" class="pinterest" data-media="<?=$shareImage ?>" title="Поделиться картинкой на Пинтересте">PIN</div>
+                <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 9px;" class="activate-user facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
+                <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user twitter" data-via="Go_Deer">TWITT</div>
+                <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user vkontakte" data-image="<?=$shareImage ?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>
+                <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user pinterest" data-media="<?=$shareImage ?>" title="Поделиться картинкой на Пинтересте">PIN</div>
             </div>
         </div>
         <div style="clear:both;width:300px;height:1px;"></div>
