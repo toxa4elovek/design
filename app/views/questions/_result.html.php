@@ -19,11 +19,12 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         }
         $remain = $interval->format('%d дн. %h ч. %i мин.');
 
-        $helpText = 'Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
+        $helpText = '<br>Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
         if(!$old):
-            $helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
+            //$helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
         endif;
-        $addonText = '';
+        $addonText = '<p style="650px">Поделитесь результатом с друзьями, и мы сократим ваш срок активации<br>
+на 5 дней, и тогда вы сможете принимать участие в проектах совсем скоро!</p>';
     elseif ($secondResult): ?>
         <?php
         $old = false;
@@ -35,11 +36,12 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         }
         $remain = $interval->format('%d дн. %h ч. %i мин.');
 
-        $helpText = 'Вы - большой мастер, вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
+        $helpText = '<br>Вы - большой мастер, вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
         if(!$old):
-            $helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
+            //$helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
         endif;
-        $addonText = '';
+        $addonText = '<p style="650px">Поделитесь результатом с друзьями, и мы сократим ваш срок активации<br>
+на 5 дней, и тогда вы сможете принимать участие в проектах совсем скоро!</p>';
     else: ?>
         <?php
         $old = false;
@@ -51,7 +53,7 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         }
         $remain = $interval->format('%d дн. %h ч. %i мин.');
 
-        $helpText = 'Этого,  однако, недостаточно для участия на платформе <a href="/pitches" target="_blank">GoDesigner</a>, поэтому мы просим вас подтянуть профессиональные навыки! Помните, что на сокращение сроков активации влияет только первое прохождение теста.';
+        $helpText = '<br>Этого,  однако, недостаточно для участия на платформе <a href="/pitches" target="_blank">GoDesigner</a>, поэтому мы просим вас подтянуть профессиональные навыки! Помните, что на сокращение сроков активации влияет только первое прохождение теста.';
         if(!$old):
             $helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain;
         endif;
@@ -70,14 +72,14 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
     $remain = $interval->format('%d дн. %h ч. %i мин.');
 
 
-    if ($bestResult):
-        $helpText = 'Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner!</a>';
+        if ($bestResult):
+        $helpText = '<br>Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner!</a>';
     elseif ($secondResult):
-        $helpText = 'Вы - большой мастер, вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
+        $helpText = '<br>Вы - большой мастер, вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
     else:
         $helpText = '';
         if(!$old):
-            $helpText = 'Этого,  однако, недостаточно для участия на платформе <a href="/pitches" target="_blank">GoDesigner</a>, поэтому мы просим вас подтянуть профессиональные навыки!';
+            $helpText = '<br>Этого,  однако, недостаточно для участия на платформе <a href="/pitches" target="_blank">GoDesigner</a>, поэтому мы просим вас подтянуть профессиональные навыки!';
             $addonText = '<p style="">К сожалению, вы уже упустили шанс сократить срок активации, завалив первую попытку.';
             $addonText .= ' Вы сможете принимать участие в проектах через ' . $remain . '.';
             $addonText .= '</p>';
@@ -87,7 +89,6 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
 <?php endif; ?>
 
 <section class="howitworks quiz result">
-
     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
     <p>Результат: <?=$result['correct']?> из <?=$result['total']?></p>
     <?php if ($result['percent'] >= 0 && $result['percent'] < 70):
@@ -99,8 +100,9 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         <h2 class="largest-header-blog">Вы — дворник!</h2>
         <p style="margin-bottom: 46px;">Вам можно выметать улицы, по ходу создавая различные фигуры. Это ваши последователи выстригают НЛО-образные круги на полях. <?php echo $helpText;?></p>
         <?php
-        echo $addonText?>
-        <img src="<?=$bigImage?>" alt="Вы — дворник!">
+        echo $addonText;
+        $fullimagetag = '<img src="' . $bigImage . '" alt="Вы — дворник!">';
+        ?>
     <?php elseif ($result['percent'] >= 70 && $result['percent'] < 80):
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я маляр, лучший кандидат в команду Тома Сойера!';
         $bigImage = 'http://www.godesigner.ru/img/questions/malyar.png';
@@ -109,8 +111,9 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         ?>
         <h2 class="largest-header-blog">Вы — маляр!</h2>
         <p style="margin-bottom: 46px;">Непыльная работёнка, вы лучший кандидат в команду Тома Сойера. <br>Хорошая занятость и сдельная зарплата вам обеспечены. <?php echo $helpText;?></p>
-        <?php echo $addonText?>
-        <img src="<?=$bigImage?>" alt="Вы — маляр!">
+        <?php echo $addonText;
+        $fullimagetag = '<img src="' . $bigImage . '" alt="Вы — маляр!">';
+        ?>
     <?php elseif ($result['percent'] >= 80 && $result['percent'] < 90):
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я Большой мастер, и выше только бог!';
         $bigImage = 'http://www.godesigner.ru/img/questions/master.png';
@@ -118,8 +121,9 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         $shareImage = 'http://www.godesigner.ru/img/questions/master_468_246.png'; ?>
         <h2 class="largest-header-blog">Вы — большой мастер!</h2>
         <p style="margin-bottom: 46px;">Большой мастер — почётное звание и выше только бог.  <?php echo $helpText;?></p>
-        <?php echo $addonText?>
-        <img src="<?=$bigImage?>" alt="Вы — большой мастер!">
+        <?php echo $addonText;
+        $fullimagetag = '<img src="' . $bigImage . '" alt="Вы — большой мастер!">';
+        ?>
     <?php else:
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я Аполлон, бог искусств!';
         $bigImage = 'http://www.godesigner.ru/img/questions/apollo.png';
@@ -127,8 +131,9 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         $shareImage = 'http://www.godesigner.ru/img/questions/apollo_468_246.png'; ?>
         <h2 class="largest-header-blog">Вы — Аполлон!</h2>
         <p style="margin-bottom: 46px;">Вы эталон, бог искусств. Достаточно быть собой. <?php echo $helpText;?></p>
-        <?php echo $addonText?>
-        <img src="<?=$bigImage?>" alt="Вы — Аполлон!">
+        <?php echo $addonText;
+        $fullimagetag = '<img src="' . $bigImage . '" alt="Вы — Аполлон!">';
+        ?>
     <?php endif; ?>
 
     <div class="share-this">
@@ -142,4 +147,5 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         </div>
         <div style="clear:both;width:300px;height:1px;"></div>
     </div>
+    <?php echo $fullimagetag ?>
 </section>
