@@ -28,7 +28,7 @@
                         <li class="first">категория</li>
                         <li><a data-group="category" data-value="all" href="#">все</a></li>
                         <?php foreach($categories as $category):?>
-                        <li><a data-group="category" data-value="<?=$category->id?>" href="#"><?=mb_strtolower($category->title, 'utf-8')?></a></li>
+                        <li style="width: 180px;"><a data-group="category" data-value="<?=$category->id?>" href="#"><?=mb_strtolower($category->title, 'utf-8')?></a></li>
                         <?php endforeach?>
                     </ul>
                     <ul class="filterlist" style="float:left;width:85px;margin-left:25px;text-transform: none">

@@ -1,4 +1,14 @@
-<?php if (($firstTime) and ($this->user->isLoggedIn())): ?>
+<?php $bestResult = false; $secondResult = false;
+
+if ($result['percent'] >= 80 && $result['percent'] < 90):
+    $secondResult = true;
+endif;
+
+if ($result['percent'] >= 90):
+    $bestResult = true;
+endif;
+
+if (($firstTime) and ($this->user->isLoggedIn())): ?>
     <?php if ($bestResult):
         $old = false;
         $datetime1 = new DateTime();
@@ -60,7 +70,7 @@
     $remain = $interval->format('%d дн. %h ч. %i мин.');
 
 
-        if ($bestResult):
+    if ($bestResult):
         $helpText = 'Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner!</a>';
     elseif ($secondResult):
         $helpText = 'Вы - большой мастер, вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
@@ -77,7 +87,7 @@
 <?php endif; ?>
 
 <section class="howitworks quiz result">
-    <?php $bestResult = false; $secondResult = false; ?>
+
     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
     <p>Результат: <?=$result['correct']?> из <?=$result['total']?></p>
     <?php if ($result['percent'] >= 0 && $result['percent'] < 70):
@@ -106,7 +116,6 @@
         $bigImage = 'http://www.godesigner.ru/img/questions/master.png';
         $squareImage = 'http://www.godesigner.ru/img/questions/master_fb.png';
         $shareImage = 'http://www.godesigner.ru/img/questions/master_468_246.png'; ?>
-        <?php $secondResult = true; ?>
         <h2 class="largest-header-blog">Вы — большой мастер!</h2>
         <p style="margin-bottom: 46px;">Большой мастер — почётное звание и выше только бог.  <?php echo $helpText;?></p>
         <?php echo $addonText?>
@@ -116,7 +125,6 @@
         $bigImage = 'http://www.godesigner.ru/img/questions/apollo.png';
         $squareImage = 'http://www.godesigner.ru/img/questions/apollo_fb.png';
         $shareImage = 'http://www.godesigner.ru/img/questions/apollo_468_246.png'; ?>
-        <?php $bestResult = true; ?>
         <h2 class="largest-header-blog">Вы — Аполлон!</h2>
         <p style="margin-bottom: 46px;">Вы эталон, бог искусств. Достаточно быть собой. <?php echo $helpText;?></p>
         <?php echo $addonText?>
