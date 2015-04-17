@@ -26,7 +26,8 @@ class Solution extends \app\models\AppModel {
     public $belongsTo = array('Pitch', 'User');
     public $hasMany = array('Like', 'Solutiontag');
     public static $logosaleNarrowSearches = array(
-        'it'
+        'it',
+        'кот'
     );
     protected static $_behaviors = array(
         'UploadableSolution'
