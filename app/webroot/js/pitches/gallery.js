@@ -338,6 +338,7 @@ var gallerySwitch = (function() {
                 $('#dinamic').fadeIn(150);
             }
         });
+        $('.social-likes').socialLikes();
         // Plot
         $( "#scroller" ).draggable({ drag: function() {
             var x = $('#scroller').css('left');
@@ -364,29 +365,7 @@ var gallerySwitch = (function() {
         fetchPitchComments();
         // Reinit Socials
         setTimeout(function() {
-            // VK
-            VK.init({apiId: 2950889, onlyWidgets: true});
-            VK.Widgets.Like("vk_like", {type: "mini"});
-
-            // Twitter
-            $.getScript('/js/pitches/gallery.twitter.js', function() {
-                if (typeof(twttr) != 'undefined') {
-                    twttr.widgets.load();
-                }
-            });
-
-            // FB
-            FB.XFBML.parse();
-
-            // gplus
-            window.___gcfg = {lang: 'ru'};
-
-            (function() {
-                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-                po.src = 'https://apis.google.com/js/plusone.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-            })();
-
+            $('.social-likes').socialLikes();
         }, 2000);
 
         $('#pitch_rating').raty({
