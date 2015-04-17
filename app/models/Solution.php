@@ -688,7 +688,7 @@ http://godesigner.ru/answers/view/73');
             'Solution.awarded' => 0,
             'Solution.selected' => 1,
             'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
-            'Pitch.status' => array('>' => 0),
+            'Pitch.status' => array('>' => 1),
             'Pitch.private' => 0,
             'Pitch.category_id' => 1,
             'Solution.rating' => array('>=' => 3)
@@ -744,7 +744,7 @@ http://godesigner.ru/answers/view/73');
                     'Solution.awarded' => 0,
                     'Solution.selected' => 1,
                     'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
-                    'Pitch.status' => array('>' => 0),
+                    'Pitch.status' => array('>' => 1),
                     'private' => 0,
                     'category_id' => 1,
                     'rating' => array('>=' => 3)
