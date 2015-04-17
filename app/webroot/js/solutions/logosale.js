@@ -326,6 +326,9 @@ jQuery(document).ready(function ($) {
     $('#goSearch, #goSearchAplly').on('click', function () {
         //$('#adv_search').click();
         $('ul.marsh').hide();
+        if($('#adv_search').hasClass('active')) {
+            $('#adv_search').click();
+        }
         var search = $('#searchTerm');
         isBusy = false;
         fetchSearch(search);
