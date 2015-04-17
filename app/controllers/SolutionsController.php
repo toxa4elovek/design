@@ -170,7 +170,7 @@ class SolutionsController extends \app\controllers\AppController {
             // Ищем указанную страницу результатов
             $params = Solution::buildSearchQuery($words, $industries, $tags_id, $page);
         }else {
-            $params = Solution::buildStreamQuery($this->request->id);
+            $params = Solution::buildStreamQuery($this->request->id, 28, Solution::randomizeStreamOrder());
         }
         if ($this->request->is('json')) {
             $params['page'] += 1;
@@ -182,8 +182,7 @@ class SolutionsController extends \app\controllers\AppController {
             $params['page'] = 1;
             $sort_tags = Tag::getPopularTags(15);
             $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'), 'limit' => 15));
-            $countParams = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'));
-            $total_count = Solution::count($countParams);
+            $total_count = Solution::solutionsForSaleCount();
         }
         $userHelper = new UserHelper(array());
         if ($userHelper->isLoggedIn()) {
@@ -191,24 +190,31 @@ class SolutionsController extends \app\controllers\AppController {
         }
 
         $solutions = Solution::all($params);
-        if(count($solutions) != 30) {
-            $needToAddSolution = true;
-        }
-        if($needToAddSolution) {
-            $params = Solution::buildStreamQuery();
-            $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
-        }
+        $needToAddSolution = false;
+        if ($solutions && count($solutions) > 0) {
+            $initialCount = count($solutions->data());
+            $solutions = Solution::filterLogoSolutions($solutions);
+            $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
+            $afterFilterCount = count($solutions);
 
-        $solutions = Solution::filterLogoSolutions($solutions);
-        $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
-
-        if(($needToAddSolution) && ($params['page'] != 1)) {
-            foreach($addedSolutions as $key => $addedSolution) {
-                $solutions[$key] = $addedSolution;
-                $solutions[$key]['sort'] = 1;
+            if((count($solutions) != 28) && ($initialCount == $afterFilterCount)) {
+                $needToAddSolution = true;
             }
-        }
 
+            if($needToAddSolution) {
+                $params = Solution::buildStreamQuery(1, 28, Solution::randomizeStreamOrder());
+                $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
+                foreach($addedSolutions as $key => $addedSolution) {
+                    $solutions[$key] = $addedSolution;
+                    $solutions[$key]['sort'] = 1;
+                }
+            }
+        }else {
+            $params = Solution::buildStreamQuery($this->request->id, 28, Solution::randomizeStreamOrder());
+            $solutions = Solution::all($params);
+            $solutions = Solution::filterLogoSolutions($solutions);
+            $solutions = Solution::applyUserFilters($solutions);
+        }
         return compact('solutions', 'count', 'sort_tags', 'search_tags', 'data', 'total_count');
     }
 
@@ -275,7 +281,7 @@ class SolutionsController extends \app\controllers\AppController {
                 }
 
                 if($needToAddSolution) {
-                    $params = Solution::buildStreamQuery($page);
+                    $params = Solution::buildStreamQuery($page, 28, Solution::randomizeStreamOrder());
                     $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
                     foreach($addedSolutions as $key => $addedSolution) {
                         $solutions[$key] = $addedSolution;
@@ -296,8 +302,7 @@ class SolutionsController extends \app\controllers\AppController {
                     Rcache::write($cacheKey, $totalPages);
                 }
                 $filteredPage = $page - $totalPages + 1;
-                $params = Solution::buildStreamQuery($filteredPage);
-                //Solution::all($params);
+                $params = Solution::buildStreamQuery($filteredPage, 28, Solution::randomizeStreamOrder());
                 $solutions = Solution::filterLogoSolutions(Solution::all($params));
                 $solutions = Solution::applyUserFilters($solutions);
                 if($solutions) {
@@ -305,6 +310,10 @@ class SolutionsController extends \app\controllers\AppController {
                         $solution['sort'] = 1;
                     }
                 }
+            }else {
+                $params = Solution::buildStreamQuery(1, 28, Solution::randomizeStreamOrder());
+                $solutions = Solution::filterLogoSolutions(Solution::all($params));
+                $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
             }
         }
         $total_solutions = count($solutions);

@@ -190,7 +190,7 @@
 
     <div class="logosale">
         <div class="logosale_content">
-            <p><span class="highlight">17826</span> отборных логотипов<br> из завершенных проектов в распродаже</p>
+            <p><span class="highlight"><?= $totalCount ?></span> отборных логотипов<br> из завершенных проектов в распродаже</p>
             <div class="logosale_search-block">
                 <form id="logosale_form" method="get" action="/logosale">
                     <input type="text" name='search' placeholder="Найдите логотип по ключевому слову" class="">

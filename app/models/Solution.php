@@ -25,6 +25,9 @@ class Solution extends \app\models\AppModel {
 
     public $belongsTo = array('Pitch', 'User');
     public $hasMany = array('Like', 'Solutiontag');
+    public static $logosaleNarrowSearches = array(
+        'it'
+    );
     protected static $_behaviors = array(
         'UploadableSolution'
     );
@@ -658,21 +661,27 @@ http://godesigner.ru/answers/view/73');
      * @param int $limit
      * @return array
      */
-    public static function buildSearchQuery($wordsArray, $industiesArray, $tagsIds, $page = 1, $limit = 28) {
+    public static function buildSearchQuery($wordsArray, $industiesArray, $tagsIds, $page = 1, $limit = 28, $orderArgument = null) {
         // Разделенные поиск
         $regexp = implode($wordsArray, '|');
         $descriptionWord = implode($wordsArray, ' ');
         // точный поиск
         $regexpFull = '[[:<:]]' . implode($wordsArray, ' ') . '[[:>:]]';
         $narrow = false;
-        if(in_array('it', $wordsArray)) {
+        // если слово - исключение, делаем точный поиск
+        if(in_array(mb_strtolower($regexp, 'UTF-8'), self::$logosaleNarrowSearches)) {
             $narrow = true;
+        }
+        if((!$orderArgument) || (count($orderArgument) != 3)) {
+            $order = array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc');
+        }else {
+            $order = array();
+            foreach($orderArgument as $field) {
+                $order['Solution.' . $field] = 'desc';
+            }
         }
         $params = array('conditions' => array(
             array('OR' => array(
-                array("Pitch.title REGEXP '" . $regexpFull . "'"),
-                array("Pitch.description REGEXP '$regexpFull'"),
-                array("'Pitch.business-description' REGEXP '$regexpFull'"),
             )),
             'Solution.multiwinner' => 0,
             'Solution.awarded' => 0,
@@ -683,17 +692,19 @@ http://godesigner.ru/answers/view/73');
             'Pitch.category_id' => 1,
             'Solution.rating' => array('>=' => 3)
         ),
-            'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+            'order' => $order,
             'with' => array('Pitch', 'Solutiontag'));
-        if(!empty($industiesArray)) {
-            $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industiesArray[0] . "%'");
-        }
         if(!$narrow) {
             $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '" . $regexp . "'");
             $params['conditions'][0]['OR'][] = array("Pitch.description LIKE '%$descriptionWord%'");
             $params['conditions'][0]['OR'][] = array("'Pitch.business-description' LIKE '%$descriptionWord%'");
         }else {
-
+            $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '$regexpFull'");
+            $params['conditions'][0]['OR'][] = array("Pitch.description REGEXP '$regexpFull'");
+            $params['conditions'][0]['OR'][] = array("'Pitch.business-description' REGEXP '$regexpFull'");
+        }
+        if(!empty($industiesArray)) {
+            $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industiesArray[0] . "%'");
         }
         if($tagsIds) {
             $tags = implode($tagsIds, ', ');
@@ -713,9 +724,18 @@ http://godesigner.ru/answers/view/73');
      *
      * @param int $page
      * @param int $limit
+     * @param array|null $orderArgument
      * @return array
      */
-    public static function buildStreamQuery($page = 1, $limit = 28) {
+    public static function buildStreamQuery($page = 1, $limit = 28, $orderArgument = null) {
+        if((!$orderArgument) || (count($orderArgument) != 3)) {
+            $order = array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc');
+        }else {
+            $order = array();
+            foreach($orderArgument as $field) {
+                $order['Solution.' . $field] = 'desc';
+            }
+        }
         $params = array(
             'conditions' =>
                 array(
@@ -728,11 +748,31 @@ http://godesigner.ru/answers/view/73');
                     'category_id' => 1,
                     'rating' => array('>=' => 3)
                 ),
-            'order' => array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+            'order' => $order,
             'with' => array('Pitch'),
             'page' => $page,
             'limit' => $limit);
         return $params;
+    }
+
+    /**
+     * Метод считает количество логотипов, доступных для распродажи, хранит информацию в кэше 1 день
+     *
+     * @return bool|mixed
+     */
+    public static function solutionsForSaleCount() {
+        if(!$totalCount = Rcache::read('logosale_totalcount')) {
+            $countParams = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'Solution.selected' => 1, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'));
+            $totalCount =  Solution::count($countParams);
+            Rcache::write('logosale_totalcount', $totalCount, '+1 day');
+        }
+        return $totalCount;
+    }
+
+    public static function randomizeStreamOrder() {
+        $array = array('likes', 'views', 'rating');
+        shuffle($array);
+        return $array;
     }
 
 }

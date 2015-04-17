@@ -77,7 +77,8 @@ class PagesController extends \app\controllers\AppController {
             $grade->user = User::first(array('conditions' => array('id' => $grade->user_id)));
         }
         $experts = Expert::all();
-        return compact('category_id', 'statistic', 'pitches', 'promos', 'experts', 'grades');
+        $totalCount = Solution::solutionsForSaleCount();
+        return compact('category_id', 'statistic', 'pitches', 'promos', 'experts', 'grades', 'totalCount');
     }
 
     public function contacts() {
