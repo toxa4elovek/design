@@ -50,7 +50,7 @@ class User extends \app\models\AppModel {
      *
      * @var array
      */
-    public static $authors = array(8472, 17865, 18856);
+    public static $authors = array(8472, 17865, 18856, 25252);
     protected static $_behaviors = array(
         'UploadableAvatar'
     );
@@ -307,7 +307,7 @@ class User extends \app\models\AppModel {
 
     public static function getSubscribedPitches($userId) {
         $pitches = Pitch::find('all', array('conditions' =>
-                    array('user_id' => $userId),
+                    array('user_id' => $userId, 'blank' => 0, 'status' => array('<' => 2)),
         ));
         $pitchesIds = array();
         foreach ($pitches as $pitch) {
@@ -1317,6 +1317,7 @@ class User extends \app\models\AppModel {
                 'percent' => array(
                     '>=' => 80,
                 ),
+                'active' => 1
         ));
 
         if ($test = Test::first($query)) {

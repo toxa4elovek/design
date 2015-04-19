@@ -10,7 +10,7 @@
             <div class="content group narrow">
                 <section class="howitworks quiz">
                     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
-                    <p>Этот тест не претендует на замену госэкзаменов в художественных ВУЗах и не гарантирует диплом по специльности «Дизайнер». Нашей целью стал праздный интерес к уровню воды в реке под названием Графический дизайн. Мы создали 15 вопросов, в каждом из которых всего один верный ответ. На прохождение теста даётся 3 минуты!</p>
+                    <p>Если вы пройдете тест на отлично с <span style="font-style: italic;">первого раза и поделитесь своим результатам</span> в социальных сетях, вы сможете принимать участие в проектах уже через 5 дней (вместо 10 дней). Этот тест не претендует на замену госэкзаменов в художественных ВУЗах и не гарантирует диплом по специльности «Дизайнер». Нашей целью стал праздный интерес к уровню воды в реке под названием Графический дизайн. Мы создали 15 вопросов, в каждом из которых всего один верный ответ. На прохождение теста даётся 3 минуты!</p>
                     <h2 class="largest-header-blog">Как прошли этот тест другие?</h2>
                     <ul class="quiz-bars">
                         <?php foreach ($stats as $data): ?>
@@ -30,7 +30,7 @@
                     <div class="share-this" style="margin-top: -20px;">
                         <?php $shareImage = 'http://www.godesigner.ru/img/icon_512.png'; ?>
                         <div style="margin-top: -5px; margin-bottom: 20px;">
-                            <div class="social-likes" data-counters="no" data-title="Узнай, какой ты дизайнер на самом деле" data-url="http://www.godesigner.ru/questions/index">
+                            <div class="social-likes" data-counters="no" data-title="Узнай, какой ты дизайнер на самом деле" data-url="http://www.godesigner.ru/questions/index" style="padding-left: 110px;">
                                 <div style="margin: 7px 0 0 9px;" class="facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                 <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
                                 <div style="margin: 7px 0 0 7px;" class="vkontakte" data-image="<?=$shareImage ?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>

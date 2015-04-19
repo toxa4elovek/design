@@ -29,6 +29,7 @@ use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\MoneyFormatter;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\PdfGetter;
+use app\extensions\mailers\SolutionsMailer;
 
 class Pitch extends \app\models\AppModel {
 
@@ -590,7 +591,7 @@ class Pitch extends \app\models\AppModel {
     }
 
     public static function dailypitch() {
-        $pitches = Pitch::all(array('conditions' => array('published' => 1, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
+        $pitches = Pitch::all(array('conditions' => array('published' => 1, 'blank' => 0, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
         if (count($pitches) > 0) {
             $users = User::all(array('conditions' => array('email_newpitchonce' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''))));
             foreach ($users as $user) {
@@ -606,6 +607,7 @@ class Pitch extends \app\models\AppModel {
         $pitches = Pitch::all(array(
                     'conditions' => array(
                         'published' => 1,
+                        'blank' => 0,
                         'started' => array(
                             '>=' => date('Y-m-d H:i:s', time() - DAY - HOUR),
                             '<=' => date('Y-m-d H:i:s', time() - DAY),
@@ -745,6 +747,7 @@ class Pitch extends \app\models\AppModel {
 
         $conditions = array(
             'published' => 1,
+            'blank' => 0,
             'status' => 0,
         );
         $conditions += $timeCond;
@@ -1069,8 +1072,8 @@ class Pitch extends \app\models\AppModel {
         $avgArray = $this->calcAvg($ratingArray, $moneyArray, $commentArray);
         $avgNum = (empty($avgArray)) ? 0 : round(array_sum($avgArray) / count($avgArray), 1);
         $guaranteed = $pitch->guaranteed;
-
-        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'commentsNum');
+        $firstSolutionTime = $pitch->firstSolutionTime;
+        return compact('guaranteed', 'dates', 'ratingArray', 'moneyArray', 'commentArray', 'avgArray', 'avgNum', 'percentages', 'commentsNum', 'firstSolutionTime');
     }
 
     /**
@@ -1108,7 +1111,7 @@ class Pitch extends \app\models\AppModel {
     private function __getFirstSolutionTime($pitch) {
         $cacheKey = 'calc_firstSolutionTime_' . $pitch->id;
         $time = null;
-        if(!$time = Rcache::read($cacheKey)) {
+        //if(!$time = Rcache::read($cacheKey)) {
             $pitch->firstSolution = Historysolution::first(array(
                 'conditions' => array(
                     'pitch_id' => $pitch->id),
@@ -1117,9 +1120,9 @@ class Pitch extends \app\models\AppModel {
             ));
             if ($pitch->firstSolution) {
                 $time = strtotime($pitch->firstSolution->created);
-                Rcache::write($cacheKey, $time);
+        //        Rcache::write($cacheKey, $time);
             }
-        }
+        //}
         return $time;
     }
 
@@ -1489,6 +1492,67 @@ class Pitch extends \app\models\AppModel {
             return false;
         }
     }
+
+    public static function activateLogoSalePitch($pitchId) {
+        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+            if($pitch->awarded == 0) {
+                return false;
+            }else {
+                if($originalSolution = Solution::first($pitch->awarded)) {
+                    $copyId = Solution::copy($pitch->id, $originalSolution->id);
+                    Solution::awardCopy($copyId);
+                    $originalPitch = Pitch::first($originalSolution->pitch_id);
+                    $pitch->awarded = $copyId;
+                    $pitch->billed = 1;
+                    $pitch->published = 1;
+                    $pitch->status = 1;
+                    $pitch->confirmed = 0;
+                    $pitch->title = $originalPitch->title;
+                    $pitch->started = date('Y-m-d H:i:s');
+                    $pitch->finishDate = date('Y-m-d H:i:s', time() + 10 * DAY);
+                    $pitch->save();
+                    SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public static function declineLogosalePitch($pitchId, $designerId) {
+        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+            $solutionCopy = Solution::first($pitch->awarded);
+            if($designerId == $solutionCopy->user_id) {
+                $pitch->awarded = 0;
+                $pitch->billed = 0;
+                $pitch->published = 0;
+                $pitch->status = 0;
+                $pitch->confirmed = 0;
+                $pitch->title = 'Logosale Pitch';
+                $pitch->started = '0000-00-00 00:00:00';
+                $pitch->finishDate = '0000-00-00 00:00:00';
+                $pitch->save();
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
+
+    public static function acceptLogosalePitch($pitchId, $designerId) {
+        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+            $solutionCopy = Solution::first($pitch->awarded);
+            if ($designerId == $solutionCopy->user_id) {
+                $pitch->confirmed = 1;
+                $pitch->save();
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
+
 
     public static function getCountBilledMultiwinner($pitchId) {
         if ($pitch = self::first($pitchId)) {

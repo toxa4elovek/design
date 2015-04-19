@@ -114,3 +114,9 @@ $(document).ready(function() {
     }
 
 });
+
+function activate(element) {
+    $.get('/questions/activate/' + $(element).data('testid') + '.json', function(response) {
+    })
+    return true;
+}

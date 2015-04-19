@@ -29,6 +29,22 @@ class Pitch extends \lithium\template\Helper {
         return strtotime($pitch->finishDate);
     }
 
+    /**
+     * Метод возвращает временной интервал, оставшийся до момента подтверждения
+     *
+     * @return boolean|DateInterval
+     */
+    public function confirmationTimeRemain($pitch = false) {
+        $timeWait = 3;
+        $datetime1 = new \DateTime();
+        $datetime2 = new \DateTime(date('Y-m-d H:i:s', (strtotime($pitch->started) + $timeWait * DAY)));
+        $interval = $datetime2->diff($datetime1);
+        if ($interval->invert == 0) {
+            return false;
+        }
+        return $interval;
+    }
+
     protected function wasExpertComment($comment) {
         $this->dates[] = strtotime($comment['created']);
         $res = ($comment['user_id'] == $this->expert);

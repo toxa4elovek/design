@@ -13,8 +13,9 @@
             <p class="sale-str regular">
                 Тут вы найдете готовые решения для вашего бизнеса: выберите логотип, и<br />
                 дизайнер доделает его согласно вашим комментариям. Это самый быстрый<br />
-                и экономичный способ получить результат на GoDesigner. <a href="#" title="Подробнее">Подробнее..</a>
+                и экономичный способ получить результат на GoDesigner. <a href="http://www.godesigner.ru/answers/view/99" target="_blank" title="Подробнее">Подробнее..</a>
             </p>
+            <div style="text-align:center;margin-top: 16px;margin-bottom: 30px;"><a class="needassist" href="#" style="height:16px;background: url('/img/category_icon.png') no-repeat;padding-left:24px;margin-top: 10px">Не нашли нужный логотип? Спросите у нас.</a></div>
             <div class="filterBackground">
                 <table>
                     <tbody>

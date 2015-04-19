@@ -235,6 +235,12 @@
     font-size: 16px;
     padding: 20px 5px 20px 0;
     line-height: 23px;
+    cursor: pointer;
+}
+
+#container-new-pitches .new-price:hover {
+    text-decoration: underline;
+    color: #658fa5;
 }
 
 #container-new-pitches .new-pitches .new-price {
@@ -290,6 +296,10 @@
     font-size: 16px;
     line-height: 23px;
     font-family: OfficinaSansC Book, serif;
+}
+
+.center-boxes > div {
+    margin-bottom: 17px;
 }
 
 .center-boxes .box {

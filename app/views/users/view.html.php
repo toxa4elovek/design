@@ -108,7 +108,8 @@
                 <?php endif ?>
             </div>
 
-            <?php if (count($selectedSolutions) > 0): ?>
+            <?php
+            if (count($selectedSolutions) > 0): ?>
                 <div class="portfolio">
                     <ul class="list_portfolio" style="margin-left:-25px;">
                         <?php

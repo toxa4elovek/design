@@ -4,17 +4,17 @@
   <div style="clear:both"></div>
   <div id="slides">
     <div class="slides_container" style="height:300px;">
+      <div class="slide">
+      <a href="/pages/howitworks"><img src="/img/main/1.png" alt="" /></a>
+      </div>
+      <div class="slide">
+          <a href="/pages/howitworks"><img src="/img/main/2.png" alt="" /></a>
+      </div>
         <div class="slide">
-            <a href="/fastpitch"><img src="/img/main_banner_logo_one_click.png" alt="" /></a>
+            <a href="/pages/howitworks"><img src="/img/main/3.png" alt="" /></a>
         </div>
-      <div class="slide">
-      <a href="/pages/howitworks"><img src="/img/main_banner1.png" alt="" /></a>
-      </div>
-      <div class="slide">
-          <a href="/pages/howitworks"><img src="/img/main_banner2.png" alt="" /></a>
-      </div>
         <div class="slide">
-            <a href="/pages/howitworks"><img src="/img/main_banner3.png" alt="" /></a>
+            <a href="/fastpitch"><img src="/img/main/4.png" alt="" /></a>
         </div>
     </div>
     <a id="finished" href="/pitches/?type=finished" style="height:32px;width:173px;position: absolute; top: 251px; left: 79px; z-index:101;background-image:url(/img/examples_173_32_red.png)"><img src="/img/examples_173_32.png" alt="Просмотреть примеры"></a>
@@ -24,6 +24,17 @@
   </div>
 
   <div class="main_page_content">
+      <div class="take_fill_block">
+          <div class="take">
+              <?=$this->html->link('Дизайнеру', 'Pitches::index')?><br>
+              <span>предложите идею заказчику</span>
+          </div>
+          <div class="fill">
+              <?=$this->html->link('Заказчику', 'Pitches::create', array('class' => 'mainpage-create-project'))?><br>
+              <span>создайте питч для дизайнеров</span>
+          </div>
+      </div>
+
     <ul class="front_catalog">
       <li>
           <?php if(count($promos) > 0):
@@ -95,16 +106,6 @@
         </div>
       </li>
     </ul>
-    <div class="take_fill_block">
-      <div class="take">
-        <?=$this->html->link('Дизайнеру', 'Pitches::index')?><br>
-        <span>предложите идею заказчику</span>
-      </div>
-      <div class="fill">
-        <?=$this->html->link('Заказчику', 'Pitches::create')?><br>
-        <span>создайте питч для дизайнеров</span>
-      </div>
-    </div>
 
     <div class="use_table">
         <div id="pitch-table" style="height:280px;">
@@ -149,9 +150,9 @@
 
               </div>
         </div>
-        <div style="margin-left: 61px;">
-            <?=$this->html->link('Как это работает?', 'Pages::howitworks', array('class' => 'more', 'id' => 'to_use_link'))?>
-            <?=$this->html->link('показать все питчи', 'Pitches::index', array('class' => 'more', 'style' => 'float: right; border-right-width: 22px; margin-right: 52px;'))?>
+        <div style="margin-left: 61px; margin-top: -55px;">
+            <?=$this->html->link('Подробнее', 'Pages::howitworks', array('class' => 'new_more', 'id' => 'to_use_link'))?>
+            <?php //$this->html->link('показать все питчи', 'Pitches::index', array('class' => 'more', 'style' => 'float: right; border-right-width: 22px; margin-right: 52px;'))?>
         </div>
     </div>
     <?php
@@ -181,10 +182,24 @@
       <div class="about_ex">
           <?=$this->html->link('Опытные эксперты будут рады помочь вам с выбором варианта...', 'Experts::index', array('class' => 'experts_text','id' => 'experts_text', 'style' => 'color: #666666;'));?>
           <div style="margin-top:10px">
-            <?=$this->html->link('подробнее', 'Experts::index', array('class' => 'more', 'id' => 'experts_link'))?>
+            <?=$this->html->link('подробнее', 'Experts::index', array('class' => 'new_more', 'id' => 'experts_link'))?>
           </div>
       </div>
     </div>
+
+
+    <div class="logosale">
+        <div class="logosale_content">
+            <p><span class="highlight"><?= $totalCount ?></span> отборных логотипов<br> из завершенных проектов в распродаже</p>
+            <div class="logosale_search-block">
+                <form id="logosale_form" method="get" action="/logosale">
+                    <input type="text" name='search' placeholder="Найдите логотип по ключевому слову" class="">
+                    <a style="margin-left:15px;margin-top:4px" href="#" class="button third clean-style-button">Поиск</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
         <?php
           $grade1 = $grades->first();
           $grade2 = $grades->next();
@@ -201,33 +216,33 @@
     ?>
     <div>
         <h2 class="largest-header" style="text-align: left; margin-left:64px;">Отзывы</h2>
-        <div style="width:959px;height:166px;background-image:url(/img/peopletalk.png);margin-bottom:18px;margin-top:12px;">
+        <div style="width:959px;height:166px;margin-bottom:18px;margin-top:12px;">
 
-          <div class="talkhoverzone" style="float:left;height:144px;width:398px;padding-left:81px;padding-top:22px">
+          <div class="talkhoverzone" style="float:left;height:144px;width:398px;padding-left:66px;padding-top:22px">
             <div style="float:left;width:50px;height:142px;padding-top: 2px;">
-            <img src="<?=$avatar1?>" alt="" style="border: 4px solid #a7a7a7;">
+            <img src="<?= $avatar1 ?>" alt="" style="border: 4px solid #cecece;">
             </div>
             <div  style="float:left;width:320px;padding-left:12px;height:142px;">
-                <p class="regular" style=""><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="font: 15px RodeoC;color:#666666;text-decoration:none;"><?=$grade1->user->first_name . ' ' . $grade1->user->last_name?></a></p>
-                <p class="regular" style="font-style:italic;font-size:14px;"><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade1->pitch->title?></a></p>
-                <p class="regular" style="font-size:14px;color:#666666;margin-top:4px;">«<?php if($grade1->short != ''): echo $grade1->short; else: echo $grade1->text; endif?>»</p>
+                <p class="regular" style=""><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="font: 17px RodeoC;color:#666666;text-decoration:none;"><?=$grade1->user->first_name . ' ' . $grade1->user->last_name?></a></p>
+                <p class="regular" style="font-style:italic; font-size:14px; font-family: Georgia;"><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade1->pitch->title?></a></p>
+                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade1->short != ''): echo $grade1->short; else: echo $grade1->text; endif?>»</p>
             </div>
 
           </div>
           <div class="talkhoverzone" style="float:left;height:144px;width:398px;padding-left:22px;padding-top:22px">
             <div  style="float:left;width:50px;height:142px;padding-top: 2px;">
-            <img src="<?=$avatar2?>" alt="" style="border: 4px solid #a7a7a7;">
+            <img src="<?= $avatar2 ?>" alt="" style="border: 4px solid #cecece;">
             </div>
             <div style="float:left;width:320px;padding-left:12px;height:142px;">
-                <p class="regular" style=""><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="font:15px RodeoC;color:#666666;text-decoration:none;"><?=$grade2->user->first_name . ' ' . $grade2->user->last_name?></a></p>
-                <p class="regular" style="font-style:italic;font-size:14px;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade2->pitch->title?></a></p>
-                <p class="regular" style="font-size:14px;color:#666666;margin-top:4px;">«<?php if($grade2->short != ''): echo $grade2->short; else: echo $grade2->text; endif?>»</p>
+                <p class="regular" style="font-size: 17px;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="font:17px RodeoC;color:#666666;text-decoration:none;"><?=$grade2->user->first_name . ' ' . $grade2->user->last_name?></a></p>
+                <p class="regular" style="font-style:italic; font-size:14px; font-family: Georgia;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade2->pitch->title?></a></p>
+                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade2->short != ''): echo $grade2->short; else: echo $grade2->text; endif?>»</p>
             </div>
 
           </div>
         </div>
     </div>
-    <div class="clear" style="clear:both; height:3px; background:url('/img/sep.png') no-repeat scroll 62px bottom transparent;margin-bottom:12px;"></div>
+    <div class="clear" style="clear:both; height:3px; margin-bottom:12px;"></div>
     <?php endif?>
 
     <div class="statistika">
@@ -242,11 +257,11 @@
       </dl>
       <dl class="dl_2">
         <dt><?=$statistic['numOfCurrentPitches']?></dt>
-        <dd>текущих<br> питчей</dd>
+        <dd>текущих<br> проектов</dd>
       </dl>
       <dl class="dl_3">
-        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'])?></dt>
-        <dd>заработанных<br> дизайнерами денег</dd>
+        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'], array('suffix' => ''))?></dt>
+        <dd>заработанных<br> дизайнерами рублей</dd>
       </dl>
       <dl class="dl_4">
         <dt><?=$this->moneyFormatter->formatMoney($statistic['totalParticipants'], array('suffix' => ''))?></dt>
@@ -254,31 +269,38 @@
       </dl>
       <dl class="dl_5">
         <dt><?=$statistic['lastDaySolutionNum']?></dt>
-        <dd>новых работ загружено за последние 24 часа</dd>
+        <dd>новых идей загружено за последние 24 часа</dd>
       </dl>
     </div>
+      <div style="height: 4px; background-color: rgb(204, 204, 204); clear: both; margin-top: -15px; margin-left: 0px;"></div>
 
     <ul class="logos">
-        <li style="width:128px;">
-          <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/47" data-off="/img/partners/logo_tutdesign.png" data-on="/img/partners/logo_tutdesign_on.png"><img class="tutdesign" src="/img/partners/logo_tutdesign.png" alt="" /></a>
-          <a target="_blank" style="opacity:0;position:relative;bottom:54px;z-index:1;" class="nonhoverlogo" href="/pitches/view/47" data-off="/img/partners/logo_tutdesign.png" data-on="/img/partners/logo_tutdesign_on.png"><img class="tutdesign" src="/img/partners/logo_tutdesign_on.png" alt="" /></a>
+
+        <li style="width:253px;margin-right: 40px;">
+            <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker.png" alt="" /></a>
+            <a target="_blank" style="opacity:0;position:relative;bottom:59px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker_on.png" alt="" /></a>
         </li>
-        <li style="width:148px;">
+
+        <li style="width:110px;" >
+            <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100162" data-off="/img/partners/trends.png" data-on="/img/partners/trends_on.png"><img class="brands" src="/img/partners/trends.png" alt="" /></a>
+            <a target="_blank" style="opacity:0;position:relative;bottom:72px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100162" data-off="/img/partners/trends.png" data-on="/img/partners/trends_on.png"><img class="brands" src="/img/partners/trends_on.png" alt="" /></a>
+        </li>
+
+        <li style="width:110px; padding-top: 2px;margin-left: 23px;margin-right: 9px;">
+            <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/102308" data-off="/img/main/flypic.png" data-on="/img/main/flypic_hover.png"><img class="brands" src="/img/main/flypic.png" alt="" /></a>
+            <a target="_blank" style="opacity:0;position:relative;bottom:82px;z-index:1;" class="nonhoverlogo" href="/pitches/view/102308" data-off="/img/main/flypic.png" data-on="/img/main/flypic_hover.png"><img class="brands" src="/img/main/flypic_hover.png" alt="" /></a>
+        </li>
+
+        <li style="width:94px;text-align: center;">
+            <a target="_blank" style="opacity:1;position:relative;z-index:2;margin-left: auto; margin-right: auto;" class="hoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo.png" alt="" /></a>
+            <a target="_blank" style="opacity:0;position:relative;bottom:55px;z-index:1;" class="nonhoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo_on.png" alt="" /></a>
+        </li>
+
+        <li style="width:148px;" class="logolast">
           <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird.png" alt="" /></a>
           <a target="_blank" style="opacity:0;position:relative;bottom:60px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird_on.png" alt="" /></a>
         </li>
-        <li style="width:94px;text-align: center;">
-          <a target="_blank" style="opacity:1;position:relative;z-index:2;margin-left: auto; margin-right: auto;" class="hoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo.png" alt="" /></a>
-          <a target="_blank" style="opacity:0;position:relative;bottom:55px;z-index:1;" class="nonhoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo_on.png" alt="" /></a></li>
 
-        <li style="width:253px;">
-          <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker.png" alt="" /></a>
-          <a target="_blank" style="opacity:0;position:relative;bottom:59px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker_on.png" alt="" /></a>
-        </li>
-        <li style="width:110px;" class="logolast">
-          <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100162" data-off="/img/partners/trends.png" data-on="/img/partners/trends_on.png"><img class="brands" src="/img/partners/trends.png" alt="" /></a>
-          <a target="_blank" style="opacity:0;position:relative;bottom:72px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100162" data-off="/img/partners/trends.png" data-on="/img/partners/trends_on.png"><img class="brands" src="/img/partners/trends_on.png" alt="" /></a>
-        </li>
     </ul>
 
     <ul class="bottom_menu">
@@ -297,7 +319,7 @@
   </div>
 </div><!-- .wrapper -->
 
-<div id="popup-final-step" class="popup-final-step" style="display:none">
+<div id="popup-final-step" class="popup-final-step" style="display:none; padding-left: 0px; height: 390px;">
     <div id="ytplayer"></div>
     <script>
         var tag = document.createElement('script');

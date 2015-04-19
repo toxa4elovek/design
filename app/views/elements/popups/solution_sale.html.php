@@ -50,11 +50,11 @@
         </div>
         <!-- start: Solution Left Panel -->
         <div class="solution-left-panel">
-            <a class="solution-title" href="#">
+            <div class="solution-title" href="#">
                 <h1>
 
                 </h1>
-            </a>
+            </div>
             <!-- start: Soluton Images -->
             <section class="solution-images isField">
                 <div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>
@@ -100,7 +100,7 @@
                                 </form>
                             </td>
                         </tr>
-                        <tr id="online-images">
+                        <!--tr id="online-images">
                             <td colspan="4" style="padding: 20px 0 0 40px;">
                                 <img src="/img/s3_master.png" alt="">
                             </td>
@@ -191,7 +191,7 @@
                                 <?php echo $this->html->script(array('jquery-1.7.1.min.js')); ?>
                                 <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=<?= $data['total'] ?>&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча') ?>&LMI_CURRENCY=RUB&LMI_PAYMENT_NO=<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>'></script>
                             </td>
-                        </tr>
+                        </tr-->
                     </table>
                 </div>
                 <div class="g_line"></div>

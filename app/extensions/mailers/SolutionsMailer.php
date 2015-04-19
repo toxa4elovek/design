@@ -48,4 +48,23 @@ class SolutionsMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    /**
+     * Метод отправки уведомлени о выкупке решения для дизайнера
+     *
+     * @param $solutionId
+     * @return bool
+     */
+    public static function sendSolutionBoughtNotification($solutionId) {
+        $solution = Solution::first($solutionId);
+        $pitch = Pitch::first($solution->pitch_id);
+        $designer = User::first($solution->user_id);
+        $data = array('user' => $designer, 'solution' => $solution, 'pitch' => $pitch);
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => $designer->email,
+            'subject' => 'Ваше решение хотят выкупить!',
+            'data' => $data
+        ));
+    }
+
 }

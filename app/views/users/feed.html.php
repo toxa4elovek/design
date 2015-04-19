@@ -1,7 +1,9 @@
 <div class="new-wrapper login">
     <script id="twitter-wjs" type="text/javascript" async defer src="//platform.twitter.com/widgets.js"></script>
     <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2', 'logo' => 'logo')) ?>
-
+    <?php
+        date_default_timezone_set('Europe/Kaliningrad');
+    ?>
     <div class="new-middle">
         <div class="new-middle_inner">
             <input type="hidden" value="<?= $this->user->getId() ?>" id="user_id">
@@ -195,6 +197,9 @@
                                                 if (strtotime($newsDate) < strtotime($n->created)) {
                                                     $newsDate = $n->created;
                                                 }
+                                                if($n->title == '') {
+                                                    continue;
+                                                }
                                                 ?>
                                                 <div class="design-news"><a target="_blank" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
                                             <?php endforeach;endif; ?>
@@ -233,7 +238,7 @@
                                             <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
                                             <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                             <p class="timeago">
-                                                <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
+                                                <time class="timeago" datetime="<?= date('c', strtotime($object['news']['created'])) ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
                                             </p>
                                         </div>
                                             <div class="box-info" style="margin-top: 0;">
@@ -460,6 +465,19 @@
                                                     ?>
                                                 </div></div>
                                         <?php elseif ($object['type'] == 'newsAdded'):
+                                            if((preg_match('@fb-xfbml-parse-ignore@', $object['news']['short'])) || (preg_match('@vk_post@', $object['news']['short']))):
+                                                if(preg_match('@vk_post@', $object['news']['short'])) {
+                                                    $text = str_replace('{width: 500}', '{width: 600}', $object['news']['short']);
+                                                }else {
+                                                    $text = str_replace('data-width="500"', 'data-width="600"', $object['news']['short']);
+                                                    $text = str_replace('<div id="fb-root"></div>', '', $text);
+                                                }
+                                                ?>
+                                                <div data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>">
+                                                    <?php echo $text ?>
+                                                </div>
+                                            <?php
+                                            else:
                                             $isValidImage = function($url){
                                                 if(empty($url)):
                                                     return false;
@@ -467,7 +485,7 @@
                                                 return true;
                                             }
                                             ?>
-                                            <div class="box" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($object['news']['imageurl'])): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
+                                            <div class="box" data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($object['news']['imageurl'])): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                                 <?php if($isValidImage($object['news']['imageurl'])):?>
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= (strpos($object['news']['imageurl'],'/events/') !== false) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
@@ -480,7 +498,7 @@
                                                     <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
                                                     <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                                     <p class="timeago">
-                                                        <time class="timeago" datetime="<?= $object['news']['created'] ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
+                                                        <time class="timeago" datetime="<?= date('c', strtotime($object['news']['created'])) ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
                                                         <?php if($object['news']['original_title'] != ''):?>
                                                             <span style="font-size: 20px;position: relative;top: 2px;margin-left: 2px;margin-right: 2px;">·</span> переведено автоматически
                                                         <?php endif;?>
@@ -559,7 +577,9 @@
                                                     ?>
                                                 </div>
                                             </div>
-                                        <?php elseif ($object['type'] == 'RatingAdded'): ?>
+                                        <?php
+                                            endif;
+                                        elseif ($object['type'] == 'RatingAdded'): ?>
                                             <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
                                                     <img class="avatar" src="<?= $avatar ?>">

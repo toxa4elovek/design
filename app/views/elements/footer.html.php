@@ -13,9 +13,9 @@
         <nav class="nav">
             <p>
                 <?php if (preg_match('@pages/about@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('О нас', 'Pages::about', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('О проекте', 'Pages::about', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('О нас', 'http://www.godesigner.ru/pages/about') ?> /
+                    <?= $this->html->link('О проекте', 'http://www.godesigner.ru/pages/about') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/howitworks@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Как это работает', 'Pages::howitworks', array('style' => 'color: #4a4c55')) ?> /
@@ -26,16 +26,6 @@
                     <?= $this->html->link('Дизайнерам', 'Pages::to_designers', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
                     <?= $this->html->link('Дизайнерам', 'http://www.godesigner.ru/pages/to_designers') ?> /
-                <?php endif ?>
-                <?php if (preg_match('@answers@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Помощь', 'Answers::index', array('style' => 'color: #4a4c55')) ?> /
-                <?php else: ?>
-                    <?= $this->html->link('Помощь', 'http://www.godesigner.ru/answers') ?> /
-                <?php endif ?>
-                <?php if (preg_match('@pages/contacts@', $_SERVER["REQUEST_URI"])): ?>
-                    <a href="/pages/contacts" style="color:#4a4c55">Контакты</a> /
-                <?php else: ?>
-                    <a href="http://www.godesigner.ru/pages/contacts">Контакты</a> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/referal$@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Пригласи друга', 'Pages::referal', array('style' => 'color: #4a4c55')) ?> /
@@ -52,7 +42,24 @@
                 <?php else: ?>
                     <?= $this->html->link('Блог', 'http://www.godesigner.ru/posts') ?> /
                 <?php endif ?>
-                <strong><?= $this->html->link('Создать проект', 'http://www.godesigner.ru/pitches/create') ?></strong>
+                <?php if (preg_match('@news@', $_SERVER["REQUEST_URI"])): ?>
+                    <?= $this->html->link('Лента', 'http://www.godesigner.ru/news', array('style' => 'color: #4a4c55')) ?> /
+                <?php else: ?>
+                    <?= $this->html->link('Лента', 'http://www.godesigner.ru/news') ?> /
+                <?php endif ?>
+                <?php if (preg_match('@answers@', $_SERVER["REQUEST_URI"])): ?>
+                    <?= $this->html->link('Помощь', 'Answers::index', array('style' => 'color: #4a4c55')) ?> /
+                <?php else: ?>
+                    <?= $this->html->link('Помощь', 'http://www.godesigner.ru/answers') ?> /
+                <?php endif ?>
+                <?php if (preg_match('@pages/contacts@', $_SERVER["REQUEST_URI"])): ?>
+                    <a href="/pages/contacts" style="color:#4a4c55">Контакты</a>
+                <?php else: ?>
+                    <a href="http://www.godesigner.ru/pages/contacts">Контакты</a>
+                <?php endif ?>
+                <br>
+                <?= $this->html->link('Создать проект', 'http://www.godesigner.ru/pitches/create', array('class' => 'bottom-link-footer', 'style' => 'margin-left: 0;')) ?> /
+                    <strong>&nbsp;<?= $this->html->link('Распродажа логотипов', 'http://www.godesigner.ru/logosale', array('style' => 'margin-left: 0;color: #5c9263')) ?></strong>
             </p>
         </nav><!-- .nav -->
         <ul class="pay-systems">

@@ -9,9 +9,10 @@ class DiscountDesigner extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the DiscountDesigner command!');
-        $users = User::first(array('conditions' => array(
+        /*$users = User::first(array('conditions' => array(
                         'isDesigner' => 1,
-                        'confirmed_email' => 1), 'with' => 'Solution'));
+                        'confirmed_email' => 1), 'with' => 'Solution'));*/
+        $users = User::all(array('conditions' => array('email' => 'devochkina@godesigner.ru'), 'with' => 'Solution'));
         $count = 0;
         foreach ($users as $user) {
             if (count($user->solutions)) {

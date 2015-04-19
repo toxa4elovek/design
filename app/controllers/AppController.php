@@ -43,13 +43,17 @@ class AppController extends \lithium\action\Controller {
 
             // updates avatars
             Session::write('user.images', $user->images);
-
-            $topPanel = Pitch::all(array(
-                'with' => array('Category'),
-                'conditions' => array(
-                    'Pitch.user_id' => Session::read('user.id'), 'Pitch.blank' => 0, 'Pitch.status' => array('<' => 2)),
-
-            ));
+            $topPanel = Pitch::all(
+                array(
+                    'with' => array('Category'),
+                    'conditions' => array(
+                        array('OR' => array(
+                            array('Pitch.user_id = ' . Session::read('user.id') . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
+                            array('Pitch.user_id = ' . Session::read('user.id') . ' AND Pitch.billed = 1 AND Pitch.blank = 1'),
+                        )),
+                    )
+                )
+            );
             foreach($topPanel as $pitch):
                 if($pitch->awarded != 0):
                     $pitch->winner = Solution::first($pitch->awarded);
@@ -66,7 +70,6 @@ class AppController extends \lithium\action\Controller {
                     'awarded' => array('!=' => 0),
                     'status' => 1,
                     'billed' => 1,
-                    'blank' => 0
                 )));
             foreach($pitchesToCheck as $pitch) {
                 $solution = Solution::first($pitch->awarded);

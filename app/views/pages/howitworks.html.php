@@ -61,7 +61,7 @@
 				</div>
 				<div class="flag-red">
 					<p>
-						<?=$this->html->link('заполните бриф', 'Pitches::create')?><br />
+						<?=$this->html->link('заполните бриф', 'Pitches::create', array('class' => 'create-project-how-it-works'))?><br />
 						<i>и создайте проект для дизайнеров</i>
 					</p>
 				</div>

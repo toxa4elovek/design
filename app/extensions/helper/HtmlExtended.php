@@ -58,6 +58,9 @@ class HtmlExtended extends \lithium\template\helper\Html {
             $title = 'О проекте';
         endif;
         $title .= ' | GoDesigner';
+        if(($params['controller'] == 'solutions') && ($params['action'] == 'logosale')):
+            $title = 'Распродажа логотипов на GoDesigner.ru';
+        endif;
         if($notags) {
             return $title;
         }else {

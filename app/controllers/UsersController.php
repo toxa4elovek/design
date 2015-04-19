@@ -164,7 +164,7 @@ class UsersController extends \app\controllers\AppController {
             $accessToken = Event::getBingAccessToken();
             return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent', 'accessToken');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('date', 'updates', 'nextUpdates', 'pitches')));
+            return $this->render(array('layout' => false, 'data' => compact('pitchIds', 'date', 'updates', 'nextUpdates', 'pitches')));
         }
     }
 
@@ -209,7 +209,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function solutions() {
         $conditions = array('Solution.user_id' => Session::read('user.id'));
-        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch', 'Solutiontag')));
         $nominatedCount = $this->nominatedCount;
         $myPitches = Pitch::all(array('conditions' => array('user_id' => Session::read('user.id'), 'published' => 1, 'billed' => 1)));
 
@@ -218,7 +218,10 @@ class UsersController extends \app\controllers\AppController {
             foreach ($myPitches as $pitch) {
                 $idList[] = $pitch->id;
             }
-            $solutions = Solution::all(array('conditions' => array('pitch_id' => $idList), 'order' => array('Solution.id' => 'desc'), 'with' => array('Pitch')));
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $idList), 'order' => array('Solution.id' => 'desc'), 'with' => array('Pitch', 'Solutiontag')));
+        }
+        foreach($solutions as $solution) {
+            $solution->tags = Solution::getTagsArrayForSolution($solution);
         }
         $filterType = 'solutions';
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
@@ -1120,6 +1123,9 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function preview() {
+        if($this->request->id != Session::read('user.id')) {
+            $this->redirect('/users/view/' . $this->request->id);
+        }
         if ($user = User::first(Session::read('user.id'))) {
             $pitchCount = User::getPitchCount(Session::read('user.id'));
             $averageGrade = User::getAverageGrade(Session::read('user.id'));
@@ -1133,9 +1139,12 @@ class UsersController extends \app\controllers\AppController {
             $awardedSolutionNum = (int) User::getAwardedSolutionNum(Session::read('user.id'));
             $totalSolutionNum = (int) User::getTotalSolutionNum(Session::read('user.id'));
             if (User::checkRole('admin')) {
-                $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+                $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch', 'Solutiontag')));
             } else {
-                $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+                $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch', 'Solutiontag')));
+            }
+            foreach($selectedSolutions as $solution) {
+                $solution->tags = Solution::getTagsArrayForSolution($solution);
             }
             $isClient = false;
             $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
@@ -1174,7 +1183,7 @@ class UsersController extends \app\controllers\AppController {
                 $moderations = Moderation::all(array('conditions' => array('model_user' => $user->id)));
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
+            $userPitches = Pitch::all(array('conditions' => array('billed' => 1, 'user_id' => $user->id)));
             if (count($userPitches) > 0) {
                 $isClient = true;
                 $ids = array();

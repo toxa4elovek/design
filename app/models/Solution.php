@@ -25,6 +25,10 @@ class Solution extends \app\models\AppModel {
 
     public $belongsTo = array('Pitch', 'User');
     public $hasMany = array('Like', 'Solutiontag');
+    public static $logosaleNarrowSearches = array(
+        'it',
+        'кот'
+    );
     protected static $_behaviors = array(
         'UploadableSolution'
     );
@@ -35,6 +39,24 @@ class Solution extends \app\models\AppModel {
             'processImage' => array(
             ),
     ));
+    public static $industryDictionary = array(
+        'realty' => 'Недвижимость / Строительство',
+        'auto' => 'Автомобили / Транспорт',
+        'finances' => 'Финансы / Бизнес',
+        'food' => 'Еда / Напитки',
+        'adv' => 'Реклама / Коммуникации',
+        'tourism' => 'Туризм / Путешествие',
+        'sport' => 'Спорт',
+        'sci' => 'Образование / Наука',
+        'fashion' => 'Красота / Мода',
+        'music' => 'Развлечение / Музыка',
+        'culture' => 'Искусство / Культура',
+        'animals' => 'Животные',
+        'childs' => 'Дети',
+        'security' => 'Охрана / Безопасность',
+        'health' => 'Медицина / Здоровье',
+        'it' => 'Компьютеры / IT'
+    );
 
     public static function __init() {
         parent::__init();
@@ -107,7 +129,7 @@ http://godesigner.ru/answers/view/73');
                             ),
                         );
                         $context  = stream_context_create($options);
-                        $result = file_get_contents($url, false, $context);
+                        file_get_contents($url, false, $context);
                     }
                 } catch(Exception $e) {
 
@@ -416,17 +438,41 @@ http://godesigner.ru/answers/view/73');
     public static function filterLogoSolutions($solutions) {
         if ($solutions) {
             $black_list = array();
+            $winnersArray = array();
+            $solutionsArray = array();
+            // запоминаем решения победители
             foreach ($solutions as $v) {
+                $v->sort = 0;
+                if(!in_array($v->pitch->awarded, $winnersArray)) {
+                    $solutionsArray[] = $v->pitch->awarded;
+                }
                 if ($v->awarded) {
+                    $winnersArray[] = $v->user_id;
                     $black_list[] = array('user' => $v->user_id, 'pitch' => $v->pitch_id);
+                }
+            }
+            // запоминаем айдишники победителей
+            foreach($solutionsArray as $winnerSolution) {
+                $sol = Solution::first($winnerSolution);
+                if(!in_array($sol->user_id, $winnersArray)) {
+                    $winnersArray[] = $sol->user_id;
                 }
             }
             $solutions = $solutions->data();
             foreach ($solutions as $k => $solution) {
+                // убираем победившие решения
                 foreach ($black_list as $v) {
                     if ($v['pitch'] == $solution['pitch_id'] && $v['user'] == $solution['user_id']) {
                         unset($solutions[$k]);
                     }
+                }
+                // убириаем решение от победителя
+                if(in_array($solution['user_id'], $winnersArray)) {
+                    unset($solutions[$k]);
+                }
+                // убирам победившие решения еще раз
+                if(in_array($solution['id'], $solutionsArray)) {
+                    unset($solutions[$k]);
                 }
             }
         } else {
@@ -435,10 +481,31 @@ http://godesigner.ru/answers/view/73');
         return $solutions;
     }
 
+    public static function applyUserFilters(Array $solutions, $prop = array(), $variant = array()) {
+        foreach ($solutions as $k => $solution) {
+            $solutions[$k]['sort'] = 0;
+            $specific = unserialize($solution['pitch']['specifics']);
+            if (count($prop) > 0) {
+                $diff_prop = count(array_diff_assoc($prop, $specific['logo-properties']));
+            } else {
+                $diff_prop = false;
+            }
+            if (isset($specific['logoType']) && count($variant) > 0) {
+                $diff_variant = count(array_diff($specific['logoType'], $variant));
+            } else {
+                $diff_variant = false;
+            }
+            if ($diff_prop > 3 || $diff_variant == count($specific['logoType'])) {
+                unset($solutions[$k]);
+            }
+        }
+        return $solutions;
+    }
+
     public static function addBlankPitchForLogosale($user_id, $solution_id) {
         $result = array();
         $fee = 3500; $award = 6000; $total = $fee + $award;
-        $pitch = Pitch::first(array('conditions' => array('blank' => 1, 'user_id' => $user_id)));
+        $pitch = Pitch::first(array('conditions' => array('blank' => 1, 'user_id' => $user_id, 'billed' => 0)));
         if ($pitch) {
             $pitch->awarded = $solution_id;
             $pitch->save();
@@ -478,7 +545,7 @@ http://godesigner.ru/answers/view/73');
         return $result;
     }
 
-    public function getTagsArrayForSolution($solution) {
+    public static function getTagsArrayForSolution($solution) {
         $cacheKey = 'tags_for_solutions_' . $solution->id;
         if(!$temp_tags = Rcache::read($cacheKey)) {
             $temp_tags = array();
@@ -496,7 +563,218 @@ http://godesigner.ru/answers/view/73');
         return $temp_tags;
     }
 
+    /**
+     * Метод возвращяет массив строк, обработанных функцией urldecode(),
+     * принимает строчки или массивы
+     *
+     * @param $input
+     * @return array
+     */
+    public static function stringToWordsForSearchQuery($input) {
+        if(is_string($input)) {
+            if(!empty($input)) {
+                return explode(' ', urldecode($input));
+            }else {
+                return array();
+            }
+        }else if(is_array($input)) {
+            foreach($input as &$word) {
+                $word = urldecode($word);
+            }
+            return $input;
+        }
+    }
 
+    /**
+     * Метод возвращяет флипнутый массив видов деятельности (русские название - ключи,
+     * английские ключи - значения)
+     *
+     * @return array|bool
+     */
+    public static function flipIndustryDictionary() {
+        if(is_array(self::$industryDictionary)) {
+            return array_flip(self::$industryDictionary);
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * Метод убирает лишние пробелы и понижает регистр переданной строчки
+     *
+     * @param $string
+     * @return string
+     */
+    public static function cleanWordForSearchQuery($string) {
+        return mb_strtolower(trim($string), 'utf-8');
+    }
+
+    /**
+     * Метод получает массив слов для поиска, проверяет, есть ли среди этих слов
+     * строки, соответсвующие видам деятельности (со слешем) и если есть, разбивает
+     * такие строчки на индивидуальные слова
+     *
+     * @param $words
+     * @return array
+     */
+    public static function injectIndustryWords($words) {
+        $newArray = array();
+        foreach($words as $key => $word) {
+            if(preg_match('@\/@', $word)) {
+                $exploded = explode('/', $word);
+                foreach($exploded as $newWord) {
+                    $newArray[] = Solution::cleanWordForSearchQuery($newWord);
+                }
+            }else {
+                $newArray[] = $word;
+            }
+        }
+        return $newArray;
+    }
+
+    /**
+     * Метод проверяет слова на наличие видов действительности, и если есть,
+     * возвращяет англоязычные клиючи в виде списка
+     *
+     * @param $words
+     * @return array
+     */
+    public static function getListOfIndustryKeys($words) {
+        $flippedDict = Solution::flipIndustryDictionary();
+        $industries = array();
+        foreach($words as $key => $word) {
+            if(preg_match('@\/@', $word)) {
+                if (isset($flippedDict[$word])) {
+                    $industries[] = $flippedDict[$word];
+                }
+            }
+        }
+        return $industries;
+    }
+
+    /**
+     * Метод строит структуру для поискового запроса с поисковыми словами
+     *
+     * @param $wordsArray
+     * @param $industiesArray
+     * @param $tagsIds
+     * @param int $page
+     * @param int $limit
+     * @return array
+     */
+    public static function buildSearchQuery($wordsArray, $industiesArray, $tagsIds, $page = 1, $limit = 28, $orderArgument = null) {
+        // Разделенные поиск
+        $regexp = implode($wordsArray, '|');
+        $descriptionWord = implode($wordsArray, ' ');
+        // точный поиск
+        $regexpFull = '[[:<:]]' . implode($wordsArray, ' ') . '[[:>:]]';
+        $narrow = false;
+        // если слово - исключение, делаем точный поиск
+        if(in_array(mb_strtolower($regexp, 'UTF-8'), self::$logosaleNarrowSearches)) {
+            $narrow = true;
+        }
+        if((!$orderArgument) || (count($orderArgument) != 3)) {
+            $order = array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc');
+        }else {
+            $order = array();
+            foreach($orderArgument as $field) {
+                $order['Solution.' . $field] = 'desc';
+            }
+        }
+        $params = array('conditions' => array(
+            array('OR' => array(
+            )),
+            'Solution.multiwinner' => 0,
+            'Solution.awarded' => 0,
+            'Solution.selected' => 1,
+            'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
+            'Pitch.status' => array('>' => 1),
+            'Pitch.private' => 0,
+            'Pitch.category_id' => 1,
+            'Solution.rating' => array('>=' => 3)
+        ),
+            'order' => $order,
+            'with' => array('Pitch', 'Solutiontag'));
+        if(!$narrow) {
+            $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '" . $regexp . "'");
+            $params['conditions'][0]['OR'][] = array("Pitch.description LIKE '%$descriptionWord%'");
+            $params['conditions'][0]['OR'][] = array("'Pitch.business-description' LIKE '%$descriptionWord%'");
+        }else {
+            $params['conditions'][0]['OR'][] = array("Pitch.title REGEXP '$regexpFull'");
+            $params['conditions'][0]['OR'][] = array("Pitch.description REGEXP '$regexpFull'");
+            $params['conditions'][0]['OR'][] = array("'Pitch.business-description' REGEXP '$regexpFull'");
+        }
+        if(!empty($industiesArray)) {
+            $params['conditions'][0]['OR'][] = array("Pitch.industry LIKE '%" . $industiesArray[0] . "%'");
+        }
+        if($tagsIds) {
+            $tags = implode($tagsIds, ', ');
+            $params['conditions'][0]['OR'][] = array("Solutiontag.tag_id IN($tags)");
+        }
+        if($page) {
+            $params['page'] = $page;
+        }
+        if($limit) {
+            $params['limit'] = $limit;
+        }
+        return $params;
+    }
+
+    /**
+     * Метод строит поисковую структуру для потокового отображения
+     *
+     * @param int $page
+     * @param int $limit
+     * @param array|null $orderArgument
+     * @return array
+     */
+    public static function buildStreamQuery($page = 1, $limit = 28, $orderArgument = null) {
+        if((!$orderArgument) || (count($orderArgument) != 3)) {
+            $order = array('Solution.rating' => 'desc', 'Solution.likes' => 'desc', 'Solution.views' => 'desc');
+        }else {
+            $order = array();
+            foreach($orderArgument as $field) {
+                $order['Solution.' . $field] = 'desc';
+            }
+        }
+        $params = array(
+            'conditions' =>
+                array(
+                    'Solution.multiwinner' => 0,
+                    'Solution.awarded' => 0,
+                    'Solution.selected' => 1,
+                    'Pitch.awardedDate' => array('<' => date('Y-m-d H:i:s', time() - MONTH)),
+                    'Pitch.status' => array('>' => 1),
+                    'private' => 0,
+                    'category_id' => 1,
+                    'rating' => array('>=' => 3)
+                ),
+            'order' => $order,
+            'with' => array('Pitch'),
+            'page' => $page,
+            'limit' => $limit);
+        return $params;
+    }
+
+    /**
+     * Метод считает количество логотипов, доступных для распродажи, хранит информацию в кэше 1 день
+     *
+     * @return bool|mixed
+     */
+    public static function solutionsForSaleCount() {
+        if(!$totalCount = Rcache::read('logosale_totalcount')) {
+            $countParams = array('conditions' => array('Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'Solution.selected' => 1, 'private' => 0, 'category_id' => 1, 'rating' => array('>=' => 3)), 'order' => array('created' => 'desc'), 'with' => array('Pitch'));
+            $totalCount =  Solution::count($countParams);
+            Rcache::write('logosale_totalcount', $totalCount, '+1 day');
+        }
+        return $totalCount;
+    }
+
+    public static function randomizeStreamOrder() {
+        $array = array('likes', 'views', 'rating');
+        shuffle($array);
+        return $array;
+    }
 
 }
 

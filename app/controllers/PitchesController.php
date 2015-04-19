@@ -383,10 +383,15 @@ class PitchesController extends \app\controllers\AppController {
             $transaction->set($this->request->data);
             $transaction->save();
             if (($pitch = Pitch::first($this->request->data['MNT_TRANSACTION_ID'])) && ($pitch->total == $this->request->data['MNT_AMOUNT'])) {
-                if ($pitch->multiwinner != 0) {
-                    Pitch::activateNewWinner($this->request->data['MNT_TRANSACTION_ID']);
-                } else {
-                    Pitch::activate($this->request->data['MNT_TRANSACTION_ID']);
+                if ($pitch->blank == 1) {
+                    //Logger::write('info', serialize($this->request->data), array('name' => 'payture'));
+                    Pitch::activateLogoSalePitch($this->request->data['MNT_TRANSACTION_ID']);
+                }else {
+                    if ($pitch->multiwinner != 0) {
+                        Pitch::activateNewWinner($this->request->data['MNT_TRANSACTION_ID']);
+                    } else {
+                        Pitch::activate($this->request->data['MNT_TRANSACTION_ID']);
+                    }
                 }
             } elseif ($addon = Addon::first($this->request->data['MNT_TRANSACTION_ID'])) {
                 Addon::activate($addon);
@@ -831,6 +836,9 @@ class PitchesController extends \app\controllers\AppController {
             if ($nominatedSolutionOfThisPitch) {
                 $selectedsolution = true;
             }
+            if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
+                return $this->redirect('/pitches');
+            }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
@@ -931,6 +939,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     return $this->redirect('/requests/sign/' . $pitch->id);
                 }
             }
+            $nominatedSolutionOfThisPitch = Solution::first(array(
+                'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
+            ));
+            if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
+                return $this->redirect('/pitches');
+            }
             $pitch->views += 1;
             $pitch->save();
 
@@ -969,6 +983,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 if (($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
                     return $this->redirect('/requests/sign/' . $pitch->id);
                 }
+            }
+            $nominatedSolutionOfThisPitch = Solution::first(array(
+                'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
+            ));
+            if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
+                return $this->redirect('/pitches');
             }
             $canViewPrivate = false;
             if (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW) {
@@ -1071,6 +1091,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
             if ($this->request->env('HTTP_X_REQUESTED_WITH')) {
                 $solution->views = Solution::increaseView($this->request->id);
+            }
+            if((isset($this->request->query['exp'])) && ($this->request->query['exp'] == 1)) {
+                $userHelper = new UserHelper(array());
+                if ($userHelper->isLoggedIn()) {
+                    Solution::addBlankPitchForLogosale($userHelper->getId(), $solution->id);
+                }
             }
             $solution->tags = Solution::getTagsArrayForSolution($solution);
             $sort = $pitch->getSolutionsSortName($this->request->query);
@@ -1488,6 +1514,30 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $tags = Tag::getSuggest($this->request->query['name']);
             return json_encode($tags);
         }
+    }
+
+    public function accept() {
+        if(Pitch::acceptLogosalePitch($this->request->id, Session::read('user.id'))) {
+            $logosalePitch = Pitch::first($this->request->id);
+            if(!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+                return compact('true');
+            }else {
+                $this->redirect('/users/step2/' . $logosalePitch->awarded);
+            }
+        }else {
+            return $this->redirect('/');
+        }
+        return compact('true');
+    }
+
+    public function decline() {
+        $result = Pitch::declineLogosalePitch($this->request->id, Session::read('user.id'));
+        if(!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+            return compact('result');
+        }else {
+            $this->redirect('/');
+        }
+        return compact('true');
     }
 
 }

@@ -21,6 +21,15 @@
         </section>
         <section>
             <div class="center_block messages_gallery"  style="margin:35px 0 0 63px !important">
+                <?php if(($solution->pitch->blank == 1) && ($type == 'designer')  &&  ($solution->pitch->confirmed == 0)):?>
+                    <div class="regular" style="text-align: center;">
+                        Та-дам! Посетитель платформы предлагает выкупить ваше решение <a style="text-decoration: none;color: #6990a0;" href="http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id?>">#<?= $solution->num?></a> для<br> проекта <a style="text-decoration: none;color: #6990a0;" href="http://www.godesigner.ru/pitches/view/<?=$solution->pitch->id?>">«<?= $solution->pitch->title?>»</a> в рамках <a style="text-decoration: none;color: #6990a0;" href="http://www.godesigner.ru/logosale">распродажи логотипов</a>,
+                        а мы поздравляем<br> вас с возможностью заработать 6000р. В случае отказа, мы вернем ему деньги.<br> На подтверждение запроса у вас есть:
+                    </div>
+                    <h3 style="font-size: 20px; color: #60879c; text-align: center; margin-top: 40px;" class="countdown" data-deadline="<?=(strtotime($solution->pitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($solution->pitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></h3>
+                    <a href="/pitches/accept/<?=$solution->pitch->id?>" style="margin-left: auto; margin-right: auto; width: 220px;display: block; margin-top: 32px" class="button">Подтвердить</a>
+                    <a href="/pitches/decline/<?=$solution->pitch->id?>" data-title="<?=$solution->pitch->title?>" data-solutionid="<?=$solution->pitch->awarded?>" data-solutionnum="<?=$solution->num?>" data-pitchid="<?=$solution->pitch->id?>" class="popup-decline" style="text-shadow: -1px 0 0 #FFFFFF; margin-left: auto; margin-right: auto; width: 220px;display: block; margin-top: 9px; color: #666666; font-size: 14px; text-align: center; text-decoration: underline;">Отказать</a>
+                <?php else: ?>
                 <?php if ($solution->pitch->category_id == 7):?>
                     <?php if($type == 'designer'):?>
                     <span class="regular">Со дня определения победителя у заказчика есть 10 дней для получения полного объема работ, запрошенного в брифе.</span>
@@ -31,7 +40,16 @@
                     <?php if($type == 'designer'):?>
                     <span class="regular">Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об этом в комментариях. Успехов!</span>
                     <?php elseif($type == 'client') :?>
-                    <span class="regular">У вас есть право на внесение 3 поправок в течение <?=$solution->pitch->category->default_timelimit?> дней до запроса исходных файлов. Если вы удовлетворены макетами, пожалуйста, нажмите кнопку &laquo;Одобрить макеты&raquo; внизу страницы.</span>
+                        <?php if(($solution->pitch->blank == 1) && ($solution->pitch->confirmed == 0)):?>
+                                    <div class="regular" style="text-align: left;">
+                                        Отличный выбор! Мы поздравляем вас с принятием решения.<br><br>
+
+                                        Если дизайнер не ответит на ваш запрос в течение 3 дней с момента покупки, мы полностью вернем вам деньги. Пока вы можете оставить ему комментарий или список из 3 правок!
+                                    </div>
+                                    <h3 style="font-size: 20px; color: #60879c; text-align: center; margin-top: 30px;" class="countdown" data-deadline="<?=(strtotime($solution->pitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($solution->pitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></h3>
+                        <?php else:?>
+                            <span class="regular">У вас есть право на внесение 3 поправок в течение <?=$solution->pitch->category->default_timelimit?> дней до запроса исходных файлов. Если вы удовлетворены макетами, пожалуйста, нажмите кнопку &laquo;Одобрить макеты&raquo; внизу страницы.</span>
+                        <?php endif;?>
                     <?php endif;?>
                 <?php endif; ?>
 
@@ -203,6 +221,7 @@
                     <?php endif; ?>
                     </div>
                 </div>
+                <?php endif;?>
                 <?php endif;?>
             </div>
             <?=$this->view()->render(array('element' => '/complete-process/rightblock'), array('solution' => $solution, 'type' => $type))?>

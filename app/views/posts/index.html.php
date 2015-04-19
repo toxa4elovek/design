@@ -26,7 +26,7 @@
                                 <div style="float:left; width:330px; margin-left: 40px;">
 
                                     <h2 class="largest-header-blog">
-                                        <?php if(($post->published == 1) && (strtotime($post->created) < time())):?>
+                                        <?php if(($post->published == 1) && (strtotime($post->created) < (time() + HOUR))):?>
                                         <a style="text-transform:uppercase;" href="/posts/view/<?=$post->id?>"><?=$post->title?></a>
                                         <?php else:?>
                                         <a style="text-transform:uppercase;color:#ccc;" href="/posts/view/<?=$post->id?>"><?=$post->title?></a>
@@ -39,7 +39,8 @@
                                         $tagstring[] = '<a class="blogtaglink" href="/posts?tag=' . urlencode($tag) . '">' . $tag . '</a>';
                                     endforeach;
                                     ?>
-                                    <p style="text-transform:uppercase;font-size:11px;color:#666666"><?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?></p>
+                                    <p style="text-transform:uppercase;font-size:11px;color:#666666"><?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?>
+                                    </p>
                                     <div class="regular" style="margin-top:10px">
                                         <?php echo $post->short?>
                                     </div>

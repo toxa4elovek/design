@@ -103,4 +103,20 @@ class TagTest extends AppUnit {
         $this->assertEqual('Теги', $data[5]['name']);
     }
 
+    public function testRemoveTag() {
+        $solutionId = 100;
+        Tag::saveSolutionTag('Проверка', $solutionId);
+        $this->assertTrue(Tag::isTagExists('Проверка'));
+        $solutionTag = Solutiontag::first(array('conditions' => array('tag_id' => 5, 'solution_id' => $solutionId)));
+        $this->assertTrue(is_object($solutionTag));
+        $removeResult = Tag::removeTag('Проверка', $solutionId);
+        $solutionTag = Solutiontag::first(array('conditions' => array('tag_id' => 5, 'solution_id' => $solutionId)));
+        $this->assertFalse($solutionTag);
+        $all = Solutiontag::all();
+        $this->assertTrue(count($all->data()) > 0);
+        $this->assertTrue(Tag::isTagExists('Проверка'));
+        $this->assertTrue($removeResult);
+
+    }
+
 }

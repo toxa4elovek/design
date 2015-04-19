@@ -8,12 +8,7 @@
 
         <div class="middle_inner">
             <nav class="main_nav clear">
-                <?= $this->html->link('<span>Обновления</span>', array('controller' => 'users', 'action' => 'office'), array('escape' => false)) ?>
-                <?= $this->html->link('<span>Мои проекты</span>', array('controller' => 'users', 'action' => 'mypitches'), array('escape' => false)) ?>
-                <!--a href="#"><span>Сообщения</span></a-->
-                <?= $this->html->link('<span>Профиль</span>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'active')) ?>
-                <?= $this->html->link('<span>Решения</span>', array('controller' => 'users', 'action' => 'solutions'), array('escape' => false)) ?>
-                <?= $this->html->link('<span>Реквизиты</span>', array('controller' => 'users', 'action' => 'details'), array('escape' => false)) ?>
+                <?= $this->view()->render(array('element' => 'office/nav')); ?>
             </nav>
             <div class="profile">
 
@@ -61,16 +56,19 @@
                 </div>
 
                 <div class="about_profile clr">
-                    <dl>
+                    <!--dl>
                         <dt class="greyboldheader">Обо мне:</dt>
                         <dd class="regular">
                             <?= $this->brief->stripemail(nl2br($userdata['about'])) ?>
                         </dd>
                         <div class="separate"> </div>
-                    </dl>
+                    </dl-->
                 </div>
 
             </div>
+            <!--h3 style="text-shadow: 0 1px 1px #FFFFFF;
+margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; font-weight: normal; color: #666666;">Укажите 5 тегов, которые описывают ваше решение</h3>
+            <p style="text-shadow: 0 1px 1px #FFFFFF; margin-top: 20px;font-family: OfficinaSansC Book, serif; font-size: 17px; text-align: center; color: #666; margin-bottom: 40px;">Это поможет найти вашу идею тем, кто захочет его<br> купить. Т. о. мы дарим вам возможность продать работу,<br> если та не станет победителем с первого раза.</p-->
 
             <?php if (count($selectedSolutions) > 0): ?>
                 <div class="portfolio">
@@ -82,6 +80,9 @@
                             endif
                             ?>
                             <li>
+                                <div class="selecting_numb">
+                                    <span class="number_img_new">#<?= $solution->num ?></span>
+                                    <?= $this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false)) ?>   </div>
                                 <div class="photo_block">
                                         <?php if ($solution->pitch->category_id == 7): ?>
                                         <a href="/pitches/viewsolution/<?= $solution->id ?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
@@ -104,9 +105,29 @@
                                 <!--span class="bottom_arrow"><a href="#"><img src="/img/marker5_2.png" alt=""></a></span-->
                                     </div>
                                 </div>
-                                <div class="selecting_numb">
-                                    <span class="number_img">#<?= $solution->num ?></span>
-                            <?= $this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false)) ?>   </div>
+                                <!--div style="padding-top: 16px;">
+                                    <form class="tag_submit" data-solutionid="<?= $solution->id ?>">
+                                    <input type="text" name="tag" style="
+                                        width: 168px;
+                                        margin-bottom: 15px;
+                                        height: 30px;
+                                        <?php if(count($solution->tags) > 4):?>
+                                            display: none;
+                                        <?php endif?>
+                                    ">
+                                    </form>
+                                    <ul class="tags" data-solutionid="<?= $solution->id ?>">
+                                        <?php
+                                        if(is_array($solution->tags)):
+                                        foreach($solution->tags as $tag):?>
+                                        <li style="padding-left: 10px; padding-right: 10px; margin-right:6px; height: 21px; padding-top: 5px; margin-bottom:3px;"><?= $tag?>
+                                        <a class="removeTag" href="#" style="margin-left: 10px;">
+                                            <img src="/img/delete-tag.png" alt="" style="padding-top: 2px;">
+                                        </a>
+                                        </li>
+                                        <?php endforeach;endif;?>
+                                    </ul>
+                                </div-->
                             </li>
     <?php endforeach; ?>
                     </ul>
@@ -123,5 +144,7 @@
     </div><!-- .middle -->
 
 </div><!-- .wrapper -->
+<?=
+$this->html->script(array('users/preview'), array('inline' => false))?>
 <?=
 $this->html->style(array('/cabinet', '/portfolio.css'), array('inline' => false))?>
