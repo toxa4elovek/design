@@ -1138,7 +1138,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 );
             }
 
-            $cacheKey = md5(serialize($order)) . '_' . $solution->pitch_id;
+            $cacheKey = md5(serialize($order)) . '_' . $solution->pitch_id . '_' . $solution->id;
             if(!$results = Rcache::read($cacheKey)) {
                 $solutions = Solution::all(array(
                     'conditions' => array(
@@ -1147,13 +1147,14 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     'order' => $order)
                 );
                 $results = getArrayNeighborsByKey($solutions->data(), (int) $solution->id);
-                Rcache::write($cacheKey, $results, array(), '+4 hours');
+                Rcache::write($cacheKey, $results, array(), '+2 hours');
             }
             if ($this->request->is('json')) {
                 $solutions = array();
             }
             $next = $results['next'];
             $prev = $results['prev'];
+            $current = $results['current'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.id' => 'desc'), 'with' => array('User', 'Pitch')));
             $comments = Comment::filterComments($solution->num, $comments);
             $comments = Comment::filterCommentsTree($comments, $pitch->user_id);
@@ -1214,7 +1215,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $formatter = new MoneyFormatter;
             $description = mb_substr($pitch->description, 0, 150, 'UTF-8') . ((mb_strlen($pitch->description) > 150) ? '... ' : '. ') . 'Награда: ' . $formatter->formatMoney($pitch->price, array('suffix' => ' рублей')) . (($pitch->guaranteed == 1) ? ', гарантированы' : '');
             $date = Solution::getCreatedDate($solution->id);
-            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount');
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount');
         } else {
             throw new Exception('Public:Такого решения не существует.', 404);
         }
