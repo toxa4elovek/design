@@ -1,14 +1,13 @@
-<?php $bestResult = false; $secondResult = false;
-
-if ($result['percent'] >= 80 && $result['percent'] < 90):
-    $secondResult = true;
-endif;
-
-if ($result['percent'] >= 90):
-    $bestResult = true;
-endif;
-
-if (($firstTime) and ($this->user->isLoggedIn())): ?>
+<?php $bestResult = false; $secondResult = false; ?>
+<?php
+    if($result['percent'] >= 80 && $result['percent'] < 90) {
+        $secondResult = true;
+    }
+    if($result['percent'] >= 90) {
+        $bestResult = true;
+    }
+?>
+<?php if (($firstTime) and ($this->user->isLoggedIn())): ?>
     <?php if ($bestResult):
         $old = false;
         $datetime1 = new DateTime();
@@ -40,7 +39,7 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         if(!$old):
             //$helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
         endif;
-        $addonText = '<p style="650px">Поделитесь результатом с друзьями, и мы сократим ваш срок активации<br>
+        $addonText = '<p style="width: 650px">Поделитесь результатом с друзьями, и мы сократим ваш срок активации<br>
 на 5 дней, и тогда вы сможете принимать участие в проектах совсем скоро!</p>';
     else: ?>
         <?php
@@ -96,6 +95,7 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         $bigImage = 'http://www.godesigner.ru/img/questions/dvornik.png';
         $squareImage = 'http://www.godesigner.ru/img/questions/dvornik_fb.png';
         $shareImage = 'http://www.godesigner.ru/img/questions/dvornik_468_246.png';
+        $urlParam = 'dvornik';
         ?>
         <h2 class="largest-header-blog">Вы — дворник!</h2>
         <p style="margin-bottom: 46px;">Вам можно выметать улицы, по ходу создавая различные фигуры. Это ваши последователи выстригают НЛО-образные круги на полях. <?php echo $helpText;?></p>
@@ -108,6 +108,7 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         $bigImage = 'http://www.godesigner.ru/img/questions/malyar.png';
         $squareImage = 'http://www.godesigner.ru/img/questions/malyar_fb.png';
         $shareImage = 'http://www.godesigner.ru/img/questions/malyar_468_246.png';
+        $urlParam = 'malyar';
         ?>
         <h2 class="largest-header-blog">Вы — маляр!</h2>
         <p style="margin-bottom: 46px;">Непыльная работёнка, вы лучший кандидат в команду Тома Сойера. <br>Хорошая занятость и сдельная зарплата вам обеспечены. <?php echo $helpText;?></p>
@@ -118,7 +119,10 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я Большой мастер, и выше только бог!';
         $bigImage = 'http://www.godesigner.ru/img/questions/master.png';
         $squareImage = 'http://www.godesigner.ru/img/questions/master_fb.png';
-        $shareImage = 'http://www.godesigner.ru/img/questions/master_468_246.png'; ?>
+        $shareImage = 'http://www.godesigner.ru/img/questions/master_468_246.png';
+        $urlParam = 'master';
+        ?>
+        <?php $secondResult = true; ?>
         <h2 class="largest-header-blog">Вы — большой мастер!</h2>
         <p style="margin-bottom: 46px;">Большой мастер — почётное звание и выше только бог.  <?php echo $helpText;?></p>
         <?php echo $addonText;
@@ -128,7 +132,10 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я Аполлон, бог искусств!';
         $bigImage = 'http://www.godesigner.ru/img/questions/apollo.png';
         $squareImage = 'http://www.godesigner.ru/img/questions/apollo_fb.png';
-        $shareImage = 'http://www.godesigner.ru/img/questions/apollo_468_246.png'; ?>
+        $shareImage = 'http://www.godesigner.ru/img/questions/apollo_468_246.png';
+        $urlParam = 'apollo';
+        ?>
+        <?php $bestResult = true; ?>
         <h2 class="largest-header-blog">Вы — Аполлон!</h2>
         <p style="margin-bottom: 46px;">Вы эталон, бог искусств. Достаточно быть собой. <?php echo $helpText;?></p>
         <?php echo $addonText;
@@ -138,7 +145,7 @@ if (($firstTime) and ($this->user->isLoggedIn())): ?>
 
     <div class="share-this">
         <div style="display: block; float: left; margin-top: 8px; margin-bottom: 10px;">
-            <div class="social-likes" data-counters="no" data-title="<?= $shareText ?>" data-url="http://www.godesigner.ru/questions/index" style="padding-left: 230px;">
+            <div class="social-likes" data-counters="no" data-title="<?= $shareText ?>" data-url="http://www.godesigner.ru/questions?result=<?= $urlParam ?>" style="padding-left: 230px;">
                 <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 9px;" class="activate-user facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                 <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user twitter" data-via="Go_Deer">TWITT</div>
                 <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user vkontakte" data-image="<?=$shareImage ?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>
