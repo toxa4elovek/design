@@ -557,7 +557,8 @@ window.fbAsyncInit = function () {
         status: true, // check login status
         cookie: true, // enable cookies to allow the server to access the session
         oauth: true, // enable OAuth 2.0
-        xfbml: true  // parse XFBML
+        xfbml: true,  // parse XFBM
+        version: 'v2.0'
     });
     /*
      FB.Event.subscribe('edge.create',
