@@ -21,6 +21,7 @@
     <!--[if lte IE 9]><?= $this->html->style(array('/ie.css')); ?><![endif]-->
     <!--[if lte IE 8]><?= $this->html->style(array('/ie8.css')); ?><![endif]-->
     <!--[if lte IE 7]><?= $this->html->style(array('/ie7.css')); ?><![endif]-->
+    <meta property="og:type" content="website"/>
     <?php if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView']))):
     if(!isset($solution->images['solution_galleryLargeSize'][0])):
         $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
@@ -64,11 +65,37 @@
         echo '<meta property="fb:admins" content="nyudmitriy"/>';
         echo '<meta property="fb:app_id" content="202765613136579"/>';
     elseif(preg_match('@/questions@', $_SERVER['REQUEST_URI'])):
+        if((!empty($_GET)) && (isset($_GET['result']))):
+            if($_GET['result'] == 'dvornik'):
+                echo '<meta property="og:url" content="http://www.godesigner.ru/questions?result=dvornik"/>';
+                echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/dvornik_468_246.png"/>';
+                echo '<meta property="og:title" content="' . htmlspecialchars('Тест «Какой ты дизайнер на самом деле» показал, что я дворник, совсем не дизайнер!') . '"/>';
+            endif;
+
+            if($_GET['result'] == 'malyar'):
+                echo '<meta property="og:url" content="http://www.godesigner.ru/questions?result=malyar"/>';
+                echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/malyar_468_246.png"/>';
+                echo '<meta property="og:title" content="' . htmlspecialchars('Тест «Какой ты дизайнер на самом деле» показал, что я маляр, лучший кандидат в команду Тома Сойера!') . '"/>';
+            endif;
+
+            if($_GET['result'] == 'master'):
+                echo '<meta property="og:url" content="http://www.godesigner.ru/questions?result=master"/>';
+                echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/master_468_246.png"/>';
+                echo '<meta property="og:title" content="' . htmlspecialchars('Тест «Какой ты дизайнер на самом деле» показал, что я Большой мастер, и выше только бог!') . '"/>';
+            endif;
+
+            if($_GET['result'] == 'apollo'):
+                echo '<meta property="og:url" content="http://www.godesigner.ru/questions?result=apollo"/>';
+                echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/apollo_468_246.png"/>';
+                echo '<meta property="og:title" content="' . htmlspecialchars('Тест «Какой ты дизайнер на самом деле» показал, что я Аполлон, бог искусств!') . '"/>';
+            endif;
+        else:
+            echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/general.jpg"/>';
+        endif;
+        echo '<meta property="og:title" content="Тест на знание основ графического дизайна"/>';
         echo '<meta property="og:description" content="Узнай, какой ты дизайнер на самом деле!"/>';
-        echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/general.jpg"/>';
     elseif(isset($shareEvent)):
         echo '<meta property="og:url" content="http://www.godesigner.ru/news?event=' . $shareEvent->id . '"/>';
-        echo '<meta property="og:type" content="website"/>';
         if(!empty($shareEvent->news->imageurl)):
             echo '<meta property="og:title" content="' . htmlspecialchars($shareEvent->news->title) . '"/>';
             echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($shareEvent->news->short, 0, 100, 'UTF-8') . '...'))))  . '"/>';
