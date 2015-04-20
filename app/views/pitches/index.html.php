@@ -210,7 +210,7 @@
                         '</tr>' .
                         '<tr class="pitch-collapsed">' .
                         '<td class="icons"></td>' .
-                        '<td colspan="3" class="al-info-pitch"><p>' . $pitch['editedDescription'] .
+                        '<td colspan="3" class="al-info-pitch"><p>' . strip_tags($pitch['editedDescription'], '<br><p>') .
                         '</p><a href="/pitches/' . $pitchPath . '/' . $pitch['id'] . '" class="go-pitch">Перейти к проекту</a>' .
                         '</td>' .
                         '<td></td>' .

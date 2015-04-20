@@ -86,7 +86,7 @@ class PitchesController extends \app\controllers\AppController {
             $totalOwn = count($usersPitches);
         }
 
-        $limit = 50;
+        $limit = 70;
         $page = Pitch::getQueryPageNum($this->request->query['page']);
         $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
         $order = Pitch::getQueryOrder($this->request->query['order'], $this->request->query['type']);

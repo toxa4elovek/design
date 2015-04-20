@@ -207,7 +207,7 @@ function TableLoader() {
                 '</tr>' +
                 '<tr class="pitch-collapsed">' +
                 '<td class="icons"></td>' +
-                '<td colspan="3" class="al-info-pitch"><p>' + object.editedDescription +
+                '<td colspan="3" class="al-info-pitch"><p>' + object.editedDescription.replace(/<\/?[^>]+>/gi, '') +
                 '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к питчу</a>' +
                 '</td>' +
                 '<td></td>' +
