@@ -756,7 +756,7 @@ $(document).ready(function () {
     });
 
 
-    if (isAdmin) {
+    if ((isAdmin) || (isFeedWriter)) {
         var fd = new FormData();
         var reader = new FileReader();
         var form_file = false;

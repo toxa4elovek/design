@@ -40,6 +40,13 @@ class UserTest extends AppUnit {
         $this->assertEqual($editors, $result);
     }
 
+    public function testGetFeedAuthorsIds() {
+        $feedAuthors = array(1, 2);
+        User::$feedAuthors = $feedAuthors;
+        $result = User::getFeedAuthorsIds();
+        $this->assertEqual($feedAuthors, $result);
+    }
+
     public function testSetLastActionTime() {
         $user = User::first(2);
         $user->setLastActionTime();

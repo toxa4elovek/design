@@ -3,6 +3,7 @@
 namespace app\tests\cases\extensions\helper;
 
 use app\extensions\helper\User;
+use app\models\User as UserModel;
 
 class UserTest extends \lithium\test\Unit {
 
@@ -245,6 +246,15 @@ class UserTest extends \lithium\test\Unit {
         $this->assertEqual('/img/default_small_avatar.png', $this->user->getAvatarUrl());
         $this->user->write('user.images.avatar_small.weburl', '/img/custom_avatar.png');
         $this->assertEqual('/img/custom_avatar.png', $this->user->getAvatarUrl());
+    }
+
+    public function testIsFeedWriter() {
+        UserModel::$feedAuthors = array('1');
+        $this->assertFalse($this->user->isFeedWriter());
+        $this->user->write('user.id', 4);
+        $this->assertFalse($this->user->isFeedWriter());
+        $this->user->write('user.id', 1);
+        $this->assertTrue($this->user->isFeedWriter());
     }
 
 }

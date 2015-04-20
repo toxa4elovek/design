@@ -7,6 +7,7 @@ class MockUserModel extends \lithium\core\StaticObject {
     public static $admins = array(1, 2);
     public static $editors = array(1, 2, 3, 4);
     public static $authors = array(5);
+    public static $feedAuthors = array(1, 2);
 
     public static function getAuthorsIds() {
         return self::$authors;
@@ -18,5 +19,9 @@ class MockUserModel extends \lithium\core\StaticObject {
 
     public static function getEditorsIds() {
         return self::$editors;
+    }
+
+    public static function getFeedAuthorsIds() {
+        return self::$feedAuthors;
     }
 }

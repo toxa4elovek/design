@@ -28,6 +28,7 @@ class User extends \app\extensions\helper\Session {
         $this->_options['expertsIds'] = $options['expertModel']::getExpertUserIds();
         $this->_options['editorsIds'] = $options['userModel']::getEditorsIds();
         $this->_options['authorIds'] = $options['userModel']::getAuthorsIds();
+        $this->_options['feedAuthorsIds'] = $options['userModel']::getFeedAuthorsIds();
     }
 
     /**
@@ -80,6 +81,18 @@ class User extends \app\extensions\helper\Session {
             return false;
         }
         return in_array($this->getId(), $this->_options['authorIds']);
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь автором ленты новостей
+     *
+     * @return bool
+     */
+    public function isFeedWriter() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return in_array($this->getId(), $this->_options['feedAuthorsIds']);
     }
 
     /**

@@ -51,6 +51,14 @@ class User extends \app\models\AppModel {
      * @var array
      */
     public static $authors = array(8472, 17865, 18856, 25252);
+
+    /**
+     * Массив хранящий айдишнки авторов ленты новостей
+     *
+     * @var array
+     */
+    public static $feedAuthors = array(17865);
+
     protected static $_behaviors = array(
         'UploadableAvatar'
     );
@@ -1239,6 +1247,15 @@ class User extends \app\models\AppModel {
      */
     public static function getEditorsIds() {
         return self::$editors;
+    }
+
+    /**
+     * Метод возвращает список айдишников авторов ленты новостей
+     *
+     * @return array
+     */
+    public static function getFeedAuthorsIds() {
+        return self::$feedAuthors;
     }
 
     /**

@@ -13,11 +13,12 @@
                 var isCurrentExpert = <?php echo $this->user->isExpert() ? 1 : 0 ?>;
                 var isClient = <?php echo ($this->user->isPitchOwner($pitch->user->id)) ? 1 : 0; ?>;
                 var isAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
+                var isFeedWriter = <?php echo $this->user->isFeedWriter() ? 1 : 0 ?>;
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
                 var userName = '<?php echo ($this->user->getId()) ? $this->user->getFormattedName($this->user->firstname, $this->user->lastname) : ''; ?>';
                 var userGender = <?php echo $this->user->getGender(); ?>;
             </script>
-            <?php if ($this->user->isAdmin()): ?>
+            <?php if (($this->user->isAdmin()) or ($this->user->isFeedWriter())): ?>
                 <div id="news-add" style="display:none;">
                     <input type="text" name="news-title" placeholder="Заголовок">
                     <input type="text" name="news-link" placeholder="Ссылка">
