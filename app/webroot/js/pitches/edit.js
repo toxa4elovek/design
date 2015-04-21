@@ -1,5 +1,32 @@
 $(document).ready(function () {
 
+    tinymce.init({
+        selector: ".enable-editor",
+        content_css: "/css/brief_wysiwyg.css",
+        language: "ru",
+        height: "240",
+        width: '538',
+        relative_urls: false,
+        remove_script_host: false,
+        menubar: false,
+        plugins: ["link,lists,charmap,paste"],
+        toolbar: "styleselect,link,bullist,numlist,charmap",
+        style_formats: [
+            {title: 'Основной текст', inline: 'span', classes: "regular"},
+            {title: 'Заголовок', inline: 'span', classes: "greyboldheader"},
+            {title: 'Дополнение', inline: 'span', classes: "supplement2"},
+        ],paste_preprocess: function (pl, o) {
+            console.log(o.content);
+            if ((jQuery(o.content).text() == '') && (o.content != '')) {
+                var text = o.content
+            } else {
+                //var text = jQuery(o.content).html()
+            }
+            //o.content = text
+        }
+    });
+
+    /*
     $('.enable-editor').tinymce({
         // Location of TinyMCE script
         script_url: '/js/tiny_mce/tiny_mce.js',
@@ -90,7 +117,7 @@ $(document).ready(function () {
             }
         }
     });
-
+    */
     /* Download Form Select */
     if ((window.File != null) && (window.FileList != null)) {
         $('#new-download').show();

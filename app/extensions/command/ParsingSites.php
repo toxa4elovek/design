@@ -40,21 +40,21 @@ class ParsingSites extends \app\extensions\command\CronJob {
         //$this->out("Starting parsing colta.ru");
         //self::ParsingColta();
         //$this->out('Finished parsing colta.ru [' . (time() - $startTimeStamp) . ' sec]');
-        $this->out("Starting parsing newgrids.fr");
-        self::ParsingWordpress('http://newgrids.fr/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
-        $this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing newgrids.fr");
+        //self::ParsingWordpress('http://newgrids.fr/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        //$this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
 
-        $this->out("Starting parsing lovelypackage.com");
-        self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
-        $this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing lovelypackage.com");
+        //self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        //$this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
 
         //$this->out("Starting parsing bpando.org");
         //self::ParsingWordpress('http://bpando.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         //$this->out('Finished parsing bpando.org [' . (time() - $startTimeStamp) . ' sec]');
 
-        $this->out("Starting parsing love-aesthetics.nl");
-        self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
-        $this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing love-aesthetics.nl");
+        //self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        //$this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
 
         //$this->out("Starting parsing vice.com/ru");
         //self::ParsingVice();
@@ -83,7 +83,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         //$this->out("Starting parsing fuckingyoung.es");
         //self::ParsingWordpress('http://fuckingyoung.es/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         //$this->out('Finished parsing fuckingyoung.es [' . (time() - $startTimeStamp) . ' sec]');
-
+/*
         $this->out("Starting parsing raneytown.com");
         self::ParsingWordpress('http://raneytown.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing raneytown.com [' . (time() - $startTimeStamp) . ' sec]');
@@ -118,7 +118,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out('Finished parsing monsterchildren [' . (time() - $startTimeStamp) . ' sec]');
 
         //self::ParsingWordpress('http://illusion.scene360.com/feed/');
-
+*/
         $this->out("Starting fixing tags");
         self::fixTags();
         $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
