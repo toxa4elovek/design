@@ -250,21 +250,30 @@
                                                 <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                 <?php
                                                 $tweetLike = $object['news']['title'];
-                                                $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
+                                                $image = $object['news']['imageurl'];
+                                                if($isValidImage($object['news']['imageurl'])):
+                                                    $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
+
+                                                elseif((!$isValidImage($object['news']['imageurl'])) and ($object['news']['link'] != '')):
+                                                    $url = $object['news']['link'];
+                                                    $image = '';
+                                                else:
+                                                    $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
+                                                endif;
                                                 ?>
                                                 <div class="sharebar" style="position: absolute; display: none; top: 30px; left: 120px;">
-                                                    <div class="tooltip-block">
-                                                        <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>" data-title="<?= $tweetLike ?>">
-                                                            <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>">SHARE</div>
+                                                    <div class="tooltip-block" data-link="<?= $object['news']['link']?>">
+                                                        <div class="social-likes" data-counters="no" data-url="<?= $url?>" data-title="<?= $tweetLike ?>">
+                                                            <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="<?= $url?>">SHARE</div>
                                                             <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div>
-                                                            <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>" data-image="<?= $object['news']['imageurl']?>">SHARE</div>
+                                                            <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-url="<?= $url?>" data-image="<?= $image?>">SHARE</div>
                                                             <?php if($isValidImage($object['news']['imageurl'])):?>
-                                                            <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>" data-media="<?= $object['news']['imageurl']?>">PIN</div>
+                                                            <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="<?= $url?>" data-media="<?= $image?>">PIN</div>
                                                             <?php endif?>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <?php if($this->user->isAdmin()):?>
+                                                <?php if(($this->user->isAdmin()) || ($this->user->isFeedWriter())):?>
                                                     <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                     <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>
                                                 <?php endif?>
@@ -509,27 +518,38 @@
                                                 <div class="box-info" style="margin-top: 0;">
                                                     <?php if($this->user->getId()):?>
                                                     <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
-                                                    <span style="font-size: 28px;position: relative;top: 4px;">·</span>
+
                                                     <?php endif?>
+                                                    <?php if(($isValidImage($object['news']['imageurl'])) && ($object['news']['link'] != '')):?>
+                                                    <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
+                                                    <?php endif?>
                                                     <?php
                                                     $tweetLike = $object['news']['title'];
-                                                    $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
+                                                    $image = $object['news']['imageurl'];
+                                                    if($isValidImage($object['news']['imageurl'])):
+                                                        $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
+                                                    elseif((!$isValidImage($object['news']['imageurl'])) and ($object['news']['link'] != '')):
+                                                        $url = $object['news']['link'];
+                                                        $image = '';
+                                                    else:
+                                                        $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
+                                                    endif;
                                                     ?>
                                                     <div class="sharebar" style="position: absolute; display: none; top: 30px;<?php if($this->user->getId()):?> left: 120px; <?php else:?> left : 50px;<?php endif?>">
                                                         <div class="tooltip-block">
-                                                            <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>" data-title="<?= $tweetLike ?>">
-                                                                <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>">SHARE</div>
+                                                            <div class="social-likes" data-counters="no" data-url="<?= $url ?>" data-title="<?= $tweetLike ?>">
+                                                                <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="<?= $url ?>">SHARE</div>
                                                                 <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div>
-                                                                <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="<?= $object['news']['imageurl']?>">SHARE</div>
+                                                                <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="<?= $image?>">SHARE</div>
                                                                 <?php if($isValidImage($object['news']['imageurl'])):?>
-                                                                    <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="http://www.godesigner.ru/news?event=<?= $object['id']?>" data-media="<?= $object['news']['imageurl']?>">PIN</div>
+                                                                    <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="<?= $url ?>" data-media="<?= $image?>">PIN</div>
                                                                 <?php endif?>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <?php if($object['news']['original_title'] != ''):?>
-                                                    <span style="font-size: 28px;position: relative;top: 4px;">·</span>
+
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#" data-translated="true" data-original-short="<?= $object['news']['original_short']?>" data-original-title="<?= $object['news']['original_title']?>">Показать оригинальный текст</a>
                                                     <?php endif?>
                                                     <?php if($this->user->isAdmin()):?>
