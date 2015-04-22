@@ -16,15 +16,7 @@ $(document).ready(function () {
             {title: 'Основной текст', inline: 'span', classes: "regular"},
             {title: 'Заголовок', inline: 'span', classes: "greyboldheader"},
             {title: 'Дополнение', inline: 'span', classes: "supplement2"},
-        ],paste_preprocess: function (pl, o) {
-            console.log(o.content);
-            if ((jQuery(o.content).text() == '') && (o.content != '')) {
-                var text = o.content
-            } else {
-                //var text = jQuery(o.content).html()
-            }
-            //o.content = text
-        }
+        ]
     });
 
     /*$('.enable-editor').tinymce({
@@ -1188,7 +1180,7 @@ function FeatureCart() {
             'industry': $('input[name=industry]').val() || '',
             'jobTypes': self._jobArray(),
             'business-description': $('textarea[name=business-description]').val(),
-            'description': $('textarea[name=description]').val(),
+            'description': tinyMCE.activeEditor.getContent(),
             'fileFormats': self._formatArray(),
             'fileFormatDesc': $('textarea[name=format-description]').val(),
             'filesId': self.fileIds,
