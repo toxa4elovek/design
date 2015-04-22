@@ -19,8 +19,36 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
         $this->header('Welcome to the ParsingSites command!');
 
-        //self::ParsingDesnewsru();
-        //die();
+        $this->out("Starting parsing http://www.kokokokids.ru/");
+        self::ParsingKoko('http://www.kokokokids.ru/feeds/posts/default?alt=rss');
+        $this->out('Finished parsing http://www.kokokokids.ru/ [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing http://www.theartnewspaper.ru/");
+        self::ParsingSimpleRss('http://www.theartnewspaper.ru/rss/');
+        $this->out('Finished parsing http://www.theartnewspaper.ru/ [' . (time() - $startTimeStamp) . ' sec]');
+
+
+        $this->out("Starting parsing interviewrussia.ru");
+        self::ParsingInterview('http://www.interviewrussia.ru/export/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing interviewrussia.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+
+        $this->out("Starting parsing interviewrussia.ru");
+        self::ParsingInterview('http://www.interviewrussia.ru/export/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing interviewrussia.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing desnews.ru");
+        self::ParsingDesnewsru('http://desnews.ru/?feed=rss2', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing desnews.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing buro247.ru");
+        self::ParsingWordpress('http://www.buro247.ru/xml/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing buro247.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing russiangap.com");
+        self::ParsingWordpress('http://www.russiangap.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing russiangap.com [' . (time() - $startTimeStamp) . ' sec]');
+
 
         $this->out("Starting parsing pixelgene.ru");
         self::ParsingWordpress('http://pixelgene.ru/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
@@ -44,33 +72,35 @@ class ParsingSites extends \app\extensions\command\CronJob {
         //self::ParsingWordpress('http://newgrids.fr/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         //$this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
 
-        //$this->out("Starting parsing lovelypackage.com");
-        //self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
-        //$this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
+        $this->out("Starting parsing lovelypackage.com");
+        self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
 
-        //$this->out("Starting parsing bpando.org");
-        //self::ParsingWordpress('http://bpando.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
-        //$this->out('Finished parsing bpando.org [' . (time() - $startTimeStamp) . ' sec]');
+        $this->out("Starting parsing bpando.org");
+        self::ParsingWordpress('http://bpando.org/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing bpando.org [' . (time() - $startTimeStamp) . ' sec]');
 
-        //$this->out("Starting parsing love-aesthetics.nl");
-        //self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
-        //$this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
+        $this->out("Starting parsing love-aesthetics.nl");
+        self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
+        $this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
 
-        //$this->out("Starting parsing vice.com/ru");
-        //self::ParsingVice();
-        //$this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
+        $this->out("Starting parsing vice.com/ru");
+        self::ParsingVice();
+        $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing wtpack.ru");
         self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing wtpack.ru [' . (time() - $startTimeStamp) . ' sec]');
 
+
+
         $this->out("Starting parsing royalcheese.ru");
         self::ParsingRoyalcheese();
         $this->out('Finished parsing royalcheese.ru [' . (time() - $startTimeStamp) . ' sec]');
 
-        $this->out("Starting parsing lookatme.ru");
-        self::ParsingLookatme();
-        $this->out('Finished parsing lookatme.ru [' . (time() - $startTimeStamp) . ' sec]');
+        //$this->out("Starting parsing lookatme.ru");
+        //self::ParsingLookatme();
+        //$this->out('Finished parsing lookatme.ru [' . (time() - $startTimeStamp) . ' sec]');
 
         //$this->out("Starting parsing the-village.ru");
         //self::ParsingVillage();
@@ -153,7 +183,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'lang' => 'ru'
                 ));
                 $news->save();
-                Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
             }
         }
     }
@@ -198,7 +228,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'lang' => 'ru'
                 ));
                 $news->save();
-                Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
             }
         }
     }
@@ -328,7 +358,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     if(self::$debug == false) {
                         $news->save();
                         if ($event) {
-                            Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                            Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
                         }
                     }else {
                         var_dump($news->data());
@@ -410,7 +440,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'lang' => 'ru'
                 ));
                 $news->save();
-                Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
             }
         }
     }
@@ -470,7 +500,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'lang' => 'ru'
                     ));
                     $news->save();
-                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
                 }
             }
         }
@@ -524,8 +554,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingDesnewsru() {
-        $xml = simplexml_load_file('http://feeds.feedburner.com/Desnewsru');
+
+    private function ParsingKoko($url) {
+        $xml = simplexml_load_file($url);
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
             $trigger = false;
@@ -534,34 +565,141 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     $trigger = true;
                 }
             }
-            var_dump($trigger);
             if (!$trigger) {
                 $date = new \DateTime($item->published);
-                var_dump($item);
+                $image = '';
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
-                //if (isset($matches[1]) && !strpos($matches[1], 'feedburner.com/')) {
-                    var_dump(array(
-                        'title' => (string) $item->title,
-                        'short' => strip_tags($item->description),
-                        'tags' => 'Дизайн',
-                        'created' => $date->format('Y-m-d H:i:s'),
-                        'link' => substr($item->link['href'], 0, strpos($item->link['href'], '#')),
-                        'imageurl' => $matches[1],
-                        'lang' => 'ru'
-                    ));
-                    die();
-                    $news = News::create(array(
-                        'title' => (string) $item->title,
-                        'tags' => 'Дизайн',
-                        'short' => '',
-                        'created' => $date->format('Y-m-d H:i:s'),
-                        'link' => substr($item->link['href'], 0, strpos($item->link['href'], '#')),
-                        'imageurl' => $matches[1],
-                        'lang' => 'ru'
-                    ));
+                if (isset($matches[1]) && !strpos($matches[1], 'feedburner.com/')) {
+                    $image = $matches[1];
+                }
+                $data = array(
+                    'title' => (string) $item->title,
+                    'short' => strip_tags($item->description),
+                    'tags' => 'Дизайн',
+                    'created' => $date->format('Y-m-d H:i:s'),
+                    'link' => (string) $item->link,
+                    'imageurl' => $image,
+                    'lang' => 'ru'
+                );
+                if(self::$debug == false) {
+                    $news = News::create($data);
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
-                //}
+                }else {
+                    var_dump($data);
+                }
+            }
+        }
+    }
+
+    private function ParsingSimpleRss($url) {
+        $xml = simplexml_load_file($url);
+        $newsList = News::all();
+        foreach ($xml->channel->item as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                $image = '';
+
+                foreach($item->enclosure->attributes() as $key => $value) {
+                    if($key == 'url') {
+                        $image = (string) $value;
+                    }
+                }
+                $data = array(
+                    'title' => (string) $item->title,
+                    'short' => strip_tags($item->description),
+                    'tags' => 'Дизайн',
+                    'created' => $date->format('Y-m-d H:i:s'),
+                    'link' => (string) $item->link,
+                    'imageurl' => $image,
+                    'lang' => 'ru'
+                );
+                if(self::$debug == false) {
+                    $news = News::create($data);
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }else {
+                    var_dump($data);
+                }
+            }
+        }
+    }
+
+    private function ParsingInterview($url) {
+        $xml = simplexml_load_file($url);
+        $newsList = News::all();
+        foreach ($xml->channel->item as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                $data = array(
+                    'title' => (string) $item->title,
+                    'short' => strip_tags($item->description),
+                    'tags' => 'Дизайн',
+                    'created' => $date->format('Y-m-d H:i:s'),
+                    'link' => (string) $item->link,
+                    'imageurl' => (string) $item->guid,
+                    'lang' => 'ru'
+                );
+                if(self::$debug == false) {
+                    $news = News::create($data);
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }else {
+                    var_dump($data);
+                }
+            }
+        }
+    }
+
+    private function ParsingDesnewsru() {
+        $xml = simplexml_load_file('http://desnews.ru/?feed=rss2');
+        $newsList = News::all();
+        foreach ($xml->channel->item as $item) {
+            $trigger = false;
+            foreach ($newsList as $n) {
+                if ((string) $item->title === (string) $n->title) {
+                    $trigger = true;
+                }
+            }
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                $content = file_get_contents($item->guid);
+                preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+                $count = count($matches[1]);
+                $image = '';
+                for ($i = 0; $i < $count; $i++) {
+                    if (strpos($matches[1][$i], 'uploads/')) {
+                        $image = $matches[1][$i];
+                        if($i == 1) {
+                            break;
+                        }
+                    }
+                }
+                $data = array(
+                    'title' => (string) $item->title,
+                    'short' => strip_tags($item->description),
+                    'tags' => 'Дизайн',
+                    'created' => $date->format('Y-m-d H:i:s'),
+                    'link' => (string) $item->guid,
+                    'imageurl' => $image,
+                    'lang' => 'ru'
+                );
+
+                $news = News::create($data);
+                $news->save();
+                Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
             }
         }
     }
@@ -589,7 +727,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                         'lang' => 'ru'
                     ));
                     $news->save();
-                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
                 }
             }
         }
@@ -621,7 +759,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'lang' => 'en'
                     ));
                     $news->save();
-                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
                 }
             }
         }
@@ -652,7 +790,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                         'lang' => 'en'
                     ));
                     $news->save();
-                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
                 }
             }
         }
@@ -671,7 +809,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
             if (!$trigger) {
                 $date = new \DateTime($item->pubDate);
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
-                if (isset($matches[1])) {
+                if (isset($matches[1]))
+                {
                     $news = News::create(array(
                                 'title' => $this->translate((string) $item->title),
                                 'original_title' => (string) $item->title,
@@ -684,7 +823,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                                 'lang' => 'en'
                     ));
                     $news->save();
-                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time() - (HOUR))));
+                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
                 }
             }
         }

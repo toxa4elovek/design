@@ -1487,7 +1487,10 @@ function OfficeStatusUpdater() {
                     if(!validUrl) {
                         boxStyle = " style='margin-top: 34px'; ";
                     }
-                    var img = (object.news.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' + object.news.imageurl  : object.news.imageurl;
+                    var img = '';
+                    if(typeof(object.news.imageurl) != 'undefined') {
+                        img = (object.news.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' + object.news.imageurl  : object.news.imageurl;
+                    }
                     html += '<div class="box" ' + boxStyle + 'data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">';
 
                     if(validUrl) {
