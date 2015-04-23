@@ -322,6 +322,7 @@ $(document).ready(function () {
         $('body').one('click', function () {
             $('.sharebar').fadeOut(300);
         });
+        $('.social-likes').socialLikes();
         $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
             likesNum.html(response.likes);
             likeLink.off('click');
