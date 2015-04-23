@@ -71,7 +71,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         //$this->out("Starting parsing newgrids.fr");
         //self::ParsingWordpress('http://newgrids.fr/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         //$this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
-
+/*
         $this->out("Starting parsing lovelypackage.com");
         self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
@@ -83,7 +83,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing love-aesthetics.nl");
         self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
-
+*/
         $this->out("Starting parsing vice.com/ru");
         self::ParsingVice();
         $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
