@@ -139,7 +139,7 @@ class EventsController extends \app\controllers\AppController {
         $result = false;
         if ($this->request->data) {
             $news = News::create($this->request->data);
-            $news->created = date('Y-m-d H:i:s', (time() - (HOUR)));
+            $news->created = date('Y-m-d H:i:s');
             if (isset($this->request->data['file'])) {
                 $news->imageurl = News::resize($this->request->data['file']);
             }
