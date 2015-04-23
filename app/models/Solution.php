@@ -143,8 +143,9 @@ http://godesigner.ru/answers/view/73');
             $result = $chain->next($self, $params, $chain);
             if ($result != false) {
                 $solution = $params['solution'];
-                $pitch = Pitch::first($solution->pitch_id);
-                User::sendTweetWinner($solution, $pitch, true);
+                User::sendWinnerComment($solution);
+                //User::sendTweetWinner($solution);
+                Task::createNewTask($solution->id, 'victoryNotificationTwitter');
                 Task::createNewTask($solution->id, 'victoryNotification');
             }
             return $result;

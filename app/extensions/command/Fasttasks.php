@@ -3,6 +3,7 @@
 namespace app\extensions\command;
 
 use app\extensions\mailers\CommentsMailer;
+use app\models\Solution;
 use \app\models\Task;
 use \app\models\Pitch;
 use \app\models\User;
@@ -20,9 +21,13 @@ class Fasttasks extends \app\extensions\command\CronJob {
         $count = count($tasks);
         foreach($tasks as $task) {
             $methodName = '__' . $task->type;
-            if(method_exists('app\extensions\command\Fasttasks', $methodName)) {
+            if((method_exists('app\extensions\command\Fasttasks', $methodName)) && ($methodName != '__victoryNotificationTwitter')) {
                 $task->markAsCompleted();
                 Fasttasks::$methodName($task);
+            }elseif(method_exists('app\extensions\command\Fasttasks', '__victoryNotificationTwitter')) {
+                if(Fasttasks::$methodName($task)) {
+                    $task->markAsCompleted();
+                }
             }
         }
         if($count) {
@@ -46,6 +51,19 @@ class Fasttasks extends \app\extensions\command\CronJob {
         }else {
             $this->out('Error sending victory notification');
         }
+    }
+
+    private function __victoryNotificationTwitter($task) {
+        $solution = Solution::first($task->model_id);
+        $result = User::sendTweetWinner($solution);
+        /*if($result = SolutionsMailer::sendVictoryNotification($task->model_id)) {
+            $this->out('New victory notification sent');
+        }else {
+            $this->out('Error sending victory notification');
+        }*/
+        var_dump($result);
+        $this->out('Twitter victory notification sent');
+        return $result;
     }
 
     private function __newCommentFromAdminNotification($task) {

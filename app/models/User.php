@@ -24,6 +24,7 @@ use app\extensions\storage\Rcache;
 use \DirectoryIterator;
 use \app\extensions\helper\MoneyFormatter;
 use app\models\Facebook;
+use app\extensions\social\TwitterAPI;
 
 class User extends \app\models\AppModel {
 
@@ -1044,20 +1045,22 @@ class User extends \app\models\AppModel {
         }
     }
 
-    public function sendTweetWinner($solution, $pitch, $comment = false) {
-        if ($comment) {
-            $admin = User::getAdmin();
-            $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
+    public static function sendWinnerComment($solution) {
+        $admin = User::getAdmin();
+        $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом питче!<br/>
     Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
-            $data = array('pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
-            Comment::createComment($data);
-        }
+        $data = array('pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
+        Comment::createComment($data);
+    }
+
+    public function sendTweetWinner($solution) {
         $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
         $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
         $winner = self::first($solution->user_id);
         $nameInflector = new nameInflector();
         $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
         $moneyFormatter = new MoneyFormatter();
+        $pitch = Pitch::first($solution->pitch_id);
         $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
         if (rand(1, 100) <= 50) {
             $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
@@ -1074,7 +1077,7 @@ class User extends \app\models\AppModel {
                 }
             }
         }
-        self::sendTweet($tweet, $imageurl);
+        return TwitterAPI::sendTweet($tweet, $imageurl);
     }
 
     public static function sendFinishReports($pitch) {
