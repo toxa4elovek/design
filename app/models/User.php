@@ -16,6 +16,7 @@ use \app\models\Comment;
 use \app\models\Test;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
+use \app\extensions\helper\PitchTitleFormatter;
 use \app\extensions\smsfeedback\SmsFeedback;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
@@ -24,6 +25,7 @@ use app\extensions\storage\Rcache;
 use \DirectoryIterator;
 use \app\extensions\helper\MoneyFormatter;
 use app\models\Facebook;
+use app\models\Url;
 use app\extensions\social\TwitterAPI;
 
 class User extends \app\models\AppModel {
@@ -1013,7 +1015,6 @@ class User extends \app\models\AppModel {
     public static function sendTweet($tweet, $img = '') {
         require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhOAuth.php';
         require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhUtilities.php';
-
         $tmhOAuth = new tmhOAuth(array(
             'consumer_key' => '8r9SEMoXAacbpnpjJ5v64A',
             'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
@@ -1056,16 +1057,20 @@ class User extends \app\models\AppModel {
     public function sendTweetWinner($solution) {
         $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
         $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
+        $shortenedUrl = Url::createNew($solutionUrl);
+        $urlForTweet = 'http://www.godesigner.ru/urls/' . $shortenedUrl->short;
         $winner = self::first($solution->user_id);
         $nameInflector = new nameInflector();
         $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
         $moneyFormatter = new MoneyFormatter();
         $pitch = Pitch::first($solution->pitch_id);
         $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
+        $nameInflector = new PitchTitleFormatter();
+        $title = $nameInflector->renderTitle($pitch->title, 30);
         if (rand(1, 100) <= 50) {
-            $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $pitch->title . '» ' . $solutionUrl . ' #Go_Deer';
+            $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за питч «' . $title . '» ' . $urlForTweet . ' #Go_Deer';
         } else {
-            $tweet = $winnerName . ' победил в питче «' . $pitch->title . '», вознаграждение ' . $winnerPrice . ' ' . $solutionUrl . ' #Go_Deer';
+            $tweet = $winnerName . ' победил в питче «' . $title . '», награда ' . $winnerPrice . ' ' . $urlForTweet . ' #Go_Deer';
         }
         $imageurl = '';
         if ($pitch->private == 0 && $pitch->category_id != 7) {

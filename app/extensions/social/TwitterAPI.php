@@ -40,6 +40,28 @@ class TwitterAPI extends \lithium\core\Object {
             $data = json_decode($tmhOAuth->response['response'], true);
             return $data['id_str'];
         } else {
+            var_dump($tweet);
+            var_dump(json_decode($tmhOAuth->response['response'], true));
+            return false;
+        }
+    }
+
+    public static function getShortUrlLength() {
+        require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhOAuth.php';
+        require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhUtilities.php';
+
+        $tmhOAuth = new tmhOAuth(array(
+            'consumer_key' => '8r9SEMoXAacbpnpjJ5v64A',
+            'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
+            'user_token' => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
+            'user_secret' => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
+        ));
+        $code = $tmhOAuth->request('GET', $tmhOAuth->url('1.1/help/configuration'));
+        if ($code == 200) {
+            $data = json_decode($tmhOAuth->response['response'], true);
+            return $data['short_url_length_https'];
+        } else {
+            var_dump(json_decode($tmhOAuth->response['response'], true));
             return false;
         }
     }
