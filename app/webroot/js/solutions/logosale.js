@@ -578,6 +578,8 @@ jQuery(document).ready(function ($) {
         $('#newComment', '.solution-left-panel').val('');
         $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         solutionThumbnail = '';
+        var solution_tags = $('.solution-tags .tags');
+        solution_tags.empty();
         $.getJSON(urlJSON, function (result) {
             $('span#date').text('Опубликовано ' + result.date);
             // Navigation
@@ -596,6 +598,15 @@ jQuery(document).ready(function ($) {
 
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + prev + '.json?exp=1');
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + next + '.json?exp=1');
+
+            if (result.solution.tags) {
+                var html = '';
+                $.each(result.solution.tags, function (i, v) {
+                    //html += '<li><a href="#">' + v + '</a></li>';
+                    html += '<li>' + v + '</li>';
+                });
+                solution_tags.append(html);
+            }
 
             // Left Panel
             $('.solution-images').html('');
@@ -750,6 +761,45 @@ jQuery(document).ready(function ($) {
             if(scroll) {
                 //$('.scrolldown').click();
             }
+
+            // Copyrighted Materials
+            var copyrightedHtml = '<div class="solution-copyrighted"><!--  --></div>';
+            if ((result.solution.copyrightedMaterial == 1) && ((currentUserId == result.pitch.user_id) || (currentUserId == result.solution.user_id) || (isCurrentAdmin))) {
+                copyrightedHtml = copyrightedInfo(result.copyrightedInfo);
+            }
+            $('.solution-copyrighted').replaceWith(copyrightedHtml);
+
+            $('.value-views', '.solution-stat').text(result.solution.views || 0);
+            $('.value-likes', '.solution-stat').text(result.solution.likes || 0);
+            $('.value-comments', '.solution-stat').text(result.comments.length || 0);
+
+            if (result.pitch.category_id != 7) {
+
+                var media = 'http://www.godesigner.ru';
+                if ($.isArray(result.solution.images.solution_solutionView)) {
+                    media += result.solution.images.solution_solutionView[0].weburl
+                } else {
+                    media += result.solution.images.solution_solutionView.weburl
+                }
+                // Twitter like solution message
+                var tweetLike = 'Мне нравится этот дизайн! А вам?';
+                if (Math.floor((Math.random() * 100) + 1) <= 50) {
+                    tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
+                }
+
+                var shareTitle = tweetLike;
+                var url = 'http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id
+                var sharebar = '<div style="display: block; height: 75px"> \
+                <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
+                <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
+                <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div> \
+                <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="' + media + '" data-url="' + url + '">SHARE</div> \
+                <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="' + url + '" data-media="' + media + '">PIN</div></div></div>';
+                var fullshareblock = '<h2>ПОДЕЛИТЬСЯ</h2><div class="body" style="display: block;">' + sharebar + '</div>';
+                $('.solution-share').html(fullshareblock);
+                $('.social-likes').socialLikes();
+            }
+
         });
     }
 
