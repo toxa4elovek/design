@@ -23,8 +23,9 @@ class Sendemail extends \app\models\AppModel {
      */
     public static function clearOldSpamSimple() {
         $sentEmails = self::find('all', array(
+            'fields' => array('id'),
             'limit' => 1000,
-            'conditions' =>  array('created' => array('<' => date('Y-m-d H:i:s', time() - (WEEK * 3)))),
+            'conditions' =>  array('created' => array('<' => date('Y-m-d H:i:s', time() - (WEEK * 3.00)))),
             'order' => array('id' => 'asc')
         ));
         foreach($sentEmails as $email) {

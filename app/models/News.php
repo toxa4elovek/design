@@ -150,4 +150,13 @@ class News extends \app\models\AppModel {
         return $result;
     }
 
+    public static function doesNewsExists($title, $url = null) {
+        $conditions = array('title' => (string) $title);
+        if($url) {
+            $conditions['link'] = (string) $url;
+        }
+        $conditions = array('OR' => array($conditions));
+        return self::count(array('conditions' => $conditions));
+    }
+
 }

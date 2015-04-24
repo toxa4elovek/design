@@ -156,16 +156,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingGodesigner() {
         $posts = Post::all(array('conditions' => array('published' => 1, 'created' => array('<=' => date('Y-m-d H:i:s'))), 'limit' => 300, 'order' => array('created' => 'desc')));
-        $newsList = News::all();
         foreach ($posts as $post) {
-            $trigger = false;
-            if (($newsList) && (count($newsList) > 0)) {
-                foreach ($newsList as $n) {
-                    if (((string) $post->title === (string) $n->title) || ($n->link == 'http://www.godesigner.ru/posts/view/' . $post->id)) {
-                        $trigger = true;
-                    }
-                }
-            }
+            $trigger = News::doesNewsExists((string) $post->title, 'http://www.godesigner.ru/posts/view/' . $post->id);
+
             if (!$trigger) {
                 $this->out('Saving - ' . $post->title . ' (' . $post->id . ')');
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $post->full, $matches);
@@ -202,14 +195,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     'order' => array('post_date' => 'desc'),
                     'limit' => 300
         ));
-        $newsList = News::all();
 
         foreach ($posts as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if ((((string) $item->post_title === (string) $n->title) || ($n->link == $item->guid)) || $item->category == 'images') {
-                    $trigger = true;
-                }
+            if($item->category == 'images') {
+                $trigger = true;
+            }else {
+                $trigger = News::doesNewsExists((string) $item->post_title, $item->guid);
             }
             if (!$trigger) {
                 $this->out('Saving - ' . $item->post_title);
@@ -316,15 +307,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
     private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true, $lang = 'en') {
         $xml = simplexml_load_file($url);
         if (($xml->channel->item) && (count($xml->channel->item > 0))) {
-
-            $newsList = News::all();
             foreach ($xml->channel->item as $item) {
-                $trigger = false;
-                foreach ($newsList as $n) {
-                    if (((string)$item->title === (string)$n->title) || ($n->link == $item->link)) {
-                        $trigger = true;
-                    }
-                }
+                $trigger = News::doesNewsExists((string) $item->title, $item->link);
                 if (!$trigger) {
                     $this->out('Saving - ' . $item->title);
                     preg_match($regexp, $item->asXML(), $matches);
@@ -370,14 +354,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingVice() {
         $xml = simplexml_load_file('http://www.vice.com/ru/rss');
-        $newsList = News::all();
         foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link)) {
-                    $trigger = true;
-                }
-            }
+            $trigger = News::doesNewsExists((string) $item->title, $item->link);
             if (!$trigger) {
                 $this->out('Saving - ' . $item->title);
                 $date = new \DateTime($item->pubDate);
@@ -401,15 +379,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
     private function ParsingRoyalcheese() {
         $url = 'http://www.royalcheese.ru/';
         $xml = simplexml_load_file($url . 'rss/');
-        $newsList = News::all();
-
         foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if (((string) $item->title === (string) $n->title) || ($n->link == $item->link)) {
-                    $trigger = true;
-                }
-            }
+            $trigger = News::doesNewsExists((string) $item->title, $item->link);
             $photo = false;
             $city = false;
             if (!$trigger && ($photo = strpos($item->link, 'photo/') || $city = strpos($item->link, 'city/'))) {
@@ -447,14 +418,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingLookatme() {
         $xml = simplexml_load_file('http://www.lookatme.ru/feeds/posts.atom');
-        $newsList = News::all();
         foreach ($xml->entry as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if (((string) $item->title === (string) $n->title) || ($n->link == $item->id)) {
-                    $trigger = true;
-                }
-            }
+            $trigger = News::doesNewsExists((string) $item->title, $item->id);
+
             if (!$trigger) {
                 $date = new \DateTime($item->published);
                 $content = file_get_contents($item->id);
@@ -557,14 +523,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingKoko($url) {
         $xml = simplexml_load_file($url);
-        $newsList = News::all();
         foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
-                    $trigger = true;
-                }
-            }
+            $trigger = News::doesNewsExists((string) $item->title, $item->link);
             if (!$trigger) {
                 $date = new \DateTime($item->published);
                 $image = '';
@@ -594,14 +554,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingSimpleRss($url) {
         $xml = simplexml_load_file($url);
-        $newsList = News::all();
         foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
-                    $trigger = true;
-                }
-            }
+            $trigger = News::doesNewsExists((string) $item->title, (string) $item->link);
             if (!$trigger) {
                 $date = new \DateTime($item->published);
                 $image = '';
@@ -633,14 +587,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingInterview($url) {
         $xml = simplexml_load_file($url);
-        $newsList = News::all();
         foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
-                    $trigger = true;
-                }
-            }
+            $trigger = News::doesNewsExists($item->title,  $item->guid);
             if (!$trigger) {
                 $date = new \DateTime($item->published);
                 $data = array(
@@ -665,14 +613,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingDesnewsru() {
         $xml = simplexml_load_file('http://desnews.ru/?feed=rss2');
-        $newsList = News::all();
         foreach ($xml->channel->item as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if ((string) $item->title === (string) $n->title) {
-                    $trigger = true;
-                }
-            }
+            $trigger = News::doesNewsExists($item->title,  $item->guid);
             if (!$trigger) {
                 $date = new \DateTime($item->published);
                 $content = file_get_contents($item->guid);
@@ -706,14 +648,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingPackaginguqam() {
         $xml = simplexml_load_file('http://feeds.feedburner.com/blogspot/mzWJ?format=xml');
-        $newsList = News::all();
         foreach ($xml->entry as $item) {
-            $trigger = false;
-            foreach ($newsList as $n) {
-                if (((string) $item->title === (string) $n->title) || ($n->link == substr($item->link['href'], 0, strpos($item->link['href'], '#')))) {
-                    $trigger = true;
-                }
-            }
+            $trigger = News::doesNewsExists($item->title,  substr($item->link['href'], 0, strpos($item->link['href'], '#')));
             if (!$trigger) {
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->content, $matches);
                 if (isset($matches[1]) && !strpos($matches[1], 'feedburner.com/')) {
