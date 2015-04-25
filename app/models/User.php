@@ -406,7 +406,7 @@ class User extends \app\models\AppModel {
         }
 
         // затем ищем питчи, которые пользователь добавил в избранное
-        if(!$awarded) {
+        /*if(!$awarded) {
             $fav = Favourite::find('all', array('conditions' => array('Favourite.user_id' => $userId), 'with' => array('Pitch')));
             foreach ($fav as $f) {
                 // нет смысла добавлять повторно, если мы в них уже участвуем
@@ -416,7 +416,7 @@ class User extends \app\models\AppModel {
                     $pitchesIds[$f->pitch->id . ''] = $f->created;
                 }
             }
-        }
+        }*/
         ksort($pitchesIds);
         return $pitchesIds;
     }

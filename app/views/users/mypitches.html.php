@@ -33,9 +33,9 @@
                         </tr>
                     </table>
                     <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:25px;width: 637px;height:347px;background-color: white;z-index:10;position:absolute;">
-                        <ul class="filterlist" style="float:left;width:140px;margin-left:25px;text-transform: none">
+                        <ul class="filterlist" style="float:left;width:190px;margin-left:25px;text-transform: none">
                             <li class="first">питчи</li>
-                            <li style="width:85px"><a data-group="type" data-value="all" href="#">все</a></li>
+                            <li style="width:205px"><a data-group="type" data-value="all" href="#">все проекты с моими решениями</a></li>
                             <!--li><a href="#">по новизне</a></li-->
                             <li style="width:85px"><a data-group="type" data-value="current" href="#">текущие</a></li>
                             <li style="width:85px"><a data-group="type" data-value="finished" href="#">завершенные</a></li>
