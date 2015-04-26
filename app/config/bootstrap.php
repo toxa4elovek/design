@@ -108,7 +108,7 @@ require __DIR__ . '/bootstrap/validation.php';
 
 	define('WINS_FOR_VIEW', 1); // Designer`s wins for allow private pitches view
 
-date_default_timezone_set('Europe/Moscow');
+date_default_timezone_set('Europe/Minsk');
 
 /*
 use lithium\action\Dispatcher;

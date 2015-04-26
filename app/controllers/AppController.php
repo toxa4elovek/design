@@ -11,6 +11,7 @@ use \app\models\Post;
 use \app\models\Favourite;
 use \lithium\storage\Session;
 use \lithium\storage\session\adapter\Cookie;
+use app\extensions\helper\User as UserHelper;
 use \lithium\security\Auth;
 
 
@@ -18,14 +19,15 @@ class AppController extends \lithium\action\Controller {
 
     public function _init() {
         parent::_init();
-        if(Session::read('user.id')) {
+        $userHelper = new UserHelper();
+        if($userHelper->isLoggedIn()) {
             if(function_exists('newrelic_add_custom_parameter')) {
-                newrelic_add_custom_parameter('userId', Session::read('user.id'));
+                newrelic_add_custom_parameter('userId', $userHelper->getId());
             }
             Session::write('user.attentionpitch', null);
             Session::write('user.attentionsolution', null);
             Session::write('user.timeoutpitch', null);
-            if($user = User::find(Session::read('user.id'))) {
+            if($user = User::find($userHelper->getId())) {
                 // Проверяем, ни забанен ли пользователь
                 if($user->banned) {
                     Auth::clear('user');
@@ -48,8 +50,8 @@ class AppController extends \lithium\action\Controller {
                     'with' => array('Category'),
                     'conditions' => array(
                         array('OR' => array(
-                            array('Pitch.user_id = ' . Session::read('user.id') . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
-                            array('Pitch.user_id = ' . Session::read('user.id') . ' AND Pitch.billed = 1 AND Pitch.blank = 1'),
+                            array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
+                            array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.billed = 1 AND Pitch.blank = 1'),
                         )),
                     )
                 )
@@ -62,50 +64,43 @@ class AppController extends \lithium\action\Controller {
 
             Session::write('user.currentpitches', $topPanel);
             /** ** **/
-            //array('conditions' => array('awarded' => array('!=' => 0), 'status' => 1))
             $topPanelDesigner = array();
-            $pitchesToCheck = Pitch::all(array(
-                'with' => array('Category'),
-                'conditions' => array(
-                    'awarded' => array('!=' => 0),
-                    'status' => 1,
-                    'billed' => 1,
-                )));
-            foreach($pitchesToCheck as $pitch) {
-                $solution = Solution::first($pitch->awarded);
-                if($solution->user_id == Session::read('user.id')) {
-                    $topPanelDesigner[] = $pitch;
+            $wonProjectsIds = User::getUsersWonProjectsIds($userHelper->getId());
+            if(!empty($wonProjectsIds)) {
+                $pitchesToCheck = Pitch::all(array(
+                    'with' => array('Category'),
+                    'conditions' => array('Pitch.id' => $wonProjectsIds),
+                ));
+                foreach($pitchesToCheck as $pitch) {
+                    $solution = Solution::first($pitch->awarded);
+                    if($userHelper->isSolutionAuthor($solution->user_id)) {
+                        if(($pitch->status == 2) and (strtotime($pitch->totalFinishDate) < time() - 3 * DAY)) {
+
+                        }else {
+                            $pitch->winner = $solution;
+                            $topPanelDesigner[] = $pitch;
+                        }
+                    }
                 }
             }
 
-            foreach($topPanelDesigner as $pitch):
-                if($pitch->awarded != 0):
-                    $pitch->winner = Solution::first($pitch->awarded);
-                endif;
-            endforeach;
-
             Session::write('user.currentdesignpitches', $topPanelDesigner);
             /** faves */
-            $faves = Favourite::all(array('conditions' => array('user_id' => Session::read('user.id'))));
-            $favesPitchIds = array();
-            foreach($faves as $fave) {
-                $favesPitchIds[] = $fave->pitch_id;
-            }
-            Session::write('user.faves', $favesPitchIds);
+            Session::write('user.faves', Favourite::getFavouriteProjectsIdsForUser($userHelper->getId()));
             if((Session::read('user.blogpost') == null) || (Session::read('user.blogpost.count') == 0)) {
                 $lastPost = Post::first(array('conditions' => array('published' => 1), 'order' => array('created' => 'desc')));
                 $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
 
                 if(isset($_COOKIE['counterdata'])) {
                     $counterData = unserialize($_COOKIE['counterdata']);
-                    if(isset($counterData[Session::read('user.id')])) {
-                        $date = $counterData[Session::read('user.id')]['date'];
+                    if(isset($counterData[$userHelper->getId()])) {
+                        $date = $counterData[$userHelper->getId()]['date'];
                     }
                 }
                 $count = Post::count(array('conditions' => array('created' => array('>' => $date), 'published' => 1)));
                 Session::write('user.blogpost.count', $count);
 
-                $counterData = array(Session::read('user.id') => array('date' => $date));
+                $counterData = array($userHelper->getId() => array('date' => $date));
                 setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
             }
 
@@ -116,7 +111,7 @@ class AppController extends \lithium\action\Controller {
                     $date = Session::read('user.events.date');
                 }
                 Session::write('user.events.date', $date);
-                if($updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, $date)) {
+                if($updates = Event::getEvents(User::getSubscribedPitches($userHelper->getId()), 1, $date)) {
 
                     Session::write('user.events.count', count($updates));
                 }else {

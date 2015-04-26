@@ -16,7 +16,7 @@ class User extends \app\extensions\helper\Session {
     /**
      * Конструктор устанавливает свойства
      */
-    public function __construct($config) {
+    public function __construct($config = array()) {
         $defaults = array(
             'userModel' => 'app\models\User',
             'expertModel' => 'app\models\Expert',

@@ -174,7 +174,7 @@
                     ?>
                     <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                         <td width="105" style="text-align: left; border: 0;">
-                            <?php if($mypitch->category_id != 7 &&($mypitch->status == 1) && ($mypitch->awarded != 0)):?>
+                            <?php if($mypitch->category_id != 7 && (($mypitch->status == 2) || ($mypitch->status == 1)) && ($mypitch->awarded != 0)):?>
                                 <img data="<?= $mypitch->category_id ?>" class="pitches-image" src="<?php echo isset($mypitch->winner->images['solution_tutdesign'][0]) ? $mypitch->winner->images['solution_tutdesign'][0]['weburl'] :$mypitch->winner->images['solution_tutdesign']['weburl']?>">
                             <?php endif?>
                         </td>
@@ -196,7 +196,13 @@
                         <?php if($mypitch->blank != 1 ):?>
                         <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                         <td class="idea"><?=$mypitch->ideas_count?></td>
-                        <td class="pitches-time"><a style="color:#639F6D" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">Победа!<br/> Завершите питч!</a></td>
+                        <td class="pitches-time"><a style="color:#639F6D" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">
+                        <?php if($mypitch->status == 1):?>
+                                Победа!<br/> Завершите проект!
+                        <?php elseif($mypitch->status == 2): ?>
+                            Победа!<br/> Проект завершен!
+                        <?php endif?>
+                        </a></td>
                         <?php elseif (($mypitch->blank == 1) && ($mypitch->confirmed == 0)): ?>
                         <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
                             <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="/pitches/accept/<?=$mypitch->id?>">Подтвердить &nbsp;&nbsp;<span class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span></a><br><br>

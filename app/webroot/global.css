@@ -239,6 +239,13 @@
 .header-menu-item-higlighted{
     color: #464650;
 }
+.form-faq-link {
+    font-size: 12px;
+    margin-left: 40px;
+}
+.form-faq-link:hover {
+    text-decoration: underline;
+}
 /*
   Footer
 */

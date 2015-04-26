@@ -16,7 +16,7 @@ class NewsTest extends AppUnit {
         $this->rollDown('News');
     }
 
-    public function testGetPost() {
+    /*public function testGetPost() {
         Rcache::delete('middle-post');
         $post = News::getPost();
         $this->assertEqual('Масло масляное: Ева Хан о своей картин', $post->title);
@@ -63,6 +63,24 @@ class NewsTest extends AppUnit {
         $post5 = News::getPost();
         $this->assertEqual('Масло масляное: Ева Хан о своей картин', $post5->title);
         Rcache::delete('middle-post');
+    }*/
+
+    public function testdoesNewsExists() {
+
+        $result = News::doesNewsExists('Fake');
+        $this->assertFalse($result);
+
+        $result = News::doesNewsExists('Матрешкин труд');
+        $this->assertTrue($result);
+
+        $result = News::doesNewsExists('Матрешкин труд', 'http://tutdesign.ru/cats/illustration/17254');
+        $this->assertTrue($result);
+
+        $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/17254');
+        $this->assertTrue($result);
+
+        $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/17254 2');
+        $this->assertFalse($result);
     }
 
 }

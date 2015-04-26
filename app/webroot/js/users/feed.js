@@ -1466,12 +1466,11 @@ function OfficeStatusUpdater() {
             this.addNews = function (object) {
                 var html = '';
 
-                if((object.news.short.match(/fb-xfbml-parse-ignore/g)) || (object.news.short.match(/vk_post/g))) {
+                if((object.news.short.match(/fb-xfbml-parse-ignore/g)) || (object.news.short.match(/instagram-media/g)) || (object.news.short.match(/vk_post/g))) {
                     if((object.news.short.match(/vk_post/g))) {
                         var text = object.news.short.replace(/width: 500/i, "width: 600");
                     }else {
                         var text = object.news.short.replace(/data-width="500"/i, 'data-width="600"');
-                        console.log(text);
                         text.replace('<div id="fb-root"></div>', '');
                     }
                     html = '<div data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">' + text + '</div>';
@@ -1487,7 +1486,10 @@ function OfficeStatusUpdater() {
                     if(!validUrl) {
                         boxStyle = " style='margin-top: 34px'; ";
                     }
-                    var img = (object.news.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' + object.news.imageurl  : object.news.imageurl;
+                    var img = '';
+                    if(typeof(object.news.imageurl) != 'undefined') {
+                        img = (object.news.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' + object.news.imageurl  : object.news.imageurl;
+                    }
                     html += '<div class="box" ' + boxStyle + 'data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">';
 
                     if(validUrl) {
@@ -1658,7 +1660,7 @@ function OfficeStatusUpdater() {
                             html += ' <span>лайкнули решение</span></span>';
                         }
                     } else if (likes < 2) {
-                        html += '<span class="who-likes"><a target="_blank" data-id="' + like.user_id + '" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + '</a> <span>' + self.getGenderTxt('лайкнул', like.user.gender) + ' рещение</span></span>';
+                        html += '<span class="who-likes"><a target="_blank" data-id="' + like.user_id + '" href="http://www.godesigner.ru/users/view/' + like.user_id + '">' + like.creator + '</a> <span>' + self.getGenderTxt('лайкнул', like.user.gender) + ' решение</span></span>';
                     }
                 });
                 html += '</div></div>';

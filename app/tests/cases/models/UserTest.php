@@ -93,4 +93,21 @@ class UserTest extends AppUnit {
 		$user4 = User::setUserToken($id);
 		$this->assertEqual($user3->token, $user4->token);	
 	}
+
+    public function testGetUsersWinnerSolutionsIds() {
+        $expected = array();
+        $this->assertEqual($expected, User::getUsersWinnerSolutionsIds(1));
+
+        $expected = array(4, 6);
+        $this->assertEqual($expected, User::getUsersWinnerSolutionsIds(2));
+    }
+
+    public function testGetUsersWonProjectsIds() {
+        $expected = array();
+        $this->assertEqual($expected, User::getUsersWonProjectsIds(1));
+
+        $expected = array(2, 6);
+        $this->assertEqual($expected, User::getUsersWonProjectsIds(2));
+    }
+
 }

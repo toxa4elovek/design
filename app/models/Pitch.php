@@ -1484,7 +1484,9 @@ class Pitch extends \app\models\AppModel {
                 $solution->awarded = 1;
                 $solution->nominated = 1;
                 $solution->save();
-                User::sendTweetWinner($solution, $pitch, true);
+                User::sendWinnerComment($solution);
+                //User::sendTweetWinner($solution);
+                Task::createNewTask($solution->id, 'victoryNotificationTwitter');
                 Task::createNewTask($solution->id, 'victoryNotification');
                 return true;
             }

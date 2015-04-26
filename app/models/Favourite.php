@@ -83,4 +83,19 @@ class Favourite extends \app\models\AppModel {
         return $fav;
     }
 
+    /**
+     * Метод возвращяет список айдишников проектов, которые пользователь $userId
+     * добавил себе в избранное.
+     *
+     * @param $userId
+     * @return array
+     */
+    public static function getFavouriteProjectsIdsForUser($userId) {
+        $favs = self::all(array('fields' => array('pitch_id'), 'conditions' => array('user_id' => $userId)));
+        $result = array_map(function($fav) {
+            return $fav['pitch_id'];
+        }, $favs->data());
+        return $result;
+    }
+
 }

@@ -475,10 +475,10 @@
                                                     ?>
                                                 </div></div>
                                         <?php elseif ($object['type'] == 'newsAdded'):
-                                            if((preg_match('@fb-xfbml-parse-ignore@', $object['news']['short'])) || (preg_match('@vk_post@', $object['news']['short']))):
+                                            if((preg_match('@fb-xfbml-parse-ignore@', $object['news']['short'])) || (preg_match('@instagram-media@', $object['news']['short'])) || (preg_match('@vk_post@', $object['news']['short']))):
                                                 if(preg_match('@vk_post@', $object['news']['short'])) {
                                                     $text = str_replace('{width: 500}', '{width: 600}', $object['news']['short']);
-                                                }else {
+                                                }else{
                                                     $text = str_replace('data-width="500"', 'data-width="600"', $object['news']['short']);
                                                     $text = str_replace('<div id="fb-root"></div>', '', $text);
                                                 }

@@ -31,7 +31,7 @@
                 <div class="g_line"></div>
                 <div id="P_card">
                     <table>
-                        <tr>
+                        <!--tr>
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="payanyway">
                             </td>
@@ -58,14 +58,14 @@
                         </tr>
                         <tr>
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                        </tr>
+                        </tr-->
                         <tr class="paymaster-section">
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                             </td>
-                            <td colspan="3" class="s3_text" style="padding-left: 20px;">
-                                Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
-                                <p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p>
+                            <td colspan="1" class="s3_text" style="padding-left: 20px;">
+                                Оплата пластиковыми картами и эл. деньгами <!--br-->через PayMaster<br><br>
+                                <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
                             </td>
                         </tr>
                         <tr id="paymaster-images" class="paymaster-section">
