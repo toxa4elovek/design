@@ -89,6 +89,5 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<script id="twitter-wjs" type="text/javascript" async defer src="//platform.twitter.com/widgets.js"></script>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), 'http://surfingbird.ru/share/share.min.js', 'http://assets.pinterest.com/js/pinit.js','/js/fotorama/jquery-1.8.0.min.js','/js/fotorama/jquery.validate.min.js','/js/fotorama/jquery.countdown.min.js', 'jquery.timeago', '/js/fotorama/fotorama.js', 'social-likes.min.js', 'posts/view'), array('inline' => false))?>
+<?=$this->html->script(array('/js/fotorama/jquery-1.8.0.min.js','/js/fotorama/jquery.validate.min.js','/js/fotorama/jquery.countdown.min.js', 'jquery.timeago', '/js/fotorama/fotorama.js', 'social-likes.min.js', 'posts/view'), array('inline' => false))?>
 <?=$this->html->style(array('/js/fotorama/fotorama.css', '/help', '/blog', 'disqus', '/css/social-likes_flat'), array('inline' => false))?>

@@ -31,14 +31,33 @@ $(document).ready(function() {
             $rama.wrapAll('<div class="fotorama" data-nav="false" data-maxwidth="100%" />');
             // 1. Initialize fotorama manually.
             var classFotorama = $(this).find('.fotorama');
-            var $fotoramaDiv = classFotorama.fotorama();
+            var $fotoramaDiv = classFotorama.on(
+                'fotorama:showend', function (e, fotorama, extra) {
+                    var classList = $(e.target).attr('class').split(/\s+/);
+                    $.each( classList, function(index, item){
+                        if (item !== 'fotorama') {
+                            fotoramaId = (item);
+                        }
+                    });
+                    var arrowBlock = $('div[data-fotorama="' + fotoramaId + '"]');
+                    if(arrowBlock.length != 0) {
+                        $('.page', arrowBlock).text(fotorama.activeFrame.i);
+                    }
+                }).fotorama();
+            var classList = $fotoramaDiv.attr('class').split(/\s+/);
+            $.each( classList, function(index, item){
+                if (item !== 'fotorama') {
+                    fotoramaId = (item);
+                }
+            });
+
             // 2. Get the API object.
             var fotorama = $fotoramaDiv.data('fotorama');
             var arrows = $(this).find('.fotorama__arr');
             if (arrows.length > 0) {
                 arrows.remove();
             }
-            $('<div class="fotorama_arrows"><span class="fotorama__arr--prev button round prev"><div class="arrow-left"></div></span><span class="page">1</span><span id="fotorama_separator">/</span><span class="count"></span><span class="fotorama__arr--next button round next"><div class="arrow-right"></div></span></div>').insertAfter(classFotorama);
+            $('<div class="fotorama_arrows" data-fotorama="' + fotoramaId + '"><span class="fotorama__arr--prev button round prev"><div class="arrow-left"></div></span><span class="page">1</span><span id="fotorama_separator">/</span><span class="count"></span><span class="fotorama__arr--next button round next"><div class="arrow-right"></div></span></div>').insertAfter(classFotorama);
             $(this).find('.count').append($rama.length);
         }
     });
