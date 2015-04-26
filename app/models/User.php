@@ -1439,4 +1439,47 @@ class User extends \app\models\AppModel {
             header('Location: ' . $loginUrl);
         }
     }
+
+    /**
+     * Метод возвращаяет список айдишников решений-победителей для пользователя $userId
+     *
+     * @param $userId
+     * @return array
+     */
+    public static function getUsersWinnerSolutionsIds($userId) {
+        return self::__findIdsOfWonProjectsOfUser($userId, 'id');
+    }
+
+    /**
+     * Метод возвращяет спиской айдишников питчей, в который побеждал пользователь $userId
+     *
+     * @param $userId
+     * @return array
+     */
+    public static function getUsersWonProjectsIds($userId) {
+        return self::__findIdsOfWonProjectsOfUser($userId, 'pitch_id');
+    }
+
+    /**
+     * Метод возвращяет список полей $fields питчей, в которых побеждал пользователь $userId
+     *
+     * @param $userId
+     * @param $field
+     * @return array
+     */
+    private static function __findIdsOfWonProjectsOfUser($userId, $field) {
+        $fields = array();
+        $fields[] = $field;
+        $solutions = Solution::all(array('fields' => $fields, 'conditions' => array(
+            'user_id' => $userId,
+            'OR' => array(
+                array('awarded' => 1),
+                array('nominated' => 1)
+            ))));
+        $result = array();
+        foreach($solutions as $solution) {
+            $result[] = $solution->{$field};
+        }
+        return $result;
+    }
 }
