@@ -907,7 +907,7 @@ class User extends \app\models\AppModel {
     }
 
     public static function sendChooseWinnerSpam() {
-        $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
+        $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'multiwinner' => 0, 'blank' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
         $ids = array();
         foreach ($pitches as $pitch) {
             $user = User::first($pitch->user_id);
