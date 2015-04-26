@@ -96,6 +96,7 @@ class Brief extends \lithium\template\Helper {
         }
         // Mentions
         $string = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', $string);
+        $string = str_replace('<br /><br />', '<br />', $string);
         return $string;
     }
 	
