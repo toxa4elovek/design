@@ -21,7 +21,7 @@
                 <?php if($pitch->private == 1):?>
                 <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="http://www.godesigner.ru/answers/view/64">закрытый питч</a> и вам нужно подписать соглашение о неразглашении!</span><br/>
                 <?php else:?>
-                <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php echo $pitch->editedDescription?></span><br/>
+                <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php echo strip_tags($pitch->editedDescription, '<br><br/><p><a><ul><li><ol>')?></span><br/>
                 <?php endif?>
         </td></tr>
         <tr>
