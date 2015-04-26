@@ -22,7 +22,7 @@
         if(!$old):
             //$helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
         endif;
-        $addonText = '<p style="650px">Поделитесь результатом с друзьями, и мы сократим ваш срок активации<br>
+        $addonText = '<p style="width: 650px">Поделитесь результатом с друзьями, и мы сократим ваш срок активации<br>
 на 5 дней, и тогда вы сможете принимать участие в проектах совсем скоро! Внимание, наличие активной ссылки в социальных сетях будет проверено!</p>';
     elseif ($secondResult): ?>
         <?php
@@ -35,7 +35,7 @@
         }
         $remain = $interval->format('%d дн. %h ч. %i мин.');
 
-        $helpText = '<br>Вы - большой мастер, вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
+        $helpText = '<br>Вам самое место на <a href="/pitches" target="_blank">GoDesigner</a>!';
         if(!$old):
             //$helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
         endif;
@@ -74,7 +74,7 @@
         if ($bestResult):
         $helpText = '<br>Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner!</a>';
     elseif ($secondResult):
-        $helpText = '<br>Вы - большой мастер, вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
+        $helpText = '<br>Вам самое место на <a href="/pitches" target="_blank">GoDesigner</a>!';
     else:
         $helpText = '';
         if(!$old):
