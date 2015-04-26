@@ -65,18 +65,21 @@ class AppController extends \lithium\action\Controller {
             Session::write('user.currentpitches', $topPanel);
             /** ** **/
             $topPanelDesigner = array();
-            $pitchesToCheck = Pitch::all(array(
-                'with' => array('Category'),
-                'conditions' => array('Pitch.id' => User::getUsersWonProjectsIds($userHelper->getId())),
-            ));
-            foreach($pitchesToCheck as $pitch) {
-                $solution = Solution::first($pitch->awarded);
-                if($userHelper->isSolutionAuthor($solution->user_id)) {
-                    if(($pitch->status == 2) and (strtotime($pitch->totalFinishDate) < time() - 3 * DAY)) {
+            $wonProjectsIds = User::getUsersWonProjectsIds($userHelper->getId());
+            if(!empty($wonProjectsIds)) {
+                $pitchesToCheck = Pitch::all(array(
+                    'with' => array('Category'),
+                    'conditions' => array('Pitch.id' => $wonProjectsIds),
+                ));
+                foreach($pitchesToCheck as $pitch) {
+                    $solution = Solution::first($pitch->awarded);
+                    if($userHelper->isSolutionAuthor($solution->user_id)) {
+                        if(($pitch->status == 2) and (strtotime($pitch->totalFinishDate) < time() - 3 * DAY)) {
 
-                    }else {
-                        $pitch->winner = $solution;
-                        $topPanelDesigner[] = $pitch;
+                        }else {
+                            $pitch->winner = $solution;
+                            $topPanelDesigner[] = $pitch;
+                        }
                     }
                 }
             }
