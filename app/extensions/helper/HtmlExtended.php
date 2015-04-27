@@ -31,10 +31,10 @@ class HtmlExtended extends \lithium\template\helper\Html {
             $title = 'Блог';
         endif;
         if(($params['controller'] == 'Pitches') && ($params['action'] == 'index')):
-            $title = 'Все питчи';
+            $title = 'Все проекты';
         endif;
         if(($params['controller'] == 'pitches') && ($params['action'] == 'create')):
-            $title = 'Создание питча';
+            $title = 'Создание проекта';
         endif;
         if(($params['controller'] == 'pitches') && (($params['action'] == 'details') || ($params['action'] == 'viewsolution') || ($params['action'] == 'view'))):
             $title = $pitch->title;

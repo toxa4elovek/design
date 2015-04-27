@@ -25,7 +25,7 @@
                         <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
                             <tr><td height="38"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Хотите получить больше решений? Воспользуйтесь нашей дополнительной опцией «<a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/88">Продлить срок</a>». Стоимость дополнительного дня 1950р., из которых 1000р. идет в сумму гонорара для победителя. Увеличение гонорара существенно повысит мотивацию дизайнеров работать именно над вашим проектом. Опция доступна только до окончания срока питча.<br><br>
+                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Хотите получить больше решений? Воспользуйтесь нашей дополнительной опцией «<a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/88">Продлить срок</a>». Стоимость дополнительного дня 1950р., из которых 1000р. идет в сумму гонорара для победителя. Увеличение гонорара существенно повысит мотивацию дизайнеров работать именно над вашим проектом. Опция доступна только до окончания срока проекта.<br><br>
 Теперь вы можете номинировать двух и более победителей. Подробнее <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/97">тут</a>.</td>
                             </tr>
                             <tr><td height="20"></td></tr>
@@ -36,7 +36,7 @@
                             </td></tr>
                             <tr><td height="20"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Стоимость дополнительного дня 1950р., из которых 1000р. идет в сумму гонорара для победителя. Опция доступна только до окончания срока питча. <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/88">Подробнее на сайте</a>.</td>
+                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Стоимость дополнительного дня 1950р., из которых 1000р. идет в сумму гонорара для победителя. Опция доступна только до окончания срока проекта. <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/88">Подробнее на сайте</a>.</td>
                             </tr>
                             <tr><td height="40"></td></tr>
                             <tr>

@@ -79,7 +79,7 @@ function mb_basename($file)
                         <div class="editor_content"><?=$this->brief->briefDetails($pitch->{'business-description'}, $pitch)?></div>
                         <?php endif;?>
 
-                        <h2 class="blueheading">Описание питча</h2>
+                        <h2 class="blueheading">Описание проекта</h2>
                         <div class="editor_content"><?=$this->brief->briefDetails($pitch->description, $pitch)?></div>
 
                         <div class="separator" style="width:620px; margin:0;"></div>

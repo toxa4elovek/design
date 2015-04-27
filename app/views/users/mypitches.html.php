@@ -34,7 +34,7 @@
                     </table>
                     <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:25px;width: 637px;height:347px;background-color: white;z-index:10;position:absolute;">
                         <ul class="filterlist" style="float:left;width:190px;margin-left:25px;text-transform: none">
-                            <li class="first">питчи</li>
+                            <li class="first">проекты</li>
                             <li style="width:205px"><a data-group="type" data-value="all" href="#">все проекты с моими решениями</a></li>
                             <!--li><a href="#">по новизне</a></li-->
                             <li style="width:85px"><a data-group="type" data-value="current" href="#">текущие</a></li>
@@ -91,7 +91,7 @@
             </section>
         </div><!-- /middle_inner -->
         <div id="popup-final-step" class="popup-final-step" style="display:none">
-            <h3>Вы уверены, что хотите удалить этот питч?</h3>
+            <h3>Вы уверены, что хотите удалить этот проект?</h3>
             <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить свое решение. Нажав "Да, одобряю", вы подтверждаете, что хотите удалить его из списка. Убедитесь, что это черновой вариант и не ждет поступления оплаты на наш счет. За справкой <a href="/pages/contacts">обратитесь к нам</a>.</p>
             <div class="final-step-nav wrapper" style="margin-top: 180px;"><input type="submit" class="button second popup-close" value="Нет, отменить"> <input type="submit" class="button" id="confirmDelete" value="Да, одобряю"></div>
         </div>

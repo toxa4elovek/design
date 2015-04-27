@@ -26,7 +26,7 @@
                 <tr id="paymaster-select" class="paymaster-section" style="display: none;">
                     <td colspan="4">
                         <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
-                        <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
+                        <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата проекта')?>&LMI_CURRENCY=RUB'></script>
                     </td>
                 </tr>
             <?php endif;?>
@@ -62,8 +62,8 @@
                                 <input type="submit" id="button-fiz" value="Скачать счёт" class="button third" style="width:420px;">
                                 <div class="clr"></div>
                             </form>
-                            <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
-                               Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
+                            <p>Мы активируем ваш проект на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
+                               Пока вы можете просмотреть ваш проект в <a href="/users/mypitches">личном кабинете</a>.</p>
                         </div>
                         <div class="pay-yur">
                             <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
@@ -83,9 +83,9 @@
                                 <label class="required">Юридический адрес</label>
                                 <input type="text" name="yur-address" id="yur-address" placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" required="" data-content="mixed">
 
-                                <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
-                                Пока вы можете просмотреть ваш питч в <a href="/users/mypitches">личном кабинете</a>.</p>
-                                <p>Закрывающие документы вы получите на e-mail сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать.
+                                <p>Мы активируем ваш проект на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
+                                Пока вы можете просмотреть ваш проект в <a href="/users/mypitches">личном кабинете</a>.</p>
+                                <p>Закрывающие документы вы получите на e-mail сразу после того, как завершите проект. Распечатайте их, подпишите и поставьте печать.
                                 Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27).
                                 В ответном письме вы получите оригиналы документов с нашей печатью.</p>
                                 <input type="submit" id="button-yur" value="Скачать счёт" class="button third" style="width:420px;">
@@ -136,5 +136,5 @@
     <div class="g_line"></div>
     <input type="button" id="backbutton" style="width: 175px; margin-right: 12px;" value="<< Вернуться" class="button steps-link" data-step="2">
     <input type="button" style="width: 175px; margin-right: 12px; padding-left: 0; padding-right: 0" value="Сохранить черновик" class="savedraft button">
-    <a href="/pitches" class="button" style="width: 167px; padding-left: 0; padding-right: 0; margin-right: 0;">Все питчи >></a>
+    <a href="/pitches" class="button" style="width: 167px; padding-left: 0; padding-right: 0; margin-right: 0;">Все проекты >></a>
 </div>

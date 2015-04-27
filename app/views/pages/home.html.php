@@ -31,7 +31,7 @@
           </div>
           <div class="fill">
               <?=$this->html->link('Заказчику', 'Pitches::create', array('class' => 'mainpage-create-project'))?><br>
-              <span>создайте питч для дизайнеров</span>
+              <span>создайте проект для дизайнеров</span>
           </div>
       </div>
 
@@ -115,7 +115,7 @@
               <div class="wap_table">
                 <table class="spec_table">
                   <tr>
-                    <th style="font-size:11px;color:#666666;">текущие питчи</th>
+                    <th style="font-size:11px;color:#666666;">текущие проекты</th>
                     <th class="price_th" style="font-size:11px;color:#666666;">цена</th>
                     <th class="idea__th" style="font-size:11px;color:#666666;">идей</th>
                     <th class="term_th" style="font-size:11px;color:#666666;">Срок</th>

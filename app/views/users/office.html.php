@@ -130,11 +130,11 @@
 
                 <div id="no-updates" style="display:none;">
                     <section class="post">
-                        <h2 class="title largest-header" style="width:640px;background: none;">участвуйте в <a href="/pitches">питчах</a>, и ваши решения появятся в галерее сверху</h2>
+                        <h2 class="title largest-header" style="width:640px;background: none;">участвуйте в <a href="/pitches">проектах</a>, и ваши решения появятся в галерее сверху</h2>
                         <p class="align-center"><img  src="/img/img-cont1.png" alt="" width="440" height="154"></p>
                     </section><!-- .post -->
                     <section class="post">
-                        <h2 class="title largest-header" style="width:640px;background: none;">Добавляйте понравившийся <a href="/pitches">питч</a> в «избранное» и отслеживайте обновления!</h2>
+                        <h2 class="title largest-header" style="width:640px;background: none;">Добавляйте понравившийся <a href="/pitches">проект</a> в «избранное» и отслеживайте обновления!</h2>
                         <p class="align-center"><img class="align-center" src="/img/img-cont2.png" width="528px" height="161px" alt=""></p>
                     </section><!-- .post -->
                 </div>

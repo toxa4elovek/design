@@ -81,7 +81,7 @@
                                 <td <?php echo (($mypitch->status < 1) || ($mypitch->multiwinner > 0 && $mypitch->billed == 0)) ? '' : 'colspan="2"' ?> class="pitches-status mypitches">
                                     <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
                                         $types['current'] += 1?>
-                                    <a href="http://www.godesigner.ru/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий питч</a>
+                                    <a href="http://www.godesigner.ru/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий проект</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
                                         $types['needpay'] += 1?>

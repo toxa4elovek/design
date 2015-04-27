@@ -25,7 +25,7 @@
                         <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
                             <tr><td height="18"></td></tr>
                             <tr>
-                                <td align="center"><span style="color: #666666; line-height: 19px; font-size: 16px; font-family: Arial, sans-serif;">Наша команда выражает благодарность<br>за успешно проведённый питч и дарит промо-код*:</td>
+                                <td align="center"><span style="color: #666666; line-height: 19px; font-size: 16px; font-family: Arial, sans-serif;">Наша команда выражает благодарность<br>за успешно проведённый проект и дарит промо-код*:</td>
                             </tr>
                             <tr><td height="20"></td></tr>
                             <tr>

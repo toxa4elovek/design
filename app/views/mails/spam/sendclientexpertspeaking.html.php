@@ -23,7 +23,7 @@
             <td>
                 <span style="color: #737171; line-height: 23px; font-size: 14px; font-family: Arial, sans-serif;">
                 Здравствуйте, <?=$user->first_name?>!<br>
-                Эксперт оставил комментарий к вашему питчу. Ознакомиться с ним вы можете ниже, или перейти по ссылке:<br>
+                Эксперт оставил комментарий к вашему проекту. Ознакомиться с ним вы можете ниже, или перейти по ссылке:<br>
                 <a href="http://www.godesigner.ru/pitches/view/<?=$pitch->id?>#comment-anchor">http://www.godesigner.ru/pitches/view/<?=$pitch->id?></a>
                 </span>
             </td>

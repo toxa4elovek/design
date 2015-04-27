@@ -56,7 +56,7 @@
     </tr>
     <tr  valign="top">
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
-        <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">Услуги дизайна на условиях агентского соглашения, размещённого на сайте godesigner.ru, за питч (конкурс) № <?=$pitch->id?> . НДС не предусмотрен.</td>
+        <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">Услуги дизайна на условиях агентского соглашения, размещённого на сайте godesigner.ru, за проект (конкурс) № <?=$pitch->id?> . НДС не предусмотрен.</td>
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">шт.</td>
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;"><?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?></td>
@@ -76,7 +76,7 @@
     </tr>
 </table>
 <p style="font-weight:bold; margin-top:20px; font-size: 20px; color:red">Внимание!<br/><span style="font-weight:bold;font-size:13px; color: black;">В назначении платежа указывайте точную фразу из столбца название услуги.</span></p>
-<p style="font-size:10px;font-weight:bold;">Закрывающие документы вы получите на e-mail сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать. Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27). В ответном письме вы получите оригиналы документов с нашей печатью.</p>
+<p style="font-size:10px;font-weight:bold;">Закрывающие документы вы получите на e-mail сразу после того, как завершите проект. Распечатайте их, подпишите и поставьте печать. Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27). В ответном письме вы получите оригиналы документов с нашей печатью.</p>
 <p style="">Всего наименований 1, на сумму <?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?>.</p>
 <p style=""><?=$money->num2str($pitch->total)?></p>
 <br /><br /><br />

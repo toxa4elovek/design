@@ -97,7 +97,7 @@ class Pitch extends \app\models\AppModel {
                 $newComment->user_id = Session::read('user.id');
                 $newComment->created = date('Y-m-d H:i:s');
                 $newComment->solution_id = $params['solutions']->first()->id;
-                $newComment->text = 'Питч завершен по правилам сервиса GoDesigner.';
+                $newComment->text = 'Проект завершен по правилам сервиса GoDesigner.';
                 $newComment->step = 3;
                 $newComment->save();
 
@@ -112,9 +112,9 @@ class Pitch extends \app\models\AppModel {
             $client = User::first($params['pitch']->user_id);
             $nameInflector = new nameInflector();
             if ($params['pitch']->expert == 0):
-                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', срок питча подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть 4 дня на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.';
+                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть 4 дня на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.';
             else:
-                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', питч завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
+                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', проект завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
             endif;
             $data = array('pitch_id' => $params['pitch']->id, 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
             Comment::createComment($data);
@@ -402,7 +402,7 @@ class Pitch extends \app\models\AppModel {
                 Comment::createComment(array(
                     'pitch_id' => $pitch->id,
                     'user_id' => User::getAdmin(),
-                    'text' => 'Дорогие друзья! Обратите внимание, что срок питча продлен до ' . date('d.m.Y', strtotime($pitch->finishDate)) . ', а размер вознаграждения увеличен.',
+                    'text' => 'Дорогие друзья! Обратите внимание, что срок проекта продлен до ' . date('d.m.Y', strtotime($pitch->finishDate)) . ', а размер вознаграждения увеличен.',
                     'public' => 1,
                 ));
                 return true;
@@ -1293,7 +1293,7 @@ class Pitch extends \app\models\AppModel {
      * @return array
      */
     public static function getQuerySearchTerm($search = '') {
-        if ((is_string($search) && !empty($search)) && $search != 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ') {
+        if ((is_string($search) && !empty($search)) && $search != 'НАЙТИ ПРОЕКТ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ') {
             $word = urldecode(filter_var($search, FILTER_SANITIZE_STRING));
             $firstLetter = mb_substr($word, 0, 1, 'utf-8');
             $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));

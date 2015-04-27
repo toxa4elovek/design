@@ -26,18 +26,18 @@
                             <tr><td height="38"></td></tr>
                             <tr>
                                 <td align="center"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Сегодня мы отмечаем два года нашем сервису, и предоставляем друзьям исключительную возможность  — в предстоящие 20 дней
-вы&nbsp;сможете создать свой питч в два раза дешевле! Например, <br>логотип с вознаграждением в 10000 р.- можно создать<br>
-за 1225 р.- (2450р.- без скидки).<br><br>Для этого используйте промо-код «ДВА» при создании питча. <br>Акция действительна с 23 апреля по 13 мая.</td>
+вы&nbsp;сможете создать свой проект в два раза дешевле! Например, <br>логотип с вознаграждением в 10000 р.- можно создать<br>
+за 1225 р.- (2450р.- без скидки).<br><br>Для этого используйте промо-код «ДВА» при создании проекта. <br>Акция действительна с 23 апреля по 13 мая.</td>
                             </tr>
                             <tr><td height="30"></td></tr>
                             <tr><td align="center">
                                 <a href="http://www.godesigner.ru/pitches/create?promocode=ДВА">
-                                <img src="http://godesigner.ru/img/mail/daydva-button.png" alt="Создать питч с промо-кодом">
+                                <img src="http://godesigner.ru/img/mail/daydva-button.png" alt="Создать проект с промо-кодом">
                                 </a>
                             </td></tr>
                             <tr><td height="20"></td></tr>
                             <tr><td align="center">
-                                <img src="http://godesigner.ru/img/mail/2years_1.png" alt="852 питча завершено">
+                                <img src="http://godesigner.ru/img/mail/2years_1.png" alt="852 проектов завершено">
                             </td></tr>
                             <tr><td height="20"></td></tr>
                             <tr><td align="center">

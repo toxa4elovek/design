@@ -14,7 +14,7 @@
 принимает настоящий отчет об исполнении агентского поручения по договору, размещённому на сайте godesigner.ru со следующими результатами:
 </p>
 
-<p style="margin: 20px 0;">1. C помощью средств сайта godesigner.ru Агентом проведён питч (конкурс) № <?=$pitch->id?> от <?=date('d.m.Y', strtotime($pitch->started));?>,
+<p style="margin: 20px 0;">1. C помощью средств сайта godesigner.ru Агентом проведён проект (конкурс) № <?=$pitch->id?> от <?=date('d.m.Y', strtotime($pitch->started));?>,
 на сумму <?=$money->formatMoney($pitch->price + $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.
 </p>
 

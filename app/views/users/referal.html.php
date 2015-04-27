@@ -20,12 +20,12 @@
                     <input type="hidden" id="prop-phone" value="<?=$user->phone;?>">
                     <input type="hidden" id="prop-phone_valid" value="<?=$user->phone_valid;?>">
                     <h1 class="separator-flag">ПРИГЛАШАЙ ДРУЗЕЙ</h1>
-                    <span class="referal-title">Вы получите 500 рублей на телефон,<br /> когда ваши друзья создадут питч на GoDesigner</span>
+                    <span class="referal-title">Вы получите 500 рублей на телефон,<br /> когда ваши друзья создадут проект на GoDesigner</span>
                     <a href="/answers/view/90" target="_blank">Правила и условия</a>
                     <br />
                     <br />
                     <br />
-                    <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут питч на GoDesigner" />
+                    <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут проект на GoDesigner" />
                     <section class="referal-block block-1" style="display: none;">
                         <form id="referal-1" action="/users/checkphone" method="post" style="margin-top: 35px;">
                             <div style="display: none; background: url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important; padding: 4px 0 4px 0 !important; height: auto; width: 282px; position: absolute; z-index: 2147483647;" id="tooltip-phone">
@@ -93,7 +93,7 @@
                             <div class="clr" style="clear: left"></div>
                         </form>
                         <?php
-                            $shareTextFacebook = 'GoDesigner, пожалуй, самый современный способ создания дизайна. Создайте питч на разработку лого или сайта по этой ссылке и получите скидку в 300 руб.';
+                            $shareTextFacebook = 'GoDesigner, пожалуй, самый современный способ создания дизайна. Создайте проект на разработку лого или сайта по этой ссылке и получите скидку в 300 руб.';
                             $shareTitleFacebook = 'GoDesigner.ru';
                             $shareTextTwitter = 'GoDesigner — самый современный способ создания дизайна. Оформите заказ по этой ссылке и получите скидку в 300 руб.';
                         ?>
@@ -118,7 +118,7 @@
                                     $refClass = '';
                                     $refSum = '—';
                                     if (($refPitch->billed == 1) && ($refPitch->published == 1)) {
-                                        $refStatus = 'оплатил питч';
+                                        $refStatus = 'оплатил проект';
                                         $refClass = ' class="active"';
                                         $refSum = '+500р.-';
                                     }?>

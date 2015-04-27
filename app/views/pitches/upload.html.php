@@ -79,7 +79,7 @@ $job_types = array(
                 </div>
                 <div style="float:left; width: 230px; margin-bottom: 20px;margin-top:63px;">
                     <p class="supplement">
-                        Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате TXT, PDF или JPEG/RGB, не больше 5 Мбт, 800*800px. Если ваше решение победит в питче, вы загрузите запрашиваемые заказчиком рабочие документы.
+                        Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате TXT, PDF или JPEG/RGB, не больше 5 Мбт, 800*800px. Если ваше решение победит в проекте, вы загрузите запрашиваемые заказчиком рабочие документы.
                     </p>
                 </div>
                 <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>

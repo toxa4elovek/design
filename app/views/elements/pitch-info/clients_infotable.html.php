@@ -97,15 +97,15 @@
         <td width="15"></td>
         <?php if (($pitch->guaranteed == 0) && ($pitch->status == 0)):?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                <span class="regular">Гарантировать питч <a href="http://www.godesigner.ru/answers/view/79" target="_blank">(?)</a></span>
+                <span class="regular">Гарантировать проект <a href="http://www.godesigner.ru/answers/view/79" target="_blank">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=guarantee">Заказать</a>
             </td>
         <?php else: ?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                 <?php if($pitch->guaranteed == 1):?>
-                <span class="regular">Питч гарантирован</span>
+                <span class="regular">Проект гарантирован</span>
                 <?php else: ?>
-                <span class="regular">Питч не гарантирован</span>
+                <span class="regular">Проект не гарантирован</span>
                 <?php endif;?>
             </td>
         <?php endif; ?>

@@ -320,7 +320,7 @@ $(document).ready(function () {
             var newText = 'Перестать следить';
         } else {
             var newtype = 'add';
-            var newText = 'Следить за питчем';
+            var newText = 'Следить за проектом';
         }
         if(link.hasClass('rss-img')) {
             link.text(newText);

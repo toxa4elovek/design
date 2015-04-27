@@ -30,7 +30,7 @@ class Event extends \app\models\AppModel {
                     if ($record->type == 'SolutionPicked') {
                         $moneyFormatter = new MoneyFormatter();
                         $solution = Solution::first($record->solution_id);
-                        $record->updateText = '#' . $solution->num . ' стал победителем питча. Поздравляем! Вознаграждение ' . $moneyFormatter->formatMoney($record->pitch->price, array('suffix' => ' Р.-'));
+                        $record->updateText = '#' . $solution->num . ' стал победителем проекта. Поздравляем! Вознаграждение ' . $moneyFormatter->formatMoney($record->pitch->price, array('suffix' => ' Р.-'));
                     }
                     if (($record->type == 'CommentAdded') || ($record->type == 'CommentCreated')) {
                         $commentText = '';
@@ -159,9 +159,9 @@ class Event extends \app\models\AppModel {
                         'SolutionPicked' => 'Выбран победитель',
                         'CommentAdded' => 'Добавлен комментарий',
                         'CommentCreated' => 'Добавлен комментарий',
-                        'PitchFinished' => 'Питч завершён',
+                        'PitchFinished' => 'Проект завершён',
                         'SolutionAdded' => 'Добавлено решение',
-                        'PitchCreated' => 'Новый питч',
+                        'PitchCreated' => 'Новый проект',
                         'newsAdded' => 'Добавлена новость',
                         'RatingAdded' => 'Добавлен рейтинг'
                     );

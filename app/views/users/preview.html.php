@@ -24,7 +24,7 @@
                             <ul class="profile-list">
                                 <li class="regular-small-grey" style="color:#666666;">Город:<span> <?= $this->brief->stripurl($this->brief->removeEmailClean($userdata['city'])) ?></span></li>
                                 <div class="g_line"></div>
-                                <li class="regular-small-grey" style="color:#666666;">Питчей:<span> <?= $pitchCount ?></span></li>
+                                <li class="regular-small-grey" style="color:#666666;">Проектов:<span> <?= $pitchCount ?></span></li>
                                 <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Решений:<span> <?= $totalSolutionNum ?></span></li>
                                 <div class="g_line"></div>
