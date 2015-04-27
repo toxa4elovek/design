@@ -585,8 +585,8 @@ a.number_img_gallery {
 .sol_hov {
     background-color: #fff;
     width:152px;
-
 }
+
 .sol_hov a {
     font-size: 11px;
     padding-top: 2px;
@@ -602,6 +602,10 @@ a.number_img_gallery {
 .sol_hov a:hover {
     /*border: 1px solid #bfbfbf;  */
     background-color: #f3f3f3;
+}
+.green_background .sol_hov a:hover {
+    background: #639e69;
+    color: #fff;
 }
 .client-link {
     color: #ffffff;
@@ -970,4 +974,22 @@ a.order-button:hover {
 #social-likes .social-likes__icon_pinterest {
     top: 0.25em;
     left: 0.71em;
+}
+span.price {
+    text-decoration: line-through;
+    font: 14px/20px "Arial", sans-serif;
+    font-weight: bold;
+}
+
+span.new-price {
+    margin-left: 4px;
+    color: #ff585d;
+    font: 14px/20px "Arial", sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+span.new-price:hover {
+    text-decoration: underline;
+    color: #658fa5;
 }

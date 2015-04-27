@@ -13,25 +13,6 @@
     padding:0; 
 }
 
-span.price {
-    text-decoration: line-through;
-    font: 14px/20px "Arial", sans-serif;
-    font-weight: bold;
-}
-
-span.new-price {
-    margin-left: 4px;
-    color: #ff585d;
-    font: 14px/20px "Arial", sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-span.new-price:hover {
-    text-decoration: underline;
-    color: #658fa5;
-}
-
 #filtertab {
     display: none;
     border-radius: 10px;

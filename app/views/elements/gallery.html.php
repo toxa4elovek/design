@@ -199,12 +199,16 @@ foreach($solutions as $solution):
 
     </div>
     <?php if (!isset($fromDesignersTab)):?>
-    <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
+        <?php if($this->pitch->isReadyForLogosale($pitch) && ($pitch->awarded != $solution->id) && !in_array($solution->user_id, $winnersUserIds)):?>
+            <div class="selecting_numb"><span class="price"><?= round($pitch->total) ?> р.</span><span class="new-price">9500р.-</span></div>
+        <?php else:?>
+            <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
+        <?php endif; ?>
     <?php endif; ?>
     <?php if(!$pitch->multiwinner):?>
 
     <div class="solution_menu" style="display: none;">
-        <ul data-winners="<?= serialize($winnersUserIds)?>" class="solution_menu_list" style="position:absolute;z-index:6;">
+        <ul class="solution_menu_list <?php if($this->pitch->isReadyForLogosale($pitch)):?>green_background<?php endif?>" style="position:absolute;z-index:6;">
 
             <?php if($this->pitch->isReadyForLogosale($pitch) && ($pitch->awarded != $solution->id) && !in_array($solution->user_id, $winnersUserIds)):?>
             <li class="sol_hov"><a data-solutionid="<?= $solution->id ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution->id ?>" class="imagecontainer">Купить</a></li>
