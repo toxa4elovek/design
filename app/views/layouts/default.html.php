@@ -113,6 +113,18 @@
     <?=$this->view()->render(array('element' => 'newrelic/newrelic_header'))?>
     <?=$this->view()->render(array('element' => 'scripts/popup_cookies'))?>
     <?php echo $this->html->script('http://vk.com/js/api/openapi.js');?>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "url": "http://www.godesigner.ru/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "http://www.godesigner.ru/logosale?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 </head>
 
 <body class="<?=$this->_request->controller;?>_<?=$this->_request->action;?>">
