@@ -833,9 +833,14 @@ class PitchesController extends \app\controllers\AppController {
             $nominatedSolutionOfThisPitch = Solution::first(array(
                         'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
             ));
+            $winnersUserIds = array();
             if ($nominatedSolutionOfThisPitch) {
                 $selectedsolution = true;
+                if(!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
+                    $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
+                }
             }
+
             if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
                 return $this->redirect('/pitches');
             }
@@ -843,12 +848,12 @@ class PitchesController extends \app\controllers\AppController {
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
                 $freePitch = Pitch::getFreePitch();
-                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount');
+                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount', 'winnersUserIds');
             } else {
                 if (isset($this->request->query['count'])) {
                     return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount')));
                 }
-                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount'));
+                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds'));
             }
         }
         throw new Exception('Public:Такого питча не существует.', 404);

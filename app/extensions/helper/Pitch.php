@@ -51,6 +51,13 @@ class Pitch extends \lithium\template\Helper {
         return $res;
     }
 
+    /**
+     * Метод определяет, готов ли переданный питч быть к тому, чтобы
+     * прдаваться на распродаже
+     *
+     * @param $pitch
+     * @return bool
+     */
     public function isReadyForLogosale($pitch) {
         if(is_object($pitch) && method_exists($pitch, 'data')) {
             $pitch = $pitch->data();
