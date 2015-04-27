@@ -24,7 +24,7 @@
                 <?php if($type == 'designer'):?>
                 <span class="regular">Поздравляем, заказчик утвердил окончательные макеты! Осталось предоставить исходные файлы в форматах, запрошенных в брифе. Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на проверку окончательных файлов. Если для корректировки понадобится более 24 часов, пожалуйста, сообщите об этом заказчику в комментариях.</span>
                 <?php elseif($type == 'client') :?>
-                <span class="regular">На этой стадии вы должны получить и проверить запрашиваемые в брифе файлы. Если вы удовлетворены макетами, завершите питч, нажав кнопку &laquo;Одобрить исходники&raquo;</span>
+                <span class="regular">На этой стадии вы должны получить и проверить запрашиваемые в брифе файлы. Если вы удовлетворены макетами, завершите проект, нажав кнопку &laquo;Одобрить исходники&raquo;</span>
                 <?php endif;?>
 
                 <div class="comment" style="margin-left:0px;">
@@ -181,7 +181,7 @@
                             $nofiles = false;
                             if($nofiles == false):?>
                             <?=$this->html->link('<img src="/img/proceed.png" /><br />
-                                <span>' . ($this->user->isAdmin() ? 'Закрыть питч' : 'Одобрить исходники') . '</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
+                                <span>' . ($this->user->isAdmin() ? 'Закрыть проект' : 'Одобрить исходники') . '</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
                         <?php else:?>
                             <a href="#" id="nofile"><img src="/img/proceed.png"><br>
                             <span>Одобрить исходники</span></a>
@@ -198,7 +198,7 @@
 </div><!-- .wrapper -->
 <div id="important-confirm" class="popup-final-step" style="display:none">
     <h3>Вы уверены, что одобряете исходники?</h3>
-    <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё решение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Нажав «Да, одобряю», вы подтверждаете, что получили все конечные файлы. Этот выбор нельзя отменить и ваш питч переместится в завершённые. За справкой обратитесь <a href="/answers/view/63" target="_blank">к разделу помощи</a> или <a href="/pages/contacts" target="_blank">напишите нам.</a></p>
+    <p>Эта процедура является окончательной, и в дальнейшем вы не сможете изменить своё решение. Пожалуйста, убедитесь ещё раз в верности вашего решения. Нажав «Да, одобряю», вы подтверждаете, что получили все конечные файлы. Этот выбор нельзя отменить и ваш проект переместится в завершённые. За справкой обратитесь <a href="/answers/view/63" target="_blank">к разделу помощи</a> или <a href="/pages/contacts" target="_blank">напишите нам.</a></p>
     <div style="margin-top: 40px;" class="final-step-nav wrapper">
         <input style="width:167px" type="submit" class="button second popup-close" value="Нет, отменить">
         <input style="width:167px" type="submit" class="button" id="confirmWinner" value="Да, одобряю">
@@ -207,7 +207,7 @@
 
 <div id="nofiles-warning" class="popup-final-step" style="display:none">
     <h3>Дизайнер не прикрепил макеты!</h3>
-    <p>В этом разделе вы должны запросить у дизайнера исходные файлы, указанные в брифе. Пока автор решения не загрузил макеты через этот раздел, вы не сможете завершить питч. На этом этапе вы должны запросить у дизайнера окончательные макеты.<br/>
+    <p>В этом разделе вы должны запросить у дизайнера исходные файлы, указанные в брифе. Пока автор решения не загрузил макеты через этот раздел, вы не сможете завершить проект. На этом этапе вы должны запросить у дизайнера окончательные макеты.<br/>
         За справкой обратитесь <a href="/answers/view/63" target="_blank">к разделу помощи</a> или <a href="/pages/contacts" target="_blank">напишите нам.</p>
     <div style="margin-top: 40px;" class="final-step-nav wrapper">
         <input style="width:167px" type="submit" class="button popup-close" value="OK!">

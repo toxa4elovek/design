@@ -26,7 +26,7 @@
             <div class="center_block"  style="margin:35px 0 0 63px !important">
                 <?php if($grade):?>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px;margin-top:10px">та-дам!</p>
-                <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #FF584D;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">поздравляем, питч завершен!</p>
+                <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #FF584D;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">поздравляем, проект завершен!</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">и мы будем рады видеть вас</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">снова</p>
                     <?php if($type == 'designer'):?>
@@ -34,9 +34,9 @@
                     <?php endif?>
                 <?php else:?>
                 <?php if($type == 'designer'):?>
-                <span class="regular">Ура! Питч завершен. Мы поздравляем вас с отличной работой! Деньги поступят вам на счет в течение 5 рабочих дней. Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об в комментариях. Успехов!</span>
+                <span class="regular">Ура! Проект завершен. Мы поздравляем вас с отличной работой! Деньги поступят вам на счет в течение 5 рабочих дней. Пожалуйста, загрузите эскизы в экранном разрешении (RGB, 72 dpi, JPG, GIF, PDF). Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на внесение 3 поправок до запроса исходных файлов. Если для этого вам потребуется более 24 часов, пожалуйста, сообщите об в комментариях. Успехов!</span>
                 <?php elseif($type == 'client') :?>
-                <span class="regular">Ура! Питч завершен. Мы поздравляем вас с отличной работой! Пожалуйста, оцените работу дизайнера и нашего сервиса. Мы будем рады видеть вас снова!</span>
+                <span class="regular">Ура! Проект завершен. Мы поздравляем вас с отличной работой! Пожалуйста, оцените работу дизайнера и нашего сервиса. Мы будем рады видеть вас снова!</span>
                 <?php endif;?>
                 <div class="clr"></div>
 

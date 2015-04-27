@@ -419,7 +419,7 @@ $(document).ready(function() {
 });
 
 /* Init placeholder */
-var placeholder = 'НАЙТИ ПИТЧ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ';
+var placeholder = 'НАЙТИ ПРОЕКТ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ';
 function checkPlaceholder() {
     var el = $('#searchTerm');
     var value = el.val();

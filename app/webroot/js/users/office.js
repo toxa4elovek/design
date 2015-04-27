@@ -522,7 +522,7 @@ function ParticipateTableLoader() {
                     var status = 'Победитель выбран';
                 }
             }else {
-                var status = 'Питч завершен';
+                var status = 'Проект завершен';
                 if (object.hasBill == 'fiz') {
                     status = '<a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
                 }
@@ -567,7 +567,7 @@ function ParticipateTableLoader() {
                 '<tr class="pitch-collapsed">' +
                 '<td class="icons"></td>' +
                 '<td colspan="3" class="al-info-pitch"><p>' + object.description +
-                '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к питчу</a>' +
+                '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к проекту</a>' +
                 '</td>' +
                 '<td></td>' +
                 '<td></td>' +
@@ -752,7 +752,7 @@ function FavesTableLoader() {
                     var status = 'Победитель выбран';
                 }
             }else {
-                var status = 'Питч завершен';
+                var status = 'Проект завершен';
             }
 
             var shortIndustry = object.industry;
@@ -790,7 +790,7 @@ function FavesTableLoader() {
                 '<tr class="pitch-collapsed">' +
                 '<td class="icons"></td>' +
                 '<td colspan="3" class="al-info-pitch"><p>' + object.description +
-                '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к питчу</a>' +
+                '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к проекту</a>' +
                 '</td>' +
                 '<td></td>' +
                 '<td></td>' +

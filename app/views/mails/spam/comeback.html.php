@@ -10,7 +10,7 @@
 <table width="800">
     <tr><td width="5"></td><td width="30"></td><td>
         <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user->first_name, 'utf-8')?>!</span><br>
-        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ПИТЧ ТРЕБУЮТ ВАШЕГО ВНИМАНИЯ:</span>
+        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ПРОЕКТ ТРЕБУЮТ ВАШЕГО ВНИМАНИЯ:</span>
     </td></tr>
     <tr><td colspan="3" height="40"></td></tr>
     <tr><td width="5"></td><td valign="top">

@@ -55,7 +55,7 @@ $details = unserialize($pitch->specifics);
                         <p class="regular"><?=$this->brief->e($pitch->{'business-description'})?></p>
                         <?php endif;?>
 
-                        <h2 class="blueheading">Описание питча</h2>
+                        <h2 class="blueheading">Описание проекта</h2>
                         <p class="regular"><?=$this->brief->e($pitch->description)?></p>
 
                         <?=$this->view()->render(array('element' => 'print/' . $pitch->category_id), array('pitch' => $pitch))?>

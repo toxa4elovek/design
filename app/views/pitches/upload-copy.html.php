@@ -33,7 +33,7 @@
 
                 </div>
                 <div style="float:left; width: 180px;margin-right:20px; margin-bottom: 20px;"><p class="supplement">
-                    Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате DOC, PDF, RTF не больше 5 Мбт. Если ваше решение победит в питче, вы загрузите запрашиваемые заказчиком рабочие документы.
+                    Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате DOC, PDF, RTF не больше 5 Мбт. Если ваше решение победит в проекте, вы загрузите запрашиваемые заказчиком рабочие документы.
                 </div>
                 <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
 

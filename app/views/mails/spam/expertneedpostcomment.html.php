@@ -18,7 +18,7 @@
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Напоминаем, что вас выбрали экспертом в этом питче, который уже закончился. В течение 3 дней вам нужно оставить на сайте комментарий к 3 лучшим решениям, и пояснить, почему вы их выбрали в качестве фаворитов.</span><br/>
+            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Напоминаем, что вас выбрали экспертом в этом проекте, который уже закончился. В течение 3 дней вам нужно оставить на сайте комментарий к 3 лучшим решениям, и пояснить, почему вы их выбрали в качестве фаворитов.</span><br/>
         </td></tr>
     <tr>
         <td colspan="3" height="40"></td>

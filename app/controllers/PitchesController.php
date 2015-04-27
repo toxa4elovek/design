@@ -57,7 +57,7 @@ class PitchesController extends \app\controllers\AppController {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
 
-        $var = unserialize('a:13:{s:15:"LMI_MERCHANT_ID";s:36:"d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60";s:18:"LMI_PAYMENT_SYSTEM";s:1:"3";s:12:"LMI_CURRENCY";s:3:"RUB";s:18:"LMI_PAYMENT_AMOUNT";s:8:"11710.00";s:14:"LMI_PAYMENT_NO";s:2:"13";s:16:"LMI_PAYMENT_DESC";s:23:"Оплата питча";s:20:"LMI_SYS_PAYMENT_DATE";s:19:"2013-10-25T10:36:27";s:18:"LMI_SYS_PAYMENT_ID";s:8:"10299519";s:15:"LMI_PAID_AMOUNT";s:8:"11710.00";s:17:"LMI_PAID_CURRENCY";s:3:"RUB";s:12:"LMI_SIM_MODE";s:1:"0";s:20:"LMI_PAYER_IDENTIFIER";s:12:"212571931422";s:8:"LMI_HASH";s:24:"uCYU7ZDqmnzNLK335/WPSQ==";}');
+        $var = unserialize('a:13:{s:15:"LMI_MERCHANT_ID";s:36:"d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60";s:18:"LMI_PAYMENT_SYSTEM";s:1:"3";s:12:"LMI_CURRENCY";s:3:"RUB";s:18:"LMI_PAYMENT_AMOUNT";s:8:"11710.00";s:14:"LMI_PAYMENT_NO";s:2:"13";s:16:"LMI_PAYMENT_DESC";s:23:"Оплата проекта";s:20:"LMI_SYS_PAYMENT_DATE";s:19:"2013-10-25T10:36:27";s:18:"LMI_SYS_PAYMENT_ID";s:8:"10299519";s:15:"LMI_PAID_AMOUNT";s:8:"11710.00";s:17:"LMI_PAID_CURRENCY";s:3:"RUB";s:12:"LMI_SIM_MODE";s:1:"0";s:20:"LMI_PAYER_IDENTIFIER";s:12:"212571931422";s:8:"LMI_HASH";s:24:"uCYU7ZDqmnzNLK335/WPSQ==";}');
         echo '<pre>';
         echo (http_build_query($var));
         //Logger::write('info', serialize('init'), array('name' => 'masterbank'));
@@ -856,7 +856,7 @@ class PitchesController extends \app\controllers\AppController {
                 return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds'));
             }
         }
-        throw new Exception('Public:Такого питча не существует.', 404);
+        throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
     public function getCommentsNew() {
@@ -967,7 +967,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch')));
             }
         }
-        throw new Exception('Public:Такого питча не существует.', 404);
+        throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
     public function designers() {
@@ -1069,7 +1069,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search')));
             }
         }
-        throw new Exception('Public:Такого питча не существует.', 404);
+        throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
     public function crowdsourcing() {
@@ -1264,7 +1264,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
             }
         }
-        throw new Exception('Public:Такого питча не существует.', 404);
+        throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
     public function uploadfile() {
@@ -1285,7 +1285,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 return json_encode('nofile');
             }
         }
-        throw new Exception('Public:Такого питча не существует.', 404);
+        throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
     public function uploadData() {
@@ -1308,7 +1308,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 }
             }
         }
-        throw new Exception('Public:Такого питча не существует.', 404);
+        throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
     public function uploadcopy() {

@@ -138,7 +138,7 @@
 
                                                 <tr><td height="19"></td></tr>
 
-                                                <tr><td align="center"><a href="http://www.godesigner.ru/answers/view/44" style="color:#f97a7d">Как принять участие в питче?</a></td></tr>
+                                                <tr><td align="center"><a href="http://www.godesigner.ru/answers/view/44" style="color:#f97a7d">Как принять участие в проекте?</a></td></tr>
                                                 <tr><td height="20"></td></tr>
 
                                                 <tr><td height="1" bgcolor="#dddddd"></td></tr>
@@ -146,7 +146,7 @@
                                                 <tr><td height="1" bgcolor="#f7f7f7"></td></tr>
 
                                                 <tr><td height="19"></td></tr>
-                                                <tr><td align="center"><a href="http://www.godesigner.ru/answers/view/50" style="color:#f97a7d">Как я узнаю, что выиграл питч?</a></td></tr>
+                                                <tr><td align="center"><a href="http://www.godesigner.ru/answers/view/50" style="color:#f97a7d">Как я узнаю, что выиграл проект?</a></td></tr>
 
                                                 <tr><td height="20"></td></tr>
 

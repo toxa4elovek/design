@@ -32,7 +32,7 @@
 
         <div class="ribbon">
             <p class="option"><label><input type="checkbox" name="" class="single-check" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'checked'; endif?> data-option-title="продлить срок" data-option-value="1950" id="prolong-checkbox">Продлить срок</label></p>
-            <p class="description">Укажите количество дней, на которое вы хотите продлить питч. Каждый день стоит 1 950 Р.-, из которых<br> 1 000Р.- добавляется в счет гонорара для дизайнера.
+            <p class="description">Укажите количество дней, на которое вы хотите продлить проект. Каждый день стоит 1 950 Р.-, из которых<br> 1 000Р.- добавляется в счет гонорара для дизайнера.
                 <a href="#" class="second tooltip" title="">(?)</a></p>
             <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'unfold'; endif?>" id="prolong-label" style="font:16px/68px "RodeoC",sans-serif">+1950.-</p>
         </div>
@@ -89,8 +89,8 @@
 
         <?php if($pitch->guaranteed == '0'): ?>
             <div class="ribbon" id="guaranteed-block">
-                <p class="option"><label><input type="checkbox" id="guaranteed" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'checked'; endif?> class="single-check" data-option-title="Гарантировать питч" data-option-value="1400">Гарантировать питч</label></p>
-                <p class="description">Гарантировать выбор победителя <a href="#" class="second tooltip" title="Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой питч в списке. Дизайнеры увидят, что питч не останется без победителя, и вы получите больший выбор идей.">(?)</a></p>
+                <p class="option"><label><input type="checkbox" id="guaranteed" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'checked'; endif?> class="single-check" data-option-title="Гарантировать проект" data-option-value="1400">Гарантировать проект</label></p>
+                <p class="description">Гарантировать выбор победителя <a href="#" class="second tooltip" title="Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. Дизайнеры увидят, что проект не останется без победителя, и вы получите больший выбор идей.">(?)</a></p>
                 <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'unfold'; endif?>">+1400.-</p>
             </div>
         <?php endif ?>
@@ -168,7 +168,7 @@
                         <tr id="paymaster-select" class="paymaster-section" style="display: none;">
                             <td colspan="4">
                                 <?php echo $this->html->script(array('jquery-1.7.1.min.js'));?>
-                                <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча')?>&LMI_CURRENCY=RUB'></script>
+                                <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата проекта')?>&LMI_CURRENCY=RUB'></script>
                             </td>
                         </tr>
                     </table>

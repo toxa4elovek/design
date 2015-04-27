@@ -63,7 +63,7 @@
                                                                 <td width="225" valign="top">
                                                                     <div style="line-height: 0;"><a href="http://www.godesigner.ru/fastpitch" target="_blank" style="border: none; text-decoration: none;"><img src="http://godesigner.ru/img/mail/logo-one-click.png" alt="ЛОГОТИП В ОДИН КЛИК" valign="top" border="0" width="250" /></a></div>
                                                                     <a href="http://www.godesigner.ru/fastpitch" target="_blank" style="color:#658fa5;text-decoration:none;font-weight:bold;line-height: 2;">ЛОГОТИП В ОДИН КЛИК</a><br />
-                                                                    <span style="line-height:1.5;">Создайте питч нажатием одной кнопки, и мы все сделаем за вас.<br />Вы сэкономите не только время, но и 2530 рублей</span>
+                                                                    <span style="line-height:1.5;">Создайте проект нажатием одной кнопки, и мы все сделаем за вас.<br />Вы сэкономите не только время, но и 2530 рублей</span>
                                                                 </td>
                                                             </tr>
                                                         </table>

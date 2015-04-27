@@ -1355,6 +1355,8 @@ function OfficeStatusUpdater() {
                     ||
                     (object.updateText.match(/питч завершен и ожидает/))
                     ||
+                    (object.updateText.match(/проект завершен и ожидает/))
+                    ||
                     (object.updateText.match(/Друзья, выбран победитель/))
                     ||
                     (object.updateText.match(/Друзья, в брифе возникли изменения/))
@@ -1369,10 +1371,10 @@ function OfficeStatusUpdater() {
                             <div class="r-content box-comment">';
 
                     if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0)) {
-                        html += '<a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="http://www.godesigner.ru/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:';
+                        html += '<a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в проекте <a href="http://www.godesigner.ru/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:';
                     }
                     else {
-                        html += '<a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="http://www.godesigner.ru/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="http://www.godesigner.ru/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:';
+                        html += '<a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="http://www.godesigner.ru/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для проекта <a href="http://www.godesigner.ru/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:';
                     }
                     html += '</div>\
                             <div class="sol"><img src="http://www.godesigner.ru' + imageurl + '"></div> \
@@ -1390,10 +1392,10 @@ function OfficeStatusUpdater() {
                                     </div> \
                                     <div class="r-content box-comment">';
                     if (this_user == object.pitch.user_id || (object.comment.public == 1 && object.comment.reply_to != 0) || !object.solution || !object.solution.id) {
-                        html += '<a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в питче <a href="http://www.godesigner.ru/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
+                        html += '<a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('оставил', object.user.gender) + ' комментарий в проекте <a href="http://www.godesigner.ru/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
                     }
                     else {
-                        html += '<a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="http://www.godesigner.ru/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для питча <a href="http://www.godesigner.ru/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
+                        html += '<a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('прокомментировал', object.user.gender) + ' <a href="http://www.godesigner.ru/pitches/viewsolution/' + object.solution.id + '">решение #' + object.solution.num + '</a> для проекта <a href="http://www.godesigner.ru/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>:<br /> &laquo;' + object.updateText + '&raquo;';
                     }
                     html += '<p class="timeago"><time class="timeago" datetime="' + object.created + '">' + object.created + '</time></p>\
                         </div>\
@@ -1624,7 +1626,7 @@ function OfficeStatusUpdater() {
                                 <a target="_blank" href="http://www.godesigner.ru/users/view/' + object.user_id + '"><img class="avatar" src="' + avatar + '"></a> \
                             </div> \
                             <div class="r-content"> \
-                                <a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для питча <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
+                                <a href="http://www.godesigner.ru/users/view/' + object.user_id + '">' + object.creator + '</a> ' + self.getGenderTxt('предложил', object.user.gender) + ' решение для проекта <a href="/pitches/view/' + object.pitch_id + '">' + object.pitch.title + '</a>: \
                             </div> \
                             <a href="http://www.godesigner.ru/pitches/viewsolution/' + object.solution.id + '"><div class="sol"><img src="' + imageurl + '"></div></a> \
                             <div class="box-info">\

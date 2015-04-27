@@ -25,7 +25,7 @@
                         <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
                             <tr><td height="38"></td></tr>
                             <tr>
-                                <td align="center"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Вы получите 500 рублей на телефон,<br />когда ваши друзья создадут питч на GoDesigner.</td>
+                                <td align="center"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Вы получите 500 рублей на телефон,<br />когда ваши друзья создадут проект на GoDesigner.</td>
                             </tr>
                             <tr><td height="30"></td></tr>
                             <tr><td align="center">

@@ -129,7 +129,7 @@ $(document).ready(function () {
         var notExists = (Cart.id == 0);
         if ($('input[name="isGuaranteed"]:checked').length == 0) {
             $.scrollTo($('#award'), {duration: 600, onAfter: function () {
-                    alert('Необходимо уточнить, оставляете ли вы питч без гарантий или создаете гарантированный питч.');
+                    alert('Необходимо уточнить, оставляете ли вы проект без гарантий или создаете гарантированный проект.');
                 }
             });
             return false;

@@ -9,7 +9,7 @@
 
 <table width="800">
     <tr><td width="5"></td><td width="30"></td><td>
-        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ДОБАВЛЕН КОММЕНТАРИЙ ПОСЛЕ ЗАВЕРШЕНИЯ ПИТЧА!</span><br>
+        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ДОБАВЛЕН КОММЕНТАРИЙ ПОСЛЕ ЗАВЕРШЕНИЯ ПРОЕКТА!</span><br>
     </td></tr>
     <tr><td colspan="3" height="40"></td></tr>
     <tr><td width="5"></td><td valign="top">

@@ -94,7 +94,7 @@
 																<table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
 																	<tr>
 																		<td width="30" valign="top"><div style="line-height: 0;"><img src="http://godesigner.ru/img/mail/list-item-1.png" alt="1" valign="top" border="0" width="18" height="18" /></div></td>
-																		<td valign="top" style="height: 34px; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;"><span style="color: #7d7c7c; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;">Заполните бриф он-лайн и создайте <a href="http://godesigner.ru/answers/view/3" target="_blank" style="color: #f75252; text-decoration: none; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;"><span style="color: #f75252; text-decoration: none; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;">питч</span></a> (конкурс).</span></td>
+																		<td valign="top" style="height: 34px; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;"><span style="color: #7d7c7c; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;">Заполните бриф он-лайн и создайте <a href="http://godesigner.ru/answers/view/3" target="_blank" style="color: #f75252; text-decoration: none; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;"><span style="color: #f75252; text-decoration: none; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;">проект</span></a> (конкурс).</span></td>
 																	</tr>
 																	<tr>
 																		<td width="30" valign="top"><div style="line-height: 0;"><img src="http://godesigner.ru/img/mail/list-item-2.png" alt="2" valign="top" border="0" width="18" height="18" /></div></td>
@@ -140,7 +140,7 @@
 																<table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
 																	<tr height="32">
 																		<td width="30" valign="top"><div style="line-height: 0;"><img src="http://godesigner.ru/img/mail/list-item-1.png" alt="1" valign="top" border="0" width="18" height="18" /></div></td>
-																		<td valign="top" style="height: 34px; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;"><span style="color: #7d7c7c; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;">Выбирайте <a href="http://godesigner.ru" target="_blank" style="color: #f75252; text-decoration: none; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;"><span style="color: #f75252; text-decoration: none; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;">питч</span></a>. (конкурс)</span></td>
+																		<td valign="top" style="height: 34px; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;"><span style="color: #7d7c7c; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;">Выбирайте <a href="http://godesigner.ru" target="_blank" style="color: #f75252; text-decoration: none; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;"><span style="color: #f75252; text-decoration: none; line-height: 17px; font-size: 14px; font-family: Arial, sans-serif;">проект</span></a>. (конкурс)</span></td>
 																	</tr>
 																	<tr height="32">
 																		<td width="30" valign="top"><div style="line-height: 0;"><img src="http://godesigner.ru/img/mail/list-item-2.png" alt="2" valign="top" border="0" width="18" height="18" /></div></td>
@@ -156,7 +156,7 @@
 														<tr><td height="30"></td></tr>
 														<tr>
 															<td>
-																<a href="http://godesigner.ru/pitches" target="_blank" style="display: block; width: 214px; height: 49px; background-color: #5c8296; background-image: url('http://godesigner.ru/img/mail/button-show.png'); background-position: 0 0; background-repeat: no-repeat; color: #ffffff; text-align: center; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, .2); line-height: 49px; font-weight: bold; font-size: 11px; font-family: Arial, sans-serif;"><img src="http://godesigner.ru/img/mail/browse-pitchs.png" alt="Просмотреть питчи" valign="top" border="0" width="211" height="49" /></a>
+																<a href="http://godesigner.ru/pitches" target="_blank" style="display: block; width: 214px; height: 49px; background-color: #5c8296; background-image: url('http://godesigner.ru/img/mail/button-show.png'); background-position: 0 0; background-repeat: no-repeat; color: #ffffff; text-align: center; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, .2); line-height: 49px; font-weight: bold; font-size: 11px; font-family: Arial, sans-serif;"><img src="http://godesigner.ru/img/mail/browse-pitchs.png" alt="Просмотреть проекты" valign="top" border="0" width="211" height="49" /></a>
 															</td>
 														</tr>
 													</table>
@@ -178,7 +178,7 @@
 
 								<tr><td height="19"></td></tr>
 								<tr>
-									<td align="center"><span style="display: block; color: #7d7c7c; text-transform: uppercase; line-height: 14px; font-size: 11px; font-family: Arial, sans-serif;">СЛЕДИТЕ ЗА ПИТЧАМИ GODESIGNER НА <a href="http://www.facebook.com/pages/Go-Designer/160482360714084" target="_blank" style="color: #f75252; text-decoration: underline; text-transform: uppercase; line-height: 14px; font-size: 11px; font-family: Arial, sans-serif;"><span style="color: #f75252; text-decoration: underline; text-transform: uppercase; line-height: 14px; font-size: 11px; font-family: Arial, sans-serif;">FACEBOOK</span></a></span></td>
+									<td align="center"><span style="display: block; color: #7d7c7c; text-transform: uppercase; line-height: 14px; font-size: 11px; font-family: Arial, sans-serif;">СЛЕДИТЕ ЗА ПРОЕКТАМИ GODESIGNER НА <a href="http://www.facebook.com/pages/Go-Designer/160482360714084" target="_blank" style="color: #f75252; text-decoration: underline; text-transform: uppercase; line-height: 14px; font-size: 11px; font-family: Arial, sans-serif;"><span style="color: #f75252; text-decoration: underline; text-transform: uppercase; line-height: 14px; font-size: 11px; font-family: Arial, sans-serif;">FACEBOOK</span></a></span></td>
 								</tr>
 								<tr><td height="19"></td></tr>
 

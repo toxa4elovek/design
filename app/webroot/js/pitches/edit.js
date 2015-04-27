@@ -443,7 +443,7 @@ function FeatureCart() {
     this.prepareData = function () {
         var features = {
             'award': self.getOption(self.awardKey),
-            'private': self.getOption('Закрытый питч'),
+            'private': self.getOption('Закрытый проект'),
             'social': self.getOption('Рекламный Кейс'),
             'experts': self._expertArray(),
             'email': self.getOption('Email рассылка'),

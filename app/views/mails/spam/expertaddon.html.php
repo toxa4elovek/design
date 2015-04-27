@@ -35,7 +35,7 @@
                             </td></tr>
                             <tr><td height="20"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Стоимость одного эксперта 1000р.-. Опция доступна только до окончания срока питча. <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/66">Подробнее на сайте</a>.</td>
+                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Стоимость одного эксперта 1000р.-. Опция доступна только до окончания срока проекта. <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/66">Подробнее на сайте</a>.</td>
                             </tr>
                             <tr><td height="25"></td></tr>
                             <tr>

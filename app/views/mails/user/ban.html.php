@@ -19,7 +19,7 @@
     </td>
         <td>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
-                Вы не можете оставлять комментарии в течение <?=$term?> <?=$this->numInflector->formatString($term, array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')))?>. Мы были вынуждены принять меры, поскольку были нарушены <a href="http://www.godesigner.ru/answers/view/37" target="_blank">правила участия</a>. Тем не менее вы можете загружать решения и участвовать в питчах. В случае несоблюдения правил в следующий раз ваш аккаунт может быть заблокирован или ликвидирован.
+                Вы не можете оставлять комментарии в течение <?=$term?> <?=$this->numInflector->formatString($term, array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')))?>. Мы были вынуждены принять меры, поскольку были нарушены <a href="http://www.godesigner.ru/answers/view/37" target="_blank">правила участия</a>. Тем не менее вы можете загружать решения и участвовать в проектах. В случае несоблюдения правил в следующий раз ваш аккаунт может быть заблокирован или ликвидирован.
             </span><br/>
         </td></tr>
     <tr>

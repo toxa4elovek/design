@@ -7,7 +7,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
     public static function newpitch($data) {
         return self::_mail(array(
                     'to' => $data['user']->email,
-                    'subject' => 'Новый питч!',
+                    'subject' => 'Новый проект!',
                     'data' => $data
         ));
     }
@@ -25,7 +25,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
                     'use-smtp' => true,
                     'to' => $data['user']->email,
-                    'subject' => 'Питч требует вашего внимания',
+                    'subject' => 'Проект требует вашего внимания',
                     'data' => $data
         ));
     }
@@ -33,7 +33,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
     public static function newclientpitch($data) {
         return self::_mail(array(
                     'to' => $data['user']->email,
-                    'subject' => 'Новый питч!',
+                    'subject' => 'Новый проект!',
                     'data' => $data
         ));
     }
@@ -60,7 +60,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
                     'use-smtp' => true,
                     'to' => $data['user']->email,
-                    'subject' => 'Новый питч на модерацию!',
+                    'subject' => 'Новый проект на модерацию!',
                     'data' => $data
         ));
     }
@@ -86,7 +86,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         }
         if ($data['addon']->guaranteed == 1) {
             $addonsCount++;
-            $addonsList .= 'гарантированный питч<br />';
+            $addonsList .= 'гарантированный проект<br />';
         }
         $stringSubject = 'Новая доп. опция!';
         $data['stringAddons'] = 'КУПЛЕНА ДОПОЛНИТЕЛЬНАЯ ОПЦИЯ:' . $addonsList;
@@ -123,7 +123,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
     public static function dailypitch($data) {
         return self::_mail(array(
                     'to' => $data['user']->email,
-                    'subject' => 'Новые питчи!',
+                    'subject' => 'Новые проекты!',
                     'data' => $data
         ));
     }
@@ -195,7 +195,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
                     'use-smtp' => true,
                     'to' => $data['admin'],
-                    'subject' => 'Оставлен комментарий после завершения питча',
+                    'subject' => 'Оставлен комментарий после завершения проекта',
                     'data' => $data
         ));
     }
@@ -250,7 +250,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
                     'use-smtp' => true,
                     'to' => $data['user']->email,
-                    'subject' => 'Закрывающие документы для вашего питча',
+                    'subject' => 'Закрывающие документы для вашего проекта',
                     'data' => $data,
                     'reply-to' => 'va@godesigner.ru',
         ));
@@ -260,7 +260,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         return self::_mail(array(
                     'use-smtp' => true,
                     'to' => $data['user']->email,
-                    'subject' => 'Хотите продлить питч и увеличить бюджет?',
+                    'subject' => 'Хотите продлить проект и увеличить бюджет?',
                     'data' => $data,
                     'reply-to' => 'team@godesigner.ru',
         ));

@@ -189,7 +189,7 @@
                         <tr id="paymaster-select" class="paymaster-section" style="display: none;">
                             <td colspan="4">
                                 <?php echo $this->html->script(array('jquery-1.7.1.min.js')); ?>
-                                <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=<?= $data['total'] ?>&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата питча') ?>&LMI_CURRENCY=RUB&LMI_PAYMENT_NO=<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>'></script>
+                                <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=<?= $data['total'] ?>&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата проекта') ?>&LMI_CURRENCY=RUB&LMI_PAYMENT_NO=<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>'></script>
                             </td>
                         </tr-->
                     </table>

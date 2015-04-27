@@ -4,7 +4,7 @@
 
 <div id="popup-mypitches-true" style="display: none;">
     <h2>Расскажите всем,<br /> что вы создали<br /> такой замечательный проект!</h2>
-    <p style="text-align:center">Поделитесь с друзьями новым питчем, и это поможет привлечь больше дизайнеров.</p>
+    <p style="text-align:center">Поделитесь с друзьями новым проектом, и это поможет привлечь больше дизайнеров.</p>
     <div class="share-this" style="margin-left:100px;">
         <div style="">
             <div style="float:left;height:20px;margin-right: 20px;">

@@ -7,12 +7,12 @@
     <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
 
     <div style="float:left; width: 627px;padding-bottom: 40px;">
-        <h2 class="largest-header" style="text-align: center; margin-bottom: 30px;">ЭТО <a target="_blank" href="http://www.godesigner.ru/answers/view/64">ЗАКРЫТЫЙ ПИТЧ</a><br/> И ВАМ НУЖНО ПОДПИСАТЬ<br/> СОГЛАШЕНИЕ О НЕРАЗГЛАШЕНИИ!<h2>
+        <h2 class="largest-header" style="text-align: center; margin-bottom: 30px;">ЭТО <a target="_blank" href="http://www.godesigner.ru/answers/view/64">ЗАКРЫТЫЙ ПРОЕКТ</a><br/> И ВАМ НУЖНО ПОДПИСАТЬ<br/> СОГЛАШЕНИЕ О НЕРАЗГЛАШЕНИИ!<h2>
 
-        <p class="regular">В закрытом питче вы сможете увидеть только свои работы, а также комментарии, оставленные только вам или всем дизайнерам. Вы не можете использовать свои решения для данного питча в портфолио без изменения имени бренда, заказчика и его данных.</p>
+        <p class="regular">В закрытом проекте вы сможете увидеть только свои работы, а также комментарии, оставленные только вам или всем дизайнерам. Вы не можете использовать свои решения для данного проекта в портфолио без изменения имени бренда, заказчика и его данных.</p>
     </div>
     <div style="float:left; width: 180px;margin-right:20px; margin-bottom: 20px;margin-left:30px;">
-        <p class="regular">Вы можете участвовать в закрытом питче только в случае, если подтвердите <a target="_blank" href="/pitches/agreement/<?=$pitch->id?>.txt">соглашение о неразглашении</a>.</p>
+        <p class="regular">Вы можете участвовать в закрытом проекте только в случае, если подтвердите <a target="_blank" href="/pitches/agreement/<?=$pitch->id?>.txt">соглашение о неразглашении</a>.</p>
     </div>
     <div style="height:2px;clear:both;width:580px;background: url(/img/obnovleniya_line.jpg) repeat-x scroll 0 100% transparent; margin-bottom: 15px;margin-top:15px;"></div>
     <div style="float:left; width: 627px;">
@@ -84,7 +84,7 @@
     </div>
     <div style="float:left; width: 180px;margin-right:20px; margin-bottom: 20px; margin-left:30px;padding-top:280px;">
         <p class="regular" style="margin-bottom: 20px;">Если вы пропишите ложные имя и фамилию, ваш аккаунт может быть блокирован, а денежные средства за победу не перечислены.</p>
-        <p class="regular">Поставив галочку в поле, вы подтверждаете, что никому не расскажете об этом питче и о том, что прописано в брифе.</p>
+        <p class="regular">Поставив галочку в поле, вы подтверждаете, что никому не расскажете об этом проекте и о том, что прописано в брифе.</p>
     </div>
     <div style="clear:both"></div>
 

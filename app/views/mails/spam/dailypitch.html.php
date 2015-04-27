@@ -10,7 +10,7 @@
 <table width="800">
     <tr><td width="5"></td><td width="30"></td><td>
         <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user->first_name, 'utf-8')?>!</span><br>
-        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">НА НАШ САЙТ ДОБАВЛЕНЫ НОВЫЕ ПИТЧИ:</span>
+        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">НА НАШ САЙТ ДОБАВЛЕНЫ НОВЫЕ ПРОЕКТЫ:</span>
     </td></tr>
     <tr><td colspan="3" height="40"></td></tr>
 
@@ -25,7 +25,7 @@
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
             <?php if($pitch->private == 1):?>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="http://www.godesigner.ru/answers/view/64">закрытый питч</a> и вам нужно подписать соглашение о неразглашении!</span><br/>
+            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="http://www.godesigner.ru/answers/view/64">закрытый проект</a> и вам нужно подписать соглашение о неразглашении!</span><br/>
             <?php else:?>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php echo strip_tags($pitch->editedDescription, '<br><br/><p><a><ul><li><ol>')?></span><br/>
             <?php endif?>

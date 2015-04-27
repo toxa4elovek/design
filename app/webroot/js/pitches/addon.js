@@ -244,7 +244,7 @@ function FeatureCart() {
                     self.addOption('экспертное мнение', 1500)
                 }
                 if($('#guaranteed').attr('checked')) {
-                    self.addOption('Гарантировать питч', 1400)
+                    self.addOption('Гарантировать проект', 1400)
                 }
                 if($('#pinned').attr('checked')) {
                     self.addOption('“Прокачать” бриф', 1450)
@@ -329,7 +329,7 @@ function FeatureCart() {
             'prolong': self._getProlong(),
             'brief': self.getOption('Заполнение брифа'),
             'pinned': self.getOption('“Прокачать” бриф'),
-            'guaranteed': self.getOption('Гарантировать питч')
+            'guaranteed': self.getOption('Гарантировать проект')
         };
         var commonPitchData = {
             'id': self.id,
