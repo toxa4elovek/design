@@ -125,6 +125,14 @@
       }
     }
     </script>
+    <script type="application/ld+json">
+    {  "@context" : "http://schema.org",
+       "@type" : "WebSite",
+       "name" : "GoDesigner",
+       "alternateName" : "GoDesigner.ru",
+       "url" : "http://www.godesigner.ru"
+    }
+    </script>
 </head>
 
 <body class="<?=$this->_request->controller;?>_<?=$this->_request->action;?>">
