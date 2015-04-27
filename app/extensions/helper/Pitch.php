@@ -50,4 +50,21 @@ class Pitch extends \lithium\template\Helper {
         $res = ($comment['user_id'] == $this->expert);
         return $res;
     }
+
+    public function isReadyForLogosale($pitch) {
+        if(is_object($pitch) && method_exists($pitch, 'data')) {
+            $pitch = $pitch->data();
+        }
+        if(is_array($pitch)) {
+            if(($pitch['status'] == 2) && ($pitch['category_id'] == 1) &&
+                ($pitch['private'] == 0) && ($pitch['totalFinishDate'] < date('Y-m-d H:i:s', time() - 30 * DAY)))
+            {
+                return true;
+            }else {
+                return false;
+            }
+        }
+        return false;
+    }
+
 }
