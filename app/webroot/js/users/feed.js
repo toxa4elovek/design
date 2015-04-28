@@ -998,7 +998,7 @@ function OfficeStatusUpdater() {
                     var html = '', solutions = '';
                     if (typeof (response.post) != "undefined" && response.post != 0) {
                         if ($('.box[data-eventid="' + response.id + '"]').length == 0) {
-                            var img = (response.post.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' : response.post.imageurl;
+                            var img = (response.post.imageurl.indexOf('/', 0) === 0) ? 'http://www.godesigner.ru' : response.post.imageurl;
                             var $prependEl = $('<div class="box" data-eventid="' + response.id + '"> \
                                 <p class="img-box"> \
                                     <a class="post-link" href="http://www.godesigner.ru/users/click?link=' + response.post.link + '&id=' + response.post.id + '" target="_blank"><img class="img-post" src="' + img + '"></a> \
@@ -1490,7 +1490,7 @@ function OfficeStatusUpdater() {
                     }
                     var img = '';
                     if(typeof(object.news.imageurl) != 'undefined') {
-                        img = (object.news.imageurl.indexOf('/', 0) == 0) ? 'http://www.godesigner.ru' + object.news.imageurl  : object.news.imageurl;
+                        img = (object.news.imageurl.indexOf('/', 0) === 0) ? 'http://www.godesigner.ru' + object.news.imageurl  : object.news.imageurl;
                     }
                     html += '<div class="box" ' + boxStyle + 'data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">';
 
