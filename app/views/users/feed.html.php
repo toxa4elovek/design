@@ -244,7 +244,7 @@
                                             <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
                                             <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                             <p class="timeago">
-                                                <time class="timeago" datetime="<?= date('c', strtotime($object['news']['created'])) ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
+                                                <time class="timeago" datetime="<?= date('c', strtotime($object['news']['created'])) ?>"><?= $object['news']['created'] ?></time> <?php if(!empty($object['host'])):?>с сайта <?php endif?><?= $object['host'] ?>
                                             </p>
                                         </div>
                                             <div class="box-info" style="margin-top: 0;">
@@ -254,7 +254,11 @@
                                                 <?php endif?>
                                                 <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                 <?php
-                                                $tweetLike = $object['news']['title'];
+                                                if(isset($object['news']['og_title'])) {
+                                                    $tweetLike = $object['news']['title'];
+                                                }else {
+                                                    $tweetLike = $object['news']['og_title'];
+                                                }
                                                 $image = $newsImage;
                                                 if($isValidImage($newsImage)):
                                                     $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
@@ -482,6 +486,9 @@
                                                     ?>
                                                 </div></div>
                                         <?php elseif ($object['type'] == 'newsAdded'):
+                                            if($shareEvent->news->id == $object['news']['id']) {
+                                                continue;
+                                            }
                                             if(!empty($object['news']['og_image'])) {
                                                 $newsImage = $object['news']['og_image'];
                                             }else {
@@ -507,7 +514,7 @@
                                                 return true;
                                             }
                                             ?>
-                                            <div class="box" data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($object['news']['imageurl'])): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
+                                            <div class="box" data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($newsImage)): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                                 <?php if($isValidImage($object['news']['imageurl'])):?>
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'],'/events/') !== false) && (strpos($object['news']['imageurl'],'/events/') === 0)) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
@@ -520,7 +527,7 @@
                                                     <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
                                                     <p class="img-short"><?php echo $object['news']['short'] ?></p>
                                                     <p class="timeago">
-                                                        <time class="timeago" datetime="<?= date('c', strtotime($object['news']['created'])) ?>"><?= $object['news']['created'] ?></time> с сайта <?= $object['host'] ?>
+                                                        <time class="timeago" datetime="<?= date('c', strtotime($object['news']['created'])) ?>"><?= $object['news']['created'] ?></time> <?php if(!empty($object['host'])):?>с сайта <?php endif ?><?= $object['host'] ?>
                                                         <?php if($object['news']['original_title'] != ''):?>
                                                             <span style="font-size: 20px;position: relative;top: 2px;margin-left: 2px;margin-right: 2px;">·</span> переведено автоматически
                                                         <?php endif;?>
@@ -532,12 +539,16 @@
                                                     <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
 
                                                     <?php endif?>
-                                                    <?php if(($isValidImage($object['news']['imageurl'])) && ($object['news']['link'] != '')):?>
+                                                    <?php if(($isValidImage($newsImage)) or ($object['news']['link'] == '')):?>
                                                     <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                     <?php endif?>
                                                     <?php
-                                                    $tweetLike = $object['news']['title'];
+                                                    if(isset($object['news']['og_title'])) {
+                                                        $tweetLike = $object['news']['og_title'];
+                                                    }else {
+                                                        $tweetLike = $object['news']['title'];
+                                                    }
                                                     $image = $newsImage;
                                                     if($isValidImage($newsImage)):
                                                         $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
