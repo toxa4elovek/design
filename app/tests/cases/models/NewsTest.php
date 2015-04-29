@@ -81,6 +81,45 @@ class NewsTest extends AppUnit {
 
         $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/17254 2');
         $this->assertFalse($result);
+
+    }
+
+    public function testSaveNewsByAdmin()  {
+        $result = News::doesNewsExists('Проверка', 'https://www.google.ru/');
+        $this->assertFalse($result);
+
+        $data = array(
+            'title' => 'Проверка',
+            'short' => '',
+            'link' => 'https://www.google.ru/'
+        );
+
+        $result = News::saveNewsByAdmin($data, false);
+        $this->assertTrue($result);
+        $news = News::first(5);
+        $this->assertEqual('Проверка', $news->title);
+        $this->assertEqual(1, $news->admin);
+        $this->assertEqual('https://www.google.ru/', $news->link);
+
+        $result = News::doesNewsExists('Проверка', 'https://www.google.ru/');
+        $this->assertTrue($result);
+
+        $result = News::doesNewsExists('Проверка2');
+        $this->assertFalse($result);
+
+        $data = array(
+            'short' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/3bhLkorXLI8" frameborder="0" allowfullscreen></iframe>',
+        );
+
+        $result = News::saveNewsByAdmin($data, false);
+        $this->assertTrue($result);
+        $news = News::first(6);
+        $this->assertEqual('', $news->imageurl);
+        $this->assertEqual('https://i.ytimg.com/vi/3bhLkorXLI8/maxresdefault.jpg', $news->og_image);
+        $this->assertEqual('', $news->title);
+        $this->assertEqual('GoDesigner.ru — Как это работает?', $news->og_title);
+        $this->assertEqual('', $news->description);
+        $this->assertEqual('Как это работает?', $news->og_description);
     }
 
 }

@@ -150,6 +150,14 @@ class News extends \app\models\AppModel {
         return $result;
     }
 
+    /**
+     * Метод проверяет, существует ли новость сназванием $title или
+     * полем link == $url
+     *
+     * @param $title
+     * @param null $url
+     * @return mixed
+     */
     public static function doesNewsExists($title, $url = null) {
         $conditions = array('title' => (string) $title);
         if($url) {
@@ -157,6 +165,42 @@ class News extends \app\models\AppModel {
         }
         $conditions = array('OR' => array($conditions));
         return self::count(array('conditions' => $conditions));
+    }
+
+    public static function saveNewsByAdmin($data, $createEvent = true) {
+        $news = News::create($data);
+        $news->created = date('Y-m-d H:i:s');
+        if (isset($data['file'])) {
+            $news->imageurl = News::resize($data['file']);
+        }
+
+        if(preg_match('@youtube.com\/embed\/(.*?)"@', $news->short, $matches)) {
+            // расшаривание с ютюба
+            $youtubeUrl = 'https://www.youtube.com/watch?v=' . $matches[1];
+            try {
+                $context  = stream_context_create();
+                if($html = file_get_contents($youtubeUrl, false, $context)) {
+                    if(preg_match('@property="og:image" content="(.*?)">@', $html, $matches)) {
+                        $news->og_image = $matches[1];
+                    }
+                    if(preg_match('@property="og:title" content="(.*?)">@', $html, $matches)) {
+                        $news->og_title = $matches[1];
+                    }
+                    if(preg_match('@property="og:description" content="(.*?)">@', $html, $matches)) {
+                        $news->og_description = $matches[1];
+                    }
+                }
+            } catch (\Exception $e) {}
+        }
+
+        $news->admin = 1;
+        if ($result = $news->save()) {
+            if ((!$news->isBanner) and ($createEvent)) {
+                Event::createEventNewsAdded($news->id, 0, $news->created);
+                $result = Event::first(array('conditions' => array('news_id' => $news->id)));
+            }
+        }
+        return $result;
     }
 
 }

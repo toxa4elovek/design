@@ -219,6 +219,11 @@
                                     <?php
                                     if (($shareEvent) && ($shareEvent->type == 'newsAdded')):
                                     $object = $shareEvent->data();
+                                        if(!empty($object['news']['og_image'])) {
+                                            $newsImage = $object['news']['og_image'];
+                                        }else {
+                                            $newsImage = $object['news']['imageurl'];
+                                        }
                                     $isValidImage = function($url){
                                     if(empty($url)):
                                     return false;
@@ -226,7 +231,7 @@
                                     return true;
                                     }
                                     ?>
-                                    <div class="box" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($object['news']['imageurl'])): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
+                                    <div class="box" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($newsImage)): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                         <?php if($isValidImage($object['news']['imageurl'])):?>
                                             <p class="img-box">
                                                 <a class="post-link" href="<?= $object['news']['link'] ?>"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'],'/events/') !== false) && (strpos($object['news']['imageurl'],'/events/') === 0)) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
@@ -250,11 +255,11 @@
                                                 <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                 <?php
                                                 $tweetLike = $object['news']['title'];
-                                                $image = $object['news']['imageurl'];
-                                                if($isValidImage($object['news']['imageurl'])):
+                                                $image = $newsImage;
+                                                if($isValidImage($newsImage)):
                                                     $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
 
-                                                elseif((!$isValidImage($object['news']['imageurl'])) and ($object['news']['link'] != '')):
+                                                elseif((!$isValidImage($newsImage)) and ($object['news']['link'] != '')):
                                                     $url = $object['news']['link'];
                                                     $image = '';
                                                 else:
@@ -267,7 +272,7 @@
                                                             <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="<?= $url?>">SHARE</div>
                                                             <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div>
                                                             <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-url="<?= $url?>" data-image="<?= $image?>">SHARE</div>
-                                                            <?php if($isValidImage($object['news']['imageurl'])):?>
+                                                            <?php if($isValidImage($newsImage)):?>
                                                             <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="<?= $url?>" data-media="<?= $image?>">PIN</div>
                                                             <?php endif?>
                                                         </div>
@@ -477,6 +482,11 @@
                                                     ?>
                                                 </div></div>
                                         <?php elseif ($object['type'] == 'newsAdded'):
+                                            if(!empty($object['news']['og_image'])) {
+                                                $newsImage = $object['news']['og_image'];
+                                            }else {
+                                                $newsImage = $object['news']['imageurl'];
+                                            }
                                             if((preg_match('@fb-xfbml-parse-ignore@', $object['news']['short'])) || (preg_match('@instagram-media@', $object['news']['short'])) || (preg_match('@vk_post@', $object['news']['short']))):
                                                 if(preg_match('@vk_post@', $object['news']['short'])) {
                                                     $text = str_replace('{width: 500}', '{width: 600}', $object['news']['short']);
@@ -528,10 +538,10 @@
                                                     <?php endif?>
                                                     <?php
                                                     $tweetLike = $object['news']['title'];
-                                                    $image = $object['news']['imageurl'];
-                                                    if($isValidImage($object['news']['imageurl'])):
+                                                    $image = $newsImage;
+                                                    if($isValidImage($newsImage)):
                                                         $url = 'http://www.godesigner.ru/news?event=' . $object['id'];
-                                                    elseif((!$isValidImage($object['news']['imageurl'])) and ($object['news']['link'] != '')):
+                                                    elseif((!$isValidImage($newsImage)) and ($object['news']['link'] != '')):
                                                         $url = $object['news']['link'];
                                                         $image = '';
                                                     else:
@@ -544,7 +554,7 @@
                                                                 <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="<?= $url ?>">SHARE</div>
                                                                 <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div>
                                                                 <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="<?= $image?>">SHARE</div>
-                                                                <?php if($isValidImage($object['news']['imageurl'])):?>
+                                                                <?php if($isValidImage($newsImage)):?>
                                                                     <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="<?= $url ?>" data-media="<?= $image?>">PIN</div>
                                                                 <?php endif?>
                                                             </div>
