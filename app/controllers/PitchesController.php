@@ -971,7 +971,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
                 return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts', 'rating', 'winnersUserIds');
             } else {
-                return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch', 'winnersUserIds')));
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch', 'rating', 'winnersUserIds')));
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);

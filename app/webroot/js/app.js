@@ -330,6 +330,7 @@ $(document).ready(function () {
                 link.css('background-image', 'http://www.godesigner.ru/img/stop_follow.png');
             }else if (link.css('background-image').match(/stop_follow/)) {
                 link.removeClass('fav-minus');
+                link.addClass('fav-plus');
                 link.css('background-image', 'http://www.godesigner.ru/img/follow_the_pitch.png');
             }
         }

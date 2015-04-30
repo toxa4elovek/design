@@ -239,7 +239,13 @@ a.fav-plus:hover {
 	background-image: url(img/follow_the_pitch_hover.png);
 }
 a.fav-minus {
+    display: inline-block;
+    width: 160px;
+    height: 39px;
+    margin-right: 20px;
     background-image: url(img/stop_follow.png);
+    background-position: 0 0;
+    background-repeat: no-repeat;
 }
 a.fav-minus:hover {
     background-image: url(img/stop_follow_hover.png);

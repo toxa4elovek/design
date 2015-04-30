@@ -169,9 +169,9 @@ function mb_basename($file)
                 <?php endif?>
                 <div class="separator" style="width: 620px; margin: 30px 0 15px 0;"></div>
 
-                <a href="/pitches" class="all-pitches-link"></a>
-                <?php if(($this->user->isLoggedIn()) && ($this->user->hasFavouritePitches()) && (!$this->user->isPitchFavourite($pitch->id))):?>
-                    <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
+                <a data-fav="<?= $this->user->hasFavouritePitches() ?>" href="/pitches" class="all-pitches-link"></a>
+                <?php if(($this->user->isLoggedIn()) && ($this->user->hasFavouritePitches()) && ($this->user->isPitchFavourite($pitch->id))):?>
+                    <a href="#" class="fav-minus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="remove"></a>
                 <?php elseif($this->user->isLoggedIn()):?>
                     <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
                 <?php endif?>
