@@ -17,7 +17,7 @@
         ?>
         <div class="designer_wrapper">
             <ul class="list_portfolio designers_tab">
-                <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab'))?>
+                <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'winnersUserIds'))?>
             </ul>
             <div class="scroll_left" style="display: none;"><i></i></div>
             <div class="scroll_right" style="display: none;"><i></i></div>
