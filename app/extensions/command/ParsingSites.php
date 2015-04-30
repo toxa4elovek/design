@@ -15,9 +15,25 @@ class ParsingSites extends \app\extensions\command\CronJob {
         // На случай долгих таймаутов
         set_time_limit(120);
         $startTimeStamp = time();
-        //self::$debug = true;
+        self::$debug = false;
 
         $this->header('Welcome to the ParsingSites command!');
+
+        $this->out("Starting parsing lookatme.ru");
+        self::ParsingLookatme();
+        $this->out('Finished parsing lookatme.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing krutayatema.ru");
+        self::ParsingWordpress('http://krutayatema.ru/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing krutayatema.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing http://designlenta.com/industrial");
+        self::ParsingRss('http://feeds.feedburner.com/designlenta?format=rss');
+        $this->out('Finished parsing http://designlenta.com/industrial [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing artchronika.ru");
+        self::ParsingWordpress('http://artchronika.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing artchronika.ru [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing http://www.kokokokids.ru/");
         self::ParsingKoko('http://www.kokokokids.ru/feeds/posts/default?alt=rss');
@@ -26,12 +42,6 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing http://www.theartnewspaper.ru/");
         self::ParsingSimpleRss('http://www.theartnewspaper.ru/rss/');
         $this->out('Finished parsing http://www.theartnewspaper.ru/ [' . (time() - $startTimeStamp) . ' sec]');
-
-
-        $this->out("Starting parsing interviewrussia.ru");
-        self::ParsingInterview('http://www.interviewrussia.ru/export/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
-        $this->out('Finished parsing interviewrussia.ru [' . (time() - $startTimeStamp) . ' sec]');
-
 
         $this->out("Starting parsing interviewrussia.ru");
         self::ParsingInterview('http://www.interviewrussia.ru/export/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
@@ -49,7 +59,6 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingWordpress('http://www.russiangap.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing russiangap.com [' . (time() - $startTimeStamp) . ' sec]');
 
-
         $this->out("Starting parsing pixelgene.ru");
         self::ParsingWordpress('http://pixelgene.ru/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing pixelgene.ru [' . (time() - $startTimeStamp) . ' sec]');
@@ -62,6 +71,19 @@ class ParsingSites extends \app\extensions\command\CronJob {
         self::ParsingTutdesign();
         $this->out('Finished parsing tutdesign.ru [' . (time() - $startTimeStamp) . ' sec]');
 
+        $this->out("Starting parsing vice.com/ru");
+        self::ParsingVice();
+        $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing wtpack.ru");
+        self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing wtpack.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        $this->out("Starting parsing royalcheese.ru");
+        self::ParsingRoyalcheese();
+        $this->out('Finished parsing royalcheese.ru [' . (time() - $startTimeStamp) . ' sec]');
+
+        /*
         //$this->out("Starting parsing vozduh.afisha.ru");
         //self::ParsingVozduhAfisha();
         //$this->out('Finished parsing vozduh.afisha.ru [' . (time() - $startTimeStamp) . ' sec]');
@@ -71,7 +93,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         //$this->out("Starting parsing newgrids.fr");
         //self::ParsingWordpress('http://newgrids.fr/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         //$this->out('Finished parsing newgrids.fr [' . (time() - $startTimeStamp) . ' sec]');
-/*
+
         $this->out("Starting parsing lovelypackage.com");
         self::ParsingWordpress('http://lovelypackage.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing lovelypackage.com [' . (time() - $startTimeStamp) . ' sec]');
@@ -83,24 +105,6 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing love-aesthetics.nl");
         self::ParsingWordpress('http://love-aesthetics.nl/category/diy/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing love-aesthetics.nl [' . (time() - $startTimeStamp) . ' sec]');
-*/
-        $this->out("Starting parsing vice.com/ru");
-        self::ParsingVice();
-        $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
-
-        $this->out("Starting parsing wtpack.ru");
-        self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
-        $this->out('Finished parsing wtpack.ru [' . (time() - $startTimeStamp) . ' sec]');
-
-
-
-        $this->out("Starting parsing royalcheese.ru");
-        self::ParsingRoyalcheese();
-        $this->out('Finished parsing royalcheese.ru [' . (time() - $startTimeStamp) . ' sec]');
-
-        //$this->out("Starting parsing lookatme.ru");
-        //self::ParsingLookatme();
-        //$this->out('Finished parsing lookatme.ru [' . (time() - $startTimeStamp) . ' sec]');
 
         //$this->out("Starting parsing the-village.ru");
         //self::ParsingVillage();
@@ -113,7 +117,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
         //$this->out("Starting parsing fuckingyoung.es");
         //self::ParsingWordpress('http://fuckingyoung.es/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         //$this->out('Finished parsing fuckingyoung.es [' . (time() - $startTimeStamp) . ' sec]');
-/*
+
         $this->out("Starting parsing raneytown.com");
         self::ParsingWordpress('http://raneytown.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i');
         $this->out('Finished parsing raneytown.com [' . (time() - $startTimeStamp) . ' sec]');
@@ -147,7 +151,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
         $this->out('Finished parsing monsterchildren [' . (time() - $startTimeStamp) . ' sec]');
 
-        //self::ParsingWordpress('http://illusion.scene360.com/feed/');
+        self::ParsingWordpress('http://illusion.scene360.com/feed/');
 */
         $this->out("Starting fixing tags");
         self::fixTags();
@@ -417,11 +421,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
     }
 
     private function ParsingLookatme() {
-        $xml = simplexml_load_file('http://www.lookatme.ru/feeds/posts.atom');
+        $xml = simplexml_load_file('http://www.lookatme.ru/feeds/posts.atom?topic=people');
         foreach ($xml->entry as $item) {
             $trigger = News::doesNewsExists((string) $item->title, $item->id);
 
             if (!$trigger) {
+
                 $date = new \DateTime($item->published);
                 $content = file_get_contents($item->id);
                 libxml_use_internal_errors(true);
@@ -445,6 +450,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 } elseif (strpos($tag, 'Интерфейс')) {
                     $cat = 'Интерфейс';
                 }
+                $cat = 'Герои';
                 preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
                 $image = '';
                 $count = count($matches[1]);
@@ -455,18 +461,24 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     }
                 }
                 if (strlen($image) > 0 && strlen($cat) > 0) {
-                    $this->out('Saving - ' . $item->title);
-                    $news = News::create(array(
-                                'title' => $item->title,
-                                'tags' => $cat,
-                                'short' => '',
-                                'created' => date('Y-m-d H:i:s', (time() - (HOUR))),
-                                'link' => $item->id,
-                                'imageurl' => $image,
-                                'lang' => 'ru'
-                    ));
-                    $news->save();
-                    Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
+                    $data = array(
+                        'title' => (string) $item->title,
+                        'tags' => $cat,
+                        'short' => (string) str_replace('Читать дальше...', '', strip_tags($item->content)),
+                        'created' => date('Y-m-d H:i:s', (time() - (HOUR))),
+                        'link' => (string) $item->id,
+                        'imageurl' => $image,
+                        'lang' => 'ru'
+                    );
+                    if(self::$debug == false) {
+                        $this->out('Saving - ' . $item->title);
+                        $news = News::create($data);
+                        $news->save();
+                        Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
+                    }else {
+                        var_dump($item);
+                        var_dump($data);
+                    }
                 }
             }
         }
@@ -535,6 +547,37 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $data = array(
                     'title' => (string) $item->title,
                     'short' => strip_tags($item->description),
+                    'tags' => 'Дизайн',
+                    'created' => $date->format('Y-m-d H:i:s'),
+                    'link' => (string) $item->link,
+                    'imageurl' => $image,
+                    'lang' => 'ru'
+                );
+                if(self::$debug == false) {
+                    $news = News::create($data);
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }else {
+                    var_dump($data);
+                }
+            }
+        }
+    }
+
+    private function ParsingRss($url) {
+        $xml = simplexml_load_file($url);
+        foreach ($xml->channel->item as $item) {
+            $trigger = News::doesNewsExists((string) $item->title, (string) $item->link);
+            if (!$trigger) {
+                $date = new \DateTime($item->published);
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                $image = '';
+                if (isset($matches[1])) {
+                    $image = $matches[1];
+                }
+                $data = array(
+                    'title' => (string) $item->title,
+                    'short' => trim(strip_tags($item->description)),
                     'tags' => 'Дизайн',
                     'created' => $date->format('Y-m-d H:i:s'),
                     'link' => (string) $item->link,

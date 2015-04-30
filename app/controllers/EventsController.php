@@ -138,18 +138,7 @@ class EventsController extends \app\controllers\AppController {
     public function add() {
         $result = false;
         if ($this->request->data) {
-            $news = News::create($this->request->data);
-            $news->created = date('Y-m-d H:i:s');
-            if (isset($this->request->data['file'])) {
-                $news->imageurl = News::resize($this->request->data['file']);
-            }
-            $news->admin = 1;
-            if ($result = $news->save()) {
-                if (!$news->isBanner) {
-                    Event::createEventNewsAdded($news->id, 0, $news->created);
-                    $result = Event::first(array('conditions' => array('news_id' => $news->id)));
-                }
-            }
+            $result = News::saveNewsByAdmin($this->request->data);
         }
         return compact('result');
     }

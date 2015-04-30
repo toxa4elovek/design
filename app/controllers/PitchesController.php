@@ -851,7 +851,7 @@ class PitchesController extends \app\controllers\AppController {
                 return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount', 'winnersUserIds');
             } else {
                 if (isset($this->request->query['count'])) {
-                    return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount')));
+                    return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds')));
                 }
                 return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds'));
             }
@@ -947,6 +947,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $nominatedSolutionOfThisPitch = Solution::first(array(
                 'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
             ));
+            $winnersUserIds = array();
+            if ($nominatedSolutionOfThisPitch) {
+                $selectedsolution = true;
+                if(!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
+                    $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
+                }
+            }
             if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
                 return $this->redirect('/pitches');
             }
@@ -962,9 +969,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
             $rating = Pitchrating::getRating($currentUser, $pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts', 'rating');
+                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts', 'rating', 'winnersUserIds');
             } else {
-                return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch')));
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch', 'winnersUserIds')));
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
@@ -992,6 +999,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $nominatedSolutionOfThisPitch = Solution::first(array(
                 'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
             ));
+            $winnersUserIds = array();
+            if ($nominatedSolutionOfThisPitch) {
+                $selectedsolution = true;
+                if(!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
+                    $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
+                }
+            }
             if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
                 return $this->redirect('/pitches');
             }
@@ -1061,12 +1075,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
             //$comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
 
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
-                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search');
+                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds');
             } else {
                 if (isset($this->request->query['count']) || isset($this->request->query['search'])) {
-                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search')));
+                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds')));
                 }
-                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search')));
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds')));
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);

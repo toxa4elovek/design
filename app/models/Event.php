@@ -204,7 +204,7 @@ class Event extends \app\models\AppModel {
         return $newEvent->save();
     }
 
-    public function createEventNewsAdded($news_id, $pitch_id, $created) {
+    public static function createEventNewsAdded($news_id, $pitch_id, $created) {
         $newEvent = Event::create();
         $newEvent->created = $created;
         $newEvent->pitch_id = $pitch_id;

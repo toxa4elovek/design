@@ -35,10 +35,10 @@
     <meta name="twitter:title" content="<?=$this->HtmlExtended->title($this->_request->params, $vars)?>" />
     <meta name="twitter:image" content="<?= $url ?>" />
     <meta name="twitter:url" content='http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>' />
-    <meta property="og:image" content="<?=$url?>"/>
+    <?php echo $this->Og->getOgImage($url); ?>
     <meta property="og:url" content='http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>' />
-    <meta property="og:title" content="<?= $this->HtmlExtended->title($this->_request->params, $vars, true)?>"/>
-    <meta property="og:description" content="<?=strip_tags($description)?>"/>
+    <?php echo $this->Og->getOgTitle($this->HtmlExtended->title($this->_request->params, $vars, true));?>
+    <?php echo $this->Og->getOgDescription($description);?>
     <?php elseif(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
         $first_img = $post->imageurl;
         preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->full, $matches);
@@ -50,63 +50,69 @@
         }
         echo '<meta content="article" property="og:type"/>';
         echo '<meta property="og:url" content="http://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
-        echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
-        echo '<meta property="og:title" content="' . $post->title . '"/>';
-        echo '<meta property="og:image" content="' . $first_img . '"/>';
+        echo $this->Og->getOgDescription($post->short);
+        echo $this->Og->getOgTitle($post->title);
+        echo $this->Og->getOgImage($first_img);
         echo '<meta property="fb:admins" content="nyudmitriy"/>';
         echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
     <?php elseif (preg_match('@/pitches/(details|view)@', $_SERVER['REQUEST_URI'])):
         echo '<meta content="godesigner:pitch" property="og:type"/>';
         echo '<meta property="og:url" content="http://www.godesigner.ru/pitches/details/' . $pitch->id . '/"/>';
-        echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($pitch->description, 0, 100, 'UTF-8') . '...')))) . '"/>';
-        echo '<meta property="og:title" content="' . htmlspecialchars($pitch->title) . '"/>';
-        echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
+        echo $this->Og->getOgDescription($pitch->description);
+        echo $this->Og->getOgTitle($pitch->title);
+        echo $this->Og->getOgImage('');
         echo '<meta property="fb:admins" content="nyudmitriy"/>';
         echo '<meta property="fb:app_id" content="202765613136579"/>';
     elseif(preg_match('@/questions@', $_SERVER['REQUEST_URI'])):
         if((!empty($_GET)) && (isset($_GET['result']))):
             if($_GET['result'] == 'dvornik'):
                 echo '<meta property="og:url" content="http://www.godesigner.ru/questions?result=dvornik"/>';
-                echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/dvornik_468_246.png"/>';
-                echo '<meta property="og:title" content="' . htmlspecialchars('Тест «Какой ты дизайнер на самом деле» показал, что я дворник, совсем не дизайнер!') . '"/>';
+                echo $this->Og->getOgImage('http://www.godesigner.ru/img/questions/dvornik_468_246.png');
+                echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я дворник, совсем не дизайнер!');
             endif;
 
             if($_GET['result'] == 'malyar'):
                 echo '<meta property="og:url" content="http://www.godesigner.ru/questions?result=malyar"/>';
-                echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/malyar_468_246.png"/>';
-                echo '<meta property="og:title" content="' . htmlspecialchars('Тест «Какой ты дизайнер на самом деле» показал, что я маляр, лучший кандидат в команду Тома Сойера!') . '"/>';
+                echo $this->Og->getOgImage('http://www.godesigner.ru/img/questions/malyar_468_246.png');
+                echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я маляр, лучший кандидат в команду Тома Сойера!');
             endif;
 
             if($_GET['result'] == 'master'):
                 echo '<meta property="og:url" content="http://www.godesigner.ru/questions?result=master"/>';
-                echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/master_468_246.png"/>';
-                echo '<meta property="og:title" content="' . htmlspecialchars('Тест «Какой ты дизайнер на самом деле» показал, что я Большой мастер, и выше только бог!') . '"/>';
+                echo $this->Og->getOgImage('http://www.godesigner.ru/img/questions/master_468_246.png');
+                echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я Большой мастер, и выше только бог!');
             endif;
 
             if($_GET['result'] == 'apollo'):
                 echo '<meta property="og:url" content="http://www.godesigner.ru/questions?result=apollo"/>';
-                echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/apollo_468_246.png"/>';
-                echo '<meta property="og:title" content="' . htmlspecialchars('Тест «Какой ты дизайнер на самом деле» показал, что я Аполлон, бог искусств!') . '"/>';
+                echo $this->Og->getOgImage('http://www.godesigner.ru/img/questions/apollo_468_246.png');
+                echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я Аполлон, бог искусств!');
             endif;
         else:
-            echo '<meta property="og:image" content="http://www.godesigner.ru/img/questions/general.jpg"/>';
+            echo $this->Og->getOgTitle("Тест на знание основ графического дизайна");
+            echo $this->Og->getOgImage('http://www.godesigner.ru/img/questions/general.jpg');
         endif;
-        echo '<meta property="og:title" content="Тест на знание основ графического дизайна"/>';
-        echo '<meta property="og:description" content="Узнай, какой ты дизайнер на самом деле!"/>';
+        echo $this->Og->getOgDescription("Узнай, какой ты дизайнер на самом деле!");
     elseif(isset($shareEvent)):
         echo '<meta property="og:url" content="http://www.godesigner.ru/news?event=' . $shareEvent->id . '"/>';
-        if((!empty($shareEvent->news->imageurl)) && (!empty($shareEvent->news->link))):
-            echo '<meta property="og:title" content="' . htmlspecialchars($shareEvent->news->title) . '"/>';
-            echo '<meta property="og:description" content="' . str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($shareEvent->news->short, 0, 100, 'UTF-8') . '...'))))  . '"/>';
-            $url = $shareEvent->news->imageurl;
-            if(!preg_match('/http/', $url)) {
-                $url = 'http://www.godesigner.ru' . $url;
-            }
-            echo '<meta property="og:image" content="' . $url . '"/>';
-        endif;
+        if(!empty($shareEvent->news->og_title)) {
+            echo $this->Og->getOgTitle($shareEvent->news->og_title);
+        }else {
+            echo $this->Og->getOgTitle($shareEvent->news->title);
+        }
+        if(!empty($shareEvent->news->og_description)) {
+            echo $this->Og->getOgDescription($shareEvent->news->og_description);
+        }else {
+            echo $this->Og->getOgDescription($shareEvent->news->short);
+        }
+        if(!empty($shareEvent->news->og_image)) {
+            echo $this->Og->getOgImage($shareEvent->news->og_image);
+        }else {
+            echo $this->Og->getOgImage($shareEvent->news->imageurl);
+        }
     else:
-        echo '<meta property="og:image" content="http://www.godesigner.ru/img/fb_icon.jpg"/>';
+        echo $this->Og->getOgImage($shareEvent->news->imageurl);
         ?>
     <?php endif;?>
 

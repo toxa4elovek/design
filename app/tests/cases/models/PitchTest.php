@@ -5,6 +5,7 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\Pitch;
 use app\models\Solution;
+use app\models\Comment;
 use lithium\storage\Session;
 
 class PitchTest extends AppUnit {
@@ -317,7 +318,7 @@ class PitchTest extends AppUnit {
             $this->assertEqual(0, $pitch->published);
             $this->assertEqual(2, $pitch->multiwinner);
             $this->assertEqual($pitch->awarded, $solution->id);
-        }
+        }*/
 
         public function testActivateNewWinner() {
             $this->assertFalse(Pitch::activateNewWinner(0));
@@ -333,7 +334,7 @@ class PitchTest extends AppUnit {
             $this->assertEqual(1,$pitch->billed);
             $this->assertEqual(1,$pitch->published);
         }
-
+/*
         public function testGetCountBilledMultiwinner() {
             // 0 результатов
             $count = Pitch::getCountBilledMultiwinner(2);
