@@ -9,9 +9,16 @@
             <div class="content group">
                 <div id="ap_content_top">
                     <div id="ap_content_top_l">
+                        <h1 class="fastpitch-main-header">Как это работает</h1>
+                        <div class="fastpitch-step1">
+                            <h2 class="fastpitch-secondary-header">Оставьте номер телефона <span>*</span></h2>
+                            <span class="plus">+</span> <input name="phone" value="" class="input-phone" placeholder="+7 911 123 45 67" />
+                            <div class="clear" style="clear:both;"></div>
+                            <p>Мы свяжемся с вами для интервью, на основе которого сами создадим тех. задание для дизайнеров.</p>
+                        </div>
                         <h1>Создай проект на логотип в один клик, остальное мы сделаем за вас.</h1>
                         <label id="phone" class="regular">Оставить номер телефона</label>
-                        <input name="phone" value="" class="input-phone" placeholder="+7 911 123 45 67" /> <span class="and_phone">и</span>
+                         <span class="and_phone">и</span>
                         <label id="time-label" class="regular">Выберите удобное время для беседы</label>
                         <ul class="date">
                             <?php
@@ -73,4 +80,5 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
+<?= $this->html->style(array('/css/fastpitch.css'), array('inline' => false)) ?>
 <?= $this->html->script(array('pages/fastpitch.js'), array('inline' => false)) ?>

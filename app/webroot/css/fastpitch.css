@@ -1,0 +1,49 @@
+#ap_content_top_l {
+    width : 830px;
+}
+#ap_content_top_l .fastpitch-main-header {
+    color: #cccccc;
+    font-size: 29px;
+    font-family: RodeoC, serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow: 1px 0 0 #ffffff;
+    margin-bottom: 6px;
+}
+#ap_content_top_l .fastpitch-secondary-header {
+    color: #666666;
+    font-size: 24px;
+    font-family: RodeoC, serif;
+    text-align: left;
+    text-shadow: 1px 0 0 #ffffff;
+    margin-bottom: 6px;
+    text-transform: none;
+    font-weight: normal;
+}
+.fastpitch-step1 {
+    background-image: url(/img/fastpitch/1_back.png);
+    height: 311px;
+    width: 811px;
+    padding-left: 240px;
+    position: relative;
+    right: 110px;
+    padding-top: 30px;
+}
+.fastpitch-secondary-header span {
+    color: #ff595d;
+}
+.fastpitch-step1 .input-phone {
+    width: 180px;
+}
+.plus {
+    display: block;
+    font-size: 17px;
+    margin-right: 17px;
+    float: left;
+    margin-top: 10px;
+}
+.fastpitch-step1 p {
+    color: #7f7f7f;
+
+}
