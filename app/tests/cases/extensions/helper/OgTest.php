@@ -67,4 +67,10 @@ class OgTest extends \lithium\test\Unit
         $this->assertEqual($expected, $result);
     }
 
+    public function testGetOgUrl() {
+        $expected = '<meta property="og:url" content="http://www.godesigner.ru/test/app/tests/cases/extensions/helper/OgTest"/>';
+        $result = $this->og->getOgUrl();
+        $this->assertEqual($expected, $result);
+    }
+
 }

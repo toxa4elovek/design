@@ -53,4 +53,13 @@ class Og extends \lithium\template\Helper {
         $template = '<meta property="og:description" content="{description}"/>';
         return str_replace('{description}', $description, $template);
     }
+
+    /**
+     * Метод возвращяет красивый текущий адрес сайта в метатеге og:url
+     *
+     * @return string
+     */
+    public function getOgUrl() {
+        return '<meta property="og:url" content="' . 'http://www.godesigner.ru' . $_SERVER['REQUEST_URI'] . '"/>';
+    }
 }
