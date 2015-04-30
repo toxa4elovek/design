@@ -16,7 +16,35 @@
                             <div class="clear" style="clear:both;"></div>
                             <p>Мы свяжемся с вами для интервью, на основе которого сами создадим тех. задание для дизайнеров.</p>
                         </div>
-                        <h1>Создай проект на логотип в один клик, остальное мы сделаем за вас.</h1>
+
+                        <div class="fastpitch-step2">
+                            <h2 class="fastpitch-secondary-header">Выберите удобное время</h2>
+                            <ul class="date">
+                                <?php
+                                $x = 0;
+                                foreach ($alllow_time as $i => $v):
+                                    $x++;
+                                    if ($x < 4):
+                                        ?>
+                                        <li>
+                                            <label><input <?php if($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
+                                        </li>
+                                        <?php unset($alllow_time[$i]);
+                                    else: ?>
+                                        <li>
+                                            <label><input id="more" name="time" type="radio">Другое время</label>
+                                        </li>
+                                        <?php
+                                        break;
+                                    endif;
+                                    ?>
+                                <?php endforeach; ?>
+                            </ul>
+                            <div class="clear" style="clear:both;"></div>
+                            <p>Мы наберем вас в указанный час. Интервью займет примерно 40 минут.</p>
+                        </div>
+
+                        <!--h1>Создай проект на логотип в один клик, остальное мы сделаем за вас.</h1>
                         <label id="phone" class="regular">Оставить номер телефона</label>
                          <span class="and_phone">и</span>
                         <label id="time-label" class="regular">Выберите удобное время для беседы</label>
@@ -71,7 +99,7 @@
                             В течении дня мы свяжемся с вами, на основе интервью сами составим тех. задание, и опубликуем проект на сайте.</span>
 
                         <h1 style="margin-top:44px">Легко и выгодно!</h1>
-                        <span class="regular">С нашим предложением вы экономите не только 2 часа на заполнение брифа, но и 2530 рублей. Мы подобрали для вас оптимальное решение и самый популярный набор опций, чтобы обеспечить пул специалистов и подарить незабываемый опыт работы с GoDesigner.</span>
+                        <span class="regular">С нашим предложением вы экономите не только 2 часа на заполнение брифа, но и 2530 рублей. Мы подобрали для вас оптимальное решение и самый популярный набор опций, чтобы обеспечить пул специалистов и подарить незабываемый опыт работы с GoDesigner.</span-->
                     </div>
                 </div>
             </div><!-- /content -->		
