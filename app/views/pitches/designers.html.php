@@ -42,7 +42,7 @@
 
                 <?php if(($designersCount > 0) && ($pitch->published == 1)): ?>
                 <ul class="portfolio_gallery designers_tab">
-                    <?=$this->view()->render(array('element' => 'designers'), compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount'))?>
+                    <?=$this->view()->render(array('element' => 'designers'), compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount', 'winnersUserIds'))?>
                 </ul>
                 <?php else: ?>
                 <div class="bigfont clr" style="margin-bottom: 76px; padding-top: 80px;">
