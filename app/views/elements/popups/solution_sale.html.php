@@ -30,6 +30,41 @@
                 <span class="solution-description isField"><!--  --></span><a class="description-more">… Подробнее</a>
             </div>
             <div class="separator"></div>
+            <div class="solution-copyrighted"><!--  --></div>
+            <div class="solution-info">
+                <table class="solution-stat">
+                    <col class="icon">
+                    <col class="description">
+                    <col class="value">
+                    <tr>
+                        <td class="icon icon-eye"></td>
+                        <td>Просмотры</td>
+                        <td class="value-views isField"><!--  --></td>
+                    </tr>
+                    <tr>
+                        <td class="icon icon-thumb"></td>
+                        <td>Лайки</td>
+                        <td class="value-likes isField"><!--  --></td>
+                    </tr>
+                    <tr>
+                        <td class="icon icon-comments"></td>
+                        <td>Комментарии</td>
+                        <td class="value-comments isField"><!--  --></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="separator"></div>
+            <div class="solution-info solution-tags chapter">
+                <h2>ТЕГИ</h2>
+                <ul class="tags">
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="separator"></div>
+            <div class="solution-info solution-share chapter">
+
+            </div>
+            <div class="separator"></div>
             <div class="solution-info solution-abuse isField"><!--  --></div>
             <?php if (isset($data['receipt'])) : ?>
                 <div>
