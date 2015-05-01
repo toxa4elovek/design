@@ -352,10 +352,15 @@ span.first {
     padding-right: 15px;
 }
 .summary-price {
-    position: fixed;
-    /*    margin-left: 0;
-        left: 15%;*/
-    top:auto;
+    /*position: fixed;
+    top:auto;*/
+    margin-left: 45px;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+#check-tag {
+    margin-bottom: 0;
 }
 #to-pay {
     background: url(/img/bottom_arrow.png) no-repeat 0 100%;

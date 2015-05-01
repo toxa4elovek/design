@@ -77,6 +77,26 @@ jQuery(document).ready(function ($) {
     var isBusy = false,
             page = 1,
             gallery = $('.portfolio_gallery');
+
+    var receiptOffsetTop = 0;
+    var popupReady = false;
+
+    $(window).on('scroll', function () {
+        if(($('.solution-sale:visible').length == 1) && (popupReady)) {
+            var receipt = $('.summary-price');
+            if(($(window).scrollTop() + 20) > receiptOffsetTop) {
+                var parent = receipt.parent();
+                var parentOffset = parent.offset();
+                receipt.css('position', 'fixed');
+                receipt.css('top', '20px');
+                receipt.css('left', parentOffset.left + 'px');
+            }else {
+                receipt.css('position', 'relative').css('left', '0').css('top', '0')
+
+            }
+        }
+    });
+
     $(window).on('scroll', function () {
         if (((gallery.height() - 200) - $(window).scrollTop() < 400) && !isBusy) {
             isBusy = true;
@@ -799,7 +819,10 @@ jQuery(document).ready(function ($) {
                 $('.solution-share').html(fullshareblock);
                 $('.social-likes').socialLikes();
             }
-
+            var receipt = $(".summary-price");
+            var offset = receipt.offset();
+            popupReady = true;
+            receiptOffsetTop = offset.top;
         });
     }
 
