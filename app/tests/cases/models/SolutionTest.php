@@ -352,4 +352,22 @@ class SolutionTest extends AppUnit {
         $this->assertEqual(DAY, $ttl);
     }
 
+    public function testGetUsersSolutions() {
+        $ids = array(11, 10, 9, 8, 7, 6, 5, 4, 3, 2);
+        $result = array();
+        $solutions = Solution::getUsersSolutions(2);
+        foreach($solutions as $solution) {
+            $result[] = $solution->id;
+        }
+        $this->assertEqual($ids, $result);
+
+        $ids = array("11", "8", "6", "4", "3", "2");
+        $result = array();
+        $solutions = Solution::getUsersSolutions(2, true);
+        foreach($solutions as $solution) {
+            $result[] = $solution->id;
+        }
+        $this->assertEqual($ids, $result);
+    }
+
 }

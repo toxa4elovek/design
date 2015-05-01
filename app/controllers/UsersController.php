@@ -209,7 +209,11 @@ class UsersController extends \app\controllers\AppController {
 
     public function solutions() {
         $conditions = array('Solution.user_id' => Session::read('user.id'));
-        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch', 'Solutiontag')));
+        $solutions = Solution::all(array(
+            'conditions' => $conditions,
+            'with' => array('Pitch', 'Solutiontag'),
+            'order' => array('Solution.id' => 'desc')
+        ));
         $nominatedCount = $this->nominatedCount;
         $myPitches = Pitch::all(array('conditions' => array('user_id' => Session::read('user.id'), 'published' => 1, 'billed' => 1)));
 
@@ -218,7 +222,11 @@ class UsersController extends \app\controllers\AppController {
             foreach ($myPitches as $pitch) {
                 $idList[] = $pitch->id;
             }
-            $solutions = Solution::all(array('conditions' => array('pitch_id' => $idList), 'order' => array('Solution.id' => 'desc'), 'with' => array('Pitch', 'Solutiontag')));
+            $solutions = Solution::all(array(
+                'conditions' => array('pitch_id' => $idList),
+                'order' => array('Solution.id' => 'desc'),
+                'with' => array('Pitch', 'Solutiontag')
+            ));
         }
         foreach($solutions as $solution) {
             $solution->tags = Solution::getTagsArrayForSolution($solution);
@@ -1139,9 +1147,9 @@ class UsersController extends \app\controllers\AppController {
             $awardedSolutionNum = (int) User::getAwardedSolutionNum(Session::read('user.id'));
             $totalSolutionNum = (int) User::getTotalSolutionNum(Session::read('user.id'));
             if (User::checkRole('admin')) {
-                $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch', 'Solutiontag')));
+                $selectedSolutions = Solution::getUsersSolutions($this->request->id);
             } else {
-                $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch', 'Solutiontag')));
+                $selectedSolutions = Solution::getUsersSolutions($this->request->id, true);
             }
             foreach($selectedSolutions as $solution) {
                 $solution->tags = Solution::getTagsArrayForSolution($solution);
@@ -1174,9 +1182,9 @@ class UsersController extends \app\controllers\AppController {
             $totalUserFavorite = Favourite::getCountFavoriteUser($user->id);
             $isFav = Favourite::first(array('conditions' => array('user_id' => Session::read('user.id'), 'fav_user_id' => $user->id)));
             if (User::checkRole('admin')) {
-                $selectedSolutions = Solution::all(array('conditions' => array('Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+                $selectedSolutions = Solution::getUsersSolutions($this->request->id);
             } else {
-                $selectedSolutions = Solution::all(array('conditions' => array('selected' => 1, 'Solution.user_id' => $this->request->id), 'with' => array('Pitch')));
+                $selectedSolutions = Solution::getUsersSolutions($this->request->id, true);
             }
             $moderations = null;
             if (User::checkRole('admin') || (Session::read('user.isAdmin') == 1)) {

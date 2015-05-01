@@ -771,10 +771,27 @@ http://godesigner.ru/answers/view/73');
         return $totalCount;
     }
 
+    /**
+     * Метод возвращяет случайный член списка для рандомизации запроса
+     * @return array
+     */
     public static function randomizeStreamOrder() {
         $array = array('likes', 'views', 'rating');
         shuffle($array);
         return $array;
+    }
+
+    public static function getUsersSolutions($userId, $selectedOnly = false) {
+        $conditions = array('Solution.user_id' => $userId);
+        if($selectedOnly) {
+            $conditions['Solution.selected'] = 1;
+        }
+        $selectedSolutions = Solution::all(array(
+            'conditions' => $conditions,
+            'with' => array('Pitch', 'Solutiontag'),
+            'order' => array('Solution.id' => 'desc')
+        ));
+        return $selectedSolutions;
     }
 
 }
