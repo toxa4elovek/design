@@ -249,10 +249,14 @@
                                         </div>
                                             <div class="box-info" style="margin-top: 0;">
                                                 <?php if($this->user->getId()):?>
-                                                <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
-                                                <span style="font-size: 28px;position: relative;top: 4px;">·</span>
+                                                <a style="padding-left: 1px;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                                    <?php if(($isValidImage($newsImage)) or ($object['news']['link'] == '')):?>
+                                                        <span style="font-size: 28px;position: relative;top: 4px;">·</span>
+                                                    <?php endif?>
                                                 <?php endif?>
-                                                <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
+                                                <?php if(($isValidImage($newsImage)) or ($object['news']['link'] == '')):?>
+                                                <a style="padding-left: <?php if($this->user->getId()):?>5px<?php else:?>2px<?php endif?>;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
+                                                <?php endif?>
                                                 <?php
                                                 if(isset($object['news']['og_title'])) {
                                                     $tweetLike = $object['news']['title'];
@@ -536,12 +540,13 @@
 
                                                 <div class="box-info" style="margin-top: 0;">
                                                     <?php if($this->user->getId()):?>
-                                                    <a style="padding-left: 0;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
-
+                                                    <a style="padding-left: 1px;padding-right: 10px;" data-news="1" data-id="<?= $object['news']['id'] ?>" class="like-small-icon-box" data-userid="<?= $this->user->getId() ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['news']['liked'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
+                                                        <?php if(($isValidImage($newsImage)) or ($object['news']['link'] == '')):?>
+                                                        <span style="font-size: 28px;position: relative;top: 4px;">·</span>
+                                                        <?php endif?>
                                                     <?php endif?>
                                                     <?php if(($isValidImage($newsImage)) or ($object['news']['link'] == '')):?>
-                                                    <span style="font-size: 28px;position: relative;top: 4px;">·</span>
-                                                    <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
+                                                    <a style="padding-left: <?php if($this->user->getId()):?>5px<?php else:?>2px<?php endif?>;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                     <?php endif?>
                                                     <?php
                                                     if(isset($object['news']['og_title'])) {

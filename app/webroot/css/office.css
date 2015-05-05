@@ -416,6 +416,7 @@
     display: block;
     margin-top: -2px;
     margin-bottom: 3px;
+    padding-left: 1px;
 }
 
 .center-boxes .box img.img-post {
@@ -432,6 +433,7 @@
     padding-top: 5px;
     width: 570px;
     word-wrap: break-word;
+    padding-left: 1px;
 }
 
 .center-boxes .box a.post-link {
