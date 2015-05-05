@@ -193,6 +193,25 @@ class News extends \app\models\AppModel {
             } catch (\Exception $e) {}
         }
 
+        if(preg_match('@player.vimeo.com\/video\/(.*?)"@', $news->short, $matches)) {
+            // расшаривание с ютюба
+            $vimeoUrl = 'https://vimeo.com/' . $matches[1];
+            try {
+                $context  = stream_context_create();
+                if($html = file_get_contents($vimeoUrl, false, $context)) {
+                    if(preg_match('@property="og:image" content="(.*?)">@', $html, $matches)) {
+                        $news->og_image = $matches[1];
+                    }
+                    if(preg_match('@property="og:title" content="(.*?)">@', $html, $matches)) {
+                        $news->og_title = $matches[1];
+                    }
+                    if(preg_match('@property="og:description" content="(.*?)">@', $html, $matches)) {
+                        $news->og_description = $matches[1];
+                    }
+                }
+            } catch (\Exception $e) {}
+        }
+
         $news->admin = 1;
         if ($result = $news->save()) {
             if ((!$news->isBanner) and ($createEvent)) {

@@ -120,6 +120,20 @@ class NewsTest extends AppUnit {
         $this->assertEqual('GoDesigner.ru — Как это работает?', $news->og_title);
         $this->assertEqual('', $news->description);
         $this->assertEqual('Как это работает?', $news->og_description);
+
+        $data = array(
+            'short' => '<iframe src="https://player.vimeo.com/video/24302498" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/24302498">29 WAYS TO STAY CREATIVE</a> from <a href="https://vimeo.com/tofudesign">TO-FU</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
+        );
+
+        $result = News::saveNewsByAdmin($data, false);
+        $this->assertTrue($result);
+        $news = News::first(7);
+        $this->assertEqual('', $news->imageurl);
+        $this->assertEqual('https://i.vimeocdn.com/video/164362346_1280x720.jpg', $news->og_image);
+        $this->assertEqual('', $news->title);
+        $this->assertEqual('29 WAYS TO STAY CREATIVE', $news->og_title);
+        $this->assertEqual('', $news->description);
+        $this->assertEqual('Motion Graphics: TO-FU Contact us at http://to-fu.tv Like us on Facebook http://www.facebook.com/TOFU.design twitter http://twitter.com/tofu_design  Reference: http://paulzii.tumblr.com/post/3360025995  Music:&hellip;', $news->og_description);
     }
 
 }
