@@ -72,33 +72,7 @@ ul.oneclick li {
     padding-bottom: 5px;
     line-height: 28px;
 }
-ul.date {
-    margin: 0;
-    padding: 4px;
-    width: 375px;
-    margin-bottom:45px;
-    margin-left:2px;
-    overflow:hidden;
-    position: absolute;
-    top: 116px;
-    left: 333px;
-}
-ul.date li,ul.date-hide li {
-    display: inline-block;
-    padding: 3px 0 3px 53px;
-    vertical-align: middle;
-    margin-bottom: 16px;
-    font-size: 16px;
-}
-ul.date-hide {
-    display: none;
-    margin-top: 38px;
-    width: 750px;
-    padding-left: 4px;
-}
-ul.date-hide li {
-    padding: 10px 54px 0 0;
-}
+
 input[type="radio"] {
     margin-right: 10px;
 }

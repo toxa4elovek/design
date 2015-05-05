@@ -24,7 +24,7 @@
                                 $x = 0;
                                 foreach ($alllow_time as $i => $v):
                                     $x++;
-                                    if ($x < 4):
+                                    if ($x < 6):
                                         ?>
                                         <li>
                                             <label><input <?php if($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
@@ -40,49 +40,63 @@
                                     ?>
                                 <?php endforeach; ?>
                             </ul>
+                            <ul class="date-hide">
+                                <?php
+                                $j = 1;
+                                foreach ($alllow_time as $i => $v): ?>
+                                    <li data-num="<?php echo $j; ?>">
+                                        <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
+                                    </li>
+                                    <?php
+                                    $j += 1;
+                                    if($j == 5):
+                                        $j = 1;
+                                    endif;
+                                endforeach; ?>
+                            </ul>
                             <div class="clear" style="clear:both;"></div>
                             <p>Мы наберем вас в указанный час. Интервью займет примерно 40 минут.</p>
                         </div>
 
+                        <div class="fastpitch-step3">
+                            <h2 class="fastpitch-secondary-header">Оплатите 19 600 рублей,<br> остальное мы сделаем за вас!</h2>
+                            <p>Мы подобрали для вас самый популярный набор опций, чтобы обеспечить пул хороших дизайнеров и подарить незабываемый опыт работы :</p>
+                            <a class="fastpitch button third" style="margin-top: 30px;color:#fff;cursor:pointer;">Оплатить 19 600 р.  и запустить проект</a>
+                            <table>
+                                <tr height="22"><td width="160">гонорар дизайнеру</td><td>14000</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="http://www.godesigner.ru/answers/view/79" target="_blank">гарантировать проект</a></td><td>950</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="http://www.godesigner.ru/answers/view/68" target="_blank">заполнить бриф</a></td><td>1750</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="http://www.godesigner.ru/answers/view/67" target="_blank">прокачать проект</a></td><td>1000</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="http://www.godesigner.ru/answers/view/66" target="_blank">экспертное мнение</a></td><td>1000</td></tr>
+                                <tr height="22"><td>сбор сервиса</td><td>24,5%</td></tr>
+                                <tr height="22"><td>скидка</td><td><span class="table-left-price">-2530</span></td></tr>
+                                <tr height="31"><td colspan="2"></td></tr>
+                                <tr><td class="result">ИТОГО:</td><td class="result"><span class="table-left">19600р</span></td></tr>
+                            </table>
+                        </div>
+
+                        <div class="fastpitch-line"></div>
+
+                        <div class="fastpitch-bottom">
+                            <h1 class="fastpitch-main-header second-part">Что включено в 19600 р.-</h1>
+                            <p style="width: 640px; color: #666;">С нашим предложением вы экономите не только 2 часа на заполнение брифа, но и деньги.  Стоимость кейса «Логотип в один клик» — 19600 рублей, что на 2530  дешевле, как если бы вы создавали аналогичный проект обычным способом. </p>
+                            <a class="fastpitch button third" style="margin-left: -2px;margin-top: 30px;color:#fff;cursor:pointer;">запустить проект на логотип в один клик</a>
+                            <ul>
+                                <li>гонорар дизайнеру 14 000 р.</li>
+                                <li><a class="" href="http://www.godesigner.ru/answers/view/68" target="_blank">«Заполнить бриф»</a> 1750 р.</li>
+                                <li><a class="" href="http://www.godesigner.ru/answers/view/79" target="_blank">«Гарантировать проект»</a> 950 р.</li>
+                                <li><a class="" href="http://www.godesigner.ru/answers/view/67" target="_blank">«Прокачать проект»</a> 1000 р.</li>
+                                <li><a class="" href="http://www.godesigner.ru/answers/view/66" target="_blank">«Экспертное мнение»</a> 1000 р.</li>
+                                <li>сбор GoDesigner 24,5%</li>
+                                <li>скидка - 2530 р. !</li>
+                            </ul>
+                        </div>
                         <!--h1>Создай проект на логотип в один клик, остальное мы сделаем за вас.</h1>
                         <label id="phone" class="regular">Оставить номер телефона</label>
                          <span class="and_phone">и</span>
                         <label id="time-label" class="regular">Выберите удобное время для беседы</label>
-                        <ul class="date">
-                            <?php
-                            $x = 0;
-                            foreach ($alllow_time as $i => $v):
-                                $x++;
-                                if ($x < 4):
-                                    ?>
-                                    <li>
-                                        <label><input <?php if($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
-                                    </li>
-                                    <?php unset($alllow_time[$i]);
-                                else: ?>
-                                    <li>
-                                        <label><input id="more" name="time" type="radio">Другое время</label>
-                                    </li>
-                                    <?php
-                                    break;
-                                endif;
-                                ?>
-                            <?php endforeach; ?>
-                        </ul>
-                        <ul class="date-hide">
-                        <?php
-                        $j = 1;
-                        foreach ($alllow_time as $i => $v): ?>
-                                <li data-num="<?php echo $j; ?>" <?php if(($j % 3) == 0){ echo 'style="padding-right: 52px;"'; }elseif($j == 2){ echo 'style="padding-right: 72px;"'; }elseif($j == 4){ echo 'style="padding-right: 10px;"';}else{ echo 'style="padding-right: 52px;"'; }?>>
-                                    <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
-                                </li>
-                        <?php
-                            $j += 1;
-                            if($j == 5):
-                                $j = 1;
-                            endif;
-                        endforeach; ?>
-                        </ul>
+
+
                         <a id="fastpitch" class="button third" style="color:#fff;cursor:pointer;">СОЗДАТЬ &laquo;ЛОГОТИП В ОДИН КЛИК&raquo; ЗА 19600 РУБЛЕЙ</a>
 
                         <h1 style="margin-top:21px">Что включено?</h1>
