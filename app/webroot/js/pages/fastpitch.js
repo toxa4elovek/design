@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#fastpitch').click(function(e) {
+    $('.fastpitch').click(function(e) {
         if ($('input[name="phone"]').val() != '') {
             $.post('/pitches/addfastpitch.json', {
                 'phone': $('input[name="phone"]').val(),
