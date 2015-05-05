@@ -146,9 +146,9 @@
                                                 <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution['id']?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution['id']?>"><?=$solution['likes']?></span>
                                                 <?php if((($solution['pitch']['private'] != 1) && ($solution['pitch']['category_id'] != 7))):
                                                     if (rand(1, 100) <= 50) {
-                                                        $tweetLike = 'Мне нравится этот дизайн! А вам?';
+                                                        $tweetLike = 'Мне нравится этот дизайн! А вам?' . " Этот логотип можно приобрести у автора за 9500 рублей на распродаже!";
                                                     } else {
-                                                        $tweetLike = 'Из всех ' . $solution['pitch']['ideas_count'] . ' мне нравится этот дизайн';
+                                                        $tweetLike = 'Из всех ' . $solution['pitch']['ideas_count'] . ' мне нравится этот дизайн' . " Этот логотип можно приобрести у автора за 9500 рублей на распродаже!";
                                                     }
                                                     if(!isset($solution['images']['solution_galleryLargeSize'][0])):
                                                         $url = 'http://www.godesigner.ru' . $solution['images']['solution_gallerySiteSize']['weburl'];

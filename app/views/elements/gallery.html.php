@@ -161,6 +161,10 @@ foreach($solutions as $solution):
                     } else {
                             $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
                     }
+                        if($this->pitch->isReadyForLogosale($pitch) && ($pitch->awarded != $solution->id) && !in_array($solution->user_id, $winnersUserIds)) {
+                            $tweetLike .= " Этот логотип можно приобрести у автора за 9500 рублей на распродаже!";
+                        }
+
                         if(!isset($solution->images['solution_galleryLargeSize'][0])):
                             $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
                         else:
