@@ -1000,7 +1000,7 @@ function OfficeStatusUpdater() {
                         if ($('.box[data-eventid="' + response.id + '"]').length == 0) {
                             var img = (response.post.imageurl.indexOf('/', 0) === 0) ? 'http://www.godesigner.ru' : response.post.imageurl;
                             var host = '';
-                            if(object.host != '') {
+                            if(object.host != null) {
                                 host = 'с сайта ' + response.post.host
                             }
                             var $prependEl = $('<div class="box" data-eventid="' + response.id + '"> \
@@ -1165,6 +1165,7 @@ function OfficeStatusUpdater() {
                             $('.social-likes').socialLikes();
                             $('time.timeago').timeago();
                         }
+                        window.fbAsyncInit();
                     }
                 });
             },
@@ -1225,6 +1226,7 @@ function OfficeStatusUpdater() {
                     } else {
                         isBusy = 0;
                     }
+                    window.fbAsyncInit()
                 });
             },
             this._priceDecorator = function (price) {
@@ -1514,7 +1516,7 @@ function OfficeStatusUpdater() {
                                         <p class="img-short">' + object.news.short + '</p> \
                                         <p class="timeago"> \
                                             <time class="timeago" datetime="' + object.news.created + '">' + object.news.created + '</time>';
-                    if(object.host != '') {
+                    if(object.host != null) {
                         html += ' с сайта ' + object.host;
                     }
                     if(object.news.original_title != '') {
