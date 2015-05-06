@@ -794,6 +794,12 @@ jQuery(document).ready(function ($) {
             $('.value-views', '.solution-stat').text(result.solution.views || 0);
             $('.value-likes', '.solution-stat').text(result.solution.likes || 0);
             $('.value-comments', '.solution-stat').text(result.comments.length || 0);
+            if((currentUserId == result.solution.user_id) || isCurrentAdmin) {
+                $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
+                    <a class="delete-solution" href="/solutions/delete/' + result.solution.id + '" data-solution="' + result.solution.id + '">Удалить</a>');
+            }else {
+                $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>');
+            }
 
             if (result.pitch.category_id != 7) {
 
@@ -870,6 +876,51 @@ jQuery(document).ready(function ($) {
             $('.solution-overlay').hide();
         }
     }
+
+    // Delete Solution
+    $(document).on('click', '.delete-solution', function() {
+        // Delete without Moderation
+        if (!isCurrentAdmin) {
+            return true;
+        }
+        var link = $(this);
+        if (link.attr('data-pressed') == 'on') {
+            window.location = link.attr("href");
+        }
+
+        // Show Delete Moderation Overlay
+        $('#popup-delete-solution').modal({
+            containerId: 'final-step-clean',
+            opacity: 80,
+            closeClass: 'popup-close',
+            onShow: function() {
+                $('#model_id', '#popup-delete-solution').val(link.data('solution'));
+                link.attr('data-pressed', 'on');
+                $(document).on('click', '.popup-close', function() {
+                    link.attr('data-pressed', 'off');
+                });
+                $(document).off('click', '#sendDeleteSolution');
+            }
+        });
+
+        // Delete Solution Popup Form
+        $(document).on('click', '#sendDeleteSolution', function() {
+            var form = $(this).parent().parent();
+            if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
+                $('#popup-delete-solution').addClass('wrong-input');
+                return false;
+            }
+            var $spinner = $(this).next();
+            $spinner.addClass('active');
+            $(document).off('click', '#sendDeleteSolution');
+            var data = form.serialize();
+            $.post(form.attr('action') + '.json', data).done(function(result) {
+                link.click();
+            });
+            return false;
+        });
+        return false;
+    });
 
     $(document).on('click', '.like-small-icon', function () {
         var likesNum = $(this).next();
