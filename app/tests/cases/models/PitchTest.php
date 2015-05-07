@@ -11,11 +11,11 @@ use lithium\storage\Session;
 class PitchTest extends AppUnit {
 
     public function setUp() {
-        $this->rollUp(array('Pitch', 'User','Solution','Comment'));
+        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway'));
     }
 
     public function tearDown() {
-        $this->rollDown(array('Pitch', 'User','Solution','Comment'));
+        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway'));
         Session::clear();
     }
 
@@ -318,7 +318,7 @@ class PitchTest extends AppUnit {
             $this->assertEqual(0, $pitch->published);
             $this->assertEqual(2, $pitch->multiwinner);
             $this->assertEqual($pitch->awarded, $solution->id);
-        }*/
+        }
 
         public function testActivateNewWinner() {
             $this->assertFalse(Pitch::activateNewWinner(0));
@@ -334,7 +334,7 @@ class PitchTest extends AppUnit {
             $this->assertEqual(1,$pitch->billed);
             $this->assertEqual(1,$pitch->published);
         }
-/*
+
         public function testGetCountBilledMultiwinner() {
             // 0 результатов
             $count = Pitch::getCountBilledMultiwinner(2);
@@ -352,7 +352,7 @@ class PitchTest extends AppUnit {
             $count = Pitch::getCountBilledMultiwinner(2);
             $this->assertEqual(2, $count);
         }
-    */
+
 
     public function testActivateLogosalePitch() {
         $data = Solution::addBlankPitchForLogosale(2, 0);
@@ -407,5 +407,18 @@ class PitchTest extends AppUnit {
         $this->assertTrue(Pitch::acceptLogosalePitch($id, 2));
         $logosalePitch = Pitch::first($id);
         $this->assertEqual(1, $logosalePitch->confirmed);
+    }*/
+
+    public function testGetPaymentId() {
+        $paymentId = Pitch::getPaymentId(1);
+        $this->assertEqual('101', $paymentId);
+        $paymentId = Pitch::getPaymentId(2);
+        $this->assertEqual('102', $paymentId);
+        $paymentId = Pitch::getPaymentId(3);
+        $this->assertEqual(null, $paymentId);
+        $paymentId = Pitch::getPaymentId(4);
+        $this->assertEqual('103', $paymentId);
+        $paymentId = Pitch::getPaymentId(5);
+        $this->assertEqual('104', $paymentId);
     }
 }

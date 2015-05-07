@@ -767,12 +767,7 @@ class Pitch extends \app\models\AppModel {
         $destination = PdfGetter::findPdfDestination($options['destination']);
         $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
         $layout = ($options['bill']->individual == 1) ? 'Report-fiz' : 'Report-yur';
-        $options['transaction'] = Transaction::first(array(
-                    'conditions' => array(
-                        'ORDER' => $options['pitch']->id,
-                        'TRTYPE' => 21,
-                    ),
-        ));
+        $options['transaction_id'] = self::getPaymentId($options['pitch']->id);
         $receipt = Receipt::all(array(
                     'conditions' => array(
                         'pitch_id' => $options['pitch']->id,
@@ -1560,6 +1555,35 @@ class Pitch extends \app\models\AppModel {
         if ($pitch = self::first($pitchId)) {
             return count(self::all(array('conditions' => array('user_id' => $pitch->user_id, 'billed' => 1, 'multiwinner' => $pitch->id))));
         }
+    }
+
+    /**
+     * Метод возвращяет номер операции для проекта номер $projectId
+     *
+     * @param $pitchId
+     * @return null
+     */
+    public static function getPaymentId($projectId) {
+        // есть запись с мастербанка
+        if($transaction = Transaction::first(array('conditions' => array(
+            "`ORDER`" => $projectId,
+            'TRTYPE' => 21,
+        )))) {
+            return $transaction->RRN;
+        }
+        // Paymaster
+        if($transaction = Paymaster::first(array('conditions' => array(
+            'LMI_PAYMENT_NO' => $projectId,
+        )))) {
+            return $transaction->LMI_SYS_PAYMENT_ID;
+        }
+        // Payanyway
+        if($transaction = Payanyway::first(array('conditions' => array(
+            'MNT_TRANSACTION_ID' => $projectId,
+        )))) {
+            return $transaction->MNT_OPERATION_ID;
+        }
+        return null;
     }
 
 }
