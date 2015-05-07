@@ -374,7 +374,19 @@ $(document).ready(function() {
                     solutionThumbnail = viewsize.weburl;
                 }
             }else {
-                $('.solution-images').append('<div class="preview"> \
+                var filesHTML = '';
+                if ((typeof (result.solution.images) != 'undefined') && (result.solution.images.length != 0)) {
+                    var file = result.solution.images.solution;
+                    if ($.isArray(file)) {
+                        downloadUrl = '/solutionfiles' + file[0].weburl;
+                        filename = file[0].originalbasename
+                    } else {
+                        downloadUrl = '/solutionfiles' + file.weburl;
+                        filename = file.originalbasename
+                    }
+                    filesHTML += '<div class="clip-document-container"><a href="' + downloadUrl + '" class="clip-document">' + filename + '</a></div>';
+                }
+                $('.solution-images').append(filesHTML + '<div class="preview"> \
                     <span>' + result.solution.description + '</span> \
                 </div>');
             }

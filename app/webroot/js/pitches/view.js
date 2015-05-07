@@ -589,7 +589,6 @@ $(document).ready(function () {
         $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
         $('.description-more').hide();
         $('#newComment', '.solution-left-panel').val('');
-        $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         solutionThumbnail = '';
         var solution_tags = $('.solution-tags .tags');
         solution_tags.empty();
@@ -641,7 +640,19 @@ $(document).ready(function () {
                     solutionThumbnail = viewsize.weburl;
                 }
             } else {
-                $('.solution-images').append('<div class="preview"> \
+                var filesHTML = '';
+                if ((typeof (result.solution.images) != 'undefined') && (result.solution.images.length != 0)) {
+                    var file = result.solution.images.solution;
+                    if ($.isArray(file)) {
+                        downloadUrl = '/solutionfiles' + file[0].weburl;
+                        filename = file[0].originalbasename
+                    } else {
+                        downloadUrl = '/solutionfiles' + file.weburl;
+                        filename = file.originalbasename
+                    }
+                    filesHTML += '<div class="clip-document-container"><a href="' + downloadUrl + '" class="clip-document">' + filename + '</a></div>';
+                }
+                $('.solution-images').append(filesHTML + '<div class="preview"> \
                     <span>' + result.solution.description + '</span> \
                 </div>');
             }

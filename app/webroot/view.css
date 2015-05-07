@@ -993,3 +993,13 @@ span.new-price:hover {
     text-decoration: underline;
     color: #658fa5;
 }
+.clip-document {
+    font-size: 14px;
+    padding-left: 25px;
+    margin-left: 15px;
+    background: url(/img/gallery/blue-clip.png) no-repeat;
+}
+.clip-document-container {
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
