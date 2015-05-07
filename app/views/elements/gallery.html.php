@@ -7,23 +7,29 @@ foreach($solutions as $solution):
     }
 
     $picCounter2 = 0;
-    if(isset($solution->images['solution_galleryLargeSize'][0]) && ($pitch->category_id != 7)):
-        foreach($solution->images['solution_galleryLargeSize'] as $image):
-            $picCounter2++;
-        endforeach;
-    else:
-        if(!isset($solution->images['solution_galleryLargeSize']) && ($pitch->category_id != 7)):
-            $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
-            $picCounter2 = 0;
-            if(is_array($solution->images['solution_galleryLargeSize'])):
-                foreach($solution->images['solution_galleryLargeSize'] as $image):
-                    $picCounter2++;
-                endforeach;
+    if($pitch->category_id != 7):
+        if(isset($solution->images['solution_galleryLargeSize'][0])):
+            foreach($solution->images['solution_galleryLargeSize'] as $image):
+                $picCounter2++;
+            endforeach;
+        else:
+            if(!isset($solution->images['solution_galleryLargeSize'])):
+                $solution->images['solution_galleryLargeSize'] = $solution->images['solution'];
+                $picCounter2 = 0;
+                if(is_array($solution->images['solution_galleryLargeSize'])):
+                    foreach($solution->images['solution_galleryLargeSize'] as $image):
+                        $picCounter2++;
+                    endforeach;
+                endif;
             endif;
+        endif;
+    else:
+        if($solution->images['solution']):
+            $picCounter2 = 1;
         endif;
     endif;
 ?>
-<li <?php if(($picCounter2 > 1) && ($pitch->category_id != 7)): echo 'class="multiclass"'; endif;?> id="li_<?=$solution->num;?>">
+<li <?php if($picCounter2 > 1): echo 'class="multiclass"'; endif;?> id="li_<?=$solution->num;?>">
     <!-- multisolution branch -->
     <div class="photo_block" <?php if(($picCounter2 > 1) && (($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id)))):?>style="background: url(/img/copy-inv.png) 10px 10px no-repeat white"<?php endif;?>>
         <?php
@@ -33,6 +39,9 @@ foreach($solutions as $solution):
             if($pitch->category_id == 7):
                 if($this->user->isLoggedIn() && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id)))):
                     $visible = true;?>
+                    <?php if($picCounter2 > 0):?>
+                    <div style="z-index: 2; position: absolute; color: rgb(102, 102, 102); font-weight: bold; font-size: 14px; padding-top: 7px; height: 16px; top: -34px; text-align: right; width: 18px; padding-right: 21px; background: url(/img/gallery/gray-clip.png) no-repeat scroll 22px 5px transparent; left: 162px;"><?=$picCounter2?></div>
+                    <?php endif?>
                     <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                     <a class="imagecontainer" href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>">
                         <?php if(mb_strlen(trim($solution->description)) > 100):?>
@@ -81,6 +90,11 @@ foreach($solutions as $solution):
             if($pitch->category_id == 7):
                 if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):
                     $visible = true;?>
+
+                    <?php if($picCounter2 > 0):?>
+                        <div style="z-index: 2; position: absolute; color: rgb(102, 102, 102); font-weight: bold; font-size: 14px; padding-top: 7px; height: 16px; top: -34px; text-align: right; width: 18px; padding-right: 21px; background: url(/img/gallery/gray-clip.png) no-repeat scroll 22px 5px transparent; left: 162px;"><?=$picCounter2?></div>
+                    <?php endif?>
+
                     <?php if(($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))):?><div class="hidedummy" style="background-image: url(/img/copy-inv.png)"><?php endif ?>
                     <a href="/pitches/viewsolution/<?=$solution->id?>?sorting=<?=$sort?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;<?php if(($solution->hidden) && ($this->user->isPitchOwner($pitch->user_id))):?>opacity:0.1;<?php endif?>">
                         <?php if(mb_strlen(trim($solution->description)) > 100):?>
