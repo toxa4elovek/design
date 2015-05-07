@@ -11,11 +11,11 @@ use lithium\storage\Session;
 class PitchTest extends AppUnit {
 
     public function setUp() {
-        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway'));
+        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note'));
     }
 
     public function tearDown() {
-        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway'));
+        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note'));
         Session::clear();
     }
 
@@ -421,4 +421,11 @@ class PitchTest extends AppUnit {
         $paymentId = Pitch::getPaymentId(5);
         $this->assertEqual('104', $paymentId);
     }
+
+    public function testIsMoneyBack() {
+        $this->assertFalse(Pitch::isMoneyBack(1));
+        $this->assertTrue(Pitch::isMoneyBack(2));
+
+    }
+
 }

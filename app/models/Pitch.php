@@ -16,6 +16,7 @@ use \app\models\Event;
 use \app\models\Expert;
 use \app\models\User;
 use \app\models\Task;
+use \app\models\Note;
 use \app\models\Promoted;
 use \app\models\Promocode;
 use \app\models\Grade;
@@ -757,6 +758,7 @@ class Pitch extends \app\models\AppModel {
     public static function generatePdfAct($options) {
         $destination = PdfGetter::findPdfDestination($options['destination']);
         $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        $options['pitch']->moneyback = self::isMoneyBack($options['pitch']->id);
         require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
         $mpdf = new \mPDF();
         $mpdf->WriteHTML(PdfGetter::get('Act', $options));
@@ -794,6 +796,7 @@ class Pitch extends \app\models\AppModel {
         }
         $options['totalfees'] = $totalfees;
         $options['prolongfees'] = $prolongfees;
+        $options['pitch']->moneyback = self::isMoneyBack($options['pitch']->id);
         require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
         $mpdf = new \mPDF();
         $mpdf->WriteHTML(PdfGetter::get($layout, $options));
@@ -1560,7 +1563,7 @@ class Pitch extends \app\models\AppModel {
     /**
      * Метод возвращяет номер операции для проекта номер $projectId
      *
-     * @param $pitchId
+     * @param $projectId
      * @return null
      */
     public static function getPaymentId($projectId) {
@@ -1584,6 +1587,19 @@ class Pitch extends \app\models\AppModel {
             return $transaction->MNT_OPERATION_ID;
         }
         return null;
+    }
+
+    /**
+     * Метод определяет, были ли возвращены заказчку деньги
+     *
+     * @param $projectId
+     * @return bool
+     */
+    public static function isMoneyBack($projectId) {
+        if($note = Note::first(array('conditions' => array('pitch_id' => $projectId))) and $note->status == 2) {
+            return true;
+        }
+        return false;
     }
 
 }
