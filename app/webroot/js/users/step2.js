@@ -163,7 +163,16 @@ function prepareWinCommentData(result) {
     var expertsObj = result.experts || {};
     commentData.commentId = result.comment.id;
     commentData.commentUserId = result.comment.user_id;
-    commentData.commentText = result.comment.text;
+    console.log('preparing');
+    console.log(result.comment.text);
+    var actualText = result.comment.text
+    if(result.comment.text.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?/)) {
+        console.log('matched, replacing')
+        actualText = result.comment.text.replace(/(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)/g, '$1<a href="$2" target="_blank">$2</a>');
+        console.log(actualText);
+    }
+
+    commentData.commentText = actualText;
     commentData.commentOriginalText = result.comment.originalText;
     //commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
     commentData.commentType = (result.comment.user_id == result.comment.solution.user_id) ? 'designer' : 'client';
