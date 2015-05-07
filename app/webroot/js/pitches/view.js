@@ -797,10 +797,25 @@ $(document).ready(function () {
                 } else {
                     media += result.solution.images.solution_solutionView.weburl
                 }
+                var readyForLogosale = false;
+                var parsed = result.pitch.totalFinishDate.split(/[- :]/);
+                var pitchFinishedDate = new Date(parsed[0], parsed[1]-1, parsed[2], parsed[3], parsed[4], parsed[5]);
+                var now = new Date();
+                var timeDiff = Math.abs(now.getTime() - pitchFinishedDate.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                if((result.solution.id != result.pitch.awarded) && (result.pitch.category_id == 1) && (result.pitch.private != 1) && (result.pitch.status == 2) && (diffDays > 30)) {
+                    readyForLogosale = true;
+                }
                 // Twitter like solution message
                 var tweetLike = 'Мне нравится этот дизайн! А вам?';
+                if(readyForLogosale) {
+                    tweetLike += ' Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
+                }
                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
                     tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
+                    if(readyForLogosale) {
+                        tweetLike += '! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
+                    }
                 }
 
                 var shareTitle = tweetLike;
@@ -808,7 +823,7 @@ $(document).ready(function () {
                 var sharebar = '<div style="display: block; height: 75px"> \
                 <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
                 <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
-                <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div> \
+                <div class="twitter" style="display: inline-block;">TWITT</div> \
                 <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="' + media + '" data-url="' + url + '">SHARE</div> \
                 <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="' + url + '" data-media="' + media + '">PIN</div></div></div>';
                 var fullshareblock = '<h2>ПОДЕЛИТЬСЯ</h2><div class="body" style="display: block;">' + sharebar + '</div>';

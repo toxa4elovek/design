@@ -192,11 +192,9 @@ jQuery(document).ready(function ($) {
                 });
             }
             if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                var tweetLike = 'Мне нравится этот дизайн! А вам?\
-                Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
+                var tweetLike = 'Мне нравится этот дизайн! А вам? Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
             } else {
-                var tweetLike = 'Из всех мне нравится этот дизайн\
-                Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
+                var tweetLike = 'Из всех мне нравится этот дизайн! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
             }
             var media = 'http://www.godesigner.ru';
             if ($.isArray(solution.images.solution_solutionView)) {
@@ -211,7 +209,7 @@ jQuery(document).ready(function ($) {
             var sharebar = '<div class="sharebar"><div class="tooltip-block"> \
                 <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
                 <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
-                <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div> \
+                <div class="twitter" style="display: inline-block;">TWITT</div> \
                 <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="' + media + '" data-url="' + url + '">SHARE</div> \
                 <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="' + url + '" data-media="' + media + '">PIN</div></div></div></div>';
 
@@ -810,9 +808,9 @@ jQuery(document).ready(function ($) {
                     media += result.solution.images.solution_solutionView.weburl
                 }
                 // Twitter like solution message
-                var tweetLike = 'Мне нравится этот дизайн! А вам?';
+                var tweetLike = 'Мне нравится этот дизайн! А вам? Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                    tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
+                    tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
                 }
 
                 var shareTitle = tweetLike;
@@ -820,7 +818,7 @@ jQuery(document).ready(function ($) {
                 var sharebar = '<div style="display: block; height: 75px"> \
                 <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
                 <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
-                <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div> \
+                <div class="twitter" style="display: inline-block;">TWITT</div> \
                 <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="' + media + '" data-url="' + url + '">SHARE</div> \
                 <div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="' + url + '" data-media="' + media + '">PIN</div></div></div>';
                 var fullshareblock = '<h2>ПОДЕЛИТЬСЯ</h2><div class="body" style="display: block;">' + sharebar + '</div>';
