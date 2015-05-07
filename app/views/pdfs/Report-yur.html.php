@@ -32,7 +32,7 @@
 <p style="margin: 20px 0;">3. Итого сумма расходов, поступивших от Принципала, составляет <?=$money->formatMoney($commission + $totalfees + $pitch->price, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.</p>
 
 <?php if($pitch->moneyback):?>
-    <p style="margin: 20px 0;">4. В соответствии с пунктом 7.8. агентского договора, размещённого на сайте godesigner.ru, Принципалу возвращена сумма проекта (конкурса) <?=$money->formatMoney($pitch->price, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.</p>
+    <p style="margin: 20px 0;">4. В соответствии с пунктом 7.9. агентского договора, размещённого на сайте godesigner.ru, Принципалу возвращена сумма проекта (конкурса) <?=$money->formatMoney($pitch->price, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.</p>
 <?php endif?>
 <br />
 <table width="750" cellspacing="0" border="0" cellpadding="0">
