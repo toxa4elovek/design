@@ -20,7 +20,19 @@
         <span class="supplement"><a href="/pitches/view/<?=$solution->pitch->id?>" target="_blank"><?=$solution->pitch->title?></a></span>
         <!--span class="bold supplement">Победил</span>
         <span class="supplement"><?=date('d.m.Y', strtotime($solution->change))?></span-->
-        <span class="supplement">Дата окончания проекта <?=date('d.m.Y', strtotime($solution->pitch->awardedDate))?>. в <?=date('H:i', strtotime($solution->pitch->awardedDate))?></span>
+        <span class="supplement">Дата окончания проекта <?php
+            if($solution->pitch->blank == 0):
+            echo date('d.m.Y', strtotime($solution->pitch->awardedDate));
+            else:
+            echo date('d.m.Y', strtotime($solution->pitch->started));
+            endif;
+            ?>. в <?php
+            if($solution->pitch->blank == 0):
+                echo date('H:i', strtotime($solution->pitch->awardedDate));
+            else:
+                echo date('H:i', strtotime($solution->pitch->started));
+            endif;
+            ?></span>
         <?php if ($solution->pitch->category_id == 7):?>
             <?php if($type == 'designer'):?>
                 <span class="supplement">Со дня определения победителя у заказчика есть 10 дней для получения полного объема работ, запрошенного в брифе.</span>
