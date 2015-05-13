@@ -95,6 +95,20 @@
                 </div>
                 <div class="separator"></div>
                 <div class="solution-info solution-abuse isField"><!--  --></div>
+                <?php if (isset($data['receipt'])) : ?>
+                    <div>
+                        <aside style="position: relative; top: 0; left: 0; margin-left: 45px;" class="summary-price expanded">
+                            <h3>Итого:</h3>
+                            <p class="summary"><strong id="total-tag"><?= $data['total'] ?>р.-</strong></p><!-- .summary -->
+                            <ul id="check-tag">
+                            </ul>
+                            <div class="hide">
+                                <span id="to-pay">Перейти к оплате</span>
+                            </div>
+                        </aside><!-- .summary-price -->
+                        <!-- end: Solution Left Panel -->
+                    </div>
+                <?php endif; ?>
             <!-- end: Solution Right Panel -->
             </div>
             <!-- start: Solution Left Panel -->
@@ -128,6 +142,9 @@
             <!-- end: Solution Left Panel -->
             </div>
             <div class="clr"></div>
+            <?php if (isset($data['receipt'])) : ?>
+                <?= $this->view()->render(array('element' => 'logosalepay'), array('data' => $data)) ?>
+            <?php endif; ?>
         <!-- end: Solution Container -->
         </div>
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->
@@ -173,4 +190,4 @@
 <!-- End: Tooltips -->
 <div id="bridge" style="display:none;"></div>
 <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'social-likes.min.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
-<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/jquery.fancybox-1.3.4.css', '/css/social-likes_flat'), array('inline' => false))?>
+<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/css/viewsolution', '/jquery.fancybox-1.3.4.css', '/css/social-likes_flat'), array('inline' => false))?>

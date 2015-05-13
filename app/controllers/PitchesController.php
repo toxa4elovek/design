@@ -1111,10 +1111,11 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if ($this->request->env('HTTP_X_REQUESTED_WITH')) {
                 $solution->views = Solution::increaseView($this->request->id);
             }
-            if((isset($this->request->query['exp'])) && ($this->request->query['exp'] == 1)) {
+            $data = null;
+            if(Pitch::isReadyForLogosale($pitch) || (isset($this->request->query['exp'])) && ($this->request->query['exp'] == 1)) {
                 $userHelper = new UserHelper(array());
                 if ($userHelper->isLoggedIn()) {
-                    Solution::addBlankPitchForLogosale($userHelper->getId(), $solution->id);
+                    $data = Solution::addBlankPitchForLogosale($userHelper->getId(), $solution->id);
                 }
             }
             $solution->tags = Solution::getTagsArrayForSolution($solution);
@@ -1234,7 +1235,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $formatter = new MoneyFormatter;
             $description = mb_substr($pitch->description, 0, 150, 'UTF-8') . ((mb_strlen($pitch->description) > 150) ? '... ' : '. ') . 'Награда: ' . $formatter->formatMoney($pitch->price, array('suffix' => ' рублей')) . (($pitch->guaranteed == 1) ? ', гарантированы' : '');
             $date = Solution::getCreatedDate($solution->id);
-            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount');
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data');
         } else {
             throw new Exception('Public:Такого решения не существует.', 404);
         }
