@@ -801,6 +801,20 @@ http://godesigner.ru/answers/view/73');
         return $selectedSolutions;
     }
 
+    /**
+     * Метод определяет, годится ли решение для распродажи
+     *
+     * @param $solution
+     * @param $pitch
+     * @return bool
+     */
+    public static function isReadyForLogosale($solution, $pitch) {
+        if(($solution->rating >= 3) && ($pitch->awarded != $solution->id)) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 function in_array_r($needle, $haystack, $strict = false) {

@@ -30,7 +30,7 @@ class PitchTest extends AppUnit {
     }
 
     public function testIsReadyForLogosaleAsObject() {
-        $pitch = PitchModel::first(1);
+        $pitch = PitchModel::first(1);$pitch = PitchModel::first(1);
         $pitch->status = 0;
         $result = $this->pitch->isReadyForLogosale($pitch);
         $this->assertFalse($result);

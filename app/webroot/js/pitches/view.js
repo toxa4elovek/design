@@ -660,6 +660,15 @@ $(document).ready(function () {
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
 
+            // hide receipt and buy buttons
+            if(result.isSolutionReady == false) {
+                $('.summary-price').hide();
+                $('#step3').hide();
+            }else {
+                $('.summary-price').show();
+                $('#step3').show();
+            }
+
             // Left Panel
             $('.solution-images').html('');
 

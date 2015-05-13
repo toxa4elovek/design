@@ -1243,7 +1243,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $formatter = new MoneyFormatter;
             $description = mb_substr($pitch->description, 0, 150, 'UTF-8') . ((mb_strlen($pitch->description) > 150) ? '... ' : '. ') . 'Награда: ' . $formatter->formatMoney($pitch->price, array('suffix' => ' рублей')) . (($pitch->guaranteed == 1) ? ', гарантированы' : '');
             $date = Solution::getCreatedDate($solution->id);
-            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data');
+            $isSolutionReady = Solution::isReadyForLogosale($solution, $pitch);
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady');
         } else {
             throw new Exception('Public:Такого решения не существует.', 404);
         }

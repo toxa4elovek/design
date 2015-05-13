@@ -4,6 +4,7 @@ namespace app\tests\cases\models;
 
 use \app\extensions\tests\AppUnit;
 use \app\models\Solution;
+use \app\models\Pitch;
 use app\extensions\storage\Rcache;
 
 class SolutionTest extends AppUnit {
@@ -368,6 +369,30 @@ class SolutionTest extends AppUnit {
             $result[] = $solution->id;
         }
         $this->assertEqual($ids, $result);
+    }
+
+    public function testIsReadyForLogosale() {
+        $pitch = Pitch::first(1);
+        $pitch->status = 2;
+        $pitch->category_id = 1;
+        $pitch->private = 0;
+        $pitch->totalFinishDate = date('Y-m-d H:i:s', time() - 31 * DAY);
+        $result = Pitch::isReadyForLogosale($pitch);
+        $this->assertTrue($result);
+
+        $solution = Solution::first(1);
+        $solution->rating = 4;
+        $result = Solution::isReadyForLogosale($solution, $pitch);
+        $this->assertTrue($result);
+
+        $solution->rating = 2;
+        $result = Solution::isReadyForLogosale($solution, $pitch);
+        $this->assertFalse($result);
+
+        $solution->rating = 4;
+        $pitch->awarded = 1;
+        $result = Solution::isReadyForLogosale($solution, $pitch);
+        $this->assertFalse($result);
     }
 
 }

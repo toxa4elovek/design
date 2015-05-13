@@ -399,7 +399,11 @@ $(document).ready(function() {
         $('#newComment', '.solution-left-panel').val('');
         solutionThumbnail = '';
         $.getJSON(urlJSON, function(result) {
-
+            // hide receipt and buy buttons
+            if(result.isSolutionReady == false) {
+                $('.summary-price').hide();
+                $('#step3').hide();
+            }
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
