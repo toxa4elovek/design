@@ -54,7 +54,7 @@
                 <p class="register_who">
                     <label><?= $this->form->radio('who_am_i', array('value' => 'client', 'class' => 'radio-input')) ?>Я — Заказчик</label>
                     <span class="">или</span>
-                    <label><?= $this->form->radio('who_am_i', array('value' => 'designer', 'class' => 'radio-input')) ?>Я — Дизайнер</label>
+                    <label><?= $this->form->radio('who_am_i', array('value' => 'designer', 'class' => 'radio-input', 'checked' => 'checked')) ?>Я — Дизайнер</label>
                 </p>
                 <p class="submit">
                     <input type="submit" value="Создать аккаунт" class="button third">
