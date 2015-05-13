@@ -373,7 +373,7 @@ $word2 = 'Опишите вид деятельности. Что отличае�
                 foreach ($job_types as $k => $v):
                     ?>
                     <li>
-                        <label><input type="checkbox" name="job-type[]" value="<?= $k ?>"<?= ($_empty) ? : (in_array($k, $industry) ? ' checked' : '') ?>><?= $v ?></label>
+                        <label><input type="checkbox" name="job-type[]" value="<?= $k ?>" <?php if(!$_empty):  if(in_array($k, $industry)): echo ' checked'; endif; endif;?>><?= $v ?></label>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -441,7 +441,6 @@ $word2 = 'Опишите вид деятельности. Что отличае�
             <input type="button" id="save" value="Сохранить и просмотреть бриф" class="button">
             <?php endif?>
         </p><!-- .submit -->
-</div>
     </div><!-- .main -->
 
 </div><!-- .middle -->
