@@ -441,6 +441,13 @@ http://godesigner.ru/answers/view/73');
             $black_list = array();
             $winnersArray = array();
             $solutionsArray = array();
+            // получаем айдишники купленных решений
+            $logosalePitches = Pitch::all(array(
+                'fields' => array('blank_id'),
+                'conditions' => array('blank' => 1, 'billed' => 1)));
+            foreach($logosalePitches as $logosalePitch) {
+                $solutionsArray[] = $logosalePitch->blank_id;
+            }
             // запоминаем решения победители
             foreach ($solutions as $v) {
                 $v->sort = 0;
