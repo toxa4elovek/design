@@ -12,9 +12,7 @@ $(document).ready(function() {
     }
 
     var receiptOffsetTop = 0;
-    var popupReady = true;
-
-
+    var popupReady = false;
 
     if($('.summary-price').length > 0) {
         $(window).on('scroll', function () {
@@ -611,7 +609,6 @@ $(document).ready(function() {
             var offset = receipt.offset();
             popupReady = true;
             receiptOffsetTop = offset.top;
-            console.log(receiptOffsetTop)
         });
     }
     

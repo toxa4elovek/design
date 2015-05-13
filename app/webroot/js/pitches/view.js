@@ -20,6 +20,67 @@ $(document).ready(function () {
         '/img/like_hover.png'
     ]);
 
+
+    var receiptOffsetTop = 0;
+    var popupReady = false;
+
+    if($('.summary-price').length > 0) {
+        $(window).on('scroll', function () {
+            if(popupReady) {
+                var receipt = $('.summary-price').last();
+                if(($(window).scrollTop() + 20) > receiptOffsetTop) {
+                    var parent = receipt.parent();
+                    var parentOffset = parent.offset();
+                    receipt.css('position', 'fixed');
+                    receipt.css('top', '20px');
+                    receipt.css('left', parentOffset.left + 'px');
+                }else {
+                    receipt.css('position', 'relative').css('left', '0').css('top', '0')
+
+                }
+            }
+        });
+    }
+
+    $(document).on('change', '.rb1', function () {
+        $('.solution-prev').hide();
+        $('.solution-next').hide();
+        switch ($(this).data('pay')) {
+            case 'payanyway':
+                $(".solution-overlay #paybutton-payanyway").fadeIn(100);
+                $(".solution-overlay #paybutton-paymaster").css('background', '#a2b2bb');
+                $(".solution-overlay #paymaster-images").show();
+                $(".solution-overlay #paymaster-select").hide();
+                $('.solution-overlay #s3_kv').hide();
+
+                break;
+            case 'paymaster':
+                $(".solution-overlay #paybutton-paymaster").removeAttr('style');
+                $(".solution-overlay #paybutton-payanyway").fadeOut(100);
+                $(".solution-overlay #paymaster-images").hide();
+                $(".solution-overlay #paymaster-select").show();
+                $('.solution-overlay #s3_kv').hide();
+                break;
+            case 'offline':
+                $(".solution-overlay #paybutton-payanyway").fadeOut(100);
+                $(".solution-overlay #paybutton-paymaster").css('background', '#a2b2bb');
+                $(".solution-overlay #paymaster-images").show();
+                $(".solution-overlay #paymaster-select").hide();
+                $('.solution-overlay #s3_kv').show();
+                break;
+        }
+    });
+
+    $(document).on('change', '.solution-overlay .rb-face', '.solution-overlay #s3_kv', function () {
+        if ($(this).data('pay') == 'offline-fiz') {
+            $('.solution-overlay .pay-fiz').show();
+            $('.solution-overlay .pay-yur').hide();
+        } else {
+            $('.solution-overlay .pay-fiz').hide();
+            $('.solution-overlay .pay-yur').show();
+        }
+    });
+
     $(document).on('mouseenter', '.ratingchange', function () {
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
     })
@@ -610,8 +671,6 @@ $(document).ready(function () {
                 });
                 solution_tags.append(html);
             }
-            console.log($('input[name="isReadyForLogoale"]'))
-            console.log($('input[name="isReadyForLogoale"]').val())
             if($('input[name="isReadyForLogoale"]').val() == 1) {
                 $('.solution-left-panel .solution-title').css('background', 'linear-gradient(#F0EFED, #DFDFDC) repeat scroll 0 0 rgba(0, 0, 0, 0)');
                 $('.solution-left-panel .solution-title').children('h1').html('<a style="color: #606060;" href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>');
@@ -873,6 +932,10 @@ $(document).ready(function () {
                     twttr.widgets.load();
                 }
             });
+            var receipt = $(".summary-price").last();
+            var offset = receipt.offset();
+            popupReady = true;
+            receiptOffsetTop = offset.top;
         });
     }
 

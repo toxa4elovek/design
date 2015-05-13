@@ -183,4 +183,4 @@
     <?php else:?>
     <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.8.23.custom.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'social-likes.min.js',  'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php endif?>
-<?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/social-likes_flat'), array('inline' => false))?>
+<?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/viewsolution', '/css/social-likes_flat'), array('inline' => false))?>

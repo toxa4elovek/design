@@ -68,7 +68,7 @@
             <div class="solution-info solution-abuse isField"><!--  --></div>
             <?php if (isset($data['receipt'])) : ?>
                 <div>
-                    <aside class="summary-price expanded">
+                    <aside class="summary-price expanded" style="position: relative; top: 0; left: 0; margin-left: 45px;">
                         <h3>Итого:</h3>
                         <p class="summary"><strong id="total-tag"><?= $data['total'] ?>р.-</strong></p><!-- .summary -->
                         <ul id="check-tag">
