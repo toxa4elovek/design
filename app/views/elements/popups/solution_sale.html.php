@@ -86,7 +86,7 @@
         <!-- start: Solution Left Panel -->
         <div class="solution-left-panel">
             <div class="solution-title" href="#">
-                <h1>
+                <h1 class="logosale-h1">
 
                 </h1>
             </div>

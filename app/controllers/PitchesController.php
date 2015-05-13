@@ -844,11 +844,19 @@ class PitchesController extends \app\controllers\AppController {
             if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
                 return $this->redirect('/pitches');
             }
+
+            if(Pitch::isReadyForLogosale($pitch)) {
+                $userHelper = new UserHelper(array());
+                if ($userHelper->isLoggedIn()) {
+                    $data = Solution::addBlankPitchForLogosale($userHelper->getId(), 0);
+                }
+            }
+
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
                 $freePitch = Pitch::getFreePitch();
-                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount', 'winnersUserIds');
+                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount', 'winnersUserIds', 'data');
             } else {
                 if (isset($this->request->query['count'])) {
                     return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds')));

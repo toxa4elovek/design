@@ -142,7 +142,13 @@
                     </div>
                 </div>
                 <?php endif?>
+                <?php if(!$this->pitch->isReadyForLogosale($pitch)):?>
+                    <input type="hidden" value="0" name="isReadyForLogoale">
                 <!-- Solution Popup Dummy --><?=$this->view()->render(array('element' => 'popups/solution'), array('pitch' => $pitch))?>
+                <?php else: ?>
+                    <input type="hidden" value="1" name="isReadyForLogoale">
+                    <!-- Solution Popup Dummy --><?=$this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data))?>
+                <?php endif?>
                 <?php if(($this->user->isPitchOwner($pitch->user_id)) && ($pitch->id != 103263)):?>
                 <!-- Rating Pancake -->
                 <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">

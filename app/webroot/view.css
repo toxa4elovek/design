@@ -1003,3 +1003,15 @@ span.new-price:hover {
     margin-top: 20px;
     margin-bottom: 25px;
 }
+.solution-title h1 a {
+    color: #606060;
+}
+.solution-title h1 .price, .solution-title h1 .new-price {
+    font-size: 17px;
+}
+.logosale-h1 {
+    color: #606060 !important;
+}
+.logosale-h1  a {
+    text-decoration: underline !important;
+}

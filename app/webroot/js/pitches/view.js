@@ -589,6 +589,7 @@ $(document).ready(function () {
         $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
         $('.description-more').hide();
         $('#newComment', '.solution-left-panel').val('');
+        $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
         solutionThumbnail = '';
         var solution_tags = $('.solution-tags .tags');
         solution_tags.empty();
@@ -609,7 +610,12 @@ $(document).ready(function () {
                 });
                 solution_tags.append(html);
             }
-
+            console.log($('input[name="isReadyForLogoale"]'))
+            console.log($('input[name="isReadyForLogoale"]').val())
+            if($('input[name="isReadyForLogoale"]').val() == 1) {
+                $('.solution-left-panel .solution-title').css('background', 'linear-gradient(#F0EFED, #DFDFDC) repeat scroll 0 0 rgba(0, 0, 0, 0)');
+                $('.solution-left-panel .solution-title').children('h1').html('<a style="color: #606060;" href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>');
+            }
             if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
                 // Main Images
                 if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
