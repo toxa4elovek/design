@@ -46,7 +46,7 @@ class User extends \app\models\AppModel {
      *
      * @var array
      */
-    public static $editors = array(32, 4, 5, 108, 81, 3049);
+    public static $editors = array(32, 4, 5, 108, 81, 3049, 120);
 
     /**
      * Массив хранящий айдишники авторов блога
