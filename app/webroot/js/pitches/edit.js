@@ -221,9 +221,7 @@ $(document).ready(function () {
     });
 
     $('#save').click(function () {
-        console.log('saving');
         if ((($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length == 0)) && ($('input[name=tos]').length == 1)) {
-            console.log('tos')
             alert('Вы должны принять правила и условия');
         } else {
             if (Cart.prepareData()) {
@@ -342,7 +340,7 @@ function FeatureCart() {
     this.container = $('#check-tag');
     this.priceTag = $('#total-tag');
     this.award = $('#award');
-    this.awardKey = 'Награда Дизайнеру';
+    this.awardKey = ($('input[name=category_id]').val() == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру';
     this.category = $('input[name=category_id]').val();
     this.data = {};
     this.fileIds = [];
@@ -362,7 +360,8 @@ function FeatureCart() {
             initVal = $('#award').attr('value');
         }
         if (self.id > 0) {
-            self.addOption('Награда Дизайнеру', initVal);
+            var awardName = ($('input[name=category_id]').val() == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру';
+            self.addOption(awardName, initVal);
         } else {
             self.updateOption('Заполнение брифа', 0);
         }
@@ -400,6 +399,8 @@ function FeatureCart() {
                 }
                 object.name = self.transferFeeKey;
             }
+            console.log(object.name);
+            console.log(object.value);
             if ((object.value != 0)) {
                 self.updateOption(object.name, parseInt(object.value));
             } else if ((object.name == 'Заполнение брифа')) {
@@ -430,10 +431,15 @@ function FeatureCart() {
     }
     this.getOption = function (key) {
         if (typeof (self.content[key]) != "undefined") {
+            console.log('exists - key')
             return parseInt(self.content[key]);
         } else {
+            console.log('not exists key = ' + key)
             return 0;
         }
+    };
+    this.getTimelimit = function () {
+        return $('.short-time-limit:checked').data('optionPeriod');
     };
     this.removeOption = function (key) {
         delete self.content[key];
@@ -443,13 +449,15 @@ function FeatureCart() {
     this.prepareData = function () {
         var features = {
             'award': self.getOption(self.awardKey),
-            'private': self.getOption('Закрытый проект'),
+            'private': self.getOption('Скрыть проект'),
             'social': self.getOption('Рекламный Кейс'),
             'experts': self._expertArray(),
             'email': self.getOption('Email рассылка'),
-            'pinned': self.getOption('“Прокачать” бриф'),
-            'timelimit': self.getOption('Поджимают сроки'),
-            'brief': self.getOption('Заполнение брифа')
+            'pinned': self.getOption('«Прокачать» проект'),
+            'timelimit': self.getOption('Установлен срок'),
+            'brief': self.getOption('Заполнение брифа'),
+            'guaranteed': self.getOption('Гарантированный проект'),
+            'timelimitOption': self.getTimelimit()
         };
         var commonPitchData = {
             'id': self.id,
