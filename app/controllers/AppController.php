@@ -41,84 +41,85 @@ class AppController extends \lithium\action\Controller {
                 /*if(($user->confirmed_email == 0) && (!in_array($this->request->params['action'], $this->publicActions) && ($this->request->params['action']!= 'viewmail') && ($this->request->params['action']!= 'resend'))){
                     return $this->redirect('/users/need_activation');
                 }*/
-            }
 
-            // updates avatars
-            Session::write('user.images', $user->images);
-            $topPanel = Pitch::all(
-                array(
-                    'with' => array('Category'),
-                    'conditions' => array(
-                        array('OR' => array(
-                            array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
-                            array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.billed = 1 AND Pitch.blank = 1'),
-                        )),
+
+                // updates avatars
+                Session::write('user.images', $user->images);
+                $topPanel = Pitch::all(
+                    array(
+                        'with' => array('Category'),
+                        'conditions' => array(
+                            array('OR' => array(
+                                array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
+                                array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.billed = 1 AND Pitch.blank = 1'),
+                            )),
+                        )
                     )
-                )
-            );
-            foreach($topPanel as $pitch):
-                if($pitch->awarded != 0):
-                    $pitch->winner = Solution::first($pitch->awarded);
-                endif;
-            endforeach;
+                );
+                foreach($topPanel as $pitch):
+                    if($pitch->awarded != 0):
+                        $pitch->winner = Solution::first($pitch->awarded);
+                    endif;
+                endforeach;
 
-            Session::write('user.currentpitches', $topPanel);
-            /** ** **/
-            $topPanelDesigner = array();
-            $wonProjectsIds = User::getUsersWonProjectsIds($userHelper->getId());
-            if(!empty($wonProjectsIds)) {
-                $pitchesToCheck = Pitch::all(array(
-                    'with' => array('Category'),
-                    'conditions' => array('Pitch.id' => $wonProjectsIds),
-                ));
-                foreach($pitchesToCheck as $pitch) {
-                    $solution = Solution::first($pitch->awarded);
-                    if($userHelper->isSolutionAuthor($solution->user_id)) {
-                        if(($pitch->status == 2) and (strtotime($pitch->totalFinishDate) < time() - 3 * DAY)) {
+                Session::write('user.currentpitches', $topPanel);
+                /** ** **/
+                $topPanelDesigner = array();
+                $wonProjectsIds = User::getUsersWonProjectsIds($userHelper->getId());
+                if(!empty($wonProjectsIds)) {
+                    $pitchesToCheck = Pitch::all(array(
+                        'with' => array('Category'),
+                        'conditions' => array('Pitch.id' => $wonProjectsIds),
+                    ));
+                    foreach($pitchesToCheck as $pitch) {
+                        $solution = Solution::first($pitch->awarded);
+                        if($userHelper->isSolutionAuthor($solution->user_id)) {
+                            if(($pitch->status == 2) and (strtotime($pitch->totalFinishDate) < time() - 3 * DAY)) {
 
-                        }else {
-                            $pitch->winner = $solution;
-                            $topPanelDesigner[] = $pitch;
+                            }else {
+                                $pitch->winner = $solution;
+                                $topPanelDesigner[] = $pitch;
+                            }
                         }
                     }
                 }
-            }
 
-            Session::write('user.currentdesignpitches', $topPanelDesigner);
-            /** faves */
-            Session::write('user.faves', Favourite::getFavouriteProjectsIdsForUser($userHelper->getId()));
-            if((Session::read('user.blogpost') == null) || (Session::read('user.blogpost.count') == 0)) {
-                $lastPost = Post::first(array('conditions' => array('published' => 1), 'order' => array('created' => 'desc')));
-                $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
+                Session::write('user.currentdesignpitches', $topPanelDesigner);
+                /** faves */
+                Session::write('user.faves', Favourite::getFavouriteProjectsIdsForUser($userHelper->getId()));
+                if((Session::read('user.blogpost') == null) || (Session::read('user.blogpost.count') == 0)) {
+                    $lastPost = Post::first(array('conditions' => array('published' => 1), 'order' => array('created' => 'desc')));
+                    $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
 
-                if(isset($_COOKIE['counterdata'])) {
-                    $counterData = unserialize($_COOKIE['counterdata']);
-                    if(isset($counterData[$userHelper->getId()])) {
-                        $date = $counterData[$userHelper->getId()]['date'];
+                    if(isset($_COOKIE['counterdata'])) {
+                        $counterData = unserialize($_COOKIE['counterdata']);
+                        if(isset($counterData[$userHelper->getId()])) {
+                            $date = $counterData[$userHelper->getId()]['date'];
+                        }
+                    }
+                    $count = Post::count(array('conditions' => array('created' => array('>' => $date), 'published' => 1)));
+                    Session::write('user.blogpost.count', $count);
+
+                    $counterData = array($userHelper->getId() => array('date' => $date));
+                    setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
+                }
+
+
+                if((Session::read('user.events') == null) || (Session::read('user.events.count') == 0)) {
+                    $date = date('Y-m-d H:i:s');
+                    if(Session::read('user.events.date') != null) {
+                        $date = Session::read('user.events.date');
+                    }
+                    Session::write('user.events.date', $date);
+                    if($updates = Event::getEvents(User::getSubscribedPitches($userHelper->getId()), 1, $date)) {
+
+                        Session::write('user.events.count', count($updates));
+                    }else {
+                        Session::write('user.events.count', 0);
                     }
                 }
-                $count = Post::count(array('conditions' => array('created' => array('>' => $date), 'published' => 1)));
-                Session::write('user.blogpost.count', $count);
-
-                $counterData = array($userHelper->getId() => array('date' => $date));
-                setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
+                $user->setLastActionTime();
             }
-
-
-            if((Session::read('user.events') == null) || (Session::read('user.events.count') == 0)) {
-                $date = date('Y-m-d H:i:s');
-                if(Session::read('user.events.date') != null) {
-                    $date = Session::read('user.events.date');
-                }
-                Session::write('user.events.date', $date);
-                if($updates = Event::getEvents(User::getSubscribedPitches($userHelper->getId()), 1, $date)) {
-
-                    Session::write('user.events.count', count($updates));
-                }else {
-                    Session::write('user.events.count', 0);
-                }
-            }
-            $user->setLastActionTime();
         }else {
             if(isset($_COOKIE['autologindata'])) {
                 $exploded = explode('&', $_COOKIE['autologindata']);

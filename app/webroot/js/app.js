@@ -73,6 +73,7 @@ $(document).ready(function () {
             if (response.who_am_i == 'designer') {
                 user_popup_register();
             } else {
+                console.log(response)
                 window.location.href = response.redirect;
             }
         });

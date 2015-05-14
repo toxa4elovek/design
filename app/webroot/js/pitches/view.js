@@ -942,9 +942,11 @@ $(document).ready(function () {
                 }
             });
             var receipt = $(".summary-price").last();
-            var offset = receipt.offset();
-            popupReady = true;
-            receiptOffsetTop = offset.top;
+            if(receipt.length > 0) {
+                var offset = receipt.offset();
+                popupReady = true;
+                receiptOffsetTop = offset.top;
+            }
         });
     }
 

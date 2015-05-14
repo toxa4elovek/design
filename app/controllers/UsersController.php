@@ -752,7 +752,11 @@ class UsersController extends \app\controllers\AppController {
                 $user->token = User::generateToken();
                 $user->created = date('Y-m-d H:i:s');
 
-                $redirect = '/users/feed';
+                if (!is_null(Session::read('redirect'))) {
+                    $redirect = Session::read('redirect');
+                }else {
+                    $redirect = '/users/feed';
+                }
                 if (isset($this->request->data['who_am_i'])) {
                     if ($this->request->data['who_am_i'] == 'client') {
                         $this->request->data['isClient'] = 1;

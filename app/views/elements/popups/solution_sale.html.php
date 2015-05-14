@@ -66,11 +66,10 @@
             </div>
             <div class="separator"></div>
             <div class="solution-info solution-abuse isField"><!--  --></div>
-            <?php if (isset($data['receipt'])) : ?>
                 <div>
                     <aside class="summary-price expanded" style="position: relative; top: 0; left: 0; margin-left: 45px;">
                         <h3>Итого:</h3>
-                        <p class="summary"><strong id="total-tag"><?= $data['total'] ?>р.-</strong></p><!-- .summary -->
+                        <p class="summary"><strong id="total-tag">9500р.-</strong></p><!-- .summary -->
                         <ul id="check-tag">
                         </ul>
                         <div class="hide">
@@ -79,7 +78,6 @@
                     </aside><!-- .summary-price -->
                     <!-- end: Solution Left Panel -->
                 </div>
-            <?php endif; ?>
             <div class="clr"></div>
             <!-- end: Solution Right Panel -->
         </div>
@@ -109,9 +107,9 @@
             </section>
             <!-- end: Solution Container -->
         </div>
-        <?php if (isset($data['receipt'])) : ?>
-            <?= $this->view()->render(array('element' => 'logosalepay'), array('data' => $data)) ?>
-        <?php endif; ?>
+
+        <?= $this->view()->render(array('element' => 'logosalepay'), array('data' => $data)) ?>
+
     </div><!-- .main -->  
     <!-- end: Solution overlay -->
 </div>

@@ -610,9 +610,11 @@ $(document).ready(function() {
             enableToolbar();
             $('.social-likes').socialLikes();
             var receipt = $(".summary-price");
-            var offset = receipt.offset();
-            popupReady = true;
-            receiptOffsetTop = offset.top;
+            if(receipt.length > 0) {
+                var offset = receipt.offset();
+                popupReady = true;
+                receiptOffsetTop = offset.top;
+            }
         });
     }
     

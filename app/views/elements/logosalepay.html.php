@@ -11,16 +11,20 @@
                     Оплата пластиковыми картами <br>через Payanyway<br><br>
                 </td>
                 <td>
-                    <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
-                        <input type="hidden" name="MNT_ID" value="36102238">
-                        <input type="hidden" name="MNT_TRANSACTION_ID" value="<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>">
-                        <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
-                        <input type="hidden" name="MNT_AMOUNT" value="<?= $data['total'] ?>">
-                        <input type="hidden" name="MNT_TEST_MODE" value="0">
-                        <input type="hidden" name="paymentSystem.unitId" value="499669">
-                        <input type="hidden" name="followup" value="true">
-                        <input type="submit" id="paybutton-payanyway" style="display: block;" value="продолжить оплату" class="button">
-                    </form>
+                    <?php if($this->user->isLoggedIn()):?>
+                        <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
+                            <input type="hidden" name="MNT_ID" value="36102238">
+                            <input type="hidden" name="MNT_TRANSACTION_ID" value="<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>">
+                            <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
+                            <input type="hidden" name="MNT_AMOUNT" value="<?= $data['total'] ?>">
+                            <input type="hidden" name="MNT_TEST_MODE" value="0">
+                            <input type="hidden" name="paymentSystem.unitId" value="499669">
+                            <input type="hidden" name="followup" value="true">
+                            <input type="submit" id="paybutton-payanyway" style="display: block;" value="продолжить оплату" class="button">
+                        </form>
+                    <?php else:?>
+                        <a href="/login" class="button" style="width: 145px">продолжить оплату</a>
+                    <?php endif?>
                 </td>
             </tr>
             <!--tr id="online-images">
