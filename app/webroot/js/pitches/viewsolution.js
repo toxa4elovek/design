@@ -421,10 +421,34 @@ $(document).ready(function() {
                 }
                 if ($.isArray(result.solution.images.solution)) {
                     $.each(work, function(idx, field) {
-                        $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                        if (field.weburl.match(/.mp4$/)) {
+                            var webmsource = field.weburl.replace(/.mp4/, '.webm');
+                            var ogvsource = field.weburl.replace(/.mp4/, '.ogv');
+                            var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + result.solution.images.solution[idx].weburl + '">' +
+                                '<source src="' + field.weburl + '" type="video/mp4">' +
+                                '<source src="' + ogvsource + '" type="video/ogg">' +
+                                '<source src="' + webmsource + '" type="video/webm">' +
+                                '<img src="' + result.solution.images.solution[idx].weburl + '" alt="">' +
+                                '</video>';
+                            $('.solution-images').append('<a href="' + field.weburl + '" target="_blank">' + videoHtml + '</a>');
+                        }else {
+                            $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                        }
                     });
                 }else {
-                    $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
+                    if (work.weburl.match(/.mp4$/)) {
+                        var webmsource = work.weburl.replace(/.mp4/, '.webm');
+                        var ogvsource = work.weburl.replace(/.mp4/, '.ogv');
+                        var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + result.solution.images.solution.weburl + '">' +
+                            '<source src="' + work.weburl + '" type="video/mp4">' +
+                            '<source src="' + ogvsource + '" type="video/ogg">' +
+                            '<source src="' + webmsource + '" type="video/webm">' +
+                            '<img src="' + result.solution.images.solution.weburl + '" alt="">' +
+                            '</video>';
+                        $('.solution-images').append('<a href="' + work.weburl + '" target="_blank">' + videoHtml + '</a>');
+                    } else {
+                        $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
+                    }
                 }
                 // Thumbnail Image
                 if(typeof(result.solution.images.solution_galleryLargeSize) != 'undefined') {

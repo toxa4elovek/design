@@ -1554,7 +1554,7 @@ function OfficeStatusUpdater() {
                         html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
                         html += '<a data-translated="true" data-original-title="' + object.news.original_title + '" data-original-short="' + object.news.original_short + '" style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#">Показать оригинальный текст</a>';
                     }
-                    if(isAdmin) {
+                    if((isAdmin) || (isFeedWriter)) {
                         html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
                         html += '<a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';
                     }

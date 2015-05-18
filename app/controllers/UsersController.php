@@ -1159,7 +1159,7 @@ class UsersController extends \app\controllers\AppController {
                 $solution->tags = Solution::getTagsArrayForSolution($solution);
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id)));
+            $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id, 'billed' => 1)));
             if (count($userPitches) > 0) {
                 $isClient = true;
             }
