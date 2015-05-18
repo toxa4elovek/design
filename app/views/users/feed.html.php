@@ -580,7 +580,7 @@
 
                                                     <a style="padding-left: 5px;padding-right: 10px; font-size: 14px;" class="translate" href="#" data-translated="true" data-original-short="<?= $object['news']['original_short']?>" data-original-title="<?= $object['news']['original_title']?>">Показать оригинальный текст</a>
                                                     <?php endif?>
-                                                    <?php if($this->user->isAdmin()):?>
+                                                    <?php if(($this->user->isAdmin()) || ($this->user->isFeedWriter())):?>
                                                         <span style="font-size: 28px;position: relative;top: 4px;">·</span>
                                                         <a style="padding-left: 5px; font-size: 14px;" data-id="<?= $object['news']['id'] ?>" class="hide-news" href="#">Удалить новость</a>
                                                     <?php endif?>
