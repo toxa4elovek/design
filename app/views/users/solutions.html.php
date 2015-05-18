@@ -61,7 +61,7 @@ font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; fon
                             </div>
                             <div style="padding-top: 16px;">
                                 <?php if(($solution->pitch->private != 1) && ($solution->pitch->category_id != 7)): ?>
-                                <?php if($this->user->isSolutionAuthor($solution->user_id)):?>
+                                <?php if(($solution->awarded == 0) && ($this->user->isSolutionAuthor($solution->user_id))):?>
                                     <form class="tag_submit" data-solutionid="<?= $solution->id ?>">
                                     <input type="text" name="tag" style="
                                         width: 180px;
