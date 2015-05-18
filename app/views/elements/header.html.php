@@ -272,9 +272,9 @@
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/profile">Настройки</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/preview/<?=$this->user->getId()?>">Профиль</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/solutions">Решения</a></li>
-                <!--li class="header-menu-item"><a href="http://www.godesigner.ru/users/details">Реквизиты</a></li-->
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/questions">Тест</a></li>
                 <li class="header-menu-item"><a href="http://www.godesigner.ru/users/referal">Пригласи друга</a></li>
+                <li class="header-menu-item"><a href="http://www.godesigner.ru/users/logout">Выйти</a></li>
             </ul>
 	</nav><!-- .nav -->
 
