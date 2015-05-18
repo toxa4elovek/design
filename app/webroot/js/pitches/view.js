@@ -665,6 +665,9 @@ $(document).ready(function () {
                 $('.summary-price').hide();
                 $('#step3').hide();
             } else {
+                if(result.pitch.status == 2) {
+                    $('.allow-comments', '.solution-left-panel').hide();
+                }
                 $('.summary-price').show();
                 $('#step3').show();
             }

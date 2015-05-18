@@ -160,6 +160,8 @@ ul.marsh .clear {
 .solution-sale #P_card {
     padding-left: 40px;
     width: 650px;
+    padding-bottom: 40px;
+    margin-top: 40px;
 }
 #P_card input.button {
     float: none !important;
@@ -381,4 +383,78 @@ span.first {
 }
 .solution-left-panel .nodecoration:hover {
     text-decoration: none;
+}
+td.s3_text{
+    padding:15px 0px 0px 0px;
+    text-transform:uppercase;
+    width:100%;
+    color: #666;
+    font-size: 11px;
+    text-shadow: -1px 0 0 #FFFFFF;
+    cursor: pointer;
+}
+td.s3_h {
+    cursor: pointer;
+}
+#s3_kv {
+    display: none;
+    font-size: 13px;
+    margin: 30px 0 0 130px;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+#s3_kv label {
+    display: block;
+    margin: 10px 0;
+    color: #666;
+    text-transform: uppercase;
+}
+#s3_kv input[type="radio"] {
+    margin: 0 10px 3px 0;
+}
+#s3_kv input[type="text"] {
+    width: 388px;
+    margin-left: 20px;
+    font-size: 14px;
+    text-transform: none;
+}
+#s3_kv p {
+    width: 420px;
+    margin: 20px 0 20px 20px;
+    color: #666;
+    font-size: 14px;
+}
+#s3_kv .pay-fiz {
+    display: none;
+}
+#s3_kv .pay-fiz img.arrow-bill-download {
+    margin: 20px 0 0 210px;
+}
+#s3_kv .pay-yur {
+    display: none;
+}
+#s3_kv .pay-yur label {
+    margin: 25px 0 5px 20px;
+    font-size: 11px;
+}
+#P_card input.button{
+    float:right;
+    margin:10px 0 0 0;
+}
+
+#P_card table{
+    width:100%;
+    text-align:left;
+}
+#button-fiz {
+    padding-left: 25px;
+    margin-top: 10px;
+    height: 49px;
+    margin-left: 20px;
+}
+
+#button-yur {
+    padding-left: 25px;
+    margin-top: 10px;
+    height: 49px;
+    margin-left: 20px;
 }

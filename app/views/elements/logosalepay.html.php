@@ -4,13 +4,13 @@
     <div id="P_card">
         <table>
             <tr>
-                <td>
+                <td style="width: 36px;">
                     <input type="radio" name="1" class="rb1" data-pay="payanyway">
                 </td>
                 <td colspan="2" class="s3_text" style="padding-left: 20px;">
                     Оплата пластиковыми картами <br>через Payanyway<br><br>
                 </td>
-                <td>
+                <td style="width: 228px;">
                     <?php if($this->user->isLoggedIn()):?>
                         <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
                             <input type="hidden" name="MNT_ID" value="36102238">
@@ -27,7 +27,7 @@
                     <?php endif?>
                 </td>
             </tr>
-            <!--tr id="online-images">
+            <tr id="online-images">
                             <td colspan="4" style="padding: 20px 0 0 40px;">
                                 <img src="/img/s3_master.png" alt="">
                             </td>
@@ -59,7 +59,7 @@
                                             <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
                                             <input type="text" name="fiz-name" id="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Иванов Иван Иванович" required="" data-content="symbolic">
                                             <img src="/img/arrow-bill-download.png" class="arrow-bill-download" />
-                                            <input type="submit" id="button-fiz" value="Скачать счёт" class="button third" style="width:420px;">
+                                            <input type="submit" id="button-fiz" value="Скачать счёт" class="reqbutton third" style="width:420px;">
                                             <div class="clr"></div>
                                         </form>
                                         <p>Мы активируем ваш питч на сайте в течение рабочего дня после поступления денег, и тогда он появится в <a href="/pitches">общем списке</a>.
@@ -88,14 +88,14 @@
                                             <p>Закрывающие документы вы получите на e-mail сразу после того, как завершите питч. Распечатайте их, подпишите и поставьте печать.
                                                 Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27).
                                                 В ответном письме вы получите оригиналы документов с нашей печатью.</p>
-                                            <input type="submit" id="button-yur" value="Скачать счёт" class="button third" style="width:420px;">
+                                            <input type="submit" id="button-yur" value="Скачать счёт" class="reqbutton third" style="width:420px;">
                                             <div class="clr"></div>
                                         </form>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <!--tr>
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
                         </tr>
                         <tr class="paymaster-section">
