@@ -11,6 +11,7 @@ class Solutionfile extends \app\models\AppModel {
             'image_resize' => true,
             'image_x' => 600,
             'image_ratio_y' => true,
+            'convert_animation' => true
         ),
         'galleryLargeSize' => array(
             'image_resize' => true,

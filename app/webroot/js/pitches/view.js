@@ -661,10 +661,10 @@ $(document).ready(function () {
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
 
             // hide receipt and buy buttons
-            if(result.isSolutionReady == false) {
+            if (result.isSolutionReady == false) {
                 $('.summary-price').hide();
                 $('#step3').hide();
-            }else {
+            } else {
                 $('.summary-price').show();
                 $('#step3').show();
             }
@@ -680,7 +680,7 @@ $(document).ready(function () {
                 });
                 solution_tags.append(html);
             }
-            if($('input[name="isReadyForLogoale"]').val() == 1) {
+            if ($('input[name="isReadyForLogoale"]').val() == 1) {
                 $('.solution-left-panel .solution-title').css('background', 'linear-gradient(#F0EFED, #DFDFDC) repeat scroll 0 0 rgba(0, 0, 0, 0)');
                 $('.solution-left-panel .solution-title').children('h1').html('<a style="color: #606060;" href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>');
             }
@@ -696,10 +696,32 @@ $(document).ready(function () {
                 }
                 if ($.isArray(result.solution.images.solution)) {
                     $.each(work, function (idx, field) {
-                        $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                        if (field.weburl.match(/.mp4$/)) {
+                            var webmsource = field.weburl.replace(/.mp4/, '.webm');
+                            var ogvsource = field.weburl.replace(/.mp4/, '.ogv');
+                            var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + result.solution.images.solution[idx].weburl + '">' +
+                                '<source src="' + field.weburl + '" type="video/mp4">' +
+                                '<source src="' + ogvsource + '" type="video/ogg">' +
+                                '<source src="' + webmsource + '" type="video/webm">' +
+                                '<img src="' + result.solution.images.solution[idx].weburl + '" alt="">' +
+                                '</video>';                            $('.solution-images').append('<a href="' + field.weburl + '" target="_blank">' + videoHtml + '</a>');
+                        }else {
+                            $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                        }
                     });
                 } else {
-                    $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
+                    if (work.weburl.match(/.mp4$/)) {
+                        var webmsource = work.weburl.replace(/.mp4/, '.webm');
+                        var ogvsource = work.weburl.replace(/.mp4/, '.ogv');
+                        var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + result.solution.images.solution.weburl + '">' +
+                            '<source src="' + work.weburl + '" type="video/mp4">' +
+                            '<source src="' + ogvsource + '" type="video/ogg">' +
+                            '<source src="' + webmsource + '" type="video/webm">' +
+                            '<img src="' + result.solution.images.solution.weburl + '" alt="">' +
+                            '</video>';                        $('.solution-images').append('<a href="' + work.weburl + '" target="_blank">' + videoHtml + '</a>');
+                    } else {
+                        $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
+                    }
                 }
                 // Thumbnail Image
                 if (typeof (result.solution.images.solution_galleryLargeSize) != 'undefined') {
@@ -755,15 +777,15 @@ $(document).ready(function () {
                     start: result.solution.rating,
                     click: function (score, evt) {
                         $.post('/solutions/rating/' + $('input[name=solution_id]').val() + '.json',
-                                {"id": result.solution.id, "rating": score}, function (response) {
-                            $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
-                            $('.rating-image', '.solution-rating').addClass('star' + score);
-                            var $underlyingRating = $('.ratingcont', '#li_' + $('.isField.number', '.solution-overlay').text());
-                            if ($underlyingRating.length > 0) {
-                                $underlyingRating.css('background-image', 'url(/img/' + score + '-rating.png)');
-                                $underlyingRating.data('default', score);
-                            }
-                        });
+                            {"id": result.solution.id, "rating": score}, function (response) {
+                                $('.rating-image', '.solution-rating').removeClass('star0 star1 star2 star3 star4 star5');
+                                $('.rating-image', '.solution-rating').addClass('star' + score);
+                                var $underlyingRating = $('.ratingcont', '#li_' + $('.isField.number', '.solution-overlay').text());
+                                if ($underlyingRating.length > 0) {
+                                    $underlyingRating.css('background-image', 'url(/img/' + score + '-rating.png)');
+                                    $underlyingRating.data('default', score);
+                                }
+                            });
                     }
                 });
 
@@ -884,21 +906,21 @@ $(document).ready(function () {
                 }
                 var readyForLogosale = false;
                 var parsed = result.pitch.totalFinishDate.split(/[- :]/);
-                var pitchFinishedDate = new Date(parsed[0], parsed[1]-1, parsed[2], parsed[3], parsed[4], parsed[5]);
+                var pitchFinishedDate = new Date(parsed[0], parsed[1] - 1, parsed[2], parsed[3], parsed[4], parsed[5]);
                 var now = new Date();
                 var timeDiff = Math.abs(now.getTime() - pitchFinishedDate.getTime());
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                if((result.solution.id != result.pitch.awarded) && (result.pitch.category_id == 1) && (result.pitch.private != 1) && (result.pitch.status == 2) && (diffDays > 30)) {
+                if ((result.solution.id != result.pitch.awarded) && (result.pitch.category_id == 1) && (result.pitch.private != 1) && (result.pitch.status == 2) && (diffDays > 30)) {
                     readyForLogosale = true;
                 }
                 // Twitter like solution message
                 var tweetLike = 'Мне нравится этот дизайн! А вам?';
-                if(readyForLogosale) {
+                if (readyForLogosale) {
                     tweetLike += ' Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
                 }
                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
                     tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
-                    if(readyForLogosale) {
+                    if (readyForLogosale) {
                         tweetLike += '! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
                     }
                 }
@@ -942,9 +964,11 @@ $(document).ready(function () {
                 }
             });
             var receipt = $(".summary-price").last();
-            var offset = receipt.offset();
-            popupReady = true;
-            receiptOffsetTop = offset.top;
+            if (receipt.length > 0) {
+                var offset = receipt.offset();
+                popupReady = true;
+                receiptOffsetTop = offset.top;
+            }
         });
     }
 
