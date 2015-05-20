@@ -5,23 +5,63 @@ namespace app\controllers;
 use \app\models\Pitch;
 use app\extensions\storage\Rcache;
 use app\extensions\billing\Payture;
+use app\models\Payment;
+use \lithium\analysis\Logger;
+
 
 class PaymentsController extends \app\controllers\AppController {
 
-    public $publicActions = array('payture_callback');
+    public $publicActions = array('payture_callback', 'startpayment');
 
     /**
      * Обработка платежных уведомлений от Payture
      *
      */
     public function payture_callback() {
-        $result = Pitch::activateLogoSalePitch(103588);
-        var_dump($result);
         if (!empty($this->request->data)) {
-            Logger::write('info', serialize($this->request->data), array('name' => 'payture'));
+            if(($this->request->data['SessionType'] == 'Pay') && ($this->request->data['Success'] == 'True')) {
+                $transaction = Payanyway::create();
+                $transaction->set($this->request->data);
+                $transaction->save();
+                $paytureId = $this->request->data['OrderId'];
+                /*
+                if ($pitch = Pitch::first(array('conditions' => array('payture_id' => $paytureId)))) {
+                    if ($pitch->blank == 1) {
+                        Pitch::activateLogoSalePitch($pitch->id);
+                    }else {
+                        if ($pitch->multiwinner != 0) {
+                            Pitch::activateNewWinner($pitch->id);
+                        } else {
+                            Pitch::activate($pitch->id);
+                        }
+                    }
+                } elseif ($addon = Addon::first(array('conditions' => array('payture_id' => $paytureId)))) {
+                    Addon::activate($addon);
+                }
+                */
+            }
         }
-        //header("HTTP/1.0 200 OK");
+        Logger::write('info', serialize($this->request->data), array('name' => 'payture'));
+        header("HTTP/1.0 200 OK");
         die();
+    }
+
+    public function startpayment() {
+        if($pitch = Pitch::first($this->request->id)) {
+            $totalInCents = (int) $pitch->total * 100;
+            $pitch = Pitch::generateNewPaytureId($this->request->id);
+            $result = Payture::init(array(
+                'SessionType' => 'Pay',
+                'OrderId' => $pitch->payture_id,
+                'Amount' => $totalInCents,
+                'Url' => 'http://godesigner.ru/users/mypitches',
+                'Total' => $pitch->total,
+                'Product' => 'Оплата проекта'
+            ));
+            $url = Payture::pay($result['SessionId']);
+            return $this->redirect($url);
+        }
+        throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
 }

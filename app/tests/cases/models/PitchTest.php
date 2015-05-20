@@ -425,7 +425,15 @@ class PitchTest extends AppUnit {
     public function testIsMoneyBack() {
         $this->assertFalse(Pitch::isMoneyBack(1));
         $this->assertTrue(Pitch::isMoneyBack(2));
+    }
 
+    public function testGenerateNewPaytureId() {
+        $pitch = Pitch::generateNewPaytureId(2);
+        $pitchindb = Pitch::first(2);
+        $this->assertTrue(preg_match('/_([0-9]*)$/', $pitch->payture_id));
+        $this->assertTrue(is_string($pitch->payture_id));
+        $this->assertTrue(mb_strlen($pitch->payture_id) == 50);
+        $this->assertEqual($pitchindb->payture_id, $pitch->payture_id);
     }
 
 }

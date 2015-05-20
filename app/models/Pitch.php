@@ -1624,4 +1624,24 @@ class Pitch extends \app\models\AppModel {
         return false;
     }
 
+    /**
+     * Метод генерирует случайный идентификатор для проекта с $id
+     *
+     * @param $id
+     * @return mixed
+     */
+    public static function generateNewPaytureId($id) {
+        $idStrlen = strlen($id);
+        $pitch = self::first($id);
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < (49 - $idStrlen); $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        $pitch->payture_id = $randomString . '_' . $id;
+        $pitch->save();
+        return $pitch;
+    }
+
 }

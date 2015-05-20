@@ -18,6 +18,11 @@ Logger::config(array(
         'priority' => array('info'),
         'file' => function($data, $config) { return "payanyway.log"; },
     ),
+    'payture' => array(
+        'adapter' => 'File',
+        'priority' => array('info'),
+        'file' => function($data, $config) { return "payture.log"; },
+    ),
     'solution' => array(
         'adapter' => 'File',
         'priority' => array('info'),

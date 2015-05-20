@@ -384,7 +384,6 @@ class PitchesController extends \app\controllers\AppController {
             $transaction->save();
             if (($pitch = Pitch::first($this->request->data['MNT_TRANSACTION_ID'])) && ($pitch->total == $this->request->data['MNT_AMOUNT'])) {
                 if ($pitch->blank == 1) {
-                    //Logger::write('info', serialize($this->request->data), array('name' => 'payture'));
                     Pitch::activateLogoSalePitch($this->request->data['MNT_TRANSACTION_ID']);
                 }else {
                     if ($pitch->multiwinner != 0) {
