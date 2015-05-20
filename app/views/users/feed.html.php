@@ -258,7 +258,7 @@
                                                 <a style="padding-left: <?php if($this->user->getId()):?>5px<?php else:?>2px<?php endif?>;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                 <?php endif?>
                                                 <?php
-                                                if(isset($object['news']['og_title'])) {
+                                                if(!empty($object['news']['og_title'])) {
                                                     $tweetLike = $object['news']['title'];
                                                 }else {
                                                     $tweetLike = $object['news']['og_title'];
@@ -549,7 +549,7 @@
                                                     <a style="padding-left: <?php if($this->user->getId()):?>5px<?php else:?>2px<?php endif?>;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                     <?php endif?>
                                                     <?php
-                                                    if(isset($object['news']['og_title'])) {
+                                                    if(!empty($object['news']['og_title'])) {
                                                         $tweetLike = $object['news']['og_title'];
                                                     }else {
                                                         $tweetLike = $object['news']['title'];
