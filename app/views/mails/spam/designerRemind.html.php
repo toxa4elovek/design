@@ -33,7 +33,7 @@
                                     <tr><td height="30"></td></tr>
                                     <tr>
                                         <td align="center">
-                                            <a href="http://www.godesigner.ru/users/details" target="_blank" style="display: block; width: 285px; height: 65px;background-image: url('http://godesigner.ru/img/mail/enter-data.png'); background-position: 0 0; background-repeat: no-repeat; color: #ffffff; text-align: center; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, .2); line-height: 49px; font-weight: bold; font-size: 11px; font-family: Arial, sans-serif;"><img src="http://godesigner.ru/img/mail/enter-data.png" alt="Войти и заполнить реквизиты" valign="top" border="0" width="285" height="65" /></a>
+                                            <a href="http://www.godesigner.ru/users/profile" target="_blank" style="display: block; width: 285px; height: 65px;background-image: url('http://godesigner.ru/img/mail/enter-data.png'); background-position: 0 0; background-repeat: no-repeat; color: #ffffff; text-align: center; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, .2); line-height: 49px; font-weight: bold; font-size: 11px; font-family: Arial, sans-serif;"><img src="http://godesigner.ru/img/mail/enter-data.png" alt="Войти и заполнить реквизиты" valign="top" border="0" width="285" height="65" /></a>
                                         </td>
                                     </tr>
                                     <tr><td height="30"></td></tr>

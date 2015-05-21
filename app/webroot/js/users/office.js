@@ -883,29 +883,11 @@ function FavesTableLoader() {
 
 $(document).ready(function(){
 
-    if($('li', '#carousel_small').length > 1) {
-        //Маленькая карусель
-        $('#carousel_small').jCarouselLite({
-            auto: 0,
-            speed: 500,
-            btnPrev: "#prev2",
-            btnNext: "#next2",
-            visible: 1
-        });
-    }else {
-        $('#prev2').click(function() {
-            return false;
-        })
-        $('#next2').click(function() {
-            return false;
-        })
-    }
-
     $('.changeStatus').live('click', function() {
         var name = $(this).attr('name');
         var input = $('#' + name);
         if($(this).hasClass('profselectbtnpressed')) {
-            $('#' + name).val(0);
+            input.val(0);
             $(this).removeClass('profselectbtnpressed');
         }else {
             $('#' + name).val(1);
@@ -1000,10 +982,10 @@ $('#save').live('click', function() {
             return false;
         }
     }
-    var href = $('#worker-payment-data').attr('action');
-    $.post('/users/savePaymentData.json', $('#worker-payment-data').serialize(), function(response) {
-        window.location = href;
-    })
+    $.post('/users/savePaymentData.json', $('#worker-payment-data').serialize(), function() {
+        $('#save').val('Реквизиты сохранены!');
+        setTimeout(function(){ $('#save').val('Сохранить реквизиты'); }, 5000);
+    });
     return false;
 });
 

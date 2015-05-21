@@ -128,7 +128,136 @@
                     </section>
 
                     <div id="sendbuttonbox"><input type="submit" class="button" style="width: 140px" value="Сохранить"></div>
+
+                    <?php
+                    if(unserialize($user->paymentOptions)) {
+                        $paydata = unserialize($user->paymentOptions);
+                        $paydata = $paydata[0];
+                    }else{
+                        $paydata = array(
+                            'cashintype' => 'none',
+                            'phone' => '',
+                            'fio' => '',
+                            'accountnum' => '',
+                            'inn' => '',
+                            'bankname' => '',
+                            'bik' => '',
+                            'coraccount' => '',
+                            'wmr-phone' => '',
+                            'wmr-account' => '',
+                            'wmr-fio' => '',
+                            'passseries' => '',
+                            'passnum' => '',
+                            'issuedby' => ''
+                        );
+                    }
+                    ?>
                 </form>
+
+                <div class="g_line"></div>
+                <section class="user-details-section">
+                    <form id="worker-payment-data" action="/users/details" method="post">
+                        <div>
+                            <div style="text-align: left;">
+                                <h1 class="user-details-header">Реквизиты: выберите способ получения денег</h1>
+                            </div>
+
+                            <table class="user-details-table">
+                                <tbody><tr>
+                                    <td width="28">
+                                        <input type="radio" data-pay="cards" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'card') echo 'checked' ?> value="card">
+                                    </td>
+                                    <td width="186">
+                                        <img alt="Банковские карты" src="/img/visa_mastercard.png">
+                                    </td>
+                                    <td class="s3_text">
+                                        Получить вознаграждение <br>на банковскую карту VISA, MASTERCARD
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr id="cards" <?php if($paydata['cashintype'] != 'card'):?> style="display:none;" <?php endif;?>>
+                                    <td colspan="4">
+                                        <table id="step1table">
+                                            <tr><td class="tableheader" colspan="2">ФИО</td></tr>
+                                            <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['fio']?>" name="fio" data-validate="fio" /></td></tr>
+                                            <tr><td class="tableheader" colspan="2">Телефон для связи</td></tr>
+                                            <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['phone']?>" name="phone" /></td></tr>
+                                            <tr>
+                                                <td width="304" class="tableheader" style="padding-right:10px">Номер счета получателя <a href="#" class="tooltip_plugin" title="Номер вашего счёта, не карты!">(?)</a></td>
+                                                <td width="304" class="tableheader" style="padding-left:10px">Ваш личный ИНН <a href="#" class="tooltip_plugin" title="12 цифр без пробелов">(?)</a></td></tr>
+                                            <tr style="height: 80px;">
+                                                <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['accountnum']?>" name="accountnum" data-validate="numeric" /></td>
+                                                <td class="" style="padding-left:10px"><input style="width:262px;" type="text" value="<?=$paydata['inn']?>" name="inn" /></td>
+                                            </tr>
+                                            <tr><td colspan="2"  height="60"><h1 style="font:bold 18px/1 'RodeoC',sans-serif;text-transform: uppercase;color:#c6c6c6; text-shadow:-1px 0 0 #FFFFFF">Банк получателя</h1></td></tr>
+                                            <tr><td class="tableheader" colspan="2">Наименование</td></tr>
+                                            <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['bankname']?>" name="bankname" /></td></tr>
+                                            <tr>
+                                                <td colspan="2" class="tableheader" style="padding-right:10px">Бик</td>
+                                            <tr style="height: 80px;">
+                                                <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['bik']?>" name="bik" /></td>
+                                            </tr>
+                                            <tr><td class="tableheader" colspan="2">Примечание</td></tr>
+                                            <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?php if(isset($paydata['extradata'])) echo $paydata['extradata']?>" name="extradata" /></td></tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr style="height: 80px;">
+                                    <td colspan="4"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="radio" data-pay="wmr" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'wmr') echo 'checked' ?> value="wmr">
+                                    </td>
+                                    <td class="s3_h">
+                                        <img alt="Webmoney WMR" src="/img/wmr.png">
+                                    </td>
+                                    <td class="s3_text" style="margin-top: 14px;">
+                                        Получить вознаграждение в wmr (webmoney.ru)
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr id="wmr" <?php if($paydata['cashintype'] != 'wmr'):?> style="display:none;"<?php endif;?> >
+                                    <td colspan="4">
+                                        <table id="step2table">
+                                            <tr><td class="tableheader" colspan="3">Кошелек</td></tr>
+                                            <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-account']?>" name="wmr-account" data-validate="wmr" /></td></tr>
+                                            <tr><td class="tableheader" colspan="3">ФИО</td></tr>
+                                            <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-fio']?>" name="wmr-fio" data-validate="fio" /></td></tr>
+                                            <tr><td class="tableheader" colspan="3">Телефон для связи</td></tr>
+                                            <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-phone']?>" name="wmr-phone" /></td></tr>
+                                            <tr>
+                                                <td colspan="2" width="304" class="tableheader" style="padding-right:10px">Номер и серия паспорта</td>
+                                                <td width="304" class="tableheader" style="padding-left:10px">Кем и когда выдан</td></tr>
+                                            <tr style="height: 80px;">
+                                                <td class="" style="padding-right:10px;width: 60px" width="60"><input style="width:60px;" type="text" value="<?=$paydata['passseries']?>" name="passseries" /></td>
+                                                <td class="" style="padding-right:10px;width: 100px"><input style="width:100px;" type="text" value="<?=$paydata['passnum']?>" name="passnum" /></td>
+                                                <td class="" style="padding-left:10px"><input style="width:272px" type="text" value="<?=$paydata['issuedby']?>" name="issuedby" /></td>
+                                            </tr>
+                                            <tr><td class="tableheader" colspan="3">Примечание</td></tr>
+                                            <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if(isset($paydata['extradatawmr'])) echo $paydata['extradatawmr']?>" name="extradatawmr" /></td></tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <input type="submit" id="save" class="button" value="Сохранить реквизиты" />
+
+                            <div class="clr"></div>
+
+                        </div>
+                    </form>
+
+
+                    <?php //$this->stream->renderStream();?>
+                    <div class="clr"></div>
+
+                </section>
+
+
                 <div id="popup-final-step" class="popup-final-step" style="display:none;">
                     <h3 style="text-transform:uppercase;font-family: RodeoC; margin-top: 140px;margin-left: 110px;font-size:28px;text-shadow: -1px 1px 2px white;margin-bottom: 30px;">Хотите удалить аккаунт?</h3>
                     <div style="margin-bottom: 30px;">• Если вам надоела рассылка, пожалуйста, просто отпишитесь<br> от нее в один клик <a href="/users/unsubscribe?token=<?=base64_encode($this->user->getId())?>">здесь.</a><br></div>
@@ -152,4 +281,4 @@
 
 
 <?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
-<?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
+<?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', '/css/profile.css'), array('inline' => false))?>

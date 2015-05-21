@@ -1,0 +1,32 @@
+.user-details-section {
+    min-height: 550px;
+}
+.user-details-header {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 20px;
+    color: #666666;
+    text-shadow: 1px 0 0 #ffffff;
+}
+.user-details-table {
+    width: 100%;
+    margin: 75px 0 30px 0;
+}
+.user-details-table input[type=radio] {
+    box-shadow: none;
+    width:14px;
+    height:14px;
+}
+.user-details-table .s3_text {
+    width: auto;
+}
+.user-details-table .tooltip_plugin {
+    display: inline-block;
+    font: 12px Helvetica, sans-serif;
+    color: #658fa5;
+    position: relative;
+    bottom: 1px;
+}
+.user-details-section #save {
+    width: 220px;
+    margin-top: 32px;
+}

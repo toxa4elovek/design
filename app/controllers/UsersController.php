@@ -1402,12 +1402,13 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function details() {
-        $user = User::first(Session::read('user.id'));
+        return $this->redirect('/users/profile');
+        /*$user = User::first(Session::read('user.id'));
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('user');
         } else {
             return $this->render(array('layout' => false, 'data' => compact('user')));
-        }
+        }*/
     }
 
     public function ban() {
