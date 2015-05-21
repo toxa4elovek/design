@@ -307,25 +307,34 @@ class Event extends \app\models\AppModel {
                 'page' => $page,
                 'with' => array('Pitch')
             ));
-            $solutionHolder = array();
-            foreach($solutions as $solution) {
-                $solutionHolder[$solution->id] = $solution->images;
-            }
-            $keys = array_keys($solutions->data());
-            $cacheKey = 'geteventssolutionguest_' .serialize($keys);
-            if(!$solpages = Rcache::read($cacheKey)) {
-                $solpages = Event::all(array(
-                    'conditions' => array(
-                        'type' => 'SolutionAdded',
-                        'Event.solution_id' => $keys
-                    ),
-                    'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
-                    'with' => array('Pitch', 'Solution')
-                ));
-                foreach($solpages as $event) {
-                    $event->solution->images = $solutionHolder[$event->solution->id];
+            if($solutions) {
+                $solutionHolder = array();
+                foreach($solutions as $solution) {
+                    $solutionHolder[$solution->id] = $solution->images;
                 }
-                Rcache::write($cacheKey, $solpages, array(), '+1 hour');
+                $data = $solutions->data();
+                if(count($data) > 0) {
+                    $keys = array_keys($data);
+                    $cacheKey = 'geteventssolutionguest_' .serialize($keys);
+                    if(!$solpages = Rcache::read($cacheKey)) {
+                        $solpages = Event::all(array(
+                            'conditions' => array(
+                                'type' => 'SolutionAdded',
+                                'Event.solution_id' => $keys
+                            ),
+                            'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+                            'with' => array('Pitch', 'Solution')
+                        ));
+                        foreach($solpages as $event) {
+                            $event->solution->images = $solutionHolder[$event->solution->id];
+                        }
+                        Rcache::write($cacheKey, $solpages, array(), '+1 hour');
+                    }
+                }else {
+                    $solpages = array();
+                }
+            }else {
+                $solpages = array();
             }
             return $solpages;
         }
