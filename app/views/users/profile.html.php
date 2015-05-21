@@ -19,7 +19,7 @@
                 </div>
             </div>
             <section class="mainblock">
-                <form action="/users/profile" method="post">
+                <form action="/users/profile" method="post" style="width: 620px;">
                     <section>
                         <h1 class="separator-flag">ОТКРЫТАЯ ИНФОРМАЦИЯ</h1>
                         <input type="hidden" name="userpic" value="">
