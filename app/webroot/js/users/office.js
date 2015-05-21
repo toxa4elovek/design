@@ -939,6 +939,15 @@ $(document).ready(function(){
         return false;
     });
 
+    $(document).on('click', '#save-notifications', function() {
+        var data = $('#notifications-form').serialize();
+        $.post('/users/update.json', data, function() {
+            $('#save-notifications').val('Изменения сохранены!');
+            setTimeout(function(){ $('#save-notifications').val('Сохранить настройки уведомлений'); }, 5000);
+        });
+        return false;
+    })
+
 });
 
 // profile.js end

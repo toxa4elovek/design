@@ -1,11 +1,19 @@
-.user-details-section {
-    min-height: 550px;
-}
-.user-details-header {
+/* Общие */
+.section-header {
     font-family: OfficinaSansC Book, serif;
     font-size: 20px;
     color: #666666;
     text-shadow: 1px 0 0 #ffffff;
+}
+.mainblock {
+    width: 100%;
+}
+.g_line {
+    margin-bottom: 10px !important;
+}
+/* Реквизиты */
+.user-details-section {
+    min-height: 550px;
 }
 .user-details-table {
     width: 100%;
@@ -29,4 +37,32 @@
 .user-details-section #save {
     width: 220px;
     margin-top: 32px;
+}
+/* Уведомления */
+#fieldblock4 {
+    margin-top: 35px;
+}
+#fieldblock4 label {
+    color: #999999;
+    width: 378px;
+    display: block;
+    font-size: 18px;
+    text-shadow: -1px 0 0 #FFFFFF;
+    font-family: OfficinaSansC Book, serif;
+    letter-spacing: -0.5px;
+    text-indent: -22px;
+    padding-left: 22px;
+}
+#fieldblock4 ul {
+    float: left;
+}
+#fieldblock4 ul:nth-child(odd) {
+    margin-right: 15px;
+}
+#fieldblock4 ul> li {
+    margin-bottom: 10px;
+}
+#save-notifications {
+    width: 340px;
+    margin-top: 20px;
 }

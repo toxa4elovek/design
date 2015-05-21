@@ -1134,6 +1134,54 @@ class UsersController extends \app\controllers\AppController {
         return compact('user', 'winners', 'passwordInfo', 'emailInfo');
     }
 
+    public function update() {
+        $user = User::first(Session::read('user.id'));
+        $result = false;
+        if ($this->request->data) {
+            if (isset($this->request->data['email_newpitch'])) {
+                $user->email_newpitch = 1;
+            } else {
+                $user->email_newpitch = 0;
+            }
+            if (isset($this->request->data['email_newcomments'])) {
+                $user->email_newcomments = 1;
+            } else {
+                $user->email_newcomments = 0;
+            }
+            if (isset($this->request->data['email_newpitchonce'])) {
+                $user->email_newpitchonce = 1;
+            } else {
+                $user->email_newpitchonce = 0;
+            }
+            if (isset($this->request->data['email_newsolonce'])) {
+                $user->email_newsolonce = 1;
+            } else {
+                $user->email_newsolonce = 0;
+            }
+            if (isset($this->request->data['email_newsol'])) {
+                $user->email_newsol = 1;
+            } else {
+                $user->email_newsol = 0;
+            }
+            if (isset($this->request->data['email_digest'])) {
+                $user->email_digest = 1;
+            } else {
+                $user->email_digest = 0;
+            }
+            if (isset($this->request->data['email_onlycopy'])) {
+                $user->email_onlycopy = 1;
+            } else {
+                $user->email_onlycopy = 0;
+            }
+            $result = $user->save(null, array('validate' => false));
+        }
+        if ($this->request->is('json')) {
+            return compact('result');
+        }else {
+            return $this->redirect('/users/profile');
+        }
+    }
+
     public function preview() {
         if($this->request->id != Session::read('user.id')) {
             $this->redirect('/users/view/' . $this->request->id);
