@@ -42,6 +42,11 @@ $(document).ready(function () {
         });
     }
 
+    $(document).on('click', '.s3_text, .s3_h img', function() {
+        var paymentType = $(this).data('radio');
+        $('.rb1[data-pay=' + paymentType + ']').prop('checked', true).change();
+    });
+
     $(document).on('change', '.rb1', function () {
         $('.solution-prev').hide();
         $('.solution-next').hide();

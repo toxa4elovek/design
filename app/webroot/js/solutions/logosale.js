@@ -955,6 +955,11 @@ jQuery(document).ready(function ($) {
         $('img:first', $(this)).attr('src', '/img/like.png');
     });
 
+    $('.s3_text, .s3_h img').on('click', function() {
+        var paymentType = $(this).data('radio');
+        $('.rb1[data-pay=' + paymentType + ']').prop('checked', true).change();
+    });
+
     $(document).on('change', '.rb1', function () {
         $('.solution-prev').hide();
         $('.solution-next').hide();
