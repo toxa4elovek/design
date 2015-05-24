@@ -42,6 +42,13 @@ $(document).ready(function () {
         });
     }
 
+    $(document).on('click', '#to-pay, .scrolldown', function () {
+        $('html, body').animate({
+            scrollTop: $('.solution-overlay #step3').offset().top
+        }, 500);
+        return false;
+    });
+
     $(document).on('click', '.s3_text, .s3_h img', function() {
         var paymentType = $(this).data('radio');
         $('.rb1[data-pay=' + paymentType + ']').prop('checked', true).change();
@@ -56,8 +63,7 @@ $(document).ready(function () {
                 $(".solution-overlay #paybutton-paymaster").css('background', '#a2b2bb');
                 $(".solution-overlay #paymaster-images").show();
                 $(".solution-overlay #paymaster-select").hide();
-                $('.solution-overlay #s3_kv').hide();
-
+                $('.solution-overlay #s3_kv').hide();1
                 break;
             case 'paymaster':
                 $(".solution-overlay #paybutton-paymaster").removeAttr('style');

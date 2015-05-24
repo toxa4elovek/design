@@ -1034,3 +1034,12 @@ span.new-price:hover {
     background: rgba(0, 0, 0, 0) linear-gradient(#6f9db5, #5c8296) repeat scroll 0 0;
     color: #fff;
 }
+#to-pay {
+    background: url(/img/bottom_arrow.png) no-repeat 0 100%;
+    background-position: right;
+    display: block;
+    height: 18px;
+    padding-right: 20px;
+    text-align: right;
+    cursor: pointer;
+}

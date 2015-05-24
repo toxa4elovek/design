@@ -32,6 +32,13 @@ $(document).ready(function() {
         });
     }
 
+    $(document).on('click', '#to-pay, .scrolldown', function () {
+        $('html, body').animate({
+            scrollTop: $('.solution-container #step3').offset().top
+        }, 500);
+        return false;
+    });
+
     $('.s3_text, .s3_h img').on('click', function() {
         var paymentType = $(this).data('radio');
         $('.rb1[data-pay=' + paymentType + ']').prop('checked', true).change();
