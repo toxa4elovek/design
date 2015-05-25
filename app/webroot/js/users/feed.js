@@ -57,7 +57,9 @@ $(document).ready(function () {
 
     $(".sharebar").hover(
         function() {
+            console.log('hoveron')
         }, function() {
+            console.log('hoveroff')
             var sharebar = $( this );
             setTimeout(function(){
                 sharebar.fadeOut(300);
@@ -833,6 +835,17 @@ $(document).ready(function () {
                         $prependEl.hide();
                         $prependEl.prependTo('#updates-box-').slideDown('slow');
                         $('.social-likes').socialLikes();
+                        $(".sharebar").hover(
+                            function() {
+                                console.log('hoveron')
+                            }, function() {
+                                console.log('hoveroff')
+                                var sharebar = $( this );
+                                setTimeout(function(){
+                                    sharebar.fadeOut(300);
+                                }, 500);
+                            }
+                        );
                         $('time.timeago').timeago();
                     }
                     $('#news-add').toggle('fast');
@@ -1163,6 +1176,17 @@ function OfficeStatusUpdater() {
                             $prependEl.hide();
                             $prependEl.prependTo('#updates-box-').slideDown('slow');
                             $('.social-likes').socialLikes();
+                            $(".sharebar").hover(
+                                function() {
+                                    console.log('hoveron')
+                                }, function() {
+                                    console.log('hoveroff')
+                                    var sharebar = $( this );
+                                    setTimeout(function(){
+                                        sharebar.fadeOut(300);
+                                    }, 500);
+                                }
+                            );
                             $('time.timeago').timeago();
                         }
                         window.fbAsyncInit();
@@ -1219,6 +1243,17 @@ function OfficeStatusUpdater() {
                         $appendEl.hide();
                         $appendEl.appendTo('#updates-box-').slideDown('slow');
                         $('.social-likes').socialLikes();
+                        $(".sharebar").hover(
+                            function() {
+                                console.log('hoveron')
+                            }, function() {
+                                console.log('hoveroff')
+                                var sharebar = $( this );
+                                setTimeout(function(){
+                                    sharebar.fadeOut(300);
+                                }, 500);
+                            }
+                        );
                         $('time.timeago').timeago();
                     }
                     if (response.nextUpdates < 1) {
@@ -1318,6 +1353,17 @@ function OfficeStatusUpdater() {
                             $prependEl.appendTo('#l-sidebar-office');
                             $('#SolutionAjaxLoader').appendTo($('#l-sidebar-office'));
                             $('.social-likes').socialLikes();
+                            $(".sharebar").hover(
+                                function() {
+                                    console.log('hoveron')
+                                }, function() {
+                                    console.log('hoveroff')
+                                    var sharebar = $( this );
+                                    setTimeout(function(){
+                                        sharebar.fadeOut(300);
+                                    }, 500);
+                                }
+                            );
                             isBusySolution = 0;
                         }
                     }
