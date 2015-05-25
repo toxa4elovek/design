@@ -76,6 +76,9 @@
                         } else {
                             $tweetLike = 'Из всех ' . $solution->pitch->ideas_count . ' мне нравится этот дизайн';
                         }
+                        if($this->pitch->isReadyForLogosale($solution->pitch)) {
+                            $tweetLike = "Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»";
+                        }
                         if(!isset($solution->solution->images['solution_galleryLargeSize'][0])):
                             $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
                         else:
@@ -85,7 +88,7 @@
                         <div style="display: block; height: 75px">
                             <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
-                                <div class="twitter" data-via="Go_Deer">TWITT</div>
+                                <div class="twitter">TWITT</div>
                                 <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">SHARE</div>
                                 <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
                             </div>

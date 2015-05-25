@@ -395,8 +395,7 @@ $(document).ready(function () {
             $('.sharebar').fadeOut(300);
         });
         $('.social-likes').socialLikes();
-        $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
-            likesNum.html(response.likes);
+        if($(this).data('status') > 0) {
             likeLink.off('click');
             sharebar.fadeIn(300);
             likeLink.off('mouseover');
@@ -408,7 +407,22 @@ $(document).ready(function () {
                 return false;
 
             });
-        });
+        }else {
+            $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
+                likesNum.html(response.likes);
+                likeLink.off('click');
+                sharebar.fadeIn(300);
+                likeLink.off('mouseover');
+                likeLink.on('click', function () {
+                    $('body').one('click', function () {
+                        sharebar.fadeOut(300);
+                    });
+                    sharebar.fadeIn(300);
+                    return false;
+
+                });
+            });
+        }
         return false;
     });
 
@@ -935,7 +949,7 @@ $(document).ready(function () {
                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
                     tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
                     if (readyForLogosale) {
-                        tweetLike += '! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
+                        tweetLike = 'Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»';
                     }
                 }
 

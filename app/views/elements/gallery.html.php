@@ -161,20 +161,16 @@ foreach($solutions as $solution):
             <ul style="margin-left: 78px;" class="right">
                 <?php if (!isset($fromDesignersTab)):?>
                 <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
-                    <?php if ($pitch->status == 2):?>
-                        <img src="/img/like.png" style="float: left;" alt="количество лайков" />
-                    <?php else:?>
-                        <a href="#" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
-                    <?php endif;?>
+                    <a href="#" data-status="<?= $pitch->status ?>" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
                     <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
                     <?php if((($pitch->private != 1) && ($pitch->category_id != 7))):
-                    if (rand(1, 100) <= 50) {
-                            $tweetLike = 'Мне нравится этот дизайн! А вам?';
-                    } else {
-                            $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
-                    }
+                        if (rand(1, 100) <= 50) {
+                                $tweetLike = 'Мне нравится этот дизайн! А вам?';
+                        } else {
+                                $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
+                        }
                         if($this->pitch->isReadyForLogosale($pitch) && ($pitch->awarded != $solution->id) && !in_array($solution->user_id, $winnersUserIds)) {
-                            $tweetLike .= " Этот логотип можно приобрести у автора за 9500 рублей на распродаже!";
+                            $tweetLike = "Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»";
                         }
 
                         if(!isset($solution->images['solution_galleryLargeSize'][0])):
@@ -187,7 +183,7 @@ foreach($solutions as $solution):
                         <div class="tooltip-block">
                             <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
-                                <div class="twitter" data-via="Go_Deer">TWITT</div>
+                                <div class="twitter">TWITT</div>
                                 <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">SHARE</div>
                                 <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
                             </div>
