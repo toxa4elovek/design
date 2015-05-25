@@ -200,7 +200,7 @@
                         <?php if($mypitch->status == 1):?>
                                 Победа!<br/> Завершите проект!
                         <?php elseif($mypitch->status == 2): ?>
-                            Победа!<br/> Проект завершен!
+                            Победа!<br/> Проставьте рейтинг!
                         <?php endif?>
                         </a></td>
                         <?php elseif (($mypitch->blank == 1) && ($mypitch->confirmed == 0)): ?>

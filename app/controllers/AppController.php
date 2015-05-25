@@ -74,7 +74,7 @@ class AppController extends \lithium\action\Controller {
                     foreach($pitchesToCheck as $pitch) {
                         $solution = Solution::first($pitch->awarded);
                         if($userHelper->isSolutionAuthor($solution->user_id)) {
-                            if(($pitch->status == 2) and (strtotime($pitch->totalFinishDate) < time() - 3 * DAY)) {
+                            if(($pitch->status == 2) and ($pitch->hadDesignerLeftRating())) {
 
                             }else {
                                 $pitch->winner = $solution;

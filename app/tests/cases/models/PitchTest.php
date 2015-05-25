@@ -4,9 +4,8 @@ namespace app\tests\cases\models;
 
 use app\extensions\tests\AppUnit;
 use app\models\Pitch;
-use app\models\Solution;
-use app\models\Comment;
 use lithium\storage\Session;
+use app\models\Grade;
 
 class PitchTest extends AppUnit {
 
@@ -15,7 +14,7 @@ class PitchTest extends AppUnit {
     }
 
     public function tearDown() {
-        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note'));
+        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Grade'));
         Session::clear();
     }
 
@@ -425,7 +424,30 @@ class PitchTest extends AppUnit {
     public function testIsMoneyBack() {
         $this->assertFalse(Pitch::isMoneyBack(1));
         $this->assertTrue(Pitch::isMoneyBack(2));
+    }
 
+    public function testHadDesignerLeftRating() {
+        $this->assertFalse(Pitch::hadDesignerLeftRating(1));
+        $pitchForTest = Pitch::first(6);
+        $pitchForTest->status = 2;
+        $pitchForTest->save();
+        $this->assertFalse(Pitch::hadDesignerLeftRating(6));
+        $clientGrade = Grade::create(array(
+            'pitch_id' => 6,
+            'user_id' => 2,
+            'type' => 'client'
+        ));
+        $clientGrade->save();
+        $this->assertFalse(Pitch::hadDesignerLeftRating(6));
+        $this->assertFalse($pitchForTest->hadDesignerLeftRating());
+        $designerGrade = Grade::create(array(
+            'pitch_id' => 6,
+            'user_id' => 3,
+            'type' => 'designer'
+        ));
+        $designerGrade->save();
+        $this->assertTrue(Pitch::hadDesignerLeftRating(6));
+        $this->assertTrue($pitchForTest->hadDesignerLeftRating());
     }
 
 }

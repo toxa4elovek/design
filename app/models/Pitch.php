@@ -1624,4 +1624,22 @@ class Pitch extends \app\models\AppModel {
         return false;
     }
 
+    /**
+     * Метод определяет, оставил ли дизайнер свой отзыва для проекта $pitchIdOrObject
+     *
+     * @param $projectIdOrObject айди или объект питча
+     * @return bool
+     */
+    public static function hadDesignerLeftRating($projectIdOrObject) {
+        if(is_object($projectIdOrObject)) {
+            $projectIdOrObject = $projectIdOrObject->id;
+        }
+        if(($pitch = Pitch::first($projectIdOrObject)) and ($pitch->status == 2)) {
+            if(Grade::isDesignerRatingExistsForProject($projectIdOrObject)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

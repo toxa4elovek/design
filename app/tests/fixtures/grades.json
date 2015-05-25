@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "pitch_id": "7",
+    "user_id": "4",
+    "type": "designer"
+  },
+  {
+    "id": 2,
+    "pitch_id": "7",
+    "user_id": "2",
+    "type": "client"
+  }
+]
