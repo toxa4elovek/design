@@ -6,37 +6,34 @@
     ?>
     <div class="middle">
         <div class="main">
+
             <nav class="main_nav clear" style="width:832px;margin-left:2px;">
                 <?=$this->view()->render(array('element' => 'office/nav'));?>
             </nav>
 
             <div class="sideblock">
-                <div class="other_nav_gallery"><!--a href="/users/preview/<?=$user->id?>">ПРОСМОТРЕТЬ ПРОФИЛЬ</a-->
-                    <a class="other-nav-right active" style="margin-right: 75px; margin-top: 70px; margin-bottom: 35px;" href="/users/preview/<?=$user->id?>">
-                        <img width="184" height="34" alt="" src="/img/1.gif"><br>
-                        <span>просмотреть профиль</span>
-                    </a>
-                </div>
+                <a class="button show-preview" href="/users/preview/<?=$user->id?>">
+                    просмотреть профиль
+                </a>
             </div>
+
             <section class="mainblock">
                 <form action="/users/profile" method="post" style="width: 620px;">
-                    <section>
-                        <h1 class="separator-flag">ОТКРЫТАЯ ИНФОРМАЦИЯ</h1>
+                    <section class="basic-info-section">
                         <input type="hidden" name="userpic" value="">
                         <div class="photoselectbox qq-uploader" style="height:196px;width:196px;">
-
                             <?=$this->avatar->show($user->data(), 'true')?>
-
                         </div>
                         <span style="display: none;position:absolute;top:396px;left:79px; width:118px;" id="file-uploader-demo1"></span>
+
                         <div id="fieldblock1">
-                            <div class="userwelcometext" style="padding-top:5px;margin-bottom: 9px">Привет, <?=$user->first_name?> <?=$user->last_name?>!</div>
-                            <div style="margin-bottom: 7px"><input type="text" name="birthdate" placeholder="Дата рождения" value="<?=$userdata['birthdate']?>" ></div>
-                            <div style="margin-bottom: 7px"><input type="text" name="city" placeholder="Город" value="<?=$userdata['city']?>" ></div>
-                            <div style="margin-bottom: 5px"><input type="text" name="profession" placeholder="Профессия" value="<?=$userdata['profession']?>" ></div>
-                            <div style="margin-top:12px;">
-                                <textarea class="textareaabout" name="about" placeholder="О себе"><?=$userdata['about']?></textarea>
+                            <div style="margin-bottom: 7px"><input type="text" name="first_name" placeholder="Имя" value="<?=$user->first_name?>" ></div>
+                            <div style="margin-bottom: 7px"><input type="text" name="last_name" placeholder="Фамилия" value="<?=$user->last_name?>" ></div>
+                            <div style="margin-top: 20px;">
+                                <label><input type="radio" name="gender" value="1" <?php if($user->gender == 1):?>checked<?php endif ?>>Мужчина</label>
+                                <label><input type="radio" name="gender" value="2" <?php if($user->gender == 2):?>checked<?php endif ?>>Женщина</label>
                             </div>
+                            <div style="clear:both;"></div>
                         </div>
                         <div class="profselectbox">
                             <input type="hidden" name="isClient" value="<?=$user->isClient?>" id="iscustomer"/>

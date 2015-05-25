@@ -166,6 +166,11 @@ textarea.placeholder {
 
 
 /* Prof */
+
+.profselectbox {
+    margin-top: 20px;
+}
+
 .profselectbox button {
     width: 179px;
     height: 36px;
@@ -265,7 +270,7 @@ textarea.placeholder {
 /* Side block */
 .sideblock {
     float: right;
-    padding-top: 115px;
+    padding-top: 30px;
     width: 180px;
 }
 

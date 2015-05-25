@@ -1051,7 +1051,6 @@ class UsersController extends \app\controllers\AppController {
             }
         }
 
-
         $passwordInfo = false;
         $emailInfo = false;
         if ($this->request->data) {
@@ -1076,41 +1075,6 @@ class UsersController extends \app\controllers\AppController {
             $user->isClient = $this->request->data['isClient'];
             $user->isDesigner = $this->request->data['isDesigner'];
             $user->isCopy = $this->request->data['isCopy'];
-            if (isset($this->request->data['email_newpitch'])) {
-                $user->email_newpitch = 1;
-            } else {
-                $user->email_newpitch = 0;
-            }
-            if (isset($this->request->data['email_newcomments'])) {
-                $user->email_newcomments = 1;
-            } else {
-                $user->email_newcomments = 0;
-            }
-            if (isset($this->request->data['email_newpitchonce'])) {
-                $user->email_newpitchonce = 1;
-            } else {
-                $user->email_newpitchonce = 0;
-            }
-            if (isset($this->request->data['email_newsolonce'])) {
-                $user->email_newsolonce = 1;
-            } else {
-                $user->email_newsolonce = 0;
-            }
-            if (isset($this->request->data['email_newsol'])) {
-                $user->email_newsol = 1;
-            } else {
-                $user->email_newsol = 0;
-            }
-            if (isset($this->request->data['email_digest'])) {
-                $user->email_digest = 1;
-            } else {
-                $user->email_digest = 0;
-            }
-            if (isset($this->request->data['email_onlycopy'])) {
-                $user->email_onlycopy = 1;
-            } else {
-                $user->email_onlycopy = 0;
-            }
             if ($userWithEmail = User::first(array(
                         'conditions' => array(
                             'email' => $this->request->data['email'],
@@ -1128,6 +1092,10 @@ class UsersController extends \app\controllers\AppController {
                     UserMailer::verification_mail($user);
                 }
             }
+
+            $user->first_name = $this->request->data['first_name'];
+            $user->last_name = $this->request->data['last_name'];
+            $user->gender = $this->request->data['gender'];
 
             $user->save(null, array('validate' => false));
         }

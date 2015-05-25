@@ -11,6 +11,37 @@
 .g_line {
     margin-bottom: 10px !important;
 }
+/* Базовые настройки */
+a.show-preview {
+    padding: 0 12px !important;
+    width: 160px !important;
+    right: 13px;
+    position: relative;
+}
+.basic-info-section {
+    padding-top: 26px;
+}
+.basic-info-section input[type=radio] {
+    width: 28px !important;
+    height: 14px;
+    box-shadow: none !important;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+#fieldblock1 label {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 18px;
+    color: #666666;
+    display: block;
+    float: left;
+    width: 120px;
+    text-align: left;
+    padding-left: 10px;
+}
+#fieldblock1 input {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 18px;
+}
 /* Реквизиты */
 .user-details-section {
     min-height: 550px;
