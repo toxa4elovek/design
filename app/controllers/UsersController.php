@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Logreferal;
 use \app\models\User;
 use \app\models\Sendemail;
 use \app\models\Category;
@@ -183,10 +184,11 @@ class UsersController extends \app\controllers\AppController {
                     ),
                     'with' => array('User'),
         ));
+        $completePaymentCount = Logreferal::getCompletePaymentCount(Session::read('user.id'));
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-            return compact('user', 'refPitches');
+            return compact('user', 'refPitches', 'completePaymentCount');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('user', 'refPitches')));
+            return $this->render(array('layout' => false, 'data' => compact('user', 'refPitches', 'completePaymentCount')));
         }
     }
 

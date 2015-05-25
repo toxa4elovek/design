@@ -102,13 +102,13 @@
                         <a href="https://twitter.com/share?url=http://www.godesigners.ru/?ref=<?=$user->referal_token?>&text=<?php echo urlencode($shareTextTwitter);?>" class="button twitter small social-popup" style="width: 176px;">Поделиться в twitter</a>
                         <?php if (count($refPitches) > 0):?>
                             <div class="separator-flag-empty">
-                                <img src="/img/text-druzya.png" alt="Друзья на GoDesigner" />
+                                <img src="/img/text-druzya.png" alt="Друзья на GoDesigner" style="position: relative;left: -110px;" />
                             </div>
                             <table class="referal-table">
                                 <thead>
                                     <tr>
-                                        <th width="308"><img src="/img/text-drug.png" style="margin-right: 90px;" alt="друг" /></th>
-                                        <th width="100"><img src="/img/text-status.png" alt="статус" /></th>
+                                        <th width="260"><img src="/img/text-drug.png" style="margin-right: 90px;" alt="друг" /></th>
+                                        <th width="148"><img src="/img/text-status.png" alt="статус" /></th>
                                         <th width="198"><img src="/img/text-balans.png" alt="баланс телефона" /></th>
                                     </tr>
                                 </thead>
@@ -118,13 +118,18 @@
                                     $refClass = '';
                                     $refSum = '—';
                                     if (($refPitch->billed == 1) && ($refPitch->published == 1)) {
-                                        $refStatus = 'оплатил проект';
+                                        if($completePaymentCount > 0) {
+                                            $refStatus = 'выплата произведена';
+                                        }else {
+                                            $refStatus = 'оплатил проект';
+                                        }
+                                        $completePaymentCount -= 1;
                                         $refClass = ' class="active"';
                                         $refSum = '+500р.-';
                                     }?>
                                     <tr<?php echo $refClass;?>>
-                                        <td width="308"><img class="referal-avatar" src="<?=$this->avatar->show($refPitch->user->data(), false, true);?>" /><span style="float: left;"><?=$refPitch->user->email;?></span></td>
-                                        <td width="100" class="ref-status"><?=$refStatus;?></td>
+                                        <td width="260"><img class="referal-avatar" src="<?=$this->avatar->show($refPitch->user->data(), false, true);?>" /><span style="float: left;"><?=$refPitch->user->email;?></span></td>
+                                        <td width="148" class="ref-status"><?=$refStatus;?></td>
                                         <td width="198"><?php echo $refSum;?></td>
                                     </tr>
                                 <?php endforeach;?>
