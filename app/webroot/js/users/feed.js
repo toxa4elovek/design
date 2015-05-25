@@ -57,9 +57,7 @@ $(document).ready(function () {
 
     $(".sharebar").hover(
         function() {
-            console.log('hoveron')
         }, function() {
-            console.log('hoveroff')
             var sharebar = $( this );
             setTimeout(function(){
                 sharebar.fadeOut(300);
@@ -837,9 +835,7 @@ $(document).ready(function () {
                         $('.social-likes').socialLikes();
                         $(".sharebar").hover(
                             function() {
-                                console.log('hoveron')
                             }, function() {
-                                console.log('hoveroff')
                                 var sharebar = $( this );
                                 setTimeout(function(){
                                     sharebar.fadeOut(300);
@@ -1178,9 +1174,7 @@ function OfficeStatusUpdater() {
                             $('.social-likes').socialLikes();
                             $(".sharebar").hover(
                                 function() {
-                                    console.log('hoveron')
                                 }, function() {
-                                    console.log('hoveroff')
                                     var sharebar = $( this );
                                     setTimeout(function(){
                                         sharebar.fadeOut(300);
@@ -1245,9 +1239,7 @@ function OfficeStatusUpdater() {
                         $('.social-likes').socialLikes();
                         $(".sharebar").hover(
                             function() {
-                                console.log('hoveron')
                             }, function() {
-                                console.log('hoveroff')
                                 var sharebar = $( this );
                                 setTimeout(function(){
                                     sharebar.fadeOut(300);
@@ -1355,9 +1347,7 @@ function OfficeStatusUpdater() {
                             $('.social-likes').socialLikes();
                             $(".sharebar").hover(
                                 function() {
-                                    console.log('hoveron')
                                 }, function() {
-                                    console.log('hoveroff')
                                     var sharebar = $( this );
                                     setTimeout(function(){
                                         sharebar.fadeOut(300);
