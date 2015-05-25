@@ -301,7 +301,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function step1() {
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             if (Session::read('user.id') == $solution->pitch->user_id) {
@@ -313,7 +313,7 @@ class UsersController extends \app\controllers\AppController {
             } else {
                 $type = 'client';
             }
-            if (Session::read('user.isAdmin') == 1) {
+            if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
             }
             $step = 1;
@@ -324,7 +324,7 @@ class UsersController extends \app\controllers\AppController {
     public function step2() {
         \lithium\net\http\Media::type('json', array('text/html'));
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
@@ -408,7 +408,7 @@ class UsersController extends \app\controllers\AppController {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id));
             }
 
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             if ($solution->step < 3) {
@@ -517,7 +517,7 @@ class UsersController extends \app\controllers\AppController {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
             }
 
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             if ($solution->step < 4) {
@@ -531,7 +531,7 @@ class UsersController extends \app\controllers\AppController {
                 $type = 'client';
                 $gradeByOtherParty = Grade::first(array('conditions' => array('user_id' => $solution->user_id, 'pitch_id' => $solution->pitch->id)));
             }
-            if (Session::read('user.isAdmin') == 1) {
+            if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
             }
             $grade = Grade::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $solution->pitch->id, 'type' => $type)));
