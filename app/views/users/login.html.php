@@ -9,13 +9,19 @@
         <div class="main">
 
             <section class="facebook-thing">
-                <h2>Зарегистрируйтесь, используя соц. сети</h2>
+                <h2>Зарегистрируйтесь, используя Facebook</h2>
 
                 <p><a class="button facebook facebook-logon" style="cursor: pointer;">Связаться через Facebook</a></p>
+
+                <div class="or-block">
+                    <h2 style="margin-top: 0;" class="or">или</h2>
+                </div>
+                <h2>Зарегистрируйтесь, используя VKONTAKTE</h2>
                 <p><a class="vkontakte-logon button vkontakte" style="cursor: pointer">Связаться через Vkontakte</a></p>
+
             </section>
 
-            <section>
+            <section style="margin-top: 25px;">
                 <h2 class="or">или</h2>
 
                 <?php $errors = $user->errors(); ?>
@@ -52,10 +58,18 @@
                     <?php endif ?>
                 </p>
                 <p class="register_who">
-                    <label><?= $this->form->radio('who_am_i', array('value' => 'client', 'class' => 'radio-input')) ?>Я — Заказчик</label>
-                    <span class="">или</span>
-                    <label><?= $this->form->radio('who_am_i', array('value' => 'designer', 'class' => 'radio-input', 'checked' => 'checked')) ?>Я — Дизайнер</label>
+                    <label><?= $this->form->radio('who_am_i', array('value' => 'designer', 'class' => 'radio-input', 'checked' => 'checked')) ?>Я дизайнер</label>
+                    <label><?= $this->form->radio('who_am_i', array('value' => 'client', 'class' => 'radio-input')) ?>Я заказчик</label>
+                    <label class="last"><?= $this->form->radio('who_am_i', array('value' => 'company', 'class' => 'radio-input')) ?>Я юр. лицо</label>
+                <div class="clr"></div>
                 </p>
+                <p>
+                    <?= $this->form->text('short_company_name', array('value' => $user->short_company_name, 'placeholder' => 'Краткое название компании', 'class' => 'name', 'required')) ?>
+                    <?php if (isset($errors['short_company_name'])): ?>
+                        <strong class="error" style="display:block">Название обязательно</strong>
+                    <?php endif ?>
+                </p>
+                <span class="character-count" data-maxchars="10">10</span>
                 <p class="submit">
                     <input type="submit" value="Создать аккаунт" class="button third">
 
@@ -100,7 +114,7 @@
                 ?>
                 <?= $this->form->create(null, array('action' => 'login')) ?>
                 <p>
-                    <input type="text" name="email" value="" placeholder="email" class="email" id="Email" />
+                    <input type="text" name="email" value="" placeholder="Email" class="email" id="Email" />
                     <strong class="error">Email обязателен</strong>
                 </p>
                 <p>

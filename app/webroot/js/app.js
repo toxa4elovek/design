@@ -18,6 +18,20 @@ $(document).ready(function () {
         '/img/vk_on.png',
         '/img/instagram_on.png'
     ]);
+
+    $('#UserShortCompanyName').keyup(function () {
+        var charsEntered = $(this).val().length;
+        var counterElement = $('.character-count');
+        var maximumChars = counterElement.data('maxchars');
+        var diff = maximumChars - charsEntered;
+        counterElement.text(diff);
+        if ((maximumChars - charsEntered) < 0) {
+            counterElement.addClass('red');
+        } else {
+            counterElement.removeClass('red');
+        }
+    });
+
     $("#registration").validate({
         /*debug: true,*/
         rules: {
@@ -36,8 +50,16 @@ $(document).ready(function () {
                 required: true,
                 minlength: 5,
                 equalTo: "#UserConfirmPassword"
+            },
+            short_company_name: {
+                required: {
+                    depends: function(element) {
+                        return $('input[value=company]').is(':checked')
+                    }
+                },
+                minlength: 5,
+                maxlength: $('.character-count').data('maxchars')
             }
-
         },
         messages: {
             first_name: {
@@ -58,6 +80,11 @@ $(document).ready(function () {
                 required: "Подтвердите пароль",
                 minlength: "Надо больше символов",
                 equalTo: "Пароли не совпадают"
+            },
+            short_company_name: {
+                required: 'Название обязательно',
+                minlength: "Надо больше символов",
+                maxlength: "Надо меньше символов"
             }
         },
         highlight: function (element, errorClass) {
@@ -69,14 +96,15 @@ $(document).ready(function () {
 
     $('#registration').on('submit', function (e) {
         e.preventDefault();
-        $.post($(this).attr('action') + '.json', $(this).serialize(), function (response) {
-            if (response.who_am_i == 'designer') {
-                user_popup_register();
-            } else {
-                console.log(response)
-                window.location.href = response.redirect;
-            }
-        });
+        if($('.error:visible').length == 0) {
+            $.post($(this).attr('action') + '.json', $(this).serialize(), function (response) {
+                if (response.who_am_i == 'designer') {
+                    user_popup_register();
+                } else {
+                    window.location.href = response.redirect;
+                }
+            });
+        }
     });
 
     $('#UserEmail').blur(function () {
@@ -562,35 +590,6 @@ window.fbAsyncInit = function () {
         xfbml: true,  // parse XFBM
         version: 'v2.0'
     });
-    /*
-     FB.Event.subscribe('edge.create',
-     function(response) {
-     var uid = '';
-     FB.getLoginStatus(function(response) {
-     if (response.status === 'connected') {
-     uid = response.authResponse.userID;
-     }
-     });
-     var solutionId = $('#solution_id').val();
-     $.post('/solutions/like/' + solutionId + '.json', {"uid": uid}, function(response) {
-     });
-     }
-     );
-     FB.Event.subscribe('edge.remove',
-     function(response) {
-     var uid = '';
-     FB.getLoginStatus(function(response) {
-     if (response.status === 'connected') {
-     uid = response.authResponse.userID;
-     }
-     });
-     var solutionId = $('#solution_id').val();
-     if(solutionId) {
-     $.post('/solutions/unlike/' + solutionId + '.json', {"uid": uid}, function(response) {
-     });
-     }
-     }
-     );*/
 
     $(document).on('click', '.top-button', function() {
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Кнопка "Создать проект"']);
@@ -605,20 +604,15 @@ window.fbAsyncInit = function () {
     $(document).on('click', '.mainpage-create-project', function() {
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заказчику" на главной']);
         return true;
-    })
+    });
 
     $(document).on('click', '.create-project-how-it-works', function() {
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заполнить бриф" на странице "Как это работает?"']);
         return true;
     })
 
-
-
 };
 
-// Load the SDK Asynchronously
-//var testLoc = window.location.pathname.match(/\/pitches\/view\//);
-//if(testLoc != null) {
 (function (d) {
     var js, id = 'facebook-jssdk';
     if (d.getElementById(id)) {
@@ -630,7 +624,6 @@ window.fbAsyncInit = function () {
     js.src = "//connect.facebook.net/en_US/all.js";
     d.getElementsByTagName('head')[0].appendChild(js);
 }(document));
-//}
 
 /*
  * Pitch files upload/delete handler

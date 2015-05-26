@@ -9,72 +9,23 @@
         <div class="main">
 
             <section class="facebook-thing">
-                <h2>Зарегистрируйтесь, используя соц. сети</h2>
+                <h2>Зарегистрируйтесь, используя Facebook</h2>
 
                 <p><a class="button facebook facebook-logon" style="cursor: pointer;">Связаться через Facebook</a></p>
+
+                <div class="or-block">
+                    <h2 style="margin-top: 0;" class="or">или</h2>
+                </div>
+                <h2>Зарегистрируйтесь, используя VKONTAKTE</h2>
                 <p><a class="vkontakte-logon button vkontakte" style="cursor: pointer">Связаться через Vkontakte</a></p>
-
-                <!--script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
-
-
-                <div id="vk_api_transport"></div>
-                <div id="login_button" onclick="VK.Auth.login(authInfo, 1);"></div>
-
-                <?php //echo $link = '<p><a href="' . $url . '?' . urldecode(http_build_query($params)) . '">Аутентификация через ВКонтакте</a></p>'; ?>
-
-                <a href="https://oauth.vk.com/authorize?client_id=2950889&display=popup&scope=friends&redirect_uri=http://godesigner.ru/users/vklogin&response_type=code" >vk</a>
-
-                <script language="javascript">
-                    function popitup(url) {
-                        console.log(url)
-                        newwindow=window.open(url,'name','height=200,width=600');
-                        if (window.focus) {newwindow.focus()}
-                        return false;
-                    }
-                    VK.init({
-                        apiId: 2950889,
-                        nameTransportPath: "http://godesigner.ru/xd_receiver.html"
-                    });
-                    function getUserProfileData(uid) {
-                        var code;
-                        code = 'return {'
-                        code += 'me: API.getProfiles({uids: "' + uid + '", fields: "first_name, last_name, nickname, bdate"})[0]';
-                        code += '};';
-                        VK.Api.call('execute', { 'code': code }, getUserProfileDataCallback);
-                    }
-
-                    function getUserProfileDataCallback(data) {
-                        console.log(data);
-                        //data.response.me.first_name; // имя
-                        //data.response.me.last_name;  // фамилия
-                        //data.response.me.nickname;   // никнейм
-                        //data.response.me.bdate;      // дата рождения
-                    }
-                    function authInfo(response) {
-                        if (response.session) {
-                            console.log('user: '+response.session.mid);
-                            getUserProfileData(response.session.mid);
-                        } else {
-                            console.log('not auth');
-                        }
-                    }
-                    VK.Auth.getLoginStatus(authInfo);
-                    VK.UI.button('login_button');
-                </script-->
 
             </section>
 
-            <section>
+            <section style="margin-top: 25px;">
                 <h2 class="or">или</h2>
 
                 <?php $errors = $user->errors(); ?>
-                <?php
-                echo $this->form->create($user, array('action' => 'registration', 'id' => 'registration'))
-                /* if($invite):?>
-                  <form action="/users/registration?invite=<?=$invite?>" method="post">
-                  <?php endif; */
-                ?>
-                <!--input type="hidden" value="" id="invite"/-->
+                <?= $this->form->create($user, array('action' => 'registration', 'id' => 'registration')) ?>
                 <input type="hidden" name="case" value="h4820g838f">
                 <p>
                     <?= $this->form->text('first_name', array('value' => $user->first_name, 'placeholder' => 'Имя', 'class' => 'name', 'required' => 'required')) ?>
@@ -107,10 +58,18 @@
                     <?php endif ?>
                 </p>
                 <p class="register_who">
-                    <label><?= $this->form->radio('who_am_i', array('value' => 'client', 'class' => 'radio-input')) ?>Я — Заказчик</label>
-                    <span class="">или</span>
-                    <label><?= $this->form->radio('who_am_i', array('value' => 'designer', 'class' => 'radio-input', 'checked' => 'checked')) ?>Я — Дизайнер</label>
+                    <label><?= $this->form->radio('who_am_i', array('value' => 'designer', 'class' => 'radio-input', 'checked' => 'checked')) ?>Я дизайнер</label>
+                    <label><?= $this->form->radio('who_am_i', array('value' => 'client', 'class' => 'radio-input')) ?>Я заказчик</label>
+                    <label class="last"><?= $this->form->radio('who_am_i', array('value' => 'company', 'class' => 'radio-input')) ?>Я юр. лицо</label>
+                    <div class="clr"></div>
                 </p>
+                <p>
+                    <?= $this->form->text('short_company_name', array('value' => $user->short_company_name, 'placeholder' => 'Краткое название компании', 'class' => 'name', 'required')) ?>
+                    <?php if (isset($errors['short_company_name'])): ?>
+                        <strong class="error" style="display:block">Название обязательно</strong>
+                    <?php endif ?>
+                </p>
+                <span class="character-count" data-maxchars="10">10</span>
                 <p class="submit">
                     <input type="submit" value="Создать аккаунт" class="button third">
 
