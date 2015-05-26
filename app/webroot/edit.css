@@ -164,13 +164,24 @@ textarea.placeholder {
     padding: 10px;
 }
 
-
 /* Prof */
 
 .profselectbox {
     margin-top: 20px;
 }
 
+.profselectbox label {
+    font-family: OfficinaSansC Book, serif;
+    color: #666;
+    font-size: 18px;
+}
+
+.profselectbox input[type=checkbox] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 6px;
+    margin-left: 4px;
+}
 .profselectbox button {
     width: 179px;
     height: 36px;
