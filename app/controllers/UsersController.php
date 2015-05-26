@@ -843,7 +843,7 @@ class UsersController extends \app\controllers\AppController {
         if ($user = User::first((int) Session::read('user.id'))) {
             if (!$this->request->data || ($this->request->data['who_am_i_fb'] == 'designer')) {
                 $user->isDesigner = 1;
-                $redirect = '/pitches';
+                $redirect = '/news';
                 $status = 'designer';
             }
             if ($this->request->data['who_am_i_fb'] == 'client') {
@@ -852,6 +852,7 @@ class UsersController extends \app\controllers\AppController {
             }
             if ($this->request->data['who_am_i_fb'] == 'company') {
                 $user->is_company = 1;
+                $redirect = '/users/profile';
                 $status = 'client';
             }
             $user->save(null, array('validate' => false));

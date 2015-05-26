@@ -11,6 +11,7 @@
     <h2>Ваше призвание</h2>
     <?php echo $this->form->create($user, array('action' => 'setStatus', 'id' => 'setStatus'));?>
     <label><?=$this->form->radio('who_am_i_fb', array('value' => 'client', 'class' => 'radio-input'))?>Я — Заказчик</label>
+    <label><?=$this->form->radio('who_am_i_fb', array('value' => 'company', 'class' => 'radio-input'))?>Я — Юр. лицо</label>
     <label><?=$this->form->radio('who_am_i_fb', array('value' => 'designer', 'class' => 'radio-input'))?>Я — Дизайнер</label>
 	<div class="wrapper" style="text-align: center;">
 	   <input type="submit" class="button third" value="Отправить">
