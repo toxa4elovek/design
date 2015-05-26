@@ -114,7 +114,7 @@
                 ?>
                 <?= $this->form->create(null, array('action' => 'login')) ?>
                 <p>
-                    <input type="text" name="email" value="" placeholder="email" class="email" id="Email" />
+                    <input type="text" name="email" value="" placeholder="Email" class="email" id="Email" />
                     <strong class="error">Email обязателен</strong>
                 </p>
                 <p>
