@@ -202,7 +202,7 @@ $(document).ready(function () {
         }
 
         return false;
-    })
+    });
 
 
     /*sliders*/
@@ -298,8 +298,8 @@ $(document).ready(function () {
         if (minAward > input.val()) {
             input.val(minAward);
             input.addClass('initial-price');
-            $('#indicator').addClass('low');
-            Cart.transferFee = feeRates.low;
+            $('#indicator').addClass('normal');
+            Cart.transferFee = feeRates.normal;
         } else {
             input.removeClass('initial-price');
             drawIndicator(input, input.val());
@@ -915,7 +915,11 @@ $(document).ready(function () {
     }
 
     checkReferal();
-    drawIndicator($('#award'), $('#award').val());
+    var value = $('#award').val();
+    if($('#award').val() == '') {
+        value = $('#award').attr('placeholder');
+    }
+    drawIndicator($('#award'), value);
 
 });
 
@@ -1026,7 +1030,7 @@ function FeatureCart() {
     this.fileIds = [];
     this.specificTemplates = [];
     this.validatetype = 1;
-    this.transferFee = feeRates.low;
+    this.transferFee = feeRates.normal;
     this.transferFeeDiscount = 0;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
@@ -1075,7 +1079,7 @@ function FeatureCart() {
         }
         $.each($('li', '#filezone'), function (index, object) {
             self.fileIds.push($(object).data('id'));
-        })
+        });
 
         if (window.location.hash == '#step3') {
             $.get('/receipts/view/' + self.id + '.json', function (response) {
@@ -1092,7 +1096,7 @@ function FeatureCart() {
         }
     };
     this._priceDecorator = function(price) {
-        price = price.toString()
+        price = price.toString();
         price = price.replace(/(.*)\.00/g, "$1");
         counter = 1;
         while(price.match(/\w\w\w\w/)) {

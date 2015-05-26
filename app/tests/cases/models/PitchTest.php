@@ -6,15 +6,18 @@ use app\extensions\tests\AppUnit;
 use app\models\Pitch;
 use lithium\storage\Session;
 use app\models\Grade;
+use app\extensions\storage\Rcache;
 
 class PitchTest extends AppUnit {
 
     public function setUp() {
-        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note'));
+        Rcache::init();
+        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Category'));
     }
 
     public function tearDown() {
-        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Grade'));
+        Rcache::flushdb();
+        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Grade', 'Category'));
         Session::clear();
     }
 
@@ -448,6 +451,19 @@ class PitchTest extends AppUnit {
         $designerGrade->save();
         $this->assertTrue(Pitch::hadDesignerLeftRating(6));
         $this->assertTrue($pitchForTest->hadDesignerLeftRating());
+    }
+
+    public function testGetStatisticalAverages() {
+        $this->assertEqual(12, Pitch::getStatisticalAverages(1, 'good'));
+        $this->assertEqual(11, Pitch::getStatisticalAverages(1, 'normal'));
+        $this->assertEqual(3, Pitch::getStatisticalAverages(1, 'minimal'));
+        $this->assertEqual(0, Pitch::getStatisticalAverages(3, 'good'));
+        $this->assertEqual(3, Pitch::getStatisticalAverages(3, 'normal'));
+        $this->assertEqual(0, Pitch::getStatisticalAverages(3, 'minimal'));
+        // cache
+        $this->assertEqual(12, Pitch::getStatisticalAverages(1, 'good'));
+        $this->assertEqual(11, Pitch::getStatisticalAverages(1, 'normal'));
+        $this->assertEqual(3, Pitch::getStatisticalAverages(1, 'minimal'));
     }
 
 }

@@ -1642,4 +1642,58 @@ class Pitch extends \app\models\AppModel {
         return false;
     }
 
+    /**
+     * Метод показывает среднее количество решений для категории $categoryId и качества награды $type
+     *
+     * @param $categoryId
+     * @param $type ('good'|'normal'|'minimal')
+     * @return bool|float|int|mixed
+     */
+    public static function getStatisticalAverages($categoryId, $type) {
+        $cacheKey = $categoryId . '_' . $type;
+        if(!$result = Rcache::read($cacheKey)) {
+            $category = Category::first($categoryId);
+            $conditions = array(
+                'category_id' => $categoryId,
+                'billed' => 1,
+                'published' => 1,
+                'ideas_count' => array('>' => 0),
+                'started' => array('>' => '2015-01-01 00:00:00'),
+            );
+            switch($type) {
+                case 'good':
+                    $conditions += array(
+                        'price' => array('>=' => $category->goodAward)
+                    );
+                    break;
+                case 'normal':
+                    $conditions += array(
+                        'price' => array('>=' => $category->normalAward, '<' => $category->goodAward)
+                    );
+                    break;
+                case 'minimal':
+                    $conditions += array(
+                        'price' => array('<' => $category->normalAward)
+                    );
+                    break;
+            }
+            $pitches = Pitch::all(array(
+                'fields' => array('id', 'category_id', 'price', 'ideas_count'),
+                'conditions' => $conditions
+            ));
+            $count = count($pitches->data());
+            if($count > 0) {
+                $total = 0;
+                foreach($pitches as $pitch) {
+                    $total += $pitch->ideas_count;
+                }
+                $result = round($total / $count);
+            }else {
+                $result = 0;
+            }
+            Rcache::write($cacheKey, $result, array(), '+1 month');
+        }
+        return $result;
+    }
+
 }
