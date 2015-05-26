@@ -28,6 +28,9 @@ a.show-preview {
     vertical-align: middle;
     margin-top: -2px;
 }
+#fieldblock1 div {
+    text-align: left;
+}
 #fieldblock1 label {
     font-family: OfficinaSansC Book, serif;
     font-size: 18px;
@@ -41,6 +44,21 @@ a.show-preview {
 #fieldblock1 input {
     font-family: OfficinaSansC Book, serif;
     font-size: 18px;
+    width: 364px;
+}
+#fieldblock1 input.short {
+    width: 150px;
+    margin-right: 40px;
+}
+#fieldblock1 .short-input-block {
+    margin-bottom: 7px;
+    margin-top: 44px;
+}
+#fieldblock1 input[name=birthdate] {
+    margin-right: 0;
+}
+.profselectbox label {
+    font-family: OfficinaSansC Book, serif;
 }
 /* Реквизиты */
 .user-details-section {

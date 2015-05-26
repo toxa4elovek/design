@@ -27,21 +27,25 @@
                         <span style="display: none;position:absolute;top:396px;left:79px; width:118px;" id="file-uploader-demo1"></span>
 
                         <div id="fieldblock1">
-                            <div style="margin-bottom: 7px"><input type="text" name="first_name" placeholder="Имя" value="<?=$user->first_name?>" ></div>
+                            <div style="margin-bottom: 2px"><input type="text" name="first_name" placeholder="Имя" value="<?=$user->first_name?>" ></div>
                             <div style="margin-bottom: 7px"><input type="text" name="last_name" placeholder="Фамилия" value="<?=$user->last_name?>" ></div>
                             <div style="margin-top: 20px;">
                                 <label><input type="radio" name="gender" value="1" <?php if($user->gender == 1):?>checked<?php endif ?>>Мужчина</label>
                                 <label><input type="radio" name="gender" value="2" <?php if($user->gender == 2):?>checked<?php endif ?>>Женщина</label>
                             </div>
-                            <div style="clear:both;"></div>
+                            <div class="short-input-block">
+                                <input class="short" type="text" name="city" placeholder="Город, страна" value="<?=$userdata['city']?>" >
+                                <input class="short" type="text" name="birthdate" placeholder="ДД.ММ.ГГ рождения" value="<?=$userdata['birthdate']?>" >
+                            </div>
+                            <div class="clr"></div>
                         </div>
                         <div class="profselectbox">
-                            <input type="hidden" name="isClient" value="<?=$user->isClient?>" id="iscustomer"/>
-                            <input type="hidden" name="isDesigner" value="<?=$user->isDesigner?>" id="isdesigner" />
-                            <input type="hidden" name="isCopy" value="<?=$user->isCopy?>" id="iscopyrighter"/>
-                            <button id="profselect1" class="changeStatus <?php if($user->isClient): echo 'profselectbtnpressed'; endif; ?>" name="iscustomer" value="false" >Я - ЗАКАЗЧИК</button>
-                            <button id="profselect2" class="changeStatus <?php if($user->isDesigner): echo 'profselectbtnpressed'; endif; ?>" name="isdesigner" value="true">Я - ДИЗАЙНЕР</button>
-                            <button id="profselect3" class="changeStatus <?php if($user->isCopy): echo 'profselectbtnpressed'; endif; ?>" name="iscopyrighter" value="false" >Я - КОПИРАЙТЕР</button>
+                            <input type="hidden" name="isDesigner" value="0">
+                            <input type="hidden" name="isClient" value="0">
+                            <input type="hidden" name="isCopy" value="0">
+                            <label><input type="checkbox" name="isDesigner" value="1" id="isdesigner" <?php if($user->isDesigner): echo 'checked'; endif; ?> />Я — дизайнер</label>
+                            <label style="margin-left: 83px;"><input type="checkbox" name="isClient" value="1" id="iscustomer" <?php if($user->isClient): echo 'checked'; endif; ?> />Я — заказчик</label>
+                            <label style="margin-left: 76px;"><input type="checkbox" name="isCopy" value="1" id="iscopyrighter" <?php if($user->isCopy): echo 'checked'; endif; ?> />Я — копирайтер</label>
                         </div>
                     </section>
                     <section style="height: 230px;">
