@@ -767,6 +767,13 @@ class UsersController extends \app\controllers\AppController {
                         $this->request->data['email_newcomments'] = 1;
                         $this->request->data['email_digest'] = 1;
                     }
+                    if ($this->request->data['who_am_i'] == 'company') {
+                        $this->request->data['is_company'] = 1;
+                        $this->request->data['email_newsolonce'] = 1;
+                        $this->request->data['email_newsol'] = 1;
+                        $this->request->data['email_newcomments'] = 1;
+                        $this->request->data['email_digest'] = 1;
+                    }
                     if ($this->request->data['who_am_i'] == 'designer') {
                         $this->request->data['isDesigner'] = 1;
                         $redirect = '/users/feed';
@@ -841,6 +848,10 @@ class UsersController extends \app\controllers\AppController {
             }
             if ($this->request->data['who_am_i_fb'] == 'client') {
                 $user->isClient = 1;
+                $status = 'client';
+            }
+            if ($this->request->data['who_am_i_fb'] == 'company') {
+                $user->is_company = 1;
                 $status = 'client';
             }
             $user->save(null, array('validate' => false));
@@ -1077,6 +1088,7 @@ class UsersController extends \app\controllers\AppController {
             $user->isClient = $this->request->data['isClient'];
             $user->isDesigner = $this->request->data['isDesigner'];
             $user->isCopy = $this->request->data['isCopy'];
+            $user->is_company = $this->request->data['is_company'];
             if ($userWithEmail = User::first(array(
                         'conditions' => array(
                             'email' => $this->request->data['email'],
