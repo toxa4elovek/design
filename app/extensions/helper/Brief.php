@@ -84,7 +84,7 @@ class Brief extends \lithium\template\Helper {
      * @return string
      */
     function eee($string) {
-        $string = strip_tags(nl2br($string), '<br>');
+        $string = nl2br(strip_tags($string));
         $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
 
         $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
@@ -97,6 +97,7 @@ class Brief extends \lithium\template\Helper {
         // Mentions
         $string = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', $string);
         $string = str_replace('<br /><br />', '<br />', $string);
+        $string = str_replace('<br><br>', '<br>', $string);
         return $string;
     }
 	

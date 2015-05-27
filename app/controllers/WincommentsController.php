@@ -40,12 +40,12 @@ class WincommentsController extends \lithium\action\Controller {
     }
 
     public function edit() {
-        if (Session::read('user.isAdmin') == 1 && ($comment = Wincomment::first($this->request->id))) {
+        if (($comment = Wincomment::first($this->request->id)) && (Session::read('user.isAdmin') == 1 || Session::read('user.id') == $comment->user_id || User::checkRole('admin') )) {
             $comment->text = $this->request->data['text'];
             $comment->save();
             $comment = Wincomment::first($this->request->id);
             $brief = new Brief();
-            return $brief->linkemail($brief->eee($comment->text));
+            return html_entity_decode($brief->linkemail($brief->eee($comment->text)));
         }
     }
 }
