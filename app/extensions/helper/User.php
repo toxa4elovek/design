@@ -454,10 +454,27 @@ class User extends \app\extensions\helper\Session {
      * Метод определяет, нужно ли пользователю сменить почту
      */
     public function needToChangeEmail() {
-        if(preg_match('/@(mail|inbox|list|bk).ru$/', $this->read('user.email'))) {
+        if(($this->isLoggedIn()) && (preg_match('/@(mail|inbox|list|bk).ru$/', $this->getEmail()))) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Метод возвращяет строку - адрес электроной части, где часть адреса скрыта звездочками
+     *
+     * @return string
+     */
+    public function getMaskedEmail() {
+        if($this->isLoggedIn()) {
+            $email = $this->getEmail();
+            preg_match('/^(.)(.*)(@.*)/', $email, $matches);
+            $partToReplace = $matches[2];
+            $partToReplaceLength = mb_strlen($partToReplace, 'UTF-8');
+            $maskedPart = str_repeat('*' , $partToReplaceLength);
+            $maskedString = str_replace($partToReplace, $maskedPart, $email);
+            return $maskedString;
+        }
     }
 
 }

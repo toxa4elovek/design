@@ -24,7 +24,7 @@
                         <div class="photoselectbox qq-uploader" style="height:196px;width:196px;">
                             <?=$this->avatar->show($user->data(), 'true')?>
                         </div>
-                        <span style="display: none;position:absolute;top:396px;left:79px; width:118px;" id="file-uploader-demo1"></span>
+                        <span style="display: none;position:absolute;top:334px;left:79px; width:118px;" id="file-uploader-demo1"></span>
 
                         <div id="fieldblock1">
                             <div style="margin-bottom: 2px"><input type="text" name="first_name" placeholder="Имя" value="<?=$user->first_name?>" ></div>
@@ -58,7 +58,7 @@
                             <p class="regular"><?=$emailInfo?></p>
                             <?php endif;?>
                             <div class="fieldleft"><input type="password" placeholder="Старый пароль" name="currentpassword"></div>
-                            <div><input type="email" placeholder="Email" name="email" value="<?=$user->email?>"></div>
+
                             <div class="fieldleft"><input type="password" placeholder="Новый пароль" name="newpassword"></div>
                             <!--div><input placeholder="Новый никнейм"></div-->
                             <div><a href="/users/deleteaccount" style="padding-left: 10px; width: 282px; display: block; float: left; height: 40px; margin-top: 13px;" id="deleteaccount">Удалить аккаунт</a></div>
@@ -75,6 +75,15 @@
 
                     <div class="g_line"></div>
 
+                    <section class="user-email-section">
+                        <h1 class="section-header">Email</h1>
+                        <p><?= $this->user->getMaskedEmail()?></p>
+                        <form method="post" action="/users/update">
+                            <input type="email" placeholder="Email" name="email" value="<?=$user->email?>">
+                            <input type="submit" class="button" value="Сохранить адрес" />
+                        </form>
+                    </section>
+                    <div class="g_line" style="margin-top: 25px;"></div>
                     <section class="user-notifications">
                         <h1 class="section-header">Уведомления</h1>
                         <form id="notifications-form" action="/users/update/" method="post">

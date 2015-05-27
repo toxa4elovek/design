@@ -1119,42 +1119,63 @@ class UsersController extends \app\controllers\AppController {
 
     public function update() {
         $user = User::first(Session::read('user.id'));
+        $currentEmail = $user->email;
         $result = false;
         if ($this->request->data) {
-            if (isset($this->request->data['email_newpitch'])) {
-                $user->email_newpitch = 1;
-            } else {
-                $user->email_newpitch = 0;
-            }
-            if (isset($this->request->data['email_newcomments'])) {
-                $user->email_newcomments = 1;
-            } else {
-                $user->email_newcomments = 0;
-            }
-            if (isset($this->request->data['email_newpitchonce'])) {
-                $user->email_newpitchonce = 1;
-            } else {
-                $user->email_newpitchonce = 0;
-            }
-            if (isset($this->request->data['email_newsolonce'])) {
-                $user->email_newsolonce = 1;
-            } else {
-                $user->email_newsolonce = 0;
-            }
-            if (isset($this->request->data['email_newsol'])) {
-                $user->email_newsol = 1;
-            } else {
-                $user->email_newsol = 0;
-            }
-            if (isset($this->request->data['email_digest'])) {
-                $user->email_digest = 1;
-            } else {
-                $user->email_digest = 0;
-            }
-            if (isset($this->request->data['email_onlycopy'])) {
-                $user->email_onlycopy = 1;
-            } else {
-                $user->email_onlycopy = 0;
+            if(isset($this->request->data['email'])) {
+                if ($userWithEmail = User::first(array(
+                    'conditions' => array(
+                        'email' => $this->request->data['email'],
+                        'id' => array(
+                            '!=' => $user->id,
+                        ),
+                    )))) {
+                    $emailInfo = 'Пользователь с таким адресом электронной почты уже существует!';
+                } else {
+                    $user->email = $this->request->data['email'];
+                    if ($currentEmail != $this->request->data['email']) {
+                        $emailInfo = 'Адрес электронной почты изменён, вам необходимо подтвердить его!';
+                        $user->confirmed_email = 0;
+                        $user->token = User::generateToken();
+                        UserMailer::verification_mail($user);
+                    }
+                }
+            }else {
+                if (isset($this->request->data['email_newpitch'])) {
+                    $user->email_newpitch = 1;
+                } else {
+                    $user->email_newpitch = 0;
+                }
+                if (isset($this->request->data['email_newcomments'])) {
+                    $user->email_newcomments = 1;
+                } else {
+                    $user->email_newcomments = 0;
+                }
+                if (isset($this->request->data['email_newpitchonce'])) {
+                    $user->email_newpitchonce = 1;
+                } else {
+                    $user->email_newpitchonce = 0;
+                }
+                if (isset($this->request->data['email_newsolonce'])) {
+                    $user->email_newsolonce = 1;
+                } else {
+                    $user->email_newsolonce = 0;
+                }
+                if (isset($this->request->data['email_newsol'])) {
+                    $user->email_newsol = 1;
+                } else {
+                    $user->email_newsol = 0;
+                }
+                if (isset($this->request->data['email_digest'])) {
+                    $user->email_digest = 1;
+                } else {
+                    $user->email_digest = 0;
+                }
+                if (isset($this->request->data['email_onlycopy'])) {
+                    $user->email_onlycopy = 1;
+                } else {
+                    $user->email_onlycopy = 0;
+                }
             }
             $result = $user->save(null, array('validate' => false));
         }

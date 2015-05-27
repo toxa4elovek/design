@@ -272,4 +272,10 @@ class UserTest extends \lithium\test\Unit {
         $this->assertFalse($this->user->needToChangeEmail());
     }
 
+    public function testGetMaskedEmail() {
+        $this->user->write('user.email', 'nyudmitriy@gmail.com');
+        $this->assertEqual('n*********@gmail.com', $this->user->getMaskedEmail());
+        $this->user->write('user.email', 'fake@address.ru');
+        $this->assertEqual('f***@address.ru', $this->user->getMaskedEmail());    }
+
 }

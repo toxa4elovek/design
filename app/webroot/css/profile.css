@@ -60,6 +60,27 @@ a.show-preview {
 .profselectbox label {
     font-family: OfficinaSansC Book, serif;
 }
+/* Почта */
+.user-email-section p {
+    font-family: OfficinaSansC Book, serif;
+    color: #999;
+    font-size: 18px;
+    margin-top: 35px;
+    margin-bottom: 5px;
+    padding-left: 2px;
+}
+.user-email-section input[type="email"] {
+    color: #b6b6b6;
+    font-size: 18px;
+    font-family: OfficinaSansC Book, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 400px;
+}
+.user-email-section input[type="submit"] {
+    width: 190px;
+    display: block;
+}
 /* Реквизиты */
 .user-details-section {
     min-height: 550px;
