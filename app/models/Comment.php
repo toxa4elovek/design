@@ -13,7 +13,7 @@ use \lithium\storage\Session;
 use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
 
-class Comment extends \app\models\AppModel {
+class Comment extends AppModel {
 
     public static $result = '';
     public static $level = 0;
@@ -412,6 +412,7 @@ class Comment extends \app\models\AppModel {
     /**
      * Check if the Comment includes real text
      *
+     * $text - текст для проверки
      * return boolean
      */
     public static function checkComment($text) {
@@ -423,11 +424,8 @@ class Comment extends \app\models\AppModel {
             '/@[\p{L}]+ [\p{L}]{1}\. ,/', // @Дмитрий Н. ,
             '/@[\p{L}]+ [\p{L}]{1}/', // @Дмитрий Н
         );
-        $res = preg_replace($patterns, '', $text);
-        $res = preg_match('/[\p{L}]+/', $res);
-        if ($res == 1) {
-            return true;
-        }
+        $text = preg_replace($patterns, '', $text);
+        return (bool) mb_strlen($text, 'UTF-8');
     }
 
     public static function isCommentRepeat($user_id, $pitch_id, $currentText) {
