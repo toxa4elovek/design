@@ -738,10 +738,12 @@ $(document).ready(function () {
 
     $('#hideproject').change(function () {
         if ($(this).attr('checked') == 'checked') {
+            $('.visibility-eye-tooltip').show();
             var offset = $(this).closest('.ribbon').offset();
             $.scrollTo(offset.top - 20, {duration: 600});
             $('#explanation_closed').show();
         } else {
+            $('.visibility-eye-tooltip').hide();
             $('#explanation_closed').hide();
         }
     });
