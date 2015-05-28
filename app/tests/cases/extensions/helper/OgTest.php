@@ -46,7 +46,7 @@ class OgTest extends \lithium\test\Unit
     }
 
     public function testGetOgTitle() {
-        $expected = '<meta property="og:title" content="Лого, сайт и дизайн от всего креативного интернет сообщества | GoDesigner"/>';
+        $expected = '<meta property="og:title" content="Логотип, сайт и дизайн: выбирай из идей, а не портфолио"/>';
         $result = $this->og->getOgTitle('');
         $this->assertEqual($expected, $result);
 
@@ -56,7 +56,7 @@ class OgTest extends \lithium\test\Unit
     }
 
     public function testGetOgDescription() {
-        $expected = '<meta property="og:description" content="Лого, сайт и дизайн от всего креативного интернет сообщества"/>';
+        $expected = '<meta property="og:description" content="Логотип, сайт и дизайн от всего креативного интернет сообщества"/>';
         $result = $this->og->getOgDescription('');
         $this->assertEqual($expected, $result);
 

@@ -29,7 +29,7 @@ class Og extends \lithium\template\Helper {
      * @return mixed
      */
     public function getOgTitle($title) {
-        $defaultTitle = 'Лого, сайт и дизайн от всего креативного интернет сообщества | GoDesigner';
+        $defaultTitle = 'Логотип, сайт и дизайн: выбирай из идей, а не портфолио';
         if(empty($title)) {
             $title = $defaultTitle;
         }
@@ -44,7 +44,7 @@ class Og extends \lithium\template\Helper {
      * @return mixed
      */
     public function getOgDescription($description) {
-        $defaultTitle = 'Лого, сайт и дизайн от всего креативного интернет сообщества';
+        $defaultTitle = 'Логотип, сайт и дизайн от всего креативного интернет сообщества';
         if(empty($description)) {
             $description = $defaultTitle;
         }else {
