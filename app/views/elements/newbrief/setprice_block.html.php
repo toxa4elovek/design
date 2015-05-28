@@ -9,7 +9,7 @@
         </div><!-- .bar -->
         <ul>
             <li>
-                <?php if($this->pitch->getStatisticalAverages($category->id, 'minimal') != 0):?>
+                <?php if(($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'minimal') != 0)):?>
                 ~ <?= $this->pitch->getStatisticalAverages($category->id, 'minimal')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'minimal'), array('string' => 'решени',
                     'first' => 'е',
                     'second' => 'я',
@@ -19,7 +19,7 @@
                 <?php endif;?>
             </li>
             <li>
-                <?php if($this->pitch->getStatisticalAverages($category->id, 'normal') != 0):?>
+                <?php if(($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'normal') != 0)):?>
                     ~ <?= $this->pitch->getStatisticalAverages($category->id, 'normal')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'normal'), array('string' => 'решени',
                         'first' => 'е',
                         'second' => 'я',
@@ -29,7 +29,7 @@
                 <?php endif;?>
             </li>
             <li>
-                <?php if($this->pitch->getStatisticalAverages($category->id, 'good') != 0):?>
+                <?php if(($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'good') != 0)):?>
                 ~ <?= $this->pitch->getStatisticalAverages($category->id, 'good')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'good'), array('string' => 'решени',
                     'first' => 'е',
                     'second' => 'я',
