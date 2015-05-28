@@ -11,12 +11,12 @@ class HtmlExtended extends \lithium\template\helper\Html {
 
     public function title($params, $vars, $notags = false) {
         extract($vars);
-        $title = 'Лого, сайт и дизайн от всего креативного интернет сообщества';
+        $title = 'Логотип, сайт и дизайн от всего креативного интернет сообщества';
         if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView'])) && (is_object($solution->pitch)) && (is_object($solution->user))):
             $title = 'Go Designer; ' . $solution->pitch->title . '; Дизайнер: ' . NameInflector::renderName($solution->user->first_name, $solution->user->last_name);
         endif;
         if((isset($post)) && (isset($post->title))):
-            $title = $post->title . '; Лого, сайт и дизайн от всего креативного интернет сообщества';
+            $title = $post->title . '; Логотип, сайт и дизайн от всего креативного интернет сообщества';
         endif;
         if((strtolower($params['controller']) == 'pages') && ($params['action'] == 'view') && ($params['args'][0] == 'howitworks')):
             $title = 'Как это работает';
