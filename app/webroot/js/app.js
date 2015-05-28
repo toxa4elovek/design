@@ -1079,6 +1079,8 @@ function enableToolbar() {
     $('body, .solution-overlay').on('click', '.createComment, #rating_comment_send', function (e) {
         e.preventDefault();
         var textarea = $(this).closest('form').find('textarea');
+        var form = $(this).closest('form');
+        var button = $(this);
         var addSolution = $(this).data('solution_id');
         addSolution = (typeof (addSolution) != 'undefined') ? addSolution + ', ' : '';
         if (typeof (solutionId) == 'undefined') {
@@ -1086,6 +1088,13 @@ function enableToolbar() {
         }
         if (isCommentValid(textarea.val())) {
             var is_public = $(this).data('is_public');
+            button.css('color', '#9bafba');
+            if(is_public) {
+                var loader = $('.public-loader', form);
+            }else {
+                var loader = $('.private-loader', form);
+            }
+            loader.show();
             $.post('/comments/add.json', {
                 'text': addSolution + textarea.val(),
                 'solution_id': solutionId,
@@ -1110,6 +1119,8 @@ function enableToolbar() {
                     $(populateComment(commentData)).insertAfter('.pitch-comments .separator:first');
                     $('.separator', '.pitch-comments section:first').remove();
                 }
+                button.css('color', '#ffffff');
+                loader.hide();
             });
         } else {
             alert('Введите текст комментария!');

@@ -94,6 +94,12 @@
                         <input type="hidden" value="<?= $pitch->id ?>" name="pitch_id">
                         <input type="button" src="/img/message_button.png" value="Публиковать комментарий для всех" class="button createComment" data-is_public="1" style="margin: 15px 18px 15px 0;">
                         <input type="button" src="/img/message_button.png" value="Отправить только дизайнеру" class="button createComment" data-is_public="0" style="margin: 15px 0 15px 18px;">
+                        <div class="public-loader-container">
+                            <img class="public-loader" src="/img/blog-ajax-loader.gif" alt="Идёт загрузка">
+                        </div>
+                        <div class="private-loader-container">
+                            <img class="private-loader" src="/img/blog-ajax-loader.gif" alt="Идёт загрузка">
+                        </div>
                         <div class="clr"></div>
                     </form>
                 <?php endif; ?>

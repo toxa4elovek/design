@@ -873,8 +873,29 @@ h1.solution-title-page  {
     padding-bottom: 2px;
     margin-top:6px;
 }
-
+.public-loader-container {
+    float: left;
+    width: 317px;
+    padding-right: 30px;
+    height: 22px;
+    text-align: center;
+}
+.private-loader-container {
+    float: left;
+    width: 200px;
+    margin-left: 18px;
+    padding-left: 30px;
+    height: 22px;
+    text-align: center;
+}
+.public-loader-container img, .private-loader-container img {
+    margin-top: -8px;
+    width: 22px;
+    height: 22px;
+    display: none;
+}
 .solution-left-panel .button {
+    outline: none;
     display: inline-block;
     padding: 0 30px;
     height: 49px;
