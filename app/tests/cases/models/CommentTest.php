@@ -20,6 +20,10 @@ class CommentTest extends AppUnit{
         $this->assertTrue(Comment::checkComment($string));
         $string = '#1,';
         $this->assertFalse(Comment::checkComment($string));
+        $string = '   ';
+        $this->assertFalse(Comment::checkComment($string));
+        $string = '';
+        $this->assertFalse(Comment::checkComment($string));
         $string = '1';
         $this->assertTrue(Comment::checkComment($string));
     }

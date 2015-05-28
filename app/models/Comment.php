@@ -425,7 +425,7 @@ class Comment extends AppModel {
             '/@[\p{L}]+ [\p{L}]{1}/', // @Дмитрий Н
         );
         $text = preg_replace($patterns, '', $text);
-        return (bool) mb_strlen($text, 'UTF-8');
+        return (bool) mb_strlen(trim($text), 'UTF-8');
     }
 
     public static function isCommentRepeat($user_id, $pitch_id, $currentText) {
