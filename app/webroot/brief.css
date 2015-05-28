@@ -77,3 +77,13 @@ input[name=package-type] {
     margin-right: 5px;
     margin-bottom: 3px;
 }
+.visibility-eye-tooltip {
+    display: none;
+    position: relative;
+    right: 3px;
+    top: 8px;
+    float: right;
+}
+.private {
+    top: 3px;
+}

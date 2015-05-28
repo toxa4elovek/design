@@ -5,14 +5,14 @@ if(!isset($specifics['logoType'])) {
 ?>
 <div class="groupc">
 <p>
-    <label>Какие 3 качества нужно донести через логотип? <a href="#" class="second tooltip" title="Прилагательные, ассоциации, которые должны возникнуть у потребителя."></a></label>
+    <label>Какие 3 качества нужно донести через логотип? <a href="#" class="second tooltip" title="Прилагательные, ассоциации, которые должны возникнуть у потребителя."></a><a href="#" class="visibility-eye-tooltip tooltip private" title="Эта информация не публична"><img src="/img/private-comment-eye.png" alt="Информация скрыта"></a></label>
     <input type="text" name="qualities" value="<?=$specifics['qualities']?>" placeholder="Прагматичный, надежный, элегантный" class="specific-prop">
 </p>
 </div><!-- .group -->
 
 <div class="groupc">
     <p style="margin-top: 24px; margin-bottom: 38px;">
-        <label><a href="#" class="expand_extra">+ Дополнительная информация</a></label>
+        <label><a href="#" class="expand_extra">+ Дополнительная информация</a><a href="#" class="visibility-eye-tooltip tooltip private" title="Эта информация не публична"><img src="/img/private-comment-eye.png" alt="Информация скрыта"></a></label>
     </p>
 
     <div class="extra_options" style="display: none">
