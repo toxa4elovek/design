@@ -104,7 +104,7 @@ class AppController extends \lithium\action\Controller {
                     setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
                 }
 
-
+/*
                 if((Session::read('user.events') == null) || (Session::read('user.events.count') == 0)) {
                     $date = date('Y-m-d H:i:s');
                     if(Session::read('user.events.date') != null) {
@@ -117,7 +117,7 @@ class AppController extends \lithium\action\Controller {
                     }else {
                         Session::write('user.events.count', 0);
                     }
-                }
+                }*/
                 $user->setLastActionTime();
             }
         }else {
