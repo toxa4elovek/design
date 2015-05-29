@@ -1,13 +1,62 @@
 $(document).ready(function() {
 
-    window.onbeforeunload = confirmExit;
+    /*window.onbeforeunload = confirmExit;
     function confirmExit()
     {
         if (tinyMCE.activeEditor.isDirty() || isUndo) {
             return "Вы собираетесь уйти с этой страницы, все несохранённые данные будут потеряны. Точно уходим?";
         }
+    }*/
+
+    tinymce.init({
+        selector: "textarea",
+        content_css: "/css/brief_wysiwyg.css",
+        language: "ru",
+        height: "540",
+        width: '538',
+        relative_urls: false,
+        remove_script_host: false,
+        menubar: false,
+        plugins: ["link,lists,charmap,paste,image"],
+        toolbar: "styleselect,link,bullist,numlist,charmap,image",
+        style_formats: [
+            {title : 'Заголовок 3 bold', inline : 'span', classes: "greyboldheader"},
+            {title : 'Заголовок 3  синий', inline : 'span', classes: "blueboldheader"},
+            {title : 'Основной текст', inline : 'span', classes: "regular"},
+            {title : 'Заголовок 1', inline : 'span', classes: "largest-header"},
+            {title : 'Дополнение', inline : 'span', classes: "supplement"},
+            {title : 'Дополнение 2', inline : 'span', classes: "supplement2"},
+            {title : 'Дополнение 3', inline : 'span', classes: "supplement3"}
+        ],
+        file_browser_callback: RoxyFileBrowser
+    });
+
+    function RoxyFileBrowser(field_name, url, type, win) {
+        var roxyFileman = '/js/fileman/index.html';
+        if (roxyFileman.indexOf("?") < 0) {
+            roxyFileman += "?type=" + type;
+        }
+        else {
+            roxyFileman += "&type=" + type;
+        }
+        roxyFileman += '&input=' + field_name + '&value=' + win.document.getElementById(field_name).value;
+        if(tinyMCE.activeEditor.settings.language){
+            roxyFileman += '&langCode=' + tinyMCE.activeEditor.settings.language;
+        }
+        tinyMCE.activeEditor.windowManager.open({
+            file: roxyFileman,
+            title: 'Roxy Fileman',
+            width: 850,
+            height: 650,
+            resizable: "yes",
+            plugins: "media",
+            inline: "yes",
+            close_previous: "no"
+        }, {     window: win,     input: field_name    });
+        return false;
     }
-    
+
+    /*
     $('textarea').tinymce({
         // Location of TinyMCE script
         script_url : '/js/tiny_mce/tiny_mce.js',
@@ -39,12 +88,6 @@ $(document).ready(function() {
             {title : 'Дополнение', inline : 'span', classes: "supplement"},
             {title : 'Дополнение 2', inline : 'span', classes: "supplement2"},
             {title : 'Дополнение 3', inline : 'span', classes: "supplement3"}
-            /*{title : 'Red text', inline : 'span', styles : {color : '#ff0000'}},
-             {title : 'Red header', block : 'h1', styles : {color : '#ff0000'}},
-             {title : 'Example 1', inline : 'span', classes : 'example1'},
-             {title : 'Example 2', inline : 'span', classes : 'example2'},
-             {title : 'Table styles'},
-             {title : 'Table row 1', selector : 'tr', classes : 'tablerow1'} */
         ],
         
         onchange_callback : function(editor) {
@@ -53,7 +96,7 @@ $(document).ready(function() {
 
         // Example content CSS (should be your site CSS)
         //content_css : "css/content.css",
-    });
+    });*/
 
     $( ".datepicker" ).datetimepicker({ dateFormat: "yy-mm-dd", timeFormat: 'hh:mm:ss', showSecond: true});
 
