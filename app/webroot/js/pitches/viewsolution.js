@@ -314,7 +314,45 @@ $(document).ready(function() {
             return false;
         }
         return true;
-    })
+    });
+
+    $(document).on('click', '.update-description-button', function() {
+        var textArea = $('.edit-description-textarea');
+        var updatedText = textArea.val();
+        $.post('/solutions/update_description.json', {"updatedText": updatedText, "id": $(this).data('solutionid')}, function() {
+        });
+        textArea.hide();
+        $(this).hide();
+        var viewLength = 100;
+        if (updatedText.length > viewLength) {
+            var descBefore = updatedText.slice(0, viewLength - 1);
+            descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
+            var descAfter = updatedText.slice(descBefore.length);
+            $('.solution-description').html(descBefore).show();
+            showMoreLink = $('.description-more');
+            showMoreLink.show(500).on('click', function () {
+                $('.solution-description').append(descAfter);
+                descAfter = '';
+                showMoreLink.hide();
+            });
+        }else {
+            $('.solution-description').show().text(updatedText);
+        }
+        $('.edit-description-link').show();
+        return false;
+    });
+
+    $(document).on('click', '.edit-description-link', function() {
+        var descriptionElement = $('.solution-description');
+        $(this).after('<a data-solutionid="' + $(this).data('solutionid') + '" class="button update-description-button" href="#">сохранить</a>').hide();
+        $('.description-more').click();
+        var descriptionText = descriptionElement.text();
+        descriptionElement
+            .after('<textarea class="edit-description-textarea">' + descriptionText + ' </textarea>')
+            .hide();
+        $('.description-more').hide();
+        return false;
+    });
 
     if(typeof(fileSet) != 'undefined') {
         var currentIndex = 0;
@@ -589,13 +627,20 @@ $(document).ready(function() {
                     descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
                     var descAfter = desc.slice(descBefore.length);
                     $('.solution-description').html(descBefore);
-                    $('.description-more').show(500);
-                    $('.description-more').on('click', function() {
+                    var showMoreLink = $('.description-more');
+                    showMoreLink.show(500).on('click', function () {
                         $('.solution-description').append(descAfter);
-                        $('.description-more').hide();
+                        descAfter = '';
+                        showMoreLink.hide();
                     });
+                    if(result.solution.user_id == currentUserId) {
+                        showMoreLink.after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>');
+                    }
                 } else {
                     $('.solution-description').html(result.solution.description);
+                    if(result.solution.user_id == currentUserId) {
+                        $('.solution-description').after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>');
+                    }
                 }
                 if(result.solution.description != '') {
                     $('span#date').after('<br />');

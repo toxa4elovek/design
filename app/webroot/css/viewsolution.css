@@ -203,3 +203,23 @@ p#top-pay{
     height: 49px;
     margin-left: 20px;
 }
+
+.edit-description-link {
+    margin-top: 10px;
+    display: block;
+    padding-left: 27px;
+    background: url(/img/edit_icon_press.png) 0 0 no-repeat;
+    background-size: 18px 18px;
+}
+.edit-description-textarea {
+    width: 208px;
+    position: relative;
+    right: 10px;
+    height: 235px;
+}
+.update-description-button {
+    position: relative;
+    right: 10px;
+    margin-top: 10px;
+    width: 173px;
+}

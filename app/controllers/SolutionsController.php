@@ -336,4 +336,12 @@ class SolutionsController extends \app\controllers\AppController {
         return $this->request->data;
     }
 
+    public function update_description() {
+        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
+            $solution->description = $this->request->data['updatedText'];
+            $solution->save();
+        }
+        return $this->request->data;
+    }
+
 }
