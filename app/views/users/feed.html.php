@@ -75,7 +75,7 @@
                             <?php endif; ?>
                             <div class="new-content group">
                             <?php endif; ?>
-                            <div id="l-sidebar-office" data-count="<?= count($solutions->data());?>">
+                            <div id="l-sidebar-office">
                                 <?php
                                 $solutionDate = '';
                                 $count = 0;
