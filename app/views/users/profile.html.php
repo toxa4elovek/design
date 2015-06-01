@@ -54,9 +54,6 @@
                             <?php if($passwordInfo != false):?>
                             <p class="regular"><?=$passwordInfo?></p>
                             <?php endif;?>
-                            <?php if($emailInfo != false):?>
-                            <p class="regular"><?=$emailInfo?></p>
-                            <?php endif;?>
                             <div class="fieldleft"><input type="password" placeholder="Старый пароль" name="currentpassword"></div>
 
                             <div class="fieldleft"><input type="password" placeholder="Новый пароль" name="newpassword"></div>
@@ -77,10 +74,14 @@
 
                     <section class="user-email-section">
                         <h1 class="section-header">Email</h1>
-                        <p><?= $this->user->getMaskedEmail()?></p>
-                        <form method="post" action="/users/update">
-                            <input type="email" placeholder="Email" name="email" value="<?=$user->email?>">
-                            <input type="submit" class="button" value="Сохранить адрес" />
+                        <p>
+                            <?php if($emailInfo != false):?>
+                            <?=$emailInfo?><br>
+                            <?php endif;?>
+                            <?= $this->user->getMaskedEmail()?></p>
+                        <form method="post" id="email-form" action="/users/update">
+                            <input type="email" placeholder="Новый email" name="email" value="">
+                            <input type="submit" id="save-email" class="button" value="Сохранить адрес" />
                         </form>
                     </section>
                     <div class="g_line" style="margin-top: 25px;"></div>

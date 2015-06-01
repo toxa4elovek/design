@@ -1090,7 +1090,7 @@ class UsersController extends \app\controllers\AppController {
             $user->isDesigner = $this->request->data['isDesigner'];
             $user->isCopy = $this->request->data['isCopy'];
             $user->is_company = $this->request->data['is_company'];
-            if ($userWithEmail = User::first(array(
+            /*if ($userWithEmail = User::first(array(
                         'conditions' => array(
                             'email' => $this->request->data['email'],
                             'id' => array(
@@ -1106,7 +1106,7 @@ class UsersController extends \app\controllers\AppController {
                     $user->token = User::generateToken();
                     UserMailer::verification_mail($user);
                 }
-            }
+            }*/
 
             $user->first_name = $this->request->data['first_name'];
             $user->last_name = $this->request->data['last_name'];
@@ -1131,15 +1131,19 @@ class UsersController extends \app\controllers\AppController {
                         ),
                     )))) {
                     $emailInfo = 'Пользователь с таким адресом электронной почты уже существует!';
+                    $result = false;
                 } else {
                     $user->email = $this->request->data['email'];
                     if ($currentEmail != $this->request->data['email']) {
                         $emailInfo = 'Адрес электронной почты изменён, вам необходимо подтвердить его!';
                         $user->confirmed_email = 0;
                         $user->token = User::generateToken();
+                        Session::write('user.email', $user->email);
                         UserMailer::verification_mail($user);
+                        $result = $user->save(null, array('validate' => false));
                     }
                 }
+                return compact('result', 'emailInfo');
             }else {
                 if (isset($this->request->data['email_newpitch'])) {
                     $user->email_newpitch = 1;
