@@ -523,6 +523,10 @@
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'],'/events/') !== false) && (strpos($object['news']['imageurl'],'/events/') === 0)) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
                                                 </p>
+                                                <?php elseif($this->feed->isEmbeddedLink($object['news']['link'])):?>
+                                                <p class="img-box">
+                                                    <?php echo $this->feed->generateEmbeddedIframe($object['news']['link'])?>
+                                                </p>
                                                 <?php endif?>
                                                 <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
                                                     <?php if ($object['news']['tags']): ?>
