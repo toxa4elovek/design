@@ -28,6 +28,9 @@ a.show-preview {
     vertical-align: middle;
     margin-top: -2px;
 }
+.basic-info-section input[type=submit] {
+    width: 140px;
+}
 #fieldblock1 div {
     text-align: left;
 }
@@ -61,7 +64,7 @@ a.show-preview {
     font-family: OfficinaSansC Book, serif;
 }
 /* Почта */
-.user-email-section p {
+.user-email-section p, .user-password-section p {
     font-family: OfficinaSansC Book, serif;
     color: #999;
     font-size: 18px;
@@ -80,6 +83,36 @@ a.show-preview {
 .user-email-section input[type="submit"] {
     width: 190px;
     display: block;
+}
+/* Пароль */
+.user-password-section input{
+    color: #b6b6b6;
+    font-size: 18px;
+    font-family: OfficinaSansC Book, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 400px !important;
+}
+#deleteaccount {
+    text-decoration: underline;
+    padding-left: 13px;
+    background: url(/img/closerequest.png) 0 2px no-repeat;
+    background-size: 8px 8px;
+    font-style: italic;
+    font-size: 12px;
+    margin-left: 15px;
+}
+.user-password-section form {
+    padding-top: 26px;
+}
+#save-password {
+    margin-top: 15px;
+    width: 186px !important;
+    font-family: Arial, sans-serif;
+}
+.user-password-section p {
+    margin-top: 0;
+    display: none;
 }
 /* Реквизиты */
 .user-details-section {

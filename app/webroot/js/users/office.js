@@ -960,6 +960,16 @@ $(document).ready(function(){
         return false;
     });
 
+    $(document).on('click', '#save-password', function() {
+        var form = $('#password-form');
+        var data = form.serialize();
+        $.post('/users/update.json', data, function(response) {
+            console.log(response);
+            $('p', '.user-password-section').show().text(response.passwordInfo);
+        });
+        return false;
+    });
+
 });
 
 // profile.js end
