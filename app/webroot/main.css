@@ -3701,6 +3701,12 @@ div.no-result p {
     margin-right: 0;
     text-align: right;
 }
+.short-company-name {
+    display: none;
+}
+.character-count {
+    display: none;
+}
 .register_who .radio-input {
     vertical-align: middle;
     margin-right: 7px;

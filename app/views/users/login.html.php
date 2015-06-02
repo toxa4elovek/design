@@ -63,7 +63,7 @@
                     <label class="last"><?= $this->form->radio('who_am_i', array('value' => 'company', 'class' => 'radio-input')) ?>Я юр. лицо</label>
                 <div class="clr"></div>
                 </p>
-                <p>
+                <p class="short-company-name">
                     <?= $this->form->text('short_company_name', array('value' => $user->short_company_name, 'placeholder' => 'Краткое название компании', 'class' => 'name', 'required')) ?>
                     <?php if (isset($errors['short_company_name'])): ?>
                         <strong class="error" style="display:block">Название обязательно</strong>
