@@ -929,7 +929,7 @@ $(document).ready(function(){
 
     $(document).on('click', '#confirmWinner', function() {
         //window.location = '/users/deleteaccount';
-        $.get('/users/deleteaccount')
+        $.get('/users/deleteaccount');
         $('.popup-close').click();
         $('#delete-comfirm').modal({
             containerId: 'final-step',
@@ -946,7 +946,29 @@ $(document).ready(function(){
             setTimeout(function(){ $('#save-notifications').val('Сохранить настройки уведомлений'); }, 5000);
         });
         return false;
-    })
+    });
+
+    $(document).on('click', '#save-email', function() {
+        var form = $('#email-form');
+        var data = form.serialize();
+        $.post('/users/update.json', data, function(response) {
+            if(response.result == false) {
+                $('input[type=email]', form).val('');
+            }
+            $('p', '.user-email-section').text(response.emailInfo);
+        });
+        return false;
+    });
+
+    $(document).on('click', '#save-password', function() {
+        var form = $('#password-form');
+        var data = form.serialize();
+        $.post('/users/update.json', data, function(response) {
+            console.log(response);
+            $('p', '.user-password-section').show().text(response.passwordInfo);
+        });
+        return false;
+    });
 
 });
 

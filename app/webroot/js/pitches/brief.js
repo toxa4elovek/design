@@ -720,6 +720,7 @@ $(document).ready(function () {
          var modded = mod * value;*/
         var newMinimum = parseInt($('#copybaseminprice').val() * mod);
         var minValue = $(this).data('minValue');
+        $('#labelPrice').text(newMinimum + 'Р.');
         input.data('minimalAward', newMinimum);
         input.blur();
     })

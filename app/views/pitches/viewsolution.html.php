@@ -149,7 +149,9 @@
             <!-- end: Solution Left Panel -->
             </div>
             <div class="clr"></div>
+            <?php if($this->pitch->isReadyForLogosale($pitch)):?>
                 <?= $this->view()->render(array('element' => 'logosalepay'), array('data' => $data)) ?>
+            <?php endif?>
         <!-- end: Solution Container -->
         </div>
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->

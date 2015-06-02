@@ -32,7 +32,8 @@ $(document).ready(function () {
         }
     });
 
-    $("#registration").validate({
+    var registrationElement = $("#registration");
+    registrationElement.validate({
         /*debug: true,*/
         rules: {
             // simple rule, converted to {required:true}
@@ -94,7 +95,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#registration').on('submit', function (e) {
+    registrationElement.on('submit', function (e) {
         e.preventDefault();
         if($('.error:visible').length == 0) {
             $.post($(this).attr('action') + '.json', $(this).serialize(), function (response) {
@@ -106,6 +107,17 @@ $(document).ready(function () {
             });
         }
     });
+
+    $('input[name=who_am_i]').on('change', function() {
+        var selectedUserType = $(this).val();
+        if(selectedUserType == 'company') {
+            $('.short-company-name').show();
+            $('.character-count').show();
+        }else {
+            $('.short-company-name').hide();
+            $('.character-count').hide();
+        }
+    })
 
     $('#UserEmail').blur(function () {
         $.post('/users/checkform.json', {"email": this.value}, function (response) {

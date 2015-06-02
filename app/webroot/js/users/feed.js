@@ -1540,6 +1540,8 @@ function OfficeStatusUpdater() {
                         html += '<p class="img-box"> \
                                         <a class="post-link" href="' + object.news.link + '" target="_blank" ><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
                                     </p>'
+                    }else if(self.isEmbeddedLink(object.news.link)) {
+                        html += '<p class="img-box">' + self.generateEmbeddedIframe(object.news.link) + '</p>';
                     }
                     html +='<div class="r-content post-content"' + style + '>';
                     if (object.news.tags) {
@@ -1712,7 +1714,48 @@ function OfficeStatusUpdater() {
                 });
                 html += '</div></div>';
                 return html;
-            };
+            },
+            this.isEmbeddedLink = function(url) {
+                var matches = url.match(/(youtube.com\/watch\?v=|vimeo.com\/\d+)/);
+                if(!matches) {
+                    return false;
+                }else {
+                    return true;
+                }
+            },
+            this.generateEmbeddedIframe = function(url) {
+                if(self.__isYoutubeLink(url)) {
+                    var videoId = self.__getYoutubeVideoId(url)
+                    return '<iframe width="600" height="337" src="https://www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe>';
+                }else if(self.__isVimeoLink(url)) {
+                    var videoId = self.__getVimeoVideoId(url)
+                    return '<iframe src="https://player.vimeo.com/video/' + videoId + '" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';;
+                }
+            },
+            this.__getYoutubeVideoId = function(url) {
+                var matches = url.match(/watch\?v=(.*)$/);
+                return matches[1]
+            },
+            this.__getVimeoVideoId = function(url) {
+                var matches = url.match(/vimeo.com\/(\d+)$/);
+                return matches[1]
+            },
+            this.__isYoutubeLink = function(url) {
+                var matches = url.match(/youtube.com\/watch\?v=/);
+                if(!matches) {
+                    return false;
+                }else {
+                    return true;
+                }
+            },
+            this.__isVimeoLink = function(url) {
+                var matches = url.match(/vimeo.com\/\d+/);
+                if(!matches) {
+                    return false;
+                }else {
+                    return true;
+                }
+            }
 }
 function parse_url_regex(url) {
     var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;

@@ -47,40 +47,36 @@
                             <label style="margin-left: 83px;"><input type="checkbox" name="isClient" value="1" id="iscustomer" <?php if($user->isClient): echo 'checked'; endif; ?> />Я — заказчик</label>
                             <label style="margin-left: 76px;"><input type="checkbox" name="isCopy" value="1" id="iscopyrighter" <?php if($user->isCopy): echo 'checked'; endif; ?> />Я — копирайтер</label>
                         </div>
+                        <input type="submit" class="button" value="Сохранить">
                     </section>
-                    <section style="height: 230px;">
-                        <h1 class="separator-flag">НАСТРОЙКИ</h1>
-                        <div id="fieldblock3">
-                            <?php if($passwordInfo != false):?>
-                            <p class="regular"><?=$passwordInfo?></p>
-                            <?php endif;?>
-                            <?php if($emailInfo != false):?>
-                            <p class="regular"><?=$emailInfo?></p>
-                            <?php endif;?>
-                            <div class="fieldleft"><input type="password" placeholder="Старый пароль" name="currentpassword"></div>
-
-                            <div class="fieldleft"><input type="password" placeholder="Новый пароль" name="newpassword"></div>
-                            <!--div><input placeholder="Новый никнейм"></div-->
-                            <div><a href="/users/deleteaccount" style="padding-left: 10px; width: 282px; display: block; float: left; height: 40px; margin-top: 13px;" id="deleteaccount">Удалить аккаунт</a></div>
-                            <div class="fieldleft">
-                                <input type="password" placeholder="Повторите новый пароль" name="confirmpassword">
-                            </div>
-                        </div>
-                        <div style="clear:both;height:1px"></div>
-                    </section>
-
-                    <div id="sendbuttonbox"><input type="submit" class="button" style="width: 140px" value="Сохранить"></div>
-
                 </form>
 
                     <div class="g_line"></div>
+                    <section class="user-password-section">
+                        <h1 class="section-header">Пароль</h1>
+                            <form method="post" id="password-form" action="/users/update">
+                                <p></p>
+                                <input type="password" placeholder="Старый пароль" name="currentpassword">
+                                <input type="password" placeholder="Новый пароль" name="newpassword">
+                                <input type="password" placeholder="Повторите новый пароль" name="confirmpassword">
+                            </form>
+                        <div style="clear:both;height:1px"></div>
 
+                        <input type="submit" id="save-password" class="button" value="Изменить пароль">
+                        <a href="/users/deleteaccount" id="deleteaccount">Удалить аккаунт</a>
+                    </section>
+
+                    <div class="g_line"></div>
                     <section class="user-email-section">
                         <h1 class="section-header">Email</h1>
-                        <p><?= $this->user->getMaskedEmail()?></p>
-                        <form method="post" action="/users/update">
-                            <input type="email" placeholder="Email" name="email" value="<?=$user->email?>">
-                            <input type="submit" class="button" value="Сохранить адрес" />
+                        <p>
+                            <?php if($emailInfo != false):?>
+                            <?=$emailInfo?><br>
+                            <?php endif;?>
+                            <?= $this->user->getMaskedEmail()?></p>
+                        <form method="post" id="email-form" action="/users/update">
+                            <input type="email" placeholder="Новый email" name="email" value="">
+                            <input type="submit" id="save-email" class="button" value="Сохранить адрес" />
                         </form>
                     </section>
                     <div class="g_line" style="margin-top: 25px;"></div>
