@@ -51,7 +51,7 @@ class AppController extends \lithium\action\Controller {
                         'conditions' => array(
                             array('OR' => array(
                                 array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
-                                array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.billed = 1 AND Pitch.blank = 1'),
+                                array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.billed = 1 AND Pitch.blank = 1'),
                             )),
                         )
                     )
