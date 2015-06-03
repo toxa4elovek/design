@@ -420,7 +420,14 @@ class User extends \app\extensions\helper\Session {
             return $pitches;
         }
     }
-    
+
+    /**
+     * Метод помощник, добавляет "а" к слову, если пол - женский
+     *
+     * @param $txt
+     * @param int $gender
+     * @return string
+     */
     public function getGenderTxt($txt,$gender=0) {
         // 0 - не установлен
         // 1 - м
@@ -430,12 +437,44 @@ class User extends \app\extensions\helper\Session {
         }
         return $txt;
     }
-    
+
+    /**
+     * Метод получает индекс пола
+     *
+     * @return int
+     */
     public function getGender() {
         if(!$this->isLoggedIn()) {
             return 0;
         }
         return (int) $this->read('user.gender');
+    }
+
+    /**
+     * Метод определяет, нужно ли пользователю сменить почту
+     */
+    public function needToChangeEmail() {
+        if(($this->isLoggedIn()) && (preg_match('/@(mail|inbox|list|bk).ru$/', $this->getEmail()))) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Метод возвращяет строку - адрес электроной части, где часть адреса скрыта звездочками
+     *
+     * @return string
+     */
+    public function getMaskedEmail() {
+        if($this->isLoggedIn()) {
+            $email = $this->getEmail();
+            preg_match('/^(.)(.*)(@.*)/', $email, $matches);
+            $partToReplace = $matches[2];
+            $partToReplaceLength = mb_strlen($partToReplace, 'UTF-8');
+            $maskedPart = str_repeat('*' , $partToReplaceLength);
+            $maskedString = str_replace($partToReplace, $maskedPart, $email);
+            return $maskedString;
+        }
     }
 
 }

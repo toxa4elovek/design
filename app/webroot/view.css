@@ -1015,3 +1015,31 @@ span.new-price:hover {
 .logosale-h1  a {
     text-decoration: underline !important;
 }
+.button, .reqbutton {
+    background: rgba(0, 0, 0, 0) linear-gradient(#658fa5, #537587) repeat scroll 0 0;
+    border: 4px solid #cecece;
+    border-radius: 4px;
+    color: #fff;
+    display: inline-block;
+    font-size: 12px;
+    height: 41px;
+    line-height: 41px;
+    padding: 0 30px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+}
+.button:hover, .reqbutton:hover {
+    background: rgba(0, 0, 0, 0) linear-gradient(#6f9db5, #5c8296) repeat scroll 0 0;
+    color: #fff;
+}
+#to-pay {
+    background: url(/img/bottom_arrow.png) no-repeat 0 100%;
+    background-position: right;
+    display: block;
+    height: 18px;
+    padding-right: 20px;
+    text-align: right;
+    cursor: pointer;
+}

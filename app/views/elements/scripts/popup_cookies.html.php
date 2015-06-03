@@ -50,7 +50,7 @@
     showMobilePopup = true;
     <?php endif; ?>
     <?php endif; ?>
-    <?php if ($this->user->getId() && strtotime($this->user->getCreatedDate()) < strtotime('2014-09-01') && (!isset($_COOKIE['mail']) || $_COOKIE['mail'] == '')): ?>
+    <?php if ($this->user->getId() && ($this->user->needToChangeEmail()) && strtotime($this->user->getCreatedDate()) < strtotime('2014-09-01') && (!isset($_COOKIE['mail']) || $_COOKIE['mail'] == '')): ?>
     <?php setcookie('mail', '1', strtotime('+6 month'), '/');?>
     showMailPopup = true;
     <?php endif; ?>

@@ -28,7 +28,7 @@ $(document).ready(function() {
         var hiddenform = $('.hiddenform', section);
         hiddenform.show();
         var text = $(this).data('text');
-        $('textarea', hiddenform).val(text);
+        $('textarea', hiddenform).html(text).text();
         editcommentflag = true;
         return false;
     });

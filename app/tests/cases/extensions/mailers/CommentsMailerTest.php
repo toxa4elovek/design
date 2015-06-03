@@ -17,8 +17,8 @@ class CommentsMailerTest extends  AppUnit {
 
     public function testSendNewCommentFromAdminNotification() {
         $html = CommentsMailer::sendNewCommentFromAdminNotificationToUser(1, 2);
-        $this->assertPattern("/GO DESIGNER ОСТАВИЛ КОММЕНТАРИЙ/", $html);
-        $this->assertPattern("/ДМИТРИЙ/", $html);
+        $this->assertPattern("/GoDesigner оставил комментарий/", $html);
+        $this->assertPattern("/Дмитрий/", $html);
         $this->assertPattern("/This is test text/", $html);
     }
 

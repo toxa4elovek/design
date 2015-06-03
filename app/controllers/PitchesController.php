@@ -764,7 +764,7 @@ class PitchesController extends \app\controllers\AppController {
             // Referal correction
             if (!empty($pitch->referal)) {
                 if ((User::isReferalAllowed($pitch->user_id) != 1) || (false == Pitch::isReferalAllowed($pitch))) {
-                    $receiptComission = Receipt::first(array('conditions' => array('pitch_id' => $pitch->id, 'name' => 'Сбор GoDesigner')));
+                    $receiptComission = Receipt::first(array('conditions' => array('pitch_id' => $pitch->id, 'name' => array('LIKE' => '%Сбор%'))));
                     $receiptComission->value += $pitch->referal_sum;
                     $receiptComission->save();
                     $pitch->referal = 0;

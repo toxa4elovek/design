@@ -105,7 +105,6 @@
 
     <?=$this->view()->render(array('element' => 'newrelic/newrelic_header'))?>
     <?=$this->view()->render(array('element' => 'scripts/popup_cookies'))?>
-    <?php echo $this->html->script('http://vk.com/js/api/openapi.js');?>
     <script type="application/ld+json">
     {
       "@context": "http://schema.org",
@@ -136,6 +135,7 @@
 
 <?=$this->view()->render(array('element' => 'footer'))?>
 <?php
+echo $this->html->script('http://vk.com/js/api/openapi.js');
 echo  $this->html->script('jquery-1.7.1.min.js', array('inline' => false, 'weight' => 10));
 echo  $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 11));
 echo  $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));

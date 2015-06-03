@@ -883,29 +883,11 @@ function FavesTableLoader() {
 
 $(document).ready(function(){
 
-    if($('li', '#carousel_small').length > 1) {
-        //Маленькая карусель
-        $('#carousel_small').jCarouselLite({
-            auto: 0,
-            speed: 500,
-            btnPrev: "#prev2",
-            btnNext: "#next2",
-            visible: 1
-        });
-    }else {
-        $('#prev2').click(function() {
-            return false;
-        })
-        $('#next2').click(function() {
-            return false;
-        })
-    }
-
     $('.changeStatus').live('click', function() {
         var name = $(this).attr('name');
         var input = $('#' + name);
         if($(this).hasClass('profselectbtnpressed')) {
-            $('#' + name).val(0);
+            input.val(0);
             $(this).removeClass('profselectbtnpressed');
         }else {
             $('#' + name).val(1);
@@ -947,12 +929,43 @@ $(document).ready(function(){
 
     $(document).on('click', '#confirmWinner', function() {
         //window.location = '/users/deleteaccount';
-        $.get('/users/deleteaccount')
+        $.get('/users/deleteaccount');
         $('.popup-close').click();
         $('#delete-comfirm').modal({
             containerId: 'final-step',
             opacity: 80,
             closeClass: 'popup-close'
+        });
+        return false;
+    });
+
+    $(document).on('click', '#save-notifications', function() {
+        var data = $('#notifications-form').serialize();
+        $.post('/users/update.json', data, function() {
+            $('#save-notifications').val('Изменения сохранены!');
+            setTimeout(function(){ $('#save-notifications').val('Сохранить настройки уведомлений'); }, 5000);
+        });
+        return false;
+    });
+
+    $(document).on('click', '#save-email', function() {
+        var form = $('#email-form');
+        var data = form.serialize();
+        $.post('/users/update.json', data, function(response) {
+            if(response.result == false) {
+                $('input[type=email]', form).val('');
+            }
+            $('p', '.user-email-section').text(response.emailInfo);
+        });
+        return false;
+    });
+
+    $(document).on('click', '#save-password', function() {
+        var form = $('#password-form');
+        var data = form.serialize();
+        $.post('/users/update.json', data, function(response) {
+            console.log(response);
+            $('p', '.user-password-section').show().text(response.passwordInfo);
         });
         return false;
     });
@@ -1000,10 +1013,10 @@ $('#save').live('click', function() {
             return false;
         }
     }
-    var href = $('#worker-payment-data').attr('action');
-    $.post('/users/savePaymentData.json', $('#worker-payment-data').serialize(), function(response) {
-        window.location = href;
-    })
+    $.post('/users/savePaymentData.json', $('#worker-payment-data').serialize(), function() {
+        $('#save').val('Реквизиты сохранены!');
+        setTimeout(function(){ $('#save').val('Сохранить реквизиты'); }, 5000);
+    });
     return false;
 });
 

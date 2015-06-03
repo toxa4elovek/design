@@ -8,9 +8,35 @@
             <div class="shadow-b"></div>
         </div><!-- .bar -->
         <ul>
-            <li>мало</li>
-            <li>хорошо</li>
-            <li>самое то!</li>
+            <li>
+                <?php if(($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'minimal') != 0)):?>
+                ~ <?= $this->pitch->getStatisticalAverages($category->id, 'minimal')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'minimal'), array('string' => 'решени',
+                    'first' => 'е',
+                    'second' => 'я',
+                    'third' => 'й'))?>
+                <?php else: ?>
+                    мало
+                <?php endif;?>
+            </li>
+            <li>
+                <?php if(($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'normal') != 0)):?>
+                    ~ <?= $this->pitch->getStatisticalAverages($category->id, 'normal')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'normal'), array('string' => 'решени',
+                        'first' => 'е',
+                        'second' => 'я',
+                        'third' => 'й'))?>
+                <?php else: ?>
+                    хорошо
+                <?php endif;?>
+            </li>
+            <li>
+                <?php if(($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'good') != 0)):?>
+                ~ <?= $this->pitch->getStatisticalAverages($category->id, 'good')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'good'), array('string' => 'решени',
+                    'first' => 'е',
+                    'second' => 'я',
+                    'third' => 'й'))?>
+                <?php else: ?>
+                    самое то!
+                <?php endif;?></li>
         </ul>
     </div><!-- .indicator -->
     <img src="/img/comissions.png" style="margin-bottom: 30px;">

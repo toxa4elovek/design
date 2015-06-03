@@ -1630,7 +1630,8 @@ class Pitch extends \app\models\AppModel {
      * @param $id
      * @return mixed
      */
-    public static function generateNewPaytureId($id) {
+    public static function generateNewPaytureId($id)
+    {
         $idStrlen = strlen($id);
         $pitch = self::first($id);
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -1642,6 +1643,78 @@ class Pitch extends \app\models\AppModel {
         $pitch->payture_id = $randomString . '_' . $id;
         $pitch->save();
         return $pitch;
+    }
+
+    /**
+     * Метод определяет, оставил ли дизайнер свой отзыва для проекта $pitchIdOrObject
+     *
+     * @param $projectIdOrObject айди или объект питча
+     * @return bool
+     */
+    public static function hadDesignerLeftRating($projectIdOrObject) {
+        if(is_object($projectIdOrObject)) {
+            $projectIdOrObject = $projectIdOrObject->id;
+        }
+        if(($pitch = Pitch::first($projectIdOrObject)) and ($pitch->status == 2)) {
+            if(Grade::isDesignerRatingExistsForProject($projectIdOrObject)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Метод показывает среднее количество решений для категории $categoryId и качества награды $type
+     *
+     * @param $categoryId
+     * @param $type ('good'|'normal'|'minimal')
+     * @return bool|float|int|mixed
+     */
+    public static function getStatisticalAverages($categoryId, $type) {
+        $cacheKey = $categoryId . '_' . $type;
+        if(!$result = Rcache::read($cacheKey)) {
+            $category = Category::first($categoryId);
+            $conditions = array(
+                'category_id' => $categoryId,
+                'billed' => 1,
+                'published' => 1,
+                'ideas_count' => array('>' => 0),
+                'started' => array('>' => '2015-01-01 00:00:00'),
+            );
+            switch($type) {
+                case 'good':
+                    $conditions += array(
+                        'price' => array('>=' => $category->goodAward)
+                    );
+                    break;
+                case 'normal':
+                    $conditions += array(
+                        'price' => array('>=' => $category->normalAward, '<' => $category->goodAward)
+                    );
+                    break;
+                case 'minimal':
+                    $conditions += array(
+                        'price' => array('<' => $category->normalAward)
+                    );
+                    break;
+            }
+            $pitches = Pitch::all(array(
+                'fields' => array('id', 'category_id', 'price', 'ideas_count'),
+                'conditions' => $conditions
+            ));
+            $count = count($pitches->data());
+            if($count > 0) {
+                $total = 0;
+                foreach($pitches as $pitch) {
+                    $total += $pitch->ideas_count;
+                }
+                $result = round($total / $count);
+            }else {
+                $result = 0;
+            }
+            Rcache::write($cacheKey, $result, array(), '+1 month');
+        }
+        return $result;
     }
 
 }

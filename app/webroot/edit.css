@@ -108,9 +108,6 @@ textarea.placeholder {
 
 /* Mainblock */
 
-.mainblock {
-    width: 619px;
-}
 .separator-flag {
     font: normal 100%/3.3em "RodeoC", sans-serif;
     color: #b9b9b9;
@@ -167,8 +164,24 @@ textarea.placeholder {
     padding: 10px;
 }
 
-
 /* Prof */
+
+.profselectbox {
+    margin-top: 20px;
+}
+
+.profselectbox label {
+    font-family: OfficinaSansC Book, serif;
+    color: #666;
+    font-size: 18px;
+}
+
+.profselectbox input[type=checkbox] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 6px;
+    margin-left: 4px;
+}
 .profselectbox button {
     width: 179px;
     height: 36px;
@@ -205,24 +218,6 @@ textarea.placeholder {
 
 #fieldblock2 input, #fieldblock3 input{
     width: 282px;	
-}
-#fieldblock4 {
-}
-#fieldblock4 label {
-    color: #999999;
-    width: 302px;
-    display: inline-block;
-    font-weight: bold;
-    text-shadow: -1px 0 0 #FFFFFF;
-}
-#fieldblock4 ul {
-    float: left;
-}
-#fieldblock4 ul:nth-child(odd) {
-    margin-right: 15px;
-}
-#fieldblock4 ul> li {
-    margin-bottom: 10px;
 }
 
 /* Fields */
@@ -286,7 +281,7 @@ textarea.placeholder {
 /* Side block */
 .sideblock {
     float: right;
-    padding-top: 115px;
+    padding-top: 30px;
     width: 180px;
 }
 

@@ -51,7 +51,7 @@ class AppController extends \lithium\action\Controller {
                         'conditions' => array(
                             array('OR' => array(
                                 array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
-                                array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.billed = 1 AND Pitch.blank = 1'),
+                                array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.billed = 1 AND Pitch.blank = 1'),
                             )),
                         )
                     )
@@ -74,7 +74,7 @@ class AppController extends \lithium\action\Controller {
                     foreach($pitchesToCheck as $pitch) {
                         $solution = Solution::first($pitch->awarded);
                         if($userHelper->isSolutionAuthor($solution->user_id)) {
-                            if(($pitch->status == 2) and (strtotime($pitch->totalFinishDate) < time() - 3 * DAY)) {
+                            if(($pitch->status == 2) and ($pitch->hadDesignerLeftRating())) {
 
                             }else {
                                 $pitch->winner = $solution;
@@ -104,7 +104,7 @@ class AppController extends \lithium\action\Controller {
                     setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
                 }
 
-
+/*
                 if((Session::read('user.events') == null) || (Session::read('user.events.count') == 0)) {
                     $date = date('Y-m-d H:i:s');
                     if(Session::read('user.events.date') != null) {
@@ -117,7 +117,7 @@ class AppController extends \lithium\action\Controller {
                     }else {
                         Session::write('user.events.count', 0);
                     }
-                }
+                }*/
                 $user->setLastActionTime();
             }
         }else {

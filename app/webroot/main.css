@@ -561,6 +561,9 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     text-align: center;
     font-weight: normal;
     margin-bottom: 5px;
+    font-size: 11px;
+    color: #666;
+    text-shadow: 1px 0 1px #fff;
 }
 .auth .main .button {
     width: 244px;
@@ -598,10 +601,27 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     font: 14px/1 "HelveticaNeue", sans-serif;
 }
 #reg-section .facebook-logon {
-    margin-top: 16px;
+    margin-top: 0;
 }
 #reg-section .vkontakte-logon {
     margin-top: 7px;
+}
+.or-block {
+    margin-top: 20px;
+    background: url(/img/register-login-divider.gif) 0 7px repeat-x;
+}
+.or-block h2 {
+    margin-top: 0;
+}
+.character-count {
+    font-size: 14px;
+    color: #666666;
+    display: inline-block;
+    float: right;
+    margin-right: 2px;
+}
+.red {
+    color: #ff585d;
 }
 .auth .name {
     background: #fff url("img/form-ico-name.png") 366px 11px no-repeat;
@@ -666,7 +686,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     text-align: center;
 }
 .login .submit {
-    padding-top: 4px;
+    padding-top: 30px;
 }
 .login .submit .button {
     margin-bottom: 9px;
@@ -3667,14 +3687,31 @@ div.no-result p {
 .register_who {
     text-align: center;
     text-transform: uppercase;
-    margin: 38px auto 21px !important;
+    margin: 28px auto 21px !important;
 }
 .register_who label {
     color: #666;
+    float: left;
+    margin-right: 66px;
+    font-size: 11px;
+}
+.register_who label.last {
+    color: #666;
+    float: right;
+    margin-right: 0;
+    text-align: right;
+}
+.short-company-name {
+    display: none;
+}
+.character-count {
+    display: none;
 }
 .register_who .radio-input {
     vertical-align: middle;
     margin-right: 7px;
+    position: relative;
+    top: -2px;
 }
 .register_who span {
     display: inline-block;

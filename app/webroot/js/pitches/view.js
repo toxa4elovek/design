@@ -42,6 +42,18 @@ $(document).ready(function () {
         });
     }
 
+    $(document).on('click', '#to-pay, .scrolldown', function () {
+        $('html, body').animate({
+            scrollTop: $('.solution-overlay #step3').offset().top
+        }, 500);
+        return false;
+    });
+
+    $(document).on('click', '.s3_text, .s3_h img', function() {
+        var paymentType = $(this).data('radio');
+        $('.rb1[data-pay=' + paymentType + ']').prop('checked', true).change();
+    });
+
     $(document).on('change', '.rb1', function () {
         $('.solution-prev').hide();
         $('.solution-next').hide();
@@ -51,8 +63,7 @@ $(document).ready(function () {
                 $(".solution-overlay #paybutton-paymaster").css('background', '#a2b2bb');
                 $(".solution-overlay #paymaster-images").show();
                 $(".solution-overlay #paymaster-select").hide();
-                $('.solution-overlay #s3_kv').hide();
-
+                $('.solution-overlay #s3_kv').hide();1
                 break;
             case 'paymaster':
                 $(".solution-overlay #paybutton-paymaster").removeAttr('style');
@@ -321,6 +332,44 @@ $(document).ready(function () {
         return false;
     });
 
+    $(document).on('click', '.update-description-button', function() {
+        var textArea = $('.edit-description-textarea');
+        var updatedText = textArea.val();
+        $.post('/solutions/update_description.json', {"updatedText": updatedText, "id": $(this).data('solutionid')}, function() {
+        });
+        textArea.hide();
+        $(this).hide();
+        var viewLength = 100;
+        if (updatedText.length > viewLength) {
+            var descBefore = updatedText.slice(0, viewLength - 1);
+            descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
+            var descAfter = updatedText.slice(descBefore.length);
+            $('.solution-description').html(descBefore).show();
+            showMoreLink = $('.description-more');
+            showMoreLink.show(500).on('click', function () {
+                $('.solution-description').append(descAfter);
+                descAfter = '';
+                showMoreLink.hide();
+            });
+        }else {
+            $('.solution-description').show().text(updatedText);
+        }
+        $('.edit-description-link').show();
+        return false;
+    });
+
+    $(document).on('click', '.edit-description-link', function() {
+        var descriptionElement = $('.solution-description:visible');
+        $(this).after('<a data-solutionid="' + $(this).data('solutionid') + '" class="button update-description-button" href="#">сохранить</a>').hide();
+        $('.description-more').click();
+        var descriptionText = descriptionElement.text();
+        descriptionElement
+            .after('<textarea class="edit-description-textarea">' + descriptionText + ' </textarea>')
+            .hide();
+        $('.description-more').hide();
+        return false;
+    });
+
     function softSolutionDelete(link) {
         var newSolutionCount = parseInt($('#hidden-solutions-count').val()) - 1;
         var word = formatString(newSolutionCount, {'string': 'решен', 'first': 'ие', 'second': 'ия', 'third': 'ий'});
@@ -384,8 +433,7 @@ $(document).ready(function () {
             $('.sharebar').fadeOut(300);
         });
         $('.social-likes').socialLikes();
-        $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
-            likesNum.html(response.likes);
+        if($(this).data('status') > 0) {
             likeLink.off('click');
             sharebar.fadeIn(300);
             likeLink.off('mouseover');
@@ -397,7 +445,22 @@ $(document).ready(function () {
                 return false;
 
             });
-        });
+        }else {
+            $.get('/solutions/like/' + $(this).data('id') + '.json', function (response) {
+                likesNum.html(response.likes);
+                likeLink.off('click');
+                sharebar.fadeIn(300);
+                likeLink.off('mouseover');
+                likeLink.on('click', function () {
+                    $('body').one('click', function () {
+                        sharebar.fadeOut(300);
+                    });
+                    sharebar.fadeIn(300);
+                    return false;
+
+                });
+            });
+        }
         return false;
     });
 
@@ -855,14 +918,20 @@ $(document).ready(function () {
                     descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
                     var descAfter = desc.slice(descBefore.length);
                     $('.solution-description').html(descBefore);
-                    $('.description-more').show(500);
-                    $('.description-more').on('click', function () {
+                    var showMoreLink = $('.description-more');
+                    showMoreLink.show(500).on('click', function () {
                         $('.solution-description').append(descAfter);
                         descAfter = '';
-                        $('.description-more').hide();
+                        showMoreLink.hide();
                     });
+                    if(result.solution.user_id == currentUserId) {
+                        showMoreLink.after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>');
+                    }
                 } else {
                     $('.solution-description').html(result.solution.description);
+                    if(result.solution.user_id == currentUserId) {
+                        $('.solution-description').after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>');
+                    }
                 }
                 if (result.solution.description != '') {
                     $('span#date').after('<br />');
@@ -924,7 +993,7 @@ $(document).ready(function () {
                 if (Math.floor((Math.random() * 100) + 1) <= 50) {
                     tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн';
                     if (readyForLogosale) {
-                        tweetLike += '! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
+                        tweetLike = 'Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»';
                     }
                 }
 

@@ -24,9 +24,9 @@ $(document).ready(function() {
 
     $('#resend').click(function() {
         $('#mailsent').show();
-        $.get('/users/resend.json', function(response) {
+        $.get('/users/resend.json', function() {
         })
         return false;
-    })
+    });
 
 });

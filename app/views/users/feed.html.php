@@ -75,7 +75,7 @@
                             <?php endif; ?>
                             <div class="new-content group">
                             <?php endif; ?>
-                            <div id="l-sidebar-office" data-count="<?= count($solutions->data());?>">
+                            <div id="l-sidebar-office">
                                 <?php
                                 $solutionDate = '';
                                 $count = 0;
@@ -236,6 +236,10 @@
                                             <p class="img-box">
                                                 <a class="post-link" href="<?= $object['news']['link'] ?>"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'],'/events/') !== false) && (strpos($object['news']['imageurl'],'/events/') === 0)) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
                                             </p>
+                                        <?php elseif($this->feed->isEmbeddedLink($object['news']['link'])):?>
+                                            <p class="img-box">
+                                                <?php echo $this->feed->generateEmbeddedIframe($object['news']['link'])?>
+                                            </p>
                                         <?php endif?>
                                         <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
                                             <?php if ($object['news']['tags']): ?>
@@ -258,7 +262,7 @@
                                                 <a style="padding-left: <?php if($this->user->getId()):?>5px<?php else:?>2px<?php endif?>;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                 <?php endif?>
                                                 <?php
-                                                if(isset($object['news']['og_title'])) {
+                                                if(!empty($object['news']['og_title'])) {
                                                     $tweetLike = $object['news']['title'];
                                                 }else {
                                                     $tweetLike = $object['news']['og_title'];
@@ -523,6 +527,10 @@
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'],'/events/') !== false) && (strpos($object['news']['imageurl'],'/events/') === 0)) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
                                                 </p>
+                                                <?php elseif($this->feed->isEmbeddedLink($object['news']['link'])):?>
+                                                <p class="img-box">
+                                                    <?php echo $this->feed->generateEmbeddedIframe($object['news']['link'])?>
+                                                </p>
                                                 <?php endif?>
                                                 <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
                                                     <?php if ($object['news']['tags']): ?>
@@ -549,7 +557,7 @@
                                                     <a style="padding-left: <?php if($this->user->getId()):?>5px<?php else:?>2px<?php endif?>;padding-right: 10px; font-size: 14px;" class="share-news-center" href="#">Поделиться</a>
                                                     <?php endif?>
                                                     <?php
-                                                    if(isset($object['news']['og_title'])) {
+                                                    if(!empty($object['news']['og_title'])) {
                                                         $tweetLike = $object['news']['og_title'];
                                                     }else {
                                                         $tweetLike = $object['news']['title'];

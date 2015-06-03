@@ -104,6 +104,15 @@ class NewsTest extends AppUnit {
         $result = News::doesNewsExists('Проверка', 'https://www.google.ru/');
         $this->assertTrue($result);
 
+        $data = array(
+            'title' => 'Проверка',
+            'short' => '',
+            'link' => 'https://www.google.ru/'
+        );
+
+        $result = News::saveNewsByAdmin($data, false);
+        $this->assertFalse($result);
+
         $result = News::doesNewsExists('Проверка2');
         $this->assertFalse($result);
 

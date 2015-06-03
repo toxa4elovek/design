@@ -1,0 +1,171 @@
+/* Общие */
+.section-header {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 20px;
+    color: #666666;
+    text-shadow: 1px 0 0 #ffffff;
+}
+.mainblock {
+    width: 100%;
+}
+.g_line {
+    margin-bottom: 10px !important;
+}
+/* Базовые настройки */
+a.show-preview {
+    padding: 0 12px !important;
+    width: 160px !important;
+    right: 13px;
+    position: relative;
+}
+.basic-info-section {
+    padding-top: 26px;
+}
+.basic-info-section input[type=radio] {
+    width: 28px !important;
+    height: 14px;
+    box-shadow: none !important;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+.basic-info-section input[type=submit] {
+    width: 140px;
+}
+#fieldblock1 div {
+    text-align: left;
+}
+#fieldblock1 label {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 18px;
+    color: #666666;
+    display: block;
+    float: left;
+    width: 120px;
+    text-align: left;
+    padding-left: 10px;
+}
+#fieldblock1 input {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 18px;
+    width: 364px;
+}
+#fieldblock1 input.short {
+    width: 150px;
+    margin-right: 40px;
+}
+#fieldblock1 .short-input-block {
+    margin-bottom: 7px;
+    margin-top: 44px;
+}
+#fieldblock1 input[name=birthdate] {
+    margin-right: 0;
+}
+.profselectbox label {
+    font-family: OfficinaSansC Book, serif;
+}
+/* Почта */
+.user-email-section p, .user-password-section p {
+    font-family: OfficinaSansC Book, serif;
+    color: #999;
+    font-size: 18px;
+    margin-top: 35px;
+    margin-bottom: 5px;
+    padding-left: 2px;
+}
+.user-email-section input[type="email"] {
+    color: #b6b6b6;
+    font-size: 18px;
+    font-family: OfficinaSansC Book, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 400px;
+}
+.user-email-section input[type="submit"] {
+    width: 190px;
+    display: block;
+}
+/* Пароль */
+.user-password-section input{
+    color: #b6b6b6;
+    font-size: 18px;
+    font-family: OfficinaSansC Book, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 400px !important;
+}
+#deleteaccount {
+    text-decoration: underline;
+    padding-left: 13px;
+    background: url(/img/closerequest.png) 0 2px no-repeat;
+    background-size: 8px 8px;
+    font-style: italic;
+    font-size: 12px;
+    margin-left: 15px;
+}
+.user-password-section form {
+    padding-top: 26px;
+}
+#save-password {
+    margin-top: 15px;
+    width: 186px !important;
+    font-family: Arial, sans-serif;
+}
+.user-password-section p {
+    margin-top: 0;
+    display: none;
+}
+/* Реквизиты */
+.user-details-section {
+    min-height: 550px;
+}
+.user-details-table {
+    width: 100%;
+    margin: 75px 0 30px 0;
+}
+.user-details-table input[type=radio] {
+    box-shadow: none;
+    width:14px;
+    height:14px;
+}
+.user-details-table .s3_text {
+    width: auto;
+}
+.user-details-table .tooltip_plugin {
+    display: inline-block;
+    font: 12px Helvetica, sans-serif;
+    color: #658fa5;
+    position: relative;
+    bottom: 1px;
+}
+.user-details-section #save {
+    width: 220px;
+    margin-top: 32px;
+}
+/* Уведомления */
+#fieldblock4 {
+    margin-top: 35px;
+}
+#fieldblock4 label {
+    color: #999999;
+    width: 378px;
+    display: block;
+    font-size: 18px;
+    text-shadow: -1px 0 0 #FFFFFF;
+    font-family: OfficinaSansC Book, serif;
+    letter-spacing: -0.5px;
+    text-indent: -22px;
+    padding-left: 22px;
+}
+#fieldblock4 ul {
+    float: left;
+}
+#fieldblock4 ul:nth-child(odd) {
+    margin-right: 15px;
+}
+#fieldblock4 ul> li {
+    margin-bottom: 10px;
+}
+#save-notifications {
+    width: 340px;
+    margin-top: 20px;
+}

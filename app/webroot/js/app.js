@@ -18,7 +18,22 @@ $(document).ready(function () {
         '/img/vk_on.png',
         '/img/instagram_on.png'
     ]);
-    $("#registration").validate({
+
+    $('#UserShortCompanyName').keyup(function () {
+        var charsEntered = $(this).val().length;
+        var counterElement = $('.character-count');
+        var maximumChars = counterElement.data('maxchars');
+        var diff = maximumChars - charsEntered;
+        counterElement.text(diff);
+        if ((maximumChars - charsEntered) < 0) {
+            counterElement.addClass('red');
+        } else {
+            counterElement.removeClass('red');
+        }
+    });
+
+    var registrationElement = $("#registration");
+    registrationElement.validate({
         /*debug: true,*/
         rules: {
             // simple rule, converted to {required:true}
@@ -36,8 +51,16 @@ $(document).ready(function () {
                 required: true,
                 minlength: 5,
                 equalTo: "#UserConfirmPassword"
+            },
+            short_company_name: {
+                required: {
+                    depends: function(element) {
+                        return $('input[value=company]').is(':checked')
+                    }
+                },
+                minlength: 5,
+                maxlength: $('.character-count').data('maxchars')
             }
-
         },
         messages: {
             first_name: {
@@ -58,6 +81,11 @@ $(document).ready(function () {
                 required: "Подтвердите пароль",
                 minlength: "Надо больше символов",
                 equalTo: "Пароли не совпадают"
+            },
+            short_company_name: {
+                required: 'Название обязательно',
+                minlength: "Надо больше символов",
+                maxlength: "Надо меньше символов"
             }
         },
         highlight: function (element, errorClass) {
@@ -67,17 +95,29 @@ $(document).ready(function () {
         }
     });
 
-    $('#registration').on('submit', function (e) {
+    registrationElement.on('submit', function (e) {
         e.preventDefault();
-        $.post($(this).attr('action') + '.json', $(this).serialize(), function (response) {
-            if (response.who_am_i == 'designer') {
-                user_popup_register();
-            } else {
-                console.log(response)
-                window.location.href = response.redirect;
-            }
-        });
+        if($('.error:visible').length == 0) {
+            $.post($(this).attr('action') + '.json', $(this).serialize(), function (response) {
+                if (response.who_am_i == 'designer') {
+                    user_popup_register();
+                } else {
+                    window.location.href = response.redirect;
+                }
+            });
+        }
     });
+
+    $('input[name=who_am_i]').on('change', function() {
+        var selectedUserType = $(this).val();
+        if(selectedUserType == 'company') {
+            $('.short-company-name').show();
+            $('.character-count').show();
+        }else {
+            $('.short-company-name').hide();
+            $('.character-count').hide();
+        }
+    })
 
     $('#UserEmail').blur(function () {
         $.post('/users/checkform.json', {"email": this.value}, function (response) {
@@ -562,35 +602,6 @@ window.fbAsyncInit = function () {
         xfbml: true,  // parse XFBM
         version: 'v2.0'
     });
-    /*
-     FB.Event.subscribe('edge.create',
-     function(response) {
-     var uid = '';
-     FB.getLoginStatus(function(response) {
-     if (response.status === 'connected') {
-     uid = response.authResponse.userID;
-     }
-     });
-     var solutionId = $('#solution_id').val();
-     $.post('/solutions/like/' + solutionId + '.json', {"uid": uid}, function(response) {
-     });
-     }
-     );
-     FB.Event.subscribe('edge.remove',
-     function(response) {
-     var uid = '';
-     FB.getLoginStatus(function(response) {
-     if (response.status === 'connected') {
-     uid = response.authResponse.userID;
-     }
-     });
-     var solutionId = $('#solution_id').val();
-     if(solutionId) {
-     $.post('/solutions/unlike/' + solutionId + '.json', {"uid": uid}, function(response) {
-     });
-     }
-     }
-     );*/
 
     $(document).on('click', '.top-button', function() {
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Кнопка "Создать проект"']);
@@ -605,20 +616,15 @@ window.fbAsyncInit = function () {
     $(document).on('click', '.mainpage-create-project', function() {
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заказчику" на главной']);
         return true;
-    })
+    });
 
     $(document).on('click', '.create-project-how-it-works', function() {
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заполнить бриф" на странице "Как это работает?"']);
         return true;
     })
 
-
-
 };
 
-// Load the SDK Asynchronously
-//var testLoc = window.location.pathname.match(/\/pitches\/view\//);
-//if(testLoc != null) {
 (function (d) {
     var js, id = 'facebook-jssdk';
     if (d.getElementById(id)) {
@@ -630,7 +636,6 @@ window.fbAsyncInit = function () {
     js.src = "//connect.facebook.net/en_US/all.js";
     d.getElementsByTagName('head')[0].appendChild(js);
 }(document));
-//}
 
 /*
  * Pitch files upload/delete handler
@@ -1086,6 +1091,8 @@ function enableToolbar() {
     $('body, .solution-overlay').on('click', '.createComment, #rating_comment_send', function (e) {
         e.preventDefault();
         var textarea = $(this).closest('form').find('textarea');
+        var form = $(this).closest('form');
+        var button = $(this);
         var addSolution = $(this).data('solution_id');
         addSolution = (typeof (addSolution) != 'undefined') ? addSolution + ', ' : '';
         if (typeof (solutionId) == 'undefined') {
@@ -1093,6 +1100,13 @@ function enableToolbar() {
         }
         if (isCommentValid(textarea.val())) {
             var is_public = $(this).data('is_public');
+            button.css('color', '#9bafba');
+            if(is_public) {
+                var loader = $('.public-loader', form);
+            }else {
+                var loader = $('.private-loader', form);
+            }
+            loader.show();
             $.post('/comments/add.json', {
                 'text': addSolution + textarea.val(),
                 'solution_id': solutionId,
@@ -1117,6 +1131,8 @@ function enableToolbar() {
                     $(populateComment(commentData)).insertAfter('.pitch-comments .separator:first');
                     $('.separator', '.pitch-comments section:first').remove();
                 }
+                button.css('color', '#ffffff');
+                loader.hide();
             });
         } else {
             alert('Введите текст комментария!');

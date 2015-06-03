@@ -191,11 +191,7 @@ jQuery(document).ready(function ($) {
                     picCounter++;
                 });
             }
-            if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                var tweetLike = 'Мне нравится этот дизайн! А вам? Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
-            } else {
-                var tweetLike = 'Из всех мне нравится этот дизайн! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
-            }
+            var tweetLike = 'Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»'
             var media = 'http://www.godesigner.ru';
             if ($.isArray(solution.images.solution_solutionView)) {
                 media += solution.images.solution_solutionView[0].weburl
@@ -953,6 +949,11 @@ jQuery(document).ready(function ($) {
 
     $(document).on('mouseleave', '.like-hoverbox', function () {
         $('img:first', $(this)).attr('src', '/img/like.png');
+    });
+
+    $('.s3_text, .s3_h img').on('click', function() {
+        var paymentType = $(this).data('radio');
+        $('.rb1[data-pay=' + paymentType + ']').prop('checked', true).change();
     });
 
     $(document).on('change', '.rb1', function () {

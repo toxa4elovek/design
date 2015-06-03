@@ -76,6 +76,9 @@
                         } else {
                             $tweetLike = 'Из всех ' . $solution->pitch->ideas_count . ' мне нравится этот дизайн';
                         }
+                        if($this->pitch->isReadyForLogosale($solution->pitch)) {
+                            $tweetLike = "Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»";
+                        }
                         if(!isset($solution->solution->images['solution_galleryLargeSize'][0])):
                             $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
                         else:
@@ -85,7 +88,7 @@
                         <div style="display: block; height: 75px">
                             <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
-                                <div class="twitter" data-via="Go_Deer">TWITT</div>
+                                <div class="twitter">TWITT</div>
                                 <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">SHARE</div>
                                 <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
                             </div>
@@ -128,7 +131,13 @@
                     	<input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
                         <input type="button" src="/img/message_button.png" value="Публиковать комментарий для всех" class="button createComment" data-is_public="1" style="margin: 15px 18px 15px 0;">
                         <input type="button" src="/img/message_button.png" value="Отправить только дизайнеру" class="button createComment" data-is_public="0" style="margin: 15px 0 15px 18px;">
-                    	<div class="clr"></div>
+                        <div class="public-loader-container">
+                            <img class="public-loader" src="/img/blog-ajax-loader.gif" alt="Идёт загрузка">
+                        </div>
+                        <div class="private-loader-container">
+                            <img class="private-loader" src="/img/blog-ajax-loader.gif" alt="Идёт загрузка">
+                        </div>
+                        <div class="clr"></div>
                     </form>
                     <?php endif; ?>
                 </section>
@@ -140,7 +149,9 @@
             <!-- end: Solution Left Panel -->
             </div>
             <div class="clr"></div>
+            <?php if($this->pitch->isReadyForLogosale($pitch)):?>
                 <?= $this->view()->render(array('element' => 'logosalepay'), array('data' => $data)) ?>
+            <?php endif?>
         <!-- end: Solution Container -->
         </div>
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->

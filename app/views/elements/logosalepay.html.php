@@ -7,7 +7,7 @@
                 <td style="width: 36px;">
                     <input type="radio" name="1" class="rb1" data-pay="payanyway">
                 </td>
-                <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                <td colspan="2" class="s3_text"  data-radio="payanyway" style="padding-left: 20px;">
                     Оплата пластиковыми картами <br>через Payanyway<br><br>
                 </td>
                 <td style="width: 228px;">
@@ -28,8 +28,8 @@
                 </td>
             </tr>
             <tr id="online-images">
-                            <td colspan="4" style="padding: 20px 0 0 40px;">
-                                <img src="/img/s3_master.png" alt="">
+                            <td colspan="4" style="padding: 20px 0 0 40px;" class="s3_h" data-radio="payanyway">
+                                <img src="/img/s3_master.png" data-radio="payanyway" alt="">
                             </td>
                         </tr>
                         <tr>
@@ -39,10 +39,10 @@
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="offline">
                             </td>
-                            <td class="s3_h">
-                                <img src="/img/s3_rsh.png" alt="">
+                            <td class="s3_h" data-radio="offline">
+                                <img src="/img/s3_rsh.png" data-radio="offline" alt="">
                             </td>
-                            <td class="s3_text">
+                            <td class="s3_text" data-radio="offline">
                                 Перевод  на расчетный счёт<br/>(Безналичный платеж через банк)
                             </td>
                             <td></td>

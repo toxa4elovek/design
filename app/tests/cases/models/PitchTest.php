@@ -4,18 +4,20 @@ namespace app\tests\cases\models;
 
 use app\extensions\tests\AppUnit;
 use app\models\Pitch;
-use app\models\Solution;
-use app\models\Comment;
 use lithium\storage\Session;
+use app\models\Grade;
+use app\extensions\storage\Rcache;
 
 class PitchTest extends AppUnit {
 
     public function setUp() {
-        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note'));
+        Rcache::init();
+        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Category'));
     }
 
     public function tearDown() {
-        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note'));
+        Rcache::flushdb();
+        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Grade', 'Category'));
         Session::clear();
     }
 
@@ -434,6 +436,43 @@ class PitchTest extends AppUnit {
         $this->assertTrue(is_string($pitch->payture_id));
         $this->assertTrue(mb_strlen($pitch->payture_id) == 50);
         $this->assertEqual($pitchindb->payture_id, $pitch->payture_id);
+    }
+
+    public function testHadDesignerLeftRating() {
+        $this->assertFalse(Pitch::hadDesignerLeftRating(1));
+        $pitchForTest = Pitch::first(6);
+        $pitchForTest->status = 2;
+        $pitchForTest->save();
+        $this->assertFalse(Pitch::hadDesignerLeftRating(6));
+        $clientGrade = Grade::create(array(
+            'pitch_id' => 6,
+            'user_id' => 2,
+            'type' => 'client'
+        ));
+        $clientGrade->save();
+        $this->assertFalse(Pitch::hadDesignerLeftRating(6));
+        $this->assertFalse($pitchForTest->hadDesignerLeftRating());
+        $designerGrade = Grade::create(array(
+            'pitch_id' => 6,
+            'user_id' => 3,
+            'type' => 'designer'
+        ));
+        $designerGrade->save();
+        $this->assertTrue(Pitch::hadDesignerLeftRating(6));
+        $this->assertTrue($pitchForTest->hadDesignerLeftRating());
+    }
+
+    public function testGetStatisticalAverages() {
+        $this->assertEqual(12, Pitch::getStatisticalAverages(1, 'good'));
+        $this->assertEqual(11, Pitch::getStatisticalAverages(1, 'normal'));
+        $this->assertEqual(3, Pitch::getStatisticalAverages(1, 'minimal'));
+        $this->assertEqual(0, Pitch::getStatisticalAverages(3, 'good'));
+        $this->assertEqual(3, Pitch::getStatisticalAverages(3, 'normal'));
+        $this->assertEqual(0, Pitch::getStatisticalAverages(3, 'minimal'));
+        // cache
+        $this->assertEqual(12, Pitch::getStatisticalAverages(1, 'good'));
+        $this->assertEqual(11, Pitch::getStatisticalAverages(1, 'normal'));
+        $this->assertEqual(3, Pitch::getStatisticalAverages(1, 'minimal'));
     }
 
 }

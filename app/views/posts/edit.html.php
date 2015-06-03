@@ -79,5 +79,7 @@
 var commonTags = [ <?php echo implode(',', app\models\Post::getCommonTags()); ?> ];
 var existingTags = [ <?php echo implode(',', app\models\Post::parseExistingTags($post->tags)); ?> ];
 </script>
+<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
 <?=$this->html->style(array('/help', '/brief', '/css/ui-lightness/jquery-ui-1.8.23.custom.css', '/css/datetimepicker.css'), array('inline' => false))?>
 <?php $this->html->script(array('/js/tiny_mce/jquery.tinymce.js', '/js/jquery-ui-1.8.23.custom.min.js', '/js/datetimepicker.js', '/js/posts/textext.min.js', '/js/posts/save.js'), array('inline' => false));?>

@@ -6,7 +6,7 @@
         <ul>
             <li>
                 <h2>Причина</h2>
-                <label><input type="radio" name="reason" value="critique" required>Публичная критика</label><br>
+                <label><input type="radio" name="reason" value="critique" required>публичная критика</label><br>
                 <label><input type="radio" name="reason" value="link">Ссылка</label><br>
                 <label><input type="radio" name="reason" value="other">Другое</label>
             </li>

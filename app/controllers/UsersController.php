@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Logreferal;
 use \app\models\User;
 use \app\models\Sendemail;
 use \app\models\Category;
@@ -183,10 +184,11 @@ class UsersController extends \app\controllers\AppController {
                     ),
                     'with' => array('User'),
         ));
+        $completePaymentCount = Logreferal::getCompletePaymentCount(Session::read('user.id'));
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-            return compact('user', 'refPitches');
+            return compact('user', 'refPitches', 'completePaymentCount');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('user', 'refPitches')));
+            return $this->render(array('layout' => false, 'data' => compact('user', 'refPitches', 'completePaymentCount')));
         }
     }
 
@@ -301,7 +303,7 @@ class UsersController extends \app\controllers\AppController {
 
     public function step1() {
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             if (Session::read('user.id') == $solution->pitch->user_id) {
@@ -313,7 +315,7 @@ class UsersController extends \app\controllers\AppController {
             } else {
                 $type = 'client';
             }
-            if (Session::read('user.isAdmin') == 1) {
+            if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
             }
             $step = 1;
@@ -324,7 +326,7 @@ class UsersController extends \app\controllers\AppController {
     public function step2() {
         \lithium\net\http\Media::type('json', array('text/html'));
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
@@ -408,7 +410,7 @@ class UsersController extends \app\controllers\AppController {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id));
             }
 
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             if ($solution->step < 3) {
@@ -517,7 +519,7 @@ class UsersController extends \app\controllers\AppController {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
             }
 
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             if ($solution->step < 4) {
@@ -531,7 +533,7 @@ class UsersController extends \app\controllers\AppController {
                 $type = 'client';
                 $gradeByOtherParty = Grade::first(array('conditions' => array('user_id' => $solution->user_id, 'pitch_id' => $solution->pitch->id)));
             }
-            if (Session::read('user.isAdmin') == 1) {
+            if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
             }
             $grade = Grade::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $solution->pitch->id, 'type' => $type)));
@@ -765,6 +767,13 @@ class UsersController extends \app\controllers\AppController {
                         $this->request->data['email_newcomments'] = 1;
                         $this->request->data['email_digest'] = 1;
                     }
+                    if ($this->request->data['who_am_i'] == 'company') {
+                        $this->request->data['is_company'] = 1;
+                        $this->request->data['email_newsolonce'] = 1;
+                        $this->request->data['email_newsol'] = 1;
+                        $this->request->data['email_newcomments'] = 1;
+                        $this->request->data['email_digest'] = 1;
+                    }
                     if ($this->request->data['who_am_i'] == 'designer') {
                         $this->request->data['isDesigner'] = 1;
                         $redirect = '/users/feed';
@@ -834,11 +843,16 @@ class UsersController extends \app\controllers\AppController {
         if ($user = User::first((int) Session::read('user.id'))) {
             if (!$this->request->data || ($this->request->data['who_am_i_fb'] == 'designer')) {
                 $user->isDesigner = 1;
-                $redirect = '/pitches';
+                $redirect = '/news';
                 $status = 'designer';
             }
             if ($this->request->data['who_am_i_fb'] == 'client') {
                 $user->isClient = 1;
+                $status = 'client';
+            }
+            if ($this->request->data['who_am_i_fb'] == 'company') {
+                $user->is_company = 1;
+                $redirect = '/users/profile';
                 $status = 'client';
             }
             $user->save(null, array('validate' => false));
@@ -1051,22 +1065,10 @@ class UsersController extends \app\controllers\AppController {
             }
         }
 
-
         $passwordInfo = false;
         $emailInfo = false;
         if ($this->request->data) {
 
-            if (($this->request->data['newpassword'] != '') && ($this->request->data['confirmpassword'] != '')) {
-                $hashedCurrentPassword = String::hash($this->request->data['currentpassword']);
-                if ($hashedCurrentPassword != $user->password) {
-                    $passwordInfo = 'Старый пароль не верен!';
-                } elseif (($this->request->data['newpassword']) != ($this->request->data['confirmpassword'])) {
-                    $passwordInfo = 'Пароли не совпадают!';
-                } else {
-                    $user->password = String::hash($this->request->data['newpassword']);
-                    $passwordInfo = 'Пароль изменен!';
-                }
-            }
             $user->userdata = serialize(array(
                 'birthdate' => $this->request->data['birthdate'],
                 'city' => $this->request->data['city'],
@@ -1076,62 +1078,105 @@ class UsersController extends \app\controllers\AppController {
             $user->isClient = $this->request->data['isClient'];
             $user->isDesigner = $this->request->data['isDesigner'];
             $user->isCopy = $this->request->data['isCopy'];
-            if (isset($this->request->data['email_newpitch'])) {
-                $user->email_newpitch = 1;
-            } else {
-                $user->email_newpitch = 0;
-            }
-            if (isset($this->request->data['email_newcomments'])) {
-                $user->email_newcomments = 1;
-            } else {
-                $user->email_newcomments = 0;
-            }
-            if (isset($this->request->data['email_newpitchonce'])) {
-                $user->email_newpitchonce = 1;
-            } else {
-                $user->email_newpitchonce = 0;
-            }
-            if (isset($this->request->data['email_newsolonce'])) {
-                $user->email_newsolonce = 1;
-            } else {
-                $user->email_newsolonce = 0;
-            }
-            if (isset($this->request->data['email_newsol'])) {
-                $user->email_newsol = 1;
-            } else {
-                $user->email_newsol = 0;
-            }
-            if (isset($this->request->data['email_digest'])) {
-                $user->email_digest = 1;
-            } else {
-                $user->email_digest = 0;
-            }
-            if (isset($this->request->data['email_onlycopy'])) {
-                $user->email_onlycopy = 1;
-            } else {
-                $user->email_onlycopy = 0;
-            }
-            if ($userWithEmail = User::first(array(
-                        'conditions' => array(
-                            'email' => $this->request->data['email'],
-                            'id' => array(
-                                '!=' => $user->id,
-                            ),
-                )))) {
-                $emailInfo = 'Пользователь с таким адресом электронной почты уже существует!';
-            } else {
-                $user->email = $this->request->data['email'];
-                if ($currentEmail != $this->request->data['email']) {
-                    $emailInfo = 'Адрес электронной почты изменён, вам необходимо подтвердить его!';
-                    $user->confirmed_email = 0;
-                    $user->token = User::generateToken();
-                    UserMailer::verification_mail($user);
-                }
-            }
+            $user->is_company = $this->request->data['is_company'];
+
+            $user->first_name = $this->request->data['first_name'];
+            $user->last_name = $this->request->data['last_name'];
+            $user->gender = $this->request->data['gender'];
 
             $user->save(null, array('validate' => false));
         }
         return compact('user', 'winners', 'passwordInfo', 'emailInfo');
+    }
+
+    public function update() {
+        $user = User::first(Session::read('user.id'));
+        $currentEmail = $user->email;
+        $result = false;
+        if ($this->request->data) {
+            if(isset($this->request->data['email'])) {
+                if ($userWithEmail = User::first(array(
+                    'conditions' => array(
+                        'email' => $this->request->data['email'],
+                        'id' => array(
+                            '!=' => $user->id,
+                        ),
+                    )))) {
+                    $emailInfo = 'Пользователь с таким адресом электронной почты уже существует!';
+                    $result = false;
+                } else {
+                    $user->email = $this->request->data['email'];
+                    if ($currentEmail != $this->request->data['email']) {
+                        $emailInfo = 'Адрес электронной почты изменён, вам необходимо подтвердить его!';
+                        $user->confirmed_email = 0;
+                        $user->token = User::generateToken();
+                        Session::write('user.email', $user->email);
+                        UserMailer::verification_mail($user);
+                        $result = $user->save(null, array('validate' => false));
+                    }
+                }
+                return compact('result', 'emailInfo');
+            }elseif(isset($this->request->data['newpassword'])) {
+                $result = false;
+                $passwordInfo = 'Пароль не введён!';
+                if (($this->request->data['newpassword'] != '') && ($this->request->data['confirmpassword'] != '')) {
+                    $hashedCurrentPassword = String::hash($this->request->data['currentpassword']);
+
+                    if ($hashedCurrentPassword != $user->password) {
+                        $passwordInfo = 'Старый пароль не верен!';
+                    } elseif (($this->request->data['newpassword']) != ($this->request->data['confirmpassword'])) {
+                        $passwordInfo = 'Пароли не совпадают!';
+                    } else {
+                        $user->password = String::hash($this->request->data['newpassword']);
+                        $result = $user->save(null, array('validate' => false));
+                        $passwordInfo = 'Пароль изменен!';
+                    }
+                }
+                return compact('result', 'passwordInfo');
+            }else {
+                if (isset($this->request->data['email_newpitch'])) {
+                    $user->email_newpitch = 1;
+                } else {
+                    $user->email_newpitch = 0;
+                }
+                if (isset($this->request->data['email_newcomments'])) {
+                    $user->email_newcomments = 1;
+                } else {
+                    $user->email_newcomments = 0;
+                }
+                if (isset($this->request->data['email_newpitchonce'])) {
+                    $user->email_newpitchonce = 1;
+                } else {
+                    $user->email_newpitchonce = 0;
+                }
+                if (isset($this->request->data['email_newsolonce'])) {
+                    $user->email_newsolonce = 1;
+                } else {
+                    $user->email_newsolonce = 0;
+                }
+                if (isset($this->request->data['email_newsol'])) {
+                    $user->email_newsol = 1;
+                } else {
+                    $user->email_newsol = 0;
+                }
+                if (isset($this->request->data['email_digest'])) {
+                    $user->email_digest = 1;
+                } else {
+                    $user->email_digest = 0;
+                }
+                if (isset($this->request->data['email_onlycopy'])) {
+                    $user->email_onlycopy = 1;
+                } else {
+                    $user->email_onlycopy = 0;
+                }
+            }
+            $result = $user->save(null, array('validate' => false));
+        }
+        if ($this->request->is('json')) {
+            return compact('result');
+        }else {
+            return $this->redirect('/users/profile');
+        }
     }
 
     public function preview() {
@@ -1402,12 +1447,13 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function details() {
-        $user = User::first(Session::read('user.id'));
+        return $this->redirect('/users/profile');
+        /*$user = User::first(Session::read('user.id'));
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('user');
         } else {
             return $this->render(array('layout' => false, 'data' => compact('user')));
-        }
+        }*/
     }
 
     public function ban() {

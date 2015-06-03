@@ -62,4 +62,15 @@ class Pitch extends \lithium\template\Helper {
         return PitchModel::isReadyForLogosale($pitch);
     }
 
+    /**
+     * Метод показывает среднее количество решений для категории $categoryId и качества награды $type
+     *
+     * @param $categoryId
+     * @param $type
+     * @return bool|float|int|mixed
+     */
+    public function getStatisticalAverages($categoryId, $type) {
+        return PitchModel::getStatisticalAverages($categoryId, $type);
+    }
+
 }
