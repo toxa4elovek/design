@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\extensions\helper\MoneyFormatter;
 use \app\models\Pitch;
 use app\extensions\storage\Rcache;
 use app\extensions\billing\Payture;
@@ -20,10 +21,11 @@ class PaymentsController extends \app\controllers\AppController {
     public function payture_callback() {
         if (!empty($this->request->data)) {
             if(($this->request->data['SessionType'] == 'Pay') && ($this->request->data['Success'] == 'True')) {
-                $transaction = Payanyway::create();
+                $transaction = Payment::create();
                 $transaction->set($this->request->data);
                 $transaction->save();
                 $paytureId = $this->request->data['OrderId'];
+                Logger::write('info', $paytureId, array('name' => 'payture'));
                 /*
                 if ($pitch = Pitch::first(array('conditions' => array('payture_id' => $paytureId)))) {
                     if ($pitch->blank == 1) {
@@ -49,13 +51,14 @@ class PaymentsController extends \app\controllers\AppController {
     public function startpayment() {
         if($pitch = Pitch::first($this->request->id)) {
             $totalInCents = (int) $pitch->total * 100;
+            $formatter = new MoneyFormatter();
             $pitch = Pitch::generateNewPaytureId($this->request->id);
             $result = Payture::init(array(
                 'SessionType' => 'Pay',
                 'OrderId' => $pitch->payture_id,
                 'Amount' => $totalInCents,
                 'Url' => 'http://godesigner.ru/users/mypitches',
-                'Total' => $pitch->total,
+                'Total' => $formatter->formatMoney($pitch->total, array('suffix' => '.00')),
                 'Product' => 'Оплата проекта'
             ));
             $url = Payture::pay($result['SessionId']);
