@@ -1094,6 +1094,56 @@ class UsersController extends \app\controllers\AppController {
         $currentEmail = $user->email;
         $result = false;
         if ($this->request->data) {
+            $shortUpdate = false;
+            if(isset($this->request->data['first_name'])) {
+                $shortUpdate = true;
+                $user->first_name = $this->request->data['first_name'];
+            }
+            if(isset($this->request->data['last_name'])) {
+                $shortUpdate = true;
+                $user->last_name = $this->request->data['last_name'];
+            }
+            if(isset($this->request->data['gender'])) {
+                $shortUpdate = true;
+                $user->gender = $this->request->data['gender'];
+            }
+            if(isset($this->request->data['isClient'])) {
+                $shortUpdate = true;
+                $user->isClient = $this->request->data['isClient'];
+            }
+            if(isset($this->request->data['isDesigner'])) {
+                $shortUpdate = true;
+                $user->isDesigner = $this->request->data['isDesigner'];
+            }
+            if(isset($this->request->data['isCopy'])) {
+                $shortUpdate = true;
+                $user->isCopy = $this->request->data['isCopy'];
+            }
+            if(isset($this->request->data['birthdate'])) {
+                $shortUpdate = true;
+                $unserialized = unserialize($user->userdata);
+                $user->userdata = serialize(array(
+                    'birthdate' => $this->request->data['birthdate'],
+                    'city' => $unserialized['city'],
+                    'profession' => $unserialized['profession'],
+                    'about' => $unserialized['about'],
+                ));
+            }
+            if(isset($this->request->data['city'])) {
+                $shortUpdate = true;
+                $unserialized = unserialize($user->userdata);
+                $user->userdata = serialize(array(
+                    'birthdate' => $unserialized['birthdate'],
+                    'city' => $this->request->data['city'],
+                    'profession' => $unserialized['profession'],
+                    'about' => $unserialized['about'],
+                ));
+            }
+            if($shortUpdate) {
+                $result = $user->save(null, array('validate' => false));
+                return compact($result);
+            }
+
             if(isset($this->request->data['email'])) {
                 if ($userWithEmail = User::first(array(
                     'conditions' => array(

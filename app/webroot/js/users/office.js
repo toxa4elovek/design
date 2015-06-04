@@ -964,11 +964,32 @@ $(document).ready(function(){
         var form = $('#password-form');
         var data = form.serialize();
         $.post('/users/update.json', data, function(response) {
-            console.log(response);
             $('p', '.user-password-section').show().text(response.passwordInfo);
         });
         return false;
     });
+
+    $(document).on('blur', '#fieldblock1 input[type=text]', function(event) {
+        var element = $(event.currentTarget)[0];
+        var data = {};
+        data[element.name] = element.value;
+        $.post('/users/update.json', data)
+    });
+
+    $(document).on('change', '#fieldblock1 input[type=radio]', function(event) {
+        var element = $(event.currentTarget)[0];
+        var data = {};
+        data[element.name] = element.value;
+        $.post('/users/update.json', data)
+    });
+
+    $(document).on('change', '.profselectbox input[type=checkbox]', function(event) {
+        var element = $(event.currentTarget)[0];
+        var data = {};
+        var value = this.checked ? 1 : 0;
+        data[element.name] = value;
+        $.post('/users/update.json', data)
+    })
 
 });
 

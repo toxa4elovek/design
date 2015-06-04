@@ -47,7 +47,6 @@
                             <label style="margin-left: 83px;"><input type="checkbox" name="isClient" value="1" id="iscustomer" <?php if($user->isClient): echo 'checked'; endif; ?> />Я — заказчик</label>
                             <label style="margin-left: 76px;"><input type="checkbox" name="isCopy" value="1" id="iscopyrighter" <?php if($user->isCopy): echo 'checked'; endif; ?> />Я — копирайтер</label>
                         </div>
-                        <input type="submit" class="button" value="Сохранить">
                     </section>
                 </form>
 
