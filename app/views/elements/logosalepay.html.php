@@ -3,7 +3,28 @@
     <h1>выберите способ оплаты</h1>
     <div id="P_card">
         <table>
+            <tr class="payture-section">
+                <td>
+                    <input type="radio" name="1" class="rb1" data-pay="payture" style="background: #a2b2bb;">
+                </td>
+                <td colspan="2" class="s3_text" data-radio="payture" style="padding-left: 20px;">
+                    Оплата пластиковыми картами через Payture<br><br>
+                    <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
+                </td>
+                <td style="width: 190px;">
+                    <a href="/payments/startpayment/<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>" id="paybutton-payture" class="button" style="display: none;">Оплатить</a>
+                </td>
+            </tr>
+            <tr id="online-images">
+                <td colspan="4" style="padding: 20px 0 0 40px;" class="s3_h" >
+                    <img src="/img/s3_master.png" alt="" data-radio="payture">
+                </td>
+            </tr>
+
             <tr>
+                <td colspan="4"><div class="g_line"><i>или</i></div></td>
+            </tr>
+            <!--tr>
                 <td style="width: 36px;">
                     <input type="radio" name="1" class="rb1" data-pay="payanyway">
                 </td>
@@ -34,7 +55,7 @@
                         </tr>
                         <tr>
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                        </tr>
+                        </tr-->
                         <tr>
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="offline">

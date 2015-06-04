@@ -63,7 +63,14 @@ $(document).ready(function () {
                 $(".solution-overlay #paybutton-paymaster").css('background', '#a2b2bb');
                 $(".solution-overlay #paymaster-images").show();
                 $(".solution-overlay #paymaster-select").hide();
-                $('.solution-overlay #s3_kv').hide();1
+                $('.solution-overlay #s3_kv').hide();
+                $(".solution-overlay #paybutton-payture").hide();
+                break;
+            case 'payture':
+                $(".solution-overlay #paybutton-payture").fadeIn(100);
+                $(".solution-overlay #paymaster-images").show();
+                $(".solution-overlay #paymaster-select").hide();
+                $('.solution-overlay #s3_kv').hide();
                 break;
             case 'paymaster':
                 $(".solution-overlay #paybutton-paymaster").removeAttr('style');
@@ -71,6 +78,7 @@ $(document).ready(function () {
                 $(".solution-overlay #paymaster-images").hide();
                 $(".solution-overlay #paymaster-select").show();
                 $('.solution-overlay #s3_kv').hide();
+                $(".solution-overlay #paybutton-payture").hide();
                 break;
             case 'offline':
                 $(".solution-overlay #paybutton-payanyway").fadeOut(100);
@@ -78,6 +86,7 @@ $(document).ready(function () {
                 $(".solution-overlay #paymaster-images").show();
                 $(".solution-overlay #paymaster-select").hide();
                 $('.solution-overlay #s3_kv').show();
+                $(".solution-overlay #paybutton-payture").hide();
                 break;
         }
     });

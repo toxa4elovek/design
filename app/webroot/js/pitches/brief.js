@@ -800,6 +800,14 @@ $(document).ready(function () {
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
+                $("#paybutton-payture").hide();
+                $('#s3_kv').hide();
+                break;
+            case 'payture':
+                $("#paybutton-payture").fadeIn(100);
+                $("#paybutton-payture");
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
                 $('#s3_kv').hide();
                 break;
             case 'paymaster':
@@ -807,6 +815,7 @@ $(document).ready(function () {
                 $("#paybutton-payanyway").fadeOut(100);
                 $("#paymaster-images").hide();
                 $("#paymaster-select").show();
+                $("#paybutton-payture").hide();
                 $('#s3_kv').hide();
                 break;
             case 'offline':
@@ -814,6 +823,7 @@ $(document).ready(function () {
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
+                $("#paybutton-payture").hide();
                 $('#s3_kv').show();
                 break;
         }
@@ -1273,8 +1283,11 @@ function FeatureCart() {
                             $('h1.pmheader', '.pmwidget').addClass('mod');
                         }
                         // Payanyway
-                        $('input[name=MNT_AMOUNT]').val(response.total)
-                        $('input[name=MNT_TRANSACTION_ID]').val(response.id)
+                        $('input[name=MNT_AMOUNT]').val(response.total);
+                        $('input[name=MNT_TRANSACTION_ID]').val(response.id);
+
+                        // Payture
+                        $('#paybutton-payture').attr('href', '/payments/startpayment/' + self.id);
 
                         // Bill
                         $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf');

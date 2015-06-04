@@ -966,7 +966,14 @@ jQuery(document).ready(function ($) {
                 $(".solution-overlay #paymaster-images").show();
                 $(".solution-overlay #paymaster-select").hide();
                 $('.solution-overlay #s3_kv').hide();
-
+                $("#paybutton-payture").hide();
+                break;
+            case 'payture':
+                $("#paybutton-payture").fadeIn(100);
+                $("#paybutton-payture");
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').hide();
                 break;
             case 'paymaster':
                 $(".solution-overlay #paybutton-paymaster").removeAttr('style');
@@ -974,12 +981,14 @@ jQuery(document).ready(function ($) {
                 $(".solution-overlay #paymaster-images").hide();
                 $(".solution-overlay #paymaster-select").show();
                 $('.solution-overlay #s3_kv').hide();
+                $("#paybutton-payture").hide();
                 break;
             case 'offline':
                 $(".solution-overlay #paybutton-payanyway").fadeOut(100);
                 $(".solution-overlay #paybutton-paymaster").css('background', '#a2b2bb');
                 $(".solution-overlay #paymaster-images").show();
                 $(".solution-overlay #paymaster-select").hide();
+                $("#paybutton-payture").hide();
                 $('.solution-overlay #s3_kv').show();
                 break;
         }

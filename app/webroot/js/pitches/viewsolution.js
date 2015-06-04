@@ -47,7 +47,6 @@ $(document).ready(function() {
     $(document).on('change', '.rb1', function () {
         $('.solution-prev').hide();
         $('.solution-next').hide();
-        console.log($(this).data('pay'));
         switch ($(this).data('pay')) {
             case 'payanyway':
                 $(".solution-container #paybutton-payanyway").fadeIn(100);
@@ -55,7 +54,14 @@ $(document).ready(function() {
                 $(".solution-container #paymaster-images").show();
                 $(".solution-container #paymaster-select").hide();
                 $('.solution-container #s3_kv').hide();
-
+                $("#paybutton-payture").hide();
+                break;
+            case 'payture':
+                $("#paybutton-payture").fadeIn(100);
+                $("#paybutton-payture");
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').hide();
                 break;
             case 'paymaster':
                 $(".solution-container #paybutton-paymaster").removeAttr('style');
@@ -63,6 +69,7 @@ $(document).ready(function() {
                 $(".solution-container #paymaster-images").hide();
                 $(".solution-container #paymaster-select").show();
                 $('.solution-container #s3_kv').hide();
+                $("#paybutton-payture").hide();
                 break;
             case 'offline':
                 $(".solution-container #paybutton-payanyway").fadeOut(100);
@@ -70,6 +77,7 @@ $(document).ready(function() {
                 $(".solution-container #paymaster-images").show();
                 $(".solution-container #paymaster-select").hide();
                 $('.solution-container #s3_kv').show();
+                $("#paybutton-payture").hide();
                 break;
         }
     });

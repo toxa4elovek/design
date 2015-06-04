@@ -26,7 +26,6 @@ class PaymentsController extends \app\controllers\AppController {
                 $transaction->save();
                 $paytureId = $this->request->data['OrderId'];
                 Logger::write('info', $paytureId, array('name' => 'payture'));
-                /*
                 if ($pitch = Pitch::first(array('conditions' => array('payture_id' => $paytureId)))) {
                     if ($pitch->blank == 1) {
                         Pitch::activateLogoSalePitch($pitch->id);
@@ -40,7 +39,6 @@ class PaymentsController extends \app\controllers\AppController {
                 } elseif ($addon = Addon::first(array('conditions' => array('payture_id' => $paytureId)))) {
                     Addon::activate($addon);
                 }
-                */
             }
         }
         Logger::write('info', serialize($this->request->data), array('name' => 'payture'));
