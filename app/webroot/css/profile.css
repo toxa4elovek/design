@@ -114,6 +114,24 @@ a.show-preview {
     margin-top: 0;
     display: none;
 }
+/* Реквизиты  компании */
+.user-company-section form {
+    padding-top: 25px;
+}
+.user-company-section input[type=text] {
+    color: #b6b6b6;
+    font-size: 18px;
+    font-family: OfficinaSansC Book, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 400px !important;
+}
+#save-company {
+    margin-top: 15px;
+    width: 220px !important;
+    font-family: Arial, sans-serif;
+    display: block;
+}
 /* Реквизиты */
 .user-details-section {
     min-height: 550px;

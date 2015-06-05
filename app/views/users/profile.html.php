@@ -3,6 +3,7 @@
     <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
     <?php
     $userdata = unserialize($user->userdata);
+    $company = unserialize($user->companydata);
     ?>
     <div class="middle">
         <div class="main">
@@ -18,7 +19,7 @@
             </div>
 
             <section class="mainblock">
-                <form action="/users/profile" method="post" style="width: 620px;">
+                <form action="/users/profile" method="post">
                     <section class="basic-info-section">
                         <input type="hidden" name="userpic" value="">
                         <div class="photoselectbox qq-uploader" style="height:196px;width:196px;">
@@ -43,9 +44,11 @@
                             <input type="hidden" name="isDesigner" value="0">
                             <input type="hidden" name="isClient" value="0">
                             <input type="hidden" name="isCopy" value="0">
+                            <input type="hidden" name="is_company" value="0">
                             <label><input type="checkbox" name="isDesigner" value="1" id="isdesigner" <?php if($user->isDesigner): echo 'checked'; endif; ?> />Я — дизайнер</label>
                             <label style="margin-left: 83px;"><input type="checkbox" name="isClient" value="1" id="iscustomer" <?php if($user->isClient): echo 'checked'; endif; ?> />Я — заказчик</label>
                             <label style="margin-left: 76px;"><input type="checkbox" name="isCopy" value="1" id="iscopyrighter" <?php if($user->isCopy): echo 'checked'; endif; ?> />Я — копирайтер</label>
+                            <label style="margin-left: 55px;"><input type="checkbox" name="is_company" value="1" <?php if($user->is_company): echo 'checked'; endif; ?> />Я — юр. лицо</label>
                         </div>
                     </section>
                 </form>
@@ -78,6 +81,7 @@
                             <input type="submit" id="save-email" class="button" value="Сохранить адрес" />
                         </form>
                     </section>
+
                     <div class="g_line" style="margin-top: 25px;"></div>
                     <section class="user-notifications">
                         <h1 class="section-header">Уведомления</h1>
@@ -164,9 +168,8 @@
                     ?>
 
                 <div class="g_line"></div>
-                <section class="user-details-section">
+                <section class="user-details-section" <?php if($user->is_company == 1):?>style="display: none;"<?php endif?>>
                     <form id="worker-payment-data" action="/users/details" method="post">
-
                         <h1 class="section-header">Реквизиты: выберите способ получения денег</h1>
 
                         <table class="user-details-table">
@@ -261,6 +264,16 @@
 
                 </section>
 
+                <section class="user-company-section" <?php if($user->is_company == 0):?>style="display: none;"<?php endif?>>
+                    <h1 class="section-header">Реквизиты вашей компании</h1>
+                    <form id="company-payment-data" action="/users/update" method="post">
+                        <input type="text" maxlength="10" name="short_company_name" value="<?= $user->short_company_name?>" placeholder="Краткое название компании">
+                        <input type="text" name="inn" value="<?= $company['inn']?>" placeholder="ИНН">
+                        <input type="text" name="kpp" value="<?= $company['kpp']?>" placeholder="КПП">
+                        <input type="text" name="address" value="<?= $company['address']?>" placeholder="address">
+                        <input type="submit" id="save-company" class="button" value="Сохранить реквизиты" />
+                    </form>
+                </section>
 
                 <div id="popup-final-step" class="popup-final-step" style="display:none;">
                     <h3 style="text-transform:uppercase;font-family: RodeoC; margin-top: 140px;margin-left: 110px;font-size:28px;text-shadow: -1px 1px 2px white;margin-bottom: 30px;">Хотите удалить аккаунт?</h3>

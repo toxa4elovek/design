@@ -1095,6 +1095,10 @@ class UsersController extends \app\controllers\AppController {
         $result = false;
         if ($this->request->data) {
             $shortUpdate = false;
+            if(isset($this->request->data['short_company_name'])) {
+                $shortUpdate = true;
+                $user->short_company_name = $this->request->data['short_company_name'];
+            }
             if(isset($this->request->data['first_name'])) {
                 $shortUpdate = true;
                 $user->first_name = $this->request->data['first_name'];
@@ -1119,6 +1123,10 @@ class UsersController extends \app\controllers\AppController {
                 $shortUpdate = true;
                 $user->isCopy = $this->request->data['isCopy'];
             }
+            if(isset($this->request->data['is_company'])) {
+                $shortUpdate = true;
+                $user->is_company = $this->request->data['is_company'];
+            }
             if(isset($this->request->data['birthdate'])) {
                 $shortUpdate = true;
                 $unserialized = unserialize($user->userdata);
@@ -1141,7 +1149,11 @@ class UsersController extends \app\controllers\AppController {
             }
             if($shortUpdate) {
                 $result = $user->save(null, array('validate' => false));
-                return compact($result);
+                if ($this->request->is('json')) {
+                    return compact('result');
+                }else {
+                    return $this->redirect('/users/profile');
+                }
             }
 
             if(isset($this->request->data['email'])) {
