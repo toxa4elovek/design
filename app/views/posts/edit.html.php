@@ -20,14 +20,14 @@
                             <div class="groupc">
                                 <p>
                                     <label>Короткая новость</label>
-                                    <textarea name="short" /><?=$post->short?></textarea>
+                                    <textarea name="short" id="short" /><?=$post->short?></textarea>
                                 </p>
                             </div>
 
                             <div class="groupc">
                                 <p>
                                     <label>Полный текст</label>
-                                    <textarea name="full" /><?=$post->full?></textarea>
+                                    <textarea name="full" id="fulltext" /><?=$post->full?></textarea>
                                 </p>
                             </div>
 
@@ -59,7 +59,7 @@
                                 <div class="groupc">
                                     <p>
                                         <label>Опубликован?</label>
-                                        <input type="checkbox" name="published" <?php if($post->published == 1): echo 'checked="checked"'; endif;?>/>
+                                        <input type="checkbox" id="published" name="published" <?php if($post->published == 1): echo 'checked="checked"'; endif;?>/>
                                     </p>
                                 </div>
                             <?php endif ?>

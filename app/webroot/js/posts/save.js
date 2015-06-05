@@ -17,8 +17,8 @@ $(document).ready(function() {
         relative_urls: false,
         remove_script_host: false,
         menubar: false,
-        plugins: ["link,lists,charmap,paste,image"],
-        toolbar: "styleselect,link,bullist,numlist,charmap,image",
+        plugins: ["link,lists,charmap,paste,image,code"],
+        toolbar: "styleselect,link,bullist,numlist,charmap,image,alignleft,aligncenter,alignright,alignjustify,code",
         style_formats: [
             {title : 'Заголовок 3 bold', inline : 'span', classes: "greyboldheader"},
             {title : 'Заголовок 3  синий', inline : 'span', classes: "blueboldheader"},
@@ -101,10 +101,22 @@ $(document).ready(function() {
     $( ".datepicker" ).datetimepicker({ dateFormat: "yy-mm-dd", timeFormat: 'hh:mm:ss', showSecond: true});
 
     $(document).on('click', '#save', function(){
-        $.post('/posts/save.json', $('form').serialize(), function(response) {
+        var data  = {};
+        if($('input[name=id]').length > 0) {
+            data['id'] = $('input[name=id]').val();
+        }
+        data['title'] = $('input[name=title]').val();
+        data['short'] = tinyMCE.get('short').getContent();
+        data['full'] = tinyMCE.get('fulltext').getContent();
+        data['created'] = $('input[name=created]').val();
+        data['imageurl'] = $('input[name=imageurl]').val();
+        data['tags'] = $('input[name=tags]').val();
+        data['published'] = $('#published').is(':checked')  ? 1 : 0;
+        $.post('/posts/save.json', data, function(response) {
             if(response.id) {
                 $('#id').val(response.id);
-                $('#preview').show().attr('href', $('#preview').attr('href') + response.id);
+                var preview = $('#preview');
+                preview.show().attr('href', preview.attr('href') + response.id);
                 alert('Пост сохранен!');
             }
         });
@@ -112,7 +124,17 @@ $(document).ready(function() {
     });
     
     $(document).on('click', '.post_preview', function(e) {
-        $.post('/posts/save.json', $('form').serialize(), function(response) { } );
+        var data  = {};
+        if($('input[name=id]').length > 0) {
+            data['id'] = $('input[name=id]').val();
+        }
+        data['title'] = $('input[name=title]').val();
+        data['short'] = tinyMCE.get('short').getContent();
+        data['full'] = tinyMCE.get('fulltext').getContent();
+        data['created'] = $('input[name=created]').val();
+        data['imageurl'] = $('input[name=imageurl]').val();
+        data['tags'] = $('input[name=tags]').val();
+        $.post('/posts/save.json', data, function(response) { } );
     });
 
     $('#typeahead').textext({
