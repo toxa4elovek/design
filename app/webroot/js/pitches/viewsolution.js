@@ -471,8 +471,14 @@ $(document).ready(function() {
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
             $('.solution-images').html('');
             // Left Panel
-            if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
+            if ((result.solution.images.solution_solutionView) && (result.pitch.category_id != 7)) {
                 // Main Images
+                if(typeof(result.solution.images.solution) == 'undefined') {
+                    var storage = result.solution.images.solution_solutionView;
+                }else {
+                    var storage = result.solution.images.solution;
+                }
+
                 if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
                     work = result.solution.images.solution_solutionView
@@ -481,16 +487,16 @@ $(document).ready(function() {
                     viewsize = result.solution.images.solution;
                     work = result.solution.images.solution
                 }
-                if ($.isArray(result.solution.images.solution)) {
+                if ($.isArray(storage)) {
                     $.each(work, function(idx, field) {
                         if (field.weburl.match(/.mp4$/)) {
                             var webmsource = field.weburl.replace(/.mp4/, '.webm');
                             var ogvsource = field.weburl.replace(/.mp4/, '.ogv');
-                            var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + result.solution.images.solution[idx].weburl + '">' +
+                            var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + storage[idx].weburl + '">' +
                                 '<source src="' + field.weburl + '" type="video/mp4">' +
                                 '<source src="' + ogvsource + '" type="video/ogg">' +
                                 '<source src="' + webmsource + '" type="video/webm">' +
-                                '<img src="' + result.solution.images.solution[idx].weburl + '" alt="">' +
+                                '<img src="' + storage[idx].weburl + '" alt="">' +
                                 '</video>';
                             $('.solution-images').append('<a href="' + field.weburl + '" target="_blank">' + videoHtml + '</a>');
                         }else {
@@ -501,11 +507,11 @@ $(document).ready(function() {
                     if (work.weburl.match(/.mp4$/)) {
                         var webmsource = work.weburl.replace(/.mp4/, '.webm');
                         var ogvsource = work.weburl.replace(/.mp4/, '.ogv');
-                        var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + result.solution.images.solution.weburl + '">' +
+                        var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + storage.weburl + '">' +
                             '<source src="' + work.weburl + '" type="video/mp4">' +
                             '<source src="' + ogvsource + '" type="video/ogg">' +
                             '<source src="' + webmsource + '" type="video/webm">' +
-                            '<img src="' + result.solution.images.solution.weburl + '" alt="">' +
+                            '<img src="' + storage.weburl + '" alt="">' +
                             '</video>';
                         $('.solution-images').append('<a href="' + work.weburl + '" target="_blank">' + videoHtml + '</a>');
                     } else {
@@ -527,7 +533,11 @@ $(document).ready(function() {
             }else {
                 var filesHTML = '';
                 if ((typeof (result.solution.images) != 'undefined') && (result.solution.images.length != 0)) {
-                    var file = result.solution.images.solution;
+                    if(typeof(result.solution.images.solution) != 'undefined') {
+                        var file = result.solution.images.solution;
+                    }else {
+                        var file = result.solution.images.solution_solutionView;
+                    }
                     if ($.isArray(file)) {
                         downloadUrl = '/solutionfiles' + file[0].weburl;
                         filename = file[0].originalbasename

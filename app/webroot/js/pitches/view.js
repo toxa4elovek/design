@@ -759,8 +759,14 @@ $(document).ready(function () {
                 $('.solution-left-panel .solution-title').css('background', 'linear-gradient(#F0EFED, #DFDFDC) repeat scroll 0 0 rgba(0, 0, 0, 0)');
                 $('.solution-left-panel .solution-title').children('h1').html('<a style="color: #606060;" href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>');
             }
-            if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
+            if ((result.solution.images.solution_solutionView) && (result.pitch.category_id != 7)) {
                 // Main Images
+                if(typeof(result.solution.images.solution) == 'undefined') {
+                    var storage = result.solution.images.solution_solutionView;
+                }else {
+                    var storage = result.solution.images.solution;
+                }
+
                 if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
                     work = result.solution.images.solution_solutionView
@@ -769,16 +775,16 @@ $(document).ready(function () {
                     viewsize = result.solution.images.solution;
                     work = result.solution.images.solution
                 }
-                if ($.isArray(result.solution.images.solution)) {
+                if ($.isArray(storage)) {
                     $.each(work, function (idx, field) {
                         if (field.weburl.match(/.mp4$/)) {
                             var webmsource = field.weburl.replace(/.mp4/, '.webm');
                             var ogvsource = field.weburl.replace(/.mp4/, '.ogv');
-                            var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + result.solution.images.solution[idx].weburl + '">' +
+                            var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + storage[idx].weburl + '">' +
                                 '<source src="' + field.weburl + '" type="video/mp4">' +
                                 '<source src="' + ogvsource + '" type="video/ogg">' +
                                 '<source src="' + webmsource + '" type="video/webm">' +
-                                '<img src="' + result.solution.images.solution[idx].weburl + '" alt="">' +
+                                '<img src="' + storage[idx].weburl + '" alt="">' +
                                 '</video>';                            $('.solution-images').append('<a href="' + field.weburl + '" target="_blank">' + videoHtml + '</a>');
                         }else {
                             $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
@@ -788,11 +794,11 @@ $(document).ready(function () {
                     if (work.weburl.match(/.mp4$/)) {
                         var webmsource = work.weburl.replace(/.mp4/, '.webm');
                         var ogvsource = work.weburl.replace(/.mp4/, '.ogv');
-                        var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + result.solution.images.solution.weburl + '">' +
+                        var videoHtml = '<video autoplay loop style="max-width: 600px" poster="' + storage.weburl + '">' +
                             '<source src="' + work.weburl + '" type="video/mp4">' +
                             '<source src="' + ogvsource + '" type="video/ogg">' +
                             '<source src="' + webmsource + '" type="video/webm">' +
-                            '<img src="' + result.solution.images.solution.weburl + '" alt="">' +
+                            '<img src="' + storage.weburl + '" alt="">' +
                             '</video>';                        $('.solution-images').append('<a href="' + work.weburl + '" target="_blank">' + videoHtml + '</a>');
                     } else {
                         $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
