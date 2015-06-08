@@ -731,17 +731,17 @@ $(document).ready(function () {
             // Navigation
             $('.solution-prev-area').attr('href', '/pitches/viewsolution/' + result.prev); // @todo Next|Prev unclearly
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
-
+            var paymentContainer = $('.solution-container #step3');
             // hide receipt and buy buttons
             if (result.isSolutionReady == false) {
                 $('.summary-price').hide();
-                $('#step3').hide();
+                paymentContainer.hide();
             } else {
                 if(result.pitch.status == 2) {
                     $('.allow-comments', '.solution-left-panel').hide();
                 }
                 $('.summary-price').show();
-                $('#step3').show();
+                paymentContainer.show();
             }
 
             // Left Panel
