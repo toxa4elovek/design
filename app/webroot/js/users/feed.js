@@ -1017,7 +1017,7 @@ function OfficeStatusUpdater() {
                                     <a class="post-link" href="http://www.godesigner.ru/users/click?link=' + response.post.link + '&id=' + response.post.id + '" target="_blank"><img class="img-post" src="' + img + '"></a> \
                                 </p> \
                                 <div class="r-content post-content"> \
-                                    <p class="img-tag">' + response.post.tags + '</p> \
+                                    <p class="img-tag"><a class="tag-title" href="/news?tag=' + encodeURIComponent(response.post.tags) + '">' + response.post.tags + '</a></p> \
                                     <a class="img-post" href="' + response.post.link + '" target="_blank"><h2>' + response.post.title + '</h2></a> \
                                     <p class="img-short">' + response.post.short + '</p> \
                                     <p class="timeago"> \
@@ -1545,7 +1545,7 @@ function OfficeStatusUpdater() {
                     }
                     html +='<div class="r-content post-content"' + style + '>';
                     if (object.news.tags) {
-                        html += '<p class="img-tag">' + object.news.tags + '</p>';
+                        html += '<p class="img-tag"><a class="tag-title" href="/news?tag=' + encodeURIComponent(object.news.tags) + '">' + object.news.tags + '</a></p>';
                     }
 
                     var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';

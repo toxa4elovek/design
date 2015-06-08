@@ -1052,3 +1052,6 @@
     left: 151px;
     top: 13px;
 }
+.post-content .img-tag a {
+    color: white;
+}

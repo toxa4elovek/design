@@ -243,7 +243,7 @@
                                         <?php endif?>
                                         <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
                                             <?php if ($object['news']['tags']): ?>
-                                                <p class="img-tag"><?= $object['news']['tags'] ?></p>
+                                                <p class="img-tag"><a class="tag-title" href="/news?tag=<?= urlencode($object['news']['tags']) ?>"><?= $object['news']['tags'] ?></a></p>
                                             <?php endif; ?>
                                             <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
                                             <p class="img-short"><?php echo $object['news']['short'] ?></p>
@@ -534,7 +534,7 @@
                                                 <?php endif?>
                                                 <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
                                                     <?php if ($object['news']['tags']): ?>
-                                                        <p class="img-tag"><?= $object['news']['tags'] ?></p>
+                                                        <p class="img-tag"><a class="tag-title" href="/news?tag=<?= urlencode($object['news']['tags']) ?>"><?= $object['news']['tags'] ?></a></p>
                                                     <?php endif; ?>
                                                     <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
                                                     <p class="img-short"><?php echo $object['news']['short'] ?></p>
