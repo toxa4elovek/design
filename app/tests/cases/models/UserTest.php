@@ -18,7 +18,7 @@ class UserTest extends AppUnit {
         Rcache::flushdb();
         $this->rollDown(array('Pitch', 'User', 'Solution', 'Category', 'Comment'));
     }
-
+/*
 	public function testGetAuthorsIds() {
         $authors = array(1, 2);
         User::$authors = $authors;
@@ -108,6 +108,33 @@ class UserTest extends AppUnit {
 
         $expected = array(2, 6);
         $this->assertEqual($expected, User::getUsersWonProjectsIds(2));
+    }*/
+
+    public function testRemoveExtraFields() {
+        $user = User::first(1);
+        $cleanUser = User::removeExtraFields($user);
+        $data = $cleanUser->data();
+        $this->assertFalse(isset($data['email']));
+        $this->assertFalse(isset($data['oldemail']));
+        $this->assertFalse(isset($data['last_name']));
+        $this->assertFalse(isset($data['location']));
+        $this->assertFalse(isset($data['birthdate']));
+        $this->assertFalse(isset($data['password']));
+        $this->assertFalse(isset($data['confirmed_email']));
+        $this->assertFalse(isset($data['token']));
+        $this->assertFalse(isset($data['facebook_uid']));
+        $this->assertFalse(isset($data['vkontakte_uid']));
+        $this->assertFalse(isset($data['created']));
+        $this->assertFalse(isset($data['invited']));
+        $this->assertFalse(isset($data['paymentOptions']));
+        $this->assertFalse(isset($data['userdata']));
+        $this->assertFalse(isset($data['balance']));
+        $this->assertFalse(isset($data['phone']));
+        $this->assertFalse(isset($data['phone_operator']));
+        $this->assertFalse(isset($data['phone_code']));
+        $this->assertFalse(isset($data['phone_valid']));
+        $this->assertFalse(isset($data['referal_token']));
+        $this->assertFalse(isset($data['autologin_token']));
     }
 
 }

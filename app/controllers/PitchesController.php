@@ -1125,6 +1125,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     $data = Solution::addBlankPitchForLogosale($userHelper->getId(), $solution->id);
                 }
             }
+            $pitch->user = User::removeExtraFields($pitch->user);
+            $solution->user = User::removeExtraFields($solution->user);
             $solution->tags = Solution::getTagsArrayForSolution($solution);
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getSolutionsSortingOrder($this->request->query);

@@ -1494,4 +1494,34 @@ class User extends \app\models\AppModel {
         }
         return $result;
     }
+
+    public static function removeExtraFields($user) {
+        $blacklist = array(
+            'email',
+            'oldemail',
+            'last_name',
+            'location',
+            'birthdate',
+            'password',
+            'confirmed_email',
+            'token',
+            'facebook_uid',
+            'vkontakte_uid',
+            'created',
+            'invited',
+            'paymentOptions',
+            'userdata',
+            'balance',
+            'phone',
+            'phone_operator',
+            'phone_code',
+            'phone_valid',
+            'referal_token',
+            'autologin_token',
+        );
+        foreach($blacklist as $field) {
+            $user->{$field} = null;
+        }
+        return $user;
+    }
 }
