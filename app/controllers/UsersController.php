@@ -1098,6 +1098,13 @@ class UsersController extends \app\controllers\AppController {
             if(isset($this->request->data['short_company_name'])) {
                 $shortUpdate = true;
                 $user->short_company_name = $this->request->data['short_company_name'];
+                $unserialized = unserialize($user->companydata);
+                $user->companydata = serialize(array(
+                    'company_name' => $this->request->data['company_name'],
+                    'inn' => $this->request->data['inn'],
+                    'kpp' => $this->request->data['kpp'],
+                    'address' => $this->request->data['address'],
+                ));
             }
             if(isset($this->request->data['first_name'])) {
                 $shortUpdate = true;

@@ -267,10 +267,11 @@
                 <section class="user-company-section" <?php if($user->is_company == 0):?>style="display: none;"<?php endif?>>
                     <h1 class="section-header">Реквизиты вашей компании</h1>
                     <form id="company-payment-data" action="/users/update" method="post">
-                        <input type="text" maxlength="10" name="short_company_name" value="<?= $user->short_company_name?>" placeholder="Краткое название компании">
-                        <input type="text" name="inn" value="<?= $company['inn']?>" placeholder="ИНН">
-                        <input type="text" name="kpp" value="<?= $company['kpp']?>" placeholder="КПП">
-                        <input type="text" name="address" value="<?= $company['address']?>" placeholder="address">
+                        <input type="text" required maxlength="10" name="short_company_name" value="<?= $user->short_company_name?>" placeholder="Краткое название компании">
+                        <input type="text" required data-content="mixed" name="company_name" value="<?= $company['company_name']?>" placeholder="Полное название компании">
+                        <input type="text" required data-content="numeric" id="yur-inn" data-length="[10,12]" name="inn" value="<?= $company['inn']?>" placeholder="ИНН">
+                        <input type="text" required data-content="numeric" id="yur-kpp" data-length="[9]" name="kpp" value="<?= $company['kpp']?>" placeholder="КПП">
+                        <input type="text" required data-content="mixed" name="address" value="<?= $company['address']?>" placeholder="Полный адрес компании">
                         <input type="submit" id="save-company" class="button" value="Сохранить реквизиты" />
                     </form>
                 </section>
