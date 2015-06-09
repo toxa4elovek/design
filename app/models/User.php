@@ -1495,11 +1495,17 @@ class User extends \app\models\AppModel {
         return $result;
     }
 
+    /**
+     * Метод удаляет приватную информацию из объекта $user
+     *
+     * @param $user
+     * @return mixed
+     */
     public static function removeExtraFields($user) {
         $blacklist = array(
             'email',
             'oldemail',
-            'last_name',
+            //'last_name',
             'location',
             'birthdate',
             'password',

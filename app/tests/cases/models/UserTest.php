@@ -116,7 +116,7 @@ class UserTest extends AppUnit {
         $data = $cleanUser->data();
         $this->assertFalse(isset($data['email']));
         $this->assertFalse(isset($data['oldemail']));
-        $this->assertFalse(isset($data['last_name']));
+        $this->assertTrue(isset($data['last_name']));
         $this->assertFalse(isset($data['location']));
         $this->assertFalse(isset($data['birthdate']));
         $this->assertFalse(isset($data['password']));
