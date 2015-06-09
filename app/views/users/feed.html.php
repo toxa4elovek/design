@@ -17,6 +17,7 @@
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
                 var userName = '<?php echo ($this->user->getId()) ? $this->user->getFormattedName($this->user->firstname, $this->user->lastname) : ''; ?>';
                 var userGender = <?php echo $this->user->getGender(); ?>;
+                var tag = '<?= $tag?>';
             </script>
             <?php if (($this->user->isAdmin()) or ($this->user->isFeedWriter())): ?>
                 <div id="news-add" style="display:none;">

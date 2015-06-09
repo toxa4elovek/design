@@ -54,10 +54,14 @@ class EventsController extends \app\controllers\AppController {
     }
 
     public function feed() {
+        $tag = null;
+        if (isset($this->request->query['tag'])) {
+            $tag = $this->request->query['tag'];
+        }
         if (isset($this->request->query['page'])) {
             $subscribed = User::getSubscribedPitches(Session::read('user.id'));
-            $updates = Event::getEvents($subscribed, $this->request->query['page'], null, Session::read('user.id'));
-            $nextUpdates = count(Event::getEvents($subscribed, $this->request->query['page'] + 1, null, Session::read('user.id')));
+            $updates = Event::getEvents($subscribed, $this->request->query['page'], null, Session::read('user.id'), $tag);
+            $nextUpdates = count(Event::getEvents($subscribed, $this->request->query['page'] + 1, null, Session::read('user.id'), $tag));
         }
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
@@ -66,7 +70,7 @@ class EventsController extends \app\controllers\AppController {
             $pitches = Pitch::all(array('fields' => array('title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => array('>' => $this->request->query['pitchDate'])), 'order' => array('started' => 'desc'), 'limit' => 5));
         }
         if (!empty($this->request->query['created'])) {
-            $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created'], Session::read('user.id'));
+            $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created'], Session::read('user.id'), $tag);
         } elseif (!isset($this->request->query['created'])) {
             $this->request->query['created'] = 0;
         }

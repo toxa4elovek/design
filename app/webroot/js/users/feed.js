@@ -981,7 +981,7 @@ function OfficeStatusUpdater() {
                 })
             },
             this.autoupdate = function () {
-                $.get('http://www.godesigner.ru/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate}, function (response) {
+                $.get('http://www.godesigner.ru/events/feed.json', {"init": true, "created": self.date, "twitterDate": self.dateTwitter, "newsDate": self.newsDate, "solutionDate": self.solutionDate, "tag": tag}, function (response) {
                     if (typeof (response.news) != "undefined" && response.news != null) {
                         var news = '', first_el = 0;
                         $.each(response.news, function (index, object) {
@@ -1191,7 +1191,7 @@ function OfficeStatusUpdater() {
                 self.page += 1;
                 $('#officeAjaxLoader').show();
                 var $formerLast = $('.box').last();
-                $.get('http://www.godesigner.ru/events/feed.json', {"init": true, "page": self.page}, function (response) {
+                $.get('http://www.godesigner.ru/events/feed.json', {"init": true, "page": self.page, "tag": tag}, function (response) {
                     $('#officeAjaxLoader').hide();
                     if (response.count != 0) {
                         function sortfunction(a, b) {
@@ -1601,7 +1601,7 @@ function OfficeStatusUpdater() {
                     html += '<div data-id="' + object.news.id + '" class="likes">';
                     var likes_count = 0;
 
-                    if (object.news.liked) {
+                    if (object.news.liked == "1") {
                         $.each(object.news.likes, function (index, like) {
                             likes_count++;
                             var likes = parseInt(object.news.liked);
@@ -1633,7 +1633,7 @@ function OfficeStatusUpdater() {
 
                         });
                     }
-                html += '</div></div>';
+                    html += '</div></div>';
                 }
                 return html;
             },

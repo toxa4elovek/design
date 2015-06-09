@@ -15,7 +15,7 @@ use app\extensions\storage\Rcache;
 
 class Event extends \app\models\AppModel {
 
-    public $belongsTo = array('Pitch', 'User', 'Comment', 'Solution');
+    public $belongsTo = array('Pitch', 'User', 'Comment', 'Solution', 'News');
 
     public static function __init() {
         parent::__init();
@@ -232,32 +232,31 @@ class Event extends \app\models\AppModel {
         return $result;
     }
 
-    public static function getEvents($pitchIds, $page = 1, $created = null, $user = false) {
+    public static function getEvents($pitchIds, $page = 1, $created = null, $user = false, $tag = null) {
         $eventList = $conditions = array();
         $limit = 14;
+        $with = array();
         if (isset($created)) {
             $page = 1;
             $limit = 100;
-            $conditions = array('created' => array('>' => $created));
+            $conditions = array('Event.created' => array('>' => $created));
         }
-        if (!empty($pitchIds)) {
-            $events = Event::find('all', array(
-                        'conditions' => $conditions + Event::createConditions($pitchIds, $user),
-                        'order' => array('created' => 'desc'),
-                        'limit' => $limit,
-                        'page' => $page
-                            )
-            );
-
-        } else {
-            $events = Event::find('all', array(
-                        'conditions' => $conditions + array('type' => array('RetweetAdded', 'newsAdded')),
-                        'order' => array('created' => 'desc'),
-                        'limit' => $limit,
-                        'page' => $page
-                            )
-            );
+        if ((!empty($pitchIds)) && (is_null($tag))) {
+            $conditions += Event::createConditions($pitchIds, $user);
+        }elseif(isset($tag)) {
+            $with = array('News');
+            $conditions += array('type' => 'newsAdded', 'News.tags' => $tag);
+        }else {
+            $conditions += array('type' => array('RetweetAdded', 'newsAdded'));
         }
+        $events = Event::find('all', array(
+                'conditions' => $conditions,
+                'order' => array('Event.created' => 'desc'),
+                'limit' => $limit,
+                'page' => $page,
+                'with' => $with
+            )
+        );
         $i = 1;
         foreach ($events as $event) {
             if (($event->type == 'CommentAdded' || $event->type == 'CommentCreated') && ($event->user_id != Session::read('user.id')) && ($event->pitch->user_id != Session::read('user.id'))) {

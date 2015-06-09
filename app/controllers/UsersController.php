@@ -144,26 +144,22 @@ class UsersController extends \app\controllers\AppController {
         }
         $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5));
         $middlePost = false;
-        /* if($middlePost = News::getPost()) {
-          $middlePost->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $middlePost->id), 'order' => array('Event.created' => 'desc')));
-          $allowLike = 0;
-          if (Session::read('user.id') && (!$like = \app\models\Like::first('first', array('conditions' => array('news_id' => $middlePost->id, 'user_id' => Session::read('user.id')))))) {
-          $allowLike = 1;
-          }
-          $middlePost->allowLike = $allowLike;
-          } */
         $shareEvent = null;
         if((isset($this->request->query['event'])) && (is_numeric($this->request->query['event']))) {
             $shareEvent = Event::first($this->request->query['event']);
         }
         $news = News::getNews();
         $solutions = Event::getEventSolutions(Session::read('user.id'));
-        $updates = Event::getEvents($pitchIds, 1, null, Session::read('user.id'));
-        $nextUpdates = count(Event::getEvents($pitchIds, 2, null, Session::read('user.id')));
+        $tag = null;
+        if(isset($this->request->query['tag'])) {
+            $tag = $this->request->query['tag'];
+        }
+        $updates = Event::getEvents($pitchIds, 1, null, Session::read('user.id'), $tag);
+        $nextUpdates = count(Event::getEvents($pitchIds, 2, null, Session::read('user.id'), $tag));
         $banner = News::getBanner();
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             $accessToken = Event::getBingAccessToken();
-            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent', 'accessToken');
+            return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent', 'accessToken', 'tag');
         } else {
             return $this->render(array('layout' => false, 'data' => compact('pitchIds', 'date', 'updates', 'nextUpdates', 'pitches')));
         }
