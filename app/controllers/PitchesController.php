@@ -890,6 +890,9 @@ class PitchesController extends \app\controllers\AppController {
                             ),
                             'order' => array('Comment.id' => 'desc'),
                             'with' => array('User')));
+                foreach($commentsRaw as $comment) {
+                    $comment->user = User::removeExtraFields($comment->user);
+                }
                 Rcache::write($cacheKey, $commentsRaw, array(), '+4 hours');
             }
             $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
