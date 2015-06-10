@@ -1601,7 +1601,7 @@ function OfficeStatusUpdater() {
                     html += '<div data-id="' + object.news.id + '" class="likes">';
                     var likes_count = 0;
 
-                    if (object.news.liked == "1") {
+                    if ((object.news.liked == "1") && (typeof(object.news.likes) != 'undefined')) {
                         $.each(object.news.likes, function (index, like) {
                             likes_count++;
                             var likes = parseInt(object.news.liked);
