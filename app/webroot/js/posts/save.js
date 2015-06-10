@@ -18,7 +18,7 @@ $(document).ready(function() {
         remove_script_host: false,
         menubar: false,
         plugins: ["link,lists,charmap,paste,image,code"],
-        toolbar: "styleselect,link,bullist,numlist,charmap,image,alignleft,aligncenter,alignright,alignjustify,code",
+        toolbar: ["styleselect,bold,italic,underline,strikethrough,link,bullist,numlist,charmap,image", "alignleft,aligncenter,alignright,alignjustify,outdent,indent,blockquote,code"],
         style_formats: [
             {title : 'Заголовок 3 bold', inline : 'span', classes: "greyboldheader"},
             {title : 'Заголовок 3  синий', inline : 'span', classes: "blueboldheader"},
