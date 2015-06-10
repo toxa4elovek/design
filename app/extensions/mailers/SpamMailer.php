@@ -2,6 +2,9 @@
 
 namespace app\extensions\mailers;
 
+use app\models\Pitch;
+use app\models\User;
+
 class SpamMailer extends \li3_mailer\extensions\Mailer {
 
     public static function newpitch($data) {
@@ -53,6 +56,29 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
                     'to' => $data['user']->email,
                     'subject' => 'Заполнить бриф: ' . $data['pitch']->{'phone-brief'},
                     'data' => $data
+        ));
+    }
+
+    public static function sendNewLogosaleProject($projectId) {
+        $project = Pitch::first($projectId);
+        $users = User::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $userIds = array();
+        foreach($users as $user) {
+            $data['pitch'] = $project;
+            $data['user'] = $user;
+            if(self::newbriefedpitch($data)) {
+                $userIds[] = $user->id;
+            }
+        }
+        return $userIds;
+    }
+
+    public static function newlogosaleproject($data) {
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Логотип с распродажи купили!',
+            'data' => $data
         ));
     }
 
