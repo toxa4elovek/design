@@ -241,9 +241,9 @@ class Event extends \app\models\AppModel {
             $limit = 100;
             $conditions = array('Event.created' => array('>' => $created));
         }
-        if ((!empty($pitchIds)) && (is_null($tag))) {
+        if ((!empty($pitchIds)) && (empty($tag))) {
             $conditions += Event::createConditions($pitchIds, $user);
-        }elseif(isset($tag)) {
+        }elseif(!empty($tag)) {
             $with = array('News');
             $conditions += array('type' => 'newsAdded', 'News.tags' => $tag);
         }else {
