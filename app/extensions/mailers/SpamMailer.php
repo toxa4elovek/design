@@ -59,20 +59,31 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
-    public static function sendNewLogosaleProject($projectId) {
-        $project = Pitch::first($projectId);
+    /**
+     * Метод отсылает админам уведомление о купленным лого с распродажи
+     *
+     * @param $project
+     * @return array
+     */
+    public static function sendNewLogosaleProject($project) {
         $users = User::all(array('conditions' => array('id' => array(4, 5, 32))));
         $userIds = array();
         foreach($users as $user) {
             $data['pitch'] = $project;
             $data['user'] = $user;
-            if(self::newbriefedpitch($data)) {
+            if(self::newlogosaleproject($data)) {
                 $userIds[] = $user->id;
             }
         }
         return $userIds;
     }
 
+    /**
+     * Метод отправляет пользователю уведомление о купленном лого с распродажи
+     *
+     * @param $data
+     * @return bool
+     */
     public static function newlogosaleproject($data) {
         return self::_mail(array(
             'use-smtp' => true,

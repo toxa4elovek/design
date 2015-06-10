@@ -1493,6 +1493,12 @@ class Pitch extends \app\models\AppModel {
         }
     }
 
+    /**
+     * Метод активирует купленный логотип на распродаже с айди $pitchId
+     *
+     * @param $pitchId
+     * @return bool
+     */
     public static function activateLogoSalePitch($pitchId) {
         if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
             if($pitch->awarded == 0) {
@@ -1512,6 +1518,7 @@ class Pitch extends \app\models\AppModel {
                     $pitch->finishDate = date('Y-m-d H:i:s', time() + 10 * DAY);
                     $pitch->save();
                     SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
+                    SpamMailer::sendNewLogosaleProject($pitch->id);
                     return true;
                 }
             }

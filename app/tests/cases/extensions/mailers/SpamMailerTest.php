@@ -29,7 +29,8 @@ class SpamMailerTest extends  AppUnit {
     }
 
     public function testSendNewLogosaleProject() {
-        $result = SpamMailer::SendNewLogosaleProject(1);
+        $pitch = Pitch::first(1);
+        $result = SpamMailer::SendNewLogosaleProject($pitch);
         $this->assertEqual(array(), $result);
     }
 }
