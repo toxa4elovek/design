@@ -260,7 +260,7 @@
         <dd>текущих<br> проектов</dd>
       </dl>
       <dl class="dl_3">
-        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'], array('suffix' => ''))?></dt>
+        <dt><a href="#" style="color: #f9f9f9;"><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'], array('suffix' => ''))?></a></dt>
         <dd>заработанных<br> дизайнерами рублей</dd>
       </dl>
       <dl class="dl_4">
@@ -339,4 +339,4 @@
 </div>
 
 <?=$this->html->script(array('slides.min.jquery', 'jquery.simplemodal-1.4.2.js', 'pages/main.js'), array('inline' => false))?>
-<?=$this->html->style(array('/new_css'), array('inline' => false))?>
+<?=$this->html->style(array('/css/main_page.css'), array('inline' => false))?>
