@@ -17,8 +17,8 @@ $(document).ready(function() {
         relative_urls: false,
         remove_script_host: false,
         menubar: false,
-        plugins: ["link,lists,charmap,paste,image,code"],
-        toolbar: ["styleselect,bold,italic,underline,strikethrough,link,bullist,numlist,charmap,image", "alignleft,aligncenter,alignright,alignjustify,outdent,indent,blockquote,code"],
+        plugins: ["link,lists,charmap,paste,image,code,spellchecker"],
+        toolbar: ["styleselect,bold,italic,underline,strikethrough,link,bullist,numlist,charmap,image", "alignleft,aligncenter,alignright,alignjustify,outdent,indent,blockquote,spellchecker,code"],
         style_formats: [
             {title : 'Заголовок 3 bold', inline : 'span', classes: "greyboldheader"},
             {title : 'Заголовок 3  синий', inline : 'span', classes: "blueboldheader"},
@@ -28,6 +28,8 @@ $(document).ready(function() {
             {title : 'Дополнение 2', inline : 'span', classes: "supplement2"},
             {title : 'Дополнение 3', inline : 'span', classes: "supplement3"}
         ],
+        spellchecker_language: 'ru_RU',
+        spellchecker_rpc_url: 'spellcheck.php',
         file_browser_callback: RoxyFileBrowser
     });
 

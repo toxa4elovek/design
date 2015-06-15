@@ -116,6 +116,9 @@
 </div>
 <div id="menuFile" class="contextMenu">
   <a href="#" onclick="setFile()" data-lang="SelectFile" id="mnuSelectFile">Select</a><hr>
+  <!--a href="#" onclick="var f = getSelectedFile(); console.log(f); if(f){
+    console.log(f.fullPath);
+  };" data-lang="ToClipboard" id="mnuToClipboard">To Clipboard</a><hr-->
   <a href="#" onclick="previewFile()" data-lang="Preview" id="mnuPreview">Preview</a><hr>
   <a href="#" onclick="downloadFile()" data-lang="DownloadFile" id="mnuDownload">Download</a><hr>
   <a href="#" onclick="return pasteToFiles(event, this)" data-lang="Paste" class="paste pale" id="mnuFilePaste">Paste</a><hr>

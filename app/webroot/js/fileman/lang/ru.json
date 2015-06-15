@@ -7,6 +7,7 @@
 "RenameFile":"Переименовать",
 "DeleteFile":"Удалить",
 "SelectFile":"Выбор",
+"ToClipboard":"Копировать ссылку",
 "OrderBy":"Сортировать",
 "Name_asc":"&uarr;&nbsp;&nbsp;Имя",
 "Size_asc":"&uarr;&nbsp;&nbsp;Размер",

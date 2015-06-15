@@ -172,7 +172,7 @@ hr{margin:0;color:#AAA;}
 #btnRenameFile,#btnRenameDir{background-image:url(../images/sprite.png);background-position: 4px 4px;}
 #mnuRenameDir,#mnuRenameFile{background-image:url(../images/sprite.png);background-position: 4px 7px;}
 #mnuDirCut,#mnuFileCut{background-image:url(../images/sprite.png);background-position: 4px -47px;}
-#mnuDirCopy,#mnuFileCopy{background-image:url(../images/sprite.png);background-position: 4px -20px;}
+#mnuDirCopy,#mnuFileCopy,#mnuToClipboard{background-image:url(../images/sprite.png);background-position: 4px -20px;}
 #mnuDirPaste,#mnuFilePaste{background-image:url(../images/sprite.png);background-position: 4px -370px;}
 
 /* END OF Buttons */
