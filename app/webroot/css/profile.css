@@ -115,7 +115,7 @@ a.show-preview {
     width: 370px;
 }
 .user-mobile-section input[name="phone_code"] {
-    width: 170px;
+    width: 140px;
     display: none;
     float: left;
 }
@@ -135,7 +135,7 @@ a.show-preview {
     font-style: italic;
     font-size: 15px;
     font-family: Georgia, serif;
-    margin-right: 105px;
+    margin-right: 75px;
     margin-bottom: 10px;
 }
 .remove-number {
@@ -144,6 +144,7 @@ a.show-preview {
 }
 .resend-code {
     padding-left: 30px;
+    margin-right: 0 !important;
     background: url(/img/user_settings/resend.png) 0 -3px no-repeat;
 }
 ul .number {

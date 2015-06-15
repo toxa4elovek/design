@@ -66,7 +66,7 @@
                         <div class="clear"></div>
                         <ul <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
                             <li class="number" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?>>+ <?= $user->phone?></li>
-                            <li class="remove-number"><a href="#" class="remove-number-link">Удалить номер</a></li>
+                            <li class="remove-number" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="margin-right: 0 !important;"<?php endif?>><a href="#" class="remove-number-link"><?php if(!empty($user->phone) && $user->phone_valid == 1):?>Удалить/поменять номер<?php else:?>Удалить номер<?php endif?></a></li>
                             <li class="resend-code" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?>><a href="#" class="resend-code-link">Выслать код повторно</a></li>
                         </ul>
                         <div class="clear"></div>

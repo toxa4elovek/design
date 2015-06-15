@@ -1026,7 +1026,8 @@ $(document).ready(function(){
         $('#save-mobile').next().show();
         $('#save-mobile').show();
         $('.resend-code').show();
-        $('.remove-number-link').text('Удалить номер')
+        $('.remove-number-link').text('Удалить номер');
+        $('.remove-number').css('margin-right', '75px');
         return false;
     });
 
@@ -1060,7 +1061,8 @@ $(document).ready(function(){
                 paragraph.hide();
                 $('#confirm-mobile').prev().hide();
                 $('#confirm-mobile').hide();
-                $('.remove-number-link').text('Удалить/поменять номер')
+                $('.remove-number-link').text('Удалить/поменять номер');
+                $('.remove-number').css('margin-right', '0 !important');
                 $('.resend-code').hide();
                 $('.number').show();
             }
