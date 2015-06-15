@@ -979,6 +979,95 @@ $(document).ready(function(){
         return false;
     });
 
+    $(document).on('click', '#save-mobile', function() {
+        var form = $('#mobile-form');
+        var phonenumber = $('input[name=phone]', form).val();
+        console.log(phonenumber)
+        var data = form.serialize();
+        $.post('/users/update.json', data, function(response) {
+            var paragraph = $('.confirm-message', '.user-mobile-section');
+            var text = '';
+            if(response == 'false') {
+                console.log('bad phone')
+                text = 'К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.';
+            }else if(response == 'limit') {
+                console.log('limit')
+                text = 'К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.';
+            }else {
+                if (response.indexOf('error') != -1) {
+                    console.log('error')
+                    text = 'Произошел сбой доставки SMS-сообщения. Попробуйте позже.';
+                    paragraph.text(text).show();
+                } else {
+                    console.log('no error');
+                    text = 'Для подтверждения номера +' + phonenumber + ' введите код, который пришел по смс.';
+                    $('.phone-input-container').hide();
+                    $('#save-mobile').hide();
+                    $('#save-mobile').next().hide();
+                    $('ul', '#mobile-form').show();
+                    $('#confirm-mobile').prev().show();
+                    $('#confirm-mobile').show();
+                    paragraph.text(text).show();
+                }
+            }
+            paragraph.text(text).show();
+        });
+        return false;
+    });
+
+    $(document).on('click', '.remove-number-link', function(){
+        var data = {"removephone": true}
+        $.post('/users/update.json', data)
+        $('.confirm-message').hide();
+        $('ul', '#mobile-form').hide();
+        $('#confirm-mobile').prev().hide();
+        $('#confirm-mobile').hide();
+        $('.phone-input-container').show();
+        $('#save-mobile').next().show();
+        $('#save-mobile').show();
+        $('.resend-code').show();
+        $('.remove-number-link').text('Удалить номер')
+        return false;
+    });
+
+    $(document).on('click', '.resend-code', function() {
+        var data = {"resendcode": true}
+        $.post('/users/update.json', data, function(response) {
+            var paragraph = $('.confirm-message', '.user-mobile-section');
+            var text = '';
+            if(response == 'limit') {
+                text = 'К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.';
+            }else{
+                if (response.indexOf('error') != -1) {
+                    text = 'Произошел сбой доставки SMS-сообщения. Попробуйте позже.';
+                } else {
+                    text = 'Код подтверждения отправлен повторно на номер ваш номер.';
+                }
+            }
+            paragraph.text(text).show();
+        })
+        return false;
+    });
+
+    $(document).on('click', '#confirm-mobile', function() {
+        var data = {"code": $('input[name=phone_code]', '.user-mobile-section').val()}
+        $.post('/users/update.json', data, function(response) {
+            var paragraph = $('.confirm-message', '.user-mobile-section');
+            if(response == 'false') {
+                text = 'Вы ввели неверный код.';
+                paragraph.text(text)
+            }else {
+                paragraph.hide();
+                $('#confirm-mobile').prev().hide();
+                $('#confirm-mobile').hide();
+                $('.remove-number-link').text('Удалить/поменять номер')
+                $('.resend-code').hide();
+                $('.number').show();
+            }
+        });
+        return false;
+    });
+
     $(document).on('blur', '#fieldblock1 input[type=text]', function(event) {
         var element = $(event.currentTarget)[0];
         var data = {};

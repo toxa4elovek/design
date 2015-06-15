@@ -53,27 +53,36 @@
                     </section>
                 </form>
 
+                <div class="clear"></div>
+                <section class="user-mobile-section">
                     <div class="g_line"></div>
-                    <section class="user-password-section">
-                        <h1 class="section-header">Пароль</h1>
-                            <form method="post" id="password-form" action="/users/update">
-                                <p></p>
-                                <input type="password" placeholder="Старый пароль" name="currentpassword">
-                                <input type="password" placeholder="Новый пароль" name="newpassword">
-                                <input type="password" placeholder="Повторите новый пароль" name="confirmpassword">
-                            </form>
-                        <div style="clear:both;height:1px"></div>
+                    <h1 class="section-header">Сотовый</h1>
+                    <form method="post" id="mobile-form" action="/users/update">
+                        <p class="confirm-message" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>Для подтверждения номера +<?=$user->phone?> введите код, который пришел по смс.</p>
+                        <div class="phone-input-container" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
+                            <span class="plus">+</span>
+                            <input type="text" name="phone" placeholder="79811234567">
+                        </div>
+                        <div class="clear"></div>
+                        <ul <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                            <li class="number" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?>>+ <?= $user->phone?></li>
+                            <li class="remove-number"><a href="#" class="remove-number-link">Удалить номер</a></li>
+                            <li class="resend-code" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?>><a href="#" class="resend-code-link">Выслать код повторно</a></li>
+                        </ul>
+                        <div class="clear"></div>
+                        <input type="text" name="phone_code"  <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                        <input type="submit" id="confirm-mobile" class="button" value="Подтвердить код" <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                        <input type="submit" id="save-mobile" class="button" value="Подтвердить телефон" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
+                        <span class="note" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>для смс оповещения в экстренных случаях</span>
+                        <div class="clear"></div>
+                    </form>
 
-                        <input type="submit" id="save-password" class="button" value="Изменить пароль">
-                        <a href="/users/deleteaccount" id="deleteaccount">Удалить аккаунт</a>
-                    </section>
-
-                    <div class="g_line"></div>
                     <section class="user-email-section">
+                        <div class="g_line"></div>
                         <h1 class="section-header">Email</h1>
                         <p>
                             <?php if($emailInfo != false):?>
-                            <?=$emailInfo?><br>
+                                <?=$emailInfo?><br>
                             <?php endif;?>
                             <?= $this->user->getMaskedEmail()?></p>
                         <form method="post" id="email-form" action="/users/update">
@@ -81,6 +90,27 @@
                             <input type="submit" id="save-email" class="button" value="Сохранить адрес" />
                         </form>
                     </section>
+                </section>
+
+                <section class="user-password-section">
+                    <div class="g_line"></div>
+                    <h1 class="section-header">Пароль</h1>
+                        <form method="post" id="password-form" action="/users/update">
+                            <p></p>
+                            <input type="password" placeholder="Старый пароль" name="currentpassword">
+                            <input type="password" placeholder="Новый пароль" name="newpassword">
+                            <input type="password" placeholder="Повторите новый пароль" name="confirmpassword">
+                        </form>
+                    <div class="clear"></div>
+
+                    <input type="submit" id="save-password" class="button" value="Изменить пароль">
+                    <a href="/users/deleteaccount" id="deleteaccount">Удалить аккаунт</a>
+                </section>
+
+
+
+
+                <div class="clear"></div>
 
                     <div class="g_line" style="margin-top: 25px;"></div>
                     <section class="user-notifications">

@@ -1119,7 +1119,7 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function phoneValidationStart($userId, $phone, $phoneOperator) {
+    public static function phoneValidationStart($userId, $phone, $phoneOperator = '') {
         if (($user = self::first($userId)) && !empty($phone)) {
             $user->phone = $phone;
             $user->phone_operator = $phoneOperator;

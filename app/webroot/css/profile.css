@@ -11,6 +11,10 @@
 .g_line {
     margin-bottom: 10px !important;
 }
+.clear{
+    clear:both;
+    height:1px;
+}
 /* Базовые настройки */
 a.show-preview {
     padding: 0 12px !important;
@@ -63,7 +67,103 @@ a.show-preview {
 .profselectbox label {
     font-family: OfficinaSansC Book, serif;
 }
+/* Телефон */
+.user-mobile-section {
+    width: 400px;
+    float: left;
+}
+
+.user-mobile-section form {
+    margin-top: 23px;
+}
+.user-mobile-section .phone-input-container {
+    position: relative;
+}
+.user-mobile-section .confirm-message {
+    font-family: Georgia, serif;
+    color: #999;
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 5px;
+    padding-left: 2px;
+    display: none;
+}
+.user-mobile-section .note {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-style: italic;
+    display: inline-block;
+    width: 140px;
+    float: left;
+    margin-top: 12px;
+    margin-left: 10px;
+}
+.user-mobile-section .plus {
+    font-size: 18px;
+    font-family: OfficinaSansC Bold, serif;
+    position: absolute;
+    color: #666666;
+    left: -24px;
+    top: 19px;
+}
+.user-mobile-section input[type="text"] {
+    color: #b6b6b6;
+    font-size: 18px;
+    font-family: OfficinaSansC Book, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 370px;
+}
+.user-mobile-section input[name="phone_code"] {
+    width: 170px;
+    display: none;
+    float: left;
+}
+.user-mobile-section #confirm-mobile {
+    width: 194px;
+    display: none;
+    float: left;
+    margin-top: 2px;
+    margin-left: 36px;
+}
+.user-mobile-section ul {
+    margin-top: 10px;
+    display: none;
+}
+.user-mobile-section ul li {
+    float: left;
+    font-style: italic;
+    font-size: 15px;
+    font-family: Georgia, serif;
+    margin-right: 105px;
+    margin-bottom: 10px;
+}
+.remove-number {
+    padding-left: 15px;
+    background: url(/img/user_settings/remove.png) 0 2px no-repeat;
+}
+.resend-code {
+    padding-left: 30px;
+    background: url(/img/user_settings/resend.png) 0 -3px no-repeat;
+}
+ul .number {
+    display: none;
+    font-style: normal !important;
+    font-family: OfficinaSansC Book, serif !important;
+    font-size: 18px !important;
+    color: #666666 !important;
+
+}
+.user-mobile-section input[type="submit"] {
+    width: 220px;
+    display: block;
+    float: left;
+}
 /* Почта */
+.user-email-section {
+    width: 400px;
+    float: left;
+}
 .user-email-section p, .user-password-section p {
     font-family: OfficinaSansC Book, serif;
     color: #999;
@@ -78,23 +178,28 @@ a.show-preview {
     font-family: OfficinaSansC Book, serif;
     padding-left: 15px;
     padding-right: 15px;
-    width: 400px;
+    width: 370px;
 }
 .user-email-section input[type="submit"] {
     width: 190px;
     display: block;
 }
 /* Пароль */
+.user-password-section {
+    width: 400px;
+    float: left;
+    margin-left: 35px;
+}
 .user-password-section input{
     color: #b6b6b6;
     font-size: 18px;
     font-family: OfficinaSansC Book, serif;
     padding-left: 15px;
     padding-right: 15px;
-    width: 400px !important;
+    width: 370px !important;
 }
 #deleteaccount {
-    text-decoration: underline;
+    text-decoration: none;
     padding-left: 13px;
     background: url(/img/closerequest.png) 0 2px no-repeat;
     background-size: 8px 8px;
@@ -102,6 +207,9 @@ a.show-preview {
     font-size: 12px;
     margin-left: 15px;
 }
+#deleteaccount:hover {
+     text-decoration: underline;
+ }
 .user-password-section form {
     padding-top: 26px;
 }

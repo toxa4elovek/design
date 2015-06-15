@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\extensions\smsfeedback\SmsFeedback;
 use app\models\Logreferal;
 use \app\models\User;
 use \app\models\Sendemail;
@@ -1094,7 +1095,6 @@ class UsersController extends \app\controllers\AppController {
             if(isset($this->request->data['short_company_name'])) {
                 $shortUpdate = true;
                 $user->short_company_name = $this->request->data['short_company_name'];
-                $unserialized = unserialize($user->companydata);
                 $user->companydata = serialize(array(
                     'company_name' => $this->request->data['company_name'],
                     'inn' => $this->request->data['inn'],
@@ -1157,6 +1157,86 @@ class UsersController extends \app\controllers\AppController {
                 }else {
                     return $this->redirect('/users/profile');
                 }
+            }
+
+            if(isset($this->request->data['removephone'])) {
+                $user->phone = '';
+                $user->phone_valid = 0;
+                $user->phone_code = '';
+                $user->phone_operator = '';
+                $user->save(null, array('validate' => false));
+                return json_encode(true);
+            }
+
+            if(isset($this->request->data['resendcode'])) {
+                // SMS Spam Prevention
+                if ($smsCount = Session::read('user.smsCount')) {
+                    if (end($smsCount) > (time() - HOUR)) {
+                        $i = 1;
+                        while ((prev($smsCount) > (time() - HOUR)) && $i < 10) {
+                            $i++;
+                        }
+                        if ($i >= 10) {
+                            return json_encode('limit');
+                        }
+                        $smsCount[] = time();
+                    } else {
+                        $smsCount = array(time());
+                    }
+                } else {
+                    $smsCount = array(time());
+                }
+                Session::write('user.smsCount', $smsCount);
+
+                $respond = SmsFeedback::send($user->phone, $user->phone_code . ' - код для проверки');
+                $phone = $user->phone;
+                $phone_valid = $user->phone_valid;
+                return json_encode(compact('respond', 'phone', 'phone_valid'));
+            }
+
+            if(isset($this->request->data['phone'])) {
+                if (!preg_match("/^[0-9]{11,12}+$/", $this->request->data['phone'])) {
+                    return json_encode(false);
+                }
+
+                // SMS Spam Prevention
+                if ($smsCount = Session::read('user.smsCount')) {
+                    if (end($smsCount) > (time() - HOUR)) {
+                        $i = 1;
+                        while ((prev($smsCount) > (time() - HOUR)) && $i < 10) {
+                            $i++;
+                        }
+                        if ($i >= 10) {
+                            return json_encode('limit');
+                        }
+                        $smsCount[] = time();
+                    } else {
+                        $smsCount = array(time());
+                    }
+                } else {
+                    $smsCount = array(time());
+                }
+                Session::write('user.smsCount', $smsCount);
+
+                // Добавляем семерку к номеру телефону, если мы рассылаем по России.
+                //$this->request->data['userPhone'] = "7" . $this->request->data['userPhone'];
+                // Иногда возникает небходимость проверить первую цифру номера, например если он
+                // 11-ти значный то для корректной отправки через наш API необходимо,
+                // чтобы номер начинался с 7, проверим это
+
+                /* For Russian Phones Only
+                 *
+                 * $first = substr($this->request->data['userPhone'], "0", 1);
+                  if ($first != 7) {
+                  return json_encode(false);
+                  } */
+
+                return json_encode(User::phoneValidationStart($user->id, $this->request->data['phone']));
+
+            }
+
+            if(isset($this->request->data['code'])) {
+                return json_encode(User::phoneValidationFinish($user->id, (int) $this->request->data['code']));
             }
 
             if(isset($this->request->data['email'])) {
