@@ -918,6 +918,10 @@ $(document).ready(function(){
         });
     }
 
+    $(document).on('click', 'td.s3_text, td.s3_h', function () {
+        $('.rb1', $(this).prevAll(':last')).click();
+    });
+
     $(document).on('click', '#deleteaccount', function() {
         $('#popup-final-step').modal({
             containerId: 'final-step',

@@ -207,7 +207,7 @@
                                 <td width="28">
                                     <input type="radio" data-pay="cards" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'card') echo 'checked' ?> value="card">
                                 </td>
-                                <td width="186">
+                                <td width="186" class="s3_h">
                                     <img alt="Банковские карты" src="/img/visa_mastercard.png">
                                 </td>
                                 <td class="s3_text">
@@ -219,6 +219,9 @@
                             <tr id="cards" <?php if($paydata['cashintype'] != 'card'):?> style="display:none;" <?php endif;?>>
                                 <td colspan="4">
                                     <table id="step1table">
+                                        <tr style="height: 40px;">
+                                            <td></td>
+                                        </tr>
                                         <tr><td class="tableheader" colspan="2">ФИО</td></tr>
                                         <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?=$paydata['fio']?>" name="fio" data-validate="fio" /></td></tr>
                                         <tr><td class="tableheader" colspan="2">Телефон для связи</td></tr>
@@ -262,6 +265,9 @@
                             <tr id="wmr" <?php if($paydata['cashintype'] != 'wmr'):?> style="display:none;"<?php endif;?> >
                                 <td colspan="4">
                                     <table id="step2table">
+                                        <tr style="height: 40px;">
+                                            <td></td>
+                                        </tr>
                                         <tr><td class="tableheader" colspan="3">Кошелек</td></tr>
                                         <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['wmr-account']?>" name="wmr-account" data-validate="wmr" /></td></tr>
                                         <tr><td class="tableheader" colspan="3">ФИО</td></tr>
