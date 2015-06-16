@@ -69,6 +69,13 @@ class Comment extends AppModel {
                 return $params;
             }
 
+            $pitch = Pitch::first($params['pitch_id']);
+            // Expert writing
+            $experts = unserialize($pitch->{'expert-ids'});
+            if($pitch->status > 0 && in_array($params['user_id'], Expert::getPitchExpertUserIds($experts))) {
+                $params['private'] = 1;
+            }
+
             $params = $chain->next($self, $params, $chain);
 
 			if($params) {
@@ -85,7 +92,6 @@ class Comment extends AppModel {
             $admin = User::getAdmin();
             $pitch = Pitch::first($params['pitch_id']);
             // Expert writing
-            $experts = unserialize($pitch->{'expert-ids'});
             if($pitch->status > 0 && in_array($params['user_id'], Expert::getPitchExpertUserIds($experts))) {
                 $data = array(
                     'pitch' => $pitch,
