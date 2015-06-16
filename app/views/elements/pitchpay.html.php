@@ -11,7 +11,7 @@
                     <input type="radio" name="1" class="rb1" data-pay="payture" style="background: #a2b2bb;">
                 </td>
                 <td colspan="2" class="s3_text" style="padding-left: 20px;">
-                    Оплата пластиковыми картами через Payture<br><br>
+                    Оплата дебетовыми или кредитными картами<br><br>
                     <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
                 </td>
                 <td style="width: 190px;">
@@ -20,7 +20,7 @@
             </tr>
             <tr id="online-images">
                 <td colspan="4" style="padding: 20px 0 0 40px;">
-                    <img src="/img/s3_master.png" alt="">
+                    <img src="/img/s3_master.png" alt="Дебетовые и кредитные карты">
                 </td>
             </tr>
 
@@ -35,13 +35,13 @@
                         <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                     </td>
                     <td colspan="3" class="s3_text" style="padding-left: 20px;">
-                        Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
+                        Оплата электронным деньгами<br><br>
                         <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
                     </td>
                 </tr>
                 <tr id="paymaster-images" class="paymaster-section">
                     <td colspan="4" class="s3_text" style="padding: 20px 0 0 40px; text-transform: uppercase;">
-                        <img src="/img/s3_paymaster.png" alt="">
+                        <img src="/img/s3_paymaster_short.png" alt="Электронные деньги">
                         <span style="margin: 0 0 0 20px; line-height: 3em;">и другие...</span>
                     </td>
                 </tr>

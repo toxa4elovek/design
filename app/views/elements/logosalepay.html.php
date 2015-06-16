@@ -8,7 +8,7 @@
                     <input type="radio" name="1" class="rb1" data-pay="payture" style="background: #a2b2bb;">
                 </td>
                 <td colspan="2" class="s3_text" data-radio="payture" style="padding-left: 20px;">
-                    Оплата пластиковыми картами через Payture<br><br>
+                    Оплата дебетовыми или кредитными картами<br><br>
                     <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
                 </td>
                 <td style="width: 190px;">

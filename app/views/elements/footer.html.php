@@ -63,7 +63,7 @@
             </p>
         </nav><!-- .nav -->
         <ul class="pay-systems">
-            <li style="width: 88px; padding-top: 0px; margin-right: 12px;"><a target="_blank" href="http://www.payanyway.ru"><img alt="PayAnyWay" src="http://www.godesigner.ru/img/88_31_paw8.gif"></a></li>
+            <li style="width: 88px; padding-top: 0; margin-right: 12px;"></li>
             <li><img src="http://www.godesigner.ru/img/mastercard.png" alt="MasteCard"/></li>
             <li><img src="http://www.godesigner.ru/img/visa.png" alt="Visa" /></li>
         </ul><!-- .social -->
