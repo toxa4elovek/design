@@ -234,10 +234,10 @@
 
     <header class="<?=$header?>">
 
-	<p class="<?=$logo?>"><strong><a href="http://www.godesigner.ru/"
+	<p class="<?=$logo?>"><a href="http://www.godesigner.ru/"
         <?php if(!$this->user->getId()):?>
              style="background: url(/img/logo2.png) 0 0 no-repeat"
-        <?php endif?>>Go Designer</a></strong></p>
+        <?php endif?>>Go Designer</a></p>
 	<nav class="topnav">
         <?php if($this->user->isLoggedIn()):?>
             <div class="avatar-top" style="width: 41px; float: left; height: 50px;">

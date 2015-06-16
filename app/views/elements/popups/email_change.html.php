@@ -10,9 +10,9 @@
     <p>В связи с чем мы просим вас по возможности указать альтернативный адрес электронной почты. Он будет пересохранен и заменен вместо старого. Спасибо!</p>
     <form id="changeEmail">
         <label for="first_email">НОВЫЙ EMAIL</label>
-        <input id="first_email" type="text" id="email" name="email">
+        <input id="first_email" type="text" name="email">
         <label for="conf_email">ПОДТВЕРДИТЬ EMAIL</label>
         <input id="conf_email" type="text" name="confirmEmail">
-        <div class="wrapper" style="text-align: center;"><input href="#" id="confirmEmail" type="submit" value="Сохранить новый Email" class="button third" style="width:440px;margin-top:10px;font-weight:bold"></div>
+        <div class="wrapper" style="text-align: center;"><input id="confirmEmail" type="submit" value="Сохранить новый Email" class="button third" style="width:440px;margin-top:10px;font-weight:bold"></div>
     </form>
 </div>
