@@ -49,7 +49,15 @@ $job_types = array(
                     </p>
                     <div id="filterContainer">
                         <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
-                        <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 9px;margin-left:0; padding-left: 10px">
+                        <?php
+                        $placeholders = array(
+                            'Мясо, комбинат, красный, вкусный, колбаса',
+                            'Лаванда, фиолетовый, травы, успокаивающий, сон',
+                            'Инвестиции, банк, деньги, синий, it'
+                        );
+                        $key = array_rand($placeholders);
+                        ?>
+                        <input type="text" placeholder="<?= $placeholders[$key] ?>" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 9px;margin-left:0; padding-left: 10px">
                     </div>
 
                     <p class="output-p" style="margin-top: 23px;">
