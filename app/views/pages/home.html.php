@@ -1,4 +1,4 @@
-<div class="wrapper auth login" style="background:none;">
+<div class="wrapper login" style="background:none;">
 
   <?=$this->view()->render(array('element' => 'header'))?>
   <div style="clear:both"></div>
@@ -215,7 +215,7 @@
     endif;
     ?>
     <div>
-        <h2 class="largest-header" style="text-align: left; margin-left:64px;">Отзывы</h2>
+        <h2 class="largest-header" style="text-align: left; margin-left:65px; text-transform: uppercase;">Отзывы</h2>
         <div style="width:959px;height:166px;margin-bottom:18px;margin-top:12px;">
 
           <div class="talkhoverzone" style="float:left;height:144px;width:398px;padding-left:66px;padding-top:22px">
