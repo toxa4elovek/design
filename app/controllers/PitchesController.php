@@ -1424,17 +1424,23 @@ Disallow: /pitches/upload/' . $pitch['id'];
         }
     }
 
+    /**
+     * Мето выводит на скачивание сгенерированный отчёт pdf
+     *
+     * @return object
+     */
     public function getPdfReport() {
         if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
-            if (Session::read('user.id') != $pitch->user_id && !User::checkRole('admin')) {
-                die();
+            if (!$this->userHelper->isPitchOwner($pitch->user_id) && !User::checkRole('admin')) {
+                return $this->redirect('/users/mypitches');
             }
             $destination = 'Download';
             $options = compact('pitch', 'bill', 'destination');
             Pitch::generatePdfReport($options);
-            exit;
+            die();
+        }else {
+            return $this->redirect('/users/mypitches');
         }
-        die();
     }
 
     public function addon() {

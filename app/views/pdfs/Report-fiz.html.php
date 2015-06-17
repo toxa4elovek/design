@@ -1,3 +1,13 @@
+<?php
+$addonData = $addons->data();
+$tableAddonData = array();
+$addonTotal = 0;
+if($addonData) {
+    foreach($addonData as $addon) {
+        $addonTotal += $addon['total'];
+    }
+}
+?>
 <img src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/logo-01.png" width="180" style="margin-bottom:40px;" />
 <div style="font-family: Arial, sans-serif;
             font-size: 13px;
@@ -15,15 +25,15 @@
 </p>
 
 <p style="margin: 20px 0;">1. C помощью средств сайта godesigner.ru Агентом проведён проект (конкурс) № <?=$pitch->id?> от <?=date('d.m.Y', strtotime($pitch->started));?>,
-на сумму <?=$money->formatMoney($pitch->price + $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.
+на сумму <?=$money->formatMoney($pitch->price - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.
 </p>
 
-<p style="margin: 20px 0;">2. Агентское вознаграждение ООО «КРАУД МЕДИА» составляет <?=$money->formatMoney($commission + $totalfees - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?>,
-в том числе <?=$money->formatMoney($totalfees - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> за услуги с предоставлением дополнительных опций.
+<p style="margin: 20px 0;">2. Агентское вознаграждение ООО «КРАУД МЕДИА» составляет <?=$money->formatMoney($totalfees + $commission - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?>,
+в том числе <?=$money->formatMoney($totalfees - $commission - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> за услуги с предоставлением дополнительных опций.
 Агент не является плательщиком НДС в соответствии с главой 26.2 Налогового кодекса РФ согласно уведомлению налогового органа.
 </p>
 
-<p style="margin: 20px 0;">3. Итого сумма расходов, поступивших от Принципала, составляет <?=$money->formatMoney($commission + $totalfees + $pitch->price, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.</p>
+<p style="margin: 20px 0;">3. Итого сумма расходов, поступивших от Принципала, составляет <?=$money->formatMoney($commission + $totalfees - $prolongfees + $pitch->price, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.</p>
 
 <?php if($pitch->moneyback):?>
     <p style="margin: 20px 0;">4. В соответствии с пунктом 7.9. агентского договора, размещённого на сайте godesigner.ru, Принципалу возвращена сумма проекта (конкурса) <?=$money->formatMoney($pitch->price, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.</p>

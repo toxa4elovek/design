@@ -787,10 +787,10 @@ class Pitch extends \app\models\AppModel {
             $prolongfees = ($addon->prolong == 1) ? $addon->{'prolong-days'} * 1000 : $prolongfees;
         }
         foreach ($receipt as $option) {
-            if ($option->name == 'Сбор GoDesigner') {
+            if (preg_match('/Сбор GoDesigner/', $option->name)) {
                 $options['commission'] = $option->value;
             }
-            if (($option->name != 'Награда копирайтеру') &&  ($option->name != 'Награда Дизайнеру') && ($option->name != 'Сбор GoDesigner')) {
+            if (($option->name != 'Награда копирайтеру') &&  ($option->name != 'Награда Дизайнеру') && (!preg_match('/Сбор GoDesigner/', $option->name))) {
                 $totalfees += $option->value;
             }
         }
