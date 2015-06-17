@@ -17,17 +17,19 @@ use \lithium\security\Auth;
 
 class AppController extends \lithium\action\Controller {
 
+    public $userHelper = null;
+
     public function _init() {
         parent::_init();
-        $userHelper = new UserHelper();
-        if($userHelper->isLoggedIn()) {
+        $this->userHelper = new UserHelper();
+        if($this->userHelper->isLoggedIn()) {
             if(function_exists('newrelic_add_custom_parameter')) {
-                newrelic_add_custom_parameter('userId', $userHelper->getId());
+                newrelic_add_custom_parameter('userId', $this->userHelper->getId());
             }
             Session::write('user.attentionpitch', null);
             Session::write('user.attentionsolution', null);
             Session::write('user.timeoutpitch', null);
-            if($user = User::find($userHelper->getId())) {
+            if($user = User::find($this->userHelper->getId())) {
                 // Проверяем, ни забанен ли пользователь
                 if($user->banned) {
                     Auth::clear('user');
@@ -50,8 +52,8 @@ class AppController extends \lithium\action\Controller {
                         'with' => array('Category'),
                         'conditions' => array(
                             array('OR' => array(
-                                array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
-                                array('Pitch.user_id = ' . $userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.billed = 1 AND Pitch.blank = 1'),
+                                array('Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
+                                array('Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.billed = 1 AND Pitch.blank = 1'),
                             )),
                         )
                     )
@@ -65,7 +67,7 @@ class AppController extends \lithium\action\Controller {
                 Session::write('user.currentpitches', $topPanel);
                 /** ** **/
                 $topPanelDesigner = array();
-                $wonProjectsIds = User::getUsersWonProjectsIds($userHelper->getId());
+                $wonProjectsIds = User::getUsersWonProjectsIds($this->userHelper->getId());
                 if(!empty($wonProjectsIds)) {
                     $pitchesToCheck = Pitch::all(array(
                         'with' => array('Category'),
@@ -73,7 +75,7 @@ class AppController extends \lithium\action\Controller {
                     ));
                     foreach($pitchesToCheck as $pitch) {
                         $solution = Solution::first($pitch->awarded);
-                        if($userHelper->isSolutionAuthor($solution->user_id)) {
+                        if($this->userHelper->isSolutionAuthor($solution->user_id)) {
                             if(($pitch->status == 2) and ($pitch->hadDesignerLeftRating())) {
 
                             }else {
@@ -86,21 +88,21 @@ class AppController extends \lithium\action\Controller {
 
                 Session::write('user.currentdesignpitches', $topPanelDesigner);
                 /** faves */
-                Session::write('user.faves', Favourite::getFavouriteProjectsIdsForUser($userHelper->getId()));
+                Session::write('user.faves', Favourite::getFavouriteProjectsIdsForUser($this->userHelper->getId()));
                 if((Session::read('user.blogpost') == null) || (Session::read('user.blogpost.count') == 0)) {
                     $lastPost = Post::first(array('conditions' => array('published' => 1), 'order' => array('created' => 'desc')));
                     $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
 
                     if(isset($_COOKIE['counterdata'])) {
                         $counterData = unserialize($_COOKIE['counterdata']);
-                        if(isset($counterData[$userHelper->getId()])) {
-                            $date = $counterData[$userHelper->getId()]['date'];
+                        if(isset($counterData[$this->userHelper->getId()])) {
+                            $date = $counterData[$this->userHelper->getId()]['date'];
                         }
                     }
                     $count = Post::count(array('conditions' => array('created' => array('>' => $date), 'published' => 1)));
                     Session::write('user.blogpost.count', $count);
 
-                    $counterData = array($userHelper->getId() => array('date' => $date));
+                    $counterData = array($this->userHelper->getId() => array('date' => $date));
                     setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
                 }
 
@@ -111,7 +113,7 @@ class AppController extends \lithium\action\Controller {
                         $date = Session::read('user.events.date');
                     }
                     Session::write('user.events.date', $date);
-                    if($updates = Event::getEvents(User::getSubscribedPitches($userHelper->getId()), 1, $date)) {
+                    if($updates = Event::getEvents(User::getSubscribedPitches($this->userHelper->getId()), 1, $date)) {
 
                         Session::write('user.events.count', count($updates));
                     }else {

@@ -49,27 +49,15 @@ class PitchesController extends \app\controllers\AppController {
      * @var array
      */
     public $publicActions = array(
-        'crowdsourcing', 'blank', 'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
+        'crowdsourcing', 'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
         'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch'
     );
 
-    public function blank() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
-
-        $var = unserialize('a:13:{s:15:"LMI_MERCHANT_ID";s:36:"d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60";s:18:"LMI_PAYMENT_SYSTEM";s:1:"3";s:12:"LMI_CURRENCY";s:3:"RUB";s:18:"LMI_PAYMENT_AMOUNT";s:8:"11710.00";s:14:"LMI_PAYMENT_NO";s:2:"13";s:16:"LMI_PAYMENT_DESC";s:23:"Оплата проекта";s:20:"LMI_SYS_PAYMENT_DATE";s:19:"2013-10-25T10:36:27";s:18:"LMI_SYS_PAYMENT_ID";s:8:"10299519";s:15:"LMI_PAID_AMOUNT";s:8:"11710.00";s:17:"LMI_PAID_CURRENCY";s:3:"RUB";s:12:"LMI_SIM_MODE";s:1:"0";s:20:"LMI_PAYER_IDENTIFIER";s:12:"212571931422";s:8:"LMI_HASH";s:24:"uCYU7ZDqmnzNLK335/WPSQ==";}');
-        echo '<pre>';
-        echo (http_build_query($var));
-        //Logger::write('info', serialize('init'), array('name' => 'masterbank'));
-        //Logger::write('info', serialize('init'), array('name' => 'paymaster'));
-        //Logger::write('debug', serialize('init'));
-        die();
-    }
-
-    public function blank2() {
-        
-    }
-
+    /**
+     * Метод выводит список питчей (html,json)
+     *
+     * @return array
+     */
     public function index() {
         $categories = Category::all();
         $hasOwnHiddenPitches = false;
@@ -146,6 +134,12 @@ class PitchesController extends \app\controllers\AppController {
         return compact('data', 'categories', 'query', 'selectedCategory');
     }
 
+    /**
+     * Метод выводит соглашение, если закрытый питч
+     *
+     * @return object|void
+     *
+     */
     public function agreement() {
         if (isset($this->request->params['id'])) {
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->params['id']), 'with' => array('User')));
@@ -158,6 +152,11 @@ class PitchesController extends \app\controllers\AppController {
         die();
     }
 
+    /**
+     * Метод выводит проекты для страницы "Мои проекты"
+     *
+     * @return array
+     */
     public function participate() {
         $categories = Category::all();
         if($this->request->query['type'] == 'favourites') {
@@ -1402,17 +1401,27 @@ Disallow: /pitches/upload/' . $pitch['id'];
         die();
     }
 
+    /**
+     * Метод выводит на скачиване сгенерированный акт pdf
+     *
+     */
     public function getPdfAct() {
         if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
-            if (Session::read('user.id') != $pitch->user_id && !User::checkRole('admin')) {
-                die();
+            if (!$this->userHelper->isPitchOwner($pitch->user_id) && !User::checkRole('admin')) {
+                return $this->redirect('/users/mypitches');
             }
             $destination = 'Download';
-            $options = compact('pitch', 'bill', 'destination');
+            $addons = Addon::all(array('conditions' => array(
+                'pitch_id' => $pitch->id,
+                'billed' => 1,
+                'prolong' => array('>' => 0)
+            )));
+            $options = compact('pitch', 'bill', 'addons', 'destination');
             Pitch::generatePdfAct($options);
-            exit;
+            die();
+        }else {
+            return $this->redirect('/users/mypitches');
         }
-        die();
     }
 
     public function getPdfReport() {

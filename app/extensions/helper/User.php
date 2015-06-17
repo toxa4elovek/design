@@ -6,7 +6,7 @@ namespace app\extensions\helper;
  * Взаимодействует с моделью User и Expert
  * @package app\extensions\helper
  */
-class User extends \app\extensions\helper\Session {
+class User extends \lithium\storage\Session {
 
     /**
      * @var array Массив для хранения опций и данных из моделей

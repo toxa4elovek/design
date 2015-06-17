@@ -4,6 +4,17 @@
     }else {
         $moneyInAct = $pitch->total;
     }
+$addonData = $addons->data();
+$tableAddonData = array();
+$finalSum = $moneyInAct;
+if($addonData) {
+    foreach($addonData as $addon) {
+        $finalSum += $addon['total'];
+        $tableAddonData[] = array('prolong-days' => $addon['prolong-days'], 'total' => $addon['total']);
+    }
+}
+
+
 ?>
 <img src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/logo-01.png" width="180" style="margin-bottom:40px;" />
 <table style="" width="550" cellspacing="0" border="0" cellpadding="0">
@@ -51,10 +62,29 @@ godesigner.ru, за проект № <?=$pitch->id?>. НДС не предусм
     <?=$money->formatMoney($moneyInAct, array('suffix' => '.00р', 'dropspaces' => true))?>
 </td>
 </tr>
+<?php if(!empty($tableAddonData)):
+    $num = 2;
+    foreach($tableAddonData as $row):?>
+        <tr  valign="top">
+            <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;"><?= $num ?></td>
+            <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">Продление срока проведения проекта</td>
+            <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">дни.</td>
+            <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;"><?= $row['prolong-days'] ?></td>
+            <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">
+                <?=$money->formatMoney('1950', array('suffix' => '.00р', 'dropspaces' => true))?>
+            </td>
+            <td style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">
+                <?=$money->formatMoney($row['total'], array('suffix' => '.00р', 'dropspaces' => true))?>
+            </td>
+        </tr>
+    <?php
+        $num ++;
+    endforeach;
+endif;?>
 <tr height="25">
 <td height="25" colspan="5" style="text-align:right;"><b>Итого:&nbsp;&nbsp;</b></td>
 <td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">
-    <?=$money->formatMoney($moneyInAct, array('suffix' => '.00р', 'dropspaces' => true))?>
+    <?=$money->formatMoney($finalSum, array('suffix' => '.00р', 'dropspaces' => true))?>
 </td>
 </tr>
 <tr height="25">
@@ -62,13 +92,13 @@ godesigner.ru, за проект № <?=$pitch->id?>. НДС не предусм
 <td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">---</td>
 </tr>
 <tr height="25">
-<td height="25" colspan="5" style="text-align:right;"><b>Всего к оплате:&nbsp;&nbsp;</b></td>
+<td height="25" colspan="5" style="text-align:right;"><b>Всего:&nbsp;&nbsp;</b></td>
 <td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">
-    <b><?=$money->formatMoney($moneyInAct, array('suffix' => '.00р', 'dropspaces' => true))?></b>
+    <b><?=$money->formatMoney($finalSum, array('suffix' => '.00р', 'dropspaces' => true))?></b>
 </td>
 </tr>
 </table>
-<p style="">Всего оказано услуг на сумму <?=$money->num2str($moneyInAct)?>.</p>
+<p style="">Всего оказано услуг на сумму <?=$money->num2str($finalSum)?>.</p>
 <p style="">Вышеперечисленные услуги выполнены полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет.</p>
 <br /><br /><br />
 <table width="750">
