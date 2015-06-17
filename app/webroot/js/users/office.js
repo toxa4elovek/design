@@ -1091,7 +1091,14 @@ $(document).ready(function(){
     $(document).on('change', '.profselectbox input[type=checkbox]', function(event) {
         var element = $(event.currentTarget)[0];
         var data = {};
+        var name = $(element).attr('name')
         var value = this.checked ? 1 : 0;
+        console.log(name);
+        if((name == 'is_company') && (value == 1)) {
+            $('.user-company-section').show();
+        }else if((name == 'is_company') && (value == 0)) {
+            $('.user-company-section').hide();
+        }
         data[element.name] = value;
         $.post('/users/update.json', data)
     })
