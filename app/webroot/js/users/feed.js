@@ -45,7 +45,7 @@ var translatedTitles = {};
 var idOfNewsToTranslate = null;
 
 function mycallback(text, title) {
-    var box = $('.box[data-newsid="' + idOfNewsToTranslate + '"]');
+    var box = $('div[data-newsid="' + idOfNewsToTranslate + '"]');
     $('.img-short', box).text(text);
     $('h2', box).text(title);
     $('.translate', box).text('Показать оригинальный текст');
@@ -927,7 +927,7 @@ function OfficeStatusUpdater() {
                         if(this_user == object.user.id) {
                             return false;
                         }
-                        if($('.box[data-newsid="' + object.news_id + '"]').length == 1) {
+                        if($('div[data-newsid="' + object.news_id + '"]').length == 1) {
                             var box = $('.box[data-newsid="' + object.news_id + '"]');
                             var link = $('.like-small-icon-box', box),
                                 link_parent = link.parent(),
@@ -1006,7 +1006,7 @@ function OfficeStatusUpdater() {
                     }
                     var html = '', solutions = '';
                     if (typeof (response.post) != "undefined" && response.post != 0) {
-                        if (($('.box[data-eventid="' + response.id + '"]').length == 0) && ($('.box[data-newsid="' + response.post.id + '"]').length == 0)) {
+                        if (($('div[data-eventid="' + response.id + '"]').length == 0) && ($('div[data-newsid="' + response.post.id + '"]').length == 0)) {
                             var img = (response.post.imageurl.indexOf('/', 0) === 0) ? 'http://www.godesigner.ru' : response.post.imageurl;
                             var host = '';
                             if(object.host != null) {
@@ -1155,7 +1155,7 @@ function OfficeStatusUpdater() {
                                 }
 
                                 if (object.type == 'newsAdded' && object.news != null) {
-                                    if (($('.box[data-eventid="' + object.id + '"]').length == 0) && ($('.box[data-newsid="' + object.news.id + '"]').length == 0)) {
+                                    if (($('div[data-eventid="' + object.id + '"]').length == 0) && ($('div[data-newsid="' + object.news.id + '"]').length == 0)) {
                                         html += self.addNews(object);
                                     }
                                 }
@@ -1214,7 +1214,7 @@ function OfficeStatusUpdater() {
                             }
 
                             if (object.type == 'newsAdded' && object.news != null) {
-                                if (($('.box[data-eventid="' + object.id + '"]').length == 0) && ($('.box[data-newsid="' + object.news.id + '"]').length == 0)) {
+                                if (($('div[data-eventid="' + object.id + '"]').length == 0) && ($('div[data-newsid="' + object.news.id + '"]').length == 0)) {
                                     html += self.addNews(object);
                                 }
                             }
