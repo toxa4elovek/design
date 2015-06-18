@@ -311,7 +311,7 @@ $(document).ready(function () {
                      });*/
                 });
             }
-        }, {scope: 'email,publish_stream,publish_actions'});
+        }, {scope: 'email,publish_actions'});
     });
 
     $('#setStatus').on('submit', function (e) {
