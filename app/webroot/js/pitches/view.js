@@ -821,10 +821,18 @@ $(document).ready(function () {
                 if ((typeof (result.solution.images) != 'undefined') && (result.solution.images.length != 0)) {
                     var file = result.solution.images.solution;
                     if ($.isArray(file)) {
-                        downloadUrl = '/solutionfiles' + file[0].weburl;
+                        if(file[0].weburl.match(/solutions/)) {
+                            downloadUrl =  file[0].weburl;
+                        }else {
+                            downloadUrl = '/solutionfiles' + file[0].weburl;
+                        }
                         filename = file[0].originalbasename
                     } else {
-                        downloadUrl = '/solutionfiles' + file.weburl;
+                        if(file.weburl.match(/solutions/)) {
+                            downloadUrl = file.weburl;
+                        }else {
+                            downloadUrl = '/solutionfiles' + file.weburl;
+                        }
                         filename = file.originalbasename
                     }
                     filesHTML += '<div class="clip-document-container"><a href="' + downloadUrl + '" class="clip-document">' + filename + '</a></div>';
@@ -961,13 +969,23 @@ $(document).ready(function () {
                 if (result.solution.images.solution) {
                     if ($.isArray(result.solution.images.solution)) {
                         $.each(result.solution.images.solution, function (index, object) {
-                            html += '<a target="_blank" href="/solutionfiles' + object.weburl + '" class="attach">' + object.originalbasename + '</a><br>'
+                            if(object.weburl.match(/solutions/)) {
+                                var downloadUrl = object.weburl;
+                            }else {
+                                var downloadUrl = '/solutionfiles' + object.weburl;
+                            }
+                            html += '<a target="_blank" href="' + downloadUrl + '" class="attach">' + object.originalbasename + '</a><br>'
                         })
                     } else {
-                        html += '<a href="/solutionfiles' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
+                        if(result.solution.images.solution.weburl.match(/solutions/)) {
+                            var downloadUrl = result.solution.images.solution.weburl;
+                        }else {
+                            var downloadUrl = '/solutionfiles' + result.solution.images.solution.weburl;
+                        }
+                        html += '<a href="' + downloadUrl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
                     }
                     html += '</div>';
-                    $('.solution-description').prev().html('ФАЙЛЫ')
+                    $('.solution-description').prev().html('ФАЙЛЫ');
                     $('.solution-description').html(html);
                 }
             }
