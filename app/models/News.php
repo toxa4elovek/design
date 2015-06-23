@@ -168,8 +168,8 @@ class News extends \app\models\AppModel {
     }
 
     public static function saveNewsByAdmin($data, $createEvent = true) {
-        if((isset($data['link'])) && (isset($data['title']))) {
-            if($exists = self::doesNewsExists($data['title'], $data['link'])) {
+        if((isset($data['link'])) && (!empty($data['link'])) && (isset($data['title'])) && (!empty($data['title']))) {
+            if(self::doesNewsExists($data['title'], $data['link'])) {
                 return false;
             }
         }

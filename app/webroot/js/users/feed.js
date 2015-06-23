@@ -817,6 +817,8 @@ $(document).ready(function () {
                         Updater.autoupdate();
                         fd = new FormData();
                         $('#previewImage').empty();
+                        $('#news-add').toggle('fast');
+                        $('#news-add-separator').toggle('fast');
                     } else if (result.result == false) {
                         button.text('Ошибка');
                     } else if (typeof(result.result.news) != 'undefined') {
@@ -843,9 +845,10 @@ $(document).ready(function () {
                             }
                         );
                         $('time.timeago').timeago();
+                        $('#news-add').toggle('fast');
+                        $('#news-add-separator').toggle('fast');
                     }
-                    $('#news-add').toggle('fast');
-                    $('#news-add-separator').toggle('fast');
+
                 }
             });
             return false;
@@ -1481,7 +1484,6 @@ function OfficeStatusUpdater() {
                 } else {
                     var avatar = object.user.images.avatar_small.weburl;
                 }
-                console.log(object.user_fav);
                 if(typeof(object.user_fav.images.avatar_small) == 'undefined') {
                     if(object.user_fav.isAdmin == '1') {
                         var avatarFav = 'http://www.godesigner.ru/img/icon_57.png';
@@ -1671,7 +1673,6 @@ function OfficeStatusUpdater() {
                 if((object.pitch.private == 1) && (this_user != object.solution.user_id)) {
                     return html;
                 }
-                console.log(imageurl);
                 var avatar = (typeof object.user.images['avatar_small'] != 'undefined') ? object.user.images['avatar_small'].weburl : 'http://www.godesigner.ru/img/default_small_avatar.png';
                 var like_txt = object.allowLike ? 'Нравится' : 'Не нравится';
                 html += '<div class="box" data-eventid="' + object.id + '"> \
