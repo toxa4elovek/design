@@ -7,6 +7,7 @@ namespace app\models;
   use \lithium\util\String;
  */
 
+use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
 use \app\models\Addon;
@@ -81,7 +82,7 @@ class Pitch extends \app\models\AppModel {
                         }
                         $facebookAPI = new FacebookAPI;
                         $facebookAPI->postMessageToPage(array('message' => $tweet));
-                        User::sendTweet($tweet);
+                        TwitterAPI::sendTweet($tweet);
                     }
                     Task::createNewTask($params['pitch']->id, 'newpitch');
                 } elseif (($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {

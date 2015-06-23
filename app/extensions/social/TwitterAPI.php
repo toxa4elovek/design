@@ -40,8 +40,6 @@ class TwitterAPI extends \lithium\core\Object {
             $data = json_decode($tmhOAuth->response['response'], true);
             return $data['id_str'];
         } else {
-            var_dump($tweet);
-            var_dump(json_decode($tmhOAuth->response['response'], true));
             return false;
         }
     }
