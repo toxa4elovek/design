@@ -42,17 +42,19 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                 if (isset($solution->images['solution_solutionView'])) {
                     if (isset($solution->images['solution_solutionView'][0]['filename'])) {
                         $imageurl = $solution->images['solution_solutionView'][0]['filename'];
+                        $weburl = $solution->images['solution_solutionView'][0]['weburl'];
                     } else {
                         $imageurl = $solution->images['solution_solutionView']['filename'];
+                        $weburl = $solution->images['solution_solutionView']['weburl'];
                     }
                 }
             }
             $data = array(
                 'message' => $tweet,
-                'picture' => $imageurl
+                'picture' => 'http://www.godesigner.ru' . $weburl
             );
             $facebookAPI = new FacebookAPI;
-            $result = $facebookAPI->postMessageToPage($data);
+            $facebookAPI->postMessageToPage($data);
 
             if ($id = TwitterAPI::sendTweet($tweet, $imageurl)) {
                 Event::create(array(
@@ -87,7 +89,7 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                 $this->out('The best solution for ' . $day . ' sent');
             } else {
                 $this->out('Error! The best solution for ' . $day . ' was not sent');
-            }
+            }*/
         }
     }
 
