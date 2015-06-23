@@ -3,14 +3,13 @@
 namespace app\extensions\command;
 
 use \app\models\Solution;
-use \app\models\Pitch;
-use \app\models\User;
 use app\extensions\storage\Rcache;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 use \app\models\Event;
 use app\extensions\social\TwitterAPI;
 use \app\extensions\helper\PitchTitleFormatter;
+use \app\extensions\social\FacebookAPI;
 
 class BestSolutionInTwitter extends \app\extensions\command\CronJob {
 
@@ -48,6 +47,12 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                     }
                 }
             }
+            $data = array(
+                'message' => $tweet,
+                'picture' => $imageurl
+            );
+            $facebookAPI = new FacebookAPI;
+            $result = $facebookAPI->postMessageToPage($data);
 
             if ($id = TwitterAPI::sendTweet($tweet, $imageurl)) {
                 Event::create(array(

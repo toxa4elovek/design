@@ -31,6 +31,7 @@ use \app\extensions\helper\MoneyFormatter;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\PdfGetter;
 use app\extensions\mailers\SolutionsMailer;
+use \app\extensions\social\FacebookAPI;
 
 class Pitch extends \app\models\AppModel {
 
@@ -78,6 +79,8 @@ class Pitch extends \app\models\AppModel {
                         } else {
                             $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer #работадлядизайнеров';
                         }
+                        $facebookAPI = new FacebookAPI;
+                        $facebookAPI->postMessageToPage(array('message' => $tweet));
                         User::sendTweet($tweet);
                     }
                     Task::createNewTask($params['pitch']->id, 'newpitch');

@@ -27,6 +27,7 @@ use \app\extensions\helper\MoneyFormatter;
 use app\models\Facebook;
 use app\models\Url;
 use app\extensions\social\TwitterAPI;
+use app\extensions\social\FacebookAPI;
 
 class User extends \app\models\AppModel {
 
@@ -1094,6 +1095,8 @@ class User extends \app\models\AppModel {
                 }
             }
         }
+        $facebookAPI = new FacebookAPI;
+        $facebookAPI->postMessageToPage(array('message' => $tweet, 'picture' => $imageurl));
         return TwitterAPI::sendTweet($tweet, $imageurl);
     }
 
