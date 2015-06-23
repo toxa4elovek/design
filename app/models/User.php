@@ -28,6 +28,7 @@ use app\models\Facebook;
 use app\models\Url;
 use app\extensions\social\TwitterAPI;
 use app\extensions\social\FacebookAPI;
+use app\extensions\social\SocialMediaManager;
 
 class User extends \app\models\AppModel {
 
@@ -1033,40 +1034,18 @@ class User extends \app\models\AppModel {
         Comment::createComment($data);
     }
 
-    public function sendTweetWinner($solution) {
-        $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
-        $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
-        $shortenedUrl = Url::createNew($solutionUrl);
-        $urlForTweet = 'http://www.godesigner.ru/urls/' . $shortenedUrl->short;
-        $winner = self::first($solution->user_id);
-        $nameInflector = new nameInflector();
-        $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
-        $moneyFormatter = new MoneyFormatter();
-        $pitch = Pitch::first($solution->pitch_id);
-        $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
-        $nameInflector = new PitchTitleFormatter();
-        $title = $nameInflector->renderTitle($pitch->title, 30);
-        if (rand(1, 100) <= 50) {
-            $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за проект «' . $title . '» ' . $urlForTweet . ' #Go_Deer';
-        } else {
-            $tweet = $winnerName . ' победил в проекте «' . $title . '», награда ' . $winnerPrice . ' ' . $urlForTweet . ' #Go_Deer';
-        }
-        $imageurl = '';
-        if ($pitch->private == 0 && $pitch->category_id != 7) {
-            if (isset($solution->images['solution_solutionView'])) {
-                if (isset($solution->images['solution_solutionView'][0]['filename'])) {
-                    $imageurl = $solution->images['solution_solutionView'][0]['filename'];
-                    $weburl = $solution->images['solution_solutionView'][0]['weburl'];
-                } else {
-                    $imageurl = $solution->images['solution_solutionView']['filename'];
-                    $weburl = $solution->images['solution_solutionView']['weburl'];
-
-                }
-            }
-        }
+    public function sendMessageToSocial($solution) {
+        $mediaManager = new SocialMediaManager;
+        $solution->winner = self::first($solution->user_id);
+        $solution->pitch  = Pitch::first($solution->pitch_id);
+        $messageForFacebook = $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook');
+        $messageForTwitter = $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter');
+        $facebookImage = $mediaManager->getImageReadyForSocialNetwork($solution, 'facebook');
+        $twitterImage = $mediaManager->getImageReadyForSocialNetwork($solution, 'twitter');
         $facebookAPI = new FacebookAPI;
-        $facebookAPI->postMessageToPage(array('message' => $tweet, 'picture' => 'http://www.godesigner.ru' . $weburl));
-        return TwitterAPI::sendTweet($tweet, $imageurl);
+        $facebookAPI->postMessageToPage(array('message' => $messageForFacebook, 'picture' => $facebookImage));
+        TwitterAPI::sendTweet($messageForTwitter, $twitterImage);
+        return true;
     }
 
     public static function sendFinishReports($pitch) {
