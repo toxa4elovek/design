@@ -3,14 +3,13 @@
 namespace app\extensions\command;
 
 use \app\models\Solution;
-use \app\models\Pitch;
-use \app\models\User;
 use app\extensions\storage\Rcache;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 use \app\models\Event;
 use app\extensions\social\TwitterAPI;
 use \app\extensions\helper\PitchTitleFormatter;
+use \app\extensions\social\FacebookAPI;
 
 class BestSolutionInTwitter extends \app\extensions\command\CronJob {
 
@@ -43,11 +42,19 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                 if (isset($solution->images['solution_solutionView'])) {
                     if (isset($solution->images['solution_solutionView'][0]['filename'])) {
                         $imageurl = $solution->images['solution_solutionView'][0]['filename'];
+                        $weburl = $solution->images['solution_solutionView'][0]['weburl'];
                     } else {
                         $imageurl = $solution->images['solution_solutionView']['filename'];
+                        $weburl = $solution->images['solution_solutionView']['weburl'];
                     }
                 }
             }
+            $data = array(
+                'message' => $tweet,
+                'picture' => 'http://www.godesigner.ru' . $weburl
+            );
+            $facebookAPI = new FacebookAPI;
+            $facebookAPI->postMessageToPage($data);
 
             if ($id = TwitterAPI::sendTweet($tweet, $imageurl)) {
                 Event::create(array(
