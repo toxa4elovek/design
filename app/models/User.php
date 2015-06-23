@@ -1056,13 +1056,16 @@ class User extends \app\models\AppModel {
             if (isset($solution->images['solution_solutionView'])) {
                 if (isset($solution->images['solution_solutionView'][0]['filename'])) {
                     $imageurl = $solution->images['solution_solutionView'][0]['filename'];
+                    $weburl = $solution->images['solution_solutionView'][0]['weburl'];
                 } else {
                     $imageurl = $solution->images['solution_solutionView']['filename'];
+                    $weburl = $solution->images['solution_solutionView']['weburl'];
+
                 }
             }
         }
         $facebookAPI = new FacebookAPI;
-        $facebookAPI->postMessageToPage(array('message' => $tweet, 'picture' => $imageurl));
+        $facebookAPI->postMessageToPage(array('message' => $tweet, 'picture' => 'http://www.godesigner.ru' . $weburl));
         return TwitterAPI::sendTweet($tweet, $imageurl);
     }
 

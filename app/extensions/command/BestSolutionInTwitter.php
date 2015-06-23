@@ -89,7 +89,7 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                 $this->out('The best solution for ' . $day . ' sent');
             } else {
                 $this->out('Error! The best solution for ' . $day . ' was not sent');
-            }*/
+            }
         }
     }
 
