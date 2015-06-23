@@ -77,6 +77,7 @@ class Solution extends \app\models\AppModel {
         self::applyFilter('uploadSolution', function($self, $params, $chain) {
             $result = $chain->next($self, $params, $chain);
             if ($result) {
+                Event::createEvent($result->pitch_id, 'SolutionAdded', $result->user_id, $result->id);
                 if ($uploadnonce = Uploadnonce::first(array('conditions' => array('nonce' => $params->uploadnonce)))) {
                     $nonce = $uploadnonce->id;
                 }
@@ -95,7 +96,6 @@ class Solution extends \app\models\AppModel {
                         $file->save();
                     }
                 }
-                Event::createEvent($result->pitch_id, 'SolutionAdded', $result->user_id, $result->id);
                 Pitch::increaseIdeasCountOne($result->pitch_id);
                 $historySolution = Historysolution::create();
                 $historySolution->set($result->data());

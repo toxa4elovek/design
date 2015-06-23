@@ -1253,6 +1253,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
         }
     }
 
+    /**
+     * Метод загрузки нового решения html|json
+     *
+     * @return array|object|string|void
+     * @throws Exception
+     */
     public function upload() {
         \lithium\net\http\Media::type('json', array('text/html'));
         if (($this->request->id > 0) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
@@ -1338,6 +1344,11 @@ Disallow: /pitches/upload/' . $pitch['id'];
         throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
+    /**
+     * Метод загрузки решения для копирайтинга html|json
+     *
+     * @return array|bool|object|void
+     */
     public function uploadcopy() {
         if (($this->request->id > 0) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             if (($pitch->status != 0) || ($pitch->published != 1)) {
@@ -1356,17 +1367,6 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 } else {
                     return false;
                 }
-                /* if((isset($this->request->data['solution'])) && (is_array($this->request->data['solution'])) && ((isset($this->request->data['solution'][0]) || ($this->request->data['solution']['error'] == 0)))) {
-                  $this->request->data['pitch_id'] = $this->request->id;
-                  $this->request->data['user_id'] = Session::read('user.id');
-                  $result = Solution::uploadSolution($this->request->data);
-                  if($result) {
-                  return $result->data();
-                  }else {
-                  return false;
-                  }
-
-                  } */
             }
             if ($pitch->category_id != 7) {
                 return compact('pitch');
