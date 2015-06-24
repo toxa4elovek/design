@@ -146,6 +146,9 @@ class News extends \app\models\AppModel {
                 $event->delete();
             }
             $result = true;
+        }else if($event = Event::first(array('conditions' => array('news_id' => $newsId)))) {
+            $event->delete();
+            $result = true;
         }
         return $result;
     }

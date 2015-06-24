@@ -1601,7 +1601,7 @@ function OfficeStatusUpdater() {
                     }
                     if((isAdmin) || (isFeedWriter)) {
                         html += '<span style="font-size: 28px;position: relative;top: 4px;">·</span>';
-                        html += '<a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news.id + '" class="hide-news" href="#">Удалить новость</a>';
+                        html += '<a style="padding-left: 5px; font-size: 14px;" data-id="' + object.news_id + '" class="hide-news" href="#">Удалить новость</a>';
                     }
                     html += '</div>';
 
