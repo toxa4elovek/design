@@ -14,12 +14,10 @@ class TwitterAPITest extends AppUnit {
     }
 
     public function testPostMessageToPage() {
-        $data = array('message' => 'Фриланс под вишнями', 'picture' => '/var/godesigner/webroot/events/46219a254ac6c92dde243164a7398065_middleFeed.jpg');
-        $result = $this->api->sendTweet($data['message'], $data['picture']);
-        var_dump($result);
-        $this->assertTrue(is_array($result));
+        $data = array('message' => 'Заполним бриф', 'picture' => '/Users/dima/www/godesigner/app/webroot/img/brief.png');
+        $result = $this->api->postMessageToPage($data);
         $this->assertTrue(is_string($result));
-        var_dump($result);
+        $this->assertTrue(is_numeric($result));
     }
 
 }

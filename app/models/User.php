@@ -1038,13 +1038,19 @@ class User extends \app\models\AppModel {
         $mediaManager = new SocialMediaManager;
         $solution->winner = self::first($solution->user_id);
         $solution->pitch  = Pitch::first($solution->pitch_id);
-        $messageForFacebook = $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook');
-        $messageForTwitter = $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter');
-        $facebookImage = $mediaManager->getImageReadyForSocialNetwork($solution, 'facebook');
-        $twitterImage = $mediaManager->getImageReadyForSocialNetwork($solution, 'twitter');
+
         $facebookAPI = new FacebookAPI;
-        $facebookAPI->postMessageToPage(array('message' => $messageForFacebook, 'picture' => $facebookImage));
-        TwitterAPI::sendTweet($messageForTwitter, $twitterImage);
+        $twitterAPI = new TwitterAPI;
+        $dataFacebook = array(
+            'message' => $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook'),
+            'picture' => $mediaManager->getImageReadyForSocialNetwork($solution, 'facebook')
+        );
+        $dataTwitter = array(
+            'message' => $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter'),
+            'picture' => $mediaManager->getImageReadyForSocialNetwork($solution, 'twitter')
+        );
+        $facebookAPI->postMessageToPage($dataFacebook);
+        $twitterAPI->postMessageToPage($dataTwitter);
         return true;
     }
 

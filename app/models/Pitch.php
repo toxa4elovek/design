@@ -81,8 +81,9 @@ class Pitch extends \app\models\AppModel {
                             $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer #работадлядизайнеров';
                         }
                         $facebookAPI = new FacebookAPI;
+                        $twitterAPI = new TwitterAPI;
                         $facebookAPI->postMessageToPage(array('message' => $tweet));
-                        TwitterAPI::sendTweet($tweet);
+                        $twitterAPI->postMessageToPage(array('message' => $tweet));
                     }
                     Task::createNewTask($params['pitch']->id, 'newpitch');
                 } elseif (($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {
