@@ -40,4 +40,4 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/help', '/howitworks', '/answer', '/edit'), array('inline' => false))?>
+<?=$this->html->style(array('/help', '/howitworks', '/answer', '/edit', '/css/pages/referal.css'), array('inline' => false))?>
