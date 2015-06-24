@@ -33,7 +33,7 @@
         "isBanner": 0,
         "liked": 0,
         "admin": 0,
-        "hidden": 0,
+        "hidden": 1,
         "lang": ""
     },
     {
