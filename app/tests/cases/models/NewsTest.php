@@ -66,7 +66,6 @@ class NewsTest extends AppUnit {
     }*/
 
     public function testdoesNewsExists() {
-
         $result = News::doesNewsExists('Fake');
         $this->assertFalse($result);
 
@@ -76,12 +75,17 @@ class NewsTest extends AppUnit {
         $result = News::doesNewsExists('Матрешкин труд', 'http://tutdesign.ru/cats/illustration/17254');
         $this->assertTrue($result);
 
+        $result = News::doesNewsExists('Матрешкин труд', 'http://tutdesign.ru/cats/illustration/17253');
+        $this->assertFalse($result);
+
         $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/17254');
         $this->assertTrue($result);
 
-        $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/17254 2');
+        $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/172542');
         $this->assertFalse($result);
 
+        $result = News::doesNewsExists('Топографический креатизм', 'http://tutdesign.ru/cats/brand/17232-topograficheskij-kreatizm.html');
+        $this->assertFalse($result);
     }
 
     public function testSaveNewsByAdmin()  {
@@ -114,6 +118,15 @@ class NewsTest extends AppUnit {
         $this->assertFalse($result);
 
         $data = array(
+            'title' => 'Проверка',
+            'short' => '',
+            'link' => 'https://www.google.com/'
+        );
+
+        $result = News::saveNewsByAdmin($data, false);
+        $this->assertTrue($result);
+
+        $data = array(
             'title' => '',
             'short' => 'Текст для проверки',
             'link' => ''
@@ -131,7 +144,7 @@ class NewsTest extends AppUnit {
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
-        $news = News::first(7);
+        $news = News::first(8);
         $this->assertEqual('', $news->imageurl);
         $this->assertEqual('https://i.ytimg.com/vi/3bhLkorXLI8/maxresdefault.jpg', $news->og_image);
         $this->assertEqual('', $news->title);
@@ -145,7 +158,7 @@ class NewsTest extends AppUnit {
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
-        $news = News::first(8);
+        $news = News::first(9);
         $this->assertEqual('', $news->imageurl);
         $this->assertEqual('https://i.vimeocdn.com/video/164362346_1280x720.jpg', $news->og_image);
         $this->assertEqual('', $news->title);
