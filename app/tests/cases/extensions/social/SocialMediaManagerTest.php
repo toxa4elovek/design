@@ -52,6 +52,17 @@ class SocialMediaManagerTest extends AppUnit {
         $this->assertEqual($string, $this->manager->getBestSolutionAnalyticsStringForSocialNetwork('vk'));
     }
 
+    public function testGetNewProjectAnalyticsStringForSocialNetwork() {
+        $string = '?utm_source=twitter&utm_medium=tweet&utm_content=new-project-tweet&utm_campaign=sharing';
+        $this->assertEqual($string, $this->manager->getNewProjectAnalyticsStringForSocialNetwork('twitter'));
+
+        $string = '?utm_source=facebook&utm_medium=post&utm_content=new-project-post&utm_campaign=sharing';
+        $this->assertEqual($string, $this->manager->getNewProjectAnalyticsStringForSocialNetwork('facebook'));
+
+        $string = '?utm_source=vk&utm_medium=post&utm_content=new-project-post&utm_campaign=sharing';
+        $this->assertEqual($string, $this->manager->getNewProjectAnalyticsStringForSocialNetwork('vk'));
+    }
+
     public function testGetBestSolutionMessageForSocialNetwork() {
         $solution = Solution::first(array('conditions' => array('Solution.id' => 2), 'with' => array('Pitch')));
         $solution->pitch->title = 'Очень больше и длинное название "проекта"';
@@ -73,9 +84,6 @@ class SocialMediaManagerTest extends AppUnit {
         $this->assertEqual('http://www.godesigner.ru/solutions/2_solutionView.jpg', $this->manager->getImageReadyForSocialNetwork($solution, 'facebook'));
         $solution->pitch->private = 1;
         $this->assertIdentical('', $this->manager->getImageReadyForSocialNetwork($solution, 'facebook'));
-        /*$solution = Solution::first(array('conditions' => array('Solution.id' => 2)));
-        $solution->pitch = null;
-        $this->assertEqual($solution->images['solution_solutionView']['filename'], $this->manager->getImageReadyForSocialNetwork($solution, 'twitter'));*/
         $solution->images = null;
         $this->assertIdentical('', $this->manager->getImageReadyForSocialNetwork($solution, 'twitter'));
     }
@@ -109,6 +117,26 @@ class SocialMediaManagerTest extends AppUnit {
         $this->assertEqual($string, $this->manager->getWinnerSolutionMessageForSocialNetwork($solution, 1, 'facebook'));
         $string = 'Дмитрий Н. победил в проекте «Очень больше и длинное название «Проекта»», награда 300 РУБ.- http://www.godesigner.ru/pitches/viewsolution/2?utm_source=vk&utm_medium=post&utm_content=winner-solution-post&utm_campaign=sharing #Go_Deer';
         $this->assertEqual($string, $this->manager->getWinnerSolutionMessageForSocialNetwork($solution, 1, 'vk'));
+    }
+
+    public function testGetNewProjectMessageForSocialNetwork() {
+        $project = Pitch::first(1);
+        $project->title = 'Очень больше и длинное название "проекта"';
+        $project->price = '15000.00';
+
+        $string = 'Нужен «Очень больше и длинное назван…», вознаграждение 15 000 р.- http://www.godesigner.ru/pitches/details/1?utm_source=twitter&utm_medium=tweet&utm_content=new-project-tweet&utm_campaign=sharing #Go_Deer #работадлядизайнеров';
+        $this->assertEqual($string, $this->manager->getNewProjectMessageForSocialNetwork($project, 0, 'twitter'));
+        $string = 'Нужен «Очень больше и длинное название «Проекта»», вознаграждение 15 000 р.- http://www.godesigner.ru/pitches/details/1?utm_source=facebook&utm_medium=post&utm_content=new-project-post&utm_campaign=sharing #Go_Deer #работадлядизайнеров';
+        $this->assertEqual($string, $this->manager->getNewProjectMessageForSocialNetwork($project, 0, 'facebook'));
+        $string = 'Нужен «Очень больше и длинное название «Проекта»», вознаграждение 15 000 р.- http://www.godesigner.ru/pitches/details/1?utm_source=vk&utm_medium=post&utm_content=new-project-post&utm_campaign=sharing #Go_Deer #работадлядизайнеров';
+        $this->assertEqual($string, $this->manager->getNewProjectMessageForSocialNetwork($project, 0, 'vk'));
+
+        $string = 'За 15 000 р.- нужен «Очень больше и длинное назван…», http://www.godesigner.ru/pitches/details/1?utm_source=twitter&utm_medium=tweet&utm_content=new-project-tweet&utm_campaign=sharing #Go_Deer #работадлядизайнеров';
+        $this->assertEqual($string, $this->manager->getNewProjectMessageForSocialNetwork($project, 1, 'twitter'));
+        $string = 'За 15 000 р.- нужен «Очень больше и длинное название «Проекта»», http://www.godesigner.ru/pitches/details/1?utm_source=facebook&utm_medium=post&utm_content=new-project-post&utm_campaign=sharing #Go_Deer #работадлядизайнеров';
+        $this->assertEqual($string, $this->manager->getNewProjectMessageForSocialNetwork($project, 1, 'facebook'));
+        $string = 'За 15 000 р.- нужен «Очень больше и длинное название «Проекта»», http://www.godesigner.ru/pitches/details/1?utm_source=vk&utm_medium=post&utm_content=new-project-post&utm_campaign=sharing #Go_Deer #работадлядизайнеров';
+        $this->assertEqual($string, $this->manager->getNewProjectMessageForSocialNetwork($project, 1, 'vk'));
     }
 
 }

@@ -2,11 +2,6 @@
 
 namespace app\models;
 
-/*
-  use \lithium\util\Validator;
-  use \lithium\util\String;
- */
-
 use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
@@ -33,8 +28,9 @@ use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\PdfGetter;
 use app\extensions\mailers\SolutionsMailer;
 use \app\extensions\social\FacebookAPI;
+use app\extensions\social\SocialMediaManager;
 
-class Pitch extends \app\models\AppModel {
+class Pitch extends AppModel {
 
     public $belongsTo = array('Category', 'User');
     public $hasMany = array('Solution');
@@ -69,21 +65,15 @@ class Pitch extends \app\models\AppModel {
                 }
                 if (($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
-                    // Send Tweet for Public Pitch only
+                    // Send messages for Public Pitch only
                     if ($params['pitch']->private != 1) {
-                        $queryString = '?utm_source=twitter&utm_medium=tweet&utm_content=new-pitch-tweet&utm_campaign=sharing';
-                        $pitchUrl = 'http://www.godesigner.ru/pitches/details/' . $params['pitch']->id . $queryString;
-                        $moneyFormatter = new MoneyFormatter();
-                        $winnerPrice = $moneyFormatter->formatMoney($params['pitch']->price, array('suffix' => ' р.-'));
-                        if (rand(1, 100) <= 50) {
-                            $tweet = 'Нужен «' . $params['pitch']->title . '», вознаграждение ' . $winnerPrice . ' ' . $pitchUrl . ' #Go_Deer #работадлядизайнеров';
-                        } else {
-                            $tweet = 'За ' . $winnerPrice . ' нужен «' . $params['pitch']->title . '», ' . $pitchUrl . ' #Go_Deer #работадлядизайнеров';
-                        }
+                        $mediaManager = new SocialMediaManager;
                         $facebookAPI = new FacebookAPI;
                         $twitterAPI = new TwitterAPI;
-                        $facebookAPI->postMessageToPage(array('message' => $tweet));
-                        $twitterAPI->postMessageToPage(array('message' => $tweet));
+                        $messageForTwitter = $mediaManager->getNewProjectMessageForSocialNetwork($params['pitch'], 'twitter');
+                        $messageForFacebook = $mediaManager->getNewProjectMessageForSocialNetwork($params['pitch'], 'facebook');
+                        $facebookAPI->postMessageToPage(array('message' => $messageForFacebook));
+                        $twitterAPI->postMessageToPage(array('message' => $messageForTwitter));
                     }
                     Task::createNewTask($params['pitch']->id, 'newpitch');
                 } elseif (($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {

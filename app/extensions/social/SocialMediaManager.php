@@ -55,6 +55,20 @@ class SocialMediaManager {
     }
 
     /**
+     * Метод возвращяет строчку для аналитики для сообщение о новом проекте
+     *
+     * @param string $social
+     * @return string
+     */
+    public function getNewProjectAnalyticsStringForSocialNetwork($social = 'twitter') {
+        switch ($social):
+            case 'twitter': return $this->__buildAnalyticsParams('sharing', 'twitter', 'tweet', 'new-project-tweet');
+            case 'facebook': return $this->__buildAnalyticsParams('sharing', 'facebook', 'post', 'new-project-post');
+            case 'vk': return $this->__buildAnalyticsParams('sharing', 'vk', 'post', 'new-project-post');
+        endswitch;
+    }
+
+    /**
      * Метод помощник для составления строчки параметров для аналитики
      *
      * @param $campaign
@@ -79,6 +93,14 @@ class SocialMediaManager {
         return 'Самое популярное решение за ' . date('d.m.Y', $time) . ' «' . $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social) . '» ' . 'http://www.godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getBestSolutionAnalyticsStringForSocialNetwork($social) . ' #Go_Deer';
     }
 
+    /**
+     * Метод публикает в соц сеть сообщение о победе в питче
+     *
+     * @param Record $solutionObject
+     * @param $index
+     * @param string $social
+     * @return string
+     */
     public function getWinnerSolutionMessageForSocialNetwork(Record $solutionObject, $index, $social = 'twitter') {
         $templates = array(
             '%s заработал %s за проект «%s» %s #Go_Deer',
@@ -91,6 +113,27 @@ class SocialMediaManager {
         switch($index):
             case 0: return sprintf($templates[$index], $winnerName, $winnerPrice, $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social), 'http://www.godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork($social));
             case 1: return sprintf($templates[$index], $winnerName, $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social), $winnerPrice, 'http://www.godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork($social));
+        endswitch;
+    }
+
+    /**
+     * Метод постит в соц сеть сообщение о новом проекте
+     *
+     * @param Record $projectObject
+     * @param $index
+     * @param string $social
+     * @return string
+     */
+    public function getNewProjectMessageForSocialNetwork(Record $projectObject, $index, $social = 'twitter') {
+        $templates = array(
+            'Нужен «%s», вознаграждение %s %s #Go_Deer #работадлядизайнеров',
+            'За %s нужен «%s», %s #Go_Deer #работадлядизайнеров'
+        );
+        $moneyFormatter = new MoneyFormatter();
+        $winnerPrice = $moneyFormatter->formatMoney($projectObject->price, array('suffix' => ' р.-'));
+        switch($index):
+            case 0: return sprintf($templates[$index], $this->getProjectTitleForSocialNetwork($projectObject, $social), $winnerPrice, 'http://www.godesigner.ru/pitches/details/' . $projectObject->id . $this->getNewProjectAnalyticsStringForSocialNetwork($social));
+            case 1: return sprintf($templates[$index], $winnerPrice, $this->getProjectTitleForSocialNetwork($projectObject, $social), 'http://www.godesigner.ru/pitches/details/' . $projectObject->id . $this->getNewProjectAnalyticsStringForSocialNetwork($social));
         endswitch;
     }
 
