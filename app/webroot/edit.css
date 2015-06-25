@@ -118,9 +118,9 @@ textarea.placeholder {
 }
 .separator-flag-empty {
     height: 38px;
-    background: url("img/userpage-separator-empty.png") no-repeat;
+    background: url("img/userpage-separator-empty.png") no-repeat 110px 0;
     text-align: center;
-    margin: 25px 0px 25px 0px;
+    margin: 25px 0 25px 0;
 }
 .separator-flag-empty img {
     margin: 6px 0 0 0;

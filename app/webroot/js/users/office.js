@@ -983,27 +983,29 @@ $(document).ready(function(){
         return false;
     });
 
+    $(document).on('blur keyup', 'input[name=phone]', function() {
+        if($(this).val() == '') {
+            var paragraph = $('.confirm-message', '.user-mobile-section');
+            paragraph.hide();
+        }
+    });
+
     $(document).on('click', '#save-mobile', function() {
         var form = $('#mobile-form');
         var phonenumber = $('input[name=phone]', form).val();
-        console.log(phonenumber)
         var data = form.serialize();
         $.post('/users/update.json', data, function(response) {
             var paragraph = $('.confirm-message', '.user-mobile-section');
             var text = '';
             if(response == 'false') {
-                console.log('bad phone')
                 text = 'К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.';
             }else if(response == 'limit') {
-                console.log('limit')
                 text = 'К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.';
             }else {
                 if (response.indexOf('error') != -1) {
-                    console.log('error')
                     text = 'Произошел сбой доставки SMS-сообщения. Попробуйте позже.';
                     paragraph.text(text).show();
                 } else {
-                    console.log('no error');
                     text = 'Для подтверждения номера +' + phonenumber + ' введите код, который пришел по смс.';
                     $('.phone-input-container').hide();
                     $('#save-mobile').hide();
@@ -1012,6 +1014,7 @@ $(document).ready(function(){
                     $('#confirm-mobile').prev().show();
                     $('#confirm-mobile').show();
                     paragraph.text(text).show();
+                    $('.number').text('+ ' + phonenumber)
                 }
             }
             paragraph.text(text).show();
@@ -1066,6 +1069,7 @@ $(document).ready(function(){
                 $('#confirm-mobile').prev().hide();
                 $('#confirm-mobile').hide();
                 $('.remove-number-link').text('Удалить/поменять номер');
+                $('.remove-number').css('margin-right', '0');
                 $('.remove-number').css('margin-right', '0 !important');
                 $('.resend-code').hide();
                 $('.number').show();

@@ -55,10 +55,10 @@ class Fasttasks extends \app\extensions\command\CronJob {
 
     private function __victoryNotificationTwitter($task) {
         $solution = Solution::first($task->model_id);
-        if($result = User::sendTweetWinner($solution)) {
-            $this->out('Twitter victory notification sent');
+        if($result = User::sendMessageToSocial($solution)) {
+            $this->out('Victory notification sent');
         }else {
-            $this->out('Twitter victory notification was not sent');
+            $this->out('Victory notification was not sent');
         }
         return $result;
     }

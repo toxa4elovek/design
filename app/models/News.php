@@ -146,6 +146,9 @@ class News extends \app\models\AppModel {
                 $event->delete();
             }
             $result = true;
+        }else if($event = Event::first(array('conditions' => array('news_id' => $newsId)))) {
+            $event->delete();
+            $result = true;
         }
         return $result;
     }
@@ -159,17 +162,26 @@ class News extends \app\models\AppModel {
      * @return mixed
      */
     public static function doesNewsExists($title, $url = null) {
-        $conditions = array('title' => (string) $title);
-        if($url) {
+        $conditions = array('hidden' => 0);
+        if(!is_null($url)) {
             $conditions['link'] = (string) $url;
+        }else {
+            $conditions['title'] = (string) $title;
         }
-        $conditions = array('OR' => array($conditions));
-        return self::count(array('conditions' => $conditions));
+        return (bool) self::count(array('conditions' => $conditions));
     }
 
+
+    /**
+     * Метод сохраняет новость из данных, предоставленных админом ленты
+     *
+     * @param $data
+     * @param bool $createEvent
+     * @return bool
+     */
     public static function saveNewsByAdmin($data, $createEvent = true) {
-        if((isset($data['link'])) && (isset($data['title']))) {
-            if($exists = self::doesNewsExists($data['title'], $data['link'])) {
+        if((isset($data['link'])) && (!empty($data['link'])) && (isset($data['title'])) && (!empty($data['title']))) {
+            if(self::doesNewsExists($data['title'], $data['link'])) {
                 return false;
             }
         }

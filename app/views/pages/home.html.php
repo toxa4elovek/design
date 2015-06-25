@@ -194,7 +194,7 @@
             <div class="logosale_search-block">
                 <form id="logosale_form" method="get" action="/logosale">
                     <input type="text" name='search' placeholder="Найдите логотип по ключевому слову" class="">
-                    <a style="margin-left:15px;margin-top:4px" href="#" class="button third clean-style-button">Поиск</a>
+                    <a href="#" class="button third clean-style-button">Поиск</a>
                 </form>
             </div>
         </div>

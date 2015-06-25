@@ -27,6 +27,8 @@ use \app\extensions\helper\MoneyFormatter;
 use app\models\Facebook;
 use app\models\Url;
 use app\extensions\social\TwitterAPI;
+use app\extensions\social\FacebookAPI;
+use app\extensions\social\SocialMediaManager;
 
 class User extends \app\models\AppModel {
 
@@ -1017,40 +1019,6 @@ class User extends \app\models\AppModel {
         }
     }
 
-    public static function sendTweet($tweet, $img = '') {
-        require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhOAuth.php';
-        require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhUtilities.php';
-        $tmhOAuth = new tmhOAuth(array(
-            'consumer_key' => '8r9SEMoXAacbpnpjJ5v64A',
-            'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
-            'user_token' => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
-            'user_secret' => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
-        ));
-        if (!empty($img)) {
-            $name = basename($img);
-            $extension = image_type_to_mime_type(exif_imagetype($img));
-            $code = $tmhOAuth->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', array(
-                'status' => $tweet,
-                'media' => "@{$img};type={$extension};filename={$name}"
-                    ), true, true);
-            $data = json_decode($tmhOAuth->response['response'], true);
-            $code = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
-                'status' => $tweet,
-                'media_ids' => $data['media_id_string']
-            ));
-        } else {
-            $code = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
-                'status' => $tweet
-            ));
-        }
-        if ($code == 200) {
-            $data = json_decode($tmhOAuth->response['response'], true);
-            return $data['id_str'];
-        } else {
-            return false;
-        }
-    }
-
     public static function sendWinnerComment($solution) {
         $pitch = Pitch::first($solution->pitch_id);
         $admin = User::getAdmin();
@@ -1066,35 +1034,24 @@ class User extends \app\models\AppModel {
         Comment::createComment($data);
     }
 
-    public function sendTweetWinner($solution) {
-        $params = '?utm_source=twitter&utm_medium=tweet&utm_content=winner-tweet&utm_campaign=sharing';
-        $solutionUrl = 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $params;
-        $shortenedUrl = Url::createNew($solutionUrl);
-        $urlForTweet = 'http://www.godesigner.ru/urls/' . $shortenedUrl->short;
-        $winner = self::first($solution->user_id);
-        $nameInflector = new nameInflector();
-        $winnerName = $nameInflector->renderName($winner->first_name, $winner->last_name);
-        $moneyFormatter = new MoneyFormatter();
-        $pitch = Pitch::first($solution->pitch_id);
-        $winnerPrice = $moneyFormatter->formatMoney($pitch->price, array('suffix' => ' РУБ.-'));
-        $nameInflector = new PitchTitleFormatter();
-        $title = $nameInflector->renderTitle($pitch->title, 30);
-        if (rand(1, 100) <= 50) {
-            $tweet = $winnerName . ' заработал ' . $winnerPrice . ' за проект «' . $title . '» ' . $urlForTweet . ' #Go_Deer';
-        } else {
-            $tweet = $winnerName . ' победил в проекте «' . $title . '», награда ' . $winnerPrice . ' ' . $urlForTweet . ' #Go_Deer';
-        }
-        $imageurl = '';
-        if ($pitch->private == 0 && $pitch->category_id != 7) {
-            if (isset($solution->images['solution_solutionView'])) {
-                if (isset($solution->images['solution_solutionView'][0]['filename'])) {
-                    $imageurl = $solution->images['solution_solutionView'][0]['filename'];
-                } else {
-                    $imageurl = $solution->images['solution_solutionView']['filename'];
-                }
-            }
-        }
-        return TwitterAPI::sendTweet($tweet, $imageurl);
+    public function sendMessageToSocial($solution) {
+        $mediaManager = new SocialMediaManager;
+        $solution->winner = self::first($solution->user_id);
+        $solution->pitch  = Pitch::first($solution->pitch_id);
+
+        $facebookAPI = new FacebookAPI;
+        $twitterAPI = new TwitterAPI;
+        $dataFacebook = array(
+            'message' => $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook'),
+            'picture' => $mediaManager->getImageReadyForSocialNetwork($solution, 'facebook')
+        );
+        $dataTwitter = array(
+            'message' => $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter'),
+            'picture' => $mediaManager->getImageReadyForSocialNetwork($solution, 'twitter')
+        );
+        $facebookAPI->postMessageToPage($dataFacebook);
+        $twitterAPI->postMessageToPage($dataTwitter);
+        return true;
     }
 
     public static function sendFinishReports($pitch) {

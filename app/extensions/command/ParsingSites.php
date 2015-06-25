@@ -50,11 +50,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing desnews.ru");
         self::ParsingDesnewsru('http://desnews.ru/?feed=rss2', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing desnews.ru [' . (time() - $startTimeStamp) . ' sec]');
-
+/*
         /*$this->out("Starting parsing buro247.ru");
         self::ParsingWordpress('http://www.buro247.ru/xml/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing buro247.ru [' . (time() - $startTimeStamp) . ' sec]');
 */
+
         $this->out("Starting parsing russiangap.com");
         self::ParsingWordpress('http://www.russiangap.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing russiangap.com [' . (time() - $startTimeStamp) . ' sec]');
@@ -197,14 +198,14 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     ),
                     'with' => array('Wp_term_relationship', 'Wp_postmeta'),
                     'order' => array('post_date' => 'desc'),
-                    'limit' => 300
+                    'limit' => 100
         ));
 
         foreach ($posts as $item) {
             if($item->category == 'images') {
                 $trigger = true;
             }else {
-                $trigger = News::doesNewsExists((string) $item->post_title, $item->guid);
+                $trigger = News::doesNewsExists((string) $item->post_title, (string) $item->guid);
             }
             if (!$trigger) {
                 $this->out('Saving - ' . $item->post_title);
@@ -423,7 +424,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
     private function ParsingLookatme() {
         $xml = simplexml_load_file('http://www.lookatme.ru/feeds/posts.atom?topic=people');
         foreach ($xml->entry as $item) {
-            $trigger = News::doesNewsExists((string) $item->title, $item->id);
+            $trigger = News::doesNewsExists((string) $item->title, (string) $item->id);
 
             if (!$trigger) {
 
@@ -631,7 +632,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
     private function ParsingInterview($url) {
         $xml = simplexml_load_file($url);
         foreach ($xml->channel->item as $item) {
-            $trigger = News::doesNewsExists($item->title,  $item->guid);
+            $trigger = News::doesNewsExists((string) $item->title, (string) $item->link);
             if (!$trigger) {
                 $date = new \DateTime($item->published);
                 $data = array(

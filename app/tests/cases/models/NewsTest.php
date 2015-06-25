@@ -66,7 +66,6 @@ class NewsTest extends AppUnit {
     }*/
 
     public function testdoesNewsExists() {
-
         $result = News::doesNewsExists('Fake');
         $this->assertFalse($result);
 
@@ -76,12 +75,17 @@ class NewsTest extends AppUnit {
         $result = News::doesNewsExists('Матрешкин труд', 'http://tutdesign.ru/cats/illustration/17254');
         $this->assertTrue($result);
 
+        $result = News::doesNewsExists('Матрешкин труд', 'http://tutdesign.ru/cats/illustration/17253');
+        $this->assertFalse($result);
+
         $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/17254');
         $this->assertTrue($result);
 
-        $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/17254 2');
+        $result = News::doesNewsExists('Матрешкин труд 2', 'http://tutdesign.ru/cats/illustration/172542');
         $this->assertFalse($result);
 
+        $result = News::doesNewsExists('Топографический креатизм', 'http://tutdesign.ru/cats/brand/17232-topograficheskij-kreatizm.html');
+        $this->assertFalse($result);
     }
 
     public function testSaveNewsByAdmin()  {
@@ -113,6 +117,24 @@ class NewsTest extends AppUnit {
         $result = News::saveNewsByAdmin($data, false);
         $this->assertFalse($result);
 
+        $data = array(
+            'title' => 'Проверка',
+            'short' => '',
+            'link' => 'https://www.google.com/'
+        );
+
+        $result = News::saveNewsByAdmin($data, false);
+        $this->assertTrue($result);
+
+        $data = array(
+            'title' => '',
+            'short' => 'Текст для проверки',
+            'link' => ''
+        );
+
+        $result = News::saveNewsByAdmin($data, false);
+        $this->assertTrue($result);
+
         $result = News::doesNewsExists('Проверка2');
         $this->assertFalse($result);
 
@@ -122,7 +144,7 @@ class NewsTest extends AppUnit {
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
-        $news = News::first(6);
+        $news = News::first(8);
         $this->assertEqual('', $news->imageurl);
         $this->assertEqual('https://i.ytimg.com/vi/3bhLkorXLI8/maxresdefault.jpg', $news->og_image);
         $this->assertEqual('', $news->title);
@@ -136,13 +158,17 @@ class NewsTest extends AppUnit {
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
-        $news = News::first(7);
+        $news = News::first(9);
         $this->assertEqual('', $news->imageurl);
         $this->assertEqual('https://i.vimeocdn.com/video/164362346_1280x720.jpg', $news->og_image);
         $this->assertEqual('', $news->title);
         $this->assertEqual('29 WAYS TO STAY CREATIVE', $news->og_title);
         $this->assertEqual('', $news->description);
         $this->assertEqual('Motion Graphics: TO-FU Contact us at http://to-fu.tv Like us on Facebook http://www.facebook.com/TOFU.design twitter http://twitter.com/tofu_design  Reference: http://paulzii.tumblr.com/post/3360025995  Music:&hellip;', $news->og_description);
+
+        $data = array('short' => '<div id="fb-root"></div><script>(function(d, s, id)');
+        $result = News::saveNewsByAdmin($data, false);
+        $this->assertTrue($result);
     }
 
 }
