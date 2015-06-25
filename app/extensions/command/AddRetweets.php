@@ -69,7 +69,7 @@ class AddRetweets extends \app\extensions\command\CronJob {
                     $this->out('checking if cache for tweet html exists in Rcache');
                     if (!isset($tweetsDump[$tweet['id_str']])) {
                         $this->out('Html cache is not exists');
-                        $params = array('rpp' => 1, 'id' => $tweet['id_str'], 'include_entities' => false);
+                        $params = array('rpp' => 1, 'id' => $tweet['id_str'], 'maxwidth' => '550', 'include_entities' => false);
                         $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/oembed.json', $params, false);
                         if ($code == 200) {
                             $this->out('Got the data, saving to cache');

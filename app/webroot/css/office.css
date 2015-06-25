@@ -1030,11 +1030,12 @@
 }
 
 .twitter-tweet {
-    width: 600px !important;
+    /*width: 600px !important;*/
+    margin-left: auto !important;
+    margin-right: auto !important;
     margin-top: 0 !important;
     margin-bottom: 16px !important;
     color: #e0e0e0
-
 }
 
 .twitter-tweet p {
@@ -1054,4 +1055,8 @@
 }
 .post-content .img-tag a {
     color: white;
+}
+.EmbeddedTweet {
+    width: 600px !important;
+    max-width: 600px !important;
 }
