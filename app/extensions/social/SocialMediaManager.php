@@ -4,7 +4,7 @@ namespace app\extensions\social;
 
 use \lithium\data\entity\Record;
 use app\extensions\helper\PitchTitleFormatter;
-use app\extensions\helper\nameInflector;
+use app\extensions\helper\NameInflector;
 use app\extensions\helper\MoneyFormatter;
 
 class SocialMediaManager {
@@ -106,7 +106,7 @@ class SocialMediaManager {
             '%s заработал %s за проект «%s» %s #Go_Deer',
             '%s победил в проекте «%s», награда %s %s #Go_Deer'
         );
-        $nameInflector = new nameInflector();
+        $nameInflector = new NameInflector();
         $moneyFormatter = new MoneyFormatter();
         $winnerPrice = $moneyFormatter->formatMoney($solutionObject->pitch->price, array('suffix' => ' РУБ.-'));
         $winnerName = $nameInflector->renderName($solutionObject->winner->first_name, $solutionObject->winner->last_name);
