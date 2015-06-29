@@ -889,13 +889,12 @@ class PitchesController extends \app\controllers\AppController {
                             ),
                             'order' => array('Comment.id' => 'desc'),
                             'with' => array('User')));
-                foreach($commentsRaw as $comment) {
-                    $comment->user = User::removeExtraFields($comment->user);
-                }
                 Rcache::write($cacheKey, $commentsRaw, array(), '+4 hours');
             }
             $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
-
+            foreach($comments as $comment) {
+                $comment->user = User::removeExtraFields($comment->user);
+            }
             return compact('comments', 'experts', 'pitch');
         } else {
             return false;
@@ -1110,7 +1109,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
 
     /**
-     * Метод отображения страницы решения
+     * Метод отображения страницы решения html|json
      * @return array|object
      * @throws \Exception
      */
@@ -1189,6 +1188,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.id' => 'desc'), 'with' => array('User', 'Pitch')));
             $comments = Comment::filterComments($solution->num, $comments);
             $comments = Comment::filterCommentsTree($comments, $pitch->user_id);
+            foreach($comments as $comment) {
+                $comment->user = User::removeExtraFields($comment->user);
+            }
             $expertsIds = Expert::getExpertUserIds();
             if (isset($this->request->query['exp'])) {
                 $comments = $comments->data();
