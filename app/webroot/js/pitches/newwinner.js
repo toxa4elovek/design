@@ -15,25 +15,42 @@ $(document).ready(function () {
         $(this).parent().addClass('expanded');
         return false;
     })
+
+    $(document).on('click', 'td.s3_text, td.s3_h', function () {
+        $('.rb1', $(this).prevAll(':last')).click();
+    });
+
     $('.rb1').change(function () {
         switch ($(this).data('pay')) {
             case 'payanyway':
-                $("#paybutton-payanyway").removeAttr('style');
+                $("#paybutton-payanyway").fadeIn(100);
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
+                $("#paybutton-payture").hide();
+                $('#s3_kv').hide();
+                break;
+            case 'payture':
+                $("#paybutton-payture").fadeIn(100);
+                $("#paybutton-payture");
+                $("#paymaster-images").show();
+                $("#paymaster-select").hide();
+                $('#s3_kv').hide();
                 break;
             case 'paymaster':
                 $("#paybutton-paymaster").removeAttr('style');
-                $("#paybutton-payanyway").css('background', '#a2b2bb');
+                $("#paybutton-payanyway").fadeOut(100);
                 $("#paymaster-images").hide();
                 $("#paymaster-select").show();
+                $("#paybutton-payture").hide();
+                $('#s3_kv').hide();
                 break;
             case 'offline':
                 $("#paybutton-payanyway").fadeOut(100);
                 $("#paybutton-paymaster").css('background', '#a2b2bb');
                 $("#paymaster-images").show();
                 $("#paymaster-select").hide();
+                $("#paybutton-payture").hide();
                 $('#s3_kv').show();
                 break;
         }

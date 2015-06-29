@@ -28,34 +28,29 @@
                 <div class="g_line"></div>
                 <div id="P_card">
                     <table>
-                        <tr>
+
+                        <tr class="payture-section">
                             <td>
-                                <input type="radio" name="1" class="rb1" data-pay="payanyway">
+                                <input type="radio" name="1" class="rb1" data-pay="payture" style="background: #a2b2bb;">
                             </td>
                             <td colspan="2" class="s3_text" style="padding-left: 20px;">
-                                Оплата пластиковыми картами <br>через Payanyway<br><br>
+                                Оплата дебетовыми или кредитными картами<br><br>
+                                <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
                             </td>
-                            <td>
-                                <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
-                                    <input type="hidden" name="MNT_ID" value="36102238">
-                                    <input type="hidden" name="MNT_TRANSACTION_ID" value="<?= $pitch->id ?>">
-                                    <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
-                                    <input type="hidden" name="MNT_AMOUNT" value="<?= $sum ?>">
-                                    <input type="hidden" name="MNT_TEST_MODE" value="0">
-                                    <input type="hidden" name="paymentSystem.unitId" value="499669">
-                                    <input type="hidden" name="followup" value="true">
-                                    <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="background: #a2b2bb;">
-                                </form>
+                            <td style="width: 190px;">
+                                <a href="/payments/startpayment/<?= $pitch->id ?>" id="paybutton-payture" class="button" style="display: none;">Оплатить</a>
                             </td>
                         </tr>
                         <tr id="online-images">
                             <td colspan="4" style="padding: 20px 0 0 40px;">
-                                <img src="/img/s3_master.png" alt="">
+                                <img src="/img/s3_master.png" alt="Дебетовые и кредитные карты">
                             </td>
                         </tr>
+
                         <tr>
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
                         </tr>
+
                         <tr>
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="offline">

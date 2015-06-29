@@ -1465,8 +1465,14 @@ Disallow: /pitches/upload/' . $pitch['id'];
         die();
     }
 
+    /**
+     * Метод отображения формы оплаты второго победителя
+     *
+     * @respond_to html
+     * @return array|object
+     */
     public function newwinner() {
-        if (($pitch = Pitch::first($this->request->id)) && Session::read('user.id') == $pitch->user_id && ($receipt = Receipt::all(array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('name', 'value'))))) {
+        if (($pitch = Pitch::first($this->request->id)) && $this->userHelper->isPitchOwner($pitch->user_id) && ($receipt = Receipt::all(array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('name', 'value'))))) {
             return compact('pitch', 'receipt');
         } else {
             return $this->redirect('/pitches');

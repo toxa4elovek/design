@@ -8,6 +8,7 @@ use app\extensions\storage\Rcache;
 use app\extensions\billing\Payture;
 use app\models\Payment;
 use \lithium\analysis\Logger;
+use \Exception;
 
 
 class PaymentsController extends \app\controllers\AppController {
@@ -16,7 +17,6 @@ class PaymentsController extends \app\controllers\AppController {
 
     /**
      * Обработка платежных уведомлений от Payture
-     *
      */
     public function payture_callback() {
         if (!empty($this->request->data)) {
@@ -46,6 +46,13 @@ class PaymentsController extends \app\controllers\AppController {
         die();
     }
 
+    /**
+     * Метод для инициации платежа через систему payture
+     *
+     * @responds_to redirect
+     * @return object
+     * @throws Exception
+     */
     public function startpayment() {
         if($pitch = Pitch::first($this->request->id)) {
             $totalInCents = (int) $pitch->total * 100;

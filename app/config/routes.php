@@ -51,6 +51,7 @@ Router::connect('/users/view/{:id}', 'Users::view');
 Router::connect('/pitches/view/{:id}', 'Pitches::view');
 Router::connect('/pitches/details/{:id}', 'Pitches::details');
 Router::connect('/pitches/designers/{:id}', 'Pitches::designers');
+Router::connect('/pitches/newwinner/{:id}', 'Pitches::newwinner');
 Router::connect('/posts/view/{:id}', 'Posts::view');
 Router::connect('/pitches/brief/{:category:\d+}', array('controller' => 'Pitches', 'action' => 'brief', 'category' => null));
 Router::connect('/users/step3/{:id:\d+}/{:confirm}', array('controller' => 'users', 'action' => 'step3'));
