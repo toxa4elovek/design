@@ -87,12 +87,12 @@ class Pitch extends AppModel {
             return $result;
         });
         self::applyFilter('finishPitch', function($self, $params, $chain) {
-            Event::createEvent($params['pitch']->id, 'PitchFinished', $params['pitch']->user_id, $params['solutions']->first()->id);
+            Event::createEvent($params['pitch']->id, 'PitchFinished', $params['pitch']->user_id, $params['solution']->id);
             if (Session::read('user.isAdmin') == 1) {
                 $newComment = Wincomment::create();
                 $newComment->user_id = Session::read('user.id');
                 $newComment->created = date('Y-m-d H:i:s');
-                $newComment->solution_id = $params['solutions']->first()->id;
+                $newComment->solution_id = $params['solutions']->id;
                 $newComment->text = 'Проект завершен по правилам сервиса GoDesigner.';
                 $newComment->step = 3;
                 $newComment->save();
@@ -463,17 +463,20 @@ class Pitch extends AppModel {
         return true;
     }
 
+    /**
+     * Метод для завершения проекта
+     *
+     * @param $pitchId
+     * @return bool|object
+     */
     public static function finishPitch($pitchId) {
-        $solutions = Solution::all(array(
-                    'conditions' => array('pitch_id' => $pitchId, 'nominated' => 1, 'awarded' => 0),
-        ));
         $pitch = Pitch::first($pitchId);
-        if (count($solutions) == 1) {
-            $params = compact('pitch', 'solutions');
+        $solution = Solution::first($pitch->awarded);
+        if ($solution) {
+            $params = compact('pitch', 'solution');
             return static::_filter(__FUNCTION__, $params, function($self, $params) {
                         extract($params);
                         $pitch->status = 2;
-                        $pitch->awarded = $solutions->first()->id;
                         $pitch->totalFinishDate = date('Y-m-d H:i:s');
                         $pitch->save();
                         return true;

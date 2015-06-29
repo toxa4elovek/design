@@ -63,7 +63,7 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                 $data = json_decode($tmhOAuth->response['response'], true);
                 $bearerToken = $data['access_token'];
                 $tmhOAuth->headers['Authorization'] = 'Bearer ' . $bearerToken;
-                $params = array('rpp' => 1, 'id' => $id, 'include_entities' => false);
+                $params = array('rpp' => 1, 'id' => $id, 'maxwidth' => '550', 'include_entities' => false);
                 $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/oembed.json', $params, false);
                 if ($code == 200) {
                     $tweetsDump = Rcache::read('RetweetsFeed');
