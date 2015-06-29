@@ -56,9 +56,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out('Finished parsing buro247.ru [' . (time() - $startTimeStamp) . ' sec]');
 */
 
-        $this->out("Starting parsing russiangap.com");
-        self::ParsingWordpress('http://www.russiangap.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
-        $this->out('Finished parsing russiangap.com [' . (time() - $startTimeStamp) . ' sec]');
+        #$this->out("Starting parsing russiangap.com");
+        #self::ParsingWordpress('http://www.russiangap.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        #$this->out('Finished parsing russiangap.com [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing pixelgene.ru");
         self::ParsingWordpress('http://pixelgene.ru/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
