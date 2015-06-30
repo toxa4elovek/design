@@ -6,6 +6,8 @@ use \lithium\data\entity\Record;
 use app\extensions\helper\PitchTitleFormatter;
 use app\extensions\helper\NameInflector;
 use app\extensions\helper\MoneyFormatter;
+use app\extensions\social\TwitterAPI;
+use app\extensions\social\FacebookAPI;
 
 class SocialMediaManager {
 
@@ -169,6 +171,69 @@ class SocialMediaManager {
         }else {
             return 'http://www.godesigner.ru' . $solutionView['weburl'];
         }
+    }
+
+    /**
+     * Метод для публикации сообщений о новом питче в соц сети
+     *
+     * @param $pitch
+     * @return bool
+     */
+    public function postNewProjectMessage(Record $pitch) {
+        $twitterAPI = new TwitterAPI();
+        $facebookAPI = new FacebookAPI();
+        $twitterAPI->postMessageToPage(array(
+            'message' => $this->getNewProjectMessageForSocialNetwork($pitch, rand(0, 1), 'twitter')
+        ));
+        $facebookAPI->postMessageToPage(array(
+            'message' => $this->getNewProjectMessageForSocialNetwork($pitch, rand(0, 1), 'facebook')
+        ));
+        return true;
+    }
+
+    /**
+     * Метод для публикации сообщение о лучшем решение о новых проектах
+     *
+     * @param Record $solution
+     * @param $lastday
+     * @return bool
+     */
+    public function postBestSolutionMessage(Record $solution, $lastday) {
+        $twitterAPI = new TwitterAPI();
+        $facebookAPI = new FacebookAPI();
+        $dataFacebook = array(
+            'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'facebook'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
+        );
+        $dataTwitter = array(
+            'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'twitter'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'twitter')
+        );
+        $facebookAPI->postMessageToPage($dataFacebook);
+        $id = $twitterAPI->postMessageToPage($dataTwitter);
+        return $id;
+    }
+
+    /**
+     * Метод для публикации сообщениях в соц сети о новом победителе
+     *
+     * @param Record $solution
+     * @return bool
+     */
+    public function postWinnerSolutionMessage(Record $solution) {
+        $facebookAPI = new FacebookAPI;
+        $twitterAPI = new TwitterAPI;
+        $dataFacebook = array(
+            'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
+        );
+        $dataTwitter = array(
+            'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'twitter')
+        );
+        $facebookAPI->postMessageToPage($dataFacebook);
+        $twitterAPI->postMessageToPage($dataTwitter);
+        return true;
     }
 
 }

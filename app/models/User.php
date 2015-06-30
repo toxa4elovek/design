@@ -1034,24 +1034,17 @@ class User extends \app\models\AppModel {
         Comment::createComment($data);
     }
 
+    /**
+     * Отправка сообщений в соц сети о новом победители
+     *
+     * @param $solution
+     * @return bool
+     */
     public function sendMessageToSocial($solution) {
         $mediaManager = new SocialMediaManager;
         $solution->winner = self::first($solution->user_id);
         $solution->pitch  = Pitch::first($solution->pitch_id);
-
-        $facebookAPI = new FacebookAPI;
-        $twitterAPI = new TwitterAPI;
-        $dataFacebook = array(
-            'message' => $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook'),
-            'picture' => $mediaManager->getImageReadyForSocialNetwork($solution, 'facebook')
-        );
-        $dataTwitter = array(
-            'message' => $mediaManager->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter'),
-            'picture' => $mediaManager->getImageReadyForSocialNetwork($solution, 'twitter')
-        );
-        $facebookAPI->postMessageToPage($dataFacebook);
-        $twitterAPI->postMessageToPage($dataTwitter);
-        return true;
+        return $mediaManager->postWinnerSolutionMessage($solution);
     }
 
     public static function sendFinishReports($pitch) {
