@@ -68,12 +68,7 @@ class Pitch extends AppModel {
                     // Send messages for Public Pitch only
                     if ($params['pitch']->private != 1) {
                         $mediaManager = new SocialMediaManager;
-                        $facebookAPI = new FacebookAPI;
-                        $twitterAPI = new TwitterAPI;
-                        $messageForTwitter = $mediaManager->getNewProjectMessageForSocialNetwork($params['pitch'], 'twitter');
-                        $messageForFacebook = $mediaManager->getNewProjectMessageForSocialNetwork($params['pitch'], 'facebook');
-                        $facebookAPI->postMessageToPage(array('message' => $messageForFacebook));
-                        $twitterAPI->postMessageToPage(array('message' => $messageForTwitter));
+                        $mediaManager->postNewProjectMessage($params['pitch']);
                     }
                     Task::createNewTask($params['pitch']->id, 'newpitch');
                 } elseif (($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {

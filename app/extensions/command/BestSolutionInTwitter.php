@@ -32,18 +32,8 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
         ));
         if($solution) {
             $mediaManager = new SocialMediaManager;
-            $facebookAPI = new FacebookAPI;
-            $twitterAPI = new TwitterAPI;
-            $dataFacebook = array(
-                'message' => $mediaManager->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'facebook'),
-                'picture' => $mediaManager->getImageReadyForSocialNetwork($solution, 'facebook')
-            );
-            $dataTwitter = array(
-                'message' => $mediaManager->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'twitter'),
-                'picture' => $mediaManager->getImageReadyForSocialNetwork($solution, 'twitter')
-            );
-            $facebookAPI->postMessageToPage($dataFacebook);
-            if ($id = $twitterAPI->postMessageToPage($dataTwitter)) {
+            $id = $mediaManager->postBestSolutionMessage($solution, $lastday);
+            if ($id) {
                 Event::create(array(
                     'type' => 'RetweetAdded',
                     'tweet_id' => $id,

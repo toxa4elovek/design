@@ -6,6 +6,9 @@ use \lithium\data\entity\Record;
 use app\extensions\helper\PitchTitleFormatter;
 use app\extensions\helper\NameInflector;
 use app\extensions\helper\MoneyFormatter;
+use app\extensions\social\TwitterAPI;
+use app\extensions\social\FacebookAPI;
+use app\extensions\social\VKAPI;
 
 class SocialMediaManager {
 
@@ -169,6 +172,85 @@ class SocialMediaManager {
         }else {
             return 'http://www.godesigner.ru' . $solutionView['weburl'];
         }
+    }
+
+    /**
+     * Метод для публикации сообщений о новом питче в соц сети
+     *
+     * @param $pitch
+     * @return bool
+     */
+    public function postNewProjectMessage(Record $pitch) {
+        $twitterAPI = new TwitterAPI();
+        $facebookAPI = new FacebookAPI();
+        $vkAPI = new VKAPI();
+        $twitterAPI->postMessageToPage(array(
+            'message' => $this->getNewProjectMessageForSocialNetwork($pitch, rand(0, 1), 'twitter')
+        ));
+        $facebookAPI->postMessageToPage(array(
+            'message' => $this->getNewProjectMessageForSocialNetwork($pitch, rand(0, 1), 'facebook')
+        ));
+        $vkAPI->postMessageToPage(array(
+            'message' => $this->getNewProjectMessageForSocialNetwork($pitch, rand(0, 1), 'vk')
+        ));
+        return true;
+    }
+
+    /**
+     * Метод для публикации сообщение о лучшем решение о новых проектах
+     *
+     * @param Record $solution
+     * @param $lastday
+     * @return bool
+     */
+    public function postBestSolutionMessage(Record $solution, $lastday) {
+        $twitterAPI = new TwitterAPI();
+        $facebookAPI = new FacebookAPI();
+        $vkAPI = new VKAPI();
+        $dataFacebook = array(
+            'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'facebook'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
+        );
+        $dataTwitter = array(
+            'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'twitter'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'twitter')
+        );
+        $dataVk = array(
+            'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'vk'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'vk')
+        );
+        $facebookAPI->postMessageToPage($dataFacebook);
+        $vkAPI->postMessageToPage($dataVk);
+        $id = $twitterAPI->postMessageToPage($dataTwitter);
+        return $id;
+    }
+
+    /**
+     * Метод для публикации сообщениях в соц сети о новом победителе
+     *
+     * @param Record $solution
+     * @return bool
+     */
+    public function postWinnerSolutionMessage(Record $solution) {
+        $facebookAPI = new FacebookAPI;
+        $twitterAPI = new TwitterAPI;
+        $vkAPI = new VKAPI();
+        $dataFacebook = array(
+            'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
+        );
+        $dataTwitter = array(
+            'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'twitter')
+        );
+        $dataVk = array(
+            'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'vk'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'vk')
+        );
+        $facebookAPI->postMessageToPage($dataFacebook);
+        $twitterAPI->postMessageToPage($dataTwitter);
+        $vkAPI->postMessageToPage($dataVk);
+        return true;
     }
 
 }
