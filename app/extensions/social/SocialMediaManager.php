@@ -8,6 +8,7 @@ use app\extensions\helper\NameInflector;
 use app\extensions\helper\MoneyFormatter;
 use app\extensions\social\TwitterAPI;
 use app\extensions\social\FacebookAPI;
+use app\extensions\social\VKAPI;
 
 class SocialMediaManager {
 
@@ -182,11 +183,15 @@ class SocialMediaManager {
     public function postNewProjectMessage(Record $pitch) {
         $twitterAPI = new TwitterAPI();
         $facebookAPI = new FacebookAPI();
+        $vkAPI = new VKAPI();
         $twitterAPI->postMessageToPage(array(
             'message' => $this->getNewProjectMessageForSocialNetwork($pitch, rand(0, 1), 'twitter')
         ));
         $facebookAPI->postMessageToPage(array(
             'message' => $this->getNewProjectMessageForSocialNetwork($pitch, rand(0, 1), 'facebook')
+        ));
+        $vkAPI->postMessageToPage(array(
+            'message' => $this->getNewProjectMessageForSocialNetwork($pitch, rand(0, 1), 'vk')
         ));
         return true;
     }
@@ -201,6 +206,7 @@ class SocialMediaManager {
     public function postBestSolutionMessage(Record $solution, $lastday) {
         $twitterAPI = new TwitterAPI();
         $facebookAPI = new FacebookAPI();
+        $vkAPI = new VKAPI();
         $dataFacebook = array(
             'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'facebook'),
             'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
@@ -209,7 +215,12 @@ class SocialMediaManager {
             'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'twitter'),
             'picture' => $this->getImageReadyForSocialNetwork($solution, 'twitter')
         );
+        $dataVk = array(
+            'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'vk'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'vk')
+        );
         $facebookAPI->postMessageToPage($dataFacebook);
+        $vkAPI->postMessageToPage($dataVk);
         $id = $twitterAPI->postMessageToPage($dataTwitter);
         return $id;
     }
@@ -223,6 +234,7 @@ class SocialMediaManager {
     public function postWinnerSolutionMessage(Record $solution) {
         $facebookAPI = new FacebookAPI;
         $twitterAPI = new TwitterAPI;
+        $vkAPI = new VKAPI();
         $dataFacebook = array(
             'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook'),
             'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
@@ -231,8 +243,13 @@ class SocialMediaManager {
             'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter'),
             'picture' => $this->getImageReadyForSocialNetwork($solution, 'twitter')
         );
+        $dataVk = array(
+            'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'vk'),
+            'picture' => $this->getImageReadyForSocialNetwork($solution, 'vk')
+        );
         $facebookAPI->postMessageToPage($dataFacebook);
         $twitterAPI->postMessageToPage($dataTwitter);
+        $vkAPI->postMessageToPage($dataVk);
         return true;
     }
 
