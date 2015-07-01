@@ -1535,8 +1535,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $receiptData = array(
                     'features' => array(
                         'award' => $pitch->price,
-                        'discount' => -2530,
-                        'brief' => 1750,
+                        'discount' => -3530,
+                        'brief' => 2750,
                         'experts' => array(1),
                         'guaranteed' => 950,
                         'pinned' => 1000),

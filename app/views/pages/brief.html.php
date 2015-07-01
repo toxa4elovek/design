@@ -19,7 +19,7 @@
 </ul>
 
 
-<p style="margin:10px 0; position:relative" class="regular underline-link">Как только средства поступят на наш счет, мы свяжемся с вами в течение рабочего дня для интервью, на основе которого сами напишем тех. задание для дизайнеров и активируем проект на сайте. Стоимость  услуги 1750 р., а о преимуществах этой опции вы можете подробнее прочитать тут: <a href="http://godesigner.ru/answers/view/68">http://godesigner.ru/answers/view/68</a></p>
+<p style="margin:10px 0; position:relative" class="regular underline-link">Как только средства поступят на наш счет, мы свяжемся с вами в течение рабочего дня для интервью, на основе которого сами напишем тех. задание для дизайнеров и активируем проект на сайте. Стоимость  услуги 2750 р., а о преимуществах этой опции вы можете подробнее прочитать тут: <a href="http://godesigner.ru/answers/view/68">http://godesigner.ru/answers/view/68</a></p>
 
                                 <div style="width: auto;
 	height: 3px;
@@ -27,7 +27,7 @@
 	margin: 0;
 	margin-top:30px;"></div>
 
-                                <div style="text-align:center;margin-top:20px;"><a href="/pitches/fillbrief" class="button third">Использовать опцию за 1750.-</a></div>
+                                <div style="text-align:center;margin-top:20px;"><a href="/pitches/fillbrief" class="button third">Использовать опцию за 2750.-</a></div>
 
                                 <div style="width: auto;
 	height: 3px;

@@ -171,10 +171,10 @@ endif?>
         <script>var fillBrief = 0;</script>
 
         <div class="ribbon complete-brief" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-            <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="1750" id="phonebrief">Заполнить бриф</label></p>
+            <p class="option"><label><input type="checkbox" name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="2750" id="phonebrief">Заполнить бриф</label></p>
             <!--p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/answers/view/68" target="_blank">тут</a>. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
             <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" value="<?=$pitch->{'phone-brief'}?>" class="phone"></p-->
-            <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>" style="text-transform: none;">1750р.</p>
+            <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>" style="text-transform: none;">2750р.</p>
         </div>
 
         <div class="explanation brief" style="display:none;" id="explanation_brief">
