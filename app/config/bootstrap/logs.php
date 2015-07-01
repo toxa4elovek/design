@@ -23,6 +23,11 @@ Logger::config(array(
         'priority' => array('info'),
         'file' => function($data, $config) { return "payture.log"; },
     ),
+    'vklog' => array(
+        'adapter' => 'File',
+        'priority' => array('info'),
+        'file' => function($data, $config) { return "vklog.log"; },
+    ),
     'solution' => array(
         'adapter' => 'File',
         'priority' => array('info'),

@@ -13,11 +13,15 @@ class TwitterAPITest extends AppUnit {
         $this->api = new TwitterAPI();
     }
 
-    public function testPostMessageToPage() {
+    /*public function testPostMessageToPage() {
         $data = array('message' => 'Заполним бриф', 'picture' => '/Users/dima/www/godesigner/app/webroot/img/brief.png');
         $result = $this->api->postMessageToPage($data);
         $this->assertTrue(is_string($result));
         $this->assertTrue(is_numeric($result));
+    }*/
+
+    public function testSearch() {
+        $result = $this->api->search();
     }
 
 }

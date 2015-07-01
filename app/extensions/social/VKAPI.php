@@ -8,7 +8,7 @@ class VKAPI extends AbstractAPI {
     /**
      * @var string переменная для хранения токена доступа к странице
      */
-    public $accessToken = '8f505b137c636ee0b8d9220ec2f3ef2a7a8f62c066dc55c7774480266946edffa9dcaafbb2acc69bf3d44';
+    public $accessToken = 'f7cf9c75292ca989950d58be5f7fcc727f2ac74911c45c1f2e2fadb62422d5670114177b8dbc0c8b8182a';
 
     public function getAccessToken() {
         return $this->accessToken;
@@ -32,12 +32,16 @@ class VKAPI extends AbstractAPI {
         $data['v'] = '5.34';
         $data['owner_id'] = '-36153921';
         $data['from_group'] = '1';
-        $data['attachments'] = $data['picture'];
+        if(isset($data['picture'])) {
+            $data['attachments'] = $data['picture'];
+        }
         $result = $service->post('method/wall.post', $data);
         $decoded =  json_decode($result, true);
         if(isset($decoded['response']['post_id'])) {
             return $decoded['response']['post_id'];
         }else {
+
+            var_dump($result);
             return false;
         }
     }
