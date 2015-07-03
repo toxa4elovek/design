@@ -78,7 +78,33 @@ class TwitterAPI extends AbstractAPI {
             'url' => $this->apiObject->url("1.1/search/tweets.json"),
             'params' => $params,
         ));
-        return $function($this->apiObject);
+        return $function($this->apiObject, $this);
+    }
+
+    /**
+     * Метод ретвитиь твит с $id
+     * @param $id
+     */
+    public function retweet($id) {
+        $params = array('id' => $id);
+        $this->apiObject->user_request(array(
+            'method' => 'POST',
+            'url' => $this->apiObject->url('1.1/statuses/retweet/' . $id . '.json'),
+            'params' => $params,
+        ));
+    }
+
+    /**
+     * Метод добавляет твит с $id в избранное
+     * @param $id
+     */
+    public function favorite($id) {
+        $params = array('id' => $id);
+        $this->apiObject->user_request(array(
+            'method' => 'POST',
+            'url' => $this->apiObject->url('1.1/favorites/create.json'),
+            'params' => $params,
+        ));
     }
 
 }
