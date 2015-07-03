@@ -18,8 +18,6 @@ use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\PitchTitleFormatter;
 use \app\extensions\smsfeedback\SmsFeedback;
-use \tmhOAuth\tmhOAuth;
-use \tmhOAuth\tmhUtilities;
 use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
 use \DirectoryIterator;

@@ -5,28 +5,23 @@ namespace app\extensions\command;
 use app\models\Event;
 use app\extensions\storage\Rcache;
 use \tmhOAuth\tmhOAuth;
-use \tmhOAuth\tmhUtilities;
 
 class AddRetweets extends \app\extensions\command\CronJob {
 
     public function run() {
         Rcache::init();
-        $string = base64_encode('8r9SEMoXAacbpnpjJ5v64A:I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk');
         $tmhOAuth = new tmhOAuth(array(
             'consumer_key' => '8r9SEMoXAacbpnpjJ5v64A',
             'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
             'user_token' => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
             'user_secret' => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
         ));
-        $tmhOAuth->headers['Authorization'] = 'Basic ' . $string;
-        $params = array('grant_type' => 'client_credentials');
-        $response = $tmhOAuth->request('POST', 'https://api.twitter.com/oauth2/token', $params, false
-        );
-        $data = json_decode($tmhOAuth->response['response'], true);
-        $bearerToken = $data['access_token'];
-        $tmhOAuth->headers['Authorization'] = 'Bearer ' . $bearerToken;
         $params = array('count' => 100, 'screen_name' => 'Go_Deer', 'include_entities' => true);
-        $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/user_timeline.json', $params, false);
+        $code = $tmhOAuth->user_request(array(
+            'method' => 'GET',
+            'url' => $tmhOAuth->url('1.1/statuses/user_timeline.json'),
+            'params' => $params
+        ));
         if ($code == 200) {
             $data = json_decode($tmhOAuth->response['response'], true);
         }
@@ -39,8 +34,11 @@ class AddRetweets extends \app\extensions\command\CronJob {
             $url .= $countTags > $x ? '%23' . urlencode($tag) . '+' : '%23' . urlencode($tag);
         }
         $params = array('rpp' => 100, 'q' => $url, 'include_entities' => true);
-        $codeTag = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/search/tweets.json', $params, false);
-
+        $codeTag = $tmhOAuth->user_request(array(
+            'method' => 'GET',
+            'url' => $tmhOAuth->url('https://api.twitter.com/1.1/search/tweets.json'),
+            'params' => $params
+        ));
         if ($code == 200 && $codeTag == 200) {
             $dataTag = json_decode($tmhOAuth->response['response'], true);
             foreach ($dataTag['statuses'] as $tweet) {
