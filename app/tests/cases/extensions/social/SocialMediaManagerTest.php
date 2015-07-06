@@ -80,7 +80,7 @@ class SocialMediaManagerTest extends AppUnit {
     public function testGetImageReadyForSocialNetwork() {
         $solution = Solution::first(array('conditions' => array('Solution.id' => 2), 'with' => array('Pitch')));
         $this->assertEqual($solution->images['solution_solutionView']['filename'], $this->manager->getImageReadyForSocialNetwork($solution, 'twitter'));
-        $this->assertEqual('http://www.godesigner.ru/solutions/2_solutionView.jpg', $this->manager->getImageReadyForSocialNetwork($solution, 'vk'));
+        $this->assertEqual('http://www.godesigner.ru/pitches/viewsolution/2', $this->manager->getImageReadyForSocialNetwork($solution, 'vk'));
         $this->assertEqual('http://www.godesigner.ru/solutions/2_solutionView.jpg', $this->manager->getImageReadyForSocialNetwork($solution, 'facebook'));
         $solution->pitch->private = 1;
         $this->assertIdentical('', $this->manager->getImageReadyForSocialNetwork($solution, 'facebook'));

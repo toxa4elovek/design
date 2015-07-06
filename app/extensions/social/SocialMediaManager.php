@@ -151,9 +151,9 @@ class SocialMediaManager {
         if (($solutionObject->pitch->private == 0 && $solutionObject->pitch->category_id != 7) &&
             (isset($solutionObject->images['solution_solutionView']))) {
             if (isset($solutionObject->images['solution_solutionView'][0]['filename'])) {
-                return $this->__returnImageReady($solutionObject->images['solution_solutionView'][0], $social);
+                return $this->__returnImageReady($solutionObject->images['solution_solutionView'][0], $social, $solutionObject);
             } else {
-                return $this->__returnImageReady($solutionObject->images['solution_solutionView'], $social);
+                return $this->__returnImageReady($solutionObject->images['solution_solutionView'], $social, $solutionObject);
             }
         }
         return '';
@@ -166,11 +166,13 @@ class SocialMediaManager {
      * @param $social
      * @return string
      */
-    private function __returnImageReady($solutionView, $social) {
+    private function __returnImageReady($solutionView, $social, $solutionObject) {
         if($social == 'twitter') {
             return $solutionView['filename'];
-        }else {
+        }elseif($social == 'facebook') {
             return 'http://www.godesigner.ru' . $solutionView['weburl'];
+        }elseif($social == 'vk') {
+            return 'http://www.godesigner.ru/pitches/viewsolution/' . $solutionObject->id;
         }
     }
 
