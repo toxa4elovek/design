@@ -1714,7 +1714,7 @@ function getParameterByName(name) {
     e.fn.countdown = function (t, n) {
         function io() {
             var eventDate = r.date;
-            var currentDate = Math.floor(e.now() / 1e3);
+            var currentDate = Math.floor(Date.now() / 1000);
             var seconds = eventDate - currentDate;
             var days = Math.floor(seconds / 86400);
             seconds -= days * 60 * 60 * 24;
@@ -1776,7 +1776,7 @@ function getParameterByName(name) {
     e.fn.countdownheader = function (t, n) {
         function i() {
             var eventDate = thisEl.data('deadline')
-            var currentDate = Math.floor(e.now() / 1e3);
+            var currentDate = Math.floor(Date.now() / 1000);
             var seconds = eventDate - currentDate;
             var days = Math.floor(seconds / 86400);
             seconds -= days * 60 * 60 * 24;
