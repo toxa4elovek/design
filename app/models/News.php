@@ -239,4 +239,14 @@ class News extends \app\models\AppModel {
         return $result;
     }
 
+    /**
+     * Метод определяет, является ли новость коубом
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isCoub($record) {
+        return (bool) preg_match('#<iframe src="//coub.com#', $record->short);
+    }
+
 }

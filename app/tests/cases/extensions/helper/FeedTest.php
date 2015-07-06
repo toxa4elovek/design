@@ -41,6 +41,10 @@ class FeedTest extends \lithium\test\Unit
         $this->assertIdentical($expected, $this->feed->generateEmbeddedIframe('https://www.youtube.com/watch?v=NifyOHkaztb'));
         $expected = '<iframe src="https://player.vimeo.com/video/129346967" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
         $this->assertIdentical($expected, $this->feed->generateEmbeddedIframe('https://vimeo.com/129346967'));
+        $expected = '<iframe src="//coub.com/embed/g9jnfu?muted=false&autostart=false&originalSize=false&hideTopBar=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="600" height="337"></iframe>';
+        $this->assertIdentical($expected, $this->feed->generateEmbeddedIframe('<iframe src="//coub.com/embed/g9jnfu?muted=false&autostart=false&originalSize=false&hideTopBar=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="640" height="360"></iframe>'));
+
+
     }
 
 }

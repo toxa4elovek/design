@@ -171,4 +171,11 @@ class NewsTest extends AppUnit {
         $this->assertTrue($result);
     }
 
+    public function testIsCoubNews(){
+        $news = News::first(1);
+        $this->assertFalse($news->isCoub());
+        $news->short = '<iframe src="//coub.com/embed/g9jnfu?muted=false&autostart=false&originalSize=false&hideTopBar=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="640" height="360"></iframe>';
+        $this->assertTrue($news->isCoub());
+    }
+
 }

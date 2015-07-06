@@ -29,6 +29,16 @@ class Feed extends \lithium\template\Helper {
         }elseif($this->__isVimeoLink($url)) {
             $videoId = $this->__getVimeoVideoId($url);
             return '<iframe src="https://player.vimeo.com/video/' . $videoId . '" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+        }elseif($this->__isCoubIframe($url)) {
+            preg_match('@width="(\d+)" height="(\d+)"@', $url, $matches);
+            $width = $matches[1];
+            $height = $matches[2];
+            $coeff = $width / 600;
+            $newHeight = floor($height / $coeff);
+            $url = preg_replace('@(.+width=")(\d+)(" height=")(\d+)(".*)@', '$1__width__$3__height__$5', $url);
+            $url = str_replace('__width__', '600', $url);
+            $url = str_replace('__height__', $newHeight, $url);
+            return $url;
         }
     }
 
@@ -75,6 +85,19 @@ class Feed extends \lithium\template\Helper {
      */
     private function __isVimeoLink($url) {
         if(preg_match('@vimeo.com/\d+@', $url)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Метод определяет, является ли строка ссылкой на коуб
+     *
+     * @param $url
+     * @return mixed
+     */
+    private function __isCoubIframe($url) {
+        if(preg_match('@<iframe src="//coub.com/embed@', $url)) {
             return true;
         }
         return false;

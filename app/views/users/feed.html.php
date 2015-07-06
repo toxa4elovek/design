@@ -523,7 +523,15 @@
                                                 return true;
                                             }
                                             ?>
-                                            <div class="box" data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>" <?php if(!$isValidImage($newsImage)): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
+                                            <?php
+                                            $style = '';
+                                            $coub = false;
+                                            if((bool) preg_match('#<iframe src="//coub.com#', $object['news']['short'])):
+                                                $style = '';
+                                                $coub = true;
+                                            endif;
+                                            ?>
+                                            <div class="box" data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>" <?php if((!$isValidImage($newsImage)) && (!$coub)): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                                 <?php if($isValidImage($object['news']['imageurl'])):?>
                                                 <p class="img-box">
                                                     <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'],'/events/') !== false) && (strpos($object['news']['imageurl'],'/events/') === 0)) ? 'http://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
@@ -532,13 +540,22 @@
                                                 <p class="img-box">
                                                     <?php echo $this->feed->generateEmbeddedIframe($object['news']['link'])?>
                                                 </p>
+                                                <?php elseif($coub):?>
+                                                    <p class="img-box">
+                                                        <?php echo $this->feed->generateEmbeddedIframe($object['news']['short'])?>
+                                                    </p>
                                                 <?php endif?>
-                                                <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
+
+                                                <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0; <?=$style?>"<?php endif; ?>>
                                                     <?php if ($object['news']['tags']): ?>
                                                         <p class="img-tag"><a class="tag-title" href="/news?tag=<?= urlencode($object['news']['tags']) ?>"><?= $object['news']['tags'] ?></a></p>
                                                     <?php endif; ?>
+                                                    <?php if($coub == false):?>
                                                     <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
+                                                    <?php endif?>
+                                                    <?php if(!$coub):?>
                                                     <p class="img-short"><?php echo $object['news']['short'] ?></p>
+                                                    <?php endif?>
                                                     <p class="timeago">
                                                         <time class="timeago" datetime="<?= date('c', strtotime($object['news']['created'])) ?>"><?= $object['news']['created'] ?></time> <?php if(!empty($object['host'])):?>с сайта <?php endif ?><?= $object['host'] ?>
                                                         <?php if($object['news']['original_title'] != ''):?>
