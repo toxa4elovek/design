@@ -49,7 +49,7 @@ class AddRetweets extends \app\extensions\command\CronJob {
             foreach ($data as $tweet) {
                 if (isset($tweet['retweeted_status']) || self::in_array_r('работадлядизайнеров', $tweet['entities']['hashtags']) || (strpos($tweet['text'], ' победил в проекте ') !== false || strpos($tweet['text'], ' заработал ') !== false)) {
                     $this->out('Dumping tweet data...');
-                    var_dump($tweet);
+                    //var_dump($tweet);
                     $this->out('checking if tweet event exists in database...');
                     if (!$tweetEvent = Event::first(array('conditions' => array('tweet_id' => $tweet['id_str'])))) {
                         $this->out('Tweet ' . $tweet['id_str'] . ' is not exists in database');
@@ -68,7 +68,11 @@ class AddRetweets extends \app\extensions\command\CronJob {
                     if (!isset($tweetsDump[$tweet['id_str']])) {
                         $this->out('Html cache is not exists');
                         $params = array('rpp' => 1, 'id' => $tweet['id_str'], 'maxwidth' => '550', 'include_entities' => false);
-                        $code = $tmhOAuth->request('GET', 'https://api.twitter.com/1.1/statuses/oembed.json', $params, false);
+                        $code = $tmhOAuth->user_request(array(
+                            'method' => 'GET',
+                            'url' => $tmhOAuth->url('1.1/statuses/oembed.json'),
+                            'params' => $params
+                        ));
                         if ($code == 200) {
                             $this->out('Got the data, saving to cache');
                             $embeddata = json_decode($tmhOAuth->response['response'], true);
