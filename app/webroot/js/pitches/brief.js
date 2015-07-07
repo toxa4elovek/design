@@ -16,98 +16,23 @@ $(document).ready(function () {
             {title: 'Основной текст', inline: 'span', classes: "regular"},
             {title: 'Заголовок', inline: 'span', classes: "greyboldheader"},
             {title: 'Дополнение', inline: 'span', classes: "supplement2"},
-        ]
-    });
-
-    /*$('.enable-editor').tinymce({
-        // Location of TinyMCE script
-        script_url: '/js/tiny_mce/tiny_mce.js',
-        // General options
-        theme: "advanced",
-        plugins: "autolink,lists,style,visualchars,paste",
-        // Theme options
-        theme_advanced_buttons1: "styleselect,link,unlink,bullist,numlist,charmap",
-        theme_advanced_buttons2: "",
-        theme_advanced_buttons3: "",
-        theme_advanced_toolbar_location: "top",
-        theme_advanced_toolbar_align: "left",
-        theme_advanced_statusbar_location: "bottom",
-        theme_advanced_resizing: true,
-        content_css: "/css/brief_wysiwyg.css",
-        language: "ru",
-        height: "240",
-        width: '538',
-        relative_urls: false,
-        remove_script_host: false,
-        paste_auto_cleanup_on_paste: true,
-        paste_remove_styles: true,
-        paste_remove_styles_if_webkit: true,
-        paste_strip_class_attributes: true,
-        paste_preprocess: function (pl, o) {
-            if ((jQuery(o.content).text() == '') && (o.content != '')) {
-                var text = o.content
-            } else {
-                var text = jQuery(o.content).text()
-            }
-            o.content = text
-        },
-        onchange_callback: function (editor) {
-            isUndo = true;
-        },
-        style_formats: [
-            {title: 'Основной текст', inline: 'span', classes: "regular"},
-            {title: 'Заголовок', inline: 'span', classes: "greyboldheader"},
-            {title: 'Дополнение', inline: 'span', classes: "supplement2"},
         ],
-        setup: function (ed) {
-            // Set placeholder
-            var tinymce_placeholder = $('#' + ed.id);
-            var attr = tinymce_placeholder.attr('data-placeholder');
-            if (typeof attr !== 'undefined' && attr !== false) {
-                var is_default = false;
-
-                ed.onInit.add(function (ed) {
-
-                    var doc = ed.getDoc(),
-                            dom = ed.dom,
-                            el = doc.content_editable ? ed.getBody() : (tinymce.isGecko ? doc : ed.getWin());
-
-                    tinymce.dom.Event.add(el, 'blur', function (e) {
-                        if (ed.getContent().length === 0) {
-                            ed.setContent(attr);
-                            is_default = true;
-                        }
-                    });
-                    // get the current content
-                    var cont = ed.getContent();
-
-                    // If its empty and we have a placeholder set the value
-                    if (cont.length == 0) {
-                        ed.setContent(tinymce_placeholder.attr("data-placeholder"));
-
-                        // Get updated content
-                        cont = tinymce_placeholder.attr("data-placeholder");
-                    }
-
-                    // convert to plain text and compare strings
-                    is_default = (cont == tinymce_placeholder.attr("data-placeholder"));
-                    // nothing to do
-                    if (!is_default) {
-                        return;
-                    }
-                });
-                ed.onChange.add(function () {
-                    is_default = false;
-                });
-                ed.onMouseDown.add(function (ed, e) {
-                    if (is_default) {
-                        ed.setContent('');
-                    }
-                });
-
-            }
+        setup: function(ed) {
+            ed.on('keyup', function(e) {
+                var chars = ed.getContent().length;
+                var indicator = $('#indicator-desc');
+                indicator.removeClass('low normal good');
+                var textarea = $('#full-description');
+                if (chars < textarea.data('normal')) {
+                    indicator.addClass('low');
+                } else if (chars < textarea.data('high')) {
+                    indicator.addClass('normal');
+                } else {
+                    indicator.addClass('good');
+                }
+            });
         }
-    });*/
+    });
 
     /* Download Form Select */
     if ((window.File != null) && (window.FileList != null)) {
@@ -419,22 +344,6 @@ $(document).ready(function () {
         }
     });
 
-    /**/
-
-    $('#full-description').keyup(function () {
-        var chars = $(this).val().length;
-        $('#indicator-desc').removeClass('low normal good');
-        if (chars < $(this).data('normal')) {
-            $('#indicator-desc').addClass('low');
-        } else if (chars < $(this).data('high')) {
-            $('#indicator-desc').addClass('normal');
-        } else {
-            $('#indicator-desc').addClass('good');
-        }
-    })
-
-    /**/
-
     $('#hide-check').click(function () {
         $(this).parent().removeClass('expanded');
         return false;
@@ -668,6 +577,7 @@ $(document).ready(function () {
 
     $('#sub-site').change(function () {
         recalcMinAwardWithNumOfPagesChange();
+        drawIndicator($('#award'), $('#award').val());
     });
 
     $('#sub-site').focus(function () {
