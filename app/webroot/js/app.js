@@ -1130,6 +1130,7 @@ function enableToolbar() {
                     $('.pitch-comments section:first').prepend('<div class="separator"></div>');
                     $(populateComment(commentData)).insertAfter('.pitch-comments .separator:first');
                     $('.separator', '.pitch-comments section:first').remove();
+                    textarea.val('');
                 }
                 button.css('color', '#ffffff');
                 loader.hide();
