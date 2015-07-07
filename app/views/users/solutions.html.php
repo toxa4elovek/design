@@ -31,8 +31,8 @@ font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; fon
                                     <?php endif; ?>
                                 <?php endif;?>
                                 <div style="
-                                <?php if((!$this->user->isSolutionAuthor($solution->user_id)) || (($solution->pitch->private != 1) && ($solution->pitch->category_id != 7))):?>
-                                    padding-left: 20px; <?php endif?>  width: 175px;">
+                                <?php if(($this->user->isSolutionAuthor($solution->user_id)) && (($solution->pitch->private != 1) && ($solution->pitch->category_id != 7))):?>
+                                    padding-left: 20px; width: 175px;<?php endif?>">
                                     <span class="number_img_new">#<?=$solution->num?></span>
                                     <?=$this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false, 'style' => 'width: 145px;display: inline-block'))?>
                                 </div>
@@ -75,7 +75,7 @@ font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; fon
                                 <?php endif?>
                                 <ul class="tags" data-solutionid="<?= $solution->id ?>">
                                     <?php
-                                    if(is_array($solution->tags)):
+                                    if(($this->user->isSolutionAuthor($solution->user_id)) && (is_array($solution->tags))):
                                     foreach($solution->tags as $tag):?>
                                         <li style="padding-left: 10px; padding-right: 10px; margin-right:6px; height: 21px; padding-top: 5px; margin-bottom:3px;">
                                             <a class="tagname" target="_blank" href="/logosale?search=<?= urlencode($tag)?>"><?= $tag?></a>
