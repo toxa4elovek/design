@@ -47,7 +47,7 @@ $(document).ready(function() {
         }
         tinyMCE.activeEditor.windowManager.open({
             file: roxyFileman,
-            title: 'Roxy Fileman',
+            title: 'Загрузка картинок',
             width: 850,
             height: 650,
             resizable: "yes",
@@ -57,48 +57,6 @@ $(document).ready(function() {
         }, {     window: win,     input: field_name    });
         return false;
     }
-
-    /*
-    $('textarea').tinymce({
-        // Location of TinyMCE script
-        script_url : '/js/tiny_mce/tiny_mce.js',
-
-        // General options
-        theme : "advanced",
-        plugins : "jbimages,images,autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist,typograf,spellchecker",
-
-        // Theme options
-        theme_advanced_buttons1 : "styleselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,blockquote,|,paste,pastetext,pasteword,spellchecker,typograf,|,bullist,numlist",
-        theme_advanced_buttons2 : "images,image,|,charmap,link,unlink,anchor,cleanup,help,code,|,undo,redo",
-        theme_advanced_buttons3 : "",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : true,
-        content_css : "/css/wysiwyg.css",
-        language : "ru",
-        height : "480",
-        relative_urls: false,
-        remove_script_host: false,
-        spellchecker_languages : "+Russian=ru,English=en",
-        // Style formats
-        style_formats : [
-            {title : 'Заголовок 3 bold', inline : 'span', classes: "greyboldheader"},
-            {title : 'Заголовок 3  синий', inline : 'span', classes: "blueboldheader"},
-            {title : 'Основной текст', inline : 'span', classes: "regular"},
-            {title : 'Заголовок 1', inline : 'span', classes: "largest-header"},
-            {title : 'Дополнение', inline : 'span', classes: "supplement"},
-            {title : 'Дополнение 2', inline : 'span', classes: "supplement2"},
-            {title : 'Дополнение 3', inline : 'span', classes: "supplement3"}
-        ],
-        
-        onchange_callback : function(editor) {
-            isUndo = true;
-        }
-
-        // Example content CSS (should be your site CSS)
-        //content_css : "css/content.css",
-    });*/
 
     $( ".datepicker" ).datetimepicker({ dateFormat: "yy-mm-dd", timeFormat: 'hh:mm:ss', showSecond: true});
 
@@ -158,5 +116,10 @@ $(document).ready(function() {
 
            data.result = false;
     }});
+
+
+    if($('input[name=id]').length > 0) {
+        setInterval(function() {$.get('/posts/updateEditTime/' + $('input[name=id]').val() + '.json')}, 30000);
+    }
 
 });

@@ -216,6 +216,7 @@ class PostsController extends \app\controllers\AppController {
     public function edit() {
         if(User::checkRole('editor') or User::checkRole('author')) {
             if($post = Post::first($this->request->id)) {
+                Post::lock($this->request->id, Session::read('user.id'));
                 return compact('post');
             }else {
                 return $this->redirect('/posts/index');
@@ -237,6 +238,16 @@ class PostsController extends \app\controllers\AppController {
             }
         }
         return $this->redirect('/posts');
+    }
+
+    /**
+     * Метод для обновления активности редактирования
+     *
+     * @return array
+     */
+    public function updateEditTime() {
+        $result = Post::updateLastEditTime($this->request->id);
+        return compact('result');
     }
 
 }

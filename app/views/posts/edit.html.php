@@ -2,6 +2,18 @@
 
     <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
 
+    <?php
+    if(!empty($post->lock)):?>
+      <script>
+          var myLock = '<?php echo md5($post->id . $this->user->getId()) ?>';
+          var postLock = '<?= $post->lock ?>';
+          if(myLock != postLock) {
+              alert('Статья редактируется другим автором!');
+              window.location.href = "/posts";
+          }
+      </script>
+    <?php endif ?>
+
     <div class="middle">
         <div class="middle_inner">
             <div class="content group">
