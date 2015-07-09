@@ -117,9 +117,11 @@ $(document).ready(function() {
            data.result = false;
     }});
 
+    setInterval(function() {
+        if(($('input[name=id]').length > 0) && ($('input[name=id]').val() != '')) {
+            $.get('/posts/updateEditTime/' + $('input[name=id]').val() + '.json')
+        }
+    }, 30000);
 
-    if($('input[name=id]').length > 0) {
-        setInterval(function() {$.get('/posts/updateEditTime/' + $('input[name=id]').val() + '.json')}, 30000);
-    }
 
 });

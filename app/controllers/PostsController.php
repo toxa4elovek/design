@@ -143,6 +143,8 @@ class PostsController extends \app\controllers\AppController {
             $post->published = $published;
 
             $post->save();
+            Post::lock($post->id, Session::read('user.id'));
+            Post::updateLastEditTime($post->id);
             return $post->data();
         }else {
             return $this->redirect('/posts');
