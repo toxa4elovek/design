@@ -512,6 +512,11 @@ class PitchesController extends \app\controllers\AppController {
         if ($category = Category::first($this->request->category)) {
             $experts = Expert::all(array('order' => array('id' => 'asc')));
             $promocode = Session::read('promocode');
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $event = $gatracking->createTracking('Event');
+            $event->setEventCategory('Создание проекта');
+            $event->setEventAction('Пользователь выбрал категорию «' . $category->title . '»');
+            $gatracking->sendTracking($event);
             if (!is_null($promocode)) {
                 return compact('category', 'experts', 'referal', 'referalId', 'promocode');
             }

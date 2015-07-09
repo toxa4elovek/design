@@ -107,6 +107,9 @@ require LITHIUM_LIBRARY_PATH . '/lithium/storage/cache/adapter/Apc.php';
 
 //Facebook SDK
 require LITHIUM_APP_PATH.'/libraries/facebook-sdk/src/facebook.php';
+
+require LITHIUM_LIBRARY_PATH . '/autoload.php';
+
 /**
  * Add the Lithium core library.  This sets default paths and initializes the autoloader.  You
  * generally should not need to override any settings.

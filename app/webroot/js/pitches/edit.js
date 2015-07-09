@@ -148,7 +148,6 @@ $(document).ready(function () {
             alert('Вы должны принять правила и условия');
         } else {
             if (Cart.prepareData()) {
-                console.log('prep success')
                 if (uploader.damnUploader('itemsCount') > 0) {
                     $('#loading-overlay').modal({
                         containerId: 'spinner',
@@ -157,11 +156,10 @@ $(document).ready(function () {
                     });
                     uploader.damnUploader('startUpload');
                 } else {
-                    console.log('save');
                     Cart.saveData();
+                    _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа']);
                 }
             } else {
-                console.log('prep wrong')
                 $.scrollTo($('.wrong-input').parent(), {duration: 600});
             }
         }
@@ -306,6 +304,7 @@ function FeatureCart() {
         if (window.location.hash == '#step3') {
             if (self.prepareData()) {
                 self.saveData();
+                _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа']);
             }
         }
     };

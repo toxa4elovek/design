@@ -84,6 +84,7 @@ $(document).ready(function () {
                 if ((stepNum == 3) && ((notExists == true) || (existsNotPublshed == true))) {
                     if (Cart.prepareData()) {
                         Cart.saveData();
+                        _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа']);
                     } else {
                         $.scrollTo($('.wrong-input').parent(), {duration: 600});
                     }
@@ -97,6 +98,7 @@ $(document).ready(function () {
              Cart.saveData();
              }  */
         } else {
+            _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на второй шаг брифа']);
             $('.middle').not('#step' + stepNum).hide();
             $('#step' + stepNum).show();
             $.scrollTo($('#header-bg'), {duration: 600});
@@ -419,6 +421,7 @@ $(document).ready(function () {
                     uploader.damnUploader('startUpload')
                 } else {
                     Cart.saveData(false);
+                    _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик']);
                 }
             } else {
                 var offset = $('.wrong-input').parent().offset()
@@ -443,6 +446,7 @@ $(document).ready(function () {
                 } else {
                     Cart.saveData();
                 }
+                _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа']);
             } else {
                 var offset = $('.wrong-input').parent().offset()
                 $.scrollTo(offset.top - 10, {duration: 600});
