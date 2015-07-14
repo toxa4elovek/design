@@ -225,7 +225,8 @@ class SocialMediaManager {
         $vkAPI = new VKAPI();
         $dataFacebook = array(
             'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'facebook'),
-            'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
+            #'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
+            'link' => 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getBestSolutionAnalyticsStringForSocialNetwork('facebook')
         );
         $dataTwitter = array(
             'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'twitter'),
@@ -233,7 +234,7 @@ class SocialMediaManager {
         );
         $dataVk = array(
             'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'vk'),
-            'picture' => $this->getImageReadyForSocialNetwork($solution, 'vk')
+            'picture' => 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getBestSolutionAnalyticsStringForSocialNetwork('vk')
         );
         $facebookAPI->postMessageToPage($dataFacebook);
         $vkAPI->postMessageToPage($dataVk);
@@ -253,7 +254,7 @@ class SocialMediaManager {
         $vkAPI = new VKAPI();
         $dataFacebook = array(
             'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook'),
-            'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
+            'link' => 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork('facebook')
         );
         $dataTwitter = array(
             'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter'),
@@ -261,7 +262,7 @@ class SocialMediaManager {
         );
         $dataVk = array(
             'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'vk'),
-            'picture' => $this->getImageReadyForSocialNetwork($solution, 'vk')
+            'picture' => 'http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork('vk')
         );
         $facebookAPI->postMessageToPage($dataFacebook);
         $twitterAPI->postMessageToPage($dataTwitter);
