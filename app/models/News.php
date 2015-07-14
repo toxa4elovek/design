@@ -4,6 +4,10 @@ namespace app\models;
 
 use app\extensions\storage\Rcache;
 use \image_manipulation\processor\Upload;
+use \app\extensions\social\VKAPI;
+use \app\extensions\social\FacebookAPI;
+use app\extensions\social\TwitterAPI;
+use app\extensions\social\SocialMediaManager;
 
 class News extends \app\models\AppModel {
 
@@ -234,6 +238,27 @@ class News extends \app\models\AppModel {
             if ((!$news->isBanner) and ($createEvent)) {
                 Event::createEventNewsAdded($news->id, 0, $news->created);
                 $result = Event::first(array('conditions' => array('news_id' => $news->id)));
+                if($news->tags == 'Goворит Designer') {
+                    $vkapi = new VKAPI();
+                    $facebookapi = new FacebookAPI();
+                    $manager = new SocialMediaManager();
+                    $data = array(
+                        'message' => $news->title,
+                        'picture' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
+                    );
+                    $vkapi->postMessageToPage($data);
+                    $data = array(
+                        'message' => $news->title,
+                        'link' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook')
+                    );
+                    $facebookapi->postMessageToPage($data);
+                    $twitterapi = new TwitterAPI();
+                    $data = array(
+                        'message' => $news->title . ' — ' . 'http://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
+                        'picture' => '/var/godesigner/webroot/' . $news->imageurl
+                    );
+                    $twitterapi->postMessageToPage($data);
+                }
             }
         }
         return $result;

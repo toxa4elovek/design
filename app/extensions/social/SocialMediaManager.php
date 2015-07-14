@@ -58,6 +58,20 @@ class SocialMediaManager {
     }
 
     /**
+     * Метод возвращяет строчку для аналитики для сообщения о лучшем решении
+     *
+     * @param string $social
+     * @return string
+     */
+    public function getFeedSharingAnalyticsString($social = 'twitter') {
+        switch ($social):
+            case 'twitter': return $this->__buildAnalyticsParams('sharing', 'twitter', 'tweet', 'feed-tweet');
+            case 'facebook': return $this->__buildAnalyticsParams('sharing', 'facebook', 'post', 'feed-post');
+            case 'vk': return $this->__buildAnalyticsParams('sharing', 'vk', 'post', 'feed-post');
+        endswitch;
+    }
+
+    /**
      * Метод возвращяет строчку для аналитики для сообщение о новом проекте
      *
      * @param string $social
