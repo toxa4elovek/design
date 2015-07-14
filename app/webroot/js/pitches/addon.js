@@ -235,7 +235,7 @@ function FeatureCart() {
                 });
                 */
                 if($('#phonebrief').attr('checked')) {
-                    self.addOption('Заполнение брифа', 2750)
+                    self.addOption('Заполнение брифа', 3200)
                 }
                 if($('#prolong-checkbox').attr('checked')) {
                     self.addOption('продлить срок', 1950)
