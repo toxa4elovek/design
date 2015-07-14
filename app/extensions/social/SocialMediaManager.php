@@ -65,9 +65,9 @@ class SocialMediaManager {
      */
     public function getFeedSharingAnalyticsString($social = 'twitter') {
         switch ($social):
-            case 'twitter': return $this->__buildAnalyticsParams('sharing', 'twitter', 'tweet', 'feed-tweet');
-            case 'facebook': return $this->__buildAnalyticsParams('sharing', 'facebook', 'post', 'feed-post');
-            case 'vk': return $this->__buildAnalyticsParams('sharing', 'vk', 'post', 'feed-post');
+            case 'twitter': return $this->__buildAnalyticsParams('sharing', 'twitter', 'tweet', 'feed-tweet', '&');
+            case 'facebook': return $this->__buildAnalyticsParams('sharing', 'facebook', 'post', 'feed-post', '&');
+            case 'vk': return $this->__buildAnalyticsParams('sharing', 'vk', 'post', 'feed-post', '&');
         endswitch;
     }
 
@@ -94,8 +94,8 @@ class SocialMediaManager {
      * @param $content
      * @return string
      */
-    private function __buildAnalyticsParams($campaign, $source, $medium, $content) {
-        return '?utm_source=' . $source . '&utm_medium=' . $medium . '&utm_content=' . $content . '&utm_campaign=' . $campaign;
+    private function __buildAnalyticsParams($campaign, $source, $medium, $content, $firstChar = '?') {
+        return $firstChar . 'utm_source=' . $source . '&utm_medium=' . $medium . '&utm_content=' . $content . '&utm_campaign=' . $campaign;
     }
 
     /**
