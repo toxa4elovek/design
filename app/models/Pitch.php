@@ -1511,7 +1511,7 @@ class Pitch extends AppModel {
                     $pitch->finishDate = date('Y-m-d H:i:s', time() + 10 * DAY);
                     $pitch->save();
                     SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
-                    SpamMailer::sendNewLogosaleProject($pitch->id);
+                    SpamMailer::sendNewLogosaleProject($pitch);
                     return true;
                 }
             }
