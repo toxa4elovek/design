@@ -249,6 +249,9 @@ function FeatureCart() {
                 if($('#pinned').attr('checked')) {
                     self.addOption('“Прокачать” бриф', 1450)
                 }
+                if($('#private').attr('checked')) {
+                    self.addOption('Скрыть проект', 3500)
+                }
             }
         }else {
             self._renderCheck();
@@ -329,6 +332,7 @@ function FeatureCart() {
             'prolong': self._getProlong(),
             'brief': self.getOption('Заполнение брифа'),
             'pinned': self.getOption('“Прокачать” бриф'),
+            'private': self.getOption('Скрыть проект'),
             'guaranteed': self.getOption('Гарантировать проект')
         };
         var commonPitchData = {

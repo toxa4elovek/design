@@ -49,6 +49,11 @@ class AddonsController extends \app\controllers\AppController {
                 $pinned = 1;
                 $total += 1450;
             }
+            $private = 0;
+            if(($featuresData['private'] > 0) && $pitch->private == 0) {
+                $private = 1;
+                $total += 3500;
+            }
             $data = array(
                 'pitch_id' => $this->request->data['commonPitchData']['id'],
                 'billed' => 0,
@@ -60,6 +65,7 @@ class AddonsController extends \app\controllers\AppController {
                 'phone-brief' => $phonebrief,
                 'guaranteed' => $guaranteed,
                 'pinned' => $pinned,
+                'private' => $private,
                 'created' => date('Y-m-d H:i:s'),
                 'total' => $total
             );

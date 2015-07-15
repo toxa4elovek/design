@@ -459,6 +459,17 @@ class Pitch extends AppModel {
     }
 
     /**
+     * Add Private when Addon Activated
+     */
+    public static function addPrivate($addon) {
+        if ($pitch = self::first($addon->pitch_id)) {
+            $pitch->private = 1;
+            $pitch->save();
+        }
+        return true;
+    }
+
+    /**
      * Метод для завершения проекта
      *
      * @param $pitchId

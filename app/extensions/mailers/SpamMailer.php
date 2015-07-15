@@ -125,6 +125,10 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
             $addonsCount++;
             $addonsList .= 'гарантированный проект<br />';
         }
+        if ($data['addon']->private == 1) {
+            $addonsCount++;
+            $addonsList .= 'скрытый проект<br />';
+        }
         $stringSubject = 'Новая доп. опция!';
         $data['stringAddons'] = 'КУПЛЕНА ДОПОЛНИТЕЛЬНАЯ ОПЦИЯ:' . $addonsList;
         if ($addonsCount > 1) {

@@ -29,6 +29,9 @@ class Addon extends \app\models\AppModel {
                 if ($params['addon']->pinned == 1) {
                     Pitch::addPinned($params['addon']);
                 }
+                if ($params['addon']->private == 1) {
+                    Pitch::addPrivate($params['addon']);
+                }
                 if ($params['addon']->prolong == 1 && $params['addon']->{'prolong-days'} > 0) {
                     Pitch::addProlong($params['addon']);
                 }

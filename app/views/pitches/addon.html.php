@@ -103,6 +103,14 @@
             </div>
         <?php endif ?>
 
+        <?php if(($pitch->private == '0') && ($pitch->id == '105318')): ?>
+            <div class="ribbon" id="private-block">
+                <p class="option"><label><input type="checkbox" id="private" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'private'): echo 'checked'; endif?> class="single-check" data-option-title="Скрыть проект" data-option-value="3500">Скрыть проект</label></p>
+                <p class="description">Проект станет не виден для поисковых систем, а идеи будут доступны для просмотра только вам и их авторам. Подробнее <a target="_blank" href="http://www.godesigner.ru/answers/view/64">тут</a></p>
+                <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'private'): echo 'unfold'; endif?>">+3500.-</p>
+            </div>
+        <?php endif ?>
+
         <p class="submit">
             <input type="submit" value="Продолжить" id="next" class="button steps-link" data-step="3">
         </p><!-- .submit -->
