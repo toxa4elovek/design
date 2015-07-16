@@ -1202,6 +1202,7 @@ h1.solution-title-page  {
     background: url('img/blog-ajax-loader.gif') center no-repeat;
 }
 .pitch-comments div.message_text {
+    position: relative;
     margin: 5px 0 0 26px;
     padding: 10px 20px 0 0;
     float: left;
@@ -1360,14 +1361,14 @@ input.wrong-input {
     z-index: 2147483647; 
 }
 div.message_text.private-comment {
-	background-image: url(img/private-comment-eye.png);
+	/*background-image: url(img/private-comment-eye.png);
 	background-repeat: no-repeat;
-	background-position: right top;
+	background-position: right top;*/
 }
 div.message_text.public-comment {
-	background-image: url(img/public-comment-eye.png);
+	/*background-image: url(img/public-comment-eye.png);
 	background-repeat: no-repeat;
-	background-position: right top;
+	background-position: right top;*/
 }
 div.moderation-spinner {
 	float: left;
@@ -1379,4 +1380,12 @@ div.moderation-spinner {
 }
 div.moderation-spinner.active {
 	opacity: 1;
+}
+#tooltip_comments #tooltipContent {
+    height: auto !important;
+    width: auto !important;
+}
+#tooltip_comments .tooltip-wrap {
+    padding: 12px 10px 36px 16px !important;
+    background: url(/img/tooltip-bottom-bg.png) 100% 100% no-repeat !important;
 }

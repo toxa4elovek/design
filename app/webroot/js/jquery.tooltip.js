@@ -1,7 +1,7 @@
 (function($){
 
 	$.fn.tooltip = function(instanceSettings){
-		
+
 		$.fn.tooltip.defaultsSettings = {
 			attributeName:'title',
 			borderColor:'#ccc',

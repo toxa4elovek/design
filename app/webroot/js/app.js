@@ -871,6 +871,13 @@ function populateComment(data) {
     if (data.isChild == 1) {
         sectionClass = 'is-child ';
     }
+    if(data.publicClass == ' private-comment') {
+        var commentTitle = "Этот комментарий приватный";
+        var commentImage = 'private-comment-eye.png';
+    }else {
+        var commentTitle = "Этот комментарий виден всем";
+        var commentImage = 'public-comment-eye.png';
+    }
     return '<section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                 <div class="separator"></div> \
                 <div class="' + data.messageInfo + '">'
@@ -882,7 +889,8 @@ function populateComment(data) {
                 <div class="clr"></div> \
                 </div> \
                 <div data-id="' + data.commentId + '" class="message_text' + data.publicClass + '"> \
-                    <span class="regular comment-container">'
+                    <a href="#" class="tooltip_comments" title="' + commentTitle + '" style="position: absolute; \
+    top: 0;right: 0;"><img src="/img/' + commentImage + '" alt="' + commentTitle + '"></a><span class="regular comment-container">'
             + data.commentText +
             '</span> \
                 </div> \
@@ -950,6 +958,15 @@ function fetchPitchComments() {
             $('.ajax-loader', '.pitch-comments').remove();
         }
         solutionTooltip();
+        $('.tooltip_comments').tooltip({
+            tooltipID: 'tooltip_comments',
+            width: '282px',
+            positionLeft: -30,
+            positionTop: -180,
+            borderSize: '0px',
+            tooltipPadding: 0,
+            tooltipBGColor: 'transparent'
+        });
     });
 }
 
