@@ -254,7 +254,7 @@ class News extends \app\models\AppModel {
                     $facebookapi->postMessageToPage($data);
                     $twitterapi = new TwitterAPI();
                     $data = array(
-                        'message' => $news->title . ' — ' . 'http://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
+                        'message' => $news->title . ' — ' . $news->short . ' http://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
                         'picture' => '/var/godesigner/webroot/' . $news->imageurl
                     );
                     $twitterapi->postMessageToPage($data);
