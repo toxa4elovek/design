@@ -36,7 +36,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
     public static function newclientpitch($data) {
         return self::_mail(array(
                     'to' => $data['user']->email,
-                    'subject' => 'Новый проект!',
+                    'subject' => 'Проект успешно оплачен!',
                     'data' => $data
         ));
     }
