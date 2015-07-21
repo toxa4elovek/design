@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var pitchid = '';
+    var awardInput = $('#award');
 
     tinymce.init({
         selector: ".enable-editor",
@@ -218,63 +219,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $('#award').numeric({"negative": false, "decimal": false}, function () {
-        var input = $('#award');
-        var minAward = input.data('minimalAward');
-        $('#indicator').removeClass('low normal good');
-        if (minAward > input.val()) {
-            input.val(minAward);
-            input.addClass('initial-price');
-            $('#indicator').addClass('normal');
-            Cart.transferFee = feeRates.normal;
-        } else {
-            input.removeClass('initial-price');
-            drawIndicator(input, input.val());
-        }
-    });
-
-    $('#award').keyup(function () {
-        var input = $(this);
-
-        input.removeClass('initial-price');
-        if ((input.val() == '') && (!input.is(':focus'))) {
-            input.val(0);
-        }
-        if (input.val() == '') {
-            var value = 0;
-        } else {
-            var value = input.val();
-        }
-        drawIndicator(input, value);
-        Cart.updateOption($(this).data('optionTitle'), value);
-    })
-
-    $('#award').click(function () {
-        $(this).removeClass('initial-price');
-        if ($('#sub-site').length == 0) {
-            if ($('#award').val() == $(this).data('minimalAward')) {
-                $('#award').val('');
-            }
-        }
-    });
-
-    // award size
-    $('#award').blur(function () {
-        if ($(this).val() == '') {
-            $(this).val($(this).data('minimalAward'))
-        }
-        if ($(this).val() == $(this).data('minimalAward')) {
-            //$(this).addClass('initial-price');
-        }
-        var award = 0;
-        if($('#award').val() == '') {
-            award = $(this).data('minimalAward');
-        }else {
-            award = $('#award').val();
-        }
-        Cart.updateOption($(this).data('optionTitle'), award);
-    });
-
     // simple options
     $('.single-check').change(function () {
         $(this).parent().parent().parent().children('.label').toggleClass('unfold');
@@ -356,21 +300,6 @@ $(document).ready(function () {
         return false;
     })
 
-
-    /*
-     $( ".slider" ).slider({
-     value: 5,
-     min: 1,
-     max: 9,
-     step: 1,
-     slide: function( event, ui ) {
-     
-     var rightOpacity = (((ui.value-1) * 0.08) + 0.36).toFixed(2);
-     var leftOpacity = (1 - ((ui.value-1) * 0.08)).toFixed(2);
-     $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
-     $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
-     }
-     })*/
     var canSave = false;
     function sleep(milliseconds) {
         var start = new Date().getTime();
@@ -507,13 +436,6 @@ $(document).ready(function () {
         return false;
     });
 
-    /*$('.sub-radio').change(function() {
-     var minValue = $(this).data('minValue');
-     
-     $('#award').data('minimalAward', minValue);
-     $('#award').blur();
-     })*/
-
     $('#sub-site').keyup(function () {
         $(this).addClass('freeze');
         $(this).change();
@@ -539,7 +461,6 @@ $(document).ready(function () {
     })
 
     $('#sub-site').numeric({"negative": false, "decimal": false}, function () {
-
     });
 
     function recalcMinAwardWithNumOfPagesChange() {
@@ -579,9 +500,94 @@ $(document).ready(function () {
         award.blur();
     }
 
+    // AWARD
+
+    awardInput.numeric({"negative": false, "decimal": false}, function () {
+        //console.log('Inside numeric value is - ' + awardInput.val());
+    });
+
+    // award size
+    awardInput.blur(function () {
+        var input = $(this);
+        var minimalAward = input.data('minimalAward')
+        //console.log('blur - current award input value - ' + input.val())
+        //console.log('blur - current minimal award - ' + minimalAward)
+        if (input.val() == '') {
+            //console.log('Award input is empty, setting value as minimumAward - ' + minimalAward);
+            input.val(minimalAward)
+            award = minimalAward;
+        }
+        var award = 0;
+        $('#indicator').removeClass('low normal good');
+        if(awardInput.hasClass('placeholder')) {
+            awardInput.val(Calculator.getMiddlePrice());
+        }
+        if (minimalAward > input.val()) {
+            //console.log('minimalAward is more than award value' - minimalAward);
+            input.val(minimalAward);
+            input.addClass('initial-price');
+            $('#indicator').addClass('normal');
+            Cart.transferFee = feeRates.normal;
+        } else {
+            input.removeClass('initial-price');
+            award = input.val();
+            //console.log('Value is exists - ' + award);
+        }
+        //console.log('redrawing indicator and updating cart - ' + award);
+        drawIndicator(input, award);
+        Cart.updateOption($(this).data('optionTitle'), award);
+        //console.log('Value after blur - ' + awardInput.val())
+        //console.log('blur end- current minimal award - ' + minimalAward)
+    });
+
+    awardInput.keyup(function () {
+        //console.log('keyup');
+        var input = $(this);
+
+        input.removeClass('initial-price');
+        if ((input.val() == '') && (!input.is(':focus'))) {
+            input.val(0);
+        }
+        var award = 0
+        if (input.val() == '') {
+            award = 0;
+        } else {
+            award = input.val();
+        }
+        drawIndicator(input, award);
+        Cart.updateOption($(this).data('optionTitle'), award);
+    })
+
+    awardInput.click(function () {
+        var input = $(this);
+        input.removeClass('initial-price');
+        if ($('#sub-site').length == 0) {
+            //console.log('No sub-site');
+            if (input.val() == input.data('minimalAward')) {
+                input.val('');
+            }
+        }
+        var minimalAward = input.data('minimalAward')
+        //console.log('MinimalAward in click - ' + minimalAward)
+        //console.log(awardInput.attr('placeholder'))
+        //console.log(awardInput.attr('value'))
+        //console.log('Inside award click - ' + awardInput.val());
+    });
+
+    var Calculator = new AwardCalculator();
+
     $('#sub-site').change(function () {
+        //console.log('Changing sub-site...');
         recalcMinAwardWithNumOfPagesChange();
-        drawIndicator($('#award'), $('#award').val());
+        var updatedAverageAward = awardInput.data('minimalAward');
+        //console.log('MIddle price from calculator - ' + Calculator.getMiddlePrice())
+        //console.log('Updated minimalAward value - ' + updatedAverageAward);
+        if(awardInput.hasClass('placeholder')) {
+            awardInput.val(Calculator.getMiddlePrice());
+        }
+        //console.log('Current value of award input - ' + awardInput.val());
+        drawIndicator(awardInput, awardInput.val());
+        awardInput.blur();
     });
 
     $('#sub-site').focus(function () {
@@ -627,11 +633,6 @@ $(document).ready(function () {
                 break;
         }
         var input = $('#award');
-        /*var value = input.val();
-         if(input.val() == '') {
-         value = input.attr('value');
-         }
-         var modded = mod * value;*/
         var newMinimum = parseInt($('#copybaseminprice').val() * mod);
         var minValue = $(this).data('minValue');
         $('#labelPrice').text(newMinimum + 'Р.');
