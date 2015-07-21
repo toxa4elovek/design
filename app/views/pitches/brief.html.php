@@ -498,5 +498,5 @@ endif;
 <?= $this->view()->render(array('element' => 'popups/brief_tos')); ?>
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
-<?= $this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'jquery-deparam.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false)) ?>
+<?= $this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'jquery-deparam.js', 'pitches/award_calculator.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false)) ?>
 <?= $this->html->style(array('/brief', '/step3'), array('inline' => false))?>
