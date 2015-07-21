@@ -482,6 +482,9 @@ http://godesigner.ru/answers/view/73');
                 if(in_array($solution['id'], $solutionsArray)) {
                     unset($solutions[$k]);
                 }
+                if($solution['pitch_id'] == '102537') {
+                    unset($solutions[$k]);
+                }
             }
         } else {
             $solutions = array();

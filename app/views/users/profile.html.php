@@ -104,7 +104,9 @@
                     <div class="clear"></div>
 
                     <input type="submit" id="save-password" class="button" value="Изменить пароль">
+                    <?php if($this->user->getId() != '21376'): ?>
                     <a href="/users/deleteaccount" id="deleteaccount">Удалить аккаунт</a>
+                    <?php endif?>
                 </section>
 
 

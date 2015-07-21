@@ -1624,6 +1624,9 @@ class Pitch extends AppModel {
             $pitch = $pitch->data();
         }
         if(is_array($pitch)) {
+            if($pitch['id'] == '102537') {
+                return false;
+            }
             if(($pitch['status'] == 2) && ($pitch['category_id'] == 1) &&
                 ($pitch['private'] == 0) && ($pitch['totalFinishDate'] < date('Y-m-d H:i:s', time() - 30 * DAY)))
             {
