@@ -812,6 +812,9 @@ http://godesigner.ru/answers/view/73');
      * @return bool
      */
     public static function isReadyForLogosale($solution, $pitch) {
+        if(!Pitch::isReadyForLogosale($pitch)) {
+            return false;
+        }
         if(($solution->rating >= 3) && ($pitch->awarded != $solution->id)) {
             return true;
         }

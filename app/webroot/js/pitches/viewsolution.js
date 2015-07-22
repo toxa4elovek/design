@@ -458,6 +458,7 @@ $(document).ready(function() {
         solutionThumbnail = '';
         $.getJSON(urlJSON, function(result) {
             // hide receipt and buy buttons
+            console.log(result.isSolutionReady);
             if(result.isSolutionReady == false) {
                 $('.summary-price').hide();
                 $('#step3').hide();

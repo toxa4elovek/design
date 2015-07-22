@@ -1053,7 +1053,9 @@ class UsersController extends \app\controllers\AppController {
 
     public function profile() {
         $user = User::first(Session::read('user.id'));
-        $currentEmail = $user->email;
+        if($user->id == '21376') {
+            $this->redirect('/news');
+        }
         $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50, 'with' => array('Pitch')));
         $winners = array();
         foreach ($winnersData as $winner) {
