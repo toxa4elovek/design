@@ -119,7 +119,11 @@
                                 <?php if (($mypitch->status < 1) || ($mypitch->multiwinner > 0)):?>
                                 <td class="pitches-edit mypitches">
                                     <?php if($mypitch->billed == 0):?>
-                                    <a href="<?= $fast_url ?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                        <?php if($mypitch->multiwinner == 0):?>
+                                            <a href="<?= $fast_url ?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                        <?php else:?>
+                                            <a href="/pitches/newwinner/<?=$mypitch->id?>" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                        <?php endif?>
                                         <?php if(($fastpitch === false) && ($mypitch->multiwinner == 0)):?>
                                             <a href="http://www.godesigner.ru/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                         <?php endif; ?>

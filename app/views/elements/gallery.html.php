@@ -265,6 +265,20 @@ foreach($solutions as $solution):
 
         </ul>
     </div>
-    <?php endif;?>
+    <?php else:?>
+    <div class="solution_menu" style="display: none;">
+        <ul class="solution_menu_list <?php if($this->pitch->isReadyForLogosale($pitch)):?>green_background<?php endif?>" style="position:absolute;z-index:6;">
+
+            <?php if ($pitch->billed == 0): ?>
+            <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
+                <a target="_blank" href="/pitches/newwinner/<?=$pitch->id?>">Оплатить 2-го победителя</a>
+            </li>
+            <?php endif; ?>
+
+            <?php if(($this->user->isLoggedIn()) && ($solution->hidden == 1) && ($this->user->isPitchOwner($pitch->user_id))): ?>
+                <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
+            <?php endif;?>
+        </ul>
+    <?php endif?>
 </li>
 <?php endforeach;?>

@@ -4,7 +4,14 @@
     <input type="hidden" value="" id="addon_id"/>
     <input type="hidden" value="<?= $pitch->billed ?>" id="billed"/>
     <input type="hidden" value="<?= $pitch->published ?>" id="published"/>
-    <?php $sum = ($receipt[0]->value + $receipt[1]->value)? : 0 ?>
+    <?php
+    $sum = 0;
+    foreach($receipt as $option):
+        if($option->value > 0):
+            $sum += $option->value;
+        endif;
+    endforeach?>
+    <?php //$sum = ($receipt[0]->value + $receipt[1]->value)? : 0 ?>
     <input type="hidden" value="<?= $sum ?>" id="amount"/>
 
     <aside class="summary-price expanded">
@@ -12,7 +19,9 @@
         <p class="summary"><strong id="total-tag"><?= $sum ?>.-</strong></p><!-- .summary -->
         <ul id="check-tag">
             <?php foreach ($receipt as $v): ?>
+                <?php if($v->value > 0):?>
                 <li><span><?= $v->name ?></span><small><?= $v->value ?>.-</small></li>
+                <?php endif?>
             <?php endforeach; ?>
         </ul>
         <a href="#" class="show" id="show-check"><span>Подробнее</span></a>
@@ -20,9 +29,9 @@
     </aside><!-- .summary-price -->
     <div class="middle add-pitch" id="step3">
         <div class="main">
-            <p id="top-pay">Выкупить решение можно только при первоначальном размере вознаграждения.<br />
-                Стоимость дополнительных опций не взимается, если таковы были заказаны,
-                однако учитывается сбор сервиса GoDesigner.</p><br />
+            <p id="top-pay">Выкупить решение можно только при первоначальном размере вознаграждения,<br />
+                <!--Стоимость дополнительных опций не взимается, если таковы были заказаны,
+                однако--> учитывается сбор сервиса GoDesigner.</p><br />
             <div>
                 <h1>выберите способ оплаты</h1>
                 <div class="g_line"></div>
@@ -111,7 +120,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <!--tr>
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
                         </tr>
                         <tr class="paymaster-section">
@@ -119,7 +128,7 @@
                                 <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                             </td>
                             <td colspan="3" class="s3_text" style="padding-left: 20px;">
-                                Оплата пластиковыми картами и эл. деньгами <br>через PayMaster<br><br>
+                                Оплата электронными деньгами <br>через PayMaster<br><br>
                                 <p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p>
                             </td>
                         </tr>
@@ -134,7 +143,7 @@
                                 <?php echo $this->html->script(array('jquery-1.7.1.min.js')); ?>
                                 <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=<?= $sum ?>&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата проекта') ?>&LMI_CURRENCY=RUB&LMI_PAYMENT_NO=<?= $pitch->id ?>'></script>
                             </td>
-                        </tr>
+                        </tr-->
                     </table>
                 </div>
                 <div class="g_line"></div>
