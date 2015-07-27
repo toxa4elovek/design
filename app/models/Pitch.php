@@ -962,7 +962,7 @@ class Pitch extends AppModel {
             if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
                 return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             } elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc');
+                return array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc', 'hidden' => 'asc',);
             } else {
                 return array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
             }

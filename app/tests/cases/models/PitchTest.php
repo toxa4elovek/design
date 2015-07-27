@@ -29,7 +29,7 @@ class PitchTest extends AppUnit {
         $this->assertTrue(is_object($result));
         $this->assertEqual(2, $result->id);
     }
-    /*
+
         public function testSimpleGetSolutionsSortingOrder() {
             // Пользователь не-владелец питча
             $pitch1 = Pitch::first(1);
@@ -141,7 +141,7 @@ class PitchTest extends AppUnit {
             $result = $pitch1->getSolutionsSortName('non-existant-type');
             $this->assertEqual('created', $result);
         }
-
+/*
         public function testGetSolutionSortNameWithoutParams() {
             // Пользователь не-владелец питча
             $pitch1 = Pitch::first(1);
