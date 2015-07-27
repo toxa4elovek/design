@@ -354,7 +354,7 @@ class SolutionTest extends AppUnit {
     }
 
     public function testGetUsersSolutions() {
-        $ids = array(11, 10, 7, 6, 5, 4, 3, 2);
+        $ids = array(4, 11, 10, 7, 6, 5, 3, 2);
         $result = array();
         $solutions = Solution::getUsersSolutions(2);
         foreach($solutions as $solution) {
@@ -362,7 +362,7 @@ class SolutionTest extends AppUnit {
         }
         $this->assertEqual($ids, $result);
 
-        $ids = array(11, 6, 4, 3, 2);
+        $ids = array(4, 11, 6, 3, 2);
         $result = array();
         $solutions = Solution::getUsersSolutions(2, true);
         foreach($solutions as $solution) {

@@ -79,7 +79,7 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
                                 continue;
                             endif
                             ?>
-                            <li>
+                            <li style="margin-bottom: 35px;">
                                 <div class="selecting_numb">
                                     <span class="number_img_new">#<?= $solution->num ?></span>
                                     <?= $this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false)) ?>   </div>

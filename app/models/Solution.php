@@ -796,10 +796,10 @@ http://godesigner.ru/answers/view/73');
         if($selectedOnly) {
             $conditions['Solution.selected'] = 1;
         }
-        $selectedSolutions = Solution::all(array(
+        $selectedSolutions = self::all(array(
             'conditions' => $conditions,
             'with' => array('Pitch', 'Solutiontag'),
-            'order' => array('Solution.id' => 'desc')
+            'order' => array('Solution.awarded' => 'desc', 'Solution.id' => 'desc')
         ));
         return $selectedSolutions;
     }
