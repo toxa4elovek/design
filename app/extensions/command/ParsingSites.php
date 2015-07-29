@@ -632,7 +632,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
     private function ParsingInterview($url) {
         $xml = simplexml_load_file($url);
         foreach ($xml->channel->item as $item) {
-            $trigger = News::doesNewsExists((string) $item->title, (string) $item->link);
+            $trigger = News::doesNewsExists((string) $item->title, (string) $item->link, (string) $item->guid);
             if (!$trigger) {
                 $date = new \DateTime($item->published);
                 $data = array(

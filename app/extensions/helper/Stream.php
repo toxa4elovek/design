@@ -41,12 +41,20 @@ class Stream extends \lithium\template\Helper {
                         $text = str_replace('@' . $user['screen_name'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a>', $text);
                     }
                     $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a>';
+                    $image = '';
+                    if(isset($tweet['thumbnail'])) {
+                        if((isset($tweet['entities']['urls'])) && (count($tweet['entities']['urls']) > 0)) {
+                            $image = '<a href="' . $tweet['entities']['urls'][0]['url'] . '"><img style="position: relative; margin: 0 0 10px 6px;" src="' . $tweet['thumbnail'] . '" width="171" alt=""></a><br>';
+                        }else {
+                            $image = '<img style="position: relative; margin: 0 0 10px 6px;" src="' . $tweet['thumbnail'] . '" width="171" alt=""><br>';
+                        }
+                    }
                     if ($count == 1):
                         $content .= '<li style="padding-left:5px;padding-right:5px;padding-top:10px;">';
                     else:
                         $content .= '<li style="padding-left:5px;">';
                     endif;
-                    $content .= '<p class="regular" style="line-height:20px;">' . $user . ' ' . $text . '</p>';
+                    $content .= '<p class="regular" style="line-height:20px;">' . $image . $user . ' ' . $text . '</p>';
                 }
                 $content .= '<p class="time" title="' . date('Y-m-d H:i:s', strtotime($tweet['created_at'])) . '">' . date('H:i:s d.m.Y', strtotime($tweet['created_at'])) . '</p><div style="height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:188px;margin-top:7px;margin-bottom:15px;"></div></li>';
                 $count += 1;

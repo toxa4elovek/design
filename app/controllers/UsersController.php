@@ -1445,6 +1445,7 @@ class UsersController extends \app\controllers\AppController {
             $censoredTweets['statuses'] = array();
             $minTimestamp = 1893355200;
             foreach ($data['statuses'] as $key => &$tweet) {
+                echo '<pre>';
                 $delete = false;
                 if (isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
                     foreach ($tweet['entities']['urls'] as $url) {
@@ -1456,6 +1457,9 @@ class UsersController extends \app\controllers\AppController {
                 if ($delete == false) {
                     $tweet['timestamp'] = strtotime($tweet['created_at']);
                     $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
+                    if (isset($tweet['entities']) and isset($tweet['entities']['media'])) {
+                        $tweet['thumbnail'] = $tweet['entities']['media'][0]['media_url_https'];
+                    }
                     $censoredTweets['statuses'][$key] = $tweet;
                 }
             }
