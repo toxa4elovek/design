@@ -1413,7 +1413,7 @@ function toggleAnswer(link) {
     if (isClient) {
         messageInfo = 'message_info2';
     }
-    var answerButtons = '<input type="button" src="/img/message_button.png" value="Ответить" class="button answercomment" data-is_public="0" style="float: left;">';
+    var answerButtons = '<input type="button" src="/img/message_button.png" value="Ответить" class="button answercomment" data-is_public="0" style="float: left; width: 150px;">';
     if (isCurrentExpert || isCurrentAdmin || isClient) {
         answerButtons = '<input type="button" src="/img/message_button.png" value="Публиковать вопрос и ответ для всех" class="button answercomment" data-is_public="1" style="float: left;"> \
         <input type="button" src="/img/message_button.png" value="Ответить только дизайнеру" class="button answercomment" data-is_public="0" style="float: right;">';
