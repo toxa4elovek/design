@@ -954,6 +954,8 @@ $(document).ready(function () {
                     $('.solution-description').html(result.solution.description);
                     if(result.solution.user_id == currentUserId) {
                         $('.solution-description').after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>');
+                    }else {
+                        $('.edit-description-link').remove();
                     }
                 }
                 if (result.solution.description != '') {
