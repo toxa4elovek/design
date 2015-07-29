@@ -116,7 +116,7 @@
                                 <td class="price mypitches">
                                     <?=$this->moneyFormatter->formatMoney($mypitch->price)?>
                                 </td>
-                                <?php if (($mypitch->status < 1) || ($mypitch->multiwinner > 0)):?>
+                                <?php if (($mypitch->status < 1) || ($mypitch->multiwinner > 0 && $mypitch->billed = 0)):?>
                                 <td class="pitches-edit mypitches">
                                     <?php if($mypitch->billed == 0):?>
                                         <?php if($mypitch->multiwinner == 0):?>
