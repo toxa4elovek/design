@@ -115,4 +115,22 @@ class Post extends \app\models\AppModel {
         }
         return false;
     }
+
+    /**
+     * Метод проверяет, залочен ли пост пользователем $userId
+     *
+     * @param $postId
+     * @param $userId
+     * @return bool
+     */
+    public static function isLockedByMe($postId, $userId) {
+        $md5 = md5($postId . $userId);
+        if($post = self::first($postId)) {
+            if(!empty($post->lock) && ($post->lock == $md5)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

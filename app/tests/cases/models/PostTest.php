@@ -35,4 +35,10 @@ class PostTest extends AppUnit {
         $this->assertFalse(Post::unlock(5));
     }
 
+    public function testIsLockedByMe() {
+        $this->assertTrue(Post::lock(1, 10));
+        $this->assertTrue(Post::isLockedByMe(1, 10));
+        $this->assertFalse(Post::isLockedByMe(1, 15));
+    }
+
 }

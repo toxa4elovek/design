@@ -248,7 +248,10 @@ class PostsController extends \app\controllers\AppController {
      * @return array
      */
     public function updateEditTime() {
-        $result = Post::updateLastEditTime($this->request->id);
+        $result = false;
+        if(Post::isLockedByMe($this->request->id, Session::read('user.id'))) {
+            $result = Post::updateLastEditTime($this->request->id);
+        }
         return compact('result');
     }
 
