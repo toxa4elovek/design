@@ -945,8 +945,10 @@ class User extends \app\models\AppModel {
             $solution = Solution::first($pitch->awarded);
             $files = array();
             $comments = Wincomment::all(array('conditions' => array('step' => 2, 'solution_id' => $solution->id), 'order' => array('created' => 'asc'), 'with' => array('User')));
+            $lastDate = null;
             foreach ($comments as $comment) {
                 if ($comment->user_id == $solution->user_id) {
+                    $lastDate = $comment->created;
                     if (!empty($comment->images)) {
                         $files[] = $comment->images;
                     }
@@ -957,7 +959,8 @@ class User extends \app\models\AppModel {
             } else {
                 $nofiles = false;
             }
-            if (($solution->step < 3) && ($nofiles == false)) {
+
+            if (($solution->step < 3) && ($nofiles == false) && (strtotime($lastDate) < time() - DAY)) {
                 $pitchesToSpam[] = $pitch;
             }
         }
@@ -976,6 +979,7 @@ class User extends \app\models\AppModel {
             $solution = Solution::first($pitch->awarded);
             $files = array();
             $comments = Wincomment::all(array('conditions' => array('step' => 3, 'solution_id' => $solution->id), 'order' => array('created' => 'asc'), 'with' => array('User')));
+            $lastDate = null;
             foreach ($comments as $comment) {
                 if ($comment->user_id == $solution->user_id) {
                     if (!empty($comment->images)) {
@@ -988,7 +992,7 @@ class User extends \app\models\AppModel {
             } else {
                 $nofiles = false;
             }
-            if (($solution->step == 3) && ($nofiles == false)) {
+            if (($solution->step == 3) && ($nofiles == false) && (strtotime($lastDate) < time() - DAY)) {
                 $pitchesToSpam[] = $pitch;
             }
         }
