@@ -12,7 +12,7 @@ class ResetLock extends CronJob {
         $posts = Post::all(array(
             'conditions' => array(
                 '`lock`' => array('!=' => ''),
-                'lastEditTime' => array('<' => date('Y-m-d H:i:s', time() - 3 * MINUTE))
+                'lastEditTime' => array('<' => date('Y-m-d H:i:s', time() - 1 * MINUTE))
             )
         ));
         if(count($posts)) {
