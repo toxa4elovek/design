@@ -149,6 +149,8 @@ $(function(){
     expertsRandom();
 
     $('a', '.logosale_search-block').click(function() {
+        $(this).html('Поиск <img src="/img/transparent-loader.gif" alt="" style="position: relative;top: 6px;left: 25px;">');
+        $(this).css({"text-align": "left", "padding-left": "25px", "width": "119px"});
         $('#logosale_form').submit();
         return false;
     });
