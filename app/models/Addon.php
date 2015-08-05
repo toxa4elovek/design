@@ -48,4 +48,57 @@ class Addon extends \app\models\AppModel {
             return $addon->save();
         });
     }
+
+    public static function graphData($date) {
+        $range = "'$date'";
+        $addons = self::all(array(
+            'conditions' => array(
+                'YEAR(created) = YEAR(' . $range . ') AND MONTH(created) = MONTH( ' . $range . ')',
+                'billed' => 1,
+            ),
+        ));
+        $countArray = array();
+        $addonsCount = 0;
+        $addonsTotal = 0;
+        $addonsProlong = 0;
+        foreach ($addons as $addon) {
+            $day = date('j', strtotime($addon->created));
+            if (isset($countArray[$day])) {
+                $countArray[$day] += 1;
+            } else {
+                $countArray[$day] = 1;
+            }
+            $addonsCount++;
+            $addonsTotal += $addon->total;
+            if ($addon->prolong == 1) {
+                $addonsProlong += 1000 * $addon->{'prolong-days'};
+            }
+        }
+        $values = array();
+        $highestValue = 0;
+
+        for ($i = 1; $i <= date('t', strtotime($date)); $i++) {
+            if ((date('Y') == date('Y', strtotime($date))) && (date('n') == date('n', strtotime($date)))) {
+                if ($i > date('j')) {
+                    break;
+                }
+            }
+            if (isset($countArray[$i])) {
+                if ($highestValue < $countArray[$i]) {
+                    $highestValue = $countArray[$i];
+                }
+                $values[] = $countArray[$i];
+            } else {
+                $values[] = 0;
+            }
+        }
+
+        return array(
+            'values' => $values,
+            'highestValue' => $highestValue,
+            'addonsCount' => $addonsCount,
+            'addonsTotal' => $addonsTotal,
+            'addonsProlong' => $addonsProlong,
+        );
+    }
 }

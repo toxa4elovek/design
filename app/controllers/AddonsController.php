@@ -6,7 +6,7 @@ use \app\models\Addon;
 use \app\models\Pitch;
 use \app\extensions\helper\MoneyFormatter;
 
-class AddonsController extends \app\controllers\AppController {
+class AddonsController extends AppController {
 
 
     public function add() {
