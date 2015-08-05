@@ -379,9 +379,14 @@ $(document).ready(function () {
             link.data('type', newtype);
         });
         return false;
-    })
+    });
 
-    $('.deleteheader').click(function () {
+    $('#project-delete-no').click(function() {
+        $('.project-delete-close').click();
+        return false;
+    });
+
+    $('#project-delete-yes').click(function() {
         var id = $(this).data('id');
         $.post('/pitches/delete/' + id + '.json', function () {
             $('tr[data-id="' + id + '"]').hide();
@@ -389,15 +394,35 @@ $(document).ready(function () {
             if (visibleRows == 0) {
                 $('#pitch-panel').hide();
             }
-        })
+        });
+        $('.project-delete-close').click();
         return false;
-    })
+    });
+
+    $('.deleteheader').click(function () {
+        $('#project-delete-yes').data('id', $(this).data('id'))
+        $('#project-delete').modal({
+            containerId: 'spinner',
+            opacity: 80,
+            closeClass: 'project-delete-close',
+            onShow: function () {
+                $('#project-delete').fadeTo(600, 1);
+            },
+            onClose: function () {
+                $('.simplemodal-container').fadeOut(800);
+                $('#simplemodal-overlay').fadeOut(800, function () {
+                    $.modal.close();
+                });
+            }
+        });
+        return false;
+    });
 
     $('.favourites').hover(function () {
         $(this).attr('src', '/img/social_plus.png');
     }, function () {
         $(this).attr('src', '/img/1.gif');
-    })
+    });
 
     $('.facebook').hover(function () {
         $(this).attr('src', '/img/social_fb.png');
