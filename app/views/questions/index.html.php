@@ -33,7 +33,7 @@
                     <div class="share-this" style="margin-top: -20px;">
                         <?php $shareImage = 'http://www.godesigner.ru/img/questions/general.jpg'; ?>
                         <div style="margin-top: -5px; margin-bottom: 20px;">
-                            <div class="social-likes" data-counters="no" data-title="Узнай, какой ты дизайнер на самом деле" data-url="http://www.godesigner.ru/questions" style="padding-left: 110px;">
+                            <div class="social-likes" data-zeroes="yes" data-counters="yes" data-title="Узнай, какой ты дизайнер на самом деле" data-url="http://www.godesigner.ru/questions" style="padding-left: 110px;">
                                 <div style="margin: 7px 0 0 9px;" class="facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                 <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
                                 <div style="margin: 7px 0 0 7px;" class="vkontakte" data-image="<?=$shareImage ?>" data-title="Тест на знание основ графического дизайна" title="Поделиться ссылкой во Вконтакте">SHARE</div>
