@@ -792,7 +792,7 @@ http://godesigner.ru/answers/view/73');
     }
 
     public static function getUsersSolutions($userId, $selectedOnly = false) {
-        $conditions = array('Solution.user_id' => $userId);
+        $conditions = array('Solution.user_id' => $userId, 'Pitch.multiwinner' => 0);
         if($selectedOnly) {
             $conditions['Solution.selected'] = 1;
         }
