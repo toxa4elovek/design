@@ -275,7 +275,11 @@ class User extends \lithium\storage\Session {
      */
     public function getFormattedName($firstName = null, $lastName = null) {
         if($this->isAdmin()) {
-            return $this->getFirstname() . ' ' . $this->getLastname();
+            if(!is_null($firstName) && !is_null($lastName)) {
+                return $firstName . ' ' . $lastName;
+            }else {
+                return $this->getFirstname() . ' ' . $this->getLastname();
+            }
         }
         $inflectorClassName = $this->_options['inflector'];
         if(!is_null($firstName) && !is_null($lastName)) {
