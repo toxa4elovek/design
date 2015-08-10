@@ -35,7 +35,7 @@
             ?></span>
         <?php if ($solution->pitch->category_id == 7):?>
             <?php if($type == 'designer'):?>
-                <span class="supplement">Со дня определения победителя у заказчика есть 10 дней для получения полного объема работ, запрошенного в брифе.</span>
+                <span class="supplement">Со дня определения победителя у заказчика есть 10 дней для получения полного объема работ, запрошенного в брифе.</span><br>
             <?php else: ?>
                 <span class="supplement">Со дня определения победителя у вас есть 10 дней для получения полного объема работ, запрошенного в брифе. Если вас все устраивает, пожалуйста, завершите проект.</span>
             <?php endif; ?>
@@ -47,8 +47,12 @@
                 <a href="/answers/view/63">инструкциями</a>
             <?php endif?>
     заключительного этапа.</span>
-        <span class="supplement">Со дня определения победителя у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты <?php if($solution->pitch->category_id == 1):?>(3 поправки)<?php endif?> и исходники.<?php
+        <span class="supplement">Со дня определения победителя у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты <?php if($solution->pitch->category_id == 1):?>(3 поправки)<?php endif?> и исходники.
+        <?php if(!$this->user->isPitchOwner($solution->pitch->user_id)):?>
+            <br><br><a href="http://www.godesigner.ru/answers/view/101" target="_blank" class="supplement">Если заказчик пропал на завершительном этапе, что делать?</a>
+        <?php endif ?>
+            <?php
             if(($step < 3) && ($this->user->isPitchOwner($solution->pitch->user_id))): echo ' Для начала вам нужно получить джипеги, внести правки и одобрить макеты.'; endif;?></span>
-        <?php endif; ?>
+            <?php endif; ?>
     </div>
 </div>
