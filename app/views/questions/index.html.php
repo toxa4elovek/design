@@ -20,6 +20,9 @@
                         <li>
                             <h3><?=$data['text']?></h3>
                             <div class="bar">
+                                <?php if($data['percent'] > 100):
+                                    $data['percent'] = 100;
+                                endif ?>
                                 <div class="line<?php echo ($data['percent'] > 98) ? ' all-round' : '';?><?php echo ($data['percent'] < 2) ? ' zero-people' : '' ;?>" style="width: <?=$data['percent']?>%"></div>
                                 <div class="shadow-b"></div>
                             </div>
