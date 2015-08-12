@@ -2,14 +2,16 @@
 
 namespace app\tests\cases\extensions\helper;
 
+use app\extensions\tests\AppUnit;
 use app\extensions\helper\User;
 use app\models\User as UserModel;
 
-class UserTest extends \lithium\test\Unit {
+class UserTest extends AppUnit {
 
     protected $_user_model = 'app\tests\mocks\template\helper\MockUserModel';
     protected $_expert_model = 'app\tests\mocks\template\helper\MockExpertModel';
     protected $_inflector = 'app\extensions\helper\NameInflector';
+    protected $_real_user_model = 'app\models\User';
 
     /**
      * Test object instance.
@@ -27,10 +29,13 @@ class UserTest extends \lithium\test\Unit {
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
         ));
+        $this->rollUp(array('User'));
     }
 
     public function tearDown() {
         $this->user->clear();
+        $this->rollDown(array('User'));
+
     }
 
     public function testIsAdmin() {
@@ -276,6 +281,48 @@ class UserTest extends \lithium\test\Unit {
         $this->user->write('user.email', 'nyudmitriy@gmail.com');
         $this->assertEqual('n*********@gmail.com', $this->user->getMaskedEmail());
         $this->user->write('user.email', 'fake@address.ru');
-        $this->assertEqual('f***@address.ru', $this->user->getMaskedEmail());    }
+        $this->assertEqual('f***@address.ru', $this->user->getMaskedEmail());
+    }
+
+    public function testGetBalance() {
+        $userId = 3;
+        $user = UserModel::first($userId);
+        $this->user->write('user', $user->data());
+        $this->assertEqual(23500, $user->balance);
+        $this->assertEqual(23500, $this->user->getBalance());
+    }
+
+    public function testGetShortCompanyName() {
+        $user = UserModel::first(3);
+        $this->user->write('user', $user->data());
+        $this->user->write('user.short_company_name', 'ООО Проверка');
+        $this->assertEqual('ООО Проверка', $this->user->getShortCompanyName());
+    }
+
+    public function testIsSubscriptionActive() {
+        $this->user = new User(array(
+            'userModel' => $this->_real_user_model,
+            'expertModel' => $this->_expert_model,
+            'inflector' => $this->_inflector
+        ));
+        $user = UserModel::first(3);
+        $this->user->write('user', $user->data());
+        $this->assertEqual(0, $user->subscription_status);
+        $this->assertFalse($this->user->isSubscriptionActive());
+        UserModel::activateSubscription(3, MONTH);
+        $this->assertTrue($this->user->isSubscriptionActive());
+    }
+
+    public function testGetSubscriptionExpireDate() {
+        $this->user = new User(array(
+            'userModel' => $this->_real_user_model,
+            'expertModel' => $this->_expert_model,
+            'inflector' => $this->_inflector
+        ));
+        $user = UserModel::first(3);
+        $this->user->write('user', $user->data());
+        UserModel::activateSubscription($user->id, MONTH);
+        $this->assertEqual(date('d.m.Y H:i:s', time() + MONTH), $this->user->getSubscriptionExpireDate());
+    }
 
 }

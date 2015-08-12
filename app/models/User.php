@@ -1482,4 +1482,56 @@ class User extends \app\models\AppModel {
         }
         return $user;
     }
+
+    /**
+     * Метод активирует подписку и добавляет время подписки
+     *
+     * @param $userId
+     * @param $timeToAdd
+     * @return mixed
+     *
+     */
+    public static function activateSubscription($userId, $timeToAdd) {
+        $user = User::first($userId);
+        if(self::isSubscriptionActive($userId, $user)) {
+            $user->subscription_expiration_date = date('Y-m-d H:i:s', strtotime($user->subscription_expiration_date) + $timeToAdd);
+        }else {
+            $user->subscription_status = 1;
+            $user->subscription_expiration_date = date('Y-m-d H:i:s', time() + $timeToAdd);
+        }
+        return $user->save(null, array('validate' => false));
+    }
+
+    /**
+     * Метод проверяет активна ли подписка пользователя
+     *
+     * @param $userId
+     * @return bool
+     */
+    public static function isSubscriptionActive($userId, $userObject = null) {
+        if(!$userObject) {
+            $userObject = self::first($userId);
+        }
+        if($userObject->subscription_status) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * Метод возвращяет дату окончания подписки
+     *
+     * @param $userId
+     * @param $format
+     * @return bool|date
+     */
+    public static function getSubscriptionExpireDate($userId, $format = 'd.m.Y H:i:s') {
+        $userObject = self::first($userId);
+        if(self::isSubscriptionActive($userId, $userObject)) {
+            return date($format, strtotime($userObject->subscription_expiration_date));
+        }else {
+            return false;
+        }
+    }
 }
