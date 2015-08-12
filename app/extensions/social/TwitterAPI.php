@@ -20,8 +20,8 @@ class TwitterAPI extends AbstractAPI {
         $this->apiObject = new tmhOAuth(array(
             'consumer_key' => '7ynjxKFuCuK4a7KE1ay1DwQbU',
             'consumer_secret' => 'aKNZum1E2wMq3BE5IUwfGP4eNVxO2ulF5OdwWqmTAUYhYLDmTH',
-            'user_token' => '513074899-XNfik3PphNaNCEpi1yfCKRpBsuxdmRFyXXUGhdRs',
-            'user_secret' => 'AiNUJVmLSf7hIO2T7Fg0UCaiifLOyrEqz9pCyZAz48urN'
+            'user_token' => '513074899-uyzoEFa8SzlIQgzcGCFTdy0n7BEBq2d4WhscX9Cj',
+            'user_secret' => 'tWB6bQuMn3BUAMBkQ5C3dDAZRHvjTFO9YVISnDrQT75ot'
         ));
     }
 

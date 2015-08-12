@@ -4,26 +4,21 @@ namespace app\extensions\command;
 
 use app\models\Event;
 use app\extensions\storage\Rcache;
-use \tmhOAuth\tmhOAuth;
+use app\extensions\social\TwitterAPI;
 
 class AddRetweets extends \app\extensions\command\CronJob {
 
     public function run() {
         Rcache::init();
-        $tmhOAuth = new tmhOAuth(array(
-            'consumer_key' => '7ynjxKFuCuK4a7KE1ay1DwQbU',
-            'consumer_secret' => 'aKNZum1E2wMq3BE5IUwfGP4eNVxO2ulF5OdwWqmTAUYhYLDmTH',
-            'user_token' => '513074899-XNfik3PphNaNCEpi1yfCKRpBsuxdmRFyXXUGhdRs',
-            'user_secret' => 'AiNUJVmLSf7hIO2T7Fg0UCaiifLOyrEqz9pCyZAz48urN'
-        ));
+        $twitterAPI = new TwitterAPI();
         $params = array('count' => 100, 'screen_name' => 'Go_Deer', 'include_entities' => true);
-        $code = $tmhOAuth->user_request(array(
+        $code = $twitterAPI->apiObject->user_request(array(
             'method' => 'GET',
-            'url' => $tmhOAuth->url('1.1/statuses/user_timeline.json'),
+            'url' => $twitterAPI->apiObject->url('1.1/statuses/user_timeline.json'),
             'params' => $params
         ));
         if ($code == 200) {
-            $data = json_decode($tmhOAuth->response['response'], true);
+            $data = json_decode($twitterAPI->apiObject->response['response'], true);
         }
         $hashTags = array('работадлядизайнеров');
         $x = 0;
@@ -34,13 +29,13 @@ class AddRetweets extends \app\extensions\command\CronJob {
             $url .= $countTags > $x ? '%23' . urlencode($tag) . '+' : '%23' . urlencode($tag);
         }
         $params = array('rpp' => 100, 'q' => $url, 'include_entities' => true);
-        $codeTag = $tmhOAuth->user_request(array(
+        $codeTag = $twitterAPI->apiObject->user_request(array(
             'method' => 'GET',
-            'url' => $tmhOAuth->url('https://api.twitter.com/1.1/search/tweets.json'),
+            'url' => $twitterAPI->apiObject->url('https://api.twitter.com/1.1/search/tweets.json'),
             'params' => $params
         ));
         if ($code == 200 && $codeTag == 200) {
-            $dataTag = json_decode($tmhOAuth->response['response'], true);
+            $dataTag = json_decode($twitterAPI->apiObject->response['response'], true);
             foreach ($dataTag['statuses'] as $tweet) {
                 $data[] = $tweet;
             }
@@ -68,18 +63,18 @@ class AddRetweets extends \app\extensions\command\CronJob {
                     if (!isset($tweetsDump[$tweet['id_str']])) {
                         $this->out('Html cache is not exists');
                         $params = array('rpp' => 1, 'id' => $tweet['id_str'], 'maxwidth' => '550', 'include_entities' => false);
-                        $code = $tmhOAuth->user_request(array(
+                        $code = $twitterAPI->apiObject->user_request(array(
                             'method' => 'GET',
-                            'url' => $tmhOAuth->url('1.1/statuses/oembed.json'),
+                            'url' => $twitterAPI->apiObject->url('1.1/statuses/oembed.json'),
                             'params' => $params
                         ));
                         if ($code == 200) {
                             $this->out('Got the data, saving to cache');
-                            $embeddata = json_decode($tmhOAuth->response['response'], true);
+                            $embeddata = json_decode($twitterAPI->apiObject->response['response'], true);
                             $tweetsDump[$tweet['id_str']] = $embeddata['html'];
                         } else {
                             $this->out('Error getting embed tweet');
-                            var_dump(json_decode($tmhOAuth->response['response'], true));
+                            var_dump(json_decode($twitterAPI->apiObject->response['response'], true));
                         }
                     } else {
                         $this->out('Html cache already exists');
@@ -94,7 +89,7 @@ class AddRetweets extends \app\extensions\command\CronJob {
             }
         } else {
             $this->out('Error gettings latest tweets');
-            var_dump(json_decode($tmhOAuth->response['response'], true));
+            var_dump(json_decode($twitterAPI->apiObject->response['response'], true));
         }
     }
 
