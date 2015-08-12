@@ -14,9 +14,10 @@
                 <script type="text/jsx">
                 var balance = <?= $this->user->getBalance() ?>;
                 var companyName = '<?= $this->user->getShortCompanyName() ?>';
-                var expirationDate = '12.10.2015';
+                var expirationDate = '<?= $this->user->getSubscriptionExpireDate('d/m/Y') ?>';
+                var isSubscriptionActive = <?php echo (int) $this->user->isSubscriptionActive() ?>;
                 React.render(
-                <BalanceBox balance={balance} companyName={companyName} expirationDate={expirationDate}/>,
+                <BalanceBox balance={balance} isSubscriptionActive={isSubscriptionActive} companyName={companyName} expirationDate={expirationDate}/>,
                     $('#balance')[0]
                 );
                 </script>
