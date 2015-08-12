@@ -27,9 +27,9 @@
 
                                     <h2 class="largest-header-blog">
                                         <?php if(($post->published == 1) && (strtotime($post->created) < (time() + HOUR))):?>
-                                        <a style="text-transform:uppercase;" href="/posts/view/<?=$post->id?>"><?=$post->title?></a>
+                                        <a style="line-height: 29px !important; display: block;" href="/posts/view/<?=$post->id?>"><?=$post->title?></a>
                                         <?php else:?>
-                                        <a style="text-transform:uppercase;color:#ccc;" href="/posts/view/<?=$post->id?>"><?=$post->title?></a>
+                                        <a style="line-height: 29px !important; display: block; text-transform:uppercase;color:#ccc;" href="/posts/view/<?=$post->id?>"><?=$post->title?></a>
                                         <?php endif?>
                                     </h2>
                                     <?php
@@ -39,12 +39,12 @@
                                         $tagstring[] = '<a class="blogtaglink" href="/posts?tag=' . urlencode($tag) . '">' . $tag . '</a>';
                                     endforeach;
                                     ?>
-                                    <p style="text-transform:uppercase;font-size:11px;color:#666666"><?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?>
+                                    <p style="text-transform:uppercase;font-size:11px;color:#666666;margin-top: 10px;"><?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?>
                                     </p>
-                                    <div class="regular" style="margin-top:10px">
+                                    <div class="regular" style="margin-top: -5px;">
                                         <?php echo $post->short?>
                                     </div>
-                                    <div style="height:1px;width:200px;margin-bottom:10px;"></div>
+                                    <div style="height:1px;width:200px;margin-bottom: -5px;"></div>
 
                                     <?php if($this->user->isEditor()):?>
                                     <a target="_blank" class="more-editor" href="/posts/edit/<?=$post->id?>" >редактировать</a>
@@ -52,9 +52,9 @@
                                     <?php elseif($this->user->isPostAuthor($post->user_id)):?>
                                         <a target="_blank" class="more-editor" href="/posts/edit/<?=$post->id?>" >редактировать</a>
                                     <?php endif?>
-                                    <a style="" class="more" href="/posts/view/<?=$post->id?>">Подробнее</a>
+                                    <a style="" style="font-transorm: " href="/posts/view/<?=$post->id?>">Подробнее</a>
                                 </div>
-                                <div style="float:left;width:500px;margin-bottom: 20px; height:1px;"></div>
+                                <div style="float:left;width:500px;margin-bottom: 12px; height:1px;"></div>
                             </div>
                             <?php if($currentIndex != $count):
                                 $currentIndex += 1;

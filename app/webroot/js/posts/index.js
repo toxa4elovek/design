@@ -134,9 +134,9 @@ function populatePosts(result) {
         var field = postsObj[key];
         //Title
         if (field.published == 1) { // && (strtotime($post->created) < time()))
-            var title = '<a style="text-transform:uppercase;" href="/posts/view/' + field.id + '">' + field.title + '</a>';
+            var title = '<a style="line-height: 29px !important; display: block;" href="/posts/view/' + field.id + '">' + field.title + '</a>';
         } else {
-            var title = '<a style="text-transform:uppercase;color:#ccc;" href="/posts/view/' + field.id + '">' + field.title + '</a>';
+            var title = '<a style="line-height: 29px !important; display: block;color:#ccc;" href="/posts/view/' + field.id + '">' + field.title + '</a>';
         }
         
         // Tags
@@ -162,6 +162,9 @@ function populatePosts(result) {
             var editor = '<a target="_blank" class="more-editor" href="/posts/edit/' + field.id + '" style="">редактировать</a>';
             editor += '<a target="_blank" class="more-editor delete-post" href="/posts/delete/' + field.id + '" style="">удалить</a>';
         }
+        if(currentIndex == 1) {
+            $(".howitworks").append('<div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>');
+        }
         $(".howitworks").append(
                 '<div> \
                 <div style="float:left;width:249px;height:185px;background-image: url(/img/frame.png);margin-top:15px;"> \
@@ -171,15 +174,15 @@ function populatePosts(result) {
                     <h2 class="largest-header-blog">'
                         + title +
                     '</h2> \
-                    <p style="text-transform:uppercase;font-size:11px;color:#666666">' + postDate + ' &bull; ' + postTime + ' &bull; ' + tagString + '</p> \
-                    <div class="regular" style="margin-top:10px">'
+                    <p style="text-transform:uppercase;font-size:11px;color:#666666;margin-top: 10px;">' + postDate + ' &bull; ' + postTime + ' &bull; ' + tagString + '</p> \
+                    <div class="regular" style="margin-top: -5px;">'
                         + field.short +
                     '</div> \
-                    <div style="height:1px;width:200px;margin-bottom:10px;"></div>'
+                    <div style="height:1px;width:200px;margin-bottom: -5px;"></div>'
                     + editor +
                     '<a style="" class="more" href="/posts/view/' + field.id + '">Подробнее</a> \
                 </div> \
-                <div style="float:left;width:500px;margin-bottom: 20px; height:1px;"></div> \
+                <div style="float:left;width:500px;margin-bottom: 12px; height:1px;"></div> \
             </div>'
         );
         if(currentIndex == keys.length) {
