@@ -1,0 +1,67 @@
+.clear{
+    clear: both;
+    height: 1px;
+}
+#faq-corporate {
+    width: 400px;
+    float: left;
+}
+#faq-corporate a {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #666666;
+    text-decoration: none;
+}
+#faq-corporate li {
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 58px;
+    line-height: 58px;
+    display: block;
+}
+#faq-corporate .faq-corporate-title {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #666666;
+    text-decoration: none;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+}
+#faq-corporate a:hover, #faq-corporate a:focus{
+    text-decoration: underline;
+}
+#faq-corporate li:nth-child(even) {background: #f7f7f7}
+#faq-corporate li:nth-child(odd) {background: #ececec}
+
+.subscribe-menu {
+    width:832px;
+    margin-left:2px !important;
+    margin-bottom: 18px !important;
+}
+
+#balance {
+    width: 379px;
+    float: left;
+    background-color: #f7f7f7;
+    margin-right: 36px;
+    padding: 20px 5px 20px 16px;
+    color: #b6b6b6;
+    font-size: 13px;
+}
+#balance h6 {
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+#balance .balance {
+    font-size: 44px;
+    height: 44px;
+    line-height: 44px;
+    color: #666;
+    display: block;
+    text-align: right;
+    margin-top: 20px;
+}
