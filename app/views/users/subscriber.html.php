@@ -23,9 +23,19 @@
                 </script>
             </section>
 
-            <aside id="faq-corporate"></aside>
+            <section id="new-project"></section>
+
+            <script type="text/jsx" src="/js/users/subscriber/NewProjectBox.js"> </script>
+            <script type="text/jsx">
+                React.render(
+                    <NewProjectBox/>,
+                    document.getElementById('new-project')
+                );
+            </script>
 
             <section id="fund-balance-button"></section>
+
+            <aside id="faq-corporate"></aside>
 
             <script type="text/jsx" src="/js/users/subscriber/FundBalanceButton.js"> </script>
             <script type="text/jsx">
@@ -34,6 +44,8 @@
                     document.getElementById('fund-balance-button')
                 );
             </script>
+
+
 
             <div class="clear"></div>
         </div><!-- .main -->
@@ -48,4 +60,4 @@
 <script type="text/jsx" src="/js/users/subscriber/FaqCorporateBox.js"> </script>
 
 <?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
-<?=$this->html->style(array('/edit', '/css/users/subscriber.css'), array('inline' => false))?>
+<?=$this->html->style(array('/edit', '/css/common/buttons.css', '/css/users/subscriber.css'), array('inline' => false))?>

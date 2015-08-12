@@ -44,10 +44,10 @@
     width: 379px;
     float: left;
     background-color: #f7f7f7;
-    margin-right: 36px;
     padding: 20px 5px 20px 16px;
     color: #b6b6b6;
     font-size: 13px;
+    margin-bottom: 20px;
 }
 #balance h6 {
     font-size: 12px;
@@ -64,4 +64,41 @@
     display: block;
     text-align: right;
     margin-top: 20px;
+}
+#fund-balance-button {
+    float: left;
+    width: 400px;
+}
+.fund-balance {
+    width: 340px;
+}
+#new-project {
+    background-color: #61a06d;
+    padding: 24px 16px;
+    width: 368px;
+    float: left;
+    margin-left: 36px;
+}
+#new-project label {
+    font-size: 11px;
+    color: #f1eeee;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+#new-project input {
+    width: 352px;
+    color: #666666;
+}
+#new-project .price-input {
+    height: 74px;
+    font-size: 44px;
+}
+#new-project input:focus::-webkit-input-placeholder { color:transparent; opacity: 0;}
+#new-project input:focus:-moz-placeholder { color:transparent; opacity: 0;}
+#new-project input:focus::-moz-placeholder { color:transparent; opacity: 0;}
+#new-project input:focus:-ms-input-placeholder { color:transparent; opacity: 0;}
+
+#new-project .title-input{
+    height: 52px;
+    font-size: 15px;
 }
