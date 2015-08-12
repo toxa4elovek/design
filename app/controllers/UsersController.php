@@ -1788,6 +1788,13 @@ class UsersController extends \app\controllers\AppController {
         return $this->redirect('/');
     }
 
+    /**
+     *  Метод для вывода страницы абонентского кабинета
+     */
+    public function subscriber() {
+
+    }
+
 }
 
 class qqUploadedFileXhr {
