@@ -158,7 +158,7 @@ class UserTest extends AppUnit {
         User::activateSubscription(3, MONTH);
         $this->assertTrue(User::isSubscriptionActive(3));
     }
-    
+
     public function testGetSubscriptionExpireDate() {
         $user = User::first(3);
         User::activateSubscription($user->id, MONTH);
