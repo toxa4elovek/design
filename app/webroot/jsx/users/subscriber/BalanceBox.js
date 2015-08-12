@@ -1,6 +1,5 @@
 var BalanceBox = React.createClass({
     render: function() {
-        console.log(this.props);
         if(this.props.isSubscriptionActive) {
             var subscriptionStatus = <span>действителен до {this.props.expirationDate}</span>
         }else {

@@ -1,6 +1,5 @@
 var BalanceBox = React.createClass({displayName: "BalanceBox",
     render: function() {
-        console.log(this.props);
         if(this.props.isSubscriptionActive) {
             var subscriptionStatus = React.createElement("span", null, "действителен до ", this.props.expirationDate)
         }else {

@@ -3,7 +3,7 @@
     <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
 
     <div class="middle">
-        <div class="main">
+        <div class="main" id="subscribe-main-container">
 
             <nav class="main_nav subscribe-menu clear">
                 <?=$this->view()->render(array('element' => 'office/nav'));?>
@@ -24,6 +24,16 @@
             </section>
 
             <aside id="faq-corporate"></aside>
+
+            <section id="fund-balance-button"></section>
+
+            <script type="text/jsx" src="/js/users/subscriber/FundBalanceButton.js"> </script>
+            <script type="text/jsx">
+                React.render(
+                    <FundBalanceButton/>,
+                    document.getElementById('fund-balance-button')
+                );
+            </script>
 
             <div class="clear"></div>
         </div><!-- .main -->
