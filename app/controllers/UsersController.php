@@ -44,6 +44,7 @@ class UsersController extends \app\controllers\AppController {
     public $publicActions = array(
         'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed'
     );
+
     public $nominatedCount = false;
 
     public function _init() {

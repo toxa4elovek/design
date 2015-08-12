@@ -36,10 +36,10 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                     'created' => date('Y-m-d H:i:s', time() - HOUR)
                 ))->save();
                 $api = new tmhOAuth(array(
-                    'consumer_key' => '8r9SEMoXAacbpnpjJ5v64A',
-                    'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
-                    'user_token' => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
-                    'user_secret' => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
+                    'consumer_key' => '7ynjxKFuCuK4a7KE1ay1DwQbU',
+                    'consumer_secret' => 'aKNZum1E2wMq3BE5IUwfGP4eNVxO2ulF5OdwWqmTAUYhYLDmTH',
+                    'user_token' => '513074899-hvE5TWZgPaPffNtk4tDqBgSTFqYmTDH0Bf8xCE7B',
+                    'user_secret' => 'VIGlcQTT2Ete4biAEyW016TJBkwUL2XuOxUNOak2jsQmh'
                 ));
                 $params = array('rpp' => 1, 'id' => $id, 'maxwidth' => '550', 'include_entities' => false);
                 $code = $api->user_request(array(
