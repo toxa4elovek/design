@@ -8,15 +8,14 @@
 .largest-header-blog a:hover{
 	color: #ff585d;
 }
- a.more{font:11px arial;text-decoration:none;color:#999999;text-shadow:none;padding:2px 24px 4px 1px;background: url(img/a.png) no-repeat right top;text-transform:uppercase}
- a.more:hover{color:#666666;background: url(img/a.png) no-repeat right -40px;}
+ a.more{font:11px arial;text-decoration:none;text-shadow:none;padding:2px 24px 4px 1px;text-transform:uppercase}
+ a.more:hover{}
  .hover.more {
-     color:#666666;background: url(img/a.png) no-repeat right -40px;
+     color:#666666;
  }
 a.more-noicon,
-a.more-editor {font:11px arial;text-decoration:none;color:#999999;text-shadow:none;padding:2px 24px 4px 1px;text-transform:uppercase}
+a.more-editor {font:11px arial;text-decoration:none;text-shadow:none;padding:2px 24px 4px 1px;text-transform:uppercase}
 a.more-editor:hover {
-	color: #666666;
 }
  .largest-header-blog{
 	font: normal 28px/34px "RodeoC", sans-serif;
