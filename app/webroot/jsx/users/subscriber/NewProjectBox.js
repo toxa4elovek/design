@@ -8,6 +8,22 @@ var NewProjectBox = React.createClass({
                 <label>название проекта<span>*</span></label>
 
                 <input type="text" name="title" className="title-input" placeholder="Бланк для письма" />
+
+                <div className="clear"></div>
+                <label className="date-label">дата окончания приёма работ</label>
+                <label className="time-label">время</label>
+                <div className="clear"></div>
+
+                <input type="text" className="date-input" />
+                <input type="text" className="date-input" />
+                <input type="text" className="date-input year" />
+
+                <input type="text" className="date-input" />
+                <input type="text" className="date-input last-block" />
+                <div className="clear"></div>
+
+                <a href="#" className="button silver-button clean-style-button">создать проект</a>
+
             </div>
         )
     }

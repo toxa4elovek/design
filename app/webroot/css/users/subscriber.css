@@ -88,6 +88,7 @@
 #new-project input {
     width: 352px;
     color: #666666;
+    margin-bottom: 30px;
 }
 #new-project .price-input {
     height: 74px;
@@ -101,4 +102,25 @@
 #new-project .title-input{
     height: 52px;
     font-size: 15px;
+}
+#new-project .date-input {
+    width: 30px;
+    height: 50px;
+    display: block;
+    float: left;
+    margin-right: 14px;
+    font-size: 15px;
+}
+#new-project .year {
+    margin-right: 75px;
+}
+#new-project .last-block {
+    margin-right: 0;
+}
+.date-label {
+    float: left;
+}
+.time-label {
+    margin-left: 56px;
+    float: left;
 }

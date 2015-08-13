@@ -45,8 +45,6 @@
                 );
             </script>
 
-
-
             <div class="clear"></div>
         </div><!-- .main -->
     </div><!-- .middle -->
