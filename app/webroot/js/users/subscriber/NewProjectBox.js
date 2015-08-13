@@ -22,7 +22,7 @@ var NewProjectBox = React.createClass({displayName: "NewProjectBox",
                 React.createElement("input", {type: "text", className: "date-input last-block"}), 
                 React.createElement("div", {className: "clear"}), 
 
-                React.createElement("a", {href: "#", className: "button silver-button clean-style-button"}, "создать проект")
+                React.createElement("a", {href: "#", className: "button silver-button clean-style-button create-project-button"}, "создать проект")
 
             )
         )

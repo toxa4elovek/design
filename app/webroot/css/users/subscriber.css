@@ -68,13 +68,14 @@
 #fund-balance-button {
     float: left;
     width: 400px;
+    margin-bottom: 18px;
 }
 .fund-balance {
     width: 340px;
 }
 #new-project {
     background-color: #61a06d;
-    padding: 24px 16px;
+    padding: 24px 16px 42px 16px;
     width: 368px;
     float: left;
     margin-left: 36px;
@@ -117,10 +118,15 @@
 #new-project .last-block {
     margin-right: 0;
 }
-.date-label {
+#new-project .date-label {
     float: left;
 }
-.time-label {
+#new-project .time-label {
     margin-left: 56px;
     float: left;
+}
+#new-project .create-project-button {
+    height: 50px;
+    width: 308px;
+    line-height: 50px;
 }

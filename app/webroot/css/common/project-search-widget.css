@@ -1,0 +1,15 @@
+.project-search-widget {
+    height: 70px;
+    padding-top: 20px;
+    background-color: rgb(243, 243, 243);
+    width: 786px;
+    margin-top: 36px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+.project-search-widget .start-search{
+    margin-left:15px;
+    margin-top:4px;
+    height: 42px;
+    width: 102px;
+}

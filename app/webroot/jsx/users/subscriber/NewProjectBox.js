@@ -22,7 +22,7 @@ var NewProjectBox = React.createClass({
                 <input type="text" className="date-input last-block" />
                 <div className="clear"></div>
 
-                <a href="#" className="button silver-button clean-style-button">создать проект</a>
+                <a href="#" className="button silver-button clean-style-button create-project-button">создать проект</a>
 
             </div>
         )

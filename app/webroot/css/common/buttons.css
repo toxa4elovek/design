@@ -3,13 +3,23 @@
     border-radius: 0!important;
 }
 .silver-button {
+    color: #717171 !important;
     outline-width: 0;
     outline: none;
     background: #cccccc;
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#cccccc), to(#f2f2f2));
-    background: -webkit-linear-gradient(#cccccc, #f2f2f2);
-    background:    -moz-linear-gradient(#cccccc, #f2f2f2);
-    background:     -ms-linear-gradient(#cccccc, #f2f2f2);
-    background:      -o-linear-gradient(#cccccc, #f2f2f2);
-    background:         linear-gradient(#cccccc, #f2f2f2);
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#f2f2f2), to(#cccccc)) !important;
+    background: -webkit-linear-gradient(#f2f2f2, #cccccc) !important;
+    background:    -moz-linear-gradient(#f2f2f2, #cccccc) !important;
+    background:     -ms-linear-gradient(#f2f2f2, #cccccc) !important;
+    background:      -o-linear-gradient(#f2f2f2, #cccccc) !important;
+    background:         linear-gradient(#f2f2f2, #cccccc) !important;
+}
+.silver-button:hover {
+    background: #cccccc;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#cccccc), to(#f2f2f2)) !important;
+    background: -webkit-linear-gradient(#cccccc, #f2f2f2) !important;
+    background:    -moz-linear-gradient(#cccccc, #f2f2f2) !important;
+    background:     -ms-linear-gradient(#cccccc, #f2f2f2) !important;
+    background:      -o-linear-gradient(#cccccc, #f2f2f2) !important;
+    background:         linear-gradient(#cccccc, #f2f2f2) !important;
 }
