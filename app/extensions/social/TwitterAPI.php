@@ -18,10 +18,10 @@ class TwitterAPI extends AbstractAPI {
     public function __construct() {
         require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhOAuth.php';
         $this->apiObject = new tmhOAuth(array(
-            'consumer_key' => '7ynjxKFuCuK4a7KE1ay1DwQbU',
-            'consumer_secret' => 'aKNZum1E2wMq3BE5IUwfGP4eNVxO2ulF5OdwWqmTAUYhYLDmTH',
-            'user_token' => '513074899-qh6ee3WgG0tbzLyKli1M2OhJ6S30ev0NLWQWoQNT',
-            'user_secret' => '2YBrHFlu2gpyyDV9NE2uEk8xeoKzUguYVYW4BlMSE72yB'
+            'consumer_key' => '8r9SEMoXAacbpnpjJ5v64A',
+            'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
+            'user_token' => '513074899-ECIFBsSq2rWMtcEc6bJXWEpZ1kn161w96SCqPuwF',
+            'user_secret' => '6vn6KIn7uJlVT9NqczndRWGYL4TVDMZGA00ZCS8yM04x2'
         ));
     }
 
@@ -106,5 +106,21 @@ class TwitterAPI extends AbstractAPI {
             'params' => $params,
         ));
     }*/
+
+    public function access_token() {
+        $result = $this->apiObject->apponly_request(array(
+            'method' => 'POST',
+            'url' => 'https://api.twitter.com/oauth/access_token',
+            'params' => array(
+                'oauth_verifier' => 'hiN4G6r3LYynbL0nvsJg6ic2GPBGRDZW',
+                'oauth_token' => 'RHeCUgAAAAAAHfhHAAABTyY7iRk'
+            )
+        ));
+        echo '<pre>';
+        var_dump($result);
+        var_dump($this->apiObject);
+        var_dump($this->apiObject->response['response']);
+        die();
+    }
 
 }
