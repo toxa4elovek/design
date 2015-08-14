@@ -85,31 +85,6 @@ $(function(){
 
     $('#pitch-table').height($('.wap_table').height());
 
-    $('.hoverlogo').on({
-
-        mouseenter: function () {
-            var link = $(this);
-            var image = $("img", $(this));
-            var onImage =  $('.nonhoverlogo', link.parent());
-            image.animate({opacity: 0}, 300, function () {
-            });
-            onImage.animate({opacity: 1}, 300, function () {
-            });
-        },
-
-        mouseleave: function () {
-            var link = $(this);
-            var image = $("img", $(this));
-            var onImage =  $('.nonhoverlogo', link.parent());
-            image.animate({opacity: 1}, 300, function () {
-            });
-            onImage.animate({opacity: 0}, 300, function () {
-            });
-
-        }
-
-    });
-
     function changeBanner() {
         var $el = $('div:visible', '#bannerblock');
         var $elNext = $el.next();
@@ -154,6 +129,11 @@ $(function(){
         $('#logosale_form').submit();
         return false;
     });
+
+    React.render(
+        React.createElement(ClientsLogosShowCase, {data: logos}), document.getElementById('clients-logos')
+    );
+
 });
 
 function expertsRandom() {
@@ -169,3 +149,4 @@ function expertsRandom() {
         $('li.expert-' + expertsArray[i], '#experts-zone').show();
     }
 }
+

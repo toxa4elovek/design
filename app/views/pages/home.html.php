@@ -273,35 +273,43 @@
       </dl>
     </div>
       <div style="height: 4px; background-color: rgb(204, 204, 204); clear: both; margin-top: -15px; margin-left: 0px;"></div>
-
-    <ul class="logos">
-
-        <li style="width:253px;margin-right: 40px;">
-            <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker.png" alt="" /></a>
-            <a target="_blank" style="opacity:0;position:relative;bottom:59px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100072" data-off="/img/partners/zucker.png" data-on="/img/partners/zucker_on.png"><img class="zucker" src="/img/partners/zucker_on.png" alt="" /></a>
-        </li>
-
-        <li style="width:110px;" >
-            <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100162" data-off="/img/partners/trends.png" data-on="/img/partners/trends_on.png"><img class="brands" src="/img/partners/trends.png" alt="" /></a>
-            <a target="_blank" style="opacity:0;position:relative;bottom:72px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100162" data-off="/img/partners/trends.png" data-on="/img/partners/trends_on.png"><img class="brands" src="/img/partners/trends_on.png" alt="" /></a>
-        </li>
-
-        <li style="width:110px; padding-top: 2px;margin-left: 23px;margin-right: 9px;">
-            <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/102308" data-off="/img/main/flypic.png" data-on="/img/main/flypic_hover.png"><img class="brands" src="/img/main/flypic.png" alt="" /></a>
-            <a target="_blank" style="opacity:0;position:relative;bottom:82px;z-index:1;" class="nonhoverlogo" href="/pitches/view/102308" data-off="/img/main/flypic.png" data-on="/img/main/flypic_hover.png"><img class="brands" src="/img/main/flypic_hover.png" alt="" /></a>
-        </li>
-
-        <li style="width:94px;text-align: center;">
-            <a target="_blank" style="opacity:1;position:relative;z-index:2;margin-left: auto; margin-right: auto;" class="hoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo.png" alt="" /></a>
-            <a target="_blank" style="opacity:0;position:relative;bottom:55px;z-index:1;" class="nonhoverlogo" href="/pitches/view/101378" data-off="/img/partners/clodo.png" data-on="/img/partners/clodo_on.png"><img class="clodo" src="/img/partners/clodo_on.png" alt="" /></a>
-        </li>
-
-        <li style="width:148px;" class="logolast">
-          <a target="_blank" style="opacity:1;position:relative;z-index:2;" class="hoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird.png" alt="" /></a>
-          <a target="_blank" style="opacity:0;position:relative;bottom:60px;z-index:1;" class="nonhoverlogo" href="/pitches/view/100079" data-off="/img/partners/surfinbird.png" data-on="/img/partners/surfinbird_on.png"><img class="surfin" src="/img/partners/surfinbird_on.png" alt="" /></a>
-        </li>
-
-    </ul>
+      <section id="clients-logos"></section>
+      <script>
+          var logos = [
+              {
+                  title: "ОАО «АК «ТРАНСАЭРО»",
+                  id: 105061,
+                  imageOn: "/img/partners/transaero_on.png",
+                  imageOff: "/img/partners/transaero.png",
+                  width: 212,
+                  paddingTop: 18
+              },
+              {
+                  title: "Лаборатория Касперского",
+                  id: 104724,
+                  imageOn: "/img/partners/kaspersky_on.png",
+                  imageOff: "/img/partners/kaspersky.png",
+                  width: 187,
+                  paddingTop: 14
+              },
+              {
+                  title: "Trendsbrands.ru",
+                  id: 100162,
+                  imageOn: "/img/partners/trends_on.png",
+                  imageOff: "/img/partners/trends.png",
+                  width: 110,
+                  paddingTop: 0
+              },
+              {
+                  title: "Цукерберг позвонит",
+                  id: 100072,
+                  imageOn: "/img/partners/zucker_on.png",
+                  imageOff: "/img/partners/zucker.png",
+                  width: 253,
+                  paddingTop: 0
+              }
+          ];
+      </script>
 
     <ul class="bottom_menu">
         <li><a href="/pitches/1?type=finished">логотипы</a> /</li>
@@ -338,5 +346,9 @@
     </script>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+<script src="/js/pages/home/ClientLogo.js"></script>
+<script src="/js/pages/home/ClientsLogosShowcase.js"></script>
 <?=$this->html->script(array('slides.min.jquery', 'jquery.simplemodal-1.4.2.js', 'pages/main.js'), array('inline' => false))?>
-<?=$this->html->style(array('/css/main_page.css'), array('inline' => false))?>
+<?=$this->html->style(array('/css/main_page.css', '/css/pages/home.css'), array('inline' => false))?>

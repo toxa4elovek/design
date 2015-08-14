@@ -1,0 +1,15 @@
+.partner-logo-item {
+
+}
+.partner-logo-item a {
+    position: relative;
+}
+.partner-logo-item .image-on {
+    opacity: 1;
+}
+.partner-logo-item .image-off {
+    opacity: 0;
+}
+.partner-logo-item img {
+    position: absolute;
+}
