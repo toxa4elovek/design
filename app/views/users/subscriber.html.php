@@ -51,59 +51,58 @@
             <div class="clear"></div>
 
             <section class="project-search-widget" id="subscribe-project-search">
-                <table>
-                    <tbody><tr>
-                        <td>
-                            <div id="filterContainer" style="border-radius:4px 4px 4px 4px;border:4px solid #F3F3F3; height:41px;padding-top:0;background-color:white;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset; width:600px;">
-                                <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
-                                <input type="text" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 3px;margin-left:4px;">
-                                <a href="#" id="filterToggle" data-dir="up" style="float:right;"><img style="padding-top:4px;margin-right:1px;" src="/img/filter-arrow-down.png" alt=""></a>
-                                <a href="#" id="filterClear"></a>
-                            </div>
-                        </td>
-                        <td>
-                            <a href="#" id="goSearch" class="button clean-style-button start-search">Поиск</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:25px;width: 637px;height:347px;background-color: white;z-index:10;position:absolute;">
-                    <ul class="filterlist" style="float:left;width:190px;margin-left:25px;text-transform: none">
-                        <li class="first">проекты</li>
-                        <li style="width:205px"><a data-group="type" data-value="all" href="#">все проекты с моими решениями</a></li>
-                        <!--li><a href="#">по новизне</a></li-->
-                        <li style="width:85px"><a data-group="type" data-value="current" href="#">текущие</a></li>
-                        <li style="width:85px"><a data-group="type" data-value="finished" href="#">завершенные</a></li>
-                        <li style="width:85px"><a data-group="type" data-value="favourites" href="#">отслеживаемые</a></li>
-                        <li style="width:140px"><a data-group="type" data-value="completion-stage" href="#">на стадии завершения</a></li>
-                        <li style="width:85px"><a data-group="type" data-value="awarded" href="#">награжденные</a></li>
-                    </ul>
-                    <ul class="filterlist" style="float:left;width:151px;margin-left:45px;text-transform: none">
-                        <li class="first">категория</li>
-                        <li><a data-group="category" data-value="all" href="#">все</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="1" href="#">логотип</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="2" href="#">web-баннер</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="3" href="#">сайт</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="4" href="#">флаер</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="5" href="#">фирменный стиль</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="6" href="#">страница соцсети</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="7" href="#">копирайтинг</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="8" href="#">презентация</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="9" href="#">иллюстрация</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="10" href="#">другое</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="11" href="#">упаковка</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="12" href="#">реклама</a></li>
-                        <li style="width: 175px;"><a data-group="category" data-value="13" href="#">фирменный стиль и логотип</a></li>
-                    </ul>
-                    <ul class="filterlist" style="float:left;width:160px;margin-left:65px;text-transform: none">
-                        <li class="first">гонорар</li>
-                        <li style="width:130px"><a data-group="priceFilter" data-value="3" href="#">от 20 000 Р.-</a></li>
-                        <li style="width:130px"><a data-group="priceFilter" data-value="2" href="#">от 10 000 - 20 000 Р.-</a></li>
-                        <li style="width:130px"><a data-group="priceFilter" data-value="1" href="#">от 5 000 - 10 000 Р.-</a></li>
-                    </ul>
-                    <div style="clear:both"></div>
-                </div>
             </section>
+            <script type="text/jsx">
+                var ProjectSearchBar = new React.createClass({
+                    arrowLinkClick: function(event) {
+                        console.log('arrow click');
+                        var arrow = $(event.target);
+                        var arrowLink = arrow.parent();
+                        var dir = arrowLink.data('dir');
+                        var imageUrl = '/img/filter-arrow-up.png';
+                        if ('up' == dir) {
+                            arrowLink.data('dir', 'down');
+                        } else {
+                            imageUrl = '/img/filter-arrow-down.png';
+                            arrowLink.data('dir', 'up');
+                        }
+                        arrow.attr('src', imageUrl);
+                        event.preventDefault();
+                    },
+                    searchButtonClick: function(event) {
+                        console.log('button click');
+                        event.preventDefault();
+                    },
+                    render: function() {
+                        return (
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div id="filterContainer" className="search-box-container">
+                                                <ul className="tags" id="filterbox"></ul>
+                                                <input type="text" placeholder="найдите свой  проект по ключевому слову или типу" id="searchTerm" />
+                                                <a href="#" onClick={this.arrowLinkClick} id="filterToggle" className="arrow-container" data-dir="up">
+                                                    <img className="arrow-down" src="/img/filter-arrow-down.png" alt="Раскрыть меню" />
+                                                </a>
+                                                <a href="#" id="filterClear"></a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="#" onClick={this.searchButtonClick} className="button clean-style-button start-search">Поиск</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        )
+                    }
+                });
+
+                React.render(
+                    <ProjectSearchBar/>,
+                    document.getElementById('subscribe-project-search')
+                );
+            </script>
 
         </div><!-- .main -->
     </div><!-- .middle -->
