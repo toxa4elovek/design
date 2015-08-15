@@ -143,7 +143,6 @@ echo  $this->html->script('jquery.validate.min', array('inline' => false, 'weigh
 echo  $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));
 echo  $this->html->script('jquery.detectmobilebrowser.min.js', array('inline' => false, 'weight' => 13));
 echo  $this->html->script('plugins', array('inline' => false, 'weight' => 14));
-echo  $this->html->script('scripts', array('inline' => false, 'weight' => 15));
 echo  $this->html->script('app', array('inline' => false, 'weight' => 16));
 ?>
 <?= $this->optimize->scripts() ?>

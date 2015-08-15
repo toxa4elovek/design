@@ -11,7 +11,6 @@
 
             <div style="float:left; width: 400px;">
                 <section id="balance">
-                    <script type="text/jsx" src="/js/users/subscriber/BalanceBox.js"></script>
                     <script type="text/jsx">
                     var balance = <?= $this->user->getBalance() ?>;
                     var companyName = '<?= $this->user->getShortCompanyName() ?>';
@@ -26,7 +25,6 @@
 
                 <section id="fund-balance-button"></section>
 
-                <script type="text/jsx" src="/js/users/subscriber/FundBalanceButton.js"> </script>
                 <script type="text/jsx">
                     React.render(
                         <FundBalanceButton/>,
@@ -40,7 +38,6 @@
 
             <section id="new-project"></section>
 
-            <script type="text/jsx" src="/js/users/subscriber/NewProjectBox.js"> </script>
             <script type="text/jsx">
                 React.render(
                     <NewProjectBox/>,
@@ -50,21 +47,19 @@
 
             <div class="clear"></div>
 
-            <section class="project-search-widget" id="subscribe-project-search">
-            </section>
+            <section class="project-search-widget" id="subscribe-project-search"></section>
             <script type="text/jsx">
                 var ProjectSearchBar = new React.createClass({
+                    placeholder: "найдите свой  проект по ключевому слову или типу",
                     arrowLinkClick: function(event) {
-                        console.log('arrow click');
-                        var arrow = $(event.target);
-                        var arrowLink = arrow.parent();
-                        var dir = arrowLink.data('dir');
+                        var arrow = $(React.findDOMNode(this.refs.arrowIndicator));
+                        var dir = arrow.data('dir');
                         var imageUrl = '/img/filter-arrow-up.png';
                         if ('up' == dir) {
-                            arrowLink.data('dir', 'down');
+                            arrow.data('dir', 'down');
                         } else {
                             imageUrl = '/img/filter-arrow-down.png';
-                            arrowLink.data('dir', 'up');
+                            arrow.data('dir', 'up');
                         }
                         arrow.attr('src', imageUrl);
                         event.preventDefault();
@@ -73,6 +68,15 @@
                         console.log('button click');
                         event.preventDefault();
                     },
+
+                    handleChange: function(event) {
+                        console.log('new value');
+                        this.setState({value: event.target.value});
+                    },
+                    /*componentDidMount: function() {
+                        React.findDOMNode(this.refs.searchInput).placeholder = "Enter a Date";
+                        console.log(React.findDOMNode(this.refs.searchInput))
+                    },*/
                     render: function() {
                         return (
                             <table>
@@ -81,9 +85,9 @@
                                         <td>
                                             <div id="filterContainer" className="search-box-container">
                                                 <ul className="tags" id="filterbox"></ul>
-                                                <input type="text" placeholder="найдите свой  проект по ключевому слову или типу" id="searchTerm" />
-                                                <a href="#" onClick={this.arrowLinkClick} id="filterToggle" className="arrow-container" data-dir="up">
-                                                    <img className="arrow-down" src="/img/filter-arrow-down.png" alt="Раскрыть меню" />
+                                                <input ref="searchInput" type="text" placeholder={this.placeholder} id="searchTerm" onChange={this.handleChange} className="placeholder" defaultValue="Test test" />
+                                                <a href="#" onClick={this.arrowLinkClick} className="arrow-container">
+                                                    <img ref="arrowIndicator" className="arrow-down" src="/img/filter-arrow-down.png" data-dir="up" alt="Раскрыть меню" />
                                                 </a>
                                                 <a href="#" id="filterClear"></a>
                                             </div>
@@ -110,10 +114,18 @@
 
 </div><!-- .wrapper -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
-<script type="text/jsx" src="/js/users/subscriber/FaqQuestionRow.js"> </script>
-<script type="text/jsx" src="/js/users/subscriber/FaqCorporateBox.js"> </script>
-
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array(
+    'jcarousellite_1.0.1.js',
+    'jquery.timers.js',
+    'jquery.simplemodal-1.4.2.js',
+    'tableloader.js',
+    'jquery.timeago.js',
+    'fileuploader',
+    'jquery.tooltip.js',
+    "/js/users/subscriber/BalanceBox.js",
+    "/js/users/subscriber/FundBalanceButton.js",
+    "/js/users/subscriber/NewProjectBox.js",
+    "/js/users/subscriber/FaqQuestionRow.js",
+    "/js/users/subscriber/FaqCorporateBox.js",
+    'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array('/edit', '/css/common/buttons.css', '/css/common/project-search-widget.css', '/css/users/subscriber.css'), array('inline' => false))?>

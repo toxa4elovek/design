@@ -95,11 +95,12 @@
     height: 74px;
     font-size: 44px;
 }
+/*
 #new-project input:focus::-webkit-input-placeholder { color:transparent; opacity: 0;}
 #new-project input:focus:-moz-placeholder { color:transparent; opacity: 0;}
 #new-project input:focus::-moz-placeholder { color:transparent; opacity: 0;}
 #new-project input:focus:-ms-input-placeholder { color:transparent; opacity: 0;}
-
+*/
 #new-project .title-input{
     height: 52px;
     font-size: 15px;

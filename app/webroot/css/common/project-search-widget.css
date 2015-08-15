@@ -30,8 +30,10 @@
 .project-search-widget .tags {
     margin-left: 9px
 }
-.project-search-widget .arrow-container{
+.project-search-widget .arrow-container {
+    cursor: pointer;
     float: right;
+    height: 41px;
 }
 .project-search-widget .search-box-container{
     border-radius: 4px 4px 4px 4px;
@@ -42,3 +44,7 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
     width:600px;
 }
+.project-search-widget .search-term::-webkit-input-placeholder { color: red; opacity: 1;}
+.project-search-widget .search-term:-moz-placeholder { color: red; opacity: 1;}
+.project-search-widget .search-term::-moz-placeholder { color: red; opacity: 1;}
+.project-search-widget .search-term:-ms-input-placeholder { color: red; opacity: 1;}
