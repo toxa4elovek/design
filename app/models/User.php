@@ -1534,4 +1534,27 @@ class User extends \app\models\AppModel {
             return false;
         }
     }
+
+    /**
+     * Метод возвращяет баланс текущего пользователя
+     *
+     * @param $userId
+     * @return int
+     */
+    public static function getBalance($userId) {
+        $userObject = self::first($userId);
+        return (int) $userObject->balance;
+    }
+
+    /**
+     * Метод возвращяет краткое название компании
+     *
+     * @param $userId
+     * @return mixed
+     */
+    public static function getShortCompanyName($userId) {
+        $userObject = self::first($userId);
+        return $userObject->short_company_name;
+    }
+
 }

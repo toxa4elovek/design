@@ -17,8 +17,8 @@
                     var expirationDate = '<?= $this->user->getSubscriptionExpireDate('d/m/Y') ?>';
                     var isSubscriptionActive = <?php echo (int) $this->user->isSubscriptionActive() ?>;
                     React.render(
-                    <BalanceBox balance={balance} isSubscriptionActive={isSubscriptionActive} companyName={companyName} expirationDate={expirationDate}/>,
-                        $('#balance')[0]
+                        <BalanceBox balance={balance} isSubscriptionActive={isSubscriptionActive} companyName={companyName} expirationDate={expirationDate}/>,
+                        document.getElementById('balance')
                     );
                     </script>
                 </section>
@@ -48,60 +48,68 @@
             <div class="clear"></div>
 
             <section class="project-search-widget" id="subscribe-project-search"></section>
-            <script type="text/jsx">
-                var ProjectSearchBar = new React.createClass({
-                    placeholder: "найдите свой  проект по ключевому слову или типу",
-                    arrowLinkClick: function(event) {
-                        var arrow = $(React.findDOMNode(this.refs.arrowIndicator));
-                        var dir = arrow.data('dir');
-                        var imageUrl = '/img/filter-arrow-up.png';
-                        if ('up' == dir) {
-                            arrow.data('dir', 'down');
-                        } else {
-                            imageUrl = '/img/filter-arrow-down.png';
-                            arrow.data('dir', 'up');
-                        }
-                        arrow.attr('src', imageUrl);
-                        event.preventDefault();
-                    },
-                    searchButtonClick: function(event) {
-                        console.log('button click');
-                        event.preventDefault();
-                    },
 
-                    handleChange: function(event) {
-                        console.log('new value');
-                        this.setState({value: event.target.value});
-                    },
-                    /*componentDidMount: function() {
-                        React.findDOMNode(this.refs.searchInput).placeholder = "Enter a Date";
-                        console.log(React.findDOMNode(this.refs.searchInput))
-                    },*/
+            <section class="project-search-results" id="subscribe-project-search-results">
+
+            </section>
+
+            <script type="text/jsx">
+                var ProjectSearchResultsTable = new React.createClass({
                     render: function() {
                         return (
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div id="filterContainer" className="search-box-container">
-                                                <ul className="tags" id="filterbox"></ul>
-                                                <input ref="searchInput" type="text" placeholder={this.placeholder} id="searchTerm" onChange={this.handleChange} className="placeholder" defaultValue="Test test" />
-                                                <a href="#" onClick={this.arrowLinkClick} className="arrow-container">
-                                                    <img ref="arrowIndicator" className="arrow-down" src="/img/filter-arrow-down.png" data-dir="up" alt="Раскрыть меню" />
-                                                </a>
-                                                <a href="#" id="filterClear"></a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="#" onClick={this.searchButtonClick} className="button clean-style-button start-search">Поиск</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                            <table id="myprojects" className="project-search-table">
+                                <ProjectSearchResultsTableHeader/>
+                                <ProjectSearchResultsTableRow/>
                             </table>
                         )
                     }
                 });
 
+                var ProjectSearchResultsTableRow = new React.createClass({
+                    render: function() {
+                        return (
+                            <tr data-id="105783" className="odd">
+                                <td className="td-title">
+                                    <a href="/pitches/view/105783" class="newpitchfont">Логотип для проекта PublicDictionary</a>
+                                </td>
+                                <td className="idea">73</td>
+                                <td className="pitches-time">6 дней 7 часов</td>
+                                <td className="price">-20 000 Р.-</td>
+                            </tr>
+                        )
+                    }
+                });
+
+                var ProjectSearchResultsTableHeader = new React.createClass({
+                    render: function() {
+                        return (
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <a href="#" id="sort-title" className="sort-link" data-dir="asc">название</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" id="sort-ideas_count" className="sort-link" data-dir="asc">идей</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" id="sort-finishDate" className="sort-link" data-dir="asc">срок/статус</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" id="sort-price" className="sort-link" data-dir="asc">Цена</a>
+                                    </td>
+                                </tr>
+                            </thead>
+                        )
+                    }
+                });
+
+                React.render(
+                    <ProjectSearchResultsTable/>,
+                    document.getElementById('subscribe-project-search-results')
+                );
+            </script>
+
+            <script type="text/jsx">
                 React.render(
                     <ProjectSearchBar/>,
                     document.getElementById('subscribe-project-search')
@@ -122,10 +130,18 @@
     'jquery.timeago.js',
     'fileuploader',
     'jquery.tooltip.js',
+    "/js/mixins/SetIntervalMixin.js",
     "/js/users/subscriber/BalanceBox.js",
     "/js/users/subscriber/FundBalanceButton.js",
     "/js/users/subscriber/NewProjectBox.js",
     "/js/users/subscriber/FaqQuestionRow.js",
     "/js/users/subscriber/FaqCorporateBox.js",
+    "/js/users/subscriber/ProjectSearchBar.js",
     'users/office.js'), array('inline' => false))?>
-<?=$this->html->style(array('/edit', '/css/common/buttons.css', '/css/common/project-search-widget.css', '/css/users/subscriber.css'), array('inline' => false))?>
+<?=$this->html->style(array(
+    '/edit',
+    '/css/common/buttons.css',
+    '/css/common/project-search-results.css',
+    '/css/common/project-search-widget.css',
+    '/css/users/subscriber.css'
+), array('inline' => false))?>

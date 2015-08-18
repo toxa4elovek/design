@@ -72,4 +72,11 @@ class PaymentsController extends \app\controllers\AppController {
         throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
+    /**
+     * Метод для пополнения баланса личного кабинета
+     */
+    public function fund_balance() {
+
+    }
+
 }

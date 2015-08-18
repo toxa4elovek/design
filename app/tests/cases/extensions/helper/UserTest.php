@@ -29,13 +29,12 @@ class UserTest extends AppUnit {
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
         ));
+        $this->user->clear();
         $this->rollUp(array('User'));
     }
 
     public function tearDown() {
-        $this->user->clear();
         $this->rollDown(array('User'));
-
     }
 
     public function testIsAdmin() {
@@ -285,17 +284,31 @@ class UserTest extends AppUnit {
     }
 
     public function testGetBalance() {
+        $this->user = new User(array(
+            'userModel' => $this->_real_user_model,
+            'expertModel' => $this->_expert_model,
+            'inflector' => $this->_inflector
+        ));
         $userId = 3;
         $user = UserModel::first($userId);
         $this->user->write('user', $user->data());
         $this->assertEqual(23500, $user->balance);
         $this->assertEqual(23500, $this->user->getBalance());
+        $user->balance = 3000;
+        $user->save(null, array('validate' => false));
+        $user = UserModel::first($userId);
+        $this->assertEqual(3000, $user->balance);
+        $this->assertEqual(3000, $this->user->getBalance());
     }
 
     public function testGetShortCompanyName() {
+        $this->user = new User(array(
+            'userModel' => $this->_real_user_model,
+            'expertModel' => $this->_expert_model,
+            'inflector' => $this->_inflector
+        ));
         $user = UserModel::first(3);
         $this->user->write('user', $user->data());
-        $this->user->write('user.short_company_name', 'ООО Проверка');
         $this->assertEqual('ООО Проверка', $this->user->getShortCompanyName());
     }
 
