@@ -184,4 +184,22 @@ class UserTest extends AppUnit {
         $this->assertEqual('Проверка 2', User::getShortCompanyName(3));
     }
 
+    public function testFillBalance() {
+        $result = User::fillBalance(3, 20000);
+        $this->assertTrue($result);
+        $this->assertEqual(43500, User::getBalance(3));
+        $user = User::first(3);
+        $this->assertEqual(43500, $user->balance);
+    }
+
+    public function testReduceBalance() {
+        $result = User::reduceBalance(3, 20000);
+        $this->assertTrue($result);
+        $this->assertEqual(3500, User::getBalance(3));
+        $user = User::first(3);
+        $this->assertEqual(3500, $user->balance);
+        $result = User::reduceBalance(3, 20000);
+        $this->assertFalse($result);
+    }
+
 }

@@ -1689,6 +1689,12 @@ class UsersController extends \app\controllers\AppController {
         }
     }
 
+    public function fill_balance() {
+        $amount = $this->request->data['amount'];
+        User::fillBalance($this->userHelper->getId(), $amount);
+        return compact('amount');
+    }
+
 }
 
 class qqUploadedFileXhr {

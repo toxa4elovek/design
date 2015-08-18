@@ -3,6 +3,7 @@
     border-radius: 0!important;
 }
 .silver-button {
+    text-shadow: 0 1px 1px rgba(255, 255, 255, .2);
     color: #717171 !important;
     outline-width: 0;
     outline: none;

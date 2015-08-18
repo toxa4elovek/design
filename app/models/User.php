@@ -1063,12 +1063,34 @@ class User extends \app\models\AppModel {
         return true;
     }
 
-    public static function fillBalance($userId, $sum) {
+    /**
+     * Метод пополняет баланс пользователя
+     *
+     * @param $userId
+     * @param $amount
+     * @return bool
+     */
+    public static function fillBalance($userId, $amount) {
         if ($user = self::first($userId)) {
-            $user->balance += (int) $sum;
-            $user->save(null, array('validate' => false,));
+            $user->balance += (int) $amount;
+            return $user->save(null, array('validate' => false));
         }
-        return true;
+        return false;
+    }
+
+    /**
+     * Метод вычитает сумму из баланса пользователя
+     *
+     * @param $userId
+     * @param $amount
+     * @return bool
+     */
+    public static function reduceBalance($userId, $amount) {
+        if (($user = self::first($userId)) && ($user->balance >= $amount)) {
+            $user->balance -= (int) $amount;
+            return $user->save(null, array('validate' => false));
+        }
+        return false;
     }
 
     public static function phoneValidationStart($userId, $phone, $phoneOperator = '') {
