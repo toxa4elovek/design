@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class Post extends \app\models\AppModel {
+class Post extends AppModel {
 
     public $belongsTo = array('User');
 
@@ -23,6 +23,12 @@ class Post extends \app\models\AppModel {
         'фриланс под пальмами',
     );
 
+    /**
+     * Метод увеличивает счетчик просмотров для статьи под номером $id
+     *
+     * @param $id
+     * @return int
+     */
     public static function increaseCounter($id) {
         $answer = self::first($id);
         $answer->views += 1;

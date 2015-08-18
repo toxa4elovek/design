@@ -42,10 +42,14 @@ class PostsController extends \app\controllers\AppController {
         }else {
             $posts = Post::all(array('conditions' => array('published' => 1, 'Post.created' => array('<=' => date('Y-m-d H:i:s'))) + $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
         }
-
+        $postsList = array();
+        foreach($posts as $post) {
+            $post->timezoneCreated = date('c', strtotime($post->created));
+            $postsList[] = $post->data();
+        }
         $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
 
-        return compact('posts', 'editor', 'search');
+        return compact('posts', 'postsList', 'editor', 'search');
     }
 
     public function search() {

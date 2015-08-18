@@ -1,13 +1,5 @@
 /* Заголовок 1-крассная ссылка*/
-.largest-header-blog a{
-	font: normal 28px/34px "RodeoC", sans-serif;
-    color: #666666;
-    text-decoration: none;
-    text-shadow: -1px 0 0 #FFFFFF;
-}
-.largest-header-blog a:hover{
-	color: #ff585d;
-}
+
  a.more{font:11px arial;text-decoration:none;text-shadow:none;padding:2px 24px 4px 1px;text-transform:uppercase}
  a.more:hover{}
  .hover.more {
@@ -31,14 +23,6 @@ a.more-editor:hover {
     text-decoration: none;
 }
 .regular a:hover {
-    text-decoration: underline;
-}
-.blogtaglink {
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 11px;
-}
-.blogtaglink:hover {
     text-decoration: underline;
 }
 .viewpost ol {

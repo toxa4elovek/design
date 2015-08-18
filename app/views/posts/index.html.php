@@ -15,52 +15,125 @@
                                 <p class="large-regular">Попробуйте еще раз, изменив запрос.</p>
                             </div>
                         <?php endif; ?>
+                        <main id="blog-posts">
+
+                        </main>
+                        <script type="text/jsx">
+                            var posts = <?php echo json_encode($postsList) ?>;
+                            var isEditor = <?= (int) $this->user->isEditor()?>;
+                            var isAuthor = <?= (int) $this->user->isAuthor()?>;
+                            var BlogPostTagLink = new React.createClass({
+                                postsSearchByTagLink: '/posts?tag=',
+                                render: function() {
+                                    var link = this.postsSearchByTagLink + encodeURIComponent(this.props.tag);
+                                    return (
+                                        <a className="blogtaglink" href={link}>{this.props.tag}</a>
+                                    );
+                                }
+                            });
+
+                            var BlogPostEntryBox = new React.createClass({
+                                postsViewLink: '/posts/view/',
+                                postsEditLink: '/posts/edit',
+                                postsDeleteLink: '/posts/delete/',
+                                getInitialState: function() {
+                                    return {isEditor: this.props.isEditor, isAuthor: this.props.isAuthor}
+                                },
+                                componentDidMount: function() {
+                                    var tagList = React.findDOMNode(this.refs["tag-list"]);
+                                    var tagLinksList = $('a', tagList);
+                                    var tagListLength = tagLinksList.length;
+                                    $.each(tagLinksList, function(index, object) {
+                                        if(index + 1 < tagListLength) {
+                                            $(object).after(' &bull; ');
+                                        }
+                                    });
+                                },
+                                deleteLinkOnClick: function(e) {
+                                    if (confirm("Точно удалить статью?")) {
+                                        return true;
+                                    } else {
+                                        e.preventDefault();
+                                    }
+                                },
+                                render: function() {
+                                    var link = this.postsViewLink + this.props.post.id;
+                                    var editLink = this.postsEditLink + this.props.post.id;
+                                    var deleteLink = this.postsDeleteLink + this.props.post.id;
+                                    var tagStringArray = [];
+                                    var postDateObj = new Date(this.props.post.timezoneCreated);
+                                    var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + postDateObj.getFullYear();
+                                    var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+                                    var actionList = [];
+                                    if (this.props.post.tags) {
+                                        var tagsArray = this.props.post.tags.split('|');
+                                        for(var i = 0; i < tagsArray.length; i++) {
+                                            tagStringArray.push(<BlogPostTagLink tag={tagsArray[i]} />);
+                                        }
+                                    }
+                                    if(this.state.isAuthor == 1) {
+                                        actionList.push(<a target="_blank" className="more-editor" href={editLink}>редактировать</a>);
+                                    }
+                                    if(this.state.isEditor == 1) {
+                                        actionList.push(<a target="_blank" onClick={this.deleteLinkOnClick} className="more-editor delete-post"
+                                                           href={deleteLink}>удалить</a>);
+                                    }
+                                    actionList.push(<a className="more" href={link}>Подробнее</a>);
+                                    return (
+                                        <div className="blog-post-entry-box">
+                                            <div className="blog-post-image-container">
+                                                <img className="blog-post-image" src={this.props.post.imageurl} alt="{this.props.post.title}" />
+                                            </div>
+                                            <div className="blog-post-description-container">
+                                                <h2 className="largest-header-blog">
+                                                    <a href={link}>{this.props.post.title}</a>
+                                                </h2>
+                                                <div className="blog-post-information">{postDate} • {postTime} • <span ref="tag-list">{tagStringArray.map(function(object) {
+                                                        return object;
+                                                        return object;
+                                                    })}
+                                                    </span>
+                                                </div>
+                                                <div className="blog-post-preview">
+                                                    <p className="regular">Все средства хороши для продвижения бизнеса, но у этого фотогеничного ресурса есть ряд своих преимуществ. &nbsp;&nbsp;</p>
+                                                </div>
+                                                <div className="blog-post-links">
+                                                    {actionList.map(function(link) {
+                                                        return link;
+                                                    })}
+                                                </div>
+                                            </div>
+                                            <div className="blog-post-bottom"></div>
+                                            <div className="blog-post-separator"></div>
+                                        </div>
+                                    )
+                                }
+                            });
+                            var BlogPostList = new React.createClass({
+                                render: function() {
+                                    return (
+                                        <div>
+                                            {this.props.posts.map(function(post) {
+                                                return (
+                                                    <BlogPostEntryBox post={post} isAuthor={isAuthor} isEditor={isEditor}/>
+                                                )
+                                            })}
+                                        </div>
+                                    )
+                                }
+                            });
+
+                            React.render(
+                                <BlogPostList posts={posts}/>,
+                                document.getElementById('blog-posts')
+                            );
+
+                        </script>
                         <?php
                         $currentIndex = 1;
                         $count = count($posts);
                         foreach($posts as $post):?>
-                            <div>
-                                <div style="float:left;width:249px;height:185px;background-image: url(/img/frame.png);margin-top:15px;">
-                                    <img style="margin-top:4px;margin-left:4px;" width="240" height="175" src="<?=$post->imageurl?>" alt=""/>
-                                </div>
-                                <div style="float:left; width:330px; margin-left: 40px;">
 
-                                    <h2 class="largest-header-blog">
-                                        <?php if(($post->published == 1) && (strtotime($post->created) < (time() + HOUR))):?>
-                                        <a style="line-height: 29px !important; display: block;" href="/posts/view/<?=$post->id?>"><?=$post->title?></a>
-                                        <?php else:?>
-                                        <a style="line-height: 29px !important; display: block; text-transform:uppercase;color:#ccc;" href="/posts/view/<?=$post->id?>"><?=$post->title?></a>
-                                        <?php endif?>
-                                    </h2>
-                                    <?php
-                                    $tags = explode('|', $post->tags);
-                                    $tagstring = '';
-                                    foreach($tags as $tag):
-                                        $tagstring[] = '<a class="blogtaglink" href="/posts?tag=' . urlencode($tag) . '">' . $tag . '</a>';
-                                    endforeach;
-                                    ?>
-                                    <p style="text-transform:uppercase;font-size:11px;color:#666666;margin-top: 10px;"><?=date('d.m.Y', strtotime($post->created))?> &bull; <?=date('H:i', strtotime($post->created))?> &bull; <?php echo implode(' &bull; ', $tagstring)?>
-                                    </p>
-                                    <div class="regular" style="margin-top: -5px;">
-                                        <?php echo $post->short?>
-                                    </div>
-                                    <div style="height:1px;width:200px;margin-bottom: -5px;"></div>
-
-                                    <?php if($this->user->isEditor()):?>
-                                    <a target="_blank" class="more-editor" href="/posts/edit/<?=$post->id?>" >редактировать</a>
-                                    <a target="_blank" class="more-editor delete-post" href="/posts/delete/<?=$post->id?>" >удалить</a>
-                                    <?php elseif($this->user->isPostAuthor($post->user_id)):?>
-                                        <a target="_blank" class="more-editor" href="/posts/edit/<?=$post->id?>" >редактировать</a>
-                                    <?php endif?>
-                                    <a style="" style="font-transorm: " href="/posts/view/<?=$post->id?>">Подробнее</a>
-                                </div>
-                                <div style="float:left;width:500px;margin-bottom: 12px; height:1px;"></div>
-                            </div>
-                            <?php if($currentIndex != $count):
-                                $currentIndex += 1;
-                                ?>
-                            <div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>
-                            <?php endif?>
                         <?php endforeach?>
                     </section>
                 </div>
@@ -86,4 +159,4 @@
 </div><!-- .wrapper -->
 <div class="onTop">&nbsp;</div>
 <?=$this->html->script(array('jquery.timeago', 'posts/index'), array('inline' => false))?>
-<?=$this->html->style(array('/help', '/blog'), array('inline' => false))?>
+<?=$this->html->style(array('/help', '/blog', '/css/posts/index.css'), array('inline' => false))?>

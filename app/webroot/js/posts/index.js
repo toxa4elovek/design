@@ -35,14 +35,6 @@ $(document).ready(function() {
     
     $(window).on('resize', function() { Tip.resize(); });
 
-    $( ".delete-post" ).on( "click", function() {
-        if (confirm("Точно удалить статью?")) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-    
     // Search
     $(document).on('submit', '#post-search', function() {
         if ($('#blog-search').val().length == 0) {
@@ -161,9 +153,6 @@ function populatePosts(result) {
         if (result.editor == 1) {
             var editor = '<a target="_blank" class="more-editor" href="/posts/edit/' + field.id + '" style="">редактировать</a>';
             editor += '<a target="_blank" class="more-editor delete-post" href="/posts/delete/' + field.id + '" style="">удалить</a>';
-        }
-        if(currentIndex == 1) {
-            $(".howitworks").append('<div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>');
         }
         $(".howitworks").append(
                 '<div> \

@@ -1,0 +1,67 @@
+.blog-post-entry-box {
+
+}
+.blog-post-entry-box .blog-post-image-container {
+    float:left;
+    width:249px;
+    height:185px;
+    background-image: url(/img/frame.png);
+    margin-top:15px;
+}
+.blog-post-entry-box .blog-post-image {
+    margin-top:4px;
+    margin-left:4px;
+    width: 240px;
+    height: 175px;
+}
+.blog-post-entry-box .blog-post-description-container {
+    float:left;
+    width:330px;
+    margin-left: 40px;
+}
+.blog-post-entry-box .largest-header-blog a {
+    font: normal 28px/34px "RodeoC", sans-serif;
+    color: #666666;
+    text-decoration: none;
+    text-shadow: -1px 0 0 #FFFFFF;
+    line-height: 29px !important;
+    display: block;
+}
+.blog-post-entry-box .largest-header-blog a:hover{
+    color: #ff585d;
+}
+.blog-post-entry-box .blogtaglink {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+.blog-post-entry-box .blogtaglink:hover {
+    text-decoration: underline;
+}
+.blog-post-entry-box .blog-post-information {
+    text-transform:uppercase;
+    font-size:11px;
+    color:#666666;
+    margin-top: 10px;
+}
+.blog-post-entry-box .blog-post-preview {
+    margin-top: 5px;
+}
+.blog-post-entry-box .blog-post-links {
+    height:1px;
+    width:200px;
+    margin-top: 10px;
+}
+.blog-post-entry-box .blog-post-bottom {
+    float:left;
+    width:500px;
+    margin-bottom: 12px;
+    height:1px;
+}
+.blog-post-separator {
+    clear:both;
+    height:3px;
+    background: url(/img/sep.png) repeat-x scroll 0 0 transparent;
+    width:588px;
+    margin-bottom:20px;
+}
