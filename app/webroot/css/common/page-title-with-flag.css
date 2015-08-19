@@ -1,0 +1,19 @@
+.page-title-with-flag {
+    font-family: "RodeoC", serif;
+    font-size: 12px;
+    font-weight: 400;
+    font-variant: normal;
+    font-style: normal;
+    height: 38px;
+    line-height: 41px;
+    text-align: center;
+    text-transform: uppercase;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: url(/img/images/howitworks.png);
+    background-origin: padding-box;
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    background-size: auto;
+}

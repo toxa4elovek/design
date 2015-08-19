@@ -1,6 +1,5 @@
 $(document).ready(function() {
     $('.time').timeago();
-
     var currentTag = getParameterByName('tag');
     var url = '/posts.json?tag=';
     if (currentTag) {
@@ -76,6 +75,12 @@ $(document).ready(function() {
     $(document).on('blur', '#blog-search', function() {
         $('#post-search').removeClass('active');
     });
+
+    React.render(
+        React.createElement(BlogPostList, {posts: posts}),
+        document.getElementById('blog-posts')
+    );
+
 });
 
 /*
