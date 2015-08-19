@@ -22,7 +22,6 @@ class PostsController extends \app\controllers\AppController {
     public function index() {
         $limit = 7;
         $page = 1;
-        $tag = false;
         $conditions = array();
         if(isset($this->request->query['page'])) {
             $page = abs(intval($this->request->query['page']));
@@ -44,7 +43,6 @@ class PostsController extends \app\controllers\AppController {
         }
         $postsList = array();
         foreach($posts as $post) {
-            $post->timezoneCreated = date('c', strtotime($post->created));
             $postsList[] = $post->data();
         }
         $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
@@ -52,6 +50,11 @@ class PostsController extends \app\controllers\AppController {
         return compact('posts', 'postsList', 'editor', 'search');
     }
 
+    /**
+     * Метод поиска по запросу
+     *
+     * @return array|object|void
+     */
     public function search() {
         if (isset($this->request->query['search'])) {
             $limit = 7;

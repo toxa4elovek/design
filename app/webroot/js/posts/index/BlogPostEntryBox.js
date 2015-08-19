@@ -1,3 +1,4 @@
+
 var BlogPostEntryBox = new React.createClass({
     postsViewLink: '/posts/view/',
     postsEditLink: '/posts/edit',
@@ -23,13 +24,12 @@ var BlogPostEntryBox = new React.createClass({
         }
     },
     render: function() {
+
         var link = this.postsViewLink + this.props.post.id;
         var editLink = this.postsEditLink + this.props.post.id;
         var deleteLink = this.postsDeleteLink + this.props.post.id;
         var tagStringArray = [];
-        var postDateObj = new Date(this.props.post.timezoneCreated);
-        var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + postDateObj.getFullYear();
-        var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
+        var publishedTime = moment(this.props.post.created, "YYYY-MM-DD HH:mm:ss").format('D.MM.YYYY • HH:mm');
         var actionList = [];
         if (this.props.post.tags) {
             var tagsArray = this.props.post.tags.split('|');
@@ -53,13 +53,13 @@ var BlogPostEntryBox = new React.createClass({
             React.createElement("div", {className: "blog-post-entry-box", key: this.props.post.id}, 
                 React.createElement("div", null, 
                     React.createElement("div", {className: "blog-post-image-container"}, 
-                        React.createElement("img", {className: "blog-post-image", src: this.props.post.imageurl, alt: "{this.props.post.title}"})
+                        React.createElement("img", {className: "blog-post-image", src: this.props.post.imageurl, alt: this.props.post.title})
                     ), 
                     React.createElement("div", {className: "blog-post-description-container"}, 
                         React.createElement("h2", {className: "largest-header-blog"}, 
                             postTitleLink
                         ), 
-                        React.createElement("div", {className: "blog-post-information"}, postDate, " • ", postTime, " • ", React.createElement("span", {ref: "tag-list"}, tagStringArray.map(function(object) {
+                        React.createElement("div", {className: "blog-post-information"}, publishedTime, " • ", React.createElement("span", {ref: "tag-list"}, tagStringArray.map(function(object) {
                                 return object;
                             })
                             )

@@ -46,6 +46,7 @@
 <div class="onTop">&nbsp;</div>
 <?=$this->html->script(array(
     'jquery.timeago',
+    'moment.min.js',
     'posts/index/BlogPostTagLink.js',
     'posts/index/BlogPostList.js',
     'posts/index/BlogPostEntryBox.js',
