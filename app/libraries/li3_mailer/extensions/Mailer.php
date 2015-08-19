@@ -133,7 +133,7 @@ class Mailer extends \lithium\core\StaticObject {
 			$unit->hash = $data['hash'];
 			return $unit->save();
 		}
-		return false
+		return false;
     }
 
 
