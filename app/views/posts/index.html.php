@@ -71,7 +71,7 @@
                                             tagStringArray.push(<BlogPostTagLink tag={tagsArray[i]} />);
                                         }
                                     }
-                                    if(this.state.isAuthor == 1) {
+                                    if((this.state.isAuthor == 1) || (this.state.isEditor == 1)) {
                                         actionList.push(<a target="_blank" className="more-editor" href={editLink}>редактировать</a>);
                                     }
                                     if(this.state.isEditor == 1) {
@@ -79,31 +79,36 @@
                                                            href={deleteLink}>удалить</a>);
                                     }
                                     actionList.push(<a className="more" href={link}>Подробнее</a>);
+                                    var postTitleLink = <a href={link}>{this.props.post.title}</a>;
+                                    if(this.props.post.published == 0) {
+                                        postTitleLink = <a href={link} className="not-published">{this.props.post.title}</a>;
+                                    }
                                     return (
-                                        <div className="blog-post-entry-box">
-                                            <div className="blog-post-image-container">
-                                                <img className="blog-post-image" src={this.props.post.imageurl} alt="{this.props.post.title}" />
+                                        <div className="blog-post-entry-box" key={this.props.post.id}>
+                                            <div>
+                                                <div className="blog-post-image-container">
+                                                    <img className="blog-post-image" src={this.props.post.imageurl} alt="{this.props.post.title}" />
+                                                </div>
+                                                <div className="blog-post-description-container">
+                                                    <h2 className="largest-header-blog">
+                                                        {postTitleLink}
+                                                    </h2>
+                                                    <div className="blog-post-information">{postDate} • {postTime} • <span ref="tag-list">{tagStringArray.map(function(object) {
+                                                            return object;
+                                                        })}
+                                                        </span>
+                                                    </div>
+                                                    <div className="blog-post-preview">
+                                                        <p className="regular">Все средства хороши для продвижения бизнеса, но у этого фотогеничного ресурса есть ряд своих преимуществ. &nbsp;&nbsp;</p>
+                                                    </div>
+                                                    <div className="blog-post-links">
+                                                        {actionList.map(function(link) {
+                                                            return link;
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                <div className="clear"></div>
                                             </div>
-                                            <div className="blog-post-description-container">
-                                                <h2 className="largest-header-blog">
-                                                    <a href={link}>{this.props.post.title}</a>
-                                                </h2>
-                                                <div className="blog-post-information">{postDate} • {postTime} • <span ref="tag-list">{tagStringArray.map(function(object) {
-                                                        return object;
-                                                        return object;
-                                                    })}
-                                                    </span>
-                                                </div>
-                                                <div className="blog-post-preview">
-                                                    <p className="regular">Все средства хороши для продвижения бизнеса, но у этого фотогеничного ресурса есть ряд своих преимуществ. &nbsp;&nbsp;</p>
-                                                </div>
-                                                <div className="blog-post-links">
-                                                    {actionList.map(function(link) {
-                                                        return link;
-                                                    })}
-                                                </div>
-                                            </div>
-                                            <div className="blog-post-bottom"></div>
                                             <div className="blog-post-separator"></div>
                                         </div>
                                     )
@@ -148,7 +153,7 @@
                     </div>
                 </div>
             </div><!-- /content -->
-            <div id="blog-ajax-wrapper">
+            <div id="blog-ajax-wrapper" style="display: none;">
                 <div id="blog-ajax-loader">&nbsp;</div>
             </div>
             <div class="onTopMiddle">&nbsp;</div>
@@ -159,4 +164,4 @@
 </div><!-- .wrapper -->
 <div class="onTop">&nbsp;</div>
 <?=$this->html->script(array('jquery.timeago', 'posts/index'), array('inline' => false))?>
-<?=$this->html->style(array('/help', '/blog', '/css/posts/index.css'), array('inline' => false))?>
+<?=$this->html->style(array('/help', '/blog', '/css/common/clear.css','/css/posts/index.css'), array('inline' => false))?>

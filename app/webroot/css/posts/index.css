@@ -27,6 +27,9 @@
     line-height: 29px !important;
     display: block;
 }
+.blog-post-entry-box .largest-header-blog a.not-published {
+    color: #ccc;
+}
 .blog-post-entry-box .largest-header-blog a:hover{
     color: #ff585d;
 }
@@ -48,7 +51,6 @@
     margin-top: 5px;
 }
 .blog-post-entry-box .blog-post-links {
-    height:1px;
     width:200px;
     margin-top: 10px;
 }
@@ -64,4 +66,5 @@
     background: url(/img/sep.png) repeat-x scroll 0 0 transparent;
     width:588px;
     margin-bottom:20px;
+    margin-top: 15px;
 }

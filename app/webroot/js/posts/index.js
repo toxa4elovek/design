@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $('.time').timeago();
-    
+
     var currentTag = getParameterByName('tag');
     var url = '/posts.json?tag=';
     if (currentTag) {
@@ -19,10 +19,16 @@ $(document).ready(function() {
             if ($(document).height() - $(window).scrollTop() - $(window).height() < 200) {
                 $(window).off('scroll');
                 Tip.scrollHandler();
-                $('#blog-ajax-wrapper').show();
+                //$('#blog-ajax-wrapper').show();
                 ++currentPage;
                 $.getJSON(url + '&page=' + currentPage, function(result) {
-                    populatePosts(result);
+                    posts = posts.concat(result.postsList);
+                    $(window).off('scroll');
+                    React.render(
+                        React.createElement(BlogPostList, {posts: posts}),
+                        document.getElementById('blog-posts')
+                    );
+                    //populatePosts(result);
                     Tip.visibility();
                     scrollInit();
                 });
@@ -32,7 +38,7 @@ $(document).ready(function() {
     var Tip = new TopTip;
     Tip.init();
     scrollInit();
-    
+
     $(window).on('resize', function() { Tip.resize(); });
 
     // Search
@@ -58,7 +64,7 @@ $(document).ready(function() {
         });
         return false;
     });
-    
+
     $(document).on('focus', '#blog-search', function() {
         $('#post-search').addClass('active');
     });
@@ -130,7 +136,7 @@ function populatePosts(result) {
         } else {
             var title = '<a style="line-height: 29px !important; display: block;color:#ccc;" href="/posts/view/' + field.id + '">' + field.title + '</a>';
         }
-        
+
         // Tags
         var tagString = '';
         var tagStringArray = [];
@@ -141,13 +147,13 @@ function populatePosts(result) {
             }
             var tagString = tagStringArray.join(' &bull; ');
         }
-        
+
         // Date Time
         var dateCreated = field.created.replace(' ', 'T'); // FF & IE date string parsing
         var postDateObj = new Date(dateCreated);
         var postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + postDateObj.getFullYear();
         var postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + (postDateObj.getMinutes())).slice(-2);
-        
+
         // Editor
         var editor = ''
         if (result.editor == 1) {
@@ -178,7 +184,7 @@ function populatePosts(result) {
 
         }else {
             currentIndex += 1;
-            $(".howitworks").append('<div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>');
+            //$(".howitworks").append('<div style="clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:588px;margin-bottom:20px;"></div>');
         }
 
     });
