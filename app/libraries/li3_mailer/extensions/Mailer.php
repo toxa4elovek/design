@@ -124,13 +124,16 @@ class Mailer extends \lithium\core\StaticObject {
 	}
 
 	protected static function logemail($data) {
-    	$unit = Sendemail::create();
-    	$unit->email = $data['email'];
-    	$unit->subject = $data['subject'];
-    	$unit->text = $data['text'];
-    	$unit->created = date('Y-m-d H:i:s');
-    	$unit->hash = $data['hash'];
-    	return $unit->save();
+		if(!empty($data['email'])) {
+			$unit = Sendemail::create();
+			$unit->email = $data['email'];
+			$unit->subject = $data['subject'];
+			$unit->text = $data['text'];
+			$unit->created = date('Y-m-d H:i:s');
+			$unit->hash = $data['hash'];
+			return $unit->save();
+		}
+		return false
     }
 
 
