@@ -15,9 +15,7 @@
                                 <p class="large-regular">Попробуйте еще раз, изменив запрос.</p>
                             </div>
                         <?php endif; ?>
-                        <main id="blog-posts">
-
-                        </main>
+                        <main id="blog-posts"></main>
                         <script type="text/jsx">
                             var posts = <?php echo json_encode($postsList) ?>;
                             var isEditor = <?= (int) $this->user->isEditor()?>;
@@ -115,6 +113,15 @@
                                 }
                             });
                             var BlogPostList = new React.createClass({
+                                _removeLastSeparator: function() {
+                                    $('.blog-post-separator').last().remove();
+                                },
+                                componentDidUpdate: function() {
+                                    this._removeLastSeparator();
+                                },
+                                componentDidMount: function() {
+                                    this._removeLastSeparator();
+                                },
                                 render: function() {
                                     return (
                                         <div>
@@ -123,6 +130,9 @@
                                                     <BlogPostEntryBox post={post} isAuthor={isAuthor} isEditor={isEditor}/>
                                                 )
                                             })}
+                                            <div id="blog-ajax-wrapper">
+                                                <div id="blog-ajax-loader">&nbsp;</div>
+                                            </div>
                                         </div>
                                     )
                                 }

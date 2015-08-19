@@ -107,12 +107,16 @@ class PostsController extends \app\controllers\AppController {
             $search = implode(' ', $words);
 
             $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
-
+            $postsList = array();
+            foreach($posts as $post) {
+                $post->timezoneCreated = date('c', strtotime($post->created));
+                $postsList[] = $post->data();
+            }
             if ($this->request->is('json')) {
-                return compact('posts', 'search', 'editor');
+                return compact('postsList', 'posts', 'search', 'editor');
             }
             $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
-            return $this->render(array('template' => 'index', 'data' => compact('posts', 'search', 'editor')));
+            return $this->render(array('template' => 'index', 'data' => compact('postsList', 'posts', 'search', 'editor')));
         }
         return $this->redirect('/posts');
     }

@@ -41,7 +41,7 @@ a.more-editor:hover {
     bottom: -105px;
     right: 90px;
     width: 102px;
-    height: 105px; 
+    height: 105px;
     background-image: url(img/blog-onTop.png);
     background-position: bottom;
 }
@@ -55,7 +55,7 @@ a.more-editor:hover {
     bottom: 0;
     right: 90px;
     width: 102px;
-    height: 105px; 
+    height: 105px;
     background-image: url(img/blog-onTop.png);
     background-position: bottom;
 }
@@ -122,4 +122,11 @@ a.more-editor:hover {
 }
 .nodecoration:hover {
     text-decoration: none !important;
+}
+.blogtaglink {
+    text-transform: uppercase;
+    font-size: 11px;
+}
+.blogtaglink:hover {
+    text-decoration: underline
 }
