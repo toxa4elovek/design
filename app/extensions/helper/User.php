@@ -271,11 +271,11 @@ class User extends \lithium\storage\Session {
      *
      * @param null $firstName
      * @param null $lastName
-     * @full false $full
+     * @param bool $full
      * @return bool
      */
     public function getFormattedName($firstName = null, $lastName = null, $full = false) {
-        if(($this->isAdmin()) && ($full)) {
+        if($this->isAdmin() && $full == true) {
             if(!is_null($firstName) && !is_null($lastName)) {
                 return $firstName . ' ' . $lastName;
             }else {
