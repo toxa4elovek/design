@@ -1,7 +1,7 @@
 var BlogPostEntryBox = new React.createClass({
     displayName: 'BlogPostEntryBox',
     postsViewLink: '/posts/view/',
-    postsEditLink: '/posts/edit',
+    postsEditLink: '/posts/edit/',
     postsDeleteLink: '/posts/delete/',
     getInitialState: function() {
         return {isEditor: this.props.isEditor, isAuthor: this.props.isAuthor}
