@@ -137,4 +137,32 @@ class UserTest extends AppUnit {
         $this->assertFalse(isset($data['autologin_token']));
     }
 
+    public function testActivateSubscription() {
+        $user = User::first(3);
+        $this->assertEqual(0, $user->subscription_status);
+        User::activateSubscription(3, MONTH);
+        $user = User::first(3);
+        $this->assertEqual(1, $user->subscription_status);
+        $this->assertEqual(date('Y-m-d H:i:s', time() + MONTH), $user->subscription_expiration_date);
+
+        User::activateSubscription(3, 2 * MONTH);
+        $user = User::first(3);
+        $this->assertEqual(1, $user->subscription_status);
+        $this->assertEqual(date('Y-m-d H:i:s', time() + 3 * MONTH), $user->subscription_expiration_date);
+    }
+
+    public function testIsSubscriptionActive() {
+        $user = User::first(3);
+        $this->assertEqual(0, $user->subscription_status);
+        $this->assertFalse(User::isSubscriptionActive(3));
+        User::activateSubscription(3, MONTH);
+        $this->assertTrue(User::isSubscriptionActive(3));
+    }
+
+    public function testGetSubscriptionExpireDate() {
+        $user = User::first(3);
+        User::activateSubscription($user->id, MONTH);
+        $this->assertEqual(date('d.m.Y H:i:s', time() + MONTH), User::getSubscriptionExpireDate($user->id));
+    }
+
 }

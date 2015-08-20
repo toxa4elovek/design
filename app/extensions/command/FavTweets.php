@@ -8,7 +8,11 @@ class FavTweets extends CronJob {
 
     public function run() {
         $twitterApi = new TwitterAPI;
-        $objects = array('логотип', 'сайт', 'упаковку', 'название', 'слоган');
+        $twitterApi->search('Какой ты дизайнер на самом деле', function($object) {
+            var_dump($object);
+        });
+
+        /*$objects = array('логотип', 'сайт', 'упаковку', 'название', 'слоган');
         $actions = array('помогите', 'где логотип', 'заказать', 'кого');
         $queries = array();
         foreach($actions as $verb) {
@@ -39,7 +43,7 @@ class FavTweets extends CronJob {
                 return count($toRetweetIds);
             });
         }
-        $this->out($result . ' твитов было отретвичено');
+        $this->out($result . ' твитов было отретвичено');*/
     }
 
 }

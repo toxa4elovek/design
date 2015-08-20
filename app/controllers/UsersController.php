@@ -44,6 +44,7 @@ class UsersController extends \app\controllers\AppController {
     public $publicActions = array(
         'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed'
     );
+
     public $nominatedCount = false;
 
     public function _init() {
@@ -1437,123 +1438,6 @@ class UsersController extends \app\controllers\AppController {
         }
     }
 
-    public function updatetwitter() {
-        $api = new TwitterAPI();
-        $api->search('godesigner.ru', function($object) {
-            $data = json_decode($object->response['response'], true);
-            $censoredTweets = array();
-            $censoredTweets['statuses'] = array();
-            $minTimestamp = 1893355200;
-            foreach ($data['statuses'] as $key => &$tweet) {
-                echo '<pre>';
-                $delete = false;
-                if (isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
-                    foreach ($tweet['entities']['urls'] as $url) {
-                        if ($matches = preg_match('*godesigners.ru/\?ref\=*', $url['expanded_url'])) {
-                            $delete = true;
-                        }
-                    }
-                }
-                if ($delete == false) {
-                    $tweet['timestamp'] = strtotime($tweet['created_at']);
-                    $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
-                    if (isset($tweet['entities']) and isset($tweet['entities']['media'])) {
-                        $tweet['thumbnail'] = $tweet['entities']['media'][0]['media_url_https'];
-                    }
-                    $censoredTweets['statuses'][$key] = $tweet;
-                }
-            }
-
-            if (($tutPosts = Wp_post::getPostsForStream($minTimestamp)) && (count($tutPosts) > 0)) {
-                foreach ($tutPosts as $post) {
-                    $censoredTweets['statuses'][] = array(
-                        'type' => 'tutdesign',
-                        'text' => $post->post_title,
-                        'timestamp' => strtotime($post->post_modified),
-                        'created_at' => $post->post_modified,
-                        'slug' => $post->post_name,
-                        'category' => $post->category,
-                        'id' => $post->ID,
-                        'thumbnail' => $post->thumbnail,
-                    );
-                }
-            }
-
-            uasort($censoredTweets['statuses'], function($a, $b) {
-                return ($a['timestamp'] > $b['timestamp']) ? -1 : 1;
-            });
-
-            $res = Rcache::write('twitterstream', $censoredTweets);
-            echo '<pre>';
-            var_dump($censoredTweets['statuses']);
-            die();
-        });
-    }
-
-    public function updatetwitterfeed() {
-        $api = new TwitterAPI();
-        $hashTags = array('работадлядизайнеров');
-        $x = 0;
-        $url = '';
-        $countTags = count($hashTags);
-        foreach ($hashTags as $tag) {
-            ++$x;
-            $url .= $countTags > $x ? '%23' . $tag . '+' : '%23' . $tag;
-        }
-        $api->search('работадлядизайнеров', function($object) {
-            $data = json_decode($object->response['response'], true);
-            $censoredTweets = array();
-            $censoredTweets['statuses'] = array();
-            $minTimestamp = 1893355200;
-            $listOfUsedIds = array();
-            foreach ($data['statuses'] as $key => &$tweet) {
-                $delete = false;
-                if (isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
-                    foreach ($tweet['entities']['urls'] as $url) {
-                        if ($matches = preg_match('*godesigners.ru/\?ref\=*', $url['expanded_url'])) {
-                            $delete = true;
-                        }
-                    }
-                }
-                if (in_array($tweet['id_str'], $listOfUsedIds)) {
-                    $delete = true;
-                }
-                if ($delete == false) {
-                    $content = '';
-                    $listOfUsedIds[] = $tweet['id_str'];
-                    $tweet['timestamp'] = strtotime($tweet['created_at']);
-                    $minTimestamp = ($tweet['timestamp'] < $minTimestamp) ? $tweet['timestamp'] : $minTimestamp;
-                    $censoredTweets['statuses'][$key] = $tweet;
-                    $text = $tweet['text'];
-                    if (!isset($tweet['type']) && $tweet['type'] !== 'tutdesign') {
-                        foreach ($tweet['entities']['hashtags'] as $hashtag) {
-                            $text = str_replace('#' . $hashtag['text'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/search/%23' . $hashtag['text'] . '">' . '#' . $hashtag['text'] . '</a>', $text);
-                        }
-                        foreach ($tweet['entities']['urls'] as $url) {
-
-                            $text = str_replace($url['url'], '<a class="url-twitter" style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a>', $text);
-                        }
-                        foreach ($tweet['entities']['user_mentions'] as $user) {
-
-                            $text = str_replace('@' . $user['screen_name'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a>', $text);
-                        }
-                        $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a>';
-                        $content .= $user . ' ' . $text;
-                        $content = preg_replace("/<img[^>]+\>/i", '', $content);
-                    }
-                }
-            }
-
-            uasort($censoredTweets['statuses'], function($a, $b) {
-                return ($a['timestamp'] > $b['timestamp']) ? -1 : 1;
-            });
-            $res = Rcache::write('twitterstreamFeed', $censoredTweets);
-            echo '<pre>';
-            var_dump($censoredTweets['statuses']);
-        });
-        die();
-    }
-
     public function details() {
         return $this->redirect('/users/profile');
         /*$user = User::first(Session::read('user.id'));
@@ -1786,6 +1670,13 @@ class UsersController extends \app\controllers\AppController {
             }
         }
         return $this->redirect('/');
+    }
+
+    /**
+     *  Метод для вывода страницы абонентского кабинета
+     */
+    public function subscriber() {
+
     }
 
 }

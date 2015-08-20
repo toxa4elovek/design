@@ -23,9 +23,7 @@
     </aside><!-- .summary-price -->
     <div class="middle add-pitch" id="step3">
         <div class="main">
-            <p id="top-pay">Выкупить решение можно только при первоначальном размере вознаграждения.<br />
-                Стоимость дополнительных опций не взимается, если таковы были заказаны,
-                однако учитывается сбор сервиса GoDesigner.</p><br />
+            <p id="top-pay">Мы свяжемся с вами для интервью, на основе которого сами создадим тех. задание для дизайнеров.</p><br />
             <div>
                 <h1>выберите способ оплаты</h1>
                 <div class="g_line"></div>
@@ -55,10 +53,27 @@
                             <td colspan="4" style="padding: 20px 0 0 40px;">
                                 <img src="/img/s3_master.png" alt="">
                             </td>
+                        </tr-->
+                        <tr class="payture-section">
+                            <td>
+                                <input type="radio" name="1" class="rb1" data-pay="payture" style="background: #a2b2bb;">
+                            </td>
+                            <td colspan="2" class="s3_text" style="padding-left: 20px;">
+                                Оплата дебетовыми или кредитными картами<br><br>
+                                <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
+                            </td>
+                            <td style="width: 190px;">
+                                <a href="/payments/startpayment/<?= $pitch->id ?>" id="paybutton-payture" class="button" style="display: none;">Оплатить</a>
+                            </td>
+                        </tr>
+                        <tr id="online-images">
+                            <td colspan="4" style="padding: 20px 0 0 40px;">
+                                <img src="/img/s3_master.png" alt="Дебетовые и кредитные карты">
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                        </tr-->
+                        </tr>
                         <tr class="paymaster-section">
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
@@ -84,11 +99,10 @@
                 </div>
                 <div class="g_line"></div>
                 <p class="submit">
-                    <input type="submit" value="Назад" id="prev" class="button steps-link" data-step="2">
+                    <a href="/pages/fastpitch"  class="button steps-link">Назад</a>
                 </p><!-- .submit -->
             </div>
         </div><!-- .main -->
     </div><!-- .middle -->
     <?= $this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'pitches/newwinner.js?' . mt_rand(100, 999), 'jquery.numeric', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false)) ?>
-    <?=
-    $this->html->style(array('/brief', '/step3'), array('inline' => false))?>
+    <?= $this->html->style(array('/brief', '/step3'), array('inline' => false))?>

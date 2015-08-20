@@ -271,10 +271,11 @@ class User extends \lithium\storage\Session {
      *
      * @param null $firstName
      * @param null $lastName
+     * @full false $full
      * @return bool
      */
-    public function getFormattedName($firstName = null, $lastName = null) {
-        if($this->isAdmin()) {
+    public function getFormattedName($firstName = null, $lastName = null, $full = false) {
+        if(($this->isAdmin()) && ($full)) {
             if(!is_null($firstName) && !is_null($lastName)) {
                 return $firstName . ' ' . $lastName;
             }else {
@@ -482,6 +483,57 @@ class User extends \lithium\storage\Session {
             $maskedString = str_replace($partToReplace, $maskedPart, $email);
             return $maskedString;
         }
+    }
+
+    /**
+     * Метод возвращяет баланс текущего пользователя, если он залогинен.
+     *
+     * @return bool|mixed
+     */
+    public function getBalance() {
+        if($this->isLoggedIn()) {
+            return $this->read('user.balance');
+        }
+        return false;
+    }
+
+    /**
+     * Метод возвращяет краткое название компании текущего пользователя, если он залогинен.
+     *
+     * @return bool|mixed
+     */
+    public function getShortCompanyName() {
+        if($this->isLoggedIn()) {
+            return $this->read('user.short_company_name');
+        }
+        return false;
+    }
+
+    /**
+     * Метод возвращяет подписан ли человек на абонентку или нет
+     *
+     * @return bool
+     */
+    public function isSubscriptionActive() {
+        if($this->isLoggedIn()) {
+            $userModel = $this->_options['userModel'];
+            return $userModel::isSubscriptionActive($this->getId());
+        }
+        return false;
+    }
+
+    /**
+     * Метод возвращяет дату окончания подписки
+     *
+     * @param $format
+     * @return bool|date
+     */
+    public function getSubscriptionExpireDate($format = 'd.m.Y H:i:s') {
+        if($this->isLoggedIn()) {
+            $userModel = $this->_options['userModel'];
+            return $userModel::getSubscriptionExpireDate($this->getId());
+        }
+        return false;
     }
 
 }

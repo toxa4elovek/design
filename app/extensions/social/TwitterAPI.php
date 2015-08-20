@@ -18,10 +18,10 @@ class TwitterAPI extends AbstractAPI {
     public function __construct() {
         require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhOAuth.php';
         $this->apiObject = new tmhOAuth(array(
-            'consumer_key' => '8r9SEMoXAacbpnpjJ5v64A',
-            'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
-            'user_token' => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
-            'user_secret' => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
+            'consumer_key' => '8KowPOOLHqbLQPKt8JpwnLpTn',
+            'consumer_secret' => 'Guna29r1BY8gEofz2amAIfPo1XcHJWNGI8Nzn6wiEwNlykAHhy',
+            'user_token' => '513074899-XF4hfFeVZNBQgX7QQU0brLzbd3AxIOk1HcEQFsGl',
+            'user_secret' => 'qJUuvweF3ennscQKvWPpHdxhhiDo4VRCvunpVm51SziQV'
         ));
     }
 
@@ -60,6 +60,8 @@ class TwitterAPI extends AbstractAPI {
             $data = json_decode($this->apiObject->response['response'], true);
             return $data['id_str'];
         } else {
+            echo '<pre>';
+            var_dump($this->apiObject);
             return false;
         }
     }
@@ -98,13 +100,44 @@ class TwitterAPI extends AbstractAPI {
      * Метод добавляет твит с $id в избранное
      * @param $id
      */
-    public function favorite($id) {
+    /*public function favorite($id) {
         $params = array('id' => $id);
         $this->apiObject->user_request(array(
             'method' => 'POST',
             'url' => $this->apiObject->url('1.1/favorites/create.json'),
             'params' => $params,
         ));
+    }*/
+
+    public function access_token() {
+        $result = $this->apiObject->apponly_request(array(
+            'method' => 'POST',
+            'url' => 'https://api.twitter.com/oauth/access_token',
+            'params' => array(
+                'oauth_verifier' => '5WWaxQtyWl8q0Rdbh8zzzRhPAjXMGXUK',
+                'oauth_token' => 'XJOlGgAAAAAAHfhHAAABTyjfe8o'
+            )
+        ));
+        echo '<pre>';
+        var_dump($result);
+        var_dump($this->apiObject);
+        var_dump($this->apiObject->response['response']);
+        die();
+    }
+
+    public function request_token() {
+        $result = $this->apiObject->user_request(array(
+            'method' => 'POST',
+            'url' => 'https://api.twitter.com/oauth/request_token',
+            'params' => array(
+                'oauth_callback' => 'http://www.godesigner.ru/twitter',
+            )
+        ));
+        echo '<pre>';
+        var_dump($result);
+        var_dump($this->apiObject);
+        var_dump($this->apiObject->response['response']);
+        die();
     }
 
 }

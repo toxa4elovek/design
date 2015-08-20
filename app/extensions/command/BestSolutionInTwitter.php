@@ -7,6 +7,7 @@ use app\extensions\storage\Rcache;
 use \tmhOAuth\tmhOAuth;
 use \app\models\Event;
 use app\extensions\social\SocialMediaManager;
+use app\extensions\social\TwitterAPI;
 
 class BestSolutionInTwitter extends \app\extensions\command\CronJob {
 
@@ -35,22 +36,17 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                     'tweet_id' => $id,
                     'created' => date('Y-m-d H:i:s', time() - HOUR)
                 ))->save();
-                $api = new tmhOAuth(array(
-                    'consumer_key' => '8r9SEMoXAacbpnpjJ5v64A',
-                    'consumer_secret' => 'I1MP2x7guzDHG6NIB8m7FshhkoIuD6krZ6xpN4TSsk',
-                    'user_token' => '513074899-IvVlKCCD0kEBicxjrLGLjW2Pb7ZiJd1ZjQB9mkvN',
-                    'user_secret' => 'ldmaK6qmlzA3QJPQemmVWJGUpfST3YuxrzIbhaArQ9M'
-                ));
+                $twitterAPI = new TwitterAPI();
                 $params = array('rpp' => 1, 'id' => $id, 'maxwidth' => '550', 'include_entities' => false);
-                $code = $api->user_request(array(
+                $code = $twitterAPI->apiObject->user_request(array(
                     'method' => 'GET',
-                    'url' => $api->url('1.1/statuses/oembed.json'),
+                    'url' => $twitterAPI->apiObject->url('1.1/statuses/oembed.json'),
                     'params' => $params
                 ));
                 if ($code == 200) {
                     $tweetsDump = Rcache::read('RetweetsFeed');
                     $this->out('Got the data, saving to cache');
-                    $embeddata = json_decode($api->response['response'], true);
+                    $embeddata = json_decode($twitterAPI->apiObject->response['response'], true);
                     $tweetsDump[$id] = $embeddata['html'];
                     Rcache::write('RetweetsFeed', $tweetsDump);
                 }
