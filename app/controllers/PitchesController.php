@@ -219,6 +219,7 @@ class PitchesController extends \app\controllers\AppController {
                         $pitch->winlink = true;
                     }
                 }
+                $pitch->winnerSolution = $winnerSolution;
                 if ($pitch->user_id == Session::read('user.id')) {
                     $pitch->winlink = true;
                 }
