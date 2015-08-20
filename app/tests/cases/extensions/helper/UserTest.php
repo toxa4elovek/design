@@ -138,6 +138,15 @@ class UserTest extends AppUnit {
         $this->user->write('user.first_name', 'Вячеслав');
         $this->user->write('user.last_name', 'Инвест-резерв');
         $this->assertEqual('Вячеслав И.', $this->user->getFormattedName());
+        $this->user->write('user.first_name', 'Александр Котенко');
+        $this->user->write('user.last_name', '');
+        $this->assertEqual('Александр К.', $this->user->getFormattedName());
+        $this->user->write('user.first_name', 'Vladimir Kalinov');
+        $this->user->write('user.last_name', '');
+        $this->assertEqual('Vladimir K.', $this->user->getFormattedName());
+        $this->user->write('user.first_name', '');
+        $this->user->write('user.last_name', 'Vladimir Kalinov');
+        $this->assertEqual('Vladimir K.', $this->user->getFormattedName());
     }
 
     public function testGetFormattedNameWithParams() {

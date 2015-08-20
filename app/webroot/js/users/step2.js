@@ -196,6 +196,18 @@ function prepareWinCommentData(result) {
         commentData.userAvatar = '/img/default_small_avatar.png';
     }
 
+    if(comment.user.first_name.trim().match(/\s/)) {
+        var splitted = comment.user.first_name.trim().split(' ');
+        comment.user.first_name = splitted[0];
+        if(comment.user.last_name == '') {
+            comment.user.last_name = splitted[1]
+        }
+    }
+    if(comment.user.last_name.trim().match(/\s/) && comment.user.first_name == '') {
+        var splitted = comment.user.last_name.trim().split(' ');
+        comment.user.first_name = splitted[0];
+        comment.user.last_name = splitted[1];
+    }
     commentData.commentAuthor = result.comment.user.first_name + (((result.comment.user.last_name == null) || (result.comment.user.last_name.length == 0)) ? '' : (' ' + result.comment.user.last_name.substring(0, 1) + '.'));
     commentData.isCommentAuthor = (currentUserId == result.comment.user_id) ? true : false;
 

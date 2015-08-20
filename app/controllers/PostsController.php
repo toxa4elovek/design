@@ -22,7 +22,6 @@ class PostsController extends \app\controllers\AppController {
     public function index() {
         $limit = 7;
         $page = 1;
-        $tag = false;
         $conditions = array();
         if(isset($this->request->query['page'])) {
             $page = abs(intval($this->request->query['page']));
@@ -42,12 +41,20 @@ class PostsController extends \app\controllers\AppController {
         }else {
             $posts = Post::all(array('conditions' => array('published' => 1, 'Post.created' => array('<=' => date('Y-m-d H:i:s'))) + $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
         }
-
+        $postsList = array();
+        foreach($posts as $post) {
+            $postsList[] = $post->data();
+        }
         $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
 
-        return compact('posts', 'editor', 'search');
+        return compact('posts', 'postsList', 'editor', 'search');
     }
 
+    /**
+     * Метод поиска по запросу
+     *
+     * @return array|object|void
+     */
     public function search() {
         if (isset($this->request->query['search'])) {
             $limit = 7;
@@ -103,12 +110,16 @@ class PostsController extends \app\controllers\AppController {
             $search = implode(' ', $words);
 
             $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
-
+            $postsList = array();
+            foreach($posts as $post) {
+                $post->timezoneCreated = date('c', strtotime($post->created));
+                $postsList[] = $post->data();
+            }
             if ($this->request->is('json')) {
-                return compact('posts', 'search', 'editor');
+                return compact('postsList', 'posts', 'search', 'editor');
             }
             $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
-            return $this->render(array('template' => 'index', 'data' => compact('posts', 'search', 'editor')));
+            return $this->render(array('template' => 'index', 'data' => compact('postsList', 'posts', 'search', 'editor')));
         }
         return $this->redirect('/posts');
     }

@@ -194,6 +194,7 @@
                                         <div id="content-news">
                                             <?php
                                             $newsDate = '';
+                                            $designNewsInitialData = array();
                                             if($news) :
                                             foreach ($news as $n): $host = parse_url($n->link);
                                                 if (strtotime($newsDate) < strtotime($n->created)) {
@@ -202,9 +203,13 @@
                                                 if($n->title == '') {
                                                     continue;
                                                 }
+                                                $n->host = $host;
+                                                $designNewsInitialData[] = $n->data();
                                                 ?>
                                                 <div class="design-news"><a target="_blank" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="http://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
-                                            <?php endforeach;endif; ?>
+                                            <?php endforeach;
+                                                $jsonDesignNewsInitialData = json_encode($designNewsInitialData);
+                                            endif; ?>
                                             <script type="text/javascript">
                                                 var newsDate = '<?= date('Y-m-d H:i:s', strtotime($newsDate)) ?>';
                                             </script>
@@ -727,6 +732,43 @@
                     </div><!-- /middle_inner -->
                 </div><!-- /middle -->
             </div><!-- .wrapper -->
+
+            <script type="text/jsx">
+                var DesignNews = React.createClass({
+                    getInitialState: function() {
+                        return {page: 1};
+                    },
+                    autoUpdate: function() {
+                        console.log('state:');
+                        console.log(this.state)
+                        console.log('autoupdate');
+                        this.state.page = 2;
+                    },
+                    render: function() {
+                        console.log(this.state)
+                        var items = [];
+                        $.each(this.props, function(i, value) {
+                            items.push(value);
+                        });
+                        return (<div>{ items.map(function(m, index){
+                            var trackLink =  'http://www.godesigner.ru/users/click?link=' + m.link + '&id=' + m.id;
+                            return <div className="design-news">
+                                <a target="_blank" href={trackLink}>{m.title}</a> <br/>
+                                <a className="clicks" href={trackLink}>{m.host.host}</a>
+                            </div>;
+                        }) }</div>)
+                    },
+                    componentDidMount: function(){
+                        //this.timer = setInterval(this.autoUpdate, 5000);
+                    }
+                });
+                var designNewsInitialData = <?php echo $jsonDesignNewsInitialData ?>;
+                React.render(
+                    <DesignNews {...designNewsInitialData} />,
+                    document.getElementById('content-news')
+                );
+            </script>
+
             <div class="onTop">&nbsp;</div>
 
             <div id="popup-other-likes" style="display: none;">
@@ -741,7 +783,8 @@
                 <div id="likedAjaxLoader"><img src="http://www.godesigner.ru/img/blog-ajax-loader.gif"></div>
                 <div class="popup-close"></div>
             </div>
-
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
             <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'social-likes.min.js', 'typeahead.jquery.min.js', 'bloodhound.min.js', 'users/feed.js', 'users/activation.js'), array('inline' => false)) ?>
             <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css', '/css/social-likes_flat'), array('inline' => false)) ?>
             <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
