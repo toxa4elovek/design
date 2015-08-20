@@ -833,7 +833,20 @@ function prepareCommentData(comment, result) {
     }
 
     commentData.userAvatar = comment.avatar;
+    if(comment.user.first_name.trim().match(/\s/)) {
+        var splitted = comment.user.first_name.trim().split(' ');
+        comment.user.first_name = splitted[0];
+        if(comment.user.last_name == '') {
+            comment.user.last_name = splitted[1]
+        }
+    }
+    if(comment.user.last_name.trim().match(/\s/) && comment.user.first_name == '') {
+        var splitted = comment.user.last_name.trim().split(' ');
+        comment.user.first_name = splitted[0];
+        comment.user.last_name = splitted[1];
+    }
     commentData.commentAuthor = comment.user.first_name + (((comment.user.last_name == null) || (comment.user.last_name.length == 0)) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
+    if(comment.user.first_name.match(''))
     commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
 
     // Date Time
