@@ -1,5 +1,5 @@
-
 var BlogPostEntryBox = new React.createClass({
+    displayName: 'BlogPostEntryBox',
     postsViewLink: '/posts/view/',
     postsEditLink: '/posts/edit',
     postsDeleteLink: '/posts/delete/',
@@ -24,13 +24,13 @@ var BlogPostEntryBox = new React.createClass({
         }
     },
     render: function() {
-
         var link = this.postsViewLink + this.props.post.id;
         var editLink = this.postsEditLink + this.props.post.id;
         var deleteLink = this.postsDeleteLink + this.props.post.id;
         var tagStringArray = [];
         var publishedTime = moment(this.props.post.created, "YYYY-MM-DD HH:mm:ss").format('D.MM.YYYY • HH:mm');
         var actionList = [];
+        var shortStory = $(this.props.post.short).text();
         if (this.props.post.tags) {
             var tagsArray = this.props.post.tags.split('|');
             for(var i = 0; i < tagsArray.length; i++) {
@@ -65,7 +65,7 @@ var BlogPostEntryBox = new React.createClass({
                             )
                         ), 
                         React.createElement("div", {className: "blog-post-preview"}, 
-                            React.createElement("p", {className: "regular"}, "Все средства хороши для продвижения бизнеса, но у этого фотогеничного ресурса есть ряд своих преимуществ.   ")
+                            React.createElement("p", {className: "regular"}, shortStory)
                         ), 
                         React.createElement("div", {className: "blog-post-links"}, 
                             actionList.map(function(link) {

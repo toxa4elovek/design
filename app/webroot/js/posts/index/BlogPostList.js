@@ -1,4 +1,5 @@
 var BlogPostList = new React.createClass({
+    displayName: 'BlogPostList',
     _removeLastSeparator: function() {
         $('.blog-post-separator').last().remove();
     },
