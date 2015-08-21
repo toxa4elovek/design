@@ -5,9 +5,8 @@ namespace app\controllers;
 use \app\models\Post;
 use \lithium\storage\Session;
 use app\models\User;
-use lithium\analysis\Logger;
 
-class PostsController extends \app\controllers\AppController {
+class PostsController extends AppController {
 
     /**
      * @var array Массив экшенов, доступных не залогинненым пользователям
@@ -15,12 +14,17 @@ class PostsController extends \app\controllers\AppController {
     public $publicActions = array('index', 'view', 'search');
 
     /**
+     * @var int переменная отвечает за количество выводимых постов на страницах-списков (оглавление и поиск)
+     */
+    public $postsOnIndexPage = 12;
+
+    /**
      * Метод показа индексной страницы, используется в html и json форматах
      *
      * @return array
      */
     public function index() {
-        $limit = 7;
+        $limit = $this->postsOnIndexPage;
         $page = 1;
         $conditions = array();
         if(isset($this->request->query['page'])) {
@@ -57,7 +61,7 @@ class PostsController extends \app\controllers\AppController {
      */
     public function search() {
         if (isset($this->request->query['search'])) {
-            $limit = 7;
+            $limit = $this->postsOnIndexPage;
             $page = 1;
             if (isset($this->request->query['page'])) {
                 $page = abs(intval($this->request->query['page']));
@@ -112,7 +116,6 @@ class PostsController extends \app\controllers\AppController {
             $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
             $postsList = array();
             foreach($posts as $post) {
-                $post->timezoneCreated = date('c', strtotime($post->created));
                 $postsList[] = $post->data();
             }
             if ($this->request->is('json')) {
