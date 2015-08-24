@@ -147,6 +147,13 @@ class PagesController extends \app\controllers\AppController {
         return compact('alllow_time');
     }
 
+    /**
+     * Метод для отображения страницы лендинга
+     */
+    public function subscribe() {
+
+    }
+
 }
 
 ?>

@@ -1,0 +1,40 @@
+.project-search-table {
+    width: 836px;
+    margin: 17px 0 0 0;
+    background: #45464f;
+}
+.project-search-table td {
+    vertical-align: middle;
+    text-align: center;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: #999999;
+    text-transform: uppercase;
+    border-right: #575864 1px solid;
+}
+.project-search-table thead tr {
+    height: 36px;
+}
+.project-search-table thead td {
+    font-family: OfficinaSansC Book, serif;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+.project-search-table tr {
+    height: 84px;
+}
+.project-search-table td.td-title {
+    padding-left: 45px;
+    padding-right: 12px;
+    padding-top: 15px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.project-search-table td.td-title a {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #e2e2e2;
+    line-height: 19px;
+}

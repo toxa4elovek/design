@@ -492,7 +492,8 @@ class User extends \lithium\storage\Session {
      */
     public function getBalance() {
         if($this->isLoggedIn()) {
-            return $this->read('user.balance');
+            $userModel = $this->_options['userModel'];
+            return $userModel::getBalance($this->getId());
         }
         return false;
     }
@@ -504,7 +505,8 @@ class User extends \lithium\storage\Session {
      */
     public function getShortCompanyName() {
         if($this->isLoggedIn()) {
-            return $this->read('user.short_company_name');
+            $userModel = $this->_options['userModel'];
+            return $userModel::getShortCompanyName($this->getId());
         }
         return false;
     }

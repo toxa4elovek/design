@@ -1673,10 +1673,26 @@ class UsersController extends \app\controllers\AppController {
     }
 
     /**
-     *  Метод для вывода страницы абонентского кабинета
+     * Метод для вывода страницы абонентского кабинета
+     * если json, выводит актуальную информацию пользователя
+     * html|json
      */
     public function subscriber() {
+        if($this->request->is('json')) {
+            $data = array(
+                'balance' => $this->userHelper->getBalance(),
+                'companyName' => $this->userHelper->getShortCompanyName(),
+                'expirationDate' => $this->userHelper->getSubscriptionExpireDate('d/m/Y'),
+                'isSubscriptionActive' =>(int) $this->userHelper->isSubscriptionActive()
+            );
+            return $data;
+        }
+    }
 
+    public function fill_balance() {
+        $amount = $this->request->data['amount'];
+        User::fillBalance($this->userHelper->getId(), $amount);
+        return compact('amount');
     }
 
 }
