@@ -1,4 +1,4 @@
-.main_page_content{width:958px;margin:0 auto;background: url(../img/paper.jpg) left top;padding:31px 0 0;zoom:1}
+.main_page_content{width:958px;margin:0 auto;background: url(/img/common/backgrounds/paper.jpg) left top;padding:31px 0 0;zoom:1}
 .main_page_content:after {content: '.';display: block;clear:both;visibility: hidden;height:0;font-size:0;}
 .front_catalog{padding:0 0 20px;margin:0 0 26px 53px;overflow:hidden;zoom:1;background: url(../img/sep.png) no-repeat left bottom;}
 .front_catalog li{float:left;list-style-type:none;margin:0 0 0 13px;border:6px solid #cdcdcd;position:relative}
