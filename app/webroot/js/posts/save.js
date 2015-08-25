@@ -8,6 +8,8 @@ $(document).ready(function() {
         }
     }*/
 
+    var pressedKeys = {};
+
     tinymce.init({
         selector: "textarea",
         content_css: "/css/brief_wysiwyg.css",
@@ -17,8 +19,8 @@ $(document).ready(function() {
         relative_urls: false,
         remove_script_host: false,
         menubar: false,
-        plugins: ["link,lists,charmap,paste,image,code,spellchecker"],
-        toolbar: ["styleselect,bold,italic,underline,strikethrough,link,bullist,numlist,charmap,image", "alignleft,aligncenter,alignright,alignjustify,outdent,indent,blockquote,spellchecker,code,removeformat"],
+        plugins: ["link,lists,charmap,paste,image,code,spellchecker,visualchars"],
+        toolbar: ["styleselect,bold,italic,underline,strikethrough,link,bullist,numlist,charmap,image", "alignleft,aligncenter,alignright,alignjustify,outdent,indent,blockquote,spellchecker,code,removeformat,visualchars"],
         style_formats: [
             {title : 'Заголовок 3 bold', inline : 'span', classes: "greyboldheader"},
             {title : 'Заголовок 3  синий', inline : 'span', classes: "blueboldheader"},
@@ -30,7 +32,20 @@ $(document).ready(function() {
         ],
         spellchecker_language: 'ru_RU',
         spellchecker_rpc_url: 'spellcheck.php',
-        file_browser_callback: RoxyFileBrowser
+        file_browser_callback: RoxyFileBrowser,
+        setup: function(editor) {
+            editor.on('keydown', function(e) {
+                pressedKeys[e.which] = true;
+                if (pressedKeys[18] == true && pressedKeys[32] == true) {
+                    e.preventDefault();
+                    editor.execCommand('mceInsertContent', false, '&nbsp;');
+                }
+            });
+
+            editor.on('keyup', function(e) {
+                delete pressedKeys[e.which];
+            });
+        }
     });
 
     function RoxyFileBrowser(field_name, url, type, win) {
