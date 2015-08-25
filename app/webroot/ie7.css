@@ -28,7 +28,7 @@ input[type="checkbox"] {
 .wrapper .button.facebook m {
 	width: 30px;
 	height: 30px;
-	background: url("img/button-facebook-ico.png");
+	background: url(/img/button-facebook-ico.png);
 	display: block;
 	float: left;
 	margin: 6px 14px 0 8px;
@@ -47,7 +47,7 @@ input[type="checkbox"] {
 	top: 14px;
 	width: 15px;
 	height: 22px;
-	background: url("img/form-error-arrow.png");
+	background: url(/img/form-error-arrow.png);
 }
 .main {
 	zoom: expression(

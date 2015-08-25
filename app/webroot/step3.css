@@ -6,7 +6,7 @@
 }
 
 .g_line{
-	background:url(img/register-login-divider.gif) repeat-x;
+	background:url(/img/register-login-divider.gif) repeat-x;
 	height:20px;
 	margin:30px 0 20px 0;
 	text-align:center;
@@ -20,7 +20,7 @@
 	position:relative;
 	top:-7px;
 	padding: 0 10px 0 10px;
-	background:url(img/bg.png);
+	background:url(/img/bg.png);
 	color:#b6b6b6;
 }
 

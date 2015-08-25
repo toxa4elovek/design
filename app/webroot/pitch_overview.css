@@ -16,7 +16,7 @@
 .separator {
 	width: auto;
 	height: 3px;
-	background: url('img/sep.png') repeat-x;
+	background: url('/img/sep.png') repeat-x;
 	margin: 0;
 }
 
@@ -33,11 +33,11 @@
 }
 
 .menu ul li a.selected {
-	background: url("img/menu-hover-bg.png") no-repeat 50% 0;
+	background: url("/img/menu-hover-bg.png") no-repeat 50% 0;
 }
 
 .menu ul li a:hover {
-	background: url("img/menu-hover-bg.png") no-repeat 50% 0;
+	background: url("/img/menu-hover-bg.png") no-repeat 50% 0;
 }
 
 #cena {
@@ -57,20 +57,20 @@ ul.pitch_info li {
 }
 
 .pitch_name {
-	background: url(img/pitch-name-bg_new.png) left no-repeat;
+	background: url(/img/pitch-name-bg_new.png) left no-repeat;
 	margin-left: -11px;
 }
 
 .social_share .favourites {
-	background: url(img/fav-fb-tw.gif) 0 0;
+	background: url(/img/fav-fb-tw.gif) 0 0;
 }
 
 .social_share .facebook {
-	background: url(img/fav-fb-tw.gif) -30px 0;
+	background: url(/img/fav-fb-tw.gif) -30px 0;
 }
 
 .social_share .twitter {
-	background: url(img/fav-fb-tw.gif) -60px 0;
+	background: url(/img/fav-fb-tw.gif) -60px 0;
 }
 
 ul.social_share li {
@@ -83,7 +83,7 @@ ul.social_share li {
 
 .gogo {
 	display: block;
-	background: url(img/gogo.gif) no-repeat;
+	background: url(/img/gogo.gif) no-repeat;
 	left: 479px;
 	text-decoration: none;
 	padding-top: 15px;
@@ -111,11 +111,11 @@ ul.social_share li {
 }     
 
 .other-nav-right img {
-	 background: url(img/give-solution.gif) 0 0;
+	 background: url(/img/give-solution.gif) 0 0;
 }
 
 .other-nav-right:hover img {
-	 background: url(img/give-solution.gif) 0 -36px;
+	 background: url(/img/give-solution.gif) 0 -36px;
 }
 
 .menu {
@@ -176,7 +176,7 @@ ul.social_share li {
     position: absolute;
     width: 282px;
     padding: 0 0 4px 0 !important;
-    background: url(img/tooltip-bg-bootom-stripe.png) 100% 100% no-repeat !important;
+    background: url(/img/tooltip-bg-bootom-stripe.png) 100% 100% no-repeat !important;
     z-index: 999;
 }
 #tooltip .url {
@@ -185,7 +185,7 @@ ul.social_share li {
 
 .tooltip-wrap {
     padding: 39px 10px 22px 16px;
-    background: url(img/tooltip-top-bg.png) no-repeat;
+    background: url(/img/tooltip-top-bg.png) no-repeat;
 }
 #tooltip h3 {
     font: 13px Verdana, Arial, Helvetica, sans-serif;
@@ -194,11 +194,11 @@ ul.social_share li {
 
 #tooltip.viewport-bottom {
     padding: 4px 0 0 0 !important;
-    background: url(img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;
+    background: url(/img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;
 }
 .viewport-bottom .tooltip-wrap {
     padding: 13px 10px 39px 16px;
-    background: url(img/tooltip-bottom-bg.png) 100% 100% no-repeat;
+    background: url(/img/tooltip-bottom-bg.png) 100% 100% no-repeat;
 }
 .breadcrumbs-view {
     font: 17px "RodeoC", serif;
@@ -219,66 +219,66 @@ a.all-pitches-link {
 	width: 106px;
 	height: 39px;
 	margin-right: 20px;
-	background-image: url(img/all_pitches.png);
+	background-image: url(/img/all_pitches.png);
 	background-position: 0 0;
 	background-repeat: no-repeat;
 }
 a.all-pitches-link:hover {
-	background-image: url(img/all_pitches_2.png);
+	background-image: url(/img/all_pitches_2.png);
 }
 a.fav-plus {
 	display: inline-block;
 	width: 160px;
 	height: 39px;
 	margin-right: 20px;
-	background-image: url(img/follow_the_pitch.png);
+	background-image: url(/img/follow_the_pitch.png);
 	background-position: 0 0;
 	background-repeat: no-repeat;
 }
 a.fav-plus:hover {
-	background-image: url(img/follow_the_pitch_hover.png);
+	background-image: url(/img/follow_the_pitch_hover.png);
 }
 a.fav-minus {
     display: inline-block;
     width: 160px;
     height: 39px;
     margin-right: 20px;
-    background-image: url(img/stop_follow.png);
+    background-image: url(/img/stop_follow.png);
     background-position: 0 0;
     background-repeat: no-repeat;
 }
 a.fav-minus:hover {
-    background-image: url(img/stop_follow_hover.png);
+    background-image: url(/img/stop_follow_hover.png);
 }
 a.print-link {
 	display: inline-block;
     width: 144px;
     height: 37px;
     margin-right: 20px;
-    background-image: url(img/print_brief_button.png);
+    background-image: url(/img/print_brief_button.png);
     background-position: 0 0;
     background-repeat: no-repeat;
 }
 a.print-link:hover {
-	background-image: url(img/print_brief_button2.png);
+	background-image: url(/img/print_brief_button2.png);
 }
 a.next-pitch-link {
 	display: inline-block;
     width: 151px;
     height: 39px;
     margin-right: 20px;
-    background-image: url(img/next.png);
+    background-image: url(/img/next.png);
     background-position: 0 0;
     background-repeat: no-repeat;
 }
 a.next-pitch-link:hover {
-	background-image: url(img/next_2.png);
+	background-image: url(/img/next_2.png);
 }
 
 .SideBarRight {width:200px; position:absolute; right:0px; top:85px; z-index:1000;margin-right: 20px;}
 .SideBarRight .zagol {font-size:18px; padding:10px;}
-.SideBarRight .batton { background: url('img/pointerBatton.png')  no-repeat top; height:50px; padding-top:44px;}
-.SideBarRight .batton:hover {background: url('img/pointerBattonRed.png') no-repeat top; font-weight:bold;}
+.SideBarRight .batton { background: url('/img/pointerBatton.png')  no-repeat top; height:50px; padding-top:44px;}
+.SideBarRight .batton:hover {background: url('/img/pointerBattonRed.png') no-repeat top; font-weight:bold;}
 
 .SideBarRight .pitchs {width:170px; height:72px; margin:0; padding-left:7px;}
 .SideBarRight .pitchs.hover { background-color:#6b92a2 !important; }
@@ -288,10 +288,10 @@ a.next-pitch-link:hover {
 .SideBarRight .pitchs p.data,p.info { color:#999999;}
 .SideBarRight .pitchs p.cost { color:#658fa5;}
 
-.SideBarRight div.files { width:170px; height:150px; background: url('img/files.png') no-repeat top; padding-top:80px; font-size:18px; text-align:center}
+.SideBarRight div.files { width:170px; height:150px; background: url('/img/files.png') no-repeat top; padding-top:80px; font-size:18px; text-align:center}
 .SideBarRight div.files p:hover {  font-weight:bold;}
 
-.gogo { width:424px; height:91px; background:url(img/gogo.png) no-repeat; position: relative ; left:485px; clear:both; text-align:center; padding-top:10px;}
+.gogo { width:424px; height:91px; background:url(/img/gogo.png) no-repeat; position: relative ; left:485px; clear:both; text-align:center; padding-top:10px;}
 .gogo p { margin-bottom:10px;}
 .gogo a {text-decoration: none;}
 .gogo a.idea { font-size:17px; color:#444756;}

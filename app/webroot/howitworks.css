@@ -11,12 +11,12 @@
 	}
 
 .howitworks h1 {
-	background: url(img/images/howitworks.png) no-repeat 50% 0;
+	background: url(/img/images/howitworks.png) no-repeat 50% 0;
 	}
 
 
 .faq h1 {
-	background: url(img/images/faq.png) no-repeat 50% 0;
+	background: url(/img/images/faq.png) no-repeat 50% 0;
 	margin-bottom: 30px;
 	}
 
@@ -53,7 +53,7 @@ ul.score li div {
 	color: #6b92a2;
 	text-shadow: 1px 1px 0 #ededed;
 	text-align: center;
-	background: url("img/images/arrow.gif") no-repeat 0 50%;
+	background: url(/img/images/arrow.gif) no-repeat 0 50%;
 	}
 
 ul.score li.fst div {
@@ -89,7 +89,7 @@ ul.marsh li {
 	float: left;
 	width: 33%;
 	padding: 0 0 20px;
-	background: url("img/images/tick.gif") no-repeat 3px 0;
+	background: url(/img/images/tick.gif) no-repeat 3px 0;
 	}
 
 ul.marsh li div {
@@ -108,7 +108,7 @@ div.clear {
 	}
 
 .flag-red {
-	background: url(img/images/flag_red.gif) no-repeat 50% 0;
+	background: url(/img/images/flag_red.gif) no-repeat 50% 0;
 	height: 95px;
 	text-align: center;
 }
@@ -140,7 +140,7 @@ div.clear {
 }
 
 #flag-red {
-	background: url(img/images/flag_red.gif) no-repeat 50% 0;
+	background: url(/img/images/flag_red.gif) no-repeat 50% 0;
 	height: 95px;
 	text-align: center;
 }
@@ -214,10 +214,10 @@ div.clear {
 	 color:#999999;
 	 text-shadow:none;
 	 padding:2px 24px 4px 1px;
-	 background: url(img/a.png) no-repeat right top;
+	 background: url(/img/a.png) no-repeat right top;
 	 text-transform:uppercase
 }
- a.more:hover{color:#666666;background: url(img/a.png) no-repeat right -40px;}
+ a.more:hover{color:#666666;background: url(/img/a.png) no-repeat right -40px;}
 
  #more_button a {
 	display: block;
@@ -225,7 +225,7 @@ div.clear {
 }
 
 .more_down {
-	background: url(img/bottom_arrow.png) no-repeat 100% 48%;
+	background: url(/img/bottom_arrow.png) no-repeat 100% 48%;
 	font:11px arial;
 	color:#999999;
 	 text-shadow:none;

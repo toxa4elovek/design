@@ -2,7 +2,7 @@
 	middle content
 */
 .middle.container{
-	background: url("img/content-bg.png") repeat;
+	background: url("/img/content-bg.png") repeat;
 	position: relative;
 	margin: auto;
 }
@@ -52,7 +52,7 @@
 	font-weight:normal;
 }
 li.active{
-	background: url("img/active.png") no-repeat 50% 0;
+	background: url("/img/active.png") no-repeat 50% 0;
 	height:25px;
 }
 /*
@@ -104,7 +104,7 @@ li.active{
 	position:absolute;
 	top:5px;
 	right:10px;
-	background: url("img/ic-1.png") no-repeat 0 0;
+	background: url("/img/ic-1.png") no-repeat 0 0;
 	width:15px;
 	height:17px;
 }
@@ -112,7 +112,7 @@ li.active{
 	position:absolute;
 	top:3px;
 	right:10px;
-	background: url("img/ic-2.png") no-repeat 0 0;
+	background: url("/img/ic-2.png") no-repeat 0 0;
 	width:14px;
 	height:33px;
 }
@@ -120,7 +120,7 @@ li.active{
 	position:absolute;
 	top:5px;
 	right:10px;
-	background: url("img/ic-3.png") no-repeat 0 0;
+	background: url("/img/ic-3.png") no-repeat 0 0;
 	width:16px;
 	height:25px;
 }
@@ -132,7 +132,7 @@ li.active{
 	post
 */
 .top-title{
-	background: url("img/top-title-bg.png") no-repeat 50% 0;
+	background: url("/img/top-title-bg.png") no-repeat 50% 0;
 	padding-top:12px;
 	margin-bottom:35px;
 	text-align:center;

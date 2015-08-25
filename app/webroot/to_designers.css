@@ -26,11 +26,11 @@ ul.score li div {
 	text-shadow: 1px 1px 0 #ededed;
 	text-align: center;
 	padding: 0 0 0 60px;
-	background: url("img/to_designers/arrow-big.gif") no-repeat 0 50%;
+	background: url("/img/to_designers/arrow-big.gif") no-repeat 0 50%;
 	}
 
 ul.score#img li div {
-	background: url("img/images/arrow.gif") no-repeat 0 50%;
+	background: url("/img/images/arrow.gif") no-repeat 0 50%;
 	padding: 0;
 	}
 
@@ -58,11 +58,11 @@ ul.marsh li {
 	width: 33.3%;
 	height: 230px;
 	padding: 0;
-	background: url("img/images/tick.gif") no-repeat 8px 3px;
+	background: url("/img/images/tick.gif") no-repeat 8px 3px;
 	}
 
 .flag-gray {
-	background: url(img/to_designers/flag-gray.gif) no-repeat 50% 0;
+	background: url(/img/to_designers/flag-gray.gif) no-repeat 50% 0;
 	height: 95px;
 	text-align: center;
 }
@@ -105,6 +105,6 @@ ul.marsh li {
 	text-transform: uppercase;
 	text-decoration: none;
 	color: #999;
-	background: url(img/bottom_arrow.png) no-repeat 100% 50%;
+	background: url(/img/bottom_arrow.png) no-repeat 100% 50%;
 }
 

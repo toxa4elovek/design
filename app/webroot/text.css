@@ -3,7 +3,7 @@
 	font: 12px/41px "RodeoC", sans-serif;
 	text-transform: uppercase;
 	text-align: center;
-	background: url(img/images/reglament.png) no-repeat 50% 0;
+	background: url(/img/images/reglament.png) no-repeat 50% 0;
 	margin-bottom: 20px;
 	}
 
@@ -39,7 +39,7 @@
 .search {
 	width: 168px;
 	height: 127px; 
-	background: url(img/images/search.gif) no-repeat 0 0;
+	background: url(/img/images/search.gif) no-repeat 0 0;
 	}
 
 .search textarea {

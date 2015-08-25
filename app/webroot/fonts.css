@@ -1,21 +1,21 @@
 @font-face {
     font-family: 'OfficinaSansC Bold';
-    src: url('fonts/officinasansboldc.eot');
-    src: url('fonts/officinasansboldc.eot') format('embedded-opentype'),
-        url('fonts/officinasansboldc.woff2') format('woff2'),
-        url('fonts/officinasansboldc.woff') format('woff'),
-        url('fonts/officinasansboldc.ttf') format('truetype'),
-        url('fonts/officinasansboldc.svg#OfficinaSansBoldCRegular') format('svg');
+    src: url(/fonts/officinasansboldc.eot);
+    src: url(/fonts/officinasansboldc.eot) format('embedded-opentype'),
+        url(/fonts/officinasansboldc.woff2) format('woff2'),
+        url(/fonts/officinasansboldc.woff) format('woff'),
+        url(/fonts/officinasansboldc.ttf) format('truetype'),
+        url(/fonts/officinasansboldc.svg#OfficinaSansBoldCRegular) format('svg');
 }
 
 @font-face {
     font-family: 'OfficinaSansC Book';
-    src: url('fonts/officinasansbookc.eot');
-    src: url('fonts/officinasansbookc.eot') format('embedded-opentype'),
-        url('fonts/officinasansbookc.woff2') format('woff2'),
-        url('fonts/officinasansbookc.woff') format('woff'),
-        url('fonts/officinasansbookc.ttf') format('truetype'),
-        url('fonts/officinasansbookc.svg#OfficinaSansBookCRegular') format('svg');
+    src: url(/fonts/officinasansbookc.eot);
+    src: url(/fonts/officinasansbookc.eot) format('embedded-opentype'),
+        url(/fonts/officinasansbookc.woff2) format('woff2'),
+        url(/fonts/officinasansbookc.woff) format('woff'),
+        url(/fonts/officinasansbookc.ttf) format('truetype'),
+        url(/fonts/officinasansbookc.svg#OfficinaSansBookCRegular) format('svg');
 }
 
 /*Дополнение*/

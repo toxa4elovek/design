@@ -34,12 +34,12 @@ ul, ol {
 -----------------------------------------------------------------------------*/
 @font-face {
     font-family: 'OfficinaSansC Book';
-    src: url('fonts/officinasansbookc.eot');
-    src: url('fonts/officinasansbookc.eot') format('embedded-opentype'),
-        url('fonts/officinasansbookc.woff2') format('woff2'),
-        url('fonts/officinasansbookc.woff') format('woff'),
-        url('fonts/officinasansbookc.ttf') format('truetype'),
-        url('fonts/officinasansbookc.svg#OfficinaSansBookCRegular') format('svg');
+    src: url('/fonts/officinasansbookc.eot');
+    src: url('/fonts/officinasansbookc.eot') format('embedded-opentype'),
+        url('/fonts/officinasansbookc.woff2') format('woff2'),
+        url('/fonts/officinasansbookc.woff') format('woff'),
+        url('/fonts/officinasansbookc.ttf') format('truetype'),
+        url('/fonts/officinasansbookc.svg#OfficinaSansBookCRegular') format('svg');
 }
 
 html {
@@ -54,7 +54,7 @@ body, select, input, textarea, button {
 body {
     height: 100%;
     font: 12px/18px Arial, sans-serif;
-    background: url("img/header-bg.gif") repeat-x !important;
+    background: url("/img/header-bg.gif") repeat-x !important;
     min-width: 954px;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -265,7 +265,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     content: "";
     width: 30px;
     height: 30px;
-    background: url("img/button-facebook-ico.png");
+    background: url("/img/button-facebook-ico.png");
     display: block;
     float: left;
     margin: 6px 14px 0 8px;
@@ -293,7 +293,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	content: "";
 	width: 27px;
 	height: 16px;
-	background: url("img/vk-icon.png");
+	background: url("/img/vk-icon.png");
 	display: block;
 	float: left;
 	margin: 13px 8px 0 12px;
@@ -321,7 +321,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     content: "";
     width: 30px;
     height: 30px;
-    background: url("img/button-facebook-ico.png");
+    background: url("/img/button-facebook-ico.png");
     display: block;
     float: left;
     margin: 6px 14px 0 8px;
@@ -340,13 +340,13 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     margin: 11px 8px 0 0;
 }
 .wrapper .button.facebook.small:before {
-    background: url("img/social-small-sprite.png") top left no-repeat;
+    background: url("/img/social-small-sprite.png") top left no-repeat;
 }
 .wrapper .button.vkontakte.small:before {
-    background: url("img/social-small-sprite.png") -25px 0px no-repeat;
+    background: url("/img/social-small-sprite.png") -25px 0px no-repeat;
 }
 .wrapper .button.twitter.small:before {
-    background: url("img/social-small-sprite.png") top right no-repeat;
+    background: url("/img/social-small-sprite.png") top right no-repeat;
 }
 .wrapper input.button {
     height: 49px;
@@ -354,31 +354,31 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 }
 @font-face {
     font-family: 'RodeoC';
-    src: url('fonts/rodeoc-webfont.eot');
-    src: url('fonts/rodeoc-webfont.eot?#iefix') format('embedded-opentype'),
-        url('fonts/rodeoc-webfont.woff') format('woff'),
-        url('fonts/rodeoc-webfont.ttf') format('truetype'),
-        url('fonts/rodeoc-webfont.svg#RodeoCRegular') format('svg');
+    src: url('/fonts/rodeoc-webfont.eot');
+    src: url('/fonts/rodeoc-webfont.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/rodeoc-webfont.woff') format('woff'),
+        url('/fonts/rodeoc-webfont.ttf') format('truetype'),
+        url('/fonts/rodeoc-webfont.svg#RodeoCRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
     font-family: 'RodeoC';
-    src: url('fonts/rodeoc-bolditalic-webfont.eot');
-    src: url('fonts/rodeoc-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
-        url('fonts/rodeoc-bolditalic-webfont.woff') format('woff'),
-        url('fonts/rodeoc-bolditalic-webfont.ttf') format('truetype'),
-        url('fonts/rodeoc-bolditalic-webfont.svg#RodeoCBoldItalic') format('svg');
+    src: url('/fonts/rodeoc-bolditalic-webfont.eot');
+    src: url('/fonts/rodeoc-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/rodeoc-bolditalic-webfont.woff') format('woff'),
+        url('/fonts/rodeoc-bolditalic-webfont.ttf') format('truetype'),
+        url('/fonts/rodeoc-bolditalic-webfont.svg#RodeoCBoldItalic') format('svg');
     font-weight: bold;
     font-style: italic;
 }
 @font-face {
     font-family: 'RodeoC';
-    src: url('fonts/rodeoc-bold-webfont.eot');
-    src: url('fonts/rodeoc-bold-webfont.eot?#iefix') format('embedded-opentype'),
-        url('fonts/rodeoc-bold-webfont.woff') format('woff'),
-        url('fonts/rodeoc-bold-webfont.ttf') format('truetype'),
-        url('fonts/rodeoc-bold-webfont.svg#RodeoCBold') format('svg');
+    src: url('/fonts/rodeoc-bold-webfont.eot');
+    src: url('/fonts/rodeoc-bold-webfont.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/rodeoc-bold-webfont.woff') format('woff'),
+        url('/fonts/rodeoc-bold-webfont.ttf') format('truetype'),
+        url('/fonts/rodeoc-bold-webfont.svg#RodeoCBold') format('svg');
     font-weight: bold;
     font-style: normal;
 }
@@ -400,7 +400,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     min-height: 88%;
 }
 .wrapper.auth {
-    background: url("img/register-login-bg.png") 50% 60px no-repeat;
+    background: url("/img/register-login-bg.png") 50% 60px no-repeat;
 }
 
 
@@ -429,7 +429,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     z-index: 5;
 }
 .logo a {
-    background: url("img/logo.png") 0 0 no-repeat;
+    background: url("/img/logo.png") 0 0 no-repeat;
     display: block;
     height: 100%;
     width: 100%;
@@ -438,7 +438,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     background-position: 0 100%;
 }
 .logo.light a {
-    background-image: url("img/logo-light.png");
+    background-image: url("/img/logo-light.png");
 }
 .topnav-menu {
     font-size: 11px;
@@ -528,7 +528,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 -----------------------------------------------------------------------------*/
 
 .main {
-    background: #e1e1e1 url("img/bg.png");
+    background: #e1e1e1 url("/img/bg.png");
     position: relative;
     border: 1px solid #d2d3d3;
     border-bottom: none;
@@ -572,7 +572,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     margin: auto;
 }
 .auth section {
-    background: url("img/register-login-divider.gif") repeat-x;
+    background: url("/img/register-login-divider.gif") repeat-x;
     padding-top: 25px;
     margin-bottom: 17px;
 }
@@ -624,13 +624,13 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     color: #ff585d;
 }
 .auth .name {
-    background: #fff url("img/form-ico-name.png") 366px 11px no-repeat;
+    background: #fff url("/img/form-ico-name.png") 366px 11px no-repeat;
 }
 .auth .email {
-    background: #fff url("img/form-ico-email.png") 366px 9px no-repeat;
+    background: #fff url("/img/form-ico-email.png") 366px 9px no-repeat;
 }
 .auth .password {
-    background: #fff url("img/form-ico-password.png") 366px 10px no-repeat;
+    background: #fff url("/img/form-ico-password.png") 366px 10px no-repeat;
 }
 .auth .submit {
     padding-top: 19px;
@@ -672,7 +672,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     top: 14px;
     width: 15px;
     height: 22px;
-    background: url("img/form-error-arrow.png");
+    background: url("/img/form-error-arrow.png");
     /*	width: 0;
             height: 0;
             border: solid #e1e1e1;
@@ -715,17 +715,17 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 
 .middle_inner {
     position: relative;
-    background: url(img/main_bg.jpg) repeat;
+    background: url(/img/main_bg.jpg) repeat;
     padding: 66px 34px 20px 63px;
     margin-top: -89px;
 }
 .middle_inner_solution {
-    background: url(img/main_bg.jpg) repeat;
+    background: url(/img/main_bg.jpg) repeat;
     padding: 0px 34px 20px 63px;
     margin-top: -6px;
 }
 .middle_inner_gallery {
-    background: url(img/main_bg.jpg) repeat;
+    background: url(/img/main_bg.jpg) repeat;
     padding: 34px 34px 20px 63px;
 }
 /*.auth section {
@@ -734,7 +734,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
  background-image: none;
  }*/
 .godesigner_dark .logo a {
-    background: url(img/logo2.png) no-repeat;
+    background: url(/img/logo2.png) no-repeat;
 }
 .godesigner_dark .logo a:hover {
     background-position: 0 100%;
@@ -742,7 +742,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 nav.main_nav {
     height: 43px;
     margin: 0 29px 0 0;
-    background: url(img/main_nav_wrap_bg.jpg) repeat-x;
+    background: url(/img/main_nav_wrap_bg.jpg) repeat-x;
 }
 .main_nav a {
     font: 12px/39px "RodeoC", sans-serif;
@@ -765,11 +765,11 @@ nav.main_nav {
     color: #50525a;
 }
 .main_nav a.active {
-    background: url(img/main_nav_active.jpg) no-repeat 0 0;
+    background: url(/img/main_nav_active.jpg) no-repeat 0 0;
     color: #b9b9b9;
 }
 .main_nav a.active span {
-    background: url(img/manin_nav_active_arrow.jpg) no-repeat 50% bottom;
+    background: url(/img/manin_nav_active_arrow.jpg) no-repeat 50% bottom;
 }
 
 .main_carous_sol {
@@ -782,7 +782,7 @@ nav.main_nav {
 }
 .main_carous_sol > div {
     position: relative;
-    background: url(img/carous_bg_wrap.png) repeat-x;
+    background: url(/img/carous_bg_wrap.png) repeat-x;
     padding: 10px 20px;
     border-left: 2px solid #e5e6e6;
     border-right: 2px solid #e5e6e6;
@@ -800,7 +800,7 @@ nav.main_nav {
 .main_carous > div {
     position: relative;
     /*height: 99px;*/
-    background: url(img/carous_bg_wrap.png) repeat-x;
+    background: url(/img/carous_bg_wrap.png) repeat-x;
     border-left: 2px solid #e5e6e6;
     border-right: 2px solid #e5e6e6;
     padding: 10px 20px;
@@ -814,21 +814,21 @@ width: 740px;
     top: 50px;
     width: 25px;
     height: 27px;
-    background: url(img/carousel_left_but.jpg) no-repeat;
+    background: url(/img/carousel_left_but.jpg) no-repeat;
 }
 .main_carous .arrow_left, .main_carous_sol .arrow_left {
     left: -12px;
 }
 .main_carous .arrow_right, .main_carous_sol .arrow_right {
     right: -12px;
-    background-image: url(img/carousel_right_but.jpg);
+    background-image: url(/img/carousel_right_but.jpg);
 }
 .main_carous .arrow a,
 #small_carousel .arrow a,
 .main_carous_sol .arrow a {
     width: 17px;
     height: 17px;
-    background: url(img/arrows_scroll.png) no-repeat;
+    background: url(/img/arrows_scroll.png) no-repeat;
     display: block;
     margin-top: 4px;
 }
@@ -887,7 +887,7 @@ width: 740px;
     margin-bottom: 4px;
 }
 section.obnovlenia {
-    background: url(img/obnovleniya_line.jpg) repeat-x 0 50%;
+    background: url(/img/obnovleniya_line.jpg) repeat-x 0 50%;
     margin-bottom: 14px;
 }
 .obnovlenia h1 {
@@ -895,11 +895,11 @@ section.obnovlenia {
     font: 12px/41px "RodeoC", sans-serif;
     text-transform: uppercase;
     text-align: center;
-    background: url(img/obnovleniya.png) no-repeat 50% 0;
+    background: url(/img/obnovleniya.png) no-repeat 50% 0;
 }
 .obnovlenia_box {
     padding: 20px 30px 12px 30px;
-    background: url(img/news_buttom_line.jpg) repeat-x left bottom;
+    background: url(/img/news_buttom_line.jpg) repeat-x left bottom;
 }
 .obnovlenia_box.last_item {
     background: none;
@@ -926,7 +926,7 @@ p.visit_number {
     display: inline-block;
     font-size: 11px;
     padding: 2px 0 2px 17px;
-    background: url(img/views.png) no-repeat 0 50%;
+    background: url(/img/views.png) no-repeat 0 50%;
 }
 p.designer_name {
     text-transform: capitalize;
@@ -942,7 +942,7 @@ p.designer_name {
     display: block;
     width: 9px;
     height: 9px;
-    background: url(img/star.png) no-repeat;
+    background: url(/img/star.png) no-repeat;
 }
 p.fb_like {
     margin-top: -2px;
@@ -953,7 +953,7 @@ p.fb_like a {
     text-decoration: none;
     color: #999999;
     padding: 0 0 0 20px;
-    background: url(img/fb_like.png) no-repeat left top;
+    background: url(/img/fb_like.png) no-repeat left top;
 }
 p.fb_like a:hover,
 p.fb_like a:active {
@@ -1014,7 +1014,7 @@ p.full_pitch a {
     display: block;
     width: 17px;
     height: 17px;
-    background: url(img/arrows_scroll.png) no-repeat;
+    background: url(/img/arrows_scroll.png) no-repeat;
     float: right;
     margin-top: 12px;
 }
@@ -1024,7 +1024,7 @@ p.full_pitch a {
 #earlier_button {
     width: 145px;
     margin: 11px auto 0;
-    background: url(img/earlier_button_bg.jpg) repeat-x;
+    background: url(/img/earlier_button_bg.jpg) repeat-x;
     text-align: center
 }
 #earlier_button a {
@@ -1033,7 +1033,7 @@ p.full_pitch a {
     text-transform: uppercase;
     text-decoration: none;
     color: #666;
-    background: url(img/bottom_arrow.png) no-repeat 13px 50%;
+    background: url(/img/bottom_arrow.png) no-repeat 13px 50%;
 }
 #earlier_button a:hover {
     color: #fff;
@@ -1053,7 +1053,7 @@ p.full_pitch a {
     height: 111px;
     width: 120px;
     position: relative;
-    background: url(img/small_carous_bg.png) repeat-x;
+    background: url(/img/small_carous_bg.png) repeat-x;
     border-right: 1px solid #ccc;
     border-left: 1px solid #ccc;
     padding: 7px 25px 0 25px;
@@ -1064,14 +1064,14 @@ p.full_pitch a {
     top: 50px;
     width: 25px;
     height: 27px;
-    background: url(img/small_carousel_left_but.jpg) no-repeat;
+    background: url(/img/small_carousel_left_but.jpg) no-repeat;
 }
 #small_carousel .arrow_left {
     left: -10px;
 }
 #small_carousel .arrow_right {
     right: -12px;
-    background-image: url(img/small_carousel_right_but.jpg);
+    background-image: url(/img/small_carousel_right_but.jpg);
 }
 #current_pitch ul li {
     /*background: #45464f;*/
@@ -1109,7 +1109,7 @@ p.full_pitch a {
 #under_middle_inner {
     height: 14px;
     margin: 0 8px;
-    background: url(img/main_bottom_block.jpg) repeat-x;
+    background: url(/img/main_bottom_block.jpg) repeat-x;
 }
 
 .follow-link {
@@ -1128,7 +1128,7 @@ p.full_pitch a {
 .footer {
     height: 133px;
     /*margin-top: -133px;*/
-    background: url("img/footer-bg.gif") repeat-x;
+    background: url("/img/footer-bg.gif") repeat-x;
 }
 .footer-inner {
     padding-top: 12px;
@@ -1158,7 +1158,7 @@ p.full_pitch a {
     float: left;
     width: 27px;
     height: 27px;
-    background: url("img/footer-social.png") 0 0 no-repeat;
+    background: url("/img/footer-social.png") 0 0 no-repeat;
     margin-left: 7px;
     text-indent: -9999px;
 }
@@ -1232,7 +1232,7 @@ p.full_pitch a {
 -----------------------------------------------------------------------------*/
 
 .coming-soon {
-    background: url("img/coming-soon-bg.png") 50% 0 no-repeat;
+    background: url("/img/coming-soon-bg.png") 50% 0 no-repeat;
 }
 .coming-soon .wrapper {
     width: 540px;
@@ -1341,7 +1341,7 @@ p.full_pitch a {
     top: 14px;
     width: 15px;
     height: 22px;
-    background: url("img/form-error-arrow.png");
+    background: url("/img/form-error-arrow.png");
 }
 
 /* Add pitch - Price */
@@ -1373,7 +1373,7 @@ p.full_pitch a {
     height: 100%;
     text-decoration: none;
     color: #aaa;
-    background: url("img/steps.png") 0 0 no-repeat;
+    background: url("/img/steps.png") 0 0 no-repeat;
 }
 .steps a:hover {
     background-position: 0 -42px;
@@ -1400,7 +1400,7 @@ p.full_pitch a {
     text-transform: uppercase;
     overflow: hidden;
     padding-bottom: 20px;
-    /*background: url("img/register-login-divider.gif") 0 100% repeat-x;*/
+    /*background: url("/img/register-login-divider.gif") 0 100% repeat-x;*/
 }
 .set-price label {
     font-size: 11px;
@@ -1527,7 +1527,7 @@ p.full_pitch a {
     text-align: center;
     padding: 10px 4px 0 6px;
     height: 34px;
-    background: url("img/indicator-divider.png") 0 0 no-repeat;
+    background: url("/img/indicator-divider.png") 0 0 no-repeat;
 }
 .indicator li:first-child {
     background: none;
@@ -1599,13 +1599,13 @@ p.full_pitch a {
     margin-top: -34px;
     width: 35px;
     right: -1px;
-    background: url("img/ribbon-label-fold.png") 100% 0 no-repeat;
+    background: url("/img/ribbon-label-fold.png") 100% 0 no-repeat;
     text-indent: -9999px;
 }
 .ribbon .label.unfold {
     width: 68px;
     right: -94px;
-    background: url("img/ribbon-label-unfold.png") 100% 0 no-repeat;
+    background: url("/img/ribbon-label-unfold.png") 100% 0 no-repeat;
     font: 20px/68px "RodeoC", sans-serif;
     color: #fff;
     padding-right: 25px;
@@ -1680,7 +1680,7 @@ p.full_pitch a {
     top: 150px;
     z-index: 5;
     margin-left: 265px;
-    background: url("img/summary-price-bg.png") 0 0 no-repeat;
+    background: url("/img/summary-price-bg.png") 0 0 no-repeat;
     padding: 8px 15px 0 11px;
     min-height: 99px;
 }
@@ -1701,7 +1701,7 @@ p.full_pitch a {
 .summary-price ul {
     margin: 0 -10px;
     padding-top: 5px;
-    background: url("img/summary-price-divider.png") 50% 0 no-repeat;
+    background: url("/img/summary-price-divider.png") 50% 0 no-repeat;
     margin-bottom: 10px;
     display: none;
 }
@@ -1710,7 +1710,7 @@ p.full_pitch a {
 }
 .summary-price li {
     padding-bottom: 5px;
-    background: url("img/summary-price-divider.png") 50% 100% no-repeat;
+    background: url("/img/summary-price-divider.png") 50% 100% no-repeat;
     font-size: 10px;
     line-height: 12px;
     text-transform: uppercase;
@@ -1758,7 +1758,7 @@ p.full_pitch a {
     bottom: -50px;
     padding-left: 11px;
     padding-right: 15px;
-    background: url("img/summary-price-bg.png") 0 100% no-repeat;
+    background: url("/img/summary-price-bg.png") 0 100% no-repeat;
     width: 148px;
     padding-top: 17px;
     color: #999;
@@ -1772,7 +1772,7 @@ p.full_pitch a {
 .summary-price .hide span {
     display: block;
     height: 18px;
-    background: url("img/summary-price-hide.png") 100% 0 no-repeat;
+    background: url("/img/summary-price-hide.png") 100% 0 no-repeat;
     padding-right: 20px;
     text-align: right;
 }
@@ -1784,7 +1784,7 @@ p.full_pitch a {
     bottom: -33px;
     padding-left: 11px;
     padding-right: 15px;
-    background: url("img/summary-price-bg.png") 0 100% no-repeat;
+    background: url("/img/summary-price-bg.png") 0 100% no-repeat;
     width: 148px;
     color: #999;
     font-size: 11px;
@@ -1797,11 +1797,11 @@ p.full_pitch a {
 .summary-price .show span {
     display: inline-block;
     height: 18px;
-    background: url("img/summary-price-show.png") 100% 0 no-repeat;
+    background: url("/img/summary-price-show.png") 100% 0 no-repeat;
     padding-right: 20px;
 }
 .add-pitch .groupc {
-    background: url("img/register-login-divider.gif") 0 100% repeat-x;
+    background: url("/img/register-login-divider.gif") 0 100% repeat-x;
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
@@ -2044,7 +2044,7 @@ textarea.placeholder {
     text-transform: uppercase;
 }
 .add-pitch .brief-example a {
-    background: url("img/download_brief.png") 50% 0 no-repeat;
+    background: url("/img/download_brief.png") 50% 0 no-repeat;
     padding-top: 80px;
     height: 55px;
     display: block;
@@ -2053,7 +2053,7 @@ textarea.placeholder {
     text-shadow: 0 1px 1px #eee;
 }
 .add-pitch .brief-example a:hover {
-    background: url("img/download_brief2.png") 50% 0 no-repeat;
+    background: url("/img/download_brief2.png") 50% 0 no-repeat;
     padding-top: 80px;
     display: block;
     color: #ccc;
@@ -2109,7 +2109,7 @@ textarea.placeholder {
     margin: 0 12px;
     padding: 0 9px;
     width: 319px;
-    background: url("img/slider-bg.png") 0 3px no-repeat;
+    background: url("/img/slider-bg.png") 0 3px no-repeat;
     height: 100%;
     outline: none;
 }
@@ -2125,7 +2125,7 @@ textarea.placeholder {
 .logo-properties .ui-slider-handle {
     width: 32px;
     height: 26px;
-    background: url("img/slider-handle.png");
+    background: url("/img/slider-handle.png");
     position: absolute;
     z-index: 2;
     top: 6px;
@@ -2146,10 +2146,10 @@ textarea.placeholder {
     height: 24px;
     padding-top: 14px;
     margin-bottom: 31px;
-    background: url("img/pitch-category-header-bg.png") 7px 0 no-repeat;
+    background: url("/img/pitch-category-header-bg.png") 7px 0 no-repeat;
 }
 .add-pitch h2 {
-    background: url("img/pitch-category-header-bg.png") -130px 0 no-repeat;
+    background: url("/img/pitch-category-header-bg.png") -130px 0 no-repeat;
 }
 .pitch-category ul {
     margin-left: -12px;
@@ -2160,7 +2160,7 @@ textarea.placeholder {
     width: 247px;
     height: 120px;
     margin-left: 32px;
-    background: url("img/category-bg.png") 0 0 no-repeat;
+    background: url("/img/category-bg.png") 0 0 no-repeat;
     margin-bottom: 20px;
 }
 .pitch-category li a {
@@ -2197,7 +2197,7 @@ textarea.placeholder {
     font: 20px/1 "RodeoC", sans-serif;
 }
 .pitch-category li:hover {
-    background-image: url("img/category-bg-hover.png");
+    background-image: url("/img/category-bg-hover.png");
 }
 .pitch-category li a:hover {
     text-shadow: -1px 1px 0 #86a8b8;
@@ -2208,7 +2208,7 @@ textarea.placeholder {
     color: #fff;
 }
 .pitch-category li.disabled:hover {
-    background: url("img/category-bg.png") 0 0 no-repeat;
+    background: url("/img/category-bg.png") 0 0 no-repeat;
 }
 .pitch-category li.disabled:hover .price {
     text-shadow: none;
@@ -2217,10 +2217,10 @@ textarea.placeholder {
 
 .pitch-category .big {
     height: 252px;
-    background: url("img/category-flag.png") 0 0 no-repeat;
+    background: url("/img/category-flag.png") 0 0 no-repeat;
 }
 .pitch-category .big:hover {
-    background-image: url("img/category-flag-hover.png");
+    background-image: url("/img/category-flag-hover.png");
 }
 .pitch-category .big a {
     padding-left: 65px;
@@ -2244,79 +2244,79 @@ textarea.placeholder {
     text-shadow: -1px 1px 2px #da494f;
 }
 .pitch-category .category-buklet a {
-    background: url("img/category/category-buklet.png") 18px 9px no-repeat;
+    background: url("/img/category/category-buklet.png") 18px 9px no-repeat;
 }
 .pitch-category .category-copyrighting a {
-    background: url("img/category/category-copyrighting.png") 18px 16px no-repeat;
+    background: url("/img/category/category-copyrighting.png") 18px 16px no-repeat;
 }
 .pitch-category .category-firmstyle a {
-    background: url("img/category/category-firmstyle.png") 14px 14px no-repeat;
+    background: url("/img/category/category-firmstyle.png") 14px 14px no-repeat;
 }
 .pitch-category .category-firmstyle2 a {
-    background: url("img/category/category-firmstyle2.png") 14px 14px no-repeat;
+    background: url("/img/category/category-firmstyle2.png") 14px 14px no-repeat;
 }
 .pitch-category .category-flaer a {
-    background: url("img/category/category-flaer2.png") 17px 13px no-repeat;
+    background: url("/img/category/category-flaer2.png") 17px 13px no-repeat;
 }
 .pitch-category .category-icons a {
-    background: url("img/category/category-icons.png") 18px 14px no-repeat;
+    background: url("/img/category/category-icons.png") 18px 14px no-repeat;
 }
 .pitch-category .category-illustration a {
-    background: url("img/category/category-illustration.png") 6px 10px no-repeat;
+    background: url("/img/category/category-illustration.png") 6px 10px no-repeat;
 }
 .pitch-category .category-logo a {
-    background: url("img/category/category-logo.png") 18px 18px no-repeat;
+    background: url("/img/category/category-logo.png") 18px 18px no-repeat;
 }
 .pitch-category .category-otherdesign a {
-    background: url("img/category/category-otherdesign.png") 17px 14px no-repeat;
+    background: url("/img/category/category-otherdesign.png") 17px 14px no-repeat;
 }
 .pitch-category .category-site a {
-    background: url("img/category/category-site.png") 19px 23px no-repeat;
+    background: url("/img/category/category-site.png") 19px 23px no-repeat;
 }
 .pitch-category .category-socialpage a {
-    background: url("img/category/category-socialpage.png") 11px 17px no-repeat;
+    background: url("/img/category/category-socialpage.png") 11px 17px no-repeat;
 }
 .pitch-category .category-upakovka a {
-    background: url("img/category/category-upakovka.png") 10px 14px no-repeat;
+    background: url("/img/category/category-upakovka.png") 10px 14px no-repeat;
 }
 .pitch-category .category-webban a {
-    background: url("img/category/category-webban.png") 10px 13px no-repeat;
+    background: url("/img/category/category-webban.png") 10px 13px no-repeat;
 }
 .pitch-category .category-buklet a:hover {
-    background-image: url("img/category/category-buklet-hover.png");
+    background-image: url("/img/category/category-buklet-hover.png");
 }
 .pitch-category .category-copyrighting a:hover {
-    background-image: url("img/category/category-copyrighting-hover.png");
+    background-image: url("/img/category/category-copyrighting-hover.png");
 }
 .pitch-category .category-firmstyle a:hover {
-    background-image: url("img/category/category-firmstyle-hover.png");
+    background-image: url("/img/category/category-firmstyle-hover.png");
 }
 .pitch-category .category-flaer a:hover {
-    background-image: url("img/category/category-flaer2.png");
+    background-image: url("/img/category/category-flaer2.png");
 }
 .pitch-category .category-icons a:hover {
-    background-image: url("img/category/category-icons-hover.png");
+    background-image: url("/img/category/category-icons-hover.png");
 }
 .pitch-category .category-illustration a:hover {
-    background-image: url("img/category/category-illustration-hover.png");
+    background-image: url("/img/category/category-illustration-hover.png");
 }
 .pitch-category .category-logo a:hover {
-    background-image: url("img/category/category-logo-hover.png");
+    background-image: url("/img/category/category-logo-hover.png");
 }
 .pitch-category .category-otherdesign a:hover {
-    background-image: url("img/category/category-otherdesign-hover.png");
+    background-image: url("/img/category/category-otherdesign-hover.png");
 }
 .pitch-category .category-site a:hover {
-    background-image: url("img/category/category-site-hover.png");
+    background-image: url("/img/category/category-site-hover.png");
 }
 .pitch-category .category-socialpage a:hover {
-    background-image: url("img/category/category-socialpage-hover.png");
+    background-image: url("/img/category/category-socialpage-hover.png");
 }
 .pitch-category .category-upakovka a:hover {
-    background-image: url("img/category/category-upakovka-hover.png");
+    background-image: url("/img/category/category-upakovka-hover.png");
 }
 .pitch-category .category-webban a:hover {
-    background-image: url("img/category/category-webban-hover.png");
+    background-image: url("/img/category/category-webban-hover.png");
 }
 
 
@@ -2338,7 +2338,7 @@ textarea.placeholder {
 -----------------------------------------------------------------------------*/
 .conteiner{
     position:relative;
-    background:#e0e0e0 url(img/content-bg.png);
+    background:#e0e0e0 url(/img/content-bg.png);
     border:1px solid #e0e0e0;
     text-transform:uppercase;
     margin:0 auto;
@@ -2347,7 +2347,7 @@ textarea.placeholder {
 .conteiner h2{
     height:73px;
     background:#648fa4;
-    background-image:url(img/pitches_bg.png);
+    background-image:url(/img/pitches_bg.png);
     background-repeat:no-repeat;
     background-position:right -1px;
     width:337px;
@@ -2360,7 +2360,7 @@ textarea.placeholder {
 }
 .shadow{
     height:5px;
-    background:url(img/pitches2_bg.png) no-repeat;
+    background:url(/img/pitches2_bg.png) no-repeat;
     margin:0 0 0 -12px;
 }
 .pitches-type{
@@ -2386,7 +2386,7 @@ textarea.placeholder {
     -moz-box-shadow: inset -1px -1px 1px #f6f4f4;
 }
 .active-pitches{
-    background:url(img/marker4.png) no-repeat 50% 95%;
+    background:url(/img/marker4.png) no-repeat 50% 95%;
 }
 .active-pitches a{
 
@@ -2440,7 +2440,7 @@ textarea.placeholder {
 }
 .navigation-pitches a span{
     display:block;
-    /*background: url(img/marker5.png) no-repeat right 50%;*/
+    /*background: url(/img/marker5.png) no-repeat right 50%;*/
     /*padding-right:24px;*/
 }
 .active-list > a{
@@ -2554,13 +2554,13 @@ thead .pitches-name{
 }
 
 .selection .icons{
-    /*background:#e0e0e0 url(img/icon-1.png) no-repeat 2px 10px;*/
+    /*background:#e0e0e0 url(/img/icon-1.png) no-repeat 2px 10px;*/
 }
 .highlighted .price, .newpitch .price{
     color:#fff;
 }
 .pitch-end .icons{
-    /*background:#e0e0e0 url(img/icon-2.png) no-repeat 1px 10px;*/
+    /*background:#e0e0e0 url(/img/icon-2.png) no-repeat 1px 10px;*/
 }
 
 .pitch-mouseover td a{
@@ -2574,13 +2574,13 @@ thead .pitches-name{
     color: #666666;
 }
 .close-and-expert .icons{
-    /*background:#e0e0e0 url(img/icon-3.png) no-repeat 1px 5px;*/
+    /*background:#e0e0e0 url(/img/icon-3.png) no-repeat 1px 5px;*/
 }
 .close .icons{
-    /*background:#e0e0e0 url(img/icon-4.png) no-repeat 1px 5px;*/
+    /*background:#e0e0e0 url(/img/icon-4.png) no-repeat 1px 5px;*/
 }
 .expert .icons{
-    /*background:#e0e0e0 url(img/icon-5.png) no-repeat 1px 5px;*/
+    /*background:#e0e0e0 url(/img/icon-5.png) no-repeat 1px 5px;*/
 }
 tr.even{
     background:#2f313a;
@@ -2606,7 +2606,7 @@ td.pitches-name{
 .pitches-name div{
     padding:15px 0 17px 40px;
 
-    /*background:url(img/arrow.png) no-repeat 10px 16px;*/
+    /*background:url(/img/arrow.png) no-repeat 10px 16px;*/
 }
 td.pitches-name.mypitches {
     vertical-align: middle;
@@ -2625,32 +2625,32 @@ td.pitches-name.mypitches a {
     width: 18px;
     height: 18px;
     margin-top: 57px;
-    background: url(img/pitch-icons-sprite.png) no-repeat 0px 0px;
+    background: url(/img/pitch-icons-sprite.png) no-repeat 0px 0px;
 }
 .mypitch_pay_link img:hover {
-    background: url(img/pitch-icons-sprite.png) no-repeat 0px -18px;
+    background: url(/img/pitch-icons-sprite.png) no-repeat 0px -18px;
 }
 .mypitch_edit_link img {
     width: 18px;
     height: 18px;
     margin-top: 34px;
-    background: url(img/pitch-icons-sprite.png) no-repeat 0px -54px;
+    background: url(/img/pitch-icons-sprite.png) no-repeat 0px -54px;
 }
 .mypitch_edit_link.not-draft img {
-    background: url(img/pitch-icons-sprite.png) no-repeat 0px -90px;
+    background: url(/img/pitch-icons-sprite.png) no-repeat 0px -90px;
 }
 .mypitch_edit_link img:hover {
-    background: url(img/pitch-icons-sprite.png) no-repeat 0px -72px;
+    background: url(/img/pitch-icons-sprite.png) no-repeat 0px -72px;
 }
 .mypitch_delete_link img {
     width: 18px;
     height: 18px;
     margin-top: 12px;
     padding-left: 4px;
-    background: url(img/pitch-icons-sprite.png) no-repeat 0px -108px;
+    background: url(/img/pitch-icons-sprite.png) no-repeat 0px -108px;
 }
 .mypitch_delete_link img:hover {
-    background: url(img/pitch-icons-sprite.png) no-repeat 0px -126px;
+    background: url(/img/pitch-icons-sprite.png) no-repeat 0px -126px;
 }
 
 .pitches-name a{
@@ -2724,7 +2724,7 @@ td.pitches-edit.mypitches a {
     color: #7E7E7E;
     font: 12px Arial, sans-serif;
     margin-left: 50px;
-    background-image: url('img/mypitches-sprite.png');
+    background-image: url('/img/mypitches-sprite.png');
     background-repeat: no-repeat;
     padding-left: 25px;
 }
@@ -2753,10 +2753,10 @@ tr.pitch-mouseover {
     border:none;
 }
 .pitch-open div{
-    /*background:url(img/arrow_grey_down.png) no-repeat 12px 16px;*/
+    /*background:url(/img/arrow_grey_down.png) no-repeat 12px 16px;*/
 }
 .pitch-mouseover div{
-    /*background:url(img/arrow_grey.png) no-repeat 12px 16px;*/
+    /*background:url(/img/arrow_grey.png) no-repeat 12px 16px;*/
 }
 .pitch-open p{
     text-align:left;
@@ -2777,7 +2777,7 @@ tr.pitch-mouseover {
 a.go-pitch{
     padding-left:40px;
     display:block;
-    background:url(img/marker3.png) no-repeat top right;
+    background:url(/img/marker3.png) no-repeat top right;
     text-align:left;
     width:140px;
     margin-bottom:10px;
@@ -2800,20 +2800,20 @@ a.go-pitch{
 }
 li.icons-infomation-one{
     padding-top:22px;
-    background:url(img/icon-5.png) no-repeat left 45%;
+    background:url(/img/icon-5.png) no-repeat left 45%;
     width:204px;
 }
 li.icons-infomation-two{
     padding-top:22px;
     /*padding-bottom:22px;*/
-    background:url(img/icon-4.png) no-repeat left 50%;
+    background:url(/img/icon-4.png) no-repeat left 50%;
 }
 li.icons-infomation-three{
-    background:url(img/icon-1.png) no-repeat left 50%;
+    background:url(/img/icon-1.png) no-repeat left 50%;
     width:204px;
 }
 li.icons-infomation-four{
-    background:url(img/icon-2.png) no-repeat left 50%;
+    background:url(/img/icon-2.png) no-repeat left 50%;
 }
 .page-nambe-nav{
     float:right;
@@ -2848,7 +2848,7 @@ a.this-page{
     float:right;
     margin: 30px 80px 0 0;
     padding-left:35px;
-    background:url(img/icons-6.png) no-repeat;
+    background:url(/img/icons-6.png) no-repeat;
 }
 .you-profile a{
     color:#658FA5;
@@ -2869,34 +2869,34 @@ a.this-page{
 }
 
 ul.social li#facebook {
-    background-image: url("img/fb.png");
+    background-image: url("/img/fb.png");
 }
 ul.social li#facebook:hover {
-    background-image: url("img/fb_on.png");
+    background-image: url("/img/fb_on.png");
 }
 
 ul.social li#twitter {
-    background-image: url("img/tw.png");
+    background-image: url("/img/tw.png");
 }
 ul.social li#twitter:hover {
-    background-image: url("img/tw_on.png");
+    background-image: url("/img/tw_on.png");
 }
 
 ul.social li#vkontakte {
-    background-image: url("img/vk.png");
+    background-image: url("/img/vk.png");
 }
 ul.social li#vkontakte:hover {
-    background-image: url("img/vk_on.png");
+    background-image: url("/img/vk_on.png");
 }
 ul.social li#instagram {
-    background-image: url("img/instagram.png");
+    background-image: url("/img/instagram.png");
 }
 ul.social li#instagram:hover {
-    background-image: url("img/instagram_on.png");
+    background-image: url("/img/instagram_on.png");
 }
 
 ul.social li#rss {
-    background-image: url("img/rss.png");
+    background-image: url("/img/rss.png");
 }
 
 #big_carousel {
@@ -2941,7 +2941,7 @@ ul.social li#rss {
     position: relative;
     width: 739px;
     height: 400px;
-    background: url(img/popup-submit-top.png) 0 0 no-repeat;
+    background: url(/img/popup-submit-top.png) 0 0 no-repeat;
 }
 
 #generic-popup:after {
@@ -2952,7 +2952,7 @@ ul.social li#rss {
     bottom: -19px;
     width: 652px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 
 #final-step,
@@ -2961,10 +2961,10 @@ ul.social li#rss {
     position: relative;
     width: 739px;
     height: 505px;
-    background: url(img/popup-submit-top.png) 0 0 no-repeat;
+    background: url(/img/popup-submit-top.png) 0 0 no-repeat;
 }
 #final-step-clean {
-    background: url(img/main_bg.jpg) 0 0 repeat;
+    background: url(/img/main_bg.jpg) 0 0 repeat;
     height: 485px;
 }
 #final-step-thanks {
@@ -2980,7 +2980,7 @@ ul.social li#rss {
     bottom: -19px;
     width: 652px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 #final-step-thanks p {
     margin: 150px -10px 0 30px;
@@ -3018,7 +3018,7 @@ ul.social li#rss {
     bottom: -19px;
     width: 454px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 #gotest-popup h2,
 #gotest-popup_gallery h2,
@@ -3075,7 +3075,7 @@ ul.social li#rss {
     height: 15px;
     margin: 12px 15px 0 0;
     overflow: hidden;
-    background-image: url('img/popup-close-sprite.png');
+    background-image: url('/img/popup-close-sprite.png');
     background-repeat: none;
     background-position: 0 -15px;
     cursor: pointer;
@@ -3135,7 +3135,7 @@ ul.social li#rss {
     zoom: 1;
     width: 22px;
     height: 22px;
-    background: url(img/simple-popup-close.png) no-repeat;
+    background: url(/img/simple-popup-close.png) no-repeat;
     cursor: pointer;
     z-index: 1002;
 }
@@ -3176,7 +3176,7 @@ ul.social li#rss {
     bottom: -19px;
     width: 454px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 #popup-need-agree-tos .reqbutton:hover, #popup-request-sign .reqbutton:hover, #popup-decline-warning .reqbutton:hover {
     color: #fff;
@@ -3216,7 +3216,7 @@ ul.social li#rss {
     bottom: -19px;
     width: 454px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 #popup-need-agree-tos .reqbutton:hover, #popup-request-sign .reqbutton:hover, #popup-decline-warning .reqbutton:hover {
     color: #fff;
@@ -3246,7 +3246,7 @@ ul.social li#rss {
     height: 15px;
     margin: 12px 15px 0 0;
     overflow: hidden;
-    background-image: url('img/popup-close-sprite.png');
+    background-image: url('/img/popup-close-sprite.png');
     background-repeat: none;
     background-position: 0 -15px;
     cursor: pointer;
@@ -3272,7 +3272,7 @@ ul.social li#rss {
     bottom: -19px;
     width: 454px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 #project-delete h2 {
     font-family: RodeoC, serif;
@@ -3302,7 +3302,7 @@ ul.social li#rss {
     height: 15px;
     margin: 12px 15px 0 0;
     overflow: hidden;
-    background-image: url('img/popup-close-sprite.png');
+    background-image: url('/img/popup-close-sprite.png');
     background-repeat: none;
     background-position: 0 -15px;
     cursor: pointer;
@@ -3320,7 +3320,7 @@ ul.social li#rss {
     height: 15px;
     margin: 12px 15px 0 0;
     overflow: hidden;
-    background-image: url('img/popup-close-sprite.png');
+    background-image: url('/img/popup-close-sprite.png');
     background-repeat: none;
     background-position: 0 -15px;
     cursor: pointer;
@@ -3346,7 +3346,7 @@ ul.social li#rss {
     bottom: -19px;
     width: 454px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 #mobile-popup h2 {
     font-family: RodeoC, serif;
@@ -3376,7 +3376,7 @@ ul.social li#rss {
     height: 15px;
     margin: 12px 15px 0 0;
     overflow: hidden;
-    background-image: url('img/popup-close-sprite.png');
+    background-image: url('/img/popup-close-sprite.png');
     background-repeat: none;
     background-position: 0 -15px;
     cursor: pointer;
@@ -3407,7 +3407,7 @@ ul.social li#rss {
     width: 19px;
     height: 16px;
     margin-bottom: 5px;
-    background: url(img/pitch-buttons.png) no-repeat 0 0;
+    background: url(/img/pitch-buttons.png) no-repeat 0 0;
 }
 
 .pitch-buttons a.edit {
@@ -3432,7 +3432,7 @@ ul.social li#rss {
     width: 17px;
     height: 16px;
     margin: 0 5px 0 20px;
-    background: url(img/pitch-buttons-legend.png) no-repeat 0 0;
+    background: url(/img/pitch-buttons-legend.png) no-repeat 0 0;
     vertical-align: -3px;
 }
 
@@ -3482,7 +3482,7 @@ ul.social li#rss {
 }
 
 #header-bg {
-    background: url("img/header-bg1.gif") repeat-x;
+    background: url("/img/header-bg1.gif") repeat-x;
 }
 
 .wrapper .button.fourth {
@@ -3636,7 +3636,7 @@ thead td .sort-link:hover {
     top: 0;
     width: 60px;
     height: 32px;
-    background: url(img/blog-ajax-loader.gif) #e3e3e3 top center no-repeat;
+    background: url(/img/blog-ajax-loader.gif) #e3e3e3 top center no-repeat;
 }
 input::-ms-clear {
     display: none;
@@ -3647,7 +3647,7 @@ a#filterClear {
     width: 21px;
     height: 23px;
     margin-top: 4px;
-    background: url('img/filter-clear.png') no-repeat;
+    background: url('/img/filter-clear.png') no-repeat;
 }
 div.no-result {
     display: none;
@@ -3703,11 +3703,11 @@ div.no-result p {
 }
 .btn-success span{
     padding-left: 36px;
-    background: url(img/take-part.png) no-repeat;
+    background: url(/img/take-part.png) no-repeat;
 }
 .btn-success:hover span{
     padding-left: 36px;
-    background: url(img/take-part-hover.png) no-repeat;
+    background: url(/img/take-part-hover.png) no-repeat;
 }
 .btn-success:hover{
     background:#cbcbcb;
@@ -3865,7 +3865,7 @@ div.no-result p {
 }
 
 #popup-email-change .error:before {
-    background: url("img/form-error-arrow.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("/img/form-error-arrow.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
     content: "";
     height: 22px;
     position: absolute;
@@ -3899,7 +3899,7 @@ div.no-result p {
     height: 15px;
     margin: 12px 15px 0 0;
     overflow: hidden;
-    background-image: url('img/popup-close-sprite.png');
+    background-image: url('/img/popup-close-sprite.png');
     background-repeat: none;
     background-position: 0 -15px;
     cursor: pointer;
@@ -3915,7 +3915,7 @@ div.no-result p {
     position: absolute;
     width: 739px;
     height: 91px;
-    background: url(img/popup-submit-top-header.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-top-header.png) 0 100% no-repeat;
 }
 #final-step-multi {
     position: relative;
@@ -3929,7 +3929,7 @@ div.no-result p {
     bottom: -58px;
     width: 645px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 100% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
 .popup-final-multi {
     padding: 0 47px 0 58px;
@@ -3948,7 +3948,7 @@ div.no-result p {
     text-align:center;
 }
 #popup-mypitches-true #popup-social-nest {
-    background: url(img/social_nest-04.png) no-repeat;
+    background: url(/img/social_nest-04.png) no-repeat;
     height:246px;
     width:468px;
 }
@@ -3960,7 +3960,7 @@ div.no-result p {
     bottom: -19px;
     width: 451px;
     height: 19px;
-    background: url(img/popup-submit-bottom.png) 0 50% no-repeat;
+    background: url(/img/popup-submit-bottom.png) 0 50% no-repeat;
 }
 
 #popup-final-step {

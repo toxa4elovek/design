@@ -60,7 +60,7 @@
 }
 .menu ul li a:hover {
     color: #fff;
-    background: url("img/menu-hover-bg.png") no-repeat;
+    background: url(/img/menu-hover-bg.png) no-repeat;
     height: 43px;
 }
 .first_li {
@@ -170,13 +170,13 @@
     width: 252px;
 }
 .auth .name {
-    background: #fff url("img/form-ico-name.png") 366px 11px no-repeat;
+    background: #fff url(img/form-ico-name.png) 366px 11px no-repeat;
 }
 .auth .email {
-    background: #fff url("img/form-ico-email.png") 366px 9px no-repeat;
+    background: #fff url(img/form-ico-email.png) 366px 9px no-repeat;
 }
 .auth .password {
-    background: #fff url("img/form-ico-password.png") 366px 10px no-repeat;
+    background: #fff url(img/form-ico-password.png) 366px 10px no-repeat;
 }
 .auth .submit {
     padding-top: 19px;
@@ -218,7 +218,7 @@
     top: 14px;
     width: 15px;
     height: 22px;
-    background: url("img/form-error-arrow.png");
+    background: url(/img/form-error-arrow.png);
     /*	width: 0;
             height: 0;
             border: solid #e1e1e1;
@@ -334,7 +334,7 @@ hr.tiny-hr {
 
 
 .rss-img-profile:before {
-    background: url("/img/rss-on-button.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url(/img/rss-on-button.png) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     content: "";
     height: 16px;
     left: 10px;
@@ -406,7 +406,7 @@ span.date-profile {
 }
 
 div.g_line {
-  background: url("img/register-login-divider.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+  background: url(/img/register-login-divider.gif) repeat-x scroll 0 0 rgba(0, 0, 0, 0);
 /*  margin: 30px 0 20px;*/
     padding-bottom: 4px;
   height: 7px;

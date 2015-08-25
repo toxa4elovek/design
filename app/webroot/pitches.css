@@ -1,6 +1,6 @@
 .conteiner{
 	position:relative;
-	background:#e0e0e0 url(img/content-bg.png);
+	background:#e0e0e0 url(/img/content-bg.png);
 	margin-top:100px;
 	border:1px solid #e0e0e0;
 	text-transform:uppercase;
@@ -10,7 +10,7 @@
 .conteiner h2{
 	height:73px;
 	background:#648fa4;
-	background-image:url(img/pitches_bg.png);
+	background-image:url(/img/pitches_bg.png);
 	background-repeat:no-repeat;
 	background-position:right -1px;
 	width:337px;
@@ -23,7 +23,7 @@
 }
 .shadow{
 	height:5px;
-	background:url(img/pitches2_bg.png) no-repeat;
+	background:url(/img/pitches2_bg.png) no-repeat;
 	margin:0 0 0 -12px;
 }
 .pitches-type{
@@ -48,7 +48,7 @@
    -moz-box-shadow: inset -1px -1px 1px #f6f4f4;
 }
 .active-pitches{
-	background:url(img/marker4.png) no-repeat 50% 95%;
+	background:url(/img/marker4.png) no-repeat 50% 95%;
 }
 .active-pitches a{
 	background:#50525a;
@@ -82,7 +82,7 @@
 }
 .navigation-pitches a span{
 	display:block;
-	background: url(img/marker5.png) no-repeat right 50%;
+	background: url(/img/marker5.png) no-repeat right 50%;
 	padding-right:24px;
 }
 .active-list > a{
@@ -185,23 +185,23 @@ tr.select-vin{
 	color:#fff;
 }
 .select-vin .icons{
-	background:#e0e0e0 url(img/icon-1.png) no-repeat 2px 10px;
+	background:#e0e0e0 url(/img/icon-1.png) no-repeat 2px 10px;
 }
 .select-vin .price{
 	color:#fff;
 	font-size:18px;
 }
 .pitch-end .icons{
-	background:#e0e0e0 url(img/icon-2.png) no-repeat 1px 10px;
+	background:#e0e0e0 url(/img/icon-2.png) no-repeat 1px 10px;
 }
 .close-and-expert .icons{
-	/*background:#e0e0e0 url(img/icon-3.png) no-repeat 1px 5px;*/
+	/*background:#e0e0e0 url(/img/icon-3.png) no-repeat 1px 5px;*/
 }
 .close .icons{
-	/*background:#e0e0e0 url(img/icon-4.png) no-repeat 1px 5px;*/
+	/*background:#e0e0e0 url(/img/icon-4.png) no-repeat 1px 5px;*/
 }
 .expert .icons{
-	/*background:#e0e0e0 url(img/icon-5.png) no-repeat 1px 5px;*/
+	/*background:#e0e0e0 url(/img/icon-5.png) no-repeat 1px 5px;*/
 }
 tr.chetn{
 	background:#2f313a;
@@ -217,7 +217,7 @@ td.pitches-name{
 }
 .pitches-name div{
 	padding:15px 0 0 40px;
-	/*background:url(img/marker.png) no-repeat 10px 16px;*/
+	/*background:url(/img/marker.png) no-repeat 10px 16px;*/
 }
 .pitches-name a{
 	color:#e3e3e3;
@@ -255,7 +255,7 @@ td.price{
 	border:none;
 	}
 .pitch-open div{
-	background:url(img/marker2.png) no-repeat 7px 16px;
+	background:url(/img/marker2.png) no-repeat 7px 16px;
 	}
 .pitch-open p{
 	text-align:left;
@@ -271,7 +271,7 @@ td.price{
 a.go-pitch{
 	padding-left:40px;
 	display:block;
-	background:url(img/marker3.png) no-repeat top right;
+	background:url(/img/marker3.png) no-repeat top right;
 	text-align:left;
 	width:140px;
 	margin-bottom:10px;
@@ -294,20 +294,20 @@ a.go-pitch{
 	float:left;
 }
 li.icons-infomation-one{
-	background:url(img/icon-5.png) no-repeat left 45%;
+	background:url(/img/icon-5.png) no-repeat left 45%;
 	width:204px;
 }
 li.icons-infomation-two{
 	padding-top:22px;
 	padding-bottom:22px;
-	background:url(img/icon-4.png) no-repeat left 50%;
+	background:url(/img/icon-4.png) no-repeat left 50%;
 }
 li.icons-infomation-three{
-	background:url(img/icon-1.png) no-repeat left 50%;
+	background:url(/img/icon-1.png) no-repeat left 50%;
 	width:204px;
 }
 li.icons-infomation-four{
-	background:url(img/icon-2.png) no-repeat left 50%;
+	background:url(/img/icon-2.png) no-repeat left 50%;
 }
 .page-nambe-nav{
 	float:right;
@@ -341,7 +341,7 @@ a.this-page{
 	float:right;
 	margin: 30px 80px 0 0;
 	padding-left:35px;
-	background:url(img/icons-6.png) no-repeat;
+	background:url(/img/icons-6.png) no-repeat;
 }
 .you-profile a{
 	color:#ff585d;

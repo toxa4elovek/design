@@ -47,17 +47,17 @@
 .separator {
 	width: auto;
 	height: 3px;
-	background: url('img/sep.png') repeat-x;
+	background: url(/img/sep.png) repeat-x;
 }
 
 a.more {
 	padding: 2px 24px 4px 1px;
-	background: url(img/a.png) no-repeat right top;
+	background: url(/img/a.png) no-repeat right top;
 }
 
 a.back {
 	padding: 2px 1px 4px 24px;
-	background: url(img/answer/back.png) no-repeat 0 0;
+	background: url(/img/answer/back.png) no-repeat 0 0;
 }
 
 a.more, a.back {
@@ -114,12 +114,12 @@ ul.menu-quest li {
 }
 
 ul.menu-quest {
-	background: url('img/sep.png') repeat-x 0 100%;
+	background: url(/img/sep.png) repeat-x 0 100%;
 	margin: 30px 0;
 }
 
 ul.menu-quest li h2 {
-	background: url('img/sep.png') repeat-x;
+	background: url(/img/sep.png/) repeat-x;
 	padding: 30px 0 30px 50px;
 }
 
@@ -139,21 +139,21 @@ ul.menu-quest li:hover a.more span {
 }
 
 ul.menu-quest li.general {
-	background: url(img/answer/home.png) no-repeat 0 25px;
+	background: url(/img/answer/home.png) no-repeat 0 25px;
 }
 
 ul.menu-quest li.client {
-	background: url(img/answer/client.png) no-repeat 0 8px;
+	background: url(/img/answer/client.png) no-repeat 0 8px;
 }
 
 
 ul.menu-quest li.designer {
-	background: url(img/answer/designer.png) no-repeat 0 20px;
+	background: url(/img/answer/designer.png) no-repeat 0 20px;
 }
 
 
 ul.menu-quest li.payment {
-	background: url(img/answer/payment.png) no-repeat 0 25px;
+	background: url(/img/answer/payment.png) no-repeat 0 25px;
 }
 
 ul.menu-quest li.same {
