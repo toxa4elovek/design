@@ -24,13 +24,13 @@
                 <li class="adv-timer ">
                     <span>2</span>
                     <h6>Срочные проекты</h6>
-                    <p>Устанавливайте как абонент свои сроки: от часа
+                    <p>Устанавливайте как абонент свои сроки: от часа<br/>
                         на внесения правок до месяцев для поиска идей!</p>
                 </li>
                 <li class="adv-rouble">
                     <span>3</span>
                     <h6>Вернём деньги</h6>
-                    <p>Мы вернем средства , если решения не понравятся.
+                    <p>Мы вернем средства , если решения не понравятся.<br/>
                         Теперь без каких-либо условий и требований.</p>
                 </li>
             </ul>
@@ -54,26 +54,20 @@
         <section class="lp-badges">
             <div class="badges-block">
                 <div class="badge" style="">
-                    <h4>тариф</h4>
-                    <h3>Предпринимательский</h3>
                     <p>Идеально для частных лиц<br/> и малого бизнеса</p>
-                    <span class="price">49000</span>
+                    <span class="price">49 000</span>
                     <span class="price-description">руб./год*</span>
                     <a href="/payments/subscribe/1" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
                 <div class="center-badge" style="">
-                    <h4>тариф</h4>
-                    <h3>Фирменный</h3>
                     <p>Идеально для среднего бизнеса<br/>и рекламных агентств</p>
-                    <span class="price">69000</span>
+                    <span class="price">69 000</span>
                     <span class="price-description">руб./год*</span>
                     <a href="/payments/subscribe/2" class="small-rounded-button red-button">Оплатить</a>
                 </div>
                 <div class="right-badge" style="">
-                    <h4>тариф</h4>
-                    <h3>Корпоративный</h3>
                     <p>Идеально для маркетинговых<br />отделов или крупных компаний</p>
-                    <span class="price">89000</span>
+                    <span class="price">89 000</span>
                     <span class="price-description">руб./год*</span>
                     <a href="/payments/subscribe/3" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
