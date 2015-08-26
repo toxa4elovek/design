@@ -18,9 +18,13 @@ class NameInflector extends Helper {
 	 *
 	 * @param string $first
 	 * @param string $second
+	 * @param bool $companyName
 	 * @return string
 	 */
-	public static function renderName($first, $second = '') {
+	public static function renderName($first, $second = '', $companyName = false) {
+		if($companyName) {
+			return $first;
+		}
 		if(strpos(trim($first), ' ')) {
 			$exploded = explode(' ', $first);
 			$first = $exploded[0];
