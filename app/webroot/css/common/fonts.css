@@ -1,23 +1,52 @@
 @font-face {
     font-family: 'OfficinaSansC Bold';
-    src: url(/fonts/officinasansboldc.eot);
-    src: url(/fonts/officinasansboldc.eot) format('embedded-opentype'),
-        url(/fonts/officinasansboldc.woff2) format('woff2'),
-        url(/fonts/officinasansboldc.woff) format('woff'),
-        url(/fonts/officinasansboldc.ttf) format('truetype'),
-        url(/fonts/officinasansboldc.svg#OfficinaSansBoldCRegular) format('svg');
+    src: url('/fonts/officinasansboldc.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/officinasansboldc.woff2') format('woff2'),
+        url('/fonts/officinasansboldc.woff') format('woff'),
+        url('/fonts/officinasansboldc.ttf') format('truetype'),
+        url('/fonts/officinasansboldc.svg#OfficinaSansBoldCRegular') format('svg');
 }
-
 @font-face {
     font-family: 'OfficinaSansC Book';
-    src: url(/fonts/officinasansbookc.eot);
-    src: url(/fonts/officinasansbookc.eot) format('embedded-opentype'),
+    src: url(/fonts/officinasansbookc.eot?#iefix) format('embedded-opentype'),
         url(/fonts/officinasansbookc.woff2) format('woff2'),
         url(/fonts/officinasansbookc.woff) format('woff'),
         url(/fonts/officinasansbookc.ttf) format('truetype'),
         url(/fonts/officinasansbookc.svg#OfficinaSansBookCRegular) format('svg');
 }
-
+@font-face {
+    font-family: 'RodeoC';
+    src: url(/fonts/rodeoc-webfont.eot?#iefix) format('embedded-opentype'),
+    url(/fonts/rodeoc-webfont.woff) format('woff'),
+    url(/fonts/rodeoc-webfont.ttf) format('truetype'),
+    url(/fonts/rodeoc-webfont.svg#RodeoCRegular) format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'RodeoC';
+    src: url(/fonts/rodeoc-bolditalic-webfont.eot?#iefix) format('embedded-opentype'),
+    url(/fonts/rodeoc-bolditalic-webfont.woff) format('woff'),
+    url(/fonts/rodeoc-bolditalic-webfont.ttf) format('truetype'),
+    url(/fonts/rodeoc-bolditalic-webfont.svg#RodeoCBoldItalic) format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'RodeoC';
+    src: url(/fonts/rodeoc-bold-webfont.eot?#iefix) format('embedded-opentype'),
+    url(/fonts/rodeoc-bold-webfont.woff) format('woff'),
+    url(/fonts/rodeoc-bold-webfont.ttf) format('truetype'),
+    url(/fonts/rodeoc-bold-webfont.svg#RodeoCBold) format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'HelveticaNeue Bold';
+    src: url(/fonts/helvetica-neue-bold.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 /*Дополнение*/
 .supplement {
     font:13px/17px "Arial", sans-serif;

@@ -1,9 +1,4 @@
-@font-face {
-    font-family: 'HelveticaNeue Bold';
-    src: url('/fonts/helvetica-neue-bold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
+
 #fastpitch {
     display: block;
     margin-top: 35px;
