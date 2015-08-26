@@ -161,25 +161,6 @@
             Или просто звоните по телефону <a href="tel:+78126482412">+7 812 648-24-12</a> с 10-17 по Москве<br />
         </section>
     </main>
-
-    <script type="text/jsx">
-        React.render(
-            <LinkStyledAsButton
-                link="/pages/howitworks"
-                text="Как это работает"
-                />,
-            document.getElementById('button1')
-        );
-        React.render(
-            <LinkStyledAsButton
-                link="/payments/subscribe"
-                text="Стать абонентом"
-                class="silver-button"
-                />,
-            document.getElementById('button2')
-        );
-    </script>
-
 </div><!-- .wrapper -->
 <?=$this->html->style(array(
     '/css/common/buttons.css',
