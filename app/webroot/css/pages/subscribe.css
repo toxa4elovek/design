@@ -231,20 +231,6 @@
     color: #fff;
     height: 368px;
 }
-.lp-badges h4 {
-    margin-top: 12px;
-    text-align: center;
-    color: #f4f4f4;
-    font-family: OfficinaSansC Bold, serif;
-    font-size: 15px;
-}
-.lp-badges h3 {
-    margin-top: 10px;
-    text-align: center;
-    color: #f4f4f4;
-    font-family: OfficinaSansC Bold, serif;
-    font-size: 23px;
-}
 .lp-badges p {
     background: url(/img/pages/subscribe/gray-tick.png) no-repeat left top;
     font-size: 11px;
@@ -275,15 +261,19 @@
     margin: 14px auto 20px auto;
 }
 .lp-badges .badge {
-    float: left; padding-top: 40px; width: 284px; height: 300px;
+    float: left;
+    padding-top: 105px; width: 284px; height: 300px;
     text-align: center;
 }
 .lp-badges .center-badge {
-    float: left; padding-top: 6px; width: 265px; height: 300px;
+    float: left; padding-top: 83px; width: 265px; height: 300px;
     text-align: center;
 }
 .lp-badges a {
-    width: 148px;
+    width: 146px;
+    height: 42px;
+    line-height: 42px;
+
 }
 .lp-badges .center-badge p {
     width: 205px;
@@ -292,9 +282,15 @@
     margin-right: 25px;
     margin-top: 40px;
 }
+.lp-badges .badge a {
+    text-shadow: 0 1px 1px rgba(255, 255, 255, .2);
+}
+.lp-badges .center-badge a{
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+}
 .lp-badges .right-badge {
     float: left;
-    padding-top: 30px;
+    padding-top: 105px;
     width: 284px;
     height: 300px;
     text-align: center;
@@ -302,7 +298,8 @@
 .lp-badges .right-badge p {
     width: 205px;
     margin-top: 50px;
-    margin-bottom: 54px;
+    margin-bottom: 40px;
+    margin-right: 34px;
 }
 .lp-badges .badges-block {
     margin: 0 auto;
