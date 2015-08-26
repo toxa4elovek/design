@@ -283,6 +283,9 @@ class User extends \lithium\storage\Session {
             }
         }
         $inflectorClassName = $this->_options['inflector'];
+        if(($this->read('user.is_company') == 1) && ($this->read('user.short_company_name') != '')) {
+            return $inflectorClassName::renderName($this->read('user.short_company_name'));
+        }
         if(!is_null($firstName) && !is_null($lastName)) {
             return $inflectorClassName::renderName($firstName, $lastName);
         }

@@ -36,7 +36,7 @@ class NameInflector extends Helper {
 		}
 
 	    $dot = ($second == '') ? '' : '.';
-		return strip_tags($first . ' ' . mb_substr($second, 0, 1, 'utf-8') . $dot);
+		return trim(strip_tags($first . ' ' . mb_substr($second, 0, 1, 'utf-8') . $dot));
 	}
 
 }
