@@ -8,8 +8,10 @@
             <p>Станьте нашим абонентом, и вы сможете создавать проекты от 500р.
                 Мы обезопасим вас от рисков работы с фрилансерами и гарантируем
                 выбор решений даже для небольших задач!</p>
-            <div id="button1" class="button-container"></div>
-            <div id="button2" class="button-container"></div>
+            <div class="button-container">
+                <a href="/pages/howitworks" class="blue-button clean-style-button ">Как это работает</a>
+                <a href="/payments/subscribe" class="clean-style-button silver-button">Стать абонентом</a>
+            </div>
         </section>
         <section class="lp-advantages paper-background">
             <h1>Преимущества абонентов</h1>
@@ -57,7 +59,7 @@
                     <p>Идеально для частных лиц<br/> и малого бизнеса</p>
                     <span class="price">49000</span>
                     <span class="price-description">руб./год*</span>
-                    <a href="/payments/subscribe/1" class="small-rounded-button almost-white">оплатить</a>
+                    <a href="/payments/subscribe/1" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
                 <div class="center-badge" style="">
                     <h4>тариф</h4>
@@ -65,7 +67,7 @@
                     <p>Идеально для среднего бизнеса<br/>и рекламных агентств</p>
                     <span class="price">69000</span>
                     <span class="price-description">руб./год*</span>
-                    <a href="/payments/subscribe/2" class="small-rounded-button almost-white">оплатить</a>
+                    <a href="/payments/subscribe/2" class="small-rounded-button red-button">Оплатить</a>
                 </div>
                 <div class="right-badge" style="">
                     <h4>тариф</h4>
@@ -73,7 +75,7 @@
                     <p>Идеально для маркетинговых<br />отделов или крупных компаний</p>
                     <span class="price">89000</span>
                     <span class="price-description">руб./год*</span>
-                    <a href="/payments/subscribe/3" class="small-rounded-button almost-white">оплатить</a>
+                    <a href="/payments/subscribe/3" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
             </div>
         </section>
