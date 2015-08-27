@@ -1092,10 +1092,12 @@ $(document).ready(function(){
         $.post('/users/update.json', data)
     });
 
-    React.render(
-        React.createElement(ProfRadioList, {data: props}),
-        document.getElementById('profselectbox')
-    );
+    if($('#profselectbox').length == 1) {
+        React.render(
+            React.createElement(ProfRadioList, {data: props}),
+            document.getElementById('profselectbox')
+        );
+    }
 
     function checkRequired(form) {
         var required = false;
@@ -1285,6 +1287,7 @@ $(document).on('click', function() {
              Ref = new Referal;
              Ref.reset({phone:$('#prop-phone').val(), phone_valid:$('#prop-phone_valid').val()});
          }else if(url.match(/users\/profile/)) {
+             $('.middle', '.wrapper').html($('.middle', response).html());
              React.render(
                  React.createElement(ProfRadioList, {data: props}),
                  document.getElementById('profselectbox')
