@@ -200,7 +200,7 @@
                         <?php if($mypitch->blank != 1 ):?>
                         <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                         <td class="idea"><?=$mypitch->ideas_count?></td>
-                        <td class="pitches-time"><a style="color:#639F6D" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">
+                        <td class="pitches-time"><a style="color:#639F6D; font-size: 11px;" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">
                         <?php if($mypitch->status == 1):?>
                                 Победа!<br/> Завершите проект!
                         <?php elseif($mypitch->status == 2): ?>
