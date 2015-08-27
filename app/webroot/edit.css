@@ -169,6 +169,10 @@ textarea.placeholder {
     bottom: 6px;
     margin-left: 4px;
 }
+.profselectbox .radio-container {
+    float: left;
+    width: 170px;
+}
 .profselectbox button {
     width: 179px;
     height: 36px;
