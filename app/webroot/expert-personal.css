@@ -11,11 +11,11 @@ h1.on-flag {
 }
 
 .expert-personal h1.on-flag {
-	background-image: url(img/images/howitworks.png);
+	background-image: url(/img/images/howitworks.png);
 }
 
 .expert-personal .faq h1.on-flag {
-	background-image: url(img/images/faq.png);
+	background-image: url(/img/images/faq.png);
 }
 
 
@@ -30,13 +30,13 @@ a.more, a.back {
 
 a.more {
 	padding: 2px 24px 4px 1px;
-	background: url(img/expert-personal/a.png) no-repeat right top;
+	background: url(/img/expert-personal/a.png) no-repeat right top;
 }
 
 
 a.back {
 	padding: 2px 1px 4px 24px;
-	background: url(img/expert-personal/back.png) no-repeat left top;
+	background: url(/img/expert-personal/back.png) no-repeat left top;
 }
 
 

@@ -42,7 +42,7 @@ a.more-editor:hover {
     right: 90px;
     width: 102px;
     height: 105px;
-    background-image: url(img/blog-onTop.png);
+    background-image: url(/img/blog-onTop.png);
     background-position: bottom;
 }
 .onTop:hover {
@@ -56,7 +56,7 @@ a.more-editor:hover {
     right: 90px;
     width: 102px;
     height: 105px;
-    background-image: url(img/blog-onTop.png);
+    background-image: url(/img/blog-onTop.png);
     background-position: bottom;
 }
 .onTopMiddle:hover {
@@ -78,7 +78,7 @@ a.more-editor:hover {
 	top: 0;
 	width: 60px;
 	height: 32px;
-	background: url(img/blog-ajax-loader.gif) #e3e3e3 top center no-repeat;
+	background: url(/img/blog-ajax-loader.gif) #e3e3e3 top center no-repeat;
 }
 #search-ajax-loader {
 	display: none;
@@ -110,7 +110,7 @@ a.more-editor:hover {
 	border: none;
 	padding: 0;
 	background-color: #5d8397;
-	background-image: url('img/blog-search.png');
+	background-image: url(/img/blog-search.png);
 	background-repeat: no-repeat;
 	background-position: left top;
 	outline: none;

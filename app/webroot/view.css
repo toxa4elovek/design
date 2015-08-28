@@ -6,13 +6,13 @@
     position:relative;
     z-index:2;
     width:967px;
-    background:url(img/about-pitch.gif) left repeat-x;
+    background:url(/img/about-pitch.gif) left repeat-x;
     height:38px;
 }
 .pitch_name{
     position:relative;
     z-index:2;
-    background:url(img/pitch-name-bg_new.png) left no-repeat;
+    background:url(/img/pitch-name-bg_new.png) left no-repeat;
     width:422px;
     height:78px;
     margin-top:-74px;
@@ -68,7 +68,7 @@ ul.social_share li{
     margin-left:-40px;
     text-transform:uppercase;
     text-decoration: none;
-    background:url(img/tooltip.png) center no-repeat;
+    background:url(/img/tooltip.png) center no-repeat;
     width:95px;
     height:44px;
     color:#999999;
@@ -264,7 +264,7 @@ span.clear{
     padding:10px;
 }
 .new-comment-user{
-    background:url(img/new-comment-user-bg.png) center no-repeat;
+    background:url(/img/new-comment-user-bg.png) center no-repeat;
     width:192px;
     height:60px;
     float:right;
@@ -289,7 +289,7 @@ span.clear{
     color:#ffffff;
     float:right;
     margin-top:38px;
-    background:url(img/new-comment-send.jpg) center no-repeat;
+    background:url(/img/new-comment-send.jpg) center no-repeat;
     width:172px;
     height:51px;
     border:5px solid #dfdfdf;
@@ -299,7 +299,7 @@ span.clear{
     clear:both;
 }
 .comment-user{
-    background:url(img/comment-user-bg.png) center no-repeat;
+    background:url(/img/comment-user-bg.png) center no-repeat;
     width:191px;
     height:59px;
     float:left;
@@ -394,7 +394,7 @@ span.clear{
     float:right;
     padding-top:1px;}
 .portfolio_gallery .medal{
-    background:url(img/icon-2.png) no-repeat;
+    background:url(/img/icon-2.png) no-repeat;
     width:28px;
     height:61px;
     position:absolute;
@@ -447,7 +447,7 @@ a.number_img_gallery {
     line-height:1em;}
 .portfolio_gallery .red_arrow{
     display:block;
-    background:url(img/add_pdf_arrow.png) no-repeat center 3px;
+    background:url(/img/add_pdf_arrow.png) no-repeat center 3px;
     width:57px;
     height:74px;
     margin:0 auto;
@@ -496,7 +496,7 @@ a.number_img_gallery {
     width: 10px;
     height: 10px;
     opacity: .5;
-    background-image: url(img/bubble-close.png);
+    background-image: url(/img/bubble-close.png);
     background-position: center bottom;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -619,16 +619,16 @@ a.number_img_gallery {
 
 #tooltip {
     /*padding: 4px 0 4px 0 !important;
-    background: url(img/tooltip-bg-top-stripe.png) top center no-repeat !important;*/
+    background: url(/img/tooltip-bg-top-stripe.png) top center no-repeat !important;*/
     padding: 4px 0 0 0 !important;
-    background: url(img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;
+    background: url(/img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;
 }
 .tooltip-wrap {
     font-size: 14px;
     /*padding: 16px 10px 39px 16px;*/
-    background: url(img/tooltip-bottom-bg.png) 0 100% no-repeat !important;
+    background: url(/img/tooltip-bottom-bg.png) 0 100% no-repeat !important;
     padding: 10px 10px 22px 10px;
-    /*background: url(img/tooltip-top-bg.png) no-repeat;*/
+    /*background: url(/img/tooltip-top-bg.png) no-repeat;*/
 }
 #tooltipContent {
     width:200px;
@@ -636,11 +636,11 @@ a.number_img_gallery {
 }
 #tooltip2 {
     padding: 4px 0 0 0 !important;
-    background: url(img/tooltip-bg2-top-stripe.png) 0 0 no-repeat !important;
+    background: url(/img/tooltip-bg2-top-stripe.png) 0 0 no-repeat !important;
 }
 #tooltip2 .tooltip-wrap {
     padding: 10px 10px 22px 10px;
-    background: url(img/tooltip-bottom-bg2.png) 0 100% no-repeat !important;
+    background: url(/img/tooltip-bottom-bg2.png) 0 100% no-repeat !important;
 }
 #tooltip2 .tooltip-wrap #tooltipContent {
     width: 180px;
@@ -649,11 +649,11 @@ a.number_img_gallery {
 }
 #tooltip3 {
     padding: 4px 0 0 0 !important;
-    background: url(img/tooltip-bg2-top-stripe.png) 0 0 no-repeat !important;
+    background: url(/img/tooltip-bg2-top-stripe.png) 0 0 no-repeat !important;
 }
 #tooltip3 .tooltip-wrap {
     padding: 10px 10px 22px 10px;
-    background: url(img/tooltip-bottom-bg2.png) 0 100% no-repeat !important;
+    background: url(/img/tooltip-bottom-bg2.png) 0 100% no-repeat !important;
 }
 #tooltip3 .tooltip-wrap #tooltipContent {
     width: 180px;
@@ -662,11 +662,11 @@ a.number_img_gallery {
 }
 /*#tooltip.tooltip-pos-bottom {
     padding: 4px 0 0 0 !important;
-    background: url(img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;
+    background: url(/img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;
 }
 .tooltip-pos-bottom .tooltip-wrap {
     padding: 16px 10px 39px 16px;
-    background: url(img/tooltip-bottom-bg.png) 100% 100% no-repeat !important;
+    background: url(/img/tooltip-bottom-bg.png) 100% 100% no-repeat !important;
 }
 
 #tooltipContent ul{
@@ -680,7 +680,7 @@ a.number_img_gallery {
     float: left;
     position: relative;
     margin-right: -20px;
-    background-image: url(img/tab-curve.png);
+    background-image: url(/img/tab-curve.png);
     background-position: left top;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -812,7 +812,7 @@ a.order-button:hover {
     top: 80px;
     width: 40px;
     height: 25px;
-    background-image: url('img/designer-arrow-sprite.png');
+    background-image: url('/img/designer-arrow-sprite.png');
     background-repeat: no-repeat;
 }
 .portfolio_gallery.designers_tab .designer_wrapper .scroll_right i {
@@ -877,7 +877,7 @@ a.order-button:hover {
     border: none;
     padding: 0;
     background-color: #5d8397;
-    background-image: url('img/blog-search.png');
+    background-image: url('/img/blog-search.png');
     background-repeat: no-repeat;
     background-position: left top;
     outline: none;

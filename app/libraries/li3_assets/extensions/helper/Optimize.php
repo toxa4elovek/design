@@ -170,7 +170,6 @@ class Optimize extends \lithium\template\Helper {
         // Before any compression and combination is done, order the styles.
         // Sort them all by a "weight" key set like: $this->html->style('mystyle.css', array('weight' => 1))
         $ordered_styles = $this->_context->styles;
-
         foreach ($ordered_styles as $key => $value) {
             if(preg_match('/href="(\/.*)\.css"/', $value, $matches)) {
                 $sheet = $webroot . Media::asset($matches[1], 'css');
@@ -246,11 +245,11 @@ class Optimize extends \lithium\template\Helper {
                 }
             }
         }
-
         // Check compression type and compress/combine
         if(!empty($library['config']['css']['compression'])) {
             $css = '';
             if(!file_exists($webroot . $output_file)) {
+                $sheets = array();
                 // true is just basic compression and combination. Basically remove white spaces and line breaks where possible.
                 if($library['config']['css']['compression'] === true) {
                     foreach($this->_context->styles as $file) {
@@ -260,16 +259,22 @@ class Optimize extends \lithium\template\Helper {
                         }
                         if(preg_match('/\/css\/(.*)"/', $file, $matches)) {
                             $sheet = $webroot . Media::asset($matches[1], 'css');
-                            // It is possible that a reference to a file that does not exist was passed
-                            if(file_exists($sheet)) {
-                                $css .= file_get_contents($sheet);
+                            if(!in_array($sheet, $sheets)) {
+                                $sheets[] = $sheet;
+                                // It is possible that a reference to a file that does not exist was passed
+                                if(file_exists($sheet)) {
+                                    $css .= file_get_contents($sheet);
+                                }
                             }
                         }
                         if(preg_match('/href="(\/.*)\.css"/', $file, $matches)) {
                             $sheet = $webroot . Media::asset($matches[1], 'css');
-                            // It is possible that a reference to a file that does not exist was passed
-                            if(file_exists($sheet)) {
-                                $css .= file_get_contents($sheet);
+                            if(!in_array($sheet, $sheets)) {
+                                $sheets[] = $sheet;
+                                // It is possible that a reference to a file that does not exist was passed
+                                if(file_exists($sheet)) {
+                                    $css .= file_get_contents($sheet);
+                                }
                             }
                         }
                     }

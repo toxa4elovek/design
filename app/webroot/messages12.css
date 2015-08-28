@@ -3,16 +3,16 @@
 }
 .messages {
 	padding: 0 0 0 62px;
-	background: #E0E0E0 url(img/content-bg.png)
+	background: #E0E0E0 url(/img/content-bg.png)
 }
 .messages_gallery {
 	padding: 0 0 0 0px;
-	background: #E0E0E0 url(img/content-bg.png)
+	background: #E0E0E0 url(/img/content-bg.png)
 }
 .separator {
 	width: 745px;
 	height: 3px;
-	background: url('img/sep.png') repeat-x;
+	background: url('/img/sep.png') repeat-x;
 	margin: 28px 0 0 38px;
 }
 .messages_titles {
@@ -34,17 +34,17 @@
 	margin: 15px 0 0 38px;
 }
 .all_messages .first_msg {
-	background: url('img/all_messages.png') no-repeat;
+	background: url('/img/all_messages.png') no-repeat;
 	width: 207px;
 	height: 36px;
 	text-align: center;
 	float: left;
 }
 .all_messages .first_msg:hover {
-	background: url('img/all_messages_hover.png') no-repeat;
+	background: url('/img/all_messages_hover.png') no-repeat;
 }
 .all_messages .second_msg {
-	background: url('img/correspondence.png') no-repeat;
+	background: url('/img/correspondence.png') no-repeat;
 	width: 542px;
 	height: 36px;
 	text-align: center;	
@@ -59,7 +59,7 @@
 	line-height: 36px;
 }	
 .all_messages .first_msg:hover {
-	background: url('img/all_messages_hover.png') no-repeat;
+	background: url('/img/all_messages_hover.png') no-repeat;
 }
 .messages section form, .messages_gallery section form {
 	margin: 15px 0 0 38px;
@@ -74,7 +74,7 @@
 	margin: 0 0 0 13px;
 }
 .messages section form .messages_info, .messages_gallery section form .messages_info {
-	background: url('img/message-info-bg.png') no-repeat;
+	background: url('/img/message-info-bg.png') no-repeat;
 	width: 191px;
 	height: 59px;
 	font: bold 11px/1 "HelveticaCE35", sans-serif;
@@ -88,7 +88,7 @@
 	line-height: 41px;
 }
 .message_info2, .messages_gallery .message_info2 {
-	background: url('img/message-info2-bg.png') no-repeat;
+	background: url('/img/message-info2-bg.png') no-repeat;
 	width: 191px;
 	height: 54px;
 	font: bold 11px/1 "Arial", sans-serif;
@@ -99,7 +99,7 @@
 	margin: 28px 0 0 38px;
 }
 .message_info1, .messages_gallery .message_info1 {
-	background: url('img/messages_hover_03.png') no-repeat;
+	background: url('/img/messages_hover_03.png') no-repeat;
 	width: 191px;
 	height: 54px;
 	font: bold 11px/1 "Arial", sans-serif;
@@ -110,7 +110,7 @@
 	margin: 28px 0 0 38px;
 }
 .message_info5, .messages_gallery .message_info5 {
-    background: url('img/message-info-bg_04-e.png') no-repeat;
+    background: url('/img/message-info-bg_04-e.png') no-repeat;
     width: 191px;
     height: 54px;
     font: bold 11px/1 "Arial", sans-serif;
@@ -221,17 +221,17 @@
 	margin: 18px 117px 0 0;
 	width: 49px;
 	height: 28px;
-	background: url('img/marker10.png') no-repeat;
+	background: url('/img/marker10.png') no-repeat;
 }
 .checkbox_red {
 	float: right;
 	margin: 18px 117px 0 0;
 	width: 49px;
 	height: 28px;
-	background: url('img/marker11.png') no-repeat;
+	background: url('/img/marker11.png') no-repeat;
 }
 .message_info3 {
-	background: url('img/message-info-bg_02.png') no-repeat;
+	background: url('/img/message-info-bg_02.png') no-repeat;
 	width: 191px;
 	height: 54px;
 	font: bold 11px/1 "HelveticaCE35", sans-serif;
@@ -251,7 +251,7 @@
 }
 
 .message_info4 {
-	background: url('img/message-info-bg_04.png') no-repeat;
+	background: url('/img/message-info-bg_04.png') no-repeat;
 	width: 142px;
 	height: 54px;
 	font: bold 11px/1 "HelveticaCE35", sans-serif;

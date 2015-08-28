@@ -1,7 +1,13 @@
+/* Стиль для кнопок без границ */
 .clean-style-button {
-    border: 0!important;
-    border-radius: 0!important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 30px;
+    text-align: center;
+    text-transform: uppercase;
 }
+
+/* Серебристая кнопка */
 .silver-button {
     text-shadow: 0 1px 1px rgba(255, 255, 255, .2);
     color: #717171 !important;
@@ -24,6 +30,32 @@
     background:      -o-linear-gradient(#cccccc, #f2f2f2) !important;
     background:         linear-gradient(#cccccc, #f2f2f2) !important;
 }
+
+/* Синяя кнопка */
+.blue-button {
+    background: #5d8397;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#658fa5), to(#537587));
+    background: -webkit-linear-gradient(#658fa5, #537587);
+    background:    -moz-linear-gradient(#658fa5, #537587);
+    background:     -ms-linear-gradient(#658fa5, #537587);
+    background:      -o-linear-gradient(#658fa5, #537587);
+    background:         linear-gradient(#658fa5, #537587);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    color: #fff;
+}
+.blue-button:hover {
+    background: #6690a6;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#6f9db5), to(#5c8296));
+    background: -webkit-linear-gradient(#6f9db5, #5c8296);
+    background:    -moz-linear-gradient(#6f9db5, #5c8296);
+    background:     -ms-linear-gradient(#6f9db5, #5c8296);
+    background:      -o-linear-gradient(#6f9db5, #5c8296);
+    background:         linear-gradient(#6f9db5, #5c8296);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    color: #fff;
+}
+
+/* маленькая кнопка с лендинга с четкими границами и легким скруглением */
 .small-rounded-button {
     height: 39px;
     display: inline-block;
@@ -34,12 +66,14 @@
     line-height: 39px;
     border-radius: 2px;
 }
+
+/* Очень светлый цвет, почти белый */
 .almost-white {
     font-family: OfficinaSansC Bold, serif;
     font-size: 15px;
     text-align: center;
     text-shadow: 0 1px 1px rgba(255, 255, 255, .2);
-    color: #666666;
+    color: #858585;
     outline-width: 0;
     outline: none;
     background: #cccccc;
@@ -51,7 +85,7 @@
     background:         linear-gradient(#efefef, #e3e3e3) !important;
 }
 .almost-white:hover {
-    color: #666666;
+    color: #858585;
     background: #cccccc;
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#e3e3e3), to(#efefef)) !important;
     background: -webkit-linear-gradient(#e3e3e3, #efefef) !important;
@@ -59,4 +93,34 @@
     background:     -ms-linear-gradient(#e3e3e3, #efefef) !important;
     background:      -o-linear-gradient(#e3e3e3, #efefef) !important;
     background:         linear-gradient(#e3e3e3, #efefef) !important;
+}
+
+/* Красная кнопка */
+.red-button {
+    font-family: OfficinaSansC Bold, serif;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, .2);
+    color: #ffffff;
+    outline-width: 0;
+    outline: none;
+    background: #cccccc;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#fa5c62), to(#d84747)) !important;
+    background: -webkit-linear-gradient(#fa5c62, #d84747) !important;
+    background:    -moz-linear-gradient(#fa5c62, #d84747) !important;
+    background:     -ms-linear-gradient(#fa5c62, #d84747) !important;
+    background:      -o-linear-gradient(#fa5c62, #d84747) !important;
+    background:         linear-gradient(#fa5c62, #d84747) !important;
+}
+.red-button:hover {
+    color: #ffffff;
+    background: #cccccc;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#d84747), to(#fa5c62)) !important;
+    background: -webkit-linear-gradient(#d84747, #fa5c62) !important;
+    background:    -moz-linear-gradient(#d84747, #fa5c62) !important;
+    background:     -ms-linear-gradient(#d84747, #fa5c62) !important;
+    background:      -o-linear-gradient(#d84747, #fa5c62) !important;
+    background:         linear-gradient(#d84747, #fa5c62) !important;
 }

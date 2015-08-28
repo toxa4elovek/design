@@ -1089,6 +1089,10 @@ class UsersController extends \app\controllers\AppController {
         return compact('user', 'winners', 'passwordInfo', 'emailInfo');
     }
 
+    /**
+     * Метод для смены данных пользователя на страницы настроек
+     *
+     */
     public function update() {
         $user = User::first(Session::read('user.id'));
         $currentEmail = $user->email;
@@ -1119,18 +1123,30 @@ class UsersController extends \app\controllers\AppController {
             }
             if(isset($this->request->data['isClient'])) {
                 $shortUpdate = true;
+                $user->isDesigner = 0;
+                $user->isCopy = 0;
                 $user->isClient = $this->request->data['isClient'];
+                $user->is_company = 0;
             }
             if(isset($this->request->data['isDesigner'])) {
                 $shortUpdate = true;
                 $user->isDesigner = $this->request->data['isDesigner'];
+                $user->isCopy = 0;
+                $user->isClient = 0;
+                $user->is_company = 0;
             }
             if(isset($this->request->data['isCopy'])) {
                 $shortUpdate = true;
+                $user->isDesigner = 1;
                 $user->isCopy = $this->request->data['isCopy'];
+                $user->isClient = 0;
+                $user->is_company = 0;
             }
             if(isset($this->request->data['is_company'])) {
                 $shortUpdate = true;
+                $user->isDesigner = 0;
+                $user->isCopy = 0;
+                $user->isClient = 0;
                 $user->is_company = $this->request->data['is_company'];
             }
             if(isset($this->request->data['birthdate'])) {
@@ -1155,8 +1171,9 @@ class UsersController extends \app\controllers\AppController {
             }
             if($shortUpdate) {
                 $result = $user->save(null, array('validate' => false));
+                $data = $this->request->data;
                 if ($this->request->is('json')) {
-                    return compact('result');
+                    return compact('result', 'data');
                 }else {
                     return $this->redirect('/users/profile');
                 }

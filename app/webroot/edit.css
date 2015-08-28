@@ -1,17 +1,4 @@
-/* by JIesnik <design@jiesnik.ru>, 2011-2012 */
-@font-face {
-    font-family: 'RodeoC';
-    src: url('fonts/rodeoc-webfont.eot');
-    src: url('fonts/rodeoc-webfont.eot?#iefix') format('embedded-opentype'),
-        url('fonts/rodeoc-webfont.woff') format('woff'),
-        url('fonts/rodeoc-webfont.ttf') format('truetype'),
-        url('fonts/rodeoc-webfont.svg#RodeoCRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-/*a, a:link, a:active, a:hover, a:visited {
-        color: #b9b9b9;
-}*/
+
 input, input[type="text"], input[type="email"], input[type="tel"], input[type="password"], textarea {
     border: none;
     -webkit-box-shadow: inset 2px 2px 2px rgba(0, 0, 0, .2);
@@ -51,11 +38,11 @@ textarea.placeholder {
     z-index: 5;
 }
 .logo a {
-    background: url('img/logo-dark.png');
+    background: url(/img/logo-dark.png);
 }
 .main {
     padding: 65px 60px 35px 60px;
-    background: url("img/userpage-background.png") repeat;
+    background: url(/img/userpage-background.png) repeat;
 }
 .header {
     margin-bottom: 0px;
@@ -91,10 +78,10 @@ textarea.placeholder {
     color: #b9b9b9;
 }
 .usermenu li:hover {
-    background: url("img/usermenu-hover.png") top no-repeat;
+    background: url(/img/usermenu-hover.png) top no-repeat;
 }
 .usermenu li.selected-usermenu-item {
-    background: url("img/usermenu-selected.png") top no-repeat;
+    background: url(/img/usermenu-selected.png) top no-repeat;
 }
 .usermenu a {
     color: #b9b9b9;
@@ -112,13 +99,13 @@ textarea.placeholder {
     font: normal 100%/3.3em "RodeoC", sans-serif;
     color: #b9b9b9;
     height: 38px;
-    background: url("img/userpage-separator.png") no-repeat;
+    background: url(/img/userpage-separator.png) no-repeat;
     text-align: center;
     margin: 25px 0px 25px 0px;
 }
 .separator-flag-empty {
     height: 38px;
-    background: url("img/userpage-separator-empty.png") no-repeat 110px 0;
+    background: url(/img/userpage-separator-empty.png) no-repeat 110px 0;
     text-align: center;
     margin: 25px 0 25px 0;
 }
@@ -182,6 +169,10 @@ textarea.placeholder {
     bottom: 6px;
     margin-left: 4px;
 }
+.profselectbox .radio-container {
+    float: left;
+    width: 170px;
+}
 .profselectbox button {
     width: 179px;
     height: 36px;
@@ -205,7 +196,7 @@ textarea.placeholder {
     color: #ffffff!important;
 }
 #profselect2 {
-    margin: 0px 37px 0px;
+    margin: 0 37px 0;
 }
 
 /* Field blocks */
@@ -290,13 +281,13 @@ textarea.placeholder {
     font: 1.5em "RodeoC", sans-serif;
     text-decoration: none;
     display: block;
-    background: url("img/button-goout.png") top center no-repeat;
+    background: url(/img/button-goout.png) top center no-repeat;
     padding-top: 40px;
     color: #bababa;
     text-align: center;
 }
 .profile-link a:hover {
-    background: url("img/button-goout-hover.png") top center no-repeat;
+    background: url(/img/button-goout-hover.png) top center no-repeat;
     color: #50525a;
 }
 
@@ -314,7 +305,7 @@ textarea.placeholder {
 
 #block1 {
     display: table;
-    background: url('img/winners-background.png') center no-repeat;
+    background: url(/img/winners-background.png) center no-repeat;
     height: 118px;
 }
 #block1left, #block1right {
@@ -326,10 +317,10 @@ textarea.placeholder {
     cursor: pointer;
 }
 #block1left {
-    background: url('img/winners-left.png') center no-repeat;
+    background: url(/img/winners-left.png) center no-repeat;
 }
 #block1right {
-    background: url('img/winners-right.png') center no-repeat;
+    background: url(/img/winners-right.png) center no-repeat;
 }
 #block1middle {
     display: table-cell;
@@ -412,11 +403,11 @@ textarea.placeholder {
     margin-top:-70px;
 }
 .other-nav-right img {
-    background: url(img/give-solution.gif) 0 0;
+    background: url(/img/give-solution.gif) 0 0;
 }
 
 .other-nav-right:hover img {
-    background: url(img/give-solution.gif) 0 -36px;
+    background: url(/img/give-solution.gif) 0 -36px;
 }
 #deleteaccount:hover {
     text-decoration: underline;
@@ -457,7 +448,7 @@ textarea.placeholder {
 .referal-table {
     border-collapse: collapse;
     width: 613px;
-    background: url('/img/referal-table-bg.jpg') repeat-y #fff;
+    background: url(/img/referal-table-bg.jpg) repeat-y #fff;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, .25);
     color: #999;
     font: 14px/17px "Arial", sans-serif;
@@ -468,7 +459,7 @@ textarea.placeholder {
 }
 .referal-table tr.active {
     color: #7ea563;
-    background: url('/img/referal-table-active.png') 6px center no-repeat;
+    background: url(/img/referal-table-active.png) 6px center no-repeat;
 }
 .referal-table td {
     display: inline-block;

@@ -50,13 +50,13 @@
 }
 .menu ul li a:hover {
 	color: #fff;
-	background: url("img/menu-hover-bg.png") no-repeat;
+	background: url("/img/menu-hover-bg.png") no-repeat;
 	height: 43px;
 }
 
 .office-selected {
     color: #fff;
-    background: url("img/menu-hover-bg.png") no-repeat;
+    background: url("/img/menu-hover-bg.png") no-repeat;
     height: 43px;
 }
 
@@ -70,7 +70,7 @@ td.pitches-name {
 }
 .pitches-name div {
 	padding: 15px 0 0 40px;
-	/*background: none;url(img/marker6.png) no-repeat 10px 18px;*/
+	/*background: none;url(/img/marker6.png) no-repeat 10px 18px;*/
 }
 .pitches-name span {
 	display: block;
@@ -82,7 +82,7 @@ td.pitches-name {
 	padding: 0 18px 0 0;
 }
 .marked .icons  {
-	background: #e0e0e0 url(img/icon-1.png) no-repeat 2px 10px !important;
+	background: #e0e0e0 url(/img/icon-1.png) no-repeat 2px 10px !important;
 }
 .pitch-end .icons {
 	background: #e0e0e0;
@@ -108,7 +108,7 @@ a.this-page {
 }
 .title {
 	width: 829px;
-	background: url(img/pitches2_title_separate.png) repeat-x 0 30px;
+	background: url(/img/pitches2_title_separate.png) repeat-x 0 30px;
 	text-align: center;
 	margin: 0 auto;
 	padding-top: 30px;
@@ -121,7 +121,7 @@ a.this-page {
 	line-height: 38px;
 	vertical-align: middle;
 	display: inline-block;
-	background: url(img/pitches2_title_bg.png) repeat-x;
+	background: url(/img/pitches2_title_bg.png) repeat-x;
 	width: 220px;
 	margin: -17px 0 19px 0;
 }

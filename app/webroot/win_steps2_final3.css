@@ -1,5 +1,5 @@
 ul li a.active {
-    background: url(img/main_nav_active.jpg) no-repeat 0 0;
+    background: url(/img/main_nav_active.jpg) no-repeat 0 0;
     color: #fff;
     line-height: 39px;
     height: 43px;
@@ -8,7 +8,7 @@ ul li a.active span {
     display: inline-block;
     width: 100%;
     height: 100%;
-	background: url(img/manin_nav_active_arrow.jpg) no-repeat 50% bottom;
+	background: url(/img/manin_nav_active_arrow.jpg) no-repeat 50% bottom;
 	color: #fff;
 }
 .solutions {
@@ -38,21 +38,21 @@ ul li a.active span {
 .requisites {
 	width: 209px;
 	height: 37px;
-	background: url('img/requisites-bg.png') no-repeat;
+	background: url('/img/requisites-bg.png') no-repeat;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 37px;
 	float: left;
 }
 .requisites:hover {
-	background: url('img/layouts-bg.png') no-repeat;
+	background: url('/img/layouts-bg.png') no-repeat;
 }
 .requisites:hover a {
 	color: #fff;
-	background: url('img/layouts-bg.png') no-repeat;
+	background: url('/img/layouts-bg.png') no-repeat;
 }
 .requisites_active {
-	background: url('img/layouts-bg.png') no-repeat;
+	background: url('/img/layouts-bg.png') no-repeat;
 	width: 209px;
 	height: 37px;
 	text-align: center;
@@ -75,7 +75,7 @@ ul li a.active span {
 .source {
 	width: 277px;
 	height: 37px;
-	background: url('img/source-bg.png') no-repeat;
+	background: url('/img/source-bg.png') no-repeat;
 	text-align:	center;
 	vertical-align: middle;
 	line-height: 37px;
@@ -85,7 +85,7 @@ ul li a.active span {
 .source-nonactive {
     width: 277px;
     height: 37px;
-    background: url('img/source-bg.png') no-repeat;
+    background: url('/img/source-bg.png') no-repeat;
     text-align:	center;
     vertical-align: middle;
     line-height: 37px;
@@ -108,7 +108,7 @@ ul li a.active span {
 .source_active {
     width: 277px;
     height: 37px;
-    background: url('img/source-hover-bg.png') no-repeat;
+    background: url('/img/source-hover-bg.png') no-repeat;
     color: #fff;
     text-align:	center;
     vertical-align: middle;
@@ -117,7 +117,7 @@ ul li a.active span {
     margin-left: -18px;
 }
 .source:hover {
-	background: url('img/source-hover-bg.png') no-repeat;
+	background: url('/img/source-hover-bg.png') no-repeat;
 	color: #fff;
 }
 .source:hover a {
@@ -129,7 +129,7 @@ ul li a.active span {
 .rating {
 	width: 188px;
 	height: 37px;
-	background: url('img/rating-bg.png') no-repeat;
+	background: url('/img/rating-bg.png') no-repeat;
 	text-align:	center;
 	vertical-align: middle;
 	line-height: 37px;
@@ -139,7 +139,7 @@ ul li a.active span {
 .rating-nonactive {
     width: 188px;
     height: 37px;
-    background: url('img/rating-bg.png') no-repeat;
+    background: url('/img/rating-bg.png') no-repeat;
     text-align:	center;
     vertical-align: middle;
     line-height: 37px;
@@ -153,7 +153,7 @@ ul li a.active span {
 	font-size: 11px;
 }
 .rating:hover {
-	background: url('img/rating-hover-bg.png') no-repeat;
+	background: url('/img/rating-hover-bg.png') no-repeat;
 }
 .rating:hover a {
 	color: #fff;
@@ -161,7 +161,7 @@ ul li a.active span {
 .rating_active {
     width: 188px;
     height: 37px;
-    background: url('img/rating-hover-bg.png') no-repeat;
+    background: url('/img/rating-hover-bg.png') no-repeat;
     text-align:	center;
     vertical-align: middle;
     line-height: 37px;
@@ -222,7 +222,7 @@ ul li a.active span {
 .separator {
 	width: 608px;
 	height: 3px;
-	background: url('img/sep.png') repeat-x;
+	background: url('/img/sep.png') repeat-x;
 	margin: 60px 0 0 0;
 }
 .message_inf {
@@ -250,7 +250,7 @@ ul li a.active span {
 .file {
 	width: 173px;
 	height: 22px;
-	background: url('img/file-bg.png') no-repeat;
+	background: url('/img/file-bg.png') no-repeat;
 	text-align: right;
 }
 .file img {
@@ -264,7 +264,7 @@ ul li a.active span {
 	padding: 0 10px 0 0;
 }
 .message_info3 {
-	background: url('img/message-info-bg_02.png') no-repeat;
+	background: url('/img/message-info-bg_02.png') no-repeat;
 	width: 175px;
 	height: 59px;
 	font: bold 11px/1 "HelveticaCE35", sans-serif;
@@ -367,7 +367,7 @@ ul li a.active span {
 .photo-png {
 	width: 179px;
 	height: 135px;
-	background: url('img/user-photo.png') no-repeat;
+	background: url('/img/user-photo.png') no-repeat;
 }
 .photo-png img {
 	margin-left: 144px;

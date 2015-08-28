@@ -27,11 +27,18 @@
 }
 .button-container {
     text-align: center;
-    margin-bottom: 20px;
+    width: 416px;
+    margin: 0 auto;
 }
 .button-container a {
-    width: 355px;
-    height: 52px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    display: block;
+    width: 356px;
+    height: 54px;
+    line-height: 54px;
+    font-size: 11px;
+    margin-bottom: 20px;
+    text-decoration: none;
 }
 .lp-advantages {
     height: 724px;
@@ -51,6 +58,7 @@
     font-size: 25px;
     color: #666666;
     padding-bottom: 30px;
+    text-shadow: -1px 0 0 #FFFFFF;
 }
 .lp-advantages p {
     line-height: 27px;
@@ -148,15 +156,17 @@
 }
 .tariff-table thead td{
     background-color: #e8e8e8;
-    font-family: OfficinaSansC Bold, serif;
+    font-family: OfficinaSansC Bold, serif !important;
     font-size: 16px;
     color: #666666;
     padding-left: 10px;
     padding-right: 10px;
     text-align: center;
+    padding-top: 5px;
+    height: 33px;
 }
 .tariff-table tbody td{
-    font-family: OfficinaSansC Book, serif;
+    font-family: OfficinaSansC Book, serif !important;
     font-size: 18px;
     color: #666666;
     padding-left: 10px;
@@ -185,7 +195,7 @@
 .footer-table h5{
     font-size: 30px;
     font-family: OfficinaSansC Bold, serif;
-    color: #666666;
+    color: #7f7e7e;
     margin-bottom: 10px;
 }
 .footer-table .description {
@@ -201,7 +211,7 @@
     font-size: 15px;
     text-align: center;
     padding-top: 20px;
-    color: #666666;
+    color: #7f7e7e;
 }
 .footer-table .try a {
     margin-top: 10px;
@@ -221,20 +231,6 @@
     color: #fff;
     height: 368px;
 }
-.lp-badges h4 {
-    margin-top: 20px;
-    text-align: center;
-    color: #f4f4f4;
-    font-family: OfficinaSansC Bold, serif;
-    font-size: 15px;
-}
-.lp-badges h3 {
-    margin-top: 10px;
-    text-align: center;
-    color: #f4f4f4;
-    font-family: OfficinaSansC Bold, serif;
-    font-size: 23px;
-}
 .lp-badges p {
     background: url(/img/pages/subscribe/gray-tick.png) no-repeat left top;
     font-size: 11px;
@@ -244,12 +240,12 @@
     padding-left: 25px;
     text-align: center;
     width: 175px;
-    margin: 35px auto 0 auto;
+    margin: 50px auto 0 auto;
 }
 .lp-badges .price {
     font-family: OfficinaSansC Bold, serif;
     font-size: 44px;
-    color: #666666;
+    color: #858585;
     display: block;
     text-align: center;
     width: 175px;
@@ -258,22 +254,26 @@
 .lp-badges .price-description {
     font-family: OfficinaSansC Bold, serif;
     font-size: 18px;
-    color: #666666;
+    color: #858585;
     display: block;
     text-align: center;
     width: 175px;
     margin: 14px auto 20px auto;
 }
 .lp-badges .badge {
-    float: left; padding-top: 40px; width: 284px; height: 300px;
+    float: left;
+    padding-top: 105px; width: 284px; height: 300px;
     text-align: center;
 }
 .lp-badges .center-badge {
-    float: left; padding-top: 6px; width: 265px; height: 300px;
+    float: left; padding-top: 83px; width: 265px; height: 300px;
     text-align: center;
 }
 .lp-badges a {
-    width: 148px;
+    width: 146px;
+    height: 42px;
+    line-height: 42px;
+
 }
 .lp-badges .center-badge p {
     width: 205px;
@@ -282,16 +282,24 @@
     margin-right: 25px;
     margin-top: 40px;
 }
+.lp-badges .badge a {
+    text-shadow: 0 1px 1px rgba(255, 255, 255, .2);
+}
+.lp-badges .center-badge a{
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+}
 .lp-badges .right-badge {
     float: left;
-    padding-top: 30px;
+    padding-top: 105px;
     width: 284px;
     height: 300px;
     text-align: center;
 }
 .lp-badges .right-badge p {
     width: 205px;
-    margin-top: 40px;
+    margin-top: 50px;
+    margin-bottom: 40px;
+    margin-right: 34px;
 }
 .lp-badges .badges-block {
     margin: 0 auto;

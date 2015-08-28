@@ -40,16 +40,35 @@
                             </div>
                             <div class="clr"></div>
                         </div>
-                        <div class="profselectbox">
-                            <input type="hidden" name="isDesigner" value="0">
-                            <input type="hidden" name="isClient" value="0">
-                            <input type="hidden" name="isCopy" value="0">
-                            <input type="hidden" name="is_company" value="0">
-                            <label><input type="checkbox" name="isDesigner" value="1" id="isdesigner" <?php if($user->isDesigner): echo 'checked'; endif; ?> />Я — дизайнер</label>
-                            <label style="margin-left: 83px;"><input type="checkbox" name="isClient" value="1" id="iscustomer" <?php if($user->isClient): echo 'checked'; endif; ?> />Я — заказчик</label>
-                            <label style="margin-left: 76px;"><input type="checkbox" name="isCopy" value="1" id="iscopyrighter" <?php if($user->isCopy): echo 'checked'; endif; ?> />Я — копирайтер</label>
-                            <label style="margin-left: 55px;"><input type="checkbox" name="is_company" value="1" <?php if($user->is_company): echo 'checked'; endif; ?> />Я — юр. лицо</label>
-                        </div>
+                        <script>
+                            var props = [
+                                {
+                                    "name": "isDesigner",
+                                    "title": "Я — дизайнер",
+                                    "isDesigner": <?= $user->isDesigner ?>,
+                                    "margin-left": "0"
+                                },
+                                {
+                                    "name": "isClient",
+                                    "title": "Я — заказчик",
+                                    "isDesigner": <?= $user->isClient ?>,
+                                    "margin-left": "47px"
+                                },
+                                {
+                                    "name": "isCopy",
+                                    "title": "Я — копирайтер",
+                                    "isDesigner": <?= $user->isCopy ?>,
+                                    "margin-left": "43px"
+                                },
+                                {
+                                    "name": "is_company",
+                                    "title": "Я — юр. лицо",
+                                    "isDesigner": <?= $user->is_company?>,
+                                    "margin-left": "40px"
+                                }
+                            ];
+                        </script>
+                        <div class="profselectbox" id="profselectbox"></div>
                     </section>
                 </form>
 
@@ -305,7 +324,10 @@
                 <section class="user-company-section" <?php if($user->is_company == 0):?>style="display: none;"<?php endif?>>
                     <h1 class="section-header">Реквизиты вашей компании</h1>
                     <form id="company-payment-data" action="/users/update" method="post">
-                        <input type="text" required maxlength="10" name="short_company_name" value="<?= $user->short_company_name?>" placeholder="Краткое название компании">
+                        <label>
+                            <input type="text" required maxlength="10" name="short_company_name" value="<?= $user->short_company_name?>" placeholder="Краткое название компании" style="margin-right: 30px;">
+                            <span style="font-size: 14px;position: relative; top: 2px;">Это название будет отображаться вместо вашего имени</span>
+                        </label>
                         <input type="text" required data-content="mixed" name="company_name" value="<?= $company['company_name']?>" placeholder="Полное название компании">
                         <input type="text" required data-content="numeric" id="yur-inn" data-length="[10,12]" name="inn" value="<?= $company['inn']?>" placeholder="ИНН">
                         <input type="text" required data-content="numeric" id="yur-kpp" data-length="[9]" name="kpp" value="<?= $company['kpp']?>" placeholder="КПП">
@@ -336,5 +358,15 @@
 </div><!-- .wrapper -->
 
 
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js'), array('inline' => false))?>
+<?=$this->html->script(array(
+    'jcarousellite_1.0.1.js',
+    'jquery.timers.js',
+    'jquery.simplemodal-1.4.2.js',
+    'tableloader.js',
+    'jquery.timeago.js',
+    'fileuploader',
+    'jquery.tooltip.js',
+    '/js/users/office/ProfRadioList.js',
+    '/js/users/office/ProfSelectBox.js',
+    'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', '/css/profile.css'), array('inline' => false))?>

@@ -74,7 +74,7 @@
 	float:right;
 	padding-top:1px;}
 .portfolio .medal{
-	background:url(img/icon-2.png) no-repeat;
+	background:url(/img/icon-2.png) no-repeat;
 	width:28px;
 	height:61px;
 	position:absolute;
@@ -113,7 +113,7 @@
 	line-height:1em;}
 .portfolio .red_arrow{
 	display:block;
-	background:url(img/add_pdf_arrow.png) no-repeat center 3px;
+	background:url(/img/add_pdf_arrow.png) no-repeat center 3px;
 	width:57px;
 	height:74px;
 	margin:0 auto;

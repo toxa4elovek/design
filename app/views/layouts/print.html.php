@@ -20,7 +20,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/img/icon_144.png" />
     <?= $this->html->link('Icon', 'favicon.png', array('type' => 'icon')); ?>
     <!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
-    <?= $this->html->style(array('/global', '/main', '/fonts', '/panel', '/contact2')); ?>
+    <?= $this->html->style(array('/global', '/main', '/css/common/fonts', '/panel', '/contact2')); ?>
     <?= $this->styles() ?>
     <!--[if lte IE 9]><?= $this->html->style(array('/ie.css')); ?><![endif]-->
     <!--[if lte IE 8]><?= $this->html->style(array('/ie8.css')); ?><![endif]-->

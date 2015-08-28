@@ -87,7 +87,7 @@ class Pitch extends AppModel {
                 $newComment = Wincomment::create();
                 $newComment->user_id = Session::read('user.id');
                 $newComment->created = date('Y-m-d H:i:s');
-                $newComment->solution_id = $params['solutions']->id;
+                $newComment->solution_id = $params['solution']->id;
                 $newComment->text = 'Проект завершен по правилам сервиса GoDesigner.';
                 $newComment->step = 3;
                 $newComment->save();

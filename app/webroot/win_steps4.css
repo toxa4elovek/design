@@ -1,7 +1,7 @@
 .proceed {
 	height: 64px;
 	width: 159px;
-	margin: 20px -12ç÷ 0 0;
+	margin: 20px -12ï¿½ï¿½ 0 0;
 	float: right;
 }
 .proceed a {
@@ -89,7 +89,7 @@
 .photo-png {
 	width: 179px;
 	height: 135px;
-	background: url('img/user-photo.png') no-repeat;
+	background: url('/img/user-photo.png') no-repeat;
 }
 .photo-png img {
 	margin-left: 144px;
