@@ -160,7 +160,7 @@ class Tag extends \app\models\AppModel {
      * @return array|bool|mixed
      */
     public static function getPopularTags($count) {
-        //$sort_tags = Rcache::read('sort_tags');
+        $sort_tags = Rcache::read('sort_tags');
         if (empty($sort_tags)) {
             $solutionTags = Solutiontag::all(array(
                 'fields' => array('tag_id', 'count(id) AS total_count'),
@@ -173,7 +173,7 @@ class Tag extends \app\models\AppModel {
                 $tag = self::first($solutionTag->tag_id);
                 $sort_tags[$tag->name] = (int) $solutionTag->total_count;
             }
-            //Rcache::write('sort_tags', $sort_tags, '+1 hour');
+            Rcache::write('sort_tags', $sort_tags, '+1 hour');
         }
         return $sort_tags;
     }
