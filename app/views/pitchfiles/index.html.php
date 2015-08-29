@@ -12,6 +12,6 @@ var iframeResponse = <?php echo $res;?>;
     <input type="hidden" id="file-description" name="file-description">
     <input type="submit" class="button" value="Загрузить" id="uploadButton">
 </form>
-<script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/jquery-1.8.3.min.js"></script>
 <script src="/js/pitchfiles/index.js"></script>
 </body></html>
