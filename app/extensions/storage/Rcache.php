@@ -23,6 +23,8 @@ class Rcache {
      */
     protected static $_tagRegistryKey = '__tags__';
 
+    public static $connected = false;
+
     /**
      * Иницилазция класса, создает подключение к редису и сохраняет его
      *
@@ -35,7 +37,9 @@ class Rcache {
             'persistent' => false
         );
         self::$_config = $config + $defaults;
-        self::connect();
+        if(self::connect()) {
+            self::$connected = true;
+        }
     }
 
     /**
@@ -48,6 +52,9 @@ class Rcache {
      * @return mixed
      */
     public static function write($key, $data, $tags = array(), $expiry = null) {
+        if(!self::connected()) {
+            return false;
+        }
         if(func_num_args() == 3) {
             if(!is_array($tags)) {
                 $expiry = $tags;
@@ -79,6 +86,9 @@ class Rcache {
      * @return bool|mixed если ключа не существует - false, в остальных случаях - значение
      */
     public static function read($key) {
+        if(!self::connected()) {
+            return false;
+        }
         if(!self::$client->exists($key)) return false;
         $type = self::$client->type($key);
         if($type == 1) {
@@ -97,6 +107,9 @@ class Rcache {
      * @return bool
      */
     public static function delete($key) {
+        if(!self::connected()) {
+            return false;
+        }
         $result = self::$client->del($key);
         return (bool) $result;
     }
@@ -108,6 +121,9 @@ class Rcache {
      * @return bool
      */
     public static function deleteByTag($tag) {
+        if(!self::connected()) {
+            return false;
+        }
         if(!self::exists($tag)) {
             return false;
         }
@@ -137,6 +153,9 @@ class Rcache {
      *
      */
     public static function ttl($key) {
+        if(!self::connected()) {
+            return false;
+        }
         $ttl = self::$client->ttl($key);
         if($ttl == -1) {
             return null;
@@ -153,6 +172,9 @@ class Rcache {
      * @return mixed
      */
     public static function exists($key) {
+        if(!self::connected()) {
+            return false;
+        }
         return self::$client->exists($key);
     }
 
@@ -164,6 +186,15 @@ class Rcache {
      */
     public static function enabled() {
         return extension_loaded('redis');
+    }
+
+    /**
+     * Метод возвращяет, подключен ли сейчас клиент к редису
+     *
+     * @return bool
+     */
+    public static function connected() {
+        return self::$connected;
     }
 
     /**
@@ -182,6 +213,9 @@ class Rcache {
      * @return mixed
      */
     public static function flushDB() {
+        if(!self::connected()) {
+            return false;
+        }
         return self::$client->flushDB();
     }
 
@@ -191,6 +225,9 @@ class Rcache {
      * @return int - количество удаленных ключей
      */
     public static function flushUnusedTags() {
+        if(!self::connected()) {
+            return false;
+        }
         $count = 0;
         $tags = self::read(self::$_tagRegistryKey);
         foreach($tags as $tag) {
