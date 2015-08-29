@@ -5,17 +5,18 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\Tag;
 use app\models\Solutiontag;
+use app\models\Solution;
 
 class TagTest extends AppUnit {
 
     public function setUp()
     {
-        $this->rollUp('Tag', 'Solutiontag');
+        $this->rollUp(array('Tag', 'Solutiontag', 'Solution'));
     }
 
     public function tearDown()
     {
-        $this->rollDown('Tag', 'Solutiontag');
+        $this->rollDown(array('Tag', 'Solutiontag', 'Solution'));
     }
 
     public function testIsTagExists() {
@@ -116,7 +117,27 @@ class TagTest extends AppUnit {
         $this->assertTrue(count($all->data()) > 0);
         $this->assertTrue(Tag::isTagExists('Проверка'));
         $this->assertTrue($removeResult);
+    }
 
+    public function testGetPopularTags() {
+        Tag::saveSolutionTag('Проверка', 1);
+        Tag::saveSolutionTag('Проверка', 2);
+        Tag::saveSolutionTag('Проверка', 3);
+        Tag::saveSolutionTag('Проверка', 4);
+        Tag::saveSolutionTag('Проверка', 5);
+        Tag::saveSolutionTag('Проверка', 6);
+        Tag::saveSolutionTag('Проверка2', 1);
+        Tag::saveSolutionTag('Проверка2', 2);
+        Tag::saveSolutionTag('Проверка2', 3);
+        Tag::saveSolutionTag('Проверка2', 4);
+        Tag::saveSolutionTag('Проверка3', 1);
+        Tag::saveSolutionTag('Проверка3', 2);
+        $result = Tag::getPopularTags(2);
+        $expected = array(
+            'Проверка' => 6,
+            'Проверка2' => 4
+        );
+        $this->assertEqual($expected, $result);
     }
 
 }
