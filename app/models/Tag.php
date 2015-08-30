@@ -184,11 +184,12 @@ class Tag extends AppModel {
         if($cleanCache) {
             Rcache::delete($cacheKey);
         }
-        if (!$tags = Rcache::read($cacheKey)) {
+        if (!$resultData = Rcache::read($cacheKey)) {
             $tags = Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
-            Rcache::write($cacheKey, $tags, '+2 hours');
+            $resultData = $tags->data();
+            Rcache::write($cacheKey, $resultData, '+2 hours');
         }
-        return $tags->data();
+        return $resultData;
     }
 
 
