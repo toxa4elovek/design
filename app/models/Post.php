@@ -2,12 +2,22 @@
 
 namespace app\models;
 
+/**
+ * Class Post
+ *
+ * Класс для работы с таблицей posts
+ *
+ * @package app\models
+ */
 class Post extends AppModel {
 
+    /**
+     * @var array связи моделей
+     */
     public $belongsTo = array('User');
 
     /**
-     * Write Common Post Tags here
+     * Базовые теги для статей
      *
      * @var array
      */
@@ -18,7 +28,7 @@ class Post extends AppModel {
         'интервью',
         'команда go',
         'герой месяца',
-        'cовет в обед',
+        'совет в обед',
         'топ 10',
         'фриланс под пальмами',
     );
@@ -37,7 +47,7 @@ class Post extends AppModel {
     }
 
     /**
-     * Gets the common tags array
+     * Метод возвращяет список стандартных тегов в двойных кавычках
      *
      * @return array
      */
@@ -48,15 +58,14 @@ class Post extends AppModel {
                 $res[] = '"' . $tag . '"';
             }
         }
-
         return $res;
     }
 
     /**
-     * Parsing specified post tags field
+     * Парсим строчку тегов и возвращяем массив
      *
      * @param string $tags
-     * @return boolean|multitype:string
+     * @return boolean|string
      */
     public static function parseExistingTags($tags = null) {
         if (empty($tags)) {
