@@ -5,7 +5,6 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\Tag;
 use app\models\Solutiontag;
-use app\models\Solution;
 
 class TagTest extends AppUnit {
 
@@ -102,6 +101,12 @@ class TagTest extends AppUnit {
         $this->assertEqual('Тег', $data[1]['name']);
         $this->assertEqual('Тегирование', $data[4]['name']);
         $this->assertEqual('Теги', $data[5]['name']);
+        $result = Tag::getSuggest('Тег', false);
+        $data = $result;
+        $this->assertEqual(3, count($data));
+        $this->assertEqual('Тег', $data[1]['name']);
+        $this->assertEqual('Тегирование', $data[4]['name']);
+        $this->assertEqual('Теги', $data[5]['name']);
     }
 
     public function testRemoveTag() {
@@ -117,6 +122,11 @@ class TagTest extends AppUnit {
         $this->assertTrue(count($all->data()) > 0);
         $this->assertTrue(Tag::isTagExists('Проверка'));
         $this->assertTrue($removeResult);
+        // Новый тег должен быть сохранен, даже если его еще нет
+        $solutionId = 100;
+        $result = Tag::removeTag('Новая проверка', $solutionId);
+        $this->assertTrue($result);
+        $this->assertTrue(Tag::isTagExists('Новая проверка'));
     }
 
     public function testGetPopularTags() {
@@ -138,6 +148,31 @@ class TagTest extends AppUnit {
             'Проверка2' => 4
         );
         $this->assertEqual($expected, $result);
+    }
+
+    public function testAdd() {
+        $this->assertFalse(Tag::isTagExists('Проверка2'));
+        $array = array('tags' => array('Проверка2'));
+        Tag::add($array, 100);
+        $this->assertTrue(Tag::isTagExists('Проверка2'));
+        $id = Tag::getTagId('Проверка2');
+        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 100)));
+        $this->assertEqual(1, $count);
+
+        $array = array('job-type' => array('finances'));
+        Tag::add($array, 101);
+        $id = Tag::getTagId('Финансы');
+        $id2 = Tag::getTagId('Бизнес');
+        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 101)));
+        $this->assertEqual(1, $count);
+        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id2, 'solution_id' => 101)));
+        $this->assertEqual(1, $count);
+
+        $array = array('job-type' => array('sport'));
+        Tag::add($array, 102);
+        $id = Tag::getTagId('Спорт');
+        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 102)));
+        $this->assertEqual(1, $count);
     }
 
 }

@@ -387,7 +387,7 @@ endif;
                     <li> <label><input type="checkbox" name="job-type[]" value="music"> Развлечение / Музыка</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="culture"> Искусство / Культура</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="animals"> Животные</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="childs"> Дети</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="children"> Дети</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="security"> Охрана / Безопасность</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="health"> Медицина / Здоровье</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="it"> Компьютеры / IT</label>     </li>
