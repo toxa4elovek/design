@@ -354,19 +354,19 @@ class SolutionTest extends AppUnit {
     }
 
     public function testGetUsersSolutions() {
-        $ids = array(4, 11, 10, 7, 6, 5, 3, 2);
+        $ids = array(4, 7, 6, 5, 2);
         $result = array();
         $solutions = Solution::getUsersSolutions(2);
         foreach($solutions as $solution) {
-            $result[] = $solution->id;
+            $result[] = (int) $solution->id;
         }
         $this->assertEqual($ids, $result);
 
-        $ids = array(4, 11, 6, 3, 2);
+        $ids = array(4, 6, 2);
         $result = array();
         $solutions = Solution::getUsersSolutions(2, true);
         foreach($solutions as $solution) {
-            $result[] = $solution->id;
+            $result[] = (int) $solution->id;
         }
         $this->assertEqual($ids, $result);
     }
