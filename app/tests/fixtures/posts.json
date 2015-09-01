@@ -1,5 +1,6 @@
 [{
     "id": 1,
     "title": "Test blog post",
-    "published": 1
+    "published": 1,
+    "views": 0
 }]

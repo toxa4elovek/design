@@ -1,0 +1,127 @@
+.summary-price {
+    width: 148px;
+    position: fixed;
+    left: 50%;
+    top: 150px;
+    z-index: 5;
+    margin-left: 265px;
+    background: url("/img/summary-price-bg.png") 0 0 no-repeat;
+    padding: 8px 15px 0 11px;
+    min-height: 99px;
+}
+.summary-price h3 {
+    font: bold 12px/1 "RodeoC", sans-serif;
+    text-transform: uppercase;
+    color: #282a34;
+    margin-bottom: 28px;
+
+}
+.summary-price .summary {
+    font: 34px/1 "RodeoC", sans-serif;
+    color: #fff;
+    text-align: right;
+    margin-bottom: 33px;
+    padding-right: 5px;
+}
+.summary-price ul {
+    margin: 0 -10px;
+    padding-top: 5px;
+    background: url("/img/summary-price-divider.png") 50% 0 no-repeat;
+    margin-bottom: 10px;
+    display: none;
+}
+.summary-price.expanded ul {
+    display: block;
+}
+.summary-price li {
+    padding-bottom: 5px;
+    background: url("/img/summary-price-divider.png") 50% 100% no-repeat;
+    font-size: 10px;
+    line-height: 12px;
+    text-transform: uppercase;
+}
+.summary-price ul a {
+    display: block;
+    padding: 7px 10px;
+    text-decoration: none;
+    color: #999;
+}
+.summary-price ul a:hover {
+    background: #ececec;
+}
+.summary-price ul a:hover span {
+    color: #666;
+}
+.summary-price ul span {
+    display: block;
+    padding: 7px 10px;
+    margin-bottom: 20px;
+}
+.summary-price ul small {
+    text-align: right;
+    display: block;
+    font-size: 12px;
+}
+.summary-price ul div {
+    display: inline;
+    margin: 0;
+}
+.summary-price.expanded {
+
+}
+.summary-price.expanded .show {
+    display: none;
+}
+.summary-price.expanded .hide {
+    display: block;
+}
+.summary-price .hide {
+    display: none;
+    position: absolute;
+    height: 33px;
+    left: 0;
+    bottom: -50px;
+    padding-left: 11px;
+    padding-right: 15px;
+    background: url("/img/summary-price-bg.png") 0 100% no-repeat;
+    width: 148px;
+    padding-top: 17px;
+    color: #999;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.summary-price .hide:hover {
+    color: #666;
+}
+.summary-price .hide span {
+    display: block;
+    height: 18px;
+    background: url("/img/summary-price-hide.png") 100% 0 no-repeat;
+    padding-right: 20px;
+    text-align: right;
+}
+.summary-price .show {
+    display: block;
+    position: absolute;
+    height: 38px;
+    left: 0;
+    bottom: -33px;
+    padding-left: 11px;
+    padding-right: 15px;
+    background: url("/img/summary-price-bg.png") 0 100% no-repeat;
+    width: 148px;
+    color: #999;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.summary-price .show:hover {
+    color: #666;
+}
+.summary-price .show span {
+    display: inline-block;
+    height: 18px;
+    background: url("/img/summary-price-show.png") 100% 0 no-repeat;
+    padding-right: 20px;
+}

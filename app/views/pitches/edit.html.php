@@ -28,7 +28,7 @@ $job_types = array(
     'music' => 'Развлечение / Музыка',
     'culture' => 'Искусство / Культура',
     'animals' => 'Животные',
-    'childs' => 'Дети',
+    'children' => 'Дети',
     'security' => 'Охрана / Безопасность',
     'health' => 'Медицина / Здоровье',
     'it' => 'Компьютеры / IT');
@@ -476,11 +476,14 @@ $word2 = 'Опишите вид деятельности. Что отличае�
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
-<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
 <?php if(!$onlyText):?>
     <?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/award_calculator.js', 'pitches/brief.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php else:?>
     <?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.ui.touch-punch.min.js', 'jquery.scrollto.min.js', 'pitches/edit.js', 'jquery.numeric','jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'jquery.damnUploader.js'), array('inline' => false))?>
 <?php endif?>
-<?=$this->html->style(array('/brief', '/step3'), array('inline' => false))?>
+<?=$this->html->style(array(
+    '/css/common/receipt.css',
+    '/brief',
+    '/step3'), array('inline' => false))?>

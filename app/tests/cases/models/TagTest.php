@@ -10,12 +10,12 @@ class TagTest extends AppUnit {
 
     public function setUp()
     {
-        $this->rollUp('Tag', 'Solutiontag');
+        $this->rollUp(array('Tag', 'Solutiontag', 'Solution'));
     }
 
     public function tearDown()
     {
-        $this->rollDown('Tag', 'Solutiontag');
+        $this->rollDown(array('Tag', 'Solutiontag', 'Solution'));
     }
 
     public function testIsTagExists() {
@@ -101,6 +101,12 @@ class TagTest extends AppUnit {
         $this->assertEqual('Тег', $data[1]['name']);
         $this->assertEqual('Тегирование', $data[4]['name']);
         $this->assertEqual('Теги', $data[5]['name']);
+        $result = Tag::getSuggest('Тег', false);
+        $data = $result;
+        $this->assertEqual(3, count($data));
+        $this->assertEqual('Тег', $data[1]['name']);
+        $this->assertEqual('Тегирование', $data[4]['name']);
+        $this->assertEqual('Теги', $data[5]['name']);
     }
 
     public function testRemoveTag() {
@@ -116,7 +122,57 @@ class TagTest extends AppUnit {
         $this->assertTrue(count($all->data()) > 0);
         $this->assertTrue(Tag::isTagExists('Проверка'));
         $this->assertTrue($removeResult);
+        // Новый тег должен быть сохранен, даже если его еще нет
+        $solutionId = 100;
+        $result = Tag::removeTag('Новая проверка', $solutionId);
+        $this->assertTrue($result);
+        $this->assertTrue(Tag::isTagExists('Новая проверка'));
+    }
 
+    public function testGetPopularTags() {
+        Tag::saveSolutionTag('Проверка', 1);
+        Tag::saveSolutionTag('Проверка', 2);
+        Tag::saveSolutionTag('Проверка', 3);
+        Tag::saveSolutionTag('Проверка', 4);
+        Tag::saveSolutionTag('Проверка', 5);
+        Tag::saveSolutionTag('Проверка', 6);
+        Tag::saveSolutionTag('Проверка2', 1);
+        Tag::saveSolutionTag('Проверка2', 2);
+        Tag::saveSolutionTag('Проверка2', 3);
+        Tag::saveSolutionTag('Проверка2', 4);
+        Tag::saveSolutionTag('Проверка3', 1);
+        Tag::saveSolutionTag('Проверка3', 2);
+        $result = Tag::getPopularTags(2);
+        $expected = array(
+            'Проверка' => 6,
+            'Проверка2' => 4
+        );
+        $this->assertEqual($expected, $result);
+    }
+
+    public function testAdd() {
+        $this->assertFalse(Tag::isTagExists('Проверка2'));
+        $array = array('tags' => array('Проверка2'));
+        Tag::add($array, 100);
+        $this->assertTrue(Tag::isTagExists('Проверка2'));
+        $id = Tag::getTagId('Проверка2');
+        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 100)));
+        $this->assertEqual(1, $count);
+
+        $array = array('job-type' => array('finances'));
+        Tag::add($array, 101);
+        $id = Tag::getTagId('Финансы');
+        $id2 = Tag::getTagId('Бизнес');
+        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 101)));
+        $this->assertEqual(1, $count);
+        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id2, 'solution_id' => 101)));
+        $this->assertEqual(1, $count);
+
+        $array = array('job-type' => array('sport'));
+        Tag::add($array, 102);
+        $id = Tag::getTagId('Спорт');
+        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 102)));
+        $this->assertEqual(1, $count);
     }
 
 }

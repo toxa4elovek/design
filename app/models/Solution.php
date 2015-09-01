@@ -52,7 +52,7 @@ class Solution extends \app\models\AppModel {
         'music' => 'Развлечение / Музыка',
         'culture' => 'Искусство / Культура',
         'animals' => 'Животные',
-        'childs' => 'Дети',
+        'children' => 'Дети',
         'security' => 'Охрана / Безопасность',
         'health' => 'Медицина / Здоровье',
         'it' => 'Компьютеры / IT'

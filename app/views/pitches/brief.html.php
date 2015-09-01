@@ -387,7 +387,7 @@ endif;
                     <li> <label><input type="checkbox" name="job-type[]" value="music"> Развлечение / Музыка</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="culture"> Искусство / Культура</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="animals"> Животные</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="childs"> Дети</label>     </li>
+                    <li> <label><input type="checkbox" name="job-type[]" value="children"> Дети</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="security"> Охрана / Безопасность</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="health"> Медицина / Здоровье</label>     </li>
                     <li> <label><input type="checkbox" name="job-type[]" value="it"> Компьютеры / IT</label>     </li>
@@ -496,7 +496,11 @@ endif;
 </div>
 
 <?= $this->view()->render(array('element' => 'popups/brief_tos')); ?>
-<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
 <?= $this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'jquery-deparam.js', 'pitches/award_calculator.js', 'pitches/brief.js?' . mt_rand(100, 999), 'jquery.numeric', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false)) ?>
-<?= $this->html->style(array('/brief', '/step3'), array('inline' => false))?>
+<?= $this->html->style(array(
+    '/css/common/receipt.css',
+    '/brief',
+    '/step3'
+    ), array('inline' => false))?>

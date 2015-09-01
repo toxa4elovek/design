@@ -2,13 +2,28 @@
 
 namespace app\models;
 
-use app\models\Solutiontag;
 use app\extensions\storage\Rcache;
 
-class Tag extends \app\models\AppModel {
+/**
+ * Class Tag
+ * Класс для взаимодействия с таблице тегов
+ * и промежуточной таблицой теги-решения
+ *
+ * @package app\models
+ */
+class Tag extends AppModel {
 
+    /**
+     * @var array связь
+     */
     public $hasMany = array('Solutiontag');
-    private static $job_types = array(
+
+    /**
+     * Словарь соответствия латинских ключей и русских видов деятельности
+     *
+     * @var array
+     */
+    private static $industryDictionary = array(
         'realty' => 'Недвижимость / Строительство',
         'auto' => 'Автомобили / Транспорт',
         'finances' => 'Финансы / Бизнес',
@@ -21,31 +36,58 @@ class Tag extends \app\models\AppModel {
         'music' => 'Развлечение / Музыка',
         'culture' => 'Искусство / Культура',
         'animals' => 'Животные',
-        'childs' => 'Дети',
+        'children' => 'Дети',
         'security' => 'Охрана / Безопасность',
         'health' => 'Медицина / Здоровье',
         'it' => 'Компьютеры / IT');
 
-    public static function add($formdata, $solution_id) {
+    /**
+     * Метод добавления тегов к решению через внешние запросы
+     *
+     * @param $formdata
+     * @param $solutionId
+     */
+    public static function add($formdata, $solutionId) {
         if(isset($formdata['tags']) && (is_array($formdata['tags']))) {
-            foreach ($formdata['tags'] as $v) {
-                Tag::saveSolutionTag($v, $solution_id);
-            }
+            self::__bulkArraySave($formdata['tags'], $solutionId);
         }
         if((isset($formdata['job-type'])) && (is_array($formdata['job-type']))) {
-            $filteredTags = array_intersect_key(self::$job_types, array_flip($formdata['job-type']));
-            if (is_array($filteredTags)) {
-                foreach ($filteredTags as $v) {
-                    $multi_tag = explode('/', $v);
-                    if (is_array($multi_tag)) {
-                        foreach ($multi_tag as $value) {
-                            Tag::saveSolutionTag($value, $solution_id);
-                        }
-                    } else {
-                        Tag::saveSolutionTag($value, $solution_id);
-                    }
+            self::__jobTypesSave($formdata['job-type'], $solutionId);
+        }
+    }
+
+    /**
+     * Приватный метод для сохранения видов деятельности как тегов
+     *
+     * @param $tagsList
+     * @param $solutionId
+     */
+    private static function __jobTypesSave($tagsList, $solutionId) {
+        $filteredTags = array_intersect_key(self::$industryDictionary, array_flip($tagsList));
+        $saveTag = function($tag, $solutionId) {
+            Tag::saveSolutionTag($tag, $solutionId);
+        };
+        foreach ($filteredTags as $tagString) {
+            $multiTag = explode('/', $tagString);
+            if ((is_array($multiTag)) && (count($multiTag) > 1)) {
+                foreach ($multiTag as $value) {
+                    $saveTag($value, $solutionId);
                 }
+            } else {
+                $saveTag($multiTag[0], $solutionId);
             }
+        }
+    }
+
+    /**
+     * Приватный метод сохранения тегов из списка
+     *
+     * @param $tagsList
+     * @param $solutionId
+     */
+    private static function __bulkArraySave($tagsList, $solutionId) {
+        foreach ($tagsList as $tag) {
+            Tag::saveSolutionTag($tag, $solutionId);
         }
     }
 
@@ -81,17 +123,14 @@ class Tag extends \app\models\AppModel {
         if (!Tag::isTagExists($string)) {
             Tag::saveTag($string);
         }
-        if(Solutiontag::remove(array('tag_id' => array(
+        if($result = Solutiontag::remove(array('tag_id' => array(
             'tag_id' => Tag::getTagId($string),
             'solution_id' => $solutionId
         )))) {
             $cacheKey = 'tags_for_solutions_' . $solutionId;
             Rcache::delete($cacheKey);
-            return true;
-        }else {
-            return false;
         }
-
+        return true;
     }
 
     /**
@@ -137,6 +176,7 @@ class Tag extends \app\models\AppModel {
      * Метод возвращяет все теги с подстрокой $string
      *
      * @param $string
+     * @param bool $cleanCache - нужно ли очистить теги
      * @return mixed
      */
     public static function getSuggest($string, $cleanCache = false) {
@@ -144,12 +184,12 @@ class Tag extends \app\models\AppModel {
         if($cleanCache) {
             Rcache::delete($cacheKey);
         }
-        if (!$tags = Rcache::read($cacheKey)) {
+        if (!$resultData = Rcache::read($cacheKey)) {
             $tags = Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
-            Rcache::write($cacheKey, $tags->data(), '+2 hours');
-            return $tags->data();
+            $resultData = $tags->data();
+            Rcache::write($cacheKey, $resultData, '+2 hours');
         }
-        return $tags;
+        return $resultData;
     }
 
 
@@ -162,12 +202,17 @@ class Tag extends \app\models\AppModel {
     public static function getPopularTags($count) {
         $sort_tags = Rcache::read('sort_tags');
         if (empty($sort_tags)) {
-            $tags = Tag::all(array('with' => 'Solutiontag'));
-            foreach ($tags as $v) {
-                $sort_tags[$v->name] = count($v->solutiontags);
+            $solutionTags = Solutiontag::all(array(
+                'fields' => array('tag_id', 'count(id) AS total_count'),
+                'group' => array('tag_id'),
+                'order' => array('total_count' => 'desc'),
+                'limit' => $count
+            ));
+            $sort_tags = array();
+            foreach($solutionTags as $solutionTag) {
+                $tag = self::first($solutionTag->tag_id);
+                $sort_tags[$tag->name] = (int) $solutionTag->total_count;
             }
-            asort($sort_tags);
-            $sort_tags = array_slice($sort_tags, 0, $count);
             Rcache::write('sort_tags', $sort_tags, '+1 hour');
         }
         return $sort_tags;

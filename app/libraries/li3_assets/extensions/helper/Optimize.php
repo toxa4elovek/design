@@ -257,6 +257,7 @@ class Optimize extends \lithium\template\Helper {
                             $css .= file_get_contents($matches[1]);
                             continue;
                         }
+                        /*
                         if(preg_match('/\/css\/(.*)"/', $file, $matches)) {
                             $sheet = $webroot . Media::asset($matches[1], 'css');
                             if(!in_array($sheet, $sheets)) {
@@ -266,7 +267,7 @@ class Optimize extends \lithium\template\Helper {
                                     $css .= file_get_contents($sheet);
                                 }
                             }
-                        }
+                        }*/
                         if(preg_match('/href="(\/.*)\.css"/', $file, $matches)) {
                             $sheet = $webroot . Media::asset($matches[1], 'css');
                             if(!in_array($sheet, $sheets)) {
