@@ -1,0 +1,20 @@
+.main {
+    padding: 36px 297px 60px 85px;
+    width: 565px;
+}
+.main p {
+    font-size: 17px;
+    font-family: OfficinaSansC Book, serif;
+    color: #7e7e7e;
+    line-height: 24px;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+.main h4 {
+    font-family: RodeoC, serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: #666666;
+    text-shadow: -1px 0 0 #FFFFFF;
+    margin-top: 56px;
+    margin-bottom: 30px;
+}

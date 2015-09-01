@@ -613,19 +613,6 @@ $(document).ready(function () {
         });
         $('.mobile-close').click();
         return false;
-    })
-
-});
-
-window.fbAsyncInit = function () {
-    FB.init({
-        appId: '202765613136579', // App ID
-        channelUrl: '//godesigner.ru/channel.html', // Channel File
-        status: true, // check login status
-        cookie: true, // enable cookies to allow the server to access the session
-        oauth: true, // enable OAuth 2.0
-        xfbml: true,  // parse XFBM
-        version: 'v2.0'
     });
 
     $(document).on('click', '.top-button', function() {
@@ -646,21 +633,33 @@ window.fbAsyncInit = function () {
     $(document).on('click', '.create-project-how-it-works', function() {
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заполнить бриф" на странице "Как это работает?"']);
         return true;
-    })
+    });
 
-};
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '202765613136579', // App ID
+            channelUrl: '//godesigner.ru/channel.html', // Channel File
+            status: true, // check login status
+            cookie: true, // enable cookies to allow the server to access the session
+            oauth: true, // enable OAuth 2.0
+            xfbml: true,  // parse XFBM
+            version: 'v2.0'
+        });
+    };
 
-(function (d) {
-    var js, id = 'facebook-jssdk';
-    if (d.getElementById(id)) {
-        return;
-    }
-    js = d.createElement('script');
-    js.id = id;
-    js.async = true;
-    js.src = "//connect.facebook.net/en_US/all.js";
-    d.getElementsByTagName('head')[0].appendChild(js);
-}(document));
+    (function (d) {
+        var js, id = 'facebook-jssdk';
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+    }(document));
+
+});
 
 /*
  * Pitch files upload/delete handler

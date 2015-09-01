@@ -155,4 +155,7 @@
     </div><!-- .middle -->
     <?= $this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'jquery.scrollto.min.js', 'pitches/newwinner.js?' . mt_rand(100, 999), 'jquery.numeric', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'jquery.simplemodal-1.4.2.js', 'jquery.tooltip.js', 'popup.js', 'jquery.damnUploader.js'), array('inline' => false)) ?>
     <?=
-    $this->html->style(array('/brief', '/step3'), array('inline' => false))?>
+    $this->html->style(array(
+        '/css/common/receipt.css',
+        '/brief',
+        '/step3'), array('inline' => false))?>

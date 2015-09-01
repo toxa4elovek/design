@@ -73,10 +73,14 @@ class PaymentsController extends \app\controllers\AppController {
     }
 
     /**
-     * Метод для пополнения баланса личного кабинета
+     * Метод для отображения страницы пополнения баланса личного кабинета и
+     * активации тарифа
      */
-    public function fund_balance() {
-
+    public function subscriber() {
+        $receipt = array(
+            array('name' => 'Пополнение счёта', 'value' => 10000)
+        );
+        return compact('receipt');
     }
 
 }
