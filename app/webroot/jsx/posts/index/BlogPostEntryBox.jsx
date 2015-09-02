@@ -49,6 +49,10 @@ var BlogPostEntryBox = new React.createClass({
         if(this.props.post.published == 0) {
             postTitleLink = <a href={link} className="not-published">{this.props.post.title}</a>;
         }
+        var currentDateTime = moment();
+        if(!currentDateTime.isAfter(moment(this.props.post.created, "YYYY-MM-DD HH:mm:ss"))) {
+            postTitleLink = <a href={link} className="not-published">{this.props.post.title}</a>;
+        }
         return (
             <div className="blog-post-entry-box" key={this.props.post.id}>
                 <div>

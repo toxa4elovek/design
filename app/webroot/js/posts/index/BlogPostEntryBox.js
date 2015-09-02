@@ -49,6 +49,10 @@ var BlogPostEntryBox = new React.createClass({
         if(this.props.post.published == 0) {
             postTitleLink = React.createElement("a", {href: link, className: "not-published"}, this.props.post.title);
         }
+        var currentDateTime = moment();
+        if(!currentDateTime.isAfter(moment(this.props.post.created, "YYYY-MM-DD HH:mm:ss"))) {
+            postTitleLink = React.createElement("a", {href: link, className: "not-published"}, this.props.post.title);
+        }
         return (
             React.createElement("div", {className: "blog-post-entry-box", key: this.props.post.id}, 
                 React.createElement("div", null, 
