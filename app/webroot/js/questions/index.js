@@ -16,23 +16,17 @@ $(document).ready(function() {
             return false;
         }
 
-        $.post($(this).attr('action'), $(this).serialize(), function() {
-            
-        }, 'html')
-        .done(function(response) {
-            $container = $('.content.group');
-            $objOld = $('.howitworks');
-            $objNew = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+        $.post($(this).attr('action'), $(this).serialize(), function(response) {
+            var $container = $('.content.group');
+            var $objOld = $('.howitworks');
+            // @TODO проверить, можно ли тут лучше сделать
+            var $objNew = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
             $objOld.fadeOut(200, function() {
                 $(this).remove();
-                $objNew.hide().appendTo($container).fadeIn(600);
-                // Refresh Share Buttons
+                $objNew.appendTo($container);
                 initShares();
             });
-        })
-        .fail(function(response) {
-
-        });
+        }, 'html');
         return false;
     });
 
