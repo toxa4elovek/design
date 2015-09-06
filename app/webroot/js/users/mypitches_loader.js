@@ -158,11 +158,11 @@ function TableLoader() {
                         if (object.hasBill == 'yur') {
                             timeleft = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
                         }
-                        var step = object.winnerSolution.step;
-                        if(step > 3) {
-                            step = 3;
-                        }
                         if(object.winlink == true) {
+                            var step = object.winnerSolution.step;
+                            if(step > 3) {
+                                step = 3;
+                            }
                             var link = '/users/step' + step + '/' + object.awarded;
                         }else {
                             var link = '/pitches/' + pitchPath + '/' + object.id;
