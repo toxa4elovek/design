@@ -158,7 +158,7 @@ function TableLoader() {
                         if (object.hasBill == 'yur') {
                             timeleft = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
                         }
-                        if(object.winlink == true) {
+                        if(object.winnerSolution) {
                             var step = object.winnerSolution.step;
                             if(step > 3) {
                                 step = 3;
