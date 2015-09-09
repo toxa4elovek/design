@@ -179,3 +179,9 @@ ul.menu-quest p a:hover {
 	color: #6b92a3;
 	text-decoration: underline;
 }
+ol {
+	padding-left: 40px;
+}
+ol li {
+	list-style: decimal;
+}
