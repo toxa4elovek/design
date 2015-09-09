@@ -130,5 +130,5 @@
     </div>
     <div class="conteiner-bottom"></div>
 </div><!-- .wrapper -->
-<?=$this->html->script(array('jquery-ui-1.8.17.custom.min.js', 'users/step4'), array('inline' => false))?>
+<?=$this->html->script(array('jquery-ui-1.11.4.min.js', 'users/step4'), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
