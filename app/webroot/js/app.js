@@ -1257,7 +1257,7 @@ function enableToolbar() {
 
 function solutionTooltip() {
     // Solutions Tooltips
-    $('.hoverimage[data-comment-to]').tooltip({
+    $('.hoverimage[data-comment-to]').tooltip2({
         tooltipID: 'tooltip2',
         tooltipSource: 'data',
         width: '205px',

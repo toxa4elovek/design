@@ -1,6 +1,6 @@
 (function($){
 
-    $.fn.tooltip = function(instanceSettings){
+    $.fn.tooltip2 = function(instanceSettings){
 
         $.fn.tooltip.defaultsSettings = {
             attributeName:'title',
