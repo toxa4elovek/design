@@ -997,6 +997,7 @@ function fetchPitchComments() {
             $('.ajax-loader', '.pitch-comments').remove();
         }
         solutionTooltip();
+        console.log('comments');
         $('.tooltip_comments').tooltip({
             tooltipID: 'tooltip_comments',
             width: '282px',
@@ -1256,6 +1257,7 @@ function enableToolbar() {
 }
 
 function solutionTooltip() {
+    console.log('solutiontooltip');
     // Solutions Tooltips
     $('.hoverimage[data-comment-to]').tooltip2({
         tooltipID: 'tooltip2',

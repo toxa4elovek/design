@@ -618,8 +618,7 @@ jQuery(document).ready(function ($) {
             if (result.solution.tags) {
                 var html = '';
                 $.each(result.solution.tags, function (i, v) {
-                    //html += '<li><a href="#">' + v + '</a></li>';
-                    html += '<li>' + v + '</li>';
+                    html += '<li><a href="/logosale?search=' + encodeURIComponent(v) + '">' + v + '</a></li>';
                 });
                 solution_tags.append(html);
             }
@@ -1003,20 +1002,6 @@ jQuery(document).ready(function ($) {
             $('.solution-overlay .pay-yur').show();
         }
     });
-
-    function solutionTooltip() {
-        // Solutions Tooltips
-        $('.hoverimage[data-comment-to]').tooltip({
-            tooltipID: 'tooltip2',
-            tooltipSource: 'data',
-            width: '205px',
-            correctPosX: 40,
-            //positionTop: 0,
-            borderSize: '0px',
-            tooltipPadding: 0,
-            tooltipBGColor: 'transparent'
-        });
-    }
 
     $('#clear-options').on('click', function () {
         var checked = $('input:checked', '.look-variants');

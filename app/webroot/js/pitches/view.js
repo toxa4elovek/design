@@ -750,8 +750,7 @@ $(document).ready(function () {
             if (result.solution.tags) {
                 var html = '';
                 $.each(result.solution.tags, function (i, v) {
-                    //html += '<li><a href="#">' + v + '</a></li>';
-                    html += '<li>' + v + '</li>';
+                    html += '<li><a href="/logosale?search=' + encodeURIComponent(v) + '">' + v + '</a></li>';
                 });
                 solution_tags.append(html);
             }

@@ -2,7 +2,7 @@
 
     $.fn.tooltip2 = function(instanceSettings){
 
-        $.fn.tooltip.defaultsSettings = {
+        $.fn.tooltip2.defaultsSettings = {
             attributeName:'title',
             borderColor:'#ccc',
             borderSize:'1',
@@ -31,7 +31,7 @@
         };
 
         //s = settings
-        var s = $.extend({}, $.fn.tooltip.defaultsSettings , instanceSettings || {});
+        var s = $.extend({}, $.fn.tooltip2.defaultsSettings , instanceSettings || {});
 
         var positionTooltip = function(e){
             $('#'+s.tooltipID+' #tooltipContent').show();
