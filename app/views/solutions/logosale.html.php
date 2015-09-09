@@ -55,7 +55,9 @@
                     </ul>
                     <ul class="activityType twoCollumn filterlist">
                         <li class="first">Популярные теги</li>
-                        <?php foreach ($sort_tags as $k => $v): ?>
+                        <?php foreach ($sort_tags as $k => $v):
+                            if($k == '') continue;
+                            ?>
                             <li><a class="prepTag" href="#"><?= $k ?></a></li>
                         <?php endforeach; ?>
                     </ul>
