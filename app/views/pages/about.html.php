@@ -31,7 +31,7 @@
                                     <h2 class="greyboldheader">Часто задаваемые вопросы</h2>
                                     <?=$this->faq->show($questions)?>
                                     <a href="/answers" class="av">Все вопросы</a>
-                                </div>
+                                </div>ki
                                 <!--div id="ap_content_r_3">
                                     <h2>Популярные разделы</h2>
                                     <ul>
