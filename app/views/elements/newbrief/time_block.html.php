@@ -10,11 +10,11 @@
 
 <table style="padding-bottom: 0; margin-bottom: 50px;">
     <tr>
-        <td width="105" style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: -8px; top: -3px;"><?= $category->shortestTimelimit ?> дня</span></td>
-        <td width="91" style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 20px; top: -3px;"><?= $category->shortTimelimit ?> дней</span></td>
-        <td width="141" style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 47px; top: -3px;"><?= $category->default_timelimit ?> дней</span></td>
-        <td width="105" style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 33px; top: -3px;"><?= $category->smallIncreseTimelimit ?> дней</span></td>
-        <td width="107" style="font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 55px; top: -3px;"><?= $category->largeIncreaseTimelimit ?> дней</span></td>
+        <td style="width: 105px; font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: -8px; top: -3px;"><?= $category->shortestTimelimit ?> дня</span></td>
+        <td style="width: 91px; font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 20px; top: -3px;"><?= $category->shortTimelimit ?> дней</span></td>
+        <td style="width: 141px; font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 47px; top: -3px;"><?= $category->default_timelimit ?> дней</span></td>
+        <td style="width: 105px; font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 33px; top: -3px;"><?= $category->smallIncreseTimelimit ?> дней</span></td>
+        <td style="width: 107px; font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 55px; top: -3px;"><?= $category->largeIncreaseTimelimit ?> дней</span></td>
     </tr>
     <tr>
         <td><input style="position: relative; left: 8px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="2" <?php if(($pitch) && ($pitch->timelimit == 2)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>

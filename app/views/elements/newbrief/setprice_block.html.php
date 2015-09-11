@@ -39,5 +39,5 @@
                 <?php endif;?></li>
         </ul>
     </div><!-- .indicator -->
-    <img src="/img/comissions.png" style="margin-bottom: 30px;">
+    <img src="/img/comissions.png" style="margin-bottom: 30px;" alt="">
 </div><!-- .set-price -->
