@@ -8,14 +8,12 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
 
     var updateBackgroundPos = function() {
         var x = -1 * (hscroll.getPosition().x - 10);
-        $('.kineticjs-content', '#container').css('left', x);
+        $('.konvajs-content', '#container').css('left', x);
         hscrollArea.setX(-100);
     };
     if((parseFloat(response.avgNum) < 3) || (response.guaranteed == '1')) {
-        //$('#switch').attr('src', '/img/off.png');
         $('#refundLabel').text('Нельзя вернуть деньги.').css('color', '#ed6567');
     }else {
-        //$('#switch').attr('src', '/img/on.png');
         if(response.guaranteed == '0') {
             if (($('input[name="notFinish"]').val() == '1') && (parseFloat(response.avgNum) >= 3))  {
                 $('#refundLabel').text('Победитель будет выбран автоматически согласно регламенту');
@@ -42,61 +40,36 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     $('li[data-points='+ lowestGrade +']').css('color', colorGrades);
     $('#avgPoints, #avgPointsFloat').text(response.avgNum).css('color', colorBigNum);
     $('#avgPointsString, #avgPointsStringFloat').css('color', colorBigNum);
+    var canvasWidth = '474';
     if(response.dates.length > 5) {
-        var canvasWidth = ((response.dates.length-1) * 106) + (28 * 2);
-    }else{
-        var canvasWidth = '474';
+        canvasWidth = ((response.dates.length-1) * 106) + (28 * 2);
     }
 
-
-    var stage = new Kinetic.Stage({
+    // Создаем сцену
+    var stage = new Konva.Stage({
         container: 'container',
         width: canvasWidth,
         height: 150
     });
 
-    var layer = new Kinetic.Layer();
-    var layer2 = new Kinetic.Layer();
+    // Создаем слой
+    var layer = new Konva.Layer();
+    // Создаем переменны для данных
     var lowestData = response.ratingArray;
     var middleData = response.moneyArray;
     var topData = response.commentArray;
     var avg = response.avgArray;
+    // Строим данные для графиков
     var lowestGraphData = buildGraph(lowestData);
     var points = lowestGraphData.plot;
     var lowestToppoints = lowestGraphData.toppoints;
     var middleGraphData = buildGraph(middleData, lowestData);
     var middlePoints = middleGraphData.plot;
     var middleToppoints = middleGraphData.toppoints;
-
     var topGraphData = buildGraph(topData, lowestData, middleData);
     var topPoints = topGraphData.plot;
     var topToppoints = topGraphData.toppoints;
-
-    var lowestGraph = new Kinetic.Polygon({
-        points: points,
-        fill: '#8d8d92',
-        opacity: 0.6
-    });
-    var lowestLine = new Kinetic.Line({
-        points: lowestToppoints,
-        strokeWidth:3,
-        stroke: '#464750'
-    })
-    var middleGraph = new Kinetic.Polygon({
-        points: middlePoints,
-        fill: '#a9c7ad',
-        opacity:0.6
-    });
-    var middleLine = new Kinetic.Line({
-        points: middleToppoints,
-        stroke: '#678e6f',
-        strokeWidth:3
-    });
-    var topGraph = new Kinetic.Polygon({
-        points: topPoints,
-        fill: '#a2b8c2',
-        opacity:0.9
-    });
+    // Получаем данные для верхний точек
     var topLinePoints = [];
     for(i=0;i < topToppoints.length;i++) {
         if(i % 2 == 0) {
@@ -105,7 +78,41 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
             topLinePoints.push(topToppoints[i]);
         }
     }
-    var topLine = new Kinetic.Line({
+    // Нижний график
+    var lowestGraph = new Konva.Line({
+        points: points,
+        fill: '#8d8d92',
+        opacity: 0.6,
+        closed : true
+    });
+    // Линия для нижнего графика
+    var lowestLine = new Konva.Line({
+        points: lowestToppoints,
+        strokeWidth:3,
+        stroke: '#464750'
+    })
+    // Средний график
+    var middleGraph = new Konva.Line({
+        points: middlePoints,
+        fill: '#a9c7ad',
+        opacity: 0.6,
+        closed : true
+    });
+    // Линия для среднего графика
+    var middleLine = new Konva.Line({
+        points: middleToppoints,
+        stroke: '#678e6f',
+        strokeWidth:3
+    });
+    // Верхний график
+    var topGraph = new Konva.Line({
+        points: topPoints,
+        fill: '#a2b8c2',
+        opacity: 0.9,
+        closed : true
+    });
+    // Линия для вверхнего графика
+    var topLine = new Konva.Line({
         points: topLinePoints,
         stroke: '#6990a1',
         strokeWidth:3
@@ -114,13 +121,9 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     var toppoints = topLinePoints;
 
     var patternJSImage = new Image();
-    patternJSImage.onload = function() {
-
-    }
     patternJSImage.src = '/img/pattern_element.jpg';
-
-
-    var pattern = new Kinetic.Rect({
+    // Добавляем паттерн-сетку для графика
+    var pattern = new Konva.Rect({
         x: 0,
         y: 0,
         width: canvasWidth,
@@ -133,7 +136,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
 
     var imageObj = new Image();
     imageObj.onload = function() {
-        var grid = new Kinetic.Rect({
+        var grid = new Konva.Rect({
             x: 0,
             y: 0,
             fillPatternImage: imageObj,
@@ -142,7 +145,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
         });
 
         layer.add(grid);
-        lowestGraph.moveToBottom();
+
         grid.moveToTop();
         layer.draw();
         var index = 0;
@@ -168,7 +171,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
                 points = points + '.0';
             }
 
-            var number = new Kinetic.Text({
+            var number = new Konva.Text({
                 x: toppoints[i-1] -5,
                 y: toppoints[i] - 25,
                 text: points,
@@ -182,7 +185,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
                 fill: color
             });
             if(i != (toppoints.length - 1)) {
-                var word = new Kinetic.Text({
+                var word = new Konva.Text({
                     x: toppoints[i-1] + 25,
                     y: toppoints[i] - 23,
                     text: 'балла',
@@ -196,8 +199,8 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
                     fill: color
                 });
             }
-
-            var date = new Kinetic.Text({
+            // Доюавляем текст даты
+            var date = new Konva.Text({
                 x: toppoints[i-1] - 15,
                 y: 132 + 5,
                 text: response.dates[index],
@@ -211,7 +214,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
                 layer.add(word);
             }
             layer.add(date);
-            index++
+            index++;
         }
 
         layer.add(lowestGraph);
@@ -222,7 +225,6 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
         layer.add(topLine);
         layer.draw();
         stage.add(layer);
-        stage.add(layer2);
         $('#placeholder').hide();
         $('#floatingblock').show();
     };
@@ -231,7 +233,7 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
 
     if(response.dates.length > 5) {
         $('#scrollerarea').show();
-        $('.kineticjs-content', '#container').css('right', $('.kineticjs-content', '#container').width() - 474 + 'px');
+        $('.konvajs-content', '#container').css('right', $('.konvajs-content', '#container').width() - 474 + 'px');
     }
     stage.add(layer);
 
@@ -296,16 +298,17 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
     }
 
     function drawPie() {
-        radius = can.height / 2.4;
         var midX = can.width / 2;
         var midY = can.height / 2;
+        var dataValue = q1Value;
+        radius = can.height / 2.4;
+
         ctx.strokeStyle = "black";
         ctx.font = "9px Helvetica";
         ctx.fontStyle = "bold";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        // get data set
-        var dataValue = q1Value;
+
         // calculate total value of pie
         var total = 0;
         for (var i = 0; i < numSamples; i++) {
@@ -320,8 +323,9 @@ $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val(
             // draw wedge
             var portion = dataValue[i] / total;
             var wedge = 2 * Math.PI * portion;
-            ctx.beginPath();
             var angle = oldAngle + wedge;
+            ctx.beginPath();
+
             ctx.arc(midX, midY, radius, oldAngle, angle);
             ctx.lineTo(midX, midY);
             ctx.closePath();
@@ -419,17 +423,6 @@ function buildGraph(data, prevdata, prevprevdata) {
     var points = [];
     var top = [];
     var bottom = [];
-    //if(data.length < 5) {
-    //    var diff = 5 - data.length;
-    //    graphLeftPoint += diff * width;
-    //}
-/*
-    if(data.length > 5) {
-        var mod = data.length - 5;
-        for(var i = 0; i < mod; i++) {
-            data.shift();
-        }
-    }*/
     for (var i = 0; i < data.length; i++) {
         var element = (data[i] / 3);
         if(prevdata) {
@@ -467,11 +460,12 @@ function buildGraph(data, prevdata, prevprevdata) {
     return {"plot": points, "toppoints": top};
 }
 
-function createImage(config, layer, moveToTop, storage) {
+function createImage(config, layer, moveToTop) {
+    "use strict";
     var img = new Image();
     img.src = config.src;
     img.onload = function() {
-        var kineticImage = new Kinetic.Image(config)
+        var kineticImage = new Konva.Image(config);
         kineticImage.setImage(img);
 
         layer.add(kineticImage);
@@ -480,9 +474,10 @@ function createImage(config, layer, moveToTop, storage) {
             layer.draw();
         }
 
-    }
+    };
 }
 
 function isInt(n) {
-    return n % 1 === 0;
+    "use strict";
+    return 0 === n % 1;
 }

@@ -195,7 +195,7 @@
 </div>
 <?= $this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data)) ?>
 <?= $this->view()->render(array('element' => 'popups/warning')) ?>
-<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.keyboard.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery-ui-1.11.4.min.js', 'jquery.raty.min.js', 'jquery.timeago.js', 'kinetic-v4.5.4.min.js', 'solutions/logosale.js', 'social-likes.min.js', 'pitches/gallery.js'), array('inline' => false)) ?>
+<?= $this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.keyboard.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery-ui-1.11.4.min.js', 'jquery.raty.min.js', 'jquery.timeago.js', 'konva.0.9.5.min.js', 'solutions/logosale.js', 'social-likes.min.js', 'pitches/gallery.js'), array('inline' => false)) ?>
 <?=
 $this->html->style(array(
     '/css/common/receipt.css',

@@ -343,8 +343,8 @@ var gallerySwitch = (function() {
         $( "#scroller" ).draggable({ drag: function() {
             var x = $('#scroller').css('left');
             x = parseInt(x.substring(0, x.length - 2));
-            var mod = ($('.kineticjs-content', '#container').width() - 476) / 350;
-            $('.kineticjs-content', '#container').css('right', Math.round(x * mod) + 'px');
+            var mod = ($('.konvajs-content', '#container').width() - 476) / 350;
+            $('.konvajs-content', '#container').css('right', Math.round(x * mod) + 'px');
         }, axis: "x", containment: "parent"});
     };
     // Details Tab Init
