@@ -79,7 +79,7 @@ $(function(){
         slidesLoaded: function() {
           $('.caption').animate({
             bottom:0
-          },00);
+          },300);
         }
     });
 
@@ -130,7 +130,7 @@ $(function(){
         return false;
     });
 
-    React.render(
+    ReactDOM.render(
         React.createElement(ClientsLogosShowCase, {data: logos}), document.getElementById('clients-logos')
     );
 

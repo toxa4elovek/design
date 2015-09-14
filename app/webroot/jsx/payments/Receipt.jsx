@@ -1,15 +1,15 @@
-var Receipt = new React.createClass({
-    hideLinkOnClick: function(e) {
+class Receipt extends React.Component{
+    hideLinkOnClick(e) {
         var aside = React.findDOMNode(this.refs["receiptContainer"]);
         $(aside).removeClass('expanded');
         e.preventDefault();
-    },
-    showLinkOnClick: function(e) {
+    }
+    showLinkOnClick(e) {
         var aside = React.findDOMNode(this.refs["receiptContainer"]);
         $(aside).addClass('expanded');
         e.preventDefault();
-    },
-    render: function() {
+    }
+    render() {
         var total = 0;
         for (i = 0; i < this.props.data.length; i++) {
             total += this.props.data[i].amount;
@@ -29,4 +29,4 @@ var Receipt = new React.createClass({
             </aside>
         )
     }
-});
+}

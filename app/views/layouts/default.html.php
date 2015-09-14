@@ -135,17 +135,15 @@
 
 <?=$this->view()->render(array('element' => 'footer'))?>
 <?php
-echo  $this->html->script('http://vk.com/js/api/openapi.js');
-echo $this->html->script('react-0.13.3/build/react.js');
-echo $this->html->script('react-0.13.3/build/JSXTransformer.js');
-//echo  $this->html->script('https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js');
-//echo  $this->html->script('https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js');
-echo  $this->html->script('jquery-1.8.3.min.js', array('inline' => false, 'weight' => 10));
-echo  $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 11));
-echo  $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));
-echo  $this->html->script('jquery.detectmobilebrowser.min.js', array('inline' => false, 'weight' => 13));
-echo  $this->html->script('plugins', array('inline' => false, 'weight' => 14));
-echo  $this->html->script('app', array('inline' => false, 'weight' => 16));
+echo $this->html->script('http://vk.com/js/api/openapi.js');
+echo $this->html->script('react-0.14.0-rc1.js', array('inline' => false, 'weight' => 8));
+echo $this->html->script('react-dom-0.14.0-rc1.js', array('inline' => false, 'weight' => 9));
+echo $this->html->script('jquery-1.8.3.min.js', array('inline' => false, 'weight' => 10));
+echo $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 11));
+echo $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));
+echo $this->html->script('jquery.detectmobilebrowser.min.js', array('inline' => false, 'weight' => 13));
+echo $this->html->script('plugins', array('inline' => false, 'weight' => 14));
+echo $this->html->script('app', array('inline' => false, 'weight' => 16));
 ?>
 <?= $this->optimize->scripts() ?>
 <?=$this->view()->render(array('element' => 'popups/contact_form'))?>

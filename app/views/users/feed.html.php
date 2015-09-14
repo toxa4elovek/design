@@ -733,40 +733,8 @@
                 </div><!-- /middle -->
             </div><!-- .wrapper -->
 
-            <script type="text/jsx">
-                var DesignNews = React.createClass({
-                    getInitialState: function() {
-                        return {page: 1};
-                    },
-                    autoUpdate: function() {
-                        console.log('state:');
-                        console.log(this.state)
-                        console.log('autoupdate');
-                        this.state.page = 2;
-                    },
-                    render: function() {
-                        console.log(this.state)
-                        var items = [];
-                        $.each(this.props, function(i, value) {
-                            items.push(value);
-                        });
-                        return (<div>{ items.map(function(m, index){
-                            var trackLink =  'http://www.godesigner.ru/users/click?link=' + m.link + '&id=' + m.id;
-                            return <div className="design-news">
-                                <a target="_blank" href={trackLink}>{m.title}</a> <br/>
-                                <a className="clicks" href={trackLink}>{m.host.host}</a>
-                            </div>;
-                        }) }</div>)
-                    },
-                    componentDidMount: function(){
-                        //this.timer = setInterval(this.autoUpdate, 5000);
-                    }
-                });
+            <script>
                 var designNewsInitialData = <?php echo $jsonDesignNewsInitialData ?>;
-                React.render(
-                    <DesignNews {...designNewsInitialData} />,
-                    document.getElementById('content-news')
-                );
             </script>
 
             <div class="onTop">&nbsp;</div>
@@ -783,10 +751,22 @@
                 <div id="likedAjaxLoader"><img src="http://www.godesigner.ru/img/blog-ajax-loader.gif"></div>
                 <div class="popup-close"></div>
             </div>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
-            <?= $this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'social-likes.min.js', 'typeahead.jquery.min.js', 'bloodhound.min.js', 'users/feed.js', 'users/activation.js'), array('inline' => false)) ?>
-            <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css', '/css/social-likes_flat'), array('inline' => false)) ?>
-            <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
-            <?= $this->view()->render(array('element' => 'popups/warning')) ?>
-            <?= $this->view()->render(array('element' => 'moderation')) ?>
+<?= $this->html->script(array(
+    'jcarousellite_1.0.1.js',
+    'jquery.timers.js',
+    'jquery.simplemodal-1.4.2.js',
+    'tableloader.js',
+    'jquery.timeago.js',
+    'fileuploader',
+    'jquery.tooltip.js',
+    'social-likes.min.js',
+    'typeahead.jquery.min.js',
+    'bloodhound.min.js',
+    'users/news/DesignNewsRow.js',
+    'users/news/DesignNews.js',
+    'users/feed.js',
+    'users/activation.js'), array('inline' => false)) ?>
+<?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css', '/css/social-likes_flat'), array('inline' => false)) ?>
+<?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
+<?= $this->view()->render(array('element' => 'popups/warning')) ?>
+<?= $this->view()->render(array('element' => 'moderation')) ?>

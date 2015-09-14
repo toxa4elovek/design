@@ -23,7 +23,7 @@ $(document).ready(function() {
                 $.getJSON(url + '&page=' + currentPage, function(result) {
                     $('#blog-ajax-wrapper').hide();
                     $('.blog-post-entry-box').last().append('<div class="blog-post-separator"></div>');
-                    React.render(
+                    ReactDOM.render(
                         React.createElement(BlogPostList, {posts: posts}),
                         document.getElementById('blog-posts')
                     );
@@ -57,7 +57,7 @@ $(document).ready(function() {
                 currentPage = 1;
                 $('.js-blog-index-title').text('Результат поиска');
                 posts = result.postsList;
-                React.render(
+                ReactDOM.render(
                     React.createElement(BlogPostList, {posts: posts}),
                     document.getElementById('blog-posts')
                 );
@@ -76,7 +76,7 @@ $(document).ready(function() {
         $('#post-search').removeClass('active');
     });
 
-    React.render(
+    ReactDOM.render(
         React.createElement(BlogPostList, {posts: posts}),
         document.getElementById('blog-posts')
     );

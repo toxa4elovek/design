@@ -1,13 +1,18 @@
-var BlogPostEntryBox = new React.createClass({
-    displayName: 'BlogPostEntryBox',
-    postsViewLink: '/posts/view/',
-    postsEditLink: '/posts/edit/',
-    postsDeleteLink: '/posts/delete/',
-    getInitialState: function() {
-        return {isEditor: this.props.isEditor, isAuthor: this.props.isAuthor}
-    },
-    componentDidMount: function() {
-        var tagList = React.findDOMNode(this.refs["tag-list"]);
+class BlogPostEntryBox extends React.Component{
+    displayName = 'BlogPostEntryBox';
+    postsViewLink = '/posts/view/';
+    postsEditLink = '/posts/edit/';
+    postsDeleteLink = '/posts/delete/';
+    constructor(props) {
+        super(props);
+        this.state = {isEditor: props.isEditor, isAuthor: props.isAuthor};
+    }
+
+    /**
+     * Метод выывается, когда компонент
+     */
+    componentDidMount() {
+        var tagList = this.refs["tag-list"];
         var tagLinksList = $('a', tagList);
         var tagListLength = tagLinksList.length;
         $.each(tagLinksList, function(index, object) {
@@ -15,26 +20,26 @@ var BlogPostEntryBox = new React.createClass({
                 $(object).after(' &bull; ');
             }
         });
-    },
-    deleteLinkOnClick: function(e) {
+    }
+    deleteLinkOnClick(e) {
         if (confirm("Точно удалить статью?")) {
             return true;
         } else {
             e.preventDefault();
         }
-    },
-    render: function() {
-        var link = this.postsViewLink + this.props.post.id;
-        var editLink = this.postsEditLink + this.props.post.id;
-        var deleteLink = this.postsDeleteLink + this.props.post.id;
-        var tagStringArray = [];
-        var publishedTime = moment(this.props.post.created, "YYYY-MM-DD HH:mm:ss").format('D.MM.YYYY • HH:mm');
-        var actionList = [];
-        var shortStory = $(this.props.post.short).text();
+    }
+    render() {
+        const link = this.postsViewLink + this.props.post.id;
+        const editLink = this.postsEditLink + this.props.post.id;
+        const deleteLink = this.postsDeleteLink + this.props.post.id;
+        let tagStringArray = [];
+        const publishedTime = moment(this.props.post.created, "YYYY-MM-DD HH:mm:ss").format('D.MM.YYYY • HH:mm');
+        let actionList = [];
+        const shortStory = $(this.props.post.short).text();
         if (this.props.post.tags) {
-            var tagsArray = this.props.post.tags.split('|');
-            for(var i = 0; i < tagsArray.length; i++) {
-                tagStringArray.push(<BlogPostTagLink tag={tagsArray[i]} />);
+            let tagsArray = this.props.post.tags.split('|');
+            for(let i = 0; i < tagsArray.length; i++) {
+                tagStringArray.push(<BlogPostTagLink key={tagsArray[i]} tag={tagsArray[i]} />);
             }
         }
         if((this.state.isAuthor == 1) || (this.state.isEditor == 1)) {
@@ -45,11 +50,11 @@ var BlogPostEntryBox = new React.createClass({
                                href={deleteLink}>удалить</a>);
         }
         actionList.push(<a className="more" href={link}>Подробнее</a>);
-        var postTitleLink = <a href={link}>{this.props.post.title}</a>;
+        let postTitleLink = <a href={link}>{this.props.post.title}</a>;
         if(this.props.post.published == 0) {
             postTitleLink = <a href={link} className="not-published">{this.props.post.title}</a>;
         }
-        var currentDateTime = moment();
+        const currentDateTime = moment();
         if(!currentDateTime.isAfter(moment(this.props.post.created, "YYYY-MM-DD HH:mm:ss"))) {
             postTitleLink = <a href={link} className="not-published">{this.props.post.title}</a>;
         }
@@ -83,4 +88,4 @@ var BlogPostEntryBox = new React.createClass({
             </div>
         )
     }
-});
+}

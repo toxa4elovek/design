@@ -43,24 +43,28 @@
                         <script>
                             var props = [
                                 {
+                                    "id": 1,
                                     "name": "isDesigner",
                                     "title": "Я — дизайнер",
                                     "isDesigner": <?= $user->isDesigner ?>,
                                     "margin-left": "0"
                                 },
                                 {
+                                    "id": 2,
                                     "name": "isClient",
                                     "title": "Я — заказчик",
                                     "isDesigner": <?= $user->isClient ?>,
                                     "margin-left": "47px"
                                 },
                                 {
+                                    "id": 3,
                                     "name": "isCopy",
                                     "title": "Я — копирайтер",
                                     "isDesigner": <?= $user->isCopy ?>,
                                     "margin-left": "43px"
                                 },
                                 {
+                                    "id": 4,
                                     "name": "is_company",
                                     "title": "Я — юр. лицо",
                                     "isDesigner": <?= $user->is_company?>,

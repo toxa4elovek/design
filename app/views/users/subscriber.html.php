@@ -11,26 +11,22 @@
 
             <div style="float:left; width: 400px;">
                 <section id="balance">
-                    <script type="text/jsx">
-                    var balance = <?= $this->user->getBalance() ?>;
-                    var companyName = '<?= $this->user->getShortCompanyName() ?>';
-                    var expirationDate = '<?= $this->user->getSubscriptionExpireDate('d/m/Y') ?>';
-                    var isSubscriptionActive = <?php echo (int) $this->user->isSubscriptionActive() ?>;
-                    React.render(
-                        <BalanceBox balance={balance} isSubscriptionActive={isSubscriptionActive} companyName={companyName} expirationDate={expirationDate}/>,
-                        document.getElementById('balance')
-                    );
+                    <script>
+                        var userInfo = {
+                            "balance": <?= $this->user->getBalance() ?>,
+                            "companyName": '<?= $this->user->getShortCompanyName() ?>',
+                            "expirationDate": '<?= $this->user->getSubscriptionExpireDate('d/m/Y') ?>',
+                            "isSubscriptionActive": <?php echo (int) $this->user->isSubscriptionActive() ?>
+                        }
+                        var questions = [
+                            {title: 'Как наша компания может заключить с вами договор?', id: '82'},
+                            {title: 'Какие способы оплаты мы принимаем?', id: '6'},
+                            {title: 'Если я создаю проект от лица компании?', id: '89'}
+                        ];
                     </script>
                 </section>
 
                 <section id="fund-balance-button"></section>
-
-                <script type="text/jsx">
-                    React.render(
-                        <FundBalanceButton/>,
-                        document.getElementById('fund-balance-button')
-                    );
-                </script>
 
                 <aside id="faq-corporate"></aside>
 
@@ -38,83 +34,11 @@
 
             <section id="new-project"></section>
 
-            <script type="text/jsx">
-                React.render(
-                    <NewProjectBox/>,
-                    document.getElementById('new-project')
-                );
-            </script>
-
             <div class="clear"></div>
 
             <section class="project-search-widget" id="subscribe-project-search"></section>
 
-            <section class="project-search-results" id="subscribe-project-search-results">
-
-            </section>
-
-            <script type="text/jsx">
-                var ProjectSearchResultsTable = new React.createClass({
-                    render: function() {
-                        return (
-                            <table id="myprojects" className="project-search-table">
-                                <ProjectSearchResultsTableHeader/>
-                                <ProjectSearchResultsTableRow/>
-                            </table>
-                        )
-                    }
-                });
-
-                var ProjectSearchResultsTableRow = new React.createClass({
-                    render: function() {
-                        return (
-                            <tr data-id="105783" className="odd">
-                                <td className="td-title">
-                                    <a href="/pitches/view/105783" class="newpitchfont">Логотип для проекта PublicDictionary</a>
-                                </td>
-                                <td className="idea">73</td>
-                                <td className="pitches-time">6 дней 7 часов</td>
-                                <td className="price">-20 000 Р.-</td>
-                            </tr>
-                        )
-                    }
-                });
-
-                var ProjectSearchResultsTableHeader = new React.createClass({
-                    render: function() {
-                        return (
-                            <thead>
-                                <tr>
-                                    <td>
-                                        <a href="#" id="sort-title" className="sort-link" data-dir="asc">название</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" id="sort-ideas_count" className="sort-link" data-dir="asc">идей</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" id="sort-finishDate" className="sort-link" data-dir="asc">срок/статус</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" id="sort-price" className="sort-link" data-dir="asc">Цена</a>
-                                    </td>
-                                </tr>
-                            </thead>
-                        )
-                    }
-                });
-
-                React.render(
-                    <ProjectSearchResultsTable/>,
-                    document.getElementById('subscribe-project-search-results')
-                );
-            </script>
-
-            <script type="text/jsx">
-                React.render(
-                    <ProjectSearchBar/>,
-                    document.getElementById('subscribe-project-search')
-                );
-            </script>
+            <section class="project-search-results" id="subscribe-project-search-results"></section>
 
         </div><!-- .main -->
     </div><!-- .middle -->
@@ -137,6 +61,10 @@
     "/js/users/subscriber/FaqQuestionRow.js",
     "/js/users/subscriber/FaqCorporateBox.js",
     "/js/users/subscriber/ProjectSearchBar.js",
+    '/js/users/subscriber/ProjectSearchResultsTable.js',
+    '/js/users/subscriber/ProjectSearchResultsTableRow.js',
+    '/js/users/subscriber/ProjectSearchResultsTableHeader.js',
+    '/js/users/subscriber.js',
     'users/office.js'), array('inline' => false))?>
 <?=$this->html->style(array(
     '/edit',

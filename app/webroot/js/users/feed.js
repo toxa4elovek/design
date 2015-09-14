@@ -922,6 +922,12 @@ function OfficeStatusUpdater() {
             }
         });
         self.started = 1;
+        if($('#content-news').length > 0) {
+            ReactDOM.render(
+                React.createElement(DesignNews, React.__spread({},  designNewsInitialData)),
+                document.getElementById('content-news')
+            );
+        }
     },
             this.autolikes = function() {
                 $.get('http://www.godesigner.ru/events/autolikes.json', {"created": self.likesdate}, function (response) {

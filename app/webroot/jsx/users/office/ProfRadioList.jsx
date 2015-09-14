@@ -1,13 +1,13 @@
-var ProfRadioList = new React.createClass({
-    render: function() {
+class ProfRadioList extends React.Component{
+    render() {
         return (
             <div className="profselectbox-container">
                 {this.props.data.map(function(props) {
                     return (
-                        <ProfSelectBox data={props} />
+                        <ProfSelectBox key={props.id} data={props} />
                     )
                 })}
             </div>
         )
     }
-});
+}

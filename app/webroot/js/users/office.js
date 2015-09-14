@@ -1093,7 +1093,7 @@ $(document).ready(function(){
     });
 
     if($('#profselectbox').length == 1) {
-        React.render(
+        ReactDOM.render(
             React.createElement(ProfRadioList, {data: props}),
             document.getElementById('profselectbox')
         );
@@ -1288,7 +1288,7 @@ $(document).on('click', function() {
              Ref.reset({phone:$('#prop-phone').val(), phone_valid:$('#prop-phone_valid').val()});
          }else if(url.match(/users\/profile/)) {
              $('.middle', '.wrapper').html($('.middle', response).html());
-             React.render(
+             ReactDOM.render(
                  React.createElement(ProfRadioList, {data: props}),
                  document.getElementById('profselectbox')
              );

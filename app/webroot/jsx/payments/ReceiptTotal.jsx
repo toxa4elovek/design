@@ -1,9 +1,9 @@
-var ReceiptTotal = new React.createClass({
-    render: function() {
-        var total = this.props.total;
+class ReceiptTotal extends React.Component{
+    render() {
+        let total = this.props.total;
         total += '.-';
         return (
             <span>{total}</span>
         )
     }
-});
+}
