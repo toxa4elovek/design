@@ -19,7 +19,7 @@
     <tr>
         <td><input style="position: relative; left: 8px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="2" <?php if(($pitch) && ($pitch->timelimit == 2)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>
         <td><input style="position: relative; left: 40px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="1" <?php if(($pitch) && ($pitch->timelimit == 1)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="950" ></td>
-        <td><input style="position: relative; left: 74px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="0" <?php if(($pitch) && ($pitch->timelimit == 0)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="0" checked="checked"></td>
+        <td><input style="position: relative; left: 74px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="0" <?php if(($pitch) && ($pitch->timelimit == 0)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="0"></td>
         <td><input style="position: relative; left: 58px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="3" <?php if(($pitch) && ($pitch->timelimit == 3)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="950" ></td>
         <td><input style="position: relative; left: 81px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="4" <?php if(($pitch) && ($pitch->timelimit == 4)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>
     </tr>
