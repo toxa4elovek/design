@@ -129,7 +129,7 @@
 
 <body class="<?=$this->_request->controller;?>_<?=$this->_request->action;?>">
 <?php if($this->_request->action != 'feed'): ?>
-<a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;display:hidden;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
+<a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
 <?php endif?>
 <?php echo $this->content() ?>
 
@@ -150,6 +150,7 @@ echo $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false,
 echo $this->html->script('jquery.detectmobilebrowser.min.js', array('inline' => false, 'weight' => 13));
 echo $this->html->script('plugins', array('inline' => false, 'weight' => 14));
 echo $this->html->script('app', array('inline' => false, 'weight' => 16));
+echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false));
 ?>
 <?= $this->optimize->scripts() ?>
 <?=$this->view()->render(array('element' => 'popups/contact_form'))?>
