@@ -135,9 +135,15 @@
 
 <?=$this->view()->render(array('element' => 'footer'))?>
 <?php
+$env = lithium\core\Environment::get();
 echo $this->html->script('http://vk.com/js/api/openapi.js');
-echo $this->html->script('react-0.14.0-rc1.js', array('inline' => false, 'weight' => 8));
-echo $this->html->script('react-dom-0.14.0-rc1.js', array('inline' => false, 'weight' => 9));
+if($env == 'development') {
+    echo $this->html->script('/js/react/0.14.0-rc1-dev/react.js', array('inline' => false, 'weight' => 8));
+    echo $this->html->script('/js/react/0.14.0-rc1-dev/react-dom.js', array('inline' => false, 'weight' => 9));
+}else {
+    echo $this->html->script('/js/react/0.14.0-rc1/react-0.14.0-rc1.min.js', array('inline' => false, 'weight' => 8));
+    echo $this->html->script('/js/react/0.14.0-rc1/react-dom-0.14.0-rc1.min.js', array('inline' => false, 'weight' => 9));
+}
 echo $this->html->script('jquery-1.8.3.min.js', array('inline' => false, 'weight' => 10));
 echo $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 11));
 echo $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));
