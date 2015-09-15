@@ -44,3 +44,6 @@
     display: inline-block;
     margin-top: 15px;
 }
+.widget div {
+    cursor: auto;
+}

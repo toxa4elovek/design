@@ -9,7 +9,7 @@
     ?>
     <script>
         var payload = {
-            "total": 20000,
+            "total": 61000,
             "projectId": 300000,
             "receipt": [
                 {"name": "Оплата тарифа", "amount": 49000},
@@ -97,9 +97,9 @@
         </div><!-- .main -->
     </div><!-- .middle -->
 <?= $this->html->script(array(
-    'payments/ReceiptLine.js',
-    'payments/ReceiptTotal.js',
-    'payments/Receipt.js',
+    'common/receipt/ReceiptLine.js',
+    'common/receipt/ReceiptTotal.js',
+    'common/receipt/Receipt.js',
     'payments/PaymentPayture.js',
     'payments/PaymentPaymaster.js',
     'payments/PaymentPaymasterPaySystem.js',

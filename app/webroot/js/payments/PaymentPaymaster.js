@@ -18,9 +18,15 @@ var PaymentPaymaster = (function (_React$Component) {
     }
 
     _createClass(PaymentPaymaster, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            $(".pmwidget").pmwidget();
+        key: "paymentSystemClick",
+        value: function paymentSystemClick(id) {
+            var amInput = $("#pmOpenAmount");
+            if (0 < amInput.length && !amInput.val().match(/^\s*\d+.?\d*\s*$/)) {
+                alert('Укажите, пожалуйста, корректную сумму платежа');
+                return false;
+            }
+            $("#pmwidgetPS").val(id);
+            $("#pmwidgetForm").submit();
         }
     }, {
         key: "render",
@@ -40,11 +46,11 @@ var PaymentPaymaster = (function (_React$Component) {
                 React.createElement("img", { className: "imageblock", src: "/img/s3_paymaster.png", alt: "Дебетовые и кредитные карты" }),
                 React.createElement(
                     "div",
-                    null,
+                    { className: "widget" },
                     React.createElement(
                         "div",
                         { className: "pmwidget pmwidgetDone", style: { "width": "471px" } },
-                        React.createElement("a", { href: "http://paymaster.ru/", className: "pmlogo" }),
+                        React.createElement("a", { onClick: this.paymentSystemClick.bind(this), href: "http://paymaster.ru/", className: "pmlogo" }),
                         React.createElement(
                             "h1",
                             { className: "pmheader" },
@@ -80,8 +86,15 @@ var PaymentPaymaster = (function (_React$Component) {
                             "div",
                             { className: "payList", style: { "height": "auto", "overflow": "hidden" } },
                             paySystems.map(function (system) {
-                                return React.createElement(PaymentPaymasterPaySystem, { key: system.id, total: total, projectId: projectId, paySystem: system });
-                            }),
+                                return React.createElement(PaymentPaymasterPaySystem, {
+                                    onMouseEnter: this.paymentSystemClick.bind(this),
+                                    key: system.id,
+                                    total: total,
+                                    projectId: projectId,
+                                    paySystem: system,
+                                    clickCallback: this.paymentSystemClick
+                                });
+                            }, this),
                             React.createElement("div", { className: "clearfix" })
                         ),
                         React.createElement(
@@ -92,10 +105,10 @@ var PaymentPaymaster = (function (_React$Component) {
                                 null,
                                 React.createElement("input", { type: "hidden", name: "LMI_MERCHANT_ID", value: "d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60" }),
                                 React.createElement("input", { type: "hidden", name: "LMI_CURRENCY", value: "RUB" }),
-                                React.createElement("input", { type: "hidden", name: "LMI_PAYMENT_AMOUNT", value: total }),
+                                React.createElement("input", { type: "hidden", name: "LMI_PAYMENT_AMOUNT", id: "pmOpenAmount", value: total }),
                                 React.createElement("input", { type: "hidden", name: "LMI_PAYMENT_NO", value: projectId }),
                                 React.createElement("input", { type: "hidden", name: "LMI_PAYMENT_DESC", value: "Оплата проекта" }),
-                                React.createElement("input", { type: "hidden", name: "LMI_PAYMENT_SYSTEM", id: "pmwidgetPS" })
+                                React.createElement("input", { type: "hidden", name: "LMI_PAYMENT_SYSTEM", id: "pmwidgetPS", ref: "inputPaymentSystem" })
                             )
                         )
                     )
