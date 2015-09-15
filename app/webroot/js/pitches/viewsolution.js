@@ -458,7 +458,6 @@ $(document).ready(function() {
         solutionThumbnail = '';
         $.getJSON(urlJSON, function(result) {
             // hide receipt and buy buttons
-            console.log(result.isSolutionReady);
             if(result.isSolutionReady == false) {
                 $('.summary-price').hide();
                 $('#step3').hide();
@@ -533,6 +532,7 @@ $(document).ready(function() {
                 }
             }else {
                 var filesHTML = '';
+                var downloadUrl ='';
                 if ((typeof (result.solution.images) != 'undefined') && (result.solution.images.length != 0)) {
                     if(typeof(result.solution.images.solution) != 'undefined') {
                         var file = result.solution.images.solution;
@@ -545,16 +545,20 @@ $(document).ready(function() {
                         }else {
                             downloadUrl = '/solutionfiles' + file[0].weburl;
                         }
-                        filename = file[0].originalbasename
+                        filename = file[0].originalbasename;
                     } else {
-                        if(file.weburl.match(/solutions/)) {
-                            downloadUrl = file.weburl;
-                        }else {
-                            downloadUrl = '/solutionfiles' + file.weburl;
+                        if(file.weburl != false) {
+                            if(file.weburl.match(/solutions/)) {
+                                downloadUrl = file.weburl;
+                            }else {
+                                downloadUrl = '/solutionfiles' + file.weburl;
+                            }
+                            filename = file.originalbasename;
                         }
-                        filename = file.originalbasename
                     }
-                    filesHTML += '<div class="clip-document-container"><a href="' + downloadUrl + '" class="clip-document">' + filename + '</a></div>';
+                    if(downloadUrl != '') {
+                        filesHTML += '<div class="clip-document-container"><a href="' + downloadUrl + '" class="clip-document">' + filename + '</a></div>';
+                    }
                 }
                 $('.solution-images').append(filesHTML + '<div class="preview"> \
                     <span>' + result.solution.description + '</span> \

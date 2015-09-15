@@ -42,11 +42,11 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out("Starting parsing http://www.theartnewspaper.ru/");
         self::ParsingSimpleRss('http://www.theartnewspaper.ru/rss/');
         $this->out('Finished parsing http://www.theartnewspaper.ru/ [' . (time() - $startTimeStamp) . ' sec]');
-
+/*
         $this->out("Starting parsing interviewrussia.ru");
         self::ParsingInterview('http://www.interviewrussia.ru/export/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing interviewrussia.ru [' . (time() - $startTimeStamp) . ' sec]');
-
+*/
         $this->out("Starting parsing desnews.ru");
         self::ParsingDesnewsru('http://desnews.ru/?feed=rss2', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing desnews.ru [' . (time() - $startTimeStamp) . ' sec]');
