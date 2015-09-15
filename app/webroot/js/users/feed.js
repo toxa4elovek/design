@@ -1247,7 +1247,6 @@ function OfficeStatusUpdater() {
                             }
                         });
                         var $appendEl = $(html);
-                        $appendEl.hide();
                         $appendEl.appendTo('#updates-box-');
                         $('.social-likes').socialLikes();
                         $(".sharebar").hover(
