@@ -179,9 +179,9 @@
 
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'social-likes.min.js' ,'konva.0.9.5.min.js', 'jquery.tooltip.js',   'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'social-likes.min.js' ,'konva.0.9.5.min.js', 'jquery.tooltip.js',   'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php else:?>
-    <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'konva.0.9.5.min.js', 'social-likes.min.js', 'jquery.tooltip.js',  'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
+    <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'konva.0.9.5.min.js', 'social-likes.min.js', 'jquery.tooltip.js',  'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php endif?>
 <?=$this->html->style(array(
     '/css/common/receipt.css',

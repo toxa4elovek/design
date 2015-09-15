@@ -4,9 +4,9 @@ namespace app\controllers;
 
 use app\extensions\helper\MoneyFormatter;
 use \app\models\Pitch;
-use app\extensions\storage\Rcache;
 use app\extensions\billing\Payture;
 use app\models\Payment;
+use app\models\SubscriptionPlan;
 use \lithium\analysis\Logger;
 use \Exception;
 
@@ -70,17 +70,6 @@ class PaymentsController extends \app\controllers\AppController {
             return $this->redirect($url);
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
-    }
-
-    /**
-     * Метод для отображения страницы пополнения баланса личного кабинета и
-     * активации тарифа
-     */
-    public function subscriber() {
-        $receipt = array(
-            array('name' => 'Пополнение счёта', 'value' => 10000)
-        );
-        return compact('receipt');
     }
 
 }

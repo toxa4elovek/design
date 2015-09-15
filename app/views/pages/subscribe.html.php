@@ -10,7 +10,7 @@
                 выбор решений даже для небольших задач!</p>
             <div class="button-container">
                 <a href="/pages/howitworks" class="blue-button clean-style-button ">Как это работает</a>
-                <a href="/payments/subscribe" class="clean-style-button silver-button">Стать абонентом</a>
+                <a href="#" id="scroll-button" class="clean-style-button silver-button">Стать абонентом</a>
             </div>
         </section>
         <section class="lp-advantages paper-background">
@@ -57,19 +57,19 @@
                     <p>Идеально для частных лиц<br/> и малого бизнеса</p>
                     <span class="price">49 000</span>
                     <span class="price-description">руб./год*</span>
-                    <a href="/payments/subscribe/1" class="small-rounded-button almost-white">Оплатить</a>
+                    <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
                 <div class="center-badge" style="">
                     <p>Идеально для среднего бизнеса<br/>и рекламных агентств</p>
                     <span class="price">69 000</span>
                     <span class="price-description">руб./год*</span>
-                    <a href="/payments/subscribe/2" class="small-rounded-button red-button">Оплатить</a>
+                    <a href="/subscription_plans/subscriber/2" class="small-rounded-button red-button">Оплатить</a>
                 </div>
                 <div class="right-badge" style="">
                     <p>Идеально для маркетинговых<br />отделов или крупных компаний</p>
                     <span class="price">89 000</span>
                     <span class="price-description">руб./год*</span>
-                    <a href="/payments/subscribe/3" class="small-rounded-button almost-white">Оплатить</a>
+                    <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
             </div>
         </section>
@@ -143,9 +143,9 @@
             <table class="footer-table">
                 <tr>
                     <td class="description">* Стоимость тарифного плана не включает гонорары дизайнеру. Абоненты каждого получат возможность<br/> создать счет в рамках сервиса и пополнять его<br/> в зависимости от задач.</td>
-                    <td class="try"><h5>49 000</h5>р./год <a href="/payments/subscribe/1" class="small-rounded-button almost-white">оплатить</a></td>
-                    <td class="try"><h5>69 000</h5>р./год <a href="/payments/subscribe/2" class="small-rounded-button almost-white">оплатить</a></td>
-                    <td class="try"><h5>89 000</h5>р./год <a href="/payments/subscribe/3" class="small-rounded-button almost-white">оплатить</a></td>
+                    <td class="try"><h5>49 000</h5>р./год <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">оплатить</a></td>
+                    <td class="try"><h5>69 000</h5>р./год <a href="/subscription_plans/subscriber/2" class="small-rounded-button almost-white">оплатить</a></td>
+                    <td class="try"><h5>89 000</h5>р./год <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">оплатить</a></td>
                 </tr>
             </table>
         </section>
@@ -162,5 +162,6 @@
     '/css/pages/subscribe.css'
 ), array('inline' => false))?>
 <?=$this->html->script(array(
-    '/js/common/LinkStyledAsButton.js',
+    'jquery-plugins/jquery.scrollTo.min.js',
+    'pages/subscribe.js'
 ), array('inline' => false))?>

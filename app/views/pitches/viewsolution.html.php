@@ -196,7 +196,7 @@
 </div>
 <!-- End: Tooltips -->
 <div id="bridge" style="display:none;"></div>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'social-likes.min.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
+<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery-plugins/jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'social-likes.min.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
 <?=$this->html->style(array(
     '/css/common/receipt.css',
     '/view', '/messages12', '/pitches12', '/pitch_overview', '/css/viewsolution', '/jquery.fancybox-1.3.4.css', '/css/social-likes_flat'), array('inline' => false))?>
