@@ -67,37 +67,23 @@
             <div>
                 <h4>Выберите способ оплаты</h4>
 
-                <div class="payments-container">
-
-                    <div id="payture-payment"></div>
-
-                    <div class="separator">
-                        <span>или</span>
-                    </div>
-
-                    <div id="paymaster-payment"></div>
-
-                    <div class="separator">
-                        <span>или</span>
-                    </div>
-
-                </div>
-                <div class="g_line"></div>
-                <p class="submit">
-                    <a href="/pages/fastpitch"  class="button steps-link">Назад</a>
-                </p><!-- .submit -->
+                <div id="payments-container" class="payments-container"></div>
             </div>
         </div><!-- .main -->
     </div><!-- .middle -->
 <?= $this->html->script(array(
+    'flux/flux.min.js',
+    'subscription_plans/actions/PaymentActions.js',
     'common/receipt/ReceiptLine.js',
     'common/receipt/ReceiptTotal.js',
     'common/receipt/Receipt.js',
-    'payments/PaymentPayture.js',
-    'payments/PaymentPaymaster.js',
-    'payments/PaymentPaymasterPaySystem.js',
-    'common/pmwidget.js',
-    'payments/subscriber.js'
+    'subscription_plans/paymentSystems/BasePaymentSystem.js',
+    'subscription_plans/paymentSystems/PaymentSeparator.js',
+    'subscription_plans/paymentSystems/PaymentPayture.js',
+    'subscription_plans/paymentSystems/PaymentPaymaster.js',
+    'subscription_plans/paymentSystems/PaymentPaymasterPaySystem.js',
+    'subscription_plans/paymentSystems/PaymentTypesList.js',
+    'subscription_plans/subscriber.js'
 ), array('inline' => false)) ?>
 <?= $this->html->style(array(
     '/css/common/page-title-with-flag.css',

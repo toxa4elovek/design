@@ -8,29 +8,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var BaseComponent = (function (_React$Component) {
-    _inherits(BaseComponent, _React$Component);
+var PaymentTypesList = (function (_React$Component) {
+    _inherits(PaymentTypesList, _React$Component);
 
-    function BaseComponent(props) {
-        _classCallCheck(this, BaseComponent);
+    function PaymentTypesList() {
+        _classCallCheck(this, PaymentTypesList);
 
-        _get(Object.getPrototypeOf(BaseComponent.prototype), "constructor", this).call(this, props);
+        _get(Object.getPrototypeOf(PaymentTypesList.prototype), "constructor", this).apply(this, arguments);
     }
 
-    _createClass(BaseComponent, [{
-        key: "_bind",
-        value: function _bind() {
-            var _this = this;
-
-            for (var _len = arguments.length, methods = Array(_len), _key = 0; _key < _len; _key++) {
-                methods[_key] = arguments[_key];
-            }
-
-            methods.forEach(function (method) {
-                return _this[method] = _this[method].bind(_this);
-            });
+    _createClass(PaymentTypesList, [{
+        key: "render",
+        value: function render() {
+            var settings = this.props.settings;
+            return React.createElement(
+                "div",
+                null,
+                settings.map(function (item) {
+                    console.log(item);
+                    return item.node;
+                })
+            );
         }
     }]);
 
-    return BaseComponent;
+    return PaymentTypesList;
 })(React.Component);

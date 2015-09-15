@@ -1,7 +1,8 @@
-class PaymentPaymaster extends React.Component{
+class PaymentPaymaster extends BasePaymentSystem{
+    paymentSystemName = 'payment-paymaster';
     paymentSystemClick(id) {
-        const amInput = $("#pmOpenAmount");
-        if((0 < amInput.length) && (!amInput.val().match(/^\s*\d+.?\d*\s*$/))) {
+        const amount = $("#pmOpenAmount");
+        if((0 < amount.length) && (!amount.val().match(/^\s*\d+.?\d*\s*$/))) {
             alert('Укажите, пожалуйста, корректную сумму платежа');
             return false;
         }
@@ -12,16 +13,25 @@ class PaymentPaymaster extends React.Component{
         const paySystems = this.props.payload.paySystems;
         const total = this.props.payload.total + '.00';
         const projectId = this.props.payload.projectId;
+        const checked = this.props.selected;
+        let widgetStyle = {"display": "none"};
+        let imageStyle = {"display": "block"};
+        if(checked === true) {
+            widgetStyle = {"display": "block"};
+            imageStyle = {"display": "none"};
+        }
         return (
             <div className="payment paymaster">
-                <input type="radio" name="payment-options" data-pay="paymaster" />
-                <span className="description">Оплата электронными деньгами через PayMaster</span>
-                <img className="imageblock" src="/img/s3_paymaster.png" alt="Дебетовые и кредитные карты" />
-                <div className="widget">
+                <div onClick={this.onClickHandler}>
+                    <input type="radio" name="payment-options" data-pay="paymaster" onChange={this.onChange} checked={checked}/>
+                    <span className="description">Оплата электронными деньгами через PayMaster</span>
+                    <img style={imageStyle} className="imageblock" src="/img/s3_paymaster.png" alt="Дебетовые и кредитные карты" />
+                </div>
+                <div className="widget" style={widgetStyle}>
                     <div className="pmwidget pmwidgetDone" style={{"width": "471px"}}>
                         <a onClick={this.paymentSystemClick.bind(this)} href="http://paymaster.ru/" className="pmlogo"></a>
                         <h1 className="pmheader"> Выберите способ оплаты</h1>
-                        <p className="pmdesc"><strong>Описание:</strong> Оплата проекта</p>
+                        <p className="pmdesc"><strong>Описание:</strong> Оплата абонентского обслуживания</p>
                         <p className="pmamount"><strong>Сумма:&nbsp;</strong>{total}&nbsp;RUB</p>
                         <label className="pmpaymenttype"> Способ оплаты:</label>
                         <div className="payList" style={{"height": "auto", "overflow": "hidden"}}>
