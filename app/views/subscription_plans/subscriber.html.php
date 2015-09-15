@@ -1,19 +1,12 @@
 <div class="wrapper">
     <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
 
-    <?php
-    $sum = 0;
-    foreach ($receipt as $rec) {
-        $sum += $rec->value;
-    }
-    ?>
     <script>
         var payload = {
-            "total": 20000,
+            "total": <?= (int) $receipt['amount']?>,
             "projectId": 300000,
             "receipt": [
-                {"name": "Оплата тарифа", "amount": 49000},
-                {"name": "Проверка чека", "amount": 12000}
+                <?php echo json_encode($receipt) ?>,
             ],
             "paySystems": [
                 {
@@ -65,8 +58,8 @@
     <div class="middle">
         <div class="main">
             <h3 class="page-title-with-flag">Оплата</h3>
-            <h4>Тариф «Фирменный»</h4>
-            <p>Действителен с 28.08.2015–27.08.2016<br/>
+            <h4>Тариф «<?=$plan['title']?>»</h4>
+            <p>Действителен с <?= date('d.m.Y')?>–<?= date('d.m.Y', time() + YEAR)?><br/>
                 Стоимость тарифного плана не включает гонорары дизайнеру.<br/>
                 При оплате тарифного плана вам будет доступен кошелёк (текущий счет), пополнить который можно по мере необходимости в любое время.
             </p>
@@ -97,9 +90,9 @@
         </div><!-- .main -->
     </div><!-- .middle -->
 <?= $this->html->script(array(
-    'payments/ReceiptLine.js',
-    'payments/ReceiptTotal.js',
-    'payments/Receipt.js',
+    'common/receipt/ReceiptLine.js',
+    'common/receipt/ReceiptTotal.js',
+    'common/receipt/Receipt.js',
     'payments/PaymentPayture.js',
     'payments/PaymentPaymaster.js',
     'payments/PaymentPaymasterPaySystem.js',

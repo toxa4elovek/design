@@ -80,7 +80,7 @@
     'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999),
     '//assets.pinterest.com/js/pinit.js',
     'jquery.simplemodal-1.4.2.js',
-    'jquery.scrollto.min.js',
+    'jquery-plugins/jquery.scrollto.min.js',
     'jquery.hover.js',
     'jquery.raty.min.js',
     'jquery-ui-1.11.4.min.js',

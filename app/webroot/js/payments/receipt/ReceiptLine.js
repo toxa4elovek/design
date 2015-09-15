@@ -8,33 +8,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PaymentPaymasterPaySystem = (function (_React$Component) {
-    _inherits(PaymentPaymasterPaySystem, _React$Component);
+var ReceiptLine = (function (_React$Component) {
+    _inherits(ReceiptLine, _React$Component);
 
-    function PaymentPaymasterPaySystem() {
-        _classCallCheck(this, PaymentPaymasterPaySystem);
+    function ReceiptLine() {
+        _classCallCheck(this, ReceiptLine);
 
-        _get(Object.getPrototypeOf(PaymentPaymasterPaySystem.prototype), 'constructor', this).apply(this, arguments);
+        _get(Object.getPrototypeOf(ReceiptLine.prototype), 'constructor', this).apply(this, arguments);
     }
 
-    _createClass(PaymentPaymasterPaySystem, [{
-        key: 'onClickHandler',
-        value: function onClickHandler(event) {
-            event.preventDefault();
-            this.props.clickCallback(this.props.paySystem.id);
-        }
-    }, {
+    _createClass(ReceiptLine, [{
         key: 'render',
         value: function render() {
-            var paySystem = this.props.paySystem;
-            var link = 'https://paymaster.ru/Payment/Init?LMI_PAYMENT_SYSTEM=' + paySystem.id + '&amp;LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&amp;LMI_CURRENCY=RUB&amp;LMI_PAYMENT_AMOUNT=' + this.props.total + '&amp;LMI_PAYMENT_NO=' + this.props.projectId + '&amp;LMI_PAYMENT_DESC=%d0%9e%d0%bf%d0%bb%d0%b0%d1%82%d0%b0+%d0%bf%d1%80%d0%be%d0%b5%d0%ba%d1%82%d0%b0';
+            var row = this.props.row;
+            var amount = row.amount + '.-';
             return React.createElement(
-                'a',
-                { onClick: this.onClickHandler.bind(this), href: link, rel: paySystem.id, className: 'pm-item paySystem', title: paySystem.title },
-                React.createElement('img', { src: paySystem.logo, alt: '', title: paySystem.title })
+                'li',
+                null,
+                React.createElement(
+                    'span',
+                    null,
+                    row.name
+                ),
+                React.createElement(
+                    'small',
+                    null,
+                    amount
+                )
             );
         }
     }]);
 
-    return PaymentPaymasterPaySystem;
+    return ReceiptLine;
 })(React.Component);
