@@ -817,6 +817,7 @@ $(document).ready(function () {
                 }
             } else {
                 var filesHTML = '';
+                var downloadUrl ='';
                 if ((typeof (result.solution.images) != 'undefined') && (result.solution.images.length != 0)) {
                     var file = result.solution.images.solution;
                     if ($.isArray(file)) {
@@ -827,14 +828,18 @@ $(document).ready(function () {
                         }
                         filename = file[0].originalbasename
                     } else {
-                        if(file.weburl.match(/solutions/)) {
-                            downloadUrl = file.weburl;
-                        }else {
-                            downloadUrl = '/solutionfiles' + file.weburl;
+                        if(file.weburl != false) {
+                            if(file.weburl.match(/solutions/)) {
+                                downloadUrl = file.weburl;
+                            }else {
+                                downloadUrl = '/solutionfiles' + file.weburl;
+                            }
+                            filename = file.originalbasename;
                         }
-                        filename = file.originalbasename
                     }
-                    filesHTML += '<div class="clip-document-container"><a href="' + downloadUrl + '" class="clip-document">' + filename + '</a></div>';
+                    if(downloadUrl != '') {
+                        filesHTML += '<div class="clip-document-container"><a href="' + downloadUrl + '" class="clip-document">' + filename + '</a></div>';
+                    }
                 }
                 $('.solution-images').append(filesHTML + '<div class="preview"> \
                     <span>' + result.solution.description + '</span> \
