@@ -1,4 +1,4 @@
-(function (ReactDOM, userInfo) {
+;(function (ReactDOM, userInfo) {
     ReactDOM.render(
         <FaqCorporateBox data={questions} />,
         document.getElementById('faq-corporate')

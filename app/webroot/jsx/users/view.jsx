@@ -1,9 +1,7 @@
-'use strict';
-
 ;(function ($) {
 
     $(document).on('click', '.banhammer', function () {
-        var data = {
+        const data = {
             "id": $('#user_id').val(),
             "term": $(this).data('term')
         };
@@ -13,7 +11,7 @@
     });
 
     $(document).on('click', '.allowcomment', function () {
-        var data = {
+        const data = {
             "id": $('#user_id').val()
         };
         $.post('/users/unban.json', data, function () {
@@ -22,7 +20,7 @@
     });
 
     $(document).on('click', '.block', function () {
-        var data = {
+        const data = {
             "id": $('#user_id').val()
         };
         $.post('/users/block.json', data, function () {
@@ -33,7 +31,7 @@
     });
 
     $(document).on('click', '.unblock', function () {
-        var data = {
+        const data = {
             "id": $('#user_id').val()
         };
         $.post('/users/unblock.json', data, function () {
@@ -44,7 +42,7 @@
     });
 
     $(document).on('click', '.fav-user', function () {
-        var link = $(this);
+        const link = $(this);
         link.text('Отписаться').addClass('unfav-user').removeClass('fav-user');
         $.get('/favourites/adduser/' + $(this).data('id') + '.json', function (response) {
             if (response.result == false) {
@@ -56,7 +54,7 @@
     });
 
     $(document).on('click', '.unfav-user', function () {
-        var link = $(this);
+        const link = $(this);
         link.text('Подписаться').addClass('fav-user').removeClass('unfav-user');
         $.get('/favourites/removeUser/' + $(this).data('id') + '.json', function (response) {
             if (response.result == false) {
@@ -66,4 +64,5 @@
         });
         return false;
     });
-})($);
+
+}) ($);

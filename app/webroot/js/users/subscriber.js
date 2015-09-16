@@ -1,6 +1,6 @@
 'use strict';
 
-(function (ReactDOM, userInfo) {
+;(function (ReactDOM, userInfo) {
     ReactDOM.render(React.createElement(FaqCorporateBox, { data: questions }), document.getElementById('faq-corporate'));
     ReactDOM.render(React.createElement(NewProjectBox, null), document.getElementById('new-project'));
     ReactDOM.render(React.createElement(BalanceBox, { balance: userInfo.balance, isSubscriptionActive: userInfo.isSubscriptionActive, companyName: userInfo.companyName, expirationDate: userInfo.expirationDate }), document.getElementById('balance'));
