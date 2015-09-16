@@ -1,11 +1,16 @@
-class Receipt extends React.Component{
+class Receipt extends React.Component {
+    constructor() {
+        super();
+        this.hideLinkOnClick = this.hideLinkOnClick.bind(this);
+        this.showLinkOnClick = this.showLinkOnClick.bind(this);
+    }
     hideLinkOnClick(e) {
-        const aside = React.findDOMNode(this.refs["receiptContainer"]);
+        const aside = this.refs.receiptContainer;
         $(aside).removeClass('expanded');
         e.preventDefault();
     }
     showLinkOnClick(e) {
-        const aside = React.findDOMNode(this.refs["receiptContainer"]);
+        const aside = this.refs.receiptContainer;
         $(aside).addClass('expanded');
         e.preventDefault();
     }

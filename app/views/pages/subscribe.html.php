@@ -162,6 +162,6 @@
     '/css/pages/subscribe.css'
 ), array('inline' => false))?>
 <?=$this->html->script(array(
-    'jquery-plugins/jquery.scrollTo.min.js',
+    'jquery-plugins/jquery.scrollto.min.js',
     'pages/subscribe.js'
 ), array('inline' => false))?>
