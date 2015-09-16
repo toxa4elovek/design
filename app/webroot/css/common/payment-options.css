@@ -20,7 +20,7 @@
     cursor: pointer;
 }
 .payment .imageblock {
-    display: block;
+    display: inline-block;
     margin-left: 40px;
     margin-top: 20px;
 }

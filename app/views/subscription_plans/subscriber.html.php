@@ -84,6 +84,7 @@
 <?= $this->html->script(array(
     'flux/flux.min.js',
     'jquery-plugins/jquery.numeric.min.js',
+    'jquery-plugins/jquery.scrollto.min.js',
     'subscription_plans/actions/PaymentActions.js',
     'common/receipt/ReceiptLine.js',
     'common/receipt/ReceiptTotal.js',
@@ -94,6 +95,7 @@
     'subscription_plans/paymentSystems/PaymentPayture.js',
     'subscription_plans/paymentSystems/PaymentPaymaster.js',
     'subscription_plans/paymentSystems/PaymentPaymasterPaySystem.js',
+    'subscription_plans/paymentSystems/PaymentWire.js',
     'subscription_plans/paymentSystems/PaymentTypesList.js',
     'subscription_plans/subscriber.js'
 ), array('inline' => false)) ?>
