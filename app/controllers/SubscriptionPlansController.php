@@ -49,6 +49,12 @@ class SubscriptionPlansController extends AppController {
         }
     }
 
+    /**
+     * Метод вызывается при обновлении поля для ввода суммы пополения личного кабинета
+     * json
+     *
+     * @return mixed
+     */
     public function updateReceipt() {
         if($plan = SubscriptionPlan::first($this->request->data['projectId'])) {
             if($this->userHelper->isPitchOwner($plan->user_id)) {
@@ -63,5 +69,29 @@ class SubscriptionPlansController extends AppController {
                 return $this->request->data;
             }
         }
+    }
+
+    /**
+     * Метод для тестовой активации любого платежа
+     */
+    public function activate() {
+        if(($paymentRecord = SubscriptionPlan::first($this->request->data['projectId'])) &&
+        ($this->userHelper->isPitchOwner($paymentRecord->user_id))) {
+            $result = SubscriptionPlan::activatePlanPayment($this->request->data['projectId']);
+            if($result) {
+                $data = array(
+                    'message' => 'Платеж успешно активирован, проверить можно по адресу http://www.godesigner.ru/users/subscriber'
+                );
+            }else {
+                $data = array(
+                    'message' => 'Что-то пошло не так, платеж не удалось активировать'
+                );
+            }
+        }else {
+            $data = array(
+                'message' => 'Что-то пошло не так, платеж не принадлежит текущему пользователю'
+            );
+        }
+        return compact('data');
     }
 }

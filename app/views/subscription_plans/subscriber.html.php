@@ -97,6 +97,7 @@
     'subscription_plans/paymentSystems/PaymentPaymasterPaySystem.js',
     'subscription_plans/paymentSystems/PaymentWire.js',
     'subscription_plans/paymentSystems/PaymentTypesList.js',
+    'subscription_plans/paymentSystems/PaymentAdmin.js',
     'subscription_plans/subscriber.js'
 ), array('inline' => false)) ?>
 <?= $this->html->style(array(
