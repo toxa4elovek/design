@@ -4,7 +4,6 @@ class PaymentAdmin extends BasePaymentSystem {
             'projectId': this.props.payload.projectId
         };
         e.preventDefault();
-        console.log('click');
         $.post('/subscription_plans/activate.json', data, function(response) {
             alert(response.data.message);
         });
