@@ -203,4 +203,86 @@ class Receipt extends \app\models\AppModel {
         }
         return $fee;
     }
+
+    /**
+     * Метод создает построчно чек из массива $data
+     *
+     * @param $projectId int
+     * @param $data array
+     * @return bool
+     */
+    static public function createReceiptForProject($projectId, $data) {
+        if(is_array($data)) {
+            foreach($data as $row) {
+                $data = array(
+                    'pitch_id' => $projectId,
+                    'name' => $row['name'],
+                    'value' => $row['value']
+                );
+                $row = self::create($data);
+                $row->save();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Метод создает построчно чек из массива $data
+     *
+     * @param $projectId int
+     * @param $data array
+     * @return bool
+     */
+    static public function updateOrCreateReceiptForProject($projectId, $data) {
+        if(is_array($data)) {
+            $existingRows = self::all(array('conditions' => array(
+                'pitch_id' => $projectId
+            )));
+            $existingRows->delete();
+            foreach($data as $row) {
+                $data = array(
+                    'pitch_id' => $projectId,
+                    'name' => $row['name'],
+                    'value' => $row['value']
+                );
+                $row = self::create($data);
+                $row->save();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Метод возвращяет простую структуру для отображения чека на фронтэнде
+     *
+     * @param $projectId int
+     * @return array
+     */
+    static public function exportToArray($projectId) {
+        $receiptRows = self::all(array('conditions' => array(
+            'pitch_id' => $projectId
+        )));
+        $array = array();
+        foreach($receiptRows as $row) {
+            $array[] = array('name' => $row->name, 'value' => (int) $row->value);
+        }
+        return $array;
+    }
+
+    /**
+     * Метод возвращяет сумму проекта согласно чеку
+     *
+     * @param $projectId int
+     * @return int
+     */
+    static public function getTotalForProject($projectId) {
+        $total = 0;
+        $array = self::exportToArray($projectId);
+        foreach($array as $row) {
+            $total += $row['value'];
+        }
+        return (int) $total;
+    }
 }

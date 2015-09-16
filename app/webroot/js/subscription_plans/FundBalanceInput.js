@@ -8,28 +8,39 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PaymentTypesList = (function (_React$Component) {
-    _inherits(PaymentTypesList, _React$Component);
+var FundBalanceInput = (function (_React$Component) {
+    _inherits(FundBalanceInput, _React$Component);
 
-    function PaymentTypesList() {
-        _classCallCheck(this, PaymentTypesList);
+    function FundBalanceInput() {
+        _classCallCheck(this, FundBalanceInput);
 
-        _get(Object.getPrototypeOf(PaymentTypesList.prototype), "constructor", this).apply(this, arguments);
+        _get(Object.getPrototypeOf(FundBalanceInput.prototype), "constructor", this).apply(this, arguments);
     }
 
-    _createClass(PaymentTypesList, [{
+    _createClass(FundBalanceInput, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var input = $(this.refs.input);
+            input.numeric({
+                "negative": false,
+                "decimal": false
+            }, function () {});
+        }
+    }, {
+        key: "onChangeHandle",
+        value: function onChangeHandle(e) {
+            PaymentActions.updateFundBalanceInput(parseInt(e.target.value));
+        }
+    }, {
         key: "render",
         value: function render() {
-            var settings = this.props.settings;
             return React.createElement(
                 "div",
                 null,
-                settings.map(function (item) {
-                    return item.node;
-                })
+                React.createElement("input", { ref: "input", type: "text", onChange: this.onChangeHandle, onKeyDown: this.onKeydownHandle, className: "fund-balance-input", placeholder: "9000" })
             );
         }
     }]);
 
-    return PaymentTypesList;
+    return FundBalanceInput;
 })(React.Component);

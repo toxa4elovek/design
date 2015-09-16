@@ -35,8 +35,8 @@ var Receipt = (function (_React$Component) {
         key: "render",
         value: function render() {
             var total = 0;
-            for (i = 0; i < this.props.data.length; i++) {
-                total += this.props.data[i].amount;
+            for (var i = 0; i < this.props.data.length; i++) {
+                total += this.props.data[i].value;
             }
             return React.createElement(
                 "aside",

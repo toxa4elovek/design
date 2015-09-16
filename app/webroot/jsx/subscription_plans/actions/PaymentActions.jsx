@@ -5,5 +5,11 @@ const PaymentActions = {
             actionType: 'payment-type-selected',
             selectedPaymentType: paymentTypeName
         });
+    },
+    updateFundBalanceInput: function(value) {
+        PaymentDispatcher.dispatch({
+            actionType: 'fund-balance-input-updated',
+            newValue: value
+        });
     }
 };

@@ -21,7 +21,7 @@ var ReceiptLine = (function (_React$Component) {
         key: 'render',
         value: function render() {
             var row = this.props.row;
-            var amount = row.amount + '.-';
+            var amount = row.value + '.-';
             return React.createElement(
                 'li',
                 null,

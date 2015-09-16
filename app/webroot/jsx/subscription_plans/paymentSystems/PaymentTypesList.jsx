@@ -4,7 +4,6 @@ class PaymentTypesList extends React.Component {
         return (
             <div>
                 {settings.map(function(item) {
-                    console.log(item);
                     return item.node;
                 })}
             </div>

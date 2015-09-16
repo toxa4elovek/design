@@ -1,7 +1,7 @@
 class ReceiptLine extends React.Component{
     render() {
         const row = this.props.row;
-        const amount = row.amount + '.-';
+        const amount = row.value + '.-';
         return (
             <li>
                 <span>{row.name}</span>

@@ -52,4 +52,74 @@ class SubscriptionPlan extends Pitch {
         }
         return null;
     }
+
+    /**
+     * Метод возвращяет следующий зарезервированный айди для платежа за тарифный план
+     *
+     * @param $userId int пользователя
+     * @return int
+     */
+    static public function getNextSubscriptionPlanId($userId) {
+        if(!$payment = self::first(array(
+            'conditions' => array(
+                'user_id' => $userId,
+                'billed' => 0,
+                'type' => 'plan-payment'
+            )
+        ))) {
+            $data = array(
+                'user_id' => $userId,
+                'type' => 'plan-payment',
+                'category' => 100,
+                'title' => 'Оплата абонентского обслуживания'
+            );
+            $payment = self::create($data);
+            $payment->save();
+        }
+        return $payment->id;
+    }
+
+    /**
+     * Метод возвращяет следующий зарезервированный айди для платежа за тарифный план
+     *
+     * @param $userId int пользователя
+     * @return int
+     */
+    static public function getNextFundBalanceId($userId) {
+        if(!$payment = self::first(array(
+            'conditions' => array(
+                'user_id' => $userId,
+                'billed' => 0,
+                'type' => 'fund-balance'
+            )
+        ))) {
+            $data = array(
+                'user_id' => $userId,
+                'type' => 'fund-balance',
+                'category' => 99,
+                'title' => 'Пополнение счёта'
+            );
+            $payment = self::create($data);
+            $payment->save();
+        }
+        return $payment->id;
+    }
+
+    /**
+     * Метод устанавливает и сохраняет новую сумму для записи
+     *
+     * @param $payment
+     * @param $value int
+     * @return bool
+     */
+    public function setTotal($payment, $value) {
+        $payment->total = (int) $value;
+        $payment->price = (int) $value;
+        return $payment->save();
+    }
+
+    static public function setTotalOfPayment($id, $value) {
+        $payment = self::first($id);
+        return $payment->setTotal((int) $value);
+    }
 }

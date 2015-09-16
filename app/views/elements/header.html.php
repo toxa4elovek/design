@@ -68,6 +68,9 @@
                             if(($mypitch->blank == 1) && ($mypitch->billed == 0)):
                                 continue;
                             endif;
+                            if(($mypitch->type == 'plan-payment') or ($mypitch->type == 'fund-balance')):
+                                continue;
+                            endif;
                             ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
 							<td>

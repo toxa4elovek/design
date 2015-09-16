@@ -9,11 +9,28 @@
     }, {
         "node": React.createElement(PaymentPaymaster, { key: "3", payload: payload, selected: false })
     }];
-
     ReactDOM.render(React.createElement(Receipt, { data: payload.receipt }), document.getElementById('receipt-container'));
     ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));
+    ReactDOM.render(React.createElement(FundBalanceInput, { payload: payload }), document.getElementById('fund-balance-container'));
 
     PaymentDispatcher.register(function (eventPayload) {
+        if (eventPayload.actionType === 'fund-balance-input-updated') {
+            var total = 0;
+            payload.receipt.forEach(function (row) {
+                if (row.name == "Пополнение счёта") {
+                    row.value = eventPayload.newValue;
+                }
+                total += row.value;
+            });
+            payload.total = total;
+            ReactDOM.render(React.createElement(Receipt, { data: payload.receipt }), document.getElementById('receipt-container'));
+            ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));
+            var data = {
+                "projectId": payload.projectId,
+                "updatedReceipt": payload.receipt
+            };
+            $.post('/subscription_plans/updateReceipt.json', data);
+        }
         if (eventPayload.actionType === 'payment-type-selected') {
             if (eventPayload.selectedPaymentType == 'payment-payture') {
                 settings = [{
