@@ -334,7 +334,7 @@
                         </label>
                         <input type="text" required data-content="mixed" name="company_name" value="<?= $company['company_name']?>" placeholder="Полное название компании">
                         <input type="text" required data-content="numeric" id="yur-inn" data-length="[10,12]" name="inn" value="<?= $company['inn']?>" placeholder="ИНН">
-                        <input type="text" required data-content="numeric" id="yur-kpp" data-length="[9]" name="kpp" value="<?= $company['kpp']?>" placeholder="КПП">
+                        <input type="text" data-content="numeric" id="yur-kpp" name="kpp" value="<?= $company['kpp']?>" placeholder="КПП">
                         <input type="text" required data-content="mixed" name="address" value="<?= $company['address']?>" placeholder="Полный адрес компании">
                         <input type="submit" id="save-company" class="button" value="Сохранить реквизиты" />
                     </form>
