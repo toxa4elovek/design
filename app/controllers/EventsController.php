@@ -31,7 +31,7 @@ class EventsController extends \app\controllers\AppController {
         if(isset($this->request->query['created'])) {
             $offsetDate = date('Y-m-d H:i:s', strtotime($this->request->query['created']) + (2 * HOUR));
             $events = Event::all(array('conditions' => array(
-                'type' => 'LikeAdded',
+                'Event.type' => 'LikeAdded',
                 'created' => array('>=' => $offsetDate),
 
             ), 'order' => array('created' => 'desc')));
@@ -78,7 +78,7 @@ class EventsController extends \app\controllers\AppController {
             $twitter = Stream::renderStreamFeed(10, $this->request->query['twitterDate']);
         }
         if (!empty($this->request->query['solutionDate'])) {
-            $solutions = Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+            $solutions = Event::all(array('conditions' => array('Event.type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
         }
         if (!empty($this->request->query['newsDate'])) {
             $post = News::getPost($this->request->query['newsDate']);
@@ -118,10 +118,10 @@ class EventsController extends \app\controllers\AppController {
         if ($this->request->id) {
 
 
-            if(!$likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')))) {
+            if(!$likes = Event::all(array('conditions' => array('Event.type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')))) {
 
             }else {
-                $likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
+                $likes = Event::all(array('conditions' => array('Event.type' => 'LikeAdded', 'news_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
             }
             $temp = array();
             foreach ($likes as $like) {

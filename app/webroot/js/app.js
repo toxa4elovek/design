@@ -99,10 +99,15 @@ $(document).ready(function () {
         e.preventDefault();
         if($('.error:visible').length == 0) {
             $.post($(this).attr('action') + '.json', $(this).serialize(), function (response) {
-                if (response.who_am_i == 'designer') {
-                    user_popup_register();
-                } else {
-                    window.location.href = response.redirect;
+                if(typeof(response.error) == 'string') {
+                    var label = $('<label id="UserEmail-error" class="error" for="UserEmail" style="display: inline;">Email занят</label>');
+                    $("input[name=email]").after(label);
+                }else {
+                    if (response.who_am_i == 'designer') {
+                        user_popup_register();
+                    } else {
+                        window.location.href = response.redirect;
+                    }
                 }
             });
         }
@@ -117,7 +122,7 @@ $(document).ready(function () {
             $('.short-company-name').hide();
             $('.character-count').hide();
         }
-    })
+    });
 
     $('#UserEmail').blur(function () {
         $.post('/users/checkform.json', {"email": this.value}, function (response) {

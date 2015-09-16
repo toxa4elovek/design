@@ -10,7 +10,7 @@ class FacebookSharer extends \app\extensions\command\CronJob {
         $this->out(date('Y-m-d H:i', time() - HOUR));
         $events = Event::all(array(
             'conditions' => array(
-                'type' => array('newsAdded'),
+                'Event.type' => array('newsAdded'),
                 'created' => array('>' => date('Y-m-d H:i', time() - 5 * HOUR))
             ),
             'order' => array('created' => 'desc'),

@@ -46,8 +46,6 @@ class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
 	   				}
 				}
 			}else {
-                error_reporting(E_ALL);
-                ini_set("display_errors", 1);
                 foreach($params['uploadedFile']['data'] as &$file) {
                     $path = 'image_manipulation\Upload';
 

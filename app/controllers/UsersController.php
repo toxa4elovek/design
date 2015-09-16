@@ -603,12 +603,11 @@ class UsersController extends \app\controllers\AppController {
      * @return array|\lithium\action\Returns|object
      */
     public function registration() {
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
         if (Session::read('user')) {
             return $this->redirect('/');
         }
-        /* if(((!isset($this->request->query['invite'])) && (!isset($this->request->data['id']))) || ((isset($this->request->query['invite'])) && (!$isValid = Invite::isValidInvite($this->request->query['invite'])))) {
-          return $this->redirect('Invites::index');
-          } */
         if ($vk_auth = Session::read('vk_data')) {
             $this->request->data = $vk_auth;
         }
@@ -752,7 +751,7 @@ class UsersController extends \app\controllers\AppController {
                 $user->token = User::generateToken();
                 $user->created = date('Y-m-d H:i:s');
 
-                if (!is_null(Session::read('redirect'))) {
+                if ((!is_null(Session::read('redirect'))) && (Session::read('redirect') != '/users/logout')) {
                     $redirect = Session::read('redirect');
                 }else {
                     $redirect = '/users/feed';
@@ -783,11 +782,12 @@ class UsersController extends \app\controllers\AppController {
                     $userToLog = User::first(array('conditions' => array('id' => $user->id)));
                     $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                     $userToLog->setLastActionTime();
+                    // Отправляем письмо для верификации почты
                     if ($user->isClient) {
                         $posts = Post::all(array('order' => array('id' => 'desc'), 'limit' => 2));
-                        $res = UserMailer::verification_mail_client($userToLog, $posts);
+                        UserMailer::verification_mail_client($userToLog, $posts);
                     } else {
-                        $res = UserMailer::verification_mail($userToLog);
+                        UserMailer::verification_mail($userToLog);
                     }
                     // производим аутентификацию
                     Auth::set('user', $userToLog->data());
@@ -801,6 +801,7 @@ class UsersController extends \app\controllers\AppController {
                             $fastPitch->user_id = $user->id;
                         }
                         $fastPitches->save();
+                        setcookie('fastpitch', null, -1, '/');
                     }
 
                     if (!is_null($pitchId)) {
@@ -811,7 +812,13 @@ class UsersController extends \app\controllers\AppController {
                         Session::delete('temppitch');
                         return array('redirect' => '/pitches/edit/' . $pitchId . '#step3', 'who_am_i' => 'client');
                     }
-                    return array('redirect' => $redirect, 'who_am_i' => $this->request->data['who_am_i']);
+                    $data = $userToLog->data();
+                    $session = Session::read();
+                    $who_am_i = $this->request->data['who_am_i'];
+                    return compact('data', 'session', 'redirect', 'who_am_i');
+                }else {
+                    $error = 'email_taken';
+                    return compact('error');
                 }
             }
         }

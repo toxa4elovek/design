@@ -59,7 +59,7 @@ class Event extends \app\models\AppModel {
                                 $allowLike = 1;
                             }
                             $record->allowLike = $allowLike;
-                            $record->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'solution_id' => $record->solution_id), 'order' => array('Event.created' => 'desc')));
+                            $record->likes = Event::all(array('conditions' => array('Event.type' => 'LikeAdded', 'solution_id' => $record->solution_id), 'order' => array('Event.created' => 'desc')));
                         }
                     } else {
                         //$record->solution = Solution::getBestSolution($record->pitch_id);
@@ -95,7 +95,7 @@ class Event extends \app\models\AppModel {
                     }
                     if ($record->type == 'newsAdded') {
                         $news = News::first($record->news_id);
-                        $news->likes = Event::all(array('conditions' => array('type' => 'LikeAdded', 'news_id' => $record->news_id), 'order' => array('Event.created' => 'asc')));
+                        $news->likes = Event::all(array('conditions' => array('Event.type' => 'LikeAdded', 'news_id' => $record->news_id), 'order' => array('Event.created' => 'asc')));
                         $allowLike = 0;
                         if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('news_id' => $record->news_id, 'user_id' => Session::read('user.id')))))) {
                             $allowLike = 1;
@@ -116,10 +116,12 @@ class Event extends \app\models\AppModel {
                         $record->user_fav = User::first(array('conditions' => array('id' => $record->fav_user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));
                     } elseif ($record->type == 'RetweetAdded') {
                         $cache = \app\extensions\storage\Rcache::read('RetweetsFeed');
-                        foreach ($cache as $k => $v) {
-                            if ($k == $record->tweet_id) {
-                                $record->html = $v;
-                                break;
+                        if(is_array($cache)) {
+                            foreach ($cache as $k => $v) {
+                                if ($k == $record->tweet_id) {
+                                    $record->html = $v;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -287,12 +289,13 @@ class Event extends \app\models\AppModel {
             $eventList[] = $event->data();
             $i++;
         }
+
         return $eventList;
     }
 
     public static function getEventSolutions($user = null, $page = 1) {
         if($user) {
-            return Event::all(array('conditions' => array('type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'page' => $page, 'with' => array('Pitch')));
+            return Event::all(array('conditions' => array('Event.type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'page' => $page, 'with' => array('Pitch')));
         } else {
             $solutions = Solution::all(array(
                 'conditions' => array(
@@ -318,7 +321,7 @@ class Event extends \app\models\AppModel {
                     if(!$solpages = Rcache::read($cacheKey)) {
                         $solpages = Event::all(array(
                             'conditions' => array(
-                                'type' => 'SolutionAdded',
+                                'Event.type' => 'SolutionAdded',
                                 'Event.solution_id' => $keys
                             ),
                             'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
@@ -342,9 +345,9 @@ class Event extends \app\models\AppModel {
     public static function getSidebarEvents($created, $limit = null) {
         $eventList = $conditions = array();
         if ($created == false) {
-            $conditions = array('type' => array('PitchCreated', 'PitchFinished'));
+            $conditions = array('Event.type' => array('PitchCreated', 'PitchFinished'));
         } else {
-            $conditions = array('created' => array('>' => $created), 'type' => array('PitchCreated', 'PitchFinished'));
+            $conditions = array('created' => array('>' => $created), 'Event.type' => array('PitchCreated', 'PitchFinished'));
         }
         $events = Event::all(array(
                     'conditions' => $conditions,
@@ -386,19 +389,10 @@ class Event extends \app\models\AppModel {
             }
             $idsOfFollowing[] = $user;
             //$idsOfFollowing[] = '108';
-            if($user == '4') {
-                //var_dump($idsOfFollowing);
-            }
             $list[] = array('type' => 'FavUserAdded', 'user_id' => $idsOfFollowing);
             $list[] = array('AND' => array('type' => array('FavUserAdded'), 'OR' => array(array('user_id' => $idsOfFollowing), array('fav_user_id' => $user))));
             $list[] = array('AND' => array('type' => array('CommentAdded', 'CommentCreated', 'SolutionAdded'), 'user_id' => $idsOfFollowing));
             $list[] = array('AND' => array('type' => 'LikeAdded', 'user_id' => $idsOfFollowing, 'news_id' => 0));
-
-            if($user == '4') {
-                //echo '<pre>';
-//var_dump($list);
-                //die();
-            }
         }
         $output = array('OR' => $list);
         return $output;

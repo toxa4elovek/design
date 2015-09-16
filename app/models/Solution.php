@@ -270,7 +270,7 @@ http://godesigner.ru/answers/view/73');
             $solution->likes -= 1;
             $solution->save();
             if ($result = $like->delete()) {
-                if ($event = Event::first(array('conditions' => array('user_id' => $userId, 'solution_id' => $solutionId, 'type' => 'LikeAdded')))) {
+                if ($event = Event::first(array('conditions' => array('user_id' => $userId, 'solution_id' => $solutionId, 'Event.type' => 'LikeAdded')))) {
                     $event->delete();
                 }
             }
@@ -291,9 +291,9 @@ http://godesigner.ru/answers/view/73');
                     if ($pitch->user_id == $userId) {
                         $solution->rating = $rating;
                         $solution->save();
-                        if (!$event = Event::first(array('conditions' => array('type' => 'RatingAdded', 'user_id' => $userId, 'solution_id' => $solution->id, 'pitch_id' => $pitch->id)))) {
+                        if (!$event = Event::first(array('conditions' => array('Event.type' => 'RatingAdded', 'user_id' => $userId, 'solution_id' => $solution->id, 'pitch_id' => $pitch->id)))) {
                             Event::create(array(
-                                'type' => 'RatingAdded',
+                                'Event.type' => 'RatingAdded',
                                 'created' => date('Y-m-d H:i:s'),
                                 'user_id' => $pitch->user_id,
                                 'pitch_id' => $pitch->id,

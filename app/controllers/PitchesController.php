@@ -269,8 +269,6 @@ class PitchesController extends \app\controllers\AppController {
     }
 
     public function updatefiles() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
         if ($pitch = Pitch::first($this->request->data['id'])) {
             $existingArray = array();
             //$existingArray = unserialize($pitch->filesId);
@@ -472,8 +470,6 @@ class PitchesController extends \app\controllers\AppController {
     }
 
     public function getpitchdata() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
         if(isset($this->request->query['pitch_id'])) {
             $id = $this->request->query['pitch_id'];
         }else {
@@ -1101,9 +1097,6 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
 
     public function crowdsourcing() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
-
         $pitches = Pitch::all(array('conditions' => array('status' => array('<' => 1), 'Pitch.awarded' => 0, 'published' => 1), 'order' => array('started' => 'desc'), 'with' => array('User')));
         foreach ($pitches as $pitch) {
             $solution = Solution::first(array('conditions' => array(

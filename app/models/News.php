@@ -107,7 +107,7 @@ class News extends \app\models\AppModel {
             $news->liked -= 1;
             $news->save();
             if ($result = $like->delete()) {
-                if ($event = Event::first(array('conditions' => array('user_id' => $userId, 'news_id' => $newsId, 'type' => 'LikeAdded')))) {
+                if ($event = Event::first(array('conditions' => array('user_id' => $userId, 'news_id' => $newsId, 'Event.type' => 'LikeAdded')))) {
                     $event->delete();
                 }
             }
