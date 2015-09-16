@@ -9,7 +9,7 @@
     <script>
         var payload = {
             "total": <?= (int) $total?>,
-            "projectId": <?= $planId ?>,
+            "projectId": <?= $planRecordId ?>,
             "receipt": <?php echo json_encode($receipt) ?>,
             "paySystems": [
                 {
