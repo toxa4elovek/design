@@ -5,6 +5,7 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\SubscriptionPlan;
 use app\models\Pitch;
+use app\models\User;
 
 class SubscriptionPlanTest extends AppUnit {
 
@@ -22,15 +23,19 @@ class SubscriptionPlanTest extends AppUnit {
     public function testGetPlan() {
         $result = SubscriptionPlan::getPlan(1);
         $expected = array(
+            'id' => 1,
             'price' => 49000,
-            'title' => 'Предпринимательский'
+            'title' => 'Предпринимательский',
+            'duration' => YEAR
         );
         $this->assertEqual($expected, $result);
 
         $result = SubscriptionPlan::getPlan(2);
         $expected = array(
+            'id' => 2,
             'price' => 69000,
-            'title' => 'Фирменный'
+            'title' => 'Фирменный',
+            'duration' => YEAR
         );
         $this->assertEqual($expected, $result);
 
@@ -93,6 +98,89 @@ class SubscriptionPlanTest extends AppUnit {
         $plan = SubscriptionPlan::first(8);
         $this->assertEqual(10000.00, $plan->total);
         $this->assertEqual(10000.00, $plan->price);
+    }
+
+    public function testSetPlanForPayment() {
+        $result = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $expected = 8;
+        $this->assertEqual($expected, $result);
+        $result = SubscriptionPlan::setPlanForPayment(8, 2);
+        $this->assertTrue($result);
+        $plan = SubscriptionPlan::first(8);
+        $this->assertEqual(array('plan_id' => '2'), unserialize($plan->specifics));
+
+        $result = SubscriptionPlan::setPlanForPayment(8, 1);
+        $this->assertTrue($result);
+        $plan = SubscriptionPlan::first(8);
+        $this->assertEqual(array('plan_id' => '1'), unserialize($plan->specifics));
+
+        $result = SubscriptionPlan::setPlanForPayment(99, 1);
+        $this->assertFalse($result);
+    }
+
+    public function testSetFundBalanceForPayment() {
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $result = SubscriptionPlan::setFundBalanceForPayment($id, 9000);
+        $this->assertTrue($result);
+        $plan = SubscriptionPlan::first($id);
+        $this->assertEqual(array('fund_balance' => 9000), unserialize($plan->specifics));
+    }
+
+    public function testGetFundBalanceForPayment() {
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        SubscriptionPlan::setFundBalanceForPayment($id, 15000);
+        $result = SubscriptionPlan::getFundBalanceForPayment(8);
+        $this->assertEqual(15000, $result);
+    }
+
+    public function testGetPlanForPayment() {
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        SubscriptionPlan::setPlanForPayment($id, 2);
+        $result = SubscriptionPlan::getPlanForPayment(8);
+        $this->assertEqual(2, $result);
+    }
+
+    public function testActivatePlan() {
+        // только план
+        $this->assertFalse(User::isSubscriptionActive(1));
+        $this->assertEqual(0, User::getBalance(1));
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        SubscriptionPlan::setPlanForPayment($id, 2);
+        $result = SubscriptionPlan::activatePlanPayment($id);
+        $this->assertTrue($result);
+        $this->assertTrue(User::isSubscriptionActive(1));
+        $this->assertEqual(0, User::getBalance(1));
+        // только баланс
+
+        $this->assertFalse(User::isSubscriptionActive(2));
+        $this->assertEqual(0, User::getBalance(2));
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(2);
+        SubscriptionPlan::setPlanForPayment($id, 0);
+        SubscriptionPlan::setFundBalanceForPayment($id, 15000);
+        $result = SubscriptionPlan::activatePlanPayment($id);
+        $this->assertTrue($result);
+        $this->assertFalse(User::isSubscriptionActive(2));
+        $this->assertEqual(15000, User::getBalance(2));
+    }
+
+    public function testActivatePlanComplex() {
+        // и план и баланс
+        $this->assertFalse(User::isSubscriptionActive(1));
+        $this->assertEqual(0, User::getBalance(1));
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        SubscriptionPlan::setPlanForPayment($id, 2);
+        SubscriptionPlan::setFundBalanceForPayment($id, 15000);
+        $result = SubscriptionPlan::activatePlanPayment($id);
+        $this->assertTrue($result);
+        $this->assertTrue(User::isSubscriptionActive(1));
+        $this->assertEqual(15000, User::getBalance(1));
+    }
+
+    public function extractFundBalanceAmount() {
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(2);
+        SubscriptionPlan::setFundBalanceForPayment($id, 15000);
+        $result = SubscriptionPlan::extractFundBalanceAmount($id);
+        $this->assertEqual(15000, $result);
     }
 
 }

@@ -1,13 +1,22 @@
 class ProjectSearchResultsTableRow extends React.Component{
     render () {
+        const row = this.props.row;
+        const link = '/pitches/view/' + row.id;
+        let ideas = '';
+        let status = '';
+        if(row.type == 'company-project') {
+            ideas = row.ideas_count;
+        }else if(row.type == 'fund-balance'){
+            row.tableClass = 'light';
+        }
         return (
-            <tr data-id="105783" className="odd">
+            <tr data-id={row.id} className={row.tableClass}>
                 <td className="td-title">
-                    <a href="/pitches/view/105783" className="newpitchfont">Логотип для проекта PublicDictionary</a>
+                    <span className="newpitchfont">{row.title}</span>
                 </td>
-                <td className="idea">73</td>
-                <td className="pitches-time">6 дней 7 часов</td>
-                <td className="price">-20 000 Р.-</td>
+                <td className="idea">{ideas}</td>
+                <td className="pitches-time">{status}</td>
+                <td className="price">{row.formattedMoney}</td>
             </tr>
         )
     }

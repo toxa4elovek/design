@@ -9,6 +9,18 @@
         },
         {
             "node": <PaymentPaymaster key="3" payload={payload} selected={false} />
+        },
+        {
+            "node": <PaymentSeparator key="4" />
+        },
+        {
+            "node": <PaymentWire key="5" payload={payload} selected={false} />
+        },
+        {
+            "node": <PaymentSeparator key="6" />
+        },
+        {
+            "node": <PaymentAdmin key="7" payload={payload} />
         }
     ];
     ReactDOM.render(
@@ -59,6 +71,18 @@
                     },
                     {
                         "node": <PaymentPaymaster key="3" payload={payload} selected={false} />
+                    },
+                    {
+                        "node": <PaymentSeparator key="4" />
+                    },
+                    {
+                        "node": <PaymentWire key="5" payload={payload} selected={false} />
+                    },
+                    {
+                        "node": <PaymentSeparator key="6" />
+                    },
+                    {
+                        "node": <PaymentAdmin key="7" payload={payload} />
                     }
                 ];
             }
@@ -72,6 +96,43 @@
                     },
                     {
                         "node": <PaymentPaymaster key="3" payload={payload} selected={true} />
+                    },
+                    {
+                        "node": <PaymentSeparator key="4" />
+                    },
+                    {
+                        "node": <PaymentWire key="5" payload={payload} selected={false} />
+                    },
+                    {
+                        "node": <PaymentSeparator key="6" />
+                    },
+                    {
+                        "node": <PaymentAdmin key="7" payload={payload} />
+                    }
+                ];
+            }
+            if(eventPayload.selectedPaymentType == 'payment-wire') {
+                settings = [
+                    {
+                        "node": <PaymentPayture key="1" payload={payload} selected={false} />
+                    },
+                    {
+                        "node": <PaymentSeparator key="2" />
+                    },
+                    {
+                        "node": <PaymentPaymaster key="3" payload={payload} selected={false} />
+                    },
+                    {
+                        "node": <PaymentSeparator key="4" />
+                    },
+                    {
+                        "node": <PaymentWire key="5" payload={payload} selected={true} />
+                    },
+                    {
+                        "node": <PaymentSeparator key="6" />
+                    },
+                    {
+                        "node": <PaymentAdmin key="7" payload={payload} />
                     }
                 ];
             }

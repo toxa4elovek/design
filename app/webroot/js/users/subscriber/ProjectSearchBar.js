@@ -40,7 +40,14 @@ var ProjectSearchBar = (function (_React$Component) {
     }, {
         key: 'searchButtonClick',
         value: function searchButtonClick(event) {
+            var data = {
+                "query": this.refs.searchInput.value
+            };
             event.preventDefault();
+            $.get('/users/subscriber.json', data, function (response) {
+                console.log(response.payload);
+                ReactDOM.render(React.createElement(ProjectSearchResultsTable, { payload: response.payload }), document.getElementById('subscribe-project-search-results'));
+            });
         }
     }, {
         key: 'handleFocus',
@@ -77,7 +84,7 @@ var ProjectSearchBar = (function (_React$Component) {
                                 'div',
                                 { ref: 'filterContainer', className: 'search-box-container' },
                                 React.createElement('ul', { className: 'tags', id: 'filterbox' }),
-                                React.createElement('input', { ref: 'searchInput', type: 'text', placeholder: this.placeholder, onFocus: this.handleFocus, onBlur: this.handleBlur, onChange: this.handleChange, className: 'placeholder' }),
+                                React.createElement('input', { ref: 'searchInput', type: 'text', placeholder: this.placeholder, onFocus: this.handleFocus, onBlur: this.handleBlur, onChange: this.handleChange, className: 'placeholder', style: { "color": "#666666" } }),
                                 React.createElement(
                                     'a',
                                     { href: '#', onClick: this.arrowLinkClick, className: 'arrow-container' },

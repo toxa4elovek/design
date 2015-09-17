@@ -1104,7 +1104,6 @@ $(document).ready(function(){
         $.each($('[required]', form), function (index, object) {
             $(this).removeClass('wrong-input')
             if (($(this).attr('id') == 'yur-kpp') && ($('#yur-inn').val().length == 10)) {
-                $(this).val('');
                 return true;
             }
             if (($(this).val() == $(this).data('placeholder')) || ($(this).val().length == 0)) {

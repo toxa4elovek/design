@@ -22,7 +22,7 @@ var FundBalanceButton = (function (_React$Component) {
         value: function render() {
             return React.createElement(
                 "a",
-                { href: "/payments/fund_balance", target: "_blank", className: "button fund-balance clean-style-button" },
+                { href: "/subscription_plans/subscriber", target: "_blank", className: "button fund-balance clean-style-button" },
                 "пополнить счёт"
             );
         }

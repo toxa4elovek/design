@@ -144,7 +144,12 @@ if($env == 'development') {
     echo $this->html->script('/js/react/0.14.0-rc1/react-0.14.0-rc1.min.js', array('inline' => false, 'weight' => 8));
     echo $this->html->script('/js/react/0.14.0-rc1/react-dom-0.14.0-rc1.min.js', array('inline' => false, 'weight' => 9));
 }
-echo $this->html->script('jquery-1.8.3.min.js', array('inline' => false, 'weight' => 10));
+if(($this->_request->params['controller'] == 'users') && ($this->_request->params['action'] == 'subscriber')) {
+    echo $this->html->script('/js/jquery/jquery-1.9.1.min.js', array('inline' => false, 'weight' => 10));
+    echo $this->html->script('/js/jquery/jquery-migrate-1.1.0.min.js', array('inline' => false, 'weight' => 10));
+} else {
+    echo $this->html->script('jquery-1.8.3.min.js', array('inline' => false, 'weight' => 10));
+}
 echo $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 11));
 echo $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 12));
 echo $this->html->script('jquery.detectmobilebrowser.min.js', array('inline' => false, 'weight' => 13));

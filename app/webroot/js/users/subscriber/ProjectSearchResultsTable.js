@@ -27,7 +27,14 @@ var ProjectSearchResultsTable = (function (_React$Component) {
                 React.createElement(
                     "tbody",
                     null,
-                    React.createElement(ProjectSearchResultsTableRow, null)
+                    this.props.payload.map(function (row, index) {
+                        if ((index + 1) % 2) {
+                            row.tableClass = 'odd';
+                        } else {
+                            row.tableClass = 'even';
+                        }
+                        return React.createElement(ProjectSearchResultsTableRow, { key: row.id, row: row });
+                    })
                 )
             );
         }

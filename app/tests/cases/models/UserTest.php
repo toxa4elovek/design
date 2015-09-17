@@ -138,30 +138,54 @@ class UserTest extends AppUnit {
     }
 
     public function testActivateSubscription() {
+        $plan =  array(
+            'id' => 2,
+            'price' => 69000,
+            'title' => 'Фирменный',
+            'duration' => YEAR
+        );
         $user = User::first(3);
         $this->assertEqual(0, $user->subscription_status);
-        User::activateSubscription(3, MONTH);
+        User::activateSubscription(3, $plan);
         $user = User::first(3);
-        $this->assertEqual(1, $user->subscription_status);
-        $this->assertEqual(date('Y-m-d H:i:s', time() + MONTH), $user->subscription_expiration_date);
+        $this->assertEqual(2, $user->subscription_status);
+        $this->assertEqual(date('Y-m-d H:i:s', time() + YEAR), $user->subscription_expiration_date);
 
-        User::activateSubscription(3, 2 * MONTH);
+        $plan =  array(
+            'id' => 2,
+            'price' => 69000,
+            'title' => 'Фирменный',
+            'duration' => YEAR
+        );
+        User::activateSubscription(3, $plan);
         $user = User::first(3);
-        $this->assertEqual(1, $user->subscription_status);
-        $this->assertEqual(date('Y-m-d H:i:s', time() + 3 * MONTH), $user->subscription_expiration_date);
+        $this->assertEqual(2, $user->subscription_status);
+        $this->assertEqual(date('Y-m-d H:i:s', time() + 2 * YEAR), $user->subscription_expiration_date);
     }
 
     public function testIsSubscriptionActive() {
         $user = User::first(3);
         $this->assertEqual(0, $user->subscription_status);
         $this->assertFalse(User::isSubscriptionActive(3));
-        User::activateSubscription(3, MONTH);
+        $plan =  array(
+            'id' => 2,
+            'price' => 69000,
+            'title' => 'Фирменный',
+            'duration' => YEAR
+        );
+        User::activateSubscription(3, $plan);
         $this->assertTrue(User::isSubscriptionActive(3));
     }
 
     public function testGetSubscriptionExpireDate() {
         $user = User::first(3);
-        User::activateSubscription($user->id, MONTH);
+        $plan =  array(
+            'id' => 2,
+            'price' => 69000,
+            'title' => 'Фирменный',
+            'duration' => MONTH
+        );
+        User::activateSubscription($user->id, $plan);
         $this->assertEqual(date('d.m.Y H:i:s', time() + MONTH), User::getSubscriptionExpireDate($user->id));
     }
 
@@ -170,7 +194,6 @@ class UserTest extends AppUnit {
         $this->assertEqual(23500, User::getBalance(3));
         $user->balance = 30000;
         $user->save(null, array('validate' => false));
-        $user = User::first(3);
         $this->assertEqual(30000, User::getBalance(3));
     }
 

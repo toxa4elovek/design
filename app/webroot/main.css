@@ -708,13 +708,12 @@ nav.main_nav {
     background: url(/img/main_nav_wrap_bg.jpg) repeat-x;
 }
 .main_nav a {
-    font: 12px/39px "RodeoC", sans-serif;
+    font: 13px/39px "OfficinaSansBookC", sans-serif;
     color: #b9b9b9;
     display: block;
     float: left;
-    width: 138px;
+    width: 130px;
     height: 100%;
-    line-height: 39px;
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
@@ -729,6 +728,7 @@ nav.main_nav {
 }
 .main_nav a.active {
     background: url(/img/main_nav_active.jpg) no-repeat 0 0;
+    background-size: 100% 35px;
     color: #b9b9b9;
 }
 .main_nav a.active span {
@@ -737,7 +737,7 @@ nav.main_nav {
 
 .main_carous_sol {
     clear:both;
-    margin: 38px 29px 14px 0px;
+    margin: 38px 29px 14px 0;
     background: #f3f3f3;
     padding: 10px 22px;
     height:100%;

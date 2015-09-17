@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var ProjectSearchResultsTableHeader = (function (_React$Component) {
     _inherits(ProjectSearchResultsTableHeader, _React$Component);
@@ -14,52 +14,63 @@ var ProjectSearchResultsTableHeader = (function (_React$Component) {
     function ProjectSearchResultsTableHeader() {
         _classCallCheck(this, ProjectSearchResultsTableHeader);
 
-        _get(Object.getPrototypeOf(ProjectSearchResultsTableHeader.prototype), "constructor", this).apply(this, arguments);
+        _get(Object.getPrototypeOf(ProjectSearchResultsTableHeader.prototype), 'constructor', this).apply(this, arguments);
     }
 
     _createClass(ProjectSearchResultsTableHeader, [{
-        key: "render",
+        key: 'onClickHandler',
+        value: function onClickHandler(e) {
+            var currentDir = $(e.target).data('dir');
+            e.preventDefault();
+            if (currentDir == 'asc') {
+                $(e.target).attr('data-dir', 'desc');
+            } else {
+                $(e.target).attr('data-dir', 'asc');
+            }
+        }
+    }, {
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "thead",
+                'thead',
                 null,
                 React.createElement(
-                    "tr",
+                    'tr',
                     null,
                     React.createElement(
-                        "td",
-                        null,
+                        'td',
+                        { style: { "textAlign": "left", "paddingLeft": "45px" } },
                         React.createElement(
-                            "a",
-                            { href: "#", id: "sort-title", className: "sort-link", "data-dir": "asc" },
-                            "название"
+                            'a',
+                            { href: '#', onClick: this.onClickHandler.bind(this), id: 'sort-title', className: 'sort-link', 'data-dir': 'asc' },
+                            'название'
                         )
                     ),
                     React.createElement(
-                        "td",
+                        'td',
                         null,
                         React.createElement(
-                            "a",
-                            { href: "#", id: "sort-ideas_count", className: "sort-link", "data-dir": "asc" },
-                            "идей"
+                            'a',
+                            { href: '#', onClick: this.onClickHandler.bind(this), id: 'sort-ideas_count', className: 'sort-link', 'data-dir': 'asc' },
+                            'идей'
                         )
                     ),
                     React.createElement(
-                        "td",
+                        'td',
                         null,
                         React.createElement(
-                            "a",
-                            { href: "#", id: "sort-finishDate", className: "sort-link", "data-dir": "asc" },
-                            "срок/статус"
+                            'a',
+                            { href: '#', onClick: this.onClickHandler.bind(this), id: 'sort-finishDate', className: 'sort-link', 'data-dir': 'asc' },
+                            'срок/статус'
                         )
                     ),
                     React.createElement(
-                        "td",
+                        'td',
                         null,
                         React.createElement(
-                            "a",
-                            { href: "#", id: "sort-price", className: "sort-link", "data-dir": "asc" },
-                            "Цена"
+                            'a',
+                            { href: '#', onClick: this.onClickHandler.bind(this), id: 'sort-price', className: 'sort-link', 'data-dir': 'asc' },
+                            'Цена'
                         )
                     )
                 )

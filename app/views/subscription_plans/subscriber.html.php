@@ -9,8 +9,9 @@
     <script>
         var payload = {
             "total": <?= (int) $total?>,
-            "projectId": <?= $planId ?>,
+            "projectId": <?= $planRecordId ?>,
             "receipt": <?php echo json_encode($receipt) ?>,
+            "userData": <?php echo json_encode($this->user->getCompanyData())?>,
             "paySystems": [
                 {
                     "id": 30,
@@ -84,6 +85,7 @@
 <?= $this->html->script(array(
     'flux/flux.min.js',
     'jquery-plugins/jquery.numeric.min.js',
+    'jquery-plugins/jquery.scrollto.min.js',
     'subscription_plans/actions/PaymentActions.js',
     'common/receipt/ReceiptLine.js',
     'common/receipt/ReceiptTotal.js',
@@ -94,7 +96,9 @@
     'subscription_plans/paymentSystems/PaymentPayture.js',
     'subscription_plans/paymentSystems/PaymentPaymaster.js',
     'subscription_plans/paymentSystems/PaymentPaymasterPaySystem.js',
+    'subscription_plans/paymentSystems/PaymentWire.js',
     'subscription_plans/paymentSystems/PaymentTypesList.js',
+    'subscription_plans/paymentSystems/PaymentAdmin.js',
     'subscription_plans/subscriber.js'
 ), array('inline' => false)) ?>
 <?= $this->html->style(array(

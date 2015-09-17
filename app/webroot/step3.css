@@ -40,43 +40,49 @@ td.s3_text{
 td.s3_h {
 	cursor: pointer;
 }
-#s3_kv {
+.wire-data-inputs {
 	display: none;
 	font-size: 13px;
 	margin: 30px 0 0 130px;
 	text-shadow: -1px 0 0 #FFFFFF;
 }
-#s3_kv label {
+.wire-data-inputs label {
 	display: block;
     margin: 10px 0;
     color: #666;
     text-transform: uppercase;
 }
-#s3_kv input[type="radio"] {
+.wire-data-inputs input[type="radio"] {
     margin: 0 10px 3px 0;
 }
-#s3_kv input[type="text"] {
+.wire-data-inputs input[type="text"] {
     width: 388px;
     margin-left: 20px;
     font-size: 14px;
     text-transform: none;
+	color: #999;
 }
-#s3_kv p {
+.wire-data-inputs .button {
+	margin-left: 20px;
+	margin-top: 10px;
+}
+.wire-data-inputs p {
 	width: 420px;
 	margin: 20px 0 20px 20px;
 	color: #666;
 	font-size: 14px;
+	font-family: Arial, sans-serif;
 }
-#s3_kv .pay-fiz {
+.wire-data-inputs .pay-fiz {
 	display: none;
 }
-#s3_kv .pay-fiz img.arrow-bill-download {
+.wire-data-inputs .pay-fiz img.arrow-bill-download {
 	margin: 20px 0 0 210px;
 }
-#s3_kv .pay-yur {
+.wire-data-inputs .pay-yur {
 	display: none;
 }
-#s3_kv .pay-yur label {
+.wire-data-inputs .pay-yur label {
 	margin: 25px 0 5px 20px;
 	font-size: 11px;
 }
