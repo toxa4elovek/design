@@ -29,12 +29,31 @@
     padding-top: 15px;
     text-align: left;
     vertical-align: top;
+    color: #ffffff;
+    font-family: Arial, serif;
+    font-weight: bold;
+    font-size: 15px;
+    text-transform: none;
 }
-
+.project-search-table td.price {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+}
 .project-search-table td.td-title a {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
     font-weight: bold;
-    color: #e2e2e2;
+    color: #ffffff;
     line-height: 19px;
+}
+.project-search-table tr.light {
+    background-color: #868686;
+}
+.project-search-table .light .td-title {
+    color: #e3e3e3;
+}
+.project-search-table .light td {
+    border-right: 0;
 }

@@ -238,4 +238,23 @@ class SubscriptionPlan extends Pitch {
         }
         return null;
     }
+
+    /**
+     * Метод вовзращяает сохраненную сумму пополнения счета
+     *
+     * @param $id
+     * @return int
+     */
+    static public function extractFundBalanceAmount($id) {
+        if($plan = self::first($id)) {
+            if(!$array = unserialize($plan->specifics)) {
+                return 0;
+            }
+            if(!isset($array['fund_balance'])) {
+                return 0;
+            }
+            return $array['fund_balance'];
+        }
+        return 0;;
+    }
 }

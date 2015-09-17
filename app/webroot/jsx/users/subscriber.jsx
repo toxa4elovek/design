@@ -16,7 +16,7 @@
         document.getElementById('fund-balance-button')
     );
     ReactDOM.render(
-        <ProjectSearchResultsTable/>,
+        <ProjectSearchResultsTable payload={payload}/>,
         document.getElementById('subscribe-project-search-results')
     );
     ReactDOM.render(

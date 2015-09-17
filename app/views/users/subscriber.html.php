@@ -17,12 +17,13 @@
                             "companyName": '<?= $this->user->getShortCompanyName() ?>',
                             "expirationDate": '<?= $this->user->getSubscriptionExpireDate('d/m/Y') ?>',
                             "isSubscriptionActive": <?php echo (int) $this->user->isSubscriptionActive() ?>
-                        }
+                        };
                         var questions = [
                             {title: 'Как наша компания может заключить с вами договор?', id: '82'},
                             {title: 'Какие способы оплаты мы принимаем?', id: '6'},
                             {title: 'Если я создаю проект от лица компании?', id: '89'}
                         ];
+                        var payload = <?php echo json_encode($payments); ?>;
                     </script>
                 </section>
 

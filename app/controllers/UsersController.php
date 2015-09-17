@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\extensions\helper\MoneyFormatter;
 use app\extensions\smsfeedback\SmsFeedback;
 use app\extensions\social\TwitterAPI;
 use app\models\Logreferal;
+use app\models\SubscriptionPlan;
 use \app\models\User;
 use \app\models\Sendemail;
 use \app\models\Category;
@@ -1702,15 +1704,59 @@ class UsersController extends \app\controllers\AppController {
      * html|json
      */
     public function subscriber() {
+        $conditions = array(
+            'billed' => 1,
+            'user_id' => $this->userHelper->getId(),
+            'OR' => array(
+                array('type' => 'fund-balance'),
+                array('type' => 'plan-payment'),
+                array('type' => 'company-project'),
+            )
+        );
+        if((isset($this->request->query['query']))
+            && ($this->request->query['query'] != 'найдите свой  проект по ключевому слову или типу')
+            && (!empty($this->request->query['query']))) {
+            $query = urldecode(filter_var($this->request->query['query'], FILTER_SANITIZE_STRING));
+            $firstLetter = mb_substr($query, 0, 1, 'utf-8');
+            $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
+            $firstLower = (mb_strtolower($firstLetter, 'utf-8'));
+            $string = $firstLower . mb_substr($query, 1, mb_strlen($query, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($query, 1, mb_strlen($query, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($query, 'utf-8') . '|' . str_replace('ё', 'е', $query);
+            $conditions += array('title' => array('REGEXP' => $string));
+        }
+        $paymentsObj = Pitch::all(array(
+            'conditions' => $conditions,
+            'order' => array('started' => 'desc')
+        ));
+        $payments = array();
+        $moneyFormatter = new MoneyFormatter();
+        foreach($paymentsObj as $row) {
+            $data = $row->data();
+            if($row->type == 'plan-payment') {
+                $amount = SubscriptionPlan::extractFundBalanceAmount($row->id);
+                if($amount > 0) {
+                    $data['type'] = 'fund-balance';
+                    $data['title'] = 'Пополнение счёта';
+                    $data['total'] = $amount;
+                    $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => 'Р.-'));
+                }
+            }
+            if($data['type'] != 'fund-balance') {
+                $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => 'Р.-'));
+            }
+            $payments[] = $data;
+        }
         if($this->request->is('json')) {
             $data = array(
                 'balance' => $this->userHelper->getBalance(),
                 'companyName' => $this->userHelper->getShortCompanyName(),
                 'expirationDate' => $this->userHelper->getSubscriptionExpireDate('d/m/Y'),
-                'isSubscriptionActive' =>(int) $this->userHelper->isSubscriptionActive()
+                'isSubscriptionActive' =>(int) $this->userHelper->isSubscriptionActive(),
+                'payload' => $payments,
+                'conditions' => $conditions
             );
             return $data;
         }
+        return compact('payments');
     }
 
     public function fill_balance() {

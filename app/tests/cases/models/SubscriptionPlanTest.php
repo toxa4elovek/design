@@ -176,4 +176,11 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual(15000, User::getBalance(1));
     }
 
+    public function extractFundBalanceAmount() {
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(2);
+        SubscriptionPlan::setFundBalanceForPayment($id, 15000);
+        $result = SubscriptionPlan::extractFundBalanceAmount($id);
+        $this->assertEqual(15000, $result);
+    }
+
 }

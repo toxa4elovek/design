@@ -21,7 +21,17 @@ class ProjectSearchBar extends React.Component{
         event.preventDefault();
     }
     searchButtonClick(event) {
+        const data = {
+            "query": this.refs.searchInput.value
+        };
         event.preventDefault();
+        $.get('/users/subscriber.json', data, function(response) {
+            console.log(response.payload);
+            ReactDOM.render(
+                <ProjectSearchResultsTable payload={response.payload}/>,
+                document.getElementById('subscribe-project-search-results')
+            );
+        });
     }
     handleFocus() {
         const container = $(this.refs.filterContainer);
@@ -51,7 +61,7 @@ class ProjectSearchBar extends React.Component{
                         <td>
                             <div ref="filterContainer" className="search-box-container">
                                 <ul className="tags" id="filterbox"></ul>
-                                <input ref="searchInput" type="text" placeholder={this.placeholder} onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} className="placeholder" />
+                                <input ref="searchInput" type="text" placeholder={this.placeholder} onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} className="placeholder" style={{"color": "#666666"}}/>
                                 <a href="#" onClick={this.arrowLinkClick} className="arrow-container">
                                     <img ref="arrowIndicator" className="arrow-down" src="/img/filter-arrow-down.png" data-dir="up" alt="Раскрыть меню" />
                                 </a>
