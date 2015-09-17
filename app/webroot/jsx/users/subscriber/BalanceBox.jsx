@@ -3,9 +3,10 @@ class BalanceBox extends React.Component{
         //this.setInterval(this.updateBalance, 10000);
     }
     render() {
-        let subscriptionStatus = <span>не действителен</span>
+        let subscriptionStatus = <span>не действителен</span>;
         if(this.props.isSubscriptionActive) {
-            subscriptionStatus = <span>действителен до {this.props.expirationDate}</span>
+            console.log(this.props.plan);
+            subscriptionStatus = <span>Тариф «{this.props.plan.title}»<br/>действителен до {this.props.expirationDate}</span>;
         }
         return (
             <div>

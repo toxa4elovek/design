@@ -27,6 +27,7 @@ use app\models\Url;
 use app\extensions\social\TwitterAPI;
 use app\extensions\social\FacebookAPI;
 use app\extensions\social\SocialMediaManager;
+use app\models\SubscriptionPlan;
 
 class User extends \app\models\AppModel {
 
@@ -1579,6 +1580,16 @@ class User extends \app\models\AppModel {
     public static function getShortCompanyName($userId) {
         $userObject = self::first($userId);
         return $userObject->short_company_name;
+    }
+
+    public static function getCurrentPlanData($userId) {
+        if(self::isSubscriptionActive($userId)) {
+            $user = self::first($userId);
+            $planId = $user->subscription_status;
+            $plan = SubscriptionPlan::getPlan($planId);
+            return $plan;
+        }
+        return array();
     }
 
 }

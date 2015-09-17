@@ -552,4 +552,12 @@ class User extends \lithium\storage\Session {
         return false;
     }
 
+    public function getCurrentPlanData() {
+        if($this->isLoggedIn()) {
+            $userModel = $this->_options['userModel'];
+            return $userModel::getCurrentPlanData($this->getId());
+        }
+        return false;
+    }
+
 }

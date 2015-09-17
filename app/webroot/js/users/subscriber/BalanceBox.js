@@ -29,9 +29,14 @@ var BalanceBox = (function (_React$Component) {
                 "не действителен"
             );
             if (this.props.isSubscriptionActive) {
+                console.log(this.props.plan);
                 subscriptionStatus = React.createElement(
                     "span",
                     null,
+                    "Тариф «",
+                    this.props.plan.title,
+                    "»",
+                    React.createElement("br", null),
                     "действителен до ",
                     this.props.expirationDate
                 );

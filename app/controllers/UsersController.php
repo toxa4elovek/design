@@ -1751,6 +1751,7 @@ class UsersController extends \app\controllers\AppController {
                 'companyName' => $this->userHelper->getShortCompanyName(),
                 'expirationDate' => $this->userHelper->getSubscriptionExpireDate('d/m/Y'),
                 'isSubscriptionActive' =>(int) $this->userHelper->isSubscriptionActive(),
+                'plan' => $this->userHelper->getCurrentPlanData(),
                 'payload' => $payments,
                 'conditions' => $conditions
             );

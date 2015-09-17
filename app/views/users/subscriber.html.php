@@ -16,7 +16,8 @@
                             "balance": <?= $this->user->getBalance() ?>,
                             "companyName": '<?= $this->user->getShortCompanyName() ?>',
                             "expirationDate": '<?= $this->user->getSubscriptionExpireDate('d/m/Y') ?>',
-                            "isSubscriptionActive": <?php echo (int) $this->user->isSubscriptionActive() ?>
+                            "isSubscriptionActive": <?php echo (int) $this->user->isSubscriptionActive() ?>,
+                            "plan": <?php echo json_encode($this->user->getCurrentPlanData()) ?>
                         };
                         var questions = [
                             {title: 'Как наша компания может заключить с вами договор?', id: '82'},

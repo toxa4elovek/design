@@ -8,7 +8,13 @@
         document.getElementById('new-project')
     );
     ReactDOM.render(
-        <BalanceBox balance={userInfo.balance} isSubscriptionActive={userInfo.isSubscriptionActive} companyName={userInfo.companyName} expirationDate={userInfo.expirationDate}/>,
+        <BalanceBox
+            balance={userInfo.balance}
+            isSubscriptionActive={userInfo.isSubscriptionActive}
+            companyName={userInfo.companyName}
+            expirationDate={userInfo.expirationDate}
+            plan={userInfo.plan}
+        />,
         document.getElementById('balance')
     );
     ReactDOM.render(
