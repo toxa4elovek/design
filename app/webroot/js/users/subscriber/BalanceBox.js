@@ -29,7 +29,6 @@ var BalanceBox = (function (_React$Component) {
                 "не действителен"
             );
             if (this.props.isSubscriptionActive) {
-                console.log(this.props.plan);
                 subscriptionStatus = React.createElement(
                     "span",
                     null,
