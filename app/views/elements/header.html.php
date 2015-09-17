@@ -178,6 +178,10 @@
                         if(($mypitch->multiwinner != 0) && ($mypitch->billed == 0)):
                             continue;
                         endif;
+                        $closing = false;
+                        if($mypitch->status > 0) {
+                            $closing = true;
+                        }
                     ?>
                     <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
                         <td width="105" style="text-align: left; border: 0;">
@@ -185,7 +189,7 @@
                                 <img data="<?= $mypitch->category_id ?>" class="pitches-image" src="<?php echo isset($mypitch->winner->images['solution_tutdesign'][0]) ? $mypitch->winner->images['solution_tutdesign'][0]['weburl'] :$mypitch->winner->images['solution_tutdesign']['weburl']?>">
                             <?php endif?>
                         </td>
-                        <td class="pitches-name">
+                        <td class="pitches-name" <?php if($closing):?>colspan="3"<?php endif ?>>
                             <div style="background-image: none; padding: 15px 0 17px 40px;">
                                 <?php if($mypitch->awarded != 0):
                                 $step = $mypitch->winner->step;
@@ -201,9 +205,11 @@
                                 <!--span><?=$mypitch->industry?></span-->
                             </div></td>
                         <?php if($mypitch->blank != 1 ):?>
-                        <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
-                        <td class="idea"><?=$mypitch->ideas_count?></td>
-                        <td class="pitches-time"><a style="color:#639F6D; font-size: 11px;" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">
+                            <?php if(!$closing):?>
+                            <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
+                            <td class="idea"><?=$mypitch->ideas_count?></td>
+                            <?php endif ?>
+                        <td class="pitches-time"><a style="color:#639F6D; font-size: 12px;" href="http://www.godesigner.ru/users/step<?=$step?>/<?=$mypitch->awarded?>">
                         <?php if($mypitch->status == 1):?>
                                 Победа!<br/> Завершите проект!
                         <?php elseif($mypitch->status == 2): ?>
