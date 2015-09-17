@@ -39,7 +39,7 @@ font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; fon
                             </div>
                             <div class="photo_block">
                                 <?php if($solution->pitch->category_id == 7):?>
-                                    <a href="/pitches/viewsolution/<?=$solution->id?>" style="width:145px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
+                                    <a href="/pitches/viewsolution/<?=$solution->id?>" style="width:145px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;padding: 16px;">
                                         <?php if(mb_strlen(trim($solution->description)) > 100):?>
                                         <?=mb_substr(trim($solution->description), 0, 100, 'UTF-8')?>
                                         <?php else:?>
@@ -76,14 +76,21 @@ font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; fon
                                 <ul class="tags" data-solutionid="<?= $solution->id ?>">
                                     <?php
                                     if(($this->user->isSolutionAuthor($solution->user_id)) && (is_array($solution->tags))):
-                                    foreach($solution->tags as $tag):?>
-                                        <li style="padding-left: 10px; padding-right: 10px; margin-right:6px; height: 21px; padding-top: 5px; margin-bottom:3px;">
-                                            <a class="tagname" target="_blank" href="/logosale?search=<?= urlencode($tag)?>"><?= $tag?></a>
-                                            <a class="removeTag" href="#" style="margin-left: 10px;">
-                                                <img src="/img/delete-tag.png" alt="" style="padding-top: 2px;">
-                                            </a>
-                                        </li>
-                                    <?php endforeach;endif;?>
+                                        $counter = 1;
+                                        foreach($solution->tags as $tag):?>
+                                            <li style="padding-left: 10px; padding-right: 10px; margin-right:6px; height: 21px; padding-top: 5px; margin-bottom:3px;">
+                                                <a class="tagname" target="_blank" href="/logosale?search=<?= urlencode($tag)?>"><?= $tag?></a>
+                                                <a class="removeTag" href="#" style="margin-left: 10px;">
+                                                    <img src="/img/delete-tag.png" alt="" style="padding-top: 2px;">
+                                                </a>
+                                            </li>
+                                        <?php
+                                            $counter++;
+                                            if($counter > 5):
+                                                break;
+                                            endif;
+                                        endforeach;
+                                    endif;?>
                                 </ul>
                                 <?php endif?>
                             </div>
