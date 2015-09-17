@@ -45,7 +45,6 @@
 
 
 </div><!-- .wrapper -->
-
 <?=$this->html->script(array(
     'jcarousellite_1.0.1.js',
     'jquery.timers.js',
@@ -54,6 +53,10 @@
     'jquery.timeago.js',
     'fileuploader',
     'jquery.tooltip.js',
+    'jquery-plugins/jquery.numeric.min.js',
+    'moment.min.js',
+    '/js/bootstrap/bootstrap.min.js',
+    '/js/bootstrap/bootstrap-datetimepicker.min.js',
     "/js/mixins/SetIntervalMixin.js",
     "/js/users/subscriber/BalanceBox.js",
     "/js/users/subscriber/FundBalanceButton.js",
@@ -71,5 +74,7 @@
     '/css/common/buttons.css',
     '/css/common/project-search-results.css',
     '/css/common/project-search-widget.css',
+    '/css/bootstrap/bootstrap-datetimepicker-standalone.css',
+    '/css/bootstrap/bootstrap-datetimepicker.min.css',
     '/css/users/subscriber.css'
 ), array('inline' => false))?>

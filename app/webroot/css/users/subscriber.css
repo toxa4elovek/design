@@ -114,7 +114,8 @@
     font-size: 15px;
 }
 #new-project .year {
-    margin-right: 75px;
+    margin-right: 55px;
+    width: 40px;
 }
 #new-project .last-block {
     margin-right: 0;

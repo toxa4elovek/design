@@ -15,9 +15,27 @@ var NewProjectBox = (function (_React$Component) {
         _classCallCheck(this, NewProjectBox);
 
         _get(Object.getPrototypeOf(NewProjectBox.prototype), "constructor", this).apply(this, arguments);
+
+        this.minimalPrice = 500;
     }
 
     _createClass(NewProjectBox, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var input = $(this.refs.award);
+            input.numeric({
+                "negative": false,
+                "decimal": false
+            });
+        }
+    }, {
+        key: "onBlurHandler",
+        value: function onBlurHandler(e) {
+            if (e.target.value < this.minimalPrice) {
+                e.target.value = this.minimalPrice;
+            }
+        }
+    }, {
         key: "render",
         value: function render() {
             return React.createElement(
@@ -33,7 +51,7 @@ var NewProjectBox = (function (_React$Component) {
                         "*"
                     )
                 ),
-                React.createElement("input", { className: "price-input", type: "text", name: "price", placeholder: "500" }),
+                React.createElement("input", { ref: "award", onBlur: this.onBlurHandler.bind(this), className: "price-input", type: "text", name: "price", placeholder: "500" }),
                 React.createElement(
                     "label",
                     null,
@@ -57,11 +75,11 @@ var NewProjectBox = (function (_React$Component) {
                     "время"
                 ),
                 React.createElement("div", { className: "clear" }),
-                React.createElement("input", { type: "text", className: "date-input" }),
-                React.createElement("input", { type: "text", className: "date-input" }),
-                React.createElement("input", { type: "text", className: "date-input year" }),
-                React.createElement("input", { type: "text", className: "date-input" }),
-                React.createElement("input", { type: "text", className: "date-input last-block" }),
+                React.createElement("input", { type: "text", "data-field": "day", className: "date-input" }),
+                React.createElement("input", { type: "text", "data-field": "month", className: "date-input" }),
+                React.createElement("input", { type: "text", "data-field": "year", className: "date-input year" }),
+                React.createElement("input", { type: "text", "data-field": "hours", className: "date-input" }),
+                React.createElement("input", { type: "text", "data-field": "minutes", className: "date-input last-block" }),
                 React.createElement("div", { className: "clear" }),
                 React.createElement(
                     "a",
