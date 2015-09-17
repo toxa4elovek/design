@@ -39,5 +39,11 @@
                 <?php endif;?></li>
         </ul>
     </div><!-- .indicator -->
+<<<<<<< Updated upstream
     <img src="/img/comissions.png" style="margin-bottom: 30px;" alt="">
+=======
+    <?php if($category->id != 20): ?>
+    <img src="/img/comissions.png" style="margin-bottom: 30px;">
+    <?php endif?>
+>>>>>>> Stashed changes
 </div><!-- .set-price -->

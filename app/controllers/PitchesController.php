@@ -460,11 +460,20 @@ class PitchesController extends \app\controllers\AppController {
         return compact('data', 'categories', 'query', 'selectedCategory');
     }*/
 
+    /**
+     * Метод отображения страницы выбора категорий
+     * Для абонентов делаем редирект на создание абонентского проекта
+     *
+     * @return array
+     */
     public function create() {
-        $temp = Category::all();
-        $categories = array();
-        foreach ($temp as $cat) {
-            $categories[$cat->id] = $cat;
+        if($this->userHelper->isSubscriptionActive()) {
+            return $this->redirect('/pitches/brief/20');
+        }
+        $categories = Category::all();
+        $categoriesList = array();
+        foreach ($categories as $category) {
+            $categoriesList[$category->id] = $category;
         }
         return compact('categories');
     }
@@ -496,6 +505,11 @@ class PitchesController extends \app\controllers\AppController {
         return $this->redirect('/pitches/create');
     }
 
+    /**
+     * Метод для оотображение страницы редактирования неоплаченного проекта
+     *
+     * @return array|object
+     */
     public function brief() {
         $referal = 0;
         $referalId = 0;
@@ -514,10 +528,11 @@ class PitchesController extends \app\controllers\AppController {
             $event->setEventCategory('Создание проекта');
             $event->setEventAction('Пользователь выбрал категорию «' . $category->title . '»');
             $gatracking->sendTracking($event);
-            if (!is_null($promocode)) {
+            if($category->id != 20) {
                 return compact('category', 'experts', 'referal', 'referalId', 'promocode');
+            }else {
+                return $this->render(array('template' => '../pitches/subscribed_project', 'data' => compact('category', 'experts', 'referal', 'referalId', 'promocode')));
             }
-            return compact('category', 'experts', 'referal', 'referalId');
         }
         return $this->redirect('Pitches::create');
     }
