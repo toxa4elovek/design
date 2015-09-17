@@ -45,7 +45,7 @@
         </div><!-- .main -->
     </div><!-- .middle -->
 
-
+    <script src="/js/jquery-plugins/jquery.numeric.min.js"><script>
 </div><!-- .wrapper -->
 <?=$this->html->script(array(
     'jcarousellite_1.0.1.js',
@@ -55,7 +55,7 @@
     'jquery.timeago.js',
     'fileuploader',
     'jquery.tooltip.js',
-    'jquery-plugins/jquery.numeric.min.js',
+    '/js/jquery-plugins/jquery.numeric.min.js',
     'moment.min.js',
     '/js/bootstrap/bootstrap.min.js',
     '/js/bootstrap/bootstrap-datetimepicker.min.js',
