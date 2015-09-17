@@ -529,6 +529,15 @@ class User extends \lithium\storage\Session {
         return false;
     }
 
+    public function getCompanyData() {
+        if($this->isLoggedIn()) {
+            $userModel = $this->_options['userModel'];
+            $user = $userModel::first($this->getId());
+            return unserialize($user->companydata);
+        }
+        return false;
+    }
+
     /**
      * Метод возвращяет дату окончания подписки
      *

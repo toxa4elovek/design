@@ -116,6 +116,7 @@ class PaymentWire extends BasePaymentSystem{
         return required;
     }
     render() {
+        const data = this.props.payload.userData;
         const checked = this.props.selected;
         const projectId = this.props.payload.projectId;
         let widgetStyle = {"display": "none"};
@@ -143,7 +144,7 @@ class PaymentWire extends BasePaymentSystem{
                         <form onSubmit={this.onSubmitFizHandler} action="/bills/save" method="post">
                             <input type="hidden" name="fiz-id" ref="fiz-id" value={projectId} />
                             <input type="hidden" name="fiz-individual" ref="fiz-individual" value="1" />
-                            <input type="text" name="fiz-name" ref="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Иванов Иван Иванович" data-required="true" data-content="symbolic" className="placeholder" />
+                            <input type="text"  defaultValue={data.company_name} name="fiz-name" ref="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Иванов Иван Иванович" data-required="true" data-content="symbolic" className="placeholder" />
                             <img src="/img/arrow-bill-download.png" className="arrow-bill-download" />
                             <input type="submit" value="Скачать счёт" className="button third" style={{"width": "420px"}} />
                             <div className="clr"></div>
@@ -158,16 +159,16 @@ class PaymentWire extends BasePaymentSystem{
                             <input type="hidden" name="yur-individual" ref="yur-individual" value="0" />
 
                             <label className="required">Наименование организации</label>
-                            <input type="text" name="yur-name" ref="yur-name" placeholder="OOO «КРАУД МЕДИА»" data-placeholder="OOO «КРАУД МЕДИА»" data-required="true" data-content="mixed" className="placeholder" />
+                            <input type="text" defaultValue={data.company_name} name="yur-name" ref="yur-name" placeholder="OOO «КРАУД МЕДИА»" data-placeholder="OOO «КРАУД МЕДИА»" data-required="true" data-content="mixed" className="placeholder" />
 
                             <label className="required">ИНН</label>
-                            <input type="text" name="yur-inn" ref="yur-inn" placeholder="123456789012" data-placeholder="123456789012" data-required="true" data-content="numeric" data-length="[10,12]" className="placeholder" />
+                            <input type="text" defaultValue={data.inn} name="yur-inn" ref="yur-inn" placeholder="123456789012" data-placeholder="123456789012" data-required="true" data-content="numeric" data-length="[10,12]" className="placeholder" />
 
                             <label>КПП</label>
-                            <input type="text" name="yur-kpp" ref="yur-kpp" placeholder="123456789" data-placeholder="123456789" data-required="true" data-content="numeric" data-length="[9]" className="placeholder" />
+                            <input type="text" defaultValue={data.kpp} name="yur-kpp" ref="yur-kpp" placeholder="123456789" data-placeholder="123456789" data-required="true" data-content="numeric" data-length="[9]" className="placeholder" />
 
                             <label className="required">Юридический адрес</label>
-                            <input type="text" name="yur-address" ref="yur-address" placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-required="true" data-content="mixed" className="placeholder" />
+                            <input type="text" defaultValue={data.address} name="yur-address" ref="yur-address" placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-placeholder="199397, Санкт-Петербург, ул. Беринга, д. 27" data-required="true" data-content="mixed" className="placeholder" />
 
                             <p>Мы активируем ваш абонентский кабинет на сайте или зачислим средства на счёт в течение рабочего дня после поступления денег.</p>
                             <p>Закрывающие документы вы получите на e-mail сразу после того, как завершите проект. Распечатайте их, подпишите и поставьте печать.

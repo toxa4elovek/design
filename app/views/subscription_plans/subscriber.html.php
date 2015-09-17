@@ -11,6 +11,7 @@
             "total": <?= (int) $total?>,
             "projectId": <?= $planRecordId ?>,
             "receipt": <?php echo json_encode($receipt) ?>,
+            "userData": <?php echo json_encode($this->user->getCompanyData())?>,
             "paySystems": [
                 {
                     "id": 30,
