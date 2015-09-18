@@ -354,22 +354,23 @@
                     <div style="text-transform: uppercase; font-family: RodeoC; margin-top: 160px; font-size: 28px; text-shadow: -1px 1px 2px white; margin-bottom: 30px; line-height: 35px; margin-left: 0px;">Жаль, что не смогли<br> быть вам полезными.</div>
                     <div style="text-transform: uppercase; font-family: RodeoC; margin-top: 60px; font-size: 28px; text-shadow: -1px 1px 2px white; margin-bottom: 30px; line-height: 35px; margin-left: 0px;">Может,<br>в следующий раз...</div>
                 </div>
+
             </section>
         </div><!-- .main -->
     </div><!-- .middle -->
-
 
 </div><!-- .wrapper -->
 
 
 <?=$this->html->script(array(
-    'jcarousellite_1.0.1.js',
-    'jquery.timers.js',
-    'jquery.simplemodal-1.4.2.js',
+    '/js/jcarousellite_1.0.1.js',
+    '/js/jquery.timers.js',
+    '/js/jquery.simplemodal-1.4.2.js',
     'tableloader.js',
-    'jquery.timeago.js',
+    '/js/jquery.timeago.js',
     'fileuploader',
-    'jquery.tooltip.js',
+    '/js/jquery.tooltip.js',
+    '/js/jquery-plugins/jquery.scrollto.min.js',
     '/js/users/office/ProfRadioList.js',
     '/js/users/office/ProfSelectBox.js',
     'users/office.js'), array('inline' => false))?>

@@ -24,12 +24,23 @@ var ProfSelectBox = (function (_React$Component) {
             var input = this.refs.radioInput;
             var value = input.checked ? 1 : 0;
             var info = this.props.data;
-            var sectionJqueryObject = $('.user-company-section');
+            var userCompanySection = $('.user-company-section');
+            var userDetailsSection = $('.user-details-section');
             var data = {};
+            console.log('change');
             if ('is_company' === info.name && input.checked) {
-                sectionJqueryObject.show();
+                userCompanySection.show();
+                $.scrollTo(userCompanySection, {
+                    axis: 'y',
+                    duration: 500
+                });
             } else {
-                sectionJqueryObject.hide();
+                userCompanySection.hide();
+            }
+            if (('isDesigner' === info.name || 'isCopy' === info.name) && input.checked) {
+                userDetailsSection.show();
+            } else {
+                userDetailsSection.hide();
             }
             data[info.name] = value;
             $.post('/users/update.json', data);
@@ -39,7 +50,7 @@ var ProfSelectBox = (function (_React$Component) {
         value: function render() {
             var info = this.props.data;
             var checked = false;
-            if (info.isDesigner == 1) {
+            if (1 == info.isDesigner) {
                 checked = true;
             }
             var input = React.createElement('input', { ref: 'radioInput', onChange: this.onChange, type: 'radio', name: 'prof', className: info.name, value: '1', defaultChecked: checked });
