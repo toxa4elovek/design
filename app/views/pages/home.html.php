@@ -225,7 +225,7 @@
             <div  style="float:left;width:320px;padding-left:12px;height:142px;">
                 <p class="regular" style=""><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="font: 17px RodeoC;color:#666666;text-decoration:none;"><?=$grade1->user->first_name . ' ' . $grade1->user->last_name?></a></p>
                 <p class="regular" style="font-style:italic; font-size:14px; font-family: Georgia;"><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade1->pitch->title?></a></p>
-                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade1->short != ''): echo $grade1->short; else: echo $grade1->text; endif?>»</p>
+                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade1->short != ''): echo trim($grade1->short); else: echo trim($grade1->text); endif?>»</p>
             </div>
 
           </div>
@@ -236,7 +236,7 @@
             <div style="float:left;width:320px;padding-left:12px;height:142px;">
                 <p class="regular" style="font-size: 17px;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="font:17px RodeoC;color:#666666;text-decoration:none;"><?=$grade2->user->first_name . ' ' . $grade2->user->last_name?></a></p>
                 <p class="regular" style="font-style:italic; font-size:14px; font-family: Georgia;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade2->pitch->title?></a></p>
-                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade2->short != ''): echo $grade2->short; else: echo $grade2->text; endif?>»</p>
+                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade2->short != ''): echo trim($grade2->short); else: echo trim($grade2->text); endif?>»</p>
             </div>
 
           </div>
