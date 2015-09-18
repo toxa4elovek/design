@@ -3,27 +3,54 @@ namespace app\controllers;
 
 use \app\models\Expert;
 
-class ExpertsController extends \app\controllers\AppController {
+/**
+ * Класс для отображения страниц, связанных с экспертами
+ *
+ * Class ExpertsController
+ * @package app\controllers
+ */
+class ExpertsController extends AppController {
 
-    public $publicActions = array('index', 'view');
+    /**
+     * Список методов, доступных без регистрации
+     *
+     * @var array
+     */
+    public $publicActions = array('index', 'view', 'viewByUser');
 
+    /**
+     * Просмотр списка экспертов
+     *
+     * @return array
+     */
     public function index() {
         $experts = Expert::all(array('order' => array('id' => 'asc')));
         return compact('experts');
     }
 
+    /**
+     * Метод отображает страницу эксперта
+     *
+     * @return array|object
+     */
     public function view() {
-        $validExperts = array('1', '2', '3', '4', '5', '6', '7', '8');
-        if(($this->request->id) && (in_array($this->request->id, $validExperts))) {
-            $expert = Expert::first($this->request->id);
-            $questions = $this->popularQuestions();
+        if($expert = Expert::first($this->request->id)) {
             return compact('expert', 'questions');
-            //return $this->render(array('template' => $this->request->id, 'data' => array('expert', 'questions' => $this->popularQuestions())));
         }else {
             return $this->redirect('/experts');
         }
     }
 
-
+    /**
+     * Метод отображает страницу эксперта, ищем эксперта по id обычного пользователя
+     *
+     * @return object
+     */
+    public function viewByUser() {
+        if($expert = Expert::first(array('conditions' => array('user_id' => $this->request->id)))) {
+            return $this->redirect('/experts/view/' . $expert->id);
+        }
+        return $this->redirect('/experts');
+    }
 
 }

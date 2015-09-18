@@ -894,7 +894,7 @@ class PitchesController extends \app\controllers\AppController {
                 return false;
             }
 
-            $experts = Expert::getExperts();
+            $experts = Expert::getExpertUserIds();
 
             // Fetch Top Level Comments
             $cacheKey = 'commentsraw_' . $pitch->id;

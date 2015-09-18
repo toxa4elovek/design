@@ -1,11 +1,4 @@
-$(document).ready(function () {
-    function preload(arrayOfImages) {
-        $(arrayOfImages).each(function () {
-            $('<img/>')[0].src = this;
-            // Alternatively you could use:
-            // (new Image()).src = this;
-        });
-    }
+$(function() {
 
     preload([
         '/img/partners/logo_tutdesign_on.png',
@@ -33,12 +26,11 @@ $(document).ready(function () {
     });
 
     var registrationElement = $("#registration");
+
     registrationElement.validate({
         /*debug: true,*/
         rules: {
-            // simple rule, converted to {required:true}
             first_name: "required",
-            // compound rule
             email: {
                 required: true,
                 email: true
@@ -154,30 +146,34 @@ $(document).ready(function () {
         $('.simplemodal-wrap').css('overflow', 'visible');
         $('#reqname').focus();
         return false;
-    })
+    });
 
-    /* Social networks widgets modal*/
     if (!$.browser.mobile) {
+
         if (showSocialPopup) {
             setTimeout(function () {
                 appendSocials();
             }, 5000);
         }
+
         if (needSocialWrite) {
             $.post('/users/addsocial/' + needSocialWrite + '.json');
         }
-        // Mobile Popup
+
         if (showMobilePopup) {
             setTimeout(function () {
                 appendMobile();
             }, 5000);
         }
+
         if (showMailPopup) {
             setTimeout(function () {
                 appendEmailConfirm();
             }, 1000);
         }
+
         $('#feedback-link').show();
+
         $('#feedback-link').live('mouseover', function () {
             $(this).css('left', '0');
         })
@@ -200,8 +196,6 @@ $(document).ready(function () {
         } else if (($('#reqmessage').val() == '') || ($('#reqmessage').val() == 'ОПИШИТЕ ПРОБЛЕМУ И ЗАДАЙТЕ ВОПРОС')) {
             alert('Введите ваше сообщение!');
         } else {
-            //var sendobj = {"name": $('#reqname').val(), "email": $('#email').val(), "message": $('#reqmessage').val()}
-
             var sendobj = {
                 "name": $('#reqname').val(),
                 "email": $('#reqemail').val(),
@@ -220,13 +214,12 @@ $(document).ready(function () {
             })
         }
         return false;
-    })
+    });
 
     $('#reqto').on('keyup', function () {
-
         $('#contactlist').show();
         return false;
-    })
+    });
 
     $(".reqlink").on('click', function () {
         $('#reqtarget').val($(this).data('id'));
@@ -234,24 +227,24 @@ $(document).ready(function () {
         $('#reqto').removeClass('placeholder');
         $('#contactlist').hide();
         return false;
-    })
+    });
 
     $('html:not(#contactlist)').on('click', function () {
         if ($('#loading-overlay2').is(':visible')) {
             $('#contactlist').hide();
         }
-    })
+    });
 
     $('.close-request').on('click', function () {
         $.modal.close();
         return false;
-    })
+    });
 
     $('#requesthelpselector, .requestli, #reqto').on('mouseover', function () {
         $('img', '#requesthelpselector').attr('src', '/img/request_help_menu_button_hover.png')
         $('#contactlist').show();
         return false;
-    })
+    });
 
     $('#requesthelpselector, .requestli, #reqto').on('mouseout', function () {
         $('img', '#requesthelpselector').attr('src', '/img/requestselector.png')
@@ -292,28 +285,7 @@ $(document).ready(function () {
                                 window.location = '/';
                             }
                         }
-                        /*if(ourResponse.newuser == false) {
-                         var params = {};
-                         params['message'] = 'Test Message';
-                         params['name'] = 'Dmitriy';
-                         params['description'] = 'My test message';
-                         params['link'] = 'http://godesigner.ru/';
-                         params['picture'] = 'http://summer-mourning.zoocha.com/uploads/thumb.png';
-                         params['caption'] = 'My Label';
-                         FB.api('/me/feed', 'post', params, function(response) {
-                         if (!response || response.error) {
-                         console.log(response);
-                         alert('Error occured - ' + response.error);
-                         
-                         } else {
-                         alert('Published to stream - you might want to delete it now!');
-                         }
-                         });
-                         }*/
                     });
-                    /*FB.logout(function(response) {
-                     console.log('Logged out.');
-                     });*/
                 });
             }
         }, {scope: 'email,publish_actions'});
@@ -433,13 +405,13 @@ $(document).ready(function () {
         $(this).attr('src', '/img/social_fb.png');
     }, function () {
         $(this).attr('src', '/img/1.gif');
-    })
+    });
 
     $('.twitter').hover(function () {
         $(this).attr('src', '/img/social_twitter.png');
     }, function () {
         $(this).attr('src', '/img/1.gif');
-    })
+    });
 
     $('#closepanel').click(function () {
         $('#panel').hide();
@@ -453,31 +425,36 @@ $(document).ready(function () {
             $('header').css('margin-bottom', '0');
         }
         $('body').removeClass('show-panel');
-    })
+    });
 
     $('#closepanel').mouseover(function () {
         $(this).css('background', 'url("/img/panel/close-btn2.png") repeat scroll 0 0 transparent');
-    })
+    });
 
     $('#closepanel').mouseout(function () {
         $(this).css('background', 'url("/img/panel/close-btn.png") repeat scroll 0 0 transparent');
-    })
+    });
 
     $('.header-menu-item').on('mouseover', function () {
         $(this).removeClass('header-menu-item').addClass('header-menu-item-higlighted');
-    })
+    });
+
     $('.header-menu-item').on('mouseout', function () {
         $(this).removeClass('header-menu-item-higlighted').addClass('header-menu-item');
-    })
+    });
+
     var menuOpen = false;
+
     $('.avatar-top, .name-top').on('mouseover', function () {
         menuOpen = true;
         $('#menu_arrow').css('padding-top', '5px').attr('src', '/img/arrow_down_header.png');
         $('.header-menu').fadeIn(300);
-    })
+    });
+
     $('.header-menu').on('mouseenter', function () {
         menuOpen = true;
     });
+
     $('.avatar-top, .name-top, .header-menu').on('mouseleave', function () {
         menuOpen = false;
         setTimeout(function () {
@@ -488,6 +465,7 @@ $(document).ready(function () {
             }
         }, 100);
     });
+
     if ($('.breadcrumbs-view', $('#pitch-title')).height() > 36) {
         $('#pitch-title').height($('.breadcrumbs-view', $('#pitch-title')).height() + 10)
     }
@@ -559,18 +537,7 @@ $(document).ready(function () {
             });
         }
     });
-//    $('#confirmEmail').on('click', function() {
-//        if (($('input[name="emails"]').val()) && ($('input[name="emails"]').val() == $('input[name="confirmEmail"]').val())) {
-//            if (filter.test($('input[name="emails"]').val()) || filter.test($('input[name="confirmEmail"]').val())) {
-//                $.post("/users/profile.json", { email:$('input[name="emails"]').val() },function(data){
-//                    $('.simplemodal-container').fadeOut(800);
-//                    $('#simplemodal-overlay').fadeOut(800, function() {
-//                        $.modal.close();
-//                    });
-//                });
-//            }
-//        }
-//    });
+
     $(document).on('click', '.popup-decline', function() {
         $('#popup-title').text('«' + $(this).data('title') + '»');
         $('#popup-title').attr('href', '/pitches/view/' + $(this).data('pitchid'));
@@ -584,33 +551,27 @@ $(document).ready(function () {
             closeClass: 'mobile-close'
         });
         return false;
-    })
+    });
 
     $('.accept-confirm').on('click', function() {
-        // пользователь отказался
         var id = $('#popip-active-id').val();
         $.get('/pitches/decline/' + id + '.json', function(response) {
         });
-        // убираем строчку в верхней панели
         $('tr[data-id="' + id + '"]', '#pitch-panel').hide();
-        // убираем всю панель, если в ней не осталось видимых строчек
         if($('tr:visible', '#pitch-panel').length == 0) {
             $('#pitch-panel').hide();
         }
-        // если мы находимы на странице заверешния, делаем редирект
         if(window.location.href.indexOf("users/step") > -1) {
             window.location.href = 'http://www.godesigner.ru/users/mypitches';
         }
         $('.mobile-close').click();
         return false;
-    })
+    });
 
     $('.change-mind').on('click', function() {
-        // пользователь согласился продать
         var id = $('#popip-active-id').val();
         var solutionid = $(this).data('solutionid')
         $.get('/pitches/accept/' + id + '.json', function(response) {
-            // переносим его на завершение
             if(window.location.href.indexOf("users/step2") > -1) {
             }else {
                 window.location.href = 'http://www.godesigner.ru/users/step2/' + solutionid;
@@ -665,6 +626,14 @@ $(document).ready(function () {
     }(document));
 
 });
+
+function preload(arrayOfImages) {
+    $(arrayOfImages).each(function () {
+        $('<img/>')[0].src = this;
+        // Alternatively you could use:
+        // (new Image()).src = this;
+    });
+}
 
 /*
  * Pitch files upload/delete handler
@@ -821,10 +790,9 @@ function prepareCommentData(comment, result) {
     commentData.commentText = comment.text;
     commentData.commentPlainText = comment.originalText.replace(/"/g, "\'");
     commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer';
-    commentData.isExpert = isExpert(comment.user_id, expertsObj);
+    commentData.isExpert = isExpertFromList(comment.user_id, expertsObj);
     commentData.isClosedPitch = (result.pitch.status != 0) ? 1 : 0;
     commentData.publicClass = (comment.public == 1) ? ' public-comment' : ' private-comment';
-
     if (result.pitch.user_id == comment.user_id) {
         commentData.messageInfo = 'message_info2';
     } else if (comment.user.isAdmin == "1") {
@@ -902,11 +870,11 @@ function populateComment(data) {
     var avatarElement = '';
     if (!data.isAdmin) {
         if (!data.isExpert) {
-            avatarElement = '<a href="/users/view/' + data.commentUserId + '"> \
+            avatarElement = '<a href="/users/view/' + data.commentUserId + '" target="_blank"> \
                             <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
                             </a>';
         } else {
-            avatarElement = '<a href="/experts/view/' + data.isExpert + '"> \
+            avatarElement = '<a href="/experts/viewbyuser/' + data.commentUserId + '" target="_blank"> \
                             <img src="' + data.userAvatar + '" alt="Портрет пользователя" width="41" height="41"> \
                             </a>';
         }
@@ -985,6 +953,13 @@ function isExpert(user, expertsObj) {
     return res;
 }
 
+function isExpertFromList(userId, expertList) {
+    if(expertList.indexOf(userId) > 0) {
+        return true;
+    }
+    return false;
+}
+
 /*
  * Fetch and populate Comments via AJAX on the pitch solutions gallery page
  */
@@ -1002,7 +977,6 @@ function fetchPitchComments() {
             $('.ajax-loader', '.pitch-comments').remove();
         }
         solutionTooltip();
-        console.log('comments');
         $('.tooltip_comments').tooltip({
             tooltipID: 'tooltip_comments',
             width: '282px',

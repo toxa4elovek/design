@@ -4,7 +4,7 @@ namespace app\models;
 
 use app\extensions\storage\Rcache;
 
-class Expert extends \app\models\AppModel {
+class Expert extends AppModel {
 
     public $belongsTo = array('User');
 
