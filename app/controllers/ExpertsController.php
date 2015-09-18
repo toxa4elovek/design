@@ -35,6 +35,7 @@ class ExpertsController extends AppController {
      */
     public function view() {
         if($expert = Expert::first($this->request->id)) {
+            $questions = $this->popularQuestions();
             return compact('expert', 'questions');
         }else {
             return $this->redirect('/experts');
