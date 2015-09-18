@@ -75,10 +75,8 @@
 
 </div><!-- .wrapper -->
 <script>
-var commonTags = [ <?php echo implode(',' , app\models\Post::getCommonTags()); ?> ];
+var commonTags = [ <?php echo implode(',', app\models\Post::getCommonTags()); ?> ];
 var existingTags = [];
 </script>
-<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
-<?=$this->html->style(array('/help', '/brief', '/css/ui-lightness/jquery-ui-1.8.23.custom.css', '/css/datetimepicker.css'), array('inline' => false))?>
-<?php $this->html->script(array('/js/tiny_mce/jquery.tinymce.js', 'jquery-ui-1.11.4.min.js', '/js/datetimepicker.js', '/js/posts/textext.min.js', '/js/posts/save.js'), array('inline' => false));?>
+<?=$this->html->style(array('/help', '/brief', '/css/ui-lightness/jquery-ui.css', '/css/datetimepicker.css'), array('inline' => false))?>
+<?php $this->html->script(array('/js/tinymce/tinymce.min.js', 'jquery-ui-1.11.4.min.js', '/js/datetimepicker.js', '/js/posts/textext.min.js', '/js/posts/save.js'), array('inline' => false));?>
