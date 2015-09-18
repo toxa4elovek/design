@@ -38,8 +38,6 @@ class RequestsController extends \app\controllers\AppController {
         $request = Request::create();
         $request->set($data);
 
-
-
         if($request->save()) {
             return $this->redirect('/pitches/details/' . $this->request->data['pitch_id']);
         }else{

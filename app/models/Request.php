@@ -2,14 +2,15 @@
 
 namespace app\models;
 
-/*
-use \lithium\util\Validator;
-use \lithium\util\String;
-*/
+class Request extends AppModel {
 
-
-class Request extends \app\models\AppModel {
-
-
+    public $validates = array(
+        'first_name' => array(
+            array('notEmpty', 'message' => 'Имя обязательно'),
+        ),
+        'last_name' => array(
+            array('notEmpty', 'message' => 'Фамилия обязетальна'),
+        ),
+    );
 
 }
