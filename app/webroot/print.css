@@ -1,0 +1,17 @@
+.blueheading {
+    color: black !important;
+    font: bold 16pt "RodeoC",serif
+}
+.details p {
+    color: black;
+    font: 10pt/16pt "Arial",sans-serif;
+}
+
+.logo-properties .label-a, .logo-properties .label-b {
+    color: black;
+    font: 10pt/16pt "Arial",sans-serif;
+}
+a, a:active, a:hover {
+    color: black;
+    text-decoration: underline;
+}

@@ -1,0 +1,127 @@
+/*.header {
+	height: 60px;
+	position: relative;
+	z-index: 2;
+	margin-bottom: 0 !important;
+}*/
+.nav .current {
+	color: #648fa4 !important;
+}
+
+.conteiners {
+	/*padding: 1px 0 35px 0 !important;*/
+    text-transform: uppercase;
+}
+.conteiners section {
+	background: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+.conteiner section {
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.menu {
+	margin: 65px 60px 36px 63px;
+	width: 828px;
+	height: 34px;
+	background: #eaeaea;
+	border: #bebebe 1px solid;
+	border-right: none;
+	border-bottom: none;
+}
+.menu ul li {	
+	display: inline-block;
+	width: 138px;
+	height: 34px;
+	margin-left: -3px;	
+	vertical-align: middle;
+}
+.menu ul li a {
+	display: inline-block;
+	width: 138px;
+	font: normal 12px/1 "RodeoC", sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #b9b9b9;
+	text-align: center;
+	line-height: 34px;
+}
+.menu ul li a:hover {
+	color: #fff;
+	background: url("/img/menu-hover-bg.png") no-repeat;
+	height: 43px;
+}
+
+.office-selected {
+    color: #fff;
+    background: url("/img/menu-hover-bg.png") no-repeat;
+    height: 43px;
+}
+
+td.pitches-name {
+	vertical-align: top;
+	text-align: left;
+	font: normal 15px/1 "RodeoC", sans-serif;
+}
+.select-vin .icons {
+	background: #E0E0E0;
+}
+.pitches-name div {
+	padding: 15px 0 0 40px;
+	/*background: none;url(/img/marker6.png) no-repeat 10px 18px;*/
+}
+.pitches-name span {
+	display: block;
+	font: 11px Helvetica, sans-serif;
+	padding-top: 5px;
+}
+.pitches-name span img {
+	margin: 0 0 0 -32px;
+	padding: 0 18px 0 0;
+}
+.marked .icons  {
+	background: #e0e0e0 url(/img/icon-1.png) no-repeat 2px 10px !important;
+}
+.pitch-end .icons {
+	background: #e0e0e0;
+}
+.close-and-expert .icons {
+	background: #e0e0e0;
+}
+.page-nambe-nav a {
+	color: #999999;
+}
+.page-nambe-nav a:hover {
+	color: #999999;	
+}
+a.this-page {
+	color: #ffffff !important;
+	background: #50525a;
+}
+.page-nambe-nav {
+	margin: 15px 20px 0;
+}
+.foot-content {
+	height: 50px;
+}
+.title {
+	width: 829px;
+	background: url(/img/pitches2_title_separate.png) repeat-x 0 30px;
+	text-align: center;
+	margin: 0 auto;
+	padding-top: 30px;
+}
+.title span {
+	font: normal 12px/1 "RodeoC", sans-serif;
+	text-transform: uppercase;
+	color: #b9b9b9;
+	text-align: center;
+	line-height: 38px;
+	vertical-align: middle;
+	display: inline-block;
+	background: url(/img/pitches2_title_bg.png) repeat-x;
+	width: 220px;
+	margin: -17px 0 19px 0;
+}

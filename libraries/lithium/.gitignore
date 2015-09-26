@@ -1,0 +1,5 @@
+.DS_Store
+app/libraries/*
+app/resources/tmp/*
+.*.sw[op]
+.idea

@@ -1,0 +1,182 @@
+#step3 h1{
+	text-align:center;
+	font: bold 28px/1 "RodeoC", sans-serif;
+	text-transform:uppercase;
+	margin-bottom:10px;
+}
+
+.g_line{
+	background:url(/img/register-login-divider.gif) repeat-x;
+	height:20px;
+	margin:30px 0 20px 0;
+	text-align:center;
+}
+
+.g_line i{
+	font-style:normal;
+	text-transform:uppercase;
+	font-size:11px;
+	font-family:Arial, Helvetica, sans-serif;
+	position:relative;
+	top:-7px;
+	padding: 0 10px 0 10px;
+	background:url(/img/bg.png);
+	color:#b6b6b6;
+}
+
+input.rb1{
+	margin:20px 10px 10px 0px;	
+}
+
+td.s3_text{
+	padding:15px 0px 0px 0px;
+	text-transform:uppercase;
+	width:100%;
+	color: #666;
+	font-size: 11px;
+	text-shadow: -1px 0 0 #FFFFFF;
+	cursor: pointer;
+}
+td.s3_h {
+	cursor: pointer;
+}
+#s3_kv {
+	display: none;
+	font-size: 13px;
+	margin: 30px 0 0 130px;
+	text-shadow: -1px 0 0 #FFFFFF;
+}
+#s3_kv label {
+	display: block;
+	margin: 10px 0;
+	color: #666;
+	text-transform: uppercase;
+}
+#s3_kv input[type="radio"] {
+	margin: 0 10px 3px 0;
+}
+#s3_kv input[type="text"] {
+	width: 388px;
+	margin-left: 20px;
+	font-size: 14px;
+	text-transform: none;
+}
+#s3_kv p {
+	width: 420px;
+	margin: 20px 0 20px 20px;
+	color: #666;
+	font-size: 14px;
+}
+#s3_kv .pay-fiz {
+	display: none;
+}
+#s3_kv .pay-fiz img.arrow-bill-download {
+	margin: 20px 0 0 210px;
+}
+#s3_kv .pay-yur {
+	display: none;
+}
+#s3_kv .pay-yur label {
+	margin: 25px 0 5px 20px;
+	font-size: 11px;
+}
+.wire-data-inputs {
+	display: none;
+	font-size: 13px;
+	margin: 30px 0 0 130px;
+	text-shadow: -1px 0 0 #FFFFFF;
+}
+.wire-data-inputs label {
+	display: block;
+    margin: 10px 0;
+    color: #666;
+    text-transform: uppercase;
+}
+.wire-data-inputs input[type="radio"] {
+    margin: 0 10px 3px 0;
+}
+.wire-data-inputs input[type="text"] {
+    width: 388px;
+    margin-left: 20px;
+    font-size: 14px;
+    text-transform: none;
+	color: #999;
+}
+.wire-data-inputs .button {
+	margin-left: 20px;
+	margin-top: 10px;
+}
+.wire-data-inputs p {
+	width: 420px;
+	margin: 20px 0 20px 20px;
+	color: #666;
+	font-size: 14px;
+	font-family: Arial, sans-serif;
+}
+.wire-data-inputs .pay-fiz {
+	display: none;
+}
+.wire-data-inputs .pay-fiz img.arrow-bill-download {
+	margin: 20px 0 0 210px;
+}
+.wire-data-inputs .pay-yur {
+	display: none;
+}
+.wire-data-inputs .pay-yur label {
+	margin: 25px 0 5px 20px;
+	font-size: 11px;
+}
+#P_card{
+	margin:20px 0 20px 0;	
+}
+
+#P_card input.button{
+	float:right;
+	margin:10px 0 0 0;
+}
+
+#P_card table{
+	width:100%;	
+	text-align:left;
+}
+
+#P_card input.button#na{
+	background:#a2b2bb;	
+}
+
+.greyed {
+    background:#a2b2bb;
+}
+.greyed {
+    cursor:default;
+}
+
+#P_card input.button#na:hover{
+	cursor:default;	
+}
+
+#P_card input.button{
+	width:190px;	
+	padding-left:25px;
+}
+/*
+ * Paymaster Widget
+ */
+.pmwidget.mod {
+	background: #e2e2e2;
+	box-shadow: none;
+}
+#step3 div.pmwidget h1.pmheader.mod {
+	font: 14px/17px Arial;
+	color: #666;
+	text-transform: none;
+	text-align: left;
+}
+p#top-pay{
+    color: #666;
+    font-size: 14px;
+    text-shadow: -1px 0 0 #ffffff;
+    line-height: 2em;
+    text-align: center; 
+    margin-bottom: 26px;
+}

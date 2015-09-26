@@ -1,0 +1,9 @@
+.bigletters{
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+.red a{
+    color:#ff585d;
+    text-decoration: none;
+}

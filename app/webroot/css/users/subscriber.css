@@ -1,0 +1,148 @@
+.clear{
+    clear: both;
+    height: 1px;
+}
+#faq-corporate {
+    width: 400px;
+    float: left;
+}
+#faq-corporate a {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #666666;
+    text-decoration: none;
+}
+#faq-corporate li {
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 58px;
+    line-height: 58px;
+    display: block;
+}
+#faq-corporate .faq-corporate-title {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #666666;
+    text-decoration: none;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+}
+#faq-corporate a:hover, #faq-corporate a:focus{
+    text-decoration: underline;
+}
+#faq-corporate li:nth-child(even) {background: #f7f7f7}
+#faq-corporate li:nth-child(odd) {background: #ececec}
+
+.subscribe-menu {
+    width:832px;
+    margin-left:2px !important;
+    margin-bottom: 18px !important;
+}
+
+#balance {
+    width: 379px;
+    float: left;
+    background-color: #f7f7f7;
+    padding: 20px 5px 20px 16px;
+    color: #b6b6b6;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+#balance h6 {
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+#balance .balance {
+    font-size: 44px;
+    height: 44px;
+    line-height: 44px;
+    color: #666;
+    display: block;
+    text-align: right;
+    margin-top: 20px;
+}
+#fund-balance-button {
+    float: left;
+    width: 400px;
+    margin-bottom: 18px;
+}
+.fund-balance {
+    width: 340px;
+}
+#new-project {
+    background-color: #61a06d;
+    padding: 24px 16px 42px 16px;
+    width: 368px;
+    height: 405px;
+    float: left;
+    margin-left: 36px;
+}
+#new-project label {
+    display: block;
+    position: relative;
+    font-size: 11px;
+    color: #f1eeee;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+#new-project input {
+    width: 338px;
+    color: #666666;
+    margin-bottom: 30px;
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, .2);
+}
+#new-project .price-input {
+    height: 74px;
+    font-size: 44px;
+}
+#new-project .wrong-input {
+    border: 3px solid #ff585d;
+    box-shadow: none;
+}
+/*
+#new-project input:focus::-webkit-input-placeholder { color:transparent; opacity: 0;}
+#new-project input:focus:-moz-placeholder { color:transparent; opacity: 0;}
+#new-project input:focus::-moz-placeholder { color:transparent; opacity: 0;}
+#new-project input:focus:-ms-input-placeholder { color:transparent; opacity: 0;}
+*/
+#new-project .title-input{
+    height: 52px;
+    font-size: 15px;
+}
+#new-project .title-input.wrong-input{
+    height: 46px;
+    width: 346px;
+}
+#new-project .date-input {
+    width: 30px;
+    height: 50px;
+    display: block;
+    float: left;
+    margin-right: 14px;
+    font-size: 15px;
+    padding-left: 11px;
+    padding-right: 11px;
+}
+#new-project .year {
+    margin-right: 55px;
+    width: 40px;
+}
+#new-project .last-block {
+    margin-right: 0;
+}
+#new-project .date-label {
+    float: left;
+}
+#new-project .time-label {
+    margin-left: 56px;
+    float: left;
+}
+#new-project .create-project-button {
+    height: 50px;
+    width: 308px;
+    line-height: 50px;
+}

@@ -1,0 +1,252 @@
+
+
+#container {
+  width:580px;
+  padding:10px;
+  margin:0 auto;
+  position:relative;
+  z-index:0;
+}
+
+#example {
+  width:600px;
+  height:350px;
+  position:relative;
+}
+
+#ribbon {
+  position:absolute;
+  top:-3px;
+  left:-15px;
+  z-index:500;
+}
+
+#frame {
+  position:absolute;
+  z-index:0;
+  width:739px;
+  height:139px;
+  top:-3px;
+  left:-80px;
+}
+
+/*
+  Slideshow
+*/
+
+#slides {position:relative;
+  width:958px;margin:-43px auto 0;
+
+}
+.small_gallery #slides {top:35px;left:2px}
+/*
+  Slides container
+  Important:
+  Set the width of your slides container
+  Set to display none, prevents content flash
+*/
+
+.slides_container {
+  width:958px;
+  overflow:hidden;
+  position:relative;
+  display:none;
+}
+
+/*
+  Each slide
+  Important:
+  Set the width of your slides
+  If height not specified height will be set by the slide content
+  Set to display block
+*/
+
+.slides_container div.slide {
+  width:958px;
+  height:277px;
+  display:block;
+}
+
+
+/*
+  Next/prev buttons
+*/
+
+#slides .next,#slides .prev {
+  position:absolute;
+  top:163px;
+  left:8px;
+
+
+  z-index:101;
+}
+
+#slides .next {
+  left:585px;
+  display:block;
+  top:163px;
+  right:8px;
+  left:auto
+}
+
+/*
+  Pagination
+*/
+
+.pagination {
+ top:-29px;right:-25px;
+  position:absolute;
+  z-index:100000;
+  padding:0;
+  width:86px;
+}
+
+.pagination li {
+  float:left;
+  margin:0 4px 0 1px;
+  list-style:none;
+}
+
+.pagination li a {
+  display:block;
+  width:14px;
+  height:14px;
+  font-size:0;
+  text-decoration:none;text-align:center;
+  background-image:url(/img/pagination.png);
+  background-position:0 -14px;
+  float:left;
+  overflow:hidden;
+}
+
+.pagination li.current a {
+  background-position:0 0px;
+  color:#fff200
+}
+
+/*
+  Caption
+*/
+
+.caption {
+  z-index:500;
+  position:absolute;
+  bottom:-35px;
+  left:0;
+  height:30px;
+  padding:5px 20px 0 20px;
+  background:#000;
+  background:rgba(0,0,0,.5);
+  width:540px;
+  font-size:1.3em;
+  line-height:1.33;
+  color:#fff;
+  border-top:1px solid #000;
+  text-shadow:none;
+}
+
+.bigfont {
+    margin-top: 15px;
+    margin-bottom: 60px;
+}
+
+.bigfont h2.title{
+    text-transform:uppercase;
+    text-align:center;
+    font-size:24px;
+    color:#666666;
+    font-weight:normal;
+    font-family: 'RodeoC';
+    line-height:120%;
+    text-shadow: 1px 1px 0px #FFF;
+    margin-bottom:0;
+}
+.bigfont a {
+    color:#ff585d;
+    text-decoration: none;
+}
+.bigfont a:hover {
+    text-decoration: underline;
+}
+
+.generic-window {
+    padding: 0 72px 0 100px;
+    font: 14px/1.5em Arial, Helvetica, sans-serif;
+    color: #666;
+    text-shadow: 1px 1px 1px #FFF;
+}
+.generic-window h3 {
+    margin: 118px 0 .6em;
+}
+
+.generic-window a {
+    text-decoration: none;
+}
+
+
+/*
+  Header
+*/
+.header-menu {
+     display: none;
+     position: relative;
+     margin-top: 23px;
+     padding-top: 16px;
+     height: 243px;
+     width: 180px;
+     background: url(/img/menu.png) 0 16px no-repeat;
+     z-index: 120;
+}
+
+.header-menu a {
+    text-decoration: none;
+    color: #464650;
+}
+.header-menu-item {
+    display: inline-block;
+    float:left;
+    width:180px;
+    height:25px;
+    padding-top:8px;
+}
+.header-menu-item a,
+.header-menu-item-higlighted a {
+    display: block;
+    color: #ffffff;
+    width: 152px;
+    height: 25px;
+    text-decoration: none;
+    margin-top: -8px;
+    padding-top: 8px;
+    padding-left: 28px;
+}
+
+.header-menu-item a:hover {
+    color: #464650;
+}
+
+.header-menu-item-higlighted {
+    display: inline-block;
+    float:left;
+    width:180px;
+    height:25px;
+    padding-top:8px;
+    background-image:url(/img/selected.png);
+}
+.header-menu-item-higlighted a:hover{
+    color: #464650;
+}
+.header-menu-item-higlighted{
+    color: #464650;
+}
+.form-faq-link {
+    font-size: 12px;
+    margin-left: 40px;
+}
+.form-faq-link:hover {
+    text-decoration: underline;
+}
+/*
+  Footer
+*/
+

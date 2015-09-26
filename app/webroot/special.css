@@ -1,0 +1,14 @@
+.special-unnumbered {
+	list-style:disc inside;
+}
+.special-unnumbered li {
+	margin-bottom: 20px;
+	margin-left: 50px;
+}
+.special-numbered {
+	list-style:decimal inside;
+}
+.special-numbered li {
+	margin-bottom: 20px;
+	margin-left: 50px;
+}

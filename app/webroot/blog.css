@@ -1,0 +1,132 @@
+/* Заголовок 1-крассная ссылка*/
+
+ a.more{font:11px arial;text-decoration:none;text-shadow:none;padding:2px 24px 4px 1px;text-transform:uppercase}
+ a.more:hover{}
+ .hover.more {
+     color:#666666;
+ }
+a.more-noicon,
+a.more-editor {font:11px arial;text-decoration:none;text-shadow:none;padding:2px 24px 4px 1px;text-transform:uppercase}
+a.more-editor:hover {
+}
+ .largest-header-blog{
+	font: normal 28px/34px "RodeoC", sans-serif;
+    color: #666666;
+    text-decoration: none;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+.regular p {
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+.regular a {
+    text-decoration: none;
+}
+.regular a:hover {
+    text-decoration: underline;
+}
+.viewpost ol {
+    padding-left: 40px;
+    list-style-type: decimal;
+}
+.viewpost ul {
+    padding-left: 40px;
+    list-style-type: disc;
+}
+.viewpost strong {
+    font-weight:bold;
+}
+.onTop {
+    position: fixed;
+    bottom: -105px;
+    right: 90px;
+    width: 102px;
+    height: 105px;
+    background-image: url(/img/blog-onTop.png);
+    background-position: bottom;
+}
+.onTop:hover {
+	cursor: pointer;
+	background-position: top;
+}
+.onTopMiddle {
+	display: none;
+    position: absolute;
+    bottom: 0;
+    right: 90px;
+    width: 102px;
+    height: 105px;
+    background-image: url(/img/blog-onTop.png);
+    background-position: bottom;
+}
+.onTopMiddle:hover {
+    cursor: pointer;
+    background-position: top;
+}
+#blog-ajax-wrapper {
+	position: relative;
+	display: block;
+	width: 837px;
+	height: 32px;
+	clear: both;
+	background: url(/img/sep.png) repeat-x scroll 0 50% transparent;
+	margin-bottom: 20px;
+}
+#blog-ajax-loader {
+	position: absolute;
+	left: 386px;
+	top: 0;
+	width: 60px;
+	height: 32px;
+	background: url(/img/blog-ajax-loader.gif) #e3e3e3 top center no-repeat;
+}
+#search-ajax-loader {
+	display: none;
+	width: 32px;
+	height: 32px;
+	margin-left: 300px;
+}
+#post-search {
+	position: relative;
+	width: 194px;
+	height: 41px;
+	margin-bottom: 30px;
+	border: 3px solid transparent;
+}
+#post-search.active {
+	border: 3px solid #d9d9d9;
+	border-radius: 3px;
+}
+#blog-search {
+	position: absolute;
+	width: 128px;
+	height: 40px;
+}
+.blog-submit {
+	position: absolute;
+	right: 0;
+	width: 40px;
+	height: 40px;
+	border: none;
+	padding: 0;
+	background-color: #5d8397;
+	background-image: url(/img/blog-search.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+	outline: none;
+}
+.blog-submit:hover {
+	background-position: left bottom;
+}
+.nodecoration {
+}
+.nodecoration:hover {
+    text-decoration: none !important;
+}
+.blogtaglink {
+    text-transform: uppercase;
+    font-size: 11px;
+}
+.blogtaglink:hover {
+    text-decoration: underline
+}

@@ -1,0 +1,187 @@
+#content_help {
+	margin-right: 250px;
+	float: none;
+	width: auto;
+}
+
+#right_sidebar_help {
+	width: 250px;
+	float: right;
+	padding: 0;
+	margin: 55px 0 0;
+}
+
+
+#right_sidebar_help div {
+	margin-left: 50px;
+}
+
+
+
+.content {
+	font: 14px/20px "Arial", sans-serif;
+	color: #666;
+}
+
+.answer h2 {
+	margin: 15px 0 15px;
+}
+
+
+.answer p, .answer ul li {
+	margin: 0 0 20px;
+}
+
+.answer ul {
+    list-style-type: disc;
+	list-style-position: inside;
+	margin: 0 0 20px 40px;
+}
+
+
+.answer ul li span {
+	/*font-size: 20px;*/
+	vertical-align: -3px;
+}
+
+.separator {
+	width: auto;
+	height: 3px;
+	background: url(/img/sep.png) repeat-x;
+}
+
+a.more {
+	padding: 2px 24px 4px 1px;
+	background: url(/img/a.png) no-repeat right top;
+}
+
+a.back {
+	padding: 2px 1px 4px 24px;
+	background: url(/img/answer/back.png) no-repeat 0 0;
+}
+
+a.more, a.back {
+	font: 11px Arial, sans-serif;
+	color: #999;
+	text-decoration: none;
+	text-shadow: none;
+	text-transform: uppercase;
+}
+
+
+a.back:hover {
+	color: #666;
+	background-position: 0 -40px;
+}
+
+a.more:hover {
+	color: #666;
+	background-position: right -40px;
+}
+
+.breadcrumbs {
+	color: #658FA5 !important;
+	padding: 0 0 15px;
+}
+
+
+.breadcrumbs a {
+	text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+	text-decoration: underline;
+}
+
+.content h2 {
+	font: 20px "RodeoC", serif;
+	text-align: left;
+	text-shadow: 1px 0px 0 #EAEAEA;
+	text-transform: none;
+}
+
+#right_sidebar_help h2 {
+	font: bold 17px "RodeoC", serif;
+	color: #666;
+	text-align: left;
+	text-shadow: 1px 0px 0 #EAEAEA;
+	text-transform: none;
+	margin: 0 0 10px;
+}
+
+ul.menu-quest li {
+	position: relative;
+}
+
+ul.menu-quest {
+	background: url(/img/sep.png) repeat-x 0 100%;
+	margin: 30px 0;
+}
+
+ul.menu-quest li h2 {
+	background: url(/img/sep.png/) repeat-x;
+	padding: 30px 0 30px 50px;
+}
+
+ul.menu-quest li a.more {
+	position: absolute;
+	right: 0;
+	top: 30px;
+	margin: 5px 0 0;
+}
+
+ul.menu-quest li a.more span {
+	visibility: hidden;
+}
+
+ul.menu-quest li:hover a.more span {
+	visibility: visible;
+}
+
+ul.menu-quest li.general {
+	background: url(/img/answer/home.png) no-repeat 0 25px;
+}
+
+ul.menu-quest li.client {
+	background: url(/img/answer/client.png) no-repeat 0 8px;
+}
+
+
+ul.menu-quest li.designer {
+	background: url(/img/answer/designer.png) no-repeat 0 20px;
+}
+
+
+ul.menu-quest li.payment {
+	background: url(/img/answer/payment.png) no-repeat 0 25px;
+}
+
+ul.menu-quest li.same {
+	padding-bottom: 30px;
+}
+
+ul.menu-quest li.same h2 {
+	padding-bottom: 5px;
+}
+
+ul.menu-quest li.same p {
+	margin: 3px 0 0 50px;
+}
+
+ul.menu-quest h2 a,
+ul.menu-quest p a {
+	color: #666;
+	text-decoration: none;
+}
+
+ul.menu-quest h2 a:hover,
+ul.menu-quest p a:hover {
+	color: #6b92a3;
+	text-decoration: underline;
+}
+ol {
+	padding-left: 40px;
+}
+ol li {
+	list-style: decimal;
+}

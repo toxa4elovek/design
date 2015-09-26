@@ -1,0 +1,8 @@
+{
+  "config": {
+    "vendor-dir": "libraries"
+  },
+  "require": {
+    "ins0/google-measurement-php-client": "dev-master"
+  }
+}

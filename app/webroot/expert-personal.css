@@ -1,0 +1,116 @@
+.margins-2 {
+	margin: 40px 20px;
+}
+
+h1.on-flag {
+	height: 38px;
+	font: 12px/41px "RodeoC", serif;
+	text-transform: uppercase;
+	text-align: center;
+	background: none no-repeat 50% 0;
+}
+
+.expert-personal h1.on-flag {
+	background-image: url(/img/images/howitworks.png);
+}
+
+.expert-personal .faq h1.on-flag {
+	background-image: url(/img/images/faq.png);
+}
+
+
+a.more, a.back {
+	font: 11px Arial, sans-serif;
+	text-decoration: none;
+	color: #999;
+	text-shadow: none;
+	text-transform: uppercase;
+}
+
+
+a.more {
+	padding: 2px 24px 4px 1px;
+	background: url(/img/expert-personal/a.png) no-repeat right top;
+}
+
+
+a.back {
+	padding: 2px 1px 4px 24px;
+	background: url(/img/expert-personal/back.png) no-repeat left top;
+}
+
+
+a.more:hover {
+	color: #666;
+	background-position: right -40px;
+}                            
+
+
+a.back:hover {
+	color: #666;
+	background-position: left -40px;
+}                            
+
+
+.expert-personal img {
+	border: 6px solid #CECECE;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	float: left;
+	position: relative;
+	top: 5px;
+}
+
+.expert-personal div.about {
+	margin-left: 280px;
+}
+
+
+.expert-personal h2 {
+	font: bold 17px "RodeoC", serif;
+	color: #666;
+	text-align: left;
+	text-shadow: 1px 0px 0 #eaeaea;
+	text-transform: none;
+	margin: 0;
+	}
+
+.expert-personal .about h2 {
+	margin: 30px 0 5px 0;
+}
+
+.expert-personal p {
+	font: 14px/20px "Arial", sans-serif;
+	color: #666;
+	padding: 0 0 30px;     
+	}
+
+
+.expert-personal .about h2 {
+        color: #FF585D;
+	}
+
+
+.expert-personal h2 a,
+.expert-personal p a  {
+        text-decoration: none;
+	}
+
+.expert-personal h2 a:hover,
+.expert-personal p a:hover {
+        text-decoration: underline;
+	}
+
+.faq {
+    margin-top: 30px;
+}
+.faq li {
+	padding: 0 0 10px 0;
+}
+.faq .more {
+    padding-left: 30px;
+}
+
+
+

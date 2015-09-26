@@ -1,0 +1,142 @@
+/*-HELP-------------------------------------------------------------
+---*/
+
+#content_help{
+	position:relative;
+	width:640px;
+	float:left;
+}
+
+.howitworks h1 { 
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: transparent;
+	background-image: url(/img/images/howitworks.png);
+	background-origin: padding-box;
+	background-position: 50% 0px;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+ 
+.howitworks h1, .faq h1 { 
+	font-family: "RodeoC", serif;
+	font-size: 12px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	height: 38px;
+	line-height: 41px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#content_help_cont{
+	position:relative;
+	margin:20px 0 20px 0;
+	padding:20px 30px 20px 30px;
+}
+
+#content_help_seach{
+	position:relative;
+	margin-bottom:10px;
+}
+
+#content_help_seach input.text{
+	background:url(/img/cont_help_seach_bg.gif) right no-repeat #FFF;
+	padding-right:40px;
+	width:370px;
+}
+
+/*#content_help_seach input.button{
+	background:#e14a4a;
+	margin-left:30px;	
+	background-image: -o-linear-gradient(to bottom, rgb(247, 82, 82), rgb(217, 71, 71));
+	text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1961);
+}
+*/
+.content_help_line{
+	position:relative;
+	height:4px;
+	background:url(/img/sep.png) repeat-x;
+	margin: 10px 0 10px 0;
+}
+
+.vp_one{
+	position:relative;	
+}
+
+.vp_one h2{
+	font-family: "RodeoC", serif;
+	font-size:20px;
+	margin: 5px 0 10px 0;
+	color:#666666;
+	font-weight:normal;
+	text-shadow: -1px 0 0 #FFFFFF
+}
+
+.vp_one a{
+	color:#666;
+	font-size:14px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-decoration:none;
+}
+
+.vp_one a:hover{
+	/*color:#658ea3;*/
+	text-decoration:underline;	
+}
+
+.vp_one td{
+	min-width:50px;	
+}
+
+.vp_one a.av{
+	text-transform:uppercase;	
+	font-size:11px;
+	font-family: "Helvetica", Arial, Helvetica, sans-serif; 
+	background:url(/img/vs.png) no-repeat scroll right 2px transparent;
+	padding:5px 25px 5px 0;
+}
+
+.vp_one a.avup{
+    text-transform:uppercase;
+    font-size:11px;
+    font-family: "Helvetica", Arial, Helvetica, sans-serif;
+    background:url(/img/vsup.png) no-repeat scroll right 2px transparent;
+    padding:5px 25px 5px 0;
+}
+
+#right_sidebar_help{
+	float: left;
+	width: 165px;
+	position: relative;
+	margin:55px 0 0 40px;
+}
+
+#r_h_v{
+	position:relative;	
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#666;
+}
+
+#r_h_v h2{
+	margin-bottom:10px;
+}
+
+#r_h_v a{
+	position:relative;
+	top:20px;
+}
+
+#tp{
+	position:relative;
+	margin: 50px 0 0 10px;
+}
+
+#tp h2{
+	font-family: "RodeoC", serif;
+	color:#bababa;
+	font-size:17px;
+	text-transform:uppercase;
+}

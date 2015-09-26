@@ -1,0 +1,304 @@
+.center {
+	width: 608px;
+	float: left;
+	margin-left: 64px;
+}
+.right {
+	width: 190px;
+	float: right;
+}
+
+.block-toggler  {
+	margin: 10px 0 0 15px;
+}
+.block-toggler a {
+	color: #666666;
+	text-decoration: none;
+	font: normal 12px/1 "RodeoC", sans-serif;
+	text-transform: lowercase;
+}
+.block-toggler a:hover {
+    color: #999999;
+}
+.block-toggler .link {
+	color: #ff585d
+}
+.block-toggler.filter-steps {
+    margin: -11px 0 26px 15px;
+}
+.block-toggler.filter-steps a {
+	font: bold 11px/1 "Arial", sans-serif;
+	text-transform: uppercase;
+}
+.block-toggler.filter-steps a.link {
+    color: #648fa4;
+}
+.props {
+	height: 36px;
+	width: 209px;
+	margin: 13px 0 0 56px;
+	background: url('/img/all_messages_02.png') no-repeat;
+	vertical-align: middle;
+	line-height: 36px;
+	float: left;
+	text-align: center;
+}
+.props a {
+	color: #ffffff;
+	text-decoration: none;
+	font: normal 12px/1 "RodeoC", sans-serif;
+}
+.layout {
+	height: 36px;
+	width: 209px;
+	margin: 11px 0 0 -19px;
+	background: url('/img/layout-bg.png') no-repeat;
+	vertical-align: middle;
+	line-height: 36px;
+	display: inline-block;
+	float: left;
+	text-align: center;
+}
+.layout a {
+	color: #aaaaaa;
+	text-decoration: none;
+	font: normal 12px/1 "RodeoC", sans-serif;
+}
+.provision {
+	height: 39px;
+	width: 275px;
+	margin: 11px 0 0 -19px;
+	background: url('/img/all_messages_05.png') no-repeat;
+	vertical-align: middle;
+	line-height: 39px;
+	display: inline-block;
+	float: left;
+	text-align: center;
+}
+.provision a {
+	color: #aaaaaa;
+	text-decoration: none;
+	font: normal 12px/1 "RodeoC", sans-serif;
+}
+.rating a {
+	color: #aaaaaa;
+	text-decoration: none;
+	font: normal 12px/1 "RodeoC", sans-serif;
+}
+.name {
+	color: #666666;
+	margin: 32px 0 0 0;
+	font: bold 12px/1 "RodeoC", sans-serif;
+}
+.name h5 span {
+	color: #ff585d;
+}
+input {
+	height: 41px;
+	width: 576px;
+	margin: 10px 0 0 0;
+}
+.country {
+	color: #666666;
+	margin: 32px 0 0 0;
+	font: bold 14px/1 "RodeoC", sans-serif;
+	text-transform: none;
+}
+select {
+	width: 165px;
+	height: 25px;
+	font: normal 10px/1 "Helvetica", sans-serif;
+	margin: 11px 0 0 0;
+	text-transform: uppercase;
+}
+.info_in_bank span {
+	font: normal 11px/1 "Arial", sans-serif;
+	color: #8b8b8b;
+	margin: 25px 0 0 0;
+}
+.bik {
+	color: #666666;
+	margin: 19px 0 0 0;
+	font: bold 14px/1 "RodeoC", sans-serif;
+}
+.bank {
+	color: #666666;
+	margin: 19px 0 0 0;
+	font: bold 14px/1 "RodeoC", sans-serif;
+	text-transform: none;
+}
+.bill {
+	color: #666666;
+	margin: 19px 0 0 0;
+	font: bold 14px/1 "RodeoC", sans-serif;
+	text-transform: none;
+}
+.map {
+	color: #666666;
+	margin: 19px 0 0 0;
+	font: bold 14px/1 "RodeoC", sans-serif;
+	text-transform: none;
+}
+.step {
+	width: 198px;
+	height: 80px;
+	vertical-align: middle;
+	margin: 22px 0 0 0;
+	float: left;
+}
+.step span {
+	/*font: normal 14px/1 "HelveticaNeue", sans-serif;
+	color: #b9b9b9;	    */
+	text-transform: none;
+}
+.proceed {
+	height: 64px;
+	width: 159px;
+	margin: 20px 0 0 0;
+	float: right;
+}
+.proceed a {
+	text-decoration: none;
+}
+.proceed a span {
+	font: normal 18px/1 "RodeoC", sans-serif;
+	color: #bababa;
+	text-decoration: none;
+	padding-left: 7px;
+	display: inline-block;
+	margin: 10px 0 0 0;
+	text-transform: uppercase;
+}
+.right {
+	margin: 59px 0 0 32px;
+	float: left;
+}
+.user_photo {
+	width: 187px;
+	height: 164px;
+	background: #ffffff;
+	padding: 7px 0 0 10px;
+}
+.photo-png {
+	width: 179px;
+	height: 135px;
+	background: url('/img/user-photo.png') no-repeat;
+}
+.photo-png img {
+	margin-left: 144px;
+}
+.user_photo span {
+	font: normal 10px/1 "HelveticaCE35", sans-serif;
+	display: inline-block;
+	margin-top: 10px;
+	margin-left: 3px;
+}
+.user_text {
+	width: 187px;
+}
+.user_text span {
+	font: normal 13px/1 "RodeoC", sans-serif;
+	color: #b9b9b9;
+	text-transform: none;
+	display: block;
+	margin-top: 5px;
+}
+.user_text span.tager {
+	font: bold 13px/1 "RodeoC", sans-serif;
+}
+.user_text span a {
+	color: #6891a2;
+	text-decoration: none;
+	font: bold 13px/1 "RodeoC", sans-serif;
+}
+.right_block {
+	margin: 45px 0 0 32px;
+	float: left;
+}
+.right_block.for-client {
+	margin-top: -37px;
+}
+.center_block {
+	width: 608px;
+	margin: -25px 0 0 63px !important;
+	float: left;
+	color: #8f8f8f;
+	text-transform: none;
+}
+
+
+.clr {
+	clear: both;
+}
+#P_card table{
+    width:100%;
+    text-align:left;
+}
+
+td.s3_text{
+    padding:7px 0px 0px 15px;
+    text-transform:uppercase;
+    width:100%;
+    color:#999;
+    text-shadow: -1px 0 0 #FFFFFF;
+}
+
+input.rb1{
+    margin:15px 10px 10px 0px;
+}
+.g_line{
+    background:url(/img/register-login-divider.gif) repeat-x;
+    height:20px;
+    margin:30px 0 20px 0;
+    text-align:center;
+}
+
+.tableheader{
+    font: bold 14px/1 "RodeoC",sans-serif;
+    color: #666666 ;
+}
+#step1table, #step2table  tr{
+    height: 25px;
+    width: 608px;
+}
+#step2-link-saveform:hover {
+	color:#50525a;
+}
+.file-link-attach {
+
+}
+.file-link-attach{
+    background: url("/img/attach_icon.png") no-repeat scroll 0 0 transparent;
+    padding-left: 20px;
+    height: 20px;
+    display: block;
+    text-decoration: underline;
+}
+.file-link-attach:hover {
+    text-decoration: underline;
+}
+.bold {
+    font-weight: bold;
+}
+
+.end-pitch-hover {
+    position: absolute;
+    background: url('/img/end-pitch.png') repeat scroll left top transparent;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 180px;
+    height: 135px;
+    margin-left: 10px;
+    margin-top: 9px;
+    display: none;
+}
+tr.account-check {
+    opacity: 0;
+}
+tr.account-check td {
+    border: 1px solid #FF585D;
+    padding: 1em;
+    color: #FF585D;
+}

@@ -1,0 +1,57 @@
+/*
+Author:     Aleks Hudochenkov
+Release:    3.11.2011
+-----------------------------------------------------------------------------*/
+
+.wrapper .button {
+	background-repeat: repeat-x;
+	background-image: url(/img/button-bg.png);
+}
+.wrapper .button:hover {
+	background-image: url(/img/button-bg-hover.png);
+}
+.wrapper .button.second {
+	background-image: url(/img/button-bg-second.png);
+}
+.wrapper .button.second:hover {
+	background-image: url(/img/button-bg-second-hover.png);
+}
+.wrapper .button.facebook {
+	background-image: url(/img/button-bg-facebook.png);
+}
+.wrapper .button.facebook:hover {
+	background-image: url(/img/button-bg-facebook-hover.png);
+}
+.login .dont-logout input {
+	top: 3px;
+	position: relative;
+	margin-right: 2px;
+}
+
+
+/* 14.02.2012 Dmitriy_Crowd(free-lance.ru->lroosso) */
+
+.logo {
+	position: relative;
+}
+
+.header {
+	margin-bottom: 0; 
+	overflow: visible;
+}
+
+.middle {
+	padding-top: 89px;
+}
+/* END 14.02.2012 Dmitriy_Crowd */
+
+
+
+
+
+
+
+
+
+
+

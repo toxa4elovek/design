@@ -1,0 +1,67 @@
+.payments-container .separator{
+    background:url(/img/register-login-divider.gif) repeat-x;
+    height:20px;
+    margin:30px 0 20px 0;
+    text-align:center;
+}
+
+.payments-container .separator span{
+    font-style:normal;
+    text-transform:uppercase;
+    font-size:11px;
+    font-family:Arial, Helvetica, sans-serif;
+    position:relative;
+    top:-7px;
+    padding: 0 10px 0 10px;
+    background:url(/img/bg.png);
+    color:#b6b6b6;
+}
+.payment {
+    cursor: pointer;
+}
+.payment .imageblock {
+    display: inline-block;
+    margin-left: 40px;
+    margin-top: 20px;
+}
+.payment .button {
+    width: 122px;
+    display: inline-block;
+    margin-left: 40px;
+}
+.payment input[type=radio] {
+    vertical-align: top;
+    background: #a2b2bb;
+    margin: 17px 25px 10px 0;
+}
+.payment .description {
+    text-transform: uppercase;
+    text-shadow: -1px 0 0 #FFFFFF;
+    color: #666;
+    font-size: 11px;
+}
+.paymaster .description {
+    display: inline-block;
+    margin-top: 15px;
+}
+.widget div {
+    cursor: auto;
+}
+.wire input[type=radio]{
+    margin-right: 20px;
+}
+.wire .imageblock {
+    margin-top: 0;
+    margin-left: 0;
+}
+.wire .description {
+    display: inline-block;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+.wire p {
+    font-family: 'Arial', serif;
+    margin: 20px 0 20px 20px;
+    width: 420px;
+    color: #666;
+}

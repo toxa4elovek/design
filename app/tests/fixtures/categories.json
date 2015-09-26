@@ -1,0 +1,4 @@
+[
+    {"id": 1, "title": "Test title", "minAward": 100, "normalAward": 200, "goodAward": 300},
+    {"id": 3, "title": "Test title", "minAward": 100, "normalAward": 200, "goodAward": 300}
+]
