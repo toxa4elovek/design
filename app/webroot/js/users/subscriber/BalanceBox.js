@@ -8,69 +8,70 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var FundBalanceInput = (function (_React$Component) {
-    _inherits(FundBalanceInput, _React$Component);
+var BalanceBox = (function (_React$Component) {
+    _inherits(BalanceBox, _React$Component);
 
-    function FundBalanceInput() {
-        _classCallCheck(this, FundBalanceInput);
+    function BalanceBox() {
+        _classCallCheck(this, BalanceBox);
 
-        _get(Object.getPrototypeOf(FundBalanceInput.prototype), "constructor", this).apply(this, arguments);
-<<<<<<< HEAD
-
-        this.walletKey = 'Пополнение счёта';
-=======
->>>>>>> 3e8050002ec4901a5268a9909d19572875d5fa8e
+        _get(Object.getPrototypeOf(BalanceBox.prototype), "constructor", this).apply(this, arguments);
     }
 
-    _createClass(FundBalanceInput, [{
+    _createClass(BalanceBox, [{
         key: "componentDidMount",
-        value: function componentDidMount() {
-            var input = $(this.refs.input);
-            input.numeric({
-                "negative": false,
-                "decimal": false
-            }, function () {});
-        }
-    }, {
-        key: "onChangeHandle",
-        value: function onChangeHandle(e) {
-<<<<<<< HEAD
-            e.target.value = e.target.value || 0;
-            PaymentActions.updateFundBalanceInput(parseInt(e.target.value));
-        }
-    }, {
-        key: "__getReceiptValue",
-        value: function __getReceiptValue(receipt) {
-            var value = 0;
-            receipt.forEach((function (row) {
-                if (row.name == this.walletKey) {
-                    value = row.value;
-                }
-            }).bind(this));
-            return value;
-        }
+        value: function componentDidMount() {}
     }, {
         key: "render",
         value: function render() {
-            var initialValue = this.__getReceiptValue(this.props.payload.receipt);
-            return React.createElement(
-                "div",
+            var subscriptionStatus = React.createElement(
+                "span",
                 null,
-                React.createElement("input", { ref: "input", type: "text", onChange: this.onChangeHandle, onKeyDown: this.onKeydownHandle, defaultValue: initialValue, className: "fund-balance-input", placeholder: "8000" })
-=======
-            PaymentActions.updateFundBalanceInput(parseInt(e.target.value));
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return React.createElement(
-                "div",
-                null,
-                React.createElement("input", { ref: "input", type: "text", onChange: this.onChangeHandle, onKeyDown: this.onKeydownHandle, className: "fund-balance-input", placeholder: "9000" })
->>>>>>> 3e8050002ec4901a5268a9909d19572875d5fa8e
+                "не действителен"
             );
+            if (this.props.isSubscriptionActive) {
+                subscriptionStatus = React.createElement(
+                    "span",
+                    null,
+                    "Тариф «",
+                    this.props.plan.title,
+                    "»",
+                    React.createElement("br", null),
+                    "действителен до ",
+                    this.props.expirationDate
+                );
+            }
+            return React.createElement(
+                "div",
+                null,
+                React.createElement(
+                    "h6",
+                    null,
+                    "Ваш текущий счет"
+                ),
+                React.createElement(
+                    "span",
+                    null,
+                    this.props.companyName
+                ),
+                React.createElement("br", null),
+                subscriptionStatus,
+                React.createElement("br", null),
+                React.createElement(
+                    "span",
+                    { className: "balance" },
+                    this.props.balance,
+                    "р."
+                )
+            );
+        }
+    }, {
+        key: "updateBalance",
+        value: function updateBalance() {
+            $.get('/users/subscriber.json').done((function (data) {
+                this.setProps(data);
+            }).bind(this));
         }
     }]);
 
-    return FundBalanceInput;
+    return BalanceBox;
 })(React.Component);

@@ -12,6 +12,8 @@ app/webroot/js/pitches/create.js
 app/webroot/js/pitches/brief.js
 app/webroot/js/pitches/view.js
 app/webroot/js/pitches/viewsolution.js
+app/resources/tmp/*
+session/*
 app/webroot/avatars/*
 app/webroot/files/*
 app/webroot/events/*
