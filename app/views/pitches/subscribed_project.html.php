@@ -66,6 +66,17 @@
                         11 => 'Ноябрь',
                         12 => 'Декабрь',
                     );
+                    $days = array(
+                        '0' => 'ПН',
+                        '1' => 'ВТ',
+                        '2' => 'СР',
+                        '3' => 'ЧТ',
+                        '4' => 'ПТ',
+                        '5' => 'СБ',
+                        '6' => 'ВС',
+                    );
+                    $dayFinishDate = $days[strftime('%w', $defaultFinishDateTime)];
+                    $dayChooseWinnerFinishDate = $days[strftime('%w', $defaultChooseWinnerFinishDateTime)];
                     $monthFinishDate = $months[date('n', $defaultFinishDateTime)];
                     $monthChooseWinnerFinishDate = $months[date('n', $defaultChooseWinnerFinishDateTime)];
                     setlocale(LC_TIME, 'ru_RU');
@@ -75,7 +86,7 @@
                         <input style="width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="first-datepick"/>
                         <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;"><?= $monthFinishDate?></h6>
                         <h5 class="day" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultFinishDateTime) ?></h5>
-                        <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= strftime('%a', $defaultFinishDateTime)?>, <?= date('h:m', $defaultFinishDateTime) ?></h6>
+                        <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= $dayFinishDate?>, <?= date('h:m', $defaultFinishDateTime) ?></h6>
                         <a href="#"  style="display: block; text-align: center; font-size: 12px;">изменить</a>
                         <input type="hidden" name="finishDate" value="<?= $defaultFinishDate ?>" />
                     </div>
@@ -86,7 +97,7 @@
                         <input style="width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="second-datepick <?php if(in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable';endif;?>"/>
                         <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;"><?= $monthChooseWinnerFinishDate?></h6>
                         <h5 class="day" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultChooseWinnerFinishDateTime) ?></h5>
-                        <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= strftime('%a', $defaultChooseWinnerFinishDateTime)?>, <?= date('h:m', $defaultChooseWinnerFinishDateTime) ?></h6>
+                        <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= $dayChooseWinnerFinishDate?>, <?= date('h:m', $defaultChooseWinnerFinishDateTime) ?></h6>
                         <?php if(in_array('chooseWinnerFinishDate', $plan['free'])):?>
                         <a href="#"  style="display: block; text-align: center; font-size: 12px;">изменить</a>
                         <?php endif?>
