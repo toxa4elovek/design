@@ -1,0 +1,9 @@
+.brief-datetime-select {
+    float: left;
+    width: 141px;
+    height: 150px;
+    background: url(/img/brief/disabled_calendar.png) no-repeat center center;
+}
+.editable_calendar {
+    background: url(/img/brief/editable_calendar.png) no-repeat center center;
+}

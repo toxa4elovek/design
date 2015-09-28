@@ -28,16 +28,17 @@
     }
 
     if(finishChooseOfWinnerPicker.length > 0) {
-        const chooseWinnerFinishDateMoment = moment($('input[name=chooseWinnerFinishDate]').val());
-        finishChooseOfWinnerPicker.datetimepicker({ locale: 'ru', defaultDate: chooseWinnerFinishDateMoment});
-        finishChooseOfWinnerPicker.data("DateTimePicker").date(chooseWinnerFinishDateMoment);
-        finishChooseOfWinnerPicker.on("dp.change", function (e) {
-            $('input[name=chooseWinnerFinishDate]').val(e.date.format('YYYY-MM-DD HH:mm:00'));
-            $('.day', '.chooseWinnerFinishDate').text(e.date.format('DD'));
-            $('.month', '.chooseWinnerFinishDate').text(e.date.format('MMMM'));
-            $('.weekday_time', '.chooseWinnerFinishDate').text(e.date.format('dd, HH:mm'));
-        });
-
+        if(finishChooseOfWinnerPicker.hasClass('editable')) {
+            const chooseWinnerFinishDateMoment = moment($('input[name=chooseWinnerFinishDate]').val());
+            finishChooseOfWinnerPicker.datetimepicker({ locale: 'ru', defaultDate: chooseWinnerFinishDateMoment});
+            finishChooseOfWinnerPicker.data("DateTimePicker").date(chooseWinnerFinishDateMoment);
+            finishChooseOfWinnerPicker.on("dp.change", function (e) {
+                $('input[name=chooseWinnerFinishDate]').val(e.date.format('YYYY-MM-DD HH:mm:00'));
+                $('.day', '.chooseWinnerFinishDate').text(e.date.format('DD'));
+                $('.month', '.chooseWinnerFinishDate').text(e.date.format('MMMM'));
+                $('.weekday_time', '.chooseWinnerFinishDate').text(e.date.format('dd, HH:mm'));
+            });
+        }
     }
 
 

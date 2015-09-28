@@ -1728,6 +1728,7 @@ class UsersController extends \app\controllers\AppController {
             'order' => array('started' => 'desc')
         ));
         $payments = array();
+        $defaultFinishDate = date('Y-m-d H:i:s', time() + (5 * DAY));
         $moneyFormatter = new MoneyFormatter();
         foreach($paymentsObj as $row) {
             $data = $row->data();
@@ -1761,7 +1762,7 @@ class UsersController extends \app\controllers\AppController {
             );
             return $data;
         }
-        return compact('payments');
+        return compact('payments', 'defaultFinishDate');
     }
 
     public function fill_balance() {

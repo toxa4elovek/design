@@ -7,6 +7,8 @@
     );
 
     const dateInput = $('.date-input');
+    const defaultDateMoment = moment(defaultDate);
+
 
     dateInput.datetimepicker({locale: 'ru'});
 

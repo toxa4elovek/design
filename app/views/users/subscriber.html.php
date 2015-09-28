@@ -30,6 +30,7 @@
                 var settings = {
                     "isFilterListActive" : false
                 };
+                var defaultDate = '<?= $defaultFinishDate ?>';
                 var data = {"payload": payload, "userInfo": userInfo, "questions": questions, "settings": settings};
             </script>
 

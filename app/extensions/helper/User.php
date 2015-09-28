@@ -560,7 +560,7 @@ class User extends \lithium\storage\Session {
     public function getSubscriptionExpireDate($format = 'd.m.Y H:i:s') {
         if($this->isLoggedIn()) {
             $userModel = $this->_options['userModel'];
-            return $userModel::getSubscriptionExpireDate($this->getId());
+            return $userModel::getSubscriptionExpireDate($this->getId(), $format);
         }
         return false;
     }

@@ -29,19 +29,22 @@ class SubscriptionPlan extends Pitch {
             'id' => 1,
             'price' => 49000,
             'title' => 'Предпринимательский',
-            'duration' => YEAR
+            'duration' => YEAR,
+            'free' => array(),
         ),
         2 => array(
             'id' => 2,
             'price' => 69000,
             'title' => 'Фирменный',
-            'duration' => YEAR
+            'duration' => YEAR,
+            'free' => array('chooseWinnerFinishDate', 'hideproject'),
         ),
         3 => array(
             'id' => 3,
             'price' => 89000,
             'title' => 'Корпоративный',
-            'duration' => YEAR
+            'duration' => YEAR,
+            'free' => array('chooseWinnerFinishDate', 'hideproject', 'phonebrief', 'pinproject'),
         )
     );
 

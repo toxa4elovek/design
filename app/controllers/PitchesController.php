@@ -513,11 +513,11 @@ class PitchesController extends \app\controllers\AppController {
         if ($category = Category::first($this->request->category)) {
             $experts = Expert::all(array('order' => array('id' => 'asc')));
             $promocode = Session::read('promocode');
-            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
-            $event = $gatracking->createTracking('Event');
-            $event->setEventCategory('Создание проекта');
-            $event->setEventAction('Пользователь выбрал категорию «' . $category->title . '»');
-            $gatracking->sendTracking($event);
+            //$gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            //$event = $gatracking->createTracking('Event');
+            //$event->setEventCategory('Создание проекта');
+            //$event->setEventAction('Пользователь выбрал категорию «' . $category->title . '»');
+            //$gatracking->sendTracking($event);
             if($category->id != 20) {
                 return compact('category', 'experts', 'referal', 'referalId', 'promocode');
             }else {
@@ -535,14 +535,17 @@ class PitchesController extends \app\controllers\AppController {
                 if(isset($this->request->query['title'])) {
                     $defaultTitle = $this->request->query['title'];
                 }
-                $defaultFinishDate = date('Y-m-d H:i:s', time() + (2 * DAY));
+                $defaultFinishDate = date('Y-m-d H:i:s', time() + (5 * DAY));
                 if(isset($this->request->query['date'])) {
                     $defaultFinishDate = $this->request->query['date'];
                 }
                 $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (4 * DAY));
+                $plan = $this->userHelper->getCurrentPlanData();
+                $balance = $this->userHelper->getBalance();
+                $expirationDate = $this->userHelper->getSubscriptionExpireDate('d.m.Y');
                 return $this->render(array(
                     'template' => '../pitches/subscribed_project',
-                    'data' => compact('category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate')));
+                    'data' => compact('expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate')));
             }
         }
         return $this->redirect('Pitches::create');

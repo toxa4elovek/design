@@ -1502,6 +1502,7 @@ p.full_pitch a {
 
 
 .ribbon {
+    position: relative;
     background: #fff;
     border: 1px solid #ededed;
     min-height: 61px;
@@ -1527,6 +1528,11 @@ p.full_pitch a {
     border: 7px solid;
     border-color: #767c83 #767c83 transparent transparent;
     bottom: -15px;
+}
+.brief-free-label {
+    position: absolute;
+    right: 40px;
+    top: 30px;
 }
 .ribbon .option {
     font: 29px/1 "RodeoC", sans-serif;

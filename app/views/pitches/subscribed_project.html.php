@@ -30,10 +30,10 @@
             <div>
                 <div id="project-reward"></div>
                 <div style="float: left; margin-left: 16px; margin-top: 4px;">
-                    <p style="text-shadow: -1px 0 0 #FFFFFF;text-transform: uppercase; font-size: 12px; color: #888888;">ВАШ ТЕКУЩИЙ СЧЁТ: 2000 р.</p>
+                    <p style="text-shadow: -1px 0 0 #FFFFFF;text-transform: uppercase; font-size: 12px; color: #888888;">ВАШ ТЕКУЩИЙ СЧЁТ: <?= $balance ?> р.</p>
                     <a style="font-weight: bold; color: #6590a2;" target="_blank" href="/subscription_plans/subscriber">пополнить</a>
-                    <p style="text-shadow: -1px 0 0 #FFFFFF;margin-top: 6px; font-size: 12px; line-height: 16px; color: #757575">тариф «Фирменный»<br />
-                        действителен до 12.12.2016</p>
+                    <p style="text-shadow: -1px 0 0 #FFFFFF;margin-top: 6px; font-size: 12px; line-height: 16px; color: #757575">тариф «<?= $plan['title']?>»<br />
+                        действителен до <?= $expirationDate ?></p>
                 </div>
             </div>
 
@@ -49,22 +49,47 @@
                 ">Выбор победителя до:</span>
 
                 <div style="margin-top: 16px;">
-                    <div class="finishDate" style="float: left; width: 145px; height: 150px; background: url(/img/brief/editable_calendar.png) no-repeat;">
+                    <?php
+                    $defaultFinishDateTime = strtotime($defaultFinishDate);
+                    $defaultChooseWinnerFinishDateTime = strtotime($defaultChooseWinnerFinishDate);
+                    $months = array(
+                        1 => 'Январь',
+                        2 => 'Февраль',
+                        3 => 'Март',
+                        4 => 'Апрель',
+                        5 => 'Май',
+                        6 => 'Июнь',
+                        7 => 'Июль',
+                        8 => 'Август',
+                        9 => 'Сентябрь',
+                        10 => 'Октябрь',
+                        11 => 'Ноябрь',
+                        12 => 'Декабрь',
+                    );
+                    $monthFinishDate = $months[date('n', $defaultFinishDateTime)];
+                    $monthChooseWinnerFinishDate = $months[date('n', $defaultChooseWinnerFinishDateTime)];
+                    setlocale(LC_TIME, 'ru_RU');
+                    ?>
+
+                    <div class="finishDate brief-datetime-select editable_calendar">
                         <input style="width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="first-datepick"/>
-                        <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;">февраль</h6>
-                        <h5 class="day" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; ">14</h5>
-                        <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px">ВТ, 12:00</h6>
+                        <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;"><?= $monthFinishDate?></h6>
+                        <h5 class="day" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultFinishDateTime) ?></h5>
+                        <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= strftime('%a', $defaultFinishDateTime)?>, <?= date('h:m', $defaultFinishDateTime) ?></h6>
                         <a href="#"  style="display: block; text-align: center; font-size: 12px;">изменить</a>
                         <input type="hidden" name="finishDate" value="<?= $defaultFinishDate ?>" />
                     </div>
 
                     <div style="float: left; width: 71px; height: 150px; background: url(/img/brief/arrow_right.png) no-repeat center center;"></div>
 
-                    <div class="chooseWinnerFinishDate" style="float: left; width: 145px; height: 150px; background: url(/img/brief/disabled_calendar.png) no-repeat center center;">
-                        <input style="width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="second-datepick"/>
-                        <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;">февраль</h6>
-                        <h5 class="day" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; ">14</h5>
-                        <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px">ВТ, 12:00</h6>
+                    <div class="chooseWinnerFinishDate brief-datetime-select <?php if(in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable_calendar';endif;?>">
+                        <input style="width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="second-datepick <?php if(in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable';endif;?>"/>
+                        <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;"><?= $monthChooseWinnerFinishDate?></h6>
+                        <h5 class="day" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultChooseWinnerFinishDateTime) ?></h5>
+                        <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= strftime('%a', $defaultChooseWinnerFinishDateTime)?>, <?= date('h:m', $defaultChooseWinnerFinishDateTime) ?></h6>
+                        <?php if(in_array('chooseWinnerFinishDate', $plan['free'])):?>
+                        <a href="#"  style="display: block; text-align: center; font-size: 12px;">изменить</a>
+                        <?php endif?>
                         <input type="hidden" name="chooseWinnerFinishDate" value="<?= $defaultChooseWinnerFinishDate ?>" />
                     </div>
                 </div>
@@ -83,8 +108,13 @@
                 text-transform: uppercase;margin-bottom:30px;">Дополнительные опции</h1>
 
             <div class="ribbon complete-brief" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-                <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Заполнение брифа" data-option-value="2750" id="phonebrief">Заполнить бриф</label></p>
+                <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Заполнение брифа" data-option-value=<?php if(in_array('phonebrief', $plan['free'])):?>"0"<?php else:?>"2750"<?php endif?> id="phonebrief">Заполнить бриф</label></p>
+                <?php if(in_array('phonebrief', $plan['free'])):?>
+                    <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
+                <?php endif;?>
+                <?php if(!in_array('phonebrief', $plan['free'])):?>
                 <p class="label" style="text-transform: none;">2750р.</p>
+                <?php endif;?>
             </div>
 
             <div class="explanation brief" style="display:none;" id="explanation_brief">
@@ -98,8 +128,17 @@
             </div>
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-                <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Скрыть проект" data-option-value="3500" id="hideproject">Скрыть проект</label></p>
+                <p class="option">
+                    <label>
+                        <input type="checkbox" name="" class="single-check" data-option-title="Скрыть проект" data-option-value=<?php if(in_array('hideproject', $plan['free'])):?>"0"<?php else:?>"3500"<?php endif?> id="hideproject">Скрыть проект
+                    </label>
+                </p>
+                <?php if(in_array('hideproject', $plan['free'])):?>
+                <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
+                <?php endif;?>
+                <?php if(!in_array('hideproject', $plan['free'])):?>
                 <p class="label" style="text-transform: none;">3500р.</p>
+                <?php endif;?>
             </div>
 
             <div class="explanation closed" style="margin-top: 0px; display: none; padding-bottom: 50px;" id="explanation_closed">
@@ -147,9 +186,14 @@
             </ul><!-- .experts -->
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;" id="pinned-block">
-                <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="«Прокачать» проект" data-option-value="1000" id="pinproject">«Прокачать» проект</label></p>
+                <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="«Прокачать» проект" data-option-value=<?php if(in_array('pinproject', $plan['free'])):?>"0"<?php else:?>"1000"<?php endif?> id="pinproject">«Прокачать» проект</label></p>
                 <!--p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения <?php if($category->id == 7): echo 'копирайтеров'; else: 'дизайнеров'; endif;?> мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p-->
+                <?php if(in_array('pinproject', $plan['free'])):?>
+                    <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
+                <?php endif;?>
+                <?php if(!in_array('pinproject', $plan['free'])):?>
                 <p class="label" style="text-transform: none;">1000р.</p>
+                <?php endif?>
             </div>
 
             <div class="explanation pinned" style="margin-top: 0; padding-bottom: 40px; display: none;" id="explanation_pinned">
