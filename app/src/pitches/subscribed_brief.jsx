@@ -20,7 +20,7 @@
         endStep1DatePicker.data("DateTimePicker").date(finishDateMoment);
         endStep1DatePicker.on("dp.change", function (e) {
             $('input[name=finishDate]').val(e.date.format('YYYY-MM-DD HH:mm:00'));
-            $('.day', '.finishDate').text(e.date.format('DD'));
+            $('.day_cal', '.finishDate').text(e.date.format('DD'));
             $('.month', '.finishDate').text(e.date.format('MMMM'));
             $('.weekday_time', '.finishDate').text(e.date.format('dd, HH:mm'));
         });
@@ -34,7 +34,7 @@
             finishChooseOfWinnerPicker.data("DateTimePicker").date(chooseWinnerFinishDateMoment);
             finishChooseOfWinnerPicker.on("dp.change", function (e) {
                 $('input[name=chooseWinnerFinishDate]').val(e.date.format('YYYY-MM-DD HH:mm:00'));
-                $('.day', '.chooseWinnerFinishDate').text(e.date.format('DD'));
+                $('.day_cal', '.chooseWinnerFinishDate').text(e.date.format('DD'));
                 $('.month', '.chooseWinnerFinishDate').text(e.date.format('MMMM'));
                 $('.weekday_time', '.chooseWinnerFinishDate').text(e.date.format('dd, HH:mm'));
             });
@@ -243,7 +243,7 @@
         if (false === tosCheckBox.prop('checked')) {
             appendTosCheck();
         } else {
-            if (Cart.prepareData()) {
+            if (Cart.prepareData(endStep1DatePicker, finishChooseOfWinnerPicker)) {
                 if (uploader.damnUploader('itemsCount') > 0) {
                     $('#loading-overlay').modal({
                         containerId: 'spinner',
@@ -253,6 +253,30 @@
                     uploader.damnUploader('startUpload');
                 } else {
                     Cart.saveData(false);
+                    _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик']);
+                }
+            } else {
+                const offset = $('.wrong-input').parent().offset();
+                $.scrollTo(offset.top - 10, {duration: 600});
+            }
+        }
+        return false;
+    });
+
+    $('#save-and-pay').click(function() {
+        if (false === tosCheckBox.prop('checked')) {
+            appendTosCheck();
+        } else {
+            if (Cart.prepareData(endStep1DatePicker, finishChooseOfWinnerPicker)) {
+                if (uploader.damnUploader('itemsCount') > 0) {
+                    $('#loading-overlay').modal({
+                        containerId: 'spinner',
+                        opacity: 80,
+                        close: false
+                    });
+                    uploader.damnUploader('startUpload');
+                } else {
+                    Cart.saveData(true);
                     _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик']);
                 }
             } else {

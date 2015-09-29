@@ -12,6 +12,8 @@ app/webroot/js/pitches/create.js
 app/webroot/js/pitches/brief.js
 app/webroot/js/pitches/view.js
 app/webroot/js/pitches/viewsolution.js
+app/webroot/js/subscription_plans/FundBalanceInput.js
+app/webroot/js/pitches/classes/*
 app/resources/tmp/*
 session/*
 app/webroot/avatars/*

@@ -278,7 +278,9 @@ class Pitch extends AppModel {
                             }
                             if ($pitch->published == 0) {
                                 $pitch->started = date('Y-m-d H:i:s');
-                                $pitch->finishDate = date('Y-m-d H:i:s', time() + (DAY * $modifier));
+                                if($pitch->type != 'company_project') {
+                                    $pitch->finishDate = date('Y-m-d H:i:s', time() + (DAY * $modifier));
+                                }
                                 $pitch->billed = 1;
                                 if ($pitch->brief) {
                                     $pitch->published = 0;
@@ -1731,4 +1733,60 @@ class Pitch extends AppModel {
         return $result;
     }
 
+    static public function saveDraft($inputData) {
+        $specificPitchData = $inputData['specificPitchData'];
+        $featuresData = $inputData['features'];
+        $commonPitchData = $inputData['commonPitchData'];
+        if (!isset($featuresData['experts'])) {
+            $expert = 0;
+            $expertId = serialize(array());
+        } else {
+            $expert = 1;
+            $expertId = serialize($featuresData['experts']);
+        }
+        if (!isset($commonPitchData['filesId'])) {
+            $commonPitchData['filesId'] = array();
+        }
+        $data = array(
+            'user_id' => $commonPitchData['user_id'],
+            'type' => 'company_project',
+            'category_id' => 20,
+            'title' => $commonPitchData['title'],
+            'industry' => serialize($commonPitchData['jobTypes']),
+            'started' => date('Y-m-d H:i:s'),
+            'ideas_count' => 0,
+            'price' => $featuresData['award'],
+            'description' => $commonPitchData['description'],
+            'status' => 0,
+            'pinned' => (bool) $featuresData['pinned'],
+            'expert' => $expert,
+            'private' => (bool) $featuresData['private'],
+            'social' => (bool) $featuresData['social'],
+            'expert-ids' => $expertId,
+            'email' => (bool) $featuresData['email'],
+            'finishDate' => $commonPitchData['finishDate'],
+            'chooseWinnerFinishDate' => $commonPitchData['chooseWinnerFinishDate'],
+            'timelimit' => 0,
+            'brief' => (bool) $featuresData['brief'],
+            'phone-brief' => $commonPitchData['phone-brief'],
+            'guaranteed' => 0,
+            'materials' => $commonPitchData['materials'],
+            'materials-limit' => $commonPitchData['materials-limit'],
+            'fileFormats' => serialize($commonPitchData['fileFormats']),
+            'fileFormatDesc' => $commonPitchData['fileFormatDesc'],
+            'filesId' => serialize($commonPitchData['filesId']),
+            'specifics' => serialize($specificPitchData),
+        );
+        if((isset($commonPitchData['id'])) && (!empty($commonPitchData['id']))) {
+            $pitch = Pitch::first((int) $commonPitchData['id']);
+        }else {
+            $pitch = Pitch::create();
+        }
+        $pitch->set($data);
+        if ($pitch->save()) {
+            return $pitch->id;
+        }else {
+            return null;
+        }
+    }
 }

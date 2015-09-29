@@ -18,7 +18,6 @@ class ProjectRewardInput extends React.Component {
     }
     onChangeHandle(e) {
         e.target.value = e.target.value || 0;
-        console.log(parseInt(e.target.value));
         SubscribedBriefActions.updateWinnerReward(parseInt(e.target.value));
     }
     __getReceiptValue(receipt) {

@@ -41,7 +41,6 @@ var ProjectRewardInput = (function (_React$Component) {
         key: "onChangeHandle",
         value: function onChangeHandle(e) {
             e.target.value = e.target.value || 0;
-            console.log(parseInt(e.target.value));
             SubscribedBriefActions.updateWinnerReward(parseInt(e.target.value));
         }
     }, {

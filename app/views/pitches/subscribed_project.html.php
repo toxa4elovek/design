@@ -4,9 +4,35 @@
 
     <?php
         $word1 = 'Бланк ';
+        $job_types = array(
+            'realty' => 'Недвижимость / Строительство',
+            'auto' => 'Автомобили / Транспорт',
+            'finances' => 'Финансы / Бизнес',
+            'food' => 'Еда / Напитки',
+            'adv' => 'Реклама / Коммуникации',
+            'tourism' => 'Туризм / Путешествие',
+            'sport' => 'Спорт',
+            'sci' => 'Образование / Наука',
+            'fashion' => 'Красота / Мода',
+            'music' => 'Развлечение / Музыка',
+            'culture' => 'Искусство / Культура',
+            'animals' => 'Животные',
+            'children' => 'Дети',
+            'security' => 'Охрана / Безопасность',
+            'health' => 'Медицина / Здоровье',
+            'it' => 'Компьютеры / IT'
+        );
+        if(isset($pitch)):
+        $specifics = unserialize($pitch->specifics);
     ?>
-
+    <?php if(isset($specifics["audience"])):?>
+        <script type="text/javascript">var slidersValue = <?php echo json_encode($specifics["audience"])?>;</script>
+    <?php else:?>
+        <script type="text/javascript">var slidersValue = <?php echo json_encode($specifics["logo-properties"])?>;</script>
+    <?php endif;?>
+    <?php endif;?>
     <script>
+        var projectId = <?php if(isset($pitch)): echo "$pitch->id"; else: echo "null"; endif;?>;
         var payload = {
             "receipt": <?php echo json_encode($receipt);?>
         }
@@ -85,7 +111,7 @@
                     <div class="finishDate brief-datetime-select editable_calendar">
                         <input style="width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="first-datepick"/>
                         <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;"><?= $monthFinishDate?></h6>
-                        <h5 class="day" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultFinishDateTime) ?></h5>
+                        <h5 class="day_cal" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultFinishDateTime) ?></h5>
                         <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= $dayFinishDate?>, <?= date('h:m', $defaultFinishDateTime) ?></h6>
                         <a href="#"  style="display: block; text-align: center; font-size: 12px;">изменить</a>
                         <input type="hidden" name="finishDate" value="<?= $defaultFinishDate ?>" />
@@ -96,7 +122,7 @@
                     <div class="chooseWinnerFinishDate brief-datetime-select <?php if(in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable_calendar';endif;?>">
                         <input style="width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="second-datepick <?php if(in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable';endif;?>"/>
                         <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;"><?= $monthChooseWinnerFinishDate?></h6>
-                        <h5 class="day" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultChooseWinnerFinishDateTime) ?></h5>
+                        <h5 class="day_cal" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultChooseWinnerFinishDateTime) ?></h5>
                         <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= $dayChooseWinnerFinishDate?>, <?= date('h:m', $defaultChooseWinnerFinishDateTime) ?></h6>
                         <?php if(in_array('chooseWinnerFinishDate', $plan['free'])):?>
                         <a href="#"  style="display: block; text-align: center; font-size: 12px;">изменить</a>
@@ -119,12 +145,12 @@
                 text-transform: uppercase;margin-bottom:30px;">Дополнительные опции</h1>
 
             <div class="ribbon complete-brief" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-                <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Заполнение брифа" data-option-value=<?php if(in_array('phonebrief', $plan['free'])):?>"0"<?php else:?>"2750"<?php endif?> id="phonebrief">Заполнить бриф</label></p>
+                <p class="option"><label><input type="checkbox"  name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value=<?php if(in_array('phonebrief', $plan['free'])):?>"0"<?php else:?>"2750"<?php endif?> id="phonebrief">Заполнить бриф</label></p>
                 <?php if(in_array('phonebrief', $plan['free'])):?>
                     <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
                 <?php endif;?>
                 <?php if(!in_array('phonebrief', $plan['free'])):?>
-                <p class="label" style="text-transform: none;">2750р.</p>
+                <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>" style="text-transform: none;">2750р.</p>
                 <?php endif;?>
             </div>
 
@@ -132,7 +158,7 @@
                 <p>Оставьте свой номер телефона, и мы свяжемся с вами для интервью
                     в течение рабочего дня с момента оплаты:
                 </p>
-                <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" class="phone" value=""></p>
+                <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" class="phone" value="<?=$pitch->{'phone-brief'}?>"></p>
                 <p>Наши специалисты знают, как правильно сформулировать ваши ожидания и поставить задачу перед дизайнерами (копирайтерами). Мы убеждены, что хороший бриф — залог эффективной работы. С примерами заполненных брифов можно <a href="/answers/view/68">ознакомиться тут</a>.
                 </p>
                 <img src="/img/brief/brief.png" alt="Заполнить бриф"/>
@@ -141,14 +167,14 @@
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
                 <p class="option">
                     <label>
-                        <input type="checkbox" name="" class="single-check" data-option-title="Скрыть проект" data-option-value=<?php if(in_array('hideproject', $plan['free'])):?>"0"<?php else:?>"3500"<?php endif?> id="hideproject">Скрыть проект
+                        <input type="checkbox" name="" <?php if($pitch->private): echo "checked"; endif;?> class="single-check" data-option-title="Скрыть проект" data-option-value=<?php if(in_array('hideproject', $plan['free'])):?>"0"<?php else:?>"3500"<?php endif?> id="hideproject">Скрыть проект
                     </label>
                 </p>
                 <?php if(in_array('hideproject', $plan['free'])):?>
                 <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
                 <?php endif;?>
                 <?php if(!in_array('hideproject', $plan['free'])):?>
-                <p class="label" style="text-transform: none;">3500р.</p>
+                <p class="label <?php if($pitch->private): echo "unfold"; endif;?>" style="text-transform: none;">3500р.</p>
                 <?php endif;?>
             </div>
 
@@ -165,11 +191,11 @@
             </div>
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-                <p class="option"><label><input type="checkbox" name="" class="multi-check" data-option-title="экспертное мнение" data-option-value="1000" id="experts-checkbox">Экспертное мнение</label></p>
-                <p class="label" style="text-transform: none;" id="expert-label">1000р.</p>
+                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->expert): echo "checked"; endif;?> class="multi-check" data-option-title="экспертное мнение" data-option-value="1000" id="experts-checkbox">Экспертное мнение</label></p>
+                <p class="label <?php if($pitch->expert): echo "unfold"; endif;?>" style="text-transform: none;" id="expert-label">1000р.</p>
             </div>
 
-            <ul class="experts">
+            <ul class="experts" <?php if((isset($pitch)) && (count(unserialize($pitch->{'expert-ids'})) > 0)): echo 'style="display:block;"';else: echo 'style="display: none;"'; endif;?>>
                 <?php
                 $imageArray = array(
                     1 => '/img/temp/expert-1.jpg',
@@ -187,7 +213,7 @@
                     ?>
                     <li>
                         <a href="/experts/view/<?= $expert->id ?>" target="_blank" class="photo"><img src="<?= $imageArray[$expert->id] ?>" alt="<?= $expert->name ?>"></a><!-- .photo -->
-                        <p class="select"><input type="checkbox" name="" class="expert-check" data-id="<?= $expert->id ?>" data-option-title="экспертное мнение" data-option-value="<?= $expert->price ?>"></p><!-- .select -->
+                        <p class="select"><input type="checkbox" name="" <?php if((isset($pitch)) && (in_array($expert->id, unserialize($pitch->{'expert-ids'})))): echo "checked"; endif;?> class="expert-check" data-id="<?= $expert->id ?>" data-option-title="экспертное мнение" data-option-value="<?= $expert->price ?>"></p><!-- .select -->
                         <dl>
                             <dt><strong><a style="font-family:OfficinaSansC Bold,serif;"  href="/experts/view/<?= $expert->id ?>" target="_blank"><?= $expert->name ?></a></strong></dt>
                             <dd><a style="font-family:OfficinaSansC Book,serif; color:#666666;font-size: 14px" href="/experts/view/<?= $expert->id ?>" target="_blank"><?= $expert->spec ?></a></dd>
@@ -197,13 +223,12 @@
             </ul><!-- .experts -->
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;" id="pinned-block">
-                <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="«Прокачать» проект" data-option-value=<?php if(in_array('pinproject', $plan['free'])):?>"0"<?php else:?>"1000"<?php endif?> id="pinproject">«Прокачать» проект</label></p>
-                <!--p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения <?php if($category->id == 7): echo 'копирайтеров'; else: 'дизайнеров'; endif;?> мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p-->
+                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->pinned): echo "checked"; endif;?> class="single-check" data-option-title="«Прокачать» проект" data-option-value=<?php if(in_array('pinproject', $plan['free'])):?>"0"<?php else:?>"1000"<?php endif?> id="pinproject">«Прокачать» проект</label></p>
                 <?php if(in_array('pinproject', $plan['free'])):?>
                     <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
                 <?php endif;?>
                 <?php if(!in_array('pinproject', $plan['free'])):?>
-                <p class="label" style="text-transform: none;">1000р.</p>
+                <p class="label <?php if($pitch->pinned): echo "unfold"; endif;?>" style="text-transform: none;">1000р.</p>
                 <?php endif?>
             </div>
 
@@ -255,28 +280,28 @@
 
             <?= $this->view()->render(array('element' => 'newbrief/description_block'), compact('pitch', 'category', 'word2'))?>
 
-            <?= $this->view()->render(array('element' => 'brief-create/' . $category->id)) ?>
+            <?php if(isset($pitch)): ?>
+                <?= $this->view()->render(array('element' => 'brief-edit/' . $category->id), array('specifics' => $specifics, 'pitch' => $pitch))?>
+            <?php else: ?>
+                <?= $this->view()->render(array('element' => 'brief-create/' . $category->id)) ?>
+            <?php endif;?>
 
             <div class="groupc" style="margin-top: 34px; margin-bottom: 25px;">
                 <label id ="show-types" class="greyboldheader">Выберите вид деятельности</label> 
                 <ul id="list-job-type" style="margin-bottom: 20px;"> 
-                    <li><label><input type="checkbox" name="job-type[]" value="realty"> Недвижимость / Строительство</label></li> 
-                    <li> <label><input type="checkbox" name="job-type[]" value="auto"> Автомобили / Транспорт</label>     </li> 
-                    <li> <label><input type="checkbox" name="job-type[]" value="finances"> Финансы / Бизнес</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="food"> Еда / Напитки</label>     </li> 
-                    <li> <label><input type="checkbox" name="job-type[]" value="adv"> Реклама / Коммуникации</label></li> 
-                    <li> <label><input type="checkbox" name="job-type[]" value="tourism"> Туризм / Путешествие</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="sport"> Спорт</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="sci"> Образование / Наука</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="fashion"> Красота / Мода</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="music"> Развлечение / Музыка</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="culture"> Искусство / Культура</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="animals"> Животные</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="children"> Дети</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="security"> Охрана / Безопасность</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="health"> Медицина / Здоровье</label>     </li>
-                    <li> <label><input type="checkbox" name="job-type[]" value="it"> Компьютеры / IT</label>     </li>
-                     </ul>
+                    <?php
+                    $industry = array();
+                    if($pitch) {
+                        $industry = (unserialize($pitch->industry));
+                    }
+                    $_empty = empty($industry);
+                    foreach ($job_types as $k => $v):
+                        ?>
+                        <li>
+                            <label><input type="checkbox" name="job-type[]" value="<?= $k ?>" <?php if(!$_empty):  if(in_array($k, $industry)): echo ' checked'; endif; endif;?>><?= $v ?></label>
+                        </li>
+                    <?php endforeach; ?>
+                 </ul>
             </div>
 
             <div class="groupc">
@@ -285,12 +310,12 @@
                     <label>Можно ли дополнительно использовать материал из банков с изображениями или шрифтами? <a href="#" class="second tooltip" title="Это даст возможность дизайнерам добиться лучшего результата. Профессионалы из мира рекламы часто прибегают к помощи фото-банков для экономии сил, времени или бюджета.">(?)</a></label>
                 </p>
                 <div style="float:left;width:50px;height:44px;padding-top:10px;">
-                    <input style="vertical-align: middle" type="radio" name="materials" value="0" checked="checked"/><span class="radiospan">Нет</span>
+                    <input style="vertical-align: middle" type="radio" name="materials" value="0" <?php if(!$pitch->materials): echo 'checked';endif;?>/><span class="radiospan">Нет</span>
                 </div>
                 <div style="float:left;width:50px;height:44px;padding-top:10px;">
-                    <input style="vertical-align: middle" type="radio" name="materials" value="1" /><span class="radiospan">Да</span>
+                    <input style="vertical-align: middle" type="radio" name="materials" value="1" <?php if($pitch->materials): echo 'checked';endif;?> /><span class="radiospan">Да</span>
                 </div>
-                <div style="margin-bottom: 15px;"><input type="text" placeholder="допустимая стоимость одного изображения" style="width: 300px;" name="materials-limit" value=""></div>
+                <div style="margin-bottom: 15px;"><input type="text" placeholder="допустимая стоимость одного изображения" style="width: 300px;" name="materials-limit" value="<?=$pitch->{'materials-limit'}?>"></div>
 
             </div>
 
@@ -316,7 +341,17 @@
 
                 <iframe id="old-download" src="/pitchfiles/index" seamless style="display:none;width:570px;height:100px;"></iframe>
 
-                <ul id="filezone"></ul>
+                <ul id="filezone">
+                    <?php if(is_array($files)):?>
+                        <?php foreach($files as $file):?>
+                            <?php if (empty($file->originalbasename)):?>
+                                <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                            <?php else:?>
+                                <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=str_replace('pitchfiles/', 'pitchfiles/1', $file->weburl);?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
+                            <?php endif;?>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                </ul>
                 <div style="clear:both"></div>
 
                 <p class="brief-example"><a href="/docs/brief_logo.pdf" target="_blank"></a></p><!-- .brief-example -->
@@ -330,7 +365,7 @@
                 <p>
                     <label class="">Ваш контактный телефон <a href="#" class="second tooltip" title="Мы убедительно просим вас оставить ваш номер телефона для экстренных случаев, и если возникнут вопросы с оплатой.">(?)</a></label>
                 </p>
-                <div><input type="text" placeholder="" style="width: 400px;" name="phone-brief" value=""></div>
+                <div><input type="text" placeholder="" style="width: 400px;" name="phone-brief" value="<?= $pitch->{'phone-brief'}?>"></div>
             </div>
         </div></div>
 

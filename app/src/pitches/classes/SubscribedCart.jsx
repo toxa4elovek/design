@@ -1,23 +1,38 @@
 class AdvancedCart {
     data = {};
-    filesId = null;
+    fileIds = null;
     projectId = null;
     receiptAccessor = null;
     constructor() {
         this.receiptAccessor = new ReceiptAccessor();
+        this.projectId = projectId;
     }
     getOption(key) {
         return this.receiptAccessor.get(payload.receipt, key);
     }
-    prepareData() {
-        const features = {
-            'award': this.getOption('Награда Дизайнеру'),
-            'private': this.getOption('Скрыть проект'),
-            'social': this.getOption('Рекламный Кейс'),
-            'experts': this._expertArray(),
-            'pinned': this.getOption('«Прокачать» проект'),
-            'brief': this.getOption('Заполнение брифа')
-        };
+    isOptionExists(key) {
+        return this.receiptAccessor.exists(payload.receipt, key);
+    }
+    prepareData(finishDatePicker, chooseWinnerDatePicker) {
+        let features = {};
+        if(this.isOptionExists('Награда Дизайнеру')) {
+            features['award'] = this.getOption('Награда Дизайнеру');
+        }
+        if(this.isOptionExists('Скрыть проект')) {
+            features['private'] = 1;
+        }
+        if(this.isOptionExists('Рекламный Кейс')) {
+            features['social'] = this.getOption('Рекламный Кейс');
+        }
+        features['experts'] = this._expertArray();
+        if(this.isOptionExists('«Прокачать» проект')) {
+            features['pinned'] = 1;
+        }
+        if(this.isOptionExists('Заполнение брифа')) {
+            features['brief'] = 1;
+        }
+        const finishDateMoment = finishDatePicker.data("DateTimePicker").date();
+        const chooseWinnerFinishDateMoment = chooseWinnerDatePicker.data("DateTimePicker").date();
         const commonPitchData = {
             'id': this.projectId,
             'title': $('input[name=title]').val(),
@@ -28,10 +43,12 @@ class AdvancedCart {
             'description': tinyMCE.activeEditor.getContent(),
             'fileFormats': this._formatArray(),
             'fileFormatDesc': $('textarea[name=format-description]').val(),
-            'filesId': this.fileIds,
+            'fileIds': this.fileIds,
             'phone-brief': $('input[name=phone-brief]').val(),
             'materials': $('input[name=materials]:checked').val(),
-            'materials-limit': $('input[name=materials-limit]').val()
+            'materials-limit': $('input[name=materials-limit]').val(),
+            'finishDate': finishDateMoment.format('YYYY-MM-DD HH:mm:00'),
+            'chooseWinnerFinishDate': chooseWinnerFinishDateMoment.format('YYYY-MM-DD HH:mm:00')
         };
         const specificData = this.__getSpecificData();
         this.data = {
@@ -53,77 +70,79 @@ class AdvancedCart {
         }
         return result;
     }
-    saveData (simplesave) {
+    saveData (pay) {
         if (this.data.features.award == 0) {
             alert('Укажите награду для дизайнера!');
         } else {
+            if(pay) {
+                this.data.actionType = 'pay';
+            }else {
+                this.data.actionType = 'saveDraft';
+            }
             $.post('/pitches/add_subscribed.json', this.data, function (response) {
-                this.id = response;
-                if(typeof(simplesave) == 'undefined') {
-                    if (response == 'redirect') {
-                        window.location = '/users/registration';
+                if(typeof(response.success) == 'undefined') {
+                    if(response.error == 'need to fill balance') {
+                        alert(`Для оплаты необходимо пополнить кошелёк на сумму ${response.needToFillAmount} р.!` );
+                        window.location = `/subscription_plans/subscriber?amount=${response.needToFillAmount}`;
+                    }else {
+                        alert('При сохранении проекта возникла ошибка, пожалуйста, свяжитесь со службой поддержки.');
                     }
-                    if (response == 'noaward') {
-                        alert('Укажите награду для дизайнера!');
-                        return false;
-                    }
-
-                }else {
-                    const viewUrl = `http://www.godesigner.ru/pitches/view/${this.id}`;
-                    const editUrl = `http://www.godesigner.ru/pitches/edit/${this.id}`;
-                    const deleteUrl = `http://www.godesigner.ru/pitches/delete/${this.id}`;
-                    const title = this.data.commonPitchData.title;
-                    const award = this._priceDecorator(this.data.features.award);
-                    const pitchPanelSelector = '#pitch-panel';
-                    const pitchPanel = $(pitchPanelSelector);
-                    let scroll = false;
-                    let evenClass = '';
-                    if((pitchPanel.length == 1) && ($('tr', '#pitch-panel').length % 2 == 0)) {
-                        evenClass = 'even';
-                    }
-                    const row =
-                        `<tr data-id="${this.id}" class="selection ${evenClass} coda">
-                            <td></td>
-                            <td class="pitches-name mypitches">
-                                <a href="${viewUrl}">${title}</a>
-                            </td>
-                            <td class="pitches-status mypitches">
-                                <a href="${editUrl}">Ожидание оплаты</a>
-                            </td>
-                            <td class="price mypitches">${award}.-</td>
-                            <td class="pitches-edit mypitches">
-                                <!--a href="${editUrl}#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a-->
-                                <a href="${editUrl}" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
-                                <a data-id="${this.id}" href="${deleteUrl}" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
-                            </td>
-                        </tr>`;
-                    if((pitchPanel.length == 1) && ($('tr[data-id="' + this.id + '"]', '#pitch-panel').length == 0)) {
-                        $('#header-table').append(row);
-                        scroll = true;
-                    }else if ($('tr[data-id="' + this.id + '"]', '#pitch-panel').length == 0) {
-                        const panel =
-                            `<div id="pitch-panel">
-                                <div class="conteiner">
-                                    <div class="content">
-                                        <table class="all-pitches" id="header-table">
-                                            <tbody>
-                                                ${row}
-                                            </tbody>
-                                        </table>
-                                        <p class="pitch-buttons-legend">
-                                            <a href="http://www.godesigner.ru/answers/view/73">
-                                                <i id="help"></i>Как мотивировать дизайнеров
-                                            </a>
-                                        </p>
-                                    </div>
+                }
+                this.id = response.success;
+                const viewUrl = `/pitches/view/${this.id}`;
+                const editUrl = `/pitches/edit/${this.id}`;
+                const deleteUrl = `/pitches/delete/${this.id}`;
+                const title = this.data.commonPitchData.title;
+                const award = this._priceDecorator(this.data.features.award);
+                const pitchPanelSelector = '#pitch-panel';
+                const pitchPanel = $(pitchPanelSelector);
+                let scroll = false;
+                let evenClass = '';
+                if((pitchPanel.length == 1) && ($('tr', '#pitch-panel').length % 2 == 0)) {
+                    evenClass = 'even';
+                }
+                const row =
+                    `<tr data-id="${this.id}" class="selection ${evenClass} coda">
+                        <td></td>
+                        <td class="pitches-name mypitches">
+                            <a href="${viewUrl}">${title}</a>
+                        </td>
+                        <td class="pitches-status mypitches">
+                            <a href="${editUrl}">Ожидание оплаты</a>
+                        </td>
+                        <td class="price mypitches">${award}.-</td>
+                        <td class="pitches-edit mypitches">
+                            <!--a href="${editUrl}#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a-->
+                            <a href="${editUrl}" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                            <a data-id="${this.id}" href="${deleteUrl}" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
+                        </td>
+                    </tr>`;
+                if((pitchPanel.length == 1) && ($('tr[data-id="' + this.id + '"]', '#pitch-panel').length == 0)) {
+                    $('#header-table').append(row);
+                    scroll = true;
+                }else if ($('tr[data-id="' + this.id + '"]', '#pitch-panel').length == 0) {
+                    const panel =
+                        `<div id="pitch-panel">
+                            <div class="conteiner">
+                                <div class="content">
+                                    <table class="all-pitches" id="header-table">
+                                        <tbody>
+                                            ${row}
+                                        </tbody>
+                                    </table>
+                                    <p class="pitch-buttons-legend">
+                                        <a href="http://www.godesigner.ru/answers/view/73">
+                                            <i id="help"></i>Как мотивировать дизайнеров
+                                        </a>
+                                    </p>
                                 </div>
-                            </div>`;
-                        $('.wrapper').first().prepend(panel);
-                        scroll = true;
-                    }
-                    if(scroll) {
-                        $.scrollTo($(pitchPanelSelector), {duration: 600});
-                    }
+                            </div>
+                        </div>`;
+                    $('.wrapper').first().prepend(panel);
+                    scroll = true;
+                }
+                if(scroll) {
+                    $.scrollTo($(pitchPanelSelector), {duration: 600});
                 }
             }.bind(this));
         }

@@ -51,4 +51,22 @@ class ReceiptAccessor {
         });
         return value;
     }
+    static exists(array, name) {
+        let result = false;
+        array.forEach(function (row) {
+            if (row.name == name) {
+                result = true;
+            }
+        });
+        return result;
+    }
+    exists(array, name) {
+        let result = false;
+        array.forEach(function (row) {
+            if (row.name == name) {
+                result = true;
+            }
+        });
+        return result;
+    }
 }

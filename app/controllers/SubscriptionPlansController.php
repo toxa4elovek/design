@@ -15,10 +15,14 @@ class SubscriptionPlansController extends AppController {
     public function subscriber() {
         if(is_null($this->request->params['id'])) {
             $planRecordId = SubscriptionPlan::getNextFundBalanceId($this->userHelper->getId());
+            $value = 9000;
+            if((isset($this->request->query['amount'])) && (!empty($this->request->query['amount']))) {
+                $value = (int) $this->request->query['amount'];
+            }
             $receipt = array(
                 array(
                     'name' => 'Пополнение счёта',
-                    'value' => 9000
+                    'value' => $value
                 )
             );
             Receipt::updateOrCreateReceiptForProject($planRecordId, $receipt);

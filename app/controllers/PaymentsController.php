@@ -27,13 +27,17 @@ class PaymentsController extends AppController {
                 $paytureId = $this->request->data['OrderId'];
                 Logger::write('info', $paytureId, array('name' => 'payture'));
                 if ($pitch = Pitch::first(array('conditions' => array('payture_id' => $paytureId)))) {
-                    if ($pitch->blank == 1) {
-                        Pitch::activateLogoSalePitch($pitch->id);
+                    if(($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
+                        SubscriptionPlan::activate($pitch->id);
                     }else {
-                        if ($pitch->multiwinner != 0) {
-                            Pitch::activateNewWinner($pitch->id);
-                        } else {
-                            Pitch::activate($pitch->id);
+                        if ($pitch->blank == 1) {
+                            Pitch::activateLogoSalePitch($pitch->id);
+                        }else {
+                            if ($pitch->multiwinner != 0) {
+                                Pitch::activateNewWinner($pitch->id);
+                            } else {
+                                Pitch::activate($pitch->id);
+                            }
                         }
                     }
                 } elseif ($addon = Addon::first(array('conditions' => array('payture_id' => $paytureId)))) {

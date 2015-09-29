@@ -41,6 +41,17 @@ var ReceiptAccessor = (function () {
             });
             return value;
         }
+    }, {
+        key: "exists",
+        value: function exists(array, name) {
+            var result = false;
+            array.forEach(function (row) {
+                if (row.name == name) {
+                    result = true;
+                }
+            });
+            return result;
+        }
     }], [{
         key: "add",
         value: function add(array, value) {
@@ -72,6 +83,17 @@ var ReceiptAccessor = (function () {
                 }
             });
             return value;
+        }
+    }, {
+        key: "exists",
+        value: function exists(array, name) {
+            var result = false;
+            array.forEach(function (row) {
+                if (row.name == name) {
+                    result = true;
+                }
+            });
+            return result;
         }
     }]);
 

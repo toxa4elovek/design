@@ -24,6 +24,7 @@ use \app\models\Payanyway;
 use \app\models\Promoted;
 use app\models\Ratingchange;
 use \app\models\Avatar;
+use \app\models\SubscriptionPlan;
 use \app\models\Url;
 use \app\models\Like;
 use \app\models\Tag;
@@ -63,6 +64,7 @@ class PitchesController extends \app\controllers\AppController {
         $hasOwnHiddenPitches = false;
         if (Session::read('user.id')) {
             $usersPitches = Pitch::all(array('conditions' => array(
+                            'type' => '',
                             'user_id' => Session::read('user.id'),
                             'published' => 0,
                             'status' => 0,
@@ -350,10 +352,14 @@ class PitchesController extends \app\controllers\AppController {
             $transaction->set($this->request->data);
             $transaction->save();
             if ($pitch = Pitch::first($this->request->data['LMI_PAYMENT_NO'])) {
-                if ($pitch->multiwinner != 0) {
-                    Pitch::activateNewWinner($this->request->data['LMI_PAYMENT_NO']);
-                } else {
-                    Pitch::activate($this->request->data['LMI_PAYMENT_NO']);
+                if(($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
+                    SubscriptionPlan::activate($pitch->id);
+                }else {
+                    if ($pitch->multiwinner != 0) {
+                        Pitch::activateNewWinner($this->request->data['LMI_PAYMENT_NO']);
+                    } else {
+                        Pitch::activate($this->request->data['LMI_PAYMENT_NO']);
+                    }
                 }
             } elseif ($addon = Addon::first($this->request->data['LMI_PAYMENT_NO'])) {
                 Addon::activate($addon);
@@ -536,7 +542,7 @@ class PitchesController extends \app\controllers\AppController {
                     $defaultTitle = $this->request->query['title'];
                 }
                 $defaultFinishDate = date('Y-m-d H:i:s', time() + (5 * DAY));
-                if(isset($this->request->query['date'])) {
+                if((isset($this->request->query['date'])) && (!empty($this->request->query['date']))) {
                     $defaultFinishDate = $this->request->query['date'];
                 }
                 $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (4 * DAY));
@@ -552,54 +558,33 @@ class PitchesController extends \app\controllers\AppController {
     }
 
     public function add_subscribed() {
-        $default = array(
-            'id' => null,
-            'type' => 'company_project',
-            'category_id' => 20,
-            'title' => '',
-            'industry' => '',
-            'description' => '',
-            'started' => '',
-            'finishDate' => '',
-            'chooseWinnerFinishDate' => '',
-            'awardedDate' => '',
-            'price' => '',
-            'total' => '',
-            'fee' => '',
-            'status' => 0,
-            'awarded' => '',
-            'pinned' => '',
-            'expert' => '',
-            'private' => '',
-            'free' => '',
-            'expert-ids' => '',
-            'email' => '',
-            'timelimit' => '',
-            'brief' => '',
-            'guaranteed' => '',
-            'phone-brief' => '',
-            'materials' => '',
-            'materials-limit' => '',
-            'fileFormats' => '',
-            'fileFormatDesc' => '',
-            'filesId' => '',
-            'fileDesc' => '',
-            'specifics' => '',
-            'published' => '',
-            'billed' => '',
-            'moderated' => '',
-            'views' => '',
-            'promocode' => '',
-            'last_solution' => '',
-            'multiwinner' => '',
-            'blank' => '',
-            'blank_id' => '',
-            'confirmed' => '',
-        );
+        $result = array('error' => 'no data provided');
         if ($this->request->data) {
-
+            $userId = $this->userHelper->getId();
+            $actionType = $this->request->data['actionType'];
+            $this->request->data['commonPitchData']['user_id'] = $userId;
+            $result = Pitch::saveDraft($this->request->data);
+            if(is_null($result)) {
+                $result = array('error' => 'save error');
+            }else {
+                $projectId = $result;
+                $result = array('success' => $result);
+                Receipt::updateOrCreateReceiptForProject($projectId, $this->request->data['receipt']);
+                if($actionType === 'pay') {
+                    $total = Receipt::findTotal($projectId);
+                    $paymentResult = User::reduceBalance($userId, (int) $total);
+                    if(!$paymentResult) {
+                        $result = array(
+                            'error' => 'need to fill balance',
+                            'needToFillAmount' => (int) ($total - User::getBalance($userId))
+                        );
+                    }else {
+                        Pitch::activate($result);
+                    }
+                }
+            }
         }
-        return $this->request->data;
+        return $result;
     }
 
     public function add() {
@@ -854,7 +839,20 @@ class PitchesController extends \app\controllers\AppController {
                     $pitch->save();
                 }
             }
-            return compact('pitch', 'category', 'files', 'experts', 'codes');
+            if($category->id != 20) {
+                return compact('pitch', 'category', 'files', 'experts', 'codes');
+            }else {
+                $receipt = Receipt::exportToArray($pitch->id);
+                $defaultTitle = $pitch->title;
+                $defaultFinishDate = $pitch->finishDate;
+                $defaultChooseWinnerFinishDate = $pitch->chooseWinnerFinishDate;
+                $plan = $this->userHelper->getCurrentPlanData();
+                $balance = $this->userHelper->getBalance();
+                $expirationDate = $this->userHelper->getSubscriptionExpireDate('d.m.Y');
+                return $this->render(array(
+                    'template' => '../pitches/subscribed_project',
+                    'data' => compact('pitch', 'expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate')));
+            }
         }
     }
 
