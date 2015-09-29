@@ -12,10 +12,6 @@
         "node": React.createElement(PaymentSeparator, { key: "4" })
     }, {
         "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: false })
-    }, {
-        "node": React.createElement(PaymentSeparator, { key: "6" })
-    }, {
-        "node": React.createElement(PaymentAdmin, { key: "7", payload: payload })
     }];
     ReactDOM.render(React.createElement(Receipt, { data: payload.receipt }), document.getElementById('receipt-container'));
     ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));

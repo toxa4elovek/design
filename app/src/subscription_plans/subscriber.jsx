@@ -15,13 +15,13 @@
         },
         {
             "node": <PaymentWire key="5" payload={payload} selected={false} />
-        },
+        }/*,
         {
             "node": <PaymentSeparator key="6" />
         },
         {
             "node": <PaymentAdmin key="7" payload={payload} />
-        }
+        }*/
     ];
     ReactDOM.render(
         <Receipt data={payload.receipt}/>,
