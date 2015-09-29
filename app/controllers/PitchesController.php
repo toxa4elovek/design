@@ -353,7 +353,7 @@ class PitchesController extends \app\controllers\AppController {
             $transaction->save();
             if ($pitch = Pitch::first($this->request->data['LMI_PAYMENT_NO'])) {
                 if(($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
-                    SubscriptionPlan::activate($pitch->id);
+                    SubscriptionPlan::activatePlanPayment($pitch->id);
                 }else {
                     if ($pitch->multiwinner != 0) {
                         Pitch::activateNewWinner($this->request->data['LMI_PAYMENT_NO']);

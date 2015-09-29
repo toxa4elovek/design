@@ -28,7 +28,7 @@ class PaymentsController extends AppController {
                 Logger::write('info', $paytureId, array('name' => 'payture'));
                 if ($pitch = Pitch::first(array('conditions' => array('payture_id' => $paytureId)))) {
                     if(($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
-                        SubscriptionPlan::activate($pitch->id);
+                        SubscriptionPlan::activatePlanPayment($pitch->id);
                     }else {
                         if ($pitch->blank == 1) {
                             Pitch::activateLogoSalePitch($pitch->id);
