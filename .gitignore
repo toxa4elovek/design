@@ -34,6 +34,7 @@ app/webroot/js/users/subscriber.js
 app/webroot/js/pitches/index.js
 app/webroot/js/users/subscriber.js
 app/webroot/js/users/subscriber/BalanceBox.js
+app/webroot/js/solutions/solutions.js
 app/webroot/js/minified/*
 app/webroot/css/minified/*
 app/libraries/MPDF54/MPDF54/tmp/*

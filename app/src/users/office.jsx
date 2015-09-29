@@ -1162,11 +1162,14 @@ $(function(){
 // profile.js end
 /* ============= */
 // solution.js start
-$(function(){
-    $('document').on('click', ".select_checkbox", function(){
-        $.post('/solutions/saveSelected.json', {"selectedSolutions": $(this).data('id')});
-    });
+
+$(document).on('click', '.select_checkbox', function() {
+    const data = {
+        "selectedSolutions": this.getAttribute('data-id')
+    };
+    $.post('/solutions/saveSelected.json', data);
 });
+
 // solution.js end
 /* ============= */
 // awarded.js start
