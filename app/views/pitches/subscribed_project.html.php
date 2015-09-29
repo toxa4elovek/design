@@ -342,7 +342,8 @@
                 <iframe id="old-download" src="/pitchfiles/index" seamless style="display:none;width:570px;height:100px;"></iframe>
 
                 <ul id="filezone">
-                    <?php if(is_array($files)):?>
+                    <?php
+                    if(isset($files)):?>
                         <?php foreach($files as $file):?>
                             <?php if (empty($file->originalbasename)):?>
                                 <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>

@@ -1,11 +1,14 @@
 class AdvancedCart {
     data = {};
-    fileIds = null;
+    fileIds = [];
     projectId = null;
     receiptAccessor = null;
     constructor() {
         this.receiptAccessor = new ReceiptAccessor();
         this.projectId = projectId;
+        $.each($('li', '#filezone'), function (index, object) {
+            this.fileIds.push($(object).data('id'));
+        }.bind(this));
     }
     getOption(key) {
         return this.receiptAccessor.get(payload.receipt, key);
@@ -69,6 +72,9 @@ class AdvancedCart {
             }
         }
         return result;
+    }
+    saveFileIds() {
+        $.post('/pitches/updatefiles.json', {"fileids": this.fileIds, "id": this.projectId});
     }
     saveData (pay) {
         if (this.data.features.award == 0) {

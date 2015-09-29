@@ -851,7 +851,7 @@ class PitchesController extends \app\controllers\AppController {
                 $expirationDate = $this->userHelper->getSubscriptionExpireDate('d.m.Y');
                 return $this->render(array(
                     'template' => '../pitches/subscribed_project',
-                    'data' => compact('pitch', 'expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate')));
+                    'data' => compact('pitch', 'files', 'expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate')));
             }
         }
     }

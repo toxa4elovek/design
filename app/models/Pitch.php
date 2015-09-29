@@ -1744,8 +1744,8 @@ class Pitch extends AppModel {
             $expert = 1;
             $expertId = serialize($featuresData['experts']);
         }
-        if (!isset($commonPitchData['filesId'])) {
-            $commonPitchData['filesId'] = array();
+        if (!isset($commonPitchData['fileIds'])) {
+            $commonPitchData['fileIds'] = array();
         }
         $data = array(
             'user_id' => $commonPitchData['user_id'],
@@ -1774,7 +1774,7 @@ class Pitch extends AppModel {
             'materials-limit' => $commonPitchData['materials-limit'],
             'fileFormats' => serialize($commonPitchData['fileFormats']),
             'fileFormatDesc' => $commonPitchData['fileFormatDesc'],
-            'filesId' => serialize($commonPitchData['filesId']),
+            'filesId' => serialize($commonPitchData['fileIds']),
             'specifics' => serialize($specificPitchData),
         );
         if((isset($commonPitchData['id'])) && (!empty($commonPitchData['id']))) {

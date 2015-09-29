@@ -305,6 +305,40 @@
         return false;
     });
 
+    $(document).on('click', '.filezone-delete-link', function () {
+        const givenId = +$(this).parent().attr('data-id');
+        if (Cart.projectId) {
+            if (givenId) { // File came from database
+                $.post('/pitchfiles/delete', {'id': givenId}, function (response) {
+                    if (response != 'true') {
+                        alert('При удалении файла произошла ошибка');
+                    }
+                    const position = $.inArray(givenId, Cart.fileIds);
+                    Cart.fileIds.splice(position, 1);
+                    Cart.saveFileIds();
+                });
+            } else {
+                uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
+            }
+            $(this).parent().remove();
+            return false;
+        } else if ($(this).data('imfromiframe') == true) {
+            $.post('/pitchfiles/delete', {'id': givenId}, function (response) {
+                if (response != 'true') {
+                    alert('При удалении файла произошла ошибка');
+                }
+                const position = $.inArray(givenId, Cart.fileIds);
+                Cart.fileIds.splice(position, 1);
+            });
+            $(this).parent().remove();
+            return false;
+        } else {
+            uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
+            $(this).parent().remove();
+            return false;
+        }
+    });
+
     /**
      * Готовим загрузчик файлов
      * @type {Array}
