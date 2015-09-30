@@ -184,13 +184,13 @@ function TableLoader() {
                 pitchMultiple = '<br>' + object.multiple;
             }
             let categoryLinkHref = '#';
-            if(object.category.id == 20) {
+            /*if(object.category.id == 20) {
                 categoryLinkHref = '/pages/subscribe';
-            }
+            }*/
             html += `<tr data-id="${object.id}" class="${rowClass}">
                 <td class="icons">${icons}</td>
                 <td class="pitches-name">
-                ${userString} +
+                ${userString}
                 <div style="padding-left: 34px; padding-right: 12px;">
                 <a href="/pitches/${pitchPath}/${object.id}" class="">${object.title}</a>
                 </div>
