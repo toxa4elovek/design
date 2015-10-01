@@ -26,7 +26,7 @@ class FundBalanceInput extends React.Component {
         const initialValue = this.__getReceiptValue(this.props.payload.receipt);
         return(
             <div>
-                <input ref="input" type="text" onChange={this.onChangeHandle} onKeyDown={this.onKeydownHandle} defaultValue={initialValue} className="fund-balance-input" placeholder="8000"/>
+                <input ref="input" type="text" onChange={this.onChangeHandle} onKeyDown={this.onKeydownHandle} defaultValue={initialValue} className="fund-balance-input" placeholder="9000"/>
             </div>
         )
     }

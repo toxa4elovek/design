@@ -1738,7 +1738,6 @@ class UsersController extends \app\controllers\AppController {
                     $data['type'] = 'fund-balance';
                     $data['title'] = 'Пополнение счёта';
                     $data['total'] = $amount;
-                    $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => 'Р.-'));
                 }
             }
             if($data['type'] != 'fund-balance') {
@@ -1746,6 +1745,7 @@ class UsersController extends \app\controllers\AppController {
             }
             if($data['type'] == 'fund-balance') {
                 $data['formattedDate'] = date('d.m.Y', strtotime($row->totalFinishDate));
+                $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => 'Р.-'));
             }
             $payments[] = $data;
         }
