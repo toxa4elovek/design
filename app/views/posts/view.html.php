@@ -31,7 +31,7 @@
                                     <div style="clear:both;width:300px;height:1px;"></div>
                                 </div>
                             <?php endif?>
-                        <div style="margin-top:20px; clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:600px;margin-bottom:40px;"></div>
+                        <div style="margin-top:20px; clear:both;height:3px;width:600px;margin-bottom:40px;"></div>
 
                         <div class="regular viewpost">
                                 <?php echo $post->full?>
