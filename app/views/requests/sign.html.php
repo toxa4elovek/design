@@ -74,8 +74,8 @@
         </h3>
         <form action="/requests/create" method="post">
             <input type="hidden" name="pitch_id" value="<?=$pitch->id?>">
-            <input <?php if($errors): echo 'class="wrong-input"'; endif;?> style="width: 580px; margin-bottom: 15px;" type="text" name="first_name" placeholder="Имя"/>
-            <input <?php if($errors): echo 'class="wrong-input"'; endif;?> style="width: 580px; margin-bottom: 15px;" type="text" name="last_name" placeholder="Фамилия"/>
+            <input class="sign-input" <?php if($errors): echo 'class="wrong-input"'; endif;?> style="color: #b6b6b6; font-size: 18px; font-family: OfficinaSansC Book, serif; width: 580px; margin-bottom: 15px;" type="text" name="first_name" placeholder="Имя"/>
+            <input class="sign-input" <?php if($errors): echo 'class="wrong-input"'; endif;?> style="color: #b6b6b6; font-size: 18px; font-family: OfficinaSansC Book, serif; width: 580px; margin-bottom: 15px;" type="text" name="last_name" placeholder="Фамилия"/>
             <div class="tos-container supplement" style="margin-bottom: 20px;">
                 <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Подписывая соглашение о неразглашении, я соглашаюсь со всеми условиями, описанными в договоре о неразглашении.</label>
             </div>
