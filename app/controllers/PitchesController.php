@@ -484,6 +484,7 @@ class PitchesController extends \app\controllers\AppController {
             $res = $pitch->pitchData();
             $res['needRatingPopup'] = $pitch->ratingPopup($res['avgArray']);
             $res['needWinnerPopup'] = $pitch->winnerPopup();
+            $res['type'] = $pitch->type;
             return $res;
         }
         return false;
