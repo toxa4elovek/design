@@ -54,7 +54,7 @@
         <td style="border-left:1px solid;border-top:1px solid; text-align:center;" width="70">Цена</td>
         <td style="border-left:1px solid;border-top:1px solid;border-right:1px solid; text-align:center;" width="70">Сумма</td>
     </tr>
-    <tr  valign="top">
+    <tr valign="top">
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">
             <?php
@@ -68,8 +68,21 @@
         </td>
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">шт.</td>
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
-        <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;"><?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?></td>
-        <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;"><?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?></td>
+        <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;"><?=$money->formatMoney(($pitch->total - $extracted), array('suffix' => '.00р', 'dropspaces' => true))?></td>
+        <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;"><?=$money->formatMoney(($pitch->total - $extracted), array('suffix' => '.00р', 'dropspaces' => true))?></td>
+    </tr>
+    <tr valign="top">
+        <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">2</td>
+        <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">
+            <?php
+            $string = 'Услуги дизайна в рамках абонентского обслуживания за проект №' . $pitch->id . '. НДС не предусмотрен.'
+            ?>
+            <?= $string?>
+        </td>
+        <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">шт.</td>
+        <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">1</td>
+        <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;"><?=$money->formatMoney($extracted, array('suffix' => '.00р', 'dropspaces' => true))?></td>
+        <td style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;"><?=$money->formatMoney($extracted, array('suffix' => '.00р', 'dropspaces' => true))?></td>
     </tr>
     <tr height="25">
         <td height="25" colspan="5" style="text-align:right;"><b>Итого:&nbsp;&nbsp;</b></td>
@@ -85,12 +98,8 @@
     </tr>
 </table>
 <p style="font-weight:bold; margin-top:20px; font-size: 20px; color:red">Внимание!<br/><span style="font-weight:bold;font-size:13px; color: black;">В назначении платежа указывайте точную фразу из столбца название услуги.</span></p>
-<?php if(($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')): ?>
-    <p style="font-size:10px;font-weight:bold;">Закрывающие документы вы получите на e-mail сразу после того, как завершите проект, а за Абонентское обслуживание сразу после поступления средств на счёт. Распечатайте их, подпишите и поставьте печать. Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27). В ответном письме вы получите оригиналы документов с нашей печатью.</p>
-<?php else: ?>
-    <p style="font-size:10px;font-weight:bold;">Закрывающие документы вы получите на e-mail сразу после того, как завершите проект. Распечатайте их, подпишите и поставьте печать. Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27). В ответном письме вы получите оригиналы документов с нашей печатью.</p>
-<?php endif?>
-<p style="">Всего наименований 1, на сумму <?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?>.</p>
+<p style="font-size:10px;font-weight:bold;">Закрывающие документы вы получите на e-mail сразу после того, как завершите проект, а за Абонентское обслуживание сразу после поступления средств на счёт. Распечатайте их, подпишите и поставьте печать. Отправьте их нам в двух экземплярах по почте (199397, Россия, Санкт-Петербург, ул. Беринга, д. 27). В ответном письме вы получите оригиналы документов с нашей печатью.</p>
+<p style="">Всего наименований 2, на сумму <?=$money->formatMoney($pitch->total, array('suffix' => '.00р', 'dropspaces' => true))?>.</p>
 <p style=""><?=$money->num2str($pitch->total)?></p>
 <br /><br /><br />
 <table>

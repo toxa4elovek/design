@@ -1475,7 +1475,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
             require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
             $options = compact('pitch', 'bill');
             $mpdf = new \mPDF();
-            $mpdf->WriteHTML(PdfGetter::get('Bill', $options));
+            if(($pitch->type == 'plan-payment') && ($extracted = SubscriptionPlan::extractFundBalanceAmount($pitch->id))) {
+                $options = compact('pitch', 'bill', 'extracted');
+                $mpdf->WriteHTML(PdfGetter::get('BillSubscription', $options));
+            }else {
+                $mpdf->WriteHTML(PdfGetter::get('Bill', $options));
+            }
             $mpdf->Output('godesigner-pitch-' . $pitch->id . '.pdf', 'd');
             exit;
         }

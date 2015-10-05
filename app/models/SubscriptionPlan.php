@@ -259,6 +259,6 @@ class SubscriptionPlan extends Pitch {
             }
             return $array['fund_balance'];
         }
-        return 0;;
+        return 0;
     }
 }
