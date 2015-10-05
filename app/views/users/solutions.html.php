@@ -59,7 +59,7 @@ font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; fon
                                     <!--span class="bottom_arrow"><a href="#"><img src="/img/marker5_2.png" alt=""></a></span-->
                             </div>
                             </div>
-                            <div style="padding-top: 16px;">
+                            <div style="padding-top: 8px;">
                                 <?php if(($solution->pitch->private != 1) && ($solution->pitch->category_id != 7)): ?>
                                 <?php if(($solution->awarded == 0) && ($this->user->isSolutionAuthor($solution->user_id))):?>
                                     <form class="tag_submit" data-solutionid="<?= $solution->id ?>">

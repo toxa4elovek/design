@@ -4,7 +4,7 @@
     <p class="regular">
         Вы не сможете восстановить черновик после удаления.
     </p>
-    <a href="#" id="project-delete-yes" style="width: 125px;" class="reqbutton">Удалить</a>
+    <a href="#" id="project-delete-yes" style="width: 125px;" class="reqbutton second">Удалить</a>
     <a href="#" id="project-delete-no" style="width: 125px;" class="reqbutton">Отмена</a>
     <div class="project-delete-close"></div>
 </div>

@@ -20,12 +20,12 @@
 	list-style-type:none;
 	margin-left:-13px;}
 .portfolio ul.list_portfolio > li{
-	width:197px;
-	margin-left:12px;
-	vertical-align:top;
-	margin-top:12px;
-	margin-bottom:5px;}
-
+	width: 197px;
+	margin-left: 12px;
+	vertical-align: top;
+	margin-top: 12px;
+	margin-bottom: 20px;
+}
 .tagname {
     margin: 0 !important;
     font-family: Arial, sans-serif !important;
@@ -83,13 +83,15 @@
 	overflow:hidden;
 	clear:both;
 	padding-top:6px;
-	padding-bottom:8px;}
+	padding-bottom:6px;
+}
 .portfolio input.select_checkbox{
 	float:left;
 	width:15px;
 	height:15px;
-	margin:0px;
-	padding:0px;}
+	margin:0;
+	padding:0;
+}
 .portfolio .number_img{
 	float:right;
 	font-weight:bold;
