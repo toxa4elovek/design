@@ -708,7 +708,7 @@ nav.main_nav {
     background: url(/img/main_nav_wrap_bg.jpg) repeat-x;
 }
 .main_nav a {
-    font: 13px/39px "OfficinaSansBookC", sans-serif;
+    font: 13px/39px OfficinaSansC Book, sans-serif;
     color: #b9b9b9;
     display: block;
     float: left;
