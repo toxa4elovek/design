@@ -1378,9 +1378,19 @@ class UsersController extends \app\controllers\AppController {
                 $solution->tags = Solution::getTagsArrayForSolution($solution);
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('conditions' => array('user_id' => $user->id, 'billed' => 1)));
+            $userPitches = Pitch::all(array('conditions' => array('billed' => 1, 'user_id' => $user->id)));
             if (count($userPitches) > 0) {
                 $isClient = true;
+                $ids = array();
+                foreach ($userPitches as $pitch) {
+                    $ids[] = $pitch->id;
+                }
+                $selectedSolutions = Solution::all(array('conditions' => array(
+                    'pitch_id' => $ids,
+                    'OR' => array(array('rating = 4'), array('rating = 5'), array('Solution.awarded = 1'), array('Solution.nominated = 1'))
+                ),
+                    'with' => array('Pitch')
+                ));
             }
             return compact('user', 'pitchCount', 'averageGrade', 'totalUserFavorite', 'totalFavoriteMe', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient');
         }

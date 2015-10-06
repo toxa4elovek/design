@@ -45,3 +45,5 @@ app/webroot/js/.module-cache/*
 app/webroot/js/tableloader.js
 app/webroot/js/help/*
 app/webroot/js/pitches/plot.js
+app/webroot/js/common/receipt/Receipt.js
+app/webroot/js/pitches/ProjectRewardInput.js

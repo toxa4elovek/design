@@ -14,6 +14,13 @@ class Receipt extends React.Component {
         $(aside).addClass('expanded');
         e.preventDefault();
     }
+    componentDidMount() {
+        if($(window).scrollTop() > $('header').offset().top) {
+            $('.summary-price').css('position', 'fixed').css('top', '150px');
+        }else {
+            $('.summary-price').css('position', 'absolute').css('top', ($('header').offset().top + 155) + 'px');
+        }
+    }
     render() {
         let total = 0;
         for (let i = 0; i < this.props.data.length; i++) {

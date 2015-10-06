@@ -305,6 +305,14 @@
         return false;
     });
 
+    $(window).on('scroll', function () {
+        if($(window).scrollTop() > $('header').offset().top) {
+            $('.summary-price').css('position', 'fixed').css('top', '150px');
+        }else {
+            $('.summary-price').css('position', 'absolute').css('top', ($('header').offset().top + 155) + 'px');
+        }
+    });
+
     $(document).on('click', '.filezone-delete-link', function () {
         const givenId = +$(this).parent().attr('data-id');
         if (Cart.projectId) {
