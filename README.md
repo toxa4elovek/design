@@ -1,3 +1,2 @@
 ### После установки
-cd app
-babel --babelrc /Users/dima/www/godesigner/.babelrc src/ --watch --out-dir webroot/js/
+babel --babelrc /Users/dima/www/godesigner/.babelrc app/src/ --watch --out-dir app/webroot/js/

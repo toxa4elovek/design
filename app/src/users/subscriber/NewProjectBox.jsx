@@ -71,14 +71,16 @@ class NewProjectBox extends React.Component{
                 <label className="time-label">время</label>
                 <div className="clear"></div>
 
-                <input ref="date" type="hidden" className="date-input-hidden" value="" />
+                <div style={{"position": "relative"}}>
+                    <input ref="date" type="text" className="hidden-date-input" style={{"position": "absolute", "top": "0", "height": "50px","opacity": "0"}}/>
+                    <input type="text" data-field="day" className="date-input" />
+                    <input type="text" data-field="month" className="date-input" />
+                    <input type="text" data-field="year" className="date-input year" />
 
-                <input type="text" data-field="day" className="date-input" />
-                <input type="text" data-field="month" className="date-input" />
-                <input type="text" data-field="year" className="date-input year" />
+                    <input type="text" data-field="hours" className="date-input" />
+                    <input type="text" data-field="minutes" className="date-input last-block" />
+                </div>
 
-                <input type="text" data-field="hours" className="date-input" />
-                <input type="text" data-field="minutes" className="date-input last-block" />
                 <div className="clear"></div>
 
                 <a href="#" onClick={this.onClickCreateProject.bind(this)} className="button silver-button clean-style-button create-project-button">создать проект</a>

@@ -9,7 +9,7 @@
                 Мы обезопасим вас от рисков работы с фрилансерами и гарантируем
                 выбор решений даже для небольших задач!</p>
             <div class="button-container">
-                <a href="/pages/howitworks" class="blue-button clean-style-button ">Как это работает</a>
+                <a href="/answers/view/102" target="_blank" class="blue-button clean-style-button ">Как это работает</a>
                 <a href="#" id="scroll-button" class="clean-style-button silver-button">Стать абонентом</a>
             </div>
         </section>
