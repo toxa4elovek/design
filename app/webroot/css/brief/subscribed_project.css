@@ -7,3 +7,10 @@
 .editable_calendar {
     background: url(/img/brief/editable_calendar.png) no-repeat center center;
 }
+.fill-balance-link {
+    font-weight: bold;
+    color: #6590a2;
+}
+.fill-balance-link:hover {
+    text-decoration: underline;
+}

@@ -58,7 +58,7 @@
                 <div id="project-reward"></div>
                 <div style="float: left; margin-left: 16px; margin-top: 4px;">
                     <p style="text-shadow: -1px 0 0 #FFFFFF;text-transform: uppercase; font-size: 12px; color: #888888;" id="current-balance-label">ВАШ ТЕКУЩИЙ СЧЁТ: <?= $balance ?> р.</p>
-                    <a style="font-weight: bold; color: #6590a2;" target="_blank" href="/subscription_plans/subscriber">пополнить</a>
+                    <a class="fill-balance-link" target="_blank" href="/subscription_plans/subscriber">пополнить</a>
                     <p style="text-shadow: -1px 0 0 #FFFFFF;margin-top: 6px; font-size: 12px; line-height: 16px; color: #757575">тариф «<?= $plan['title']?>»<br />
                         действителен до <?= $expirationDate ?></p>
                 </div>
