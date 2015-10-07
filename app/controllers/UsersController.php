@@ -210,14 +210,19 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function solutions() {
-        $conditions = array('Solution.user_id' => Session::read('user.id'));
+        $conditions = array(
+            'Solution.user_id' => $this->userHelper->getId(),
+            'Pitch.blank' => 0
+        );
         $solutions = Solution::all(array(
             'conditions' => $conditions,
             'with' => array('Pitch', 'Solutiontag'),
             'order' => array('Solution.id' => 'desc')
         ));
         $nominatedCount = $this->nominatedCount;
-        $myPitches = Pitch::all(array('conditions' => array('user_id' => Session::read('user.id'), 'published' => 1, 'billed' => 1)));
+        $myPitches = Pitch::all(array('conditions' => array(
+            'user_id' => $this->userHelper->getId(),
+            'published' => 1, 'billed' => 1)));
 
         if ($myPitches->data()) {
             $idList = array();
