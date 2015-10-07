@@ -102,17 +102,21 @@
         </td>
         <?php if($pitch->billed == 1): ?>
             <td width="15"></td>
-            <?php if (($pitch->guaranteed == 0) && ($pitch->status == 0)):?>
+            <?php if (($pitch->guaranteed == 0) && ($pitch->status == 0) && ($pitch->type != 'company_project')):?>
                 <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                     <span class="regular">Гарантировать проект <a href="http://www.godesigner.ru/answers/view/79" target="_blank">(?)</a></span>
                     <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=guarantee">Заказать</a>
                 </td>
             <?php else: ?>
                 <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                    <?php if($pitch->guaranteed == 1):?>
-                    <span class="regular">Проект гарантирован</span>
-                    <?php else: ?>
-                    <span class="regular">Проект не гарантирован</span>
+                    <?php if(($pitch->type == 'company_project') && ($pitch->status == 1) && (!$pitch->awarded)):?>
+                        <a class="order-button" style="width: 252px; top: -3px; float: left;" href="#">Отказаться от всех решений</a>
+                    <?php else :?>
+                        <?php if($pitch->guaranteed == 1):?>
+                        <span class="regular">Проект гарантирован</span>
+                        <?php else: ?>
+                        <span class="regular">Проект не гарантирован</span>
+                        <?php endif;?>
                     <?php endif;?>
                 </td>
             <?php endif; ?>
