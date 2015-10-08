@@ -26,7 +26,8 @@ class SubscriptionPlanTest extends AppUnit {
             'id' => 1,
             'price' => 49000,
             'title' => 'Предпринимательский',
-            'duration' => YEAR
+            'duration' => YEAR,
+            'free' => array(),
         );
         $this->assertEqual($expected, $result);
 
@@ -35,7 +36,8 @@ class SubscriptionPlanTest extends AppUnit {
             'id' => 2,
             'price' => 69000,
             'title' => 'Фирменный',
-            'duration' => YEAR
+            'duration' => YEAR,
+            'free' => array('chooseWinnerFinishDate', 'hideproject'),
         );
         $this->assertEqual($expected, $result);
 
@@ -142,15 +144,27 @@ class SubscriptionPlanTest extends AppUnit {
 
     public function testActivatePlan() {
         // только план
+        $user = User::first(1);
+        $user->companydata = serialize(array(
+            'company_name' => 'Полное название компании',
+        ));
+        $user->short_company_name = 'Краткое Наз';
+        $user->save(null, array('validate' => false));
         $this->assertFalse(User::isSubscriptionActive(1));
         $this->assertEqual(0, User::getBalance(1));
         $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
         SubscriptionPlan::setPlanForPayment($id, 2);
         $result = SubscriptionPlan::activatePlanPayment($id);
+        $plan = SubscriptionPlan::first($id);
         $this->assertTrue($result);
         $this->assertTrue(User::isSubscriptionActive(1));
         $this->assertEqual(0, User::getBalance(1));
+        $this->assertEqual('Оплата абонентского обслуживания (Полное название компании)', $plan->title);
         // только баланс
+
+        $user = User::first(2);
+        $user->short_company_name = 'Краткое Наз';
+        $user->save(null, array('validate' => false));
 
         $this->assertFalse(User::isSubscriptionActive(2));
         $this->assertEqual(0, User::getBalance(2));
@@ -158,9 +172,12 @@ class SubscriptionPlanTest extends AppUnit {
         SubscriptionPlan::setPlanForPayment($id, 0);
         SubscriptionPlan::setFundBalanceForPayment($id, 15000);
         $result = SubscriptionPlan::activatePlanPayment($id);
+        $plan = SubscriptionPlan::first($id);
         $this->assertTrue($result);
         $this->assertFalse(User::isSubscriptionActive(2));
         $this->assertEqual(15000, User::getBalance(2));
+        $this->assertEqual('Оплата абонентского обслуживания (Краткое Наз)', $plan->title);
+
     }
 
     public function testActivatePlanComplex() {
@@ -176,6 +193,7 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual(15000, User::getBalance(1));
         $activatedPlan = SubscriptionPlan::first($id);
         $this->assertEqual(date('Y-m-d H:i:s'), $activatedPlan->totalFinishDate);
+        $this->assertEqual(date('Y-m-d H:i:s'), $activatedPlan->started);
     }
 
     public function extractFundBalanceAmount() {

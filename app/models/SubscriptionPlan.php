@@ -149,7 +149,10 @@ class SubscriptionPlan extends Pitch {
         if($paymentPlan = self::first($id)) {
             $finalResult = false;
             $paymentPlan->billed = 1;
+            $paymentPlan->started = date('Y-m-d H:i:s');
             $paymentPlan->totalFinishDate = date('Y-m-d H:i:s');
+            $companyName = User::getFullCompanyName($paymentPlan->user_id);
+            $paymentPlan->title = $paymentPlan->title . ' (' . $companyName . ')';
             $paymentPlan->save();
             if($planId = self::getPlanForPayment($id)) {
                 if($plan = self::getPlan($planId)) {
