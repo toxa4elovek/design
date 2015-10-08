@@ -54,12 +54,12 @@ class BlogPostEntryBox extends React.Component{
         if(this.props.post.published == 0) {
             postTitleLink = <a href={link} className="not-published">{this.props.post.title}</a>;
         }
-        const currentDateTime = moment();
-        if(!currentDateTime.isAfter(moment(this.props.post.created, "YYYY-MM-DD HH:mm:ss"))) {
+        const currentMoscowTime = moment().tz('Europe/Kaliningrad');
+        if(!currentMoscowTime.isAfter(moment(this.props.post.timezonedCreated))) {
             postTitleLink = <a href={link} className="not-published">{this.props.post.title}</a>;
         }
         return (
-            <div className="blog-post-entry-box" key={this.props.post.id}>
+            <div className="blog-post-entry-box">
                 <div>
                     <div className="blog-post-image-container">
                         <img className="blog-post-image" src={this.props.post.imageurl} alt={this.props.post.title} />

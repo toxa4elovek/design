@@ -47,6 +47,7 @@
 <?=$this->html->script(array(
     'jquery.timeago',
     'moment.min.js',
+    'moment-timezone-with-data-2010-2020.min.js',
     'posts/index/BlogPostTagLink.js',
     'posts/index/BlogPostList.js',
     'posts/index/BlogPostEntryBox.js',

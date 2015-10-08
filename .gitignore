@@ -47,3 +47,4 @@ app/webroot/js/help/*
 app/webroot/js/pitches/plot.js
 app/webroot/js/common/receipt/Receipt.js
 app/webroot/js/pitches/ProjectRewardInput.js
+app/webroot/js/posts/index/BlogPostEntryBox.js
