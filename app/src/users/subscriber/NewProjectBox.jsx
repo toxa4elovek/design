@@ -40,7 +40,7 @@ class NewProjectBox extends React.Component{
             validInputs = false;
         }
         if(validInputs) {
-            const queryString = '?reward=' + priceInput.value + '&title=' + titleInput.value + '&date=' + dateInput.value;
+            const queryString = '?reward=' + priceInput.value + '&title=' + titleInput.value + '&date=' + encodeURIComponent(dateInput.value);
             window.location = '/pitches/brief/20' + queryString;
         }
     }

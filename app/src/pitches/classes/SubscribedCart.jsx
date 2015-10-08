@@ -95,6 +95,9 @@ class AdvancedCart {
                     }
                 }
                 this.id = response.success;
+                if(typeof(response.redirect) != 'undefined') {
+                    window.location = `${response.redirect}`;
+                }
                 const viewUrl = `/pitches/view/${this.id}`;
                 const editUrl = `/pitches/edit/${this.id}`;
                 const deleteUrl = `/pitches/delete/${this.id}`;

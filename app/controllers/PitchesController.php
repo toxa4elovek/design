@@ -580,7 +580,9 @@ class PitchesController extends \app\controllers\AppController {
                             'needToFillAmount' => (int) ($total - User::getBalance($userId))
                         );
                     }else {
-                        Pitch::activate($result);
+                        $operationResult = Pitch::activate($projectId);
+                        $result['operationResult'] = $operationResult;
+                        $result['redirect'] = '/pitches/details/' . $projectId;
                     }
                 }
             }
