@@ -145,4 +145,5 @@
     height: 50px;
     width: 308px;
     line-height: 50px;
+    border-top: 1px solid #fff !important;
 }
