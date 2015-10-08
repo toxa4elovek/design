@@ -28,11 +28,14 @@ use app\extensions\social\TwitterAPI;
 use app\extensions\social\FacebookAPI;
 use app\extensions\social\SocialMediaManager;
 use app\models\SubscriptionPlan;
+use \app\models\Category;
+use \tmhOAuth\tmhOAuth;
+use \tmhOAuth\tmhUtilities;
 
-class User extends \app\models\AppModel {
+class User extends AppModel {
 
     public $hasOne = array();
-    public $hasMany = array('Pitch', 'Solution');
+    public $hasMany = array('Social', 'Solution', 'Pitch');
 
     /**
      * Fill Admin role user's ids here
@@ -66,6 +69,7 @@ class User extends \app\models\AppModel {
     protected static $_behaviors = array(
         'UploadableAvatar'
     );
+
     public static $attaches = array('avatar' => array(
             'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/avatars/'),
             'setPermission' => array('mode' => 0600),
@@ -329,21 +333,6 @@ class User extends \app\models\AppModel {
         foreach ($fav as $f) {
             $pitchesIds[$f->pitch->id . ''] = $f->created;
         }
-        /*
-        $fav_user = Favourite::all(array('conditions' => array('Favourite.user_id' => $userId, 'Favourite.pitch_id' => 0), 'order' => array('id' => 'desc')));
-        $temp = array();
-        foreach ($fav_user as $f) {
-            $temp[] = $f->fav_user_id;
-        }
-
-
-        if (count($temp) > 0) {
-            $fav_pitches = Pitch::all(array('conditions' => array('user_id' => $temp)));
-            foreach ($fav_pitches as $f) {
-                $pitchesIds[$f->id . ''] = $f->started;
-            }
-        }
-        */
         $solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
         foreach ($solutions as $s) {
             $pitchesIds[$s->pitch->id . ''] = $s->created;
@@ -551,7 +540,6 @@ class User extends \app\models\AppModel {
         }
     }
 
-    /// !!!!
     public static function sendSpamNewPitch($params) {
         $recipientsIds = self::getDesignersForSpam($params['pitch']->category_id);
         $recipientsIds = array_unique($recipientsIds);
@@ -778,6 +766,27 @@ class User extends \app\models\AppModel {
     public static function getAdmin() {
         $admin = self::first(array('conditions' => array('isAdmin' => 1)));
         return $admin->id;
+    }
+
+	public static function editUser($data) {
+		$user = User::first($data['user-id']);
+		$user->active = (isset($data['active']) ? 1 : 0);
+		$user->confirmed_email = (isset($data['confirmed_email']) ? 1 : 0);
+		$user->invited = (isset($data['invited']) ? 1 : 0);
+		$user->isClient = (isset($data['isClient']) ? 1 : 0);
+		$user->isDesigner = (isset($data['isDesigner']) ? 1 : 0);
+		$user->isCopy = (isset($data['isCopy']) ? 1 : 0);
+		$user->isAdmin = (isset($data['isAdmin']) ? 1 : 0);
+		$user->email_newpitch = (isset($data['email_newpitch']) ? 1 : 0);
+		$user->email_newcomments = (isset($data['email_newcomments']) ? 1 : 0);
+		$user->email_newpitchonce = (isset($data['email_newpitchonce']) ? 1 : 0);
+		$user->email_newsolonce = (isset($data['email_newsolonce']) ? 1 : 0);
+		$user->email_newsol = (isset($data['email_newsol']) ? 1 : 0);
+		$user->email_digest = (isset($data['email_digest']) ? 1 : 0);
+		$user->email_onlycopy = (isset($data['email_onlycopy']) ? 1 : 0);
+		$user->banned = (isset($data['banned']) ? 1 : 0);
+		$user->phone_valid = (isset($data['phone_valid']) ? 1 : 0);
+		return $user->save();
     }
 
     public static function sendDailyDigest() {
