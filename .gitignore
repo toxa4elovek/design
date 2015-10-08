@@ -45,3 +45,4 @@ app/webroot/js/.module-cache/*
 app/webroot/js/tableloader.js
 app/webroot/js/help/*
 app/webroot/js/pitches/plot.js
+app/webroot/js/posts/index/BlogPostEntryBox.js

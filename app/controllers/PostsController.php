@@ -47,6 +47,7 @@ class PostsController extends AppController {
         }
         $postsList = array();
         foreach($posts as $post) {
+            $post->timezonedCreated = date('c', strtotime($post->created));
             $postsList[] = $post->data();
         }
         $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
