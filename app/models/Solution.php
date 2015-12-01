@@ -372,17 +372,26 @@ http://godesigner.ru/answers/view/73');
         $pitch = Pitch::first($solution->pitch_id);
         $params = compact('solution', 'pitch');
         return static::_filter(__FUNCTION__, $params, function($self, $params) {
-                    extract($params);
-                    $solution->nominated = 1;
-                    $solution->change = date('Y-m-d H:i:s');
-                    $solution->save();
-                    $pitch->awarded = $solution->id;
-                    $pitch->status = 1;
-                    $pitch->awardedDate = date('Y-m-d H:i:s');
-                    $pitch->save();
-                    $result = $solution->data();
-                    return compact('result');
-                });
+            extract($params);
+            $solution->nominated = 1;
+            $solution->change = date('Y-m-d H:i:s');
+            $solution->save();
+            $pitch->awarded = $solution->id;
+            $pitch->status = 1;
+            $pitch->awardedDate = date('Y-m-d H:i:s');
+            $pitch->save();
+            $result = $solution->data();
+            return compact('result');
+        });
+    }
+
+    public static function revert($solution_id)
+    {
+        if ($solution = self::first($solution_id)) {
+            $solution->awarded = 0;
+            $solution->nominated = 0;
+            $solution->save();
+        }
     }
 
     public static function getNumOfUploadedSolutionInLastDay() {
@@ -417,8 +426,9 @@ http://godesigner.ru/answers/view/73');
             $solution->nominated = 1;
             $solution->awarded = 1;
             $solution->save();
-        } else
+        } else {
             return false;
+        }
     }
 
     public static function getCreatedDate($solutionId) {
@@ -462,7 +472,7 @@ http://godesigner.ru/answers/view/73');
             // запоминаем айдишники победителей
             foreach($solutionsArray as $winnerSolution) {
                 $sol = Solution::first($winnerSolution);
-                if(!in_array($sol->user_id, $winnersArray)) {
+                if((is_object($sol)) && (!in_array($sol->user_id, $winnersArray))) {
                     $winnersArray[] = $sol->user_id;
                 }
             }

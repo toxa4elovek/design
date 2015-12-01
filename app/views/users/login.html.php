@@ -118,7 +118,7 @@
                     <strong class="error">Email обязателен</strong>
                 </p>
                 <p>
-                    <input type="password" name="password" placeholder="пароль" class="password" id="Password" />
+                    <input type="password" name="password" placeholder="Пароль" class="password" id="Password" />
                     <strong class="error">Пароль обязателен</strong>
                 </p>
                 <p class="submit">

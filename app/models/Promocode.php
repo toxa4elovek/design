@@ -25,6 +25,7 @@ class Promocode extends \app\models\AppModel {
                     }
                     switch($code->type):
                         case 'pinned': $code->humanType = 'прокачать бриф'; break;
+                        case 'custom_discount': $code->humanType = 'произвольная скидка'; break;
                     endswitch;
                     if(!is_null($code->user_id)) {
                         $user = User::first($code->user_id);
@@ -38,21 +39,35 @@ class Promocode extends \app\models\AppModel {
         });
     }
 
-    public function generateToken($length = 4) {
+    /**
+     * Метод генерирует случайно/ строчку, которая еще не используется в качестве промокода
+     *
+     * @param int $length
+     * @return string
+     */
+    public static function generateToken($length = 4) {
         $exists = true;
         while($exists == true) {
-            $token = substr(md5(rand().rand()), 0, $length);
-            if(!self::first(array('conditions' => array('code' => $token)))) {
+            $randomString = uniqid();
+            $token = substr($randomString, strlen($randomString) - $length, $length);
+            if(!self::first(array(
+                'fields' => array('id'),
+                'conditions' => array('code' => $token)))) {
                 $exists = false;
             }
         }
         return $token;
     }
 
-    public function createPromocode($userId) {
-        $data = array('code' => self::generateToken(), 'type' => 'pinned', 'expires' => date('Y-m-d H:i:s', time() + (2 * MONTH)), 'user_id' => $userId);
-        $newCode = self::create();
-        $newCode->set($data);
+    public static function createPromocode($userId) {
+        $data = array(
+            'code' => self::generateToken(),
+            'type' => 'pinned',
+            'starts' => date('Y-m-d H:i:s'),
+            'expires' => date('Y-m-d H:i:s', time() + (2 * MONTH)),
+            'user_id' => $userId
+        );
+        $newCode = self::create($data);
         $newCode->save();
         return $newCode->code;
     }
@@ -63,13 +78,13 @@ class Promocode extends \app\models\AppModel {
             'code' => $codeString
 
         )))) {
-            if(($code->pitch_id != null) && (($code->type != 'discount') && ($code->type != 'misha') && ($code->type != 'in_twain'))) {
+            if(($code->pitch_id != null) && (!$code->isMultiUse())) {
                 return $result;
             }
-            if(time() > strtotime($code->expires)) {
+            if((time() < strtotime($code->starts)) || (time() > strtotime($code->expires))) {
                 return $result;
             }
-            if(($code->type != 'discount') && ($code->type != 'misha') && ($code->type != 'in_twain')) {
+            if(!$code->isMultiUse()) {
                 $code->user_id = Session::read('user.id');
                 $code->save();
             }
@@ -78,6 +93,11 @@ class Promocode extends \app\models\AppModel {
         return $result;
     }
 
+    /**
+     * Метод возвращяет номера устаревших промокодов для их удаления
+     *
+     * @return mixed
+     */
     public static function getOldPromocodes() {
         return self::all(array(
             'fields' => array('id'),
@@ -86,8 +106,27 @@ class Promocode extends \app\models\AppModel {
                 'pitch_id' => null,
                 'expires' => array(
                     '<' => date('Y-m-d H:i:s'),
-                ),
+                )
             ),
         ));
     }
+
+    /**
+     * Метод определяет, являетсял и запись промокода мультиисппользуемой
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isMultiUse($record) {
+        $multiUse = array(
+            'discount',
+            'misha',
+            'in_twain'
+        );
+        if((in_array($record->type, $multiUse)) || ($record->multi)){
+            return true;
+        }
+        return false;
+    }
+
 }

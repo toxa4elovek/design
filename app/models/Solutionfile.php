@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use \image_manipulation\processor\Upload;
-
 class Solutionfile extends \app\models\AppModel {
 
     protected static $processImage = array(
@@ -134,8 +132,9 @@ class Solutionfile extends \app\models\AppModel {
             ));
             $newfiledata = pathinfo($newname->filename);
             $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
-            $imageProcessor = new Upload();
-            $imageProcessor->uploadandinit($newname->filename);
+            $imageProcessor = new \upload($newname->filename);
+            $imageProcessor->upload($newname->filename);
+            $imageProcessor->init();
             $imageProcessor->uploaded = true;
             $imageProcessor->no_upload_check = true;
             $imageProcessor->file_src_pathname = $newname->filename;

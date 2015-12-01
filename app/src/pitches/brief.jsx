@@ -152,7 +152,7 @@ $(document).ready(function () {
                 $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
                 $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
             }
-        })
+        });
     });
 
     const promoCodeInput = $('#promocode');
@@ -163,10 +163,13 @@ $(document).ready(function () {
             return false;
         }
         $.post('/promocodes/check.json', {"code": value}, function (response) {
+            const promoHint = $('#promo-hint');
             if (response == 'false') {
-                //$('#hint').text('Промокод неверен!');
+                if(value != '8888') {
+                    promoHint.css('display', 'inline-block').text('Промокод неверен!');
+                }
             } else {
-                //$('#hint').text('Промокод активирован!');
+                promoHint.css('display', 'inline-block').text('Промокод активирован!');
                 if ((response.type == 'pinned') || (response.type == 'misha')) {
                     Cart.addOption("“Прокачать” бриф", 0);
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
@@ -178,6 +181,10 @@ $(document).ready(function () {
                     Cart._renderCheck();
                 } else if (response.type == 'in_twain') {
                     Cart.feeRatesReCalc(2);
+                    Cart.updateFees();
+                    Cart._renderCheck();
+                } else if(response.type == 'custom_discount') {
+                    Cart.transferFeeDiscountPercentage = response.data;
                     Cart.updateFees();
                     Cart._renderCheck();
                 }
@@ -530,6 +537,11 @@ $(document).ready(function () {
             award = input.val();
             //console.log('Value is exists - ' + award);
         }
+        if(award <= 14980) {
+            $('#fastpitch-tooltip').fadeIn();
+        }else {
+            $('#fastpitch-tooltip').fadeOut();
+        }
         //console.log('redrawing indicator and updating cart - ' + award);
         drawIndicator(input, award);
         Cart.updateOption($(this).data('optionTitle'), award);
@@ -549,7 +561,6 @@ $(document).ready(function () {
     }
 
     awardInput.keyup(function () {
-        //console.log('keyup');
         const input = $(this);
 
         input.removeClass('initial-price');
@@ -815,9 +826,17 @@ $(document).ready(function () {
     // Unpin check
     $(window).on('scroll', function () {
         var diff = $(window).scrollTop() - $('header').offset().top - 440;
-        /*if (diff > 0) {
-            $('.summary-price').offset({top: $('header').offset().top + 668});
-        }*/
+        var award = awardInput.val();
+        const fastPitchTooltip = $('#fastpitch-tooltip');
+        if((award <= 14980) && (award != '')) {
+            if(fastPitchTooltip.not(':visible').length == 1) {
+                fastPitchTooltip.fadeIn();
+            }
+        }else {
+            if(fastPitchTooltip.is(':visible').length == 1) {
+                fastPitchTooltip.fadeOut();
+            }
+        }
     });
 
     /**/
@@ -978,6 +997,7 @@ function FeatureCart() {
     this.validatetype = 1;
     this.transferFee = feeRates.normal;
     this.transferFeeDiscount = 0;
+    this.transferFeeDiscountPercentage = 0;
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
     this.referalDiscount = 0;
@@ -1005,6 +1025,9 @@ function FeatureCart() {
         }
         if ($('#discount').length > 0) {
             self.transferFeeDiscount = 700;
+        }
+        if ($('#custom_discount').length > 0) {
+            self.transferFeeDiscountPercentage = $('#custom_discount').val();
         }
         if (self.mode == 'edit') {
             if (window.location.hash != '#step3') {
@@ -1092,14 +1115,19 @@ function FeatureCart() {
         }
     };
     this.updateFees = function () {
-        var total = self._calculateOptionsWithoutFee();
+        self._calculateOptionsWithoutFee();
         var award = self.getOption(self.awardKey);
         var commision = Math.round(award * this.transferFee) - this.transferFeeDiscount;
+        if(this.transferFeeDiscountPercentage != 0) {
+            let decimal = this.transferFeeDiscountPercentage / 100;
+            let amount = Math.round(commision * decimal);
+            commision -= amount;
+        }
         if (commision < 0) {
             commision = 0;
         }
         self.content[self.transferFeeKey] = commision;
-    }
+    };
     this.getOption = function (key) {
         if (typeof (self.content[key]) != "undefined") {
             return parseInt(self.content[key]);

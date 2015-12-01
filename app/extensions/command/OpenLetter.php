@@ -2,15 +2,37 @@
 
 namespace app\extensions\command;
 
-use \app\models\Pitch;
+use app\models\Pitch;
+use app\models\User;
 
-class OpenLetter extends \app\extensions\command\CronJob {
+class OpenLetter extends CronJob {
 
     public function run() {
         $this->header('Welcome to the OpenLetter command!');
-        $count = Pitch::openLetter();
-        $messages = ($count['sent'] == 1) ? ' message ' : ' messages ';
-        $have = ($count['sent'] == 1) ? ' has ' : ' have ';
-        $this->out($count['sent'] . $messages . 'of ' . $count['all'] . $have . 'been sent.');
+        $pitches = Pitch::all(array(
+            'conditions' => array(
+                'published' => 1,
+                'blank' => 0,
+                'started' => array(
+                    '>=' => date('Y-m-d H:i:s', time() - DAY - HOUR),
+                    '<=' => date('Y-m-d H:i:s', time() - DAY),
+                ),
+            ),
+            'with' => array('User'),
+        ));
+        $result = array(
+            'all' => count($pitches),
+            'sent' => 0,
+        );
+        if ($result['all'] > 0) {
+            foreach ($pitches as $pitch) {
+                if (User::sendOpenLetter($pitch)) {
+                    $result['sent'] ++;
+                }
+            }
+        }
+        $messages = ($result['sent'] == 1) ? ' message ' : ' messages ';
+        $have = ($result['sent'] == 1) ? ' has ' : ' have ';
+        $this->out($result['sent'] . $messages . 'of ' . $result['all'] . $have . 'been sent.');
     }
 }

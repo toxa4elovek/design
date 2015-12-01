@@ -2,22 +2,12 @@
 
 namespace app\models;
 
-/**
- * Class Post
- *
- * Класс для работы с таблицей posts
- *
- * @package app\models
- */
 class Post extends AppModel {
 
-    /**
-     * @var array связи моделей
-     */
     public $belongsTo = array('User');
 
     /**
-     * Базовые теги для статей
+     * Write Common Post Tags here
      *
      * @var array
      */
@@ -28,10 +18,28 @@ class Post extends AppModel {
         'интервью',
         'команда go',
         'герой месяца',
-        'совет в обед',
+        'cовет в обед',
         'топ 10',
         'фриланс под пальмами',
     );
+
+    public static function __init() {
+        parent::__init();
+        self::applyFilter('save', function ($self, $params, $chain) {
+            $record = $params['entity'];
+            $postNonBreakList = array('и', 'в', 'для', 'не', 'на', 'с', '&mdash;', '-', 'по');
+            foreach($postNonBreakList as $word) {
+                $postNonBreakList[] = $self::mb_ucfirst($word);
+            }
+            foreach($postNonBreakList as $word) {
+                $pattern = "(\s)($word)\s";
+                $record->full = preg_replace("/$pattern/im", '$1$2&nbsp;', $record->full);
+                $record->short = preg_replace("/$pattern/im", '$1$2&nbsp;', $record->short);
+            }
+            $result = $chain->next($self, $params, $chain);
+            return $result;
+        });
+    }
 
     /**
      * Метод увеличивает счетчик просмотров для статьи под номером $id
@@ -47,7 +55,7 @@ class Post extends AppModel {
     }
 
     /**
-     * Метод возвращяет список стандартных тегов в двойных кавычках
+     * Gets the common tags array
      *
      * @return array
      */
@@ -58,14 +66,15 @@ class Post extends AppModel {
                 $res[] = '"' . $tag . '"';
             }
         }
+
         return $res;
     }
 
     /**
-     * Парсим строчку тегов и возвращяем массив
+     * Parsing specified post tags field
      *
      * @param string $tags
-     * @return boolean|string
+     * @return boolean|multitype:string
      */
     public static function parseExistingTags($tags = null) {
         if (empty($tags)) {
@@ -146,6 +155,11 @@ class Post extends AppModel {
             }
         }
         return false;
+    }
+
+    public static function mb_ucfirst($string, $enc = 'UTF-8') {
+        return mb_strtoupper(mb_substr($string, 0, 1, $enc), $enc) .
+        mb_substr($string, 1, mb_strlen($string, $enc), $enc);
     }
 
 }

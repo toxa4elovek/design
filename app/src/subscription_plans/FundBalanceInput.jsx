@@ -10,8 +10,11 @@ class FundBalanceInput extends React.Component {
         });
     }
     onChangeHandle(e) {
-        e.target.value = e.target.value || 0;
-        PaymentActions.updateFundBalanceInput(parseInt(e.target.value));
+        let newValue = e.target.value;
+        if(!e.target.value) {
+            newValue = 0;
+        }
+        PaymentActions.updateFundBalanceInput(parseInt(newValue));
     }
     __getReceiptValue(receipt) {
         let value = 0;
@@ -26,7 +29,7 @@ class FundBalanceInput extends React.Component {
         const initialValue = this.__getReceiptValue(this.props.payload.receipt);
         return(
             <div>
-                <input ref="input" type="text" onChange={this.onChangeHandle} onKeyDown={this.onKeydownHandle} defaultValue={initialValue} className="fund-balance-input" placeholder="9000"/>
+                <input ref="input" type="text" onChange={this.onChangeHandle} onKeyDown={this.onKeydownHandle} defaultValue={initialValue} className="fund-balance-input"/>
             </div>
         )
     }

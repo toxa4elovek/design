@@ -182,5 +182,16 @@ class MoneyFormatter extends \lithium\template\Helper {
 
     }
 
+    /**
+     * Метод вовзращяет процент $discount от числа $value
+     *
+     * @param $value
+     * @param $discount
+     * @return mixed
+     */
+    public function applyDiscount($value, $discount) {
+        return $value - ($value * ($discount * 0.01));
+    }
+
 
 }

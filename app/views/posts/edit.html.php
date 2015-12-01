@@ -60,6 +60,18 @@
 
                             <div class="groupc">
                                 <p>
+                                    <label>Автореклама (после первого параграфа)</label>
+                                    <select name="blog_ad_id">
+                                        <option value="0">Не использовать</option>
+                                        <?php foreach($snippets as $snippet):?>
+                                        <option <?php if($post->blog_ad_id == $snippet->id) echo ' selected="selected" ';?> value="<?= $snippet->id?>"><?= $snippet->title?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </p>
+                            </div>
+
+                            <div class="groupc">
+                                <p>
                                     <label>Теги</label>
                                     <input type="text" name="tags" id="typeahead" />
                                 </p>

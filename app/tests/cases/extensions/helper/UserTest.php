@@ -170,6 +170,12 @@ class UserTest extends AppUnit {
     public function testGetFormattedNameWithParams() {
         $this->assertFalse($this->user->getFormattedName());
         $this->assertEqual('Дмитрий В.', $this->user->getFormattedName('Дмитрий', 'Васильев'));
+        $this->assertFalse($this->user->getFormattedName());
+        $this->user->write('user.id', 1);
+        $this->user->write('user.first_name', 'Иван');
+        $this->user->write('user.last_name', 'Леонтьев');
+        $this->assertEqual('Дмитрий Васильев', $this->user->getFormattedName('Дмитрий', 'Васильев', true));
+        $this->assertEqual('Иван Леонтьев', $this->user->getFormattedName(null, null, true));
     }
 
     public function testIsPostAuthor() {
@@ -311,6 +317,7 @@ class UserTest extends AppUnit {
     }
 
     public function testGetBalance() {
+        $this->assertEqual(false, $this->user->getBalance());
         $this->user = new User(array(
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
@@ -329,6 +336,7 @@ class UserTest extends AppUnit {
     }
 
     public function testGetShortCompanyName() {
+        $this->assertEqual(false, $this->user->getShortCompanyName());
         $this->user = new User(array(
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
@@ -340,6 +348,7 @@ class UserTest extends AppUnit {
     }
 
     public function testGetFullCompanyName() {
+        $this->assertEqual(false, $this->user->getFullCompanyName());
         $this->user = new User(array(
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
@@ -354,6 +363,7 @@ class UserTest extends AppUnit {
     }
 
     public function testIsSubscriptionActive() {
+        $this->assertFalse($this->user->isSubscriptionActive());
         $this->user = new User(array(
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
@@ -374,6 +384,7 @@ class UserTest extends AppUnit {
     }
 
     public function testGetSubscriptionExpireDate() {
+        $this->assertEqual(false, $this->user->getSubscriptionExpireDate());
         $this->user = new User(array(
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
@@ -389,6 +400,41 @@ class UserTest extends AppUnit {
         );
         UserModel::activateSubscription($user->id, $plan);
         $this->assertEqual(date('d.m.Y H:i:s', time() + MONTH), $this->user->getSubscriptionExpireDate());
+    }
+
+    public function testHasActiveSubscriptionDiscount() {
+        $this->user = new User(array(
+            'userModel' => $this->_real_user_model,
+            'expertModel' => $this->_expert_model,
+            'inflector' => $this->_inflector
+        ));
+        UserModel::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = UserModel::getSubscriptionDiscount(2);
+        $this->assertEqual(40, $result);
+        $result = $this->user->getSubscriptionDiscount(2);
+        $this->assertEqual(40, $result);
+    }
+
+    public function testGetGender() {
+        $this->assertEqual(0, $this->user->getGender());
+        $this->user->write('user.gender', 0);
+        $this->assertEqual(0, $this->user->getGender());
+        $this->user->write('user.gender', 1);
+        $this->assertEqual(1, $this->user->getGender());
+        $this->user->write('user.gender', 2);
+        $this->assertEqual(2, $this->user->getGender());
+    }
+
+    public function testGetGenderTxt() {
+        $this->assertEqual('принял', $this->user->getGenderTxt('принял', 0));
+        $this->assertEqual('принял', $this->user->getGenderTxt('принял', 1));
+        $this->assertEqual('приняла', $this->user->getGenderTxt('принял', 2));
+    }
+
+    public function testGetCreatedDate() {
+        $this->assertFalse($this->user->getCreatedDate());
+        $this->user->write('user.created', '2015-01-01 00:00:00');
+        $this->assertEqual('2015-01-01 00:00:00', $this->user->getCreatedDate());
     }
 
 }

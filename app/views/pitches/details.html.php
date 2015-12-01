@@ -76,11 +76,11 @@ function mb_basename($file)
 
                         <?php if(!empty($pitch->{'business-description'})):?>
                         <h2 class="blueheading">Описание бизнеса/деятельности</h2>
-                        <div class="editor_content"><?=$this->brief->briefDetails($pitch->{'business-description'}, $pitch)?></div>
+                        <div class="editor_content"><?=$this->brief->briefDetails($pitch, 'business-description')?></div>
                         <?php endif;?>
 
                         <h2 class="blueheading">Описание проекта</h2>
-                        <div class="editor_content"><?=$this->brief->briefDetails($pitch->description, $pitch)?></div>
+                        <div class="editor_content"><?=$this->brief->briefDetails($pitch)?></div>
 
                         <div class="separator" style="width:620px; margin:0;"></div>
 
@@ -110,7 +110,7 @@ function mb_basename($file)
                             <?= implode(', ', unserialize($pitch->fileFormats))?>
                         </p>
                         <?php endif;?>
-                        <p class="regular"><?=$this->brief->e($pitch->fileFormatDesc)?></p>
+                        <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->fileFormatDesc)?></p>
                         <?php if((!empty($files)) && (count($files) > 0)):?>
                         <div class="separator" style="width:620px; margin:0;"></div>
                         <h2 class="blueheading">Прикрепленные документы:</h2>
@@ -188,9 +188,15 @@ function mb_basename($file)
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->
     </div><!-- /middle -->
 </div><!-- .wrapper -->
+
+<script>
+    var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
+</script>
+
 <?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
 
 <?=$this->html->script(array(
+    'flux/flux.min.js',
     'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999),
     '//assets.pinterest.com/js/pinit.js',
     'jquery.simplemodal-1.4.2.js',
@@ -202,6 +208,8 @@ function mb_basename($file)
     'jquery.timeago.js',
     'social-likes.min.js',
     'konva.0.9.5.min.js',
+    '/js/common/comments/UserAutosuggest.js',
+    '/js/common/comments/actions/CommentsActions.js',
     'pitches/plot.js',
     'pitches/view.js',
     'pitches/gallery.js',

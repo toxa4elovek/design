@@ -119,9 +119,13 @@ class SocialMediaManager {
      * @return string
      */
     public function getWinnerSolutionMessageForSocialNetwork(Record $solutionObject, $index, $social = 'twitter') {
+        $ending = '';
+        if($solutionObject->winner->gender == '2') {
+            $ending = 'а';
+        }
         $templates = array(
-            '%s заработал %s за проект «%s» %s #Go_Deer',
-            '%s победил в проекте «%s», награда %s %s #Go_Deer'
+            "%s заработал$ending %s за проект «%s» %s #Go_Deer",
+            "%s победил$ending в проекте «%s», награда %s %s #Go_Deer"
         );
         $nameInflector = new NameInflector();
         $moneyFormatter = new MoneyFormatter();

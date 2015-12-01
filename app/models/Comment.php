@@ -72,7 +72,7 @@ class Comment extends AppModel {
             $pitch = Pitch::first($params['pitch_id']);
             // Expert writing
             $experts = unserialize($pitch->{'expert-ids'});
-            if($pitch->status > 0 && in_array($params['user_id'], Expert::getPitchExpertUserIds($experts))) {
+            if($pitch->status > 0 && in_array($params['user_id'], Expert::getExpertUserIds($experts))) {
                 $params['private'] = 1;
             }
 
@@ -92,7 +92,7 @@ class Comment extends AppModel {
             $admin = User::getAdmin();
             $pitch = Pitch::first($params['pitch_id']);
             // Expert writing
-            if($pitch->status > 0 && in_array($params['user_id'], Expert::getPitchExpertUserIds($experts))) {
+            if($pitch->status > 0 && in_array($params['user_id'], Expert::getExpertUserIds($experts))) {
                 $data = array(
                     'pitch' => $pitch,
                     'text' => $params['text'],
@@ -163,9 +163,9 @@ class Comment extends AppModel {
                         if (preg_match_all('/(#\d+)/', $record->text, $matches)) {
                             $solutionsHere = array_unique($matches[1]);
                             usort($solutionsHere, function ($s1, $s2) {
-                                if (strlen($s1['name']) < strlen($s2['name'])) {
+                                if (strlen($s1) < strlen($s2)) {
                                     return 1;
-                                } elseif (strlen($s1['name']) > strlen($s2['name'])) {
+                                } elseif (strlen($s1) > strlen($s2)) {
                                     return -1;
                                 } else {
                                     return 0;
@@ -218,8 +218,8 @@ class Comment extends AppModel {
                 $stripEmail = function($record) {
                     if (isset($record->text)) {
                         $briefHelper = new Brief;
-                        $record->text = $briefHelper->stripemail($record->text);
-                        $record->originalText = $briefHelper->stripemail($record->originalText);
+                        $record->text = $briefHelper->stripEmail($record->text);
+                        $record->originalText = $briefHelper->stripEmail($record->originalText);
                     }
                     return $record;
                 };
@@ -342,7 +342,7 @@ class Comment extends AppModel {
         return $commentsFiltered;
     }
 
-    function fetchCommentsTree($commentsRaw) {
+    public static function fetchCommentsTree($commentsRaw) {
         self::$level++;
         foreach ($commentsRaw as $comment) {
             $avatarHelper = new AvatarHelper;

@@ -958,6 +958,7 @@ h1.solution-title-page  {
 }
 .solution-left-panel .createCommentForm {
 	width: 640px;
+	position: relative;
 }
 /*
  * ----- Right Panel -----

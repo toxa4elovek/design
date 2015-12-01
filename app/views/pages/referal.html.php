@@ -8,7 +8,7 @@
                     <div id="r_h_v">
 
                         <h2>Возникли вопросы?</h2>
-                        Если вы&nbsp;не&nbsp;можете найти ответ на&nbsp;свой вопрос&nbsp;&mdash; напишите нам. Мы&nbsp;постараемся ответить вам в&nbsp;течении 24&nbsp;часов по&nbsp;рабочим дням.
+                        Если вы&nbsp;не&nbsp;можете найти ответ на&nbsp;свой <span style="white-space: nowrap;">вопрос — напишите</span> нам. Мы&nbsp;постараемся ответить вам в&nbsp;течении 24&nbsp;часов по&nbsp;рабочим дням.
                         <?=$this->html->link('<img src="/img/otp_em.jpg" alt="Контакты">', 'Pages::contacts', array('escape' => false))?>
                     </div>
 

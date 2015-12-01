@@ -4,20 +4,18 @@ namespace app\tests\cases\models;
 
 use app\extensions\tests\AppUnit;
 use app\models\SubscriptionPlan;
-use app\models\Pitch;
+use app\models\Task;
 use app\models\User;
 
 class SubscriptionPlanTest extends AppUnit {
 
-    public function setUp()
-    {
+    public function setUp() {
         SubscriptionPlan::config(array('connection' => 'test'));
-        $this->rollUp(array('Pitch', 'User'));
+        $this->rollUp(array('Pitch', 'User', 'Task'));
     }
 
-    public function tearDown()
-    {
-        $this->rollDown(array('Pitch', 'User'));
+    public function tearDown() {
+        $this->rollDown(array('Pitch', 'User', 'Task'));
     }
 
     public function testGetPlan() {
@@ -59,6 +57,14 @@ class SubscriptionPlanTest extends AppUnit {
         $result = SubscriptionPlan::getNextSubscriptionPlanId(1);
         $expected = 9;
         $this->assertEqual($expected, $result);
+    }
+
+    public function testHasSubscriptionPlanDraft() {
+        $result = SubscriptionPlan::hasSubscriptionPlanDraft(1);
+        $this->assertFalse($result);
+        SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $result = SubscriptionPlan::hasSubscriptionPlanDraft(1);
+        $this->assertTrue($result);
     }
 
     public function testGetNextFundBalanceId() {
@@ -126,6 +132,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertTrue($result);
         $plan = SubscriptionPlan::first($id);
         $this->assertEqual(array('fund_balance' => 9000), unserialize($plan->specifics));
+        // не существующий план
+        $this->assertFalse(SubscriptionPlan::setFundBalanceForPayment(999999, 9000));
     }
 
     public function testGetFundBalanceForPayment() {
@@ -133,6 +141,16 @@ class SubscriptionPlanTest extends AppUnit {
         SubscriptionPlan::setFundBalanceForPayment($id, 15000);
         $result = SubscriptionPlan::getFundBalanceForPayment(8);
         $this->assertEqual(15000, $result);
+
+        // пустое значение
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $plan = SubscriptionPlan::first($id);
+        $plan->specifics = '';
+        $plan->save();
+        $this->assertNull(SubscriptionPlan::getFundBalanceForPayment($id));
+
+        // не существующий план
+        $this->assertNull(SubscriptionPlan::getFundBalanceForPayment(999999, 9000));
     }
 
     public function testGetPlanForPayment() {
@@ -140,9 +158,29 @@ class SubscriptionPlanTest extends AppUnit {
         SubscriptionPlan::setPlanForPayment($id, 2);
         $result = SubscriptionPlan::getPlanForPayment(8);
         $this->assertEqual(2, $result);
+
+        // сериализованный данных просто нет
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $plan = SubscriptionPlan::first($id);
+        $plan->specifics = '';
+        $plan->save();
+        $this->assertNull(SubscriptionPlan::getPlanForPayment($id));
+
+        // сериалозованные данные есть, но нужного ключа в них нет
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $plan = SubscriptionPlan::first($id);
+        $plan->specifics = serialize(array('noInfo' => true));
+        $plan->save();
+        $this->assertNull(SubscriptionPlan::getPlanForPayment($id));
+
+        // не существующий план
+        $this->assertNull(SubscriptionPlan::getPlanForPayment(999999));
     }
 
     public function testActivatePlan() {
+        // не существующий план
+        $this->assertFalse(SubscriptionPlan::activatePlanPayment(9999));
+
         // только план
         $user = User::first(1);
         $user->companydata = serialize(array(
@@ -160,8 +198,14 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertTrue(User::isSubscriptionActive(1));
         $this->assertEqual(0, User::getBalance(1));
         $this->assertEqual('Оплата абонентского обслуживания (Полное название компании)', $plan->title);
-        // только баланс
+        $this->assertNull(Task::first(array('conditions' =>
+            array(
+            'type' => 'emailFillBalanceSuccessNotification',
+            'model_id' => $id
+            )
+        )));
 
+        // только баланс
         $user = User::first(2);
         $user->short_company_name = 'Краткое Наз';
         $user->save(null, array('validate' => false));
@@ -177,7 +221,14 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertFalse(User::isSubscriptionActive(2));
         $this->assertEqual(15000, User::getBalance(2));
         $this->assertEqual('Оплата абонентского обслуживания (Краткое Наз)', $plan->title);
-
+        $task = Task::first(array('conditions' =>
+            array(
+                'type' => 'emailFillBalanceSuccessNotification',
+                'model_id' => $id
+            )
+        ));
+        $this->assertTrue(is_object($task));
+        $this->assertEqual('lithium\data\entity\Record', get_class($task));
     }
 
     public function testActivatePlanComplex() {
@@ -194,13 +245,39 @@ class SubscriptionPlanTest extends AppUnit {
         $activatedPlan = SubscriptionPlan::first($id);
         $this->assertEqual(date('Y-m-d H:i:s'), $activatedPlan->totalFinishDate);
         $this->assertEqual(date('Y-m-d H:i:s'), $activatedPlan->started);
+        $task = Task::first(array('conditions' =>
+            array(
+                'type' => 'emailFillBalanceSuccessNotification',
+                'model_id' => $id
+            )
+        ));
+        $this->assertTrue(is_object($task));
+        $this->assertEqual('lithium\data\entity\Record', get_class($task));
     }
 
-    public function extractFundBalanceAmount() {
+    public function testExtractFundBalanceAmount() {
         $id = SubscriptionPlan::getNextSubscriptionPlanId(2);
         SubscriptionPlan::setFundBalanceForPayment($id, 15000);
         $result = SubscriptionPlan::extractFundBalanceAmount($id);
         $this->assertEqual(15000, $result);
+
+        // сериализованный данных просто нет
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $plan = SubscriptionPlan::first($id);
+        $plan->specifics = '';
+        $plan->save();
+        $this->assertIdentical(0, SubscriptionPlan::extractFundBalanceAmount($id));
+
+        // сериалозованные данные есть, но нужного ключа в них нет
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $plan = SubscriptionPlan::first($id);
+        $plan->specifics = serialize(array('noInfo' => true));
+        $plan->save();
+        $this->assertIdentical(0, SubscriptionPlan::extractFundBalanceAmount($id));
+
+        // не существующий план
+        $result = SubscriptionPlan::extractFundBalanceAmount(99999);
+        $this->assertIdentical(0, $result);
     }
 
 }

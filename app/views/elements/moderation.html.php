@@ -37,6 +37,7 @@
     <br>
     <form id="delete-solution-form" action="/moderations/add" method="post">
         <h1 class="largest-header regular">Удалить решение</h1>
+        <p id="winner-warning" style="display: none; font-weight: bold; color: red;">Внимание! Решение является победителем в проекте!!!</p>
         <ul>
             <li>
                 <h2>Причина</h2>

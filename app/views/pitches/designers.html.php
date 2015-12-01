@@ -74,9 +74,14 @@
     </div><!-- /middle -->
 </div><!-- .wrapper -->
 
+<script>
+    var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
+</script>
+
 <?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
 
 <?=$this->html->script(array(
+    'flux/flux.min.js',
     'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999),
     '//assets.pinterest.com/js/pinit.js',
     'jquery.simplemodal-1.4.2.js',
@@ -87,6 +92,8 @@
     'jquery.timeago.js',
     'social-likes.min.js',
     'konva.0.9.5.min.js',
+    '/js/common/comments/UserAutosuggest.js',
+    '/js/common/comments/actions/CommentsActions.js',
     'pitches/plot.js',
     'pitches/view.js',
     'pitches/gallery.js'

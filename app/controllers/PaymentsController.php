@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\extensions\helper\MoneyFormatter;
 use \app\models\Pitch;
+use app\models\Addon;
 use app\extensions\billing\Payture;
 use app\models\Payment;
 use app\models\SubscriptionPlan;
@@ -29,6 +30,8 @@ class PaymentsController extends AppController {
                 if ($pitch = Pitch::first(array('conditions' => array('payture_id' => $paytureId)))) {
                     if(($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
                         SubscriptionPlan::activatePlanPayment($pitch->id);
+                    }elseif($pitch->type == 'penalty') {
+                        Pitch::activatePenalty($pitch->id);
                     }else {
                         if ($pitch->blank == 1) {
                             Pitch::activateLogoSalePitch($pitch->id);

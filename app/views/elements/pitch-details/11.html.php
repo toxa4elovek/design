@@ -49,10 +49,10 @@ $subValues = array('Этикетка и контрэтикетка', 'Оформ
 
 <?php if(!empty($details['qualities'])):?>
 <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
-<p class="regular"><?=$this->brief->e($details['qualities'])?></p>
+<p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['qualities'])?></p>
 <?php endif;?>
 
 <?php if(!empty($details['site-inspiration'])):?>
 <h2 class="blueheading">Предпочтения</h2>
-<p class="regular"><?=$this->brief->e($details['site-inspiration'])?></p>
+<p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
  <?php endif;?>

@@ -24,7 +24,7 @@ class ExpertsController extends AppController {
      * @return array
      */
     public function index() {
-        $experts = Expert::all(array('order' => array('id' => 'asc')));
+        $experts = Expert::all(array('order' => array('id' => 'asc'), 'conditions' => array('enabled' => 1)));
         return compact('experts');
     }
 
@@ -35,7 +35,24 @@ class ExpertsController extends AppController {
      */
     public function view() {
         if($expert = Expert::first($this->request->id)) {
-            $questions = $this->popularQuestions();
+            $questions = $this->popularQuestions(10);
+
+            $postNonBreakList = array('и', 'в', 'для', 'не', 'на', 'с', '&mdash;', '-', 'по');
+            $preBreakingList = array('(\s\d+\s)' => 'гг.');
+
+            foreach($postNonBreakList as $word) {
+                $postNonBreakList[] = $this->mb_ucfirst($word);
+            }
+            foreach($postNonBreakList as $word) {
+                $pattern = "(\s)($word) ";
+                $expert->text = preg_replace("/$pattern/im", '$1$2&nbsp;', $expert->text);
+            }
+
+            foreach($preBreakingList as $prevPattern => $word) {
+                $pattern = "$prevPattern($word)";
+                //$expert->text = preg_replace("/$pattern/im", '$1$2&nbsp;', $expert->text);
+            }
+
             return compact('expert', 'questions');
         }else {
             return $this->redirect('/experts');
@@ -52,6 +69,11 @@ class ExpertsController extends AppController {
             return $this->redirect('/experts/view/' . $expert->id);
         }
         return $this->redirect('/experts');
+    }
+
+    public function mb_ucfirst($string, $enc = 'UTF-8') {
+        return mb_strtoupper(mb_substr($string, 0, 1, $enc), $enc) .
+        mb_substr($string, 1, mb_strlen($string, $enc), $enc);
     }
 
 }

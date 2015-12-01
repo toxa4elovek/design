@@ -1,29 +1,31 @@
 <?php
 
-/**
- * Lithium: the most rad php framework
- *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
- * @license       http://opensource.org/licenses/bsd-license.php The BSD License
- */
-
 namespace app\controllers;
 
 use \app\models\Pitch;
-use \app\models\Answer;
 use \app\models\Expert;
-use \app\models\Promo;
 use \app\models\User;
 use \app\models\Grade;
+use app\models\Answer;
 use \app\models\Solution;
 use \app\extensions\mailers\ContactMailer;
 use app\extensions\storage\Rcache;
 use app\models\Schedule;
 
-class PagesController extends \app\controllers\AppController {
+/**
+ * Class PagesController
+ *
+ * Метод для показа статических и полустатических страниц
+ *
+ * @package app\controllers
+ */
+class PagesController extends AppController {
 
+    /**
+     * @var array публичные методы
+     */
     public $publicActions = array(
-        'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch'
+        'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch', 'subscribe'
     );
 
     public function view() {
@@ -32,11 +34,18 @@ class PagesController extends \app\controllers\AppController {
             return $this->redirect('/experts');
         }
         $questions = $this->popularQuestions();
-        return $this->render(array('template' => join('/', $path), 'data' => array('questions' => $questions)));
+        $answers = Answer::all(array('conditions' => array('questioncategory_id' => 2), 'limit' => 10, 'order' => array('hits' => 'desc')));
+        return $this->render(array('template' => join('/', $path), 'data' => array('questions' => $questions, 'answers' => $answers)));
     }
 
     public function stats() {
         return $this->render(array('layout' => 'stats'));
+    }
+
+    public function twitter() {
+        echo '<pre>';
+        var_dump($_GET);
+        die();
     }
 
     public function home() {
@@ -89,10 +98,6 @@ class PagesController extends \app\controllers\AppController {
         return compact('success', 'questions');
     }
 
-    public function howitworks() {
-        
-    }
-
     public function fastpitch() {
         $schedule = Schedule::all(array('conditions' => array('start' => array('>=' => time()))));
         $alllow_time = array();
@@ -136,7 +141,6 @@ class PagesController extends \app\controllers\AppController {
                 }
             } elseif ($max_hour >= '16' && strtotime($max_time) > time()) {
                 $max_hour = '';
-                //var_dump($temp->format('H:i d/m/y'),$temp->format('H:i d/m/y'),date('H:i d/m/y',time()),date('H:i d/m/y',strtotime($max_time)));
                 $alllow_time[strtotime($max_time)] = date('H:i d/m/y', strtotime($max_time));
             }
         }
@@ -148,9 +152,13 @@ class PagesController extends \app\controllers\AppController {
      * Метод для отображения страницы лендинга
      */
     public function subscribe() {
+        if($this->userHelper->isLoggedIn() && User::hasActiveSubscriptionDiscount($this->userHelper->getId())) {
+            $discount = User::getSubscriptionDiscount($this->userHelper->getId());
+            $discountEndTime = User::getSubscriptionDiscountEndTime($this->userHelper->getId());
+            $data = array('discount' => $discount, 'discountEndTime' => $discountEndTime);
+            return $this->render(array('template' => 'subscribe_discount', 'data' => $data));
+        }
 
     }
 
 }
-
-?>

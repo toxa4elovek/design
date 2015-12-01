@@ -30,7 +30,9 @@ class VKAPI extends AbstractAPI {
         $service = new Service($config);
         $data['access_token'] = $this->getAccessToken();
         $data['v'] = '5.34';
-        $data['owner_id'] = '-36153921';
+        if(!isset($data['owner_id'])) {
+            $data['owner_id'] = '-36153921';
+        }
         $data['from_group'] = '1';
         if(isset($data['picture'])) {
             $data['attachments'] = $data['picture'];

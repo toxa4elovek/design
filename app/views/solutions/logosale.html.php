@@ -34,7 +34,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div id="filtertab">
+                <div id="filtertab" style="display: none;">
                     <ul class="activityType filterlist">
                         <li class="first">Вид деятельности</li>
                         <li><a class="prepTag" href="#">Недвижимость / Строительство</a></li>
@@ -82,7 +82,7 @@
                 <li>
                     <h2 class="greyboldheader">Уникальность: каждый лого продается только один раз</h2>
                 </li>
-                <li class="clear">
+                <li class="last-item">
                     <h2 class="greyboldheader">Внесение 3 правок бесплатно!</h2>
                 </li>
             </ul>

@@ -48,7 +48,7 @@
                         <ul class="profile-list-info"></ul>
                         <div class="pitches">
                             <ul class="profile-list">
-                                <li class="regular-small-grey" style="color:#666666;">Город:<span> <?= $this->brief->stripurl($this->brief->removeEmailClean($userdata['city'])) ?></span></li>
+                                <li class="regular-small-grey" style="color:#666666;">Город:<span> <?= $this->brief->stripUrl($this->brief->removeEmailClean($userdata['city'])) ?></span></li>
                                 <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Проектов:<span> <?= $pitchCount ?></span></li>
                                 <div class="g_line"></div>
@@ -62,7 +62,7 @@
                         </div>
                         <div class="likes">
                             <ul class="profile-list">
-                                <li class="regular-small-grey" style="color:#666666;">Дата рожд:<span> <?= $this->brief->stripurl($this->brief->removeEmailClean($userdata['birthdate'])) ?></span></li>
+                                <li class="regular-small-grey" style="color:#666666;">Дата рожд:<span> <?= $this->brief->stripUrl($this->brief->removeEmailClean($userdata['birthdate'])) ?></span></li>
                                 <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Лайков:<span> <?= $totalLikes ?></span></li>
                                 <div class="g_line"></div>
@@ -121,7 +121,7 @@
                             <li style="margin-bottom: 35px;">
                                 <div class="photo_block">
                                     <?php if ($solution->pitch->category_id == 7): ?>
-                                        <a href="/pitches/viewsolution/<?= $solution->id ?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
+                                        <a href="/pitches/viewsolution/<?= $solution->id ?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:normal;padding-top:16px;padding: 16px;">
                                             <?php if (mb_strlen(trim($solution->description)) > 100): ?>
                                                 <?= mb_substr(trim($solution->description), 0, 100, 'UTF-8') ?>
                                             <?php else: ?>

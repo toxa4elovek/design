@@ -7,7 +7,7 @@ foreach($solutions as $solution):
     }
 
     $picCounter2 = 0;
-    if($pitch->category_id != 7):
+    if(!$pitch->isCopyrighting()):
         if(isset($solution->images['solution_galleryLargeSize'][0])):
             foreach($solution->images['solution_galleryLargeSize'] as $image):
                 $picCounter2++;
@@ -36,7 +36,7 @@ foreach($solutions as $solution):
         $visible = false;
 
         if($pitch->private != 1):
-            if($pitch->category_id == 7):
+            if($pitch->isCopyrighting()):
                 if($this->user->isLoggedIn() && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id)))):
                     $visible = true;?>
                     <?php if($picCounter2 > 0):?>
@@ -87,7 +87,7 @@ foreach($solutions as $solution):
         <?php else:?>
             <!-- solo branch -->
             <?php
-            if($pitch->category_id == 7):
+            if($pitch->isCopyrighting()):
                 if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):
                     $visible = true;?>
                     <?php if($picCounter2 > 0):?>
@@ -141,7 +141,7 @@ foreach($solutions as $solution):
         <?php if(($solution->nominated == 1) || ($solution->awarded == 1)):?>
         <span class="medal"></span>
         <?php endif?>
-        <div class="photo_opt" <?php if(($visible == true) && ($pitch->category_id != 7) && (isset($solution->images['solution_galleryLargeSize'][0]))): echo "style=\"padding-top:0; margin-top:144px;\""; endif?> >
+        <div class="photo_opt" <?php if(($visible == true) && (!$pitch->isCopyrighting()) && (isset($solution->images['solution_galleryLargeSize'][0]))): echo "style=\"padding-top:0; margin-top:144px;\""; endif?> >
             <div class="" style="display: block; float:left;">
                 <span class="rating_block">
                     <div class="ratingcont" data-default="<?=$solution->rating?>" data-solutionid="<?=$solution->id?>" style="float: left; height: 9px; background: url(/img/<?=$solution->rating?>-rating.png) repeat scroll 0% 0% transparent; width: 56px;">
@@ -163,7 +163,7 @@ foreach($solutions as $solution):
                 <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
                     <a href="#" data-status="<?= $pitch->status ?>" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
                     <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
-                    <?php if((($pitch->private != 1) && ($pitch->category_id != 7))):
+                    <?php if((($pitch->private != 1) && (!$pitch->isCopyrighting()))):
                         if (rand(1, 100) <= 50) {
                                 $tweetLike = 'Мне нравится этот дизайн! А вам?';
                         } else {
@@ -247,7 +247,15 @@ foreach($solutions as $solution):
             <?php if($this->user->isPitchOwner($pitch->user_id)):?>
                 <?php if (($pitchesCount<1) and ($pitch->status > 0) and (!$selectedsolution)): ?>
                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
-                        <a class="select-winner" href="/solutions/select/<?=$solution->id?>.json" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a>
+                        <?php
+                        $selectWinnerUrl = '/solutions/select/' . $solution->id . '.json';
+                        $selectWinnerClass = 'select-winner';
+                        if(time() > $this->pitch->getChooseWinnerTime($pitch)):
+                            $selectWinnerUrl = '/pitches/penalty/' . $solution->id;
+                            $selectWinnerClass = '';
+                        endif;
+                        ?>
+                        <a class="<?= $selectWinnerClass?>" href="<?=$selectWinnerUrl?>" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a>
                     </li>
                 <?php elseif (($pitch->awarded != $solution->id) && (($pitch->status == 1) or ($pitch->status == 2)) && ($pitch->awarded != 0)): ?>
                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">

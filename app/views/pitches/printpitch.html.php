@@ -52,11 +52,11 @@ $details = unserialize($pitch->specifics);
 
                         <?php if(!empty($pitch->{'business-description'})):?>
                         <h2 class="blueheading">Описание бизнеса/деятельности</h2>
-                        <p class="regular"><?=$this->brief->e($pitch->{'business-description'})?></p>
+                        <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->{'business-description'})?></p>
                         <?php endif;?>
 
                         <h2 class="blueheading">Описание проекта</h2>
-                        <p class="regular"><?=$this->brief->e($pitch->description)?></p>
+                        <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->description)?></p>
 
                         <?=$this->view()->render(array('element' => 'print/' . $pitch->category_id), array('pitch' => $pitch))?>
 
@@ -75,7 +75,7 @@ $details = unserialize($pitch->specifics);
                             <?= implode(', ', unserialize($pitch->fileFormats))?>
                         </p>
                         <?php endif;?>
-                        <p class="regular"><?=$this->brief->e($pitch->fileFormatDesc)?></p>
+                        <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->fileFormatDesc)?></p>
 
 
 

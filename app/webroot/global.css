@@ -188,14 +188,18 @@
   Header
 */
 .header-menu {
-     display: none;
-     position: relative;
-     margin-top: 23px;
-     padding-top: 16px;
-     height: 243px;
-     width: 180px;
-     background: url(/img/menu.png) 0 16px no-repeat;
-     z-index: 120;
+    display: none;
+    position: relative;
+    margin-top: 23px;
+    padding-top: 16px;
+    height: 276px;
+    /*width: 184px;*/
+    background: url(/img/menu.png) 0 12px no-repeat;
+    z-index: 120;
+
+    /* Style for "Layer 7" */
+    width: 195px;
+    /*height: 290px;*/
 }
 
 .header-menu a {
@@ -205,7 +209,7 @@
 .header-menu-item {
     display: inline-block;
     float:left;
-    width:180px;
+    width:195px;
     height:25px;
     padding-top:8px;
 }
@@ -213,7 +217,7 @@
 .header-menu-item-higlighted a {
     display: block;
     color: #ffffff;
-    width: 152px;
+    width: 163px;
     height: 25px;
     text-decoration: none;
     margin-top: -8px;
@@ -224,17 +228,20 @@
 .header-menu-item a:hover {
     color: #464650;
 }
-
+.header-menu-item-new {
+    background-color: #62a26e !important;
+}
 .header-menu-item-higlighted {
     display: inline-block;
     float:left;
-    width:180px;
+    width:195px;
     height:25px;
     padding-top:8px;
-    background-image:url(/img/selected.png);
+    background-color: #d5736a;
 }
 .header-menu-item-higlighted a:hover{
     color: #464650;
+    background-image:url(/img/topmenu/menu_background.png);
 }
 .header-menu-item-higlighted{
     color: #464650;

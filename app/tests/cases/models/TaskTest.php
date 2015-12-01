@@ -26,6 +26,17 @@ class TaskTest extends AppUnit{
             'completed' => '0'
         );
         $this->assertEqual($result, $task->data());
+
+        $result = Task::createNewTask(4, 'postNewsToSocial', HOUR);
+        $task = Task::find('first', array('conditions' => array('id' => $result)));
+        $result = array(
+            'id' => $result,
+            'model_id' => '4',
+            'type' => 'postNewsToSocial',
+            'date' => date('Y-m-d H:i:s', time() + HOUR),
+            'completed' => '0'
+        );
+        $this->assertEqual($result, $task->data());
     }
 
     public function testGetCompletedTask() {

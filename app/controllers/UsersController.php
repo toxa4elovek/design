@@ -22,6 +22,7 @@ use \app\models\Avatar;
 use \app\models\Moderation;
 use \app\models\Wp_post;
 use \app\models\Favourite;
+use app\models\Receipt;
 use \app\models\Tweet;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SpamMailer;
@@ -35,6 +36,7 @@ use app\extensions\storage\Rcache;
 use \tmhOAuth\tmhOAuth;
 use \Exception;
 use \app\extensions\helper\Avatar as AvatarHelper;
+use app\extensions\helper\NameInflector;
 
 class UsersController extends \app\controllers\AppController {
 
@@ -51,7 +53,6 @@ class UsersController extends \app\controllers\AppController {
 
     public function _init() {
         parent::_init();
-        //var_dump($_COOKIE);
         $withMenu = array(
             'office',
             'solutions',
@@ -139,6 +140,10 @@ class UsersController extends \app\controllers\AppController {
 
     public function feed() {
         $date = date('Y-m-d H:i:s');
+        if(!$this->userHelper->isLoggedIn()) {
+            //error_reporting(E_ALL);
+            //ini_set('display_errors', 1);
+        }
         if ((Session::read('user')) && (Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
             $date = Session::read('user.events.date');
             Session::delete('user.events');
@@ -209,12 +214,17 @@ class UsersController extends \app\controllers\AppController {
         $this->redirect('/');
     }
 
+    /**
+     * Метод для отображения страницы портфолио у дизайнера / страницы предложенных решений у заказчика
+     *
+     * @return array|void
+     */
     public function solutions() {
         $conditions = array(
             'Solution.user_id' => $this->userHelper->getId(),
             'Pitch.blank' => 0
         );
-        $solutions = Solution::all(array(
+        $unfilteredSolutions = Solution::all(array(
             'conditions' => $conditions,
             'with' => array('Pitch', 'Solutiontag'),
             'order' => array('Solution.id' => 'desc')
@@ -229,15 +239,26 @@ class UsersController extends \app\controllers\AppController {
             foreach ($myPitches as $pitch) {
                 $idList[] = $pitch->id;
             }
-            $solutions = Solution::all(array(
+            $unfilteredSolutions = Solution::all(array(
                 'conditions' => array('pitch_id' => $idList),
                 'order' => array('Solution.id' => 'desc'),
                 'with' => array('Pitch', 'Solutiontag')
             ));
         }
-        foreach($solutions as $solution) {
-            $solution->tags = Solution::getTagsArrayForSolution($solution);
+        $multiWinnerOriginals = array();
+        foreach($unfilteredSolutions as $solution) {
+            if($solution->multiwinner != 0) {
+                $multiWinnerOriginals[] = $solution->multiwinner;
+            }
         }
+        $filteredSolutions = array();
+        foreach($unfilteredSolutions as $solution) {
+            if(!in_array($solution->id, $multiWinnerOriginals)) {
+                $solution->tags = Solution::getTagsArrayForSolution($solution);
+                $filteredSolutions[] = $solution;
+            }
+        }
+        $solutions = $filteredSolutions;
         $filterType = 'solutions';
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('solutions', 'filterType', 'nominatedCount');
@@ -315,7 +336,7 @@ class UsersController extends \app\controllers\AppController {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id));
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
-            if ($solution->user_id == Session::read('user.id')) {
+            if ($solution->user_id == $this->userHelper->getId()) {
                 $type = 'designer';
             } else {
                 $type = 'client';
@@ -323,28 +344,43 @@ class UsersController extends \app\controllers\AppController {
             if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
             }
+            /** @TODO - remove */
+            if($this->userHelper->getId() == 32) {
+                $type = 'client';
+            }
             $step = 1;
-            return compact('type', 'solution', 'step');
+            $user = User::first($this->userHelper->getId());
+            return compact('type', 'solution', 'step', 'user');
         }
     }
 
     public function step2() {
         \lithium\net\http\Media::type('json', array('text/html'));
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if ((!$this->userHelper->isSolutionAuthor($solution->user_id)) && (!$this->userHelper->isAdmin()) && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))) {
                 return $this->redirect('Users::feed');
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
-            if ($solution->user_id == Session::read('user.id')) {
+            if ($this->userHelper->isSolutionAuthor($solution->user_id)) {
                 $type = 'designer';
-                $messageTo = User::first($solution->pitch->user_id);
+                $designer = User::first($this->userHelper->getId());
+                if(($designer->phone_valid != 1) || ($designer->phone == '')) {
+                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $this->request->id));
+                }
+                $messageTo = $client = User::first($solution->pitch->user_id);
             } else {
                 $type = 'client';
-                $messageTo = User::first($solution->user_id);
+                $messageTo = $designer = User::first($solution->user_id);
             }
             if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
                 $messageTo = User::first($solution->pitch->user_id);
+            }
+            if(!isset($client)) {
+                $client = User::first($solution->pitch->user_id);
+            }
+            if(!isset($designer)) {
+                $designer = User::first($solution->user_id);
             }
             if ($this->request->data) {
                 $newComment = Wincomment::create();
@@ -368,6 +404,10 @@ class UsersController extends \app\controllers\AppController {
                     $recipient = User::first($solution->pitch->user_id);
                 } else {
                     $recipient = User::first($solution->user_id);
+                }
+                if(preg_match('/@GoDesigner/', $newComment->text)) {
+                    $admin = User::first(5);
+                    User::sendSpamWincomment($newComment, $admin, true);
                 }
                 User::sendSpamWincomment($newComment, $recipient);
                 $user = User::first(Session::read('user.id'));
@@ -394,12 +434,34 @@ class UsersController extends \app\controllers\AppController {
                 }
             }
             $step = 2;
+            $nofiles = false;
             if (empty($files)) {
                 $nofiles = true;
-            } else {
-                $nofiles = false;
             }
-            return compact('type', 'solution', 'comments', 'step', 'nofiles', 'messageTo');
+            $nameInflector = new NameInflector();
+            $avatarHelper = new AvatarHelper();
+            $autosuggestUsers = [];
+            $adminGo = User::first(108);
+            $autosuggestUsers[] = [
+                'id' => $adminGo->id,
+                'avatar' => $avatarHelper->show($adminGo->data(), false, true),
+                'name' => $nameInflector->renderName($adminGo->first_name, $adminGo->last_name, false),
+            ];
+            $autosuggestUsers[] = [
+                'id' => $designer->id,
+                'avatar' => $avatarHelper->show($designer->data(), false, true),
+                'name' => $nameInflector->renderName($designer->first_name, $designer->last_name, false),
+            ];
+            $client->visualName = $this->userHelper->getFormattedName($client->first_name, $client->last_name, false);
+            if (($client->is_company == 1) && ($client->short_company_name != '')) {
+                $client->visualName = $client->short_company_name;
+            }
+            $autosuggestUsers[] = [
+                'id' => $client->id,
+                'avatar' => $avatarHelper->show($client->data(), false, true),
+                'name' => $client->visualName
+            ];
+            return compact('type', 'solution', 'comments', 'step', 'nofiles', 'messageTo', 'autosuggestUsers');
         }
     }
 
@@ -407,8 +469,45 @@ class UsersController extends \app\controllers\AppController {
         \lithium\net\http\Media::type('json', array('text/html'));
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
             if (($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
-                    ((Session::read('user.isAdmin') == 1) || (Session::read('user.id') == $solution->pitch->user_id)) && ($solution->step < 3)) {
+                    ($this->userHelper->isAdmin() || ($this->userHelper->isPitchOwner($solution->pitch->user_id))) && ($solution->step < 3)) {
                 $user = User::first($solution->user_id);
+                $client = User::first($solution->pitch->user_id);
+                if(!User::isSubscriptionActive($client->id, $client)) {
+                    $nameInflector = new NameInflector();
+                    $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
+                    $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> Нам понравилось работать с вами, и мы хотим продолжить наше партнерство. Сотрудничайте с&nbsp;дизайнерами и&nbsp;копирайтерами без рисков дальше, корректируйте макеты без сервисных сборов, создавайте проекты от 500р. в&nbsp;течение года, став нашим абонентом. В течение недели <a href="/pages/subscribe" target="_blank">мы предлагаем вам скидку 10%</a> на <a href="/pages/subscribe" target="_blank">годовое обслуживание</a>.';
+                    $data = array(
+                        'user_id' => 108,
+                        'text' => $text,
+                        'step' => 3,
+                        'solution_id' => $solution->id,
+                        'created' => date('Y-m-d H:i:s'),
+                        'touch' => '0000-00-00 00:00:00'
+                    );
+                    Wincomment::create($data)->save();
+                    User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
+                    if(!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
+                        $plan = SubscriptionPlan::getPlan(1);
+                        $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
+                        $receipt = array(
+                            array(
+                                'name' => 'Оплата тарифа «' . $plan['title'] . '»',
+                                'value' => $plan['price']
+                            ),
+                            array(
+                                'name' => 'Пополнение счёта',
+                                'value' => 0
+                            )
+                        );
+                        $discount = 10;
+                        $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
+                        $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
+                        Receipt::updateOrCreateReceiptForProject($paymentId, $receipt);
+                        SubscriptionPlan::setTotalOfPayment($paymentId, Receipt::getTotalForProject($paymentId));
+                        SubscriptionPlan::setPlanForPayment($paymentId, $plan['id']);
+                        SubscriptionPlan::setFundBalanceForPayment($paymentId, 0);
+                    }
+                }
                 User::sendSpamWinstep($user, $solution, '3');
                 $solution->step = 3;
                 $solution->save();
@@ -427,14 +526,24 @@ class UsersController extends \app\controllers\AppController {
             $solution->pitch->category = Category::first($solution->pitch->category_id);
             if ($solution->user_id == Session::read('user.id')) {
                 $type = 'designer';
-                $messageTo = User::first($solution->pitch->user_id);
+                $designer = User::first($this->userHelper->getId());
+                if(($designer->phone_valid != 1) || ($designer->phone == '')) {
+                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $this->request->id));
+                }
+                $messageTo = $client = User::first($solution->pitch->user_id);
             } else {
                 $type = 'client';
-                $messageTo = User::first($solution->user_id);
+                $messageTo = $designer = User::first($solution->user_id);
             }
             if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
                 $type = 'admin';
                 $messageTo = User::first($solution->pitch->user_id);
+            }
+            if(!isset($client)) {
+                $client = User::first($solution->pitch->user_id);
+            }
+            if(!isset($designer)) {
+                $designer = User::first($solution->user_id);
             }
             if ($this->request->data) {
                 $newComment = Wincomment::create();
@@ -458,6 +567,10 @@ class UsersController extends \app\controllers\AppController {
                     $recipient = User::first($solution->pitch->user_id);
                 } else {
                     $recipient = User::first($solution->user_id);
+                }
+                if(preg_match('/@GoDesigner/', $newComment->text)) {
+                    $admin = User::first(5);
+                    User::sendSpamWincomment($newComment, $admin, true);
                 }
                 User::sendSpamWincomment($newComment, $recipient);
                 $user = User::first(Session::read('user.id'));
@@ -490,7 +603,30 @@ class UsersController extends \app\controllers\AppController {
             } else {
                 $nofiles = false;
             }
-            return compact('type', 'solution', 'comments', 'step', 'nofiles', 'messageTo');
+            $nameInflector = new NameInflector();
+            $avatarHelper = new AvatarHelper();
+            $autosuggestUsers = [];
+            $adminGo = User::first(108);
+            $autosuggestUsers[] = [
+                'id' => $adminGo->id,
+                'avatar' => $avatarHelper->show($adminGo->data(), false, true),
+                'name' => $nameInflector->renderName($adminGo->first_name, $adminGo->last_name, false),
+            ];
+            $autosuggestUsers[] = [
+                'id' => $designer->id,
+                'avatar' => $avatarHelper->show($designer->data(), false, true),
+                'name' => $nameInflector->renderName($designer->first_name, $designer->last_name, false),
+            ];
+            $client->visualName = $this->userHelper->getFormattedName($client->first_name, $client->last_name, false);
+            if (($client->is_company == 1) && ($client->short_company_name != '')) {
+                $client->visualName = $client->short_company_name;
+            }
+            $autosuggestUsers[] = [
+                'id' => $client->id,
+                'avatar' => $avatarHelper->show($client->data(), false, true),
+                'name' => $client->visualName,
+            ];
+            return compact('type', 'solution', 'comments', 'step', 'nofiles', 'messageTo', 'autosuggestUsers');
         }
     }
 
@@ -715,7 +851,7 @@ class UsersController extends \app\controllers\AppController {
                     Auth::clear('user');
                     return array('data' => true, 'redirect' => '/users/login');
                 }
-                $userToLog->autologin_token = User::generateToken();
+                $userToLog->autologin_token = $userToLog->generateToken();
                 if (isset($this->request->data['accessToken'])) {
                     $userToLog->accessToken = $this->request->data['accessToken'];
                 }
@@ -755,7 +891,7 @@ class UsersController extends \app\controllers\AppController {
                 if (!isset($this->request->data['case']) || $this->request->data['case'] != 'fu27fwkospf' || !$this->request->is('json')) { // Check for bots
                     return $this->redirect('/');
                 }
-                $user->token = User::generateToken();
+                $user->token = $user->generateToken();
                 $user->created = date('Y-m-d H:i:s');
 
                 if ((!is_null(Session::read('redirect'))) && (Session::read('redirect') != '/users/logout')) {
@@ -901,7 +1037,7 @@ class UsersController extends \app\controllers\AppController {
                 }
                 $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                 if ((isset($this->request->data['remember'])) && ($this->request->data['remember'] == 'on')) {
-                    $userToLog->autologin_token = User::generateToken();
+                    $userToLog->autologin_token = $userToLog->generateToken();
                     setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->autologin_token), time() + strtotime('+1 month'), '/');
                 }
                 $userToLog->save(null, array('validate' => false));
@@ -1055,7 +1191,7 @@ class UsersController extends \app\controllers\AppController {
         $success = false;
         if ($this->request->data) {
             if ($user = User::findByEmail($this->request->data['email'])) {
-                $user->token = User::generateToken();
+                $user->token = $user->generateToken();
                 $user->save(null, array('validate' => false));
                 UserMailer::forgotpassword_mail($user);
                 $success = true;
@@ -1288,7 +1424,7 @@ class UsersController extends \app\controllers\AppController {
                     if ($currentEmail != $this->request->data['email']) {
                         $emailInfo = 'Адрес электронной почты изменён, вам необходимо подтвердить его!';
                         $user->confirmed_email = 0;
-                        $user->token = User::generateToken();
+                        $user->token = $user->generateToken();
                         Session::write('user.email', $user->email);
                         UserMailer::verification_mail($user);
                         $result = $user->save(null, array('validate' => false));
@@ -1370,8 +1506,8 @@ class UsersController extends \app\controllers\AppController {
             }
             $totalViews = (int) User::getTotalViews(Session::read('user.id'));
             $totalLikes = (int) User::getTotalLikes(Session::read('user.id'));
-            $totalFavoriteMe = Favourite::getCountFavoriteMe($user->id);
-            $totalUserFavorite = Favourite::getCountFavoriteUser($user->id);
+            $totalFavoriteMe = Favourite::getNumberOfTimesAddedToFavourite($user->id);
+            $totalUserFavorite = Favourite::getCountFavoriteUsersForUser($user->id);
             $awardedSolutionNum = (int) User::getAwardedSolutionNum(Session::read('user.id'));
             $totalSolutionNum = (int) User::getTotalSolutionNum(Session::read('user.id'));
             if (User::checkRole('admin')) {
@@ -1416,8 +1552,8 @@ class UsersController extends \app\controllers\AppController {
             $totalLikes = (int) User::getTotalLikes($this->request->id);
             $awardedSolutionNum = (int) User::getAwardedSolutionNum($this->request->id);
             $totalSolutionNum = (int) User::getTotalSolutionNum($this->request->id);
-            $totalFavoriteMe = Favourite::getCountFavoriteMe($user->id);
-            $totalUserFavorite = Favourite::getCountFavoriteUser($user->id);
+            $totalFavoriteMe = Favourite::getNumberOfTimesAddedToFavourite($user->id);
+            $totalUserFavorite = Favourite::getCountFavoriteUsersForUser($user->id);
             $isFav = Favourite::first(array('conditions' => array('user_id' => Session::read('user.id'), 'fav_user_id' => $user->id)));
             if (User::checkRole('admin')) {
                 $selectedSolutions = Solution::getUsersSolutions($this->request->id);
@@ -1725,7 +1861,7 @@ class UsersController extends \app\controllers\AppController {
             'OR' => array(
                 array('type' => 'fund-balance'),
                 array('type' => 'plan-payment'),
-                array('type' => 'company-project'),
+                array('type' => 'company_project'),
             )
         );
         if((isset($this->request->query['query']))
@@ -1756,7 +1892,11 @@ class UsersController extends \app\controllers\AppController {
                 }
             }
             if($data['type'] != 'fund-balance') {
-                $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => 'Р.-'));
+                if($data['type'] != 'plan-payment') {
+                    $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['price'], array('suffix' => 'Р.-'));
+                }else {
+                    $data['formattedMoney'] = $moneyFormatter->formatMoney($data['price'], array('suffix' => 'Р.-'));
+                }
             }
             if($data['type'] == 'fund-balance') {
                 $data['formattedDate'] = date('d.m.Y', strtotime($row->totalFinishDate));

@@ -2,7 +2,14 @@
 
 namespace app\models;
 
-class Transaction extends \app\models\AppModel {
+class Transaction extends AppModel {
 
+    public $hasMany = array(
+        'Addon' => array(
+            'key' => array(
+                'ORDER' => 'id',
+            ),
+        ),
+    );
 
 }

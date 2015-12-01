@@ -3,7 +3,6 @@
 namespace app\models;
 
 use app\extensions\storage\Rcache;
-use \image_manipulation\processor\Upload;
 use \app\extensions\social\VKAPI;
 use \app\extensions\social\FacebookAPI;
 use app\extensions\social\TwitterAPI;
@@ -81,8 +80,9 @@ class News extends \app\models\AppModel {
             $newfiledata['filename'] = md5(uniqid('', true));
             $newfiledata['dirname'] = 'events';
             $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
-            $imageProcessor = new Upload();
-            $imageProcessor->uploadandinit($file['tmp_name']);
+            $imageProcessor = new \upload($file['tmp_name']);
+            $imageProcessor->upload($file['tmp_name']);
+            $imageProcessor->init();
             $imageProcessor->uploaded = true;
             $imageProcessor->no_upload_check = true;
             $imageProcessor->file_src_pathname = $file['tmp_name'];
@@ -246,25 +246,8 @@ class News extends \app\models\AppModel {
                 Event::createEventNewsAdded($news->id, 0, $news->created);
                 $result = Event::first(array('conditions' => array('news_id' => $news->id)));
                 if($news->tags == 'Goворит Designer') {
-                    $vkapi = new VKAPI();
-                    $facebookapi = new FacebookAPI();
-                    $manager = new SocialMediaManager();
-                    $data = array(
-                        'message' => $news->title,
-                        'picture' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
-                    );
-                    $vkapi->postMessageToPage($data);
-                    $data = array(
-                        'message' => $news->title,
-                        'link' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook')
-                    );
-                    $facebookapi->postMessageToPage($data);
-                    $twitterapi = new TwitterAPI();
-                    $data = array(
-                        'message' => $news->title . ' — ' . $news->short . ' http://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
-                        'picture' => '/var/godesigner/webroot/' . $news->imageurl
-                    );
-                    $twitterapi->postMessageToPage($data);
+                    Task::createNewTask($result->id, 'postNewsToSocial');
+                    Task::createNewTask($result->id, 'postNewsToSocialDelayed', HOUR);
                 }
             }
         }

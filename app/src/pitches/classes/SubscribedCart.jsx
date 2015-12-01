@@ -170,6 +170,14 @@ class AdvancedCart {
         if ($('.look-variants').length) {
             specificPitchData["logoType"] = this._logoTypeArray();
         }
+        if($('input[name=subscription-type]:checked').length > 0) {
+            if($('input[name=subscription-type]:checked').val() == 'copyrighting') {
+                specificPitchData['isCopyrighting'] = true;
+            }else {
+                specificPitchData['isCopyrighting'] = false;
+            }
+
+        }
         return specificPitchData;
     }
     _logoProperites() {

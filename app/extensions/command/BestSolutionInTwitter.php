@@ -2,19 +2,18 @@
 
 namespace app\extensions\command;
 
-use \app\models\Solution;
-use app\extensions\storage\Rcache;
-use \tmhOAuth\tmhOAuth;
-use \app\models\Event;
+use app\models\Event;
+use app\models\Solution;
 use app\extensions\social\SocialMediaManager;
 use app\extensions\social\TwitterAPI;
+use app\extensions\storage\Rcache;
 
-class BestSolutionInTwitter extends \app\extensions\command\CronJob {
+class BestSolutionInTwitter extends CronJob {
 
     public function run() {
         Rcache::init();
-        $lastday = time() - (DAY);
-        $day = date('Y-m-d', $lastday);
+        $lastDay = time() - (DAY);
+        $day = date('Y-m-d', $lastDay);
         $start = strtotime($day);
         $end = $start + DAY;
         $solution = Solution::first(array(
@@ -22,6 +21,7 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                         'Pitch.status' => 0,
                         'Pitch.published' => 1,
                         'Pitch.private' => 0,
+                        'Pitch.category_id' => array('!=' => 20),
                         'created' => array('>=' => date('Y-m-d H:i:s', $start), '<=' => date('Y-m-d H:i:s', $end))
                     ),
                     'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
@@ -29,7 +29,7 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
         ));
         if($solution) {
             $mediaManager = new SocialMediaManager;
-            $id = $mediaManager->postBestSolutionMessage($solution, $lastday);
+            $id = $mediaManager->postBestSolutionMessage($solution, $lastDay);
             if ($id) {
                 Event::create(array(
                     'type' => 'RetweetAdded',
@@ -46,8 +46,8 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
                 if ($code == 200) {
                     $tweetsDump = Rcache::read('RetweetsFeed');
                     $this->out('Got the data, saving to cache');
-                    $embeddata = json_decode($twitterAPI->apiObject->response['response'], true);
-                    $tweetsDump[$id] = $embeddata['html'];
+                    $embeddedData = json_decode($twitterAPI->apiObject->response['response'], true);
+                    $tweetsDump[$id] = $embeddedData['html'];
                     Rcache::write('RetweetsFeed', $tweetsDump);
                 }
                 $this->out('Event saved');
@@ -59,5 +59,3 @@ class BestSolutionInTwitter extends \app\extensions\command\CronJob {
     }
 
 }
-
-?>

@@ -3,8 +3,6 @@ $(document).ready(function() {
     function preload(arrayOfImages) {
         $(arrayOfImages).each(function(){
             $('<img/>')[0].src = this;
-            // Alternatively you could use:
-            // (new Image()).src = this;
         });
     }
     if(typeof(fileSet) != 'undefined') {
@@ -25,8 +23,7 @@ $(document).ready(function() {
                     receipt.css('top', '20px');
                     receipt.css('left', parentOffset.left + 'px');
                 }else {
-                    receipt.css('position', 'relative').css('left', '0').css('top', '0')
-
+                    receipt.css('position', 'relative').css('left', '0').css('top', '0');
                 }
             }
         });
@@ -165,19 +162,19 @@ $(document).ready(function() {
 
     $('#prevsol').mouseover(function() {
         $('img', this).attr('src', '/img/arrow_solution_prev_hover.png');
-    })
+    });
 
     $('#prevsol').mouseout(function() {
         $('img', this).attr('src', '/img/arrow_solution_left.png');
-    })
+    });
 
     $('#nextsol').mouseover(function() {
         $('img', this).attr('src', '/img/arrow_solution_next_hover.png');
-    })
+    });
 
     $('#nextsol').mouseout(function() {
         $('img', this).attr('src', '/img/arrow_solution_right.png');
-    })
+    });
 
 	if($('input[name=user_id]').val() == $('input[name=pitch_user_id]').val()) {
 		$('#rating').raty({
@@ -207,19 +204,21 @@ $(document).ready(function() {
 
 
     $('.solution-link, .number_img_gallery').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
+        const newComment = $('#newComment');
+        if((newComment.val().match(/^#\d/ig) == null) && (newComment.val().match(/@\W*\s\W\.,/) == null)){
             var prepend = $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $('#newComment').val(newText);
+            var newText = prepend + newComment.val();
+            newComment.val(newText);
         }
         return false;
     });
 
     $('.solution-link-menu').click(function() {
-        if(($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)){
+        const newComment = $('#newComment');
+        if((newComment.val().match(/^#\d/ig) == null) && (newComment.val().match(/@\W*\s\W\.,/) == null)){
             var prepend = $(this).data('commentTo') + ', ';
-            var newText = prepend + $('#newComment').val();
-            $('#newComment').val(newText);
+            var newText = prepend + newComment.val();
+            newComment.val(newText);
             $(this).parent().parent().parent().hide();
         }
         return false;
@@ -231,6 +230,10 @@ $(document).ready(function() {
             if(response.result != false) {
                 if(response.result.nominated) {
                     window.location = '/users/nominated';
+                }
+            }else {
+                if(typeof response.redirect != 'undefined') {
+                    window.location = response.redirect;
                 }
             }
         });
@@ -252,7 +255,7 @@ $(document).ready(function() {
         if (link.attr('data-pressed') == 'on') {
             window.location = link.attr("href");
         }
-        
+
         // Show Delete Moderation Overlay
         $('#popup-delete-solution').modal({
             containerId: 'final-step-clean',
@@ -279,7 +282,7 @@ $(document).ready(function() {
             $spinner.addClass('active');
             $(document).off('click', '#sendDeleteSolution');
             var data = form.serialize();
-            $.post(form.attr('action') + '.json', data).done(function(result) {
+            $.post(form.attr('action') + '.json', data).done(function() {
                 link.click();
             });
             return false;
@@ -304,7 +307,7 @@ $(document).ready(function() {
     });
 
     function formatString(value, strings) {
-        root = strings['string'];
+        const root = strings['string'];
         if((value == 1) || (value.toString().match(/[^1]1$/))) {
             var index = 'first';
         }else if ((value >= 2) && (value <= 4)) {
@@ -337,7 +340,7 @@ $(document).ready(function() {
             descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
             var descAfter = updatedText.slice(descBefore.length);
             $('.solution-description').html(descBefore).show();
-            showMoreLink = $('.description-more');
+            const showMoreLink = $('.description-more');
             showMoreLink.show(500).on('click', function () {
                 $('.solution-description').append(descAfter);
                 descAfter = '';
@@ -366,12 +369,12 @@ $(document).ready(function() {
         var currentIndex = 0;
         $('.preview').hover(function() {
             $('#image').animate({
-                opacity: 0.5,
+                opacity: 0.5
               }, 300);
             $('#left, #right, #zoom').show();
         }, function() {
             $('#image').animate({
-                opacity: 1,
+                opacity: 1
               }, 300);
             $('#left, #right, #zoom').hide();
         });
@@ -381,21 +384,21 @@ $(document).ready(function() {
             $('#right, #zoom').css('opacity', '0');
         }, function(){
             $(this).css('opacity', '0');
-        })
+        });
 
         $('#right').hover(function() {
             $(this).css('opacity', '0.2');
             $('#left, #zoom').css('opacity', '0');
         }, function(){
             $(this).css('opacity', '0');
-        })
+        });
 
         $('#zoom').hover(function() {
             $(this).css('opacity', '0.2');
             $('#left, #right').css('opacity', '0');
         }, function(){
             $(this).css('opacity', '0');
-        })
+        });
 
         var total = fileSet.length;
         $('#left').click(function() {
@@ -412,7 +415,7 @@ $(document).ready(function() {
             $('#image').attr('src', fileSet[currentIndex]);
             $('#zoom').attr('href', zoomFileSet[currentIndex]);
             return false;
-        })
+        });
 
         $('#right').click(function() {
             total = total - 1;
@@ -427,7 +430,7 @@ $(document).ready(function() {
             $('#image').attr('src', fileSet[currentIndex]);
             $('#zoom').attr('href', zoomFileSet[currentIndex]);
             return false;
-        })
+        });
 
     }
 
@@ -481,11 +484,11 @@ $(document).ready(function() {
 
                 if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
-                    work = result.solution.images.solution_solutionView
+                    work = result.solution.images.solution_solutionView;
                 }else {
                     // case when we don't have gallerySiteSize image size
                     viewsize = result.solution.images.solution;
-                    work = result.solution.images.solution
+                    work = result.solution.images.solution;
                 }
                 if ($.isArray(storage)) {
                     $.each(work, function(idx, field) {
@@ -598,9 +601,9 @@ $(document).ready(function() {
                 // Solution Author views nothing
             } else { // Any User
                 if ((result.pitch.status != 1) && (result.pitch.status != 2)) {
-                    var already = ''
+                    var already = '';
                     if(result.likes == true) {
-                        already = ' already'
+                        already = ' already';
                     }
 
                     $('<div class="like-wrapper"><div class="left">поддержи</div> \
@@ -610,19 +613,19 @@ $(document).ready(function() {
                     $('.like-widget[data-id=' + result.solution.id + ']').click(function() {
                         $(this).toggleClass('already');
                         if($(this).hasClass('already')) {
-                            var counter = $('.value-likes')
-                            var solutionId = $(this).data('id')
+                            var counter = $('.value-likes');
+                            var solutionId = $(this).data('id');
                             $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
                                 counter.html(parseInt(response.likes));
                             });
                         }else {
-                            var counter = $('.value-likes')
-                            var solutionId = $(this).data('id')
+                            var counter = $('.value-likes');
+                            var solutionId = $(this).data('id');
                             $.post('/solutions/unlike/' + solutionId + '.json', {"uid": currentUserId}, function(response) {
                                 counter.html(parseInt(response.likes));
                             });
                         }
-                        return false
+                        return false;
                     });
                 }
             }
@@ -655,7 +658,7 @@ $(document).ready(function() {
                 var viewLength = 100; // Description string cut length parameter
                 if (desc.length > viewLength) {
                     var descBefore = desc.slice(0, viewLength - 1);
-                    descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")))
+                    descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
                     var descAfter = desc.slice(descBefore.length);
                     $('.solution-description').html(descBefore);
                     var showMoreLink = $('.description-more');
@@ -690,7 +693,7 @@ $(document).ready(function() {
                                 var downloadUrl = '/solutionfiles' + object.weburl;
                             }
                             html += '<a target="_blank" href="' + downloadUrl + '" class="attach">' + object.originalbasename + '</a><br>'
-                        })
+                        });
                     }else {
                         if(result.solution.images.solution.weburl.match(/solutions/)) {
                             var downloadUrl = result.solution.images.solution.weburl;
@@ -701,7 +704,7 @@ $(document).ready(function() {
                         html = '<a href="' + result.solution.images.solution.weburl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
                     }
                     html += '</div>';
-                    $('.solution-description').prev().html('ФАЙЛЫ')
+                    $('.solution-description').prev().html('ФАЙЛЫ');
                     $('.solution-description').html(html);
                 }
             }

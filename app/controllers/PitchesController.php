@@ -2,74 +2,69 @@
 
 namespace app\controllers;
 
-use \app\models\Bill;
-use \app\models\Pitch;
-use \app\models\Pitchrating;
-use \app\models\Pitchfile;
-use \app\models\Category;
-use \app\models\Grade;
-use \app\models\Addon;
-use \app\models\Solution;
-use \app\models\Comment;
-use \app\models\User;
-use \app\models\Historycomment;
-use \app\models\Historysolution;
-use \app\models\Transaction;
-use \app\models\Receipt;
-use \app\models\Request;
-use \app\models\Expert;
-use \app\models\Promocode;
-use \app\models\Paymaster;
-use \app\models\Payanyway;
-use \app\models\Promoted;
-use app\models\Ratingchange;
-use \app\models\Avatar;
-use \app\models\SubscriptionPlan;
-use \app\models\Url;
-use \app\models\Like;
-use \app\models\Tag;
-use \app\models\Uploadnonce;
-use \app\models\Note;
-use \app\extensions\paymentgateways\Webgate;
-use \lithium\storage\Session;
-use \lithium\analysis\Logger;
-use \app\extensions\helper\MoneyFormatter;
-use \app\extensions\helper\PitchTitleFormatter;
-use \app\extensions\helper\PdfGetter;
-use \app\extensions\helper\Avatar as AvatarHelper;
-use \app\extensions\helper\User as UserHelper;
-use \Exception;
+use app\extensions\helper\NameInflector;
+use app\models\Bill;
+use app\models\Pitch;
+use app\models\Pitchrating;
+use app\models\Pitchfile;
+use app\models\Category;
+use app\models\Addon;
+use app\models\Solution;
+use app\models\Comment;
+use app\models\User;
+use app\models\Transaction;
+use app\models\Receipt;
+use app\models\Request;
+use app\models\Expert;
+use app\models\Promocode;
+use app\models\Paymaster;
+use app\models\Payanyway;
+use app\models\SubscriptionPlan;
+use app\models\Url;
+use app\models\Like;
+use app\models\Tag;
+use app\models\Uploadnonce;
+use app\models\Note;
+use app\extensions\paymentgateways\Webgate;
+use lithium\storage\Session;
+use lithium\analysis\Logger;
+use app\extensions\helper\MoneyFormatter;
+use app\extensions\helper\PitchTitleFormatter;
+use app\extensions\helper\PdfGetter;
+use app\extensions\helper\Avatar as AvatarHelper;
+use app\extensions\helper\User as UserHelper;
+use Exception;
 use app\extensions\storage\Rcache;
 
-
-class PitchesController extends \app\controllers\AppController {
-
+class PitchesController extends AppController
+{
     /**
-     * Методы, доступные без аутентификации
+     * Методы, доступные без аутентификации.
      *
      * @var array
      */
-    public $publicActions = array(
+    public $publicActions = [
         'crowdsourcing', 'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
-        'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch'
-    );
+        'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch',
+    ];
 
     /**
-     * Метод выводит список питчей (html,json)
+     * Метод выводит список питчей (html,json).
      *
      * @return array
      */
-    public function index() {
+    public function index()
+    {
         $categories = Category::all();
         $hasOwnHiddenPitches = false;
         if (Session::read('user.id')) {
-            $usersPitches = Pitch::all(array('conditions' => array(
+            $usersPitches = Pitch::all(['conditions' => [
                             'type' => '',
                             'user_id' => Session::read('user.id'),
                             'published' => 0,
                             'status' => 0,
-                            'blank' => 0
-                        ), 'with' => array('Category')));
+                            'blank' => 0,
+                        ], 'with' => ['Category']]);
             if ($usersPitches) {
                 $hasOwnHiddenPitches = true;
             }
@@ -122,56 +117,59 @@ class PitchesController extends \app\controllers\AppController {
             $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title'], 80);
             $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
             $pitchList[] = $pitch;
-            $i++;
+            ++$i;
         }
         $data = array(
             'pitches' => $pitchList,
             'info' => array(
                 'page' => $page,
-                'total' => $total
+                'total' => $total,
             ),
         );
         $query = $this->request->query;
-        return compact('data', 'categories', 'query', 'selectedCategory');
+        $debug = $this->debug->dumpDebugInfo();
+
+        return compact('data', 'categories', 'query', 'selectedCategory', 'debug');
     }
 
     /**
-     * Метод выводит соглашение, если закрытый питч
+     * Метод выводит соглашение, если закрытый питч.
      *
      * @return object|void
-     *
      */
-    public function agreement() {
+    public function agreement()
+    {
         if (isset($this->request->params['id'])) {
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->params['id']), 'with' => array('User')));
             if ($pitch->private == 1) {
                 return $this->render(array('layout' => false, 'data' => compact('pitch')));
             } else {
-                return $this->redirect('/pitches/details/' . $this->request->params['id']);
+                return $this->redirect('/pitches/details/'.$this->request->params['id']);
             }
         }
         die();
     }
 
     /**
-     * Метод выводит проекты для страницы "Мои проекты"
+     * Метод выводит проекты для страницы "Мои проекты".
      *
      * @return array
      */
-    public function participate() {
+    public function participate()
+    {
         $categories = Category::all();
-        if($this->request->query['type'] == 'favourites') {
+        if ($this->request->query['type'] == 'favourites') {
             $pitchesId = User::getFavouritePitches(Session::read('user.id'));
-        }elseif(($this->request->query['type'] == 'awarded') || ($this->request->query['type'] == 'completion-stage')) {
+        } elseif (($this->request->query['type'] == 'awarded') || ($this->request->query['type'] == 'completion-stage')) {
             $pitchesId = User::getUserRelatedPitches(Session::read('user.id'), true);
-        }else {
+        } else {
             $pitchesId = User::getUserRelatedPitches(Session::read('user.id'));
         }
         $data = array(
             'pitches' => array(),
             'info' => array(
                 'page' => 1,
-                'total' => 0
+                'total' => 0,
             ),
         );
         if (!empty($pitchesId)) {
@@ -187,7 +185,7 @@ class PitchesController extends \app\controllers\AppController {
             $category = Pitch::getQueryCategory($this->request->query['category']);
             $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
             $conditions = array('Pitch.id' => $pitchesId);
-            if ($this->request->query['type'] != 'favourites'){
+            if ($this->request->query['type'] != 'favourites') {
                 $type = Pitch::getQueryType($this->request->query['type']);
                 $conditions += $type;
             }
@@ -195,7 +193,7 @@ class PitchesController extends \app\controllers\AppController {
             $conditions += $priceFilter;
             $conditions += $search;
 
-            if(isset($this->request->query['page'])) {
+            if (isset($this->request->query['page'])) {
                 $page = abs(intval($this->request->query['page']));
             }
 
@@ -240,27 +238,29 @@ class PitchesController extends \app\controllers\AppController {
             $tempPitchList = array_slice($tempPitchList, ($page - 1) * $limit, $limit, true);
 
             $pitchList = array();
-            $pitchTitleHelper = new PitchTitleFormatter;
+            $pitchTitleHelper = new PitchTitleFormatter();
             foreach ($tempPitchList as &$pitch) {
                 $pitch['sort'] = $i;
                 $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title'], 80);
                 $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
                 $pitchList[] = $pitch;
-                $i++;
+                ++$i;
             }
             $data = array(
                 'pitches' => $pitchList,
                 'info' => array(
                     'page' => $page,
-                    'total' => $total
+                    'total' => $total,
                 ),
             );
         }
         $query = $this->request->query;
+
         return compact('data', 'categories', 'query', 'selectedCategory', 'conditions');
     }
 
-    public function updatefiles() {
+    public function updatefiles()
+    {
         if ($pitch = Pitch::first($this->request->data['id'])) {
             $existingArray = array();
             //$existingArray = unserialize($pitch->filesId);
@@ -274,12 +274,15 @@ class PitchesController extends \app\controllers\AppController {
             $fileIds = serialize($existingArray);
             $pitch->filesId = $fileIds;
             $res = $pitch->save();
+
             return $fileIds;
         }
+
         return 'false';
     }
 
-    public function delete() {
+    public function delete()
+    {
         if ($pitch = Pitch::first($this->request->id)) {
             if (($pitch->user_id == Session::read('user.id')) && ($pitch->published == 0) && ($pitch->billed == 0) && ($pitch->ideas_count == 0)) {
                 $pitch->delete();
@@ -287,19 +290,21 @@ class PitchesController extends \app\controllers\AppController {
             if (!$this->request->is('json')) {
                 return $this->redirect('/pitches');
             }
+
             return $pitch->data();
         }
     }
 
-    public function callback() {
+    public function callback()
+    {
         $secretword = 'ge6biTwUghs78g73sY6'; //секретное слово
         //$secretword = 'mO74WC9rnOJu'; //секретное слово
         //проверяем что пришли правильные данные
-        if ((isset($this->request->data["SIGN_CALLBACK"])) && (trim($this->request->data["SIGN_CALLBACK"]) == md5($this->request->data["TERMINAL"] . $this->request->data["TIMESTAMP"] . $this->request->data["ORDER"] . $this->request->data["AMOUNT"] . $this->request->data["RESULT"] . $this->request->data["RC"] . $this->request->data["RRN"] . $this->request->data["INT_REF"] . $this->request->data["TRTYPE"] . $this->request->data["AUTHCODE"] . $secretword))) {
+        if ((isset($this->request->data['SIGN_CALLBACK'])) && (trim($this->request->data['SIGN_CALLBACK']) == md5($this->request->data['TERMINAL'].$this->request->data['TIMESTAMP'].$this->request->data['ORDER'].$this->request->data['AMOUNT'].$this->request->data['RESULT'].$this->request->data['RC'].$this->request->data['RRN'].$this->request->data['INT_REF'].$this->request->data['TRTYPE'].$this->request->data['AUTHCODE'].$secretword))) {
             //проверяем что операция прошла успешно
             Logger::write('info', serialize($this->request->data), array('name' => 'masterbank'));
-            if (0 == $this->request->data["RESULT"]) {
-                switch ($this->request->data["TRTYPE"]) {
+            if (0 == $this->request->data['RESULT']) {
+                switch ($this->request->data['TRTYPE']) {
                     case 0:
                         //Авторизован (пользователь оплатил. данные на его карте заблокированы, но не списаны)
                         /*
@@ -341,20 +346,23 @@ class PitchesController extends \app\controllers\AppController {
             $transaction->set($this->request->data);
             $transaction->save();
         }
-        header("HTTP/1.0 200 OK");
+        header('HTTP/1.0 200 OK');
         die();
     }
 
-    function paymaster() {
+    public function paymaster()
+    {
         Logger::write('info', serialize($this->request->data), array('name' => 'paymaster'));
         if (!empty($this->request->data) && !empty($this->request->data['LMI_MERCHANT_ID']) && !empty($this->request->data['LMI_PAYMENT_SYSTEM']) && !empty($this->request->data['LMI_CURRENCY']) && !empty($this->request->data['LMI_PAYMENT_AMOUNT']) && !empty($this->request->data['LMI_PAYMENT_NO']) && !empty($this->request->data['LMI_SYS_PAYMENT_DATE']) && !empty($this->request->data['LMI_SYS_PAYMENT_ID']) && !empty($this->request->data['LMI_PAID_AMOUNT']) && !empty($this->request->data['LMI_HASH'])) {
             $transaction = Paymaster::create();
             $transaction->set($this->request->data);
             $transaction->save();
             if ($pitch = Pitch::first($this->request->data['LMI_PAYMENT_NO'])) {
-                if(($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
+                if (($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
                     SubscriptionPlan::activatePlanPayment($pitch->id);
-                }else {
+                } elseif ($pitch->type == 'penalty') {
+                    Pitch::activatePenalty($pitch->id);
+                } else {
                     if ($pitch->multiwinner != 0) {
                         Pitch::activateNewWinner($this->request->data['LMI_PAYMENT_NO']);
                     } else {
@@ -365,11 +373,12 @@ class PitchesController extends \app\controllers\AppController {
                 Addon::activate($addon);
             }
         }
-        header("HTTP/1.0 200 OK");
+        header('HTTP/1.0 200 OK');
         die();
     }
 
-    public function payanyway() {
+    public function payanyway()
+    {
         Logger::write('info', serialize($this->request->data), array('name' => 'payanyway'));
         if (!empty($this->request->data) && !empty($this->request->data['MNT_ID']) && !empty($this->request->data['MNT_TRANSACTION_ID']) && !empty($this->request->data['MNT_AMOUNT'])
         ) {
@@ -379,7 +388,7 @@ class PitchesController extends \app\controllers\AppController {
             if (($pitch = Pitch::first($this->request->data['MNT_TRANSACTION_ID'])) && ($pitch->total == $this->request->data['MNT_AMOUNT'])) {
                 if ($pitch->blank == 1) {
                     Pitch::activateLogoSalePitch($this->request->data['MNT_TRANSACTION_ID']);
-                }else {
+                } else {
                     if ($pitch->multiwinner != 0) {
                         Pitch::activateNewWinner($this->request->data['MNT_TRANSACTION_ID']);
                     } else {
@@ -393,10 +402,9 @@ class PitchesController extends \app\controllers\AppController {
         } else {
             echo 'FAIL';
         }
-        header("HTTP/1.0 200 OK");
+        header('HTTP/1.0 200 OK');
         die();
     }
-
 
     /*public function favourites() {
         error_reporting(E_ALL);
@@ -458,12 +466,13 @@ class PitchesController extends \app\controllers\AppController {
 
     /**
      * Метод отображения страницы выбора категорий
-     * Для абонентов делаем редирект на создание абонентского проекта
+     * Для абонентов делаем редирект на создание абонентского проекта.
      *
      * @return array
      */
-    public function create() {
-        if($this->userHelper->isSubscriptionActive()) {
+    public function create()
+    {
+        if ($this->userHelper->isSubscriptionActive()) {
             return $this->redirect('/pitches/brief/20');
         }
         $categories = Category::all();
@@ -471,13 +480,15 @@ class PitchesController extends \app\controllers\AppController {
         foreach ($categories as $category) {
             $categoriesList[$category->id] = $category;
         }
+
         return compact('categories');
     }
 
-    public function getpitchdata() {
-        if(isset($this->request->query['pitch_id'])) {
+    public function getpitchdata()
+    {
+        if (isset($this->request->query['pitch_id'])) {
             $id = $this->request->query['pitch_id'];
-        }else {
+        } else {
             $id = $this->request->data['pitch_id'];
         }
         if (!empty($id) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $id), 'with' => array('Category'))))) {
@@ -485,29 +496,36 @@ class PitchesController extends \app\controllers\AppController {
             $res['needRatingPopup'] = $pitch->ratingPopup($res['avgArray']);
             $res['needWinnerPopup'] = $pitch->winnerPopup();
             $res['type'] = $pitch->type;
+
             return $res;
         }
+
         return false;
     }
 
-    public function apiPitchData() {
+    public function apiPitchData()
+    {
         if (!empty($this->request->query['pitch_id']) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->query['pitch_id']), 'with' => array('Category'))))) {
-            return $_GET['callback'] . '(' . json_encode($pitch->pitchData()) . ')';
+            return $_GET['callback'].'('.json_encode($pitch->pitchData()).')';
         }
+
         return false;
     }
 
-    public function fillbrief() {
+    public function fillbrief()
+    {
         Session::write('fillbrief', true);
+
         return $this->redirect('/pitches/create');
     }
 
     /**
-     * Метод для оотображение страницы редактирования неоплаченного проекта
+     * Метод для оотображение страницы редактирования неоплаченного проекта.
      *
      * @return array|object
      */
-    public function brief() {
+    public function brief()
+    {
         $referal = 0;
         $referalId = 0;
         if (isset($_COOKIE['ref']) && ($_COOKIE['ref'] != '')) {
@@ -525,72 +543,77 @@ class PitchesController extends \app\controllers\AppController {
             //$event->setEventCategory('Создание проекта');
             //$event->setEventAction('Пользователь выбрал категорию «' . $category->title . '»');
             //$gatracking->sendTracking($event);
-            if($category->id != 20) {
+            if ($category->id != 20) {
                 return compact('category', 'experts', 'referal', 'referalId', 'promocode');
-            }else {
+            } else {
                 $value = 9000;
-                if(isset($this->request->query['reward'])) {
+                if (isset($this->request->query['reward'])) {
                     $value = (int) $this->request->query['reward'];
                 }
                 $receipt = array(
                     array(
                         'name' => 'Награда Дизайнеру',
-                        'value' => $value
-                    )
+                        'value' => $value,
+                    ),
                 );
                 $defaultTitle = '';
-                if(isset($this->request->query['title'])) {
+                if (isset($this->request->query['title'])) {
                     $defaultTitle = $this->request->query['title'];
                 }
                 $defaultFinishDate = date('Y-m-d H:i:s', time() + (5 * DAY));
-                if((isset($this->request->query['date'])) && (!empty($this->request->query['date']))) {
+                if ((isset($this->request->query['date'])) && (!empty($this->request->query['date']))) {
                     $defaultFinishDate = $this->request->query['date'];
                 }
                 $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (4 * DAY));
                 $plan = $this->userHelper->getCurrentPlanData();
                 $balance = $this->userHelper->getBalance();
                 $expirationDate = $this->userHelper->getSubscriptionExpireDate('d.m.Y');
+
                 return $this->render(array(
                     'template' => '../pitches/subscribed_project',
-                    'data' => compact('expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate')));
+                    'data' => compact('expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate'), ));
             }
         }
+
         return $this->redirect('Pitches::create');
     }
 
-    public function add_subscribed() {
+    public function add_subscribed()
+    {
         $result = array('error' => 'no data provided');
         if ($this->request->data) {
             $userId = $this->userHelper->getId();
             $actionType = $this->request->data['actionType'];
             $this->request->data['commonPitchData']['user_id'] = $userId;
             $result = Pitch::saveDraft($this->request->data);
-            if(is_null($result)) {
+            if (is_null($result)) {
                 $result = array('error' => 'save error');
-            }else {
+            } else {
                 $projectId = $result;
                 $result = array('success' => $result);
                 Receipt::updateOrCreateReceiptForProject($projectId, $this->request->data['receipt']);
-                if($actionType === 'pay') {
-                    $total = Receipt::findTotal($projectId);
+                if ($actionType === 'pay') {
+                    $total = Receipt::getTotalForProject($projectId);
                     $paymentResult = User::reduceBalance($userId, (int) $total);
-                    if(!$paymentResult) {
+                    if (!$paymentResult) {
                         $result = array(
                             'error' => 'need to fill balance',
-                            'needToFillAmount' => (int) ($total - User::getBalance($userId))
+                            'needToFillAmount' => (int) ($total - User::getBalance($userId)),
                         );
-                    }else {
+                    } else {
                         $operationResult = Pitch::activate($projectId);
                         $result['operationResult'] = $operationResult;
-                        $result['redirect'] = '/pitches/details/' . $projectId;
+                        $result['redirect'] = '/pitches/details/'.$projectId;
                     }
                 }
             }
         }
+
         return $result;
     }
 
-    public function add() {
+    public function add()
+    {
         if ($this->request->data) {
             $featuresData = $this->request->data['features'];
             $commonPitchData = $this->request->data['commonPitchData'];
@@ -709,7 +732,7 @@ class PitchesController extends \app\controllers\AppController {
                         'fileFormatDesc' => $commonPitchData['fileFormatDesc'],
                         'filesId' => serialize($commonPitchData['filesId']),
                         'specifics' => serialize($specificPitchData),
-                        'promocode' => $promocode
+                        'promocode' => $promocode,
                     );
                 }
             } else {
@@ -738,7 +761,7 @@ class PitchesController extends \app\controllers\AppController {
                                     '!=' => $userId,
                                 ),
                                 'referal_token' => $commonPitchData['referalId'],
-                    ))))) {
+                    ), )))) {
                     $referalId = $referalUser->id;
                     setcookie('ref', '', time() - 3600, '/');
                 } else {
@@ -806,22 +829,25 @@ class PitchesController extends \app\controllers\AppController {
                 if ($pitch->referal_sum > 0) {
                     $this->request->data['commonPitchData']['referalDiscount'] = $pitch->referal_sum;
                 }
-                Receipt::createReceipt($this->request->data, false, (bool) ($commonPitchData['category_id'] == 7));
-                $total = Receipt::findTotal($pitch->id);
+                Receipt::createReceipt($this->request->data);
+                $total = Receipt::getTotalForProject($pitch->id);
                 $pitch->total = $total;
             }
             $pitch->save();
             Logger::write('debug', serialize($pitch->data()));
             if ($redirect == true) {
                 Session::write('temppitch', $pitch->id);
+
                 return 'redirect';
             }
             Session::write('unpublished.pitch', $pitch->id);
+
             return $pitch->id;
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         if (($pitch = Pitch::first($this->request->id)) && (($pitch->user_id == Session::read('user.id')) || (Session::read('user.isAdmin') == 1 || (in_array(Session::read('user.id'), User::$admins))))) {
             $category = Category::first($pitch->category_id);
             $files = array();
@@ -838,13 +864,13 @@ class PitchesController extends \app\controllers\AppController {
                     $receiptComission->save();
                     $pitch->referal = 0;
                     $pitch->referal_sum = 0;
-                    $pitch->total = Receipt::findTotal($pitch->id);
+                    $pitch->total = Receipt::getTotalForProject($pitch->id);
                     $pitch->save();
                 }
             }
-            if($category->id != 20) {
+            if (($category->id != 20) || ($category->id == 20 && $pitch->billed == 1)) {
                 return compact('pitch', 'category', 'files', 'experts', 'codes');
-            }else {
+            } else {
                 $receipt = Receipt::exportToArray($pitch->id);
                 $defaultTitle = $pitch->title;
                 $defaultFinishDate = $pitch->finishDate;
@@ -852,14 +878,16 @@ class PitchesController extends \app\controllers\AppController {
                 $plan = $this->userHelper->getCurrentPlanData();
                 $balance = $this->userHelper->getBalance();
                 $expirationDate = $this->userHelper->getSubscriptionExpireDate('d.m.Y');
+
                 return $this->render(array(
                     'template' => '../pitches/subscribed_project',
-                    'data' => compact('pitch', 'files', 'expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate')));
+                    'data' => compact('pitch', 'files', 'expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate'), ));
             }
         }
     }
 
-    public function printpitch() {
+    public function printpitch()
+    {
         if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
             $currentUser = Session::read('user.id');
             if (($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
@@ -867,7 +895,7 @@ class PitchesController extends \app\controllers\AppController {
             }
             if ($pitch->private == 1) {
                 if (($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
-                    return $this->redirect('/requests/sign/' . $pitch->id);
+                    return $this->redirect('/requests/sign/'.$pitch->id);
                 }
             }
             $pitch->views += 1;
@@ -878,12 +906,33 @@ class PitchesController extends \app\controllers\AppController {
             if (!empty($fileIds)) {
                 $files = Pitchfile::all(array('conditions' => array('id' => $fileIds)));
             }
+
             return $this->render(array('layout' => 'print', 'data' => compact('pitch', 'files')));
         }
     }
 
-    public function view() {
+    public function view()
+    {
         if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
+            $nameInflector = new NameInflector();
+            $avatarHelper = new AvatarHelper();
+            $autosuggestUsers = [];
+            $client = User::first($pitch->user_id);
+            $client->visualName = $this->userHelper->getFormattedName($client->first_name, $client->last_name, false);
+            if (($client->is_company == 1) && ($client->short_company_name != '')) {
+                $client->visualName = $client->short_company_name;
+            }
+            $autosuggestUsers[] = [
+                'id' => $client->id,
+                'avatar' => $avatarHelper->show($client->data(), false, true),
+                'name' => $client->visualName,
+            ];
+            $adminGo = User::first(108);
+            $autosuggestUsers[] = [
+                'id' => $adminGo->id,
+                'avatar' => $avatarHelper->show($adminGo->data(), false, true),
+                'name' => $nameInflector->renderName($adminGo->first_name, $adminGo->last_name, false),
+            ];
             $limit = $limitSolutions = 36; // Set this to limit solutions per page
             $offset = 0;
             if (isset($this->request->query['count'])) {
@@ -896,7 +945,7 @@ class PitchesController extends \app\controllers\AppController {
             }
             if ($pitch->private == 1) {
                 if (($pitch->user_id != $currentUser['id']) && (!in_array($currentUser['id'], User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => $currentUser['id'], 'pitch_id' => $pitch->id))))) {
-                    return $this->redirect('/requests/sign/' . $pitch->id);
+                    return $this->redirect('/requests/sign/'.$pitch->id);
                 }
             }
 
@@ -908,25 +957,35 @@ class PitchesController extends \app\controllers\AppController {
             $order = $pitch->getSolutionsSortingOrder($this->request->query);
 
             $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order, 'limit' => $limit, 'offset' => $offset));
+
+            if($solutions) {
+                foreach ($solutions as $solution) {
+                    $autosuggestUsers[] = array(
+                        'id' => $solution->user->id,
+                        'avatar' => $avatarHelper->show($solution->user->data(), false, true),
+                        'name' => $nameInflector->renderName($solution->user->first_name, $solution->user->last_name, false),
+                    );
+                }
+            }
             $solutionsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id)));
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
             $selectedsolution = false;
             $nominatedSolutionOfThisPitch = Solution::first(array(
-                        'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
+                        'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id),
             ));
             $winnersUserIds = array();
             if ($nominatedSolutionOfThisPitch) {
                 $selectedsolution = true;
-                if(!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
+                if (!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
                     $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
                 }
             }
 
-            if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
+            if ((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
                 return $this->redirect('/pitches');
             }
 
-            if(Pitch::isReadyForLogosale($pitch)) {
+            if (Pitch::isReadyForLogosale($pitch)) {
                 $userHelper = new UserHelper(array());
                 if ($userHelper->isLoggedIn()) {
                     $data = Solution::addBlankPitchForLogosale($userHelper->getId(), 0);
@@ -937,18 +996,21 @@ class PitchesController extends \app\controllers\AppController {
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
                 $freePitch = Pitch::getFreePitch();
-                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount', 'winnersUserIds', 'data');
+
+                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount', 'winnersUserIds', 'data', 'autosuggestUsers');
             } else {
                 if (isset($this->request->query['count'])) {
-                    return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds')));
+                    return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds', 'autosuggestUsers')));
                 }
-                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds'));
+
+                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds', 'autosuggestUsers'));
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
-    public function getCommentsNew() {
+    public function getCommentsNew()
+    {
         if (!$this->request->is('json')) {
             return $this->redirect('/pitches');
         }
@@ -963,55 +1025,59 @@ class PitchesController extends \app\controllers\AppController {
             $experts = Expert::getExpertUserIds();
 
             // Fetch Top Level Comments
-            $cacheKey = 'commentsraw_' . $pitch->id;
-            if(!$commentsRaw = Rcache::read($cacheKey)) {
+            $cacheKey = 'commentsraw_'.$pitch->id;
+            if (!$commentsRaw = Rcache::read($cacheKey)) {
                 $commentsRaw = Comment::all(array(
                             'conditions' => array(
                                 'pitch_id' => $pitch->id,
                                 'question_id' => 0,
                             ),
                             'order' => array('Comment.id' => 'desc'),
-                            'with' => array('User')));
+                            'with' => array('User'), ));
                 Rcache::write($cacheKey, $commentsRaw, array(), '+4 hours');
             }
             $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
-            foreach($comments as $comment) {
+            foreach ($comments as $comment) {
                 $comment->user = User::removeExtraFields($comment->user);
             }
+
             return compact('comments', 'experts', 'pitch');
         } else {
             return false;
         }
     }
 
-    public function robots() {
+    public function robots()
+    {
         $pitches = Pitch::all(array('conditions' => array('private' => 1)));
         $text = 'User-agent: *';
         foreach ($pitches->data() as $pitch):
             $text .= '
-Disallow: /pitches/view/' . $pitch['id'] . '
-Disallow: /pitches/details/' . $pitch['id'] . '
-Disallow: /pitches/designers/' . $pitch['id'] . '
-Disallow: /pitches/printpitch/' . $pitch['id'] . '
-Disallow: /pitches/upload/' . $pitch['id'];
+Disallow: /pitches/view/'.$pitch['id'].'
+Disallow: /pitches/details/'.$pitch['id'].'
+Disallow: /pitches/designers/'.$pitch['id'].'
+Disallow: /pitches/printpitch/'.$pitch['id'].'
+Disallow: /pitches/upload/'.$pitch['id'];
         endforeach;
-        file_put_contents(LITHIUM_APP_PATH . '/webroot/robots.txt', $text);
+        file_put_contents(LITHIUM_APP_PATH.'/webroot/robots.txt', $text);
         die();
     }
 
-    public function details() {
+    public function details()
+    {
         if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
             $allpitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1), 'order' => array(
                             'price' => 'desc',
-                            'started' => 'desc'
+                            'started' => 'desc',
             )));
             $first = null;
             $flag = false;
             $i = 0;
             $count = count($allpitches);
             foreach ($allpitches as $cpitch) {
-                if ($i == 0)
+                if ($i == 0) {
                     $first = $cpitch;
+                }
 
                 if ($flag == true) {
                     $prevpitch = $cpitch;
@@ -1023,8 +1089,27 @@ Disallow: /pitches/upload/' . $pitch['id'];
                         $prevpitch = $first;
                     }
                 }
-                $i ++;
+                ++$i;
             }
+            $nameInflector = new NameInflector();
+            $avatarHelper = new AvatarHelper();
+            $autosuggestUsers = [];
+            $client = User::first($pitch->user_id);
+            $client->visualName = $this->userHelper->getFormattedName($client->first_name, $client->last_name, false);
+            if (($client->is_company == 1) && ($client->short_company_name != '')) {
+                $client->visualName = $client->short_company_name;
+            }
+            $autosuggestUsers[] = [
+                'id' => $client->id,
+                'avatar' => $avatarHelper->show($client->data(), false, true),
+                'name' => $client->visualName,
+            ];
+            $adminGo = User::first(108);
+            $autosuggestUsers[] = [
+                'id' => $adminGo->id,
+                'avatar' => $avatarHelper->show($adminGo->data(), false, true),
+                'name' => $nameInflector->renderName($adminGo->first_name, $adminGo->last_name, false),
+            ];
 
             $currentUser = Session::read('user.id');
             if (($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
@@ -1032,20 +1117,19 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
             if ($pitch->private == 1) {
                 if (($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
-                    return $this->redirect('/requests/sign/' . $pitch->id);
+                    return $this->redirect('/requests/sign/'.$pitch->id);
                 }
             }
             $nominatedSolutionOfThisPitch = Solution::first(array(
-                'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
+                'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id),
             ));
             $winnersUserIds = array();
             if ($nominatedSolutionOfThisPitch) {
-                $selectedsolution = true;
-                if(!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
+                if (!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
                     $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
                 }
             }
-            if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
+            if ((!$this->userHelper->isLoggedIn() && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($this->userHelper->getId() != $pitch->user_id && $this->userHelper->getId() != $nominatedSolutionOfThisPitch->user_id))) {
                 return $this->redirect('/pitches');
             }
             $pitch->views += 1;
@@ -1059,16 +1143,27 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $files = Pitchfile::all(array('conditions' => array('id' => $fileIds)));
             }
             $rating = Pitchrating::getRating($currentUser, $pitch->id);
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User')));
+            if($solutions) {
+                foreach ($solutions as $solution) {
+                    $autosuggestUsers[] = array(
+                        'id' => $solution->user->id,
+                        'avatar' => $avatarHelper->show($solution->user->data(), false, true),
+                        'name' => $nameInflector->renderName($solution->user->first_name, $solution->user->last_name, false),
+                    );
+                }
+            }
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts', 'rating', 'winnersUserIds');
+                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts', 'rating', 'winnersUserIds', 'autosuggestUsers');
             } else {
-                return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch', 'rating', 'winnersUserIds')));
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch', 'rating', 'winnersUserIds', 'autosuggestUsers')));
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
-    public function designers() {
+    public function designers()
+    {
         if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
             $limit = $limitDesigners = 6; // Set this to limit of designers per page
             $offset = 0;
@@ -1084,24 +1179,23 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
             if ($pitch->private == 1) {
                 if (($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
-                    return $this->redirect('/requests/sign/' . $pitch->id);
+                    return $this->redirect('/requests/sign/'.$pitch->id);
                 }
             }
             $nominatedSolutionOfThisPitch = Solution::first(array(
-                'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
+                'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id),
             ));
             $winnersUserIds = array();
             if ($nominatedSolutionOfThisPitch) {
-                $selectedsolution = true;
-                if(!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
+                if (!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
                     $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
                 }
             }
-            if((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
+            if ((!$this->userHelper->getId() && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($this->userHelper->getId() != $pitch->user_id && $this->userHelper->getId() != $nominatedSolutionOfThisPitch->user_id))) {
                 return $this->redirect('/pitches');
             }
             $canViewPrivate = false;
-            if (User::getAwardedSolutionNum($currentUser['id']) >= WINS_FOR_VIEW) {
+            if (($this->userHelper->getId()) && (User::getAwardedSolutionNum($this->userHelper->getId()) >= WINS_FOR_VIEW)) {
                 $canViewPrivate = true;
             }
 
@@ -1136,10 +1230,10 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     $searchWord = trim($searchWord);
                 }
                 if (count($words) == 1) {
-                    $query['conditions']['User.first_name'] = array('LIKE' => '%' . $words[0] . '%');
+                    $query['conditions']['User.first_name'] = array('LIKE' => '%'.$words[0].'%');
                 } else {
-                    $query['conditions']['User.first_name'] = array('LIKE' => '%' . $words[0] . '%');
-                    $query['conditions']['User.last_name'] = array('LIKE' => mb_substr($words[1], 0, 1, 'UTF-8') . '%');
+                    $query['conditions']['User.first_name'] = array('LIKE' => '%'.$words[0].'%');
+                    $query['conditions']['User.last_name'] = array('LIKE' => mb_substr($words[1], 0, 1, 'UTF-8').'%');
                 }
                 $distincts = Solution::all($query);
                 $designersCount = count($distincts);
@@ -1151,56 +1245,93 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $o = 0;
             $l = 0;
             foreach ($distincts as $item) {
-                $o++;
-                if ($o <= $offset)
+                ++$o;
+                if ($o <= $offset) {
                     continue;
+                }
                 $item->user = User::first($item->{'user_id'});
                 $item->solutions = Solution::all(array('conditions' => array('user_id' => $item->user->id, 'pitch_id' => $this->request->id), 'order' => array('created' => 'desc')));
                 $designers->append($item);
-                $l++;
-                if ($l == $limit)
+                ++$l;
+                if ($l == $limit) {
                     break;
+                }
             }
 
             $comments = '';
             //$comments = Comment::all(array('conditions' => array('pitch_id' => $this->request->id), 'order' => array('Comment.created' => 'desc'), 'with' => array('User')));
+            $nameInflector = new NameInflector();
+            $avatarHelper = new AvatarHelper();
+            $autosuggestUsers = [];
+            $client = User::first($pitch->user_id);
+            $client->visualName = $this->userHelper->getFormattedName($client->first_name, $client->last_name, false);
+            if (($client->is_company == 1) && ($client->short_company_name != '')) {
+                $client->visualName = $client->short_company_name;
+            }
+            $autosuggestUsers[] = [
+                'id' => $client->id,
+                'avatar' => $avatarHelper->show($client->data(), false, true),
+                'name' => $client->visualName,
+            ];
+            $adminGo = User::first(108);
+            $autosuggestUsers[] = [
+                'id' => $adminGo->id,
+                'avatar' => $avatarHelper->show($adminGo->data(), false, true),
+                'name' => $nameInflector->renderName($adminGo->first_name, $adminGo->last_name, false),
+            ];
+            $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order, 'limit' => $limit, 'offset' => $offset));
 
+            if($solutions) {
+                foreach ($solutions as $solution) {
+                    $autosuggestUsers[] = array(
+                        'id' => $solution->user->id,
+                        'avatar' => $avatarHelper->show($solution->user->data(), false, true),
+                        'name' => $nameInflector->renderName($solution->user->first_name, $solution->user->last_name, false),
+                    );
+                }
+            }
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
-                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds');
+                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers');
             } else {
                 if (isset($this->request->query['count']) || isset($this->request->query['search'])) {
-                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds')));
+                    return $this->render(array('layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers')));
                 }
-                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds')));
+
+                return $this->render(array('layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers')));
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
-    public function crowdsourcing() {
+    public function crowdsourcing()
+    {
         $pitches = Pitch::all(array('conditions' => array('status' => array('<' => 1), 'Pitch.awarded' => 0, 'published' => 1), 'order' => array('started' => 'desc'), 'with' => array('User')));
         foreach ($pitches as $pitch) {
             $solution = Solution::first(array('conditions' => array(
-                            'pitch_id' => $pitch->id
+                            'pitch_id' => $pitch->id,
                         ), 'order' => array('created' => 'desc')));
             $pitch->solution = $solution;
         }
+
         return compact('pitches');
     }
 
     /**
-     * Метод отображения страницы решения html|json
+     * Метод отображения страницы решения html|json.
+     *
      * @return array|object
+     *
      * @throws \Exception
      */
-    public function viewsolution() {
+    public function viewsolution()
+    {
         if (($this->request->id) && ($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('User', 'Pitch', 'Solutiontag'))))) {
             $pitch = Pitch::first(array('conditions' => array('Pitch.id' => $solution->pitch_id), 'with' => array('User')));
             if ($this->request->env('HTTP_X_REQUESTED_WITH')) {
                 $solution->views = Solution::increaseView($this->request->id);
             }
             $data = null;
-            if(Pitch::isReadyForLogosale($pitch) || (isset($this->request->query['exp'])) && ($this->request->query['exp'] == 1)) {
+            if (Pitch::isReadyForLogosale($pitch) || (isset($this->request->query['exp'])) && ($this->request->query['exp'] == 1)) {
                 $userHelper = new UserHelper(array());
                 if ($userHelper->isLoggedIn()) {
                     $data = Solution::addBlankPitchForLogosale($userHelper->getId(), $solution->id);
@@ -1214,13 +1345,13 @@ Disallow: /pitches/upload/' . $pitch['id'];
 
             $solution->description = nl2br($solution->description);
 
-            function getArrayNeighborsByKey($array, $findKey) {
-
+            function getArrayNeighborsByKey($array, $findKey)
+            {
                 if (!array_key_exists($findKey, $array)) {
-                    return FALSE;
+                    return false;
                 }
 
-                $select = $prevous = $next = NULL;
+                $select = $prevous = $next = null;
 
                 foreach ($array as $key => $value) {
                     $thisValue = array($key => $value);
@@ -1228,33 +1359,34 @@ Disallow: /pitches/upload/' . $pitch['id'];
                         $select = key($thisValue);
                         continue;
                     }
-                    if ($select !== NULL) {
+                    if ($select !== null) {
                         $next = key($thisValue);
                         break;
                     }
                     $previous = key($thisValue);
                 }
+                $keys = array_keys($array);
                 if (!isset($previous)) {
-                    $previous = array_pop(array_keys($array));
+                    $previous = array_pop($keys);
                 }
                 if (!isset($next)) {
-                    $next = array_shift(array_keys($array));
+                    $next = array_shift($keys);
                 }
 
                 return array(
                     'prev' => $previous,
                     'current' => $select,
-                    'next' => $next
+                    'next' => $next,
                 );
             }
 
-            $cacheKey = md5(serialize($order)) . '_' . $solution->pitch_id . '_' . $solution->id;
-            if(!$results = Rcache::read($cacheKey)) {
+            $cacheKey = md5(serialize($order)).'_'.$solution->pitch_id.'_'.$solution->id;
+            if (!$results = Rcache::read($cacheKey)) {
                 $solutions = Solution::all(array(
                     'conditions' => array(
-                        'pitch_id' => $solution->pitch_id
+                        'pitch_id' => $solution->pitch_id,
                     ),
-                    'order' => $order)
+                    'order' => $order, )
                 );
                 $results = getArrayNeighborsByKey($solutions->data(), (int) $solution->id);
                 Rcache::write($cacheKey, $results, array(), '+2 hours');
@@ -1268,7 +1400,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $comments = Comment::all(array('conditions' => array('pitch_id' => $solution->pitch->id, 'question_id' => 0), 'order' => array('Comment.id' => 'desc'), 'with' => array('User', 'Pitch')));
             $comments = Comment::filterComments($solution->num, $comments);
             $comments = Comment::filterCommentsTree($comments, $pitch->user_id);
-            foreach($comments as $comment) {
+            foreach ($comments as $comment) {
                 $comment->user = User::removeExtraFields($comment->user);
             }
             $expertsIds = Expert::getExpertUserIds();
@@ -1281,9 +1413,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 }
             }
             // Forbid Copywrited
-            if ($pitch->category_id == 7) {
+            if ($pitch->isCopyrighting()) {
                 if ((Session::read('user') == null) || ($solution->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), $expertsIds)) && (!in_array(Session::read('user.id'), User::$admins)) && ($pitch->user_id != Session::read('user.id'))) {
-                    return $this->redirect('/pitches/view/' . $pitch->id);
+                    return $this->redirect('/pitches/view/'.$pitch->id);
                 }
             }
             // Forbid Private
@@ -1294,12 +1426,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     $canViewPrivate = true;
                 }
                 if ((Session::read('user') == null) || ($solution->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), $expertsIds)) && (!in_array(Session::read('user.id'), User::$admins)) && ($pitch->user_id != Session::read('user.id')) && !$canViewPrivate) {
-                    return $this->redirect('/pitches/view/' . $pitch->id);
+                    return $this->redirect('/pitches/view/'.$pitch->id);
                 }
             }
             $selectedsolution = false;
             $nominatedSolutionOfThisPitch = Solution::first(array(
-                        'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id)
+                        'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id),
             ));
             if ($nominatedSolutionOfThisPitch) {
                 $selectedsolution = true;
@@ -1307,10 +1439,10 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $userData = unserialize($solution->user->{'userdata'});
             $copyrightedInfo = unserialize($solution->copyrightedInfo);
             foreach ($copyrightedInfo['source'] as $key => $value) {
-                $copyrightedInfo['source'][$key] = Url::view($value);
+                $copyrightedInfo['source'][$key] = Url::getShortUrlFor($value);
             }
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
-            $avatarHelper = new AvatarHelper;
+            $avatarHelper = new AvatarHelper();
             $userAvatar = $avatarHelper->show($solution->user->data(), false, true);
             $likes = false;
             if (Session::read('user')) {
@@ -1319,30 +1451,57 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     $likes = true;
                 }
             } else {
-                if (isset($_COOKIE['bmx_' . $solution->id]) && ($_COOKIE['bmx_' . $solution->id] == 'true')) {
+                if (isset($_COOKIE['bmx_'.$solution->id]) && ($_COOKIE['bmx_'.$solution->id] == 'true')) {
                     $likes = true;
                 }
             }
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $pitch->id), 'fields' => array('distinct(user_id)')));
             $experts = Expert::getExpertUserIds();
 
-            $formatter = new MoneyFormatter;
-            $description = mb_substr($pitch->description, 0, 150, 'UTF-8') . ((mb_strlen($pitch->description) > 150) ? '... ' : '. ') . 'Награда: ' . $formatter->formatMoney($pitch->price, array('suffix' => ' рублей')) . (($pitch->guaranteed == 1) ? ', гарантированы' : '');
+            $formatter = new MoneyFormatter();
+            $description = mb_substr($pitch->description, 0, 150, 'UTF-8').((mb_strlen($pitch->description) > 150) ? '... ' : '. ').'Награда: '.$formatter->formatMoney($pitch->price, array('suffix' => ' рублей')).(($pitch->guaranteed == 1) ? ', гарантированы' : '');
             $date = Solution::getCreatedDate($solution->id);
             $isSolutionReady = Solution::isReadyForLogosale($solution, $pitch);
-            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady', 'experts');
+
+            $nameInflector = new NameInflector();
+            $avatarHelper = new AvatarHelper();
+            $autosuggestUsers = [];
+            $client = User::first($pitch->user_id);
+            $client->visualName = $this->userHelper->getFormattedName($client->first_name, $client->last_name, false);
+            if (($client->is_company == 1) && ($client->short_company_name != '')) {
+                $client->visualName = $client->short_company_name;
+            }
+            $autosuggestUsers[] = [
+                'id' => $client->id,
+                'avatar' => $avatarHelper->show($client->data(), false, true),
+                'name' => $client->visualName,
+            ];
+            $adminGo = User::first(108);
+            $autosuggestUsers[] = [
+                'id' => $adminGo->id,
+                'avatar' => $avatarHelper->show($adminGo->data(), false, true),
+                'name' => $nameInflector->renderName($adminGo->first_name, $adminGo->last_name, false),
+            ];
+            $autosuggestUsers[] = [
+                'id' => $solution->user->id,
+                'avatar' => $avatarHelper->show($solution->user->data(), false, true),
+                'name' => $nameInflector->renderName($solution->user->first_name, $solution->user->last_name, false),
+            ];
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady', 'experts', 'autosuggestUsers');
         } else {
             throw new Exception('Public:Такого решения не существует.', 404);
         }
     }
 
     /**
-     * Метод загрузки нового решения html|json
+     * Метод загрузки нового решения html|json.
      *
      * @return array|object|string|void
+     *
      * @throws Exception
      */
-    public function upload() {
+    public function upload()
+    {
         \lithium\net\http\Media::type('json', array('text/html'));
         if (($this->request->id > 0) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             if (($pitch->status != 0) || ($pitch->published != 1)) {
@@ -1354,7 +1513,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
             }
 
             $userHelper = new UserHelper(array());
-            if (($userHelper->designerTimeRemain($pitch)) or ( Session::read('user.confirmed_email') == '0')) {
+            if (($userHelper->designerTimeRemain($pitch)) or (Session::read('user.confirmed_email') == '0')) {
                 return $this->redirect(array('Pitches::view', 'id' => $pitch->id));
             }
 
@@ -1373,17 +1532,19 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 }
             }
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
-            if ($pitch->category_id != 7) {
+            if (!$pitch->isCopyrighting()) {
                 $uploadnonce = Uploadnonce::getNonce();
+
                 return compact('pitch', 'uploadnonce');
             } else {
-                return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
+                return $this->render(array('template' => '/upload-copy', 'data' => compact('pitch')));
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
-    public function uploadfile() {
+    public function uploadfile()
+    {
         if (($this->request->id > 0) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             $currentUser = Session::read('user.id');
             if (($pitch->published == 0) && (($currentUser != $pitch->user_id) && (!in_array($currentUser, User::$admins)))) {
@@ -1396,15 +1557,18 @@ Disallow: /pitches/upload/' . $pitch['id'];
                     if ($result) {
                         return json_encode('true'); //$this->render(array('data' => array('json' => $result->data())));
                     }
+
                     return json_encode('false');
                 }
+
                 return json_encode('nofile');
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
-    public function uploadData() {
+    public function uploadData()
+    {
         if (($this->request->id > 0) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             $currentUser = Session::read('user.id');
             if (($pitch->published == 0) && (($currentUser != $pitch->user_id) && (!in_array($currentUser, User::$admins)))) {
@@ -1418,7 +1582,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $this->request->data['tags'] = explode(',', $this->request->data['tags']);
                 $result = Solution::uploadSolution($this->request->data);
                 if ($result) {
-                    return $this->redirect('/pitches/view/' . $pitch->id);
+                    return $this->redirect('/pitches/view/'.$pitch->id);
                 } else {
                     return false;
                 }
@@ -1428,11 +1592,12 @@ Disallow: /pitches/upload/' . $pitch['id'];
     }
 
     /**
-     * Метод загрузки решения для копирайтинга html|json
+     * Метод загрузки решения для копирайтинга html|json.
      *
      * @return array|bool|object|void
      */
-    public function uploadcopy() {
+    public function uploadcopy()
+    {
         if (($this->request->id > 0) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             if (($pitch->status != 0) || ($pitch->published != 1)) {
                 $this->redirect(array('Pitches::view', 'id' => $pitch->id));
@@ -1457,44 +1622,46 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 return $this->render(array('template' => '/upload-copy', 'data' => array('pitch' => $pitch)));
             }
         } else {
-            
         }
     }
 
-    public function getlatestsolution() {
+    public function getlatestsolution()
+    {
         if (!isset($this->request->query['category_id'])) {
             $this->request->query['category_id'] = null;
         }
         $result = Pitch::apiGetPitch($this->request->query['category_id']);
-        return $this->render(array('text' => 'writePitch(' . json_encode($result) . ')'));
+
+        return $this->render(array('text' => 'writePitch('.json_encode($result).')'));
     }
 
-    public function getpdf() {
+    public function getpdf()
+    {
         if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
             if (Session::read('user.id') != $pitch->user_id) {
                 die();
             }
-            require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
+            require_once LITHIUM_APP_PATH.'/'.'libraries'.'/'.'MPDF54/MPDF54/mpdf.php';
             $options = compact('pitch', 'bill');
             $mpdf = new \mPDF();
-            if(($pitch->type == 'plan-payment') && ($extracted = SubscriptionPlan::extractFundBalanceAmount($pitch->id))) {
+            if (($pitch->type == 'plan-payment') && ($extracted = SubscriptionPlan::extractFundBalanceAmount($pitch->id))) {
                 $options = compact('pitch', 'bill', 'extracted');
                 $mpdf->WriteHTML(PdfGetter::get('BillSubscription', $options));
-            }else {
+            } else {
                 $mpdf->WriteHTML(PdfGetter::get('Bill', $options));
             }
-            $mpdf->Output('godesigner-pitch-' . $pitch->id . '.pdf', 'd');
+            $mpdf->Output('godesigner-pitch-'.$pitch->id.'.pdf', 'd');
             exit;
         }
         die();
     }
 
     /**
-     * Метод выводит на скачиване сгенерированный акт pdf
-     *
+     * Метод выводит на скачиване сгенерированный акт pdf.
      */
-    public function getPdfAct() {
-        if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+    public function getPdfAct()
+    {
+        if (($pitch = Pitch::first($this->request->id)) && ($pitch->type == 'plan-payment' || $bill = Bill::first($this->request->id))) {
             if (!$this->userHelper->isPitchOwner($pitch->user_id) && !User::checkRole('admin')) {
                 return $this->redirect('/users/mypitches');
             }
@@ -1502,23 +1669,24 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $addons = Addon::all(array('conditions' => array(
                 'pitch_id' => $pitch->id,
                 'billed' => 1,
-                'prolong' => array('>' => 0)
+                'prolong' => array('>' => 0),
             )));
             $options = compact('pitch', 'bill', 'addons', 'destination');
             Pitch::generatePdfAct($options);
             die();
-        }else {
+        } else {
             return $this->redirect('/users/mypitches');
         }
     }
 
     /**
-     * Мето выводит на скачивание сгенерированный отчёт pdf
+     * Мето выводит на скачивание сгенерированный отчёт pdf.
      *
      * @return object
      */
-    public function getPdfReport() {
-        if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+    public function getPdfReport()
+    {
+        if (($pitch = Pitch::first($this->request->id)) && ($pitch->type == 'plan-payment' || $bill = Bill::first($this->request->id))) {
             if (!$this->userHelper->isPitchOwner($pitch->user_id) && !User::checkRole('admin')) {
                 return $this->redirect('/users/mypitches');
             }
@@ -1526,18 +1694,40 @@ Disallow: /pitches/upload/' . $pitch['id'];
             $options = compact('pitch', 'bill', 'destination');
             Pitch::generatePdfReport($options);
             die();
-        }else {
+        } else {
             return $this->redirect('/users/mypitches');
         }
     }
 
-    public function addon() {
+    public function addon()
+    {
         $pitch = Pitch::first($this->request->id);
         $experts = Expert::all(array('order' => array('id' => 'asc')));
+
         return compact('pitch', 'experts');
     }
 
-    public function addmoney() {
+    public function penalty()
+    {
+        $solution = Solution::first($this->request->id);
+        $designer = User::first(array('conditions' => array('id' => $solution->user_id)));
+        $pitch = Pitch::first($solution->pitch_id);
+        $penaltyId = Pitch::getNextPenaltyId($this->userHelper->getId(), $solution->id);
+        $receipt = array(
+            array(
+                'name' => 'Несвоевременный выбор победителя',
+                'value' => $pitch->getPenaltyAmount(),
+            ),
+        );
+        $penaltyRecord = Pitch::first($penaltyId);
+        $penaltyRecord->total = $pitch->getPenaltyAmount();
+        $penaltyRecord->save();
+
+        return compact('solution', 'pitch', 'receipt', 'designer', 'penaltyId');
+    }
+
+    public function addmoney()
+    {
         $pitch = Pitch::first($this->request->id);
         if ($pitch->id != '101534') {
             return $this->redirect('/');
@@ -1546,18 +1736,21 @@ Disallow: /pitches/upload/' . $pitch['id'];
         }
     }
 
-    public function promocode() {
+    public function promocode()
+    {
         Pitch::dailypitch();
         die();
     }
 
     /**
-     * Метод отображения формы оплаты второго победителя
+     * Метод отображения формы оплаты второго победителя.
      *
      * @respond_to html
+     *
      * @return array|object
      */
-    public function newwinner() {
+    public function newwinner()
+    {
         if (($pitch = Pitch::first($this->request->id)) && $this->userHelper->isPitchOwner($pitch->user_id) && ($receipt = Receipt::all(array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('name', 'value'))))) {
             return compact('pitch', 'receipt');
         } else {
@@ -1565,7 +1758,8 @@ Disallow: /pitches/upload/' . $pitch['id'];
         }
     }
 
-    public function setnewwinner() {
+    public function setnewwinner()
+    {
         $solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch')));
         $pitch = $solution->pitch;
         if (!is_null($pitch->id) && $pitch->awarded != $solution->id && Session::read('user.id') == $pitch->user_id) {
@@ -1573,29 +1767,46 @@ Disallow: /pitches/upload/' . $pitch['id'];
             if (!empty($copyPitch)) {
                 $copyPitch->awarded = Solution::copy($copyPitch->id, $this->request->id);
                 $copyPitch->save();
-                if ($copyPitch->free == 1) {
-                    Pitch::activateNewWinner($copyPitch->id);
-                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $copyPitch->awarded));
-                }
             } else {
                 $newPitchId = Pitch::createNewWinner($solution->id);
-                if ($pitch->free == 1) {
-                    $newFreeCopy = Pitch::first($newPitchId);
-                    Pitch::activateNewWinner($newPitchId);
-                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $newFreeCopy->awarded));
-                }
+                $copyPitch = Pitch::first($newPitchId);
             }
-            return $this->redirect(array('controller' => 'pitches', 'action' => 'newwinner', 'id' => $newPitchId ? $newPitchId : $copyPitch->id));
+            if ($copyPitch->free == 1) {
+                Pitch::activateNewWinner($copyPitch->id);
+
+                return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $copyPitch->awarded));
+            } else {
+                if (User::isSubscriptionActive($pitch->user_id)) {
+                    $total = Receipt::getTotalForProject($copyPitch->id);
+                    $paymentResult = User::reduceBalance($copyPitch->user_id, (int) $total);
+                    if (!$paymentResult) {
+                        $result = array(
+                            'error' => 'need to fill balance',
+                            'needToFillAmount' => (int) ($total - User::getBalance($copyPitch->user_id)),
+                        );
+                        $url = '/subscription_plans/subscriber?amount='.$result['needToFillAmount'];
+
+                        return $this->redirect($url);
+                    } else {
+                        Pitch::activateNewWinner($copyPitch->id);
+
+                        return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $copyPitch->awarded));
+                    }
+                }
+
+                return $this->redirect(array('controller' => 'pitches', 'action' => 'newwinner', 'id' => $copyPitch->id));
+            }
         } else {
             return $this->redirect('/pitches');
         }
     }
 
-    public function addfastpitch() {
+    public function addfastpitch()
+    {
         if ($this->request->is('json')) {
             $pitch = Pitch::create();
             $pitch->set(array(
-                'title' => 'Логотип в один клик (' . $this->request->data['phone'] . ')',
+                'title' => 'Логотип в один клик ('.$this->request->data['phone'].')',
                 'category_id' => 1,
                 'phone-brief' => $this->request->data['phone'],
                 'expert-ids' => serialize(array(1)),
@@ -1605,7 +1816,7 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 'phone-brief' => $this->request->data['phone'],
                 'specifics' => 'a:2:{s:9:"qualities";s:64:"Прагматичный, надежный, элегантный";s:15:"logo-properties";a:7:{i:0;s:1:"5";i:1;s:1:"5";i:2;s:1:"5";i:3;s:1:"5";i:4;s:1:"5";i:5;s:1:"5";i:6;s:1:"5";}}',
                 'price' => 14000,
-                'total' => 19600));
+                'total' => 19600, ));
             if (Session::read('user.id')) {
                 $pitch->user_id = Session::read('user.id');
             }
@@ -1614,9 +1825,9 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 $start->setTimestamp($this->request->data['date']);
                 \app\models\Schedule::create(array(
                     'pitch_id' => $pitch->id,
-                    'title' => 'Логотип в один клик (' . $this->request->data['phone'] . ')',
+                    'title' => 'Логотип в один клик ('.$this->request->data['phone'].')',
                     'start' => $start->format('Y-m-d H:i:s'),
-                    'end' => $start->setTime($start->format('H') + 1, '00', '00')->format('Y-m-d H:i:s')
+                    'end' => $start->setTime($start->format('H') + 1, '00', '00')->format('Y-m-d H:i:s'),
                 ))->save();
                 $receiptData = array(
                     'features' => array(
@@ -1625,11 +1836,11 @@ Disallow: /pitches/upload/' . $pitch['id'];
                         'brief' => 2750,
                         'experts' => array(1),
                         'guaranteed' => 950,
-                        'pinned' => 1000),
+                        'pinned' => 1000, ),
                     'commonPitchData' => array(
                         'id' => $pitch->id,
                         'category_id' => 0,
-                        'promocode' => 0));
+                        'promocode' => 0, ), );
                 if (isset($_COOKIE['fastpitch'])) {
                     $cookies = unserialize($_COOKIE['fastpitch']);
                     $cookies[] = $pitch->id;
@@ -1637,14 +1848,16 @@ Disallow: /pitches/upload/' . $pitch['id'];
                 } else {
                     setcookie('fastpitch', serialize(array($pitch->id)), strtotime('+2 month'), '/');
                 }
-                return json_encode('/pitches/fastpitch/' . Receipt::createReceipt($receiptData));
+
+                return json_encode('/pitches/fastpitch/'.Receipt::createReceipt($receiptData));
             } else {
                 return json_encode('false');
             }
         }
     }
 
-    public function fastpitch() {
+    public function fastpitch()
+    {
         if (($pitch = Pitch::first($this->request->id)) && ($receipt = Receipt::all(array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('name', 'value'))))) {
             return compact('pitch', 'receipt');
         } else {
@@ -1652,35 +1865,57 @@ Disallow: /pitches/upload/' . $pitch['id'];
         }
     }
 
-    public function getags() {
+    public function getags()
+    {
         if (isset($this->request->query['name']) && strlen($this->request->query['name']) > 0) {
             $tags = Tag::getSuggest($this->request->query['name']);
+
             return json_encode($tags);
         }
     }
 
-    public function accept() {
-        if(Pitch::acceptLogosalePitch($this->request->id, Session::read('user.id'))) {
+    public function accept()
+    {
+        if (Pitch::acceptLogosalePitch($this->request->id, Session::read('user.id'))) {
             $logosalePitch = Pitch::first($this->request->id);
-            if(!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+            if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
                 return compact('true');
-            }else {
-                $this->redirect('/users/step2/' . $logosalePitch->awarded);
+            } else {
+                $this->redirect('/users/step2/'.$logosalePitch->awarded);
             }
-        }else {
+        } else {
             return $this->redirect('/');
         }
+
         return compact('true');
     }
 
-    public function decline() {
+    public function decline()
+    {
         $result = Pitch::declineLogosalePitch($this->request->id, Session::read('user.id'));
-        if(!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+        if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('result');
-        }else {
+        } else {
             $this->redirect('/');
         }
+
         return compact('true');
     }
 
+    /**
+     * Метод для оформления автоматического возврата.
+     *
+     * @return object
+     */
+    public function refund_subscription()
+    {
+        $id = $this->request->id;
+        if (($pitch = Pitch::first($id))
+            && ($pitch->type == 'company_project')
+            && ($this->userHelper->isPitchOwner($pitch->user_id))) {
+            Pitch::markAsRefunded($id);
+        }
+
+        return $this->redirect('/pitches/view/'.$id);
+    }
 }

@@ -29,7 +29,9 @@ use lithium\core\Environment;
  */
 Router::connect('/', 'Pages::home');
 
+Router::connect('/twitter', 'Pages::twitter');
 Router::connect('/pages/contacts', 'Pages::contacts');
+Router::connect('/pages/subscribe', 'Pages::subscribe');
 Router::connect('/fastpitch', 'Pages::fastpitch');
 Router::connect('/stats', 'Pages::stats');
 Router::connect('/events/updates.{:type}', 'Events::updates');

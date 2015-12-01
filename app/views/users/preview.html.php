@@ -22,7 +22,7 @@
                         <ul class="profile-list-info"></ul>
                         <div class="pitches">
                             <ul class="profile-list">
-                                <li class="regular-small-grey" style="color:#666666;">Город:<span> <?= $this->brief->stripurl($this->brief->removeEmailClean($userdata['city'])) ?></span></li>
+                                <li class="regular-small-grey" style="color:#666666;">Город:<span> <?= $this->brief->stripUrl($this->brief->removeEmailClean($userdata['city'])) ?></span></li>
                                 <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Проектов:<span> <?= $pitchCount ?></span></li>
                                 <div class="g_line"></div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="likes">
                             <ul class="profile-list">
-                                <li class="regular-small-grey" style="color:#666666;">Дата рожд:<span> <?= $this->brief->stripurl($this->brief->removeEmailClean($userdata['birthdate'])) ?></span></li>
+                                <li class="regular-small-grey" style="color:#666666;">Дата рожд:<span> <?= $this->brief->stripUrl($this->brief->removeEmailClean($userdata['birthdate'])) ?></span></li>
                                 <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Total Likes:<span> <?= $totalLikes ?></span></li>
                                 <div class="g_line"></div>
@@ -59,7 +59,7 @@
                     <!--dl>
                         <dt class="greyboldheader">Обо мне:</dt>
                         <dd class="regular">
-                            <?= $this->brief->stripemail(nl2br($userdata['about'])) ?>
+                            <?= $this->brief->stripEmail(nl2br($userdata['about'])) ?>
                         </dd>
                         <div class="separate"> </div>
                     </dl-->

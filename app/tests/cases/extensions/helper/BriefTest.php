@@ -3,8 +3,10 @@
 namespace app\tests\cases\extensions\helper;
 
 use app\extensions\helper\Brief;
+use app\extensions\tests\AppUnit;
+use app\models\Pitch;
 
-class BriefTest extends \lithium\test\Unit {
+class BriefTest extends AppUnit {
 
     /**
      * Это переменная будет хранить объект хелпера, чтобы можно было в тесте
@@ -21,13 +23,14 @@ class BriefTest extends \lithium\test\Unit {
      */
     public function setUp() {
         $this->brief = new Brief();
+		$this->rollUp('Pitch');
     }
 
     /**
      * Ну а этот метод вызывает в конце каждого теста, тут можно почистить базу, сбросить состояния и тп.
      */
     public function tearDown() {
-        // ничего пока не делаем тут
+		$this->rollUp('Pitch');
     }
 
     public function testRemoveEmailClean() {
@@ -47,32 +50,85 @@ class BriefTest extends \lithium\test\Unit {
 
 
 	public function testStripEmail(){
-		$this->assertEqual('', $this->brief->stripemail(null));
-		$this->assertEqual('', $this->brief->stripemail(false));
-		$this->assertEqual('asdfg12345', $this->brief->stripemail('asdfg12345'));
-		$this->assertEqual('<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripemail('test@test.ru'));
-		$this->assertEqual('Проверка <a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a> вторая часть <a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripemail('Проверка test@mail.com вторая часть test@mail.com'));
-		$this->assertEqual('test.ru/login/user', $this->brief->stripemail('test.ru/login/user'));
+		$this->assertEqual('', $this->brief->stripEmail(null));
+		$this->assertEqual('', $this->brief->stripEmail(false));
+		$this->assertEqual('asdfg12345', $this->brief->stripEmail('asdfg12345'));
+		$this->assertEqual('<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripEmail('test@test.ru'));
+		$this->assertEqual('Проверка <a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a> вторая часть <a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripEmail('Проверка test@mail.com вторая часть test@mail.com'));
+		$this->assertEqual('test.ru/login/user', $this->brief->stripEmail('test.ru/login/user'));
 	}
 
 	public function testStripUrl() {
-		$this->assertEqual('', $this->brief->stripurl(null));
-		$this->assertEqual('', $this->brief->stripurl(false));
-		$this->assertEqual('test.ru/login/user', $this->brief->stripurl('test.ru/login/user'));
-		$this->assertEqual('qwerty65432', $this->brief->stripurl('qwerty65432'));
-		$this->assertEqual('test@test.ru', $this->brief->stripurl('test@test.ru'));
-		$this->assertEqual('', $this->brief->stripurl('http://test/'));
-		$this->assertEqual('Начало строки  конец строки ', $this->brief->stripurl('Начало строки http://test.ru конец строки http://test.ru/main'));
+		$this->assertEqual('', $this->brief->stripUrl(null));
+		$this->assertEqual('', $this->brief->stripUrl(false));
+		$this->assertEqual('test.ru/login/user', $this->brief->stripUrl('test.ru/login/user'));
+		$this->assertEqual('qwerty65432', $this->brief->stripUrl('qwerty65432'));
+		$this->assertEqual('test@test.ru', $this->brief->stripUrl('test@test.ru'));
+		$this->assertEqual('', $this->brief->stripUrl('http://test/'));
+		$this->assertEqual('Начало строки  конец строки ', $this->brief->stripUrl('Начало строки http://test.ru конец строки http://test.ru/main'));
 	}
 
 	public function testLinkEmail() {
-		$this->assertEqual('', $this->brief->linkemail(null));
-		$this->assertEqual('', $this->brief->linkemail(false));
-		$this->assertEqual('test@@test.ru', $this->brief->linkemail('test@@test.ru'));
-		$this->assertEqual('test@test', $this->brief->linkemail('test@test'));
-		$this->assertEqual('<a href="mailto://test@test.ru">test@test.ru</a>', $this->brief->linkemail('test@test.ru'));
-		$this->assertEqual('Начало строки <a href="mailto://test@test.ru">test@test.ru</a> конец строки <a href="mailto://tester@tester.ru">tester@tester.ru</a>', $this->brief->linkemail('Начало строки test@test.ru конец строки tester@tester.ru'));
-		$this->assertEqual('http://test.ru/main', $this->brief->linkemail('http://test.ru/main'));
+		$this->assertEqual('', $this->brief->linkEmail(null));
+		$this->assertEqual('', $this->brief->linkEmail(false));
+		$this->assertEqual('test@@test.ru', $this->brief->linkEmail('test@@test.ru'));
+		$this->assertEqual('test@test', $this->brief->linkEmail('test@test'));
+		$this->assertEqual('<a href="mailto://test@test.ru">test@test.ru</a>', $this->brief->linkEmail('test@test.ru'));
+		$this->assertEqual('Начало строки <a href="mailto://test@test.ru">test@test.ru</a> конец строки <a href="mailto://tester@tester.ru">tester@tester.ru</a>', $this->brief->linkEmail('Начало строки test@test.ru конец строки tester@tester.ru'));
+		$this->assertEqual('http://test.ru/main', $this->brief->linkEmail('http://test.ru/main'));
+	}
+
+	public function testIsUsingPlainText() {
+		$project = Pitch::first(1);
+		$this->assertFalse($this->brief->isUsingPlainText($project));
+		$project->started = '2012-01-01 00:00:00';
+		$project->save();
+		$this->assertTrue($this->brief->isUsingPlainText($project));
+	}
+
+	public function testTrimAll() {
+		$text = "This is \r\n Test";
+		$expected = "This is Test";
+		$result = $this->brief->trimAllInvisibleCharacter($text);
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testBriefDetails() {
+		$project = Pitch::first(1);
+		$project->description = '<p>Описание проекта на сайте</p> htt://www.godesigner.ru/ и продолжение <a href="http://www.google.com">http://www.google.com</a> текста';
+
+		$project->started = '2012-01-01 00:00:00';
+		$project->save();
+		$result = $this->brief->briefDetails($project);
+		$expected = 'Описание проекта на сайте <a href="http://htt://www.godesigner.ru/" target="_blank">htt://www.godesigner.ru/</a> и продолжение <a href="http://www.google.com" target="_blank">http://www.google.com</a> текста';
+		$this->assertEqual($expected, $result);
+
+		$project->started = '2015-01-01 00:00:00';
+		$project->save();
+		$result = $this->brief->briefDetails($project);
+		$expected = '<p>Описание проекта на сайте</p> <a href="http://htt://www.godesigner.ru/" target="_blank">htt://www.godesigner.ru/</a> и продолжение <a href="http://www.google.com">http://www.google.com</a> текста';
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testInsertHtmlLinkInText() {
+		$text = '<p>Test<br/> text http://www.google.com</p>';
+		$expected = '<p>Test<br/> text <a href="http://www.google.com" target="_blank">http://www.google.com</a></p>';
+		$result = $this->brief->insertHtmlLinkInText($text);
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testDeleteHtmlTagsAndInsertHtmlLinkInText() {
+		$text = '<p>Test<br/><br> text http://www.google.com</p>';
+		$expected = 'Test<br/><br> text <a href="http://www.google.com" target="_blank">http://www.google.com</a>';
+		$result = $this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($text);
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testDeleteHtmlTagsAndInsertHtmlLinkInTextAndMentions() {
+		$text = "<p>@Дмитрий Н., Test<br/><br> text http://www.google.com</p>";
+		$expected = '<a href="#" class="mention-link" data-comment-to="Дмитрий Н.">@Дмитрий Н.,</a> Test text <a href="http://www.google.com" target="_blank">http://www.google.com</a>';
+		$result = $this->brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($text);
+		$this->assertEqual($expected, $result);
 	}
  
 }

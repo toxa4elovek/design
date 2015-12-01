@@ -15,8 +15,8 @@ use app\extensions\storage\Rcache;
 class CommentsController extends \lithium\action\Controller {
 
 	public function add() {
-        //error_reporting(E_ALL);
-        //ini_set('display_errors', 1);
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
         $allowedAction = array('view', 'viewsolution');
         if((!isset($this->request->data['action'])) || (!in_array($this->request->data['action'], $allowedAction))) {
             $this->request->redirectAction = 'view';
@@ -62,7 +62,7 @@ class CommentsController extends \lithium\action\Controller {
             $brief = new Brief();
             $cacheKey = 'commentsraw_' . $comment->pitch_id;
             Rcache::delete($cacheKey);
-            return $brief->stripemail($comment->text);
+            return $brief->stripEmail($comment->text);
         }
     }
 

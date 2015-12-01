@@ -24,7 +24,9 @@ var ProfRadioList = (function (_React$Component) {
                 "div",
                 { className: "profselectbox-container" },
                 this.props.data.map(function (props) {
-                    return React.createElement(ProfSelectBox, { key: props.id, data: props });
+                    return React.createElement(ProfSelectBox, { data: props,
+                        key: props.id
+                    });
                 })
             );
         }

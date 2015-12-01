@@ -4,12 +4,19 @@ namespace app\extensions\command;
 
 use app\extensions\mailers\CommentsMailer;
 use app\models\Solution;
+use app\models\SubscriptionPlan;
 use \app\models\Task;
-use \app\models\Pitch;
+use \app\models\News;
 use \app\models\User;
 use app\extensions\mailers\SolutionsMailer;
+use app\extensions\mailers\NotificationsMailer;
+use \app\models\Event;
+use app\extensions\social\TwitterAPI;
+use app\extensions\social\FacebookAPI;
+use app\extensions\social\VKAPI;
+use app\extensions\social\SocialMediaManager;
 
-class Fasttasks extends \app\extensions\command\CronJob {
+class Fasttasks extends CronJob {
 
     public function run() {
         $this->header('Welcome to the Fasttasks Command');
@@ -21,12 +28,10 @@ class Fasttasks extends \app\extensions\command\CronJob {
         $count = count($tasks);
         foreach($tasks as $task) {
             $methodName = '__' . $task->type;
-            if((method_exists('app\extensions\command\Fasttasks', $methodName)) && ($methodName != '__victoryNotificationTwitter')) {
-                $task->markAsCompleted();
-                Fasttasks::$methodName($task);
-            }elseif(method_exists('app\extensions\command\Fasttasks', '__victoryNotificationTwitter')) {
-                if(Fasttasks::$methodName($task)) {
+            if(method_exists('app\extensions\command\Fasttasks', $methodName)) {
+                if(strtotime($task->date) < time()) {
                     $task->markAsCompleted();
+                    Fasttasks::$methodName($task);
                 }
             }
         }
@@ -82,6 +87,86 @@ class Fasttasks extends \app\extensions\command\CronJob {
     private function __dvaSpam($task) {
         $count = User::sendDvaSpam();
         $this->out('Emails has been set to ' . $count . ' users');
+    }
+
+    private function __postNewsToSocial($task) {
+        if($result = Event::first($task->model_id)) {
+            $news = News::first($result->news_id);
+            $manager = new SocialMediaManager();
+
+            $vkApi = new VKAPI();
+            $data = array(
+                'message' => $news->title,
+                'picture' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
+            );
+            $vkApi->postMessageToPage($data);
+
+            $facebookApi = new FacebookAPI();
+            $data = array(
+                'message' => $news->title,
+                'link' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
+            );
+            $facebookApi->postMessageToPage($data);
+
+            $twitterApi = new TwitterAPI();
+            $data = array(
+                'message' => $news->title . ' — ' . $news->short . ' http://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
+                'picture' => '/var/godesigner/webroot/' . $news->imageurl
+            );
+            $twitterApi->postMessageToPage($data);
+        }
+    }
+
+    private function __postNewsToSocialDelayed($task) {
+        if($result = Event::first($task->model_id)) {
+            $news = News::first($result->news_id);
+            $manager = new SocialMediaManager();
+
+            $vkApi = new VKAPI();
+            $data = array(
+                'message' => $news->title,
+                'owner_id' => '-26880133',
+                'picture' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
+            );
+            $vkApi->postMessageToPage($data);
+
+            $facebookApi = new FacebookAPI();
+            $data = array(
+                'message' => $news->title,
+                'page_id' => '112408302103669',
+                'link' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
+            );
+            $facebookApi->postMessageToPage($data);
+
+            $keys = array(
+                'consumer_key' => '8KowPOOLHqbLQPKt8JpwnLpTn',
+                'consumer_secret' => 'Guna29r1BY8gEofz2amAIfPo1XcHJWNGI8Nzn6wiEwNlykAHhy',
+                'user_token' => '76610418-JxUuuxQdUOaxc3uwxRjBUG4rXUdIABjNYAuhKP7uh',
+                'user_secret' => '8qoejI0OTXHq56wp2QKPz16KoiB9w1sQQUncl6ilL20eh'
+            );
+            $twitterApi = new TwitterAPI($keys);
+            $data = array(
+                'message' => $news->title . ' — ' . $news->short . ' http://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
+                'picture' => '/var/godesigner/webroot/' . $news->imageurl
+            );
+            $twitterApi->postMessageToPage($data);
+
+        }
+    }
+
+    /**
+     * Метод отправляет уведомление о том, что пользователь пополнил баланс
+     *
+     * @param $task
+     */
+    private function __emailFillBalanceSuccessNotification($task) {
+        $plan = SubscriptionPlan::first($task->model_id);
+        $user = User::first($plan->user_id);
+        if($result = NotificationsMailer::sendFillBalanceSuccess($user, $plan)) {
+            $this->out('New fill balance notification sent');
+        }else {
+            $this->out('New fill balance notification failed');
+        }
     }
 
 }

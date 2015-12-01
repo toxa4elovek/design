@@ -2,6 +2,8 @@
     <script id="twitter-wjs" type="text/javascript" async defer src="//platform.twitter.com/widgets.js"></script>
     <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2', 'logo' => 'logo')) ?>
     <?php
+
+
         date_default_timezone_set('Europe/Kaliningrad');
     ?>
     <div class="new-middle">
@@ -11,7 +13,6 @@
                 var offsetDate = Date.parse('<?= date('Y/m/d H:i:s', strtotime($date)) ?>');
                 var isCurrentAdmin = <?php echo $this->user->isAdmin() ? 1 : 0 ?>;
                 var isCurrentExpert = <?php echo $this->user->isExpert() ? 1 : 0 ?>;
-                var isClient = <?php echo ($this->user->isPitchOwner($pitch->user->id)) ? 1 : 0; ?>;
                 var isAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
                 var isFeedWriter = <?php echo $this->user->isFeedWriter() ? 1 : 0 ?>;
                 var isAllowedToComment = <?php echo ($this->user->isAllowedToComment() ? 1 : 0 ); ?>;
@@ -43,7 +44,7 @@
                         <div>
                             <div data-bannerid="<?= $banner->id ?>" class="close-gender"></div>
                             <span><?= $banner->title ?></span>
-                            <p><?= $this->brief->ee($banner->short) ?></p>
+                            <p><?= $this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($banner->short) ?></p>
                         </div>
                     </div>
                     <nav class="main_nav clear" style="width:832px;margin:30px auto 25px;">
@@ -247,8 +248,8 @@
                                                 <?php echo $this->feed->generateEmbeddedIframe($object['news']['link'])?>
                                             </p>
                                         <?php endif?>
-                                        <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0px;"<?php endif; ?>>
-                                            <?php if ($object['news']['tags']): ?>
+                                        <div class="r-content post-content" <?php if ((!$object['news']['tags']) || (preg_match('/iframe/', $object['news']['short']))): ?>style="padding-top: 0px;"<?php endif; ?>>
+                                            <?php if (($object['news']['tags']) && (!preg_match('/iframe/', $object['news']['short']))): ?>
                                                 <p class="img-tag"><a class="tag-title" href="/news?tag=<?= urlencode($object['news']['tags']) ?>"><?= $object['news']['tags'] ?></a></p>
                                             <?php endif; ?>
                                             <a class="img-post" href="<?= $object['news']['link'] ?>" target="_blank"><h2><?= $object['news']['title'] ?></h2></a>
@@ -551,8 +552,8 @@
                                                     </p>
                                                 <?php endif?>
 
-                                                <div class="r-content post-content" <?php if (!$object['news']['tags']): ?>style="padding-top: 0; <?=$style?>"<?php endif; ?>>
-                                                    <?php if ($object['news']['tags']): ?>
+                                                <div class="r-content post-content" <?php if ((!$object['news']['tags']) || (preg_match('/iframe/', $object['news']['short']))): ?>style="padding-top: 0; <?=$style?>"<?php endif; ?>>
+                                                    <?php if (($object['news']['tags']) && (!preg_match('/iframe/', $object['news']['short']))): ?>
                                                         <p class="img-tag"><a class="tag-title" href="/news?tag=<?= urlencode($object['news']['tags']) ?>"><?= $object['news']['tags'] ?></a></p>
                                                     <?php endif; ?>
                                                     <?php if($coub == false):?>
@@ -623,33 +624,35 @@
                                                     $html_likes = '';
                                                     $likes = (int) $object['news']['liked'];
                                                     if ($likes) {
-                                                        foreach ($object['news']['likes'] as $like) {
-                                                            ++$likes_count;
-                                                            if ($likes > 4) {
-                                                                if ($likes_count == 1) {
-                                                                    $html_likes .= '<span class="who-likes">';
+                                                        if(is_array($object['news']['likes'])) {
+                                                            foreach ($object['news']['likes'] as $like) {
+                                                                ++$likes_count;
+                                                                if ($likes > 4) {
+                                                                    if ($likes_count == 1) {
+                                                                        $html_likes .= '<span class="who-likes">';
+                                                                    }
+                                                                    if ($likes_count == 4) {
+                                                                        $other = $likes - $likes_count;
+                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
+                                                                          и <a class="show-other-likes" data-solid="' . $object['news']['id'] . '" href="#">' . $other . ' других</a> <span>лайкнули новость</span></span>';
+                                                                        break;
+                                                                    } else {
+                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                    }
+                                                                } elseif (($likes >= 2) && ($likes <= 4)) {
+                                                                    if ($likes_count == 1) {
+                                                                        $html_likes .= '<span class="who-likes">';
+                                                                    }
+                                                                    if ($likes_count != $likes) {
+                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                    }
+                                                                    if ($likes_count == $likes) {
+                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
+                                                                        $html_likes .= ' <span>лайкнули новость</span></span>';
+                                                                    }
+                                                                } elseif ($likes < 2) {
+                                                                    $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
                                                                 }
-                                                                if ($likes_count == 4) {
-                                                                    $other = $likes - $likes_count;
-                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
-                                                                      и <a class="show-other-likes" data-solid="' . $object['news']['id'] . '" href="#">' . $other . ' других</a> <span>лайкнули новость</span></span>';
-                                                                    break;
-                                                                } else {
-                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
-                                                                }
-                                                            } elseif (($likes >= 2) && ($likes <= 4)) {
-                                                                if ($likes_count == 1) {
-                                                                    $html_likes .= '<span class="who-likes">';
-                                                                }
-                                                                if ($likes_count != $likes) {
-                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
-                                                                }
-                                                                if ($likes_count == $likes) {
-                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
-                                                                    $html_likes .= ' <span>лайкнули новость</span></span>';
-                                                                }
-                                                            } elseif ($likes < 2) {
-                                                                $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="http://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
                                                             }
                                                         }
                                                     }
@@ -741,13 +744,7 @@
 
             <div id="popup-other-likes" style="display: none;">
                 <div class="other-header">Люди, которым это нравится</div>
-                <ul id="who-its-liked">
-                    <!--            <li>
-                                    <img src="/img/default_small_avatar.png" class="avatar">
-                                    <a class="user-title" href="/users/view/202">Test T.</a>
-                                    <a id="fav-user" class="order-button" href="#">Подписаться</a>
-                                </li>-->
-                </ul>
+                <ul id="who-its-liked"></ul>
                 <div id="likedAjaxLoader"><img src="http://www.godesigner.ru/img/blog-ajax-loader.gif"></div>
                 <div class="popup-close"></div>
             </div>
@@ -768,5 +765,8 @@
     'users/activation.js'), array('inline' => false)) ?>
 <?= $this->html->style(array('/main2.css', '/pitches2.css', '/view', '/messages12', '/pitches12', '/win_steps2_final3.css', '/blog', '/portfolio.css', 'main.css', '/css/office.css', '/css/social-likes_flat'), array('inline' => false)) ?>
 <?= $this->view()->render(array('element' => 'popups/activation_popup')) ?>
-<?= $this->view()->render(array('element' => 'popups/warning')) ?>
+<?php
+/* @todo fox this */
+//$this->view()->render(array('element' => 'popups/warning')) ?>
 <?= $this->view()->render(array('element' => 'moderation')) ?>
+

@@ -1,13 +1,11 @@
-;
-$(document).ready(function () {
+;$(document).ready(function () {
+
     $('.social-likes').socialLikes();
 
     // Preload Images
     (function (arrayOfImages) {
         $(arrayOfImages).each(function () {
             $('<img/>')[0].src = this;
-            // Alternatively you could use:
-            // (new Image()).src = this;
         });
     })([
         '/img/0-rating.png',
@@ -19,7 +17,6 @@ $(document).ready(function () {
         '/img/like.png',
         '/img/like_hover.png'
     ]);
-
 
     var receiptOffsetTop = 0;
     var popupReady = false;
@@ -35,7 +32,7 @@ $(document).ready(function () {
                     receipt.css('top', '20px');
                     receipt.css('left', parentOffset.left + 'px');
                 }else {
-                    receipt.css('position', 'relative').css('left', '0').css('top', '0')
+                    receipt.css('position', 'relative').css('left', '0').css('top', '0');
 
                 }
             }
@@ -103,11 +100,11 @@ $(document).ready(function () {
 
     $(document).on('mouseenter', '.ratingchange', function () {
         $(this).parent().css('background', 'url(/img/' + $(this).data('rating') + '-rating.png) repeat scroll 0% 0% transparent');
-    })
+    });
 
     $(document).on('mouseleave', '.ratingcont', function () {
         $(this).css('background', 'url(/img/' + $(this).data('default') + '-rating.png) repeat scroll 0% 0% transparent');
-    })
+    });
 
     $(document).on('click', '.ratingchange', function () {
         var id = $(this).parent().data('solutionid');
@@ -133,16 +130,17 @@ $(document).ready(function () {
             self.parent().css('background', 'url(/img/' + rating + '-rating.png) repeat scroll 0% 0% transparent');
         });
         return false;
-    })
+    });
 
+    const ratingComment = $('.ratingcomment');
     $(document).on('click', '#rating-close', function () {
-        $(this).closest('.ratingcomment').fadeOut(200, function () {
+        $(this).closest(ratingComment).fadeOut(200, function () {
             $(this).remove();
         });
     });
     $(document).on('click', '#rating_comment_send', function (e) {
         e.preventDefault();
-        $(this).closest('.ratingcomment').fadeOut(200, function () {
+        $(this).closest(ratingComment).fadeOut(200, function () {
             $(this).remove();
         });
     });
@@ -161,14 +159,14 @@ $(document).ready(function () {
         }
         $.get('/pitches/view/' + $('input[name=pitch_id]').val(), data, function (response) {
             var solutionsCount = $($(response)[0]).val();
-            obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
-            obj.each(function (index) {
+            const obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+            obj.each(function () {
                 if ($(this).is('li')) {
                     $(this).css('opacity', '0');
                 }
             });
             obj.appendTo('.list_portfolio.main_portfolio');
-            obj.each(function (index) {
+            obj.each(function () {
                 if ($(this).is('li')) {
                     $(this).animate({opacity: 1}, 500);
                 }
@@ -266,6 +264,10 @@ $(document).ready(function () {
                     window.location = '/users/nominated';
                     $('.select-winner-li').remove();
                 }
+            }else {
+                if(typeof response.redirect != 'undefined') {
+                    window.location = response.redirect;
+                }
             }
         });
     });
@@ -291,7 +293,7 @@ $(document).ready(function () {
 
     $('.social-likes__button').on('click', function() {
         $(this).closest('.sharebar').fadeOut(300);
-    })
+    });
 
     // Delete Solution
     $(document).on('click', '.delete-solution', function () {
@@ -303,8 +305,14 @@ $(document).ready(function () {
             solutionDelete(link);
             return false;
         }
-
+        // Delete for Moderators
         $('#model_id', '#popup-delete-solution').val($(this).data('solution'));
+
+        if($(`#li_${num}`).has('.medal').length == 1) {
+            $('#winner-warning').show();
+        }else {
+            $('#winner-warning').hide();
+        }
 
         // Show Delete Moderation Overlay
         $('#popup-delete-solution').modal({
@@ -437,7 +445,6 @@ $(document).ready(function () {
         var likeLink = $(this);
         likesNum.html(parseInt(likesNum.html()));
         var sharebar = likesNum.next();
-        var solutionId = $(this).data('id');
         $('body').one('click', function () {
             $('.sharebar').fadeOut(300);
         });
@@ -514,16 +521,17 @@ $(document).ready(function () {
 
     $(document).on('click', '.solution-menu-toggle', function () {
         return false;
-    })
+    });
 
     // Comment Bubble
     $(document).on('click', '.solution-link-menu, .solution-link, .number_img_gallery', function (e) {
         e.preventDefault();
-        if ($('#newComment').length > 0) { // View Tab
-            if (($('#newComment').val().match(/^#\d/ig) == null) && ($('#newComment').val().match(/@\W*\s\W\.,/) == null)) {
+        const newComment = $('#newComment');
+        if (newComment.length > 0) { // View Tab
+            if ((newComment.val().match(/^#\d/ig) == null) && (newComment.val().match(/@\W*\s\W\.,/) == null)) {
                 var prepend = $(this).data('commentTo') + ', ';
-                var newText = prepend + $('#newComment').val();
-                $('#newComment').val(newText);
+                var newText = prepend + newComment.val();
+                newComment.val(newText);
                 $('.solution_menu.temp').hide().remove();
                 $.scrollTo($('.all_messages'), {duration: 500});
             }
@@ -547,17 +555,17 @@ $(document).ready(function () {
         var $imagecontainer = $(this).find('a');
         $imagecontainer.css('opacity', '1');
         if ($('.imagecontainer', this).children().length > 1) {
-            $(this).parent().css('background-image', '')
+            $(this).parent().css('background-image', '');
         }
-    })
+    });
 
     $(document).on('mouseout', '.hidedummy', function () {
         $(this).css('background-image', 'url(/img/copy-inv.png)');
         $(this).find('a').css('opacity', '.1');
         if ($('.imagecontainer', this).children().length > 1) {
-            $(this).parent().css('background-image', 'url(/img/copy-inv.png)')
+            $(this).parent().css('background-image', 'url(/img/copy-inv.png)');
         }
-    })
+    });
 
     $(document).on('click', '.hide-item', function () {
         var link = $(this);
@@ -570,33 +578,32 @@ $(document).ready(function () {
             } else {
                 $('.photo_block', block).css('background', 'url(/img/copy-inv.png) 10px 10px no-repeat white');
             }
-            $('.imagecontainer', block).css('opacity', 0.1)
+            $('.imagecontainer', block).css('opacity', 0.1);
             $('.hide-item', block).replaceWith('<a data-to="' + num + '" class="unhide-item" href="/solutions/unhide/' + num + '.json">Сделать видимой</a>');
             //listofitems.append(block);
-        })
+        });
         return false;
-    })
+    });
 
     $(document).on('click', '.unhide-item', function () {
         var link = $(this);
         var num = link.data('to');
         var block = $('#li_' + num);
-        var listofitems = $('.list_portfolio');
         $.get($(this).attr('href'), function (response) {
             if ($('.imagecontainer', block).children().length == 1) {
-                var dummy = $('.hidedummy', block)
-                var child = dummy.children(':first')
-                child.css('opacity', 1)
-                dummy.replaceWith(child)
+                var dummy = $('.hidedummy', block);
+                var child = dummy.children(':first');
+                child.css('opacity', 1);
+                dummy.replaceWith(child);
             } else {
                 $('.photo_block', block).css('background', '');
-                $('.imagecontainer', block).css('opacity', 1)
+                $('.imagecontainer', block).css('opacity', 1);
             }
             $('.solution_menu.temp').hide().remove();
             $('.unhide-item', block).replaceWith('<a data-to="' + num + '" class="hide-item" href="/solutions/hide/' + num + '.json">С глаз долой</a>');
-        })
+        });
         return false;
-    })
+    });
 
     var cycle = {};
     $(document).on('mouseenter', '.photo_block', function () {
@@ -605,11 +612,11 @@ $(document).ready(function () {
             var image = $(this).children('.imagecontainer').children(':visible');
             cycleImage(image, $(this).children('.imagecontainer'));
         }
-    })
+    });
 
     $(document).on('mouseleave', '.photo_block', function () {
         cycle[$(this).children('.imagecontainer').data('solutionid')] = false;
-    })
+    });
 
     function cycleImage(image, parent, prev) {
         if (cycle[parent.data('solutionid')] == true) {
@@ -620,7 +627,7 @@ $(document).ready(function () {
             }
             nextImage.fadeIn(300);
             setTimeout(function () {
-                cycleImage(nextImage, parent, image)
+                cycleImage(nextImage, parent, image);
             }, 1500);
             //    cycleImage(nextImage, parent, image)
             //    5000
@@ -636,7 +643,7 @@ $(document).ready(function () {
                 if ((separator) && (separator.length == 1)) {
                     separator.hide();
                 }
-            })
+            });
         } else {
             $.each($('section[data-type="designer"]', '.messages_gallery'), function (index, object) {
                 var comment = $(object);
@@ -645,9 +652,9 @@ $(document).ready(function () {
                 if ((separator) && (separator.length == 1)) {
                     separator.show();
                 }
-            })
+            });
         }
-    })
+    });
 
     /*
      * View Solution Overlay
@@ -768,11 +775,11 @@ $(document).ready(function () {
 
                 if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
-                    work = result.solution.images.solution_solutionView
+                    work = result.solution.images.solution_solutionView;
                 } else {
                     // case when we don't have gallerySiteSize image size
                     viewsize = result.solution.images.solution;
-                    work = result.solution.images.solution
+                    work = result.solution.images.solution;
                 }
                 if ($.isArray(storage)) {
                     $.each(work, function (idx, field) {
@@ -830,7 +837,7 @@ $(document).ready(function () {
                         }else {
                             downloadUrl = '/solutionfiles' + file[0].weburl;
                         }
-                        filename = file[0].originalbasename
+                        filename = file[0].originalbasename;
                     } else {
                         if(file.weburl != false) {
                             if(file.weburl.match(/solutions/)) {
@@ -890,9 +897,9 @@ $(document).ready(function () {
                 // Solution Author views nothing
             } else { // Any User
                 if ((result.pitch.status != 1) && (result.pitch.status != 2)) {
-                    var already = ''
+                    var already = '';
                     if (result.likes == true) {
-                        already = ' already'
+                        already = ' already';
                     }
                     $('<div class="like-wrapper"><div class="left">поддержи</div> \
                        <a class="like-widget' + already + '" data-id="' + result.solution.id + '"></a> \
@@ -900,8 +907,8 @@ $(document).ready(function () {
 
                     $('.like-widget[data-id=' + result.solution.id + ']').click(function () {
                         $(this).toggleClass('already');
-                        var counter = $('.value-likes')
-                        var solutionId = $(this).data('id')
+                        var counter = $('.value-likes');
+                        var solutionId = $(this).data('id');
                         if ($(this).hasClass('already')) {
                             $.post('/solutions/like/' + solutionId + '.json', {"uid": currentUserId}, function (response) {
                                 counter.text(parseInt(response.likes));
@@ -913,7 +920,7 @@ $(document).ready(function () {
                                 $('.underlying-likes[data-id=' + result.solution.id + ']').text(parseInt(response.likes));
                             });
                         }
-                        return false
+                        return false;
                     });
                 }
             }
@@ -944,30 +951,41 @@ $(document).ready(function () {
             if (result.pitch.category_id != 7) {
                 var desc = result.solution.description;
                 var viewLength = 100; // Description string cut length parameter
+                const solutionDescription = $('.solution-description');
+                $('.edit-description-textarea').remove();
+                $('.update-description-button').hide();
+                solutionDescription.show();
                 if (desc.length > viewLength) {
                     var descBefore = desc.slice(0, viewLength - 1);
                     descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
                     var descAfter = desc.slice(descBefore.length);
-                    $('.solution-description').html(descBefore);
+                    solutionDescription.html(descBefore);
                     var showMoreLink = $('.description-more');
                     showMoreLink.show(500).on('click', function () {
-                        $('.solution-description').append(descAfter);
+                        solutionDescription.append(descAfter);
                         descAfter = '';
                         showMoreLink.hide();
                     });
                     if(result.solution.user_id == currentUserId) {
+                        $('.edit-description-link').remove();
                         showMoreLink.after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>');
                     }
                 } else {
-                    $('.solution-description').html(result.solution.description);
+                    solutionDescription.html(result.solution.description);
                     if(result.solution.user_id == currentUserId) {
-                        $('.solution-description').after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>');
+                        $('.edit-description-link').remove();
+                        solutionDescription.after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>');
                     }else {
                         $('.edit-description-link').remove();
                     }
                 }
                 if (result.solution.description != '') {
-                    $('span#date').after('<br />');
+                    const dateSpan = $('#date', '.solution-info:visible');
+                    const breakAfterDateSpan = dateSpan.nextUntil('.solution-description', 'br');
+                    if(breakAfterDateSpan.length < 2) {
+                        dateSpan.after('<br />');
+                    }
+
                 }
             } else {
                 $('.solution-description').html('');
@@ -985,12 +1003,13 @@ $(document).ready(function () {
                                 var downloadUrl = '/solutionfiles' + object.weburl;
                             }
                             html += '<a target="_blank" href="' + downloadUrl + '" class="attach">' + object.originalbasename + '</a><br>'
-                        })
+                        });
                     } else {
+                        let downloadUrl = '';
                         if(result.solution.images.solution.weburl.match(/solutions/)) {
-                            var downloadUrl = result.solution.images.solution.weburl;
+                            downloadUrl = result.solution.images.solution.weburl;
                         }else {
-                            var downloadUrl = '/solutionfiles' + result.solution.images.solution.weburl;
+                            downloadUrl = '/solutionfiles' + result.solution.images.solution.weburl;
                         }
                         html += '<a href="' + downloadUrl + '" class="attach">' + result.solution.images.solution.originalbasename + '</a>'
                     }
@@ -1015,9 +1034,9 @@ $(document).ready(function () {
 
                 var media = 'http://www.godesigner.ru';
                 if ($.isArray(result.solution.images.solution_solutionView)) {
-                    media += result.solution.images.solution_solutionView[0].weburl
+                    media += result.solution.images.solution_solutionView[0].weburl;
                 } else {
-                    media += result.solution.images.solution_solutionView.weburl
+                    media += result.solution.images.solution_solutionView.weburl;
                 }
                 var readyForLogosale = false;
                 var parsed = result.pitch.totalFinishDate.split(/[- :]/);
@@ -1041,7 +1060,7 @@ $(document).ready(function () {
                 }
 
                 var shareTitle = tweetLike;
-                var url = 'http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id
+                var url = 'http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id;
                 var sharebar = '<div style="display: block; height: 75px"> \
                 <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
                 <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \

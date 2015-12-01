@@ -15,14 +15,17 @@ class TwitterAPI extends AbstractAPI {
     /**
      * Конструктор, где инициализируется внешний объект
      */
-    public function __construct() {
+    public function __construct($keys = array()) {
         require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhOAuth.php';
-        $this->apiObject = new tmhOAuth(array(
-            'consumer_key' => '8KowPOOLHqbLQPKt8JpwnLpTn',
-            'consumer_secret' => 'Guna29r1BY8gEofz2amAIfPo1XcHJWNGI8Nzn6wiEwNlykAHhy',
-            'user_token' => '513074899-XF4hfFeVZNBQgX7QQU0brLzbd3AxIOk1HcEQFsGl',
-            'user_secret' => 'qJUuvweF3ennscQKvWPpHdxhhiDo4VRCvunpVm51SziQV'
-        ));
+        if(empty($keys)) {
+            $keys = array(
+                'consumer_key' => '8KowPOOLHqbLQPKt8JpwnLpTn',
+                'consumer_secret' => 'Guna29r1BY8gEofz2amAIfPo1XcHJWNGI8Nzn6wiEwNlykAHhy',
+                'user_token' => '513074899-XF4hfFeVZNBQgX7QQU0brLzbd3AxIOk1HcEQFsGl',
+                'user_secret' => 'qJUuvweF3ennscQKvWPpHdxhhiDo4VRCvunpVm51SziQV'
+            );
+        }
+        $this->apiObject = new tmhOAuth($keys);
     }
 
     /**

@@ -41,6 +41,9 @@ class Stream extends \lithium\template\Helper {
                         $text = str_replace('@' . $user['screen_name'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a>', $text);
                     }
                     $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a>';
+                    if(($tweet['user']['screen_name'] == 'tutdesign') && (preg_match('/news\?event/', $text))) {
+                        continue;
+                    }
                     $image = '';
                     if(isset($tweet['thumbnail'])) {
                         if((isset($tweet['entities']['urls'])) && (count($tweet['entities']['urls']) > 0)) {

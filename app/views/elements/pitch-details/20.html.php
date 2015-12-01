@@ -12,30 +12,13 @@ $types = array(
 ?>
 <input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["logo-properties"])); ?>">
 
-<?php if(!empty($details['logoType'])):?>
-    <h2 class="blueheading">Предпочтительный вид логотипа</h2>
-
-
-    <div class="group">
-        <ul class="look-variants">
-            <?php
-            foreach($details['logoType'] as $id):?>
-                <li>
-                    <span class="photo"><img src="/img/logo-looks/logo-looks-0<?=$id?>.jpg" alt="<?=$types[$id]?>"></span>
-                    <label class="supplement"><?=$types[$id]?></label>
-                </li>
-            <?php endforeach;?>
-        </ul><!-- .look-variants -->
-    </div><!-- .group -->
-<?php endif;?>
-
 <?php if(!empty($details['qualities'])):?>
-    <h2 class="blueheading">Какие 3 качества нужно донести через логотип?</h2>
+    <h2 class="blueheading">Какие 3 качества нужно донести через дизайн?</h2>
     <p class="regular"><?php echo nl2br($details['qualities'])?></p>
 <?php endif?>
 
 <div class="group">
-    <h2 class="blueheading">Какими свойствами должен обладать ваш логотип?</h2>
+    <h2 class="blueheading">Какими свойствами должен обладать ваш дизайн?</h2>
 
     <ul class="logo-properties">
         <li>

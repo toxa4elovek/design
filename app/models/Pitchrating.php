@@ -2,52 +2,72 @@
 
 namespace app\models;
 
-use \app\models\Pitch;
-use \app\models\User;
+/**
+ * Class Pitchrating
+ *
+ * Класс для работы с записями оценок брифов пользователями
+ * @package app\models
+ */
+class Pitchrating extends AppModel {
 
-class Pitchrating extends \app\models\AppModel {
-
-    public static function setRating($userId, $pitchId, $rating) {
-        $pitch = Pitch::first($pitchId);
+    /**
+     * Метод устанавливает рейтинг для проекта $projectId и пользователя $userId
+     *
+     * @param $userId integer айди пользователя
+     * @param $projectId integer айди проекта
+     * @param $rating integer рейтинг
+     * @return bool результат операции
+     */
+    public static function setRating($userId, $projectId, $rating) {
+        $pitch = Pitch::first($projectId);
         $user = User::first($userId);
         if (!empty($user) && !empty($pitch)) {
-            if (!$pitchRating = Pitchrating::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $pitchId)))) {
-                $pitchRating = Pitchrating::create();
+            if (!$pitchRating = self::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $projectId)))) {
+                $pitchRating = self::create();
             }
             if ($pitchRating->rating != $rating) {
                 $rating = ($rating > 5) ? 5 : $rating;
                 $rating = ($rating < 1) ? 1 : $rating;
-                $pitchRating->rating = $rating;
-                $pitchRating->user_id = $user->id;
-                $pitchRating->pitch_id = $pitch->id;
-                if ($pitchRating->save())
-                    return true;
-            } return true;
-        } else
-            return false;
+                $pitchRating->set(array('rating' => $rating, 'user_id' => $userId, 'pitch_id' => $projectId));
+                return (bool) $pitchRating->save();
+            }
+            return true;
+        }
+        return false;
     }
 
-    public static function takePart($userId, $pitchId) {
-        $pitch = Pitch::first($pitchId);
+    /**
+     * Метод помечает участие пользователя $userId в проекте $projectId
+     *
+     * @param $userId
+     * @param $projectId
+     * @return bool
+     */
+    public static function takePart($userId, $projectId) {
+        $pitch = Pitch::first($projectId);
         $user = User::first($userId);
         if (!empty($user) && !empty($pitch)) {
-            if (!$pitchRating = Pitchrating::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $pitchId)))) {
-                $pitchRating = Pitchrating::create();
+            if (!$pitchRating = self::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $projectId)))) {
+                $pitchRating = self::create();
             }
-            $pitchRating->trigger = 1;
-            $pitchRating->user_id = $user->id;
-            $pitchRating->pitch_id = $pitch->id;
-            if ($pitchRating->save()) {
-                return true;
-            }
+            $pitchRating->set(array('trigger' => 1, 'user_id' => $userId, 'pitch_id' => $projectId));
+            return (bool) $pitchRating->save();
         } else {
             return false;
         }
     }
 
-    public static function getRating($userId, $pitchId) {
-        $rating = Pitchrating::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $pitchId)));
-        $rating = (!empty($rating)) ? $rating->rating :0;
-        return $rating;
+    /**
+     * Метод возвращяет рейтинг проекта $projectId для пользователя $userId
+     *
+     * @param $userId
+     * @param $projectId
+     * @return int
+     */
+    public static function getRating($userId, $projectId) {
+        $rating = self::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $projectId)));
+        $rating = (!empty($rating)) ? $rating->rating : 0;
+        return (int) $rating;
     }
+
 }

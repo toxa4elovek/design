@@ -64,11 +64,11 @@
                 <table id="primary" class="all-pitches">
                     <thead>
                         <tr>
-                            <td class="icons"></td>
-                            <td class="" style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-title" class="sort-link" data-dir="asc">название проекта</a></td>
+                            <td class="icons" style="width: 20px;"></td>
+                            <td class="" style="text-align: left; padding:0 10px 0 40px; width: 255px;"><a href="#" id="sort-title" class="sort-link" data-dir="asc">название проекта</a></td>
                             <td class="pitches-cat"><a href="#" id="sort-category" class="sort-link" data-dir="asc">Категории</a></td>
                             <td class="idea"><a href="#" id="sort-ideas_count" class="sort-link" data-dir="desc">Идеи</a></td>
-                            <td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" data-dir="asc">Срок</a></td>
+                            <td class="pitches-time"><a href="#" id="sort-finishDate" class="sort-link" data-dir="asc">Статус</a></td>
                             <td style="text-align: left; padding:0 10px 0 40px"><a href="#" id="sort-price" class="sort-link" data-dir="desc">Цена</a></td>
                         </tr>
                     </thead>

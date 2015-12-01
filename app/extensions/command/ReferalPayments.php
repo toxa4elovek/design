@@ -12,7 +12,7 @@ class ReferalPayments extends \app\extensions\command\CronJob {
 
     public function run() {
         $this->header('Welcome to the ReferalPayments command!');
-        $count = User::getReferalPayments();
+        $count = User::getReferalPaymentsCount();
         if ($count > 0) {
             $data = array('to' => $this->dest);
             Spammailer::referalpayments($data);
@@ -22,5 +22,3 @@ class ReferalPayments extends \app\extensions\command\CronJob {
         $this->out($count . ' users');
     }
 }
-
-?>

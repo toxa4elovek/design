@@ -72,7 +72,7 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
             'library' => true,
             'controller' => '_errors',
             'template' => 'development',
-            'layout' => 'default',
+            'layout' => 'error',
             'request' => $params['request']
         ));
     }

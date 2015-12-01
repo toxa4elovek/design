@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\BlogAd;
 use \app\models\Post;
 use \lithium\storage\Session;
 use app\models\User;
@@ -34,6 +35,9 @@ class PostsController extends AppController {
             $tag = $this->request->query['tag'];
             $conditions += array('tags' => array('LIKE' => '%' . $tag . '%'));
         }
+        if(isset($this->request->query['author'])) {
+            $conditions += array('user_id' => (int) $this->request->query['author']);
+        }
         if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
             setcookie('counterdata', "", time() - 3600, '/');
             Session::delete('user.blogpost');
@@ -52,7 +56,7 @@ class PostsController extends AppController {
         }
         $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
 
-        return compact('posts', 'postsList', 'editor', 'search');
+        return compact('posts', 'postsList', 'editor', 'search', 'conditions');
     }
 
     /**
@@ -68,48 +72,37 @@ class PostsController extends AppController {
                 $page = abs(intval($this->request->query['page']));
             }
             $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
-            $words = explode(' ', $searchCondition);
-            foreach ($words as $index => &$searchWord) {
+            $tempWords = explode(' ', $searchCondition);
+            foreach ($tempWords as $index => &$searchWord) {
                 if ($searchWord == '') {
-                    unset($words[$index]);
+                    unset($tempWords[$index]);
                     continue;
                 }
                 $searchWord = mb_eregi_replace('[^A-Za-z0-9а-яА-Я]', '', $searchWord);
                 $searchWord = trim($searchWord);
             }
-            if (count($words) == 1) {
-                $posts = Post::all(array('conditions' => array(
+            $words = array($searchCondition);
+            foreach($tempWords as $subwords) {
+                $words[] = $subwords;
+            }
+            $posts = new \lithium\util\Collection();
+            foreach ($words as $word) {
+                $result = Post::all(array('conditions' => array(
                     'OR' => array(
-                        'title' => array('LIKE' => '%' . $words[0] . '%'),
-                        'full' => array('LIKE' => '%' . $words[0] . '%'),
+                        'title' => array('REGEXP' => $word),
+                        'short' => array('REGEXP' => $word),
+                        'full' => array('REGEXP' => $word),
                     ),
                     'published' => 1,
                     'Post.created' => array('<=' => date('Y-m-d H:i:s')),
-                    ),
+                ),
                     'page' => $page,
                     'limit' => $limit,
                     'order' => array('created' => 'desc'),
                     'with' => array('User'),
                 ));
-            } else {
-                $posts = new \lithium\util\Collection();
-                foreach ($words as $word) {
-                    $result = Post::all(array('conditions' => array(
-                        'OR' => array(
-                            'title' => array('LIKE' => '%' . $word . '%'),
-                            'full' => array('LIKE' => '%' . $word . '%'),
-                        ),
-                        'published' => 1,
-                        'Post.created' => array('<=' => date('Y-m-d H:i:s')),
-                        ),
-                        'page' => $page,
-                        'limit' => $limit,
-                        'order' => array('created' => 'desc'),
-                        'with' => array('User'),
-                    ));
-                    foreach ($result as $post) {
-                        $posts[$post->id] = $post;
-                    }
+                foreach ($result as $post) {
+                    $posts[$post->id] = $post;
                 }
             }
             $search = implode(' ', $words);
@@ -117,6 +110,7 @@ class PostsController extends AppController {
             $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
             $postsList = array();
             foreach($posts as $post) {
+                $post->timezonedCreated = date('c', strtotime($post->created));
                 $postsList[] = $post->data();
             }
             if ($this->request->is('json')) {
@@ -206,6 +200,15 @@ class PostsController extends AppController {
             if($top) {
                 $related = Post::all(array('conditions' => array('id' => $top)));
             }
+            if($post->blog_ad_id != 0) {
+                function getFirstParagraph($string){
+                    $string = substr($string,0, strpos($string, "</p>")+4);
+                    return $string;
+                }
+                $snippet = BlogAd::first($post->blog_ad_id);
+                $paragraph = getFirstParagraph($post->full);
+                $post->full = str_replace($paragraph, $paragraph . $snippet->text, $post->full);
+            }
             return compact('post', 'related');
         }else {
             return $this->redirect('/posts');
@@ -222,7 +225,8 @@ class PostsController extends AppController {
             return $this->redirect('/posts');
         }
         $commonTags = Post::getCommonTags();
-        return compact('commonTags');
+        $snippets = BlogAd::all();
+        return compact('commonTags', 'snippets');
     }
 
     /**
@@ -234,7 +238,8 @@ class PostsController extends AppController {
         if(User::checkRole('editor') or User::checkRole('author')) {
             if($post = Post::first($this->request->id)) {
                 Post::lock($this->request->id, Session::read('user.id'));
-                return compact('post');
+                $snippets = BlogAd::all();
+                return compact('post', 'snippets');
             }else {
                 return $this->redirect('/posts/index');
             }

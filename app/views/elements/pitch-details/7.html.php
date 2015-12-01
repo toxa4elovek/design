@@ -53,10 +53,10 @@ if(isset($details['third-option'])):?>
 
 <?php if(!empty($details['copy-extra'])):?>
 <h2 class="blueheading">Есть что добавить?</h2>
-<p class="regular"><?=$this->brief->e($details['copy-extra'])?></p>
+<p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['copy-extra'])?></p>
 <?php endif;?>
 
 <?php if(!empty($details['copy-ref'])):?>
 <h2 class="blueheading">Референсы</h2>
-<p class="regular"><?=$this->brief->e($details['copy-ref'])?></p>
+<p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['copy-ref'])?></p>
 <?php endif;?>

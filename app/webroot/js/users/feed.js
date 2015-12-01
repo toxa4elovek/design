@@ -633,6 +633,10 @@ $(document).ready(function () {
                     window.location = '/users/nominated';
                     $('.select-winner-li').remove();
                 }
+            }else {
+                if(typeof response.redirect != 'undefined') {
+                    window.location = response.redirect;
+                }
             }
         });
     });
@@ -1531,11 +1535,9 @@ function OfficeStatusUpdater() {
                     }
                     html = '<div data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">' + text + '</div>';
                 }else{
-
-                    if (!object.news.tags) {
+                    var style = '';
+                    if ((!object.news.tags) || (object.news.short.match(/iframe/))) {
                         var style = ' style="padding-top: 0px;"';
-                    } else {
-                        var style = '';
                     }
                     var validUrl = self.isValidImage(object.news.imageurl);
                     var boxStyle = '';
@@ -1551,12 +1553,12 @@ function OfficeStatusUpdater() {
                     if(validUrl) {
                         html += '<p class="img-box"> \
                                         <a class="post-link" href="' + object.news.link + '" target="_blank" ><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
-                                    </p>'
+                                    </p>';
                     }else if(self.isEmbeddedLink(object.news.link)) {
                         html += '<p class="img-box">' + self.generateEmbeddedIframe(object.news.link) + '</p>';
                     }
                     html +='<div class="r-content post-content"' + style + '>';
-                    if (object.news.tags) {
+                    if ((object.news.tags) && (!object.news.short.match(/iframe/))) {
                         html += '<p class="img-tag"><a class="tag-title" href="/news?tag=' + encodeURIComponent(object.news.tags) + '">' + object.news.tags + '</a></p>';
                     }
 

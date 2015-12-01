@@ -32,7 +32,8 @@
                     <?php //if(($solution->step == 3) && ($solution->pitch->status < 2)):?>
                     <?php if($solution->step >= 3):?>
                     <form id="wincomment" method="post" action="/users/step3/<?=$solution->id?>.json" enctype="multipart/form-data">
-                        <textarea id="newComment" name="text" style="margin:10px 0 0 0;">@<?=$this->user->getFormattedName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
+                        <textarea id="newComment" data-user-autosuggest="true" name="text" style="margin:10px 0 0 0;">@<?=$this->user->getFormattedName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
+                        <div></div>
                         <div style="position: relative;">
                             <input type="file" name="file[]" multiple="multiple" class="wincommentfileupload" />
                             <input id="fakebutton" type="button" style="position: absolute; z-index: 4; top: 0; left: 0; width: 185px; height: 23px; font-size: 12px;" value="Выбрать файлы">
@@ -47,6 +48,9 @@
                 <div class="separator" style="margin-top: 10px;"></div>
                 <section class="comments-container">
                 <?php foreach($comments as $comment):
+                    if(($type == 'designer') && (preg_match('/хотим продолжить наше партнерство/', $comment->originalText))):
+                        continue;
+                    endif;
                 if($comment->type == 'designer'):
                     $class ="message_info1";
                 elseif ($comment->user->isAdmin) :
@@ -77,7 +81,11 @@
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
                         <div class="message_text2">
-                            <span class="regular comment-container"><?=$this->brief->linkemail($this->brief->eee($comment->originalText))?></span>
+                            <?php if($comment->user->isAdmin):?>
+                                <span class="regular comment-container"><?=$this->brief->linkEmail($comment->originalText)?></span>
+                            <?php else: ?>
+                                <span class="regular comment-container"><?=$this->brief->linkEmail($this->brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->originalText))?></span>
+                            <?php endif?>
                         </div>
                     </div>
 
@@ -222,5 +230,9 @@
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
-<?=$this->html->script(array('jquery-ui-1.11.4.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'users/step2', 'users/step3'), array('inline' => false))?>
+<script>
+    var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
+</script>
+
+<?=$this->html->script(array('flux/flux.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', '/js/common/comments/UserAutosuggest.js', '/js/common/comments/actions/CommentsActions.js', 'users/step2', 'users/step3'), array('inline' => false))?>
 <?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
