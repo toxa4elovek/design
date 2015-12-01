@@ -843,11 +843,11 @@ class UsersController extends \app\controllers\AppController {
                         }
                     }
                     if(isset($vk) && ($vk)) {
-                        if((User::isMemberOfVKGroup($userToLog)) && (!User::isSubscriptionActive($userToLog->id, $userToLog)) && (!User::hasActiveSubscriptionDiscount($userToLog->id))) {
+                        if(($userToLog->isUserRecordMemberOfVKGroup()) && (!User::isSubscriptionActive($userToLog->id, $userToLog)) && (!User::hasActiveSubscriptionDiscount($userToLog->id))) {
                             User::setSubscriptionDiscount($userToLog->id, 10, date('Y-m-d H:i:s', time() + (MONTH)));
                             if(!SubscriptionPlan::hasSubscriptionPlanDraft($userToLog->id)) {
                                 $plan = SubscriptionPlan::getPlan(1);
-                                $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
+                                $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($userToLog->id);
                                 $receipt = array(
                                     array(
                                         'name' => 'Оплата тарифа «' . $plan['title'] . '»',
