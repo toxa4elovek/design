@@ -5,7 +5,7 @@
     <div class="middle">
         <div class="middle_inner">
             <div class="right-sidebar">
-                <?php echo $this->stream->renderStream(5, false);?>
+                <?php echo $this->stream->renderStream(4, false);?>
             </div>
             <div class="content group narrow">
                 <section class="howitworks quiz">

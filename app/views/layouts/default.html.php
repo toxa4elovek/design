@@ -138,11 +138,11 @@
 $env = lithium\core\Environment::get();
 echo $this->html->script('http://vk.com/js/api/openapi.js');
 if($env == 'development') {
-    echo $this->html->script('/js/react/0.14.0-rc1-dev/react.js', array('inline' => false, 'weight' => 8));
-    echo $this->html->script('/js/react/0.14.0-rc1-dev/react-dom.js', array('inline' => false, 'weight' => 9));
+    echo $this->html->script('/js/react/0.14.0-dev/react-0.14.0.js', array('inline' => false, 'weight' => 8));
+    echo $this->html->script('/js/react/0.14.0-dev/react-dom-0.14.0.js', array('inline' => false, 'weight' => 9));
 }else {
-    echo $this->html->script('/js/react/0.14.0-rc1/react-0.14.0-rc1.min.js', array('inline' => false, 'weight' => 8));
-    echo $this->html->script('/js/react/0.14.0-rc1/react-dom-0.14.0-rc1.min.js', array('inline' => false, 'weight' => 9));
+    echo $this->html->script('/js/react/0.14.0/react-0.14.0.min.js', array('inline' => false, 'weight' => 8));
+    echo $this->html->script('/js/react/0.14.0/react-dom-0.14.0.min.js', array('inline' => false, 'weight' => 9));
 }
 if(($this->_request->params['controller'] == 'users') && ($this->_request->params['action'] == 'subscriber')) {
     echo $this->html->script('/js/jquery/jquery-1.9.1.min.js', array('inline' => false, 'weight' => 10));
@@ -154,7 +154,8 @@ echo $this->html->script('jquery.validate.min', array('inline' => false, 'weight
 echo $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 13));
 echo $this->html->script('jquery.detectmobilebrowser.min.js', array('inline' => false, 'weight' => 14));
 echo $this->html->script('plugins', array('inline' => false, 'weight' => 15));
-echo $this->html->script('app', array('inline' => false, 'weight' => 15));
+echo $this->html->script('moment.min.js', array('inline' => false, 'weight' => 15));
+echo $this->html->script('app', array('inline' => false, 'weight' => 16));
 echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false));
 ?>
 <?= $this->optimize->scripts() ?>
@@ -167,5 +168,27 @@ echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false)
 <?=$this->view()->render(array('element' => 'scripts/ga'))?>
 <?=$this->view()->render(array('element' => 'scripts/ua'))?>
 <?=$this->view()->render(array('element' => 'newrelic/newrelic_footer'))?>
+<script>
+<?php
+    if($this->debug->isDebugInfoExists()) {
+        $debugQueries = $this->debug->getDebugQueries();
+        $debugQueries = $this->debug->sortQueriesByTimestamp($debugQueries);
+        $totalTimeMysql = 0;
+        $totalTimeRedis = 0;
+        foreach($debugQueries as $query):
+            if($query['type'] == 'sql'):
+                $totalTimeMysql += $this->debug->roundTime($query['elapsed_time']);
+            elseif($query['type'] == 'redis'):
+                $totalTimeRedis += $this->debug->roundTime($query['elapsed_time']);
+            endif;
+            echo $this->debug->getHtmlForQuery($query);
+        endforeach;
+        $totalCount = count($debugQueries);
+        $style = $this->debug->getVisualStyle('info');
+        echo "console.log('%cTotal queries: $totalCount, time in MySql: $totalTimeMysql, time in Redis: $totalTimeRedis', '$style');\r\n";
+        $this->debug->clearDebugInfo();
+    }
+?>
+</script>
 </body>
 </html>

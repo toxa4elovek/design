@@ -45,7 +45,7 @@ class WincommentsController extends \lithium\action\Controller {
             $comment->save();
             $comment = Wincomment::first($this->request->id);
             $brief = new Brief();
-            return html_entity_decode($brief->linkemail($brief->eee($comment->text)));
+            return html_entity_decode($brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->text));
         }
     }
 }

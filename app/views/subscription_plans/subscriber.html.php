@@ -3,7 +3,7 @@
     <?php
     $total = 0;
     foreach($receipt as $row) {
-        $total += $row['amount'];
+        $total += $row['value'];
     }
     ?>
     <script>
@@ -62,15 +62,28 @@
     <div class="middle">
         <div class="main">
             <h3 class="page-title-with-flag">Оплата</h3>
-            <?php if(isset($plan)): ?>
-                <h4>Тариф «<?=$plan['title']?>» <?=$this->MoneyFormatter->formatMoney($plan['price'], array('suffix' => ' р.-'))?></h4>
+            <?php if(isset($plan)):
+                if($discount == 0) {
+                    $value = $plan['price'];
+                }else {
+                    $value = $plan['price'] - $this->MoneyFormatter->applyDiscount($plan['price'], $discount);
+                }
+                ?>
+                <h4 style="line-height: 30px;">Тариф «<?=$plan['title']?>» <?=$this->MoneyFormatter->formatMoney($value, array('suffix' => ' р.-'))?>
+                    <?php if($discount):?><br/>(со скидкой <?=$discount?>%)<?php endif;?>
+
+                </h4>
                 <p>Действителен с <?= date('d.m.Y')?>–<?= date('d.m.Y', time() + YEAR)?><br/>
                     Стоимость тарифного плана не включает гонорары дизайнеру.<br/>
                     При оплате тарифного плана вам будет доступен кошелёк (личный счет), пополнить который можно по мере необходимости в любое время.
                 </p>
             <?php else: ?>
                 <h4>Пополнение счёта</h4>
-                <p>Пополнить кошелёк можно по мере необходимости в любое время</p>
+                <?php if(isset($predefined)): ?>
+                    <p>Для выбранного действия необходимо пополнить личный счёт на указанную сумму.</p>
+                <?php else:?>
+                    <p>Пополнить кошелёк можно по мере необходимости в любое время</p>
+                <?php endif;?>
             <?php endif ?>
 
             <span class="label-fund-balance">Пополнить личный счет, руб.</span>

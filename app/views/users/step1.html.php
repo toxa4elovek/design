@@ -131,11 +131,33 @@
                         </tr>
                         </tbody></table>
                 </div>
+            </form>
+                <section class="user-mobile-section" style="width: 540px">
+                    <div class="g_line"></div>
+                    <h1 class="section-header" style="width: 540px">Для перехода на следующий шаг и получения награды необходимо подтвердить ваш номер телефона!</h1>
+                    <form method="post" id="mobile-form" action="/users/update">
+                        <p class="confirm-message" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>Для подтверждения номера +<?=$user->phone?> введите код, который пришел по смс.</p>
+                        <div class="phone-input-container" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
+                            <span class="plus">+</span>
+                            <input type="text" name="phone" placeholder="79811234567">
+                        </div>
+                        <div class="clear"></div>
+                        <ul <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                            <li class="number" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?>>+ <?= $user->phone?></li>
+                            <li class="remove-number" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="margin-right: 0 !important;"<?php endif?>><a href="#" class="remove-number-link"><?php if(!empty($user->phone) && $user->phone_valid == 1):?>Удалить/поменять номер<?php else:?>Удалить номер<?php endif?></a></li>
+                            <li class="resend-code" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?>><a href="#" class="resend-code-link">Выслать код повторно</a></li>
+                        </ul>
+                        <div class="clear"></div>
+                        <input type="text" name="phone_code"  <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                        <input type="submit" id="confirm-mobile" class="button" value="Подтвердить код" <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                        <input type="submit" id="save-mobile" class="button" value="Подтвердить телефон" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
+                        <span class="note" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>для смс оповещения в экстренных случаях</span>
+                        <div class="clear"></div>
+                    </form>
+                    <p class="help" style="margin-top: 40px; font-family: Georgia, serif; font-size: 13px; font-style: italic; line-height: 16px;">Свяжитесь с нами, если  не получается подтвердить номер:<br/>
+                        <a href="mailto:team@godesigner.ru">team@godesigner.ru</a> или (812) 648-24-12 по будням с 10–17<br/> по Москве</p>                </section>
+                <div class="clear"></div>
 
-
-                <div class="step">
-                    <span class="regular">Вы можете вернуться к этому этапу позже!</span>
-                </div>
                 <div class="proceed">
                     <?=$this->html->link('<img src="/img/proceed.png" /><br />
                         <span>Продолжить</span>', array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id), array('escape' => false, 'id' => 'step2-link-saveform'))?>
@@ -143,7 +165,7 @@
                 <div class="clr"></div>
 
             </div>
-            </form>
+
 
 
             <?=$this->view()->render(array('element' => '/complete-process/rightblock'), array('solution' => $solution, 'type' => $type))?>

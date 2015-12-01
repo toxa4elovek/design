@@ -184,9 +184,9 @@ function TableLoader() {
                 pitchMultiple = '<br>' + object.multiple;
             }
             let categoryLinkHref = '#';
-            /*if(object.category.id == 20) {
+            if(object.category_id == 20) {
                 categoryLinkHref = '/pages/subscribe';
-            }*/
+            }
             html += `<tr data-id="${object.id}" class="${rowClass}">
                 <td class="icons">${icons}</td>
                 <td class="pitches-name">

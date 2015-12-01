@@ -46,7 +46,7 @@ if(isset($details['logo-properties'])) {
 
     <?php if(!empty($details['site-inspiration'])):?>
     <h2 class="blueheading">Предпочтения</h2>
-    <p class="regular"><?=$this->brief->e($details['site-inspiration'])?></p>
+    <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
     <?php endif;?>
 
 </div>

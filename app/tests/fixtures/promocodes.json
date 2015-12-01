@@ -1,0 +1,11 @@
+[
+  {"id": 1, "type": "discount", "code": "aaaa", "expires": "2018-01-01 00:00:00"},
+  {"id": 2, "type": "in_twain", "code": "bbbb", "expires": "2018-01-01 00:00:00"},
+  {"id": 3, "type": "pinned", "pitch_id": null, "code": "cccc", "expires": "2011-01-01 00:00:00"},
+  {"id": 4, "type": "pinned", "pitch_id": null, "user_id": null, "code": "dddd", "starts": "2017-01-01 00:00:00", "expires": "2018-01-01 00:00:00", "multi": 0},
+  {"id": 5, "type": "pinned", "pitch_id": null, "user_id": null, "code": "eeee", "expires": "2018-01-01 00:00:00", "multi": 1},
+  {"id": 6, "type": "pinned", "pitch_id": 2, "user_id": 2, "code": "ffff", "expires": "2018-01-01 00:00:00", "multi": 0},
+  {"id": 7, "type": "pinned", "pitch_id": null, "user_id": null, "code": "gggg", "starts": "2012-01-01 00:00:00", "expires": "2018-01-01 00:00:00", "multi": 0},
+  {"id": 8, "type": "custom_discount", "pitch_id": null, "user_id": null, "code": "hhhh", "starts": "2012-01-01 00:00:00", "expires": "2018-01-01 00:00:00", "multi": 0, "data": "50"},
+  {"id": 9, "type": "custom_discount", "pitch_id": 32, "user_id": null, "code": "jjjj", "starts": "2012-01-01 00:00:00", "expires": "2018-01-01 00:00:00", "multi": 1, "data": "100"}
+]

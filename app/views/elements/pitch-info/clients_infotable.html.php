@@ -110,7 +110,7 @@
             <?php else: ?>
                 <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                     <?php if(($pitch->type == 'company_project') && ($pitch->status == 1) && (!$pitch->awarded)):?>
-                        <a class="order-button" style="width: 252px; top: -3px; float: left;" href="#">Отказаться от всех решений</a>
+                        <a class="order-button" id="refund" style="width: 252px; top: -3px; float: left;" href="/pitches/refund_subscription/<?= $pitch->id ?>">Отказаться от всех решений</a>
                     <?php else :?>
                         <?php if($pitch->guaranteed == 1):?>
                         <span class="regular">Проект гарантирован</span>

@@ -2,26 +2,29 @@
 
 namespace app\controllers;
 
+use app\extensions\helper\Debug;
 use \app\models\Answer;
 use \app\models\Solution;
 use \app\models\Pitch;
 use \app\models\User;
-use \app\models\Event;
 use \app\models\Post;
 use \app\models\Favourite;
 use \lithium\storage\Session;
-use \lithium\storage\session\adapter\Cookie;
 use app\extensions\helper\User as UserHelper;
+use app\extensions\helper\MoneyFormatter as Money;
 use \lithium\security\Auth;
-
 
 class AppController extends \lithium\action\Controller {
 
     public $userHelper = null;
+    public $money = null;
+    public $debug = null;
 
     public function _init() {
         parent::_init();
         $this->userHelper = new UserHelper();
+        $this->money = new Money();
+        $this->debug = new Debug();
         if($this->userHelper->isLoggedIn()) {
             if(function_exists('newrelic_add_custom_parameter')) {
                 newrelic_add_custom_parameter('userId', $this->userHelper->getId());
@@ -53,7 +56,6 @@ class AppController extends \lithium\action\Controller {
                         'conditions' => array(
                             array('AND' => array(
                                 array("Pitch.type != 'fund-balance'"),
-                                array("Pitch.type != 'plan-payment'"),
                             )),
                             array('OR' => array(
                                 array('Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
@@ -143,7 +145,7 @@ class AppController extends \lithium\action\Controller {
                         return $this->redirect('/');
                     }
                     $user->lastTimeOnline = date('Y-m-d H:i:s');
-                    $user->autologin_token = User::generateToken();
+                    $user->autologin_token = $user->generateToken();
                     setcookie('autologindata', 'id=' . $user->id . '&token=' . sha1($user->token), time() + strtotime('+1 month') );
                     $user->save(null, array('validate' => false));
                     Auth::set('user', $user->data());
@@ -170,7 +172,7 @@ class AppController extends \lithium\action\Controller {
         }
     }
 
-    protected function popularQuestions() {
-        return Answer::all(array('limit' => 5, 'order' => array('hits' => 'desc')));
+    protected function popularQuestions($limit = 5) {
+        return Answer::getPopularQuesions($limit);
     }
 }

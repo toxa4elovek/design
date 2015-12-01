@@ -28,14 +28,14 @@
 }
 
 
-.answer p, .answer ul li {
+.answer p/*, .answer ul li*/ {
 	margin: 0 0 20px;
 }
 
 .answer ul {
     list-style-type: disc;
 	list-style-position: inside;
-	margin: 0 0 20px 40px;
+	margin: 0 0 20px 20px;
 }
 
 
@@ -184,4 +184,49 @@ ol {
 }
 ol li {
 	list-style: decimal;
+}
+.breadcrumbs {
+	margin-bottom: 29px;
+	padding-bottom: 0;
+}
+.breadcrumbs a{
+	color: #658fa5;
+	font-family: RodeoC;
+	font-size: 17px;
+	font-weight: 700;
+	line-height: 20px;
+}
+.breadcrumbs a:hover {
+	text-decoration: underline;
+}
+.timeline_v {
+	padding-top: 8px;
+	margin-bottom: 36px;
+	padding-left: 25px;
+	width: 550px;
+	height: 389px;
+	background: url(/img/pages/howitworks/timeline_v.png) left top no-repeat;
+}
+.timeline_v li {
+	list-style: none;
+	margin-bottom: -9px;
+	float: left;
+	width: 540px;
+}
+.timeline_v li a {
+	font-family: RodeoC;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 22px;
+}
+.timeline_v a:hover {
+	text-decoration: underline;
+}
+.timeline_v li p {
+	margin-top: 5px;
+	color: #8f8f8f;
+	font-family: Georgia;
+	font-size: 14px;
+	font-style: italic;
+	line-height: 19px;
 }

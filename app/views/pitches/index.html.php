@@ -43,6 +43,7 @@
                         <li style="width:130px"><a data-group="priceFilter" data-value="3" href="#">от 20 000 Р.-</a></li>
                         <li style="width:130px"><a data-group="priceFilter" data-value="2" href="#">от 10 000 - 20 000 Р.-</a></li>
                         <li style="width:130px"><a data-group="priceFilter" data-value="1" href="#">от 5 000 - 10 000 Р.-</a></li>
+                        <li style="width:130px"><a data-group="priceFilter" data-value="4" href="#">за идею (0 Р.-)</a></li>
                     </ul>
                     <div style="clear:both"></div>
                 </div>
@@ -190,6 +191,10 @@
                         $pitchPath = 'details';
                     }
                     $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
+                    $categoryLinkHref = '#';
+                    if($pitch['category_id'] == 20) {
+                        $categoryLinkHref = '/pages/subscribe';
+                    }
                     $html = '<tr data-id="' . $pitch['id'] . '" class="' . $rowClass . '">' .
                         '<td class="icons">' . $icons . '</td>' .
                         '<td class="pitches-name">' .
@@ -200,7 +205,7 @@
                         '</div>' .
                         '</td>' .
                         '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' .
-                        '<a href="#" style="font-size:11px;">' . $pitch['category']['title'] . $multiple . '</a>' .
+                        '<a href="' . $categoryLinkHref . '" style="font-size:11px;" target="_blank">' . $pitch['category']['title'] . $multiple . '</a>' .
                         '</td>' .
                         '<td class="idea"  style="font-size:11px;">' . $pitch['ideas_count'] . '</td>' .
                         '<td class="pitches-time"  style="font-size:11px;">' . $timeleft . '</td>' .

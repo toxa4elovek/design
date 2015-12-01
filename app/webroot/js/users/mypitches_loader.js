@@ -1,76 +1,72 @@
-/* Class */
+'use strict';
 
 function TableLoader() {
     var self = this;
-    // storage object for saving data
+
     this.storage = {};
     this.container = $('#table-content');
     this.nav = $('.page-nambe-nav');
-    this.limit = 3; //even number
+    this.limit = 3;
     this.navNeub = 2;
     this.options = {
         "page": 1,
         "type": "all",
         "category": "all",
-        "order": {"finishDate": "desc"},
+        "order": { "finishDate": "desc" },
         "priceFilter": "all",
         "searchTerm": ""
-    }
+    };
     this.page = 1;
     this.type = 'all';
     this.magePage = null;
-    // initialisation method
-    this.init = function() {
+
+    this.init = function () {
         self.setFilter('category', $('input[name=category]').val(), $('#cat-menu'));
 
-        $(document).on('click', '.nav-page', function() {
+        $(document).on('click', '.nav-page', function () {
             var page = $(this).attr('rel');
-            if(page == 'prev') {
+            if (page == 'prev') {
                 page = parseInt(self.page) - 1;
-                if(page < 1) page = 1;
+                if (page < 1) page = 1;
             }
-            if(page == 'next') {
+            if (page == 'next') {
                 page = parseInt(self.page) + 1;
-                if(page > self.total) page = self.total;
+                if (page > self.total) page = self.total;
             }
             self.options.page = page;
             self.fetchTable(self.options);
             return false;
         });
-        
-        if(window.location.href.match(/finished/)) {
+
+        if (window.location.href.match(/finished/)) {
             $('.pitches-type:nth-child(2)').addClass('active-pitches');
             self.options.type = 'finished';
         }
-        if(window.location.pathname.match(/(\/pitches\/?)$/)) {
-            //self.fetchTable(self.options);
-        }else {
-            if(window.location.pathname.match(/(\/pitches\/?)(\d+)$/)) {
-                var results = window.location.pathname.match(/(\/pitches\/?)(\d+)$/);
-                $('a[data-group=category][data-value=' + results[2] + ']').click();
-            }else {
-                self.fetchTable(self.options);
+        if (window.location.pathname.match(/(\/pitches\/?)$/)) {} else {
+                if (window.location.pathname.match(/(\/pitches\/?)(\d+)$/)) {
+                    var results = window.location.pathname.match(/(\/pitches\/?)(\d+)$/);
+                    $('a[data-group=category][data-value=' + results[2] + ']').click();
+                } else {
+                    self.fetchTable(self.options);
+                }
             }
-        }
     };
-    this.fetchTable = function(options) {
+    this.fetchTable = function (options) {
         var pathname = window.location.pathname;
         if (!options.fromQuery) {
             var queryParams = $.param(options);
-            window.history.pushState('object or string', 'Title', pathname + '?' + queryParams); // @todo Check params
+            window.history.pushState('object or string', 'Title', pathname + '?' + queryParams);
         } else {
-            queryToSearchField(options);
-        }
+                queryToSearchField(options);
+            }
         $('.pitches-ajax-wrapper').fadeIn(100);
-        $.get('/pitches/participate.json', options, function(response) {
+        $.get('/pitches/participate.json', options, function (response) {
             self.page = response.data.info.page;
             self.total = response.data.info.total;
             self.renderTable(response);
             self.renderNav(response);
             $('.pitches-ajax-wrapper').fadeOut(50);
-            if (!options.fromQuery) { // Came Back - No Scroll
-                //$('html, body').animate({ scrollTop: 0 }, 600 );
-            }
+            if (!options.fromQuery) {}
             if (response.data.pitches.length == 0) {
                 $('.all-pitches, .foot-content').hide();
                 var image = '/img/filter-arrow-down.png';
@@ -84,33 +80,29 @@ function TableLoader() {
             }
         });
     };
-    this.renderTable = function(response) {
+    this.renderTable = function (response) {
         var html = '';
         var counter = 1;
 
         response.data.pitches.sort(sortfunction);
 
-        function sortfunction(a, b){
-            return (a.sort - b.sort);
+        function sortfunction(a, b) {
+            return a.sort - b.sort;
         }
-        $.each(response.data.pitches, function(index, object) {
+        $.each(response.data.pitches, function (index, object) {
             var rowClass = 'odd';
-            if((counter % 2 == 0)) {
+            if (counter % 2 == 0) {
                 rowClass = 'even';
             }
-            var temp  = object.started.split(/\-|\s/)
-            var pitchStartDate = new Date(temp.slice(0,3).join('/')+' '+temp[3]);
+            var temp = object.started.split(/\-|\s/);
+            var pitchStartDate = new Date(temp.slice(0, 3).join('/') + ' ' + temp[3]);
             var plusoneday = Math.round(pitchStartDate.getTime() / 1000) + 24 * 60 * 60;
             var currentunixtime = Math.round(new Date().getTime() / 1000);
-            if(object.new_pitch == 1) {
+            if (object.new_pitch == 1) {
                 rowClass += ' newpitch';
-            }else {
-                if(object.pinned == 1) {
-                    rowClass += ' highlighted';
-                }
-            }
+            } else {}
             var icons = '';
-            if(object.guaranteed == 1) {
+            if (object.guaranteed == 1) {
                 icons = '<img style="width:30px; margin-top:4px;float:left;" src="/img/guarantee.png" alt="Награда гарантирована">';
             }
             var timeleft = '';
@@ -119,93 +111,97 @@ function TableLoader() {
                 pitchPath = 'details';
             }
             var link = '/pitches/' + pitchPath + '/' + object.id;
-            if(object.status == 0) {
-                if((object.private == 1) && (object.expert == 0)){
+            if (object.status == 0) {
+                if (object['private'] == 1 && object.expert == 0) {
                     rowClass += ' close';
                     icons += '<img style="margin-right: 5px;margin-left: -5px;margin-top: 1px" src="/img/icon-4.png" title="Закрытый проект." alt="Закрытый проект.">';
                 }
-                if((object.private == 0) && (object.expert == 1)){
+                if (object['private'] == 0 && object.expert == 1) {
                     rowClass += ' expert';
                     icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-5.png" title="Важно мнение эксперта." alt="Важно мнение эксперта.">';
-
                 }
-                if((object.private == 1) && (object.expert == 1)){
+                if (object['private'] == 1 && object.expert == 1) {
                     rowClass += ' close-and-expert';
                     icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-3.png" title="Закрытый проект. Важно мнение эксперта." alt="Закрытый проект. Важно мнение эксперта.">';
                 }
-                if ((object.published == 0) && (object.billed == 0) && (object.moderated != 1)) {
+                if (object.published == 0 && object.billed == 0 && object.moderated != 1) {
                     timeleft = 'Ожидание оплаты';
-                } else if ((object.published == 0) && (object.billed == 0) && (object.moderated == 1)) {
+                } else if (object.published == 0 && object.billed == 0 && object.moderated == 1) {
                     timeleft = 'Ожидание<br />модерации';
-                } else if((object.published == 0) && (object.billed == 1) && (object.brief == 1)) {
+                } else if (object.published == 0 && object.billed == 1 && object.brief == 1) {
                     timeleft = 'Ожидайте звонка';
                 } else {
                     timeleft = object.startedHuman;
                 }
-            } else if ((object.status == 1) && (object.awarded == 0)) {
+            } else if (object.status == 1 && object.awarded == 0) {
                 rowClass += ' selection';
                 icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-1.png" title="Идёт выбор победителя." alt="Идёт выбор победителя.">';
                 timeleft = 'Выбор победителя';
-            } else if ((object.status == 2) || ((object.status == 1) && (object.awarded > 0))){
+            } else if (object.status == 2 || object.status == 1 && object.awarded > 0) {
                 rowClass += ' pitch-end';
                 icons += '<img style="margin-right: 5px;margin-top: 1px" src="/img/icon-2.png" title="Проект завершён, победитель выбран" alt="Закрытый проект. Важно мнение эксперта.">';
-                if(object.status == 2) {
-                    timeleft = 'Проект завершен';
-                    if(object.user_id == $('#user_id').val()) {
+                if (object.status == 2) {
+                    timeleft = '<span style="display: block; padding-left: 10px; color: #4f8b5c; text-align: left;">Проект завершен</span>';
+                    if (object.user_id == $('#user_id').val()) {
+                        if (object.winnerSolution) {
+                            timeleft += '<a style="padding-left: 10px;" class="pitches-finish" href="/users/step3/' + object.winnerSolution.id + '">Скачать исходники</a>';
+                        }
                         if (object.hasBill == 'fiz') {
-                            timeleft = '<a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                            timeleft += '<a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
                         }
                         if (object.hasBill == 'yur') {
-                            timeleft = '<a href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><br><a href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                            timeleft += '<a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
                         }
-                        if(object.winnerSolution) {
+                        if (object.winnerSolution) {
                             var step = object.winnerSolution.step;
-                            if(step > 3) {
+                            if (step > 3) {
                                 step = 3;
                             }
-                            var link = '/users/step' + step + '/' + object.awarded;
-                        }else {
-                            var link = '/pitches/' + pitchPath + '/' + object.id;
                         }
-                    }else {
-                        if(object.winlink == true) {
+                        link = '/pitches/' + pitchPath + '/' + object.id;
+                    } else {
+                        if (object.winlink == true) {
                             var link = '/users/step2/' + object.awarded;
-                        }else {
+                        } else {
                             var link = '/pitches/' + pitchPath + '/' + object.id;
                         }
                     }
-                }else if((object.status == 1) && (object.awarded > 0)) {
-                    timeleft = 'Победитель выбран';
-                }else if((object.status == 1) && (object.awarded == 0)) {
+                } else if (object.status == 1 && object.awarded > 0) {
+                    var _step = parseInt(object.winnerSolution.step);
+                    if (_step < 2) {
+                        _step = 2;
+                    }
+                    timeleft = '<a style="padding-left: 10px;" class="pitches-finish" href="/users/step' + _step + '/' + object.id + '">Перейти<br>на завершающий этап</a>';
+                } else if (object.status == 1 && object.awarded == 0) {
                     timeleft = 'Выбор победителя';
-                }else {
+                } else {
                     timeleft = object.startedHuman;
                 }
             }
 
             var imgForDraft = '';
-            if((object.user_id == $('#user_id').val()) && (object.awarded == '')) {
+            if (object.user_id == $('#user_id').val() && object.awarded == '') {
                 if (object.published == 1) {
                     imgForDraft = ' not-draft';
                 }
-                if(object.billed == 1) {
+                if (object.billed == 1) {
                     var userString = '<a title="Редактировать" href="/pitches/edit/' + object.id + '" class="mypitch_edit_link' + imgForDraft + '"><img class="pitches-name-td-img" src="/img/1.gif"></a>';
-                }else {
-                    var userString = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
+                } else {
+                    var userString = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id + '" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                 }
-            }else {
+            } else {
                 var userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" style="display: none;"/></a>';
             }
 
-            if(object.private == 1) {
+            if (object['private'] == 1) {
                 object.editedDescription = 'Это закрытый проект и вам нужно подписать соглашение о неразглашении.';
             }
             var shortIndustry = object.industry;
-            if(shortIndustry.length > 80) {
+            if (shortIndustry.length > 80) {
                 shortIndustry = shortIndustry.substr(0, 75) + '...';
             }
             var textGuarantee = '';
-            if(object.guaranteed == 1) {
+            if (object.guaranteed == 1) {
                 textGuarantee = '<br><span style="font-size: 11px; font-family: Arial; font-weight: normal;  text-transform: uppercase">гарантированы</span>';
             }
             var pitchPath = 'view';
@@ -216,60 +212,37 @@ function TableLoader() {
             if (object.multiple) {
                 pitchMultiple = '<br>' + object.multiple;
             }
-            // прячем иконки
+
             var icons = '';
-            html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' +
-                '<td class="icons">' + icons + '</td>' +
-                '<td class="pitches-name">' +
-                userString +
-                '<div style="padding-left: 34px; padding-right: 12px;">' +
-                '<a href="' + link + '" class="">' + object.title + '</a>' +
-                '<!--span style="font-size: 11px;">' + shortIndustry + '</span-->' +
-                '</div>' +
-                '</td>' +
-                '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' +
-                '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' +
-                '</td>' +
-                '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' +
-                '<td class="pitches-time" style="font-size: 11px;">' + timeleft + '</td>' +
-                '<td class="price">' + self._priceDecorator(object.price) + ' Р.-' + textGuarantee + '</td>' +
-                '</tr>' +
-                '<tr class="pitch-collapsed">' +
-                '<td class="icons"></td>' +
-                '<td colspan="3" class="al-info-pitch"><p>' + object.editedDescription +
-                '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к проекту</a>' +
-                '</td>' +
-                '<td></td>' +
-                '<td></td>' +
-                '</tr>';
+            html += '<tr data-id="' + object.id + '" class="' + rowClass + '">' + '<td class="icons">' + icons + '</td>' + '<td class="pitches-name" style="width: 255px;">' + userString + '<div style="padding-left: 34px; padding-right: 12px;">' + '<a href="' + link + '" class="">' + object.title + '</a>' + '<!--span style="font-size: 11px;">' + shortIndustry + '</span-->' + '</div>' + '</td>' + '<td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">' + '<a href="#" style="font-size: 11px;">' + object.category.title + pitchMultiple + '</a>' + '</td>' + '<td class="idea" style="font-size: 11px;">' + object.ideas_count + '</td>' + '<td class="pitches-status mypitches" style="font-size: 11px;">' + timeleft + '</td>' + '<td class="price">' + self._priceDecorator(object.price) + ' Р.-' + textGuarantee + '</td>' + '</tr>' + '<tr class="pitch-collapsed">' + '<td class="icons"></td>' + '<td colspan="3" class="al-info-pitch"><p>' + object.editedDescription + '</p><a href="/pitches/' + pitchPath + '/' + object.id + '" class="go-pitch">Перейти к проекту</a>' + '</td>' + '<td></td>' + '<td></td>' + '</tr>';
             counter++;
         });
         self.container.html(html);
-    }
-    this.renderNav = function(response) {
+    };
+    this.renderNav = function (response) {
         var navInfo = response.data.info;
         var navBar = '';
         var prepend = '';
         var append = '';
-        if(navInfo.total > 1) {
-            if(navInfo.total > 1) {
+        if (navInfo.total > 1) {
+            if (navInfo.total > 1) {
                 prepend = '<a href="#" class="nav-page" rel="prev"><</a>';
                 append = '<a href="#" class="nav-page" rel="next">></a>';
             }
-            if(navInfo.total <= 5) {
-                for(i = 1; i <= navInfo.total; i++) {
-                    if(navInfo.page == i) {
+            if (navInfo.total <= 5) {
+                for (i = 1; i <= navInfo.total; i++) {
+                    if (navInfo.page == i) {
                         navBar += '<a href="#" class="this-page nav-page" rel="' + i + '">' + i + '</a>';
-                    }else {
+                    } else {
                         navBar += '<a href="#" class="nav-page" rel="' + i + '">' + i + '</a>';
                     }
                 }
-            }else {
-                if((navInfo.page - 3) <= 0) {
-                    for(i = 1; i <= 4; i++) {
-                        if(navInfo.page == i) {
+            } else {
+                if (navInfo.page - 3 <= 0) {
+                    for (i = 1; i <= 4; i++) {
+                        if (navInfo.page == i) {
                             navBar += '<a href="#" class="this-page nav-page" rel="' + i + '">' + i + '</a>';
-                        }else {
+                        } else {
                             navBar += '<a href="#" class="nav-page" rel="' + i + '">' + i + '</a>';
                         }
                     }
@@ -277,13 +250,13 @@ function TableLoader() {
                     navBar += '<a href="#" class="nav-page" rel="' + navInfo.total + '">' + navInfo.total + '</a>';
                 }
 
-                if(((navInfo.page - 3) > 0) && (navInfo.total > (navInfo.page + 2))) {
+                if (navInfo.page - 3 > 0 && navInfo.total > navInfo.page + 2) {
                     navBar += '<a href="#" class="nav-page" rel="1">1</a>';
                     navBar += ' ... ';
-                    for(i = navInfo.page - 1 ; i <= navInfo.page + 1; i++) {
-                        if(navInfo.page == i) {
+                    for (i = navInfo.page - 1; i <= navInfo.page + 1; i++) {
+                        if (navInfo.page == i) {
                             navBar += '<a href="#" class="this-page nav-page" rel="' + i + '">' + i + '</a>';
-                        }else {
+                        } else {
                             navBar += '<a href="#" class="nav-page" rel="' + i + '">' + i + '</a>';
                         }
                     }
@@ -291,13 +264,13 @@ function TableLoader() {
                     navBar += '<a href="#" class="nav-page" rel="' + navInfo.total + '">' + navInfo.total + '</a>';
                 }
 
-                if(navInfo.total <= (navInfo.page + 2)) {
+                if (navInfo.total <= navInfo.page + 2) {
                     navBar += '<a href="#" class="nav-page" rel="1">1</a>';
                     navBar += ' ... ';
-                    for(i = navInfo.total - 3; i <= navInfo.total; i++) {
-                        if(navInfo.page == i) {
+                    for (i = navInfo.total - 3; i <= navInfo.total; i++) {
+                        if (navInfo.page == i) {
                             navBar += '<a href="#" class="this-page nav-page" rel="' + i + '">' + i + '</a>';
-                        }else {
+                        } else {
                             navBar += '<a href="#" class="nav-page" rel="' + i + '">' + i + '</a>';
                         }
                     }
@@ -307,19 +280,17 @@ function TableLoader() {
         navBar = prepend + navBar + append;
         self.nav.html(navBar);
     };
-    this.setFilter = function(key, value, menu) {
+    this.setFilter = function (key, value, menu) {
         self.options[key] = value;
-        //menu.children().children('a').removeClass('selected');
-        //menu.children().children('a[rel=' + value + ']').addClass('selected')
     };
-    this._priceDecorator = function(price) {
+    this._priceDecorator = function (price) {
         price = price.replace(/(.*)\.00/g, "$1");
         counter = 1;
-        while(price.match(/\w\w\w\w/)) {
+        while (price.match(/\w\w\w\w/)) {
             price = price.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
-            counter ++;
-            if(counter > 6) break;
+            counter++;
+            if (counter > 6) break;
         }
         return price;
-    }
+    };
 }

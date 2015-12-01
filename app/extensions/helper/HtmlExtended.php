@@ -36,7 +36,7 @@ class HtmlExtended extends \lithium\template\helper\Html {
         if(($params['controller'] == 'pitches') && ($params['action'] == 'create')):
             $title = 'Создание проекта';
         endif;
-        if(($params['controller'] == 'pitches') && (($params['action'] == 'details') || ($params['action'] == 'viewsolution') || ($params['action'] == 'view'))):
+        if((isset($pitch)) && (($params['controller'] == 'pitches') && (($params['action'] == 'details') || ($params['action'] == 'viewsolution') || ($params['action'] == 'view')))):
             $title = $pitch->title;
         endif;
         if((($params['controller'] == 'answers')) && ($params['action'] == 'index')):

@@ -1,6 +1,11 @@
 ;(function() {
     const experts = $('.experts');
     const Cart = new AdvancedCart();
+    const types = [
+        {"id": 1,"value": "design", "label": "Проект на дизайн", "checked": true},
+        {"id": 2, "value": "copyrighting", "label": "Проект на копирайтинг", "checked": false}
+    ];
+
     let endStep1DatePicker = $('.first-datepick');
     let finishChooseOfWinnerPicker = $('.second-datepick');
 
@@ -14,30 +19,60 @@
         document.getElementById('project-reward')
     );
 
+    ReactDOM.render(
+        <ProjectTypesRadioWrapper data={types} />,
+        document.getElementById('radios-container')
+    );
+
     if(endStep1DatePicker.length > 0) {
+        endStep1DatePicker.on('mouseover', function() {
+            $(this).siblings( "a").css("text-decoration", "underline");
+        });
+        endStep1DatePicker.on('mouseout', function() {
+            $(this).siblings( "a").css("text-decoration", "none");
+        });
         const finishDateMoment = moment($('input[name=finishDate]').val());
-        endStep1DatePicker.datetimepicker({ locale: 'ru'});
+        endStep1DatePicker.datetimepicker({ locale: 'ru', widgetPositioning: {
+            horizontal: 'left',
+            vertical: 'bottom'
+        }});
         endStep1DatePicker.data("DateTimePicker").date(finishDateMoment);
         endStep1DatePicker.on("dp.change", function (e) {
             $('input[name=finishDate]').val(e.date.format('YYYY-MM-DD HH:mm:00'));
             $('.day_cal', '.finishDate').text(e.date.format('DD'));
             $('.month', '.finishDate').text(e.date.format('MMMM'));
             $('.weekday_time', '.finishDate').text(e.date.format('dd, HH:mm'));
+            if(!$('.chooseWinnerFinishDate').hasClass('editable_calendar')) {
+                let newChooseWinnerFinishDate = e.date;
+                newChooseWinnerFinishDate.add(4, 'days');
+                finishChooseOfWinnerPicker.data('DateTimePicker').date(newChooseWinnerFinishDate);
+            }
         });
 
     }
 
     if(finishChooseOfWinnerPicker.length > 0) {
+        const chooseWinnerFinishDateMoment = moment($('input[name=chooseWinnerFinishDate]').val());
+        finishChooseOfWinnerPicker.datetimepicker({ locale: 'ru', defaultDate: chooseWinnerFinishDateMoment, debug: true, widgetPositioning: {
+            horizontal: 'left',
+            vertical: 'bottom'
+        }});
+        finishChooseOfWinnerPicker.data("DateTimePicker").date(chooseWinnerFinishDateMoment);
+        finishChooseOfWinnerPicker.on("dp.change", function (e) {
+            $('input[name=chooseWinnerFinishDate]').val(e.date.format('YYYY-MM-DD HH:mm:00'));
+            $('.day_cal', '.chooseWinnerFinishDate').text(e.date.format('DD'));
+            $('.month', '.chooseWinnerFinishDate').text(e.date.format('MMMM'));
+            $('.weekday_time', '.chooseWinnerFinishDate').text(e.date.format('dd, HH:mm'));
+        });
         if(finishChooseOfWinnerPicker.hasClass('editable')) {
-            const chooseWinnerFinishDateMoment = moment($('input[name=chooseWinnerFinishDate]').val());
-            finishChooseOfWinnerPicker.datetimepicker({ locale: 'ru', defaultDate: chooseWinnerFinishDateMoment});
-            finishChooseOfWinnerPicker.data("DateTimePicker").date(chooseWinnerFinishDateMoment);
-            finishChooseOfWinnerPicker.on("dp.change", function (e) {
-                $('input[name=chooseWinnerFinishDate]').val(e.date.format('YYYY-MM-DD HH:mm:00'));
-                $('.day_cal', '.chooseWinnerFinishDate').text(e.date.format('DD'));
-                $('.month', '.chooseWinnerFinishDate').text(e.date.format('MMMM'));
-                $('.weekday_time', '.chooseWinnerFinishDate').text(e.date.format('dd, HH:mm'));
+            finishChooseOfWinnerPicker.on('mouseover', function() {
+                $(this).siblings( "a").css("text-decoration", "underline");
             });
+            finishChooseOfWinnerPicker.on('mouseout', function() {
+                $(this).siblings( "a").css("text-decoration", "none");
+            });
+        }else {
+            finishChooseOfWinnerPicker.css({"width": 0, "height": 0});
         }
     }
 
@@ -306,10 +341,11 @@
     });
 
     $(window).on('scroll', function () {
-        if($(window).scrollTop() > $('header').offset().top) {
+        const header = $('header');
+        if($(window).scrollTop() > header.offset().top) {
             $('.summary-price').css('position', 'fixed').css('top', '150px');
         }else {
-            $('.summary-price').css('position', 'absolute').css('top', ($('header').offset().top + 155) + 'px');
+            $('.summary-price').css('position', 'absolute').css('top', (header.offset().top + 155) + 'px');
         }
     });
 

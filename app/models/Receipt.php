@@ -2,10 +2,14 @@
 
 namespace app\models;
 
-use \app\models\Expert;
-use \app\models\Category;
-
-class Receipt extends \app\models\AppModel {
+/**
+ * Class Receipt
+ *
+ * Класс для работы с записями чека
+ *
+ * @package app\models
+ */
+class Receipt extends AppModel {
 
     public static $dict = array(
         'award' => 'Награда Дизайнеру',
@@ -23,171 +27,141 @@ class Receipt extends \app\models\AppModel {
     public static $fee = FEE_LOW;
 
 
-    public static function createReceipt($data, $returnComission = false, $copyright = false) {
-        if($copyright == true) {
+    /**
+     * Метод создает чек, считает коммсиию, и сохряняет (перезаписывает) данные
+     *
+     * @param $data array массив входящих данных
+     * @return integer номер проекта
+     */
+    public static function createReceipt($data) {
+        if($data['commonPitchData']['category_id'] == 7) {
             self::$dict['award'] = 'Награда копирайтеру';
         }
         $receiptData = array();
-        if(isset($data['features']['award'])) {
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['award'],
-                'value' => $data['features']['award']
-            );
-        }
-        if(isset($data['features']['private'])) {
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['private'],
-                'value' => $data['features']['private']
-            );
-        }
-        if(isset($data['features']['social'])) {
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['social'],
-                'value' => $data['features']['social']
-            );
-        }
-        if(isset($data['features']['experts'])) {
-            $total = 0;
-            foreach($data['features']['experts'] as $expertId) {
-                $expert = Expert::first($expertId);
-                $total += $expert->price;
-            }
-
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['experts'],
-                'value' => $total
-            );
-        }
-        if(isset($data['features']['pinned'])) {
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['pinned'],
-                'value' => $data['features']['pinned']
-            );
-        }
-        if(isset($data['features']['timelimit'])) {
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['timelimit'],
-                'value' => $data['features']['timelimit']
-            );
-        }
-        if(isset($data['features']['brief'])) {
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['brief'],
-                'value' => $data['features']['brief']
-            );
-        }
-        if(isset($data['features']['guaranteed'])) {
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['guaranteed'],
-                'value' => $data['features']['guaranteed']
-            );
-        }
-        if(isset($data['features']['discount'])) {
-            $receiptData[] = array(
-                'pitch_id' => $data['commonPitchData']['id'],
-                'name' => self::$dict['discount'],
-                'value' => $data['features']['discount']
-            );
-        }
-        $total = 0;
-        foreach($receiptData as $row) {
-            $total += $row['value'];
-
-        }
-        self::$fee = self::findOutFee($data);
-        $comission = round($data['features']['award'] * self::$fee);
-        if($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'])) {
-            if($promocode['type'] == 'in_twain') {
-                self::$fee = round((self::$fee / 2), 3, PHP_ROUND_HALF_DOWN);
-                $comission = round($data['features']['award'] * self::$fee);
-            }
-            if($promocode['type'] == 'discount') {
-                $comission -= 700;
-            }
-        }
-        if (isset($data['commonPitchData']['referalDiscount']) && !empty($data['commonPitchData']['referalDiscount'])) {
-            $comission -= $data['commonPitchData']['referalDiscount'];
-        }
-        $receiptData[] = array(
-            'pitch_id' => $data['commonPitchData']['id'],
-            'name' => self::$dict['fee'] . ' ' . str_replace('.', ',', self::$fee * 100 . '%'),
-            'value' => $comission
+        $projectId = $data['commonPitchData']['id'];
+        $keys = array(
+            'award',
+            'private',
+            'social',
+            'experts',
+            'pinned',
+            'timelimit',
+            'brief',
+            'discount',
+            'guaranteed',
         );
-        self::remove(array('pitch_id' => $data['commonPitchData']['id']));
-        foreach($receiptData as $row) {
-            $receiptItem = self::create();
-            $receiptItem->set($row);
-            $receiptItem->save();
+        foreach($keys as $key) {
+            if(isset($data['features'][$key])) {
+                $value = $data['features'][$key];
+                if($key == 'experts') {
+                    $value = 0;
+                    foreach($data['features']['experts'] as $expertId) {
+                        $expert = Expert::first($expertId);
+                        $value += $expert->price;
+                    }
+                }
+                $receiptData[] = array(
+                    'pitch_id' => $projectId,
+                    'name' => self::$dict[$key],
+                    'value' => $value
+                );
+            }
         }
-        if($returnComission == true) {
-            return $comission;
-        }else {
-            return $data['commonPitchData']['id'];
-        }
+        self::$fee = self::findOutFeeModifier($data);
+        $commission = self::__getCommissionWithEffectOfPromocodes($data);
+        $commission = self::__applyReferalDiscrountEffects($data, $commission);
+        $receiptData[] = array(
+            'pitch_id' => $projectId,
+            'name' => self::$dict['fee'] . ' ' . str_replace('.', ',', self::$fee * 100 . '%'),
+            'value' => $commission
+        );
+        self::updateOrCreateReceiptForProject($projectId, $receiptData);
+        return (int) $projectId;
     }
 
-    public static function fetchReceipt($id) {
-        return self::all(array('conditions' => array('pitch_id' => $id)));
-    }
-
-    public static function findTotal($id) {
-        $receipt = self::fetchReceipt($id);
-        $total = 0;
-        foreach($receipt as $item) {
-            $total += $item->value;
+    /**
+     * Метод помощник, мутирует сбор, если есть скидка от реферала
+     *
+     * @param $data array
+     * @param $commission integer
+     * @return mixed
+     */
+    private static function __applyReferalDiscrountEffects($data, $commission) {
+        if (isset($data['commonPitchData']['referalDiscount']) && !empty($data['commonPitchData']['referalDiscount'])) {
+            $commission -= $data['commonPitchData']['referalDiscount'];
         }
-        return $total;
+        return $commission;
     }
 
-    protected static function findOutFee($data) {
+    /**
+     * Метод-помощник для снижения сложности родительского метода
+     *
+     * @param $data array
+     * @return float|int
+     */
+    private static function __getCommissionWithEffectOfPromocodes($data) {
+        $commission = round($data['features']['award'] * self::$fee);
+        if(isset($data['commonPitchData']['promocode']) && ($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'])) && ($promocode != 'false')) {
+            $commission = self::__processPromocodes($promocode, $commission, $data['features']['award']);
+        }
+        return $commission;
+    }
+
+    /**
+     * Метод-помощник, обрабатывает промокоды, вовзращяет уменьшенную коммисси
+     * и может поменять процент сбора
+     *
+     * @param $promocode array
+     * @param $commission integer
+     * @param $award integer
+     * @return float|int
+     */
+    private static function __processPromocodes($promocode, $commission, $award) {
+        if($promocode['type'] == 'in_twain') {
+            self::$fee = round((self::$fee / 2), 3, PHP_ROUND_HALF_DOWN);
+            $commission = round($award * self::$fee);
+        }
+        if($promocode['type'] == 'discount') {
+            $commission -= 700;
+        }
+        if($promocode['type'] == 'custom_discount') {
+            $decimal = $promocode['data'] / 100;
+            $amount = round($commission * $decimal);
+            $commission -= $amount;
+        }
+        return $commission;
+    }
+
+    /**
+     * Метод возвращяет все записи чека для проекта $projectId
+     *
+     * @param $projectId
+     * @return \lithium\data\collection\RecordSet|null
+     */
+    public static function fetchReceipt($projectId) {
+        return self::all(array('conditions' => array('pitch_id' => $projectId)));
+    }
+
+    /**
+     * Метод высчитывает множитель сбора сервиса в зависимости от уровня награды,
+     * категории и количестве требуемых единиц
+     *
+     * @param $data array
+     * @return float
+     */
+    public static function findOutFeeModifier($data) {
         $fee = self::$fee;
         $award = $data['features']['award'];
         if ($category = Category::first($data['commonPitchData']['category_id'])) {
             $minAward = $minValue = $category->minAward;
             $normalAward = $normal = $category->normalAward;
             $goodAward = $high = $category->goodAward;
-            if (!empty($data['specificPitchData']['site-sub'])) { // Multi Items Pitch
-                $quantity = $data['specificPitchData']['site-sub'];
-                if ($category->id == 3) {
-                    $mult = 2000;
-                } else {
-                    $mult = $minAward / 2;
-                }
-                $minValue = (($quantity - 1) * $mult) + $minAward;
-            }
-            if ($category->id == 7) {
-                /*
-                 * Needed for another behavior
-
-                $mods = 0;
-                $mods += (!empty($data['specificPitchData']['first-option'])) ? 1 : 0;
-                $mods += (!empty($data['specificPitchData']['second-option'])) ? 1 : 0;
-                $mods += (!empty($data['specificPitchData']['third-option'])) ? 1 : 0;
-                switch ($mods) {
-                    case 1: $mod = 1; break;
-                    case 2: $mod = 1.5; break;
-                    case 3: $mod = 1.75; break;
-                    default: $mod = 1; break;
-                }
-                $minValue = COPY_BASE_PRICE * $mod;
-                 */
-
-                $minValue = $minAward;
-            }
-            if ($category->id == 11) {
-                /*
-                 * Nothing needed
-                 *
-                 */
-                $minValue = $minAward;
+            if (!empty($data['specificPitchData']['site-sub'])) {
+               $minValue = self::__getMinValueForWebsite(
+                   (int) $data['specificPitchData']['site-sub'],
+                   (int) $minAward,
+                   (int) $category->id
+               );
             }
             $extraNormal = $normalAward - $minAward;
             $extraHigh = $goodAward - $minAward;
@@ -202,6 +176,22 @@ class Receipt extends \app\models\AppModel {
             }
         }
         return $fee;
+    }
+
+    /**
+     * Метод-помощник для подсчета минимума для категорий, с выбором количества единиц
+     *
+     * @param $quantity integer количество единиц
+     * @param $minAward integer минимальная награда категории
+     * @param $categoryId integer номер категории
+     * @return integer
+     */
+    private static function __getMinValueForWebsite($quantity, $minAward, $categoryId) {
+        $multiplier = $minAward / 2;
+        if ($categoryId == 3) {
+            $multiplier = 2000;
+        }
+        return (($quantity - 1) * $multiplier) + $minAward;
     }
 
     /**
@@ -241,12 +231,12 @@ class Receipt extends \app\models\AppModel {
             )));
             $existingRows->delete();
             foreach($data as $row) {
-                $data = array(
+                $rowData = array(
                     'pitch_id' => $projectId,
                     'name' => $row['name'],
                     'value' => $row['value']
                 );
-                $row = self::create($data);
+                $row = self::create($rowData);
                 $row->save();
             }
             return true;
@@ -285,4 +275,49 @@ class Receipt extends \app\models\AppModel {
         }
         return (int) $total;
     }
+
+    /**
+     * Метод возвращяет текущее значение сборя для проекта $projectId
+     *
+     * @param $projectId integer
+     * @return int
+     */
+    static public function getCommissionForProject($projectId) {
+        $record = self::first(array('conditions' => array(
+            'pitch_id' => (int) $projectId,
+            'name' => array('LIKE' => 'Сбор GoDesigner%')
+        )));
+        return (int) $record->value;
+    }
+
+    /**
+     * Метод добавляет строчку в массив чека
+     *
+     * @param $array
+     * @param $name
+     * @param $value
+     * @return array
+     */
+    public static function addRow($array, $name, $value) {
+        $array[] = array('name' => $name, 'value' => $value);
+        return $array;
+    }
+
+    /**
+     * Метод обновляет строчку в массиве чека
+     *
+     * @param $array
+     * @param $name
+     * @param $value
+     * @return $array
+     */
+    public static function updateRow($array, $name, $value) {
+        foreach($array as &$row) {
+            if($row['name'] == $name) {
+                $row['value'] = $value;
+            }
+        }
+        return $array;
+    }
+
 }

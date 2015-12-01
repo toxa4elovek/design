@@ -1,149 +1,85 @@
 <?php
 namespace app\models;
 
-class Answer extends \app\models\AppModel {
+/**
+ * Class Answer
+ *
+ * Класс для работы с записями вопросов помощи
+ *
+ * @package app\models
+ */
+class Answer extends AppModel {
 
+    /**
+     * @var array Фиксированные категории вопросов
+     */
     public static $questioncategory_id = array(
         '1' => 'Общие вопросы',
         '2' => 'Помощь заказчикам',
         '3' => 'Помощь дизайнерам',
-        '4' => 'Оплата и денежные вопросы'
+        '4' => 'Оплата и денежные вопросы',
+        '5' => 'Для юридических лиц'
     );
 
-    public static function increaseCounter($id) {
-        $answer = self::first($id);
-        $answer->hits += 1;
-        $answer->save();
-        return $answer->hits;
+    /**
+     * Метод увеличивает счётчик просмотра вопросов записи на единицу
+     *
+     * @param $answerRecord \lithium\data\entity\Record запись вопроса
+     * @return bool результат операции
+     */
+    public function increaseCounterForRecord($answerRecord) {
+        $answerRecord->hits +=1;
+        return (bool) $answerRecord->save();
     }
 
     /**
-     * Moving Answer one position up
+     * Метод возвращяет коллекцию схожих по тематике вопросов
      *
-     * @param number $id Answer Id
-     * @return array Result
+     * @param $answerRecord \lithium\data\entity\Record запись вопроса
+     * @param int $limit опциональный лимит
+     * @return \lithium\data\collection\RecordSet|null
      */
-    public static function moveUp($id) {
-        $res = array();
-        $res['error'] = false;
-        if ($answer = self::first($id)) {
-            $currentOrder = $answer->display_order;
-            if ($currentOrder == 1) {
-                $res['position'] = 1;
-                $res['error'] = 'alreadyTop';
-                return $res;
-            }
-            if ($prev = self::first(array('conditions' => array('display_order' => $currentOrder - 1, 'questioncategory_id' => $answer->questioncategory_id)))) {
-                $answer->display_order = $currentOrder - 1;
-                $prev->display_order = $currentOrder;
-                $answer->save();
-                $prev->save();
-                $res['position'] = $currentOrder - 1;
-                return $res;
-            }
-        }
-        $res['error'] = 'wrongId';
-        return $res;
+    public function getSimilarQuesions($answerRecord, $limit = 5) {
+        return self::all(array(
+            'order' => array('RAND()'),
+            'limit' => $limit,
+            'conditions' => array(
+                'questioncategory_id' => $answerRecord->questioncategory_id,
+                'id' => array('!=' => $answerRecord->id)
+            )
+        ));
     }
 
     /**
-     * Moving Answer one position down
+     * Метод возвращяет коллекцию самых популярных вопросов
      *
-     * @param number $id Answer Id
-     * @return array Result
+     * @param int $limit опциональный лимит
+     * @return \lithium\data\collection\RecordSet|null
      */
-    public static function moveDown($id) {
-        $res = array();
-        $res['error'] = false;
-        if ($answer = self::first($id)) {
-            $countInCategory = self::find('count', array('conditions' => array('questioncategory_id' => $answer->questioncategory_id)));
-            $currentOrder = $answer->display_order;
-            if ($currentOrder == $countInCategory) {
-                $res['position'] = $currentOrder;
-                $res['error'] = 'alreadyBottom';
-                return $res;
-            }
-            if ($next = self::first(array('conditions' => array('display_order' => $currentOrder + 1, 'questioncategory_id' => $answer->questioncategory_id)))) {
-                $answer->display_order = $currentOrder + 1;
-                $next->display_order = $currentOrder;
-                $answer->save();
-                $next->save();
-                $res['position'] = $currentOrder + 1;
-                return $res;
-            }
+    public static function getPopularQuesions($limit = 5, $category = null) {
+        $conditions = array();
+        if(!is_null($category)) {
+            $conditions = array('questioncategory_id' => $category);
         }
-        $res['error'] = 'wrongId';
-        return $res;
+        return self::all(array(
+            'conditions' => $conditions,
+            'limit' => $limit,
+            'order' => array('hits' => 'desc')
+        ));
     }
 
     /**
-     * Moving Answer to thw top position
+     * Метод возвращяет вопросы, содержащие в названии или тексте слово $word
      *
-     * @param number $id Answer Id
-     * @return array Result
+     * @param $word string поисковое слово
+     * @return \lithium\data\collection\RecordSet|null
      */
-    public static function moveTop($id) {
-        $res = array();
-        $res['error'] = false;
-        if ($answer = self::first($id)) {
-            $currentOrder = $answer->display_order;
-            if ($currentOrder == 1) {
-                $res['position'] = 1;
-                $res['error'] = 'alreadyTop';
-                return $res;
-            }
-            $answersBefore = self::find('all', array(
-                'conditions' => array(
-                    'questioncategory_id' => $answer->questioncategory_id,
-                    'display_order' => array('<' => $currentOrder),
-                ),
-            ));
-            foreach ($answersBefore as $updatable) {
-                $updatable->display_order++;
-                $updatable->save();
-            }
-            $answer->display_order = 1;
-            $answer->save();
-            $res['position'] = 1;
-            return $res;
-        }
-        $res['error'] = 'wrongId';
-        return $res;
+    public static function searchForWord($word) {
+        return self::all(array('conditions' => array(
+            'OR' => array(
+                'title' => array('LIKE' => '%' . $word . '%'),
+                'text' => array('LIKE' => '%' . $word . '%')
+        ))));
     }
 
-    /**
-     * Moving Answer to the bottom position
-     *
-     * @param number $id Answer Id
-     * @return array Result
-     */
-    public static function moveBottom($id) {
-        $res = array();
-        $res['error'] = false;
-        if ($answer = self::first($id)) {
-            $countInCategory = self::find('count', array('conditions' => array('questioncategory_id' => $answer->questioncategory_id)));
-            $currentOrder = $answer->display_order;
-            if ($currentOrder == $countInCategory) {
-                $res['position'] = $currentOrder;
-                $res['error'] = 'alreadyBottom';
-                return $res;
-            }
-            $answersAfter = self::find('all', array(
-                'conditions' => array(
-                    'questioncategory_id' => $answer->questioncategory_id,
-                    'display_order' => array('>' => $currentOrder),
-                ),
-            ));
-            foreach ($answersAfter as $updatable) {
-                $updatable->display_order--;
-                $updatable->save();
-            }
-            $answer->display_order = $countInCategory;
-            $answer->save();
-            $res['position'] = $countInCategory;
-            return $res;
-        }
-        $res['error'] = 'wrongId';
-        return $res;
-    }
 }

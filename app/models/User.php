@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use lithium\net\http\Service;
 use \lithium\util\Validator;
 use \lithium\util\String;
 use \lithium\storage\Session;
@@ -42,7 +43,7 @@ class User extends AppModel {
      *
      * @var array
      */
-    public static $admins = array(32, 4, 5, 108, 81, 8472);
+    public static $admins = array(32, 4, 5, 108, 81, 8472, 47);
     public static $experts = array();
 
     /**
@@ -57,14 +58,14 @@ class User extends AppModel {
      *
      * @var array
      */
-    public static $authors = array(8472, 18856, 25252);
+    public static $authors = array(8472, 18856, 25252, 30454);
 
     /**
      * Массив хранящий айдишнки авторов ленты новостей
      *
      * @var array
      */
-    public static $feedAuthors = array(17865);
+    public static $feedAuthors = array(17865, 108);
 
     protected static $_behaviors = array(
         'UploadableAvatar'
@@ -616,10 +617,24 @@ class User extends AppModel {
         }
     }
 
-    public static function sendSpamWincomment($comment, $recipient) {
+    /**
+     * Метод отправляет уведомление о новом комментарии на завершении
+     *
+     * @param $comment
+     * @param $recipient
+     * @param bool $blue
+     * @return bool
+     */
+    public static function sendSpamWincomment($comment, $recipient, $blue = false) {
         $solution = Solution::first($comment->solution_id);
         $pitch = Pitch::first($solution->pitch_id);
-        $data = array('user' => $recipient, 'pitch' => $pitch, 'solution' => $solution, 'comment' => $comment);
+        $data = array(
+            'user' => $recipient,
+            'pitch' => $pitch,
+            'solution' => $solution,
+            'comment' => $comment,
+            'blue' => $blue
+        );
         SpamMailer::newwincomment($data);
         return true;
     }
@@ -915,6 +930,9 @@ class User extends AppModel {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'multiwinner' => 0, 'blank' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - (4 * DAY))))));
         $ids = array();
         foreach ($pitches as $pitch) {
+            if(($pitch->type == 'fund-balance') || ($pitch->type == 'plan-payment')) {
+                continue;
+            }
             $user = User::first($pitch->user_id);
             $ids[] = $pitch->user_id;
 
@@ -922,18 +940,24 @@ class User extends AppModel {
                 continue;
             }
 
+            $defaultTerm = 4;
+            if($pitch->type == 'company_project') {
+                $diff = strtotime($pitch->chooseWinnerFinishDate) - strtotime($pitch->finishDate);
+                $defaultTerm = floor((($diff / 60) / 60) / 24);
+            }
+
             if ($pitch->expert == 1) {
                 $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения.<br/>
-В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 4 дней после того, как эксперты выскажут своё мнение, оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 4 дней после окончания срока проекта, в противном случае такая возможность будет недоступна.';
+В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до ' . $defaultTerm . ' дней после того, как эксперты выскажут своё мнение, оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 4 дней после окончания срока проекта, в противном случае такая возможность будет недоступна.';
             } else {
                 $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения.<br/>
-В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до 4 дней после завершения проекта оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 4 дней после окончания срока проекта, в противном случае такая возможность будет недоступна.';
+В случае, если предложенные идеи вам не понравились, мы инициируем возврат средств. Для этого необходимо в срок до ' . $defaultTerm . ' дней после завершения проекта оставить комментарий в галерее работ и объяснить дизайнерам, что эти идеи вам не подходят. Решение о возврате необходимо принять в течение 4 дней после окончания срока проекта, в противном случае такая возможность будет недоступна.';
             }
             if ($pitch->guaranteed == 1) {
                 if ($pitch->expert == 1) {
-                    $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения. На выбор победителя у вас есть четыре рабочих дня после того, как все выбранные вами эксперты выскажут своё мнение.';
+                    $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения. На выбор победителя у вас есть ' . $defaultTerm . ' рабочих дня после того, как все выбранные вами эксперты выскажут своё мнение.';
                 } else {
-                    $text = 'Срок выбора победителя, на который отводится 4 дня, подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br>
+                    $text = 'Срок выбора победителя, на который отводится ' . $defaultTerm . ' дня, подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br>
 Внести дальнейшие правки вы сможете на <a href="http://www.godesigner.ru/answers/view/63">завершающем этапе</a>. У вас также есть возможность номинировать <a href="http://www.godesigner.ru/answers/view/97">двух и более дизайнеров</a>. ';
                 }
             }
@@ -1282,14 +1306,21 @@ class User extends AppModel {
         return strtotime($lastActionTime);
     }
 
-    public static function getReferalPayments() {
+    /**
+     * Метод возвращяет количество пользователей с положительным балансо и не абоненты
+     *
+     * @return mixed
+     */
+    public static function getReferalPaymentsCount() {
         return self::count(array(
-                    'conditions' => array(
-                        'balance' => array(
-                            '>' => 0,
-                        ),
-                        'phone_valid' => 1,
-                    ),
+            'conditions' => array(
+                'balance' => array(
+                    '>' => 0,
+                ),
+                'phone_valid' => 1,
+                'phone' => array('!=' => ''),
+                'subscription_status' => 0
+            ),
         ));
     }
 
@@ -1588,7 +1619,7 @@ class User extends AppModel {
 
     /**
      * Метод возвращяет полное название компании, если установлено
-     * если нет, возвращяем краткео название
+     * если нет, возвращяем краткое название
      *
      * @param $userId
      * @return mixed
@@ -1601,6 +1632,12 @@ class User extends AppModel {
         return self::getShortCompanyName($userId);
     }
 
+    /**
+     * Метод возвращяет информацию о текущем плане пользователя
+     *
+     * @param $userId
+     * @return array|null
+     */
     public static function getCurrentPlanData($userId) {
         if(self::isSubscriptionActive($userId)) {
             $user = self::first($userId);
@@ -1609,6 +1646,100 @@ class User extends AppModel {
             return $plan;
         }
         return array();
+    }
+
+    /**
+     * Метод устанавливает скидку и дату окончания скидки
+     *
+     * @param $userId
+     * @param $discount
+     * @param $endDate
+     * @return bool
+     */
+    public static function setSubscriptionDiscount($userId, $discount, $endDate) {
+        if($user = self::first($userId)) {
+            $data = array('subscription_discount' => (int) $discount, 'subscription_discount_end_date' => $endDate);
+            return $user->save($data, array('validate' => false));
+        }
+        return false;
+    }
+
+    /**
+     * Метод возвращяет, есть ли активная скидка для абонента
+     *
+     * @param $userId
+     * @return bool
+     */
+    public static function hasActiveSubscriptionDiscount($userId) {
+        if(($user = self::first($userId)) && ($user->subscription_discount_end_date != '0000-00-00 00:00:00')) {
+            if(strtotime($user->subscription_discount_end_date) > time()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Метод возвращяет текущую активную скидку, если активная
+     *
+     * @param $userId
+     * @return null|integer
+     */
+    public static function getSubscriptionDiscount($userId) {
+        if(($user = self::first($userId)) && (self::hasActiveSubscriptionDiscount($userId))) {
+            return (int) $user->subscription_discount;
+        }
+        return null;
+    }
+
+    /**
+     * Метод возвращяет дату окончания текущей скидки, если активная
+     *
+     * @param $userId
+     * @return null|string
+     */
+    public static function getSubscriptionDiscountEndTime($userId) {
+        if(($user = self::first($userId)) && (self::hasActiveSubscriptionDiscount($userId))) {
+            return $user->subscription_discount_end_date;
+        }
+        return null;
+    }
+
+    /**
+     * Метод проверяет, состоит ли пользователей в группе в ВК
+     *
+     * @param $userId
+     * @return bool
+     */
+    static public function isMemberOfVKGroup($userId) {
+        if(($user = self::first($userId))) {
+            return (bool) $user->isUserRecordMemberOfVKGroup();
+        }
+        return false;
+    }
+
+    /**
+     * Метод проверяет, состоит ли запись пользователя в группе в ВК
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isUserRecordMemberOfVKGroup($record) {
+        if($record->vkontakte_uid != '') {
+            $config = array(
+                'scheme'     => 'https',
+                'host'       => 'api.vk.com'
+            );
+            $service = new Service($config);
+            $params = array(
+                'group_id' => 36153921,
+                'user_id' => $record->vkontakte_uid
+            );
+            $result = $service->get("/method/groups.isMember", $params);
+            $decoded = json_decode($result);
+            return (bool) $decoded->response;
+        }
+        return false;
     }
 
 }

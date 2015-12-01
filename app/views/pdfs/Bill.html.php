@@ -31,7 +31,7 @@
         <td height="25" rowspan="2" style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid;text-align:center;">30101810600000000786</td>
     </tr>
 </table>
-<H2 style="margin-top:50px">СЧЕТ № <?=$pitch->id?> от <?=date('d.m.Y', strtotime($pitch->started))?></H2>
+<H2 style="margin-top:50px">СЧЕТ № <?=$pitch->id?> от <?=date('d.m.Y')?></H2>
 <table cellpadding="10">
     <tr>
         <td valign="top"><h3>Плательщик:</h3></td>

@@ -2,34 +2,71 @@
 
 namespace app\models;
 
-class Url extends \app\models\AppModel {
+/**
+ * Class Url
+ *
+ * Класс для работы с краткими адресами
+ *
+ * @package app\models
+ */
+class Url extends AppModel {
 
-    public function check($full){
-        return Url::first(array('conditions' => array('full' => $full)));
+    /**
+     * Метод проверяет есть ли в базе указанный урл
+     *
+     * @param $url string
+     * @return bool
+     */
+    public static function check($url){
+        return (bool) self::first(array('conditions' => array('full' => $url)));
     }
 
-    public function get($short) {
-        return Url::first(array('conditions' => array('short' => $short)));
-    }
-
-    public function createNew($full) {
-        if($existing = Url::check($full)) {
-            return $existing;
-        }else{
-            $new = Url::create();
-            $new->full = $full;
-            $new->short = Url::generateUrl();
-            $new->save();
-            return $new;
+    /**
+     * Метод возвращяет полный адрес по коротку коду
+     *
+     * @param $short string
+     * @return null|string
+     */
+    public static function get($short) {
+        if($url = self::first(array('conditions' => array('short' => $short)))) {
+            return $url->full;
         }
+        return null;
     }
 
-    public function generateUrl(){
+    /**
+     * @param $full string
+     * @return string
+     */
+    private static function fetchOrCreateNew($full) {
+        if(!$record = self::first(array('conditions' => array('full' => $full)))) {
+            $data = array('full' => $full, 'short' => self::generateUrl());
+            $record = self::create($data);
+            $record->save();
+        }
+        return $record->short;
+    }
+
+    /**
+     * Метод создает случайную шестисимвольную строчки для использования в адресе
+     *
+     * @return string
+     */
+    private static function generateUrl(){
         return substr(md5(rand().rand()), 0, 6);
     }
 
-    public function view($full) {
-        return Url::createNew($full)->short;
+    /**
+     * Метод возвращяет короткий адрес для полного адреса $full
+     * если адрес $full уже есть в базе, просто возвращяет его короткий адрес
+     * если адрес $full не существует, создается запись
+     *
+     * @param $full string
+     * @return string
+     */
+    public static function getShortUrlFor($full) {
+        $shortUrlCode = self::fetchOrCreateNew($full);
+        return $shortUrlCode;
     }
 
 }

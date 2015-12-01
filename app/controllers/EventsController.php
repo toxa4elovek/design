@@ -6,14 +6,29 @@ use \app\models\User;
 use \app\models\Event;
 use \app\models\Pitch;
 use app\models\News;
+use \app\models\Favourite;
 use \lithium\storage\Session;
 use \app\extensions\helper\Stream;
-use app\extensions\storage\Rcache;
 
-class EventsController extends \app\controllers\AppController {
+/**
+ * Class EventsController
+ *
+ * Класс для работы с событиями
+ *
+ * @package app\controllers
+ */
+class EventsController extends AppController {
 
+    /**
+     * @var array публичные методы
+     */
     public $publicActions = array('feed', 'getsol', 'autolikes', 'getaccesstoken', 'access');
 
+    /**
+     *
+     *
+     * @return array
+     */
     public function updates() {
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
@@ -27,6 +42,11 @@ class EventsController extends \app\controllers\AppController {
         return compact('updates', 'count', 'nextUpdates');
     }
 
+    /**
+     * Метод для получения информации о новых проставленных лайках
+     *
+     * @return array
+     */
     public function autolikes() {
         if(isset($this->request->query['created'])) {
             $offsetDate = date('Y-m-d H:i:s', strtotime($this->request->query['created']) + (2 * HOUR));
@@ -53,6 +73,11 @@ class EventsController extends \app\controllers\AppController {
         }
     }
 
+    /**
+     * Метод для вывода всех новых событий и новостей
+     *
+     * @return array
+     */
     public function feed() {
         $tag = null;
         if (isset($this->request->query['tag'])) {
@@ -60,25 +85,26 @@ class EventsController extends \app\controllers\AppController {
         }
         if (isset($this->request->query['page'])) {
             $subscribed = User::getSubscribedPitches(Session::read('user.id'));
-            $updates = Event::getEvents($subscribed, $this->request->query['page'], null, Session::read('user.id'), $tag);
-            $nextUpdates = count(Event::getEvents($subscribed, $this->request->query['page'] + 1, null, Session::read('user.id'), $tag));
+            $updates = Event::getEvents($subscribed, $this->request->query['page'], null, $this->userHelper->getId(), $tag);
+            $nextUpdates = count(Event::getEvents($subscribed, $this->request->query['page'] + 1, null, $this->userHelper->getId(), $tag));
         }
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
         }
         if (!empty($this->request->query['pitchDate'])) {
-            $pitches = Pitch::all(array('fields' => array('title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => array('>' => $this->request->query['pitchDate'])), 'order' => array('started' => 'desc'), 'limit' => 5));
+            $pitches = Pitch::all(['fields' => array('title', 'price', 'started'), 'conditions' => ['status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => ['>' => $this->request->query['pitchDate']]], 'order' => ['started' => 'desc'], 'limit' => 5]);
         }
         if (!empty($this->request->query['created'])) {
-            $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), $this->request->query['page'], $this->request->query['created'], Session::read('user.id'), $tag);
+            $updates = Event::getEvents(User::getSubscribedPitches($this->userHelper->getId()), $this->request->query['page'], $this->request->query['created'], $this->userHelper->getId(), $tag);
         } elseif (!isset($this->request->query['created'])) {
             $this->request->query['created'] = 0;
         }
         if (!empty($this->request->query['twitterDate'])) {
-            $twitter = Stream::renderStreamFeed(10, $this->request->query['twitterDate']);
+            $streamHelper = new Stream();
+            $twitter = $streamHelper->renderStreamFeed(10, $this->request->query['twitterDate']);
         }
         if (!empty($this->request->query['solutionDate'])) {
-            $solutions = Event::all(array('conditions' => array('Event.type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0, 'created' => array('>' => $this->request->query['solutionDate'])), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'with' => array('Pitch')));
+            $solutions = Event::all(['conditions' => ['Event.type' => 'SolutionAdded', 'private' => 0, 'category_id' => ['!=' => 7], 'multiwinner' => 0, 'created' => ['>' => $this->request->query['solutionDate']]], 'order' => ['Event.created' => 'desc'], 'limit' => 10, 'with' => ['Pitch']]);
         }
         if (!empty($this->request->query['newsDate'])) {
             $post = News::getPost($this->request->query['newsDate']);
@@ -93,12 +119,22 @@ class EventsController extends \app\controllers\AppController {
         return compact('solpages');
     }
 
+    /**
+     * Метод для получения информации о новых твитах про работу для дизайнеров
+     *
+     * @return array
+     */
     public function job() {
         $job = \app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page']));
         $count = count(\app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page'] + 1)));
         return compact('job', 'count');
     }
 
+    /**
+     * Метод для получения информции о новых проектах
+     *
+     * @return array
+     */
     public function pitches() {
         $pitches = Pitch::all(array('fields' => array('id', 'title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5, 'page' => $this->request->data['page']));
         $count = 0;
@@ -108,30 +144,46 @@ class EventsController extends \app\controllers\AppController {
         return compact('pitches', 'count');
     }
 
+    /**
+     * Метод для получения информации о последних новостях
+     *
+     * @return array
+     */
     public function news() {
         $news = News::getNews(0, $this->request->data['page']);
         $count = count(News::getNews(0, $this->request->data['page'] + 1));
         return compact('news', 'count');
     }
 
+    /**
+     * Метод возвращяет события лайков
+     *
+     * @return array
+     */
     public function liked() {
+        $likes = array();
+        $temp = array();
+        $fav = array();
         if ($this->request->id) {
-
-
-            if(!$likes = Event::all(array('conditions' => array('Event.type' => 'LikeAdded', 'solution_id' => $this->request->id), 'order' => array('Event.created' => 'desc')))) {
-
-            }else {
-                $likes = Event::all(array('conditions' => array('Event.type' => 'LikeAdded', 'news_id' => $this->request->id), 'order' => array('Event.created' => 'desc')));
-            }
-            $temp = array();
+            $likes = Event::all(array('conditions' => array(
+                'Event.type' => 'LikeAdded',
+                'solution_id' => $this->request->id
+            ), 'order' => array('Event.created' => 'desc')));
             foreach ($likes as $like) {
                 $temp[] = $like->user->id;
             }
-            $fav = \app\models\Favourite::all(array('conditions' => array('pitch_id' => 0, 'fav_user_id' => $temp)));
+            if(!empty($temp)) {
+                $fav = Favourite::all(array('conditions' => array('pitch_id' => 0, 'fav_user_id' => $temp)));
+            }
         }
         return compact('likes', 'fav');
     }
 
+    /**
+     * Метод возвращяет теги для новостей
+     *
+     * @return string
+     */
     public function newstags() {
         if (isset($this->request->query['name']) && strlen($this->request->query['name']) > 0) {
             $tags = News::all(array('fields' => array('tags'), 'conditions' => array('tags' => array('LIKE' => array('%' . $this->request->query['name'] . '%')))));
@@ -139,6 +191,11 @@ class EventsController extends \app\controllers\AppController {
         }
     }
 
+    /**
+     * Метод сохраняет новост
+     *
+     * @return array
+     */
     public function add() {
         $result = false;
         if ($this->request->data) {
@@ -147,10 +204,13 @@ class EventsController extends \app\controllers\AppController {
         return compact('result');
     }
 
+    /**
+     * Получение токена доступа для перевода
+     *
+     * @return bool|mixed|null
+     */
     public function getaccesstoken() {
         return Event::getBingAccessToken();
     }
 
 }
-
-?>

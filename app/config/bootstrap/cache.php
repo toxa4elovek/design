@@ -16,6 +16,8 @@ use lithium\core\Environment;
 use lithium\action\Dispatcher;
 use lithium\storage\cache\adapter\Apc;
 use app\extensions\storage\Rcache;
+use lithium\data\Connections;
+use lithium\data\source\Database;
 
 if (PHP_SAPI === 'cli') {
 	return;
@@ -80,4 +82,24 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 	return $result;
 });
 
-?>
+Dispatcher::applyFilter('run', function($self, $params, $chain) {
+	$connections = array('default', 'tutdesign');
+
+	foreach ($connections as $name) {
+		if (!(($connection = Connections::get($name)) instanceof Database)) {
+			continue;
+		}
+		$connection->applyFilter('describe', function($self, $params, $chain) use ($name) {
+			if (isset($params['fields'])) {
+				return $chain->next($self, $params, $chain);
+			}
+			$cacheKey = "data.connections.{$name}.sources.{$params['entity']}.schema";
+			if(!$fields = Rcache::read($cacheKey)) {
+				$fields = $chain->next($self, $params, $chain);
+				Rcache::write($cacheKey, $fields, array(), '+1 day');
+			}
+			return $fields;
+		});
+	}
+	return $chain->next($self, $params, $chain);
+});

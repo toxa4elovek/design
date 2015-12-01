@@ -4,13 +4,18 @@ namespace app\tests\cases\extensions\social;
 
 use app\extensions\social\TwitterAPI;
 use app\extensions\tests\AppUnit;
+use app\tests\mocks\social\TwitterServerMock;
 
 class TwitterAPITest extends AppUnit {
 
     public $api = null;
 
     public function setUp() {
-        $this->api = new TwitterAPI();
+        $this->api = new TwitterAPI('app\tests\mocks\social\TwitterServerMock');
+    }
+
+    public function tearDown() {
+        $this->api = new null();
     }
 
     /*function testPostMessageToPage() {
@@ -49,7 +54,7 @@ class TwitterAPITest extends AppUnit {
             return count($toRetweetIds);
         });
     }*/
-
+/*
     public function testFav() {
         $objects = array('логотип', 'сайт', 'упаковку', 'название', 'слоган');
         $actions = array('помогите', 'где логотип', 'заказать', 'кого');
@@ -83,6 +88,6 @@ class TwitterAPITest extends AppUnit {
             });
         }
     }
-
+*/
 
 }

@@ -11,12 +11,12 @@ class UserTest extends AppUnit {
 
     public function setUp() {
 		Rcache::init();
-        $this->rollUp(array('Pitch', 'User', 'Solution', 'Category', 'Comment'));
+        $this->rollUp(array('Pitch', 'User', 'Solution', 'Category', 'Comment', 'Expert'));
     }
 
     public function tearDown() {
         Rcache::flushdb();
-        $this->rollDown(array('Pitch', 'User', 'Solution', 'Category', 'Comment'));
+        $this->rollDown(array('Pitch', 'User', 'Solution', 'Category', 'Comment', 'Expert'));
     }
 /*
 	public function testGetAuthorsIds() {
@@ -109,7 +109,7 @@ class UserTest extends AppUnit {
         $expected = array(2, 6);
         $this->assertEqual($expected, User::getUsersWonProjectsIds(2));
     }*/
-
+/*
     public function testRemoveExtraFields() {
         $user = User::first(1);
         $cleanUser = User::removeExtraFields($user);
@@ -239,6 +239,92 @@ class UserTest extends AppUnit {
         $this->assertEqual(3500, $user->balance);
         $result = User::reduceBalance(3, 20000);
         $this->assertFalse($result);
+    }
+
+    public function testSetActiveSubscriptionDiscount() {
+        $result = User::setSubscriptionDiscount(22222222, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $this->assertFalse($result);
+
+        $result = User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $this->assertTrue($result);
+        $user = User::first(2);
+        $this->assertEqual(40, $user->subscription_discount);
+        $this->assertEqual(date('Y-m-d H:i:s', time() + MONTH), $user->subscription_discount_end_date);
+    }
+
+    public function testHasActiveSubscriptionDiscount() {
+        User::setSubscriptionDiscount(22222222, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = User::hasActiveSubscriptionDiscount(2222222);
+        $this->assertFalse($result);
+
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = User::hasActiveSubscriptionDiscount(2);
+        $this->assertTrue($result);
+
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+        $result = User::hasActiveSubscriptionDiscount(2);
+        $this->assertFalse($result);
+    }
+
+    public function testGetSubscriptionDiscount() {
+        $result = User::getSubscriptionDiscount(2222222);
+        $this->assertNull($result);
+
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = User::getSubscriptionDiscount(2);
+        $this->assertEqual(40, $result);
+
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+        $result = User::getSubscriptionDiscount(2);
+        $this->assertNull($result);
+    }*/
+
+    public function testGetSubscriptionDiscountEndTime() {
+        $result = User::getSubscriptionDiscountEndTime(2222222);
+        $this->assertNull($result);
+
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = User::getSubscriptionDiscountEndTime(2);
+        $this->assertEqual(date('Y-m-d H:i:s', time() + MONTH), $result);
+
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+        $result = User::getSubscriptionDiscountEndTime(2);
+        $this->assertNull($result);
+    }
+
+    public function testGetReferalPaymentsCount() {
+        $count = User::getReferalPaymentsCount();
+        $this->assertIdentical(0, $count);
+        $user = User::first(3);
+        $user->phone_valid = 1;
+        $user->phone = '';
+        $user->save(null, array('validate' => false));
+        $count = User::getReferalPaymentsCount();
+        $this->assertIdentical(0, $count);
+        $user->phone = '1234';
+        $user->save(null, array('validate' => false));
+        $count = User::getReferalPaymentsCount();
+        $this->assertIdentical(1, $count);
+        $user->subscription_status = 1;
+        $user->save(null, array('validate' => false));
+        $count = User::getReferalPaymentsCount();
+        $this->assertIdentical(0, $count);
+    }
+
+    public function testIsMemberOfVKGroup() {
+        $this->assertFalse(User::isMemberOfVKGroup(999999));
+        $this->assertTrue(User::isMemberOfVKGroup(2));
+        $this->assertFalse(User::isMemberOfVKGroup(3));
+        $this->assertFalse(User::isMemberOfVKGroup(4));
+    }
+
+    public function testIsUserRecordMemberOfVKGroup() {
+        $user = User::first(2);
+        $this->assertTrue($user->isUserRecordMemberOfVKGroup(2));
+        $user = User::first(3);
+        $this->assertFalse($user->isUserRecordMemberOfVKGroup(3));
+        $user = User::first(4);
+        $this->assertFalse($user->isUserRecordMemberOfVKGroup(4));
     }
 
 }

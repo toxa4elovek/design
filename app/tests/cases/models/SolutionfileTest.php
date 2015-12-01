@@ -16,13 +16,14 @@ class SolutionfileTest extends AppUnit {
         $this->rollDown(array('Solution', 'Solutionfile'));
     }
 
-    public function testSave() {  
-    /*    $this->assertTrue(Solutionfile::copy(2, 100075));
+    public function testSave() {
+        /*
+        $this->assertTrue(Solutionfile::copy(2, 100075));
         $solutionFiles = Solutionfile::find('all',array('conditions'=>array('model_id'=>100075)));
         foreach ($solutionFiles as $file) {
             $this->assertTrue(file_exists($file->filename));
         }
-        $this->assertFalse(Solutionfile::copy(0, 0)); */
+        $this->assertFalse(Solutionfile::copy(0, 0));*/
     }
 
 }

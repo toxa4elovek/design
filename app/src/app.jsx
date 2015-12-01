@@ -479,19 +479,65 @@ $(function() {
     }
 
     // Countdown
-    if($("#countdown").length > 0) {
-        $("#countdown").countdown({
-            date: $("#countdown").data('deadline'), // Change this to your desired date to countdown to
+    const counddownId = $("#countdown");
+    if(counddownId.length > 0) {
+        counddownId.countdown({
+            date: counddownId.data('deadline'), // Change this to your desired date to countdown to
             format: "on",
             showEmptyDays: 'off'
         });
     }
 
-    if($(".countdown").length > 0) {
-        $(".countdown").countdownheader({
+    const countdownClass = $(".countdown");
+    if(countdownClass.length > 0) {
+        countdownClass.countdownheader({
             format: "on",
             showEmptyDays: 'off'
         });
+    }
+
+    const lcdTimer = $('#timer');
+    if(lcdTimer.length > 0) {
+        var initialCurrentTime = lcdTimer.data('currenttime');
+        setInterval(function() {
+            var currentTime = moment.unix(initialCurrentTime);
+            initialCurrentTime += 1;
+            var deadline = moment.unix(lcdTimer.data('deadline'));
+            if(deadline.isAfter(currentTime)) {
+                var diff = deadline.valueOf() - currentTime.valueOf();
+                var duration = moment.duration(diff);
+                var stringHours = Math.floor(duration.asHours()).toString();
+                if(stringHours.length == 1) {
+                    stringHours = '0' + stringHours;
+                }
+                var stringMinutes = duration.minutes().toString();
+                if(stringMinutes.length == 1) {
+                    stringMinutes = '0' + stringMinutes;
+                }
+                var stringSeconds = duration.seconds().toString();
+                if(stringSeconds.length == 1) {
+                    stringSeconds = '0' + stringSeconds;
+                }
+                $('.lcd').text(`${stringHours}:${stringMinutes}:${stringSeconds}`);
+            }else {
+                var diff = currentTime.valueOf() - deadline.valueOf();
+                var duration = moment.duration(diff);
+                var stringHours = Math.floor(duration.asHours()).toString();
+                if(stringHours.length == 1) {
+                    stringHours = '0' + stringHours;
+                }
+                var stringMinutes = duration.minutes().toString();
+                if(stringMinutes.length == 1) {
+                    stringMinutes = '0' + stringMinutes;
+                }
+                var stringSeconds = duration.seconds().toString();
+                if(stringSeconds.length == 1) {
+                    stringSeconds = '0' + stringSeconds;
+                }
+                $('.lcd').css('color', '#ff585d').text(`-${stringHours}:${stringMinutes}:${stringSeconds}`);
+            }
+        }, 1000);
+
     }
 
     $('#changeEmail').validate({
@@ -547,11 +593,13 @@ $(function() {
     });
 
     $(document).on('click', '.popup-decline', function() {
-        $('#popup-title').text('«' + $(this).data('title') + '»');
-        $('#popup-title').attr('href', '/pitches/view/' + $(this).data('pitchid'));
-        $('#popup-num').text('#' + $(this).data('solutionnum'));
-        $('#popup-num').attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
-        $('.change-mind').data('solutionid', $(this).data('solutionid'))
+        const popupTitle = $('#popup-title');
+        popupTitle.text('«' + $(this).data('title') + '»');
+        popupTitle.attr('href', '/pitches/view/' + $(this).data('pitchid'));
+        const popupNum = $('#popup-num');
+        popupNum.text('#' + $(this).data('solutionnum'));
+        popupNum.attr('href', '/pitches/viewsolution/' + $(this).data('solutionid'));
+        $('.change-mind').data('solutionid', $(this).data('solutionid'));
         $('#popip-active-id').val($(this).data('pitchid'));
         $('#popup-decline-warning').modal({
             containerId: 'spinner',
@@ -580,8 +628,7 @@ $(function() {
         var id = $('#popip-active-id').val();
         var solutionid = $(this).data('solutionid');
         $.get('/pitches/accept/' + id + '.json', function() {
-            if(window.location.href.indexOf("users/step2") > -1) {
-            }else {
+            if(window.location.href.indexOf("users/step2") <= -1) {
                 window.location.href = 'http://www.godesigner.ru/users/step2/' + solutionid;
             }
         });
@@ -960,7 +1007,7 @@ function isExpert(user, expertsObj) {
 }
 
 function isExpertFromList(userId, expertList) {
-    if(expertList.indexOf(userId) > 0) {
+    if(expertList.indexOf(userId) >= 0) {
         return true;
     }
     return false;
@@ -1180,6 +1227,107 @@ function enableToolbar() {
         } else {
             alert('Введите текст комментария!');
             return false;
+        }
+    });
+
+    TextareaDispatcher.register(function(eventPayload) {
+        if (eventPayload.actionType === 'person-for-comment-selected') {
+            startedWatchingTextarea = false;
+            const textarea = eventPayload.person.selector;
+            let text = textarea.val();
+            const replacement = `@${eventPayload.person.name}, `;
+            const regExp = new RegExp(`(${enteredNameQuery})`, 'ig');
+            const updatedText = text.replace(regExp, replacement);
+            textarea.val(updatedText);
+            textarea.focus();
+            enteredNameQuery = '';
+            CommentsActions.userStoppedAutosuggest(eventPayload.person.selector);
+        }
+    });
+
+    /**
+     * Диспетчер событий
+     */
+    CommentsDispatcher.register(function(eventPayload) {
+        if (eventPayload.actionType === 'start-autosuggest') {
+            let changeSelected = null;
+            let selected = null;
+            if(typeof(eventPayload.props.changeSelected) != 'undefined') {
+                changeSelected = eventPayload.props.changeSelected;
+            }
+            if(typeof(eventPayload.props.selected) != 'undefined') {
+                selected = eventPayload.props.selected;
+            }
+            const props = {
+                "active": true,
+                "selector": eventPayload.props.selector,
+                "query": eventPayload.props.query,
+                "changeSelected": changeSelected,
+                "users": autosuggestUsers,
+                "selected": selected
+            };
+            ReactDOM.render(
+                <UserAutosuggest data={props}/>,
+                eventPayload.props.selector.next()[0]
+            );
+        }
+        if (eventPayload.actionType === 'stop-autosuggest') {
+            let props = {
+                "active": false,
+                "selector": eventPayload.props
+            };
+            ReactDOM.render(
+                <UserAutosuggest data={props}/>,
+                eventPayload.props.next()[0]
+            );
+        }
+    });
+
+    let startedWatchingTextarea = false;
+    let enteredNameQuery = '';
+    $(document).on('keydown', 'textarea[data-user-autosuggest=true]', function(e) {
+        const charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+        const selector = $(this);
+        if((charCode == 8) && (startedWatchingTextarea) && (enteredNameQuery.length == 0)) {
+            startedWatchingTextarea = false;
+            enteredNameQuery = '';
+            CommentsActions.userStoppedAutosuggest(selector);
+        }
+        if((charCode == 38) && (startedWatchingTextarea)) {
+            CommentsActions.userNeedUserAutosuggest({
+                'selector': selector,
+                'query': enteredNameQuery,
+                'changeSelected': -1
+            });
+        }
+        if((charCode == 40) && (startedWatchingTextarea)) {
+            CommentsActions.userNeedUserAutosuggest({
+                'selector': selector,
+                'query': enteredNameQuery,
+                'changeSelected': 1
+            });
+        }
+        if((charCode == 8) && (startedWatchingTextarea)) {
+            enteredNameQuery = enteredNameQuery.slice(0, -1);
+            CommentsActions.userNeedUserAutosuggest({'selector': selector, 'query': enteredNameQuery});
+        }
+        if((charCode == 13) && (startedWatchingTextarea)) {
+            $('li[data-selected="true"]', '.userAutosuggest').click();
+            return false;
+        }
+    });
+    $(document).on('keypress', 'textarea[data-user-autosuggest=true]', function(e) {
+        const charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+        const selector = $(this);
+        if(charCode == 64) {
+            CommentsActions.userNeedUserAutosuggest({'selector': selector, 'query': ''});
+            startedWatchingTextarea = true;
+            enteredNameQuery = '@';
+        }else if(startedWatchingTextarea) {
+            if (e.which !== 0 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                enteredNameQuery += String.fromCharCode(charCode);
+                CommentsActions.userNeedUserAutosuggest({'selector': selector, 'query': enteredNameQuery});
+            }
         }
     });
 
@@ -1467,7 +1615,7 @@ function toggleAnswer(link) {
                         <div class="hiddenform"> \
                             <section> \
                                 <form style="margin-left: 0;" action="/comments/add.json" method="post"> \
-                                    <textarea name="text" data-question-id="' + link.data('comment-id') + '"></textarea><br>'
+                                    <textarea name="text" data-user-autosuggest="true" data-question-id="' + link.data('comment-id') + '"></textarea><div></div><br>'
         + answerButtons +
         '<div class="clr"></div> \
                             </form> \
@@ -1762,7 +1910,7 @@ function getParameterByName(name) {
                 hours = 0;
                 minutes = 0;
                 seconds = 0;
-                clearInterval(interval)
+                clearInterval(interval);
             }
             if (r["format"] == "on") {
                 //days = String(days).length >= 2 ? days : "0" + days;
@@ -1785,9 +1933,7 @@ function getParameterByName(name) {
                 thisEl.find(".days").text(days);
                 thisEl.find(".hours").text(hours);
                 thisEl.find(".minutes").text(minutes);
-                thisEl.find(".seconds").text(seconds)
-            } else {
-
+                thisEl.find(".seconds").text(seconds);
             }
             thisEl.css({opacity: 1});
         }

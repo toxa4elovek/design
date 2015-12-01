@@ -4,12 +4,26 @@ namespace app\controllers;
 
 use \app\models\Answer;
 
-class AnswersController extends \lithium\action\Controller {
+/**
+ * Class AnswersController
+ *
+ * Контроллер запросов раздела "Помощь"
+ *
+ * @package app\controllers
+ */
+class AnswersController extends AppController {
 
+    /**
+     * @var array Публичные методы
+     */
     public $publicActions = array('index', 'view');
 
+    /**
+     * Метод для вывода списка вопросов/результатов поиска
+     *
+     * @return array|void
+     */
     public function index() {
-        $conditions = array();
         $search = '';
         if(isset($this->request->query['search'])) {
             $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
@@ -22,52 +36,40 @@ class AnswersController extends \lithium\action\Controller {
                 $searchWord = mb_eregi_replace('[^A-Za-z0-9а-яА-Я]', '', $searchWord);
                 $searchWord = trim($searchWord);
             }
-            if(count($words) == 1) {
-                $answers = Answer::all(array('conditions' => array(
-                    'OR' => array(
-                        'title' => array('LIKE' => '%' . $words[0] . '%'),
-                        'text' => array('LIKE' => '%' . $words[0] . '%')
-                    )
-                )));
-                $answers = $answers->data();
-            }else {
-                $answers = array();
-                foreach($words as $word) {
-                    $result = Answer::all(array('conditions' => array(
-                    'OR' => array(
-                        'title' => array('LIKE' => '%' . $word . '%'),
-                        'text' => array('LIKE' => '%' . $word . '%')
-                    ))));
-                    $answers += $result->data();
-                }
-            }
             $search = implode(' ', $words);
+            $answers = array();
+            foreach($words as $word) {
+                $result = Answer::searchForWord($word);
+                $answers += $result->data();
+            }
         }else {
-            $answers = Answer::all(array('order' => array('hits' => 'desc')));
+            $category = null;
+            if((isset($this->request->query['category'])) && (in_array($this->request->query['category'], array_keys(Answer::$questioncategory_id)))) {
+                $category = $this->request->query['category'];
+            }
+            $answers = Answer::getPopularQuesions(1000, $category);
             $answers = $answers->data();
         }
         if((isset($this->request->query['ajax'])) && ($this->request->query['ajax'] == 'true')) {
-            return $this->render(array('layout' => false, 'data' => array('answers' => $answers, 'search' => $search)));
+            return $this->render(array('layout' => false, 'data' => compact('answers', 'search')));
         }else {
-            return compact('answers', 'search');
+            return compact('answers', 'search', 'category');
         }
     }
 
+    /**
+     * Метод выводит страницу помощи
+     *
+     * @return array|object
+     */
     public function view() {
-        if(($this->request->id != null) && ($answer = Answer::first($this->request->id))) {
-            Answer::increaseCounter($this->request->id);
-            $similar = Answer::all(array(
-                'order' => array('RAND()'),
-                'limit' => 5,
-                'conditions' => array(
-                    'questioncategory_id' => $answer->questioncategory_id,
-                    'id' => array('!=' => $answer->id)
-                )
-            ));
+        if(($this->request->id != null) && ($answer = Answer::first((int) $this->request->id))) {
+            $answer->increaseCounterForRecord();
+            $similar = $answer->getSimilarQuesions(10);
+            $answer->category = Answer::$questioncategory_id[$answer->questioncategory_id];
             return compact('answer', 'similar');
         }
         return $this->redirect('Answers::index');
     }
-}
 
-?>
+}

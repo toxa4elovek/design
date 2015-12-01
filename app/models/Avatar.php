@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class Avatar extends \app\models\AppModel {
+class Avatar extends AppModel {
 
     public function clearOldAvatars($userId) {
         $avatars = self::all(array('conditions' => array('model_id' => $userId)));

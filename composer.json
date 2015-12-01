@@ -3,6 +3,9 @@
     "vendor-dir": "libraries"
   },
   "require": {
-    "ins0/google-measurement-php-client": "dev-master"
+    "ins0/google-measurement-php-client": "dev-master",
+    "unionofrad/li3_quality": "^0.2.0",
+    "verot/class.upload.php": "dev-master",
+    "swiftmailer/swiftmailer": "^5.4"
   }
 }

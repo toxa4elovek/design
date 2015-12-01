@@ -59,7 +59,7 @@ class BlogPostEntryBox extends React.Component{
             postTitleLink = <a href={link} className="not-published">{this.props.post.title}</a>;
         }
         return (
-            <div className="blog-post-entry-box">
+            <div key={this.props.post.id} className="blog-post-entry-box">
                 <div>
                     <div className="blog-post-image-container">
                         <img className="blog-post-image" src={this.props.post.imageurl} alt={this.props.post.title} />

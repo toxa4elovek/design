@@ -48,7 +48,6 @@
             <ol class="steps">
                 <li class="current"><a href="#" class="steps-link" data-step="1">1. Гонорар</a></li>
                 <li><a href="#" class="steps-link" data-step="2">2. Бриф</a></li>
-                <!--li class="last"><a href="#" class="steps-link" data-step="3">3. Оплата</a></li-->
             </ol>
 
             <label style="
@@ -133,6 +132,13 @@
                 </div>
 
                 <div class="clear"></div>
+            </div>
+
+            <div style="margin-top: 48px; margin-bottom: 50px;">
+                <span style="
+                    font-family: Helvetica, serif; font-size: 11px; text-transform: uppercase; color: #666666;
+                ">3. Выберите тип проекта:</span>
+                <div id="radios-container"></div>
             </div>
 
             <h1 style="background: url('/img/images/faq.png') no-repeat scroll 55% 0 transparent;	font-family: OfficinaSansBookC, serif;
@@ -410,9 +416,11 @@
     '/js/pitches/classes/ReceiptAccessor.js',
     '/js/pitches/classes/SubscribedCart.js',
     '/js/pitches/actions/SubscribedBriefActions.js',
-    'common/receipt/ReceiptLine.js',
-    'common/receipt/ReceiptTotal.js',
-    'common/receipt/Receipt.js',
+    '/js/pitches/components/ProjectTypesRadioWrapper.js',
+    '/js/pitches/components/ProjectTypesRadio.js',
+    '/js/common/receipt/ReceiptLine.js',
+    '/js/common/receipt/ReceiptTotal.js',
+    '/js/common/receipt/Receipt.js',
     '/js/pitches/ProjectRewardInput.js',
     '/js/pitches/subscribed_brief.js',
     //'pitches/award_calculator.js',

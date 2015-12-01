@@ -17,7 +17,7 @@ endif;
 
 <?php if(!empty($details['site-existing'])):?>
 <h2 class="blueheading">Cуществующий сайт</h2>
-<p class="regular"><?= $this->brief->e($details['site-existing'])?></p>
+<p class="regular"><?= $this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-existing'])?></p>
 <?php endif?>
 
 <div class="group">
@@ -54,7 +54,7 @@ endif;
 
 <?php if(!empty($details['site-inspiration'])):?>
 <h2 class="blueheading">Какие сайты вам нравятся? Откуда дизайнерам черпать вдохновение</h2>
-<p class="regular"><?=$this->brief->e($details['site-inspiration'])?></p>
+<p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
 <?php endif;?>
 
 <?php if(!empty($details['qualities'])):?>

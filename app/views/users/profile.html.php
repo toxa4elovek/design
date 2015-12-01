@@ -107,7 +107,7 @@
                             <?php if($emailInfo != false):?>
                                 <?=$emailInfo?><br>
                             <?php endif;?>
-                            <?= $this->user->getMaskedEmail()?></p>
+                            <a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
                         <form method="post" id="email-form" action="/users/update">
                             <input type="email" placeholder="Новый email" name="email" value="">
                             <input type="submit" id="save-email" class="button" value="Сохранить адрес" />

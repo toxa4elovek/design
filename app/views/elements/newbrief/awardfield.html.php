@@ -25,4 +25,19 @@
         echo (date('N') > 5) ? $category->discountPrice : round(($category->goodAward + $category->normalAward) / 2);
     endif;
     ?>">
+    <?php if($category->id == 1):?>
+    <div id="fastpitch-tooltip" style="top: 216px;left: 240px;display: none;
+    position: absolute;width: 285px;
+    padding-left: 30px;
+    padding-top: 13px;
+height: 137px;
+background: url(/img/brief/fastpitch_tooltip.png) left top no-repeat;
+font-family: Arial;
+font-size: 14px;
+font-weight: 400;
+line-height: 22px;text-transform: none;">
+    Кейс «<a href="/pages/fastpitch" target="_blank">Логотип в один клик</a>» экономит<br/> 3530 руб. и час на заполнение брифа, включает самый популярный набор опций</br> и стоит всего 19600 руб.,<br/>
+    включая сборы. <a href="/pages/fastpitch" target="_blank">Подробнее</a>...
+</div>
+    <?php endif;?>
 </p>

@@ -306,6 +306,131 @@ var gallerySwitch = (function() {
     };
     // Gallery Tab Init
     var initGallery = function() {
+
+        if((typeof(needConfirmation) != 'undefined') && (needConfirmation)) {
+            $('#phone-confirm').modal({
+                containerId: 'spinner',
+                opacity: 80,
+                closeClass: 'mobile-close',
+                escClose: false,
+                onShow: function onShow() {
+                    $('.modalCloseImg').hide();
+                    $('#phone-confirm').fadeTo(600, 1);
+                },
+                onClose: function onClose() {
+                    $('.simplemodal-container').fadeOut(800);
+                    $('#simplemodal-overlay').fadeOut(800, function () {
+                        $.modal.close();
+                    });
+                }
+            });
+        }
+
+        $(document).on('click', '#save-mobile', function() {
+            var form = $('#mobile-form');
+            var phonenumber = $('input[name=phone]', form).val();
+            var data = form.serialize();
+            $.post('/users/update.json', data, function(response) {
+                var paragraph = $('.confirm-message', '.user-mobile-section');
+                var text = '';
+                if(response == 'false') {
+                    text = 'К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.';
+                    $('#phone-confirm').css('height', '445px');
+                    paragraph.text(text).show();
+                }else if(response == 'limit') {
+                    text = 'К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.';
+                    $('#phone-confirm').css('height', '445px');
+                    paragraph.text(text).show();
+                }else {
+                    if (response.indexOf('error') != -1) {
+                        text = 'Произошел сбой доставки SMS-сообщения. Попробуйте позже.';
+                        paragraph.text(text).show();
+                    } else {
+                        text = 'Для подтверждения номера +' + phonenumber + ' введите код, который пришел по смс.';
+                        $('.top-text').text(text);
+                        $('.phone-input-container').hide();
+                        var saveMobile = $('#save-mobile');
+                        saveMobile.hide();
+                        $('input[name=phone_code]').show();
+                        $('ul', '#mobile-form').show();
+                        var confirmMobile = $('#confirm-mobile').show();
+                        confirmMobile.prev().show();
+                        confirmMobile.show();
+                        $('.number').text('+ ' + phonenumber).show();
+                        $('.resend-code').show().css('display', 'block');
+                        $('.help').css('margin-top', '68px');
+                    }
+                }
+            });
+            return false;
+        });
+
+        $(document).on('click', '.resend-code', function() {
+            var data = {"resendcode": true};
+            $.post('/users/update.json', data, function(response) {
+                var paragraph = $('.confirm-message', '.user-mobile-section');
+                var text = '';
+                if(response == 'limit') {
+                    text = 'К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.';
+
+                }else{
+                    if (response.indexOf('error') != -1) {
+                        text = 'Произошел сбой доставки SMS-сообщения. Попробуйте позже.';
+                    } else {
+                        text = 'Код подтверждения отправлен повторно на номер ваш номер.';
+                    }
+                }
+                paragraph.text(text).show();
+                $('.help').css('margin-top', '8px');
+            });
+            return false;
+        });
+
+        $(document).on('click', '.remove-number-link', function(){
+            var data = {"removephone": true};
+            $.post('/users/update.json', data);
+            $('.confirm-message').hide();
+            $('ul', '#mobile-form').hide();
+            $('#confirm-mobile').prev().hide();
+            $('#confirm-mobile').hide();
+            $('.phone-input-container').show();
+            $('#save-mobile').next().show();
+            $('#save-mobile').show();
+            $('.resend-code').show();
+            $('.remove-number-link').text('Удалить номер');
+            $('.resend-code').hide();
+            $('h2', '#phone-confirm').text('Подтвердите номер');
+            $('.top-text').html('Пожалуйста, укажите сотовый для экстренной связи.<br/>Команда GoDesignеr не расглашает данные третьим<br/>лицам и никогда не использует номер для спама.').show();
+            return false;
+        });
+
+        $(document).on('click', '#confirm-mobile', function() {
+            var data = {"code": $('input[name=phone_code]', '.user-mobile-section').val()};
+            $.post('/users/update.json', data, function(response) {
+                var paragraph = $('.confirm-message', '.user-mobile-section');
+                if(response == 'false') {
+                    text = 'Вы ввели неверный код.';
+                    paragraph.text(text).show();
+                    $('.help').css('margin-top', '8px');
+                }else {
+                    $('.mobile-close').show();
+                    $('h2', '#phone-confirm').text('Спасибо, номер подтвержден!');
+                    paragraph.hide();
+                    $('#confirm-mobile').prev().hide();
+                    $('#confirm-mobile').hide();
+                    $('.remove-number-link').text('Удалить/поменять номер');
+                    $('.remove-number').css('margin-right', '0');
+                    $('.remove-number').css('margin-right', '0 !important');
+                    $('.resend-code').hide();
+                    $('.number').show();
+                    $('.top-text').hide();
+                    $('.help').css('margin-top', '237px');
+                }
+            });
+            return false;
+        });
+
+
         // Refresh Comments
         fetchPitchComments();
         // Pancake

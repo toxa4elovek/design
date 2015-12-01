@@ -58,20 +58,25 @@
                             <p class="regular">По вашему запросу ничего не найдено.</p>
                             <?php endif?>
                             <?php if($first > 0):?>
-                            <div class="vp_one">
+                            <div class="vp_one" data-count="<?=$first?>">
                                 <table>
                                     <tr>
                                         <td><img src="/img/cont_help_data_1.gif" alt=""></td>
                                         <td><h2>Общие вопросы</h2>
-                                            <div class="answer-expand" style="overflow:hidden;height:107px;">
-                                            <?php foreach($answers as $answer):
-                                            if($answer['questioncategory_id'] != 1) continue;
+                                            <div class="answer-expand" style="overflow:hidden;height:<?php if($first < 4): echo ($first) * 36; else: if($category == null): echo '108'; else: echo 'auto'; endif; endif;?>px;">
+                                            <?php
+                                            $count = 0;
+                                            foreach($answers as $answer):
+                                            if($answer['questioncategory_id'] != 1) { continue; }
+                                                $count++;
                                             ?>
                                             <div style="background:url(img/sep.png) repeat-x;height:4px;"></div>
                                             <p class="regular" style="height: 26px; padding-top:6px;width:530px;"><?=$this->html->link(highlight($answer['title'], $search), array('Answers::view', 'id' => $answer['id']), array('escape' => false));?></p>
                                             <?php endforeach;?>
                                             </div>
+                                            <?php if(($count > 3) && ($category == null)):?>
                                             <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
+                                            <?php endif?>
                                         </td>
                                     </tr>
                                 </table>
@@ -79,20 +84,25 @@
                             <div class="content_help_line"></div>
                             <?php endif?>
                             <?php if($second > 0):?>
-                            <div class="vp_one">
+                            <div class="vp_one" data-count="<?=$second?>">
                                 <table>
                                     <tr>
                                         <td><img src="/img/cont_help_data_2.png" style="margin-left: 14px;" alt=""></td>
                                         <td><h2>Помощь заказчикам</h2>
-                                            <div class="answer-expand" style="overflow:hidden;height:107px;">
-                                            <?php foreach($answers as $answer):
-                                                if($answer['questioncategory_id'] != 2) continue;
+                                            <div class="answer-expand" style="overflow:hidden;height:<?php if($second < 4): echo ($second) * 36; else: if($category == null): echo '108'; else: echo 'auto'; endif; endif;?>px;">
+                                            <?php
+                                            $count = 0;
+                                            foreach($answers as $answer):
+                                                if($answer['questioncategory_id'] != 2) { continue; }
+                                                $count++;
                                                 ?>
                                                 <div style="background:url(img/sep.png) repeat-x;height:4px;"></div>
                                                 <p class="regular" style="height: 26px; padding-top:6px;width:530px;"><?=$this->html->link(highlight($answer['title'], $search), array('Answers::view', 'id' => $answer['id']), array('escape' => false));?></p>
                                             <?php endforeach;?>
                                             </div>
-                                            <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
+                                            <?php if(($count > 3) && ($category == null)):?>
+                                                <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
+                                            <?php endif?>
                                         </td>
                                     </tr>
                                 </table>
@@ -100,20 +110,25 @@
                             <div class="content_help_line"></div>
                             <?php endif?>
                             <?php if($third > 0):?>
-                            <div class="vp_one">
+                            <div class="vp_one" data-count="<?=$third?>">
                                 <table>
                                     <tr>
                                         <td><img src="/img/designers.png" style="" alt=""></td>
                                         <td><h2>Помощь дизайнерам</h2>
-                                            <div class="answer-expand" style="overflow:hidden;height:107px;">
-                                            <?php foreach($answers as $answer):
-                                                if($answer['questioncategory_id'] != 3) continue;
+                                            <div class="answer-expand" style="overflow:hidden;height:<?php if($third < 4): echo ($third) * 36; else: if($category == null): echo '108'; else: echo 'auto'; endif; endif;?>px;">
+                                            <?php
+                                            $count = 0;
+                                            foreach($answers as $answer):
+                                                if($answer['questioncategory_id'] != 3) { continue; }
+                                                $count++;
                                                 ?>
                                                 <div style="background:url(img/sep.png) repeat-x;height:4px;"></div>
                                                 <p class="regular" style="height: 26px; padding-top:6px;width:530px;"><?=$this->html->link(highlight($answer['title'], $search), array('Answers::view', 'id' => $answer['id']), array('escape' => false));?></p>
                                             <?php endforeach;?>
                                             </div>
-                                            <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
+                                            <?php if(($count > 3) && ($category == null)):?>
+                                                <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
+                                            <?php endif?>
                                         </td>
                                     </tr>
                                 </table>
@@ -121,21 +136,25 @@
                             <div class="content_help_line"></div>
                             <?php endif?>
                             <?php if($fourth > 0):?>
-                            <div class="vp_one">
+                            <div class="vp_one" data-count="<?=$fourth?>">
                                 <table>
                                     <tr>
                                         <td><img src="/img/cont_help_data_4.gif" alt=""></td>
                                         <td><h2>Оплата и денежные вопросы</h2>
-                                            <div class="answer-expand" style="overflow:hidden;height:107px;">
-                                                <?php foreach($answers as $answer):
-                                                if($answer['questioncategory_id'] != 4) continue;
-                                                ?>
+                                            <div class="answer-expand" style="overflow:hidden;height:<?php if($fourth < 4): echo ($fourth) * 36; else: if($category == null): echo '108'; else: echo 'auto'; endif; endif;?>px;">
+                                                <?php
+                                                $count = 0;
+                                                foreach($answers as $answer):
+                                                if($answer['questioncategory_id'] != 4) { continue; }
+                                                    $count++;
+                                                    ?>
                                                 <div style="background:url(img/sep.png) repeat-x;height:4px;"></div>
                                                 <p class="regular" style="height: 26px; padding-top:6px;width:530px;"><?=$this->html->link(highlight($answer['title'], $search), array('Answers::view', 'id' => $answer['id']), array('escape' => false));?></p>
                                                 <?php endforeach;?>
                                             </div>
-                                            <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
-
+                                            <?php if(($count > 3) && ($category == null)):?>
+                                                <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
+                                            <?php endif?>
                                         </td>
                                     </tr>
                                 </table>
@@ -143,21 +162,25 @@
                             <div class="content_help_line"></div>
                             <?php endif?>
                             <?php if($fifth > 0):?>
-                                <div class="vp_one">
+                                <div class="vp_one" data-count="<?=$fifth?>">
                                     <table>
                                         <tr>
                                             <td><img src="/img/jur.png" alt=""></td>
                                             <td><h2>Для юридических лиц</h2>
-                                                <div class="answer-expand" style="overflow:hidden;height:107px;">
-                                                    <?php foreach($answers as $answer):
-                                                        if($answer['questioncategory_id'] != 5) continue;
+                                                <div class="answer-expand" style="overflow:hidden;height:<?php if($fifth < 4): echo ($fifth) * 36; else: if($category == null): echo '108'; else: echo 'auto'; endif; endif;?>px;">
+                                                    <?php
+                                                    $count = 0;
+                                                    foreach($answers as $answer):
+                                                        if($answer['questioncategory_id'] != 5) { continue; }
+                                                        $count++;
                                                         ?>
                                                         <div style="background:url(img/sep.png) repeat-x;height:4px;"></div>
                                                         <p class="regular" style="height: 26px; padding-top:6px;width:530px;"><?=$this->html->link(highlight($answer['title'], $search), array('Answers::view', 'id' => $answer['id']), array('escape' => false));?></p>
                                                     <?php endforeach;?>
                                                 </div>
-                                                <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
-
+                                                <?php if(($count > 3) && ($category == null)):?>
+                                                    <p style="margin-top:8px;"><a href="#" class="av answer-expand-link">Все вопросы</a></p>
+                                                <?php endif?>
                                             </td>
                                         </tr>
                                     </table>
@@ -172,9 +195,6 @@
                         Если вы не можете найти ответ на свой <span style="white-space: nowrap;">вопрос - напишите</span> нам. Мы постараемся ответить вам в течении 24 часов по рабочим дням.
                         <?=$this->html->link('<img src="/img/otp_em.jpg" alt="">', 'Pages::contacts', array('escape' => false))?>
                     </div>
-                    <!--div id="tp">
-                        <h2>текущие питчи</h2>
-                    </div-->
                 </div>
             </div><!-- /content -->
         </div><!-- /middle_inner -->

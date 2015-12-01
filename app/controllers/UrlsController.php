@@ -4,20 +4,31 @@ namespace app\controllers;
 
 use \app\models\Url;
 
-class UrlsController extends \app\controllers\AppController {
+/**
+ * Class UrlsController
+ *
+ * Класс отвечает за работу с короткими адресами
+ *
+ * @package app\controllers
+ */
+class UrlsController extends AppController {
 
+    /**
+     * @var array публичные методы контроллера
+     */
     public $publicActions = array('view');
 
+    /**
+     * Метод перенаправляет пользователя на страницу соответствующую
+     * коду $this->request->params['short'] или на главную, если
+     * код не действителен
+     *
+     */
     public function view() {
-        $result = Url::get($this->request->params['short']);
-        if($result) {
-            return $this->redirect($result->full);
-        }else{
-            return $this->redirect('/');
+        if(!$url = Url::get($this->request->params['short'])) {
+            $url = '/';
         }
-
+        return $this->redirect($url);
     }
 
 }
-
-?>

@@ -28,8 +28,9 @@ if (isset($fromDesignersTab)) return false; ?>
             <?php endif; ?>
             </div>
             <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
-            <form class="createCommentForm" method="post" action="/comments/add">
-                <textarea id="newComment" name="text"></textarea>
+            <form style="position: relative;" class="createCommentForm" method="post" action="/comments/add">
+                <textarea id="newComment" data-user-autosuggest="true" name="text"></textarea>
+                <div></div>
                 <input type="hidden" value="" name="solution_id">
                 <input type="hidden" value="" name="comment_id">
                 <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">

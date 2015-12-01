@@ -1,21 +1,25 @@
-$(document).ready(function(){
-	$('#trigger').click(function() {
-		$('.trigger-block').toggle();
-		if($('#trigger').hasClass('more')) {
-			$('#trigger').removeClass('more').addClass('more_down');
-		}else {
-			$('#trigger').removeClass('more_down').addClass('more');
-		}
-		return false;
-	});
+'use strict';
 
-	$('.contacts-form').submit(function() {
-	    var info = clientInfo();
-	    var els = '';
-	    for (var key in info) {
-	        els += '<input type="hidden" name="info[' + key + ']" value="' + info[key] + '" />';
-	    }
-	    $(this).prepend(els);
-	    return true;
-	});
-})
+;(function () {
+    var maxHeight = 0;
+    var counter = 0;
+    var list = [];
+    var advantagesBlockChilder = $('#advantages').children();
+    var total = advantagesBlockChilder.length;
+    $.each(advantagesBlockChilder, function (index, object) {
+        if ($('h2', object).height() > maxHeight) {
+            maxHeight = $('h2', object).height();
+        }
+        list.push(object);
+        counter += 1;
+        total -= 1;
+        if (counter == 3 || total == 0) {
+            $.each(list, function (index, object) {
+                $('h2', object).height(maxHeight);
+            });
+            list = [];
+            maxHeight = 0;
+            counter = 0;
+        }
+    });
+})();

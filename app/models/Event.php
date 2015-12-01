@@ -106,7 +106,10 @@ class Event extends \app\models\AppModel {
                             $news->tags = substr($news->tags, 0, $str);
                         }
                         $host = parse_url($news->link);
-                        $record->host = $host['host'];
+                        $record->host = '';
+                        if(isset($host['host'])) {
+                            $record->host = $host['host'];
+                        }
                         if($news->admin == 0) {
                             $news->short = html_entity_decode($news->short, ENT_COMPAT, 'UTF-8');
                             $news->short = mb_strimwidth($news->short, 0, 250, '...', 'UTF-8');
@@ -398,7 +401,7 @@ class Event extends \app\models\AppModel {
         return $output;
     }
 
-    public function getBingAccessToken() {
+    public static function getBingAccessToken() {
         $accesstoken = null;
         if(!$accesstoken = Rcache::read('bingaccesstoken')) {
             $url = 'http://www.godesigner.ru/microsoft.php';

@@ -4,16 +4,17 @@ namespace app\tests\cases\models;
 
 use app\extensions\tests\AppUnit;
 use app\models\News;
-use app\extensions\storage\Rcache;
+use app\models\Like;
+use app\models\Event;
 
 class NewsTest extends AppUnit {
 
     public function setUp() {
-        $this->rollUp('News');
+        $this->rollUp(array('News', 'Like', 'Event'));
     }
 
     public function tearDown() {
-        $this->rollDown('News');
+        $this->rollDown(array('News', 'Like', 'Event'));
     }
 
     /*public function testGetPost() {
@@ -176,6 +177,54 @@ class NewsTest extends AppUnit {
         $this->assertFalse($news->isCoub());
         $news->short = '<iframe src="//coub.com/embed/g9jnfu?muted=false&autostart=false&originalSize=false&hideTopBar=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="640" height="360"></iframe>';
         $this->assertTrue($news->isCoub());
+    }
+
+    public function testIncreaseLike() {
+        $result = News::increaseLike(9999);
+        $expected = array('result' => false);
+        $this->assertEqual($expected, $result);
+
+        $result = News::increaseLike(4);
+        $expected = array('result' => false, 'likes' => 10);
+        $this->assertEqual($expected, $result);
+
+        $result = News::increaseLike(4, 2);
+        $expected = array('result' => true, 'likes' => 11);
+        $this->assertEqual($expected, $result);
+
+        $like = Like::first(array('conditions' => array('news_id' => 4, 'user_id' => 2)));
+        $this->assertEqual('object', gettype($like));
+        $this->assertEqual('lithium\data\entity\Record', get_class($like));
+
+        $event = Event::first(array('conditions' => array('type' => 'LikeAdded', 'news_id' => 4, 'user_id' => 2)));
+        $this->assertEqual('object', gettype($event));
+        $this->assertEqual('lithium\data\entity\Record', get_class($event));
+
+        $result = News::increaseLike(4, 2);
+        $expected = array('result' => false, 'likes' => 11);
+        $this->assertEqual($expected, $result);
+    }
+
+    public function testDecreaseLike() {
+        $result = News::decreaseLike(9999);
+        $expected = array('result' => false);
+        $this->assertEqual($expected, $result);
+
+        $result = News::decreaseLike(4);
+        $expected = array('result' => false, 'likes' => 10);
+        $this->assertEqual($expected, $result);
+
+        News::increaseLike(4, 2);
+
+        $result = News::decreaseLike(4, 2);
+        $expected = array('result' => true, 'likes' => 10);
+        $this->assertEqual($expected, $result);
+
+        $like = Like::first(array('conditions' => array('news_id' => 4, 'user_id' => 2)));
+        $event = Event::first(array('conditions' => array('type' => 'LikeAdded', 'news_id' => 4, 'user_id' => 2)));
+
+        $this->assertNull($like);
+        $this->assertNull($event);
     }
 
 }

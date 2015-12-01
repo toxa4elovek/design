@@ -9,19 +9,6 @@
 			$logo = "logo";
 		}
 	}
-
-	$templateView = $this;
-	$this->helper('html')->applyFilter('script', function($self, $params, $chain) use ($templateView) {
-	    $templateView->compressor->check($params);
-	    $result = $chain->next($self, $params, $chain);
-	    return $result;
-	});
-	$this->helper('html')->applyFilter('style', function($self, $params, $chain) use ($templateView) {
-	    $templateView->compressor->check($params);
-	    $result = $chain->next($self, $params, $chain);
-	    return $result;
-	});
-
 ?>
 <?php if($this->user->getCountOfCurrentPitches() > 0):?>
 <div id="pitch-panel">
@@ -62,13 +49,25 @@
                             } else {
                                 $fast_url = '/pitches/edit/'. $mypitch->id;
                             }
-                            
+                            $discount = '';
+                            $viewUrl = "/pitches/view/$mypitch->id";
+
+                            if(($mypitch->type == 'plan-payment') && ($mypitch->billed == 1)):
+                                continue;
+                            endif;
                             if(($mypitch->blank == 1) && ($mypitch->billed == 0)):
                                 continue;
                             endif;
-                            if(($mypitch->type == 'plan-payment') or ($mypitch->type == 'fund-balance')):
+                            if(($mypitch->type == 'penalty') or ($mypitch->type == 'fund-balance')):
                                 continue;
                             endif;
+                            if($mypitch->type == 'plan-payment') {
+                                $viewUrl = '/pages/subscribe';
+                                $fast_url = '/subscription_plans/subscriber/' . $this->pitch->getPlanForPayment($mypitch->id);
+                                if($discountAmount = $this->user->getSubscriptionDiscount($this->user->getId())) {
+                                    $discount = " (скидка — $discountAmount%)";
+                                }
+                            }
                             ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
 							<td>
@@ -77,20 +76,24 @@
 							<?php endif?>
 							</td>
                                 <td class="pitches-name mypitches">
-                                    <a href="/pitches/view/<?= $mypitch->id?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?></a>
+                                    <a href="<?= $viewUrl?>"><?=$this->PitchTitleFormatter->renderTitle($mypitch->title, 80)?><?=$discount?></a>
                                 </td>
                                 <td <?php echo (($mypitch->status < 1) || ($mypitch->multiwinner > 0 && $mypitch->billed == 0)) ? '' : 'colspan="2"' ?> class="pitches-status mypitches">
                                     <?php if(($mypitch->published == 1) && ($mypitch->status == 0)):
                                         $types['current'] += 1?>
                                     <a href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Текущий проект</a>
                                     <?php endif;?>
-                                    <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1)):
-                                        $types['needpay'] += 1?>
-                                    <a href="http://www.godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
-                                    <?php endif;?>
-                                    <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status > 0) && ($mypitch->multiwinner != 0)):
+                                    <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1) && ($mypitch->type != 'plan-payment')):
                                         $types['needpay'] += 1?>
                                         <a href="http://www.godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
+                                    <?php endif;?>
+                                    <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status > 0) && ($mypitch->multiwinner != 0) && ($mypitch->type != 'plan-payment')):
+                                        $types['needpay'] += 1?>
+                                        <a href="http://www.godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
+                                    <?php endif;?>
+                                    <?php if(($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->type == 'plan-payment')):
+                                        $types['needpay'] += 1?>
+                                        <a href="<?= $fast_url?>">Ожидание оплаты</a>
                                     <?php endif;?>
                                     <?php if(($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated == 1)):
                                         $types['needpay'] += 1?>
@@ -110,8 +113,18 @@
                                         <?php endif?>
                                     <?php endif?>
                                     <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0)):
-                                        $types['winner'] += 1?>
+                                        $types['winner'] += 1;
+                                        ?>
+                                        <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0) && (time() > $this->pitch->getChooseWinnerTime($mypitch))):
+                                        $style = 'color: #ff5360;';
+                                        $delay = '&nbsp;&nbsp;(–' . (round((time() - $this->pitch->getChooseWinnerTime($mypitch)) / 60 / 60, 0, PHP_ROUND_HALF_DOWN)) . ' Ч.)';
+                                        ?>
+                                        <a class="pitches-time" style="<?= $style ?>" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">
+                                            Истёк срок выбора победителя<br/>Штраф &mdash; <?= $this->pitch->getPenalty($mypitch)?> р.
+                                        </a>
+                                        <?php else: ?>
                                         <a class="pitches-time" href="/pitches/<?=$pitchPath?>/<?=$mypitch->id?>">Выбор победителя</a>
+                                        <?php endif?>
                                     <?php endif?>
                                 </td>
                                 <td class="price mypitches">
@@ -125,13 +138,13 @@
                                         <?php else:?>
                                             <a href="/pitches/newwinner/<?=$mypitch->id?>" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
                                         <?php endif?>
-                                        <?php if(($fastpitch === false) && ($mypitch->multiwinner == 0)):?>
+                                        <?php if(($fastpitch === false) && ($mypitch->multiwinner == 0) && ($mypitch->type != 'plan-payment')):?>
                                             <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                         <?php endif; ?>
                                         <?php if($mypitch->multiwinner == 0):?>
                                         <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                                         <?php endif; ?>
-                                    <?php elseif($mypitch->multiwinner == 0):?>
+                                    <?php elseif(($mypitch->multiwinner == 0) && ($mypitch != 'plan-payment')):?>
                                         <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                     <?php endif?>
                                 </td>
@@ -277,12 +290,14 @@
                     /  <a href="/login">Вход</a>
                 <?php endif?>
             </div>
-            <ul class="header-menu">
+            <ul class="header-menu" <?php if($this->user->isSubscriptionActive()):?>style="height: 253px;"<?php endif?>>
                 <li class="header-menu-item"><a href="/users/mypitches">Мои проекты</a></li>
                 <li class="header-menu-item"><a href="/users/profile">Настройки</a></li>
                 <li class="header-menu-item"><a href="/users/preview/<?=$this->user->getId()?>">Профиль</a></li>
                 <?php if($this->user->isSubscriptionActive()):?>
-                    <li class="header-menu-item"><a href="/users/subscriber">Абонентский кабинет</a></li>
+                    <li class="header-menu-item header-menu-item-new"><a href="/users/subscriber">Абонентский кабинет</a></li>
+                <?php else:?>
+                    <li class="header-menu-item header-menu-item-new"><a href="/pages/subscribe">Годовое обслуживание</a></li>
                 <?php endif?>
                 <li class="header-menu-item"><a href="/users/solutions">Решения</a></li>
                 <?php if(!$this->user->isSubscriptionActive()):?>

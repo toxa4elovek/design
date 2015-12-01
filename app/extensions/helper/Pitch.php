@@ -4,16 +4,28 @@ namespace app\extensions\helper;
 use \app\models\Pitch as PitchModel;
 use \app\models\Expert;
 use \app\models\Comment;
+use app\models\SubscriptionPlan;
 
+/**
+ * Class Pitch
+ * Хэлпер для работы с данными проектов
+ * @package app\extensions\helper
+ */
 class Pitch extends \lithium\template\Helper {
 
     protected $expert;
     protected $dates = array();
 
-    function expertOpinion($pitch_id) {
+    /**
+     * Метод возвращяет дату публикации экспертного мнения или дату завершения проекта
+     *
+     * @param $pitch_id
+     * @return int
+     */
+    public function expertOpinion($pitch_id) {
         $pitch = PitchModel::first($pitch_id);
         $experts = unserialize($pitch->{'expert-ids'});
-        $expertUserIds = Expert::getPitchExpertUserIds($experts);
+        $expertUserIds = Expert::getExpertUserIds($experts);
         if ($comments = Comment::all(array('conditions' => array('pitch_id' => $pitch_id, 'user_id' => $expertUserIds)))) {
             $comments = $comments->data();
             foreach ($expertUserIds as $expert) {
@@ -45,10 +57,15 @@ class Pitch extends \lithium\template\Helper {
         return $interval;
     }
 
-    protected function wasExpertComment($comment) {
+    /**
+     * Метод проверяет, является ли комментарий комментарием эксперта
+     *
+     * @param $comment
+     * @return bool
+     */
+    public function wasExpertComment($comment) {
         $this->dates[] = strtotime($comment['created']);
-        $res = ($comment['user_id'] == $this->expert);
-        return $res;
+        return (bool) $comment['user_id'] == $this->expert;
     }
 
     /**
@@ -71,6 +88,43 @@ class Pitch extends \lithium\template\Helper {
      */
     public function getStatisticalAverages($categoryId, $type) {
         return PitchModel::getStatisticalAverages($categoryId, $type);
+    }
+
+    /**
+     * Метод возвращяет метку времени, когда заканчивается этап выбора победителя
+     *
+     * @param $projectRecord
+     * @return int|null
+     */
+    public function getChooseWinnerTime($projectRecord) {
+        if(($projectRecord->status != 1) || ($projectRecord->awarded != 0)) {
+            return null;
+        }
+        $startTime = $projectRecord->finishDate;
+        $time = strtotime($startTime) + DAY * 4;
+        if($projectRecord->expert == 1) {
+            return $this->expertOpinion($projectRecord->id) + (4 * DAY);
+        }
+        if($projectRecord->chooseWinnerFinishDate != '0000-00-00 00:00:00') {
+            $time = strtotime($projectRecord->chooseWinnerFinishDate);
+        }
+        return $time;
+    }
+
+    public function getPenalty($projectRecord) {
+        //http://www.godesigner.ru/answers/view/70
+        $diff = time() - $this->getChooseWinnerTime($projectRecord);
+        return floor($diff / 60 / 60) * 25;
+    }
+
+    /**
+     * Метод-обертка для получения номера тарифного плана из уже существующей записи
+     *
+     * @param $recordId
+     * @return int|null
+     */
+    public function getPlanForPayment($recordId) {
+        return SubscriptionPlan::getPlanForPayment($recordId);
     }
 
 }

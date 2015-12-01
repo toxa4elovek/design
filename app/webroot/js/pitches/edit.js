@@ -1,4 +1,8 @@
-$(document).ready(function () {
+"use strict";
+
+$(function () {
+
+    var awardInput = $('#award');
 
     tinymce.init({
         selector: ".enable-editor",
@@ -11,13 +15,9 @@ $(document).ready(function () {
         menubar: false,
         plugins: ["link,lists,charmap,paste"],
         toolbar: "styleselect,link,bullist,numlist,charmap",
-        style_formats: [
-            {title: 'Основной текст', inline: 'span', classes: "regular"},
-            {title: 'Заголовок', inline: 'span', classes: "greyboldheader"},
-            {title: 'Дополнение', inline: 'span', classes: "supplement2"},
-        ],
-        setup: function(ed) {
-            ed.on('keyup', function(e) {
+        style_formats: [{ title: 'Основной текст', inline: 'span', classes: "regular" }, { title: 'Заголовок', inline: 'span', classes: "greyboldheader" }, { title: 'Дополнение', inline: 'span', classes: "supplement2" }],
+        setup: function setup(ed) {
+            ed.on('keyup', function () {
                 var chars = ed.getContent().length;
                 var indicator = $('#indicator-desc');
                 indicator.removeClass('low normal good');
@@ -31,26 +31,13 @@ $(document).ready(function () {
                 }
             });
         }
-        //,
-        //paste_preprocess: function (pl, o) {
-        //    console.log(o.content);
-        //    if ((jQuery(o.content).text() == '') && (o.content != '')) {
-        //        var text = o.content
-        //    } else {
-                //var text = jQuery(o.content).html()
-        //    }
-            //o.content = text
-        //}
     });
 
-    /* Download Form Select */
-    if ((window.File != null) && (window.FileList != null)) {
+    if (window.File != null && window.FileList != null) {
         $('#new-download').show();
     } else {
         $('#old-download').show();
     }
-
-    /**/
 
     $('.short-time-limit').change(function () {
         var value = $(this).data('optionValue');
@@ -64,45 +51,42 @@ $(document).ready(function () {
         }
     });
 
-    /**/
-    var chars = $('#full-description').val().length;
-    $('#indicator-desc').removeClass('low normal good');
+    var fullDescription = $('#full-description');
+    var indicatorDesc = $('#indicator-desc');
+    var chars = fullDescription.val().length;
+    fullDescription.removeClass('low normal good');
     if (chars < 1000) {
-        $('#indicator-desc').addClass('low');
+        indicatorDesc.addClass('low');
     } else if (chars < 2500) {
-        $('#indicator-desc').addClass('normal');
+        indicatorDesc.addClass('normal');
     } else {
-        $('#indicator-desc').addClass('good');
+        indicatorDesc.addClass('good');
     }
-    $('#full-description').keyup(function () {
+    fullDescription.keyup(function () {
         var chars = $(this).val().length;
-        $('#indicator-desc').removeClass('low normal good');
+        indicatorDesc.removeClass('low normal good');
         if (chars < 1000) {
-            $('#indicator-desc').addClass('low');
+            indicatorDesc.addClass('low');
         } else if (chars < 2500) {
-            $('#indicator-desc').addClass('normal');
+            indicatorDesc.addClass('normal');
         } else {
-            $('#indicator-desc').addClass('good');
+            indicatorDesc.addClass('good');
         }
-    })
-
-    /**/
+    });
 
     $('#hide-check').click(function () {
         $(this).parent().removeClass('expanded');
         return false;
-    })
+    });
 
     $('#show-check').click(function () {
         $(this).parent().addClass('expanded');
         return false;
-    })
+    });
 
-
-    /*sliders*/
     $(".slider").each(function (index, object) {
         var value = 5;
-        if (typeof (slidersValue) != "undefined") {
+        if (typeof slidersValue != "undefined") {
 
             value = slidersValue[index];
         }
@@ -112,16 +96,15 @@ $(document).ready(function () {
             min: 1,
             max: 9,
             step: 1,
-            slide: function (event, ui) {
-                var rightOpacity = (((ui.value - 1) * 0.08) + 0.36).toFixed(2);
-                var leftOpacity = (1 - ((ui.value - 1) * 0.08)).toFixed(2);
+            slide: function slide(event, ui) {
+                var rightOpacity = ((ui.value - 1) * 0.08 + 0.36).toFixed(2);
+                var leftOpacity = (1 - (ui.value - 1) * 0.08).toFixed(2);
                 $(ui.handle).parent().parent().next().css('opacity', rightOpacity);
                 $(ui.handle).parent().parent().prev().css('opacity', leftOpacity);
             }
-        })
+        });
     });
 
-    /**/
     $(document).on('focus', '.wrong-input', function () {
         $(this).removeClass('wrong-input');
     });
@@ -133,18 +116,19 @@ $(document).ready(function () {
         $('#list-job-type').removeClass('wrong-input');
     });
 
-    $('.expand_extra').on('click', function() {
-        $('.extra_options').toggle();
-        if($('.extra_options').is(":visible")) {
-            $(this).text('– Дополнительная информация')
-        }else {
-            $(this).text('+ Дополнительная информация')
+    $('.expand_extra').on('click', function () {
+        var extraOptions = $('.extra_options');
+        extraOptions.toggle();
+        if (extraOptions.is(":visible")) {
+            $(this).text('– Дополнительная информация');
+        } else {
+            $(this).text('+ Дополнительная информация');
         }
         return false;
     });
 
     $('#save').click(function () {
-        if ((($('input[name=tos]').attr('checked') != 'checked') || ($('input[type=radio]:checked').length == 0)) && ($('input[name=tos]').length == 1)) {
+        if (($('input[name=tos]').attr('checked') != 'checked' || $('input[type=radio]:checked').length == 0) && $('input[name=tos]').length == 1) {
             alert('Вы должны принять правила и условия');
         } else {
             if (Cart.prepareData()) {
@@ -160,7 +144,7 @@ $(document).ready(function () {
                     _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа']);
                 }
             } else {
-                $.scrollTo($('.wrong-input').parent(), {duration: 600});
+                $.scrollTo($('.wrong-input').parent(), { duration: 600 });
             }
         }
         return false;
@@ -169,10 +153,9 @@ $(document).ready(function () {
     var fileIds = [];
     var uploader = $("#fileupload").damnUploader({
         url: '/pitchfiles/add.json',
-        onSelect: function (file) {
+        onSelect: function onSelect(file) {
             onSelectHandler.call(this, file, fileIds, Cart);
-        } // See app.js
-    });
+        } });
 
     $('input[name="phone-brief"]').change(function () {
         var phone = $(this).val();
@@ -182,8 +165,8 @@ $(document).ready(function () {
     $(document).on('click', '.filezone-delete-link', function () {
         if (Cart.id) {
             var givenId = +$(this).parent().attr('data-id');
-            if (givenId) { // File came from database
-                $.post('/pitchfiles/delete', {'id': givenId}, function (response) {
+            if (givenId) {
+                $.post('/pitchfiles/delete', { 'id': givenId }, function (response) {
                     if (response != 'true') {
                         alert('При удалении файла произошла ошибка');
                     }
@@ -201,7 +184,7 @@ $(document).ready(function () {
             $(this).parent().remove();
             return false;
         }
-    })
+    });
 
     $('#uploadButton').click(function () {
 
@@ -211,9 +194,9 @@ $(document).ready(function () {
 
     $('.sub-radio').change(function () {
         var minValue = $(this).data('minValue');
-        $('#award').data('minimalAward', minValue);
-        $('#award').blur();
-    })
+        awardInput.data('minimalAward', minValue);
+        awardInput.blur();
+    });
 
     $('#phonebrief').change(function () {
         if ($(this).attr('checked') == 'checked') {
@@ -231,8 +214,7 @@ $(document).ready(function () {
         borderSize: '0px',
         tooltipPadding: 0,
         tooltipBGColor: 'transparent'
-    })
-
+    });
 
     $('.rb1').change(function () {
         if ($(this).data('pay') == 'online') {
@@ -244,14 +226,9 @@ $(document).ready(function () {
         }
     });
 
-    /**/
-    Cart = new FeatureCart;
+    Cart = new FeatureCart();
     Cart.init();
-
 });
-//$('input[name=category_id]').val()
-
-/* Class */
 
 function FeatureCart() {
     var self = this;
@@ -261,27 +238,25 @@ function FeatureCart() {
     this.container = $('#check-tag');
     this.priceTag = $('#total-tag');
     this.award = $('#award');
-    this.awardKey = ($('input[name=category_id]').val() == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру';
+    this.awardKey = $('input[name=category_id]').val() == 7 ? 'Награда копирайтеру' : 'Награда Дизайнеру';
     this.category = $('input[name=category_id]').val();
     this.data = {};
     this.fileIds = [];
-    this.specificTemplates = [];
     this.validatetype = 1;
     this.transferFee = feeRates.low;
     this.transferFeeKey = 'Сбор GoDesigner';
-    this.transferFeeFlag = 0;
     this.mode = 'add';
     this.init = function () {
-        if (typeof ($('#pitch_id').val()) != 'undefined') {
+        if (typeof $('#pitch_id').val() != 'undefined') {
             self.id = $('#pitch_id').val();
             this.mode = 'edit';
         }
-        var initVal = $('#award').val();
-        if ($('#award').val() == '') {
-            initVal = $('#award').attr('value');
+        var initVal = self.award.val();
+        if (self.award.val() == '') {
+            initVal = self.award.attr('value');
         }
         if (self.id > 0) {
-            var awardName = ($('input[name=category_id]').val() == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру';
+            var awardName = $('input[name=category_id]').val() == 7 ? 'Награда копирайтеру' : 'Награда Дизайнеру';
             self.addOption(awardName, initVal);
         } else {
             self.updateOption('Заполнение брифа', 0);
@@ -299,7 +274,7 @@ function FeatureCart() {
         }
         $.each($('li', '#filezone'), function (index, object) {
             self.fileIds.push($(object).data('id'));
-        })
+        });
 
         if (window.location.hash == '#step3') {
             if (self.prepareData()) {
@@ -312,23 +287,21 @@ function FeatureCart() {
         self.content = {};
         $.each(data, function (index, object) {
             var feeOption = object.name.indexOf(self.transferFeeKey);
-            if (feeOption != -1) {
+            if (feeOption != -1 && self.category != 20) {
                 var percent = object.name.substr(self.transferFeeKey.length + 1, 4);
                 if (percent.length > 0) {
                     self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
-                } else { // For older pitches
+                } else {
                     self.transferFee = feeRates.good;
                 }
                 object.name = self.transferFeeKey;
             }
-            console.log(object.name);
-            console.log(object.value);
-            if ((object.value != 0)) {
+            if (object.value != 0) {
                 self.updateOption(object.name, parseInt(object.value));
-            } else if ((object.name == 'Заполнение брифа')) {
+            } else if (object.name == 'Заполнение брифа') {
                 self.updateOption(object.name, parseInt(object.value));
             }
-        })
+        });
     };
     this.addOption = function (key, value) {
         self.content[key] = value;
@@ -336,27 +309,24 @@ function FeatureCart() {
         self._renderCheck();
     };
     this.updateOption = function (key, value) {
-        if (typeof (self.content[key]) != "undefined") {
+        if (typeof self.content[key] != "undefined") {
             self.content[key] = value;
-            self.updateFees();
-            self._renderCheck();
         } else {
             self.addOption(key, value);
-            self.updateFees();
-            self._renderCheck();
         }
+        self.updateFees();
+        self._renderCheck();
     };
     this.updateFees = function () {
-        var total = self._calculateOptionsWithoutFee();
-        var award = self.getOption(self.awardKey);
-        self.content[self.transferFeeKey] = Math.round(award * this.transferFee);
-    }
+        if (self.category != 20) {
+            var award = self.getOption(self.awardKey);
+            self.content[self.transferFeeKey] = Math.round(award * this.transferFee);
+        }
+    };
     this.getOption = function (key) {
-        if (typeof (self.content[key]) != "undefined") {
-            console.log('exists - key')
+        if (typeof self.content[key] != "undefined") {
             return parseInt(self.content[key]);
         } else {
-            console.log('not exists key = ' + key)
             return 0;
         }
     };
@@ -402,30 +372,17 @@ function FeatureCart() {
             "specificPitchData": self.getSpecificData()
         };
         return self.validateData();
-    }
+    };
     this.validateData = function () {
         var result = true;
         if (self.validatetype == 1) {
-            if ((self.data.commonPitchData.title == '') || ($('input[name=title]').data('placeholder') == self.data.commonPitchData.title)) {
+            if (self.data.commonPitchData.title == '' || $('input[name=title]').data('placeholder') == self.data.commonPitchData.title) {
                 $('input[name=title]').addClass('wrong-input');
                 result = false;
             }
-            /*
-            if ((self.data.commonPitchData.description == '') || ($('textarea[name=description]').data('placeholder') == self.data.commonPitchData.description)) {
-                $('textarea[name=description]').addClass('wrong-input');
-                result = false;
-            }
-            if (self.data.commonPitchData.fileFormats.length == 0) {
-                $('.extensions').addClass('wrong-input');
-                result = false;
-            }
-            if (self.data.commonPitchData.jobTypes.length == 0) {
-                $('#list-job-type').addClass('wrong-input');
-                result = false;
-            }*/
         }
         return result;
-    }
+    };
     this.saveData = function () {
         if (self.data.features.award == 0) {
             alert('Укажите награду для дизайнера!');
@@ -442,83 +399,74 @@ function FeatureCart() {
                 window.location = '/pitches/details/' + self.id;
             });
         }
-    }
+    };
 
     this.saveFileIds = function () {
-        $.post('/pitches/updatefiles.json', {"fileids": self.fileIds, "id": self.id}, function () {
-
-        });
-    }
+        $.post('/pitches/updatefiles.json', { "fileids": self.fileIds, "id": self.id });
+    };
 
     this.getSpecificData = function () {
         var specificPitchData = {};
         $('input.specific-prop, textarea.specific-prop').each(function (index, object) {
-            specificPitchData[$(object).attr('name')] = $(object).val()
+            specificPitchData[$(object).attr('name')] = $(object).val();
         });
         $('input.specific-group:checked').each(function (index, object) {
-            specificPitchData[$(object).attr('name')] = $(object).val()
+            specificPitchData[$(object).attr('name')] = $(object).val();
         });
         $('input.specific-group[data-selected~="true"]').each(function (index, object) {
-            specificPitchData[$(object).attr('name')] = $(object).val()
+            specificPitchData[$(object).attr('name')] = $(object).val();
         });
         if ($('.slider').length > 0) {
             specificPitchData[$('.sliderul').data('name')] = self._logoProperites();
         }
         if ($('.look-variants').length) {
-            specificPitchData["logoType"] = self._logoTypeArray()
+            specificPitchData["logoType"] = self._logoTypeArray();
         }
         return specificPitchData;
-    },
-            this.decoratePrice = function (price) {
-                price += '.-';
-                return price;
-            },
-            this._logoProperites = function () {
-                var array = new Array();
-                $.each($('.slider'), function (i, object) {
-                    array.push($(object).slider('value'));
-                })
-                return array;
-            },
-            this._logoTypeArray = function () {
-                var array = new Array();
-                var checkedExperts = $('input:checked', '.look-variants');
-                $.each(checkedExperts, function (index, object) {
-                    array.push($(object).data('id'));
-                })
-                return array;
-            },
-            this._formatArray = function () {
-                var array = new Array();
-                var checkedExperts = $('input:checked', '.extensions');
-                $.each(checkedExperts, function (index, object) {
-                    array.push($(object).data('value'));
-                })
-                return array;
-            },
-            this._jobArray = function () {
-                var array = new Array();
-                var checkedJob = $('input:checked', '#list-job-type');
-                $.each(checkedJob, function (index, object) {
-                    array.push($(object).val());
-                });
-                return array;
-            },
-            this._expertArray = function () {
-                var array = new Array();
-                var checkedExperts = $('input:checked', '.experts');
-                $.each(checkedExperts, function (index, object) {
-                    array.push($(object).data('id'));
-                })
-                return array;
-            };
-    /*this._getTimelimitDays = function() {
-     if(self.getOption('Поджимают сроки') > 0) {
-     return $('.short-time-limit').data('optionPeriod');
-     }else {
-     return 0;
-     }
-     }*/
+    };
+    this.decoratePrice = function (price) {
+        price += '.-';
+        return price;
+    };
+    this._logoProperites = function () {
+        var array = new Array();
+        $.each($('.slider'), function (i, object) {
+            array.push($(object).slider('value'));
+        });
+        return array;
+    };
+    this._logoTypeArray = function () {
+        var array = new Array();
+        var checkedExperts = $('input:checked', '.look-variants');
+        $.each(checkedExperts, function (index, object) {
+            array.push($(object).data('id'));
+        });
+        return array;
+    };
+    this._formatArray = function () {
+        var array = new Array();
+        var checkedExperts = $('input:checked', '.extensions');
+        $.each(checkedExperts, function (index, object) {
+            array.push($(object).data('value'));
+        });
+        return array;
+    };
+    this._jobArray = function () {
+        var array = new Array();
+        var checkedJob = $('input:checked', '#list-job-type');
+        $.each(checkedJob, function (index, object) {
+            array.push($(object).val());
+        });
+        return array;
+    };
+    this._expertArray = function () {
+        var array = new Array();
+        var checkedExperts = $('input:checked', '.experts');
+        $.each(checkedExperts, function (index, object) {
+            array.push($(object).data('id'));
+        });
+        return array;
+    };
     this._renderCheck = function () {
         self._renderTotal();
         self._renderOptions();
@@ -531,7 +479,7 @@ function FeatureCart() {
         var html = '';
         $.each(self.content, function (key, value) {
             if (self.category == 7 && self.awardKey == key) {
-               key = 'Награда копирайтеру';
+                key = 'Награда копирайтеру';
             }
             if (key == self.transferFeeKey) {
                 html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>';
@@ -548,11 +496,9 @@ function FeatureCart() {
                 optionsTotal += parseInt(value);
             }
         });
-        if (typeof (self.content[self.transferFeeKey]) != 'undefined') {
-            optionsTotal += self.content[self.transferFeeKey];
+        if (typeof self.content[self.transferFeeKey] != 'undefined') {
+            optionsTotal += parseInt(self.content[self.transferFeeKey]);
         }
-        //
-        //optionsTotal
         return optionsTotal;
     };
     this._calculateOptionsWithoutFee = function () {
@@ -562,13 +508,12 @@ function FeatureCart() {
                 optionsTotal += parseInt(value);
             }
         });
-        //
+
         return optionsTotal;
     };
     this._calculateTotal = function () {
         self.total = self._calculateOptions();
         return self.total;
     };
-
 }
 ;

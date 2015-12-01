@@ -10,7 +10,7 @@
             <div class="margins-1 experts-page">
 
                 <section>
-                    <h1 class="on-flag">наши эксперты</h1>
+                    <h1 class="page-title-with-flag">наши эксперты</h1>
                 </section>
                 <div class="w100">
 
@@ -80,4 +80,4 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/text', '/howitworks', '/experts'), array('inline' => false))?>
+<?=$this->html->style(array('/css/common/page-title-with-flag.css', '/text', '/howitworks', '/experts'), array('inline' => false))?>

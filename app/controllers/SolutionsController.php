@@ -8,6 +8,7 @@ use \app\models\Solution;
 use \app\models\User;
 use app\models\Tag;
 use app\models\Searchtag;
+use app\models\Pitch;
 use app\models\Solutiontag;
 use \app\extensions\helper\User as UserHelper;
 use \app\extensions\mailers\UserMailer;
@@ -17,11 +18,6 @@ use \lithium\analysis\Logger;
 class SolutionsController extends \app\controllers\AppController {
 
     public $publicActions = array('like', 'unlike', 'logosale', 'search_logo', 'testmail');
-
-    public function testmail() {
-        SolutionsMailer::sendSolutionBoughtNotification(139860);
-        die();
-    }
 
     public function hide() {
         $result = $this->request;
@@ -72,24 +68,32 @@ class SolutionsController extends \app\controllers\AppController {
                 $result = false;
                 return compact('result');
             }
+            if(Pitch::isPenaltyNeededForProject($solution->pitch->id)) {
+                $result = false;
+                $redirect = '/pitches/penalty/' . $solution->id;
+                return compact('result', 'redirect');
+            }
             $result = Solution::selectSolution($solution);
             return $result;
         }
     }
 
+    /**
+     * Метод удаляет решение. Только авторы или админы.
+     *
+     * @return array
+     */
     public function delete() {
-        //error_reporting(E_ALL);
-        //ini_set('display_errors', '1');
         $result = false;
-        $isAdmin = Session::read('user.isAdmin');
-        if (($solution = Solution::first($this->request->id)) && (($isAdmin == 1) || User::checkRole('admin') || ($solution->user_id == Session::read('user.id')))) {
+        if (($solution = Solution::first($this->request->id)) && (($this->userHelper->isAdmin()) || User::checkRole('admin') || ($this->userHelper->isSolutionAuthor($solution->user_id)))) {
+            $projectId = $solution->pitch_id;
             $data = array(
                 'id' => $solution->id,
                 'num' => $solution->num,
-                'user_who_deletes' => Session::read('user.id'),
+                'user_who_deletes' => $this->userHelper->getId(),
                 'user_id' => $solution->user_id,
                 'date' => date('Y-m-d H:i:s'),
-                'isAdmin' => $isAdmin
+                'isAdmin' => $this->userHelper->isAdmin()
             );
             Logger::write('info', serialize($data), array('name' => 'deleted_solutions'));
             $result = $solution->delete();
@@ -97,7 +101,7 @@ class SolutionsController extends \app\controllers\AppController {
         if ($this->request->is('json')) {
             return compact('result');
         } else {
-            $this->redirect(array('Pitches::view', 'id' => $solution->pitch_id));
+            $this->redirect(array('Pitches::view', 'id' => $projectId));
         }
     }
 
@@ -128,7 +132,7 @@ class SolutionsController extends \app\controllers\AppController {
         $count = 0;
         $sort_tags = array();
         $search_tags = array();
-        if(($this->request->query['search']) && (!empty($this->request->query['search']))) {
+        if((isset($this->request->query['search'])) && (!empty($this->request->query['search']))) {
             $words = Solution::stringToWordsForSearchQuery($this->request->query['search']);
             $industries = Solution::getListOfIndustryKeys($words);
             $words = Solution::injectIndustryWords($words);
@@ -194,7 +198,9 @@ class SolutionsController extends \app\controllers\AppController {
         if ($solutions && count($solutions) > 0) {
             $initialCount = count($solutions->data());
             $solutions = Solution::filterLogoSolutions($solutions);
-            $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
+            if((isset($this->request->data['prop'])) && (isset($this->request->data['variants']))) {
+                $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
+            }
             $afterFilterCount = count($solutions);
 
             if((count($solutions) != 28) && ($initialCount == $afterFilterCount)) {

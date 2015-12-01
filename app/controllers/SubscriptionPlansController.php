@@ -5,6 +5,7 @@ namespace app\controllers;
 use \Exception;
 use app\models\SubscriptionPlan;
 use app\models\Receipt;
+use app\models\User;
 
 class SubscriptionPlansController extends AppController {
 
@@ -17,6 +18,7 @@ class SubscriptionPlansController extends AppController {
             $planRecordId = SubscriptionPlan::getNextFundBalanceId($this->userHelper->getId());
             $value = 9000;
             if((isset($this->request->query['amount'])) && (!empty($this->request->query['amount']))) {
+                $predefined = true;
                 $value = (int) $this->request->query['amount'];
             }
             $receipt = array(
@@ -29,10 +31,14 @@ class SubscriptionPlansController extends AppController {
             SubscriptionPlan::setTotalOfPayment($planRecordId, Receipt::getTotalForProject($planRecordId));
             SubscriptionPlan::setPlanForPayment($planRecordId, 0);
             SubscriptionPlan::setFundBalanceForPayment($planRecordId, 9000);
-            return compact('receipt', 'planRecordId');
+            return compact('receipt', 'planRecordId', 'predefined');
         }else {
             if ($plan = SubscriptionPlan::getPlan((int)$this->request->params['id'])) {
                 $planRecordId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
+                $value = 9000;
+                if(($savedValue = SubscriptionPlan::getFundBalanceForPayment($planRecordId)) && ($savedValue !== null)) {
+                    $value = $savedValue;
+                }
                 $receipt = array(
                     array(
                         'name' => 'Оплата тарифа «' . $plan['title'] . '»',
@@ -40,14 +46,20 @@ class SubscriptionPlansController extends AppController {
                     ),
                     array(
                         'name' => 'Пополнение счёта',
-                        'value' => 9000
+                        'value' => $value
                     )
                 );
+                $discount = 0;
+                if(User::hasActiveSubscriptionDiscount($this->userHelper->getId())) {
+                    $discount = User::getSubscriptionDiscount($this->userHelper->getId());
+                    $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
+                    $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
+                }
                 Receipt::updateOrCreateReceiptForProject($planRecordId, $receipt);
                 SubscriptionPlan::setTotalOfPayment($planRecordId, Receipt::getTotalForProject($planRecordId));
                 SubscriptionPlan::setPlanForPayment($planRecordId, $plan['id']);
-                SubscriptionPlan::setFundBalanceForPayment($planRecordId, 9000);
-                return compact('plan', 'receipt', 'planRecordId');
+                SubscriptionPlan::setFundBalanceForPayment($planRecordId, $value);
+                return compact('plan', 'receipt', 'planRecordId', 'discount');
             }
             throw new Exception('Выбранного тарифа не существует.', 404);
         }

@@ -2,7 +2,6 @@
 
 namespace app\models\behaviors\handlers;
 
-use \image_manipulation\processor\Upload;
 use \app\models\Solutionfile;
 
 class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
@@ -11,8 +10,6 @@ class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
 		$behavior::applyFilter('afterSave', function($self, $params, $chain) {
             set_time_limit(120);
             if((isset($params['uploadedFile']['data'])) && (!isset($params['uploadedFile']['data'][0]))){
-				$path = 'image_manipulation\Upload';
-
 				if(!isset($params['uploadedFile']['attachInfo']['processImage'])){
 					$useroptions = array();
 				}else{
@@ -21,8 +18,9 @@ class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
 				$options = $useroptions + $self::$defaults['processImage'];
 
 				foreach($options as $option => $imageParams){
-					$imageProcessor = new Upload();
-					$imageProcessor->uploadandinit($params['uploadedFile']['data']['newname']);
+                    $imageProcessor = new \upload($params['uploadedFile']['data']['tmp_name']);
+					$imageProcessor->upload($params['uploadedFile']['data']['tmp_name']);
+                    $imageProcessor->init();
 					$imageProcessor->uploaded = true;
 					$imageProcessor->no_upload_check = true;
 					$newfiledata = pathinfo($params['uploadedFile']['data']['newname']);
@@ -33,7 +31,6 @@ class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
 					foreach($imageParams as $param => $value){
 						$imageProcessor->{$param} = $value;
 					}
-
 					$imageProcessor->process($newfiledata['dirname']);
 					$conditions = array('model' => $params['model'], 'model_id' => $params['record']->id, 'filekey' => $params['key'] . '_' . $option, 'filename' => $newfilename);
    					$fileModel = $self::$fileModel;
@@ -47,8 +44,6 @@ class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
 				}
 			}else {
                 foreach($params['uploadedFile']['data'] as &$file) {
-                    $path = 'image_manipulation\Upload';
-
                     if(!isset($params['uploadedFile']['attachInfo']['processImage'])){
                         $useroptions = array();
                     }else{
@@ -112,8 +107,9 @@ class ProcessImageHandler extends \app\models\behaviors\handlers\StaticHandler {
                             }
                         }
                         if($isAnimatedGif == false) {
-                            $imageProcessor = new Upload();
-                            $imageProcessor->uploadandinit($file['newname']);
+                            $imageProcessor = new \upload($file['tmp_name']);
+                            $imageProcessor->upload($file['newname']);
+                            $imageProcessor->init($file['newname']);
                             $imageProcessor->uploaded = true;
                             $imageProcessor->no_upload_check = true;
                             $newfiledata = pathinfo($file['newname']);

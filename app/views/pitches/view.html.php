@@ -36,12 +36,6 @@
                     <?php
                     if(!$this->user->isPitchOwner($pitch->user_id) && ($pitch->status < 1) && ($pitch->published == 1)):?>
                         <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if($this->session->read('user.confirmed_email') == '0') {echo 'needConfirm';}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
-                        <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
-                        <!-- <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/> -->
-                        <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>
-                        <!-- <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/> -->
-                        <?php elseif($pitch->status == 2):?>
-                        <!-- <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/> -->
                     <?php endif;?>
 
                 </nav>
@@ -96,7 +90,9 @@
                     </tr>
                     <tr>
                         <td height="200">
-                            <div style="margin-left:18px;padding:0;float:left;margin-top:5px;width:474px;height:150px; border:1px black; background-color: #f2f1f0;overflow:hidden;" id="container"></div>
+                            <a href="/answers/view/71" target="_blank">
+                                <div style="margin-left:18px;padding:0;float:left;margin-top:5px;width:474px;height:150px; border:1px black; background-color: #f2f1f0;overflow:hidden;" id="container"></div>
+                            </a>
                             <div style="clear:both"></div>
                             <div id="scrollerarea" style="display:none;height:12px;margin-left:45px;width:425px;background-image: url('/img/scrollbarfiller.png')">
                                 <div id="scroller" style="margin-top: 10px;background-image:url('/img/scroller.png');height:12px;width:76px;background-color:black;left:349px;"></div>
@@ -104,6 +100,7 @@
                         </td>
                     </tr>
                     </table>
+
                     <div style="float:right;height:209px;width:458px;">
                         <ul style="margin-top: 51px;margin-left:4px; float:left;width: 100px;height:190px;">
                             <li data-points="5" style="font-size:10px;text-transform: uppercase;color:#a9a8a8;margin-bottom:3px">Фантастик!!!</li>
@@ -119,18 +116,25 @@
                             <div style="background-image:url(/img/big-krug.png);margin-top:4px;height:132px;width:132px;">
                             <canvas id="can" height="132" width="132" style="">
                             </canvas></div>
-                            <div style="background: url('/img/krug-small.png') no-repeat scroll 32px 30px transparent;height: 82px; width: 87px; position: relative; top: -132px; bottom: 0px; z-index: 15; padding-top: 50px; padding-left: 45px;">
+                            <a target="_blank" href="/answers/view/71" style="background: url('/img/krug-small.png') no-repeat scroll 32px 30px transparent;height: 82px; width: 87px; position: relative; top: -132px; bottom: 0px; z-index: 15; padding-top: 50px; padding-left: 45px; display: block;">
                                 <h2 id="avgPoints" style="font-size:28px;color:#666666;text-shadow: -1px 0 0 #FFFFFF;width:40px;text-align:center"></h2>
                                 <h2 id="avgPointsString" style="color: rgb(102, 102, 102); text-align: center; text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 0px; margin-top: 4px; font-size: 9px; width: 44px;">БАЛЛА</h2>
-                            </div>
+                            </a>
                         </div>
                         <?php if($pitch->guaranteed == 0):?>
                         <div style="width:200px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
-                            <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;">
-                                <a target="_blank" id="whatIsIt" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a>
-                                <br />
-                            </p>
+                            <?php if($pitch->type == 'company_project'):?>
+                                <p style="color: rgb(102, 102, 102); margin-left: 0; margin-top: 17px; font: 14px/15px arial;">
+                                    <a target="_blank" id="whatIsIt" href="http://www.godesigner.ru/answers/view/102">Абонентское обслуживание</a>
+                                    <br />
+                                </p>
+                            <?php else: ?>
+                                <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;">
+                                    <a target="_blank" id="whatIsIt" href="http://www.godesigner.ru/answers/view/71">Что это значит?</a>
+                                    <br />
+                                </p>
+                            <?php endif?>
                         </div>
                         <?php else:?>
                         <div style="width:200px;float:left;height:190px;text-align:center">
@@ -150,7 +154,12 @@
                     <!-- Solution Popup Dummy --><?=$this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data))?>
                 <?php endif?>
                 <?php if(($this->user->isPitchOwner($pitch->user_id)) && ($pitch->id != 103263)):?>
-                <!-- Rating Pancake -->
+                    <?php if(($pitch->status == 1) && ($pitch->awarded == 0)):?>
+                    <div id="timer" data-expert="<?= ($this->pitch->expertOpinion($pitch->id) + 4 * DAY)?>" data-deadline="<?= $this->pitch->getChooseWinnerTime($pitch) ?>" data-currenttime="<?= time();?>">
+                        <a href="/answers/view/70" target="_blank" class="lcd"></a>
+                    </div>
+                    <?php endif?>
+                    <!-- Rating Pancake -->
                 <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
                     <div class="bubble">
                         <span>Возврат денег недоступен:</span><br>
@@ -175,14 +184,21 @@
 	</div><!-- /middle -->
 </div><!-- .wrapper -->
 
-<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
+<script>
+var needConfirmation = <?php if(($this->user->isPitchOwner($pitch->user_id)) && (($pitch->user->phone === '') || ($pitch->user->phone_valid == 0))): echo 'true'; else: echo 'false'; endif?>;
+var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
+</script>
 
+<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
+<?=$this->view()->render(array('element' => 'popups/phone_confirm'))?>
     <div id="bridge" style="display:none;"></div>
 <?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
-<?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'social-likes.min.js' ,'konva.0.9.5.min.js', 'jquery.tooltip.js',   'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
+<?=$this->html->script(array('flux/flux.min.js', 'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'social-likes.min.js' ,'konva.0.9.5.min.js', 'jquery.tooltip.js', '/js/common/comments/UserAutosuggest.js', '/js/common/comments/actions/CommentsActions.js', 'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php else:?>
     <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'konva.0.9.5.min.js', 'social-likes.min.js', 'jquery.tooltip.js',  'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
     <?php endif?>
 <?=$this->html->style(array(
     '/css/common/receipt.css',
+    '/css/common/buttons.css',
+    '/css/common/clear.css',
     '/messages12', '/pitches12', '/view', '/pitch_overview', '/css/viewsolution', '/css/social-likes_flat'), array('inline' => false))?>

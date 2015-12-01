@@ -2114,6 +2114,10 @@ textarea.placeholder {
 .pitch-category .category-webban a {
     background: url("/img/category/category-webban.png") 10px 13px no-repeat;
 }
+.pitch-category .category-subscriber a {
+    padding-left: 59px;
+    background: url("/img/category/category_subscriber.png") 18px 16px no-repeat;
+}
 .pitch-category .category-buklet a:hover {
     background-image: url("/img/category/category-buklet-hover.png");
 }
@@ -2150,7 +2154,9 @@ textarea.placeholder {
 .pitch-category .category-webban a:hover {
     background-image: url("/img/category/category-webban-hover.png");
 }
-
+.pitch-category .category-subscriber a:hover {
+    background-image: url("/img/category/category_subscriber-hover.png");
+}
 
 .pitch-category .category-otherdesign h3 {
     color: #ff595e;
@@ -3095,6 +3101,9 @@ ul.social li#rss {
     border: 1px solid #a7a7a9;
     background-color: #e1e1e1;
     text-align: center;
+    padding-left: 45px;
+    padding-right: 45px;
+    padding-top: 10px;
 }
 #project-delete:after {
     content: "";
@@ -3102,7 +3111,7 @@ ul.social li#rss {
     position: absolute;
     left: 10px;
     bottom: -19px;
-    width: 454px;
+    width: 544px;
     height: 19px;
     background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
@@ -3146,7 +3155,175 @@ ul.social li#rss {
     color: #fff;
 }
 /**/
+#phone-confirm .mobile-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    margin: 12px 15px 0 0;
+    overflow: hidden;
+    background-image: url('/img/popup-close-sprite.png');
+    background-repeat: none;
+    background-position: 0 -15px;
+    cursor: pointer;
+}
+#phone-confirm .mobile-close:hover {
+    background-position: 0 0;
+}
+#phone-confirm {
+    display: none;
+    opacity: 0;
+    position: relative;
+    width: 483px;
+    min-height: 403px;
+    height: auto;
+    border: 1px solid #a7a7a9;
+    background-color: #e1e1e1;
+    padding-top: 44px;
+    padding-left: 44px;
+    text-align: center;
+}
+#phone-confirm:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 10px;
+    bottom: -19px;
+    width: 505px;
+    height: 19px;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
+}
+#phone-confirm h2 {
+    font-family: RodeoC, serif;
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 32px;
+    color: #666;
+    text-align: left;
+    margin: 0 auto 0 auto;
+    text-shadow: 0 1px 0 rgb(240, 240, 240);
+}
+#phone-confirm p {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: normal;
+    color: #666;
+    text-align: left;
+    line-height: 22px;
+    margin: 22px 0 25px 0;
+    text-shadow: 0 1px 0 rgb(240, 240, 240);
+}
+#phone-confirm .mobile-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    margin: 12px 15px 0 0;
+    overflow: hidden;
+    background-image: url('/img/popup-close-sprite.png');
+    background-repeat: none;
+    background-position: 0 -15px;
+    cursor: pointer;
+}
+#phone-confirm .mobile-close:hover {
+    background-position: 0 0;
+}
+.user-mobile-section {
+    width: 400px;
+    float: left;
+}
 
+.user-mobile-section form {
+    margin-top: 23px;
+}
+.user-mobile-section .phone-input-container {
+    position: relative;
+}
+.user-mobile-section .confirm-message {
+    font-family: Georgia, serif;
+    color: #999;
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 5px;
+    padding-left: 2px;
+    display: none;
+}
+.user-mobile-section .note {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-style: italic;
+    display: inline-block;
+    width: 140px;
+    float: left;
+    margin-top: 12px;
+    margin-left: 10px;
+}
+.user-mobile-section .plus {
+    font-size: 18px;
+    font-family: OfficinaSansC Bold, serif;
+    position: absolute;
+    color: #666666;
+    left: -24px;
+    top: 19px;
+}
+.user-mobile-section input[type="text"] {
+    color: #b6b6b6;
+    font-size: 18px;
+    font-family: OfficinaSansC Book, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 370px;
+}
+.user-mobile-section input[name="phone_code"] {
+    width: 140px;
+    display: none;
+    float: left;
+}
+.user-mobile-section #confirm-mobile {
+    width: 194px;
+    display: none;
+    float: left;
+    margin-top: 2px;
+    margin-left: 36px;
+}
+.user-mobile-section ul {
+    margin-top: 10px;
+    display: none;
+}
+.user-mobile-section ul li {
+    float: left;
+    font-style: italic;
+    font-size: 15px;
+    font-family: Georgia, serif;
+    margin-right: 75px;
+    margin-bottom: 10px;
+}
+.remove-number {
+    padding-left: 15px;
+    background: url(/img/user_settings/remove.png) 0 2px no-repeat;
+}
+.resend-code {
+    padding-left: 30px;
+    margin-right: 0 !important;
+    background: url(/img/user_settings/resend.png) 0 -3px no-repeat;
+}
+ul .number {
+    display: none;
+    font-style: normal !important;
+    font-family: OfficinaSansC Book, serif !important;
+    font-size: 18px !important;
+    color: #666666 !important;
+
+}
+.user-mobile-section input[type="submit"] {
+    width: 220px;
+    display: block;
+    float: left;
+}
+
+/**/
 #mobile-popup .mobile-close {
     position: absolute;
     top: 0;
@@ -3503,7 +3680,7 @@ div.no-result p {
     text-transform: none;
     margin: 10px auto 20px;
 }
-.clr {
+.clr, .clear {
     clear: both;
 }
 #rating_brief {

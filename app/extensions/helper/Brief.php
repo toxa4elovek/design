@@ -1,104 +1,105 @@
 <?php
 namespace app\extensions\helper;
 
+/**
+ * Class Brief
+ *
+ * Класс помощник для работы с текстами брифов и комментариев
+ *
+ * @package app\extensions\helper
+ */
 class Brief extends \lithium\template\Helper {
 
+    /**
+     * @var string паттерн для матчинга адреса имейла
+     */
     public $emailPattern = "\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b";
+
+    /**
+     * @var string паттенр лоя матчинга адреса url
+     */
     public $urlPattern = '/\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i';
 
-    function isUsingPlainText($pitch) {
-        if((strtotime($pitch->started) < strtotime('2013-07-25 16:30:00')) or ($pitch->id == '102442')) {
-            return true;
-        }
-        return false;
-    }
-
-    function briefDetails($string, $pitch) {
-        if($this->isUsingPlainText($pitch)){
-            return $this->e($string);
-        }else {
-            $string = strip_tags($string, '<p><ul><ol><li><a><br><span>');
-            $string = preg_replace('@(<a>)(.*?)(</a>)@', '<a class="check_url" href="$2">$2$3', $string);
-
-            $num = preg_match_all('@<a class="check_url" href="(.*?)">.*?</a>@Ui', $string, $matches, PREG_SET_ORDER);
-            if ($num > 0) {
-                foreach ($matches as $match) {
-                    if (!preg_match("~^(?:f|ht)tps?://~i", $match[1])) {
-                        $linkToFixRegExp = '@(<a class="check_url" href=")(' . $match[1] . ')(">' . $match[1] . '</a>)@';
-                        $url = "http://" . $match[1];
-                        $string = preg_replace($linkToFixRegExp, '<a href="' . $url . '$3', $string);
-
-                    }
-                }
-
-            }
-            return $this->softE($string);
-        }
-    }
-
-    function softE($string) {
-        $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
-
-        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
-        if(preg_match($regex, $string)) {
-            $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
-        }
-        while(preg_match('#href="(?!(http|https)://)(.*)"#', $string, $match)) {
-            $string = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $string, -1);
-        }
-        return $this->stripemail($string);
-    }
-
-    function e($string) {
-        $string = strip_tags(nl2br($string), '<br>');
-        $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
-
-        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
-        if(preg_match($regex, $string)) {
-            $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
-        }
-        while(preg_match('#href="(?!(http|https)://)(.*)"#', $string, $match)) {
-            $string = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $string, -1);
-        }
-        return $this->stripemail($string);
-    }
-
-    function ee($string) {
-        $string = strip_tags(nl2br($string), '<br>');
-        $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
-
-        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
-        if(preg_match($regex, $string)) {
-            $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
-        }
-        while(preg_match('#href="(?!(http|https)://)(.*)"#', $string, $match)) {
-            $string = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $string, -1);
-        }
-        return $string;
+    /**
+     * Метод определяет, нудно ли отображать текст брифа как текст, если проект старый
+     *
+     * @param $projectRecord
+     * @return bool
+     */
+    public function isUsingPlainText($projectRecord) {
+        return strtotime($projectRecord->started) < strtotime('2013-07-25 16:30:00');
     }
 
     /**
-     * Convert links in text to real links. Preserve mentions.
+     * Мето обрабатывает текст и создает hmtl ссылки для адресов в тексте
      *
-     * @param string $string Original text
+     * @param $pitch
+     * @param string $textField
      * @return string
      */
-    function eee($string) {
-        $string = nl2br(strip_tags($string));
-        $regex = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
+    public function briefDetails($pitch, $textField = 'description') {
+        if($this->isUsingPlainText($pitch)){
+            return $this->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->{$textField});
+        }else {
+            $string = strip_tags($pitch->{$textField}, '<p><ul><ol><li><a><br><span>');
+            return $this->insertHtmlLinkInText($string);
+        }
+    }
 
-        $regex2 = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
-        if(preg_match($regex, $string)) {
-            $string = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $string);
+    /**
+     * Метод заменяет простые адреса на html ссылки
+     *
+     * @param $text
+     * @return string
+     */
+    public function insertHtmlLinkInText($text) {
+        $text= $this->__autoReplaceHtmlLinks($text);
+        return $this->stripEmail($text);
+    }
+
+    /**
+     * Метод заменяет простые адреса на html ссылки и удаляет html код
+     *
+     * @param $text
+     * @return string
+     */
+    public function deleteHtmlTagsAndInsertHtmlLinkInText($text) {
+        $text = strip_tags(nl2br($text), '<br/><br>');
+        $text = $this->__autoReplaceHtmlLinks($text);
+        return $this->stripEmail($text);
+    }
+
+    /**
+     * Метод удаляет теги, вставляет html ссылки и создает ссылки для упоминаний людей
+     *
+     * @param string $text Original text
+     * @return string
+     */
+    public function deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($text) {
+        $text = nl2br(strip_tags($text));
+        $text = $this->__autoReplaceHtmlLinks($text);
+        $text = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', $text);
+        $text = str_replace('<br /><br />', '<br />', $text);
+        $text = str_replace('<br><br>', '<br>', $text);
+        return $text;
+    }
+
+    /**
+     * Метод ищет адреса в строке и пытается вставить html ссылку
+     *
+     * @param $text
+     * @return mixed
+     */
+    private function __autoReplaceHtmlLinks($text) {
+        $checkRegExp = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
+        $replacementRegExp = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
+        if(preg_match($checkRegExp, $text)) {
+            $text = preg_replace($replacementRegExp, '$1<a href="$2" target="_blank">$2</a>', $text);
         }
-        while(preg_match('#href="(?!(http|https)://)(.*)"#', $string, $match)) {
-            $string = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $string, -1);
+        while(preg_match('#href="(?!(http|https)://)(.*)"#', $text, $match)) {
+            $text = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $text, -1);
         }
-        // Mentions
-        $string = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', $string);
-        $string = str_replace('<br /><br />', '<br />', $string);
-        $string = str_replace('<br><br>', '<br>', $string);
-        return $string;
+        return $text;
     }
 	
 	/**
@@ -107,7 +108,7 @@ class Brief extends \lithium\template\Helper {
      * @param $string
      * @return string
      */
-    function stripemail($string){
+    public function stripEmail($string){
         return preg_replace('#' . $this->emailPattern . '#',
             '<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $string);
     }
@@ -118,7 +119,7 @@ class Brief extends \lithium\template\Helper {
      * @param $string
      * @return string
      */
-    function removeEmailClean($string) {
+    public function removeEmailClean($string) {
         return preg_replace('#' . $this->emailPattern . '#', '', $string);
     }
 
@@ -128,7 +129,7 @@ class Brief extends \lithium\template\Helper {
      * @param $string
      * @return string
      */
-    function stripurl($string) {
+    public function stripUrl($string) {
         return preg_replace($this->urlPattern, '', $string);
     }
 
@@ -138,24 +139,24 @@ class Brief extends \lithium\template\Helper {
      * @param $string
      * @return string
      */
-    function linkemail($string) {
+    public function linkEmail($string) {
         return preg_replace('#(' . $this->emailPattern . ')#',
             '<a href="mailto://$1">$1</a>', $string);
     }
 
-    function trim_all($str, $what = NULL, $with = ' ') {
-        if ($what === NULL) {
-            //  Character      Decimal      Use
-            //  "\0"            0           Null Character
-            //  "\t"            9           Tab
-            //  "\n"           10           New line
-            //  "\x0B"         11           Vertical Tab
-            //  "\r"           13           New Line in Mac
-            //  " "            32           Space
-
-            $what   = "\\x00-\\x20";    //all white-spaces and control chars
+    /**
+     * Метод заменяет все невидимые переносы и пробелы
+     *
+     * @param $string
+     * @param null $specialChars
+     * @param string $replacement
+     * @return string
+     */
+    public function trimAllInvisibleCharacter($string, $specialChars = null, $replacement = ' ') {
+        if ($specialChars === null) {
+            $specialChars   = "\\x00-\\x20";
         }
-
-        return trim(preg_replace("/[".$what."]+/", $with, $str), $what);
+        return trim(preg_replace("/[".$specialChars."]+/", $replacement, $string), $specialChars);
     }
+
 }

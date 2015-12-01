@@ -765,6 +765,32 @@ class Pitch extends AppModel {
         $destination = PdfGetter::findPdfDestination($options['destination']);
         $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
         $options['pitch']->moneyback = self::isMoneyBack($options['pitch']->id);
+        if($options['pitch']->type == 'plan-payment') {
+            $planId = SubscriptionPlan::getPlanForPayment($options['pitch']->id);
+            $plan = SubscriptionPlan::getPlan($planId);
+            $total = $plan['price'];
+            if(!isset($options['bill'])) {
+                $user = User::first($options['pitch']->user_id);
+                if($companyData = unserialize($user->companydata)) {
+                    $bill = new \stdClass();
+                    $bill->name = $companyData['company_name'];
+                    $bill->address = $companyData['address'];
+                    $bill->inn = $companyData['inn'];
+                    $bill->kpp = $companyData['kpp'];
+                    if($bill->kpp == '') {
+                        $bill->individual = 1;
+                    }else {
+                        $bill->individual = 0;
+                    }
+                    $options['bill'] = $bill;
+                }
+            }
+            if(User::hasActiveSubscriptionDiscount($options['pitch']->user_id)) {
+                $discount = User::getSubscriptionDiscount($options['pitch']->user_id);
+                $total = (int) $total - ($total * ($discount * 0.01));
+            }
+            $options['pitch']->total = $total;
+        }
         require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
         $mpdf = new \mPDF();
         $mpdf->WriteHTML(PdfGetter::get('Act', $options));
@@ -799,6 +825,34 @@ class Pitch extends AppModel {
             if (($option->name != 'Награда копирайтеру') &&  ($option->name != 'Награда Дизайнеру') && (!preg_match('/Сбор GoDesigner/', $option->name))) {
                 $totalfees += $option->value;
             }
+        }
+        if($options['pitch']->type == 'plan-payment') {
+            $planId = SubscriptionPlan::getPlanForPayment($options['pitch']->id);
+            $plan = SubscriptionPlan::getPlan($planId);
+            $total = $plan['price'];
+            if(!isset($options['bill'])) {
+                $user = User::first($options['pitch']->user_id);
+                if($companyData = unserialize($user->companydata)) {
+                    $bill = new \stdClass();
+                    $bill->name = $companyData['company_name'];
+                    $bill->address = $companyData['address'];
+                    $bill->inn = $companyData['inn'];
+                    $bill->kpp = $companyData['kpp'];
+                    if($bill->kpp == '') {
+                        $bill->individual = 1;
+                    }else {
+                        $bill->individual = 0;
+                    }
+                    $options['bill'] = $bill;
+                }
+            }
+            if(User::hasActiveSubscriptionDiscount($options['pitch']->user_id)) {
+                $discount = User::getSubscriptionDiscount($options['pitch']->user_id);
+                $total = (int) $total - ($total * ($discount * 0.01));
+            }
+            $options['pitch']->total = $total;
+            $totalfees = 0;
+            $prolongfees = 0;
         }
         $options['totalfees'] = $totalfees;
         $options['prolongfees'] = $prolongfees;
@@ -1258,6 +1312,9 @@ class Pitch extends AppModel {
             case 3:
                 $result = array('price' => array('>' => 20000));
                 break;
+            case 4:
+                $result = array('price' => 0);
+                break;
             default:
                 $result = array();
         }
@@ -1439,6 +1496,7 @@ class Pitch extends AppModel {
                 ))) && count(self::all(array('conditions' => array('user_id' => $solution->pitch->user_id, 'billed' => 0, 'multiwinner' => $solution->pitch->id)))) == 0) {
             $copyPitch = Pitch::create();
             $data = $solution->pitch->data();
+            $data['type'] = 'multiwinner';
             $data['billed'] = 0;
             $data['published'] = 0;
             $data['status'] = 1;
@@ -1457,8 +1515,9 @@ class Pitch extends AppModel {
                         'id' => $copyPitch->id,
                         'category_id' => $copyPitch->category_id,
                         'promocode' => $copyPitch->promocode));
-                $comission = Receipt::createReceipt($receiptData, true);
-                $copyPitch->total = $comission + $copyPitch->price;
+                Receipt::createReceipt($receiptData);
+                $commission = Receipt::getCommissionForProject($copyPitch->id);
+                $copyPitch->total = $commission + $copyPitch->price;
                 $copyPitch->save();
                 return $copyPitch->id;
             }
@@ -1531,6 +1590,25 @@ class Pitch extends AppModel {
             return false;
         }
         return false;
+    }
+
+    /**
+     * Метод активирует оплату записи штрафа и назначает победителя
+     *
+     * @param $penaltyId
+     * @return mixed
+     */
+    public static function activatePenalty($penaltyId) {
+        $penalty = self::first($penaltyId);
+        $solution = Solution::first(array('conditions' => array('Solution.id' => $penalty->awarded), 'with' => array('Pitch')));
+        Solution::selectSolution($solution);
+        $data = array(
+            'billed' => 1,
+            'status' => 2,
+            'started' => date('Y-m-d H:i:s'),
+            'finishDate' => date('Y-m-d H:i:s')
+        );
+        return $penalty->save($data);
     }
 
     public static function declineLogosalePitch($pitchId, $designerId) {
@@ -1788,5 +1866,220 @@ class Pitch extends AppModel {
         }else {
             return null;
         }
+    }
+
+    /**
+     * Метод определяет, является ли проект по подписке проектов на копирайтинг или нет
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isSubscriberProjectForCopyrighting($record) {
+        if(($record->category_id == 20) && ($unSerialized = unserialize($record->specifics))) {
+            if(is_bool($unSerialized['isCopyrighting'])) {
+                $unSerialized['isCopyrighting'] = ($unSerialized['isCopyrighting']) ? 'true' : 'false';
+            }
+            if((isset($unSerialized['isCopyrighting'])) && ($unSerialized['isCopyrighting'] === 'true')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Метод определяет, является ли проект проектом на копирайтинг или нет
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isCopyrighting($record) {
+        if((int) $record->category_id === 20) {
+            return $record->isSubscriberProjectForCopyrighting();
+        }
+        return intval($record->category_id) === 7;
+    }
+
+    /**
+     * Метод помечает проект как отказанный, создается заметку о возвравте, комментарий
+     * и возвращяет деньги на кошелек
+     *
+     * @param $id
+     * @return bool
+     */
+    public static function markAsRefunded($id) {
+        if(($project = self::first($id)) && ($project->status != 2)) {
+            if(!$note = Note::first(array('conditions' => array('pitch_id' => $id)))) {
+                $note = Note::create();
+            }
+            $note->set(array(
+                'pitch_id' => $id,
+                'status' => 2
+            ));
+            $note->save();
+            $data = array(
+                'user_id' => 108,
+                'pitch_id' => $id,
+                'public' => 1,
+                'text' => 'Друзья, заказчик отказался от всех предложенных решений. К сожалению, такое случается. Мы благодарим всех за участие, и хотим напомнить, что права на свои идеи сохраняются за авторами, и вы можете адаптировать их для участия в другом питче!
+Подробнее читайте тут: http://godesigner.ru/answers/view/51');
+            Comment::createComment($data);
+            User::fillBalance($project->user_id, $project->price);
+            $project->status = 2;
+            $project->awarded = 0;
+            return $project->save();
+        }
+        return false;
+    }
+
+    /**
+     * Метод проверяет, нужно ли постить предупреждение в завершение проекта
+     *
+     * @param $projectId
+     * @return bool
+     */
+    public static function isNeededToPostClosingWarning($projectId) {
+        $project = Pitch::first($projectId);
+        if(($project->status < 1) || ($project->awarded == 0)) {
+            return false;
+        }
+        $daysBeforeAutoComment = 12;
+        if(in_array($project->category_id, array(3, 4))) {
+            $daysBeforeAutoComment = 14;
+        }
+        $diff = (time() - strtotime($project->awardedDate)) / DAY;
+        if(($diff  > $daysBeforeAutoComment) && (!self::isAutoClosingWarningPosted($projectId))) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Метод генерирует текст авто предупреждения для завершающего этапа
+     *
+     * @param $projectId
+     * @return string
+     */
+    public static function getAutoClosingWarningComment($projectId) {
+        $project = Pitch::first($projectId);
+        $projectOwner = User::first($project->user_id);
+        $solution = Solution::first($project->awarded);
+        $designer = User::first($solution->user_id);
+        $nameInflector = new NameInflector();
+        $planDaysDefault = 10;
+        if(in_array($project->category_id, array(3, 4))) {
+            $planDaysDefault = 17;
+        }
+        $planDateToComplete = date('d.m.Y H:i', (strtotime($project->awardedDate) + $planDaysDefault * DAY));
+        $newPlanDateToComplete = date('d.m.Y H:i', (strtotime($project->awardedDate) + ($planDaysDefault + 2) * DAY));
+
+        $ownerFormatted = $nameInflector->renderName($projectOwner->first_name, $projectOwner->last_name);
+        $designerFormatted = $nameInflector->renderName($designer->first_name, $designer->last_name);
+        $result = "@$ownerFormatted, cрок завершительного этапа длится $planDaysDefault дней, ваш проект должен был быть закрыт к $planDateToComplete.
+        <br/><br/>Мы убедительно просим вас активизироваться на сайте, внести финальную правку, утвердить макеты и проверить исходники не позже $newPlanDateToComplete, в противном случае мы будем вынуждены инициировать завершение проекта согласно регламенту.
+        <br/><br/>@$designerFormatted, мы просим вас выложить исходники в том виде, каком их последний раз утвердил заказчик, к $newPlanDateToComplete.
+        <br/><br/>Спасибо за понимание и содействие!";
+        return $result;
+    }
+
+    /**
+     * Метод проверяет, было ли запощено в завершении автопредупреждение о необходимости
+     * закончить проект
+     *
+     * @param $projectId
+     * @return bool
+     */
+    public static function isAutoClosingWarningPosted($projectId) {
+        $project = Pitch::first($projectId);
+        $solution = Solution::first($project->awarded);
+        $text = 'Мы убедительно просим вас активизироваться на сайте, внести финальную правку';
+        if($winComment = Wincomment::first(array('conditions' => array(
+            'solution_id' => $solution->id,
+            'text' => array('LIKE' => '%' . $text .  '%')
+        )))) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Метод определяет, на каком шаге завершения находится проект
+     *
+     * @param $projectId
+     * @return mixed
+     */
+    public static function getCurrentClosingStep($projectId) {
+        $project = Pitch::first($projectId);
+        $solution = Solution::first($project->awarded);
+        return $solution->step;
+    }
+
+    /**
+     * Метод возвращяет следующий зарезервированный айди для платежа за
+     * просроченный выбор победителя
+     *
+     * @param $userId int пользователя
+     * @return int
+     */
+    static public function getNextPenaltyId($userId, $solutionId) {
+        if(!$payment = self::first(array(
+            'conditions' => array(
+                'user_id' => $userId,
+                'billed' => 0,
+                'type' => 'penalty',
+            )
+        ))) {
+            $data = array(
+                'user_id' => $userId,
+                'type' => 'penalty',
+                'category' => 98,
+                'title' => 'Оплата штрафа',
+                'awarded' => $solutionId
+            );
+            $payment = self::create($data);
+            $payment->save();
+            return $payment->id;
+        }
+        $payment->awarded = $solutionId;
+        $payment->save();
+        return $payment->id;
+    }
+
+    public function getPenaltyAmount($projectRecord) {
+        $time = strtotime($projectRecord->finishDate) + DAY * 4;
+        if($projectRecord->expert == 1) {
+            $pitchHelper = new \app\extensions\helper\Pitch();
+            $time = $pitchHelper->expertOpinion($projectRecord->id) + DAY * 4;
+        }
+        if($projectRecord->chooseWinnerFinishDate != '0000-00-00 00:00:00') {
+            $time = strtotime($projectRecord->chooseWinnerFinishDate);
+        }
+        $latePointOfTime = time();
+        if($projectRecord->awardedDate != '0000-00-00 00:00:00') {
+            $latePointOfTime = strtotime($projectRecord->awardedDate);
+        }
+        $diff = $latePointOfTime - $time;
+        return floor($diff / 60 / 60) * 25;
+    }
+
+    /**
+     * Метод проверяет, нужно ли к проекту применять штрафные санкции за долгий выбор победителя
+     *
+     * @param $projectId
+     * @return bool
+     */
+    public static function isPenaltyNeededForProject($projectId) {
+        $projectRecord = self::first($projectId);
+        if(($projectRecord->category_id == 20) || (($projectRecord->status == 1) && ($projectRecord->awarded != 0))) {
+            return false;
+        }
+        $time = strtotime($projectRecord->finishDate);
+        if($projectRecord->expert == 1) {
+            $pitchHelper = new \app\extensions\helper\Pitch();
+            $time = $pitchHelper->expertOpinion($projectRecord->id);
+        }
+        if(($time + 4 * DAY) < time()) {
+            return true;
+        }
+        return false;
     }
 }

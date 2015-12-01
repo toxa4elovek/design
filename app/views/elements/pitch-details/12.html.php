@@ -12,17 +12,17 @@ $details = unserialize($pitch->specifics);
 
     <?php if(!empty($details['qualities'])):?>
     <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
-    <p class="regular"><?=$this->brief->e($details['qualities'])?></p>
+    <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['qualities'])?></p>
     <?php endif;?>
 
     <?php if(!empty($details['site-image'])):?>
     <h2 class="blueheading">Какой образ о себе (продукте/услуге) вы бы хотели создать?</h2>
-    <p class="regular"><?=$this->brief->e($details['site-image'])?></p>
+    <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-image'])?></p>
     <?php endif;?>
 
     <?php if(!empty($details['site-inspiration'])):?>
     <h2 class="blueheading">Предпочтения</h2>
-    <p class="regular"><?=$this->brief->e($details['site-inspiration'])?></p>
+    <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
     <?php endif;?>
 
     <h2 class="blueheading">Целевая аудитория</h2>

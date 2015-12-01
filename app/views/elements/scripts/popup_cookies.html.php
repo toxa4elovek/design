@@ -54,4 +54,8 @@
     <?php setcookie('mail', '1', strtotime('+6 month'), '/');?>
     showMailPopup = true;
     <?php endif; ?>
+    <?php if($this->_request->params['action'] == 'login'):?>
+    showMobilePopup = false;
+    showSocialPopup = false;
+    <?php endif;?>
 </script>

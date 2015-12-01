@@ -24,6 +24,7 @@ app/webroot/events/*
 app/webroot/pitchfiles/*
 app/webroot/solutions/*
 app/webroot/js/posts/save.js
+app/webroot/js/posts/index.js
 app/webroot/js/users/office.js
 app/webroot/js/users/subscriber/*
 app/webroot/js/users/subscriber/NewProjectBox.js
@@ -48,3 +49,9 @@ app/webroot/js/pitches/plot.js
 app/webroot/js/common/receipt/Receipt.js
 app/webroot/js/pitches/ProjectRewardInput.js
 app/webroot/js/posts/index/BlogPostEntryBox.js
+app/webroot/js/pitches/edit.js
+app/webroot/js/pitches/penalty.js
+app/webroot/js/users/mypitches_loader.js
+app/webroot/js/pitches/actions/CommentsActions.js
+app/webroot/js/pitches/components/UserAutosuggest.js
+app/webroot/js/users/step2.js

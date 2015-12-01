@@ -37,22 +37,43 @@ var BlogPostList = (function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            return React.createElement(
-                'div',
-                null,
-                this.props.posts.map(function (post) {
-                    return React.createElement(BlogPostEntryBox, { key: post.id, post: post, isAuthor: isAuthor, isEditor: isEditor });
-                }),
-                React.createElement(
+            if (this.props.posts.length === 0) {
+                return React.createElement(
                     'div',
-                    { id: 'blog-ajax-wrapper' },
+                    null,
                     React.createElement(
                         'div',
-                        { id: 'blog-ajax-loader' },
-                        ' '
+                        { style: { "textAlign": "center" } },
+                        React.createElement(
+                            'h2',
+                            { className: 'largest-header', style: { "lineHeight": "2em" } },
+                            'УПС, НИЧЕГО НЕ НАШЛИ!'
+                        ),
+                        React.createElement(
+                            'p',
+                            { className: 'large-regular' },
+                            'Попробуйте еще раз, изменив запрос.'
+                        )
                     )
-                )
-            );
+                );
+            } else {
+                return React.createElement(
+                    'div',
+                    null,
+                    this.props.posts.map(function (post) {
+                        return React.createElement(BlogPostEntryBox, { key: post.id, post: post, isAuthor: isAuthor, isEditor: isEditor });
+                    }),
+                    React.createElement(
+                        'div',
+                        { id: 'blog-ajax-wrapper' },
+                        React.createElement(
+                            'div',
+                            { id: 'blog-ajax-loader' },
+                            ' '
+                        )
+                    )
+                );
+            }
         }
     }]);
 

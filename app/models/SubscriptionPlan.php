@@ -88,6 +88,16 @@ class SubscriptionPlan extends Pitch {
         return $payment->id;
     }
 
+    static public function hasSubscriptionPlanDraft($userId) {
+        return (bool) self::first(array(
+            'conditions' => array(
+                'user_id' => $userId,
+                'billed' => 0,
+                'type' => 'plan-payment'
+            )
+        ));
+    }
+
     /**
      * Метод возвращяет следующий зарезервированный айди для платежа за тарифный план
      *
@@ -152,7 +162,10 @@ class SubscriptionPlan extends Pitch {
             $paymentPlan->started = date('Y-m-d H:i:s');
             $paymentPlan->totalFinishDate = date('Y-m-d H:i:s');
             $companyName = User::getFullCompanyName($paymentPlan->user_id);
-            $paymentPlan->title = $paymentPlan->title . ' (' . $companyName . ')';
+            if($companyName != '') {
+                $paymentPlan->title = $paymentPlan->title . ' (' . $companyName . ')';
+            }
+            $paymentPlan->status = 2;
             $paymentPlan->save();
             if($planId = self::getPlanForPayment($id)) {
                 if($plan = self::getPlan($planId)) {
@@ -161,6 +174,7 @@ class SubscriptionPlan extends Pitch {
             }
             if($fundBalance = self::getFundBalanceForPayment($id)) {
                 $result = User::fillBalance($paymentPlan->user_id, $fundBalance);
+                Task::createNewTask($paymentPlan->id, 'emailFillBalanceSuccessNotification');
                 if(!$finalResult) {
                     $finalResult = $result;
                 }
@@ -264,4 +278,5 @@ class SubscriptionPlan extends Pitch {
         }
         return 0;
     }
+
 }

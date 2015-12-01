@@ -2,12 +2,10 @@
 
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header'))?>
 
-	<div class="middle">
+	<div class="middle" style="width: 100%;">
 	<div class="middle_inner">
-       
-		
-		
-		<div class="content group">
+
+		<div class="content group" style="width: 861px; margin: 0 auto;">
 			<div class="margins-1">
 				<section class="howitworks">
 					<h1>как это работает</h1>
@@ -21,95 +19,136 @@
 					<ul class="score">
 						<li class="fst">
 							<div>1</div>
-							<h2 class="greyboldheader">Опишите, что вам нужно</h2>
-							<p class="regular">Опубликуйте <a href="/pitches/create">бриф</a> на сайте, заполнив все поля. Чем более подробно вы ответите на вопросы, тем дизайнерам станет легче добиться желаемого результата!</p>
+							<h2 class="greyboldheader" style="padding-bottom: 22px;">Опишите, что вам нужно</h2>
+							<p class="regular">
+								Опубликуйте <a href="/pitches/create" target="_blank">бриф</a> на сайте,<br>
+								заполнив поля. Чем подробнее<br>вы ответите на вопросы, тем ди-<br>зайнеры легче добьются желае-<br>мого результата.
 						</li>
 						<li>
 							<div>2</div>
-							<h2 class="greyboldheader">Дизайнеры предложат идеи</h2>
-							<p class="regular">Десятки креативщиков в сети выложат свои решения на сайт. Комментируйте и оценивайте их, и тогда вы гарантированно получите еще больше предложений!</p>
+							<h2 class="greyboldheader" style="padding-bottom: 22px;">Дизайнеры предложат идеи</h2>
+							<p class="regular">Комментируйте идеи копирайте-<br>ров и дизайнеров, и тогда вы&nbsp;по-<br>лучите больше предложений!</p>
 						</li>
 						<li>
 							<div>3</div>
-							<h2 class="greyboldheader">Выберите лучший дизайн</h2>
-							<p class="regular">Помогите дизайнерам лучше понять вас, и вы получите именно то, что хотели! Объявите победителя и  вы получите финальную версию с правами на исходник.</p>
+							<h2 class="greyboldheader" style="padding-bottom: 22px;">Выберите лучший дизайн</h2>
+							<p class="regular">Объявите победителя, внесите<br>правки и получите финальный<br>дизайн с правами на исходник.
+							</p>
 						</li>
 					</ul>
 				
 					<div class="clear"></div>
 
-					<ul class="score">
+					<ul class="score" style="margin-top: 22px;">
 						<li class="fst">
-							<div><p><img src="/img/images/1.gif" alt="" /></p></div>
+							<div><p><img src="/img/pages/howitworks/brief-01.png" alt="" /></p></div>
 						</li>
 						<li>
-							<div><p><img  src="/img/images/2.gif" alt="" /></p></div>
+							<div><p><img  src="/img/pages/howitworks/ideas.png" alt="" /></p></div>
 						</li>
 						<li>
-							<div><p><img  src="/img/images/3.gif" alt="" /></p></div>
+							<div><p><img  src="/img/pages/howitworks/win-01.png" alt="" /></p></div>
 						</li>
 					</ul>
 				</div>				
 			</div>		
 			
 			<div class="clear"></div>
+
+			<ul class="timeline" style="">
+				<li style="width: 154px; margin-right: 29px;">
+					<a href="/answers/view/4" target="_blank">Заполнение брифа</a>
+					<p>Вы создаете задание,<br>заполняя поля</p>
+				</li>
+				<li style="width:58px; margin-right: 21px;">
+					<a href="/answers/view/6" target="_blank">Оплата</a>
+					<p></p>
+				</li>
+				<li style="width: 149px; margin-right: 47px;">
+					<a href="/answers/view/103" target="_blank">Приём работ</a>
+					<p>Вы комментируете,<br>участники<br>корректируют. </p>
+				</li>
+				<li style="width: 197px; margin-right: 18px;">
+					<a href="/answers/view/70" target="_blank">Выбор победителя 4 дня</a>
+					<p>Вы выбираете ≥1 авторов.<br>Можно продлить выбор<br>до 10 дней за 25р./ч.</p>
+				</li>
+				<li style="width: 171px;">
+					<a href="/answers/view/63" target="_blank">Внесение правок</a>
+					<p>Вы дорабатываете<br>макет и запрашиваете<br>файлы лично у автора.</p>
+				</li>
+			</ul>
+
+			<div class="margins-1" style="margin-top: 48px; margin-bottom: 29px;">
+				<section class="howitworks">
+					<h1>узнать за 60 секунд</h1>
+				</section>
+			</div>
 			
 			<div class="margins-1">
-				<p class="big-gray">На старт - внимание - марш!</p>
 				<div style="text-align:center;margin-bottom:25px;">
 					<iframe style="text-align:center;" title="YouTube video player" src="http://www.youtube.com/embed/3bhLkorXLI8" width="600" height="399"></iframe>
 				</div>
-				<div class="flag-red">
-					<p>
-						<?=$this->html->link('заполните бриф', 'Pitches::create', array('class' => 'create-project-how-it-works'))?><br />
-						<i>и создайте проект для дизайнеров</i>
-					</p>
-				</div>
-			</div>	
+			</div>
+
+			<div class="margins-1" style="margin-top: 47px; margin-bottom: 47px;">
+				<section class="howitworks">
+					<h1>преимущества</h1>
+				</section>
+			</div>
 			
 			<div class="margins-2 trigger-block">
 				<div class="w100">
-					<ul class="marsh">
-						<li>
-							<h2 class="greyboldheader">Вы сами назначаете цену дизайнерам</h2>
-							<p class="regular"><a href="/">Go Designer</a> рекомендует минимальную сумму и берет процент от размещения брифа на сайте.</p>
+					<ul class="marsh" id="advantages">
+						<li style="margin-bottom: 70px;">
+							<h2 class="greyboldheader" style="margin-bottom: 8px">Вы определяете бюджет</h2>
+							<p class="regular">Вы сами решаете, сколько<br/> платить дизайнеру. Сбор составит 19,5&#8209;24,4% установленной суммы вознаграждения победителю.
+							</p>
 						</li>
-						<li>
-							<h2 class="greyboldheader">Вы выбираете готовые решения, а не портфолио</h2>
-							<p class="regular">Вам больше не нужно изучать огромное количество портфолио разных дизайнеров, теперь вы выбираете непосредственно идею!</p>
+						<li style="margin-bottom: 70px;">
+							<h2 class="greyboldheader" style="margin-bottom: 8px">Вы выбираете готовые ре-<br/>шения, а не портфолио</h2>
+							<p class="regular">Вам не придется тратить время <br/>на поиски ответственных дизай-<br>неров. Теперь вы выбираете непосредственно среди готовых идей.
+							</p>
 						</li>
-						<li>
-							<h2 class="greyboldheader">Больше решений за те же деньги</h2>
-							<p class="regular">Если вы обратитесь в агентство, вам предоставят 3 варианта на выбор. Креативное сообщество в интернете способно предоставить намного больше идей. </p>
+						<li style="margin-bottom: 70px;">
+							<h2 class="greyboldheader" style="margin-bottom: 8px">Больше решений<br/> за те же деньги</h2>
+							<p class="regular">Если вы обратитесь в агентство,<br/> вам предоставят 3 варианта<br/>на выбор. На GoDesigner вы получите ~100 решений на задачу.
+							</p>
 						</li>
 						<li class="clear">
-							<h2 class="greyboldheader">Интерактивно</h2>
-							<p class="regular">Из-за отсутствия рутинной документации, текучки и иерархии, вы увидите решения сразу, как только дизайнеры загрузят их на сайт.</p>
+							<h2 class="greyboldheader" style="margin-bottom: 8px">Интерактивно<br>и оперативно</h2>
+							<p class="regular">Из-за отсутствия рутинной доку-<br>ментации и иерархии, вы увидите<br> решения сразу, как только дизай-<br>неры загрузят идеи на сайт.</p>
 						</li>
 						<li>
-							<h2 class="greyboldheader">Мнение экспертов</h2>
-							<p class="regular">Креативщики и маркетологи именитых агентств с опытом работы в дизайне и рекламе могут помочь вам в выборе варианта, максимально отвечающего вашим запросам.</p>
+							<h2 class="greyboldheader" style="margin-bottom: 8px">Мнение экспертов</h2>
+							<p class="regular">Директора именитых агентств <br>с опытом работы в рекламе помогут вам с выбором варианта, который отвечает вашей задаче.
+								</p>
 						</li>
 						<li>
-							<h2 class="greyboldheader">Экономьте не только деньги, но и время</h2>
-							<p class="regular">Ограниченная длительность проекта мотивирует креативщиков: меньше чем за месяц вы получите то, что хотели!</p>
+							<h2 class="greyboldheader" style="margin-bottom: 8px">Экономьте деньги<br/>и время</h2>
+							<p class="regular">Мы ограничиваем срок проекта,<br> это мотивирует креативщиков:<br> меньше, чем за месяц, вы полу-<br>чите то, что хотели!
+							</p>
 						</li>
 					</ul>
 				</div>
 			</div>
 			
 			<div class="clear trigger-block"></div>
-				
-			
-			<section class="faq trigger-block">
-				<div class="margins-1">
-					<h1>Часто задаваемые вопросы</h1>
-				</div>
-                <?=$this->faq->show($questions)?>
-                <div>
-                    <?=$this->html->link('Все вопросы', 'Answers::index', array('class' => 'more', 'style' => 'margin-left:28px;'));?>
-                </div>
-			</section>
+
+
+			<div class="margins-1" style="margin-top: 47px; margin-bottom: 33px;">
+				<section class="howitworks">
+					<h1>faq</h1>
+				</section>
+			</div>
+
+			<ul class="faq vp_one">
+				<?php foreach($answers as $answer): ?>
+				<li>
+					<p class="regular" style=""><a href="/answers/view/<?=$answer->id ?>" target="_blank"><?= $answer->title ?></a></p>
+					<div style="background:url(/img/sep.png) repeat-x;height:4px;"></div>
+				</li>
+				<?php endforeach?>
+			</ul>
 				
     	
 		</div><!-- /content -->
@@ -120,3 +159,4 @@
 
 </div><!-- .wrapper -->
 <?=$this->html->style(array('/howitworks'), array('inline' => false))?>
+<?=$this->html->script(array('/js/pages/howitworks.js'), array('inline' => false))?>

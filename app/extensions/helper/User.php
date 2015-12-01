@@ -1,5 +1,6 @@
 <?php
 namespace app\extensions\helper;
+use lithium\core\Environment;
 
 /**
  * Class User - Хелпер для различных проверок текущего пользователя
@@ -13,22 +14,42 @@ class User extends \lithium\storage\Session {
      */
     protected $_options = array();
 
+    protected $_initialized = false;
+
     /**
      * Конструктор устанавливает свойства
      */
-    public function __construct($config = array()) {
-        $defaults = array(
-            'userModel' => 'app\models\User',
-            'expertModel' => 'app\models\Expert',
-            'inflector' => 'app\extensions\helper\NameInflector',
-            'defaultAvatarUrl' => '/img/default_small_avatar.png',
-        );
-        $this->_options = $options = $config + $defaults;
-        $this->_options['adminsIds'] = $options['userModel']::getAdminsIds();
-        $this->_options['expertsIds'] = $options['expertModel']::getExpertUserIds();
-        $this->_options['editorsIds'] = $options['userModel']::getEditorsIds();
-        $this->_options['authorIds'] = $options['userModel']::getAuthorsIds();
-        $this->_options['feedAuthorsIds'] = $options['userModel']::getFeedAuthorsIds();
+    public function __construct($config = []) {
+        $thisObjectMethods = (get_class_methods($this));
+        $parentMethods = (get_class_methods(get_parent_class($this)));
+        $diffMethods = array_diff($thisObjectMethods, $parentMethods);
+        foreach($diffMethods as $method) {
+            if(preg_match('/^_/', $method)) {
+                continue;
+            }
+            $this->applyFilter($method, function($self, $params, $chain) use ($config) {
+                $this->_init($config);
+                return $chain->next($self, $params, $chain);
+            });
+        }
+    }
+
+    protected function _init($config = []) {
+        if(!$this->_initialized) {
+            $defaults = array(
+                'userModel' => 'app\models\User',
+                'expertModel' => 'app\models\Expert',
+                'inflector' => 'app\extensions\helper\NameInflector',
+                'defaultAvatarUrl' => '/img/default_small_avatar.png',
+            );
+            $this->_options = $options = $config + $defaults;
+            $this->_options['adminsIds'] = $options['userModel']::getAdminsIds();
+            $this->_options['expertsIds'] = $options['expertModel']::getExpertUserIds();
+            $this->_options['editorsIds'] = $options['userModel']::getEditorsIds();
+            $this->_options['authorIds'] = $options['userModel']::getAuthorsIds();
+            $this->_options['feedAuthorsIds'] = $options['userModel']::getFeedAuthorsIds();
+            $this->_initialized = true;
+        }
     }
 
     /**
@@ -41,7 +62,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->getId(), $this->_options['expertsIds']);
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return in_array($this->getId(), $this->_options['expertsIds']);
+        });
     }
 
     /**
@@ -53,10 +76,12 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        if(($this->read('user.isAdmin')) || (in_array($this->getId(), $this->_options['adminsIds']))) {
-            return true;
-        }
-        return false;
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            if (($this->read('user.isAdmin')) || (in_array($this->getId(), $this->_options['adminsIds']))) {
+                return true;
+            }
+            return false;
+        });
     }
 
     /**
@@ -68,7 +93,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->getId(), $this->_options['editorsIds']);
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return in_array($this->getId(), $this->_options['editorsIds']);
+        });
     }
 
     /**
@@ -80,7 +107,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->getId(), $this->_options['authorIds']);
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return in_array($this->getId(), $this->_options['authorIds']);
+        });
     }
 
     /**
@@ -92,7 +121,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return in_array($this->getId(), $this->_options['feedAuthorsIds']);
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return in_array($this->getId(), $this->_options['feedAuthorsIds']);
+        });
     }
 
     /**
@@ -101,7 +132,9 @@ class User extends \lithium\storage\Session {
      * @return bool
      */
     public function isLoggedIn() {
-        return (bool) $this->read('user');
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return (bool) $this->read('user');
+        });
     }
 
     /**
@@ -111,7 +144,9 @@ class User extends \lithium\storage\Session {
      * @return bool
      */
     public function isPitchOwner($pitchUserId) {
-        return $this->__detectOwnership($pitchUserId);
+        return $this->_filter(__FUNCTION__, [], function($self, $params) use ($pitchUserId) {
+            return $this->__detectOwnership($pitchUserId);
+        });
     }
 
     /**
@@ -121,7 +156,9 @@ class User extends \lithium\storage\Session {
      * @return bool
      */
     public function isSolutionAuthor($solutionUserId) {
-        return $this->__detectOwnership($solutionUserId);
+        return $this->_filter(__FUNCTION__, [], function($self, $params) use ($solutionUserId){
+            return $this->__detectOwnership($solutionUserId);
+        });
     }
 
     /**
@@ -131,17 +168,21 @@ class User extends \lithium\storage\Session {
      * @return bool
      */
     public function isCommentAuthor($commentAuthorId) {
-        return $this->__detectOwnership($commentAuthorId);
+        return $this->_filter(__FUNCTION__, [], function($self, $params) use ($commentAuthorId) {
+            return $this->__detectOwnership($commentAuthorId);
+        });
     }
 
     /**
      * Метод определяет, является ли текущий пользователь автором поста с айди $postAuthorId
      *
-     * @param $commentAuthorId
+     * @param $postAuthorId
      * @return bool
      */
     public function isPostAuthor($postAuthorId) {
-        return $this->__detectOwnership($postAuthorId);
+        return $this->_filter(__FUNCTION__, [], function($self, $params) use ($postAuthorId) {
+            return $this->__detectOwnership($postAuthorId);
+        });
     }
 
     /**
@@ -153,7 +194,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return strtotime($this->read('user.silenceUntil')) < time();
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return strtotime($this->read('user.silenceUntil')) < time();
+        });
     }
 
     /**
@@ -165,7 +208,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return (bool) $this->read('user.social');
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return (bool)$this->read('user.social');
+        });
     }
 
     /**
@@ -178,7 +223,9 @@ class User extends \lithium\storage\Session {
         if((!$this->isLoggedIn()) and (!$this->hasFavouritePitches())) {
             return false;
         }
-        return in_array($pitchId, $this->read('user.faves'));
+        return $this->_filter(__FUNCTION__, [], function($self, $params) use ($pitchId) {
+            return in_array($pitchId, $this->read('user.faves'));
+        });
     }
 
     /**
@@ -190,7 +237,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return is_array($this->read('user.faves'));
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return is_array($this->read('user.faves'));
+        });
     }
 
     /**
@@ -202,7 +251,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return (int) $this->read('user.id');
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return (int)$this->read('user.id');
+        });
     }
 
     /**
@@ -214,7 +265,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return $this->read('user.first_name');
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return $this->read('user.first_name');
+        });
     }
 
     /**
@@ -226,7 +279,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return $this->read('user.last_name');
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return $this->read('user.last_name');
+        });
     }
 
     /**
@@ -238,7 +293,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return $this->getFirstname() . ' ' . $this->getLastname();
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return $this->getFirstname() . ' ' . $this->getLastname();
+        });
     }
 
     /**
@@ -250,7 +307,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return $this->read('user.email');
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return $this->read('user.email');
+        });
     }
     
     /**
@@ -262,7 +321,9 @@ class User extends \lithium\storage\Session {
         if(!$this->isLoggedIn()) {
             return false;
         }
-        return $this->read('user.created');
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return $this->read('user.created');
+        });
     }
 
     /**
@@ -275,26 +336,28 @@ class User extends \lithium\storage\Session {
      * @return bool
      */
     public function getFormattedName($firstName = null, $lastName = null, $full = false) {
-        if($this->isAdmin() && $full == true) {
-            if(!is_null($firstName) && !is_null($lastName)) {
-                return $firstName . ' ' . $lastName;
-            }else {
-                return $this->getFirstname() . ' ' . $this->getLastname();
+        return $this->_filter(__FUNCTION__, [], function($self, $params) use ($firstName, $lastName, $full) {
+            if($this->isAdmin() && $full == true) {
+                if(!is_null($firstName) && !is_null($lastName)) {
+                    return $firstName . ' ' . $lastName;
+                }else {
+                    return $this->getFirstname() . ' ' . $this->getLastname();
+                }
             }
-        }
-        $inflectorClassName = $this->_options['inflector'];
-        if(($this->read('user.is_company') == 1) && ($this->read('user.short_company_name') != '')) {
-            if(is_null($firstName) && is_null($lastName)) {
-                return $inflectorClassName::renderName($this->read('user.short_company_name'), null, true);
+            $inflectorClassName = $this->_options['inflector'];
+            if (($this->read('user.is_company') == 1) && ($this->read('user.short_company_name') != '')) {
+                if (is_null($firstName) && is_null($lastName)) {
+                    return $inflectorClassName::renderName($this->read('user.short_company_name'), null, true);
+                }
             }
-        }
-        if(!is_null($firstName) && !is_null($lastName)) {
-            return $inflectorClassName::renderName($firstName, $lastName);
-        }
-        if(!$this->isLoggedIn()) {
-            return false;
-        }
-        return $inflectorClassName::renderName($this->getFirstname(), $this->getLastname());
+            if (!is_null($firstName) && !is_null($lastName)) {
+                return $inflectorClassName::renderName($firstName, $lastName);
+            }
+            if (!$this->isLoggedIn()) {
+                return false;
+            }
+            return $inflectorClassName::renderName($this->getFirstname(), $this->getLastname());
+        });
     }
 
     /**
@@ -357,11 +420,13 @@ class User extends \lithium\storage\Session {
      * @return mixed
      */
     public function getAvatarUrl() {
-        if(!$avatarUrl = $this->read('user.images.avatar_small.weburl')) {
-            return $this->_options['defaultAvatarUrl'];
-        }else {
-            return $avatarUrl;
-        }
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            if (!$avatarUrl = $this->read('user.images.avatar_small.weburl')) {
+                return $this->_options['defaultAvatarUrl'];
+            } else {
+                return $avatarUrl;
+            }
+        });
     }
 
     /**
@@ -377,19 +442,20 @@ class User extends \lithium\storage\Session {
         if (!$this->isLoggedIn()) {
             return false;
         }
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            $userModel = $this->_options['userModel'];
+            $timeWait = $userModel::designerTimeWait((int)$this->read('user.id'));
 
-        $userModel = $this->_options['userModel'];
-        $timeWait = $userModel::designerTimeWait((int) $this->read('user.id'));
+            $datetime1 = new \DateTime();
+            $datetime2 = new \DateTime(date('Y-m-d H:i:s', (strtotime($this->read('user.created')) + $timeWait * DAY)));
+            $interval = $datetime2->diff($datetime1);
 
-        $datetime1 = new \DateTime();
-        $datetime2 = new \DateTime(date('Y-m-d H:i:s', (strtotime($this->read('user.created')) + $timeWait * DAY)));
-        $interval = $datetime2->diff($datetime1);
+            if ($interval->invert == 0) {
+                return false;
+            }
 
-        if ($interval->invert == 0) {
-            return false;
-        }
-
-        return $interval;
+            return $interval;
+        });
     }
 
     /**
@@ -437,18 +503,18 @@ class User extends \lithium\storage\Session {
     /**
      * Метод помощник, добавляет "а" к слову, если пол - женский
      *
-     * @param $txt
+     * @param $string
      * @param int $gender
      * @return string
      */
-    public function getGenderTxt($txt,$gender=0) {
+    public function getGenderTxt($string, $gender = 0) {
         // 0 - не установлен
         // 1 - м
         // 2 - ж
         if ($gender > 1) {
-            $txt .='а';
+            $string .='а';
         }
-        return $txt;
+        return $string;
     }
 
     /**
@@ -497,8 +563,10 @@ class User extends \lithium\storage\Session {
      */
     public function getBalance() {
         if($this->isLoggedIn()) {
-            $userModel = $this->_options['userModel'];
-            return $userModel::getBalance($this->getId());
+            return $this->_filter(__FUNCTION__, [], function($self, $params) {
+                $userModel = $this->_options['userModel'];
+                return $userModel::getBalance($this->getId());
+            });
         }
         return false;
     }
@@ -510,8 +578,10 @@ class User extends \lithium\storage\Session {
      */
     public function getShortCompanyName() {
         if($this->isLoggedIn()) {
-            $userModel = $this->_options['userModel'];
-            return $userModel::getShortCompanyName($this->getId());
+            return $this->_filter(__FUNCTION__, [], function($self, $params) {
+                $userModel = $this->_options['userModel'];
+                return $userModel::getShortCompanyName($this->getId());
+            });
         }
         return false;
     }
@@ -571,6 +641,19 @@ class User extends \lithium\storage\Session {
             return $userModel::getCurrentPlanData($this->getId());
         }
         return false;
+    }
+
+    /**
+     * Метод-обёртка для получения размера скидки
+     *
+     * @param $userId
+     * @return mixed
+     */
+    public function getSubscriptionDiscount($userId) {
+        return $this->_filter(__FUNCTION__, [], function($self, $params) use ($userId) {
+            $userModel = $this->_options['userModel'];
+            return $userModel::getSubscriptionDiscount($userId);
+        });
     }
 
 }

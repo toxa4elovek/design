@@ -1043,3 +1043,31 @@ span.new-price:hover {
     text-align: right;
     cursor: pointer;
 }
+/** timer **/
+#timer {
+    position: fixed;
+    z-index: 15;
+    bottom:220px;
+    right: 110px;
+    padding-top: 6px;
+}
+.lcd {
+    width: 212px;
+    height: 51px;
+    padding-left: 30px;
+    display: block;
+    background-color: #282a34;
+    background-image: -webkit-linear-gradient(bottom, #2a2d35 0%, #353848 8%, #222432 25%, #040a26 48%, #40424f 100%);
+    background-image: linear-gradient(to top, #2a2d35 0%, #353848 8%, #222432 25%, #040a26 48%, #40424f 100%);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    opacity: 0.8;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 0 24px rgba(40, 42, 52, 0.1);
+    font-family: DS, serif;
+    text-shadow: 0 0 5px rgba(38, 82, 132, 0.54);
+    color: #65a771;
+    font-size: 57px;
+    font-style: italic;
+    line-height: 51px;
+    text-align: left;
+}

@@ -104,6 +104,7 @@ require LITHIUM_LIBRARY_PATH . '/lithium/template/view/Compiler.php';
 require LITHIUM_LIBRARY_PATH . '/lithium/template/view/adapter/File.php';
 require LITHIUM_LIBRARY_PATH . '/lithium/storage/Cache.php';
 require LITHIUM_LIBRARY_PATH . '/lithium/storage/cache/adapter/Apc.php';
+require LITHIUM_LIBRARY_PATH . '/lithium/analysis/Logger.php';
 
 //Facebook SDK
 require LITHIUM_APP_PATH.'/libraries/facebook-sdk/src/facebook.php';
@@ -130,7 +131,6 @@ Libraries::add('li3_fixtures');
 Libraries::add('li3_mailer');
 Libraries::add('li3_flash_message');
 Libraries::add('li3_oauth');
-Libraries::add('image_manipulation');
 Libraries::add('tmhOAuth');
 Libraries::add('li3_assets', array(
     'config' => array(
@@ -153,5 +153,4 @@ Libraries::add('li3_assets', array(
         ),
     ),
 ));
-
-?>
+//Libraries::add('li3_quality');

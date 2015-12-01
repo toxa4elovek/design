@@ -37,7 +37,20 @@
                     </div>
                     <div class="clear"></div>
 
-                    <?=$this->view()->render(array('element' => 'experts/expert-faq'), array('questions' => $questions))?>
+                    <div class="margins-1" style="margin-top: 47px; margin-bottom: 33px;">
+                        <section class="howitworks">
+                            <h1>faq</h1>
+                        </section>
+                    </div>
+
+                    <ul class="faq vp_one" style="margin-left: 0; margin-bottom: 20px;">
+                        <?php foreach($questions as $answer): ?>
+                            <li>
+                                <p class="regular" style="padding: 0;"><a href="/answers/view/<?=$answer->id ?>" target="_blank"><?= $answer->title ?></a></p>
+                                <div style="background:url(/img/sep.png) repeat-x;height:4px;"></div>
+                            </li>
+                        <?php endforeach?>
+                    </ul>
 
                 </div>
             </div><!-- /content -->

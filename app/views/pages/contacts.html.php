@@ -69,8 +69,6 @@
                         <div id="ap_content_r_2" style="margin-top: 20px;">
                             <h2 class="greyboldheader">Часто задаваемые вопросы</h2>
                             <?=$this->faq->show($questions)?>
-
-                            <a href="/answers" class="av">Все вопросы</a>
                         </div>
 
                     </div>
