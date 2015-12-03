@@ -125,10 +125,10 @@ var EnjoyHint = function (_options) {
                     if (step_data.skipButton){
                         $(".enjoyhint_skip_btn").addClass(step_data.skipButton.className || "");
                         $(".enjoyhint_skip_btn").text(step_data.skipButton.text || "Skip");
-                        if(step_data.selector != '') {
+                        if(step_data.selectorClick != '') {
                             $(".enjoyhint_skip_btn").off('click');
                             $(".enjoyhint_skip_btn").on('click', function() {
-                                $('a', step_data.selector)[0].click();
+                                $('a', step_data.selectorClick)[0].click();
                                 //destroyEnjoy();
                                 return true;
                             });

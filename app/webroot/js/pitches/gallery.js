@@ -19,10 +19,10 @@ $(document).ready(function () {
     if (projectStatusInput.length == 1 && projectStatusInput.val() == 0) {
         projectStatus = true;
     }
-    console.log(isOwner);
-    console.log(projectPublished);
-    console.log(projectStatus);
-    if (isOwner && projectStatus && projectPublished && typeof getCookie('tutorial') == 'undefined') {
+    if (typeof needConfirmation == 'undefined') {
+        needConfirmation = false;
+    }
+    if (!needConfirmation && isOwner && projectStatus && projectPublished && typeof getCookie('tutorial') == 'undefined') {
         var tutorial = new EnjoyHint({
             onSkip: function onSkip() {
                 writeCookie('tutorial', true, 90);
@@ -37,21 +37,21 @@ $(document).ready(function () {
             "showNext": true,
             "nextButton": { "text": "Далее" },
             "skipButton": { "text": "Узнать" },
-            "selector": '.helptools'
+            "selectorClick": '.helptools'
         }, {
             "next .helppinned": 'Мало решений? Позвольте нам привлечь больше<br>дизайнеров к своему проекту!',
             "showSkip": true,
             "showNext": true,
             "nextButton": { "text": "Нет, спасибо!" },
             "skipButton": { "text": "Подробнее" },
-            "selector": '.helppinned'
+            "selectorClick": '.helppinned'
         }, {
-            "next .helpbrief": 'Правильно заполненное ТЗ &mdash залог эффективной работы',
+            "next .helpbrief": 'Правильно заполненное ТЗ — залог эффективной работы',
             "showSkip": true,
             "showNext": true,
             "nextButton": { "text": "Далее" },
             "skipButton": { "text": "Подробнее" },
-            "selector": '.helpbrief'
+            "selectorClick": '.helpbrief'
         }];
         tutorial.set(steps);
         tutorial.run();
@@ -72,7 +72,7 @@ $(document).ready(function () {
 
     $('#resend').click(function () {
         $('#mailsent').show();
-        $.get('/users/resend.json', function (response) {});
+        $.get('/users/resend.json');
         return false;
     });
 
