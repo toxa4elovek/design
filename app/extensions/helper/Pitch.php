@@ -114,7 +114,7 @@ class Pitch extends \lithium\template\Helper {
     public function getPenalty($projectRecord) {
         //http://www.godesigner.ru/answers/view/70
         $diff = time() - $this->getChooseWinnerTime($projectRecord);
-        return floor($diff / 60 / 60) * 25;
+        return ceil($diff / 60 / 60) * 25;
     }
 
     /**

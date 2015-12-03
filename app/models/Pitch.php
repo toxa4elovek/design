@@ -2058,7 +2058,7 @@ class Pitch extends AppModel {
             $latePointOfTime = strtotime($projectRecord->awardedDate);
         }
         $diff = $latePointOfTime - $time;
-        return floor($diff / 60 / 60) * 25;
+        return ceil($diff / 60 / 60) * 25;
     }
 
     /**

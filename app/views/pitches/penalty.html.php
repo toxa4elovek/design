@@ -111,7 +111,7 @@ line-height: 27px;margin-top: 20px;">Оплата штрафа <?= (int) $total?
                     </div>
 
                 </div>
-                <div class="selecting_numb"><a href="/users/view/<?= $solution->user_id ?>" class="portfolio_gallery_username">Дмитрий С.</a><a href="#" class="number_img_gallery" data-comment-to="#<?= $solution->num ?>">#<?= $solution->num ?></a></div>
+                <div class="selecting_numb"><a href="/users/view/<?= $solution->user_id ?>" class="portfolio_gallery_username"><?= $this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?= $solution->num ?>">#<?= $solution->num ?></a></div>
             </div>
 
 
