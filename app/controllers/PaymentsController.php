@@ -20,6 +20,8 @@ class PaymentsController extends AppController {
      * Обработка платежных уведомлений от Payture
      */
     public function payture_callback() {
+        error_reporting(0);
+        @ini_set('display_errors', 0);
         if (!empty($this->request->data)) {
             if(($this->request->data['SessionType'] == 'Pay') && ($this->request->data['Success'] == 'True')) {
                 $transaction = Payment::create();

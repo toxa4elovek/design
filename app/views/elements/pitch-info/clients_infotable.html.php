@@ -1,17 +1,20 @@
+<input type="hidden" name="is_owner" value="<?=(int) $this->user->isPitchOwner($pitch->user_id)?>" />
+<input type="hidden" name="project_status" value="<?=$pitch->status?>" />
+<input type="hidden" name="project_published" value="<?=$pitch->published?>" />
 <table class="pitch-info-table" border="1">
     <tr>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1">
             <span class="regular">Решений:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pitch-info-text"><?=$pitch->ideas_count ?></span>
         </td>
         <td width="15"></td>
-        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;" class="helptools">
             <span class="regular">Инструменты заказчика:</span>
-            <a class="order-button" href="/answers/view/78">Просмотреть</a>
+            <a class="order-button" href="/answers/view/78" target="_blank">Просмотреть</a>
         </td>
         <?php if($pitch->billed == 1): ?>
             <td width="15"></td>
             <?php if ($pitch->status == 0):?>
-            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <td width="255" height="25" class="helpexpert" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                 <span class="regular">Мнение эксперта <a href="http://www.godesigner.ru/answers/view/66" target="_blank">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=experts-checkbox">Заказать</a>
             </td>
@@ -28,7 +31,7 @@
         </td>
         <td width="15"></td>
         <?php if (($pitch->pinned == 0) && ($pitch->status == 0)):?>
-        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+        <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;" class="helppinned">
             <span class="regular">Прокачать бриф <a href="http://www.godesigner.ru/answers/view/67" target="_blank">(?)</a></span>
             <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=pinned">Заказать</a>
         </td>
@@ -44,7 +47,7 @@
         <?php if($pitch->billed == 1): ?>
             <td width="15"></td>
             <?php if ($pitch->status == 0):?>
-            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;" class="helpbrief">
                 <?php if ($pitch->brief == 1):?>
                     <span class="regular">Бриф заполнен:</span>&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'));?>
                 <?php else:?>

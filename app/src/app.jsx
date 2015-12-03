@@ -1389,6 +1389,23 @@ function enableToolbar() {
     warningModal();
 }
 
+function writeCookie(name, value, days) {
+    const now = new Date();
+    let time = now.getTime();
+    time += 3600 * 1000 * 24 * days;
+    now.setTime(time);
+    const stringTime = now.toUTCString();
+    value = String(value);
+    document.cookie = `${name}=${value}; expires=${stringTime}; path=/`;
+}
+
+function getCookie(name) {
+    var matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 function solutionTooltip() {
     // Solutions Tooltips
     $('.hoverimage[data-comment-to]').tooltip2({

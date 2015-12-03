@@ -82,6 +82,7 @@
 
 <?=$this->html->script(array(
     'flux/flux.min.js',
+    '/js/enjoyhint.js',
     'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999),
     '//assets.pinterest.com/js/pinit.js',
     'jquery.simplemodal-1.4.2.js',
@@ -98,4 +99,4 @@
     'pitches/view.js',
     'pitches/gallery.js'
 ), array('inline' => false))?>
-<?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>
+<?=$this->html->style(array('/css/enjoyhint.css', '/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>
