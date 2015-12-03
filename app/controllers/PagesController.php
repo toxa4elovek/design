@@ -33,6 +33,9 @@ class PagesController extends AppController {
         if (preg_match('/experts/', $path[0])) {
             return $this->redirect('/experts');
         }
+        if (preg_match('/fastpitch/', $path[0])) {
+            return $this->redirect('/fastpitch');
+        }
         $questions = $this->popularQuestions();
         $answers = Answer::all(array('conditions' => array('questioncategory_id' => 2), 'limit' => 10, 'order' => array('hits' => 'desc')));
         return $this->render(array('template' => join('/', $path), 'data' => array('questions' => $questions, 'answers' => $answers)));

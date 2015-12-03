@@ -212,7 +212,7 @@ http://godesigner.ru/answers/view/73');
         $result = false;
         $solution = self::first($solutionId);
         if ($userId == 0) {
-            return $solution->likes;
+            return array('result' => $result, 'likes' => $solution->likes);
         }
         $pitch = Pitch::first(array('conditions' => array('id' => $solution->pitch_id)));
         $userId = (int) $userId;

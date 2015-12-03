@@ -43,6 +43,7 @@
                             <ul class="date-hide">
                                 <?php
                                 $j = 1;
+                                if(isset($alllow_time)):
                                 foreach ($alllow_time as $i => $v): ?>
                                     <li data-num="<?php echo $j; ?>">
                                         <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
@@ -52,7 +53,8 @@
                                     if($j == 5):
                                         $j = 1;
                                     endif;
-                                endforeach; ?>
+                                endforeach;
+                                    endif;?>
                             </ul>
                             <div class="clear" style="clear:both;"></div>
                             <p>Мы наберем вас в указанный час. Интервью займет примерно 40 минут.</p>

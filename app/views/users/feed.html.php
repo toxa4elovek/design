@@ -81,6 +81,7 @@
                                 <?php
                                 $solutionDate = '';
                                 $count = 0;
+                                if((isset($solutions)) && ($solutions) && (count($solutions) > 0)):
                                 foreach ($solutions as $solution):
                                     if (isset($solution->solution->images['solution_leftFeed'])) :
                                         if (isset($solution->solution->images['solution_leftFeed'][0]['weburl'])) {
@@ -153,6 +154,7 @@
                                         //var_dump($solution->solution->data());
                                     endif;
                                 endforeach;
+                                endif;
                                 ?>
                                 <script type="text/javascript">
                                     var solutionDate = '<?= date('Y-m-d H:i:s', strtotime($solutionDate)) ?>';
