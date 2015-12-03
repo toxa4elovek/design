@@ -197,6 +197,7 @@ function mb_basename($file)
 
 <?=$this->html->script(array(
     'flux/flux.min.js',
+    '/js/enjoyhint.js',
     'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999),
     '//assets.pinterest.com/js/pinit.js',
     'jquery.simplemodal-1.4.2.js',
@@ -215,4 +216,4 @@ function mb_basename($file)
     'pitches/gallery.js',
     'pitches/details.js'
 ), array('inline' => false))?>
-<?=$this->html->style(array('/messages12', '/pitches12', '/view', '/pitch_overview', '/css/social-likes_flat'), array('inline' => false))?>
+<?=$this->html->style(array('/css/enjoyhint.css', '/messages12', '/pitches12', '/view', '/pitch_overview', '/css/social-likes_flat'), array('inline' => false))?>

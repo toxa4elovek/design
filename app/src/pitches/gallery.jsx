@@ -1,96 +1,104 @@
-'use strict';
+$(document).ready(function() {
 
-$(document).ready(function () {
-
-    var isOwner = false;
-    var isOwnerInput = $('input[name=is_owner]');
-    if (isOwnerInput.length == 1 && isOwnerInput.val() == 1) {
+    let isOwner = false;
+    const isOwnerInput = $('input[name=is_owner]');
+    if((isOwnerInput.length == 1) && (isOwnerInput.val() == 1)) {
         isOwner = true;
     }
 
-    var projectPublished = false;
-    var projectPublishedInput = $('input[name=project_published]');
-    if (projectPublishedInput.length == 1 && projectPublishedInput.val() == 1) {
+    let projectPublished = false;
+    const projectPublishedInput = $('input[name=project_published]');
+    if((projectPublishedInput.length == 1) && (projectPublishedInput.val() == 1)) {
         projectPublished = true;
     }
 
-    var projectStatus = false;
-    var projectStatusInput = $('input[name=project_status]');
-    if (projectStatusInput.length == 1 && projectStatusInput.val() == 0) {
+    let projectStatus = false;
+    const projectStatusInput = $('input[name=project_status]');
+    if((projectStatusInput.length == 1) && (projectStatusInput.val() == 0)) {
         projectStatus = true;
     }
     console.log(isOwner);
     console.log(projectPublished);
     console.log(projectStatus);
-    if (isOwner && projectStatus && projectPublished && typeof getCookie('tutorial') == 'undefined') {
-        var tutorial = new EnjoyHint({
-            onSkip: function onSkip() {
-                writeCookie('tutorial', true, 90);
-            },
-            onEnd: function onEnd() {
-                writeCookie('tutorial', true, 90);
+    if(isOwner && projectStatus && projectPublished && (typeof(getCookie('tutorial')) == 'undefined')) {
+        const tutorial = new EnjoyHint(
+            {
+                onSkip: function(){
+                    writeCookie('tutorial', true, 90);
+                },
+                onEnd: function() {
+                    writeCookie('tutorial', true, 90);
+                }
             }
-        });
-        var steps = [{
-            "next .helptools": 'Узнайте свои возможности при проведении проекта',
-            "showSkip": true,
-            "showNext": true,
-            "nextButton": { "text": "Далее" },
-            "skipButton": { "text": "Узнать" },
-            "selector": '.helptools'
-        }, {
-            "next .helppinned": 'Мало решений? Позвольте нам привлечь больше<br>дизайнеров к своему проекту!',
-            "showSkip": true,
-            "showNext": true,
-            "nextButton": { "text": "Нет, спасибо!" },
-            "skipButton": { "text": "Подробнее" },
-            "selector": '.helppinned'
-        }, {
-            "next .helpbrief": 'Правильно заполненное ТЗ &mdash залог эффективной работы',
-            "showSkip": true,
-            "showNext": true,
-            "nextButton": { "text": "Далее" },
-            "skipButton": { "text": "Подробнее" },
-            "selector": '.helpbrief'
-        }];
+        );
+        const steps = [
+            {
+                "next .helptools" : 'Узнайте свои возможности при проведении проекта',
+                "showSkip": true,
+                "showNext": true,
+                "nextButton" : {"text": "Далее"},
+                "skipButton" : {"text": "Узнать"},
+                "selector": '.helptools'
+            },
+            {
+                "next .helppinned" : 'Мало решений? Позвольте нам привлечь больше<br>дизайнеров к своему проекту!',
+                "showSkip": true,
+                "showNext": true,
+                "nextButton" : {"text": "Нет, спасибо!"},
+                "skipButton" : {"text": "Подробнее"},
+                "selector": '.helppinned'
+            },
+            {
+                "next .helpbrief" : 'Правильно заполненное ТЗ &mdash залог эффективной работы',
+                "showSkip": true,
+                "showNext": true,
+                "nextButton" : {"text": "Далее"},
+                "skipButton" : {"text": "Подробнее"},
+                "selector": '.helpbrief'
+            }
+        ];
         tutorial.set(steps);
         tutorial.run();
     }
 
-    $(document).on('click', '.ajaxgallery', function (e) {
+    // Navigation
+    $(document).on('click', '.ajaxgallery', function(e) {
         e.preventDefault();
         if (window.history.pushState) {
-            window.history.pushState('object or string', 'Title', this.href);
+            window.history.pushState('object or string', 'Title', this.href); // @todo Check params
             gallerySwitch.historyChange();
         } else {
             window.location = $(this).attr('href');
         }
     });
-    if (window.location.href.match(/pitches\/designers/)) {
-        $(window).on('popstate', function () {});
+    if(window.location.href.match(/pitches\/designers/)) {
+        $(window).on('popstate', function() {
+            //gallerySwitch.historyChange();
+        });
     }
 
-    $('#resend').click(function () {
+    $('#resend').click(function() {
         $('#mailsent').show();
-        $.get('/users/resend.json', function (response) {});
+        $.get('/users/resend.json', function(response) {
+        })
         return false;
-    });
+    })
 
-    $(document).on('click', '.add_solution', function () {
-        if (!$(this).hasClass('needWait') && !$(this).hasClass('needConfirm')) {
+    $(document).on('click', '.add_solution', function() {
+        if ((!$(this).hasClass('needWait')) && (!$(this).hasClass('needConfirm'))) {
             return true;
         }
-        if ($(this).hasClass('needConfirm')) {
+        if($(this).hasClass('needConfirm')) {
             $('#popup-need-confirm-email').modal({
                 containerId: 'gotest-popup_gallery',
                 opacity: 80,
-                closeClass: 'gotest-close'
+                closeClass: 'gotest-close',
             });
-        } else if ($(this).hasClass('needWait')) {
+        }else if ($(this).hasClass('needWait')) {
             $('#popup-need-wait').modal({
                 containerId: 'gotest-popup_gallery',
                 opacity: 80,
-                closeClass: 'gotest-close'
+                closeClass: 'gotest-close',
             });
         }
         return false;
@@ -99,60 +107,68 @@ $(document).ready(function () {
     gallerySwitch.tabInit();
     enableToolbar();
 
-    $('#client-only-toggle').change(function () {
-        if ($(this).attr('checked')) {
-            $.each($('section[data-type="designer"]', '.messages_gallery'), function (index, object) {
+    // details.js start
+    /* ==============*/
+    $('#client-only-toggle').change(function() {
+        if($(this).attr('checked')) {
+            $.each($('section[data-type="designer"]', '.messages_gallery'), function(index, object) {
                 var comment = $(object);
                 comment.hide();
                 var separator = comment.next('.separator');
-                if (separator && separator.length == 1) {
+                if((separator) && (separator.length == 1)) {
                     separator.hide();
                 }
-            });
-        } else {
-            $.each($('section[data-type="designer"]', '.messages_gallery'), function (index, object) {
+            })
+        }else {
+            $.each($('section[data-type="designer"]', '.messages_gallery'), function(index, object) {
                 var comment = $(object);
                 comment.show();
                 var separator = comment.next('.separator');
-                if (separator && separator.length == 1) {
+                if((separator) && (separator.length == 1)) {
                     separator.show();
                 }
-            });
+            })
         }
-    });
+    })
 
-    $(document).on('click', '.scroll_right', function () {
+    // details.js end
+    /* ==============*/
+    // designers.js start
+
+    // Scrolling
+    $(document).on('click', '.scroll_right', function() {
         var $wrapper = $(this).parent();
         var self = $(this);
         var $opp = self.prev();
         var $el = $wrapper.children('ul');
-        $el.animate({ left: '-=216' }, 500, function () {
+        $el.animate({left: '-=216'}, 500, function() {
             if ($el.position().left < 0) {
                 $opp.show();
             }
             if ($el.width() + $el.position().left < $wrapper.width() + 10) {
                 self.hide();
-                $el.animate({ right: -($el.width() - $el.parent().width()) }, 0);
+                $el.animate({right: -($el.width() - $el.parent().width())}, 0);
             }
         });
     });
-    $(document).on('click', '.scroll_left', function () {
+    $(document).on('click', '.scroll_left', function() {
         var $wrapper = $(this).parent();
         var self = $(this);
         var $opp = self.next();
         var $el = $wrapper.children('ul');
-        $el.animate({ left: '+=216' }, 500, function () {
+        $el.animate({left: '+=216'}, 500, function() {
             if ($el.width() + $el.position().left > $wrapper.width()) {
                 $opp.show();
             }
             if ($el.position().left >= 0) {
                 self.hide();
-                $el.animate({ left: 0 }, 0);
+                $el.animate({left: 0}, 0);
             }
         });
     });
 
-    $(document).on('click', '.next_part_design', function (e) {
+    // Designers buttons
+    $(document).on('click', '.next_part_design', function(e) {
         e.preventDefault();
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
@@ -160,25 +176,25 @@ $(document).ready(function () {
             count: $('.designer_row').length
         };
         var $search = $('#designer-name-search');
-        if ($search.val().length > 0 && $search.val() != $search.data('placeholder')) {
+        if (($search.val().length > 0) && ($search.val() != $search.data('placeholder'))) {
             data.search = $search.val();
         }
         var gallerySorting = getParameterByName('sorting');
         if (gallerySorting.length > 0) {
             data.sorting = gallerySorting;
         }
-        $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), data, function (response) {
+        $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), data, function(response) {
             var designersCount = $($(response)[0]).val();
-            obj = $('<div/>').html(response).contents();
-            obj.each(function (index) {
+            obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+            obj.each(function(index) {
                 if ($(this).is('li')) {
                     $(this).css('opacity', '0');
                 }
             });
             obj.appendTo('.portfolio_gallery.designers_tab');
-            obj.each(function (index) {
+            obj.each(function(index) {
                 if ($(this).is('li')) {
-                    $(this).animate({ opacity: 1 }, 500);
+                    $(this).animate({opacity:1}, 500);
                 }
             });
             $('.gallery_postload_loader').hide();
@@ -191,7 +207,7 @@ $(document).ready(function () {
             checkScrollers();
         });
     });
-    $(document).on('click', '.rest_part_design', function (e) {
+    $(document).on('click', '.rest_part_design', function(e) {
         e.preventDefault();
         $('.button_more').css('opacity', 0);
         $('.gallery_postload_loader').show();
@@ -200,24 +216,24 @@ $(document).ready(function () {
             rest: 1
         };
         var $search = $('#designer-name-search');
-        if ($search.val().length > 0 && $search.val() != $search.data('placeholder')) {
+        if (($search.val().length > 0) && ($search.val() != $search.data('placeholder'))) {
             data.search = $search.val();
         }
         var gallerySorting = getParameterByName('sorting');
         if (gallerySorting.length > 0) {
             data.sorting = gallerySorting;
         }
-        $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), data, function (response) {
-            obj = $('<div/>').html(response).contents();
-            obj.each(function (index) {
+        $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), data, function(response) {
+            obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+            obj.each(function(index) {
                 if ($(this).is('li')) {
                     $(this).css('opacity', '0');
                 }
             });
             obj.appendTo('.portfolio_gallery.designers_tab');
-            obj.each(function (index) {
+            obj.each(function(index) {
                 if ($(this).is('li')) {
-                    $(this).animate({ opacity: 1 }, 500);
+                    $(this).animate({opacity:1}, 500);
                 }
             });
             $('.gallery_postload_loader').hide();
@@ -229,6 +245,7 @@ $(document).ready(function () {
         });
     });
 
+    // Search
     function searchCallback($search, forced) {
         var forced = forced || false;
         var $form = $search.parent();
@@ -237,20 +254,20 @@ $(document).ready(function () {
         if ($buttons.is(':visible') || forced) {
             $container.html('<img id="search-ajax-loader" src="/img/blog-ajax-loader.gif" style="margin: 0 0 100px 400px;">');
             $buttons.hide();
-            $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), $form.serialize(), function (response) {
+            $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), $form.serialize(), function(response) {
                 var designersCount = $($(response)[0]).val();
                 $('#search-ajax-loader').remove();
                 if (designersCount != 0) {
-                    obj = $('<div/>').html(response).contents();
-                    obj.each(function (index) {
+                    obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+                    obj.each(function(index) {
                         if ($(this).is('li')) {
                             $(this).css('opacity', '0');
                         }
                     });
                     obj.appendTo($container);
-                    obj.each(function (index) {
+                    obj.each(function(index) {
                         if ($(this).is('li')) {
-                            $(this).animate({ opacity: 1 }, 500);
+                            $(this).animate({opacity:1}, 500);
                         }
                     });
                     if ($('.designer_row').length < designersCount) {
@@ -266,7 +283,7 @@ $(document).ready(function () {
             });
         } else {
             var pattern = $search.val().toLowerCase();
-            $('.designer_row').each(function (idx, obj) {
+            $('.designer_row').each(function(idx, obj) {
                 var name = $(obj).find('.designer_name').text().toLowerCase();
                 if (name.indexOf(pattern) == -1) {
                     $(obj).fadeOut(200);
@@ -275,7 +292,7 @@ $(document).ready(function () {
                     $(obj).fadeIn(200);
                 }
             });
-            setTimeout(function () {
+            setTimeout(function() {
                 if ($('.designer_row:visible').length == 0) {
                     $('.ooopsSign', $container).remove();
                     $container.append('<div class="ooopsSign" style="text-align: center; margin-bottom: 50px;"><h2 class="largest-header" style="line-height: 2em;">УПС, НИЧЕГО НЕ НАШЛИ!</h2><p class="large-regular">Попробуйте еще раз, изменив запрос.</p></div>');
@@ -284,73 +301,75 @@ $(document).ready(function () {
         }
     }
 
-    $(document).on('submit', '#designers-search', function () {
+    $(document).on('submit', '#designers-search', function() {
         var $search = $('#designer-name-search');
-        if ($search.val().length == 0 || $search.val() == $search.data('placeholder')) {
+        if (($search.val().length == 0) || ($search.val() == $search.data('placeholder'))) {
             $search.val('');
         }
         searchCallback($search, true);
         return false;
     });
 
-    $(document).on('keyup', '#designer-name-search', function (e) {
+    // Live Search
+    $(document).on('keyup', '#designer-name-search', function(e) {
         clearTimeout($.data(this, 'timer'));
         if (e.keyCode == 13) {
             return true;
         }
 
-        var c = e.keyCode;
+        var c = (e.keyCode);
         var isWordCharacter = checkSymbol(c);
-        var isBackspaceOrDelete = e.keyCode == 8 || e.keyCode == 46 || e.keyCode == 16;
+        var isBackspaceOrDelete = (e.keyCode == 8 || e.keyCode == 46 || e.keyCode == 16);
 
         if (!isWordCharacter && !isBackspaceOrDelete) {
             return false;
         }
         var $search = $(this);
         var forced = false;
-        if ($search.val().length == 0 || $search.val() == $search.data('placeholder')) {
+        if (($search.val().length == 0) || ($search.val() == $search.data('placeholder'))) {
             $search.val('');
             forced = true;
         }
-        $(this).data('timer', setTimeout(function () {
-            searchCallback($search, forced);
-        }, 600));
+        $(this).data('timer', setTimeout(function() { searchCallback($search, forced); }, 600));
         return true;
     });
 
-    $(document).on('focus', '#designer-name-search', function () {
+    $(document).on('focus', '#designer-name-search', function() {
         $('#designers-search').addClass('active');
     });
-    $(document).on('blur', '#designer-name-search', function () {
+    $(document).on('blur', '#designer-name-search', function() {
         $('#designers-search').removeClass('active');
     });
 
     function checkSymbol(code) {
-        var all = [32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239];
+        var all = [32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239]
         if ($.inArray(code, all) == -1) {
             return false;
         }
         return true;
     }
+    // designers.js end
+    /* ==============*/
 });
 
 function checkScrollers() {
-    $.each($('.designer_wrapper'), function (idx, obj) {
+    $.each($('.designer_wrapper'), function(idx, obj) {
         if ($(obj).width() < $('ul', $(obj)).first().width()) {
             $('.scroll_right', $(obj)).show();
         }
     });
 }
 
-var gallerySwitch = (function () {
-    var activateTab = function activateTab($el) {
+var gallerySwitch = (function() {
+    // Make Tab Active
+    var activateTab = function($el) {
         $('.tabs-curve').find('li').removeClass('active');
         $el.parent().addClass('active');
     };
+    // Gallery Tab Init
+    var initGallery = function() {
 
-    var initGallery = function initGallery() {
-
-        if (typeof needConfirmation != 'undefined' && needConfirmation) {
+        if((typeof(needConfirmation) != 'undefined') && (needConfirmation)) {
             $('#phone-confirm').modal({
                 containerId: 'spinner',
                 opacity: 80,
@@ -369,22 +388,22 @@ var gallerySwitch = (function () {
             });
         }
 
-        $(document).on('click', '#save-mobile', function () {
+        $(document).on('click', '#save-mobile', function() {
             var form = $('#mobile-form');
             var phonenumber = $('input[name=phone]', form).val();
             var data = form.serialize();
-            $.post('/users/update.json', data, function (response) {
+            $.post('/users/update.json', data, function(response) {
                 var paragraph = $('.confirm-message', '.user-mobile-section');
                 var text = '';
-                if (response == 'false') {
+                if(response == 'false') {
                     text = 'К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.';
                     $('#phone-confirm').css('height', '445px');
                     paragraph.text(text).show();
-                } else if (response == 'limit') {
+                }else if(response == 'limit') {
                     text = 'К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.';
                     $('#phone-confirm').css('height', '445px');
                     paragraph.text(text).show();
-                } else {
+                }else {
                     if (response.indexOf('error') != -1) {
                         text = 'Произошел сбой доставки SMS-сообщения. Попробуйте позже.';
                         paragraph.text(text).show();
@@ -408,14 +427,15 @@ var gallerySwitch = (function () {
             return false;
         });
 
-        $(document).on('click', '.resend-code', function () {
-            var data = { "resendcode": true };
-            $.post('/users/update.json', data, function (response) {
+        $(document).on('click', '.resend-code', function() {
+            var data = {"resendcode": true};
+            $.post('/users/update.json', data, function(response) {
                 var paragraph = $('.confirm-message', '.user-mobile-section');
                 var text = '';
-                if (response == 'limit') {
+                if(response == 'limit') {
                     text = 'К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.';
-                } else {
+
+                }else{
                     if (response.indexOf('error') != -1) {
                         text = 'Произошел сбой доставки SMS-сообщения. Попробуйте позже.';
                     } else {
@@ -428,8 +448,8 @@ var gallerySwitch = (function () {
             return false;
         });
 
-        $(document).on('click', '.remove-number-link', function () {
-            var data = { "removephone": true };
+        $(document).on('click', '.remove-number-link', function(){
+            var data = {"removephone": true};
             $.post('/users/update.json', data);
             $('.confirm-message').hide();
             $('ul', '#mobile-form').hide();
@@ -446,15 +466,15 @@ var gallerySwitch = (function () {
             return false;
         });
 
-        $(document).on('click', '#confirm-mobile', function () {
-            var data = { "code": $('input[name=phone_code]', '.user-mobile-section').val() };
-            $.post('/users/update.json', data, function (response) {
+        $(document).on('click', '#confirm-mobile', function() {
+            var data = {"code": $('input[name=phone_code]', '.user-mobile-section').val()};
+            $.post('/users/update.json', data, function(response) {
                 var paragraph = $('.confirm-message', '.user-mobile-section');
-                if (response == 'false') {
+                if(response == 'false') {
                     text = 'Вы ввели неверный код.';
                     paragraph.text(text).show();
                     $('.help').css('margin-top', '8px');
-                } else {
+                }else {
                     $('.mobile-close').show();
                     $('h2', '#phone-confirm').text('Спасибо, номер подтвержден!');
                     paragraph.hide();
@@ -472,44 +492,53 @@ var gallerySwitch = (function () {
             return false;
         });
 
-        fetchPitchComments();
 
+        // Refresh Comments
+        fetchPitchComments();
+        // Pancake
         try {
-            if ($('#placeholder').length > 0) {
+            if($('#placeholder').length > 0) {
                 renderFloatingBlock();
             }
-        } catch (err) {}
-        var floatingBlockHeight = $('#floatingblock').height();
+        }catch(err) {
+
+        }
+        var floatingBlockHeight = $('#floatingblock').height()
         var offset = $('#floatingblock').offset();
-        $(window).scroll(function () {
+        $(window).scroll(function() {
             var currentPosition = $(window).scrollTop() + floatingBlockHeight;
             var obj = $('#floatingblock');
-            if (currentPosition < offset.top) {} else {
-                    obj.removeClass('fixed');
-                }
+            if (currentPosition < offset.top) {
+                //console.log(currentPosition + ' vs ' + offset.top);
+                //$('#floatingblock').addClass('fixed');
+            } else {
+                //console.log('removing fixed' + currentPosition);
+                obj.removeClass('fixed');
+            }
             var height = $(window).height();
             var scrollTop = $(window).scrollTop();
             var pos = obj.position();
             if (height + scrollTop > pos.top) {
                 $('#dinamic').fadeOut(150);
-            } else {
+            }
+            else {
                 $('#dinamic').fadeIn(150);
             }
         });
         $('.social-likes').socialLikes();
-
-        $("#scroller").draggable({ drag: function drag() {
-                var x = $('#scroller').css('left');
-                x = parseInt(x.substring(0, x.length - 2));
-                var mod = ($('.konvajs-content', '#container').width() - 476) / 350;
-                $('.konvajs-content', '#container').css('right', Math.round(x * mod) + 'px');
-            }, axis: "x", containment: "parent" });
+        // Plot
+        $( "#scroller" ).draggable({ drag: function() {
+            var x = $('#scroller').css('left');
+            x = parseInt(x.substring(0, x.length - 2));
+            var mod = ($('.konvajs-content', '#container').width() - 476) / 350;
+            $('.konvajs-content', '#container').css('right', Math.round(x * mod) + 'px');
+        }, axis: "x", containment: "parent"});
     };
-
-    var initDetails = function initDetails() {
+    // Details Tab Init
+    var initDetails = function() {
         $('.time').timeago();
         var logoProperties = $.parseJSON(decodeURIComponent($('#logo_properties').data('props')));
-        $(".slider").each(function (index, object) {
+        $( ".slider" ).each(function(index, object) {
             var value = parseInt(logoProperties[index]);
             $(object).slider({
                 disabled: true,
@@ -519,10 +548,10 @@ var gallerySwitch = (function () {
                 step: 1
             });
         });
-
+        // Refresh Comments
         fetchPitchComments();
-
-        setTimeout(function () {
+        // Reinit Socials
+        setTimeout(function() {
             $('.social-likes').socialLikes();
         }, 2000);
 
@@ -534,49 +563,52 @@ var gallerySwitch = (function () {
             size: 24,
             readOnly: $('#pitch_rating').data('read'),
             start: $('#pitch_rating').data('rating'),
-            click: function click(score, evt) {
-                $.post('/rating/save.json', { "id": $(this).data('pitchid'), "rating": score }, function (response) {});
+            click: function(score, evt) {
+                $.post('/rating/save.json',
+                    {"id": $(this).data('pitchid'), "rating": score}, function(response) {
+                    });
                 $('#take-part').show('fast');
             }
         });
 
-        $('.btn-success').on('click', function () {
+        $('.btn-success').on('click', function() {
             {
-                $.post('/rating/takePart.json', { "id": $(this).data('pitchid') });
+                $.post('/rating/takePart.json', {"id": $(this).data('pitchid')});
                 $('#take-part').hide('fast');
             }
         });
-    };
 
-    var initDesigners = function initDesigners() {
+    };
+    // Designers Tab Init
+    var initDesigners = function() {
         checkScrollers();
     };
     return {
-        historyChange: function historyChange() {
+        historyChange: function() {
             var url = window.location.pathname;
             activateTab($('a[href="' + window.location.pathname + '"]'));
             $(window).off('scroll');
             var $container = $('.gallery_container');
             $container.html('<img id="search-ajax-loader" src="/img/blog-ajax-loader.gif" style="margin: 60px 0 100px 400px;">');
-            $.get(url, { fromTab: true }, function (response) {
+            $.get(url, {fromTab: true}, function(response) {
                 var $replacement = $(response).find('.gallery_container');
                 $container.hide().html($replacement).fadeIn();
                 gallerySwitch.tabInit();
             });
         },
-        tabInit: function tabInit() {
-            if (window.location.pathname.indexOf('view') != -1) {
+        tabInit: function() {
+            if (window.location.pathname.indexOf('view') != -1) { // Gallery Tab Init
                 initGallery();
-            } else if (window.location.pathname.indexOf('details') != -1) {
+            } else if (window.location.pathname.indexOf('details') != -1) { // Details Tab Init
                 initDetails();
-            } else if (window.location.pathname.indexOf('designers') != -1) {
+            } else if (window.location.pathname.indexOf('designers') != -1) { // Designers Tab Init
                 initDesigners();
             }
         }
-    };
-})();
+    }
+}());
 
-$(document).mouseup(function (e) {
+$(document).mouseup(function(e) {
     var container = $("#take-part");
     if (container.has(e.target).length === 0) {
         container.hide('fast');

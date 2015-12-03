@@ -377,18 +377,20 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 .header {
     height: 60px;
     margin-bottom: 89px;
+    position: relative;
 }
 .header2 {
     height: 60px;
+    position: relative;
 }
 .logo {
-    width: 257px;
+    width: 260px;
     height: 141px;
     text-indent: -9999px;
     float: left;
     margin-left: -8px;
     margin-top: -36px;
-    position: absolute;
+    position: relative;
     z-index: 5;
 }
 .logo a {
@@ -443,13 +445,11 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     margin-left: 0;
 }
 .header .topnav, .header2 .topnav {
-    float: left;
     padding-top: 10px;
     height: 44px;
-    margin-left: 98px;
-    padding-left: 35px;
-    position: relative;
+    position: absolute;
     z-index: 11;
+    left: 130px;
 }
 .header .add-pitch, .header2 .add-pitch {
     float: right;
