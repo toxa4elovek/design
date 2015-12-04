@@ -598,7 +598,7 @@ class Pitch extends AppModel {
     }
 
     public static function dailypitch() {
-        $pitches = Pitch::all(array('conditions' => array('published' => 1, 'blank' => 0, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
+        $pitches = Pitch::all(array('conditions' => array('published' => 1, 'blank' => 0, 'status' => 0, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
         if (count($pitches) > 0) {
             $users = User::all(array('conditions' => array('email_newpitchonce' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''))));
             foreach ($users as $user) {
