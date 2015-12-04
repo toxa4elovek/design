@@ -657,35 +657,37 @@ class ParsingSites extends \app\extensions\command\CronJob {
 
     private function ParsingDesnewsru() {
         $xml = simplexml_load_file('http://desnews.ru/?feed=rss2');
-        foreach ($xml->channel->item as $item) {
-            $trigger = News::doesNewsExists($item->title,  $item->guid);
-            if (!$trigger) {
-                $date = new \DateTime($item->published);
-                $content = file_get_contents($item->guid);
-                preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
-                $count = count($matches[1]);
-                $image = '';
-                for ($i = 0; $i < $count; $i++) {
-                    if (strpos($matches[1][$i], 'uploads/')) {
-                        $image = $matches[1][$i];
-                        if($i == 1) {
-                            break;
+        if(($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
+            foreach ($xml->channel->item as $item) {
+                $trigger = News::doesNewsExists($item->title,  $item->guid);
+                if (!$trigger) {
+                    $date = new \DateTime($item->published);
+                    $content = file_get_contents($item->guid);
+                    preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+                    $count = count($matches[1]);
+                    $image = '';
+                    for ($i = 0; $i < $count; $i++) {
+                        if (strpos($matches[1][$i], 'uploads/')) {
+                            $image = $matches[1][$i];
+                            if($i == 1) {
+                                break;
+                            }
                         }
                     }
-                }
-                $data = array(
-                    'title' => (string) $item->title,
-                    'short' => strip_tags($item->description),
-                    'tags' => 'Дизайн',
-                    'created' => $date->format('Y-m-d H:i:s'),
-                    'link' => (string) $item->guid,
-                    'imageurl' => $image,
-                    'lang' => 'ru'
-                );
+                    $data = array(
+                        'title' => (string) $item->title,
+                        'short' => strip_tags($item->description),
+                        'tags' => 'Дизайн',
+                        'created' => $date->format('Y-m-d H:i:s'),
+                        'link' => (string) $item->guid,
+                        'imageurl' => $image,
+                        'lang' => 'ru'
+                    );
 
-                $news = News::create($data);
-                $news->save();
-                Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                    $news = News::create($data);
+                    $news->save();
+                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                }
             }
         }
     }
