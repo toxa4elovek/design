@@ -12,15 +12,55 @@ $(document).ready(function() {
         projectPublished = true;
     }
 
-    let projectStatus = false;
+    let projectStatusActive = false;
     const projectStatusInput = $('input[name=project_status]');
     if((projectStatusInput.length == 1) && (projectStatusInput.val() == 0)) {
-        projectStatus = true;
+        projectStatusActive = true;
     }
+
+    let projectStatusChooseWinner = false;
+    const projectAwardedInput = $('input[name=project_awarded]');
+    if(((projectStatusInput.length == 1) && (projectStatusInput.val() == 1)) && (
+        (projectAwardedInput.length == 1) && (projectAwardedInput.val() == 0)
+    )) {
+        projectStatusChooseWinner = true;
+    }
+
+    let projectExpert = false;
+    const projectExpertInput = $('input[name=project_expert]');
+    if((projectExpertInput.length == 1) && (projectExpertInput.val() == 1)) {
+        projectExpert = true;
+    }
+
     if(typeof(needConfirmation) == 'undefined') {
         needConfirmation = false;
     }
-    if(!needConfirmation && isOwner && projectStatus && projectPublished && (typeof(getCookie('tutorial')) == 'undefined')) {
+    if(isOwner && !projectExpert && projectStatusChooseWinner && (typeof(getCookie('expert_tutorial')) == 'undefined')) {
+        const tutorial = new EnjoyHint(
+            {
+                onSkip: function(){
+                    writeCookie('expert_tutorial', true, 90);
+                },
+                onEnd: function() {
+                    writeCookie('expert_tutorial', true, 90);
+                }
+            }
+        );
+        const steps = [
+            {
+                "next .helpexpert" : 'Сложности с выбором? Опытный эксперт подскажет<br/> правильный выбор',
+                "showSkip": true,
+                "showNext": true,
+                "nextButton" : {"text": "Нет, спасибо!"},
+                "skipButton" : {"text": "Подробнее"},
+                "selectorClick": '.helpexpert'
+            }
+        ];
+        tutorial.set(steps);
+        tutorial.run();
+    }
+
+    if(!needConfirmation && isOwner && projectStatusActive && projectPublished && (typeof(getCookie('tutorial')) == 'undefined')) {
         const tutorial = new EnjoyHint(
             {
                 onSkip: function(){

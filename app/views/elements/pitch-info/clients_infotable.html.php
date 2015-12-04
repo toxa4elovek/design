@@ -1,6 +1,8 @@
 <input type="hidden" name="is_owner" value="<?=(int) $this->user->isPitchOwner($pitch->user_id)?>" />
 <input type="hidden" name="project_status" value="<?=$pitch->status?>" />
 <input type="hidden" name="project_published" value="<?=$pitch->published?>" />
+<input type="hidden" name="project_expert" value="<?=$pitch->expert?>" />
+<input type="hidden" name="project_awarded" value="<?=$pitch->awarded?>" />
 <table class="pitch-info-table" border="1">
     <tr>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1">
@@ -13,7 +15,7 @@
         </td>
         <?php if($pitch->billed == 1): ?>
             <td width="15"></td>
-            <?php if ($pitch->status == 0):?>
+            <?php if (($pitch->status == 0) || ($pitch->status == 1 && $pitch->awarded == 0)):?>
             <td width="255" height="25" class="helpexpert" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                 <span class="regular">Мнение эксперта <a href="http://www.godesigner.ru/answers/view/66" target="_blank">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=experts-checkbox">Заказать</a>
