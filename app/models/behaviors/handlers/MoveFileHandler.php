@@ -43,8 +43,10 @@ class MoveFileHandler extends \app\models\behaviors\handlers\StaticHandler {
                             $newfilename = generateHashName($params['record']->id, LITHIUM_APP_PATH . $options['path']) . '.' . $info['extension'];
                         }
                         $path = LITHIUM_APP_PATH . $options['path'].$newfilename;
-                        if(copy($file['tmp_name'], $path)){
-                            $file['newname'] = $path;
+                        if(file_exists($file['tmp_name'])) {
+                            if(copy($file['tmp_name'], $path)){
+                                $file['newname'] = $path;
+                            }
                         }
                     }
                 }else {
@@ -62,8 +64,10 @@ class MoveFileHandler extends \app\models\behaviors\handlers\StaticHandler {
                         $newfilename = generateHashName($params['record']->id, LITHIUM_APP_PATH . $options['path']) . '.' . $info['extension'];
                     }
                     $path = LITHIUM_APP_PATH . $options['path'].$newfilename;
-                    if(copy($params['uploadedFile']['data']['tmp_name'], $path)){
-                        $params['uploadedFile']['data']['newname'] = $path;
+                    if(file_exists($params['uploadedFile']['data']['tmp_name'])) {
+                        if (copy($params['uploadedFile']['data']['tmp_name'], $path)) {
+                            $params['uploadedFile']['data']['newname'] = $path;
+                        }
                     }
                 }
 
