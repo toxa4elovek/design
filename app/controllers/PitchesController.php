@@ -1112,7 +1112,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
             ];
 
             $currentUser = Session::read('user.id');
-            if (($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
+            if (($pitch->published == 0) && ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isAdmin()))) {
                 return $this->redirect('/pitches');
             }
             if ($pitch->private == 1) {
