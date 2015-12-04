@@ -3,6 +3,14 @@
 <input type="hidden" name="project_published" value="<?=$pitch->published?>" />
 <input type="hidden" name="project_expert" value="<?=$pitch->expert?>" />
 <input type="hidden" name="project_awarded" value="<?=$pitch->awarded?>" />
+<?php
+$finishSoon = 0;
+if(strtotime($pitch->finishDate) - (2 * DAY) < time()):
+    $diff = abs((strtotime($pitch->finishDate) - time()) / DAY);
+    $finishSoon = ceil($diff);
+endif;
+?>
+<input type="hidden" name="finish_soon" value="<?=$finishSoon?>" />
 <table class="pitch-info-table" border="1">
     <tr>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1">
@@ -79,7 +87,7 @@
         <?php if($pitch->billed == 1): ?>
             <td width="15"></td>
             <?php if ($pitch->status == 0):?>
-            <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
+            <td width="255" height="25" class="helpprolong" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                 <span class="regular">Продлить срок <a href="http://www.godesigner.ru/answers/view/88" target="_blank">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=prolong">Заказать</a>
             </td>

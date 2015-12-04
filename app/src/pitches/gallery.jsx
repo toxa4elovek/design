@@ -35,6 +35,44 @@ $(document).ready(function() {
     if(typeof(needConfirmation) == 'undefined') {
         needConfirmation = false;
     }
+
+    let finishSoon = 0;
+    const finishSoonInput = $('input[name=finish_soon]');
+    if((finishSoonInput.length == 1) && (finishSoonInput.val() > 0)) {
+        finishSoon = finishSoonInput.val() ;
+    }
+
+    if(isOwner && finishSoon > 0 && projectStatusActive && (typeof(getCookie('prolong_tutorial')) == 'undefined')) {
+        const tutorial = new EnjoyHint(
+            {
+                onSkip: function(){
+                    writeCookie('prolong_tutorial', true, 90);
+                },
+                onEnd: function() {
+                    writeCookie('prolong_tutorial', true, 90);
+                }
+            }
+        );
+        let message = `Осталось ${finishSoon} дней приёма работ. Хотите продлить срок?`;
+        if (finishSoon == 2) {
+            message = 'Осталось 2 дня приёма работ. Хотите продлить срок?';
+        }else if(finishSoon == 1) {
+            message = 'Остался 1 день приёма работ. Хотите продлить срок?';
+        }
+        const steps = [
+            {
+                "next .helpprolong" : message,
+                "showSkip": true,
+                "showNext": true,
+                "nextButton" : {"text": "Нет, спасибо!"},
+                "skipButton" : {"text": "Подробнее"},
+                "selectorClick": '.helpprolong'
+            }
+        ];
+        tutorial.set(steps);
+        tutorial.run();
+    }
+
     if(isOwner && !projectExpert && projectStatusChooseWinner && (typeof(getCookie('expert_tutorial')) == 'undefined')) {
         const tutorial = new EnjoyHint(
             {
