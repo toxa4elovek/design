@@ -42,7 +42,7 @@ $(document).ready(function() {
         finishSoon = finishSoonInput.val() ;
     }
 
-    if(isOwner && finishSoon > 0 && projectStatusActive && (typeof(getCookie('prolong_tutorial')) == 'undefined')) {
+    if(isOwner && projectPublished && finishSoon > 0 && projectStatusActive && (typeof(getCookie('prolong_tutorial')) == 'undefined')) {
         const tutorial = new EnjoyHint(
             {
                 onSkip: function(){
@@ -73,7 +73,7 @@ $(document).ready(function() {
         tutorial.run();
     }
 
-    if(isOwner && !projectExpert && projectStatusChooseWinner && (typeof(getCookie('expert_tutorial')) == 'undefined')) {
+    if(isOwner && projectPublished && !projectExpert && projectStatusChooseWinner && (typeof(getCookie('expert_tutorial')) == 'undefined')) {
         const tutorial = new EnjoyHint(
             {
                 onSkip: function(){
