@@ -203,7 +203,7 @@ endif?>
             </ul>
             <div style="clear:both; font-size: 18px; font-family: OfficinaSansC Book, serif;"></div>
         </div>
-
+        <?php if((isset($experts)) && $experts):?>
         <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
             <p class="option"><label><input type="checkbox" name="" <?php if($pitch->expert): echo "checked"; endif;?> class="multi-check" data-option-title="экспертное мнение" data-option-value="1000" id="experts-checkbox">Экспертное мнение</label></p>
             <!--p class="description"><a href="#" id="expert-trigger">Наши эксперты</a> с опытом работы в ведущих рекламных агентствах помогут вам с выбором варианта <a href="#" class="second tooltip" title="Эксперт укажет   и прокомментирует 3 лучших решения, которые максимально отвечают на вашу задачу. Вы можете выбрать несколько экспертов и заручиться надёжной поддержкой.">(?)</a></p-->
@@ -234,7 +234,7 @@ endif?>
                 </li>
             <?php endforeach?>
         </ul><!-- .experts -->
-
+        <?php endif?>
         <!--div class="ribbon">
                       <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Email рассылка" data-option-value="1000">Email рассылка</label></p>
                       <p class="description">Увеличить число креативщиков, дизайнеров или копирайтеров с помощью рассылки по email <a href="#" class="second">(?)</a></p>
