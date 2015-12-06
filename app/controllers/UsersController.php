@@ -1564,7 +1564,7 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function view() {
-        if ($user = User::first($this->request->id)) {
+        if ((isset($this->request->id)) && ($user = User::first((int) $this->request->id))) {
             if (($user->active == 0) && !User::checkRole('admin')):
                 return $this->redirect('/');
             endif;
