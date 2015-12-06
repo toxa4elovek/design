@@ -7,11 +7,13 @@ use \app\models\Wp_post;
 use \app\models\News;
 use \app\models\Event;
 
-class ParsingSites extends \app\extensions\command\CronJob {
+class ParsingSites extends \app\extensions\command\CronJob
+{
 
     public static $debug = false;
 
-    public function run() {
+    public function run()
+    {
         // На случай долгих таймаутов
         set_time_limit(120);
         $startTimeStamp = time();
@@ -159,7 +161,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
     }
 
-    private function ParsingGodesigner() {
+    private function ParsingGodesigner()
+    {
         $posts = Post::all(array('conditions' => array('published' => 1, 'created' => array('<=' => date('Y-m-d H:i:s'))), 'limit' => 300, 'order' => array('created' => 'desc')));
         foreach ($posts as $post) {
             $trigger = News::doesNewsExists((string) $post->title, 'http://www.godesigner.ru/posts/view/' . $post->id);
@@ -186,7 +189,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingTutdesign() {
+    private function ParsingTutdesign()
+    {
         $posts = Wp_post::all(array(
                     'conditions' => array(
                         'post_status' => 'publish',
@@ -202,9 +206,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
         ));
 
         foreach ($posts as $item) {
-            if($item->category == 'images') {
+            if ($item->category == 'images') {
                 $trigger = true;
-            }else {
+            } else {
                 $trigger = News::doesNewsExists((string) $item->post_title, (string) $item->guid);
             }
             if (!$trigger) {
@@ -229,7 +233,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingVozduhAfisha() {
+    private function ParsingVozduhAfisha()
+    {
         $xml = file_get_contents('http://vozduh.afisha.ru/export/rss/');
         $xml = simplexml_load_string($xml);
 
@@ -263,7 +268,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingColta() {
+    private function ParsingColta()
+    {
         $xml = simplexml_load_file('http://www.colta.ru/feed');
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
@@ -309,7 +315,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true, $lang = 'en') {
+    private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true, $lang = 'en')
+    {
         $xml = simplexml_load_file($url);
         if (($xml->channel->item) && (count($xml->channel->item > 0))) {
             foreach ($xml->channel->item as $item) {
@@ -321,7 +328,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     if (isset($matches[1])) {
                         $image = $matches[1];
                     }
-                    if($lang == 'ru') {
+                    if ($lang == 'ru') {
                         $news = News::create(array(
                             'title' => $item->title,
                             'short' => strip_tags($item->description),
@@ -331,7 +338,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'imageurl' => $image,
                             'lang' => $lang
                         ));
-                    }else {
+                    } else {
                         $news = News::create(array(
                             'title' => $this->translate($item->title),
                             'original_title' => $item->title,
@@ -344,12 +351,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
                             'lang' => $lang
                         ));
                     }
-                    if(self::$debug == false) {
+                    if (self::$debug == false) {
                         $news->save();
                         if ($event) {
                             Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
                         }
-                    }else {
+                    } else {
                         var_dump($news->data());
                     }
                 }
@@ -357,31 +364,35 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingVice() {
+    private function ParsingVice()
+    {
         $xml = simplexml_load_file('http://www.vice.com/ru/rss');
-        foreach ($xml->channel->item as $item) {
-            $trigger = News::doesNewsExists((string) $item->title, $item->link);
-            if (!$trigger) {
-                $this->out('Saving - ' . $item->title);
-                $date = new \DateTime($item->pubDate);
-                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
-                if (isset($matches[1])) {
-                    $news = News::create(array(
-                                'title' => $item->title,
-                                'short' => preg_replace('@\[.*\]@', '', strip_tags($item->description)),
-                                'tags' => substr($item->category, 0, strpos($item->category, ',')),
-                                'created' => $date->format('Y-m-d H:i:s'),
-                                'link' => $item->link,
-                                'imageurl' => $matches[1]
-                    ));
-                    $news->save();
-                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+        if (($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
+            foreach ($xml->channel->item as $item) {
+                $trigger = News::doesNewsExists((string) $item->title, $item->link);
+                if (!$trigger) {
+                    $this->out('Saving - ' . $item->title);
+                    $date = new \DateTime($item->pubDate);
+                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                    if (isset($matches[1])) {
+                        $news = News::create(array(
+                                    'title' => $item->title,
+                                    'short' => preg_replace('@\[.*\]@', '', strip_tags($item->description)),
+                                    'tags' => substr($item->category, 0, strpos($item->category, ',')),
+                                    'created' => $date->format('Y-m-d H:i:s'),
+                                    'link' => $item->link,
+                                    'imageurl' => $matches[1]
+                        ));
+                        $news->save();
+                        Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                    }
                 }
             }
         }
     }
 
-    private function ParsingRoyalcheese() {
+    private function ParsingRoyalcheese()
+    {
         $url = 'http://www.royalcheese.ru/';
         $xml = simplexml_load_file($url . 'rss/');
         foreach ($xml->channel->item as $item) {
@@ -421,13 +432,13 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingLookatme() {
+    private function ParsingLookatme()
+    {
         $xml = simplexml_load_file('http://www.lookatme.ru/feeds/posts.atom?topic=people');
         foreach ($xml->entry as $item) {
             $trigger = News::doesNewsExists((string) $item->title, (string) $item->id);
 
             if (!$trigger) {
-
                 $date = new \DateTime($item->published);
                 $content = file_get_contents($item->id);
                 libxml_use_internal_errors(true);
@@ -471,12 +482,12 @@ class ParsingSites extends \app\extensions\command\CronJob {
                         'imageurl' => $image,
                         'lang' => 'ru'
                     );
-                    if(self::$debug == false) {
+                    if (self::$debug == false) {
                         $this->out('Saving - ' . $item->title);
                         $news = News::create($data);
                         $news->save();
                         Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
-                    }else {
+                    } else {
                         var_dump($item);
                         var_dump($data);
                     }
@@ -485,7 +496,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingVillage() {
+    private function ParsingVillage()
+    {
         $xml = simplexml_load_file('http://www.the-village.ru/feeds/posts.atom');
         $newsList = News::all();
         foreach ($xml->entry as $item) {
@@ -512,7 +524,9 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     if (strpos($matches[1][$i], 'lamcdn.net')) {
                         $image = $matches[1][$i];
                         ++$img;
-                        if ($img >= 2) break;
+                        if ($img >= 2) {
+                            break;
+                        }
                     }
                 }
                 if (strlen($image) > 0 && strlen($cat) > 0) {
@@ -534,7 +548,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
     }
 
 
-    private function ParsingKoko($url) {
+    private function ParsingKoko($url)
+    {
         $xml = simplexml_load_file($url);
         foreach ($xml->channel->item as $item) {
             $trigger = News::doesNewsExists((string) $item->title, $item->link);
@@ -554,18 +569,19 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     'imageurl' => $image,
                     'lang' => 'ru'
                 );
-                if(self::$debug == false) {
+                if (self::$debug == false) {
                     $news = News::create($data);
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
-                }else {
+                } else {
                     var_dump($data);
                 }
             }
         }
     }
 
-    private function ParsingRss($url) {
+    private function ParsingRss($url)
+    {
         $xml = simplexml_load_file($url);
         foreach ($xml->channel->item as $item) {
             $trigger = News::doesNewsExists((string) $item->title, (string) $item->link);
@@ -585,18 +601,19 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     'imageurl' => $image,
                     'lang' => 'ru'
                 );
-                if(self::$debug == false) {
+                if (self::$debug == false) {
                     $news = News::create($data);
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
-                }else {
+                } else {
                     var_dump($data);
                 }
             }
         }
     }
 
-    private function ParsingSimpleRss($url) {
+    private function ParsingSimpleRss($url)
+    {
         $xml = simplexml_load_file($url);
         foreach ($xml->channel->item as $item) {
             $trigger = News::doesNewsExists((string) $item->title, (string) $item->link);
@@ -604,8 +621,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
                 $date = new \DateTime($item->published);
                 $image = '';
 
-                foreach($item->enclosure->attributes() as $key => $value) {
-                    if($key == 'url') {
+                foreach ($item->enclosure->attributes() as $key => $value) {
+                    if ($key == 'url') {
                         $image = (string) $value;
                     }
                 }
@@ -618,18 +635,19 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     'imageurl' => $image,
                     'lang' => 'ru'
                 );
-                if(self::$debug == false) {
+                if (self::$debug == false) {
                     $news = News::create($data);
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
-                }else {
+                } else {
                     var_dump($data);
                 }
             }
         }
     }
 
-    private function ParsingInterview($url) {
+    private function ParsingInterview($url)
+    {
         $xml = simplexml_load_file($url);
         foreach ($xml->channel->item as $item) {
             $trigger = News::doesNewsExists((string) $item->title, (string) $item->link, (string) $item->guid);
@@ -644,20 +662,21 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     'imageurl' => (string) $item->guid,
                     'lang' => 'ru'
                 );
-                if(self::$debug == false) {
+                if (self::$debug == false) {
                     $news = News::create($data);
                     $news->save();
                     Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
-                }else {
+                } else {
                     var_dump($data);
                 }
             }
         }
     }
 
-    private function ParsingDesnewsru() {
+    private function ParsingDesnewsru()
+    {
         $xml = simplexml_load_file('http://desnews.ru/?feed=rss2');
-        if(($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
+        if (($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
             foreach ($xml->channel->item as $item) {
                 $trigger = News::doesNewsExists($item->title,  $item->guid);
                 if (!$trigger) {
@@ -669,7 +688,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
                     for ($i = 0; $i < $count; $i++) {
                         if (strpos($matches[1][$i], 'uploads/')) {
                             $image = $matches[1][$i];
-                            if($i == 1) {
+                            if ($i == 1) {
                                 break;
                             }
                         }
@@ -692,7 +711,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingPackaginguqam() {
+    private function ParsingPackaginguqam()
+    {
         $xml = simplexml_load_file('http://feeds.feedburner.com/blogspot/mzWJ?format=xml');
         foreach ($xml->entry as $item) {
             $trigger = News::doesNewsExists($item->title,  substr($item->link['href'], 0, strpos($item->link['href'], '#')));
@@ -715,7 +735,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingAbduzeedo() {
+    private function ParsingAbduzeedo()
+    {
         $xml = simplexml_load_file('http://feeds.feedburner.com/abduzeedo');
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
@@ -747,7 +768,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function ParsingUnderconsideration() {
+    private function ParsingUnderconsideration()
+    {
         $xml = simplexml_load_file('http://feeds.feedburner.com/ucllc/fpo');
         $newsList = News::all();
         foreach ($xml->entry as $item) {
@@ -778,7 +800,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function hel_looks() {
+    private function hel_looks()
+    {
         $xml = simplexml_load_file('http://feeds.feedburner.com/hel-looks');
         $newsList = News::all();
         foreach ($xml->channel->item as $item) {
@@ -791,8 +814,7 @@ class ParsingSites extends \app\extensions\command\CronJob {
             if (!$trigger) {
                 $date = new \DateTime($item->pubDate);
                 preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
-                if (isset($matches[1]))
-                {
+                if (isset($matches[1])) {
                     $news = News::create(array(
                                 'title' => $this->translate((string) $item->title),
                                 'original_title' => (string) $item->title,
@@ -811,7 +833,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         }
     }
 
-    private function fixTags() {
+    private function fixTags()
+    {
         $newsList = News::all();
         $trigger = false;
         foreach ($newsList as $news) {
@@ -838,20 +861,21 @@ class ParsingSites extends \app\extensions\command\CronJob {
      * @return string.
      *
      */
-    function curlRequest($url, $authHeader, $postData=''){
+    public function curlRequest($url, $authHeader, $postData='')
+    {
         //Initialize the Curl Session.
         $ch = curl_init();
         //Set the Curl url.
-        curl_setopt ($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $url);
         //Set the HTTP HEADER Fields.
-        curl_setopt ($ch, CURLOPT_HTTPHEADER, array($authHeader,"Content-Type: text/xml"));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array($authHeader, "Content-Type: text/xml"));
         //CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
-        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
-        curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, False);
-        if($postData) {
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        if ($postData) {
             //Set HTTP POST Request.
-            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POST, true);
             //Set data to POST in HTTP "POST" Operation.
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         }
@@ -875,10 +899,11 @@ class ParsingSites extends \app\extensions\command\CronJob {
      *
      * @return string.
      */
-    function createReqXML($languageCode) {
+    public function createReqXML($languageCode)
+    {
         //Create the Request XML.
         $requestXml = '<ArrayOfstring xmlns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">';
-        if($languageCode) {
+        if ($languageCode) {
             $requestXml .= "<string>$languageCode</string>";
         } else {
             throw new Exception('Language Code is empty.');
@@ -887,7 +912,8 @@ class ParsingSites extends \app\extensions\command\CronJob {
         return $requestXml;
     }
 
-    function translate($text) {
+    public function translate($text)
+    {
         $from = "en";
         $to = "ru";
 
@@ -900,11 +926,10 @@ class ParsingSites extends \app\extensions\command\CronJob {
         $xml = simplexml_load_string($strResponse);
         $json = json_encode($xml);
         $array = json_decode($json, true);
-        if(isset($array[0])) {
+        if (isset($array[0])) {
             return $array[0];
-        }else {
+        } else {
             return '';
         }
     }
-
 }
