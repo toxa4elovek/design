@@ -210,6 +210,9 @@ ul.social_share li {
     width:100%;
     border:1px;
 }
+.pitch-info-table span a:hover {
+	text-decoration: underline;
+}
 body.pitches_upload .pitch-info-table,
 body.pitches_upload #pitch-title {
 	margin-left: 23px;

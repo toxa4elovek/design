@@ -660,6 +660,32 @@ a.number_img_gallery {
     height: 48px;
     padding-left: 14px;
 }
+#tooltip4 {
+    padding: 4px 0 0 0 !important;
+    background: url(/img/tooltip-bg2-top-stripe.png) 0 0 no-repeat !important;
+}
+#tooltip4 .tooltip-wrap {
+    padding: 10px 10px 22px 10px;
+    background: url(/img/tooltip-bottom-bg2.png) 0 100% no-repeat !important;
+}
+#tooltip4 .tooltip-wrap #tooltipContent {
+    width: 180px;
+    height: 105px;
+    padding-left: 4px;
+}
+#tooltip5 {
+    padding: 4px 0 0 0 !important;
+    background: url(/img/tooltip-bg2-top-stripe.png) 0 0 no-repeat !important;
+}
+#tooltip5 .tooltip-wrap {
+    padding: 10px 10px 22px 10px;
+    background: url(/img/tooltip-bottom-bg2.png) 0 100% no-repeat !important;
+}
+#tooltip5 .tooltip-wrap #tooltipContent {
+    width: 180px;
+    height: 165px;
+    padding-left: 4px;
+}
 /*#tooltip.tooltip-pos-bottom {
     padding: 4px 0 0 0 !important;
     background: url(/img/tooltip-bg-top-stripe.png) 0 0 no-repeat !important;

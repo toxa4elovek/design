@@ -23,12 +23,16 @@ $(document).ready(function () {
                 var indicator = $('#indicator-desc');
                 indicator.removeClass('low normal good');
                 var textarea = $('#full-description');
+                const tooltipBriefDescription = $('#tooltip-brief-description');
                 if (chars < textarea.data('normal')) {
                     indicator.addClass('low');
+                    tooltipBriefDescription.fadeIn();
                 } else if (chars < textarea.data('high')) {
                     indicator.addClass('normal');
+                    tooltipBriefDescription.fadeOut();
                 } else {
                     indicator.addClass('good');
+                    tooltipBriefDescription.fadeOut();
                 }
             });
         }
