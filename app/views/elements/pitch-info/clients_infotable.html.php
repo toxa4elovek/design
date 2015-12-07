@@ -25,7 +25,8 @@ endif;
             <td width="15"></td>
             <?php if (($pitch->status == 0) || ($pitch->status == 1 && $pitch->awarded == 0)):?>
             <td width="255" height="25" class="helpexpert" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                <span class="regular">Мнение эксперта <a href="http://www.godesigner.ru/answers/view/66" target="_blank">(?)</a></span>
+                <span class="regular">
+                    <a href="http://www.godesigner.ru/answers/view/66" target="_blank">Мнение эксперта</a> <a href="http://www.godesigner.ru/answers/view/66" target="_blank" class="tooltip_hints" title="Опытный эксперт поможет с выбором и укажет 3 решения, которые максимально отвечают вашей задаче.">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=experts-checkbox">Заказать</a>
             </td>
             <?php else: ?>
@@ -42,7 +43,7 @@ endif;
         <td width="15"></td>
         <?php if (($pitch->pinned == 0) && ($pitch->status == 0)):?>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;" class="helppinned">
-            <span class="regular">Прокачать бриф <a href="http://www.godesigner.ru/answers/view/67" target="_blank">(?)</a></span>
+            <span class="regular"><a href="http://www.godesigner.ru/answers/view/67" target="_blank">Прокачать бриф</a> <a href="http://www.godesigner.ru/answers/view/67" target="_blank" class="tooltip_hints" title="С помощью опции вы сможете повысить число предложенных вариантов на 15-40%.">(?)</a></span>
             <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=pinned">Заказать</a>
         </td>
         <?php else: ?>
@@ -61,7 +62,7 @@ endif;
                 <?php if ($pitch->brief == 1):?>
                     <span class="regular">Бриф заполнен:</span>&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'));?>
                 <?php else:?>
-                    <span class="regular">Заполнить бриф <a href="http://www.godesigner.ru/answers/view/68" target="_blank">(?)</a></span>
+                    <span class="regular"><a href="http://www.godesigner.ru/answers/view/68" target="_blank">Заполнить бриф</a> <a href="http://www.godesigner.ru/answers/view/68" target="_blank" class="tooltip_hints" title="Наши специалисты правильно сформулируют ожидания и напишут профессиональное ТЗ на основе интервью по тел.">(?)</a></span>
                     <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=phonebrief">Заказать</a>
                 <?php endif;?>
             </td>
@@ -88,7 +89,7 @@ endif;
             <td width="15"></td>
             <?php if ($pitch->status == 0):?>
             <td width="255" height="25" class="helpprolong" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                <span class="regular">Продлить срок <a href="http://www.godesigner.ru/answers/view/88" target="_blank">(?)</a></span>
+                <span class="regular"><a href="http://www.godesigner.ru/answers/view/88" target="_blank">Продлить срок</a> <a href="http://www.godesigner.ru/answers/view/88" target="_blank" class="tooltip_hints_long" title="Если не хватает вариантов, или вы решили увеличить размер вознаграждения, воспользуйтесь доп. опцией за 1950р./день, из которых 1000р. идет в гонорар дизайнеру.">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=prolong">Заказать</a>
             </td>
             <?php else: ?>
@@ -117,7 +118,7 @@ endif;
             <td width="15"></td>
             <?php if (($pitch->guaranteed == 0) && ($pitch->status == 0) && ($pitch->type != 'company_project')):?>
                 <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                    <span class="regular">Гарантировать проект <a href="http://www.godesigner.ru/answers/view/79" target="_blank">(?)</a></span>
+                    <span class="regular"><a href="http://www.godesigner.ru/answers/view/79" target="_blank">Гарантировать проект</a> <a href="http://www.godesigner.ru/answers/view/79" target="_blank" class="tooltip_hints" title="Убедите дизайнеров в платежеспособности и получите до 40% больше решений.">(?)</a></span>
                     <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=guarantee">Заказать</a>
                 </td>
             <?php else: ?>

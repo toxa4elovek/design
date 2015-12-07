@@ -139,6 +139,27 @@ $(document).ready(function() {
         tutorial.run();
     }
 
+    $('.tooltip_hints').tooltip({
+        tooltipID: 'tooltip4',
+        width: '282px',
+        correctPosX: 45,
+        positionTop: -180,
+        borderSize: '0px',
+        tooltipPadding: 0,
+        tooltipBGColor: 'transparent'
+    });
+
+    $('.tooltip_hints_long').tooltip({
+        tooltipID: 'tooltip5',
+        width: '282px',
+        correctPosX: 45,
+        positionTop: -180,
+        borderSize: '0px',
+        tooltipPadding: 0,
+        tooltipBGColor: 'transparent'
+    });
+
+
     // Navigation
     $(document).on('click', '.ajaxgallery', function(e) {
         e.preventDefault();
