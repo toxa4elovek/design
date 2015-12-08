@@ -47,7 +47,9 @@
                 <div class="clr"></div>
                 <div class="separator" style="margin-top: 10px;"></div>
                 <section class="comments-container">
-                <?php foreach($comments as $comment):
+                <?php
+                if((isset($comments)) && ($comments)):
+                foreach($comments as $comment):
                     if(($type == 'designer') && (preg_match('/хотим продолжить наше партнерство/', $comment->originalText))):
                         continue;
                     endif;
@@ -159,7 +161,8 @@
 
                     <div class="separator" style="margin-top: 0px;"></div>
                 </section>
-                <?php endforeach;?>
+                <?php endforeach;
+                endif;?>
                 </section><!-- /comments-container -->
                 <div class="clr"></div>
  <?php if($type == 'designer'):?>

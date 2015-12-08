@@ -180,7 +180,11 @@ function TableLoader() {
                     if(step < 2) {
                         step = 2;
                     }
-                    timeleft = `<a style="padding-left: 10px;" class="pitches-finish" href="/users/step${step}/${object.id}">Перейти<br>на завершающий этап</a>`;
+                    if((object.winnerSolution.user_id == $('#user_id').val()) || (object.user_id == $('#user_id').val())) {
+                        timeleft = `<a style="padding-left: 10px;" class="pitches-finish" href="/users/step${step}/${object.winnerSolution.id}">Перейти<br>на завершающий этап</a>`;
+                    } else {
+                        timeleft = '<span style="display: block; padding-left: 10px; color: #4f8b5c; text-align: left;">Проект завершен</span>';
+                    }
                 }else if((object.status == 1) && (object.awarded == 0)) {
                     timeleft = 'Выбор победителя';
                 }else {
