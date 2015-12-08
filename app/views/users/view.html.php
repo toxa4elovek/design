@@ -114,7 +114,7 @@
                     <ul class="list_portfolio" style="margin-left:-25px;">
                         <?php
                         foreach ($selectedSolutions as $solution):
-                            if ((($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)) && !$this->user->isAdmin()):
+                            if ((($solution->pitch->private == 1) || ($solution->pitch->isCopyrighting())) && !$this->user->isAdmin()):
                                 continue;
                             endif
                             ?>

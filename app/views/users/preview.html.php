@@ -75,7 +75,7 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
                     <ul class="list_portfolio" style="margin-left:-25px;">
                         <?php
                         foreach ($selectedSolutions as $solution):
-                            if (($solution->pitch->private == 1) || ($solution->pitch->category_id == 7)):
+                            if (($solution->pitch->private == 1) || ($solution->pitch->isCopyrighting())):
                                 continue;
                             endif
                             ?>
