@@ -150,6 +150,10 @@ $(function() {
         });
         $('.simplemodal-wrap').css('overflow', 'visible');
         $('#reqname').focus();
+        const subscriberLink = $('.reqlink[data-id=5]');
+        if(subscriberLink.length > 0) {
+            subscriberLink.click();
+        }
         return false;
     });
 
@@ -215,7 +219,7 @@ $(function() {
                 "info": clientInfo()
             };
             $.post('/users/requesthelp.json', sendobj, function (response) {
-                if (response.success == 'true') {
+                if (response.success == true) {
                     $('#reqmainform').hide();
                     $('#reqformthankyou').show();
                 }
@@ -227,6 +231,12 @@ $(function() {
     reqTo.on('keyup', function () {
         $('#contactlist').show();
         return false;
+    });
+
+    reqTo.on('click', function() {
+        $('img', '#requesthelpselector').attr('src', '/img/request_help_menu_button_hover.png');
+        $('#contactlist').show();
+       return false;
     });
 
     $(".reqlink").on('click', function () {
@@ -250,14 +260,18 @@ $(function() {
 
     const messageTargetInput = $('#requesthelpselector, .requestli, #reqto');
     messageTargetInput.on('mouseover', function () {
-        $('img', '#requesthelpselector').attr('src', '/img/request_help_menu_button_hover.png');
-        $('#contactlist').show();
+        if(messageTargetInput.val() == '') {
+            $('img', '#requesthelpselector').attr('src', '/img/request_help_menu_button_hover.png');
+            $('#contactlist').show();
+        }
         return false;
     });
 
     messageTargetInput.on('mouseout', function () {
-        $('img', '#requesthelpselector').attr('src', '/img/requestselector.png');
-        $('#contactlist').hide();
+        if(messageTargetInput.val() == '') {
+            $('img', '#requesthelpselector').attr('src', '/img/requestselector.png');
+            $('#contactlist').hide();
+        }
         return false;
     });
 
@@ -475,7 +489,7 @@ $(function() {
     });
 
     if ($('.breadcrumbs-view', $('#pitch-title')).height() > 36) {
-        $('#pitch-title').height($('.breadcrumbs-view', $('#pitch-title')).height() + 10)
+        $('#pitch-title').height($('.breadcrumbs-view', $('#pitch-title')).height() + 10);
     }
 
     // Countdown
@@ -705,7 +719,7 @@ function onSelectHandler(file, fileIds, Cart) {
             $('#progressbar').text(percents + '%');
             var progresspx = Math.round(3.4 * percents);
             if (progresspx > 330) {
-                progresspx == 330;
+                progresspx = 330;
             }
             $('#filler').css('width', progresspx);
             if (percents > 95) {

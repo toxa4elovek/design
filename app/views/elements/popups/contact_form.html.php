@@ -28,12 +28,19 @@
                 <a class="form-faq-link" href="http://www.godesigner.ru/answers/view/96" target="_blank">Почему не сокращается срок после теста?</a><br>
                 <a class="form-faq-link" href="http://www.godesigner.ru/answers/view/96" target="_blank">Можно ли загрузить решение раньше срока?</a>
             </form>
-            <div id="contactlist" style="background:url('/img/requestback.png');display:none;top:-541px;margin-left:42px;width:399px;height:140px;position:relative;z-index:15">
-                <ul>
-                    <li class="requestli"><a href="#" class="reqlink" data-id="1">дизайн консультация (Оксана Девочкина)</a></li>
-                    <li class="requestli" style="padding-top:16px"><a href="#" class="reqlink" data-id="2">бухгалтерия (Слава Афанасьев)</a></li>
-                    <li class="requestli" style="padding-top:16px"><a href="#" class="reqlink" data-id="3">тех. поддержка (Дима Ню)</a></li>
-                    <li class="requestli" style="padding-top:16px"><a href="#" class="reqlink" data-id="4">другое (Максим Федченко)</a></li>
+            <div id="contactlist" style=" background-color: #ffffff; display:none; top:-548px;margin-left:42px;width:401px;position:relative;z-index:15;">
+                <ul style="padding: 0 20px; border: 2px solid #e0e0e0;">
+                    <?php
+                    $hasPriorityTarget = false;
+                    if($this->user->isSubscriptionActive()):
+                        $hasPriorityTarget = true;
+                    ?>
+                    <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px;"><a href="#" class="reqlink" data-id="5">абонентский сервис (Мария Еленевская)</a></li>
+                    <?php endif?>
+                    <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; <?php if($hasPriorityTarget):?>padding-top:5px;<?php endif?>"><a href="#" class="reqlink" data-id="1">дизайн консультация (Оксана Девочкина)</a></li>
+                    <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; padding-top:5px"><a href="#" class="reqlink" data-id="2">бухгалтерия (Слава Афанасьев)</a></li>
+                    <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; padding-top:5px"><a href="#" class="reqlink" data-id="3">тех. поддержка (Дима Ню)</a></li>
+                    <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; padding-top:5px"><a href="#" class="reqlink" data-id="4">другое (Максим Федченко)</a></li>
                 </ul>
             </div>
         </div>

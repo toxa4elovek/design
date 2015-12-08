@@ -1718,15 +1718,16 @@ class UsersController extends \app\controllers\AppController {
     }
 
     public function requesthelp() {
-        $success = 'false';
-        if (($this->request->data) && ($this->request->data['case'] == 'fu27fwkospf')) {
+        $success = false;
+        if (($this->request->data) && (isset($this->request->data['case'])) && ($this->request->data['case'] == 'fu27fwkospf')) {
             if ($this->request->data['target'] != 0) {
-                $emails = array(
+                $emails = [
                     1 => 'devochkina@godesigner.ru',
                     2 => 'va@godesigner.ru',
                     3 => 'nyudmitriy@godesigner.ru',
-                    4 => 'fedchenko@godesigner.ru'
-                );
+                    4 => 'fedchenko@godesigner.ru',
+                    5 => 'm.elenevskaya@godesigner.ru'
+                ];
                 $this->request->data['target'] = $emails[$this->request->data['target']];
             } else {
                 $this->request->data['target'] = 'team@godesigner.ru';
@@ -1737,7 +1738,7 @@ class UsersController extends \app\controllers\AppController {
                 $this->request->data['user'] = User::getUserInfo();
             }
             ContactMailer::contact_mail2($this->request->data);
-            $success = 'true';
+            $success = true;
         }
         return compact('success');
     }
