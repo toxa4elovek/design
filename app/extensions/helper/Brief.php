@@ -78,7 +78,9 @@ class Brief extends \lithium\template\Helper {
     public function deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($text) {
         $text = nl2br(strip_tags($text));
         $text = $this->__autoReplaceHtmlLinks($text);
-        $text = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', $text);
+        //@([a-zA-Zа-яА-Я]*)(\s[a-zA-Zа-яА-Я])?(\.\,)?
+        //'/@([^@]*? [^@]\.)(,?)/u'
+        $text = preg_replace('/@([a-zA-Zа-яА-Я]*)(\s[a-zA-Zа-яА-Я])?(\.\,)?/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2$3</a>', $text);
         $text = str_replace('<br /><br />', '<br />', $text);
         $text = str_replace('<br><br>', '<br>', $text);
         return $text;
