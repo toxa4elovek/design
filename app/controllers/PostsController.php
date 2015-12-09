@@ -89,9 +89,9 @@ class PostsController extends AppController {
             foreach ($words as $word) {
                 $result = Post::all(array('conditions' => array(
                     'OR' => array(
-                        'title' => array('REGEXP' => $word),
-                        'short' => array('REGEXP' => $word),
-                        'full' => array('REGEXP' => $word),
+                        'title' => array('LIKE' => '%' . $word . '%'),
+                        'short' => array('LIKE' => '%' . $word . '%'),
+                        'full' => array('LIKE' => '%' . $word . '%'),
                     ),
                     'published' => 1,
                     'Post.created' => array('<=' => date('Y-m-d H:i:s')),
