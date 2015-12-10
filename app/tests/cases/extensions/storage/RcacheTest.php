@@ -7,9 +7,11 @@ use app\extensions\storage\Rcache;
 use app\tests\mocks\storage\MockDummy;
 use lithium\core\Environment;
 
-class RcacheTest extends \lithium\test\Unit {
+class RcacheTest extends \lithium\test\Unit
+{
 
-    public function __construct(array $config = array()) {
+    public function __construct(array $config = array())
+    {
         Environment::set('test');
         $defaults = array(
             'host' => '127.0.0.1',
@@ -18,22 +20,26 @@ class RcacheTest extends \lithium\test\Unit {
         parent::__construct($config + $defaults);
     }
 
-    public function skip() {
+    public function skip()
+    {
         $this->skipIf(
             !Rcache::enabled(),
             'The redis extension is not installed, please install from https://github.com/phpredis/phpredis'
         );
     }
 
-    public function setUp() {
+    public function setUp()
+    {
         Rcache::init();
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Rcache::flushdb();
     }
 
-    public function testInitAndConnected() {
+    public function testInitAndConnected()
+    {
         Rcache::init();
         $this->assertTrue(Rcache::connected());
         $this->assertTrue(Rcache::disconnect());
@@ -42,11 +48,13 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertTrue(Rcache::connect());
     }
 
-    public function testConnect() {
+    public function testConnect()
+    {
         $this->assertTrue(Rcache::enabled());
     }
 
-    public function testWriteString() {
+    public function testWriteString()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $data = 'value';
         $key = 'key';
@@ -56,7 +64,28 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertEqual($data, $result);
     }
 
-    public function testWriteArray() {
+    public function testReadWithFunction()
+    {
+        $this->assertFalse(Rcache::exists('robot'));
+        $this->assertFalse(Rcache::exists('key'));
+        $result = Rcache::read('key');
+        $this->assertFalse($result);
+        $result = Rcache::read('key', function () {
+            return 'data';
+        }, '+1 minute', ['robot']);
+        $this->assertEqual('data', $result);
+        $this->assertTrue(Rcache::exists('key'));
+        $result = Rcache::read('key');
+        $this->assertEqual('data', $result);
+        $ttl = Rcache::ttl('key');
+        $this->assertTrue(is_numeric($ttl));
+        $this->assertTrue($ttl > 0);
+        $this->assertEqual(60, $ttl);
+        $this->assertTrue(Rcache::exists('robot'));
+    }
+
+    public function testWriteArray()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $data = array('first' => 'first_test', 'second' => 'second_test');
         $key = 'key';
@@ -66,7 +95,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertIdentical($data, $result);
     }
 
-    public function testWriteObject() {
+    public function testWriteObject()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $data = new MockDummy;
         $key = 'key';
@@ -79,7 +109,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertEqual(3, $result->calc());
     }
 
-    public function testWriteWithExpiry() {
+    public function testWriteWithExpiry()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $data = 'value';
         $key = 'key';
@@ -102,7 +133,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertIdentical(false, $ttl);
     }
 
-    public function testDelete() {
+    public function testDelete()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $result = Rcache::delete('non-existing key');
         $this->assertFalse($result);
@@ -116,7 +148,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertFalse($result);
     }
 
-    public function testWriteWithTags() {
+    public function testWriteWithTags()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $data = 'value';
         $data2 = 'value2';
@@ -156,10 +189,10 @@ class RcacheTest extends \lithium\test\Unit {
         // проверим регистр тегов
         $results = Rcache::read('__tags__');
         $this->assertEqual(array('tag1', 'tag2'), $results);
-
     }
 
-    public function testWriteWithTagsAndExpiry() {
+    public function testWriteWithTagsAndExpiry()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $key = 'key';
         $data = 'value';
@@ -170,7 +203,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertTrue($ttl);
     }
 
-    public function testDeleteByTags() {
+    public function testDeleteByTags()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         // Добавим новые записи с тегами
         $result = Rcache::write('key1', 'data1', array('tag1', 'tag2'));
@@ -192,7 +226,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertFalse(Rcache::exists('tag3'));
     }
 
-    public function testFlushUnusedTagsKeysFlush() {
+    public function testFlushUnusedTagsKeysFlush()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $redis = new \Redis;
         $redis->connect('127.0.0.1', '6379');
@@ -213,7 +248,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertEqual(array('key1'), $result);
     }
 
-    public function testFlushUnusedTagsKeysAndTagsFlush() {
+    public function testFlushUnusedTagsKeysAndTagsFlush()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $redis = new \Redis;
         $redis->connect('127.0.0.1', '6379');
@@ -236,7 +272,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertEqual(array('tag1'), $result);
     }
 
-    public function testWriteOnSameKey() {
+    public function testWriteOnSameKey()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $data = 'value';
         $data2 = 'value2';
@@ -251,7 +288,8 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertEqual($data2, $result);
     }
 
-    public function testFlushDB(){
+    public function testFlushDB()
+    {
         $this->skipIf(!Rcache::connected(), 'The redis is not connected.');
         $key = 'key';
         $data = 'value';
@@ -264,22 +302,24 @@ class RcacheTest extends \lithium\test\Unit {
         $this->assertFalse($result);
     }
 
-        public function testPublicsMustReturnFalseIfRedisNotConnected() {
-            if(Rcache::connected()) {
-                Rcache::disconnect();
-            }
-            $data = 'value';
-            $key = 'key';
-            $result = Rcache::write($key, $data);
-            $this->assertFalse($result);
-            $result = Rcache::read($key);
-            $this->assertFalse($result);
-            $result = Rcache::delete('non-existing key');
-            $this->assertFalse($result);
+    public function testPublicsMustReturnFalseIfRedisNotConnected()
+    {
+        if (Rcache::connected()) {
+            Rcache::disconnect();
+        }
+        $data = 'value';
+        $key = 'key';
+        $result = Rcache::write($key, $data);
+        $this->assertFalse($result);
+        $result = Rcache::read($key);
+        $this->assertFalse($result);
+        $result = Rcache::delete('non-existing key');
+        $this->assertFalse($result);
     }
 
-    public function testReadFilter() {
-        Rcache::applyFilter('read', function($self, $params, $chain) {
+    public function testReadFilter()
+    {
+        Rcache::applyFilter('read', function ($self, $params, $chain) {
             $result = $chain->next($self, $params, $chain);
             return str_repeat($result, 2);
         });
@@ -289,5 +329,4 @@ class RcacheTest extends \lithium\test\Unit {
         $result = Rcache::read($key);
         $this->assertEqual($data.$data, $result);
     }
-
 }
