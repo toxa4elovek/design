@@ -1,5 +1,5 @@
 [
-    {"id": 1, "user_id": 5},
+    {"id": 1, "user_id": 5, "price": 1000},
     {"id": 2, "user_id": 4, "price": 3000},
     {"id": 3, "user_id": 6, "price": 2000}
 ]

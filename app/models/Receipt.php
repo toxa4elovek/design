@@ -9,7 +9,8 @@ namespace app\models;
  *
  * @package app\models
  */
-class Receipt extends AppModel {
+class Receipt extends AppModel
+{
 
     public static $dict = array(
         'award' => 'Награда Дизайнеру',
@@ -33,8 +34,9 @@ class Receipt extends AppModel {
      * @param $data array массив входящих данных
      * @return integer номер проекта
      */
-    public static function createReceipt($data) {
-        if($data['commonPitchData']['category_id'] == 7) {
+    public static function createReceipt($data)
+    {
+        if ($data['commonPitchData']['category_id'] == 7) {
             self::$dict['award'] = 'Награда копирайтеру';
         }
         $receiptData = array();
@@ -50,12 +52,12 @@ class Receipt extends AppModel {
             'discount',
             'guaranteed',
         );
-        foreach($keys as $key) {
-            if(isset($data['features'][$key])) {
+        foreach ($keys as $key) {
+            if (isset($data['features'][$key])) {
                 $value = $data['features'][$key];
-                if($key == 'experts') {
+                if ($key == 'experts') {
                     $value = 0;
-                    foreach($data['features']['experts'] as $expertId) {
+                    foreach ($data['features']['experts'] as $expertId) {
                         $expert = Expert::first($expertId);
                         $value += $expert->price;
                     }
@@ -86,7 +88,8 @@ class Receipt extends AppModel {
      * @param $commission integer
      * @return mixed
      */
-    private static function __applyReferalDiscrountEffects($data, $commission) {
+    private static function __applyReferalDiscrountEffects($data, $commission)
+    {
         if (isset($data['commonPitchData']['referalDiscount']) && !empty($data['commonPitchData']['referalDiscount'])) {
             $commission -= $data['commonPitchData']['referalDiscount'];
         }
@@ -99,9 +102,10 @@ class Receipt extends AppModel {
      * @param $data array
      * @return float|int
      */
-    private static function __getCommissionWithEffectOfPromocodes($data) {
+    private static function __getCommissionWithEffectOfPromocodes($data)
+    {
         $commission = round($data['features']['award'] * self::$fee);
-        if(isset($data['commonPitchData']['promocode']) && ($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'])) && ($promocode != 'false')) {
+        if (isset($data['commonPitchData']['promocode']) && ($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'])) && ($promocode != 'false')) {
             $commission = self::__processPromocodes($promocode, $commission, $data['features']['award']);
         }
         return $commission;
@@ -116,15 +120,16 @@ class Receipt extends AppModel {
      * @param $award integer
      * @return float|int
      */
-    private static function __processPromocodes($promocode, $commission, $award) {
-        if($promocode['type'] == 'in_twain') {
+    private static function __processPromocodes($promocode, $commission, $award)
+    {
+        if ($promocode['type'] == 'in_twain') {
             self::$fee = round((self::$fee / 2), 3, PHP_ROUND_HALF_DOWN);
             $commission = round($award * self::$fee);
         }
-        if($promocode['type'] == 'discount') {
+        if ($promocode['type'] == 'discount') {
             $commission -= 700;
         }
-        if($promocode['type'] == 'custom_discount') {
+        if ($promocode['type'] == 'custom_discount') {
             $decimal = $promocode['data'] / 100;
             $amount = round($commission * $decimal);
             $commission -= $amount;
@@ -138,7 +143,8 @@ class Receipt extends AppModel {
      * @param $projectId
      * @return \lithium\data\collection\RecordSet|null
      */
-    public static function fetchReceipt($projectId) {
+    public static function fetchReceipt($projectId)
+    {
         return self::all(array('conditions' => array('pitch_id' => $projectId)));
     }
 
@@ -149,7 +155,8 @@ class Receipt extends AppModel {
      * @param $data array
      * @return float
      */
-    public static function findOutFeeModifier($data) {
+    public static function findOutFeeModifier($data)
+    {
         $fee = self::$fee;
         $award = $data['features']['award'];
         if ($category = Category::first($data['commonPitchData']['category_id'])) {
@@ -157,7 +164,7 @@ class Receipt extends AppModel {
             $normalAward = $normal = $category->normalAward;
             $goodAward = $high = $category->goodAward;
             if (!empty($data['specificPitchData']['site-sub'])) {
-               $minValue = self::__getMinValueForWebsite(
+                $minValue = self::__getMinValueForWebsite(
                    (int) $data['specificPitchData']['site-sub'],
                    (int) $minAward,
                    (int) $category->id
@@ -169,7 +176,7 @@ class Receipt extends AppModel {
             $high = $minValue + $extraHigh;
             if ($award < $normal) {
                 $fee = FEE_LOW;
-            } else if ($award < $high) {
+            } elseif ($award < $high) {
                 $fee = FEE_NORMAL;
             } else {
                 $fee = FEE_GOOD;
@@ -186,7 +193,8 @@ class Receipt extends AppModel {
      * @param $categoryId integer номер категории
      * @return integer
      */
-    private static function __getMinValueForWebsite($quantity, $minAward, $categoryId) {
+    private static function __getMinValueForWebsite($quantity, $minAward, $categoryId)
+    {
         $multiplier = $minAward / 2;
         if ($categoryId == 3) {
             $multiplier = 2000;
@@ -201,9 +209,10 @@ class Receipt extends AppModel {
      * @param $data array
      * @return bool
      */
-    static public function createReceiptForProject($projectId, $data) {
-        if(is_array($data)) {
-            foreach($data as $row) {
+    public static function createReceiptForProject($projectId, $data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $row) {
                 $data = array(
                     'pitch_id' => $projectId,
                     'name' => $row['name'],
@@ -224,13 +233,14 @@ class Receipt extends AppModel {
      * @param $data array
      * @return bool
      */
-    static public function updateOrCreateReceiptForProject($projectId, $data) {
-        if(is_array($data)) {
+    public static function updateOrCreateReceiptForProject($projectId, $data)
+    {
+        if (is_array($data)) {
             $existingRows = self::all(array('conditions' => array(
                 'pitch_id' => $projectId
             )));
             $existingRows->delete();
-            foreach($data as $row) {
+            foreach ($data as $row) {
                 $rowData = array(
                     'pitch_id' => $projectId,
                     'name' => $row['name'],
@@ -250,12 +260,13 @@ class Receipt extends AppModel {
      * @param $projectId int
      * @return array
      */
-    static public function exportToArray($projectId) {
+    public static function exportToArray($projectId)
+    {
         $receiptRows = self::all(array('conditions' => array(
             'pitch_id' => $projectId
         )));
         $array = array();
-        foreach($receiptRows as $row) {
+        foreach ($receiptRows as $row) {
             $array[] = array('name' => $row->name, 'value' => (int) $row->value);
         }
         return $array;
@@ -267,13 +278,38 @@ class Receipt extends AppModel {
      * @param $projectId int
      * @return int
      */
-    static public function getTotalForProject($projectId) {
+    public static function getTotalForProject($projectId)
+    {
         $total = 0;
         $array = self::exportToArray($projectId);
-        foreach($array as $row) {
+        foreach ($array as $row) {
             $total += $row['value'];
         }
         return (int) $total;
+    }
+
+    /**
+     * Метод пытается посчитать, сколько прибыли принёс проект.
+     * Неточность в подсчете прибыли от экспертов (примерно 20 процентов),
+     * это может быть неверно в случае с экспертами не за 1000 рублей.
+     *
+     * @param $projectId
+     * @return int
+     */
+    public static function getProfitForProject($projectId)
+    {
+        $profit = 0;
+        $array = self::exportToArray($projectId);
+        foreach ($array as $row) {
+            if (preg_match('/Награда/', $row['name'])) {
+                continue;
+            }
+            if ($row['name'] == self::$dict['experts']) {
+                $row['value'] = (20 / 100) * $row['value'];
+            }
+            $profit += $row['value'];
+        }
+        return (int) $profit;
     }
 
     /**
@@ -282,7 +318,8 @@ class Receipt extends AppModel {
      * @param $projectId integer
      * @return int
      */
-    static public function getCommissionForProject($projectId) {
+    public static function getCommissionForProject($projectId)
+    {
         $record = self::first(array('conditions' => array(
             'pitch_id' => (int) $projectId,
             'name' => array('LIKE' => 'Сбор GoDesigner%')
@@ -298,7 +335,8 @@ class Receipt extends AppModel {
      * @param $value
      * @return array
      */
-    public static function addRow($array, $name, $value) {
+    public static function addRow($array, $name, $value)
+    {
         $array[] = array('name' => $name, 'value' => $value);
         return $array;
     }
@@ -311,13 +349,13 @@ class Receipt extends AppModel {
      * @param $value
      * @return $array
      */
-    public static function updateRow($array, $name, $value) {
-        foreach($array as &$row) {
-            if($row['name'] == $name) {
+    public static function updateRow($array, $name, $value)
+    {
+        foreach ($array as &$row) {
+            if ($row['name'] == $name) {
                 $row['value'] = $value;
             }
         }
         return $array;
     }
-
 }

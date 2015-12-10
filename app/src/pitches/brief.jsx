@@ -175,7 +175,7 @@ $(document).ready(function () {
             } else {
                 promoHint.css('display', 'inline-block').text('Промокод активирован!');
                 if ((response.type == 'pinned') || (response.type == 'misha')) {
-                    Cart.addOption("“Прокачать” бриф", 0);
+                    Cart.addOption("«Прокачать» проект", 0);
                     $('input[type=checkbox]', '#pinned-block').attr('checked', 'checked');
                     $('input[type=checkbox]', '#pinned-block').data('optionValue', '0');
                     $('.label', '#pinned-block').text('0р.').addClass('unfold');

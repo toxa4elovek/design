@@ -5,17 +5,21 @@ namespace app\tests\cases\models;
 use \app\extensions\tests\AppUnit;
 use \app\models\Receipt;
 
-class ReceiptTest extends AppUnit {
+class ReceiptTest extends AppUnit
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->rollUp(array('Receipt', 'Expert', 'Category', 'Promocode'));
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->rollDown(array('Receipt', 'Expert', 'Category', 'Promocode'));
     }
 
-    public function testFindOutFee() {
+    public function testFindOutFee()
+    {
 
         // простые подсчеты
         $data = array(
@@ -77,7 +81,8 @@ class ReceiptTest extends AppUnit {
         $this->assertEqual(FEE_LOW, $result);
     }
 
-    public function testCreateReceiptForProject(){
+    public function testCreateReceiptForProject()
+    {
         $this->assertFalse(Receipt::createReceiptForProject(5, 'non array'));
         $receipt = array(
             array(
@@ -99,7 +104,8 @@ class ReceiptTest extends AppUnit {
         $this->assertEqual(4, count($receiptRows->data()));
     }
 
-    public function testUpdateOrCreateReceiptForProject() {
+    public function testUpdateOrCreateReceiptForProject()
+    {
         $this->assertFalse(Receipt::updateOrCreateReceiptForProject(5, 'string'));
 
         $receipt = array(
@@ -135,10 +141,10 @@ class ReceiptTest extends AppUnit {
         $this->assertTrue($result);
         $receiptRows = Receipt::all(array('conditions' => array('pitch_id' => 5)));
         $this->assertEqual(3, count($receiptRows->data()));
-
     }
 
-    public function testExportToArray() {
+    public function testExportToArray()
+    {
         $receipt = array(
             array(
                 'name' => 'Оплата тарифа test',
@@ -156,7 +162,8 @@ class ReceiptTest extends AppUnit {
         $this->assertEqual($expected, $result);
     }
 
-    public function testGetTotalForProject() {
+    public function testGetTotalForProject()
+    {
         $receipt = array(
             array(
                 'name' => 'Оплата тарифа test',
@@ -173,14 +180,16 @@ class ReceiptTest extends AppUnit {
         $this->assertEqual(10000, $result);
     }
 
-    public function testFetchReceipt() {
+    public function testFetchReceipt()
+    {
         $result = Receipt::fetchReceipt(2);
         $this->assertEqual(2, count($result));
         $this->assertEqual('object', gettype($result));
         $this->assertEqual('lithium\data\collection\RecordSet', get_class($result));
     }
 
-    public function testCreateReceipt() {
+    public function testCreateReceipt()
+    {
         $data = array(
             'features' => array(
                 'award' => 10000,
@@ -198,15 +207,15 @@ class ReceiptTest extends AppUnit {
         $this->assertEqual(16950, $total);
         $exported = Receipt::exportToArray(2000);
         $expected = array(
-            array (
+            array(
                 'name' => 'Награда Дизайнеру',
                 'value' => 10000,
             ),
-            array (
+            array(
                 'name' => 'Экспертное мнение',
                 'value' => 5000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 24,5%',
                 'value' => 1950,
             ),
@@ -228,15 +237,15 @@ class ReceiptTest extends AppUnit {
 
         $exported = Receipt::exportToArray(2000);
         $expected = array(
-            array (
+            array(
                 'name' => 'Награда Дизайнеру',
                 'value' => 10000,
             ),
-            array (
+            array(
                 'name' => 'Экспертное мнение',
                 'value' => 5000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 24,5%',
                 'value' => 1750,
             ),
@@ -257,11 +266,11 @@ class ReceiptTest extends AppUnit {
 
         $exported = Receipt::exportToArray(2000);
         $expected = array(
-            array (
+            array(
                 'name' => 'Награда Дизайнеру',
                 'value' => 10000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 24,5%',
                 'value' => 1225,
             ),
@@ -282,11 +291,11 @@ class ReceiptTest extends AppUnit {
 
         $exported = Receipt::exportToArray(2000);
         $expected = array(
-            array (
+            array(
                 'name' => 'Награда Дизайнеру',
                 'value' => 10000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 24,5%',
                 'value' => 0,
             ),
@@ -308,15 +317,15 @@ class ReceiptTest extends AppUnit {
 
         $exported = Receipt::exportToArray(2000);
         $expected = array(
-            array (
+            array(
                 'name' => 'Награда Дизайнеру',
                 'value' => 10000,
             ),
-            array (
+            array(
                 'name' => 'Экспертное мнение',
                 'value' => 5000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 12,2%',
                 'value' => 1220,
             ),
@@ -339,15 +348,15 @@ class ReceiptTest extends AppUnit {
         $this->assertEqual(35150, $total);
         $exported = Receipt::exportToArray(2001);
         $expected = array(
-            array (
+            array(
                 'name' => 'Награда копирайтеру',
                 'value' => 30000,
             ),
-            array (
+            array(
                 'name' => 'Скидка',
                 'value' => -700
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 19,5%',
                 'value' => 5850,
             ),
@@ -355,7 +364,8 @@ class ReceiptTest extends AppUnit {
         $this->assertEqual($expected, $exported);
     }
 
-    public function testGetCommissionForProject() {
+    public function testGetCommissionForProject()
+    {
         $data = array(
             'features' => array(
                 'award' => 10000,
@@ -371,28 +381,29 @@ class ReceiptTest extends AppUnit {
         $this->assertIdentical(2450, $commission);
     }
 
-    public function testAddRow() {
+    public function testAddRow()
+    {
         $data = array(
-            array (
+            array(
                 'name' => 'Награда копирайтеру',
                 'value' => 30000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 19,5%',
                 'value' => 5850,
             ),
         );
         $result = Receipt::addRow($data, 'Скидка', -700);
         $expected = array(
-            array (
+            array(
                 'name' => 'Награда копирайтеру',
                 'value' => 30000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 19,5%',
                 'value' => 5850,
             ),
-            array (
+            array(
                 'name' => 'Скидка',
                 'value' => -700,
             ),
@@ -400,24 +411,25 @@ class ReceiptTest extends AppUnit {
         $this->assertIdentical($expected, $result);
     }
 
-    public function testUpdateRow() {
+    public function testUpdateRow()
+    {
         $data = array(
-            array (
+            array(
                 'name' => 'Награда копирайтеру',
                 'value' => 30000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 19,5%',
                 'value' => 5850,
             ),
         );
         $result = Receipt::updateRow($data, 'Награда копирайтеру', 15000);
         $expected = array(
-            array (
+            array(
                 'name' => 'Награда копирайтеру',
                 'value' => 15000,
             ),
-            array (
+            array(
                 'name' => 'Сбор GoDesigner 19,5%',
                 'value' => 5850,
             ),
@@ -425,4 +437,76 @@ class ReceiptTest extends AppUnit {
         $this->assertIdentical($expected, $result);
     }
 
+    public function testGetRealProfit()
+    {
+        $data = array(
+            'features' => array(
+                'award' => 10000,
+            ),
+            'commonPitchData' => array(
+                'category_id' => 1,
+                'id' => 2000,
+            ),
+        );
+        $result = Receipt::createReceipt($data);
+        $this->assertEqual(2000, $result);
+        $total = Receipt::getTotalForProject(2000);
+        $this->assertEqual(12450, $total);
+        $profit = Receipt::getProfitForProject(2000);
+        $this->assertEqual(2450, $profit);
+
+        $data = array(
+            'features' => array(
+                'award' => 10000,
+                'experts' => array(1)
+            ),
+            'commonPitchData' => array(
+                'category_id' => 1,
+                'id' => 2000,
+            ),
+        );
+        $result = Receipt::createReceipt($data);
+        $this->assertEqual(2000, $result);
+        $total = Receipt::getTotalForProject(2000);
+        $this->assertEqual(13450, $total);
+        $profit = Receipt::getProfitForProject(2000);
+        $this->assertEqual(2650, $profit);
+
+        $data = array(
+            'features' => array(
+                'award' => 10000,
+                'experts' => array(1),
+                'private' => 3500
+            ),
+            'commonPitchData' => array(
+                'category_id' => 1,
+                'id' => 2000,
+            ),
+        );
+        $result = Receipt::createReceipt($data);
+        $this->assertEqual(2000, $result);
+        $total = Receipt::getTotalForProject(2000);
+        $this->assertEqual(16950, $total);
+        $profit = Receipt::getProfitForProject(2000);
+        $this->assertEqual(6150, $profit);
+
+        $data = array(
+            'features' => array(
+                'award' => 10000,
+                'experts' => array(1),
+                'private' => 3500,
+            ),
+            'commonPitchData' => array(
+                'category_id' => 1,
+                'id' => 2000,
+                'promocode' => 'jjjj'
+            ),
+        );
+        $result = Receipt::createReceipt($data);
+        $this->assertEqual(2000, $result);
+        $total = Receipt::getTotalForProject(2000);
+        $this->assertEqual(14500, $total);
+        $profit = Receipt::getProfitForProject(2000);
+        $this->assertEqual(3700, $profit);
+    }
 }
