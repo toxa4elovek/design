@@ -551,30 +551,32 @@ class ParsingSites extends \app\extensions\command\CronJob
     private function ParsingKoko($url)
     {
         $xml = simplexml_load_file($url);
-        foreach ($xml->channel->item as $item) {
-            $trigger = News::doesNewsExists((string) $item->title, $item->link);
-            if (!$trigger) {
-                $date = new \DateTime($item->published);
-                $image = '';
-                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
-                if (isset($matches[1]) && !strpos($matches[1], 'feedburner.com/')) {
-                    $image = $matches[1];
-                }
-                $data = array(
-                    'title' => (string) $item->title,
-                    'short' => strip_tags($item->description),
-                    'tags' => 'Дизайн',
-                    'created' => $date->format('Y-m-d H:i:s'),
-                    'link' => (string) $item->link,
-                    'imageurl' => $image,
-                    'lang' => 'ru'
-                );
-                if (self::$debug == false) {
-                    $news = News::create($data);
-                    $news->save();
-                    Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
-                } else {
-                    var_dump($data);
+        if(($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
+            foreach ($xml->channel->item as $item) {
+                $trigger = News::doesNewsExists((string) $item->title, $item->link);
+                if (!$trigger) {
+                    $date = new \DateTime($item->published);
+                    $image = '';
+                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $item->description, $matches);
+                    if (isset($matches[1]) && !strpos($matches[1], 'feedburner.com/')) {
+                        $image = $matches[1];
+                    }
+                    $data = array(
+                        'title' => (string) $item->title,
+                        'short' => strip_tags($item->description),
+                        'tags' => 'Дизайн',
+                        'created' => $date->format('Y-m-d H:i:s'),
+                        'link' => (string) $item->link,
+                        'imageurl' => $image,
+                        'lang' => 'ru'
+                    );
+                    if (self::$debug == false) {
+                        $news = News::create($data);
+                        $news->save();
+                        Event::createEventNewsAdded($news->id, 0, $date->format('Y-m-d H:i:s'));
+                    } else {
+                        var_dump($data);
+                    }
                 }
             }
         }
