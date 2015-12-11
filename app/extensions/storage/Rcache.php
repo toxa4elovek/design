@@ -4,7 +4,8 @@ namespace app\extensions\storage;
 
 use lithium\core\StaticObject;
 
-class Rcache extends StaticObject {
+class Rcache extends StaticObject
+{
 
     /**
      * @var Object свойство для хранения объекта класса Redis
@@ -26,7 +27,8 @@ class Rcache extends StaticObject {
      *
      * @param array $config
      */
-    public static function init(array $config = []) {
+    public static function init(array $config = [])
+    {
         self::$client = new \Redis;
         $defaults = [
             'host' => '127.0.0.1:6379',
@@ -44,8 +46,8 @@ class Rcache extends StaticObject {
             'exists',
             'flushUnusedTags'
         ];
-        self::applyFilter($methodsThatMustHaveConnections, function($self, $params, $chain) {
-            if(!self::connected()) {
+        self::applyFilter($methodsThatMustHaveConnections, function ($self, $params, $chain) {
+            if (!self::connected()) {
                 return false;
             }
             return $chain->next($self, $params, $chain);
@@ -61,15 +63,16 @@ class Rcache extends StaticObject {
      * @param null $expiry - strtotime-совместима строка $expiry
      * @return mixed
      */
-    public static function write($key, $data, $tags = [], $expiry = null) {
-        if(func_num_args() == 3) {
-            if(!is_array($tags)) {
+    public static function write($key, $data, $tags = [], $expiry = null)
+    {
+        if (func_num_args() == 3) {
+            if (!is_array($tags)) {
                 $expiry = $tags;
                 $tags = [];
             }
         }
         $params = ['key' => $key, 'data' => $data, 'tags' => $tags, 'expiry' => $expiry, 'operation' => __FUNCTION__];
-        return static::_filter(__FUNCTION__, $params, function($self, $params) {
+        return static::_filter(__FUNCTION__, $params, function ($self, $params) {
             $key = $params['key'];
             $data = $params['data'];
             $tags = $params['tags'];
@@ -98,19 +101,32 @@ class Rcache extends StaticObject {
      * @param $key
      * @return bool|mixed если ключа не существует - false, в остальных случаях - значение
      */
-    public static function read($key) {
-        $params = ['key' => $key, 'operation' => __FUNCTION__];
-        return static::_filter(__FUNCTION__, $params, function($self, $params) {
+    public static function read($key, $writeFunction = null, $expiry = null, $tags = [])
+    {
+        $params = [
+            'key' => $key,
+            'operation' => __FUNCTION__,
+            'writeFunction' => $writeFunction,
+            'expiry' => $expiry,
+            'tags' => $tags,
+        ];
+        return static::_filter(__FUNCTION__, $params, function ($self, $params) {
             $key = $params['key'];
-            if (!$exists = self::$client->exists($key)) {
+            $writeFunction = $params['writeFunction'];
+            if ((!$exists = self::$client->exists($key)) && (null === $writeFunction)) {
                 return false;
+            }
+            if (($exists === false) && (null !== $writeFunction)) {
+                $functionValue = $writeFunction();
+                self::write($key, $functionValue, $params['tags'], $params['expiry']);
             }
             $type = self::$client->type($key);
             if ($type == 1) {
                 $result = self::$client->get($key);
                 return unserialize($result);
             } elseif ($type == 3) {
-                $result = self::$client->lRange($key, 0, -1);;
+                $result = self::$client->lRange($key, 0, -1);
+                ;
                 return $result;
             }
             return false;
@@ -123,14 +139,14 @@ class Rcache extends StaticObject {
      * @param $key
      * @return bool
      */
-    public static function delete($key) {
+    public static function delete($key)
+    {
         $operation = __FUNCTION__;
         $params = compact('key', 'operation');
-        return static::_filter(__FUNCTION__, $params, function($self, $params) {
+        return static::_filter(__FUNCTION__, $params, function ($self, $params) {
             $result = self::$client->del($params['key']);
             return (bool) $result;
         });
-
     }
 
     /**
@@ -139,21 +155,22 @@ class Rcache extends StaticObject {
      * @param $tag
      * @return bool
      */
-    public static function deleteByTag($tag) {
+    public static function deleteByTag($tag)
+    {
         //$operation = __FUNCTION__;
         //$params = compact('tag', 'operation');
         //$tag = $params['tag'];
         $listOfKeysForTag = self::read($tag);
-        foreach($listOfKeysForTag as $key) {
+        foreach ($listOfKeysForTag as $key) {
             self::delete($key);
             self::$client->lrem($tag, $key, 1);
         }
         $tagList = self::read(self::$_tagRegistryKey);
-        foreach($tagList as $tag) {
+        foreach ($tagList as $tag) {
             $keyList = self::read($tag);
-            if($keyList) {
+            if ($keyList) {
                 $intersected = array_intersect($listOfKeysForTag, $keyList);
-                foreach($intersected as $key) {
+                foreach ($intersected as $key) {
                     self::$client->lrem($tag, $key, 1);
                 }
             }
@@ -168,10 +185,11 @@ class Rcache extends StaticObject {
      * @return bool|null - число, если дата есть, null - если срок вечный, false - если запись не найдена
      *
      */
-    public static function ttl($key) {
+    public static function ttl($key)
+    {
         $operation = __FUNCTION__;
         $params = compact('key', 'operation');
-        return static::_filter(__FUNCTION__, $params, function($self, $params) {
+        return static::_filter(__FUNCTION__, $params, function ($self, $params) {
             $ttl = self::$client->ttl($params['key']);
             if ($ttl == -1) {
                 return null;
@@ -188,10 +206,11 @@ class Rcache extends StaticObject {
      * @param $key
      * @return mixed
      */
-    public static function exists($key) {
+    public static function exists($key)
+    {
         $operation = __FUNCTION__;
         $params = compact('key', 'operation');
-        return static::_filter(__FUNCTION__, $params, function($self, $params) {
+        return static::_filter(__FUNCTION__, $params, function ($self, $params) {
             return self::$client->exists($params['key']);
         });
     }
@@ -202,7 +221,8 @@ class Rcache extends StaticObject {
      * @see https://github.com/nicolasff/phpredis
      * @return bool
      */
-    public static function enabled() {
+    public static function enabled()
+    {
         return extension_loaded('redis');
     }
 
@@ -211,7 +231,8 @@ class Rcache extends StaticObject {
      *
      * @return bool
      */
-    public static function connected() {
+    public static function connected()
+    {
         return self::$connected;
     }
 
@@ -220,9 +241,10 @@ class Rcache extends StaticObject {
      *
      * @return mixed
      */
-    public static function connect() {
+    public static function connect()
+    {
         list($ip, $port) = explode(':', self::$_config['host']);
-        if(self::$client->connect($ip, $port)) {
+        if (self::$client->connect($ip, $port)) {
             self::$connected = true;
         }
         return self::$connected;
@@ -233,8 +255,9 @@ class Rcache extends StaticObject {
      *
      * @return mixed
      */
-    public static function disconnect() {
-        if($result = self::$client->close()) {
+    public static function disconnect()
+    {
+        if ($result = self::$client->close()) {
             self::$connected = false;
         }
         return $result;
@@ -245,8 +268,9 @@ class Rcache extends StaticObject {
      *
      * @return mixed
      */
-    public static function flushDB() {
-        return static::_filter(__FUNCTION__, [], function($self, $params) {
+    public static function flushDB()
+    {
+        return static::_filter(__FUNCTION__, [], function ($self, $params) {
             return self::$client->flushDB();
         });
     }
@@ -256,8 +280,9 @@ class Rcache extends StaticObject {
      *
      * @return int - количество удаленных ключей
      */
-    public static function flushUnusedTags() {
-        return static::_filter(__FUNCTION__, [], function($self, $params) {
+    public static function flushUnusedTags()
+    {
+        return static::_filter(__FUNCTION__, [], function ($self, $params) {
             $count = 0;
             $tags = self::read(self::$_tagRegistryKey);
             foreach ($tags as $tag) {
@@ -283,8 +308,9 @@ class Rcache extends StaticObject {
      * @param $key
      * @return bool
      */
-    private static function __isInList($value, $key) {
-        if($list = self::read($key)) {
+    private static function __isInList($value, $key)
+    {
+        if ($list = self::read($key)) {
             return in_array($value, $list);
         }
         return false;
