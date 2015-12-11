@@ -848,7 +848,7 @@ class PitchesController extends AppController
 
     public function edit()
     {
-        if (($pitch = Pitch::first($this->request->id)) && (($pitch->user_id == Session::read('user.id')) || (Session::read('user.isAdmin') == 1 || (in_array(Session::read('user.id'), User::$admins))))) {
+        if (isset($this->request->id) && (is_numeric($this->request->id)) && ($pitch = Pitch::first($this->request->id)) && (($pitch->user_id == Session::read('user.id')) || (Session::read('user.isAdmin') == 1 || (in_array(Session::read('user.id'), User::$admins))))) {
             $category = Category::first($pitch->category_id);
             $files = array();
             if (count(unserialize($pitch->filesId)) > 0) {
@@ -884,6 +884,7 @@ class PitchesController extends AppController
                     'data' => compact('pitch', 'files', 'expirationDate', 'balance', 'plan', 'category', 'experts', 'referal', 'referalId', 'promocode', 'receipt', 'defaultTitle', 'defaultFinishDate', 'defaultChooseWinnerFinishDate'), ));
             }
         }
+        return $this->redirect('/pitches');
     }
 
     public function printpitch()
