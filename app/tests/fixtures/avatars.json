@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "filename": "/Users/dima/www/godesigner/app/resources/tmp/avatar.png",
+    "model": "\\app\\models\\User",
+    "model_id": 2,
+    "filekey": "avatar"
+  },
+  {
+    "id": 2,
+    "filename": "/Users/dima/www/godesigner/app/resources/tmp/avatar_small.png",
+    "model": "\\app\\models\\User",
+    "model_id": 2,
+    "filekey": "avatar_small"
+  },
+  {
+    "id": 3,
+    "filename": "/Users/dima/www/godesigner/app/resources/tmp/avatar_normal.png",
+    "model": "\\app\\models\\User",
+    "model_id": 2,
+    "filekey": "avatar_normal"
+  }
+]

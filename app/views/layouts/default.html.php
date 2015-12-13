@@ -175,17 +175,19 @@ echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false)
         $debugQueries = $this->debug->sortQueriesByTimestamp($debugQueries);
         $totalTimeMysql = 0;
         $totalTimeRedis = 0;
+        $redisCount = 0;
         foreach($debugQueries as $query):
             if($query['type'] == 'sql'):
                 $totalTimeMysql += $this->debug->roundTime($query['elapsed_time']);
             elseif($query['type'] == 'redis'):
+                $redisCount++;
                 $totalTimeRedis += $this->debug->roundTime($query['elapsed_time']);
             endif;
             echo $this->debug->getHtmlForQuery($query);
         endforeach;
         $totalCount = count($debugQueries);
         $style = $this->debug->getVisualStyle('info');
-        echo "console.log('%cTotal queries: $totalCount, time in MySql: $totalTimeMysql, time in Redis: $totalTimeRedis', '$style');\r\n";
+        echo "console.log('%cTotal queries: $totalCount (redis - $redisCount), time in MySql: $totalTimeMysql, time in Redis: $totalTimeRedis', '$style');\r\n";
         $this->debug->clearDebugInfo();
     }
 ?>

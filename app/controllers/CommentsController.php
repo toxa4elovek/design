@@ -31,7 +31,6 @@ class CommentsController extends \lithium\action\Controller {
                 }
                 $avatarHelper = new AvatarHelper;
                 $userAvatar = $avatarHelper->show($user->data(), false, true);
-                //$userAvatar = Avatar::first(array('conditions' => array('model_id' => $user->id)));
                 $comment = Comment::first(array('conditions' => array('Comment.id' => $result['id']), 'with' => array('User', 'Pitch')));
                 if($comment->solution_id) {
                     $solution = Solution::first($comment->solution_id);

@@ -13,7 +13,7 @@ function microTimeFloat() {
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
 }
-/*
+
 if($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 'true') || ($_SERVER['SERVER_ADDR'] == '127.0.0.1')) {
     $sessionHelper = new \lithium\storage\Session();
 
@@ -57,4 +57,3 @@ if($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 'tr
         return $result;
     });
 }
-*/

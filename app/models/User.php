@@ -232,63 +232,24 @@ class User extends AppModel {
         }
     }
 
-    public function getVkAvatar($entity, $imagelink) {
-        $data = json_decode(file_get_contents($imagelink), true);
-        $userpic = file_get_contents($data['response'][0]['photo_max_orig']);
-        $tmp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()] = tmpfile())));
-
-        file_put_contents($tmp, $userpic);
-        $imageData = getimagesize($tmp);
-        switch ($imageData['mime']) {
-            case 'image/gif':
-                $filename = uniqid() . '.gif';
-                break;
-            case 'image/jpeg':
-                $filename = uniqid() . '.jpg';
-                break;
-            case 'image/png':
-                $filename = uniqid() . '.png';
-                break;
-            default:
-                return array('error' => 'nouserpic set');
-                break;
-        }
-        Avatar::clearOldAvatars(Session::read('user.id'));
-        $entity->set(array('avatar' => array('name' => $filename, 'tmp_name' => $tmp, 'error' => 0)));
-        $entity->save();
-        return array('result' => 'true');
+    /**
+     * Метод сохраняет и возвращяет аватарки (с вк)
+     *
+     * @param $userRecord
+     * @return array
+     */
+    public function getVkAvatar($userRecord) {
+        return Avatar::getVkAvatar($userRecord);
     }
 
     /**
-     * Get and store Facebook user avatar
+     * Метод сохраняет и возвращяет аватарки (с фейсбука)
      *
+     * @param $userRecord
      * @return array
      */
-    public function getFbAvatar($entity) {
-        $id = $entity->facebook_uid;
-        $userpic = file_get_contents('http://graph.facebook.com/' . $id . '/picture?type=large');
-        $tmp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()] = tmpfile())));
-
-        file_put_contents($tmp, $userpic);
-        $imageData = getimagesize($tmp);
-        switch ($imageData['mime']) {
-            case 'image/gif':
-                $filename = uniqid() . '.gif';
-                break;
-            case 'image/jpeg':
-                $filename = uniqid() . '.jpg';
-                break;
-            case 'image/png':
-                $filename = uniqid() . '.png';
-                break;
-            default:
-                return array('error' => 'nouserpic set');
-                break;
-        }
-        Avatar::clearOldAvatars(Session::read('user.id'));
-        $entity->set(array('avatar' => array('name' => $filename, 'tmp_name' => $tmp, 'error' => 0)));
-        $entity->save();
-        return array('result' => 'true');
+    public function getFbAvatar($userRecord) {
+        return Avatar::getFbAvatar($userRecord);
     }
 
     public function unsubscribeToken($entity) {

@@ -97,12 +97,11 @@ class UsersController extends \app\controllers\AppController {
             $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
             $result = $uploader->handleUpload(LITHIUM_APP_PATH . '/webroot/avatars/');
             if ($result['success']) {
-                //Avatar::remove(array('model_id' => Session::read('user.id')));
-                Avatar::clearOldAvatars(Session::read('user.id'));
-                $user = User::first(Session::read('user.id'));
+                Avatar::removeAllAvatarsOfUser($this->userHelper->getId());
+                $user = User::first($this->userHelper->getId());
                 $user->set(array('avatar' => array('name' => $result['name'], 'tmp_name' => $result['tmpname'], 'error' => 0)));
                 $user->save();
-                $user = User::first(Session::read('user.id'));
+                $user = User::first($this->userHelper->getId());
                 unlink($result['tmpname']);
                 return array('result' => 'true', 'data' => $user->data());
             }
@@ -769,7 +768,7 @@ class UsersController extends \app\controllers\AppController {
 
                     } else {
                         $userToLog->facebook_uid = $this->request->data['id'];
-                        if (!Avatar::first(array('conditions' => array('model_id' => $userToLog->id)))) {
+                        if (!Avatar::count(['conditions' => ['model_id' => $userToLog->id]])) {
                             $userToLog->getFbAvatar();
                         }
                     }
@@ -799,8 +798,9 @@ class UsersController extends \app\controllers\AppController {
                             if($fb) {
                                 $userToLog->getFbAvatar();
                             }else {
-                                $userToLog->getVkAvatar(Session::read('vk_data.image_link'));
+                                $userToLog->vk_image_link = Session::read('vk_data.image_link');
                                 Session::delete('vk_data');
+                                $userToLog->getVkAvatar();
                             }
                             UserMailer::hi_mail($userToLog);
                             $newuser = true;
