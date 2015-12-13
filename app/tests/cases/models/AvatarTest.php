@@ -7,9 +7,11 @@ use app\extensions\tests\AppUnit;
 use app\models\Avatar;
 use app\models\User;
 
-class AvatarTest extends AppUnit{
+class AvatarTest extends AppUnit
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         Rcache::init();
         $this->rollUp(array('Avatar', 'User'));
         copy(
@@ -26,22 +28,23 @@ class AvatarTest extends AppUnit{
         );
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Rcache::flushdb();
         $this->rollDown(array('Avatar', 'User'));
-        if(file_exists('/Users/dima/www/godesigner/app/resources/tmp/avatar.png')) {
+        if (file_exists('/Users/dima/www/godesigner/app/resources/tmp/avatar.png')) {
             unlink('/Users/dima/www/godesigner/app/resources/tmp/avatar.png');
         }
-        if(file_exists('/Users/dima/www/godesigner/app/resources/tmp/avatar_normal.png')) {
+        if (file_exists('/Users/dima/www/godesigner/app/resources/tmp/avatar_normal.png')) {
             unlink('/Users/dima/www/godesigner/app/resources/tmp/avatar_normal.png');
         }
-        if(file_exists('/Users/dima/www/godesigner/app/resources/tmp/avatar_small.png')) {
+        if (file_exists('/Users/dima/www/godesigner/app/resources/tmp/avatar_small.png')) {
             unlink('/Users/dima/www/godesigner/app/resources/tmp/avatar_small.png');
         }
     }
 
-    public function testClearOldAvatars() {
-
+    public function testClearOldAvatars()
+    {
         $user = User::first(1);
         $images = $user->data()['images'];
         $this->assertTrue(is_array($images));
@@ -73,7 +76,8 @@ class AvatarTest extends AppUnit{
         $this->assertTrue(Rcache::exists($cacheKey));
     }
 
-    public function testFindWithCache() {
+    public function testFindWithCache()
+    {
         $cacheKey = 'avatars_2';
         $this->assertFalse(Rcache::exists($cacheKey));
         $user = User::first(2);
@@ -81,9 +85,15 @@ class AvatarTest extends AppUnit{
         $this->assertTrue(is_array($images));
         $this->assertEqual(3, count($images));
         $this->assertTrue(Rcache::exists($cacheKey));
+        $user = User::first(2);
+        $images = $user->data()['images'];
+        $this->assertTrue(is_array($images));
+        $this->assertEqual(3, count($images));
+        $this->assertTrue(Rcache::exists($cacheKey));
     }
 
-    public function testGetFbAvatar() {
+    public function testGetFbAvatar()
+    {
         $cacheKey = 'avatars_2';
         $userRecord = User::first(2);
         $results = Avatar::getFbAvatar($userRecord);
@@ -91,7 +101,8 @@ class AvatarTest extends AppUnit{
         $this->assertTrue(Rcache::exists($cacheKey));
     }
 
-    public function testGetVkAvatar() {
+    public function testGetVkAvatar()
+    {
         $cacheKey = 'avatars_3';
         $userRecord = User::first(3);
         $userRecord->vk_image_link = 'https://api.vk.com/method/users.get?user_id=96385962&fields=photo_max_orig&v=5.27&access_token=9f3a1787cf07739487983f245f68e1680182f69f72e5ff973b0ac2d3283236203c6f96b69ea2be8c7010a';
@@ -109,19 +120,17 @@ class AvatarTest extends AppUnit{
         $this->assertEqual(3, count($images));
     }
 
-    public function testFindCountAndCache() {
+    public function testFindCountAndCache()
+    {
         $cacheKey = 'avatars_2';
         $userRecord = User::first(2);
         $results = Avatar::getFbAvatar($userRecord);
         $this->assertEqual(3, count($results));
         $this->assertTrue(Rcache::exists($cacheKey));
-
-        //Rcache::delete($cacheKey);
         $count = Avatar::count(['conditions' => ['model_id' => 2]]);
         $this->assertIdentical(3, $count);
         Rcache::delete($cacheKey);
         $count = Avatar::count(['conditions' => ['model_id' => 2]]);
         $this->assertIdentical(3, $count);
     }
-
 }

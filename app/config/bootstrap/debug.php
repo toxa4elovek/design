@@ -9,17 +9,21 @@ if (PHP_SAPI === 'cli') {
 
 $userHelper = new User;
 
-function microTimeFloat() {
+function microTimeFloat()
+{
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
 }
 
-if($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 'true') || ($_SERVER['SERVER_ADDR'] == '127.0.0.1')) {
+if ($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 'true') || ($_SERVER['SERVER_ADDR'] == '127.0.0.1')) {
     $sessionHelper = new \lithium\storage\Session();
-
-    $connection = Connections::get('default');
-    $connection->applyFilter('_execute', function($self, $params, $chain) use ($sessionHelper) {
-        if(!$currentQueryLog = $sessionHelper->read('debug.queries')) {
+    if (preg_match('@^/test/@', $_SERVER['REQUEST_URI'])) {
+        $connection = Connections::get('test');
+    } else {
+        $connection = Connections::get('default');
+    }
+    $connection->applyFilter('_execute', function ($self, $params, $chain) use ($sessionHelper) {
+        if (!$currentQueryLog = $sessionHelper->read('debug.queries')) {
             $currentQueryLog = [];
             $sessionHelper->write('debug.queries', $currentQueryLog);
         }
@@ -38,8 +42,8 @@ if($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 'tr
     });
 
     $actions = ['read', 'write', 'delete', 'ttl', 'exists'];
-    Rcache::applyFilter($actions, function($self, $params, $chain) use ($sessionHelper) {
-        if(!$currentQueryLog = $sessionHelper->read('debug.queries')) {
+    Rcache::applyFilter($actions, function ($self, $params, $chain) use ($sessionHelper) {
+        if (!$currentQueryLog = $sessionHelper->read('debug.queries')) {
             $currentQueryLog = [];
             $sessionHelper->write('debug.queries', $currentQueryLog);
         }

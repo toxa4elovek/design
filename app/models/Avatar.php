@@ -32,9 +32,9 @@ class Avatar extends AppModel
                 $conditions = $params['options']['conditions'];
                 if (isset($conditions['model_id'])) {
                     $cacheKey = 'avatars_' . $conditions['model_id'];
-                    if(!$result = Rcache::read($cacheKey)) {
+                    if (!$result = Rcache::read($cacheKey)) {
                         $result = $chain->next($self, $params, $chain);
-                    }else {
+                    } else {
                         $result = count($result);
                     }
                 }
