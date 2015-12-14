@@ -103,7 +103,7 @@ class Pitch extends \lithium\template\Helper {
         $startTime = $projectRecord->finishDate;
         $time = strtotime($startTime) + DAY * 4;
         if($projectRecord->expert == 1) {
-            return $this->expertOpinion($projectRecord->id) + (4 * DAY);
+            return $this->expertOpinion($projectRecord->id) + (3 * DAY);
         }
         if($projectRecord->chooseWinnerFinishDate != '0000-00-00 00:00:00') {
             $time = strtotime($projectRecord->chooseWinnerFinishDate);
