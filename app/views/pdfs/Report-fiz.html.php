@@ -1,23 +1,19 @@
-<?php
-$addonData = $addons->data();
-$tableAddonData = array();
-$addonTotal = 0;
-if($addonData) {
-    foreach($addonData as $addon) {
-        $addonTotal += $addon['total'];
-    }
-}
-?>
 <img src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/logo-01.png" width="180" style="margin-bottom:40px;" />
 <div style="font-family: Arial, sans-serif;
             font-size: 13px;
             line-height: 25px;
             margin: 0 20px 0 30px;">
-<p style="margin: 0 0 20px 0;">Отчет ООО «КРАУД МЕДИА» об исполнении агентского поручения по агентскому договору
+<p style="margin: 20px 0;">Отчет ООО «КРАУД МЕДИА» об исполнении агентского поручения по агентскому договору
 № <?=$pitch->id?>, размещённому на сайте godesigner.ru.
 </p>
 
-<p style="margin: 20px 0;"><?=date('d.m.Y', strtotime($pitch->totalFinishDate));?><br />
+<p style="margin: 20px 0;">
+    <?php if($pitch->totalFinishDate != '0000-00-00 00:00:00'):?>
+    <?=date('d.m.Y', strtotime($pitch->totalFinishDate));?>
+    <?php else: ?>
+    <?=date('d.m.Y', strtotime($pitch->finishDate));?>
+    <?php endif?>
+    <br />
 г. Санкт-Петербург<br />
 Общество с ограниченной ответственностью «КРАУД МЕДИА», именуемое в дальнейшем Агент, в лице генерального директора Федченко Максима Юрьевича, действующего на основании Устава, предоставляет,
 а <?=$bill->name?>, оплативший по банковской карте или электронными деньгами с номером транзакции <?=$transaction_id?>, именуемый в дальнейшем Принципал,
@@ -28,7 +24,7 @@ if($addonData) {
 на сумму <?=$money->formatMoney($pitch->price - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> НДС не облагается в соответствии с главой 26.2 Налогового кодекса РФ.
 </p>
 
-<p style="margin: 20px 0;">2. Агентское вознаграждение ООО «КРАУД МЕДИА» составляет <?=$money->formatMoney($totalfees + $commission - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?>,
+<p style="margin: 20px 0;">2. Агентское вознаграждение ООО «КРАУД МЕДИА» составляет <?=$money->formatMoney($commission + $totalfees - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?>,
 в том числе <?=$money->formatMoney($totalfees - $commission - $prolongfees, array('suffix' => ' руб. 00 коп.', 'dropspaces' => true))?> за услуги с предоставлением дополнительных опций.
 Агент не является плательщиком НДС в соответствии с главой 26.2 Налогового кодекса РФ согласно уведомлению налогового органа.
 </p>
