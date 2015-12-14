@@ -791,6 +791,22 @@ class Pitch extends AppModel {
             }
             $options['pitch']->total = $total;
         }
+        if(!($options['bill'])) {
+            $user = User::first($options['pitch']->user_id);
+            if($companyData = unserialize($user->companydata)) {
+                $bill = new \stdClass();
+                $bill->name = $companyData['company_name'];
+                $bill->address = $companyData['address'];
+                $bill->inn = $companyData['inn'];
+                $bill->kpp = $companyData['kpp'];
+                if($bill->kpp == '') {
+                    $bill->individual = 1;
+                }else {
+                    $bill->individual = 0;
+                }
+                $options['bill'] = $bill;
+            }
+        }
         require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
         $mpdf = new \mPDF();
         $mpdf->WriteHTML(PdfGetter::get('Act', $options));
@@ -853,6 +869,22 @@ class Pitch extends AppModel {
             $options['pitch']->total = $total;
             $totalfees = 0;
             $prolongfees = 0;
+        }
+        if(!($options['bill'])) {
+            $user = User::first($options['pitch']->user_id);
+            if($companyData = unserialize($user->companydata)) {
+                $bill = new \stdClass();
+                $bill->name = $companyData['company_name'];
+                $bill->address = $companyData['address'];
+                $bill->inn = $companyData['inn'];
+                $bill->kpp = $companyData['kpp'];
+                if($bill->kpp == '') {
+                    $bill->individual = 1;
+                }else {
+                    $bill->individual = 0;
+                }
+                $options['bill'] = $bill;
+            }
         }
         $options['totalfees'] = $totalfees;
         $options['prolongfees'] = $prolongfees;

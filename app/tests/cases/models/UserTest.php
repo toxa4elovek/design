@@ -327,4 +327,35 @@ class UserTest extends AppUnit {
         $this->assertFalse($user->isUserRecordMemberOfVKGroup(4));
     }
 
+    public function testIsEntrepreneur() {
+        $user = User::first(2);
+        $this->assertFalse($user->isEntrepreneur());
+        $user->companydata = 'a:4:{s:12:"company_name";s:11:"13231312311";s:3:"inn";s:10:"1231231231";s:3:"kpp";s:9:"123123123";s:7:"address";s:4:"test";}';
+        $user->save(null, ['validate' => false]);
+        $this->assertFalse($user->isEntrepreneur());
+        $user->companydata = serialize([
+            'company_name' => 'Дмитрий Александрович',
+            'inn' => '987654321012',
+            'address' => 'просто проверка'
+        ]);
+        $user->save(null, ['validate' => false]);
+        $this->assertTrue($user->isEntrepreneur());
+    }
+
+    public function testIsCompany() {
+        $user = User::first(2);
+        $this->assertFalse($user->isCompany());
+        $user->companydata = 'a:4:{s:12:"company_name";s:11:"13231312311";s:3:"inn";s:10:"1231231231";s:3:"kpp";s:9:"123123123";s:7:"address";s:4:"test";}';
+        $user->save(null, ['validate' => false]);
+        $this->assertTrue($user->isCompany());
+        $user->companydata = serialize([
+            'company_name' => 'Дмитрий Александрович',
+            'inn' => '987654321012',
+            'address' => 'просто проверка'
+        ]);
+        $user->save(null, ['validate' => false]);
+        $this->assertFalse($user->isCompany());
+    }
+
+
 }

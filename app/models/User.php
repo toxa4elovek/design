@@ -1703,4 +1703,45 @@ class User extends AppModel {
         return false;
     }
 
+    /**
+     * Метод определяет, является ли пользователь ИП
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isEntrepreneur($record) {
+        if($data = $this->getUnserializedCompanyData($record)) {
+           return !$this->isCompany($record);
+        }
+        return false;
+    }
+
+    /**
+     * Метод определяет, является ли пользователь компанией
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isCompany($record) {
+        if($data = $this->getUnserializedCompanyData($record)) {
+            if((isset($data['kpp'])) && (isset($data['inn'])) && (mb_strlen($data['inn'], 'UTF-8') == 10)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Метод помощник для полуения сериализорованных данных
+     *
+     * @param $record
+     * @return mixed|null
+     */
+    public function getUnserializedCompanyData($record) {
+        if(($record->companydata != '') && ($data = unserialize($record->companydata))) {
+            return $data;
+        }
+        return null;
+    }
+
 }

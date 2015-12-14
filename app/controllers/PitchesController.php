@@ -184,7 +184,7 @@ class PitchesController extends AppController
             $order = Pitch::getQueryOrder($this->request->query['order']);
             $category = Pitch::getQueryCategory($this->request->query['category']);
             $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
-            $conditions = array('Pitch.id' => $pitchesId);
+            $conditions = array('Pitch.id' => $pitchesId, 'Pitch.type' => array('!=' => 'penalty'));
             if ($this->request->query['type'] != 'favourites') {
                 $type = Pitch::getQueryType($this->request->query['type']);
                 $conditions += $type;
@@ -227,9 +227,14 @@ class PitchesController extends AppController
                 }
 
                 $pitch->hasBill = false;
-                if (($pitch->status == 2) && ($pitch->user_id == Session::read('user.id'))) {
-                    if ($bill = Bill::first($pitch->id)) {
-                        $pitch->hasBill = ($bill->individual == 1) ? 'fiz' : 'yur';
+                if (($pitch->status == 2) && ($pitch->user_id == $this->userHelper->getId())) {
+                    $client = User::first($pitch->user_id);
+                    if (($bill = Bill::first($pitch->id)) || ($data = $client->getUnserializedCompanyData())) {
+                        if($bill) {
+                            $pitch->hasBill = ($bill->individual == 1) ? 'fiz' : 'yur';
+                        }elseif($data) {
+                            $pitch->hasBill = ($client->isEntrepreneur()) ? 'fiz': 'yur';
+                        }
                     }
                 }
             }
@@ -1662,16 +1667,20 @@ Disallow: /pitches/upload/'.$pitch['id'];
      */
     public function getPdfAct()
     {
-        if (($pitch = Pitch::first($this->request->id)) && ($pitch->type == 'plan-payment' || $bill = Bill::first($this->request->id))) {
+        if (($pitch = Pitch::first($this->request->id))) {
             if (!$this->userHelper->isPitchOwner($pitch->user_id) && !User::checkRole('admin')) {
                 return $this->redirect('/users/mypitches');
             }
+            $user = User::first($pitch->user_id);
+            if((!$bill = Bill::first($this->request->id)) && (!$user->getUnserializedCompanyData())) {
+                return $this->redirect('/users/mypitches');
+            }
             $destination = 'Download';
-            $addons = Addon::all(array('conditions' => array(
+            $addons = Addon::all(array('conditions' => [
                 'pitch_id' => $pitch->id,
                 'billed' => 1,
-                'prolong' => array('>' => 0),
-            )));
+                'prolong' => ['>' => 0],
+            ]));
             $options = compact('pitch', 'bill', 'addons', 'destination');
             Pitch::generatePdfAct($options);
             die();
@@ -1687,8 +1696,12 @@ Disallow: /pitches/upload/'.$pitch['id'];
      */
     public function getPdfReport()
     {
-        if (($pitch = Pitch::first($this->request->id)) && ($pitch->type == 'plan-payment' || $bill = Bill::first($this->request->id))) {
+        if (($pitch = Pitch::first($this->request->id))) {
             if (!$this->userHelper->isPitchOwner($pitch->user_id) && !User::checkRole('admin')) {
+                return $this->redirect('/users/mypitches');
+            }
+            $user = User::first($pitch->user_id);
+            if((!$bill = Bill::first($this->request->id)) && (!$user->getUnserializedCompanyData())) {
                 return $this->redirect('/users/mypitches');
             }
             $destination = 'Download';

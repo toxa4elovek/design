@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\extensions\helper\MoneyFormatter;
 use app\extensions\smsfeedback\SmsFeedback;
 use app\extensions\social\TwitterAPI;
+use app\models\Bill;
 use app\models\Logreferal;
 use app\models\SubscriptionPlan;
 use \app\models\User;
@@ -1908,8 +1909,21 @@ class UsersController extends \app\controllers\AppController {
         $payments = array();
         $defaultFinishDate = date('Y-m-d H:i:s', time() + (5 * DAY));
         $moneyFormatter = new MoneyFormatter();
+        $client = User::first($this->userHelper->getId());
         foreach($paymentsObj as $row) {
             $data = $row->data();
+
+$data['hasBill'] = false;
+/*if (($row->status == 2) && ($row->user_id == $this->userHelper->getId())) {
+    if (($bill = Bill::first($row->id)) || ($data = $client->getUnserializedCompanyData())) {
+        if($bill) {
+            $data['hasBill'] = ($bill->individual == 1) ? 'fiz' : 'yur';
+        }elseif($data) {
+            $data['hasBill'] = ($client->isEntrepreneur()) ? 'fiz': 'yur';
+        }
+    }
+}*/
+
             if($row->type == 'plan-payment') {
                 $amount = SubscriptionPlan::extractFundBalanceAmount($row->id);
                 if($amount > 0) {

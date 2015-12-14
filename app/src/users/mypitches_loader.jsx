@@ -152,14 +152,16 @@ function TableLoader() {
                 if(object.status == 2) {
                     timeleft = '<span style="display: block; padding-left: 10px; color: #4f8b5c; text-align: left;">Проект завершен</span>';
                     if(object.user_id == $('#user_id').val()) {
-                        if(object.winnerSolution) {
-                            timeleft += `<a style="padding-left: 10px;" class="pitches-finish" href="/users/step3/${object.winnerSolution.id}">Скачать исходники</a>`;
-                        }
-                        if (object.hasBill == 'fiz') {
-                            timeleft += '<a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
-                        }
-                        if (object.hasBill == 'yur') {
-                            timeleft += '<a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                        if(object.type != 'penalty') {
+                            if(object.winnerSolution) {
+                                timeleft += `<a style="padding-left: 10px;" class="pitches-finish" href="/users/step3/${object.winnerSolution.id}">Скачать исходники</a>`;
+                            }
+                            if (object.hasBill == 'fiz') {
+                                timeleft += '<a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                            }
+                            if (object.hasBill == 'yur') {
+                                timeleft += '<a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfact/' + object.id + '">Скачать Акт</a><a style="padding-left: 10px;" class="pitches-finish" href="/pitches/getpdfreport/' + object.id + '">Скачать отчёт</a>';
+                            }
                         }
                         if(object.winnerSolution) {
                             var step = object.winnerSolution.step;
