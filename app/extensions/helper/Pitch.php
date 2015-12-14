@@ -136,4 +136,15 @@ class Pitch extends \lithium\template\Helper {
         return SubscriptionPlan::getPlanForPayment($recordId);
     }
 
+    public function isWaitingForExperts($record) {
+        $waitingForExpert = false;
+        if($record->expert):
+            $allowSelect = $this->expertOpinion($record->id);
+            if($allowSelect == strtotime($record->finishDate)):
+                $waitingForExpert = true;
+            endif;
+        endif;
+        return $waitingForExpert;
+    }
+
 }

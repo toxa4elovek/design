@@ -2108,6 +2108,9 @@ class Pitch extends AppModel {
         if($projectRecord->expert == 1) {
             $pitchHelper = new \app\extensions\helper\Pitch();
             $time = $pitchHelper->expertOpinion($projectRecord->id);
+            if($pitchHelper->isWaitingForExperts($projectRecord)) {
+                return false;
+            }
         }
         if(($time + 4 * DAY) < time()) {
             return true;

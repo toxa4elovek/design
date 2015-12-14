@@ -245,12 +245,12 @@ foreach($solutions as $solution):
             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/<?=$solution->id?>.json" class="warning" data-solution-id="<?=$solution->id?>">Пожаловаться</a></li>
             <?php endif;?>
             <?php if($this->user->isPitchOwner($pitch->user_id)):?>
-                <?php if (($pitchesCount<1) and ($pitch->status > 0) and (!$selectedsolution)): ?>
+                <?php if (($pitchesCount < 1) and ($pitch->status > 0) and (!$selectedsolution)): ?>
                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
                         <?php
                         $selectWinnerUrl = '/solutions/select/' . $solution->id . '.json';
                         $selectWinnerClass = 'select-winner';
-                        if(time() > $this->pitch->getChooseWinnerTime($pitch)):
+                        if((time() > $this->pitch->getChooseWinnerTime($pitch)) && !$this->pitch->isWaitingForExperts($pitch)):
                             $selectWinnerUrl = '/pitches/penalty/' . $solution->id;
                             $selectWinnerClass = '';
                         endif;

@@ -115,7 +115,7 @@
                                     <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0)):
                                         $types['winner'] += 1;
                                         ?>
-                                        <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0) && (time() > $this->pitch->getChooseWinnerTime($mypitch))):
+                                        <?php if(($mypitch->status == 1) && ($mypitch->awarded == 0) && (time() > $this->pitch->getChooseWinnerTime($mypitch)) && !$this->pitch->isWaitingForExperts($mypitch)):
                                         $style = 'color: #ff5360;';
                                         $delay = '&nbsp;&nbsp;(–' . (round((time() - $this->pitch->getChooseWinnerTime($mypitch)) / 60 / 60, 0, PHP_ROUND_HALF_DOWN)) . ' Ч.)';
                                         ?>
