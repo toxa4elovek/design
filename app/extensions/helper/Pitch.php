@@ -19,18 +19,27 @@ class Pitch extends \lithium\template\Helper {
     /**
      * Метод возвращяет дату публикации экспертного мнения или дату завершения проекта
      *
-     * @param $pitch_id
+     * @param $projectId
      * @return int
      */
-    public function expertOpinion($pitch_id) {
-        $pitch = PitchModel::first($pitch_id);
+    public function expertOpinion($projectId) {
+        $pitch = PitchModel::first($projectId);
         $experts = unserialize($pitch->{'expert-ids'});
         $expertUserIds = Expert::getExpertUserIds($experts);
-        if ($comments = Comment::all(array('conditions' => array('pitch_id' => $pitch_id, 'user_id' => $expertUserIds)))) {
+        $expertsThatHadCommented = [];
+        if ($comments = Comment::all(['conditions' => ['pitch_id' => $projectId, 'user_id' => $expertUserIds]])) {
             $comments = $comments->data();
+            foreach($comments as $comment) {
+                if(!in_array($comment->user_id, $expertsThatHadCommented)) {
+                    $expertsThatHadCommented[] = $comment->user_id;
+                }
+            }
+            if(count($experts) != count($expertsThatHadCommented)) {
+                return strtotime($pitch->finishDate);
+            }
             foreach ($expertUserIds as $expert) {
                 $this->expert = $expert;
-                $res = array_filter($comments, array($this, 'wasExpertComment'));
+                $res = array_filter($comments, [$this, 'wasExpertComment']);
                 if (count($res) == 0) {
                     return strtotime($pitch->finishDate);
                 }
