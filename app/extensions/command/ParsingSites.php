@@ -550,7 +550,8 @@ class ParsingSites extends \app\extensions\command\CronJob
 
     private function ParsingKoko($url)
     {
-        $xml = simplexml_load_file($url);
+        $temp = file_get_contents($url);
+        $xml = simplexml_load_string($temp);
         if(($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
             foreach ($xml->channel->item as $item) {
                 $trigger = News::doesNewsExists((string) $item->title, $item->link);
