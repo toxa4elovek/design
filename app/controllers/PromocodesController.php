@@ -11,7 +11,8 @@ use app\models\Promocode;
  *
  * @package app\controllers
  */
-class PromocodesController extends AppController {
+class PromocodesController extends AppController
+{
 
     /**
      * @var array публичные методы
@@ -23,7 +24,8 @@ class PromocodesController extends AppController {
      *
      * @return string
      */
-    public function check() {
+    public function check()
+    {
         return Promocode::checkPromocode($this->request->data['code']);
     }
 }

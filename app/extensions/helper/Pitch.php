@@ -11,7 +11,8 @@ use app\models\SubscriptionPlan;
  * Хэлпер для работы с данными проектов
  * @package app\extensions\helper
  */
-class Pitch extends \lithium\template\Helper {
+class Pitch extends \lithium\template\Helper
+{
 
     protected $expert;
     protected $dates = array();
@@ -22,19 +23,20 @@ class Pitch extends \lithium\template\Helper {
      * @param $projectId
      * @return int
      */
-    public function expertOpinion($projectId) {
+    public function expertOpinion($projectId)
+    {
         $pitch = PitchModel::first($projectId);
         $experts = unserialize($pitch->{'expert-ids'});
         $expertUserIds = Expert::getExpertUserIds($experts);
         $expertsThatHadCommented = [];
         if ($comments = Comment::all(['conditions' => ['pitch_id' => $projectId, 'user_id' => $expertUserIds]])) {
             $comments = $comments->data();
-            foreach($comments as $comment) {
-                if(!in_array($comment->user_id, $expertsThatHadCommented)) {
-                    $expertsThatHadCommented[] = $comment->user_id;
+            foreach ($comments as $comment) {
+                if (!in_array($comment['user_id'], $expertsThatHadCommented)) {
+                    $expertsThatHadCommented[] = $comment['user_id'];
                 }
             }
-            if(count($experts) != count($expertsThatHadCommented)) {
+            if (count($experts) != count($expertsThatHadCommented)) {
                 return strtotime($pitch->finishDate);
             }
             foreach ($expertUserIds as $expert) {
@@ -55,7 +57,8 @@ class Pitch extends \lithium\template\Helper {
      *
      * @return boolean|DateInterval
      */
-    public function confirmationTimeRemain($pitch = false) {
+    public function confirmationTimeRemain($pitch = false)
+    {
         $timeWait = 3;
         $datetime1 = new \DateTime();
         $datetime2 = new \DateTime(date('Y-m-d H:i:s', (strtotime($pitch->started) + $timeWait * DAY)));
@@ -72,7 +75,8 @@ class Pitch extends \lithium\template\Helper {
      * @param $comment
      * @return bool
      */
-    public function wasExpertComment($comment) {
+    public function wasExpertComment($comment)
+    {
         $this->dates[] = strtotime($comment['created']);
         return (bool) $comment['user_id'] == $this->expert;
     }
@@ -84,7 +88,8 @@ class Pitch extends \lithium\template\Helper {
      * @param $pitch
      * @return bool
      */
-    public function isReadyForLogosale($pitch) {
+    public function isReadyForLogosale($pitch)
+    {
         return PitchModel::isReadyForLogosale($pitch);
     }
 
@@ -95,7 +100,8 @@ class Pitch extends \lithium\template\Helper {
      * @param $type
      * @return bool|float|int|mixed
      */
-    public function getStatisticalAverages($categoryId, $type) {
+    public function getStatisticalAverages($categoryId, $type)
+    {
         return PitchModel::getStatisticalAverages($categoryId, $type);
     }
 
@@ -105,22 +111,24 @@ class Pitch extends \lithium\template\Helper {
      * @param $projectRecord
      * @return int|null
      */
-    public function getChooseWinnerTime($projectRecord) {
-        if(($projectRecord->status != 1) || ($projectRecord->awarded != 0)) {
+    public function getChooseWinnerTime($projectRecord)
+    {
+        if (($projectRecord->status != 1) || ($projectRecord->awarded != 0)) {
             return null;
         }
         $startTime = $projectRecord->finishDate;
         $time = strtotime($startTime) + DAY * 4;
-        if($projectRecord->expert == 1) {
+        if ($projectRecord->expert == 1) {
             return $this->expertOpinion($projectRecord->id) + (3 * DAY);
         }
-        if($projectRecord->chooseWinnerFinishDate != '0000-00-00 00:00:00') {
+        if ($projectRecord->chooseWinnerFinishDate != '0000-00-00 00:00:00') {
             $time = strtotime($projectRecord->chooseWinnerFinishDate);
         }
         return $time;
     }
 
-    public function getPenalty($projectRecord) {
+    public function getPenalty($projectRecord)
+    {
         //http://www.godesigner.ru/answers/view/70
         $diff = time() - $this->getChooseWinnerTime($projectRecord);
         return ceil($diff / 60 / 60) * 25;
@@ -132,19 +140,20 @@ class Pitch extends \lithium\template\Helper {
      * @param $recordId
      * @return int|null
      */
-    public function getPlanForPayment($recordId) {
+    public function getPlanForPayment($recordId)
+    {
         return SubscriptionPlan::getPlanForPayment($recordId);
     }
 
-    public function isWaitingForExperts($record) {
+    public function isWaitingForExperts($record)
+    {
         $waitingForExpert = false;
-        if($record->expert):
+        if ($record->expert):
             $allowSelect = $this->expertOpinion($record->id);
-            if($allowSelect == strtotime($record->finishDate)):
+        if ($allowSelect == strtotime($record->finishDate)):
                 $waitingForExpert = true;
-            endif;
+        endif;
         endif;
         return $waitingForExpert;
     }
-
 }
