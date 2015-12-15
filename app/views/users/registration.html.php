@@ -24,7 +24,11 @@
             <section style="margin-top: 25px;">
                 <h2 class="or">или</h2>
 
-                <?php $errors = $user->errors(); ?>
+                <?php
+                if(isset($user)) {
+                    $errors = $user->errors();
+                }
+                ?>
                 <?= $this->form->create($user, array('action' => 'registration', 'id' => 'registration')) ?>
                 <input type="hidden" name="case" value="h4820g838f">
                 <p>
