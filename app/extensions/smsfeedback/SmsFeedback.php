@@ -1,18 +1,20 @@
 <?php
 namespace app\extensions\smsfeedback;
 
-class SmsFeedback {
+class SmsFeedback
+{
 
-    protected static $defaults = array(
+    protected static $defaults = [
         'host' => 'api.smsfeedback.ru',
         'port' => 80,
         'login' => 'godesigner',
         'password' => '6446969i',
         'sender' => 'GoDesigner',
         'wapurl' => '',
-    );
+    ];
 
-    public static function send($phone, $text, $options = array()) {
+    public static function send($phone, $text, $options = [])
+    {
         if (is_array($options)) {
             $options += static::$defaults;
         }
@@ -33,15 +35,11 @@ class SmsFeedback {
         }
         fwrite($fp, "\n");
         $response = "";
-        while(!feof($fp)) {
+        while (!feof($fp)) {
             $response .= fread($fp, 1);
         }
         fclose($fp);
-        list($other, $responseBody) = explode("\r\n\r\n", $response, 2);
+        list($varNotUsed, $responseBody) = explode("\r\n\r\n", $response, 2);
         return $responseBody;
-    }
-
-    public static function test() {
-        return 'Ok';
     }
 }
