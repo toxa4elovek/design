@@ -2,23 +2,31 @@
 
 namespace app\tests\cases\models;
 
+use app\extensions\storage\Rcache;
 use app\extensions\tests\AppUnit;
 use app\models\Expert;
-use app\extensions\storage\Rcache;
+use app\models\Pitch;
 
-class ExpertTest extends AppUnit{
+class ExpertTest extends AppUnit
+{
 
-    public function setUp() {
+    public $models = ['Expert', 'Pitch', 'Comment', 'User'];
+
+    public function setUp()
+    {
         Rcache::init();
         Rcache::flushdb();
-        $this->rollUp('Expert');
+        $this->rollUp($this->models);
     }
 
-    public function tearDown() {
-        $this->rollDown('Expert');
+    public function tearDown()
+    {
+        Rcache::flushdb();
+        $this->rollDown($this->models);
     }
 
-    public function testGetExpertUserIds() {
+    public function testGetExpertUserIds()
+    {
         $result = Expert::getExpertUserIds();
         $expected = array(5, 4, 6);
         $this->assertEqual($expected, $result);
@@ -42,4 +50,26 @@ class ExpertTest extends AppUnit{
         $this->assertEqual(array(5, 4, 6), $userIds);
     }
 
+    public function testIsExpertNeedToWriteComment()
+    {
+        $project = Pitch::first(3);
+        $result = Expert::isExpertNeedToWriteComment($project, 1);
+        $this->assertTrue($result);
+        $result = Expert::isExpertNeedToWriteComment($project, 2);
+        $this->assertFalse($result);
+        $result = Expert::isExpertNeedToWriteComment($project, 3);
+        $this->assertFalse($result);
+
+        $project = Pitch::first(1);
+        $result = Expert::isExpertNeedToWriteComment($project, 3);
+        $this->assertFalse($result);
+
+        $project = Pitch::first(3);
+        $project->status = 0;
+        $project->save();
+        $result = Expert::isExpertNeedToWriteComment($project, 1);
+        $this->assertFalse($result);
+        $result = Expert::isExpertNeedToWriteComment($project, 2);
+        $this->assertFalse($result);
+    }
 }

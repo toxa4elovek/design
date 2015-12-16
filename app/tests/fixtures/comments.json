@@ -1,3 +1,6 @@
 [
-    {"id": 1, "pitch_id": 1, "text": "This is test text", "reply_to": 1}
+    {"id": 1, "pitch_id": 1, "text": "This is test text", "reply_to": 1},
+    {"id": 2, "pitch_id": 3, "user_id": 2, "text": "This is test text", "reply_to": 1},
+    {"id": 3, "pitch_id": 3, "created": "2015-12-10 05-00-00", "user_id": 5, "text": "This is test text"},
+    {"id": 4, "pitch_id": 3, "created": "2015-12-10 12-00-00", "user_id": 4, "text": "This is test text2"}
 ]
