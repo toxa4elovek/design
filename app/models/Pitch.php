@@ -1186,7 +1186,7 @@ class Pitch extends AppModel {
                 $ids[] = $solution->id;
             }
             if(strtotime($plusDay) < time()) {
-                Rcache::write($cacheKey, $ids);
+                Rcache::write($cacheKey, $ids, [], '+2 hours');
             }
         }
         return $ids;
@@ -1201,7 +1201,7 @@ class Pitch extends AppModel {
     private function __getFirstSolutionTime($pitch) {
         $cacheKey = 'calc_firstSolutionTime_' . $pitch->id;
         $time = null;
-        //if(!$time = Rcache::read($cacheKey)) {
+        if(!$time = Rcache::read($cacheKey)) {
             $pitch->firstSolution = Historysolution::first(array(
                 'conditions' => array(
                     'pitch_id' => $pitch->id),
@@ -1210,9 +1210,9 @@ class Pitch extends AppModel {
             ));
             if ($pitch->firstSolution) {
                 $time = strtotime($pitch->firstSolution->created);
-        //        Rcache::write($cacheKey, $time);
+                Rcache::write($cacheKey, $time);
             }
-        //}
+        }
         return $time;
     }
 
@@ -1263,7 +1263,7 @@ class Pitch extends AppModel {
                 $rating = 3;
             }
             if(strtotime($plusDay) < time()) {
-                Rcache::write($cacheKey, $rating);
+                Rcache::write($cacheKey, $rating, [], '+2 hours');
             }
         }
         return $rating;
@@ -1308,7 +1308,7 @@ class Pitch extends AppModel {
                 $comments = 3;
             }
             if(strtotime($plusDay) < time()) {
-                Rcache::write($cacheKey, $comments);
+                Rcache::write($cacheKey, $comments, [], '+2 hours');
             }
         }
         return $comments;
