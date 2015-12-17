@@ -33,7 +33,8 @@ use \app\models\Category;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
 
-class User extends AppModel {
+class User extends AppModel
+{
 
     public $hasOne = array();
     public $hasMany = array('Social', 'Solution', 'Pitch');
@@ -84,9 +85,10 @@ class User extends AppModel {
             ),
     ));
 
-    public static function __init() {
+    public static function __init()
+    {
         parent::__init();
-        self::applyFilter('save', function($self, $params, $chain) {
+        self::applyFilter('save', function ($self, $params, $chain) {
             $record = $params['entity'];
             if (!$record->id) {
                 if (empty($record->password)) {
@@ -129,21 +131,24 @@ class User extends AppModel {
         )
     );
 
-    public function checkFacebookUser($entity, $data) {
+    public function checkFacebookUser($entity, $data)
+    {
         $conditions = array(
             'facebook_uid' => $data['facebook_uid']
         );
         return (bool) (self::find('first', array('conditions' => $conditions)));
     }
 
-    public function checkVkontakteUser($entity, $data) {
+    public function checkVkontakteUser($entity, $data)
+    {
         $conditions = array(
             'vkontakte_uid' => $data['uid']
         );
         return (bool) (self::first(array('conditions' => $conditions)));
     }
 
-    public function isUserExistsByEmail($entity, $email) {
+    public function isUserExistsByEmail($entity, $email)
+    {
         $conditions = array(
             'email' => $email,
             'facebook_uid' => ''
@@ -154,14 +159,15 @@ class User extends AppModel {
             'vkontakte_uid' => ''
         );
         $vkUser = self::find('first', array('conditions' => $conditions));
-        if((!$fbUser) && (!$vkUser)) {
+        if ((!$fbUser) && (!$vkUser)) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
 
-    public function saveVkontakteUser($entity, $data) {
+    public function saveVkontakteUser($entity, $data)
+    {
         $gender = 0;
         if (isset($data['gender']) && $data['gender'] == 2) {
             $gender = 1;
@@ -197,7 +203,8 @@ class User extends AppModel {
         }
     }
 
-    public function saveFacebookUser($entity, $data) {
+    public function saveFacebookUser($entity, $data)
+    {
         $gender = 0;
         if (isset($this->request->data['gender']) && $this->request->data['gender'] == 'male') {
             $gender = 1;
@@ -238,7 +245,8 @@ class User extends AppModel {
      * @param $userRecord
      * @return array
      */
-    public function getVkAvatar($userRecord) {
+    public function getVkAvatar($userRecord)
+    {
         return Avatar::getVkAvatar($userRecord);
     }
 
@@ -248,25 +256,30 @@ class User extends AppModel {
      * @param $userRecord
      * @return array
      */
-    public function getFbAvatar($userRecord) {
+    public function getFbAvatar($userRecord)
+    {
         return Avatar::getFbAvatar($userRecord);
     }
 
-    public function unsubscribeToken($entity) {
+    public function unsubscribeToken($entity)
+    {
         $from = 'from=' . base64_encode($entity->email);
         $token = base64_encode(sha1($entity->id . $entity->created));
         return '?token=' . $token . '&' . $from;
     }
 
-    public function generateToken() {
+    public function generateToken()
+    {
         return uniqid();
     }
 
-    public function generatePassword() {
+    public function generatePassword()
+    {
         return substr(md5(rand() . rand()), 0, 14);
     }
 
-    public static function generateReferalToken($length = 4) {
+    public static function generateReferalToken($length = 4)
+    {
         $exists = true;
         while ($exists == true) {
             $token = substr(md5(rand() . rand()), 0, $length);
@@ -277,13 +290,15 @@ class User extends AppModel {
         return $token;
     }
 
-    public function activateUser($entity) {
+    public function activateUser($entity)
+    {
         $entity->token = '';
         $entity->confirmed_email = 1;
         $res = $entity->save(null, array('validate' => false));
     }
 
-    public static function getSubscribedPitches($userId) {
+    public static function getSubscribedPitches($userId)
+    {
         $pitches = Pitch::find('all', array('conditions' =>
                     array('user_id' => $userId, 'blank' => 0, 'status' => array('<' => 2)),
         ));
@@ -308,7 +323,8 @@ class User extends AppModel {
      *
      * @return boolean
      */
-    public static function checkRole($role) {
+    public static function checkRole($role)
+    {
         $res = false;
         switch ($role) {
             case 'admin':
@@ -329,7 +345,8 @@ class User extends AppModel {
         return $res;
     }
 
-    public static function getUserRelatedPitches($userId, $awarded = false) {
+    public static function getUserRelatedPitches($userId, $awarded = false)
+    {
         // сначала ищем созданные пользователем питчи
         $pitches = Pitch::find('all', array('conditions' =>
             array(
@@ -346,7 +363,7 @@ class User extends AppModel {
             $pitchesIds[$pitch->id . ''] = $pitch->started;
         }
         // затем ищем питчи, где пользователь выложил решения
-        if($awarded) {
+        if ($awarded) {
             $solutions = Solution::all(array('conditions' =>
                 array(
                     'user_id' => $userId,
@@ -356,7 +373,7 @@ class User extends AppModel {
                     ),
                 )
             ));
-        }else {
+        } else {
             $solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
         }
 
@@ -368,7 +385,8 @@ class User extends AppModel {
         return $pitchesIds;
     }
 
-    public static function getFavouritePitches($userId) {
+    public static function getFavouritePitches($userId)
+    {
         $fav = Favourite::find('all', array('conditions' => array('Favourite.user_id' => $userId), 'with' => array('Pitch')));
         $pitchesIds = array();
         foreach ($fav as $f) {
@@ -378,27 +396,32 @@ class User extends AppModel {
         return $pitchesIds;
     }
 
-    public static function getTotalSolutionNum($userId) {
+    public static function getTotalSolutionNum($userId)
+    {
         $count = Solution::count(array('conditions' => array('user_id' => $userId)));
         return $count;
     }
 
-    public static function getAwardedSolutionNum($userId) {
+    public static function getAwardedSolutionNum($userId)
+    {
         $count = Solution::count(array('conditions' => array('user_id' => $userId, 'OR' => array(array('awarded' => 1), array('nominated' => 1)))));
         return $count;
     }
 
-    public static function getTotalLikes($userId) {
+    public static function getTotalLikes($userId)
+    {
         $all = Solution::all(array('conditions' => array('user_id' => $userId), 'fields' => array('SUM(likes) as totalLikes')));
         return $all->first()->totalLikes;
     }
 
-    public static function getTotalViews($userId) {
+    public static function getTotalViews($userId)
+    {
         $all = Solution::all(array('conditions' => array('user_id' => $userId), 'fields' => array('SUM(views) as totalViews')));
         return $all->first()->totalViews;
     }
 
-    public static function getAverageGrade($userId) {
+    public static function getAverageGrade($userId)
+    {
         $all = Solution::all(array('conditions' => array('user_id' => $userId, 'awarded' => 1)));
         $pitches = array();
         foreach ($all as $solution) {
@@ -431,13 +454,15 @@ class User extends AppModel {
         }
     }
 
-    public static function getPitchCount($userId) {
+    public static function getPitchCount($userId)
+    {
         $pitches = Pitch::count(array('conditions' => array('user_id' => $userId, 'published' => 2)));
         $participatedPitches = count(Solution::all(array('conditions' => array('user_id' => $userId), 'group' => array('pitch_id'))));
         return $pitches + $participatedPitches;
     }
 
-    public static function getDesignersForSpam($category) {
+    public static function getDesignersForSpam($category)
+    {
         // Designers
         $result1 = array();
         if ($category != 7) {
@@ -502,7 +527,8 @@ class User extends AppModel {
         }
     }
 
-    public static function sendSpamNewPitch($params) {
+    public static function sendSpamNewPitch($params)
+    {
         $recipientsIds = self::getDesignersForSpam($params['pitch']->category_id);
         $recipientsIds = array_unique($recipientsIds);
         foreach ($recipientsIds as $person) {
@@ -518,7 +544,8 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendClientSpamNewPitch($params) {
+    public static function sendClientSpamNewPitch($params)
+    {
         $user = self::first($params['pitch']->user_id);
         if ($params['pitch']->brief == 0) {
             $text = 'Ваша оплата прошла успешно и проект опубликован на сайте. Как только дизайнеры загрузят свои решения, комментируйте их, выставляйте рейтинг и помогайте лучше понять вас, и тогда вы точно получите то, что хотели.';
@@ -529,7 +556,8 @@ class User extends AppModel {
         SpamMailer::newclientpitch($data);
     }
 
-    public static function sendSpamNewcomment($params) {
+    public static function sendSpamNewcomment($params)
+    {
         $pitch = Pitch::first($params['pitch_id']);
         $solution = Solution::first($params['solution_id']);
         $user = self::first(array(
@@ -542,17 +570,19 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendAdminBriefPitch($params) {
-        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
-        $schedule = \app\models\Schedule::first(array('conditions' => array('pitch_id' => $params['pitch']->id)));
+    public static function sendAdminBriefPitch($params)
+    {
+        $users = self::all(['conditions' => ['id' => [4, 5, 32, 47]]]);
+        $schedule = \app\models\Schedule::first(['conditions' => ['pitch_id' => $params['pitch']->id]]);
         foreach ($users as $user) {
             $text = 'На сайт добавлен новый проект с опцией "заполнить бриф"';
-            $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $text, 'schedule' => $schedule);
+            $data = ['user' => $user, 'pitch' => $params['pitch'], 'text' => $text, 'schedule' => $schedule];
             SpamMailer::newbriefedpitch($data);
         }
     }
 
-    public static function sendAdminModeratedPitch($pitch) {
+    public static function sendAdminModeratedPitch($pitch)
+    {
         $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
         foreach ($users as $user) {
             $data = array('user' => $user, 'pitch' => $pitch);
@@ -560,7 +590,8 @@ class User extends AppModel {
         }
     }
 
-    public static function sendAdminNewAddon($addon) {
+    public static function sendAdminNewAddon($addon)
+    {
         $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
         $pitch = Pitch::first($addon->pitch_id);
         foreach ($users as $user) {
@@ -569,7 +600,8 @@ class User extends AppModel {
         }
     }
 
-    public static function sendAdminNewAddonBrief($addon) {
+    public static function sendAdminNewAddonBrief($addon)
+    {
         $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
         $pitch = Pitch::first($addon->pitch_id);
         foreach ($users as $user) {
@@ -586,7 +618,8 @@ class User extends AppModel {
      * @param bool $blue
      * @return bool
      */
-    public static function sendSpamWincomment($comment, $recipient, $blue = false) {
+    public static function sendSpamWincomment($comment, $recipient, $blue = false)
+    {
         $solution = Solution::first($comment->solution_id);
         $pitch = Pitch::first($solution->pitch_id);
         $data = array(
@@ -600,7 +633,8 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendSpamWinstep($user, $solution, $step) {
+    public static function sendSpamWinstep($user, $solution, $step)
+    {
         $pitch = Pitch::first($solution->pitch_id);
         if ($step == 3) {
             $text = 'Ваши макеты были одобрены, вы переходите на следующую стадию предоставления исходников.';
@@ -613,7 +647,8 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendSpamWinstepGo($user, $solution, $step) {
+    public static function sendSpamWinstepGo($user, $solution, $step)
+    {
         $pitch = Pitch::first($solution->pitch_id);
         $text = 'Ваши исходники одобрены администрацией GoDesigner, вы переходите на стадию выставления оценок.';
         $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution);
@@ -621,7 +656,8 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendPersonalComment($params) {
+    public static function sendPersonalComment($params)
+    {
         $user = User::first($params['reply_to']);
         $pitch = Pitch::first($params['pitch_id']);
         if ($user->email_newcomments == 1) {
@@ -631,7 +667,8 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendAdminNotification($params) {
+    public static function sendAdminNotification($params)
+    {
         $admin = 'fedchenko@godesigner.ru';
         $pitch = Pitch::first($params['pitch_id']);
         $data = array('admin' => $admin, 'pitch' => $pitch, 'comment' => $params);
@@ -639,24 +676,28 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendPromoCode($userId) {
+    public static function sendPromoCode($userId)
+    {
         $user = User::first(array('conditions' => array('id' => $userId)));
         $code = Promocode::createPromocode($user->id);
         $data = array('user' => $user, 'promocode' => $code);
         SpamMailer::promocode($data);
     }
 
-    public static function sendDailyPitch($user, $pitches) {
+    public static function sendDailyPitch($user, $pitches)
+    {
         $data = array('user' => $user, 'pitches' => $pitches);
         SpamMailer::dailypitch($data);
     }
 
-    public static function sendOpenLetter($pitch) {
+    public static function sendOpenLetter($pitch)
+    {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
         return SpamMailer::openletter($data);
     }
 
-    public static function sendExpertMail($addon) {
+    public static function sendExpertMail($addon)
+    {
         $data = array('pitch' => Pitch::first($addon->pitch_id));
         $experts = unserialize($addon->{'expert-ids'});
         foreach ($experts as $expert) {
@@ -672,7 +713,8 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendExpertReminder($pitch) {
+    public static function sendExpertReminder($pitch)
+    {
         $data = array('pitch' => $pitch);
         $experts = unserialize($pitch->{'expert-ids'});
         foreach ($experts as $expert) {
@@ -691,14 +733,16 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendSpamExpertSpeaking($params) {
+    public static function sendSpamExpertSpeaking($params)
+    {
         $user = self::first($params['pitch']->user_id);
         $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $params['text']);
         SpamMailer::sendclientexpertspeaking($data);
         return true;
     }
 
-    public static function sendSpamFirstSolutionForPitch($pitchId) {
+    public static function sendSpamFirstSolutionForPitch($pitchId)
+    {
         $pitch = Pitch::first($pitchId);
         $user = self::first($pitch->user_id);
         $data = array('user' => $user, 'pitch' => $pitch);
@@ -706,7 +750,8 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendSpamReferal() {
+    public static function sendSpamReferal()
+    {
         $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
         $sent = 0;
         foreach ($users as $user) {
@@ -720,7 +765,8 @@ class User extends AppModel {
         return $sent;
     }
 
-    public static function sendDvaSpam() {
+    public static function sendDvaSpam()
+    {
         $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
         $sent = 0;
         // Test User
@@ -739,33 +785,36 @@ class User extends AppModel {
         return $sent;
     }
 
-    public static function getAdmin() {
+    public static function getAdmin()
+    {
         $admin = self::first(array('conditions' => array('isAdmin' => 1)));
         return $admin->id;
     }
 
-	public static function editUser($data) {
-		$user = User::first($data['user-id']);
-		$user->active = (isset($data['active']) ? 1 : 0);
-		$user->confirmed_email = (isset($data['confirmed_email']) ? 1 : 0);
-		$user->invited = (isset($data['invited']) ? 1 : 0);
-		$user->isClient = (isset($data['isClient']) ? 1 : 0);
-		$user->isDesigner = (isset($data['isDesigner']) ? 1 : 0);
-		$user->isCopy = (isset($data['isCopy']) ? 1 : 0);
-		$user->isAdmin = (isset($data['isAdmin']) ? 1 : 0);
-		$user->email_newpitch = (isset($data['email_newpitch']) ? 1 : 0);
-		$user->email_newcomments = (isset($data['email_newcomments']) ? 1 : 0);
-		$user->email_newpitchonce = (isset($data['email_newpitchonce']) ? 1 : 0);
-		$user->email_newsolonce = (isset($data['email_newsolonce']) ? 1 : 0);
-		$user->email_newsol = (isset($data['email_newsol']) ? 1 : 0);
-		$user->email_digest = (isset($data['email_digest']) ? 1 : 0);
-		$user->email_onlycopy = (isset($data['email_onlycopy']) ? 1 : 0);
-		$user->banned = (isset($data['banned']) ? 1 : 0);
-		$user->phone_valid = (isset($data['phone_valid']) ? 1 : 0);
-		return $user->save();
+    public static function editUser($data)
+    {
+        $user = User::first($data['user-id']);
+        $user->active = (isset($data['active']) ? 1 : 0);
+        $user->confirmed_email = (isset($data['confirmed_email']) ? 1 : 0);
+        $user->invited = (isset($data['invited']) ? 1 : 0);
+        $user->isClient = (isset($data['isClient']) ? 1 : 0);
+        $user->isDesigner = (isset($data['isDesigner']) ? 1 : 0);
+        $user->isCopy = (isset($data['isCopy']) ? 1 : 0);
+        $user->isAdmin = (isset($data['isAdmin']) ? 1 : 0);
+        $user->email_newpitch = (isset($data['email_newpitch']) ? 1 : 0);
+        $user->email_newcomments = (isset($data['email_newcomments']) ? 1 : 0);
+        $user->email_newpitchonce = (isset($data['email_newpitchonce']) ? 1 : 0);
+        $user->email_newsolonce = (isset($data['email_newsolonce']) ? 1 : 0);
+        $user->email_newsol = (isset($data['email_newsol']) ? 1 : 0);
+        $user->email_digest = (isset($data['email_digest']) ? 1 : 0);
+        $user->email_onlycopy = (isset($data['email_onlycopy']) ? 1 : 0);
+        $user->banned = (isset($data['banned']) ? 1 : 0);
+        $user->phone_valid = (isset($data['phone_valid']) ? 1 : 0);
+        return $user->save();
     }
 
-    public static function sendDailyDigest() {
+    public static function sendDailyDigest()
+    {
         $activePitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1)));
         $ids = array();
         foreach ($activePitches as $pitch) {
@@ -777,7 +826,8 @@ class User extends AppModel {
         return $ids;
     }
 
-    public static function getDailyDigest($userId) {
+    public static function getDailyDigest($userId)
+    {
         $user = self::first($userId);
         if (empty($user->email)) {
             return true;
@@ -832,7 +882,8 @@ class User extends AppModel {
         return true;
     }
 
-    public static function sendLastDigest() {
+    public static function sendLastDigest()
+    {
         if ($lastPosts = Option::first(array('conditions' => array('name' => 'last_posts')))) {
             $ids = unserialize($lastPosts->value);
 
@@ -863,7 +914,8 @@ class User extends AppModel {
         return 0;
     }
 
-    public static function sendSpamToLostClients() {
+    public static function sendSpamToLostClients()
+    {
         $pitches = Pitch::all(array(
                     'conditions' => array(
                         'ideas_count' => array('>' => 0),
@@ -878,8 +930,9 @@ class User extends AppModel {
         foreach ($pitches as $pitch) {
             $pitchData = $pitch->pitchData();
             $avgNum = $pitchData['avgNum'];
-            if ($avgNum > 3)
+            if ($avgNum > 3) {
                 continue;
+            }
             $data = array('user' => $pitch->user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения проекта. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
             SpamMailer::comeback($data);
             $count++;
@@ -887,22 +940,23 @@ class User extends AppModel {
         return $count;
     }
 
-    public static function sendChooseWinnerSpam() {
+    public static function sendChooseWinnerSpam()
+    {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'multiwinner' => 0, 'blank' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - (4 * DAY))))));
         $ids = array();
         foreach ($pitches as $pitch) {
-            if(($pitch->type == 'fund-balance') || ($pitch->type == 'plan-payment')) {
+            if (($pitch->type == 'fund-balance') || ($pitch->type == 'plan-payment')) {
                 continue;
             }
             $user = User::first($pitch->user_id);
             $ids[] = $pitch->user_id;
 
-            if(($pitch->expert == 1) && (strtotime($pitch->finishDate) < time() - (DAY * 4))) {
+            if (($pitch->expert == 1) && (strtotime($pitch->finishDate) < time() - (DAY * 4))) {
                 continue;
             }
 
             $defaultTerm = 4;
-            if($pitch->type == 'company_project') {
+            if ($pitch->type == 'company_project') {
                 $diff = strtotime($pitch->chooseWinnerFinishDate) - strtotime($pitch->finishDate);
                 $defaultTerm = floor((($diff / 60) / 60) / 24);
             }
@@ -928,7 +982,8 @@ class User extends AppModel {
         return $ids;
     }
 
-    public static function sendStep2Spam() {
+    public static function sendStep2Spam()
+    {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => array('>' => 0), 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
         $pitchesToSpam = array();
         foreach ($pitches as $pitch) {
@@ -962,7 +1017,8 @@ class User extends AppModel {
         }
     }
 
-    public static function sendStep3Spam() {
+    public static function sendStep3Spam()
+    {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => array('>' => 0), 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
         $pitchesToSpam = array();
         foreach ($pitches as $pitch) {
@@ -994,7 +1050,8 @@ class User extends AppModel {
         }
     }
 
-    public static function sendStep4Spam() {
+    public static function sendStep4Spam()
+    {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => array('>' => 0), 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
         $pitchesToSpam = array();
         foreach ($pitches as $pitch) {
@@ -1011,14 +1068,15 @@ class User extends AppModel {
         }
     }
 
-    public static function sendWinnerComment($solution) {
+    public static function sendWinnerComment($solution)
+    {
         $pitch = Pitch::first($solution->pitch_id);
         $admin = User::getAdmin();
-        if(($pitch->category_id == 1) && ($pitch->private == 0)) {
+        if (($pitch->category_id == 1) && ($pitch->private == 0)) {
             $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом проекте!<br/>
     Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a><br>
     Через 30 дней ваши работы автоматически попадут на распродажу логотипов и будут доступны каждому за 9500 рублей. Подробнее тут: <a href="http://www.godesigner.ru/answers?search=%D1%80%D0%B0%D1%81%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0">http://www.godesigner.ru/answers?search=распродажа</a>';
-        }else {
+        } else {
             $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом проекте!<br/>
     Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
         }
@@ -1032,20 +1090,23 @@ class User extends AppModel {
      * @param $solution
      * @return bool
      */
-    public function sendMessageToSocial($solution) {
+    public function sendMessageToSocial($solution)
+    {
         $mediaManager = new SocialMediaManager;
         $solution->winner = self::first($solution->user_id);
         $solution->pitch  = Pitch::first($solution->pitch_id);
         return $mediaManager->postWinnerSolutionMessage($solution);
     }
 
-    public static function sendFinishReports($pitch) {
+    public static function sendFinishReports($pitch)
+    {
         $user = self::first($pitch->user_id);
         $path = LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/';
         $files = array();
         foreach (new DirectoryIterator($path) as $fileInfo) {
-            if ($fileInfo->isDot() || !$fileInfo->isFile() || (false == strpos($fileInfo->getFilename(), $pitch->id)))
+            if ($fileInfo->isDot() || !$fileInfo->isFile() || (false == strpos($fileInfo->getFilename(), $pitch->id))) {
                 continue;
+            }
             $files[] = $path . $fileInfo->getFilename();
         }
         $data = array('user' => $user, 'pitch' => $pitch, 'files' => $files);
@@ -1060,7 +1121,8 @@ class User extends AppModel {
      * @param $amount
      * @return bool
      */
-    public static function fillBalance($userId, $amount) {
+    public static function fillBalance($userId, $amount)
+    {
         if ($user = self::first($userId)) {
             $user->balance += (int) $amount;
             return $user->save(null, array('validate' => false));
@@ -1075,7 +1137,8 @@ class User extends AppModel {
      * @param $amount
      * @return bool
      */
-    public static function reduceBalance($userId, $amount) {
+    public static function reduceBalance($userId, $amount)
+    {
         if (($user = self::first($userId)) && ($user->balance >= $amount)) {
             $user->balance -= (int) $amount;
             return $user->save(null, array('validate' => false));
@@ -1083,7 +1146,8 @@ class User extends AppModel {
         return false;
     }
 
-    public static function phoneValidationStart($userId, $phone, $phoneOperator = '') {
+    public static function phoneValidationStart($userId, $phone, $phoneOperator = '')
+    {
         if (($user = self::first($userId)) && !empty($phone)) {
             $user->phone = $phone;
             $user->phone_operator = $phoneOperator;
@@ -1097,7 +1161,8 @@ class User extends AppModel {
         return false;
     }
 
-    public static function phoneValidationFinish($userId, $code) {
+    public static function phoneValidationFinish($userId, $code)
+    {
         if (($user = self::first($userId)) && !empty($user->phone) && !empty($user->phone_code)) {
             if ($code == $user->phone_code) {
                 $user->phone_valid = 1;
@@ -1111,26 +1176,31 @@ class User extends AppModel {
         return false;
     }
 
-    protected static function generatePhoneCode($count = 5, $string = '0123456789') {
+    protected static function generatePhoneCode($count = 5, $string = '0123456789')
+    {
         return substr(str_shuffle($string), 0, $count);
     }
 
-    public static function sendAddonProlong($pitch) {
+    public static function sendAddonProlong($pitch)
+    {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
         return SpamMailer::duration($data);
     }
 
-    public static function sendAddonExpert($pitch) {
+    public static function sendAddonExpert($pitch)
+    {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
         return SpamMailer::expertaddon($data);
     }
 
-    public static function sendAddonBrief($pitch) {
+    public static function sendAddonBrief($pitch)
+    {
         $data = array('user' => $pitch->user, 'pitch' => $pitch);
         return SpamMailer::briefaddon($data);
     }
 
-    public static function isReferalAllowed($userId) {
+    public static function isReferalAllowed($userId)
+    {
         $query = array(
             'conditions' => array(
                 'id' => $userId,
@@ -1146,7 +1216,8 @@ class User extends AppModel {
         return 0;
     }
 
-    public static function setReferalCookie($ref) {
+    public static function setReferalCookie($ref)
+    {
         $userId = Session::read('user.id');
         if (is_null($userId)) { // User not registered
             if (!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) {
@@ -1169,7 +1240,8 @@ class User extends AppModel {
         }
     }
 
-    public function block($user) {
+    public function block($user)
+    {
         $user->banned = 1;
         $user->save(null, array('validate' => false));
 
@@ -1211,7 +1283,8 @@ class User extends AppModel {
      *
      * @return array
      */
-    public static function getAuthorsIds() {
+    public static function getAuthorsIds()
+    {
         return self::$authors;
     }
 
@@ -1220,7 +1293,8 @@ class User extends AppModel {
      *
      * @return array
      */
-    public static function getAdminsIds() {
+    public static function getAdminsIds()
+    {
         return self::$admins;
     }
 
@@ -1229,7 +1303,8 @@ class User extends AppModel {
      *
      * @return array
      */
-    public static function getEditorsIds() {
+    public static function getEditorsIds()
+    {
         return self::$editors;
     }
 
@@ -1238,7 +1313,8 @@ class User extends AppModel {
      *
      * @return array
      */
-    public static function getFeedAuthorsIds() {
+    public static function getFeedAuthorsIds()
+    {
         return self::$feedAuthors;
     }
 
@@ -1247,7 +1323,8 @@ class User extends AppModel {
      *
      * @param $record
      */
-    public function setLastActionTime($record) {
+    public function setLastActionTime($record)
+    {
         if (!Rcache::write('user_' . $record->id . '_LastActionTime', date('Y-m-d H:i:s'))) {
             $record->lastActionTime = date('Y-m-d H:i:s');
             $record->save(null, array('validate' => false));
@@ -1260,7 +1337,8 @@ class User extends AppModel {
      * @param $record
      * @return int
      */
-    public function getLastActionTime($record) {
+    public function getLastActionTime($record)
+    {
         if (!$lastActionTime = Rcache::read('user_' . $record->id . '_LastActionTime')) {
             $lastActionTime = $record->lastActionTime;
         }
@@ -1272,7 +1350,8 @@ class User extends AppModel {
      *
      * @return mixed
      */
-    public static function getReferalPaymentsCount() {
+    public static function getReferalPaymentsCount()
+    {
         return self::count(array(
             'conditions' => array(
                 'balance' => array(
@@ -1288,10 +1367,11 @@ class User extends AppModel {
     /**
      * Check User's Accounts
      */
-    public static function accountCheck($entity) {
+    public static function accountCheck($entity)
+    {
         $options = unserialize($entity->paymentOptions);
         $options = $options[0];
-        if ((isset($options['coraccount'])) and ( isset($options['accountnum'])) and ( isset($options['bik']))) {
+        if ((isset($options['coraccount'])) and (isset($options['accountnum'])) and (isset($options['bik']))) {
             $resultCor = 1; //$resultCor = self::fn_checkKS($options['coraccount']) ? 1 : 0;
             $resultAcc = self::fn_checkRS($options['accountnum'], $options['bik']) ? 2 : 0;
             $result = $resultCor + $resultAcc;
@@ -1317,7 +1397,8 @@ class User extends AppModel {
         return false;
     }
 
-    public static function designerTimeWait($user_id) {
+    public static function designerTimeWait($user_id)
+    {
         $query = array(
             'conditions' => array(
                 'first_time' => 1,
@@ -1335,7 +1416,8 @@ class User extends AppModel {
         return 10;
     }
 
-    protected static function fn_bank_account($str) {
+    protected static function fn_bank_account($str)
+    {
         $result = false;
         $sum = 0;
         if ($str == 0) {
@@ -1347,7 +1429,7 @@ class User extends AppModel {
 
         for ($i = 0; $i <= 22; $i++) {
             //вычисляем контрольную сумму
-            $sum = $sum + ( ((int) $str{$i}) * $v[$i] ) % 10;
+            $sum = $sum + (((int) $str{$i}) * $v[$i]) % 10;
         }
 
         //сравниваем остаток от деления контрольной суммы на 10 с нулём
@@ -1358,7 +1440,8 @@ class User extends AppModel {
         return $result;
     }
 
-    protected static function fn_checkKS($account) {
+    protected static function fn_checkKS($account)
+    {
         return (bool) preg_match('/^[0-9]{20}$/', $account);
     }
 
@@ -1367,11 +1450,13 @@ class User extends AppModel {
      * 1. Для проверки контрольной суммы перед расчётным счётом добавляются три последние цифры БИКа банка.
      */
 
-    protected function fn_checkRS($account, $BIK) {
+    protected function fn_checkRS($account, $BIK)
+    {
         return self::fn_bank_account(substr($BIK, -3, 3) . $account);
     }
 
-    public static function getUserInfo() {
+    public static function getUserInfo()
+    {
         $res = null;
         $currentUserId = Session::read('user.id');
         if ((false != $currentUserId) && ($user = self::first(array('conditions' => array('User.id' => $currentUserId), 'with' => array('Pitch'))))) {
@@ -1391,16 +1476,18 @@ class User extends AppModel {
      * @param $userid
      * @return object
      */
-	public static function setUserToken($userid) {
-		$user = self::first($userid);
-		if(!$user->token) {
-			$user->token = $user->generateToken();
-			$user->save(null, array('validate' => false));
-		}
-		return $user;
-	}
+    public static function setUserToken($userid)
+    {
+        $user = self::first($userid);
+        if (!$user->token) {
+            $user->token = $user->generateToken();
+            $user->save(null, array('validate' => false));
+        }
+        return $user;
+    }
 
-    public static function postOnFacebook($text) {
+    public static function postOnFacebook($text)
+    {
         $facebook = new Facebook(array(
             'appId'  => '202765613136579',
             'secret' => '404ec2eea7487d85eb69ecceea341821',
@@ -1429,7 +1516,8 @@ class User extends AppModel {
      * @param $userId
      * @return array
      */
-    public static function getUsersWinnerSolutionsIds($userId) {
+    public static function getUsersWinnerSolutionsIds($userId)
+    {
         return self::__findIdsOfWonProjectsOfUser($userId, 'id');
     }
 
@@ -1439,7 +1527,8 @@ class User extends AppModel {
      * @param $userId
      * @return array
      */
-    public static function getUsersWonProjectsIds($userId) {
+    public static function getUsersWonProjectsIds($userId)
+    {
         return self::__findIdsOfWonProjectsOfUser($userId, 'pitch_id');
     }
 
@@ -1450,7 +1539,8 @@ class User extends AppModel {
      * @param $field
      * @return array
      */
-    private static function __findIdsOfWonProjectsOfUser($userId, $field) {
+    private static function __findIdsOfWonProjectsOfUser($userId, $field)
+    {
         $fields = array();
         $fields[] = $field;
         $solutions = Solution::all(array('fields' => $fields, 'conditions' => array(
@@ -1460,7 +1550,7 @@ class User extends AppModel {
                 array('nominated' => 1)
             ))));
         $result = array();
-        foreach($solutions as $solution) {
+        foreach ($solutions as $solution) {
             $result[] = $solution->{$field};
         }
         return $result;
@@ -1472,7 +1562,8 @@ class User extends AppModel {
      * @param $user
      * @return mixed
      */
-    public static function removeExtraFields($user) {
+    public static function removeExtraFields($user)
+    {
         $blacklist = array(
             'email',
             'oldemail',
@@ -1496,7 +1587,7 @@ class User extends AppModel {
             'referal_token',
             'autologin_token',
         );
-        foreach($blacklist as $field) {
+        foreach ($blacklist as $field) {
             $user->{$field} = null;
         }
         return $user;
@@ -1510,12 +1601,13 @@ class User extends AppModel {
      * @return mixed
      *
      */
-    public static function activateSubscription($userId, $plan) {
+    public static function activateSubscription($userId, $plan)
+    {
         $userId = (int) $userId;
         $user = User::first($userId);
-        if(self::isSubscriptionActive($userId, $user)) {
+        if (self::isSubscriptionActive($userId, $user)) {
             $user->subscription_expiration_date = date('Y-m-d H:i:s', strtotime($user->subscription_expiration_date) + $plan['duration']);
-        }else {
+        } else {
             $user->subscription_status = $plan['id'];
             $user->subscription_expiration_date = date('Y-m-d H:i:s', time() + $plan['duration']);
         }
@@ -1529,13 +1621,14 @@ class User extends AppModel {
      * @param $userObject
      * @return bool
      */
-    public static function isSubscriptionActive($userId, $userObject = null) {
-        if(!$userObject) {
+    public static function isSubscriptionActive($userId, $userObject = null)
+    {
+        if (!$userObject) {
             $userObject = self::first($userId);
         }
-        if((bool) $userObject->subscription_status) {
+        if ((bool) $userObject->subscription_status) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -1547,11 +1640,12 @@ class User extends AppModel {
      * @param $format
      * @return bool|date
      */
-    public static function getSubscriptionExpireDate($userId, $format = 'd.m.Y H:i:s') {
+    public static function getSubscriptionExpireDate($userId, $format = 'd.m.Y H:i:s')
+    {
         $userObject = self::first($userId);
-        if(self::isSubscriptionActive($userId, $userObject)) {
+        if (self::isSubscriptionActive($userId, $userObject)) {
             return date($format, strtotime($userObject->subscription_expiration_date));
-        }else {
+        } else {
             return false;
         }
     }
@@ -1562,7 +1656,8 @@ class User extends AppModel {
      * @param $userId
      * @return int
      */
-    public static function getBalance($userId) {
+    public static function getBalance($userId)
+    {
         $userObject = self::first($userId);
         return (int) $userObject->balance;
     }
@@ -1573,7 +1668,8 @@ class User extends AppModel {
      * @param $userId
      * @return mixed
      */
-    public static function getShortCompanyName($userId) {
+    public static function getShortCompanyName($userId)
+    {
         $userObject = self::first($userId);
         return $userObject->short_company_name;
     }
@@ -1585,9 +1681,10 @@ class User extends AppModel {
      * @param $userId
      * @return mixed
      */
-    public static function getFullCompanyName($userId) {
+    public static function getFullCompanyName($userId)
+    {
         $userObject = self::first($userId);
-        if(($companyData = unserialize($userObject->companydata)) && (isset($companyData['company_name']))) {
+        if (($companyData = unserialize($userObject->companydata)) && (isset($companyData['company_name']))) {
             return $companyData['company_name'];
         }
         return self::getShortCompanyName($userId);
@@ -1599,8 +1696,9 @@ class User extends AppModel {
      * @param $userId
      * @return array|null
      */
-    public static function getCurrentPlanData($userId) {
-        if(self::isSubscriptionActive($userId)) {
+    public static function getCurrentPlanData($userId)
+    {
+        if (self::isSubscriptionActive($userId)) {
             $user = self::first($userId);
             $planId = $user->subscription_status;
             $plan = SubscriptionPlan::getPlan($planId);
@@ -1617,8 +1715,9 @@ class User extends AppModel {
      * @param $endDate
      * @return bool
      */
-    public static function setSubscriptionDiscount($userId, $discount, $endDate) {
-        if($user = self::first($userId)) {
+    public static function setSubscriptionDiscount($userId, $discount, $endDate)
+    {
+        if ($user = self::first($userId)) {
             $data = array('subscription_discount' => (int) $discount, 'subscription_discount_end_date' => $endDate);
             return $user->save($data, array('validate' => false));
         }
@@ -1631,9 +1730,10 @@ class User extends AppModel {
      * @param $userId
      * @return bool
      */
-    public static function hasActiveSubscriptionDiscount($userId) {
-        if(($user = self::first($userId)) && ($user->subscription_discount_end_date != '0000-00-00 00:00:00')) {
-            if(strtotime($user->subscription_discount_end_date) > time()) {
+    public static function hasActiveSubscriptionDiscount($userId)
+    {
+        if (($user = self::first($userId)) && ($user->subscription_discount_end_date != '0000-00-00 00:00:00')) {
+            if (strtotime($user->subscription_discount_end_date) > time()) {
                 return true;
             }
         }
@@ -1646,8 +1746,9 @@ class User extends AppModel {
      * @param $userId
      * @return null|integer
      */
-    public static function getSubscriptionDiscount($userId) {
-        if(($user = self::first($userId)) && (self::hasActiveSubscriptionDiscount($userId))) {
+    public static function getSubscriptionDiscount($userId)
+    {
+        if (($user = self::first($userId)) && (self::hasActiveSubscriptionDiscount($userId))) {
             return (int) $user->subscription_discount;
         }
         return null;
@@ -1659,8 +1760,9 @@ class User extends AppModel {
      * @param $userId
      * @return null|string
      */
-    public static function getSubscriptionDiscountEndTime($userId) {
-        if(($user = self::first($userId)) && (self::hasActiveSubscriptionDiscount($userId))) {
+    public static function getSubscriptionDiscountEndTime($userId)
+    {
+        if (($user = self::first($userId)) && (self::hasActiveSubscriptionDiscount($userId))) {
             return $user->subscription_discount_end_date;
         }
         return null;
@@ -1672,8 +1774,9 @@ class User extends AppModel {
      * @param $userId
      * @return bool
      */
-    static public function isMemberOfVKGroup($userId) {
-        if(($user = self::first($userId))) {
+    public static function isMemberOfVKGroup($userId)
+    {
+        if (($user = self::first($userId))) {
             return (bool) $user->isUserRecordMemberOfVKGroup();
         }
         return false;
@@ -1685,8 +1788,9 @@ class User extends AppModel {
      * @param $record
      * @return bool
      */
-    public function isUserRecordMemberOfVKGroup($record) {
-        if($record->vkontakte_uid != '') {
+    public function isUserRecordMemberOfVKGroup($record)
+    {
+        if ($record->vkontakte_uid != '') {
             $config = array(
                 'scheme'     => 'https',
                 'host'       => 'api.vk.com'
@@ -1709,9 +1813,10 @@ class User extends AppModel {
      * @param $record
      * @return bool
      */
-    public function isEntrepreneur($record) {
-        if($data = $this->getUnserializedCompanyData($record)) {
-           return !$this->isCompany($record);
+    public function isEntrepreneur($record)
+    {
+        if ($data = $this->getUnserializedCompanyData($record)) {
+            return !$this->isCompany($record);
         }
         return false;
     }
@@ -1722,9 +1827,10 @@ class User extends AppModel {
      * @param $record
      * @return bool
      */
-    public function isCompany($record) {
-        if($data = $this->getUnserializedCompanyData($record)) {
-            if((isset($data['kpp'])) && (isset($data['inn'])) && (mb_strlen($data['inn'], 'UTF-8') == 10)) {
+    public function isCompany($record)
+    {
+        if ($data = $this->getUnserializedCompanyData($record)) {
+            if ((isset($data['kpp'])) && (isset($data['inn'])) && (mb_strlen($data['inn'], 'UTF-8') == 10)) {
                 return true;
             }
         }
@@ -1737,11 +1843,11 @@ class User extends AppModel {
      * @param $record
      * @return mixed|null
      */
-    public function getUnserializedCompanyData($record) {
-        if(($record->companydata != '') && ($data = unserialize($record->companydata))) {
+    public function getUnserializedCompanyData($record)
+    {
+        if (($record->companydata != '') && ($data = unserialize($record->companydata))) {
             return $data;
         }
         return null;
     }
-
 }
