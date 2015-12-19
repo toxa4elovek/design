@@ -7,5 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Racecore\\GATracking' => array($vendorDir . '/ins0/google-measurement-php-client/src'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log'),
+    'ImageOptimizer' => array($vendorDir . '/ps/image-optimizer/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src'),
 );

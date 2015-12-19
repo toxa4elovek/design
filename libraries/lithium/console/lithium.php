@@ -17,7 +17,6 @@
  */
 $params = getopt("", array("app::"));
 $working = $params ? array_pop($params) : getcwd();
-$working = '/var/godesigner/';
 $app = null;
 
 /**

@@ -6,6 +6,10 @@
     "ins0/google-measurement-php-client": "dev-master",
     "unionofrad/li3_quality": "^0.2.0",
     "verot/class.upload.php": "dev-master",
-    "swiftmailer/swiftmailer": "^5.4"
+    "swiftmailer/swiftmailer": "^5.4",
+    "ps/image-optimizer": "^1.0",
+    "symfony/stopwatch": "^2.8",
+    "gabrielelana/byte-units": "^0.3.0",
+    "symfony/finder": "^2.8"
   }
 }
