@@ -328,6 +328,9 @@ class ParsingSites extends \app\extensions\command\CronJob
                     if (isset($matches[1])) {
                         $image = $matches[1];
                     }
+                    if((!isset($item->category)) || ($item->category == '')) {
+                        $item->category = 'Дизайн';
+                    }
                     if ($lang == 'ru') {
                         $news = News::create(array(
                             'title' => $item->title,
