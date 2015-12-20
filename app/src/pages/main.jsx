@@ -1,10 +1,29 @@
+import React from 'react';
+import {render} from 'react-dom';
+import ClientsLogosShowcase from './home/ClientsLogosShowcase.jsx';
+import ClientLogo from './home/ClientLogo.jsx';
+
+render(<ClientsLogosShowcase data={logos} />, document.getElementById('clients-logos'));
+
+const expertsZone = $('#experts-zone');
+
+expertsZone.on('hover', 'a', function() {
+    var id = $(this).data('id');
+    $('a[data-id="' + id + '"]', '#experts-zone').css('color', '#ff585d');
+});
+
+expertsZone.on('mouseout', 'a', function() {
+    var id = $(this).data('id');
+    $('a[data-id="' + id + '"]', '#experts-zone').css('color', '#666666');
+});
+
 $(function(){
 
-     $('.take, .fill').click(function(){
-         var link = $(this).children('a').attr('href');
-         if(link == '/pitches/create') {
-             _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заказчику" на главной']);
-         }
+    $('.take, .fill').click(function(){
+        var link = $(this).children('a').attr('href');
+        if(link == '/pitches/create') {
+            _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заказчику" на главной']);
+        }
 
         window.location = link;
     });
@@ -21,16 +40,6 @@ $(function(){
         $('#to_use_text').removeClass('hover');
     });
 
-    $('#experts-zone').on('hover', 'a', function() {
-        var id = $(this).data('id');
-        $('a[data-id="' + id + '"]', '#experts-zone').css('color', '#ff585d');
-    })
-
-    $('#experts-zone').on('mouseout', 'a', function() {
-        var id = $(this).data('id');
-        $('a[data-id="' + id + '"]', '#experts-zone').css('color', '#666666');
-    })
-
     $('#experts_text').hover(function() {
         $('#experts_link').addClass('hover');
         $('#experts_text').css('color', '#ff585d');
@@ -40,11 +49,9 @@ $(function(){
     });
 
     $('#experts_link').hover(function() {
-        $('#experts_text').addClass('hover');
-        $('#experts_text').css('color', '#ff585d');
+        $('#experts_text').addClass('hover').css('color', '#ff585d');
     }, function() {
-        $('#experts_text').removeClass('hover');
-        $('#experts_text').css('color', '#666666');
+        $('#experts_text').removeClass('hover').css('color', '#666666');
     });
 
     $('#finished, #video').hover(function() {
@@ -58,28 +65,20 @@ $(function(){
         play: 5000,
         pause: 2500,
         hoverPause: true,
-        animationStart: function(current){
-          $('.caption').animate({
-            bottom:-35
-          },100);
-          if (window.console && console.log) {
-            // example return of current slide number
-            //console.log('animationStart on slide: ', current);
-          };
+        animationStart: function(){
+            $('.caption').animate({
+                bottom:-35
+            },100);
         },
-        animationComplete: function(current){
-          $('.caption').animate({
-            bottom:0
-          },200);
-          if (window.console && console.log) {
-            // example return of current slide number
-            //console.log('animationComplete on slide: ', current);
-          };
+        animationComplete: function(){
+            $('.caption').animate({
+                bottom:0
+            }, 200);
         },
         slidesLoaded: function() {
-          $('.caption').animate({
-            bottom:0
-          },300);
+            $('.caption').animate({
+                bottom:0
+            },300);
         }
     });
 
@@ -97,20 +96,18 @@ $(function(){
     setInterval(changeBanner, 7500);
     $('.talkhoverzone').on('mouseover', function() {
         $('a', $(this)).css('color', '#ff585d');
-    })
-
-    $('.talkhoverzone').on('mouseout', function() {
+    }).on('mouseout', function() {
         $('a', $(this)).css('color', '#666666');
-    })
+    });
 
     $('.front_catalog li').hover(function() {
-        $('.more_info', $(this)).fadeIn(300);
-    },
-    function() {
-        $('.more_info', $(this)).fadeOut(300, function() {
+            $('.more_info', $(this)).fadeIn(300);
+        },
+        function() {
+            $('.more_info', $(this)).fadeOut(300, function() {
                 $(this).hide();
             });
-    });
+        });
 
     $('#video').click(function() {
         $('#popup-final-step').modal({
@@ -130,10 +127,6 @@ $(function(){
         return false;
     });
 
-    ReactDOM.render(
-        React.createElement(ClientsLogosShowCase, {data: logos}), document.getElementById('clients-logos')
-    );
-
 });
 
 function expertsRandom() {
@@ -142,11 +135,9 @@ function expertsRandom() {
     $('li.expert_enabled').each(function(idx, obj) {
         expertsArray.push($(obj).data('expert_id'));
     });
-    // Shuffle Array. Taken from http://css-tricks.com/snippets/javascript/shuffle-array
     expertsArray.sort(function() { return 0.5 - Math.random() });
-    
+
     for (var i = 0; i < limit; i++) {
         $('li.expert-' + expertsArray[i], '#experts-zone').show();
     }
 }
-

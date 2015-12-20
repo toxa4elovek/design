@@ -1,17 +1,20 @@
-class ClientsLogosShowCase extends React.Component{
+import React from 'react';
+import ClientLogo from './ClientLogo.jsx';
+
+export default class ClientsLogosShowcase extends React.Component{
     render() {
         return (<ul className="logos" >{this.props.data.map(function(object) {
             return (
                 <ClientLogo
-                    key={object.id}
-                    title={object.title}
                     id={object.id}
-                    imageOn={object.imageOn}
                     imageOff={object.imageOff}
-                    width={object.width}
+                    imageOn={object.imageOn}
+                    key={object.id}
                     paddingTop={object.paddingTop}
+                    title={object.title}
+                    width={object.width}
                     />
-            )
-        })}</ul>)
+            );
+        })}</ul>);
     }
 }

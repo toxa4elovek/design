@@ -1,4 +1,6 @@
-class ClientLogo extends React.Component{
+import React from 'react';
+
+export default class ClientLogo extends React.Component{
     constructor() {
         super();
         this.animationSpeed = 300;
