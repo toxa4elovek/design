@@ -14,14 +14,14 @@ module.exports = {
                 loader: 'babel?presets[]=react,presets[]=es2015'
             }
         ]
-    }/*,
+    },
     plugins: [
-        //new webpack.optimize.UglifyJsPlugin({minimize: true})
-        new webpack.ProvidePlugin({
+        new webpack.optimize.UglifyJsPlugin({minimize: true})
+        /*new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
-        })
-    ]*/
+        })*/
+    ]
     /*resolve: {
         alias: {
             jquery: "jquery/src/jquery"
