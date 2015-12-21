@@ -9,14 +9,16 @@ use lithium\storage\Session;
 
 class UserTest extends AppUnit {
 
+    public $models = ['Pitch', 'User', 'Solution', 'Category', 'Comment', 'Expert'];
+
     public function setUp() {
 		Rcache::init();
-        $this->rollUp(array('Pitch', 'User', 'Solution', 'Category', 'Comment', 'Expert'));
+        $this->rollUp($this->models);
     }
 
     public function tearDown() {
         Rcache::flushdb();
-        $this->rollDown(array('Pitch', 'User', 'Solution', 'Category', 'Comment', 'Expert'));
+        $this->rollDown($this->models);
     }
 /*
 	public function testGetAuthorsIds() {
@@ -240,122 +242,161 @@ class UserTest extends AppUnit {
         $result = User::reduceBalance(3, 20000);
         $this->assertFalse($result);
     }
-
+*/
     public function testSetActiveSubscriptionDiscount() {
-        $result = User::setSubscriptionDiscount(22222222, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $dateTime = date('Y-m-d H:i:s', time() + MONTH);
+        $result = User::setSubscriptionDiscount(22222222, 40, $dateTime);
         $this->assertFalse($result);
 
-        $result = User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = User::setSubscriptionDiscount(2, 40, $dateTime);
         $this->assertTrue($result);
         $user = User::first(2);
         $this->assertEqual(40, $user->subscription_discount);
-        $this->assertEqual(date('Y-m-d H:i:s', time() + MONTH), $user->subscription_discount_end_date);
+        $this->assertEqual($dateTime, $user->subscription_discount_end_date);
     }
 
-    public function testHasActiveSubscriptionDiscount() {
-        User::setSubscriptionDiscount(22222222, 40, date('Y-m-d H:i:s', time() + MONTH));
-        $result = User::hasActiveSubscriptionDiscount(2222222);
-        $this->assertFalse($result);
-
+    public function testHasActiveSubscriptionDiscountForRecord() {
         User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
-        $result = User::hasActiveSubscriptionDiscount(2);
+        $userRecord = User::first(2);
+        $result = $userRecord->hasActiveSubscriptionDiscountForRecord($userRecord->id);
         $this->assertTrue($result);
-
-        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
-        $result = User::hasActiveSubscriptionDiscount(2);
+        User::setSubscriptionDiscount($userRecord->id, 40, date('Y-m-d H:i:s', time() - MONTH));
+        $userRecord = User::first(2);
+        $result = $userRecord->hasActiveSubscriptionDiscountForRecord($userRecord->id);
         $this->assertFalse($result);
     }
 
-    public function testGetSubscriptionDiscount() {
-        $result = User::getSubscriptionDiscount(2222222);
-        $this->assertNull($result);
+        public function testHasActiveSubscriptionDiscount() {
+            User::setSubscriptionDiscount(22222222, 40, date('Y-m-d H:i:s', time() + MONTH));
+            $result = User::hasActiveSubscriptionDiscount(2222222);
+            $this->assertFalse($result);
 
-        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
-        $result = User::getSubscriptionDiscount(2);
-        $this->assertEqual(40, $result);
+            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+            $result = User::hasActiveSubscriptionDiscount(2);
+            $this->assertTrue($result);
 
-        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
-        $result = User::getSubscriptionDiscount(2);
-        $this->assertNull($result);
-    }*/
+            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+            $result = User::hasActiveSubscriptionDiscount(2);
+            $this->assertFalse($result);
+        }
 
-    public function testGetSubscriptionDiscountEndTime() {
-        $result = User::getSubscriptionDiscountEndTime(2222222);
-        $this->assertNull($result);
+        public function testGetSubscriptionDiscountForRecord() {
+            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+            $userRecord = User::first(2);
+            $result = $userRecord->getSubscriptionDiscountForRecord(2);
+            $this->assertEqual(40, $result);
 
-        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
-        $result = User::getSubscriptionDiscountEndTime(2);
-        $this->assertEqual(date('Y-m-d H:i:s', time() + MONTH), $result);
+            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+            $userRecord = User::first(2);
+            $result = $userRecord->getSubscriptionDiscountForRecord(2);
+            $this->assertNull($result);
+        }
 
-        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
-        $result = User::getSubscriptionDiscountEndTime(2);
-        $this->assertNull($result);
-    }
+        public function testGetSubscriptionDiscount() {
+            $result = User::getSubscriptionDiscount(2222222);
+            $this->assertNull($result);
 
-    public function testGetReferalPaymentsCount() {
-        $count = User::getReferalPaymentsCount();
-        $this->assertIdentical(0, $count);
-        $user = User::first(3);
-        $user->phone_valid = 1;
-        $user->phone = '';
-        $user->save(null, array('validate' => false));
-        $count = User::getReferalPaymentsCount();
-        $this->assertIdentical(0, $count);
-        $user->phone = '1234';
-        $user->save(null, array('validate' => false));
-        $count = User::getReferalPaymentsCount();
-        $this->assertIdentical(1, $count);
-        $user->subscription_status = 1;
-        $user->save(null, array('validate' => false));
-        $count = User::getReferalPaymentsCount();
-        $this->assertIdentical(0, $count);
-    }
+            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+            $result = User::getSubscriptionDiscount(2);
+            $this->assertEqual(40, $result);
 
-    public function testIsMemberOfVKGroup() {
-        $this->assertFalse(User::isMemberOfVKGroup(999999));
-        $this->assertTrue(User::isMemberOfVKGroup(2));
-        $this->assertFalse(User::isMemberOfVKGroup(3));
-        $this->assertFalse(User::isMemberOfVKGroup(4));
-    }
+            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+            $result = User::getSubscriptionDiscount(2);
+            $this->assertNull($result);
+        }
 
-    public function testIsUserRecordMemberOfVKGroup() {
-        $user = User::first(2);
-        $this->assertTrue($user->isUserRecordMemberOfVKGroup(2));
-        $user = User::first(3);
-        $this->assertFalse($user->isUserRecordMemberOfVKGroup(3));
-        $user = User::first(4);
-        $this->assertFalse($user->isUserRecordMemberOfVKGroup(4));
-    }
+        public function testGetSubscriptionDiscountEndTimeForRecord() {
+            $dateTime = date('Y-m-d H:i:s', time() + MONTH);
+            User::setSubscriptionDiscount(2, 40, $dateTime);
+            $userRecord = User::first(2);
+            $result = $userRecord->getSubscriptionDiscountEndTimeForRecord();
+            $this->assertEqual($dateTime, $result);
 
-    public function testIsEntrepreneur() {
-        $user = User::first(2);
-        $this->assertFalse($user->isEntrepreneur());
-        $user->companydata = 'a:4:{s:12:"company_name";s:11:"13231312311";s:3:"inn";s:10:"1231231231";s:3:"kpp";s:9:"123123123";s:7:"address";s:4:"test";}';
-        $user->save(null, ['validate' => false]);
-        $this->assertFalse($user->isEntrepreneur());
-        $user->companydata = serialize([
-            'company_name' => 'Дмитрий Александрович',
-            'inn' => '987654321012',
-            'address' => 'просто проверка'
-        ]);
-        $user->save(null, ['validate' => false]);
-        $this->assertTrue($user->isEntrepreneur());
-    }
+            $dateTime = date('Y-m-d H:i:s', time() - MONTH);
+            User::setSubscriptionDiscount(2, 40, $dateTime);
+            $userRecord = User::first(2);
+            $result = $userRecord->getSubscriptionDiscountEndTimeForRecord();
+            $this->assertNull($result);
+        }
 
-    public function testIsCompany() {
-        $user = User::first(2);
-        $this->assertFalse($user->isCompany());
-        $user->companydata = 'a:4:{s:12:"company_name";s:11:"13231312311";s:3:"inn";s:10:"1231231231";s:3:"kpp";s:9:"123123123";s:7:"address";s:4:"test";}';
-        $user->save(null, ['validate' => false]);
-        $this->assertTrue($user->isCompany());
-        $user->companydata = serialize([
-            'company_name' => 'Дмитрий Александрович',
-            'inn' => '987654321012',
-            'address' => 'просто проверка'
-        ]);
-        $user->save(null, ['validate' => false]);
-        $this->assertFalse($user->isCompany());
-    }
+        public function testGetSubscriptionDiscountEndTime() {
+            $result = User::getSubscriptionDiscountEndTime(2222222);
+            $this->assertNull($result);
+            $dateTime = date('Y-m-d H:i:s', time() + MONTH);
+            User::setSubscriptionDiscount(2, 40, $dateTime);
+            $result = User::getSubscriptionDiscountEndTime(2);
+            $this->assertEqual($dateTime, $result);
 
+            $dateTime = date('Y-m-d H:i:s', time() - MONTH);
+            User::setSubscriptionDiscount(2, 40, $dateTime);
+            $result = User::getSubscriptionDiscountEndTime(2);
+            $this->assertNull($result);
+        }
+    /*
+            public function testGetReferalPaymentsCount() {
+                $count = User::getReferalPaymentsCount();
+                $this->assertIdentical(0, $count);
+                $user = User::first(3);
+                $user->phone_valid = 1;
+                $user->phone = '';
+                $user->save(null, array('validate' => false));
+                $count = User::getReferalPaymentsCount();
+                $this->assertIdentical(0, $count);
+                $user->phone = '1234';
+                $user->save(null, array('validate' => false));
+                $count = User::getReferalPaymentsCount();
+                $this->assertIdentical(1, $count);
+                $user->subscription_status = 1;
+                $user->save(null, array('validate' => false));
+                $count = User::getReferalPaymentsCount();
+                $this->assertIdentical(0, $count);
+            }
 
+            public function testIsMemberOfVKGroup() {
+                $this->assertFalse(User::isMemberOfVKGroup(999999));
+                $this->assertTrue(User::isMemberOfVKGroup(2));
+                $this->assertFalse(User::isMemberOfVKGroup(3));
+                $this->assertFalse(User::isMemberOfVKGroup(4));
+            }
+
+            public function testIsUserRecordMemberOfVKGroup() {
+                $user = User::first(2);
+                $this->assertTrue($user->isUserRecordMemberOfVKGroup(2));
+                $user = User::first(3);
+                $this->assertFalse($user->isUserRecordMemberOfVKGroup(3));
+                $user = User::first(4);
+                $this->assertFalse($user->isUserRecordMemberOfVKGroup(4));
+            }
+
+            public function testIsEntrepreneur() {
+                $user = User::first(2);
+                $this->assertFalse($user->isEntrepreneur());
+                $user->companydata = 'a:4:{s:12:"company_name";s:11:"13231312311";s:3:"inn";s:10:"1231231231";s:3:"kpp";s:9:"123123123";s:7:"address";s:4:"test";}';
+                $user->save(null, ['validate' => false]);
+                $this->assertFalse($user->isEntrepreneur());
+                $user->companydata = serialize([
+                    'company_name' => 'Дмитрий Александрович',
+                    'inn' => '987654321012',
+                    'address' => 'просто проверка'
+                ]);
+                $user->save(null, ['validate' => false]);
+                $this->assertTrue($user->isEntrepreneur());
+            }
+
+            public function testIsCompany() {
+                $user = User::first(2);
+                $this->assertFalse($user->isCompany());
+                $user->companydata = 'a:4:{s:12:"company_name";s:11:"13231312311";s:3:"inn";s:10:"1231231231";s:3:"kpp";s:9:"123123123";s:7:"address";s:4:"test";}';
+                $user->save(null, ['validate' => false]);
+                $this->assertTrue($user->isCompany());
+                $user->companydata = serialize([
+                    'company_name' => 'Дмитрий Александрович',
+                    'inn' => '987654321012',
+                    'address' => 'просто проверка'
+                ]);
+                $user->save(null, ['validate' => false]);
+                $this->assertFalse($user->isCompany());
+            }
+
+        */
 }

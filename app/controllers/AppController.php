@@ -11,16 +11,34 @@ use app\models\Pitch;
 use app\models\Post;
 use app\models\Solution;
 use app\models\User;
-use lithium\storage\Session;
 use lithium\security\Auth;
 
 class AppController extends \lithium\action\Controller
 {
 
+    /**
+     * @var null хелпер User
+     */
     public $userHelper = null;
+
+    /**
+     * @var null хелпер Money
+     */
     public $money = null;
+
+    /**
+     * @var null хелпер Debug
+     */
     public $debug = null;
 
+    /**
+     * @var null
+     */
+    public $userRecord = null;
+
+    /**
+     * @return object инициализация каждого запроса
+     */
     public function _init()
     {
         parent::_init();
@@ -31,40 +49,35 @@ class AppController extends \lithium\action\Controller
             if (function_exists('newrelic_add_custom_parameter')) {
                 newrelic_add_custom_parameter('userId', $this->userHelper->getId());
             }
-            Session::write('user.attentionpitch', null);
-            Session::write('user.attentionsolution', null);
-            Session::write('user.timeoutpitch', null);
-            if ($user = User::find($this->userHelper->getId())) {
+            $this->userHelper->write('user.attentionpitch', null);
+            $this->userHelper->write('user.attentionsolution', null);
+            $this->userHelper->write('user.timeoutpitch', null);
+            if ($userRecord = User::find($this->userHelper->getId())) {
                 // Проверяем, ни забанен ли пользователь
-                if ($user->banned) {
+                if ($userRecord->banned) {
                     Auth::clear('user');
                     return $this->redirect('/users/banned');
                 }
                 // Проверяем, не удалил ли себя пользователь
-                if ($user->email == '') {
+                if ($userRecord->email === '') {
                     Auth::clear('user');
                     return $this->redirect('/');
                 }
-                /*if(($user->confirmed_email == 0) && (!in_array($this->request->params['action'], $this->publicActions) && ($this->request->params['action']!= 'viewmail') && ($this->request->params['action']!= 'resend'))){
-                    return $this->redirect('/users/need_activation');
-                }*/
-
-
                 // updates avatars
-                Session::write('user.images', $user->images);
+                $this->userHelper->write('user.images', $userRecord->images);
                 $topPanel = Pitch::all(
-                    array(
-                        'with' => array('Category'),
-                        'conditions' => array(
-                            array('AND' => array(
-                                array("Pitch.type != 'fund-balance'"),
-                            )),
-                            array('OR' => array(
-                                array('Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'),
-                                array('Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.billed = 1 AND Pitch.blank = 1'),
-                            )),
-                        )
-                    )
+                    [
+                        'with' => ['Category'],
+                        'conditions' => [
+                            ['AND' => [
+                                ["Pitch.type != 'fund-balance'"],
+                            ]],
+                            ['OR' => [
+                                ['Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'],
+                                ['Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.billed = 1 AND Pitch.blank = 1'],
+                            ]],
+                        ]
+                    ]
                 );
                 foreach ($topPanel as $pitch):
                     if ($pitch->awarded != 0):
@@ -72,15 +85,15 @@ class AppController extends \lithium\action\Controller
                 endif;
                 endforeach;
 
-                Session::write('user.currentpitches', $topPanel);
-                /** ** **/
-                $topPanelDesigner = array();
+                $this->userHelper->write('user.currentpitches', $topPanel);
+
+                $topPanelDesigner = [];
                 $wonProjectsIds = User::getUsersWonProjectsIds($this->userHelper->getId());
                 if (!empty($wonProjectsIds)) {
-                    $pitchesToCheck = Pitch::all(array(
-                        'with' => array('Category'),
-                        'conditions' => array('Pitch.id' => $wonProjectsIds),
-                    ));
+                    $pitchesToCheck = Pitch::all([
+                        'with' => ['Category'],
+                        'conditions' => ['Pitch.id' => $wonProjectsIds],
+                    ]);
                     foreach ($pitchesToCheck as $pitch) {
                         $solution = Solution::first($pitch->awarded);
                         if ($this->userHelper->isSolutionAuthor($solution->user_id)) {
@@ -93,11 +106,11 @@ class AppController extends \lithium\action\Controller
                     }
                 }
 
-                Session::write('user.currentdesignpitches', $topPanelDesigner);
+                $this->userHelper->write('user.currentdesignpitches', $topPanelDesigner);
                 /** faves */
-                Session::write('user.faves', Favourite::getFavouriteProjectsIdsForUser($this->userHelper->getId()));
-                if ((Session::read('user.blogpost') == null) || (Session::read('user.blogpost.count') == 0)) {
-                    $lastPost = Post::first(array('conditions' => array('published' => 1), 'order' => array('created' => 'desc')));
+                $this->userHelper->write('user.faves', Favourite::getFavouriteProjectsIdsForUser($this->userHelper->getId()));
+                if (($this->userHelper->read('user.blogpost') == null) || ($this->userHelper->read('user.blogpost.count') == 0)) {
+                    $lastPost = Post::first(['conditions' => ['published' => 1], 'order' => ['created' => 'desc']]);
                     $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
 
                     if (isset($_COOKIE['counterdata'])) {
@@ -106,28 +119,13 @@ class AppController extends \lithium\action\Controller
                             $date = $counterData[$this->userHelper->getId()]['date'];
                         }
                     }
-                    $count = Post::count(array('conditions' => array('created' => array('>' => $date), 'published' => 1)));
-                    Session::write('user.blogpost.count', $count);
+                    $count = Post::count(['conditions' => ['created' => ['>' => $date], 'published' => 1]]);
+                    $this->userHelper->write('user.blogpost.count', $count);
 
-                    $counterData = array($this->userHelper->getId() => array('date' => $date));
+                    $counterData = [$this->userHelper->getId() => ['date' => $date]];
                     setcookie('counterdata', serialize($counterData), time() + strtotime('+1 month'), '/');
                 }
-
-/*
-                if((Session::read('user.events') == null) || (Session::read('user.events.count') == 0)) {
-                    $date = date('Y-m-d H:i:s');
-                    if(Session::read('user.events.date') != null) {
-                        $date = Session::read('user.events.date');
-                    }
-                    Session::write('user.events.date', $date);
-                    if($updates = Event::getEvents(User::getSubscribedPitches($this->userHelper->getId()), 1, $date)) {
-
-                        Session::write('user.events.count', count($updates));
-                    }else {
-                        Session::write('user.events.count', 0);
-                    }
-                }*/
-                $user->setLastActionTime();
+                $userRecord->setLastActionTime();
             }
         } else {
             if (isset($_COOKIE['autologindata'])) {
@@ -137,20 +135,20 @@ class AppController extends \lithium\action\Controller
                     $id = $id[1];
                     $token = (explode('=', $exploded[1]));
                     $token = $token[1];
-                    if (($user = User::first($id)) && (sha1($user->autologin_token) == $token)) {
-                        if ($user->banned) {
+                    if (($userRecord = User::first($id)) && (sha1($userRecord->autologin_token) == $token)) {
+                        if ($userRecord->banned) {
                             Auth::clear('user');
                             return $this->redirect('/users/banned');
                         }
-                        if ($user->email == '') {
+                        if ($userRecord->email == '') {
                             Auth::clear('user');
                             return $this->redirect('/');
                         }
-                        $user->lastTimeOnline = date('Y-m-d H:i:s');
-                        $user->autologin_token = $user->generateToken();
-                        setcookie('autologindata', 'id=' . $user->id . '&token=' . sha1($user->token), time() + strtotime('+1 month'));
-                        $user->save(null, array('validate' => false));
-                        Auth::set('user', $user->data());
+                        $userRecord->lastTimeOnline = date('Y-m-d H:i:s');
+                        $userRecord->autologin_token = $userRecord->generateToken();
+                        setcookie('autologindata', 'id=' . $userRecord->id . '&token=' . sha1($userRecord->token), time() + strtotime('+1 month'));
+                        $userRecord->save(null, ['validate' => false]);
+                        Auth::set('user', $userRecord->data());
                     }
                 }
             }
@@ -167,14 +165,24 @@ class AppController extends \lithium\action\Controller
         }
 
         if (isset($_GET['promocode']) && !empty($_GET['promocode']) && ((mb_strlen($_GET['promocode'], 'UTF-8') == 3) || (mb_strlen($_GET['promocode'], 'UTF-8') == 4))) {
-            Session::write('promocode', $_GET['promocode']);
+            $this->userHelper->write('promocode', $_GET['promocode']);
         }
 
         if (!empty($this->request->query['ref'])) {
             User::setReferalCookie($this->request->query['ref']);
         }
+
+        if (($this->userHelper->isLoggedIn()) && (isset($userRecord))) {
+            $this->userRecord = $userRecord;
+        }
     }
 
+    /**
+     * Метод возвращяет популярные ответы из faq
+     *
+     * @param int $limit
+     * @return \lithium\data\collection\RecordSet|null
+     */
     protected function popularQuestions($limit = 5)
     {
         return Answer::getPopularQuesions($limit);

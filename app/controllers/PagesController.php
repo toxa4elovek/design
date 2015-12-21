@@ -19,7 +19,8 @@ use app\models\Schedule;
  *
  * @package app\controllers
  */
-class PagesController extends AppController {
+class PagesController extends AppController
+{
 
     /**
      * @var array публичные методы
@@ -28,7 +29,8 @@ class PagesController extends AppController {
         'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch', 'subscribe'
     );
 
-    public function view() {
+    public function view()
+    {
         $path = func_get_args() ? : array('home');
         if (preg_match('/experts/', $path[0])) {
             return $this->redirect('/experts');
@@ -41,17 +43,20 @@ class PagesController extends AppController {
         return $this->render(array('template' => join('/', $path), 'data' => array('questions' => $questions, 'answers' => $answers)));
     }
 
-    public function stats() {
+    public function stats()
+    {
         return $this->render(array('layout' => 'stats'));
     }
 
-    public function twitter() {
+    public function twitter()
+    {
         echo '<pre>';
         var_dump($_GET);
         die();
     }
 
-    public function home() {
+    public function home()
+    {
         $pool = array(1, 3, 7);
         $category_id = $pool[array_rand($pool)];
         if (!$statistic = Rcache::read('statistic')) {
@@ -78,7 +83,7 @@ class PagesController extends AppController {
             'order' => array('RAND()'),
             'limit' => 2
         ));
-        foreach($promoSolutions as $promoSolution) {
+        foreach ($promoSolutions as $promoSolution) {
             $promoSolution->pitch->days = ceil((strtotime($promoSolution->pitch->finishDate) - strtotime($promoSolution->pitch->started)) / DAY);
         }
         $grades = Grade::all(array('limit' => 2, 'conditions' => array('enabled' => 1), 'order' => array('RAND()'), 'with' => array('Pitch')));
@@ -90,7 +95,8 @@ class PagesController extends AppController {
         return compact('category_id', 'statistic', 'pitches', 'promoSolutions', 'experts', 'grades', 'totalCount');
     }
 
-    public function contacts() {
+    public function contacts()
+    {
         $success = false;
         if ($this->request->data) {
             $this->request->data['user'] = User::getUserInfo();
@@ -101,7 +107,8 @@ class PagesController extends AppController {
         return compact('success', 'questions');
     }
 
-    public function fastpitch() {
+    public function fastpitch()
+    {
         $schedule = Schedule::all(array('conditions' => array('start' => array('>=' => time()))));
         $alllow_time = array();
         $deny_time = array();
@@ -138,7 +145,7 @@ class PagesController extends AppController {
                 } else {
                     $start_hours->setDate($start_hours->format('Y'), $start_hours->format('m'), $start_hours->format('d') + 1);
                     $end_hours->setDate($end_hours->format('Y'), $end_hours->format('m'), $end_hours->format('d') + 1);
-                    $temp->setDate($temp->format('Y'), $temp->format('m'), $temp->format('d') + 1);
+                    $temp->setdate($temp->format('Y'), $temp->format('m'), $temp->format('d') + 1);
                     $temp->setTime('12', '00', '00');
                     $x = true;
                 }
@@ -154,14 +161,13 @@ class PagesController extends AppController {
     /**
      * Метод для отображения страницы лендинга
      */
-    public function subscribe() {
-        if($this->userHelper->isLoggedIn() && User::hasActiveSubscriptionDiscount($this->userHelper->getId())) {
-            $discount = User::getSubscriptionDiscount($this->userHelper->getId());
-            $discountEndTime = User::getSubscriptionDiscountEndTime($this->userHelper->getId());
-            $data = array('discount' => $discount, 'discountEndTime' => $discountEndTime);
-            return $this->render(array('template' => 'subscribe_discount', 'data' => $data));
+    public function subscribe()
+    {
+        if ($this->userHelper->isLoggedIn() && $this->userRecord->hasActiveSubscriptionDiscountForRecord()) {
+            $discount = $this->userRecord->getSubscriptionDiscountForRecord();
+            $discountEndTime = $this->userRecord->getSubscriptionDiscountEndTimeForRecord();
+            $data = compact('discount', 'discountEndTime');
+            return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
         }
-
     }
-
 }

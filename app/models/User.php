@@ -32,6 +32,7 @@ use app\models\SubscriptionPlan;
 use \app\models\Category;
 use \tmhOAuth\tmhOAuth;
 use \tmhOAuth\tmhUtilities;
+use lithium\data\entity\Record;
 
 class User extends AppModel
 {
@@ -1727,17 +1728,42 @@ class User extends AppModel
     /**
      * Метод возвращяет, есть ли активная скидка для абонента
      *
+     * @param $userRecord
+     * @return bool
+     */
+    public function hasActiveSubscriptionDiscountForRecord(Record $userRecord)
+    {
+        $discountEndDate = new \DateTime($userRecord->subscription_discount_end_date);
+        $currentDateTime = new \DateTime;
+        return $discountEndDate > $currentDateTime;
+    }
+
+    /**
+     * Метод возвращяет, есть ли активная скидка для абонента
+     *
      * @param $userId
      * @return bool
      */
     public static function hasActiveSubscriptionDiscount($userId)
     {
-        if (($user = self::first($userId)) && ($user->subscription_discount_end_date != '0000-00-00 00:00:00')) {
-            if (strtotime($user->subscription_discount_end_date) > time()) {
-                return true;
-            }
+        if ($user = self::first((int) $userId)) {
+            return $user->hasActiveSubscriptionDiscountForRecord();
         }
         return false;
+    }
+
+    /**
+     * Метод возвращяет текущую активную скидку, если активная
+     *
+     * @param $userRecord
+     * @return null|integer
+     */
+    public function getSubscriptionDiscountForRecord(Record $userRecord)
+    {
+        if ($userRecord->hasActiveSubscriptionDiscountForRecord()) {
+            return (int) $userRecord->subscription_discount;
+        }
+        return null;
     }
 
     /**
@@ -1748,8 +1774,22 @@ class User extends AppModel
      */
     public static function getSubscriptionDiscount($userId)
     {
-        if (($user = self::first($userId)) && (self::hasActiveSubscriptionDiscount($userId))) {
-            return (int) $user->subscription_discount;
+        if ($user = self::first((int) $userId)) {
+            return $user->getSubscriptionDiscountForRecord();
+        }
+        return null;
+    }
+
+    /**
+     * Метод возвращяет дату окончания текущей скидки, если активная
+     *
+     * @param $userRecord
+     * @return null|string
+     */
+    public static function getSubscriptionDiscountEndTimeForRecord(Record $userRecord)
+    {
+        if ($userRecord->hasActiveSubscriptionDiscountForRecord()) {
+            return $userRecord->subscription_discount_end_date;
         }
         return null;
     }
@@ -1762,8 +1802,8 @@ class User extends AppModel
      */
     public static function getSubscriptionDiscountEndTime($userId)
     {
-        if (($user = self::first($userId)) && (self::hasActiveSubscriptionDiscount($userId))) {
-            return $user->subscription_discount_end_date;
+        if ($user = self::first((int) $userId)) {
+            return $user->getSubscriptionDiscountEndTimeForRecord();
         }
         return null;
     }

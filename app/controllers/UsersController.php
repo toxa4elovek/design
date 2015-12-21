@@ -498,7 +498,7 @@ class UsersController extends \app\controllers\AppController
                         'touch' => '0000-00-00 00:00:00'
                     );
                     Wincomment::create($data)->save();
-                    if (!User::hasActiveSubscriptionDiscount($client->id)) {
+                    if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
                             $plan = SubscriptionPlan::getPlan(1);
