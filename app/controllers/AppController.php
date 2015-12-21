@@ -52,7 +52,7 @@ class AppController extends \lithium\action\Controller
             $this->userHelper->write('user.attentionpitch', null);
             $this->userHelper->write('user.attentionsolution', null);
             $this->userHelper->write('user.timeoutpitch', null);
-            if ($userRecord = User::find($this->userHelper->getId())) {
+            if ($userRecord = User::first($this->userHelper->getId())) {
                 // Проверяем, ни забанен ли пользователь
                 if ($userRecord->banned) {
                     Auth::clear('user');
@@ -107,10 +107,9 @@ class AppController extends \lithium\action\Controller
                 }
 
                 $this->userHelper->write('user.currentdesignpitches', $topPanelDesigner);
-                /** faves */
                 $this->userHelper->write('user.faves', Favourite::getFavouriteProjectsIdsForUser($this->userHelper->getId()));
                 if (($this->userHelper->read('user.blogpost') == null) || ($this->userHelper->read('user.blogpost.count') == 0)) {
-                    $lastPost = Post::first(['conditions' => ['published' => 1], 'order' => ['created' => 'desc']]);
+                    $lastPost = Post::first(['fields' => ['created'], 'conditions' => ['published' => 1], 'order' => ['created' => 'desc']]);
                     $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
 
                     if (isset($_COOKIE['counterdata'])) {
