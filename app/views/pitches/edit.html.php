@@ -205,7 +205,7 @@ endif?>
         </div>
         <?php if((isset($experts)) && $experts):?>
         <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-            <p class="option"><label><input type="checkbox" name="" <?php if($pitch->expert): echo "checked"; endif;?> class="multi-check" data-option-title="экспертное мнение" data-option-value="1000" id="experts-checkbox">Экспертное мнение</label></p>
+            <p class="option"><label><input type="checkbox" name="" <?php if($pitch->expert): echo "checked"; endif;?> class="multi-check" data-option-title="экспертное мнение" data-option-value="1500" id="experts-checkbox">Экспертное мнение</label></p>
             <!--p class="description"><a href="#" id="expert-trigger">Наши эксперты</a> с опытом работы в ведущих рекламных агентствах помогут вам с выбором варианта <a href="#" class="second tooltip" title="Эксперт укажет   и прокомментирует 3 лучших решения, которые максимально отвечают на вашу задачу. Вы можете выбрать несколько экспертов и заручиться надёжной поддержкой.">(?)</a></p-->
             <p class="label <?php if($pitch->expert): echo "unfold"; endif;?>" id="expert-label"></p>
         </div>
