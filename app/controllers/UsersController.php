@@ -498,27 +498,29 @@ class UsersController extends \app\controllers\AppController
                         'touch' => '0000-00-00 00:00:00'
                     );
                     Wincomment::create($data)->save();
-                    User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
-                    if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
-                        $plan = SubscriptionPlan::getPlan(1);
-                        $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
-                        $receipt = array(
-                            array(
-                                'name' => 'Оплата тарифа «' . $plan['title'] . '»',
-                                'value' => $plan['price']
-                            ),
-                            array(
-                                'name' => 'Пополнение счёта',
-                                'value' => 0
-                            )
-                        );
-                        $discount = 10;
-                        $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
-                        $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
-                        Receipt::updateOrCreateReceiptForProject($paymentId, $receipt);
-                        SubscriptionPlan::setTotalOfPayment($paymentId, Receipt::getTotalForProject($paymentId));
-                        SubscriptionPlan::setPlanForPayment($paymentId, $plan['id']);
-                        SubscriptionPlan::setFundBalanceForPayment($paymentId, 0);
+                    if (!User::hasActiveSubscriptionDiscount($client->id)) {
+                        User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
+                        if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
+                            $plan = SubscriptionPlan::getPlan(1);
+                            $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
+                            $receipt = array(
+                                array(
+                                    'name' => 'Оплата тарифа «' . $plan['title'] . '»',
+                                    'value' => $plan['price']
+                                ),
+                                array(
+                                    'name' => 'Пополнение счёта',
+                                    'value' => 0
+                                )
+                            );
+                            $discount = 10;
+                            $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
+                            $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
+                            Receipt::updateOrCreateReceiptForProject($paymentId, $receipt);
+                            SubscriptionPlan::setTotalOfPayment($paymentId, Receipt::getTotalForProject($paymentId));
+                            SubscriptionPlan::setPlanForPayment($paymentId, $plan['id']);
+                            SubscriptionPlan::setFundBalanceForPayment($paymentId, 0);
+                        }
                     }
                 }
                 User::sendSpamWinstep($user, $solution, '3');
