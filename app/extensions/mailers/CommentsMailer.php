@@ -3,28 +3,36 @@ namespace app\extensions\mailers;
 
 use app\models\Comment;
 use app\models\Pitch;
-use app\models\User;
 use app\models\Solution;
+use app\models\User;
+use lithium\data\entity\Record;
 
-class CommentsMailer extends \li3_mailer\extensions\Mailer {
+/**
+ * Class CommentsMailer
+ *
+ * Класс для отправки уведомлений о публикации комментариев
+ *
+ * @package app\extensions\mailers
+ */
+class CommentsMailer extends \li3_mailer\extensions\Mailer
+{
 
     /**
      * Метод отправляет пользоватлею уведомление о том, что GoDesigner оставил новый комментарий
      *
-     * @param $commentId
-     * @param $userId
+     * @param $commentRecord
+     * @param $userRecord
+     * @param $projectRecord
      * @return bool
      */
-    public static function sendNewCommentFromAdminNotificationToUser($commentId, $userId) {
-        $comment = Comment::first($commentId);
-        $pitch = Pitch::first($comment->pitch_id);
-        $user = User::first($userId);
-        $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $comment);
-        return self::_mail(array(
-            'to' => $user->email,
+    public static function sendNewCommentFromAdminNotificationToUser(Record $commentRecord, Record $userRecord, Record $projectRecord)
+    {
+        $data = ['user' => $userRecord, 'pitch' => $projectRecord, 'comment' => $commentRecord];
+        return self::_mail([
+            'to' => $userRecord->email,
             'subject' => 'Go Designer оставил комментарий',
             'data' => $data
-        ));
+        ]);
     }
 
     /**
@@ -34,26 +42,27 @@ class CommentsMailer extends \li3_mailer\extensions\Mailer {
      * @param $commentId
      * @return int
      */
-    public static function sendNewCommentFromAdminNotification($commentId) {
+    public static function sendNewCommentFromAdminNotification($commentId)
+    {
         $emailsSent = 0;
-        if($comment = Comment::first($commentId)) {
-            $pitch = Pitch::first($comment->pitch_id);
-            $client = User::first($pitch->user_id);
-            $ids = array();
-            if($client->email_newcomments == 1) {
+        if ($comment = Comment::first((int) $commentId)) {
+            $ids = [];
+            $project = Pitch::first($comment->pitch_id);
+            $client = User::first($project->user_id);
+            if ($client->email_newcomments == 1) {
                 $ids[] = $client->id;
-            }
-            $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id)));
-            foreach($solutions as $solution) {
-                $user = User::first($solution->user_id);
-                if($user->email_newcomments == 1) {
-                    $ids[] = $user->id;
+                if (self::sendNewCommentFromAdminNotificationToUser($comment, $client, $project)) {
+                    $emailsSent++;
                 }
             }
-
-            foreach($ids as $id) {
-                if(CommentsMailer::sendNewCommentFromAdminNotificationToUser($commentId, $id)) {
-                    $emailsSent++;
+            $solutions = Solution::all(['fields' => ['user_id'], 'conditions' => ['pitch_id' => $project->id]]);
+            foreach ($solutions as $solution) {
+                $userRecord = User::first($solution->user_id);
+                if (($userRecord->email_newcomments == 1) && (!in_array($userRecord->id, $ids))) {
+                    if (self::sendNewCommentFromAdminNotificationToUser($comment, $userRecord, $project)) {
+                        $emailsSent++;
+                    }
+                    $ids[] = $userRecord->id;
                 }
             }
         }
@@ -66,20 +75,20 @@ class CommentsMailer extends \li3_mailer\extensions\Mailer {
      * @param $commentId
      * @return bool
      */
-    public static function sendNewPersonalCommentNotification($commentId) {
-        if($comment = Comment::first($commentId)){
+    public static function sendNewPersonalCommentNotification($commentId)
+    {
+        if ($comment = Comment::first($commentId)) {
             $user = User::first($comment->reply_to);
             $pitch = Pitch::first($comment->pitch_id);
-            if($user->email_newcomments == 1) {
-                $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $comment);
-                return self::_mail(array(
+            if ($user->email_newcomments == 1) {
+                $data = ['user' => $user, 'pitch' => $pitch, 'comment' => $comment];
+                return self::_mail([
                     'to' => $user->email,
                     'use-smtp' => true,
                     'subject' => 'Вам оставлен новый комментарий!',
                     'data' => $data
-                ));
+                ]);
             }
         }
     }
-
 }
