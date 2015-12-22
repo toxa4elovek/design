@@ -26,14 +26,14 @@ font-weight: 400;" target="_blank">(?)</a></span>
         <span class="hours">00</span><span class="timeRefHours">:</span><span class="minutes">00</span><span class="timeRefMinutes">:</span><span class="seconds">00</span><span class="timeRefSeconds"></span>
     </span>
     <?php endif?>
-<?php elseif(($pitch->status == 1) && ($pitch->expert == 1) && ($allowSelect = $this->pitch->expertOpinion($pitch->id)) && ($allowSelect == strtotime($pitch->finishDate))):?>
+<?php elseif(($pitch->status == 1 && $pitch->awarded == 0) && ($pitch->expert == 1) && ($allowSelect = $this->pitch->expertOpinion($pitch->id)) && ($allowSelect == strtotime($pitch->finishDate))):?>
     <span class="regular">Ожидание эксперта:</span>&nbsp;&nbsp;&nbsp;
     <span class="pitch-info-text" style="color: #ff585d; display: inline-block;" id="countdown" data-deadline="<?=$allowSelect + DAY * 2;?>">
         <span class="days">00</span>
         <span class="timeRefDays">дн</span>
         <span class="hours">00</span><span class="timeRefHours">:</span><span class="minutes">00</span><span class="timeRefMinutes">:</span><span class="seconds">00</span><span class="timeRefSeconds"></span>
     </span>
-<?php elseif(($pitch->status == 1) && ($pitch->expert == 1) && ($allowSelect = $this->pitch->expertOpinion($pitch->id)) && ($allowSelect != strtotime($pitch->finishDate))):?>
+<?php elseif(($pitch->status == 1 && $pitch->awarded == 0) && ($pitch->expert == 1) && ($allowSelect = $this->pitch->expertOpinion($pitch->id)) && ($allowSelect != strtotime($pitch->finishDate))):?>
     <?php if($this->pitch->getChooseWinnerTime($pitch) > time()):
         $color = '#62a26e;';
     else:
