@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\Pitch;
 use lithium\net\http\Service;
 use \lithium\util\Validator;
 use \lithium\util\String;
@@ -9,7 +10,6 @@ use \lithium\storage\Session;
 use \app\models\Expert;
 use \app\models\Promocode;
 use \app\models\Option;
-use \app\models\Pitch;
 use \app\models\Favourite;
 use \app\models\Solution;
 use \app\models\Wincomment;
@@ -36,9 +36,6 @@ use lithium\data\entity\Record;
 
 class User extends AppModel
 {
-
-    public $hasOne = array();
-    public $hasMany = array('Social', 'Solution', 'Pitch');
 
     /**
      * Fill Admin role user's ids here
@@ -74,16 +71,12 @@ class User extends AppModel
     );
 
     public static $attaches = array('avatar' => array(
-            'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/avatars/'),
-            'setPermission' => array('mode' => 0600),
-            'processImage' => array(
-                //'largest' => array('image_resize' => true, 'image_ratio_crop' => true, 'image_x' => 960, 'image_y' => 740, 'file_overwrite' => true),
-                'small' => array('image_resize' => true, 'image_x' => 41, 'image_y' => 41, 'image_ratio_crop' => 'T', 'file_overwrite' => true),
-                //'gallerySmallSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 99, 'image_y' => 75, 'file_overwrite' => true),
-                'normal' => array('image_resize' => true, 'image_x' => 180, 'image_y' => 180, 'image_ratio_crop' => 'T', 'file_overwrite' => true),
-            /* 'galleryLargeSize' => array('image_resize' => true, 'image_ratio_crop' => 'TB', 'image_x' => 179, 'image_y' => 135, 'file_overwrite' => true), */
-            //'promoSize' => array('image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 259, 'image_y' => 258, 'file_overwrite' => true),
-            ),
+        'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/avatars/'),
+        'setPermission' => array('mode' => 0600),
+        'processImage' => array(
+            'small' => array('image_resize' => true, 'image_x' => 41, 'image_y' => 41, 'image_ratio_crop' => 'T', 'file_overwrite' => true),
+            'normal' => array('image_resize' => true, 'image_x' => 180, 'image_y' => 180, 'image_ratio_crop' => 'T', 'file_overwrite' => true),
+        ),
     ));
 
     public static function __init()
@@ -485,11 +478,11 @@ class User extends AppModel
                     'conditions' => array(
                         'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''),
                     ),
-                    'with' => array('Pitch')
         ));
 
         $ids = array();
         foreach ($users2 as $user) {
+            $user->pitches = Pitch::all(['conditions' => ['user_id' => $user->id]]);
             if (count($user->pitches) > 0) {
                 if (is_null($user->pitches[0]->id)) {
                     $ids[] = $user->id;
@@ -1254,8 +1247,7 @@ class User extends AppModel
                             '(`Pitch`.`status` = 0)',
                             '(`Pitch`.`status` = 1 AND `Pitch`.`awarded` = 0)',
                         ),
-                    ),
-                    'with' => array('Pitch'),
+                    )
         ));
         foreach ($solutions as $solution) {
             $solution->delete();
@@ -1460,7 +1452,8 @@ class User extends AppModel
     {
         $res = null;
         $currentUserId = Session::read('user.id');
-        if ((false != $currentUserId) && ($user = self::first(array('conditions' => array('User.id' => $currentUserId), 'with' => array('Pitch'))))) {
+        if ((false != $currentUserId) && ($user = self::first(array('conditions' => array('User.id' => $currentUserId))))) {
+            $user->pitches = Pitch::all(['conditions' => ['user_id' => $user->id]]);
             $res = array(
                 'id' => $user->id,
                 'firstName' => $user->first_name,

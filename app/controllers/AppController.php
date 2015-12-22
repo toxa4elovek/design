@@ -153,16 +153,6 @@ class AppController extends \lithium\action\Controller
             }
         }
 
-        // Get Promocode Length
-        $r = new \ReflectionMethod('\app\models\Promocode', 'generateToken');
-        $params = $r->getParameters();
-        foreach ($params as $param) {
-            if ($param->getName() == 'length' && $param->isOptional() == 1) {
-                $promocodeLength = $param->getDefaultValue();
-                break;
-            }
-        }
-
         if (isset($_GET['promocode']) && !empty($_GET['promocode']) && ((mb_strlen($_GET['promocode'], 'UTF-8') == 3) || (mb_strlen($_GET['promocode'], 'UTF-8') == 4))) {
             $this->userHelper->write('promocode', $_GET['promocode']);
         }
