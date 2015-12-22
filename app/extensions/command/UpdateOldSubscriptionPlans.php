@@ -19,7 +19,6 @@ class UpdateOldSubscriptionPlans extends CronJob
         $this->header('{:purple}Starting UpdateOldSubscriptionPlans...{:end}');
         $draftsOfPlans = SubscriptionPlan::all(
             [
-                'fields' => ['id', 'user_id', 'specifics'],
                 'conditions' => [
                 'type' => 'plan-payment',
                 'billed' => 0
