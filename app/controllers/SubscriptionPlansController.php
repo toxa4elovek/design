@@ -7,17 +7,19 @@ use app\models\SubscriptionPlan;
 use app\models\Receipt;
 use app\models\User;
 
-class SubscriptionPlansController extends AppController {
+class SubscriptionPlansController extends AppController
+{
 
     /**
      * Метод для отображения страницы пополнения баланса личного кабинета и
      * активации тарифа
      */
-    public function subscriber() {
-        if(is_null($this->request->params['id'])) {
+    public function subscriber()
+    {
+        if (is_null($this->request->params['id'])) {
             $planRecordId = SubscriptionPlan::getNextFundBalanceId($this->userHelper->getId());
             $value = 9000;
-            if((isset($this->request->query['amount'])) && (!empty($this->request->query['amount']))) {
+            if ((isset($this->request->query['amount'])) && (!empty($this->request->query['amount']))) {
                 $predefined = true;
                 $value = (int) $this->request->query['amount'];
             }
@@ -32,11 +34,11 @@ class SubscriptionPlansController extends AppController {
             SubscriptionPlan::setPlanForPayment($planRecordId, 0);
             SubscriptionPlan::setFundBalanceForPayment($planRecordId, 9000);
             return compact('receipt', 'planRecordId', 'predefined');
-        }else {
+        } else {
             if ($plan = SubscriptionPlan::getPlan((int)$this->request->params['id'])) {
                 $planRecordId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
                 $value = 9000;
-                if(($savedValue = SubscriptionPlan::getFundBalanceForPayment($planRecordId)) && ($savedValue !== null)) {
+                if (($savedValue = SubscriptionPlan::getFundBalanceForPayment($planRecordId)) && ($savedValue !== null)) {
                     $value = $savedValue;
                 }
                 $receipt = array(
@@ -50,7 +52,7 @@ class SubscriptionPlansController extends AppController {
                     )
                 );
                 $discount = 0;
-                if(User::hasActiveSubscriptionDiscount($this->userHelper->getId())) {
+                if (User::hasActiveSubscriptionDiscount($this->userHelper->getId())) {
                     $discount = User::getSubscriptionDiscount($this->userHelper->getId());
                     $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
                     $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
@@ -71,13 +73,14 @@ class SubscriptionPlansController extends AppController {
      *
      * @return mixed
      */
-    public function updateReceipt() {
-        if($plan = SubscriptionPlan::first($this->request->data['projectId'])) {
-            if($this->userHelper->isPitchOwner($plan->user_id)) {
+    public function updateReceipt()
+    {
+        if ($plan = SubscriptionPlan::first($this->request->data['projectId'])) {
+            if ($this->userHelper->isPitchOwner($plan->user_id)) {
                 Receipt::updateOrCreateReceiptForProject($plan->id, $this->request->data['updatedReceipt']);
                 SubscriptionPlan::setTotalOfPayment($plan->id, Receipt::getTotalForProject($plan->id));
-                foreach($this->request->data['updatedReceipt'] as $receiptRow) {
-                    if($receiptRow['name'] == 'Пополнение счёта') {
+                foreach ($this->request->data['updatedReceipt'] as $receiptRow) {
+                    if ($receiptRow['name'] == 'Пополнение счёта') {
                         $updatedValue = $receiptRow['value'];
                         SubscriptionPlan::setFundBalanceForPayment($plan->id, (int) $updatedValue);
                     }
@@ -85,29 +88,5 @@ class SubscriptionPlansController extends AppController {
                 return $this->request->data;
             }
         }
-    }
-
-    /**
-     * Метод для тестовой активации любого платежа
-     */
-    public function activate() {
-        if(($paymentRecord = SubscriptionPlan::first($this->request->data['projectId'])) &&
-        ($this->userHelper->isPitchOwner($paymentRecord->user_id))) {
-            $result = SubscriptionPlan::activatePlanPayment($this->request->data['projectId']);
-            if($result) {
-                $data = array(
-                    'message' => 'Платеж успешно активирован, проверить можно по адресу http://www.godesigner.ru/users/subscriber'
-                );
-            }else {
-                $data = array(
-                    'message' => 'Что-то пошло не так, платеж не удалось активировать'
-                );
-            }
-        }else {
-            $data = array(
-                'message' => 'Что-то пошло не так, платеж не принадлежит текущему пользователю'
-            );
-        }
-        return compact('data');
     }
 }
