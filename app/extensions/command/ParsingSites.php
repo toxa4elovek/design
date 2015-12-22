@@ -317,8 +317,9 @@ class ParsingSites extends \app\extensions\command\CronJob
 
     private function ParsingWordpress($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true, $lang = 'en')
     {
-        $xml = simplexml_load_file($url);
-        if (($xml->channel->item) && (count($xml->channel->item > 0))) {
+        $temp = file_get_contents($url);
+        $xml = simplexml_load_string($temp);
+        if(($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
             foreach ($xml->channel->item as $item) {
                 $trigger = News::doesNewsExists((string) $item->title, $item->link);
                 if (!$trigger) {
