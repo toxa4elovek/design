@@ -289,6 +289,21 @@ class Receipt extends AppModel
     }
 
     /**
+     * Метод возвращяет сумму проекта на основе массива
+     *
+     * @param $receipt array
+     * @return int
+     */
+    public static function getTotalFromArray(array $receipt = [])
+    {
+        $total = 0;
+        foreach ($receipt as $row) {
+            $total += $row['value'];
+        }
+        return (int) $total;
+    }
+
+    /**
      * Метод пытается посчитать, сколько прибыли принёс проект.
      * Неточность в подсчете прибыли от экспертов (примерно 20 процентов),
      * это может быть неверно в случае с экспертами не за 1000 рублей.

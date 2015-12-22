@@ -1,6 +1,8 @@
 <?php
 namespace app\models;
 
+use lithium\data\entity\Record;
+
 /**
  * Class SubscriptionPlan
  *
@@ -8,7 +10,8 @@ namespace app\models;
  *
  * @package app\models
  */
-class SubscriptionPlan extends Pitch {
+class SubscriptionPlan extends Pitch
+{
 
     /**
      * Для хранения используем таблицу pitches
@@ -54,9 +57,10 @@ class SubscriptionPlan extends Pitch {
      * @param $id
      * @return null|array
      */
-    static public function getPlan($id) {
+    public static function getPlan($id)
+    {
         $id = (int) $id;
-        if(isset(self::$_plans[$id])) {
+        if (isset(self::$_plans[$id])) {
             return self::$_plans[$id];
         }
         return null;
@@ -68,8 +72,9 @@ class SubscriptionPlan extends Pitch {
      * @param $userId int пользователя
      * @return int
      */
-    static public function getNextSubscriptionPlanId($userId) {
-        if(!$payment = self::first(array(
+    public static function getNextSubscriptionPlanId($userId)
+    {
+        if (!$payment = self::first(array(
             'conditions' => array(
                 'user_id' => $userId,
                 'billed' => 0,
@@ -88,7 +93,8 @@ class SubscriptionPlan extends Pitch {
         return $payment->id;
     }
 
-    static public function hasSubscriptionPlanDraft($userId) {
+    public static function hasSubscriptionPlanDraft($userId)
+    {
         return (bool) self::first(array(
             'conditions' => array(
                 'user_id' => $userId,
@@ -104,8 +110,9 @@ class SubscriptionPlan extends Pitch {
      * @param $userId int пользователя
      * @return int
      */
-    static public function getNextFundBalanceId($userId) {
-        if(!$payment = self::first(array(
+    public static function getNextFundBalanceId($userId)
+    {
+        if (!$payment = self::first(array(
             'conditions' => array(
                 'user_id' => $userId,
                 'billed' => 0,
@@ -131,10 +138,21 @@ class SubscriptionPlan extends Pitch {
      * @param $value int
      * @return bool
      */
-    public function setTotal($payment, $value) {
+    public function setTotal($payment, $value)
+    {
         $payment->total = (int) $value;
         $payment->price = (int) $value;
         return $payment->save();
+    }
+
+    /**
+     * @param $record Record
+     * @param $value int
+     * @return mixed
+     */
+    public function setTotalOfPaymentForRecord(Record $record, $value)
+    {
+        return $record->setTotal((int) $value);
     }
 
     /**
@@ -144,9 +162,10 @@ class SubscriptionPlan extends Pitch {
      * @param $value int
      * @return mixed
      */
-    static public function setTotalOfPayment($id, $value) {
+    public static function setTotalOfPayment($id, $value)
+    {
         $payment = self::first($id);
-        return $payment->setTotal((int) $value);
+        return $payment->setTotalOfPaymentForRecord((int) $value);
     }
 
     /**
@@ -155,27 +174,28 @@ class SubscriptionPlan extends Pitch {
      * @param $id
      * @return bool
      */
-    static public function activatePlanPayment($id) {
-        if($paymentPlan = self::first($id)) {
+    public static function activatePlanPayment($id)
+    {
+        if ($paymentPlan = self::first($id)) {
             $finalResult = false;
             $paymentPlan->billed = 1;
             $paymentPlan->started = date('Y-m-d H:i:s');
             $paymentPlan->totalFinishDate = date('Y-m-d H:i:s');
             $companyName = User::getFullCompanyName($paymentPlan->user_id);
-            if($companyName != '') {
+            if ($companyName != '') {
                 $paymentPlan->title = $paymentPlan->title . ' (' . $companyName . ')';
             }
             $paymentPlan->status = 2;
             $paymentPlan->save();
-            if($planId = self::getPlanForPayment($id)) {
-                if($plan = self::getPlan($planId)) {
+            if ($planId = self::getPlanForPayment($id)) {
+                if ($plan = self::getPlan($planId)) {
                     $finalResult = User::activateSubscription($paymentPlan->user_id, $plan);
                 }
             }
-            if($fundBalance = self::getFundBalanceForPayment($id)) {
+            if ($fundBalance = self::getFundBalanceForPayment($id)) {
                 $result = User::fillBalance($paymentPlan->user_id, $fundBalance);
                 Task::createNewTask($paymentPlan->id, 'emailFillBalanceSuccessNotification');
-                if(!$finalResult) {
+                if (!$finalResult) {
                     $finalResult = $result;
                 }
             }
@@ -191,9 +211,10 @@ class SubscriptionPlan extends Pitch {
      * @param $planId
      * @return bool
      */
-    static public function setPlanForPayment($id, $planId) {
-        if($plan = self::first($id)) {
-            if(!$array = unserialize($plan->specifics)) {
+    public static function setPlanForPayment($id, $planId)
+    {
+        if ($plan = self::first($id)) {
+            if (!$array = unserialize($plan->specifics)) {
                 $array = array();
             }
             $array['plan_id'] = $planId;
@@ -210,9 +231,10 @@ class SubscriptionPlan extends Pitch {
      * @param $balance int
      * @return bool
      */
-    static public function setFundBalanceForPayment($id, $balance) {
-        if($plan = self::first($id)) {
-            if(!$array = unserialize($plan->specifics)) {
+    public static function setFundBalanceForPayment($id, $balance)
+    {
+        if ($plan = self::first($id)) {
+            if (!$array = unserialize($plan->specifics)) {
                 $array = array();
             }
             $array['fund_balance'] = $balance;
@@ -225,15 +247,16 @@ class SubscriptionPlan extends Pitch {
     /**
      * Метод возвращяет сумму пополнения
      *
-     * @param $id int
+     * @param $planRecord Record
      * @return int|null
      */
-    static public function getFundBalanceForPayment($id) {
-        if($plan = self::first($id)) {
-            if(!$array = unserialize($plan->specifics)) {
+    public function getFundBalanceForPaymentForRecord(Record $planRecord)
+    {
+        if ($plan = self::first($planRecord->id)) {
+            if (!$array = unserialize($plan->specifics)) {
                 return null;
             }
-            if(!isset($array['fund_balance'])) {
+            if (!isset($array['fund_balance'])) {
                 return null;
             }
             return (int) $array['fund_balance'];
@@ -242,20 +265,46 @@ class SubscriptionPlan extends Pitch {
     }
 
     /**
+     * Метод возвращяет сумму пополнения
+     *
+     * @param $id int
+     * @return int|null
+     */
+    public static function getFundBalanceForPayment($id)
+    {
+        if ($plan = self::first($id)) {
+            return $plan->getFundBalanceForPaymentForRecord();
+        }
+        return null;
+    }
+
+    /**
+     * Метод возвращяет айди плана, если он установлен в плане
+     *
+     * @param $planRecord
+     * @return int|null
+     */
+    public function getPlanForPaymentForRecord(Record $planRecord)
+    {
+        if (!$array = unserialize($planRecord->specifics)) {
+            return null;
+        }
+        if (!isset($array['plan_id'])) {
+            return null;
+        }
+        return (int) $array['plan_id'];
+    }
+
+    /**
      * Метод возвращяет айди плана, если он установлен в плане
      *
      * @param $id
      * @return int|null
      */
-    static public function getPlanForPayment($id) {
-        if($plan = self::first($id)) {
-            if(!$array = unserialize($plan->specifics)) {
-                return null;
-            }
-            if(!isset($array['plan_id'])) {
-                return null;
-            }
-            return (int) $array['plan_id'];
+    public static function getPlanForPayment($id)
+    {
+        if ($plan = self::first($id)) {
+            return $plan->getPlanForPaymentForRecord();
         }
         return null;
     }
@@ -266,17 +315,17 @@ class SubscriptionPlan extends Pitch {
      * @param $id
      * @return int
      */
-    static public function extractFundBalanceAmount($id) {
-        if($plan = self::first($id)) {
-            if(!$array = unserialize($plan->specifics)) {
+    public static function extractFundBalanceAmount($id)
+    {
+        if ($plan = self::first($id)) {
+            if (!$array = unserialize($plan->specifics)) {
                 return 0;
             }
-            if(!isset($array['fund_balance'])) {
+            if (!isset($array['fund_balance'])) {
                 return 0;
             }
             return $array['fund_balance'];
         }
         return 0;
     }
-
 }

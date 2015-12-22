@@ -7,18 +7,22 @@ use app\models\SubscriptionPlan;
 use app\models\Task;
 use app\models\User;
 
-class SubscriptionPlanTest extends AppUnit {
+class SubscriptionPlanTest extends AppUnit
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         SubscriptionPlan::config(array('connection' => 'test'));
         $this->rollUp(array('Pitch', 'User', 'Task'));
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->rollDown(array('Pitch', 'User', 'Task'));
     }
 
-    public function testGetPlan() {
+    public function testGetPlan()
+    {
         $result = SubscriptionPlan::getPlan(1);
         $expected = array(
             'id' => 1,
@@ -44,7 +48,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual($expected, $result);
     }
 
-    public function testGetNextSubscriptionPlanId() {
+    public function testGetNextSubscriptionPlanId()
+    {
         $result = SubscriptionPlan::getNextSubscriptionPlanId(1);
         $expected = 8;
         $this->assertEqual($expected, $result);
@@ -59,7 +64,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual($expected, $result);
     }
 
-    public function testHasSubscriptionPlanDraft() {
+    public function testHasSubscriptionPlanDraft()
+    {
         $result = SubscriptionPlan::hasSubscriptionPlanDraft(1);
         $this->assertFalse($result);
         SubscriptionPlan::getNextSubscriptionPlanId(1);
@@ -67,7 +73,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertTrue($result);
     }
 
-    public function testGetNextFundBalanceId() {
+    public function testGetNextFundBalanceId()
+    {
         $result = SubscriptionPlan::getNextFundBalanceId(1);
         $expected = 8;
         $this->assertEqual($expected, $result);
@@ -82,7 +89,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual($expected, $result);
     }
 
-    public function testSetTotal() {
+    public function testSetTotal()
+    {
         $result = SubscriptionPlan::getNextSubscriptionPlanId(1);
         $expected = 8;
         $this->assertEqual($expected, $result);
@@ -95,7 +103,24 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual(10000.00, $plan->price);
     }
 
-    public function testSetTotalOfPayment() {
+    public function testSetTotalOfPaymentForRecord()
+    {
+        $result = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $expected = 8;
+        $this->assertEqual($expected, $result);
+        $plan = SubscriptionPlan::first(8);
+        $this->assertTrue('0.00', $plan->total);
+        $result = $plan->setTotalOfPaymentForRecord(10000);
+        $this->assertTrue($result);
+        $this->assertEqual(10000.00, $plan->total);
+        $this->assertEqual(10000.00, $plan->price);
+        $plan = SubscriptionPlan::first(8);
+        $this->assertEqual(10000.00, $plan->total);
+        $this->assertEqual(10000.00, $plan->price);
+    }
+
+    public function testSetTotalOfPayment()
+    {
         $result = SubscriptionPlan::getNextSubscriptionPlanId(1);
         $expected = 8;
         $this->assertEqual($expected, $result);
@@ -108,7 +133,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual(10000.00, $plan->price);
     }
 
-    public function testSetPlanForPayment() {
+    public function testSetPlanForPayment()
+    {
         $result = SubscriptionPlan::getNextSubscriptionPlanId(1);
         $expected = 8;
         $this->assertEqual($expected, $result);
@@ -126,7 +152,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertFalse($result);
     }
 
-    public function testSetFundBalanceForPayment() {
+    public function testSetFundBalanceForPayment()
+    {
         $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
         $result = SubscriptionPlan::setFundBalanceForPayment($id, 9000);
         $this->assertTrue($result);
@@ -136,7 +163,27 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertFalse(SubscriptionPlan::setFundBalanceForPayment(999999, 9000));
     }
 
-    public function testGetFundBalanceForPayment() {
+    public function testGetFundBalanceForPaymentForRecord()
+    {
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        SubscriptionPlan::setFundBalanceForPayment($id, 15000);
+        $planRecord = SubscriptionPlan::first($id);
+        $result = $planRecord->getFundBalanceForPaymentForRecord();
+        $this->assertEqual(15000, $result);
+
+        // пустое значение
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $plan = SubscriptionPlan::first($id);
+        $plan->specifics = '';
+        $plan->save();
+        $this->assertNull($planRecord->getFundBalanceForPaymentForRecord($id));
+
+        // не существующий план
+        $this->assertNull($planRecord->getFundBalanceForPaymentForRecord(999999, 9000));
+    }
+
+    public function testGetFundBalanceForPayment()
+    {
         $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
         SubscriptionPlan::setFundBalanceForPayment($id, 15000);
         $result = SubscriptionPlan::getFundBalanceForPayment(8);
@@ -153,13 +200,37 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertNull(SubscriptionPlan::getFundBalanceForPayment(999999, 9000));
     }
 
-    public function testGetPlanForPayment() {
+    public function testGetPlanForPaymentForRecord()
+    {
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        SubscriptionPlan::setPlanForPayment($id, 2);
+        $plan = SubscriptionPlan::first($id);
+        $result = $plan->getPlanForPaymentForRecord();
+        $this->assertEqual(2, $result);
+
+        // сериализованных данных просто нет
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $plan = SubscriptionPlan::first($id);
+        $plan->specifics = '';
+        $plan->save();
+        $this->assertNull($plan->getPlanForPaymentForRecord());
+
+        // сериалозованные данные есть, но нужного ключа в них нет
+        $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
+        $plan = SubscriptionPlan::first($id);
+        $plan->specifics = serialize(array('noInfo' => true));
+        $plan->save();
+        $this->assertNull($plan->getPlanForPaymentForRecord());
+    }
+
+    public function testGetPlanForPayment()
+    {
         $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
         SubscriptionPlan::setPlanForPayment($id, 2);
         $result = SubscriptionPlan::getPlanForPayment(8);
         $this->assertEqual(2, $result);
 
-        // сериализованный данных просто нет
+        // сериализованных данных просто нет
         $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
         $plan = SubscriptionPlan::first($id);
         $plan->specifics = '';
@@ -177,7 +248,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertNull(SubscriptionPlan::getPlanForPayment(999999));
     }
 
-    public function testActivatePlan() {
+    public function testActivatePlan()
+    {
         // не существующий план
         $this->assertFalse(SubscriptionPlan::activatePlanPayment(9999));
 
@@ -231,7 +303,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual('lithium\data\entity\Record', get_class($task));
     }
 
-    public function testActivatePlanComplex() {
+    public function testActivatePlanComplex()
+    {
         // и план и баланс
         $this->assertFalse(User::isSubscriptionActive(1));
         $this->assertEqual(0, User::getBalance(1));
@@ -255,7 +328,8 @@ class SubscriptionPlanTest extends AppUnit {
         $this->assertEqual('lithium\data\entity\Record', get_class($task));
     }
 
-    public function testExtractFundBalanceAmount() {
+    public function testExtractFundBalanceAmount()
+    {
         $id = SubscriptionPlan::getNextSubscriptionPlanId(2);
         SubscriptionPlan::setFundBalanceForPayment($id, 15000);
         $result = SubscriptionPlan::extractFundBalanceAmount($id);
@@ -279,5 +353,4 @@ class SubscriptionPlanTest extends AppUnit {
         $result = SubscriptionPlan::extractFundBalanceAmount(99999);
         $this->assertIdentical(0, $result);
     }
-
 }

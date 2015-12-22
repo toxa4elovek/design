@@ -437,6 +437,25 @@ class ReceiptTest extends AppUnit
         $this->assertIdentical($expected, $result);
     }
 
+    public function testGetTotalFromArray()
+    {
+        $receipt = array(
+            array(
+                'name' => 'Оплата тарифа «Проверка»',
+                'value' => 21000
+            ),
+            array(
+                'name' => 'Пополнение счёта',
+                'value' => 5000
+            ),
+            array(
+                'name' => 'Скидка',
+                'value' => -5000
+            )
+        );
+        $this->assertEqual(21000, Receipt::getTotalFromArray($receipt));
+    }
+
     public function testGetRealProfit()
     {
         $data = array(
