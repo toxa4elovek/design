@@ -11,5 +11,7 @@
     "symfony/stopwatch": "^2.8",
     "gabrielelana/byte-units": "^0.3.0",
     "symfony/finder": "^2.8"
+  },
+  "require-dev": {
   }
 }
