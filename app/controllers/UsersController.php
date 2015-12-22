@@ -406,8 +406,13 @@ class UsersController extends \app\controllers\AppController
                 if (empty($this->request->data['file'])) {
                     unset($this->request->data['file']);
                 }
+                if ($this->userHelper->isAdmin()) {
+                    $userIdForComment = 108;
+                } else {
+                    $userIdForComment = $this->userHelper->getId();
+                }
                 $newComment->set($this->request->data);
-                $newComment->user_id = Session::read('user.id');
+                $newComment->user_id = $userIdForComment;
                 $newComment->solution_id = $solution->id;
                 $newComment->created = date('Y-m-d H:i:s');
                 $newComment->step = 2;
@@ -572,8 +577,13 @@ class UsersController extends \app\controllers\AppController
                 if (empty($this->request->data['file'])) {
                     unset($this->request->data['file']);
                 }
+                if ($this->userHelper->isAdmin()) {
+                    $userIdForComment = 108;
+                } else {
+                    $userIdForComment = $this->userHelper->getId();
+                }
                 $newComment->set($this->request->data);
-                $newComment->user_id = Session::read('user.id');
+                $newComment->user_id = $userIdForComment;
                 $newComment->solution_id = $solution->id;
                 $newComment->created = date('Y-m-d H:i:s');
                 $newComment->step = 3;
