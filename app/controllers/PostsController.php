@@ -7,7 +7,8 @@ use \app\models\Post;
 use \lithium\storage\Session;
 use app\models\User;
 
-class PostsController extends AppController {
+class PostsController extends AppController
+{
 
     /**
      * @var array Массив экшенов, доступных не залогинненым пользователям
@@ -24,33 +25,34 @@ class PostsController extends AppController {
      *
      * @return array
      */
-    public function index() {
+    public function index()
+    {
         $limit = $this->postsOnIndexPage;
         $page = 1;
         $conditions = array();
-        if(isset($this->request->query['page'])) {
+        if (isset($this->request->query['page'])) {
             $page = abs(intval($this->request->query['page']));
         }
-        if(isset($this->request->query['tag'])) {
+        if (isset($this->request->query['tag'])) {
             $tag = $this->request->query['tag'];
             $conditions += array('tags' => array('LIKE' => '%' . $tag . '%'));
         }
-        if(isset($this->request->query['author'])) {
+        if (isset($this->request->query['author'])) {
             $conditions += array('user_id' => (int) $this->request->query['author']);
         }
-        if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
+        if ((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
             setcookie('counterdata', "", time() - 3600, '/');
             Session::delete('user.blogpost');
         }
 
-        if(User::checkRole('editor') || User::checkRole('author')) {
-            $posts = Post::all(array('conditions' => $conditions, 'page' => $page, 'limit' => $limit,'order' => array('created' => 'desc'), 'with' => array('User')));
+        if (User::checkRole('editor') || User::checkRole('author')) {
+            $posts = Post::all(array('conditions' => $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
             $editor = 1;
-        }else {
+        } else {
             $posts = Post::all(array('conditions' => array('published' => 1, 'Post.created' => array('<=' => date('Y-m-d H:i:s'))) + $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
         }
         $postsList = array();
-        foreach($posts as $post) {
+        foreach ($posts as $post) {
             $post->timezonedCreated = date('c', strtotime($post->created));
             $postsList[] = $post->data();
         }
@@ -64,7 +66,8 @@ class PostsController extends AppController {
      *
      * @return array|object|void
      */
-    public function search() {
+    public function search()
+    {
         if (isset($this->request->query['search'])) {
             $limit = $this->postsOnIndexPage;
             $page = 1;
@@ -82,7 +85,7 @@ class PostsController extends AppController {
                 $searchWord = trim($searchWord);
             }
             $words = array($searchCondition);
-            foreach($tempWords as $subwords) {
+            foreach ($tempWords as $subwords) {
                 $words[] = $subwords;
             }
             $posts = new \lithium\util\Collection();
@@ -109,7 +112,7 @@ class PostsController extends AppController {
 
             $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
             $postsList = array();
-            foreach($posts as $post) {
+            foreach ($posts as $post) {
                 $post->timezonedCreated = date('c', strtotime($post->created));
                 $postsList[] = $post->data();
             }
@@ -127,24 +130,25 @@ class PostsController extends AppController {
      *
      * @return object
      */
-    public function save() {
-        if((User::checkRole('editor')) || (User::checkRole('author'))) {
-            if((!empty($this->request->data['id'])) && ($this->request->data['id'])) {
+    public function save()
+    {
+        if ((User::checkRole('editor')) || (User::checkRole('author'))) {
+            if ((!empty($this->request->data['id'])) && ($this->request->data['id'])) {
                 $post = Post::first($this->request->data['id']);
-            }else {
+            } else {
                 unset($this->request->data['id']);
                 $post = Post::create();
                 $post->user_id = Session::read('user.id');
             }
             $post->set($this->request->data);
             $tagsArray = array();
-            foreach(explode(',', preg_replace('/[\[\]@\"]/', '', $this->request->data['tags'])) as $tag) {
+            foreach (explode(',', preg_replace('/[\[\]@\"]/', '', $this->request->data['tags'])) as $tag) {
                 $tagsArray[] = trim($tag);
             }
             $tagsString = implode('|', $tagsArray);
-            if((isset($this->request->data['published'])) && (($this->request->data['published'] == 'on') || ($this->request->data['published'] == 1))) {
+            if ((isset($this->request->data['published'])) && (($this->request->data['published'] == 'on') || ($this->request->data['published'] == 1))) {
                 $published = '1';
-            }else {
+            } else {
                 $published = '0';
             }
 
@@ -155,7 +159,7 @@ class PostsController extends AppController {
             Post::lock($post->id, Session::read('user.id'));
             Post::updateLastEditTime($post->id);
             return $post->data();
-        }else {
+        } else {
             return $this->redirect('/posts');
         }
     }
@@ -165,13 +169,14 @@ class PostsController extends AppController {
      *
      * @return array|object
      */
-    public function view() {
+    public function view()
+    {
         if (!empty($this->request->query['search'])) {
             return $this->redirect('/posts/search?search=' . $this->request->query['search']);
         }
 
-        if(($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
-            if((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
+        if (($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
+            if ((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
                 Session::delete('user.blogpost');
                 setcookie('counterdata', '', time() - 3600, '/');
             }
@@ -180,29 +185,29 @@ class PostsController extends AppController {
             $post->views += 1;
             $post->save();
             $searchIds = array();
-            foreach($tags as $tag) {
+            foreach ($tags as $tag) {
                 $related = Post::all(array('conditions' => array(
                     'tags' => array('LIKE' => '%' . $tag . '%'),
                     'id' => array('!=' => $post->id),
                     'published' => 1,
                     'Post.created' => array('<=' => date('Y-m-d H:i:s'))
                 ),                    'order' => array('RAND()')));
-                foreach($related as $relatedPost) {
-                    if(isset($searchIds[$relatedPost->id])) {
+                foreach ($related as $relatedPost) {
+                    if (isset($searchIds[$relatedPost->id])) {
                         $searchIds[$relatedPost->id] += 1;
-                    }else {
+                    } else {
                         $searchIds[$relatedPost->id] = 1;
                     }
                 }
-
             }
             $top = array_keys(array_slice($searchIds, 0, 3, true));
-            if($top) {
+            if ($top) {
                 $related = Post::all(array('conditions' => array('id' => $top)));
             }
-            if($post->blog_ad_id != 0) {
-                function getFirstParagraph($string){
-                    $string = substr($string,0, strpos($string, "</p>")+4);
+            if ($post->blog_ad_id != 0) {
+                function getFirstParagraph($string)
+                {
+                    $string = substr($string, 0, strpos($string, "</p>")+4);
                     return $string;
                 }
                 $snippet = BlogAd::first($post->blog_ad_id);
@@ -210,7 +215,7 @@ class PostsController extends AppController {
                 $post->full = str_replace($paragraph, $paragraph . $snippet->text, $post->full);
             }
             return compact('post', 'related');
-        }else {
+        } else {
             return $this->redirect('/posts');
         }
     }
@@ -220,8 +225,9 @@ class PostsController extends AppController {
      *
      * @return array|object
      */
-    public function add() {
-        if(false === (User::checkRole('author') or User::checkRole('editor'))) {
+    public function add()
+    {
+        if (false === (User::checkRole('author') or User::checkRole('editor'))) {
             return $this->redirect('/posts');
         }
         $commonTags = Post::getCommonTags();
@@ -234,16 +240,17 @@ class PostsController extends AppController {
      *
      * @return array|object
      */
-    public function edit() {
-        if(User::checkRole('editor') or User::checkRole('author')) {
-            if($post = Post::first($this->request->id)) {
-                Post::lock($this->request->id, Session::read('user.id'));
+    public function edit()
+    {
+        if ($this->request->id && (User::checkRole('editor') || User::checkRole('author'))) {
+            if ($post = Post::first($this->request->id)) {
+                Post::lock($this->request->id, $this->userHelper->getId());
                 $snippets = BlogAd::all();
                 return compact('post', 'snippets');
-            }else {
+            } else {
                 return $this->redirect('/posts/index');
             }
-        }else {
+        } else {
             return $this->redirect('/posts');
         }
     }
@@ -253,9 +260,10 @@ class PostsController extends AppController {
      *
      * @return object
      */
-    public function delete() {
-        if(User::checkRole('editor') or User::checkRole('author')) {
-            if($post = Post::first($this->request->id)) {
+    public function delete()
+    {
+        if (User::checkRole('editor') or User::checkRole('author')) {
+            if ($post = Post::first($this->request->id)) {
                 $post->delete();
             }
         }
@@ -267,12 +275,12 @@ class PostsController extends AppController {
      *
      * @return array
      */
-    public function updateEditTime() {
+    public function updateEditTime()
+    {
         $result = false;
-        if(Post::isLockedByMe($this->request->id, Session::read('user.id'))) {
+        if (Post::isLockedByMe($this->request->id, Session::read('user.id'))) {
             $result = Post::updateLastEditTime($this->request->id);
         }
         return compact('result');
     }
-
 }
