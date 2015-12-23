@@ -33,11 +33,14 @@ $(function () {
         }
     });
 
+    /* Download Form Select */
     if (window.File != null && window.FileList != null) {
         $('#new-download').show();
     } else {
         $('#old-download').show();
     }
+
+    /**/
 
     $('.short-time-limit').change(function () {
         var value = $(this).data('optionValue');
@@ -84,6 +87,7 @@ $(function () {
         return false;
     });
 
+    /*sliders*/
     $(".slider").each(function (index, object) {
         var value = 5;
         if (typeof slidersValue != "undefined") {
@@ -105,6 +109,7 @@ $(function () {
         });
     });
 
+    /**/
     $(document).on('focus', '.wrong-input', function () {
         $(this).removeClass('wrong-input');
     });
@@ -155,7 +160,8 @@ $(function () {
         url: '/pitchfiles/add.json',
         onSelect: function onSelect(file) {
             onSelectHandler.call(this, file, fileIds, Cart);
-        } });
+        } // See app.js
+    });
 
     $('input[name="phone-brief"]').change(function () {
         var phone = $(this).val();
@@ -166,6 +172,7 @@ $(function () {
         if (Cart.id) {
             var givenId = +$(this).parent().attr('data-id');
             if (givenId) {
+                // File came from database
                 $.post('/pitchfiles/delete', { 'id': givenId }, function (response) {
                     if (response != 'true') {
                         alert('При удалении файла произошла ошибка');
@@ -226,9 +233,13 @@ $(function () {
         }
     });
 
+    /**/
     Cart = new FeatureCart();
     Cart.init();
 });
+//$('input[name=category_id]').val()
+
+/* Class */
 
 function FeatureCart() {
     var self = this;
@@ -292,6 +303,7 @@ function FeatureCart() {
                 if (percent.length > 0) {
                     self.transferFee = (percent.replace(',', '.') / 100).toFixed(3);
                 } else {
+                    // For older pitches
                     self.transferFee = feeRates.good;
                 }
                 object.name = self.transferFeeKey;
@@ -508,7 +520,7 @@ function FeatureCart() {
                 optionsTotal += parseInt(value);
             }
         });
-
+        //
         return optionsTotal;
     };
     this._calculateTotal = function () {

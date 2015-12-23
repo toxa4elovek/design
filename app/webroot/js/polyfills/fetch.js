@@ -192,6 +192,7 @@
     return this;
   }
 
+  // HTTP methods whose capitalization should be normalized
   var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
 
   function normalizeMethod(method) {
@@ -264,6 +265,7 @@
   self.Response = Response;
 
   self.fetch = function (input, init) {
+    // TODO: Request constructor should accept input, init
     var request;
     if (Request.prototype.isPrototypeOf(input) && !init) {
       request = input;
@@ -279,6 +281,7 @@
           return xhr.responseURL;
         }
 
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
         if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
           return xhr.getResponseHeader('X-Request-URL');
         }

@@ -1,12 +1,22 @@
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _react = require('react');
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var ClientLogo = (function (_React$Component) {
     _inherits(ClientLogo, _React$Component);
@@ -14,10 +24,12 @@ var ClientLogo = (function (_React$Component) {
     function ClientLogo() {
         _classCallCheck(this, ClientLogo);
 
-        _get(Object.getPrototypeOf(ClientLogo.prototype), 'constructor', this).call(this);
-        this.animationSpeed = 300;
-        this.mouseEnter = this.mouseEnter.bind(this);
-        this.mouseLeave = this.mouseLeave.bind(this);
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ClientLogo).call(this));
+
+        _this.animationSpeed = 300;
+        _this.mouseEnter = _this.mouseEnter.bind(_this);
+        _this.mouseLeave = _this.mouseLeave.bind(_this);
+        return _this;
     }
 
     _createClass(ClientLogo, [{
@@ -53,18 +65,20 @@ var ClientLogo = (function (_React$Component) {
         key: 'render',
         value: function render() {
             var link = '/pitches/view/' + this.props.id;
-            return React.createElement(
+            return _react2.default.createElement(
                 'li',
                 { className: 'partner-logo-item', style: { width: this.props.width, marginRight: '25px' } },
-                React.createElement(
+                _react2.default.createElement(
                     'a',
                     { onMouseOver: this.mouseEnter, onMouseOut: this.mouseLeave, target: '_blank', className: 'hoverlogo', href: link },
-                    React.createElement('img', { style: { paddingTop: this.props.paddingTop + 'px' }, className: 'image-on', 'data-image-status': 'off', src: this.props.imageOff, alt: this.props.title }),
-                    React.createElement('img', { style: { paddingTop: this.props.paddingTop + 'px' }, className: 'image-off', 'data-image-status': 'on', src: this.props.imageOn, alt: this.props.title })
+                    _react2.default.createElement('img', { style: { paddingTop: this.props.paddingTop + 'px' }, className: 'image-on', 'data-image-status': 'off', src: this.props.imageOff, alt: this.props.title }),
+                    _react2.default.createElement('img', { style: { paddingTop: this.props.paddingTop + 'px' }, className: 'image-off', 'data-image-status': 'on', src: this.props.imageOn, alt: this.props.title })
                 )
             );
         }
     }]);
 
     return ClientLogo;
-})(React.Component);
+})(_react2.default.Component);
+
+exports.default = ClientLogo;

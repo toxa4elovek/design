@@ -1,5 +1,7 @@
 'use strict';
 
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
 ;(function () {
     $(function () {
         var paramsSearch = {};
@@ -157,7 +159,7 @@
                     $prependEl.hide();
                     $prependEl.appendTo('.list_portfolio').slideDown('slow');
                     $('#officeAjaxLoader').hide();
-                    if (typeof response.solutions == 'object' && Object.keys(response.solutions).length > 0) {
+                    if (_typeof(response.solutions) == 'object' && Object.keys(response.solutions).length > 0) {
                         isBusy = false;
                     } else {
                         isBusy = true;
@@ -312,7 +314,7 @@
                 return true;
             }
             if (window.history.pushState) {
-                window.history.pushState('object or string', 'Title', this.href);
+                window.history.pushState('object or string', 'Title', this.href); // @todo Check params
             } else {
                     window.location = $(this).attr('href');
                     return false;
@@ -348,7 +350,7 @@
             }
             isBusy = false;
             var newAddress = '?search=' + encodeURIComponent(search.val().trim());
-
+            //fetchSearch(search);
             $('#filterToggle').data('dir', 'up');
             $('img', '#filterToggle').attr('src', image);
             $('#filtertab').hide();
@@ -429,6 +431,7 @@
                         keys.push(solution);
                     });
                     keys = keys.sort(function (obj1, obj2) {
+                        // Ascending: first age less than the previous
                         if (obj2.sort > obj1.sort) {
                             return -1;
                         }
@@ -486,6 +489,26 @@
             }
         }
 
+        /*
+        $('#searchTerm').keyboard('space', function () {
+            if ($(this).val().trim() != '') {
+                var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+                $(this).val('');
+                var filter = $('#filterbox');
+                $(box).appendTo(filter);
+                recalculateBox();
+            }
+        }).keyboard('enter', function () {
+            if ($(this).val().trim() != '') {
+                var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^A-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+                $(this).val('');
+                var filter = $('#filterbox');
+                $(box).appendTo(filter);
+                recalculateBox();
+            }
+            return false;
+        });
+        */
         $('#searchTerm').keyboard('enter', function () {
             if ($(this).val().trim() != '') {
                 var box = '<li style="margin-left:6px;">' + $(this).val().replace(/[^\sA-Za-zА-Яа-яЁё0-9-]/g, "").trim() + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
@@ -593,12 +616,13 @@
         $('body, .solution-overlay').on('click', '.solution-prev-area, .solution-next-area', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            window.history.pushState('object or string', 'Title', this.href);
+            window.history.pushState('object or string', 'Title', this.href); // @todo Check params
             var urlJSON = this.href + '.json';
             fetchSolution(urlJSON);
         });
 
         function fetchSolution(urlJSON, scroll) {
+            // Reset layout
             $(window).scrollTop(0);
             $('.solution-images').html('<div style="text-align:center;height:220px;padding-top:180px"><img alt="" src="/img/blog-ajax-loader.gif"></div>');
             $('.author-avatar').attr('src', '/img/default_small_avatar.png');
@@ -611,7 +635,7 @@
             solution_tags.empty();
             $.getJSON(urlJSON, function (result) {
                 $('span#date').text('Опубликовано ' + result.date);
-
+                // Navigation
                 var container = $('.imagecontainer[data-solutionid="' + result.solution.id + '"]');
                 var parent = container.parent().parent();
                 var prevLi = parent.prev();
@@ -636,14 +660,17 @@
                     solution_tags.append(html);
                 }
 
+                // Left Panel
                 $('.solution-images').html('');
-
+                //$('.solution-left-panel .solution-title').addClass('nodecoration').data('href', '/pitches/view/' + result.pitch.id);
                 $('.solution-left-panel .solution-title').children('h1').html('<a href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>');
                 if (result.solution.images.solution && result.pitch.category_id != 7) {
+                    // Main Images
                     if (typeof result.solution.images.solution_gallerySiteSize != 'undefined') {
                         viewsize = result.solution.images.solution_gallerySiteSize;
                         work = result.solution.images.solution_solutionView;
                     } else {
+                        // case when we don't have gallerySiteSize image size
                         viewsize = result.solution.images.solution;
                         work = result.solution.images.solution;
                     }
@@ -654,10 +681,11 @@
                     } else {
                         $('.solution-images').append('<a href="' + viewsize.weburl + '" target="_blank"><img src="' + work.weburl + '" class="solution-image" /></a>');
                     }
-
+                    // Thumbnail Image
                     if (typeof result.solution.images.solution_galleryLargeSize != 'undefined') {
                         viewsize = result.solution.images.solution_galleryLargeSize;
                     } else {
+                        // case when we don't have gallerySiteSize image size
                         viewsize = result.solution.images.solution;
                     }
                     if ($.isArray(viewsize)) {
@@ -673,6 +701,7 @@
 
                 var firstImage = $('.solution-image', '.solution-overlay').first().parent();
                 if (currentUserId == result.pitch.user_id) {
+                    // isClient
                     var ratingWidget = $('<div class="separator-rating"> \
                         <div class="separator-left"></div> \
                         <div class="rating-widget"><span class="left">выставьте</span> \
@@ -705,7 +734,10 @@
                             });
                         }
                     });
-                } else if (currentUserId == result.solution.user_id) {} else {
+                } else if (currentUserId == result.solution.user_id) {
+                    // Solution Author views nothing
+                } else {
+                        // Any User
                         if (result.pitch.status != 1 && result.pitch.status != 2) {
                             var already = '';
                             if (result.likes == true) {
@@ -743,6 +775,7 @@
                     solutionTooltip();
                 }
 
+                // Right Panel
                 $('.number', '.solution-number').text(result.solution.num || '');
                 $('.rating-image', '.solution-rating').addClass('star' + result.solution.rating).attr('data-rating', result.solution.rating);
                 if (result.userAvatar) {
@@ -752,13 +785,13 @@
                 }
                 $('.author-name').attr('href', '/users/view/' + result.solution.user_id).text(result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '.');
                 if (result.userData && result.userData.city) {
-                    $('.author-from').text(result.userData.city);
+                    $('.author-from').text(result.userData.city); // @todo Try to unserialize userdata on Clientside
                 } else {
                         $('.author-from').text('');
                     }
 
                 var desc = result.solution.description;
-                var viewLength = 100;
+                var viewLength = 100; // Description string cut length parameter
                 if (desc.length > viewLength) {
                     var descBefore = desc.slice(0, viewLength - 1);
                     descBefore = descBefore.substr(0, Math.min(descBefore.length, descBefore.lastIndexOf(" ")));
@@ -777,7 +810,9 @@
                     $('span#date').after('<br />');
                 }
                 if (scroll) {}
+                //$('.scrolldown').click();
 
+                // Copyrighted Materials
                 var copyrightedHtml = '<div class="solution-copyrighted"><!--  --></div>';
                 if (result.solution.copyrightedMaterial == 1 && (currentUserId == result.pitch.user_id || currentUserId == result.solution.user_id || isCurrentAdmin)) {
                     copyrightedHtml = copyrightedInfo(result.copyrightedInfo);
@@ -802,7 +837,7 @@
                     } else {
                         media += result.solution.images.solution_solutionView.weburl;
                     }
-
+                    // Twitter like solution message
                     var tweetLike = 'Мне нравится этот дизайн! А вам? Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
                     if (Math.floor(Math.random() * 100 + 1) <= 50) {
                         tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
@@ -870,7 +905,9 @@
             }
         }
 
+        // Delete Solution
         $(document).on('click', '.delete-solution', function () {
+            // Delete without Moderation
             if (!isCurrentAdmin) {
                 return true;
             }
@@ -879,6 +916,7 @@
                 window.location = link.attr("href");
             }
 
+            // Show Delete Moderation Overlay
             $('#popup-delete-solution').modal({
                 containerId: 'final-step-clean',
                 opacity: 80,
@@ -893,6 +931,7 @@
                 }
             });
 
+            // Delete Solution Popup Form
             $(document).on('click', '#sendDeleteSolution', function () {
                 var form = $(this).parent().parent();
                 if (!$('input[name=reason]:checked', form).length || !$('input[name=penalty]:checked', form).length) {
@@ -1034,7 +1073,7 @@
                 return true;
             }
             if (window.history.pushState) {
-                window.history.pushState('object or string', 'Title', imagecontainer.attr('href'));
+                window.history.pushState('object or string', 'Title', imagecontainer.attr('href')); // @todo Check params
             } else {
                     window.location = imagecontainer.attr('href');
                     return false;
@@ -1139,7 +1178,7 @@
                 if ($(this).val() == $(this).data('placeholder') || $(this).val().length == 0) {
                     $(this).addClass('wrong-input');
                     required = true;
-                    return true;
+                    return true; // Continue next element
                 }
                 if ($(this).data('length') && $(this).data('length').length > 0) {
                     var arrayLength = $(this).data('length');
@@ -1151,6 +1190,7 @@
                 }
                 if ($(this).data('content') && $(this).data('content').length > 0) {
                     if ($(this).data('content') == 'numeric') {
+                        // Numbers only
                         if (/\D+/.test($(this).val())) {
                             $(this).addClass('wrong-input');
                             required = true;
@@ -1158,6 +1198,7 @@
                         }
                     }
                     if ($(this).data('content') == 'symbolic') {
+                        // Symbols only
                         if (/[^a-zа-я\s]/i.test($(this).val())) {
                             $(this).addClass('wrong-input');
                             required = true;
@@ -1165,6 +1206,7 @@
                         }
                     }
                     if ($(this).data('content') == 'mixed') {
+                        // Symbols and Numbers
                         if (!/[a-zа-я0-9]/i.test($(this).val())) {
                             $(this).addClass('wrong-input');
                             required = true;

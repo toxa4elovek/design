@@ -5,17 +5,17 @@ namespace app\models;
 class Wincomment extends AppModel
 {
 
-    public $belongsTo = array('Solution', 'User');
+    public $belongsTo = ['Solution', 'User'];
 
-    protected static $_behaviors = array(
+    protected static $_behaviors = [
         'UploadableWincomment'
-    );
+    ];
 
     public static $attaches = array('file' => array(
-        'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/files/'),
+        'moveFile' => ['preserveFileName' => false, 'path' => '/webroot/files/'],
     ));
 
-    public static function _init()
+    public static function __init()
     {
         parent::__init();
         self::applyFilter('find', function ($self, $params, $chain) {
@@ -24,7 +24,6 @@ class Wincomment extends AppModel
                 $addMentionLink = function ($record) {
                     if (isset($record->text)) {
                         $record->text = nl2br($record->text);
-                        $solutionId = $record->solution_id;
                         $record->text = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', strip_tags($record->text, '<br><a>'));
                     }
                     return $record;
@@ -50,7 +49,7 @@ class Wincomment extends AppModel
             return $result;
         });
         self::applyFilter('createComment', function ($self, $params, $chain) {
-            $change = array(4, 5);
+            $change = [4, 5];
             $admin = 108;
             if (in_array($params['user_id'], $change)) {
                 $params['user_id'] = $admin;
