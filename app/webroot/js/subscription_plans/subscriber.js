@@ -12,7 +12,14 @@
         "node": React.createElement(PaymentSeparator, { key: "4" })
     }, {
         "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: false })
-    }];
+    } /*,
+      {
+         "node": <PaymentSeparator key="6" />
+      },
+      {
+         "node": <PaymentAdmin key="7" payload={payload} />
+      }*/
+    ];
     ReactDOM.render(React.createElement(Receipt, { data: payload.receipt }), document.getElementById('receipt-container'));
     ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));
     ReactDOM.render(React.createElement(FundBalanceInput, { payload: payload }), document.getElementById('fund-balance-container'));
@@ -47,11 +54,14 @@
                     "node": React.createElement(PaymentSeparator, { key: "4" })
                 }, {
                     "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: false })
-                }, {
-                    "node": React.createElement(PaymentSeparator, { key: "6" })
-                }, {
-                    "node": React.createElement(PaymentAdmin, { key: "7", payload: payload })
-                }];
+                } /*,
+                  {
+                     "node": <PaymentSeparator key="6" />
+                  },
+                  {
+                     "node": <PaymentAdmin key="7" payload={payload} />
+                  }*/
+                ];
             }
             if (eventPayload.selectedPaymentType == 'payment-paymaster') {
                 settings = [{
@@ -64,11 +74,14 @@
                     "node": React.createElement(PaymentSeparator, { key: "4" })
                 }, {
                     "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: false })
-                }, {
-                    "node": React.createElement(PaymentSeparator, { key: "6" })
-                }, {
-                    "node": React.createElement(PaymentAdmin, { key: "7", payload: payload })
-                }];
+                } /*,
+                  {
+                     "node": <PaymentSeparator key="6" />
+                  },
+                  {
+                     "node": <PaymentAdmin key="7" payload={payload} />
+                  }*/
+                ];
             }
             if (eventPayload.selectedPaymentType == 'payment-wire') {
                 settings = [{
@@ -81,11 +94,14 @@
                     "node": React.createElement(PaymentSeparator, { key: "4" })
                 }, {
                     "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: true })
-                }, {
-                    "node": React.createElement(PaymentSeparator, { key: "6" })
-                }, {
-                    "node": React.createElement(PaymentAdmin, { key: "7", payload: payload })
-                }];
+                } /*,
+                  {
+                     "node": <PaymentSeparator key="6" />
+                  },
+                  {
+                     "node": <PaymentAdmin key="7" payload={payload} />
+                  }*/
+                ];
             }
             ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));
         }

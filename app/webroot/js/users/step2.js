@@ -18,6 +18,9 @@
             }
         });
 
+        /**
+         * Диспетчер событий
+         */
         CommentsDispatcher.register(function (eventPayload) {
             if (eventPayload.actionType === 'start-autosuggest') {
                 var changeSelected = null;
@@ -222,6 +225,7 @@
             $('#wincomment').fileupload('uploadByClickNoCheckInplace', $(this), placeWincomment);
         });
 
+        // Delete Comment
         $(document).on('click', '.delete-link-in-comment', function () {
             $(this).closest('section').fadeOut(400, function () {
                 $(this).remove();
@@ -232,6 +236,9 @@
     });
 })($);
 
+/*
+ * Filling progressbar with completed value
+ */
 function fillProgress(completed) {
     completed = completed > 95 ? 100 : completed;
     $('#progressbar').text(completed + '%');
@@ -265,9 +272,10 @@ function prepareWinCommentData(result) {
 
     commentData.commentText = actualText;
     commentData.commentOriginalText = result.comment.originalText;
-
+    //commentData.commentPlainText = result.comment.originalText.replace(/"/g, "\'");
     commentData.commentType = result.comment.user_id == result.comment.solution.user_id ? 'designer' : 'client';
     commentData.isExpert = isExpert(result.comment.user_id, expertsObj);
+    //commentData.isClosedPitch = (result.comment.pitch.status != 0) ? 1 : 0;
 
     if (commentData.commentType == 'designer') {
         commentData.messageInfo = 'message_info1';
@@ -304,12 +312,16 @@ function prepareWinCommentData(result) {
     }
     commentData.isCommentAuthor = currentUserId == result.comment.user_id ? true : false;
 
+    // Date Time
     var postDateObj = getProperDate(result.comment.created);
     commentData.postDate = ('0' + postDateObj.getDate()).slice(-2) + '.' + ('0' + (postDateObj.getMonth() + 1)).slice(-2) + '.' + ('' + postDateObj.getFullYear()).slice(-2);
     commentData.postTime = ('0' + postDateObj.getHours()).slice(-2) + ':' + ('0' + postDateObj.getMinutes()).slice(-2);
     return commentData;
 }
 
+/*
+ * Populate each comment layout
+ */
 function populateWincomment(data) {
     var toolbar = '';
     var manageToolbar = '<a href="/wincomments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ">Удалить</a>';
@@ -317,7 +329,9 @@ function populateWincomment(data) {
     if (data.needAnswer == 1) {
         answerTool = '';
     }
-
+    /*if (isCurrentAdmin != 1 && isClient != 1 && data.isClosedPitch) {
+     answerTool = ' display: none;';
+     }*/
     var userToolbar = '<a href="#" data-comment-id="' + data.commentId + '" data-comment-to="' + data.commentAuthor + '" class="replyto reply-link-in-comment" style="float:right;' + answerTool + '">Ответить</a>';
     var editToolbar = '<a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentOriginalText + '">Редактировать</a>';
     if (data.isCommentAuthor) {

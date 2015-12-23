@@ -17,6 +17,9 @@ $(document).ready(function () {
         url += '&author=' + authorId;
     }
 
+    /*
+     * Initialize endless scroll
+     */
     function scrollInit() {
         $(window).on('scroll', function () {
             if ($(document).height() - $(window).scrollTop() - $(window).height() < 200) {
@@ -45,6 +48,7 @@ $(document).ready(function () {
         Tip.resize();
     });
 
+    // Search
     $(document).on('submit', '#post-search', function () {
         if ($('#blog-search').val().length == 0) {
             return false;
@@ -77,6 +81,9 @@ $(document).ready(function () {
     ReactDOM.render(React.createElement(BlogPostList, { posts: posts }), document.getElementById('blog-posts'));
 });
 
+/*
+ * Class TopTip
+ */
 function TopTip() {
     var self = this;
     this.element = $('.onTop');
@@ -109,6 +116,7 @@ function TopTip() {
     };
     this.visibility = function () {
         if ($(window).scrollTop() / $(window).height() > 2) {
+            // number is a screens to scroll before Tip appear
             var middleBottom = self.middleInner.offset().top + self.middleInner.height() > $(window).scrollTop() + $(window).height();
             if (!middleBottom) {
                 this.element.hide();

@@ -6,7 +6,7 @@ pear install Mail_Mime
 pear install Net_SMTP
 
 Компиляция скриптов из /app/src
-babel --babelrc /Users/dima/www/godesigner/.babelrc app/src/ --watch --out-dir app/webroot/js/
+./node_modules/.bin/babel --babelrc /Users/dima/www/godesigner/.babelrc app/src/ --watch --out-dir app/webroot/js/
 
 ### Типы
 По возможности, использовать типы и аннотации
