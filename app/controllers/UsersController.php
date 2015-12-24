@@ -435,6 +435,29 @@ class UsersController extends \app\controllers\AppController
                 return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
             $files = array();
+            $commentCount = Wincomment::count(
+                [
+                    'fields' => ['id'],
+                    'conditions' =>
+                        ['step' => 2, 'solution_id' => $solution->id],
+                    'order' => ['created' => 'desc'],
+                    'with' => ['User']]
+            );
+            if (0 == $commentCount) {
+                $text = sprintf('Вся переписка до запроса исходников должна быть проведена в рамках этого кабинета. Мы не допускаем обмена контактами до момента одобрения исходников, т.о. в спорной ситуации мы сможем разрешить конфликт. Мы убедительно просим вас соблюдать правила платформы. Срок завершительного этапа %d дней. Предупреждайте, если правки или комментарии займут более 24 часов.', $solution->pitch->category->default_timelimit);
+                $date = new \DateTime();
+                $dateString = $date->format('Y-m-d H:i:s');
+                $data = array(
+                    'user_id' => 108,
+                    'text' => $text,
+                    'step' => 2,
+                    'solution_id' => $solution->id,
+                    'created' => $dateString,
+                    'touch' => '0000-00-00 00:00:00'
+                );
+                Wincomment::create($data)->save();
+            }
+
             $comments = Wincomment::all(array('conditions' => array('step' => 2, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
             foreach ($comments as $comment) {
                 if ($comment->user_id == $solution->user_id) {
