@@ -812,6 +812,7 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false,
                 success: function (result) {
+                    document.getElementById("news-file").value = "";
                     if (result.result == true) {
                         button.text('Сохранено!');
                         $('#news-add input[name="news-title"]').val('');
@@ -819,10 +820,12 @@ $(document).ready(function () {
                         $('#news-add textarea[name="news-description"]').val('');
                         $('#news-add #news-add-tag').val('');
                         Updater.autoupdate();
+                        fd.delete('file');
                         fd = new FormData();
                         $('#previewImage').empty();
                         $('#news-add').toggle('fast');
                         $('#news-add-separator').toggle('fast');
+                        reader = new FileReader();
                     } else if (result.result == false) {
                         button.text('Ошибка');
                     } else if (typeof(result.result.news) != 'undefined') {
@@ -831,6 +834,7 @@ $(document).ready(function () {
                         $('#news-add input[name="news-link"]').val('');
                         $('#news-add textarea[name="news-description"]').val('');
                         $('#news-add #news-add-tag').val('');
+                        fd.delete('file');
                         fd = new FormData();
                         $('#previewImage').empty();
                         html = Updater.addNews(result.result);
@@ -851,6 +855,7 @@ $(document).ready(function () {
                         $('time.timeago').timeago();
                         $('#news-add').toggle('fast');
                         $('#news-add-separator').toggle('fast');
+                        reader = new FileReader();
                     }
 
                 }
