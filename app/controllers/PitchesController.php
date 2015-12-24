@@ -230,9 +230,9 @@ class PitchesController extends AppController
                 if (($pitch->status == 2) && ($pitch->user_id == $this->userHelper->getId())) {
                     $client = User::first($pitch->user_id);
                     if (($bill = Bill::first($pitch->id)) || ($data = $client->getUnserializedCompanyData())) {
-                        if($bill) {
+                        if ($bill) {
                             $pitch->hasBill = ($bill->individual == 1) ? 'fiz' : 'yur';
-                        }elseif($data) {
+                        } elseif ($data) {
                             $pitch->hasBill = ($client->isEntrepreneur()) ? 'fiz': 'yur';
                         }
                     }
@@ -410,64 +410,6 @@ class PitchesController extends AppController
         header('HTTP/1.0 200 OK');
         die();
     }
-
-    /*public function favourites() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
-        $categories = Category::all();
-        $pitchesId = User::getFavouritePitches(Session::read('user.id'));
-        $data = array(
-            'pitches' => array(),
-            'info' => array(
-                'page' => 1,
-                'total' => 0
-            ),
-        );
-        if (!empty($pitchesId)) {
-            $pitchesId = array_keys($pitchesId);
-            $limit = 5;
-            $page = 1;
-            if (isset($this->request->query['page'])) {
-                $page = abs(intval($this->request->query['page']));
-            }
-            $conditions = array('Pitch.id' => $pitchesId);
-            //$conditions += array('status' => array('<' => 2));
-            $total = ceil(Pitch::count(array(
-                        'conditions' => $conditions,
-                    )) / $limit);
-            $pitches = Pitch::all(array(
-                        'with' => 'Category',
-                        'conditions' => $conditions,
-                        'order' => array('id' => 'desc'),
-                        'limit' => $limit,
-                        'page' => $page,
-            ));
-            $i = 1;
-            $pitchList = array();
-            if ($pitches) {
-                $tempPitchList = $pitches->data();
-                $pitchTitleHelper = new PitchTitleFormatter;
-                foreach ($tempPitchList as &$pitch) {
-                    $pitch['sort'] = $i;
-                    $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title'], 80);
-                    $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
-                    $pitchList[] = $pitch;
-                    $i++;
-                }
-            } else {
-                
-            }
-            $data = array(
-                'pitches' => $pitchList,
-                'info' => array(
-                    'page' => $page,
-                    'total' => $total
-                ),
-            );
-        }
-        $query = $this->request->query;
-        return compact('data', 'categories', 'query', 'selectedCategory');
-    }*/
 
     /**
      * Метод отображения страницы выбора категорий
@@ -964,7 +906,7 @@ class PitchesController extends AppController
 
             $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order, 'limit' => $limit, 'offset' => $offset));
 
-            if($solutions) {
+            if ($solutions) {
                 foreach ($solutions as $solution) {
                     $autosuggestUsers[] = array(
                         'id' => $solution->user->id,
@@ -1150,7 +1092,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
             }
             $rating = Pitchrating::getRating($currentUser, $pitch->id);
             $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User')));
-            if($solutions) {
+            if ($solutions) {
                 foreach ($solutions as $solution) {
                     $autosuggestUsers[] = array(
                         'id' => $solution->user->id,
@@ -1287,7 +1229,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
             ];
             $solutions = Solution::all(array('conditions' => array('pitch_id' => $this->request->id), 'with' => array('User'), 'order' => $order, 'limit' => $limit, 'offset' => $offset));
 
-            if($solutions) {
+            if ($solutions) {
                 foreach ($solutions as $solution) {
                     $autosuggestUsers[] = array(
                         'id' => $solution->user->id,
@@ -1465,7 +1407,14 @@ Disallow: /pitches/upload/'.$pitch['id'];
             $experts = Expert::getExpertUserIds();
 
             $formatter = new MoneyFormatter();
-            $description = mb_substr($pitch->description, 0, 150, 'UTF-8').((mb_strlen($pitch->description) > 150) ? '... ' : '. ').'Награда: '.$formatter->formatMoney($pitch->price, array('suffix' => ' рублей')).(($pitch->guaranteed == 1) ? ', гарантированы' : '');
+            if (($pitch->status == 1) && ($pitch->awarded != 0) || ($pitch->status == 2)) {
+                $pitchHelper = new \app\extensions\helper\Pitch();
+                $description = $pitchHelper->getOpenGraphDescription($pitch);
+                //var_dump($description);
+                //die();
+            } else {
+                $description = mb_substr($pitch->description, 0, 150, 'UTF-8').((mb_strlen($pitch->description) > 150) ? '... ' : '. ').'Награда: '.$formatter->formatMoney($pitch->price, array('suffix' => ' рублей')).(($pitch->guaranteed == 1) ? ', гарантированы' : '');
+            }
             $date = Solution::getCreatedDate($solution->id);
             $isSolutionReady = Solution::isReadyForLogosale($solution, $pitch);
 
@@ -1672,7 +1621,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 return $this->redirect('/users/mypitches');
             }
             $user = User::first($pitch->user_id);
-            if((!$bill = Bill::first($this->request->id)) && (!$user->getUnserializedCompanyData())) {
+            if ((!$bill = Bill::first($this->request->id)) && (!$user->getUnserializedCompanyData())) {
                 return $this->redirect('/users/mypitches');
             }
             $destination = 'Download';
@@ -1701,7 +1650,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 return $this->redirect('/users/mypitches');
             }
             $user = User::first($pitch->user_id);
-            if((!$bill = Bill::first($this->request->id)) && (!$user->getUnserializedCompanyData())) {
+            if ((!$bill = Bill::first($this->request->id)) && (!$user->getUnserializedCompanyData())) {
                 return $this->redirect('/users/mypitches');
             }
             $destination = 'Download';

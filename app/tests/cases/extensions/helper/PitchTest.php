@@ -8,7 +8,8 @@ use app\extensions\storage\Rcache;
 use app\models\Pitch as PitchModel;
 use app\models\SubscriptionPlan;
 
-class PitchTest extends AppUnit {
+class PitchTest extends AppUnit
+{
 
     #protected $_user_model = 'app\tests\mocks\template\helper\MockUserModel';
 
@@ -19,23 +20,29 @@ class PitchTest extends AppUnit {
      */
     public $user = null;
 
+    public $models = ['Pitch', 'Category', 'Solution'];
+
     /**
      * Initialize test by creating a new object instance with a default context.
      */
-    public function setUp() {
+    public function setUp()
+    {
         Rcache::init();
-        SubscriptionPlan::config(array('connection' => 'test'));
+        SubscriptionPlan::config(['connection' => 'test']);
         $this->pitch = new Pitch();
-        $this->rollUp(array('Pitch', 'Category'));
+        $this->rollUp($this->models);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Rcache::flushdb();
-        $this->rollDown(array('Pitch', 'Category'));
+        $this->rollDown($this->models);
     }
 
-    public function testIsReadyForLogosaleAsObject() {
-        $pitch = PitchModel::first(1);$pitch = PitchModel::first(1);
+    public function testIsReadyForLogosaleAsObject()
+    {
+        $pitch = PitchModel::first(1);
+        $pitch = PitchModel::first(1);
         $pitch->status = 0;
         $result = $this->pitch->isReadyForLogosale($pitch);
         $this->assertFalse($result);
@@ -75,7 +82,8 @@ class PitchTest extends AppUnit {
         $this->assertTrue($result);
     }
 
-    public function testIsReadyForLogosaleAsArray() {
+    public function testIsReadyForLogosaleAsArray()
+    {
         $pitch = PitchModel::first(1);
         $pitch = $pitch->data();
         $pitch['status'] = 0;
@@ -121,20 +129,22 @@ class PitchTest extends AppUnit {
         $this->assertFalse($result);
     }
 
-    public function testGetStatisticalAverages() {
+    public function testGetStatisticalAverages()
+    {
         $this->assertEqual(0, $this->pitch->getStatisticalAverages(1, 'good'));
         $this->assertEqual(0, $this->pitch->getStatisticalAverages(1, 'normal'));
-        $this->assertEqual(7, $this->pitch->getStatisticalAverages(1, 'minimal'));
+        $this->assertEqual(6, $this->pitch->getStatisticalAverages(1, 'minimal'));
         $this->assertEqual(0, $this->pitch->getStatisticalAverages(3, 'good'));
         $this->assertEqual(0, $this->pitch->getStatisticalAverages(3, 'normal'));
         $this->assertEqual(3, $this->pitch->getStatisticalAverages(3, 'minimal'));
         // cache
         $this->assertEqual(0, $this->pitch->getStatisticalAverages(1, 'good'));
         $this->assertEqual(0, $this->pitch->getStatisticalAverages(1, 'normal'));
-        $this->assertEqual(7, $this->pitch->getStatisticalAverages(1, 'minimal'));
+        $this->assertEqual(6, $this->pitch->getStatisticalAverages(1, 'minimal'));
     }
 
-    public function testGetChooseWinnerTime() {
+    public function testGetChooseWinnerTime()
+    {
         $project = PitchModel::first(7);
         $result = $this->pitch->getChooseWinnerTime($project);
         $this->assertNull($result);
@@ -158,7 +168,8 @@ class PitchTest extends AppUnit {
         $this->assertIdentical(strtotime($project->chooseWinnerFinishDate), $result);
     }
 
-    public function testGetPlanForPayment() {
+    public function testGetPlanForPayment()
+    {
         $id = SubscriptionPlan::getNextSubscriptionPlanId(1);
         SubscriptionPlan::setPlanForPayment($id, 2);
         $result = SubscriptionPlan::getPlanForPayment($id);
@@ -168,4 +179,10 @@ class PitchTest extends AppUnit {
         $this->assertEqual(2, $result);
     }
 
+    public function testGetOpenGraphDescription()
+    {
+        $project = PitchModel::first(7);
+        $result = $this->pitch->getOpenGraphDescription($project);
+        $this->assertEqual("В течение 9 дней в проекте приняли участие 2 дизайнера, предложив 2 решения.", $result);
+    }
 }

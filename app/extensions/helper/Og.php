@@ -1,7 +1,8 @@
 <?php
 namespace app\extensions\helper;
 
-class Og extends \lithium\template\Helper {
+class Og extends \lithium\template\Helper
+{
 
     /**
      * Метод возвращяет open graph метатег og:image
@@ -9,12 +10,13 @@ class Og extends \lithium\template\Helper {
      * @param $imageUrl
      * @return mixed
      */
-    public function getOgImage($imageUrl) {
+    public function getOgImage($imageUrl)
+    {
         $defaultImageUrl = 'http://www.godesigner.ru/img/fb_icon.jpg';
-        if(empty($imageUrl)) {
+        if (empty($imageUrl)) {
             $imageUrl = $defaultImageUrl;
-        }else {
-            if(!preg_match('/http/', $imageUrl)) {
+        } else {
+            if (!preg_match('/http/', $imageUrl)) {
                 $imageUrl = 'http://www.godesigner.ru' . $imageUrl;
             }
         }
@@ -28,9 +30,10 @@ class Og extends \lithium\template\Helper {
      * @param $title
      * @return mixed
      */
-    public function getOgTitle($title) {
+    public function getOgTitle($title)
+    {
         $defaultTitle = 'Логотип, сайт и дизайн: выбирай из идей, а не портфолио';
-        if(empty($title)) {
+        if (empty($title)) {
             $title = $defaultTitle;
         }
         $template = '<meta property="og:title" content="{title}"/>';
@@ -43,12 +46,16 @@ class Og extends \lithium\template\Helper {
      * @param $description
      * @return mixed
      */
-    public function getOgDescription($description) {
+    public function getOgDescription($description)
+    {
         $defaultTitle = 'Логотип, сайт и дизайн от всего креативного интернет сообщества';
-        if(empty($description)) {
+        if (empty($description)) {
             $description = $defaultTitle;
-        }else {
-            $description = str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags(mb_substr($description, 0, 100, 'UTF-8') . '...'))));
+        } else {
+            if (mb_strlen($description, 'UTF-8') > 100) {
+                $description = mb_substr($description, 0, 100, 'UTF-8') . '...';
+            }
+            $description = str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags($description))));
         }
         $template = '<meta property="og:description" content="{description}"/>';
         return str_replace('{description}', $description, $template);
@@ -59,7 +66,8 @@ class Og extends \lithium\template\Helper {
      *
      * @return string
      */
-    public function getOgUrl() {
+    public function getOgUrl()
+    {
         return '<meta property="og:url" content="' . 'http://www.godesigner.ru' . $_SERVER['REQUEST_URI'] . '"/>';
     }
 }

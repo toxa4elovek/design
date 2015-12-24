@@ -4,7 +4,9 @@ namespace app\extensions\helper;
 use \app\models\Pitch as PitchModel;
 use \app\models\Expert;
 use \app\models\Comment;
+use app\models\Solution as SolutionModel;
 use app\models\SubscriptionPlan;
+use lithium\data\entity\Record;
 
 /**
  * Class Pitch
@@ -155,5 +157,29 @@ class Pitch extends \lithium\template\Helper
         endif;
         endif;
         return $waitingForExpert;
+    }
+
+    public function getOpenGraphDescription(Record $projectRecord)
+    {
+        $startDate = new \DateTime($projectRecord->started);
+        $finishDate = new \DateTime($projectRecord->finishDate);
+        $diff = $startDate->diff($finishDate);
+        $designerCount = SolutionModel::count([
+            'conditions' => ['pitch_id' => $projectRecord->id],
+            'fields' => ['distinct(user_id)']
+        ]);
+        $inflector = new NumInflector();
+        $daysWord = $inflector->formatString($diff->days, [
+            'string' => ['first' => 'дня', 'second' => 'дней', 'third' => 'дней']
+        ]);
+        $designerWord = $inflector->formatString($designerCount, [
+            'string' => ['first' => 'дизайнер', 'second' => 'дизайнера', 'third' => 'дизайнеров']
+        ]);
+        $solutionsWord = $inflector->formatString($projectRecord->ideas_count, [
+            'string' => ['first' => 'решение', 'second' => 'решения', 'third' => 'решений']
+        ]);
+        $description = sprintf("В течение %d %s в проекте приняли участие %d %s, предложив %d %s.",
+            $diff->days, $daysWord, $designerCount, $designerWord, $projectRecord->ideas_count, $solutionsWord);
+        return $description;
     }
 }
