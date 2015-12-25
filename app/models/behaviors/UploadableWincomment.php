@@ -14,7 +14,8 @@ use \app\models\behaviors\handlers\SetPermissionHandler;
  *
  *
  */
-class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
+class UploadableWincomment extends \app\models\behaviors\ModelBehavior
+{
 
 
     /**
@@ -44,7 +45,8 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
      */
     public static $validateUploadedFile = true;
 
-    protected function _init(){
+    protected function _init()
+    {
         parent::_init();
         static::$name = __CLASS__;
     }
@@ -57,23 +59,24 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
      * 				выносим их из пришедших данных во временный контейнер, передаем данные дальше.
      *
      */
-    public function beforeSave($params){
+    public function beforeSave($params)
+    {
         $model = $this->_model;
-        if(isset($model::$attaches)){
+        if (isset($model::$attaches)) {
             self::__fillStorage();
             $recordObject = $params['entity'];
             $data = $params['data'];
-            if(is_null($data)) {
+            if (is_null($data)) {
                 $data = $recordObject->data();
             }
-            foreach($model::$attaches as $key => $attach){
-                if(is_string($attach)){
+            foreach ($model::$attaches as $key => $attach) {
+                if (is_string($attach)) {
                     $key = $attach;
                     $attach = static::$defaults ;
-                }else{
+                } else {
                     $attach = $attach + static::$defaults;
                 }
-                if(isset($data[$key])){
+                if (isset($data[$key])) {
                     $recordObject->set(array($key => null));
                     static::$_storage[$model]['attaches'][$key]['data'] = $data[$key];
                     static::$_storage[$model]['record'] = $recordObject;
@@ -83,31 +86,34 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
         return $params;
     }
 
-    public function afterFind($data) {
-        if(is_null($data)) return $data;
-        $getWebUrl = function($path) {
-            if(preg_match('#webroot(.*)#', $path, $matches)) {
+    public function afterFind($data)
+    {
+        if (is_null($data)) {
+            return $data;
+        }
+        $getWebUrl = function ($path) {
+            if (preg_match('#webroot(.*)#', $path, $matches)) {
                 return $matches[1];
-            }else {
+            } else {
                 return false;
             }
         };
-        $getBasename = function($path) {
+        $getBasename = function ($path) {
             $basename = function ($param, $suffix=null) {
-                if ( $suffix ) {
-                    $tmpstr = ltrim(substr($param, strrpos($param, DIRECTORY_SEPARATOR) ), DIRECTORY_SEPARATOR);
-                    if ( (strpos($param, $suffix)+strlen($suffix) )  ==  strlen($param) ) {
-                        return str_ireplace( $suffix, '', $tmpstr);
+                if ($suffix) {
+                    $tmpstr = ltrim(substr($param, strrpos($param, DIRECTORY_SEPARATOR)), DIRECTORY_SEPARATOR);
+                    if ((strpos($param, $suffix)+strlen($suffix))  ==  strlen($param)) {
+                        return str_ireplace($suffix, '', $tmpstr);
                     } else {
-                        return ltrim(substr($param, strrpos($param, DIRECTORY_SEPARATOR) ), DIRECTORY_SEPARATOR);
+                        return ltrim(substr($param, strrpos($param, DIRECTORY_SEPARATOR)), DIRECTORY_SEPARATOR);
                     }
                 } else {
-                    return ltrim(substr($param, strrpos($param, DIRECTORY_SEPARATOR) ), DIRECTORY_SEPARATOR);
+                    return ltrim(substr($param, strrpos($param, DIRECTORY_SEPARATOR)), DIRECTORY_SEPARATOR);
                 }
             };
             return $basename($path);
         };
-        $attachRecord = function($fileModel, $record) use ($getWebUrl, $getBasename) {
+        $attachRecord = function ($fileModel, $record) use ($getWebUrl, $getBasename) {
             $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
             $record->images = array();
             $first = true;
@@ -118,10 +124,10 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
                 } else {
                     $value->basename = $getBasename($value->originalbasename);
                 }
-                if(!isset($record->images[$value->filekey])) {
+                if (!isset($record->images[$value->filekey])) {
                     $record->images[$value->filekey] = $value->data();
-                }else {
-                    if($first){
+                } else {
+                    if ($first) {
                         $reserve = $record->images[$value->filekey];
                         $record->images[$value->filekey] = array();
                         $record->images[$value->filekey][] = $reserve;
@@ -132,11 +138,13 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
             }
         };
         $fileModel = static::$fileModel;
-        if(get_class($data) == 'lithium\data\entity\Record') {
+        if ((is_object($data)) && (get_class($data) === 'lithium\data\entity\Record')) {
             $attachRecord($fileModel, $data);
-        }else {
-            foreach($data as $record) {
-                $attachRecord($fileModel, $record);
+        } else {
+            if ((is_object($data)) && (get_class($data) === 'lithium\data\collection\RecordSet')) {
+                foreach ($data as $record) {
+                    $attachRecord($fileModel, $record);
+                }
             }
         }
         return $data;
@@ -149,25 +157,26 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
      *
      * @param boolean $result record saved
      */
-    public function afterSave($result) {
+    public function afterSave($result)
+    {
         $model = $this->_model;
-        if(!isset(static::$_storage[$model]['record'])) {
+        if (!isset(static::$_storage[$model]['record'])) {
             return $result;
         }
         $record = static::$_storage[$model]['record'];
-        foreach(static::$_storage[$model]['attaches'] as $key => $uploadedFile) {
+        foreach (static::$_storage[$model]['attaches'] as $key => $uploadedFile) {
             $attachRules = $uploadedFile['attachInfo'];
 
-            if((!isset($model::$attaches[$key])) || (!is_array($model::$attaches[$key]))){
+            if ((!isset($model::$attaches[$key])) || (!is_array($model::$attaches[$key]))) {
                 $userHandlerOptions = array();
-            }else{
+            } else {
                 $userHandlerOptions = $model::$attaches[$key];
             }
             $handlersSet =  $userHandlerOptions + static::$defaults;
             static::$_methodFilters[__CLASS__] = array();
 
-            foreach($handlersSet as $handlerName => $options){
-                if((is_int($handlerName)) && (is_string($options))){
+            foreach ($handlersSet as $handlerName => $options) {
+                if ((is_int($handlerName)) && (is_string($options))) {
                     $handlerName = $options;
                 }
 
@@ -183,45 +192,42 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
             }
 
             $params = compact('model', 'key', 'attachRules', 'record', 'uploadedFile');
-            static::_filter('afterSave', $params, function($self, $params) {
-                if(isset($params['uploadedFile']['data'][0])) {
-                    foreach($params['uploadedFile']['data'] as $file) {
-                        if((isset($file)) && (isset($file['newname']))){
+            static::_filter('afterSave', $params, function ($self, $params) {
+                if (isset($params['uploadedFile']['data'][0])) {
+                    foreach ($params['uploadedFile']['data'] as $file) {
+                        if ((isset($file)) && (isset($file['newname']))) {
                             $conditions = array('model' => $params['model'], 'model_id' => $params['record']->id, 'filekey' => $params['key'], 'filename' => $file['newname']);
                             $fileModel = $self::$fileModel;
                             $data = array(
                                 'filename' => $file['newname'],
                                 'originalbasename' => $file['name'],
                             ) + $conditions;
-                            if($existingRow = $fileModel::first(array('conditions' => $conditions))) {
+                            if ($existingRow = $fileModel::first(array('conditions' => $conditions))) {
                                 $existingRow->set($data);
                                 $existingRow->save();
-                            }else {
+                            } else {
                                 $fileModel::create($data)->save();
                             }
                         }
                     }
-
-
-                }else {
-                    if((isset($params['uploadedFile']['data'])) && (isset($params['uploadedFile']['data']['newname']))){
+                } else {
+                    if ((isset($params['uploadedFile']['data'])) && (isset($params['uploadedFile']['data']['newname']))) {
                         $conditions = array('model' => $params['model'], 'model_id' => $params['record']->id, 'filekey' => $params['key'], 'filename' => $params['uploadedFile']['data']['newname']);
                         $fileModel = $self::$fileModel;
                         $data = array(
                             'filename' => $params['uploadedFile']['data']['newname'],
                             'originalbasename' => $params['uploadedFile']['data']['name'],
                         ) + $conditions;
-                        if($existingRow = $fileModel::first(array('conditions' => $conditions))) {
+                        if ($existingRow = $fileModel::first(array('conditions' => $conditions))) {
                             $existingRow->set($data);
                             $existingRow->save();
-                        }else {
+                        } else {
                             $fileModel::create($data)->save();
                         }
                     }
                 }
                 return true;
             });
-
         }
         return $result;
     }
@@ -233,39 +239,42 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
      * @param array|string $filedata
      * @return boolean
      */
-    public static function isUploadedFile($filedata){
+    public static function isUploadedFile($filedata)
+    {
         $result = false;
-        if((is_array($filedata)) && (array_key_exists('tmp_name', $filedata))){
+        if ((is_array($filedata)) && (array_key_exists('tmp_name', $filedata))) {
             $result = is_uploaded_file($filedata['tmp_name']);
         }
-        if(is_string($filedata)){
+        if (is_string($filedata)) {
             $result = is_uploaded_file($filedata);
         }
         return $result;
     }
 
-    public function beforeDelete($params) {
+    public function beforeDelete($params)
+    {
         $model = $this->_model;
-        foreach($model::$attaches as $key => &$attachInfo){
+        foreach ($model::$attaches as $key => &$attachInfo) {
             $attachInfo['deleteId'] = $params['entity']->id;
         }
         return $params;
     }
 
-    public function afterDelete($result){
-        if($result){
+    public function afterDelete($result)
+    {
+        if ($result) {
             $model = $this->_model;
             $configuration = static::$_storage[$model];
-            foreach($model::$attaches as $key => &$attachInfo){
-                if(isset($attachInfo['deleteId'])){
+            foreach ($model::$attaches as $key => &$attachInfo) {
+                if (isset($attachInfo['deleteId'])) {
                     $fileModel = static::$fileModel;
                     $filerecord = $fileModel::find('first', array('conditions' => array(
                         'model' => $model,
                         'model_id' => $attachInfo['deleteId'],
                         'filekey' => $key,
                     )));
-                    if(!is_null($filerecord)){
-                        if(file_exists($filerecord->filename)){
+                    if (!is_null($filerecord)) {
+                        if (file_exists($filerecord->filename)) {
                             unlink($filerecord->filename);
                         }
                         $filerecord->delete();
@@ -276,11 +285,12 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
         return $result;
     }
 
-    protected function __fillStorage(){
+    protected function __fillStorage()
+    {
         $model = $this->_model;
         static::$_storage[$model] = array();
-        foreach($model::$attaches as $key => $attach){
-            if((is_numeric($key)) && (is_string($attach))){
+        foreach ($model::$attaches as $key => $attach) {
+            if ((is_numeric($key)) && (is_string($attach))) {
                 $key = $attach;
                 $attach = array();
             }
@@ -291,5 +301,4 @@ class UploadableWincomment extends \app\models\behaviors\ModelBehavior{
             );
         }
     }
-
 }
