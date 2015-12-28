@@ -1,0 +1,48 @@
+/*
+.spec_table{background:#2f313a;color:#fff;font: 15px Arial; font-weight:bold;text-align:center;width:100%;margin:0 0 12px}
+.spec_table tr {
+    all: inherit;
+    background:#2f313a;
+    color:#fff;
+    font: 15px Arial;
+    font-weight:bold;
+    text-align:center;
+    width:100%;
+}
+.spec_table td{border-left:1px solid #4c4d57;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px;vertical-align:top; height:70px;}
+.spec_table tr td:first-child{border:none;text-align:left;padding-left:15px;text-transform:uppercase}
+.spec_table th{padding-left:5px;padding-right:5px;border-left:1px solid #4c4d57;font-size:15px;color:#6a6c7b;background:#2f313a;font-weight:normal;padding-top:8px;padding-bottom:10px;text-transform:uppercase}
+.spec_table tr th { display: table-cell; }
+.spec_table a:hover {text-decoration: underline;}
+
+.title_th {
+    border:none;
+    text-align:left;
+    padding-left:15px;
+}
+.price_th {
+    width:100px;
+}
+.idea_th{
+    width:68px;
+}
+.term_th{
+    width:115px;
+}
+.spec_table span{
+    color:#999999;
+    font:11px Arial;
+}
+.odd{background:#454650;height: 70px;}
+.event{height: 70px;}
+
+.spec_table tr:hover{background:#54555d}
+
+td.pitches-name{
+    width:357px;
+    border-left:none;
+}
+tr.even{
+    background:#2f313a;
+}
+*/

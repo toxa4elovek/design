@@ -2,8 +2,11 @@ import React from 'react';
 import {render} from 'react-dom';
 import ClientsLogosShowcase from './home/ClientsLogosShowcase.jsx';
 import ClientLogo from './home/ClientLogo.jsx';
+//import MainPageProjectTable from './components/MainPageProjectTable/MainPageProjectTable.jsx';
 
 render(<ClientsLogosShowcase data={logos} />, document.getElementById('clients-logos'));
+
+//render(<MainPageProjectTable />, $('.wap_table')[0]);
 
 const expertsZone = $('#experts-zone');
 
@@ -18,7 +21,6 @@ expertsZone.on('mouseout', 'a', function() {
 });
 
 $(function(){
-
     $('.take, .fill').click(function(){
         var link = $(this).children('a').attr('href');
         if(link == '/pitches/create') {

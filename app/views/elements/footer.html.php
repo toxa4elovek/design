@@ -15,47 +15,47 @@
                 <?php if (preg_match('@pages/about@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('О проекте', 'Pages::about', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('О проекте', 'http://www.godesigner.ru/pages/about') ?> /
+                    <?= $this->html->link('О проекте', '/pages/about') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/howitworks@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Как это работает', 'Pages::howitworks', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Как это работает', 'http://www.godesigner.ru/pages/howitworks') ?> /
+                    <?= $this->html->link('Как это работает', '/pages/howitworks') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/to_designers@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Дизайнерам', 'Pages::to_designers', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Дизайнерам', 'http://www.godesigner.ru/pages/to_designers') ?> /
+                    <?= $this->html->link('Дизайнерам', '/pages/to_designers') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/referal$@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Пригласи друга', 'Pages::referal', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Пригласи друга', 'http://www.godesigner.ru/pages/referal') ?> /
+                    <?= $this->html->link('Пригласи друга', '/pages/referal') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@questions@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Тест', 'Questions::index', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Тест', 'http://www.godesigner.ru/questions') ?> /
+                    <?= $this->html->link('Тест', '/questions') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@posts$@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Блог', 'Posts::index', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Блог', 'http://www.godesigner.ru/posts') ?> /
+                    <?= $this->html->link('Блог', '/posts') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@news@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Лента', 'http://www.godesigner.ru/news', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('Лента', '/news', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Лента', 'http://www.godesigner.ru/news') ?> /
+                    <?= $this->html->link('Лента', '/news') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@answers@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Помощь', 'Answers::index', array('style' => 'color: #4a4c55')) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Помощь', 'http://www.godesigner.ru/answers') ?> /
+                    <?= $this->html->link('Помощь', '/answers') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/contacts@', $_SERVER["REQUEST_URI"])): ?>
                     <a href="/pages/contacts" style="color:#4a4c55">Контакты</a>
                 <?php else: ?>
-                    <a href="http://www.godesigner.ru/pages/contacts">Контакты</a>
+                    <a href="/pages/contacts">Контакты</a>
                 <?php endif ?>
                 <br>
                 <?= $this->html->link('Создать проект', '/pitches/create', array('class' => 'bottom-link-footer', 'style' => 'margin-left: 0;')) ?> /
@@ -66,8 +66,8 @@
         </nav><!-- .nav -->
         <ul class="pay-systems">
             <li style="width: 88px; padding-top: 0; margin-right: 12px;"></li>
-            <li><img src="http://www.godesigner.ru/img/mastercard.png" alt="MasteCard"/></li>
-            <li><img src="http://www.godesigner.ru/img/visa.png" alt="Visa" /></li>
+            <li><img src="/img/mastercard.png" alt="MasteCard"/></li>
+            <li><img src="/img/visa.png" alt="Visa" /></li>
         </ul><!-- .social -->
         <p class="info"><small>Опубликуй бриф на сайте и получи дизайн за лучшую цену. Если вы хотите иметь действительно большой выбор &mdash; вам к нам!<br/> &copy; 2012–<?= date('Y') ?> Go Designer</small></p><!-- .info -->
 

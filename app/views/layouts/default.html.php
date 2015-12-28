@@ -16,6 +16,7 @@
     <?= $this->html->style('/css/common/fonts', array('inline' => false, 'weight' => 12)); ?>
     <?= $this->html->style('/panel', array('inline' => false, 'weight' => 13)); ?>
     <?= $this->html->style('/contact2', array('inline' => false, 'weight' => 14)); ?>
+    <?= $this->html->style('/dist/build', array('inline' => false, 'weight' => 20)); ?>
     <?php echo $this->optimize->styles();?>
     <!--[if lte IE 9]><?= $this->html->style(array('/ie.css')); ?><![endif]-->
     <!--[if lte IE 8]><?= $this->html->style(array('/ie8.css')); ?><![endif]-->
@@ -136,7 +137,7 @@
 <?=$this->view()->render(array('element' => 'footer'))?>
 <?php
 $env = lithium\core\Environment::get();
-echo $this->html->script('http://vk.com/js/api/openapi.js');
+echo $this->html->script('https://vk.com/js/api/openapi.js');
 if($env == 'development') {
     echo $this->html->script('/js/react/0.14.0-dev/react-0.14.0.js', array('inline' => false, 'weight' => 8));
     echo $this->html->script('/js/react/0.14.0-dev/react-dom-0.14.0.js', array('inline' => false, 'weight' => 9));

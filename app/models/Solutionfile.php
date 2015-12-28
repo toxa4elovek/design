@@ -185,8 +185,9 @@ class Solutionfile extends \app\models\AppModel {
 
                 foreach ($options as $option => $imageParams) {
                     $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
-                    $imageProcessor = new Upload();
-                    $imageProcessor->uploadandinit($file->filename);
+                    $imageProcessor = new \upload($file->filename);
+                    $imageProcessor->upload($file->filename);
+                    $imageProcessor->init();
                     $imageProcessor->uploaded = true;
                     $imageProcessor->no_upload_check = true;
                     $imageProcessor->file_src_pathname = $file->filename;

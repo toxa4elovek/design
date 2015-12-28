@@ -51,7 +51,7 @@ class PaymentsController extends AppController {
             }
         }
         Logger::write('info', serialize($this->request->data), array('name' => 'payture'));
-        header("HTTP/1.0 200 OK");
+        //header("HTTP/1.0 200 OK");
         die();
     }
 

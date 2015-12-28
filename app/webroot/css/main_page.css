@@ -42,33 +42,20 @@
 .to_use a:hover {
     color:#ff585d;
 }
- a.more{font:11px arial;text-decoration:none;color:#999999;text-shadow:none;padding:2px 24px 4px 1px;background: url(/img/a.png) no-repeat right top;text-transform:uppercase}
- a.more:hover{color:#666666;background: url(/img/a.png) no-repeat right -40px;}
- .hover.more {
-     color:#666666;background: url(/img/a.png) no-repeat right -40px;
- }
+a.more{font:11px arial;text-decoration:none;color:#999999;text-shadow:none;padding:2px 24px 4px 1px;background: url(/img/a.png) no-repeat right top;text-transform:uppercase}
+a.more:hover{color:#666666;background: url(/img/a.png) no-repeat right -40px;}
+.hover.more {
+    color:#666666;background: url(/img/a.png) no-repeat right -40px;
+}
 
 
 
 
 
- .use_table{overflow:hidden;zoom:1;padding:0 0 12px;background: url(/img/sep.png) no-repeat 62px bottom;margin:0 0 24px}
+.use_table{overflow:hidden;zoom:1;padding:0 0 12px;background: url(/img/sep.png) no-repeat 62px bottom;margin:0 0 24px}
 .wap_table{float:right;width:555px;margin:0 52px 0 0;}
 .wap_table a.more{float:right}
-.spec_table{background:#2f313a;color:#fff;font: 15px Arial; font-weight:bold;text-align:center;width:100%;margin:0 0 12px}
 
-.spec_table td{border-left:1px solid #4c4d57;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px;vertical-align:top; height:70px;}
-.spec_table tr td:first-child{border:none;text-align:left;padding-left:15px;text-transform:uppercase}
-.spec_table th{padding-left:5px;padding-right:5px;border-left:1px solid #4c4d57;font-size:15px;color:#6a6c7b;background:#2f313a;font-weight:normal;padding-top:8px;padding-bottom:10px;text-transform:uppercase}
-.spec_table tr th:first-child{border:none;text-align:left;padding-left:15px}
-.spec_table a:hover {text-decoration: underline;}
-.price_th{width:100px;}
-.idea_th{width:68px;}
-.term_th{width:115px;}
-.spec_table span{color:#999999;font:11px arial}
-.odd{background:#454650;height: 70px;}
-.event{height: 70px;}
-.spec_table tr:hover{background:#54555d}
 
 .experts-main{padding:0 0 12px; padding-bottom: 33px; overflow:hidden;zoom:1;}
 .experts-main ul{float:left;width:600px;padding:0;margin:0 0 0 60px}

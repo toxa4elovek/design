@@ -2,7 +2,7 @@
 use lithium\data\Connections;
 use app\extensions\helper\User;
 use app\extensions\storage\Rcache;
-
+/*
 if (PHP_SAPI === 'cli') {
     return;
 }
@@ -61,3 +61,4 @@ if ($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 't
         return $result;
     });
 }
+*/

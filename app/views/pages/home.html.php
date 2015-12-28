@@ -125,7 +125,6 @@
                   <tr class="<?=$class?>">
                     <td class="pitches-name">
                     <?=$this->html->link($this->PitchTitleFormatter->renderTitle($pitch->title, 80), array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'expand-link'))?><br>
-                    <!--span><?=$pitch->industry?></span-->
                     </td>
                     <td><?=$this->moneyFormatter->formatMoney($pitch->price)?></td>
                     <td><?=$pitch->ideas_count?></td>
@@ -337,6 +336,6 @@
 <?=$this->html->script(array(
     'slides.min.jquery',
     'jquery.simplemodal-1.4.2.js',
-    'pages/main.js'
+    '/dist/main.js'
 ), array('inline' => false))?>
 <?=$this->html->style(array('/css/main_page.css', '/css/pages/home.css'), array('inline' => false))?>

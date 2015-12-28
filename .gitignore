@@ -58,3 +58,4 @@ app/webroot/js/users/step2.js
 app/webroot/js/pitches/gallery.js
 app/webroot/js/users/mypitches_loader.js
 app/webroot/js/pages/main.js
+app/webroot/dist/*
