@@ -63,7 +63,10 @@ class PaymentsController extends AppController {
      * @throws Exception
      */
     public function startpayment() {
-        if($pitch = Pitch::first($this->request->id)) {
+        if((isset($this->request->id)) && ($this->request->id === '0')) {
+            return $this->redirect('/users/login');
+        }
+        if($pitch = Pitch::first( (int) $this->request->id)) {
             $totalInCents = (int) $pitch->total * 100;
             $formatter = new MoneyFormatter();
             $pitch = Pitch::generateNewPaytureId($this->request->id);
