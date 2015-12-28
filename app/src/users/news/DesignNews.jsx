@@ -5,7 +5,7 @@ class DesignNews extends React.Component {
             items.push(value);
         });
         return (<div>{ items.map(function(newsItem){
-            newsItem.trackLink = 'http://www.godesigner.ru/users/click?link=' + newsItem.link + '&id=' + newsItem.id;
+            newsItem.trackLink = 'https://www.godesigner.ru/users/click?link=' + newsItem.link + '&id=' + newsItem.id;
             return <DesignNewsRow key={newsItem.id} newsInfoForRow={newsItem}/>
         }) }</div>)
     }

@@ -1032,7 +1032,7 @@
 
             if (result.pitch.category_id != 7) {
 
-                var media = 'http://www.godesigner.ru';
+                var media = 'https://www.godesigner.ru';
                 if ($.isArray(result.solution.images.solution_solutionView)) {
                     media += result.solution.images.solution_solutionView[0].weburl;
                 } else {
@@ -1060,7 +1060,7 @@
                 }
 
                 var shareTitle = tweetLike;
-                var url = 'http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id;
+                var url = 'https://www.godesigner.ru/pitches/viewsolution/' + result.solution.id;
                 var sharebar = '<div style="display: block; height: 75px"> \
                 <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
                 <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \

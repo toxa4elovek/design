@@ -28,7 +28,7 @@ var DesignNews = (function (_React$Component) {
                 'div',
                 null,
                 items.map(function (newsItem) {
-                    newsItem.trackLink = 'http://www.godesigner.ru/users/click?link=' + newsItem.link + '&id=' + newsItem.id;
+                    newsItem.trackLink = 'https://www.godesigner.ru/users/click?link=' + newsItem.link + '&id=' + newsItem.id;
                     return React.createElement(DesignNewsRow, { key: newsItem.id, newsInfoForRow: newsItem });
                 })
             );

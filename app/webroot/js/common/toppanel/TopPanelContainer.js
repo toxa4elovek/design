@@ -51,7 +51,7 @@ var TopPanelContainer = (function (_BaseComponent) {
                             { className: "pitch-buttons-legend" },
                             React.createElement(
                                 "a",
-                                { href: "http://www.godesigner.ru/answers/view/6" },
+                                { href: "https://www.godesigner.ru/answers/view/6" },
                                 React.createElement("i", { id: "help" }),
                                 "Какие способы оплаты вы принимаете?"
                             )

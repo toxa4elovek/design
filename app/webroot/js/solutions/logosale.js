@@ -210,7 +210,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
                     });
                 }
                 var tweetLike = 'Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»';
-                var media = 'http://www.godesigner.ru';
+                var media = 'https://www.godesigner.ru';
                 if ($.isArray(solution.images.solution_solutionView)) {
                     media += solution.images.solution_solutionView[0].weburl;
                 } else {
@@ -218,7 +218,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
                 }
 
                 var shareTitle = tweetLike;
-                var url = 'http://www.godesigner.ru/pitches/viewsolution/' + solution.id;
+                var url = 'https://www.godesigner.ru/pitches/viewsolution/' + solution.id;
 
                 var sharebar = '<div class="sharebar"><div class="tooltip-block"> \
                     <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
@@ -240,7 +240,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
                         <ul style="margin-left: 78px;" class="right">\
                             <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">\
                                 <a href="#" style="float:left" class="like-small-icon" data-id="' + solution.id + '"><img src="/img/like.png" alt="количество лайков"></a>\
-                                <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="' + solution.id + '" rel="http://www.godesigner.ru/pitches/viewsolution/' + solution.id + '">' + solution.likes + '</span>' + sharebar + '</li>\
+                                <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="' + solution.id + '" rel="https://www.godesigner.ru/pitches/viewsolution/' + solution.id + '">' + solution.likes + '</span>' + sharebar + '</li>\
                             <li style="padding-left:0;margin-left:0;float: left; padding-top: 1px; height: 16px; margin-top: 0;width:30px">\
                                 <span class="bottom_arrow">\
                                     <a href="#" class="solution-menu-toggle"><img src="/img/marker5_2.png" alt=""></a>\
@@ -831,7 +831,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 
                 if (result.pitch.category_id != 7) {
 
-                    var media = 'http://www.godesigner.ru';
+                    var media = 'https://www.godesigner.ru';
                     if ($.isArray(result.solution.images.solution_solutionView)) {
                         media += result.solution.images.solution_solutionView[0].weburl;
                     } else {
@@ -844,7 +844,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
                     }
 
                     var shareTitle = tweetLike;
-                    var url = 'http://www.godesigner.ru/pitches/viewsolution/' + result.solution.id;
+                    var url = 'https://www.godesigner.ru/pitches/viewsolution/' + result.solution.id;
                     var sharebar = '<div style="display: block; height: 75px"> \
                     <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
                     <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \

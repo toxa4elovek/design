@@ -367,11 +367,11 @@ $(function() {
         }else {
             if(link.css('background-image').match(/follow_the_pitch/)) {
                 link.addClass('fav-minus');
-                link.css('background-image', 'http://www.godesigner.ru/img/stop_follow.png');
+                link.css('background-image', 'https://www.godesigner.ru/img/stop_follow.png');
             }else if (link.css('background-image').match(/stop_follow/)) {
                 link.removeClass('fav-minus');
                 link.addClass('fav-plus');
-                link.css('background-image', 'http://www.godesigner.ru/img/follow_the_pitch.png');
+                link.css('background-image', 'https://www.godesigner.ru/img/follow_the_pitch.png');
             }
         }
         $.post('/favourites/' + type + '.json', data, function (response) {
@@ -632,7 +632,7 @@ $(function() {
             $('#pitch-panel').hide();
         }
         if(window.location.href.indexOf("users/step") > -1) {
-            window.location.href = 'http://www.godesigner.ru/users/mypitches';
+            window.location.href = 'https://www.godesigner.ru/users/mypitches';
         }
         $('.mobile-close').click();
         return false;
@@ -643,7 +643,7 @@ $(function() {
         var solutionid = $(this).data('solutionid');
         $.get('/pitches/accept/' + id + '.json', function() {
             if(window.location.href.indexOf("users/step2") <= -1) {
-                window.location.href = 'http://www.godesigner.ru/users/step2/' + solutionid;
+                window.location.href = 'https://www.godesigner.ru/users/step2/' + solutionid;
             }
         });
         $('.mobile-close').click();
