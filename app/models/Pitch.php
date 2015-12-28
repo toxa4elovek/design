@@ -2164,19 +2164,8 @@ class Pitch extends AppModel
 
     public function getPenaltyAmount($projectRecord)
     {
-        $time = strtotime($projectRecord->finishDate) + DAY * 4;
-        if ($projectRecord->expert == 1) {
-            $pitchHelper = new \app\extensions\helper\Pitch();
-            $time = $pitchHelper->expertOpinion($projectRecord->id) + DAY * 4;
-        }
-        if ($projectRecord->chooseWinnerFinishDate != '0000-00-00 00:00:00') {
-            $time = strtotime($projectRecord->chooseWinnerFinishDate);
-        }
-        $latePointOfTime = time();
-        if ($projectRecord->awardedDate != '0000-00-00 00:00:00') {
-            $latePointOfTime = strtotime($projectRecord->awardedDate);
-        }
-        $diff = $latePointOfTime - $time;
+        $pitchHelper = new \app\extensions\helper\Pitch();
+        $diff = time() - $pitchHelper->getChooseWinnerTime($projectRecord);
         return ceil($diff / 60 / 60) * 25;
     }
 

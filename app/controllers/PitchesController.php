@@ -1581,12 +1581,13 @@ Disallow: /pitches/upload/'.$pitch['id'];
 
     public function getlatestsolution()
     {
+        header('Content-Type: application/javascript');
         if (!isset($this->request->query['category_id'])) {
             $this->request->query['category_id'] = null;
         }
         $result = Pitch::apiGetPitch($this->request->query['category_id']);
-
-        return $this->render(array('text' => 'writePitch('.json_encode($result).')'));
+        echo 'writePitch('.json_encode($result).')';
+        die();
     }
 
     public function getpdf()
