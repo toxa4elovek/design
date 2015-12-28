@@ -162,7 +162,7 @@ foreach($solutions as $solution):
                 <?php if (!isset($fromDesignersTab)):?>
                 <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
                     <a href="#" data-status="<?= $pitch->status ?>" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
-                    <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
+                    <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="https://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
                     <?php if((($pitch->private != 1) && (!$pitch->isCopyrighting()))):
                         if (rand(1, 100) <= 50) {
                                 $tweetLike = 'Мне нравится этот дизайн! А вам?';
@@ -174,18 +174,18 @@ foreach($solutions as $solution):
                         }
 
                         if(!isset($solution->images['solution_galleryLargeSize'][0])):
-                            $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
+                            $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
                         else:
-                            $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
+                            $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
                         endif;
                     ?>
                     <div class="sharebar">
                         <div class="tooltip-block">
-                            <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
+                            <div class="social-likes" data-counters="no" data-url="https://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                 <div class="twitter">TWITT</div>
-                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">SHARE</div>
-                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
+                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'https://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">SHARE</div>
+                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'https://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
                             </div>
                         </div>
                     </div>

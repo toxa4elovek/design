@@ -176,7 +176,7 @@ class Comment extends AppModel {
                                 $solution = Solution::first(array('conditions' => array('pitch_id' => $pitchId, 'num' => $num), 'with' => array('Pitch')));
                                 if (isset($solution)) {
                                     $solutionHelper = new SolutionHelper;
-                                    $record->text = preg_replace("/($solutionNum\D)([\W]*)/", '<a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1" data-thumbnail="' . $solutionHelper->renderImageUrlRights($solution, 'solution_galleryLargeSize', $solution->pitch) . '">$1</a>$2', $record->text);
+                                    $record->text = preg_replace("/($solutionNum\D)([\W]*)/", '<a href="https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1" data-thumbnail="' . $solutionHelper->renderImageUrlRights($solution, 'solution_galleryLargeSize', $solution->pitch) . '">$1</a>$2', $record->text);
                                 } else {
                                     $record->text = preg_replace("/($solutionNum\D)([\W]*)/", '<a href="#" target="_blank" class="solution-link hoverimage">$1</a>$2', $record->text);
                                 }

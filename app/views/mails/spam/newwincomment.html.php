@@ -7,10 +7,10 @@
 <body style="margin: 0; padding: 0;">
 <?php
 if($blue) {
-    $imgSrc = 'http://www.godesigner.ru/img/logo_original-03.png';
+    $imgSrc = 'https://www.godesigner.ru/img/logo_original-03.png';
     $color = '#648fa4';
 }else {
-    $imgSrc = 'http://www.godesigner.ru/img/logo_original-01.png';
+    $imgSrc = 'https://www.godesigner.ru/img/logo_original-01.png';
     $color = '#ff585d';
 }
 ?>
@@ -28,7 +28,7 @@ if($blue) {
 
     </td>
         <td>
-            <a style="color: <?= $color?>; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/users/step4/<?=$solution->id?>"><?=$pitch->title?></a><br/>
+            <a style="color: <?= $color?>; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://www.godesigner.ru/users/step4/<?=$solution->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$comment->text?></span><br/>
         </td></tr>

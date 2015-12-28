@@ -158,7 +158,7 @@ function mb_basename($file)
                 <?php if($pitch->private == 0):?>
                 <div class="separator" style="width: 620px; margin: 30px 0 15px 0;"></div>
                 <div style="">
-                    <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/details/<?=$pitch->id?>">
+                    <div class="social-likes" data-counters="no" data-url="https://www.godesigner.ru/pitches/details/<?=$pitch->id?>">
                         <div style="margin: 7px 0 0 9px;" class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                         <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
                         <div style="margin: 7px 0 0 7px;" class="vkontakte" title="Поделиться ссылкой во Вконтакте">SHARE</div>

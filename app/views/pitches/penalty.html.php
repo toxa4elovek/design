@@ -105,7 +105,7 @@ line-height: 27px;margin-top: 20px;">Оплата штрафа <?= (int) $total?
                         <ul style="margin-left: 78px;" class="right">
                             <li class="like-hoverbox" style="float: left; margin-top: 0; padding-top: 0; height: 15px; padding-right: 0; margin-right: 0; width: 38px;">
                                 <a href="#" data-status="1" style="float:left" class="like-small-icon" data-id="<?= $solution->id ?>"><img src="/img/like.png" alt="количество лайков"></a>
-                                <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 1px; margin-left: 2px;" data-id="<?= $solution->id ?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>"><?= $solution->likes ?></span>
+                                <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 1px; margin-left: 2px;" data-id="<?= $solution->id ?>" rel="https://www.godesigner.ru/pitches/viewsolution/<?= $solution->id ?>"><?= $solution->likes ?></span>
                             </li>
                         </ul>
                     </div>

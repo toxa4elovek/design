@@ -33,7 +33,7 @@
                                     <tr>
                                         <td align="center"><span style="color:#7d7c7c;font-size: 14px; font-family: Arial, sans-serif;line-height:2">
                                                 Мы заметили, что вы хотели создать<br />
-                                                <a style="color:#f45151;text-decoration: none;" href="http://www.godesigner.ru/users/sale?id=<?= $sale ?>"><?= $pitch->title ?></a><br />
+                                                <a style="color:#f45151;text-decoration: none;" href="https://www.godesigner.ru/users/sale?id=<?= $sale ?>"><?= $pitch->title ?></a><br />
                                                 Специально для вас у нас есть предложение:<br />
                                                 Оплатите проект в эту субботу или воскресенье, и минимальный<br />
                                                 гонорар на логотип изменится с 8000р до 6000р.,<br />
@@ -43,7 +43,7 @@
                                     <tr><td height="30"></td></tr>
                                     <tr>
                                         <td align="center">
-                                            <a href="http://www.godesigner.ru/users/sale?id=<?= $sale ?>" target="_blank"><img src="http://godesigner.ru/img/mail/go_to_project.png" alt="Войти и заполнить реквизиты" border="0" width="500" height="50" /></a>
+                                            <a href="https://www.godesigner.ru/users/sale?id=<?= $sale ?>" target="_blank"><img src="http://godesigner.ru/img/mail/go_to_project.png" alt="Войти и заполнить реквизиты" border="0" width="500" height="50" /></a>
                                         </td>
                                     </tr>
                                     <tr><td height="15"></td></tr>
@@ -70,7 +70,7 @@
                                                 <a style="color: #999999; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="http://godesigner.ru/viewmail/<?= $hash ?>">
                                                     <span style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;">ЗДЕСЬ</span>
                                                 </a>.<br />
-                                                <a style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="http://www.godesigner.ru/users/unsubscribe<?= $pitch->user->unsubscribeToken() ?>">
+                                                <a style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="https://www.godesigner.ru/users/unsubscribe<?= $pitch->user->unsubscribeToken() ?>">
                                                     <span style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;">ОТПИСАТЬСЯ</span>
                                                 </a>
                                                 ОТ РАССЫЛКИ.ОТПРАВЛЕНО ИЗ ГОЛОВНОГО ОФИСА GO DESIGNER, САНКТ- ПЕТЕРБУРГ, РОССИЯ.

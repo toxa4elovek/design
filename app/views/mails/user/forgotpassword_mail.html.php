@@ -5,9 +5,9 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="http://www.godesigner.ru/img/logo_original-01.png" width="200">
+<img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
 <p style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
 Пройдите по ссылке, введите и сохраните новый пароль!<br>
-<a href="http://www.godesigner.ru/users/setnewpassword?token=<?=$token?>" target="_blank">http://www.godesigner.ru/users/setnewpassword?token=<?=$token?></a>
+<a href="https://www.godesigner.ru/users/setnewpassword?token=<?=$token?>" target="_blank">https://www.godesigner.ru/users/setnewpassword?token=<?=$token?></a>
 </p>
 </body></html>

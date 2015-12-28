@@ -33,7 +33,7 @@
                             </tr>
                             <tr><td height="20"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 19px; font-size: 16px; font-family: Arial, sans-serif;">С ним функция «<a style="color:#6990a0; text-decoration: none" href="http://www.godesigner.ru/answers/view/67">Прокачать бриф</a>» станет бесплатной. С этим беспроигрышным предложением вы сможете увеличить число решений до 40%, абсолютно безвозмездно!</td>
+                                <td align="left"><span style="color: #666666; line-height: 19px; font-size: 16px; font-family: Arial, sans-serif;">С ним функция «<a style="color:#6990a0; text-decoration: none" href="https://www.godesigner.ru/answers/view/67">Прокачать бриф</a>» станет бесплатной. С этим беспроигрышным предложением вы сможете увеличить число решений до 40%, абсолютно безвозмездно!</td>
                             </tr>
                             <tr><td height="20"></td></tr>
 
@@ -81,7 +81,7 @@
                             <tr><td height="20"></td></tr>
 
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 18px; font-size: 13px; font-family: Arial, sans-serif;">*Промо-код действует 2 месяца и активен один раз. С подробностями об опции <a style="color:#6990a0; text-decoration: none" href="http://www.godesigner.ru/answers/view/67">«Прокачать бриф»</a> можно ознакомиться на сайте.</td>
+                                <td align="left"><span style="color: #666666; line-height: 18px; font-size: 13px; font-family: Arial, sans-serif;">*Промо-код действует 2 месяца и активен один раз. С подробностями об опции <a style="color:#6990a0; text-decoration: none" href="https://www.godesigner.ru/answers/view/67">«Прокачать бриф»</a> можно ознакомиться на сайте.</td>
                             </tr>
 
                             <tr><td height="16"></td></tr>

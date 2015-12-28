@@ -18,7 +18,7 @@
                     <h3 style="text-shadow: 0 1px 1px #FFFFFF;
 font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; font-weight: normal; color: #666666;">Укажите 5 тегов, которые описывают ваше решение</h3>
                     <p style="line-height: 20px; text-shadow: 0 1px 1px #FFFFFF; margin-top: 20px;font-family: OfficinaSansC Book, serif; font-size: 16px; text-align: center; color: #666; margin-bottom: 40px;">
-                        Это поможет найти вашу идею тем, кто захочет его купить.<br> Т. о. мы дарим вам возможность продать работу, если та не станет<br> победителем с первого раза. Отметьте работы, которые будут<br> достпуны в профиле и на распродаже. <a href="http://www.godesigner.ru/answers/view/100" target="_blank">Подробнее</a>
+                        Это поможет найти вашу идею тем, кто захочет его купить.<br> Т. о. мы дарим вам возможность продать работу, если та не станет<br> победителем с первого раза. Отметьте работы, которые будут<br> достпуны в профиле и на распродаже. <a href="https://www.godesigner.ru/answers/view/100" target="_blank">Подробнее</a>
                     </p>
                     <?php endif?>
                     <ul class="list_portfolio">
@@ -112,7 +112,7 @@ font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; fon
             </div>
         </div><!-- .conteiner -->
         <div id="popup-warning" class="popup-warn generic-window" style="display:none;height:300px;">
-            <p style="margin-top:120px;">Изменения, внесенные вами в список отображаемых работ в вашем профиле, сохранены!<br> Вы можете просмотреть ваш профиль по этой ссылке:<br> <a href="http://www.godesigner.ru/user/view/<?=$this->user->getId()?>" target="_blank">http://www.godesigner.ru/user/view/<?=$this->user->getId()?></a></p>
+            <p style="margin-top:120px;">Изменения, внесенные вами в список отображаемых работ в вашем профиле, сохранены!<br> Вы можете просмотреть ваш профиль по этой ссылке:<br> <a href="https://www.godesigner.ru/user/view/<?=$this->user->getId()?>" target="_blank">https://www.godesigner.ru/user/view/<?=$this->user->getId()?></a></p>
             <div class="final-step-nav wrapper" style="margin-top:20px;"><input type="submit" style="width:108px;" class="button popup-close" value="ОК"></div>
         </div>
         <div id="under_middle_inner"></div><!-- /under_middle_inner -->

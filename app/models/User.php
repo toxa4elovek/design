@@ -841,7 +841,7 @@ class User extends AppModel
             if (count($solutions) > 0) {
                 $solArray = array();
                 foreach ($solutions as $solution) {
-                    $solArray[] = '<a style="color: #7ea0ac; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"" href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank">#' . $solution->num . '</a>';
+                    $solArray[] = '<a style="color: #7ea0ac; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"" href="https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank">#' . $solution->num . '</a>';
                 }
                 $blocks[$pitch->id]['solutions'] = 'Для вашего проекта выложены новые решения: ' . implode(', ', $solArray) . '. Комментируйте идеи, выставляйте рейтинг (звезды), помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!';
             } else {
@@ -967,7 +967,7 @@ class User extends AppModel
                     $text = 'Срок выбора победителя подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br/>Дизайнеры больше не могут добавлять и комментировать решения. На выбор победителя у вас есть ' . $defaultTerm . ' рабочих дня после того, как все выбранные вами эксперты выскажут своё мнение.';
                 } else {
                     $text = 'Срок выбора победителя, на который отводится ' . $defaultTerm . ' дня, подошел к концу. Вам необходимо срочно номинировать лучшее решение!<br>
-Внести дальнейшие правки вы сможете на <a href="http://www.godesigner.ru/answers/view/63">завершающем этапе</a>. У вас также есть возможность номинировать <a href="http://www.godesigner.ru/answers/view/97">двух и более дизайнеров</a>. ';
+Внести дальнейшие правки вы сможете на <a href="https://www.godesigner.ru/answers/view/63">завершающем этапе</a>. У вас также есть возможность номинировать <a href="https://www.godesigner.ru/answers/view/97">двух и более дизайнеров</a>. ';
                 }
             }
             $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text);
@@ -1067,12 +1067,12 @@ class User extends AppModel
         $pitch = Pitch::first($solution->pitch_id);
         $admin = User::getAdmin();
         if (($pitch->category_id == 1) && ($pitch->private == 0)) {
-            $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом проекте!<br/>
-    Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a><br>
-    Через 30 дней ваши работы автоматически попадут на распродажу логотипов и будут доступны каждому за 9500 рублей. Подробнее тут: <a href="http://www.godesigner.ru/answers?search=%D1%80%D0%B0%D1%81%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0">http://www.godesigner.ru/answers?search=распродажа</a>';
+            $message = 'Друзья, выбран победитель. <a href="https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом проекте!<br/>
+    Подробнее читайте тут: <a href="https://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a><br>
+    Через 30 дней ваши работы автоматически попадут на распродажу логотипов и будут доступны каждому за 9500 рублей. Подробнее тут: <a href="https://www.godesigner.ru/answers?search=%D1%80%D0%B0%D1%81%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0">https://www.godesigner.ru/answers?search=распродажа</a>';
         } else {
-            $message = 'Друзья, выбран победитель. <a href="http://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом проекте!<br/>
-    Подробнее читайте тут: <a href="http://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
+            $message = 'Друзья, выбран победитель. <a href="https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом проекте!<br/>
+    Подробнее читайте тут: <a href="https://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
         }
         $data = array('pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
         Comment::createComment($data);

@@ -5,7 +5,7 @@
         <title></title>
     </head>
     <body style="margin: 0; padding: 0;">
-        <img src="http://www.godesigner.ru/img/logo_original-03.png" width="200">
+        <img src="https://www.godesigner.ru/img/logo_original-03.png" width="200">
 
             <table width="800">
                 <tr><td width="5"></td><td width="30"></td><td>
@@ -16,7 +16,7 @@
                 <tr><td width="5"></td><td valign="top">
                     </td>
                     <td>
-                        <a style="color: #648fa4; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a><br/>
+                        <a style="color: #648fa4; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://www.godesigner.ru/pitches/view/<?= $pitch->id ?>"><?= $pitch->title ?></a><br/>
                         <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?= $this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch)); ?></span><br/>
                         <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?= $text ?>. <?php if ($schedule): ?><?php echo date('j F Y H:i', strtotime($schedule->start)); ?> (московское время)<?php endif; ?></span><br/>
                     </td></tr>

@@ -57,7 +57,7 @@
 														</tr>
 														<tr><td height="10"></td></tr>
 														<tr>
-															<td><a href="http://godesigner.ru/pages/about" target="_blank" style="color: #999999; text-decoration: none; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><span style="color: #999999; text-decoration: none; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ПОДРОБНЕЕ О ПРОЕКТЕ&nbsp;&nbsp;&nbsp;<img src="http://www.godesigner.ru/img/mail/watch-video-arrow.png" alt="Подробнее о нас" width="17" height="17" valign="middle" style="margin-top: -1px; vertical-align: middle;" border="0" /></span></a></td>
+															<td><a href="http://godesigner.ru/pages/about" target="_blank" style="color: #999999; text-decoration: none; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><span style="color: #999999; text-decoration: none; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ПОДРОБНЕЕ О ПРОЕКТЕ&nbsp;&nbsp;&nbsp;<img src="https://www.godesigner.ru/img/mail/watch-video-arrow.png" alt="Подробнее о нас" width="17" height="17" valign="middle" style="margin-top: -1px; vertical-align: middle;" border="0" /></span></a></td>
 														</tr>
 													</table>
 												</td>

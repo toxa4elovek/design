@@ -1,7 +1,7 @@
 <div id="popup-confirm-email-true" style="display: none;">
     <h2>Почтовый адрес успешно подтверждён!</h2>
     <p>Мы очень рады, что вы решили стать частью нашего креативного сообщества. Ваш адрес электронной почты успешно подтверждён.</p>
-    <p>Настроить почтовые уведомления вы можете на странице &laquo;<a href="http://www.godesigner.ru/users/profile" target="_blank">профиль</a>&raquo;</p>
+    <p>Настроить почтовые уведомления вы можете на странице &laquo;<a href="https://www.godesigner.ru/users/profile" target="_blank">профиль</a>&raquo;</p>
     <div class="true-close"></div>
 </div>
 

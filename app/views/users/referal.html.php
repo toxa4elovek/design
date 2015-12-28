@@ -88,7 +88,7 @@
                             <span class="referal-title">Ваш телефон +<span class="phone-number"><?=$user->phone;?></span></span>
                             <a href="/users/deletephone" class="phone-delete" style="padding-left: 14px; background: url('/img/referal-close.png') 0px 6px no-repeat;">Удалить номер</a>
                             <div class="clr" style="margin: 30px 0;clear: left"></div>
-                            <input type="text" name="" value="http://www.godesigner.ru/?ref=<?=$user->referal_token;?>" style="width: 270px; float: left; margin-top: 3px; font-size: 15px; font-weight: bold; color: #999;">
+                            <input type="text" name="" value="https://www.godesigner.ru/?ref=<?=$user->referal_token;?>" style="width: 270px; float: left; margin-top: 3px; font-size: 15px; font-weight: bold; color: #999;">
                             <a href="mailto:?subject=Это новый сервис для создания дизайна" class="button" style="width: 240px; float: right;">Отправить по почте</a>
                             <div class="clr" style="clear: left"></div>
                         </form>
@@ -97,8 +97,8 @@
                             $shareTitleFacebook = 'GoDesigner.ru';
                             $shareTextTwitter = 'GoDesigner — самый современный способ создания дизайна. Оформите заказ по этой ссылке и получите скидку в 300 руб.';
                         ?>
-                        <a href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&p[title]=<?php echo urlencode($shareTitleFacebook);?>&p[summary]=<?php echo urlencode($shareTextFacebook);?>" class="button facebook small social-popup" style="width: 176px;">Поделиться в facebook</a>
-                        <a href="http://www.vkontakte.ru/share.php?url=http://www.godesigner.ru/?ref=<?=$user->referal_token?>&title=<?php echo urlencode($shareTitleFacebook);?>&description=<?php echo urlencode($shareTextFacebook);?>&noparse=1" class="button vkontakte small social-popup" style="width: 176px;">Поделиться vkontakte</a>
+                        <a href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=https://www.godesigner.ru/?ref=<?=$user->referal_token?>&p[title]=<?php echo urlencode($shareTitleFacebook);?>&p[summary]=<?php echo urlencode($shareTextFacebook);?>" class="button facebook small social-popup" style="width: 176px;">Поделиться в facebook</a>
+                        <a href="http://www.vkontakte.ru/share.php?url=https://www.godesigner.ru/?ref=<?=$user->referal_token?>&title=<?php echo urlencode($shareTitleFacebook);?>&description=<?php echo urlencode($shareTextFacebook);?>&noparse=1" class="button vkontakte small social-popup" style="width: 176px;">Поделиться vkontakte</a>
                         <a href="https://twitter.com/share?url=http://www.godesigners.ru/?ref=<?=$user->referal_token?>&text=<?php echo urlencode($shareTextTwitter);?>" class="button twitter small social-popup" style="width: 176px;">Поделиться в twitter</a>
                         <?php if (count($refPitches) > 0):?>
                             <div class="separator-flag-empty">

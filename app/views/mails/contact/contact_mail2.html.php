@@ -15,13 +15,13 @@ Resolution: <?=$info['screen']?><br>
 <br>
 Имя: <?=$user['firstName']?><br>
 Фамилия: <?=$user['lastName']?><br>
-<a href="http://www.godesigner.ru/users/view/<?=$user['id']?>">Профиль</a><br>
-<a href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=http://www.godesigner.ru/users/loginasuser/<?=$user['id']?>">Войти под именем</a><br>
+<a href="https://www.godesigner.ru/users/view/<?=$user['id']?>">Профиль</a><br>
+<a href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://www.godesigner.ru/users/loginasuser/<?=$user['id']?>">Войти под именем</a><br>
 
 <br>
 <?php if (!is_null($user['pitches'][0]['id'])):
     foreach ($user['pitches'] as $pitch):?>
-        <a href="http://www.godesigner.ru/pitches/view/<?=$pitch['id']; ?>"><?=(empty($pitch['title'])) ? '— ' : $pitch['title'];?></a> (<a href="http://cp.godesigner.ru/pitches/edit/<?=$pitch['id']; ?>">просмотреть в админке</a>)<br>
+        <a href="https://www.godesigner.ru/pitches/view/<?=$pitch['id']; ?>"><?=(empty($pitch['title'])) ? '— ' : $pitch['title'];?></a> (<a href="http://cp.godesigner.ru/pitches/edit/<?=$pitch['id']; ?>">просмотреть в админке</a>)<br>
     <?php endforeach;?>
 <?php endif; ?>
 

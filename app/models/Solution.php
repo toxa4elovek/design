@@ -118,7 +118,7 @@ http://godesigner.ru/answers/view/73');
                 try {
                     $pitch = Pitch::first($result->pitch_id);
                     if(($pitch->category_id != 7) && ($pitch->private != 1)) {
-                        $id = 'http://www.godesigner.ru/pitches/viewsolution/' . $result->id;
+                        $id = 'https://www.godesigner.ru/pitches/viewsolution/' . $result->id;
                         $url = 'https://graph.facebook.com';
                         $data = array('id' => $id, 'scrape' => 'true');
                         $options = array(

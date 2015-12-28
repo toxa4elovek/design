@@ -10,7 +10,7 @@
 
             <?php if ($this->user->isAdmin()): ?>
                 <div class="right-sidebar-user">
-                    <a id="enter-name" class="order-button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=http://www.godesigner.ru/users/loginasuser/<?= $user->id ?>">Войти под именем</a>
+                    <a id="enter-name" class="order-button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://www.godesigner.ru/users/loginasuser/<?= $user->id ?>">Войти под именем</a>
                     <p style="margin-top:41px"><a class="email-profile" href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
                     <div class="g_line" style="margin-top: 8px;"></div>
                     <p class="regular-small-grey">Online: <span class="date-profile"><?= date('d.m.Y H:i', strtotime($user->lastTimeOnline)) ?></span></p>

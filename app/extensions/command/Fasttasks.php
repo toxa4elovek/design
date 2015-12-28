@@ -97,20 +97,20 @@ class Fasttasks extends CronJob {
             $vkApi = new VKAPI();
             $data = array(
                 'message' => $news->title,
-                'picture' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
+                'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
             );
             $vkApi->postMessageToPage($data);
 
             $facebookApi = new FacebookAPI();
             $data = array(
                 'message' => $news->title,
-                'link' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
+                'link' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
             );
             $facebookApi->postMessageToPage($data);
 
             $twitterApi = new TwitterAPI();
             $data = array(
-                'message' => $news->title . ' — ' . $news->short . ' http://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
+                'message' => $news->title . ' — ' . $news->short . ' https://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
                 'picture' => '/var/godesigner/webroot/' . $news->imageurl
             );
             $twitterApi->postMessageToPage($data);
@@ -126,7 +126,7 @@ class Fasttasks extends CronJob {
             $data = array(
                 'message' => $news->title,
                 'owner_id' => '-26880133',
-                'picture' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
+                'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
             );
             $vkApi->postMessageToPage($data);
 
@@ -134,7 +134,7 @@ class Fasttasks extends CronJob {
             $data = array(
                 'message' => $news->title,
                 'page_id' => '112408302103669',
-                'link' => 'http://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
+                'link' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
             );
             $facebookApi->postMessageToPage($data);
 
@@ -146,7 +146,7 @@ class Fasttasks extends CronJob {
             );
             $twitterApi = new TwitterAPI($keys);
             $data = array(
-                'message' => $news->title . ' — ' . $news->short . ' http://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
+                'message' => $news->title . ' — ' . $news->short . ' https://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
                 'picture' => '/var/godesigner/webroot/' . $news->imageurl
             );
             $twitterApi->postMessageToPage($data);

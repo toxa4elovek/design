@@ -192,7 +192,7 @@
                     <li>Проект станет недоступен поисковым системам</li>
                     <li>Участники подпишут «Cоглашение о неразглашении»</li>
                     <li>Идеи будут не доступны для просмотра посторонними</li>
-                    <li style="list-style: outside none none; margin-top: 12px; margin-left: 0px;"><a href="http://www.godesigner.ru/answers/view/64" target="_blank">Подробнее тут</a></li>
+                    <li style="list-style: outside none none; margin-top: 12px; margin-left: 0px;"><a href="https://www.godesigner.ru/answers/view/64" target="_blank">Подробнее тут</a></li>
                 </ul>
                 <div style="clear:both; font-size: 18px; font-family: OfficinaSansC Book, serif;"></div>
             </div>
@@ -247,7 +247,7 @@
                     <li style="width: 480px;">социальные сети GoDesigner: <a href="https://www.facebook.com/godesigner.ru" target="_blank">fb,</a> <a href="http://vk.com/godesigner" target="_blank">vk,</a> <a href="https://twitter.com/go_deer" target="_blank">twitter</a> (> 10 000 подписчиков)</li>
                     <li style="width: 480px;">выделение цветом в списке проектов</li>
                     <li style="width: 480px;">отображение на главной странице сайта</li>
-                    <li style="list-style: outside none none; margin-left:0;"><a href="http://www.godesigner.ru/answers/view/67" target="_blank">Подробнее тут</a></li>
+                    <li style="list-style: outside none none; margin-left:0;"><a href="https://www.godesigner.ru/answers/view/67" target="_blank">Подробнее тут</a></li>
                 </ul>
             </div>
 

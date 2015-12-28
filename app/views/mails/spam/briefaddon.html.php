@@ -47,7 +47,7 @@
                             </td></tr>
                             <tr><td height="20"></td></tr>
                             <tr>
-                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Чтобы заказать дополнительную опцию «Заполнить бриф», оставьте заявку и свой телефон, и я свяжусь с вами в течение рабочего дня с момента оплаты. На основе нашего интервью, я создам грамотное тех. задание для дизайнеров. Подробнее <a style="color:#6990a0; text-decoration: underline;" href="http://www.godesigner.ru/answers/view/68">об опции на сайте</a>.</td>
+                                <td align="left"><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">Чтобы заказать дополнительную опцию «Заполнить бриф», оставьте заявку и свой телефон, и я свяжусь с вами в течение рабочего дня с момента оплаты. На основе нашего интервью, я создам грамотное тех. задание для дизайнеров. Подробнее <a style="color:#6990a0; text-decoration: underline;" href="https://www.godesigner.ru/answers/view/68">об опции на сайте</a>.</td>
                             </tr>
 
                             <tr><td height="15"></td></tr>

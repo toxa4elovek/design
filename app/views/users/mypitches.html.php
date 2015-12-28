@@ -80,7 +80,7 @@
                 <div class="no-result">
                     <h1>Упс, мы ничего не нашли!</h1>
                     <p class="regular">Попробуйте ввести другое слово, или используйте<br /> стрелку в поле, повторив поиск с выбранным<br /> фильтром. <a href="/answers/view/85">Подробнее…</a></p>
-                    <p><img src="http://www.godesigner.ru/img/help/d3fa990a965b8ebf1cf8691586140165.jpg" alt="" width="610" height="292"></p>
+                    <p><img src="https://www.godesigner.ru/img/help/d3fa990a965b8ebf1cf8691586140165.jpg" alt="" width="610" height="292"></p>
                 </div>
                 <div class="foot-content">
                     <div class="page-nambe-nav" id="topnav">

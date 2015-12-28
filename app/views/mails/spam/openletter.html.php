@@ -8,7 +8,7 @@
 Здравствуйте!<br><br>
 
 Спасибо, что разместили бриф на нашем сайте:<br>
-<a href="http://www.godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br><br>
+<a href="https://www.godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br><br>
 
 Для эффективной работы на GoDesigner у нас есть 5 рекомендаций того, как сделать ваш бриф лучше:<br><br>
 
@@ -23,33 +23,33 @@
 
 
 О том, что нужно указывать в брифе и почему, вы можете прочитать тут:<br>
-<a href="http://www.godesigner.ru/answers/view/4">http://www.godesigner.ru/answers/view/4</a><br><br>
+<a href="https://www.godesigner.ru/answers/view/4">https://www.godesigner.ru/answers/view/4</a><br><br>
 
 Эта статья поможет обратить внимание на самые важные вопросы:<br>
-<a href="http://www.godesigner.ru/posts/view/1">http://www.godesigner.ru/posts/view/1</a><br><br>
+<a href="https://www.godesigner.ru/posts/view/1">https://www.godesigner.ru/posts/view/1</a><br><br>
 
 
 Крайне полезная публикация нашего эксперта:<br>
-<a href="http://www.godesigner.ru/posts/view/63">http://www.godesigner.ru/posts/view/63</a><br><br>
+<a href="https://www.godesigner.ru/posts/view/63">https://www.godesigner.ru/posts/view/63</a><br><br>
 
 Тем, кто занимается созданием сайта:<br>
-<a href="http://www.godesigner.ru/posts/view/80">http://www.godesigner.ru/posts/view/80</a><br><br>
+<a href="https://www.godesigner.ru/posts/view/80">https://www.godesigner.ru/posts/view/80</a><br><br>
 
-Если у вас сложности с заполнением брифа, воспользуйтесь опцией «<a href="http://www.godesigner.ru/answers/view/68">Заполнить бриф</a>»: мы свяжемся с вами для интервью, на основе которого создадим тех. задание.<br><br>
+Если у вас сложности с заполнением брифа, воспользуйтесь опцией «<a href="https://www.godesigner.ru/answers/view/68">Заполнить бриф</a>»: мы свяжемся с вами для интервью, на основе которого создадим тех. задание.<br><br>
 
 Творческих успехов и на связи!<br><br><br><br><br>
 
 
 
-<img src="http://www.godesigner.ru/img/logo_email.png" ><br>
+<img src="https://www.godesigner.ru/img/logo_email.png" ><br>
 
 <span style="font-family: Arial, sans-serif; font-size:13px; color: rgb(181, 181, 181); font-style: italic">Оксана Девочкина</span><br>
 <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">арт-директор проекта</span><br>
-<a  style="font-family: Arial, sans-serif;font-size:13px; font-style: italic; color: rgb(17, 50, 204)" href="http://www.godesigner.ru/">www.godesigner.ru</a><br>
+<a  style="font-family: Arial, sans-serif;font-size:13px; font-style: italic; color: rgb(17, 50, 204)" href="https://www.godesigner.ru/">www.godesigner.ru</a><br>
 <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">+7 (812) 648 24 12</span><br>
 <br>
 <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">Следите за нами на:</span><br>
 <a style="font-family: Arial, sans-serif;font-size:13px; font-style: italic; color: rgb(17, 50, 204)" href="https://www.facebook.com/pages/Go-Designer/160482360714084">facebook</a><br>
-<a style="font-family: Arial, sans-serif;font-size:13px; font-style: italic; color: rgb(17, 50, 204)" href="http://vk.com/public36153921">vkontakte</a><br>
+<a style="font-family: Arial, sans-serif;font-size:13px; font-style: italic; color: rgb(17, 50, 204)" href="https://vk.com/public36153921">vkontakte</a><br>
 <a style="font-family: Arial, sans-serif;font-size:13px; font-style: italic; color: rgb(17, 50, 204)" href="https://twitter.com/Go_Deer">twitter</a><br>
 </body></html>

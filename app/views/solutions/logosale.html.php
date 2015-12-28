@@ -13,7 +13,7 @@
             <p class="sale-str regular">
                 Тут вы найдете готовые решения для вашего бизнеса: выберите логотип, и<br />
                 дизайнер доделает его согласно вашим комментариям. Это самый быстрый<br />
-                и экономичный способ получить результат на GoDesigner. <a href="http://www.godesigner.ru/answers/view/99" target="_blank" title="Подробнее">Подробнее..</a>
+                и экономичный способ получить результат на GoDesigner. <a href="https://www.godesigner.ru/answers/view/99" target="_blank" title="Подробнее">Подробнее..</a>
             </p>
             <div style="text-align:center;margin-top: 16px;margin-bottom: 30px;"><a class="needassist" href="#" style="height:16px;background: url('/img/category_icon.png') no-repeat;padding-left:24px;margin-top: 10px">Не нашли нужный логотип? Спросите у нас.</a></div>
             <div class="filterBackground">
@@ -145,22 +145,22 @@
                                         <ul style="margin-left: 78px;" class="right">
                                             <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
                                                 <a href="#" style="float:left" class="like-small-icon" data-id="<?=$solution['id']?>"><img src="/img/like.png" alt="количество лайков" /></a>
-                                                <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution['id']?>" rel="http://www.godesigner.ru/pitches/viewsolution/<?=$solution['id']?>"><?=$solution['likes']?></span>
+                                                <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution['id']?>" rel="https://www.godesigner.ru/pitches/viewsolution/<?=$solution['id']?>"><?=$solution['likes']?></span>
                                                 <?php if((($solution['pitch']['private'] != 1) && ($solution['pitch']['category_id'] != 7))):
                                                     $tweetLike = 'Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»';
                                                     if(!isset($solution['images']['solution_galleryLargeSize'][0])):
-                                                        $url = 'http://www.godesigner.ru' . $solution['images']['solution_gallerySiteSize']['weburl'];
+                                                        $url = 'https://www.godesigner.ru' . $solution['images']['solution_gallerySiteSize']['weburl'];
                                                     else:
-                                                        $url = 'http://www.godesigner.ru' . $solution['images']['solution_gallerySiteSize'][0]['weburl'];
+                                                        $url = 'https://www.godesigner.ru' . $solution['images']['solution_gallerySiteSize'][0]['weburl'];
                                                     endif;
                                                     ?>
                                                     <div class="sharebar">
                                                         <div class="tooltip-block">
-                                                            <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution['id']?>" data-title="<?= $tweetLike ?>">
+                                                            <div class="social-likes" data-counters="no" data-url="https://www.godesigner.ru/pitches/viewsolution/<?=$solution['id']?>" data-title="<?= $tweetLike ?>">
                                                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                                                 <div class="twitter">TWITT</div>
-                                                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution['images']['solution_solutionView'])?>">SHARE</div>
-                                                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution['images']['solution_solutionView'])?>">PIN</div>
+                                                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'https://www.godesigner.ru'. $this->solution->renderImageUrl($solution['images']['solution_solutionView'])?>">SHARE</div>
+                                                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'https://www.godesigner.ru'. $this->solution->renderImageUrl($solution['images']['solution_solutionView'])?>">PIN</div>
                                                             </div>
                                                         </div>
                                                     </div>

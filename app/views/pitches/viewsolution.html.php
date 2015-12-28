@@ -80,17 +80,17 @@
                             $tweetLike = "Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»";
                         }
                         if(!isset($solution->solution->images['solution_galleryLargeSize'][0])):
-                            $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
+                            $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
                         else:
-                            $url = 'http://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
+                            $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
                         endif;
                         ?>
                         <div style="display: block; height: 75px">
-                            <div class="social-likes" data-counters="no" data-url="http://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
+                            <div class="social-likes" data-counters="no" data-url="https://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>" data-title="<?= $tweetLike ?>">
                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                 <div class="twitter">TWITT</div>
-                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">SHARE</div>
-                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'http://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
+                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'https://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">SHARE</div>
+                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'https://www.godesigner.ru'. $this->solution->renderImageUrl($solution->images['solution_solutionView'])?>">PIN</div>
                             </div>
                             <div style="clear:both;width:300px;height:1px;"></div>
                         </div>

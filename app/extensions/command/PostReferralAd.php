@@ -32,7 +32,7 @@ class PostReferralAd extends CronJob
         $count = count($projects);
         $this->out("Found $count projects for ad");
         foreach ($projects as $project) {
-            $message = 'Вы получите 500 рублей на&nbsp;телефон, когда ваши друзья создадут проект на&nbsp;GoDesigner. Узнать подробности и&nbsp;получить ссылку тут: http://www.godesigner.ru/pages/referal';
+            $message = 'Вы получите 500 рублей на&nbsp;телефон, когда ваши друзья создадут проект на&nbsp;GoDesigner. Узнать подробности и&nbsp;получить ссылку тут: https://www.godesigner.ru/pages/referal';
             $data = [
                 'pitch_id' => $project->id,
                 'user_id' => 108,

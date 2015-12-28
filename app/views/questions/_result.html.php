@@ -56,7 +56,7 @@
         if(!$old):
             $helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain;
         endif;
-        $helpText .= 'Подробнее <a href="http://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
+        $helpText .= 'Подробнее <a href="https://www.godesigner.ru/answers/view/96" target="_blank">тут</a>';
         $addonText = '<p style="width: 650px;">К сожалению, вы уже упустили шанс сократить срок активации, завалив первую попытку. Вы сможете принимать участие в проектах через ' . $remain . '.</p>';
     endif; ?>
 <?php else: ?>
@@ -92,9 +92,9 @@
     <p>Результат: <?=$result['correct']?> из <?=$result['total']?></p>
     <?php if ($result['percent'] >= 0 && $result['percent'] < 70):
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я дворник, совсем не дизайнер!';
-        $bigImage = 'http://www.godesigner.ru/img/questions/dvornik.png';
-        $squareImage = 'http://www.godesigner.ru/img/questions/dvornik_fb.png';
-        $shareImage = 'http://www.godesigner.ru/img/questions/dvornik_468_246.png';
+        $bigImage = 'https://www.godesigner.ru/img/questions/dvornik.png';
+        $squareImage = 'https://www.godesigner.ru/img/questions/dvornik_fb.png';
+        $shareImage = 'https://www.godesigner.ru/img/questions/dvornik_468_246.png';
         $urlParam = 'dvornik';
         ?>
         <h2 class="largest-header-blog">Вы — дворник!</h2>
@@ -105,9 +105,9 @@
         ?>
     <?php elseif ($result['percent'] >= 70 && $result['percent'] < 80):
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я маляр, лучший кандидат в команду Тома Сойера!';
-        $bigImage = 'http://www.godesigner.ru/img/questions/malyar.png';
-        $squareImage = 'http://www.godesigner.ru/img/questions/malyar_fb.png';
-        $shareImage = 'http://www.godesigner.ru/img/questions/malyar_468_246.png';
+        $bigImage = 'https://www.godesigner.ru/img/questions/malyar.png';
+        $squareImage = 'https://www.godesigner.ru/img/questions/malyar_fb.png';
+        $shareImage = 'https://www.godesigner.ru/img/questions/malyar_468_246.png';
         $urlParam = 'malyar';
         ?>
         <h2 class="largest-header-blog">Вы — маляр!</h2>
@@ -117,9 +117,9 @@
         ?>
     <?php elseif ($result['percent'] >= 80 && $result['percent'] < 90):
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я Большой мастер, и выше только бог!';
-        $bigImage = 'http://www.godesigner.ru/img/questions/master.png';
-        $squareImage = 'http://www.godesigner.ru/img/questions/master_fb.png';
-        $shareImage = 'http://www.godesigner.ru/img/questions/master_468_246.png';
+        $bigImage = 'https://www.godesigner.ru/img/questions/master.png';
+        $squareImage = 'https://www.godesigner.ru/img/questions/master_fb.png';
+        $shareImage = 'https://www.godesigner.ru/img/questions/master_468_246.png';
         $urlParam = 'master';
         ?>
         <?php $secondResult = true; ?>
@@ -130,9 +130,9 @@
         ?>
     <?php else:
         $shareText = 'Тест «Какой ты дизайнер на самом деле» показал, что я Аполлон, бог искусств!';
-        $bigImage = 'http://www.godesigner.ru/img/questions/apollo.png';
-        $squareImage = 'http://www.godesigner.ru/img/questions/apollo_fb.png';
-        $shareImage = 'http://www.godesigner.ru/img/questions/apollo_468_246.png';
+        $bigImage = 'https://www.godesigner.ru/img/questions/apollo.png';
+        $squareImage = 'https://www.godesigner.ru/img/questions/apollo_fb.png';
+        $shareImage = 'https://www.godesigner.ru/img/questions/apollo_468_246.png';
         $urlParam = 'apollo';
         ?>
         <?php $bestResult = true; ?>
@@ -145,7 +145,7 @@
 
     <div class="share-this">
         <div style="display: block; float: left; margin-top: 8px; margin-bottom: 10px;">
-            <div class="social-likes" data-counters="no" data-title="<?= $shareText ?>" data-url="http://www.godesigner.ru/questions?result=<?= $urlParam ?>" style="padding-left: 230px;">
+            <div class="social-likes" data-counters="no" data-title="<?= $shareText ?>" data-url="https://www.godesigner.ru/questions?result=<?= $urlParam ?>" style="padding-left: 230px;">
                 <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 9px;" class="activate-user facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                 <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user twitter" data-via="Go_Deer">TWITT</div>
                 <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user vkontakte" data-image="<?=$shareImage ?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>

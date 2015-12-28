@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="http://www.godesigner.ru/img/logo_original-01.png" width="200">
+<img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
 
 <table width="800">
     <tr><td width="5"></td><td width="30"></td><td>
@@ -21,7 +21,7 @@
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
                 Ваше решение #<?=$solution->num?> было удалено. Это могло произойти по 2 причинам:<br><br>
 
-1. вами были нарушены <a href="http://www.godesigner.ru/answers/view/37" target="_blank">правила участия в проекте</a>. В случае несоблюдения правил в следующий раз ваш аккаунт может быть заблокирован или ликвидирован;<br><br>
+1. вами были нарушены <a href="https://www.godesigner.ru/answers/view/37" target="_blank">правила участия в проекте</a>. В случае несоблюдения правил в следующий раз ваш аккаунт может быть заблокирован или ликвидирован;<br><br>
 2. вы неоднократно предложили одну концепцию в разных цветовых комбинациях или интерпретациях. Пожалуйста, используйте для этого функцию мульти-загрузки и предложите ваши идеи на сайт. Заранее спасибо за содействие и понимание!
             </span><br/>
         </td></tr>

@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="http://www.godesigner.ru/img/logo_original-01.png" width="200">
+<img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
 
 <table width="800">
     <tr><td width="5"></td><td width="30"></td><td>
@@ -22,10 +22,10 @@
 
     </td>
         <td>
-            <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://www.godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
+            <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://www.godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
             <?php if($pitch->private == 1):?>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="http://www.godesigner.ru/answers/view/64">закрытый проект</a> и вам нужно подписать соглашение о неразглашении!</span><br/>
+            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="https://www.godesigner.ru/answers/view/64">закрытый проект</a> и вам нужно подписать соглашение о неразглашении!</span><br/>
             <?php else:?>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php echo strip_tags($pitch->editedDescription, '<br><br/><p><a><ul><li><ol>')?></span><br/>
             <?php endif?>
@@ -38,7 +38,7 @@
     <tr>
         <td width="5"></td><td valign="top"></td>
         <td height="40">
-            <a href="http://www.godesigner.ru/users/unsubscribe<?php echo $user->unsubscribeToken(); ?>" style="color: #7ea0ac; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;">ОТПИСАТЬСЯ ОТ РАССЫЛКИ.</a><br/>
+            <a href="https://www.godesigner.ru/users/unsubscribe<?php echo $user->unsubscribeToken(); ?>" style="color: #7ea0ac; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;">ОТПИСАТЬСЯ ОТ РАССЫЛКИ.</a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;">ОТПРАВЛЕНО ИЗ ГОЛОВНОГО ОФИСА GODESIGNER.RU. САНКТ-ПЕТЕРБУРГ, РОССИЯ</span>
         </td>
     </tr>

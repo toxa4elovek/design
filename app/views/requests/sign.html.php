@@ -7,7 +7,7 @@
     <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
 
     <div style="float:left; width: 627px;padding-bottom: 40px;">
-        <h2 class="largest-header" style="text-align: center; margin-bottom: 30px;">ЭТО <a target="_blank" href="http://www.godesigner.ru/answers/view/64">ЗАКРЫТЫЙ ПРОЕКТ</a><br/> И ВАМ НУЖНО ПОДПИСАТЬ<br/> СОГЛАШЕНИЕ О НЕРАЗГЛАШЕНИИ!<h2>
+        <h2 class="largest-header" style="text-align: center; margin-bottom: 30px;">ЭТО <a target="_blank" href="https://www.godesigner.ru/answers/view/64">ЗАКРЫТЫЙ ПРОЕКТ</a><br/> И ВАМ НУЖНО ПОДПИСАТЬ<br/> СОГЛАШЕНИЕ О НЕРАЗГЛАШЕНИИ!<h2>
 
         <p class="regular">В закрытом проекте вы сможете увидеть только свои работы, а также комментарии, оставленные только вам или всем дизайнерам. Вы не можете использовать свои решения для данного проекта в портфолио без изменения имени бренда, заказчика и его данных.</p>
     </div>
