@@ -681,9 +681,9 @@ class UsersController extends \app\controllers\AppController
     {
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User'))))) {
             if (($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
-                    ((Session::read('user.id') == $solution->pitch->user_id) || (Session::read('user.isAdmin') == 1)) && ($solution->step == 3)) {
+                    (($this->userHelper->isPitchOwner($solution->pitch->user_id)) || $this->userHelper->isAdmin()) && ($solution->step == 3)) {
                 $user = User::first($solution->user_id);
-                if (Session::read('user.isAdmin') == 1) {
+                if ($this->userHelper->isAdmin()) {
                     User::sendSpamWinstepGo($user, $solution, '4');
                 } else {
                     User::sendSpamWinstep($user, $solution, '4');
@@ -695,9 +695,9 @@ class UsersController extends \app\controllers\AppController
             }
 
             if (($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
-                    ((Session::read('user.id') == $solution->pitch->user_id) || (Session::read('user.isAdmin') == 1)) && ($solution->pitch->category_id == 7)) {
+                    ($this->userHelper->isPitchOwner($solution->pitch->user_id) || $this->userHelper->isAdmin()) && ($solution->pitch->category_id == 7)) {
                 $user = User::first($solution->user_id);
-                if (Session::read('user.isAdmin') == 1) {
+                if ($this->userHelper->isAdmin()) {
                     User::sendSpamWinstepGo($user, $solution, '4');
                 } else {
                     User::sendSpamWinstep($user, $solution, '4');
@@ -708,29 +708,29 @@ class UsersController extends \app\controllers\AppController
                 return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
             }
 
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isAdmin() && !$this->userHelper->isSolutionAuthor($solution->user_id)) {
                 return $this->redirect('Users::feed');
             }
             if ($solution->step < 4) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $this->request->id));
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
-            if ($solution->user_id == Session::read('user.id')) {
+            if ($this->userHelper->isSolutionAuthor($solution->user_id)) {
                 $type = 'designer';
                 $gradeByOtherParty = Grade::first(array('conditions' => array('user_id' => $solution->pitch->user_id, 'pitch_id' => $solution->pitch->id)));
             } else {
                 $type = 'client';
                 $gradeByOtherParty = Grade::first(array('conditions' => array('user_id' => $solution->user_id, 'pitch_id' => $solution->pitch->id)));
             }
-            if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
+            if ($this->userHelper->isAdmin()) {
                 $type = 'admin';
             }
-            $grade = Grade::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $solution->pitch->id, 'type' => $type)));
+            $grade = Grade::first(array('conditions' => array('user_id' => $this->userHelper->getId(), 'pitch_id' => $solution->pitch->id, 'type' => $type)));
             if ($this->request->data) {
                 $grade = Grade::create();
                 $grade->set($this->request->data);
                 $grade->pitch_id = $solution->pitch->id;
-                $grade->user_id = Session::read('user.id');
+                $grade->user_id = $this->userHelper->getId();
                 $grade->type = $type;
                 $grade->save();
                 if ($gradeByOtherParty) {
