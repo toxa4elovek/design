@@ -416,7 +416,7 @@ class User extends AppModel
 
     public static function getAverageGrade($userId)
     {
-        $all = Solution::all(array('conditions' => array('user_id' => $userId, 'awarded' => 1)));
+        $all = Solution::all(array('fields' => ['pitch_id'], 'conditions' => array('user_id' => $userId, 'awarded' => 1)));
         $pitches = array();
         foreach ($all as $solution) {
             $pitches[] = $solution->pitch_id;
@@ -448,11 +448,20 @@ class User extends AppModel
         }
     }
 
+    /**
+     * Метод считают сумму проектов пользователя и количество проектов, в которых он участвовал
+     *
+     * @param int $userId
+     * @return int
+     */
     public static function getPitchCount($userId)
     {
-        $pitches = Pitch::count(array('conditions' => array('user_id' => $userId, 'published' => 2)));
-        $participatedPitches = count(Solution::all(array('conditions' => array('user_id' => $userId), 'group' => array('pitch_id'))));
-        return $pitches + $participatedPitches;
+        $projects = Pitch::count(['conditions' => ['user_id' => (int) $userId, 'published' => 2]]);
+        $participatedProjects = Solution::count([
+            'fields' => ['distinct(pitch_id)'],
+            'conditions' => ['user_id' => (int) $userId]
+        ]);
+        return $projects + $participatedProjects;
     }
 
     public static function getDesignersForSpam($category)

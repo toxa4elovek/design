@@ -2,9 +2,10 @@
 
 namespace app\models;
 
-class Solutionfile extends \app\models\AppModel {
+class Solutionfile extends AppModel
+{
 
-    protected static $processImage = array(
+    public static $processImage = array(
         'solutionView' => array(
             'image_resize' => true,
             'image_x' => 600,
@@ -117,7 +118,8 @@ class Solutionfile extends \app\models\AppModel {
         ),
     );
 
-    public static function resize($params) {
+    public static function resize($params)
+    {
         $options = self::$processImage;
         if ($params['solution']->pitch->private > 0 && false) { // false turns off the watermarking
             $options = self::$processImageWatermark;
@@ -158,11 +160,13 @@ class Solutionfile extends \app\models\AppModel {
         return true;
     }
 
-    public static function getParams() {
+    public static function getParams()
+    {
         return self::$processImage;
     }
 
-    public static function paramsModify($file) {
+    public static function paramsModify($file)
+    {
         $res = self::$processImage;
         if (file_exists($file['tmp_name'])) {
             $image_info = getimagesize($file["tmp_name"]);
@@ -175,7 +179,8 @@ class Solutionfile extends \app\models\AppModel {
         return $res;
     }
 
-    public static function copy($model_id, $new_model) {
+    public static function copy($model_id, $new_model)
+    {
         $files = self::all(array('conditions' => array('model_id' => $model_id, 'originalbasename' => array('!=' => ''))));
         $options = self::$processImage;
         if (count($files) > 0) {
@@ -213,5 +218,4 @@ class Solutionfile extends \app\models\AppModel {
         }
         return true;
     }
-
 }

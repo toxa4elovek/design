@@ -1631,7 +1631,8 @@ class UsersController extends \app\controllers\AppController
                 return $this->redirect('/');
             endif;
 
-            $pitchCount = User::getPitchCount($this->request->id);
+            $pitchCount = User::getPitchCount((int) $user->id);
+
             $averageGrade = User::getAverageGrade($this->request->id);
             if (!$averageGrade) {
                 $averageGrade = 0;
@@ -1643,11 +1644,13 @@ class UsersController extends \app\controllers\AppController
             $totalFavoriteMe = Favourite::getNumberOfTimesAddedToFavourite($user->id);
             $totalUserFavorite = Favourite::getCountFavoriteUsersForUser($user->id);
             $isFav = Favourite::first(array('conditions' => array('user_id' => Session::read('user.id'), 'fav_user_id' => $user->id)));
+
             if (User::checkRole('admin')) {
                 $selectedSolutions = Solution::getUsersSolutions($this->request->id);
             } else {
                 $selectedSolutions = Solution::getUsersSolutions($this->request->id, true);
             }
+
             $moderations = null;
             if (User::checkRole('admin') || (Session::read('user.isAdmin') == 1)) {
                 $moderations = Moderation::all(array('conditions' => array('model_user' => $user->id)));

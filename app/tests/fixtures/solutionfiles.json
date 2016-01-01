@@ -1,1 +1,6 @@
-[]
+[
+  {"id": 1, "filename": "/Users/dima/www/godesigner/app/resources/tmp/solution_largest.png", "originalbasename": "", "model": "\\app\\models\\Solution", "model_id": 2, "filekey": "solution_solutionView"},
+  {"id": 2, "filename": "/Users/dima/www/godesigner/app/resources/tmp/solution.png", "originalbasename": "", "model": "\\app\\models\\Solution", "model_id": 2, "filekey": "solution"},
+  {"id": 3, "filename": "/Users/dima/www/godesigner/app/resources/tmp/solution_normal.png", "originalbasename": "", "model": "\\app\\models\\Solution", "model_id": 2, "filekey": "solution_galleryLargeSize"},
+  {"id": 4, "filename": "/Users/dima/www/godesigner/app/resources/tmp/solution_view.png", "originalbasename": "", "model": "\\app\\models\\Solution", "model_id": 2, "filekey": "solution_gallerySiteSize"}
+]

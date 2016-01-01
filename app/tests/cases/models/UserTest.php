@@ -7,21 +7,24 @@ use app\models\User;
 use app\extensions\storage\Rcache;
 use lithium\storage\Session;
 
-class UserTest extends AppUnit {
+class UserTest extends AppUnit
+{
 
     public $models = ['Pitch', 'User', 'Solution', 'Category', 'Comment', 'Expert'];
 
-    public function setUp() {
-		Rcache::init();
+    public function setUp()
+    {
+        Rcache::init();
         $this->rollUp($this->models);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Rcache::flushdb();
         $this->rollDown($this->models);
     }
 /*
-	public function testGetAuthorsIds() {
+    public function testGetAuthorsIds() {
         $authors = array(1, 2);
         User::$authors = $authors;
         $result = User::getAuthorsIds();
@@ -67,34 +70,34 @@ class UserTest extends AppUnit {
         $result = $user->getLastActionTime();
         $this->assertEqual($time, $result);
     } 
-	
-	public function testActivateUser() {
-		$user = User::first(1);
-		$user->activateUser();
-		$this->assertEqual('', $user->token);
-		$this->assertEqual(1, $user->confirmed_email);
-		$user2 = User::first(1);
-		$this->assertEqual('', $user2->token);
-		$this->assertEqual(1, $user2->confirmed_email);
-	}
-	
-	public function testSetUserToken() {
-		// Токена нету
-		$id=1;
-		$user = User::first($id);
-		$user->token = '';
-		$user->save(null, array('validate' => false));
-		$user2 = User::setUserToken($id);
-		$this->assertNotEqual($user->token, $user2->token);	
-		
-		// Токен есть
-		$id=2;
-		$user3 = User::first($id);
-		$user3->token = '52e72fbb58de8';
-		$user3->save(null, array('validate' => false));
-		$user4 = User::setUserToken($id);
-		$this->assertEqual($user3->token, $user4->token);	
-	}
+    
+    public function testActivateUser() {
+        $user = User::first(1);
+        $user->activateUser();
+        $this->assertEqual('', $user->token);
+        $this->assertEqual(1, $user->confirmed_email);
+        $user2 = User::first(1);
+        $this->assertEqual('', $user2->token);
+        $this->assertEqual(1, $user2->confirmed_email);
+    }
+    
+    public function testSetUserToken() {
+        // Токена нету
+        $id=1;
+        $user = User::first($id);
+        $user->token = '';
+        $user->save(null, array('validate' => false));
+        $user2 = User::setUserToken($id);
+        $this->assertNotEqual($user->token, $user2->token);	
+        
+        // Токен есть
+        $id=2;
+        $user3 = User::first($id);
+        $user3->token = '52e72fbb58de8';
+        $user3->save(null, array('validate' => false));
+        $user4 = User::setUserToken($id);
+        $this->assertEqual($user3->token, $user4->token);	
+    }
 
     public function testGetUsersWinnerSolutionsIds() {
         $expected = array();
@@ -243,7 +246,8 @@ class UserTest extends AppUnit {
         $this->assertFalse($result);
     }
 */
-    public function testSetActiveSubscriptionDiscount() {
+    public function testSetActiveSubscriptionDiscount()
+    {
         $dateTime = date('Y-m-d H:i:s', time() + MONTH);
         $result = User::setSubscriptionDiscount(22222222, 40, $dateTime);
         $this->assertFalse($result);
@@ -255,7 +259,8 @@ class UserTest extends AppUnit {
         $this->assertEqual($dateTime, $user->subscription_discount_end_date);
     }
 
-    public function testHasActiveSubscriptionDiscountForRecord() {
+    public function testHasActiveSubscriptionDiscountForRecord()
+    {
         User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
         $userRecord = User::first(2);
         $result = $userRecord->hasActiveSubscriptionDiscountForRecord($userRecord->id);
@@ -266,72 +271,77 @@ class UserTest extends AppUnit {
         $this->assertFalse($result);
     }
 
-        public function testHasActiveSubscriptionDiscount() {
-            User::setSubscriptionDiscount(22222222, 40, date('Y-m-d H:i:s', time() + MONTH));
-            $result = User::hasActiveSubscriptionDiscount(2222222);
-            $this->assertFalse($result);
+    public function testHasActiveSubscriptionDiscount()
+    {
+        User::setSubscriptionDiscount(22222222, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = User::hasActiveSubscriptionDiscount(2222222);
+        $this->assertFalse($result);
 
-            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
-            $result = User::hasActiveSubscriptionDiscount(2);
-            $this->assertTrue($result);
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = User::hasActiveSubscriptionDiscount(2);
+        $this->assertTrue($result);
 
-            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
-            $result = User::hasActiveSubscriptionDiscount(2);
-            $this->assertFalse($result);
-        }
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+        $result = User::hasActiveSubscriptionDiscount(2);
+        $this->assertFalse($result);
+    }
 
-        public function testGetSubscriptionDiscountForRecord() {
-            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
-            $userRecord = User::first(2);
-            $result = $userRecord->getSubscriptionDiscountForRecord(2);
-            $this->assertEqual(40, $result);
+    public function testGetSubscriptionDiscountForRecord()
+    {
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $userRecord = User::first(2);
+        $result = $userRecord->getSubscriptionDiscountForRecord(2);
+        $this->assertEqual(40, $result);
 
-            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
-            $userRecord = User::first(2);
-            $result = $userRecord->getSubscriptionDiscountForRecord(2);
-            $this->assertNull($result);
-        }
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+        $userRecord = User::first(2);
+        $result = $userRecord->getSubscriptionDiscountForRecord(2);
+        $this->assertNull($result);
+    }
 
-        public function testGetSubscriptionDiscount() {
-            $result = User::getSubscriptionDiscount(2222222);
-            $this->assertNull($result);
+    public function testGetSubscriptionDiscount()
+    {
+        $result = User::getSubscriptionDiscount(2222222);
+        $this->assertNull($result);
 
-            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
-            $result = User::getSubscriptionDiscount(2);
-            $this->assertEqual(40, $result);
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
+        $result = User::getSubscriptionDiscount(2);
+        $this->assertEqual(40, $result);
 
-            User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
-            $result = User::getSubscriptionDiscount(2);
-            $this->assertNull($result);
-        }
+        User::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() - MONTH));
+        $result = User::getSubscriptionDiscount(2);
+        $this->assertNull($result);
+    }
 
-        public function testGetSubscriptionDiscountEndTimeForRecord() {
-            $dateTime = date('Y-m-d H:i:s', time() + MONTH);
-            User::setSubscriptionDiscount(2, 40, $dateTime);
-            $userRecord = User::first(2);
-            $result = $userRecord->getSubscriptionDiscountEndTimeForRecord();
-            $this->assertEqual($dateTime, $result);
+    public function testGetSubscriptionDiscountEndTimeForRecord()
+    {
+        $dateTime = date('Y-m-d H:i:s', time() + MONTH);
+        User::setSubscriptionDiscount(2, 40, $dateTime);
+        $userRecord = User::first(2);
+        $result = $userRecord->getSubscriptionDiscountEndTimeForRecord();
+        $this->assertEqual($dateTime, $result);
 
-            $dateTime = date('Y-m-d H:i:s', time() - MONTH);
-            User::setSubscriptionDiscount(2, 40, $dateTime);
-            $userRecord = User::first(2);
-            $result = $userRecord->getSubscriptionDiscountEndTimeForRecord();
-            $this->assertNull($result);
-        }
+        $dateTime = date('Y-m-d H:i:s', time() - MONTH);
+        User::setSubscriptionDiscount(2, 40, $dateTime);
+        $userRecord = User::first(2);
+        $result = $userRecord->getSubscriptionDiscountEndTimeForRecord();
+        $this->assertNull($result);
+    }
 
-        public function testGetSubscriptionDiscountEndTime() {
-            $result = User::getSubscriptionDiscountEndTime(2222222);
-            $this->assertNull($result);
-            $dateTime = date('Y-m-d H:i:s', time() + MONTH);
-            User::setSubscriptionDiscount(2, 40, $dateTime);
-            $result = User::getSubscriptionDiscountEndTime(2);
-            $this->assertEqual($dateTime, $result);
+    public function testGetSubscriptionDiscountEndTime()
+    {
+        $result = User::getSubscriptionDiscountEndTime(2222222);
+        $this->assertNull($result);
+        $dateTime = date('Y-m-d H:i:s', time() + MONTH);
+        User::setSubscriptionDiscount(2, 40, $dateTime);
+        $result = User::getSubscriptionDiscountEndTime(2);
+        $this->assertEqual($dateTime, $result);
 
-            $dateTime = date('Y-m-d H:i:s', time() - MONTH);
-            User::setSubscriptionDiscount(2, 40, $dateTime);
-            $result = User::getSubscriptionDiscountEndTime(2);
-            $this->assertNull($result);
-        }
+        $dateTime = date('Y-m-d H:i:s', time() - MONTH);
+        User::setSubscriptionDiscount(2, 40, $dateTime);
+        $result = User::getSubscriptionDiscountEndTime(2);
+        $this->assertNull($result);
+    }
     /*
             public function testGetReferalPaymentsCount() {
                 $count = User::getReferalPaymentsCount();
@@ -399,4 +409,12 @@ class UserTest extends AppUnit {
             }
 
         */
+
+    public function testGetPitchCount()
+    {
+        $count = User::getPitchCount(1);
+        $this->assertEqual(1, $count);
+        $count = User::getPitchCount(2);
+        $this->assertEqual(11, $count);
+    }
 }

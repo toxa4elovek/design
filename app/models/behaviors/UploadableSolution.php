@@ -2,66 +2,81 @@
 
 namespace app\models\behaviors;
 
-use \app\models\File;
+use app\extensions\storage\Rcache;
+use app\models\Solution;
+use app\models\Solutionfile;
 
 /**
- * ��������� UploadableImage
- *
- * @description	��������� ����������� ��������� ����� ������ � ����� ������.
- *
- *
+ * Class UploadableSolution
+ * @package app\models\behaviors
  */
-class UploadableSolution extends \app\models\behaviors\UploadableImage{
+class UploadableSolution extends UploadableImage
+{
+    /**
+     * @var array $defaults Настройки для сохранения картинок для решений
+     */
+    public static $defaults = [
+        'validate' => ['uploadedOnly' => true],
+        'moveFile' => ['preserveFileName' => false, 'path' => '/resources/tmp/'],
+        'setPermission' => ['mode' => 0644],
+        'processImage' => [],
+    ];
 
-    public static $defaults = array(
-        'validate' => array('uploadedOnly' => true),
-        'moveFile' => array('preserveFileName' => false, 'path' => '/resources/tmp/'),
-        'setPermission' => array('mode' => 0644),
-        'processImage' => array(),
-    );
-
+    /**
+     * @var string $fileModel Имя модели
+     */
     public static $fileModel = 'app\models\Solutionfile';
 
-    protected function _init(){
+    /**
+     * Инициализация
+     * @return void
+     */
+    protected function _init()
+    {
         parent::_init();
         static::$name = __CLASS__;
     }
 
-    public function afterDelete($result){
-        if($result){
-            $model = $this->_model;
-			foreach($model::$attaches as $key => &$attachInfo){
-                if(isset($attachInfo['deleteId'])){
-                    $fileModel = static::$fileModel;
-                    $filerecord = $fileModel::find('first', array('conditions' => array(
-                        'model' => $model,
-                        'model_id' => $attachInfo['deleteId'],
-                        'filekey' => $key,
-                    )));
-                    if(!is_null($filerecord)){
-                        if(file_exists($filerecord->filename)){
-                            unlink($filerecord->filename);
-                        }
-                        $filerecord->delete();
+    /**
+     * Перегруженный метод, который запускается после удаления записи Solutionfile
+     * Удалются все записи картинок и файлы
+     *
+     * @param mixed $result
+     * @return mixed
+     */
+    public function afterDelete($result)
+    {
+        if (isset(Solution::$attaches['solution']['deleteId'])) {
+            $deleteFileForRecord = function ($fileRecord) {
+                if (!is_null($fileRecord)) {
+                    if (file_exists($fileRecord->filename)) {
+                        unlink($fileRecord->filename);
                     }
-                    foreach($attachInfo['processImage'] as $resizeName => $resizeOptions){
-                        $filerecord = $fileModel::find('first', array('conditions' => array(
-                            'model' => $model,
-                            'model_id' => $attachInfo['deleteId'],
-                            'filekey' => $key . '_' . $resizeName,
-                        )));
-                        if(!is_null($filerecord)){
-                            if(file_exists($filerecord->filename)){
-                                unlink($filerecord->filename);
-                            }
-                            $filerecord->delete();
-                        }
-                    }
-
+                    $fileRecord->delete();
                 }
+            };
+            $deletedRecordId = Solution::$attaches['solution']['deleteId'];
+            $cacheKey = "solutionfiles_$deletedRecordId";
+            Rcache::delete($cacheKey);
+            $fullModelName = $this->_model;
+            foreach (Solution::$attaches as $key => $attachInfo) {
+                $fileModel = static::$fileModel;
+                $fileRecord = $fileModel::first(['conditions' => [
+                    'model' => $fullModelName,
+                    'model_id' => $deletedRecordId,
+                    'filekey' => $key,
+                ]]);
+                $deleteFileForRecord($fileRecord);
             }
-		}
+            foreach (Solutionfile::$processImage as $resizeName => $resizeOptions) {
+                $fileRecord = $fileModel::first(['conditions' => [
+                    'model' => $fullModelName,
+                    'model_id' => $deletedRecordId,
+                    'filekey' => $key . '_' . $resizeName,
+                ]]);
+                $deleteFileForRecord($fileRecord);
+            }
+        }
         return $result;
     }
-
 }

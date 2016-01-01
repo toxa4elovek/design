@@ -2,6 +2,7 @@
 
 namespace app\models\behaviors;
 
+use app\extensions\storage\Rcache;
 use \app\models\File;
 use \app\models\behaviors\handlers\ValidateHandler;
 use \app\models\behaviors\handlers\MoveFileHandler;
@@ -100,9 +101,23 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior
             }
         };
         $attachRecord = function ($fileModel, $record) use ($getWebUrl) {
-            $record->images = array();
-            if ($fileModel == 'app\models\Solutionfile') {
-                $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model()), 'order' => array('position' => 'asc')));
+            if(!isset($record->id)) {
+                return false;
+            }
+            $record->images = [];
+            if ($fileModel === 'app\models\Solutionfile') {
+                $cacheKey = "solutionfiles_$record->id";
+                if(!$images = Rcache::read($cacheKey)) {
+                    $images = $fileModel::all([
+                        'conditions' => [
+                            'model_id' => $record->id,
+                            'model' => '\\' . $record->model()
+                        ],
+                        'order' => ['position' => 'asc']
+                    ]);
+                    $images->data();
+                    Rcache::write($cacheKey, $images, null, '+1 hour');
+                }
             } else {
                 $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
             }

@@ -2,7 +2,7 @@
 use lithium\data\Connections;
 use app\extensions\helper\User;
 use app\extensions\storage\Rcache;
-/*
+
 if (PHP_SAPI === 'cli') {
     return;
 }
@@ -40,7 +40,7 @@ if ($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 't
         $sessionHelper->write('debug.queries', $currentQueryLog);
         return $result;
     });
-
+/*
     $actions = ['read', 'write', 'delete', 'ttl', 'exists'];
     Rcache::applyFilter($actions, function ($self, $params, $chain) use ($sessionHelper) {
         if (!$currentQueryLog = $sessionHelper->read('debug.queries')) {
@@ -60,5 +60,5 @@ if ($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 't
         $sessionHelper->write('debug.queries', $currentQueryLog);
         return $result;
     });
-}
 */
+}
