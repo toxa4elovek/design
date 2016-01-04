@@ -22,6 +22,8 @@
     <!--[if lte IE 8]><?= $this->html->style(array('/ie8.css')); ?><![endif]-->
     <!--[if lte IE 7]><?= $this->html->style(array('/ie7.css')); ?><![endif]-->
     <meta property="og:type" content="website"/>
+    <meta property="fb:app_id" content="202765613136579"/>
+
     <?php echo $this->Og->getOgUrl(''); ?>
     <?php if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView']))):
     if(!isset($solution->images['solution_galleryLargeSize'][0])):

@@ -10,6 +10,7 @@ class Payture {
     #public static $key = 'MerchantGoDesigner';
     public static $url = 'secure.payture.com';
     public static $key = 'GoDesignerPSB437';
+    #public static $key = 'GoDesignerOpen3DS';
     public static $password = '123';
     public static $scheme = 'https';
 
