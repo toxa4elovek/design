@@ -3,12 +3,17 @@
 namespace app\models;
 
 use app\extensions\storage\Rcache;
-use \app\extensions\social\VKAPI;
-use \app\extensions\social\FacebookAPI;
-use app\extensions\social\TwitterAPI;
-use app\extensions\social\SocialMediaManager;
+use lithium\data\collection\RecordSet;
+use lithium\data\entity\Record;
 
-class News extends \app\models\AppModel
+/**
+ * Class News
+ * @package app\models
+ * @method Record|null first(array $conditions) static
+ * @method int count(array $conditions) static
+ * @method RecordSet|null all(array $conditions) static
+ */
+class News extends AppModel
 {
 
     private static $news;

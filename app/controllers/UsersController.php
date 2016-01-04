@@ -28,6 +28,7 @@ use \app\models\Tweet;
 use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SpamMailer;
 use \app\extensions\mailers\ContactMailer;
+use lithium\action\Response;
 use \lithium\storage\Session;
 use \lithium\security\Auth;
 use \li3_flash_message\extensions\storage\FlashMessage;
@@ -1911,14 +1912,23 @@ class UsersController extends \app\controllers\AppController
         $this->redirect('/');
     }
 
+    /**
+     * Метод происходит при клике на ссылку в ленте новостей, он увеличивает счётчик кликов для
+     * записи новости
+     *
+     * @return Response
+     */
     public function click()
     {
-        $news = News::first($this->request->query['id']);
-        if ($news) {
-            $news->views += 1;
-            $news->save();
+        $link = '/';
+        if ((isset($this->request->query['id'])) && (isset($this->request->query['link']))) {
+            if ($news = News::first($this->request->query['id'])) {
+                $news->views += 1;
+                $news->save();
+            }
+            $link = $this->request->query['link'];
         }
-        return $this->redirect($this->request->query['link']);
+        return $this->redirect($link);
     }
 
     public function gender()
