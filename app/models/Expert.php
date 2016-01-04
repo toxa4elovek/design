@@ -3,6 +3,8 @@
 namespace app\models;
 
 use app\extensions\storage\Rcache;
+use lithium\data\collection\RecordSet;
+use lithium\data\entity\Record;
 
 /**
  * Class Expert
@@ -10,6 +12,9 @@ use app\extensions\storage\Rcache;
  * Класс для работы с записями экспертов
  *
  * @package app\models
+ * @method Record|null first(array $conditions) static
+ * @method int count(array $conditions) static
+ * @method RecordSet|null all(array $conditions = []) static
  */
 class Expert extends AppModel
 {

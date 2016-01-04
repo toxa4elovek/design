@@ -2,15 +2,15 @@
 
 namespace app\controllers;
 
-use \app\models\Pitch;
-use \app\models\Expert;
-use \app\models\User;
-use \app\models\Grade;
-use app\models\Answer;
-use \app\models\Solution;
-use \app\extensions\mailers\ContactMailer;
+use app\extensions\mailers\ContactMailer;
 use app\extensions\storage\Rcache;
+use app\models\Answer;
+use app\models\Expert;
+use app\models\Grade;
+use app\models\Pitch;
 use app\models\Schedule;
+use app\models\Solution;
+use app\models\User;
 
 /**
  * Class PagesController
@@ -18,6 +18,7 @@ use app\models\Schedule;
  * Метод для показа статических и полустатических страниц
  *
  * @package app\controllers
+ * @property \app\extensions\helper\User $userHelper
  */
 class PagesController extends AppController
 {
@@ -29,9 +30,12 @@ class PagesController extends AppController
         'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch', 'subscribe'
     );
 
+    /**
+     * Метод для отображения статических страниц
+     */
     public function view()
     {
-        $path = func_get_args() ? : array('home');
+        $path = func_get_args() ? : ['home'];
         if (preg_match('/experts/', $path[0])) {
             return $this->redirect('/experts');
         }
@@ -43,18 +47,11 @@ class PagesController extends AppController
         return $this->render(array('template' => join('/', $path), 'data' => array('questions' => $questions, 'answers' => $answers)));
     }
 
-    public function stats()
-    {
-        return $this->render(array('layout' => 'stats'));
-    }
-
-    public function twitter()
-    {
-        echo '<pre>';
-        var_dump($_GET);
-        die();
-    }
-
+    /**
+     * Метод для отображения главной страницы
+     *
+     * @return array
+     */
     public function home()
     {
         $pool = array(1, 3, 7);
@@ -95,6 +92,11 @@ class PagesController extends AppController
         return compact('category_id', 'statistic', 'pitches', 'promoSolutions', 'experts', 'grades', 'totalCount');
     }
 
+    /**
+     * Метод для отображения страницы "контакты" и обработка формы получения сообщений
+     *
+     * @return array
+     */
     public function contacts()
     {
         $success = false;
@@ -107,11 +109,17 @@ class PagesController extends AppController
         return compact('success', 'questions');
     }
 
+    /**
+     * Метод для отображения лендинга "логотип в один клик"
+     *
+     * @return array
+     */
     public function fastpitch()
     {
-        $schedule = Schedule::all(array('conditions' => array('start' => array('>=' => time()))));
-        $alllow_time = array();
-        $deny_time = array();
+        $currentTime = new \DateTime();
+        $schedule = Schedule::all(['conditions' => ['start' => ['>=' => $currentTime->format('Y-m-d H:i:s')]]]);
+        $allowTime = [];
+        $deny_time = [];
         $start_hours = new \DateTime();
         $start_hours->setTime('12', '00', '00');
 
@@ -125,41 +133,40 @@ class PagesController extends AppController
             }
         }
         $max_hour = date('H', strtotime($max_time));
-        // var_dump($max_time,date('H',  strtotime($max_time)));
         $end_hours->setTime('15', '00', '00');
-        //date('Y-m-d H:i:s', mktime(date("H"), 0, 0));
         $temp = new \DateTime();
         $x = true;
         for ($i = 1; $i <= 15;) {
             if ($x) {
                 $temp->setTime($temp->format('H'), '00', '00');
             } else {
-                $temp->setTime($temp->format('H') + 1, '00', '00');
+                $temp->setTime((int) $temp->format('H') + 1, '00', '00');
             }
             $x = false;
             if (!in_array($temp->format('Y-m-d H:i:s'), $deny_time) && $temp->getTimestamp() >= $start_hours->getTimestamp()) {
                 if ($temp->getTimestamp() <= $end_hours->getTimestamp() && (int) $temp->format('w') != 0 && (int) $temp->format('w') != 6) {
-                    //var_dump($end_hours->format('H:i d/m/y'), $temp->format('H:i d/m/y'));
-                    $alllow_time[$temp->getTimestamp()] = $temp->format('H:i d/m/y');
+                    $allowTime[$temp->getTimestamp()] = $temp->format('H:i d/m/y');
                     $i++;
                 } else {
-                    $start_hours->setDate($start_hours->format('Y'), $start_hours->format('m'), $start_hours->format('d') + 1);
-                    $end_hours->setDate($end_hours->format('Y'), $end_hours->format('m'), $end_hours->format('d') + 1);
-                    $temp->setdate($temp->format('Y'), $temp->format('m'), $temp->format('d') + 1);
+                    $start_hours->setDate($start_hours->format('Y'), $start_hours->format('m'), (int) $start_hours->format('d') + 1);
+                    $end_hours->setDate($end_hours->format('Y'), $end_hours->format('m'), (int) $end_hours->format('d') + 1);
+                    $temp->setdate($temp->format('Y'), $temp->format('m'), (int) $temp->format('d') + 1);
                     $temp->setTime('12', '00', '00');
                     $x = true;
                 }
             } elseif ($max_hour >= '16' && strtotime($max_time) > time()) {
                 $max_hour = '';
-                $alllow_time[strtotime($max_time)] = date('H:i d/m/y', strtotime($max_time));
+                $allowTime[strtotime($max_time)] = date('H:i d/m/y', strtotime($max_time));
             }
         }
 
-        return compact('alllow_time');
+        return compact('allowTime');
     }
 
     /**
      * Метод для отображения страницы лендинга
+     *
+     * @return void
      */
     public function subscribe()
     {

@@ -2,7 +2,18 @@
 
 namespace app\models;
 
-class Grade extends AppModel {
+use lithium\data\collection\RecordSet;
+use lithium\data\entity\Record;
+
+/**
+ * Class Grade
+ * @package app\models
+ * @method Record|null first(array $conditions) static
+ * @method int count(array $conditions) static
+ * @method RecordSet|null all(array $conditions) static
+ */
+class Grade extends AppModel
+{
 
     public $belongsTo = array('User', 'Pitch');
 
@@ -12,12 +23,12 @@ class Grade extends AppModel {
      * @param $projectId
      * @return bool
      */
-    public static function isDesignerRatingExistsForProject($projectId) {
+    public static function isDesignerRatingExistsForProject($projectId)
+    {
         $grade = self::first(array('conditions' => array(
             'pitch_id' => $projectId,
             'type' => 'designer'
         )));
         return (bool) $grade;
     }
-
 }

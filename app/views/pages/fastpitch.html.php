@@ -22,14 +22,14 @@
                             <ul class="date">
                                 <?php
                                 $x = 0;
-                                foreach ($alllow_time as $i => $v):
+                                foreach ($allowTime as $i => $v):
                                     $x++;
                                     if ($x < 6):
                                         ?>
                                         <li>
                                             <label><input <?php if($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                         </li>
-                                        <?php unset($alllow_time[$i]);
+                                        <?php unset($allowTime[$i]);
                                     else: ?>
                                         <li>
                                             <label><input id="more" name="time" type="radio">Другое время</label>
@@ -43,8 +43,8 @@
                             <ul class="date-hide">
                                 <?php
                                 $j = 1;
-                                if(isset($alllow_time)):
-                                foreach ($alllow_time as $i => $v): ?>
+                                if(isset($allowTime)):
+                                foreach ($allowTime as $i => $v): ?>
                                     <li data-num="<?php echo $j; ?>">
                                         <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                     </li>

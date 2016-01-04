@@ -2,19 +2,19 @@
 
 namespace app\models;
 
-use \app\extensions\storage\Rcache;
-use \app\extensions\helper\NameInflector;
-use \lithium\analysis\Logger;
-use \lithium\storage\Session;
-use lithium\data\entity\Record;
+use app\extensions\storage\Rcache;
+use app\extensions\helper\NameInflector;
+use lithium\analysis\Logger;
+use lithium\storage\Session;
 use lithium\data\collection\RecordSet;
+use lithium\data\entity\Record;
 
 /**
  * Class Solution
  * @package app\models
- * @method Record|null first(integer $id)
- * @method int count(array $conditions)
- * @method RecordSet|null all(array $conditions)
+ * @method Record|null first(integer $id) static
+ * @method int count(array $conditions) static
+ * @method RecordSet|null all(array $conditions) static
  */
 class Solution extends AppModel
 {
