@@ -17,7 +17,8 @@ use \app\extensions\helper\Stream;
  *
  * @package app\controllers
  */
-class EventsController extends AppController {
+class EventsController extends AppController
+{
 
     /**
      * @var array публичные методы
@@ -29,7 +30,8 @@ class EventsController extends AppController {
      *
      * @return array
      */
-    public function updates() {
+    public function updates()
+    {
         if (!isset($this->request->query['page'])) {
             $this->request->query['page'] = 1;
         }
@@ -47,8 +49,9 @@ class EventsController extends AppController {
      *
      * @return array
      */
-    public function autolikes() {
-        if(isset($this->request->query['created'])) {
+    public function autolikes()
+    {
+        if (isset($this->request->query['created'])) {
             $offsetDate = date('Y-m-d H:i:s', strtotime($this->request->query['created']) + (2 * HOUR));
             $events = Event::all(array('conditions' => array(
                 'Event.type' => 'LikeAdded',
@@ -56,18 +59,18 @@ class EventsController extends AppController {
 
             ), 'order' => array('created' => 'desc')));
             $eventsCount = 0;
-            if($events) {
+            if ($events) {
                 $newLatestDate = $this->request->query['created'];
                 $eventsCount = (int) count($events->data());
-                foreach($events as $event) {
+                foreach ($events as $event) {
                     $newLatestDate = date('Y-m-d H:i:s', (strtotime($event->created) - (2 * HOUR) +  SECOND));
                     break;
                 }
-            }else {
+            } else {
                 $newLatestDate = $this->request->query['created'];
             }
             return compact('events', 'offsetDate', 'newLatestDate', 'eventsCount', 'first');
-        }else {
+        } else {
             $pong = 'pong';
             return compact($pong);
         }
@@ -78,7 +81,8 @@ class EventsController extends AppController {
      *
      * @return array
      */
-    public function feed() {
+    public function feed()
+    {
         $tag = null;
         if (isset($this->request->query['tag'])) {
             $tag = $this->request->query['tag'];
@@ -114,7 +118,8 @@ class EventsController extends AppController {
         return compact('subscribed', 'updates', 'count', 'nextUpdates', 'post', 'news', 'twitter', 'pitches', 'solutions');
     }
 
-    public function getsol() {
+    public function getsol()
+    {
         $solpages = Event::getEventSolutions(Session::read('user'), $this->request->query['page']);
         return compact('solpages');
     }
@@ -124,7 +129,8 @@ class EventsController extends AppController {
      *
      * @return array
      */
-    public function job() {
+    public function job()
+    {
         $job = \app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page']));
         $count = count(\app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page'] + 1)));
         return compact('job', 'count');
@@ -135,7 +141,8 @@ class EventsController extends AppController {
      *
      * @return array
      */
-    public function pitches() {
+    public function pitches()
+    {
         $pitches = Pitch::all(array('fields' => array('id', 'title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5, 'page' => $this->request->data['page']));
         $count = 0;
         if ($pitches) {
@@ -149,7 +156,8 @@ class EventsController extends AppController {
      *
      * @return array
      */
-    public function news() {
+    public function news()
+    {
         $news = News::getNews(0, $this->request->data['page']);
         $count = count(News::getNews(0, $this->request->data['page'] + 1));
         return compact('news', 'count');
@@ -160,7 +168,8 @@ class EventsController extends AppController {
      *
      * @return array
      */
-    public function liked() {
+    public function liked()
+    {
         $likes = array();
         $temp = array();
         $fav = array();
@@ -172,7 +181,7 @@ class EventsController extends AppController {
             foreach ($likes as $like) {
                 $temp[] = $like->user->id;
             }
-            if(!empty($temp)) {
+            if (!empty($temp)) {
                 $fav = Favourite::all(array('conditions' => array('pitch_id' => 0, 'fav_user_id' => $temp)));
             }
         }
@@ -184,7 +193,8 @@ class EventsController extends AppController {
      *
      * @return string
      */
-    public function newstags() {
+    public function newstags()
+    {
         if (isset($this->request->query['name']) && strlen($this->request->query['name']) > 0) {
             $tags = News::all(array('fields' => array('tags'), 'conditions' => array('tags' => array('LIKE' => array('%' . $this->request->query['name'] . '%')))));
             return json_encode($tags->data());
@@ -194,9 +204,11 @@ class EventsController extends AppController {
     /**
      * Метод сохраняет новост
      *
+     * @todo переместить в контроллер "News"
      * @return array
      */
-    public function add() {
+    public function add()
+    {
         $result = false;
         if ($this->request->data) {
             $result = News::saveNewsByAdmin($this->request->data);
@@ -209,8 +221,8 @@ class EventsController extends AppController {
      *
      * @return bool|mixed|null
      */
-    public function getaccesstoken() {
+    public function getaccesstoken()
+    {
         return Event::getBingAccessToken();
     }
-
 }

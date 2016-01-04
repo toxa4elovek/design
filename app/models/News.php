@@ -8,7 +8,8 @@ use \app\extensions\social\FacebookAPI;
 use app\extensions\social\TwitterAPI;
 use app\extensions\social\SocialMediaManager;
 
-class News extends \app\models\AppModel {
+class News extends \app\models\AppModel
+{
 
     private static $news;
     public $hasMany = array('Like');
@@ -22,7 +23,8 @@ class News extends \app\models\AppModel {
         ),
     );
 
-    public static function getPost($newsDate = 0) {
+    public static function getPost($newsDate = 0)
+    {
         $post = 0;
         if ($newsDate < 1) {
             $post = Rcache::read('middle-post');
@@ -65,15 +67,18 @@ class News extends \app\models\AppModel {
         return $post;
     }
 
-    public static function getNews($newsDate = 0, $page = 1) {
-        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0, 'isBanner' => 0, 'hidden' => 0,'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%', '%https://www.godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
+    public static function getNews($newsDate = 0, $page = 1)
+    {
+        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0, 'isBanner' => 0, 'hidden' => 0, 'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%', '%https://www.godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
     }
 
-    public static function getBanner() {
+    public static function getBanner()
+    {
         return self::first(array('conditions' => array('isBanner' => 1, 'hidden' => 0), 'order' => array('created' => 'desc')));
     }
 
-    public static function resize($file) {
+    public static function resize($file)
+    {
         $options = self::$processImage;
         foreach ($options as $option => $imageParams) {
             $newfiledata = pathinfo($file['name']);
@@ -99,7 +104,8 @@ class News extends \app\models\AppModel {
         return true;
     }
 
-    public static function decreaseLike($newsId, $userId = 0) {
+    public static function decreaseLike($newsId, $userId = 0)
+    {
         $result = false;
         $news = self::first($newsId);
         $userId = (int) $userId;
@@ -115,7 +121,8 @@ class News extends \app\models\AppModel {
         return array('result' => $result, 'likes' => $news->likes);
     }
 
-    public static function increaseLike($newsId, $userId = 0) {
+    public static function increaseLike($newsId, $userId = 0)
+    {
         $result = false;
         $news = self::first($newsId);
         if ($userId == 0) {
@@ -141,16 +148,17 @@ class News extends \app\models\AppModel {
         return array('result' => $result, 'likes' => $news->liked);
     }
 
-    public static function hideNews($newsId) {
+    public static function hideNews($newsId)
+    {
         $result = false;
-        if($news = self::first($newsId)) {
+        if ($news = self::first($newsId)) {
             $news->hidden = 1;
             $news->save();
-            if($event = Event::first(array('conditions' => array('news_id' => $news->id)))) {
+            if ($event = Event::first(array('conditions' => array('news_id' => $news->id)))) {
                 $event->delete();
             }
             $result = true;
-        }else if($event = Event::first(array('conditions' => array('news_id' => $newsId)))) {
+        } elseif ($event = Event::first(array('conditions' => array('news_id' => $newsId)))) {
             $event->delete();
             $result = true;
         }
@@ -166,7 +174,8 @@ class News extends \app\models\AppModel {
      * @param $imageUrl
      * @return mixed
      */
-    public static function doesNewsExists($title, $url = null, $imageUrl = null) {
+    public static function doesNewsExists($title, $url = null, $imageUrl = null)
+    {
         $conditions = array('hidden' => 0);
         if (!is_null($url)) {
             $conditions['link'] = (string) $url;
@@ -176,7 +185,7 @@ class News extends \app\models\AppModel {
                 array('imageurl' => (string) $imageUrl),
                 array('title' => (string) $title))
             );
-        }else{
+        } else {
             $conditions['title'] = (string) $title;
         }
         return (bool) self::count(array('conditions' => $conditions));
@@ -190,9 +199,10 @@ class News extends \app\models\AppModel {
      * @param bool $createEvent
      * @return bool
      */
-    public static function saveNewsByAdmin($data, $createEvent = true) {
-        if((isset($data['link'])) && (!empty($data['link'])) && (isset($data['title'])) && (!empty($data['title']))) {
-            if(self::doesNewsExists($data['title'], $data['link'])) {
+    public static function saveNewsByAdmin($data, $createEvent = true)
+    {
+        if ((isset($data['link'])) && (!empty($data['link'])) && (isset($data['title'])) && (!empty($data['title']))) {
+            if (self::doesNewsExists($data['title'], $data['link'])) {
                 return false;
             }
         }
@@ -202,42 +212,44 @@ class News extends \app\models\AppModel {
             $news->imageurl = News::resize($data['file']);
         }
 
-        if(preg_match('@youtube.com\/embed\/(.*?)"@', $news->short, $matches)) {
+        if (preg_match('@youtube.com\/embed\/(.*?)"@', $news->short, $matches)) {
             // расшаривание с ютюба
             $youtubeUrl = 'https://www.youtube.com/watch?v=' . $matches[1];
             try {
                 $context  = stream_context_create();
-                if($html = file_get_contents($youtubeUrl, false, $context)) {
-                    if(preg_match('@property="og:image" content="(.*?)">@', $html, $matches)) {
+                if ($html = file_get_contents($youtubeUrl, false, $context)) {
+                    if (preg_match('@property="og:image" content="(.*?)">@', $html, $matches)) {
                         $news->og_image = $matches[1];
                     }
-                    if(preg_match('@property="og:title" content="(.*?)">@', $html, $matches)) {
+                    if (preg_match('@property="og:title" content="(.*?)">@', $html, $matches)) {
                         $news->og_title = $matches[1];
                     }
-                    if(preg_match('@property="og:description" content="(.*?)">@', $html, $matches)) {
+                    if (preg_match('@property="og:description" content="(.*?)">@', $html, $matches)) {
                         $news->og_description = $matches[1];
                     }
                 }
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
-        if(preg_match('@player.vimeo.com\/video\/(.*?)"@', $news->short, $matches)) {
+        if (preg_match('@player.vimeo.com\/video\/(.*?)"@', $news->short, $matches)) {
             // расшаривание с ютюба
             $vimeoUrl = 'https://vimeo.com/' . $matches[1];
             try {
                 $context  = stream_context_create();
-                if($html = file_get_contents($vimeoUrl, false, $context)) {
-                    if(preg_match('@property="og:image" content="(.*?)">@', $html, $matches)) {
+                if ($html = file_get_contents($vimeoUrl, false, $context)) {
+                    if (preg_match('@property="og:image" content="(.*?)">@', $html, $matches)) {
                         $news->og_image = $matches[1];
                     }
-                    if(preg_match('@property="og:title" content="(.*?)">@', $html, $matches)) {
+                    if (preg_match('@property="og:title" content="(.*?)">@', $html, $matches)) {
                         $news->og_title = $matches[1];
                     }
-                    if(preg_match('@property="og:description" content="(.*?)">@', $html, $matches)) {
+                    if (preg_match('@property="og:description" content="(.*?)">@', $html, $matches)) {
                         $news->og_description = $matches[1];
                     }
                 }
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
         $news->admin = 1;
@@ -245,8 +257,8 @@ class News extends \app\models\AppModel {
             if ((!$news->isBanner) and ($createEvent)) {
                 Event::createEventNewsAdded($news->id, 0, $news->created);
                 $result = Event::first(array('conditions' => array('news_id' => $news->id)));
-                if($news->tags == 'Goворит Designer') {
-                    Task::createNewTask($result->id, 'postNewsToSocial');
+                if ($news->tags == 'Goворит Designer') {
+                    Task::createNewTask($result->id, 'postNewsToSocial', 30 * MINUTE);
                     Task::createNewTask($result->id, 'postNewsToSocialDelayed', HOUR);
                 }
             }
@@ -260,8 +272,8 @@ class News extends \app\models\AppModel {
      * @param $record
      * @return bool
      */
-    public function isCoub($record) {
+    public function isCoub($record)
+    {
         return (bool) preg_match('#<iframe src="//coub.com#', $record->short);
     }
-
 }
