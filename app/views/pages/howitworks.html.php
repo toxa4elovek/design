@@ -86,7 +86,7 @@
 			
 			<div class="margins-1">
 				<div style="text-align:center;margin-bottom:25px;">
-					<iframe style="text-align:center;" title="YouTube video player" src="http://www.youtube.com/embed/3bhLkorXLI8" width="600" height="399"></iframe>
+					<iframe style="text-align:center;" title="YouTube video player" src="https://www.youtube.com/embed/3bhLkorXLI8" width="600" height="399"></iframe>
 				</div>
 			</div>
 
