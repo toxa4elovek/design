@@ -29,7 +29,16 @@ use \app\extensions\helper\PdfGetter;
 use app\extensions\mailers\SolutionsMailer;
 use \app\extensions\social\FacebookAPI;
 use app\extensions\social\SocialMediaManager;
+use lithium\data\collection\RecordSet;
+use lithium\data\entity\Record;
 
+/**
+ * Class Pitch
+ * @package app\models
+ * @method Record|null first(array $conditions) static
+ * @method int count(array $conditions) static
+ * @method RecordSet|null all(array $conditions) static
+ */
 class Pitch extends AppModel
 {
 
