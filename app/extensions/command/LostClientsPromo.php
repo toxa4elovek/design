@@ -23,6 +23,9 @@ class LostClientsPromo extends CronJob {
             ],
         ]]);
         foreach($projects as $project) {
+            if($project->user_id == 0) {
+                continue;
+            }
             $profit = Receipt::getProfitForProject($project->id);
             $this->out('Project found, id ' . $project->id . ', profit - ' . $profit);
             if(($profit >= 2500) && ($profit < 8000)) {
