@@ -49,7 +49,11 @@
     заключительного этапа.</span>
         <span class="supplement">Со дня определения победителя у вас есть <?=$solution->pitch->category->default_timelimit?> дней, чтобы доработать макеты <?php if($solution->pitch->category_id == 1):?>(3 поправки)<?php endif?> и исходники.
         <?php if(!$this->user->isPitchOwner($solution->pitch->user_id)):?>
-            <br><br><a href="https://www.godesigner.ru/answers/view/101" target="_blank" class="supplement">Если заказчик пропал на завершительном этапе, что делать?</a>
+            <?php if(mt_rand(0, 1)):?>
+                <br><br><a href="https://www.godesigner.ru/answers/view/101" target="_blank" class="supplement">Если заказчик пропал на завершительном этапе, что делать?</a>
+            <?php else: ?>
+                <br><br><a href="https://www.godesigner.ru/answers/view/105" target="_blank" class="supplement">Как подготовить исходники</a>
+            <?php endif ?>
         <?php endif ?>
             <?php
             if(($step < 3) && ($this->user->isPitchOwner($solution->pitch->user_id))): echo ' Для начала вам нужно получить джипеги, внести правки и одобрить макеты.'; endif;?></span>
