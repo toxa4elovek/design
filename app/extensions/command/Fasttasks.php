@@ -91,66 +91,67 @@ class Fasttasks extends CronJob {
 
     private function __postNewsToSocial($task) {
         if($result = Event::first($task->model_id)) {
-            $news = News::first($result->news_id);
-            $manager = new SocialMediaManager();
+            if(($news = News::first($result->news_id)) && ($news->hidden != 0)) {
+                $manager = new SocialMediaManager();
 
-            $vkApi = new VKAPI();
-            $data = array(
-                'message' => $news->title,
-                'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
-            );
-            $vkApi->postMessageToPage($data);
+                $vkApi = new VKAPI();
+                $data = array(
+                    'message' => $news->title,
+                    'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
+                );
+                $vkApi->postMessageToPage($data);
 
-            $facebookApi = new FacebookAPI();
-            $data = array(
-                'message' => $news->title,
-                'link' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
-            );
-            $facebookApi->postMessageToPage($data);
+                $facebookApi = new FacebookAPI();
+                $data = array(
+                    'message' => $news->title,
+                    'link' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
+                );
+                $facebookApi->postMessageToPage($data);
 
-            $twitterApi = new TwitterAPI();
-            $data = array(
-                'message' => $news->title . ' — ' . $news->short . ' https://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
-                'picture' => '/var/godesigner/webroot/' . $news->imageurl
-            );
-            $twitterApi->postMessageToPage($data);
+                $twitterApi = new TwitterAPI();
+                $data = array(
+                    'message' => $news->title . ' — ' . $news->short . ' https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('twitter'),
+                    'picture' => '/var/godesigner/webroot/' . $news->imageurl
+                );
+                $twitterApi->postMessageToPage($data);
+            }
         }
     }
 
     private function __postNewsToSocialDelayed($task) {
         if($result = Event::first($task->model_id)) {
-            $news = News::first($result->news_id);
-            $manager = new SocialMediaManager();
+            if(($news = News::first($result->news_id)) && ($news->hidden != 0)) {
+                $manager = new SocialMediaManager();
 
-            $vkApi = new VKAPI();
-            $data = array(
-                'message' => $news->title,
-                'owner_id' => '-26880133',
-                'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
-            );
-            $vkApi->postMessageToPage($data);
+                $vkApi = new VKAPI();
+                $data = array(
+                    'message' => $news->title,
+                    'owner_id' => '-26880133',
+                    'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
+                );
+                $vkApi->postMessageToPage($data);
 
-            $facebookApi = new FacebookAPI();
-            $data = array(
-                'message' => $news->title,
-                'page_id' => '112408302103669',
-                'link' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
-            );
-            $facebookApi->postMessageToPage($data);
+                $facebookApi = new FacebookAPI();
+                $data = array(
+                    'message' => $news->title,
+                    'page_id' => '112408302103669',
+                    'link' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('facebook'),
+                );
+                $facebookApi->postMessageToPage($data);
 
-            $keys = array(
-                'consumer_key' => '8KowPOOLHqbLQPKt8JpwnLpTn',
-                'consumer_secret' => 'Guna29r1BY8gEofz2amAIfPo1XcHJWNGI8Nzn6wiEwNlykAHhy',
-                'user_token' => '76610418-JxUuuxQdUOaxc3uwxRjBUG4rXUdIABjNYAuhKP7uh',
-                'user_secret' => '8qoejI0OTXHq56wp2QKPz16KoiB9w1sQQUncl6ilL20eh'
-            );
-            $twitterApi = new TwitterAPI($keys);
-            $data = array(
-                'message' => $news->title . ' — ' . $news->short . ' https://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
-                'picture' => '/var/godesigner/webroot/' . $news->imageurl
-            );
-            $twitterApi->postMessageToPage($data);
-
+                $keys = array(
+                    'consumer_key' => '8KowPOOLHqbLQPKt8JpwnLpTn',
+                    'consumer_secret' => 'Guna29r1BY8gEofz2amAIfPo1XcHJWNGI8Nzn6wiEwNlykAHhy',
+                    'user_token' => '76610418-JxUuuxQdUOaxc3uwxRjBUG4rXUdIABjNYAuhKP7uh',
+                    'user_secret' => '8qoejI0OTXHq56wp2QKPz16KoiB9w1sQQUncl6ilL20eh'
+                );
+                $twitterApi = new TwitterAPI($keys);
+                $data = array(
+                    'message' => $news->title . ' — ' . $news->short . ' https://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
+                    'picture' => '/var/godesigner/webroot/' . $news->imageurl
+                );
+                $twitterApi->postMessageToPage($data);
+            }
         }
     }
 

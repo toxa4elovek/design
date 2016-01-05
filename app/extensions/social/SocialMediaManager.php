@@ -95,6 +95,9 @@ class SocialMediaManager {
      * @return string
      */
     private function __buildAnalyticsParams($campaign, $source, $medium, $content, $firstChar = '?') {
+        if($source === 'vk') {
+            return '';
+        }
         return $firstChar . 'utm_source=' . $source . '&utm_medium=' . $medium . '&utm_content=' . $content . '&utm_campaign=' . $campaign;
     }
 
