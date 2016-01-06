@@ -53,6 +53,7 @@ class AppController extends \lithium\action\Controller
             $this->userHelper->write('user.attentionsolution', null);
             $this->userHelper->write('user.timeoutpitch', null);
             if ($userRecord = User::first($this->userHelper->getId())) {
+                $this->userHelper->write('user.confirmed_email', $userRecord->confirmed_email);
                 // Проверяем, ни забанен ли пользователь
                 if ($userRecord->banned) {
                     Auth::clear('user');

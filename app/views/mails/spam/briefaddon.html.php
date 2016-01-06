@@ -42,7 +42,7 @@
 
                             <tr><td align="center">
                                 <a href="http://godesigner.ru/pitches/addon/<?=$pitch->id;?>?click=phonebrief">
-                                <img src="http://godesigner.ru/img/fill-brief-button.png" alt="">
+                                <!--img src="http://godesigner.ru/img/fill-brief-button.png" alt=""-->
                                 </a>
                             </td></tr>
                             <tr><td height="20"></td></tr>
