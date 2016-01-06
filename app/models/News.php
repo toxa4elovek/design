@@ -263,7 +263,7 @@ class News extends AppModel
                 Event::createEventNewsAdded($news->id, 0, $news->created);
                 $result = Event::first(array('conditions' => array('news_id' => $news->id)));
                 if ($news->tags == 'Goворит Designer') {
-                    Task::createNewTask($result->id, 'postNewsToSocial', 30 * MINUTE);
+                    Task::createNewTask($result->id, 'postNewsToSocial', 10 * MINUTE);
                     Task::createNewTask($result->id, 'postNewsToSocialDelayed', HOUR);
                 }
             }
