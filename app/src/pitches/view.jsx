@@ -781,7 +781,7 @@
                     viewsize = result.solution.images.solution;
                     work = result.solution.images.solution;
                 }
-                if ($.isArray(storage)) {
+                if ($.isArray(work)) {
                     $.each(work, function (idx, field) {
                         if (field.weburl.match(/.mp4$/)) {
                             var webmsource = field.weburl.replace(/.mp4/, '.webm');

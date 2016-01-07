@@ -91,7 +91,7 @@ class Fasttasks extends CronJob {
 
     private function __postNewsToSocial($task) {
         if($result = Event::first($task->model_id)) {
-            if(($news = News::first($result->news_id)) && ($news->hidden != 0)) {
+            if(($news = News::first($result->news_id)) && ($news->hidden == 0)) {
                 $manager = new SocialMediaManager();
 
                 $vkApi = new VKAPI();
@@ -99,8 +99,8 @@ class Fasttasks extends CronJob {
                     'message' => $news->title,
                     'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
                 );
-                $vkApi->postMessageToPage($data);
-
+                $id = $vkApi->postMessageToPage($data);
+var_dump($id);
                 $facebookApi = new FacebookAPI();
                 $data = array(
                     'message' => $news->title,
@@ -114,13 +114,15 @@ class Fasttasks extends CronJob {
                     'picture' => '/var/godesigner/webroot/' . $news->imageurl
                 );
                 $twitterApi->postMessageToPage($data);
+            }else {
+                var_dump($news->data());
             }
         }
     }
 
     private function __postNewsToSocialDelayed($task) {
         if($result = Event::first($task->model_id)) {
-            if(($news = News::first($result->news_id)) && ($news->hidden != 0)) {
+            if(($news = News::first($result->news_id)) && ($news->hidden == 0)) {
                 $manager = new SocialMediaManager();
 
                 $vkApi = new VKAPI();
