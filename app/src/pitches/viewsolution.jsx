@@ -481,7 +481,6 @@ $(document).ready(function() {
                 }else {
                     var storage = result.solution.images.solution;
                 }
-
                 if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
                     work = result.solution.images.solution_solutionView;
@@ -490,7 +489,7 @@ $(document).ready(function() {
                     viewsize = result.solution.images.solution;
                     work = result.solution.images.solution;
                 }
-                if ($.isArray(storage)) {
+                if ($.isArray(work)) {
                     $.each(work, function(idx, field) {
                         if (field.weburl.match(/.mp4$/)) {
                             var webmsource = field.weburl.replace(/.mp4/, '.webm');
