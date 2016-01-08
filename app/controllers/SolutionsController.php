@@ -15,60 +15,72 @@ use \app\extensions\mailers\UserMailer;
 use \app\extensions\mailers\SolutionsMailer;
 use \lithium\analysis\Logger;
 
-class SolutionsController extends \app\controllers\AppController {
+class SolutionsController extends \app\controllers\AppController
+{
 
     public $publicActions = array('like', 'unlike', 'logosale', 'search_logo', 'testmail');
 
-    public function hide() {
+    public function hide()
+    {
         $result = $this->request;
         $result = Solution::hideimage($this->request->id, Session::read('user.id'));
         return compact('result');
     }
 
-    public function unhide() {
+    public function unhide()
+    {
         $result = true;
         $result = Solution::unhideimage($this->request->id, Session::read('user.id'));
         return compact('result');
     }
 
-    public function like() {
+    public function like()
+    {
         $likes = Solution::increaseLike($this->request->id, Session::read('user.id'));
         $result = $likes['result'];
         $likes = $likes['likes'];
         return compact('likes', 'result');
     }
 
-    public function unlike() {
+    public function unlike()
+    {
         $likes = Solution::decreaseLike($this->request->id, Session::read('user.id'));
         $result = $likes['result'];
         $likes = $likes['likes'];
         return compact('likes', 'result');
     }
 
-    public function rating() {
+    public function rating()
+    {
         $rating = Solution::setRating($this->request->data['id'], $this->request->data['rating'], Session::read('user.id'));
         return compact('rating');
     }
 
-    public function select() {
-        if ($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch')))) {
-            if ((Session::read('user.id') != $solution->pitch->user_id) && (Session::read('user.isAdmin') != 1) && !User::checkRole('admin')) {
+    /**
+     * Метод для выбора победителя
+     *
+     * @return array|bool|object
+     */
+    public function select()
+    {
+        if ($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch']])) {
+            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isAdmin()) {
                 $result = false;
                 return compact('result');
             }
-            $nominatedSolutionOfThisPitch = Solution::first(array(
-                        'conditions' => array('nominated' => 1, 'pitch_id' => $solution->pitch->id)
-            ));
+            $nominatedSolutionOfThisPitch = Solution::first([
+                        'conditions' => ['nominated' => 1, 'pitch_id' => $solution->pitch->id]
+            ]);
             if ($nominatedSolutionOfThisPitch) {
                 $result = false;
                 return compact('result');
             }
             // Already has selected winner, need buy second winner
-            if($solution->pitch->awarded > 0) {
+            if ($solution->pitch->awarded > 0) {
                 $result = false;
                 return compact('result');
             }
-            if(Pitch::isPenaltyNeededForProject($solution->pitch->id)) {
+            if ((Pitch::isPenaltyNeededForProject($solution->pitch->id)) && (!$this->userHelper->isAdmin())) {
                 $result = false;
                 $redirect = '/pitches/penalty/' . $solution->id;
                 return compact('result', 'redirect');
@@ -83,7 +95,8 @@ class SolutionsController extends \app\controllers\AppController {
      *
      * @return array
      */
-    public function delete() {
+    public function delete()
+    {
         $result = false;
         if (($solution = Solution::first($this->request->id)) && (($this->userHelper->isAdmin()) || User::checkRole('admin') || ($this->userHelper->isSolutionAuthor($solution->user_id)))) {
             $projectId = $solution->pitch_id;
@@ -105,7 +118,8 @@ class SolutionsController extends \app\controllers\AppController {
         }
     }
 
-    public function warn() {
+    public function warn()
+    {
         $user = Session::read('user');
         if ($solution = Solution::first($this->request->params['id'])) {
             $data = array('text' => $this->request->data['text'], 'user' => $user, 'solution' => $solution->data());
@@ -114,7 +128,8 @@ class SolutionsController extends \app\controllers\AppController {
         return $this->request->params['id'];
     }
 
-    public function saveSelected() {
+    public function saveSelected()
+    {
         if (isset($this->request->data['selectedSolutions'])) {
             if (($solution = Solution::first($this->request->data['selectedSolutions'])) && ($solution->user_id == Session::read('user.id'))) {
                 if ($solution->selected == 1) {
@@ -128,11 +143,12 @@ class SolutionsController extends \app\controllers\AppController {
         return $this->request->data;
     }
 
-    public function logosale() {
+    public function logosale()
+    {
         $count = 0;
         $sort_tags = array();
         $search_tags = array();
-        if((isset($this->request->query['search'])) && (!empty($this->request->query['search']))) {
+        if ((isset($this->request->query['search'])) && (!empty($this->request->query['search']))) {
             $words = Solution::stringToWordsForSearchQuery($this->request->query['search']);
             $industries = Solution::getListOfIndustryKeys($words);
             $words = Solution::injectIndustryWords($words);
@@ -173,7 +189,7 @@ class SolutionsController extends \app\controllers\AppController {
             $page = (isset($this->request->id) && !empty($this->request->id)) ? $this->request->id : 1;
             // Ищем указанную страницу результатов
             $params = Solution::buildSearchQuery($words, $industries, $tags_id, $page);
-        }else {
+        } else {
             $params = Solution::buildStreamQuery($this->request->id, 28, Solution::randomizeStreamOrder());
         }
         if ($this->request->is('json')) {
@@ -198,24 +214,24 @@ class SolutionsController extends \app\controllers\AppController {
         if ($solutions && count($solutions) > 0) {
             $initialCount = count($solutions->data());
             $solutions = Solution::filterLogoSolutions($solutions);
-            if((isset($this->request->data['prop'])) && (isset($this->request->data['variants']))) {
+            if ((isset($this->request->data['prop'])) && (isset($this->request->data['variants']))) {
                 $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
             }
             $afterFilterCount = count($solutions);
 
-            if((count($solutions) != 28) && ($initialCount == $afterFilterCount)) {
+            if ((count($solutions) != 28) && ($initialCount == $afterFilterCount)) {
                 $needToAddSolution = true;
             }
 
-            if($needToAddSolution) {
+            if ($needToAddSolution) {
                 $params = Solution::buildStreamQuery(1, 28, Solution::randomizeStreamOrder());
                 $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
-                foreach($addedSolutions as $key => $addedSolution) {
+                foreach ($addedSolutions as $key => $addedSolution) {
                     $solutions[$key] = $addedSolution;
                     $solutions[$key]['sort'] = 1;
                 }
             }
-        }else {
+        } else {
             $params = Solution::buildStreamQuery($this->request->id, 28, Solution::randomizeStreamOrder());
             $solutions = Solution::all($params);
             $solutions = Solution::filterLogoSolutions($solutions);
@@ -224,12 +240,12 @@ class SolutionsController extends \app\controllers\AppController {
         return compact('solutions', 'count', 'sort_tags', 'search_tags', 'data', 'total_count');
     }
 
-    public function search_logo() {
-        if((!empty($this->request->query)) && (count($this->request->query) > 1)) {
+    public function search_logo()
+    {
+        if ((!empty($this->request->query)) && (count($this->request->query) > 1)) {
             $this->request->data = $this->request->query;
         }
         if ($this->request->is('json') && (isset($this->request->data['search_list']) || (isset($this->request->data['prop'])))) {
-
             $words = Solution::stringToWordsForSearchQuery($this->request->data['search_list']);
             $industries = Solution::getListOfIndustryKeys($words);
             $words = Solution::injectIndustryWords($words);
@@ -276,29 +292,27 @@ class SolutionsController extends \app\controllers\AppController {
             $solutions = Solution::all($params);
             $needToAddSolution = false;
             if ($solutions && count($solutions) > 0) {
-
                 $initialCount = count($solutions->data());
                 $solutions = Solution::filterLogoSolutions($solutions);
                 $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
                 $afterFilterCount = count($solutions);
 
-                if((count($solutions) != 28) && ($initialCount == $afterFilterCount)) {
+                if ((count($solutions) != 28) && ($initialCount == $afterFilterCount)) {
                     $needToAddSolution = true;
                 }
 
-                if($needToAddSolution) {
+                if ($needToAddSolution) {
                     $params = Solution::buildStreamQuery($page, 28, Solution::randomizeStreamOrder());
                     $addedSolutions = Solution::filterLogoSolutions(Solution::all($params));
-                    foreach($addedSolutions as $key => $addedSolution) {
+                    foreach ($addedSolutions as $key => $addedSolution) {
                         $solutions[$key] = $addedSolution;
                         $solutions[$key]['sort'] = 1;
                     }
                 }
-
-            }elseif($page > 1) {
+            } elseif ($page > 1) {
                 $totalParams = Solution::buildSearchQuery($words, $industries, $tags_id, false, false);
                 $cacheKey = 'totalSolutions' . serialize($words) . '_' . serialize($industries) . '_' . serialize($tags_id);
-                if(!$totalPages = Rcache::read($cacheKey)) {
+                if (!$totalPages = Rcache::read($cacheKey)) {
                     $totalSolutions = Solution::all($totalParams);
                     if ($totalSolutions && count($totalSolutions) > 0) {
                         $totalSolutions = Solution::filterLogoSolutions($totalSolutions);
@@ -311,12 +325,12 @@ class SolutionsController extends \app\controllers\AppController {
                 $params = Solution::buildStreamQuery($filteredPage, 28, Solution::randomizeStreamOrder());
                 $solutions = Solution::filterLogoSolutions(Solution::all($params));
                 $solutions = Solution::applyUserFilters($solutions);
-                if($solutions) {
-                    foreach($solutions as $key => $solution) {
+                if ($solutions) {
+                    foreach ($solutions as $key => $solution) {
                         $solution['sort'] = 1;
                     }
                 }
-            }else {
+            } else {
                 $params = Solution::buildStreamQuery(1, 28, Solution::randomizeStreamOrder());
                 $solutions = Solution::filterLogoSolutions(Solution::all($params));
                 $solutions = Solution::applyUserFilters($solutions, $this->request->data['prop'], $this->request->data['variants']);
@@ -326,7 +340,8 @@ class SolutionsController extends \app\controllers\AppController {
         return compact('solutions', 'total_solutions', 'page', 'pageParams', 'params');
     }
 
-    public function add_tag() {
+    public function add_tag()
+    {
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
             $result = Tag::saveSolutionTag($this->request->data['tag'], $solution->id);
             return compact($result);
@@ -334,7 +349,8 @@ class SolutionsController extends \app\controllers\AppController {
         return $this->request->data;
     }
 
-    public function remove_tag() {
+    public function remove_tag()
+    {
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
             $result = Tag::removeTag($this->request->data['tag'], $solution->id);
             return compact($result);
@@ -342,12 +358,12 @@ class SolutionsController extends \app\controllers\AppController {
         return $this->request->data;
     }
 
-    public function update_description() {
+    public function update_description()
+    {
         if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
             $solution->description = $this->request->data['updatedText'];
             $solution->save();
         }
         return $this->request->data;
     }
-
 }
