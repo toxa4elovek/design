@@ -1041,12 +1041,15 @@ p.full_pitch a {
     /*border-top: 1px solid #3f3942; */
 }
 #current_pitch ul li a {
-    display: inline;
+    /*display: inline;*/
     color:#ff585d;
     font: 14px/20px "Arial",sans-serif;
     text-decoration: none;
     /*padding: 6px 5px 7px 5px;*/
     word-wrap: break-word;
+    max-height: 171px;
+    display: block;
+    overflow: hidden;
 }
 #current_pitch ul li a:hover {
     color:#ff585d;
