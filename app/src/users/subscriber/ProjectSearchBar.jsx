@@ -1,11 +1,11 @@
 class ProjectSearchBar extends React.Component{
-    placeholder = "найдите свой  проект по ключевому слову или типу";
     constructor() {
         super();
         this.arrowLinkClick = this.arrowLinkClick.bind(this);
         this.searchButtonClick = this.searchButtonClick.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
+        this.placeholder = "найдите свой  проект по ключевому слову или типу";
     }
     arrowLinkClick(event) {
         const arrow = this.refs.arrowIndicator;
@@ -19,7 +19,7 @@ class ProjectSearchBar extends React.Component{
         }
         arrow.setAttribute('src', imageUrl);
         event.preventDefault();
-        if(this.props.settings.isFilterListActive == true) {
+        if(this.props.settings.isFilterListActive) {
             data.settings.isFilterListActive = false;
         }else {
             data.settings.isFilterListActive = true;

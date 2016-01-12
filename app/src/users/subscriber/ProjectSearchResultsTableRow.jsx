@@ -1,14 +1,13 @@
 class ProjectSearchResultsTableRow extends React.Component{
     render () {
         const row = this.props.row;
-        console.log(row);
         const viewLink = '/pitches/view/' + row.id;
         let ideas = '';
         let status = '';
         if(row.status == 0) {
             status = row.startedHuman;
         }
-        if((row.type != 'plan-payment') && (row.status == 2) && (row.awarded == 0)) {
+        if((row.type !== 'plan-payment') && (row.status == 2) && (row.awarded == 0) && (row.type !== 'fund-balance')) {
             status = 'оформлен возврат';
         }
         if(((row.status == 2) && (row.awarded != 0)) || ((row.status == 2) && (row.type == 'plan-payment'))) {
@@ -35,15 +34,20 @@ class ProjectSearchResultsTableRow extends React.Component{
         }
         let title = row.title;
         let dateAfterTitle = '';
+        const dateAfterTitleStyle = {
+            "fontSize": "12px",
+            "fontWeight": "bold"
+        };
         if(row.type == 'company_project') {
             ideas = row.ideas_count;
             title = <a href={viewLink} target="_blank">{title}</a>;
         }else if(row.type == 'fund-balance'){
             row.tableClass = 'light';
-            let dateAfterTitleStyle = {
-                "fontSize": "12px",
-                "fontWeight": "bold"
-            };
+            dateAfterTitle = <span style={dateAfterTitleStyle}>({row.formattedDate})</span>;
+        }
+        if(row.type === 'refund') {
+            row.tableClass = 'light';
+            title = 'Возврат';
             dateAfterTitle = <span style={dateAfterTitleStyle}>({row.formattedDate})</span>;
         }
         return (

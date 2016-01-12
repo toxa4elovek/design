@@ -29,6 +29,6 @@ class ProjectSearchResultsTableHeader extends React.Component{
                 </td>
             </tr>
             </thead>
-        )
+        );
     }
 }
