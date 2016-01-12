@@ -174,26 +174,28 @@ class News extends AppModel
      * Метод проверяет, существует ли новость сназванием $title или
      * полем link == $url иди imageUrl
      *
-     * @param $title
-     * @param null $url
-     * @param $imageUrl
-     * @return mixed
+     * @param string $title
+     * @param string $url
+     * @param string $imageUrl
+     * @return bool
      */
     public static function doesNewsExists($title, $url = null, $imageUrl = null)
     {
-        $conditions = array('hidden' => 0);
+        $conditions = [];
         if (!is_null($url)) {
             $conditions['link'] = (string) $url;
         } elseif (!is_null($imageUrl)) {
-            // special for interviewrussia
-            $conditions = array('OR' => array(
-                array('imageurl' => (string) $imageUrl),
-                array('title' => (string) $title))
-            );
+            /**
+             * @todo - возможно, следует убрать
+             */
+            $conditions = ['OR' => [
+                ['imageurl' => (string) $imageUrl],
+                ['title' => (string) $title]]
+            ];
         } else {
             $conditions['title'] = (string) $title;
         }
-        return (bool) self::count(array('conditions' => $conditions));
+        return (bool) self::count(['conditions' => $conditions]);
     }
 
 

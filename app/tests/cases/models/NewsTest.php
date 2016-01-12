@@ -86,7 +86,7 @@ class NewsTest extends AppUnit {
         $this->assertFalse($result);
 
         $result = News::doesNewsExists('Топографический креатизм', 'http://tutdesign.ru/cats/brand/17232-topograficheskij-kreatizm.html');
-        $this->assertFalse($result);
+        $this->assertTrue($result);
     }
 
     public function testSaveNewsByAdmin()  {
