@@ -12,9 +12,9 @@ use lithium\data\entity\Record;
 /**
  * Class Solution
  * @package app\models
- * @method Record|null first(array $id) static
- * @method int count(array $conditions) static
- * @method RecordSet|null all(array $conditions) static
+ * @method Record|null first(array $conditions = []) static
+ * @method int count(array $conditions = []) static
+ * @method RecordSet|null all(array $conditions = []) static
  */
 class Solution extends AppModel
 {
