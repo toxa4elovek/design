@@ -1,5 +1,8 @@
 class FundBalanceInput extends React.Component {
-    walletKey = 'Пополнение счёта';
+    constructor() {
+        super();
+        this.walletKey = 'Пополнение счёта';
+    }
     componentDidMount() {
         const input = $(this.refs.input);
         input.numeric(
@@ -16,6 +19,10 @@ class FundBalanceInput extends React.Component {
         }
         PaymentActions.updateFundBalanceInput(parseInt(newValue));
     }
+    onBlur(e) {
+        const currentValue = e.target.value;
+        PaymentActions.submitNewReceipt(parseInt(currentValue));
+    }
     __getReceiptValue(receipt) {
         let value = 0;
         receipt.forEach(function (row) {
@@ -29,8 +36,8 @@ class FundBalanceInput extends React.Component {
         const initialValue = this.__getReceiptValue(this.props.payload.receipt);
         return(
             <div>
-                <input ref="input" type="text" onChange={this.onChangeHandle} onKeyDown={this.onKeydownHandle} defaultValue={initialValue} className="fund-balance-input"/>
+                <input ref="input" type="text" onChange={this.onChangeHandle} onBlur={this.onBlur} onKeyDown={this.onKeydownHandle} defaultValue={initialValue} className="fund-balance-input"/>
             </div>
-        )
+        );
     }
 }

@@ -79,13 +79,9 @@ class SubscriptionPlansController extends AppController
             if ($this->userHelper->isPitchOwner($plan->user_id)) {
                 Receipt::updateOrCreateReceiptForProject($plan->id, $this->request->data['updatedReceipt']);
                 SubscriptionPlan::setTotalOfPayment($plan->id, Receipt::getTotalForProject($plan->id));
-                foreach ($this->request->data['updatedReceipt'] as $receiptRow) {
-                    if ($receiptRow['name'] == 'Пополнение счёта') {
-                        $updatedValue = $receiptRow['value'];
-                        SubscriptionPlan::setFundBalanceForPayment($plan->id, (int) $updatedValue);
-                    }
-                }
-                return $this->request->data;
+                SubscriptionPlan::setFundBalanceForPayment($plan->id, (int) $this->request->data['newFundValue']);
+                $fundBalance = SubscriptionPlan::getFundBalanceForPayment((int) $this->request->data['projectId']);
+                return compact('fundBalance');
             }
         }
     }

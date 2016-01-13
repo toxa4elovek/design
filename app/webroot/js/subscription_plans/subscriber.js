@@ -36,11 +36,27 @@
             payload.total = total;
             ReactDOM.render(React.createElement(Receipt, { data: payload.receipt }), document.getElementById('receipt-container'));
             ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));
+        }
+        if (eventPayload.actionType === 'submit-news-receipt') {
+            var total = 0;
+            payload.receipt.forEach(function (row) {
+                if (row.name == "Пополнение счёта") {
+                    row.value = eventPayload.currentValue;
+                }
+                total += row.value;
+            });
+            payload.total = total;
             var data = {
+                "newFundValue": eventPayload.currentValue,
                 "projectId": payload.projectId,
                 "updatedReceipt": payload.receipt
             };
-            $.post('/subscription_plans/updateReceipt.json', data);
+            $.post('/subscription_plans/updateReceipt.json', data, function (response) {
+                if (response.fundBalance != eventPayload.currentValue) {
+                    PaymentActions.updateFundBalanceInput(parseInt(response.fundBalance));
+                    ReactDOM.render(React.createElement(FundBalanceInput, { payload: payload }), document.getElementById('fund-balance-container'));
+                }
+            });
         }
         if (eventPayload.actionType === 'payment-type-selected') {
             if (eventPayload.selectedPaymentType == 'payment-payture') {

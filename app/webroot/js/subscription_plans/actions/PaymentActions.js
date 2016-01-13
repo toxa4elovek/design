@@ -13,5 +13,11 @@ var PaymentActions = {
             actionType: 'fund-balance-input-updated',
             newValue: value
         });
+    },
+    submitNewReceipt: function submitNewReceipt(value) {
+        PaymentDispatcher.dispatch({
+            actionType: 'submit-news-receipt',
+            currentValue: value
+        });
     }
 };

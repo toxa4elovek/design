@@ -54,11 +54,30 @@
                 <PaymentTypesList payload={payload} settings={settings}/>,
                 document.getElementById('payments-container')
             );
+        }
+        if (eventPayload.actionType === 'submit-news-receipt') {
+            let total = 0;
+            payload.receipt.forEach(function (row) {
+                if(row.name == "Пополнение счёта") {
+                    row.value = eventPayload.currentValue;
+                }
+                total += row.value;
+            });
+            payload.total = total;
             const data = {
+                "newFundValue": eventPayload.currentValue,
                 "projectId": payload.projectId,
                 "updatedReceipt": payload.receipt
             };
-            $.post('/subscription_plans/updateReceipt.json', data);
+            $.post('/subscription_plans/updateReceipt.json', data, function(response) {
+                if(response.fundBalance != eventPayload.currentValue) {
+                    PaymentActions.updateFundBalanceInput(parseInt(response.fundBalance));
+                    ReactDOM.render(
+                        <FundBalanceInput payload={payload}/>,
+                        document.getElementById('fund-balance-container')
+                    );
+                }
+            });
         }
         if (eventPayload.actionType === 'payment-type-selected') {
             if(eventPayload.selectedPaymentType == 'payment-payture') {
