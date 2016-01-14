@@ -23,7 +23,7 @@ class News extends AppModel
             'image_resize' => true,
             'image_x' => 600,
             'image_y' => 500,
-            'image_ratio_crop' => 'T',
+            'image_ratio' => true,
             'file_overwrite' => true
         ),
     );
