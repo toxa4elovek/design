@@ -10,6 +10,7 @@ class ProjectSearchResultsTable extends React.Component{
                 const momentDate = moment(row.finishDate, 'YYYY-MM-DD HH:mm:ss');
                 const refundObject = {
                     "type": "refund",
+                    "total": row.price,
                     "formattedMoney": formattedMoney,
                     "formattedDate": momentDate.format('DD.MM.YYYY')
                 };
@@ -17,6 +18,19 @@ class ProjectSearchResultsTable extends React.Component{
             }
             rows.push(row);
         });
+        const copyForCalculations = rows.slice().reverse();
+        let operations = [0];
+        copyForCalculations.forEach(function (row) {
+            let result = 0;
+            if(row.type === 'company_project') {
+                result -= parseInt(row.price);
+            }else if((row.type === 'fund-balance') || (row.type === 'refund')) {
+                result += parseInt(row.total);
+            }
+            const lastResult = operations[operations.length - 1];
+            operations.push(lastResult + result);
+        });
+        operations = operations.reverse().slice(1);
         return (
             <table
                 className="project-search-table"
@@ -34,6 +48,7 @@ class ProjectSearchResultsTable extends React.Component{
                             <ProjectSearchResultsTableRow
                                 key={row.id}
                                 row={row}
+                                subtotal={operations[index]}
                             />
                         );
                     })}

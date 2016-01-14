@@ -2431,8 +2431,8 @@ tr.highlighted{
     color:#fff;
 }
 tr.newpitch{
-    background:#4f8b5c;
-    color:#fff;
+    background:#4f8b5c !important;
+    color:#fff !important;
 }
 td.icons{
     background:#e0e0e0;
