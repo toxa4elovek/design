@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\extensions\helper\MoneyFormatter;
 use app\extensions\smsfeedback\SmsFeedback;
 use app\extensions\social\TwitterAPI;
+use app\models\Addon;
 use app\models\Bill;
 use app\models\Logreferal;
 use app\models\SubscriptionPlan;
@@ -2043,18 +2044,7 @@ class UsersController extends \app\controllers\AppController
         $client = User::first($this->userHelper->getId());
         foreach ($paymentsObj as $row) {
             $data = $row->data();
-
             $data['hasBill'] = false;
-/*if (($row->status == 2) && ($row->user_id == $this->userHelper->getId())) {
-    if (($bill = Bill::first($row->id)) || ($data = $client->getUnserializedCompanyData())) {
-        if($bill) {
-            $data['hasBill'] = ($bill->individual == 1) ? 'fiz' : 'yur';
-        }elseif($data) {
-            $data['hasBill'] = ($client->isEntrepreneur()) ? 'fiz': 'yur';
-        }
-    }
-}*/
-
             if ($row->type == 'plan-payment') {
                 $amount = SubscriptionPlan::extractFundBalanceAmount($row->id);
                 if ($amount > 0) {
@@ -2062,6 +2052,30 @@ class UsersController extends \app\controllers\AppController
                     $data['title'] = 'Пополнение счёта';
                     $data['total'] = $amount;
                 }
+            }
+            $data['extraFunds'] = 0;
+            if(($data['type'] === 'company_project') && ($addons = Addon::all(['conditions' => [
+                'pitch_id' => $row->id,
+                'billed' => 1
+            ]]))) {
+                $reducePriceAmount = 0;
+                foreach($addons as $addon) {
+                    if($addon->prolong == 1) {
+                        $reducePriceAmount = $addon->{'prolong-days'} * 1000;
+                    }
+                }
+                $data['price'] -= $reducePriceAmount;
+            }
+            if($data['expert'] == 1) {
+                $reducedPriceAmount = 0;
+                $receipt = Receipt::exportToArray($data['id']);
+                foreach($receipt as $receiptRow) {
+                    if(($receiptRow['name'] === 'Экспертное мнение') || ($receiptRow['name'] === 'экспертное мнение')) {
+                        $reducedPriceAmount = $receiptRow['value'];
+                    }
+                }
+                $data['price'] += $reducedPriceAmount;
+                $data['extraFunds'] += $reducedPriceAmount;
             }
             if ($data['type'] != 'fund-balance') {
                 if ($data['type'] != 'plan-payment') {
