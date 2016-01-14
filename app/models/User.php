@@ -106,6 +106,11 @@ class User extends AppModel
                 }
                 $params['data']['password'] = String::hash($password);
                 $params['data']['confirm_password'] = String::hash($comfirmPassword);
+            }else {
+                if(isset($params['data']['avatar'])) {
+                    $cacheKey = 'avatars_' . $record->id;
+                    Rcache::delete($cacheKey);
+                }
             }
             if (!empty($params['data'])) {
                 $record->set($params['data']);

@@ -100,7 +100,7 @@ class AvatarTest extends AppUnit
         $this->assertEqual(3, count($results));
         $this->assertTrue(Rcache::exists($cacheKey));
     }
-
+/*
     public function testGetVkAvatar()
     {
         $cacheKey = 'avatars_3';
@@ -119,7 +119,7 @@ class AvatarTest extends AppUnit
         $this->assertTrue(is_array($images));
         $this->assertEqual(3, count($images));
     }
-
+*/
     public function testFindCountAndCache()
     {
         $cacheKey = 'avatars_2';

@@ -3,12 +3,17 @@
 namespace app\models;
 
 use app\extensions\storage\Rcache;
+use lithium\data\collection\RecordSet;
+use lithium\data\entity\Record;
 
 /**
- * Class Avatar
+ * Class User
  *
  * Метод для управления аватарами пользователя
  * @package app\models
+ * @method Record|null first(array $conditions) static
+ * @method int count(array $conditions) static
+ * @method RecordSet|null all(array $conditions = []) static
  */
 class Avatar extends AppModel
 {
@@ -26,6 +31,9 @@ class Avatar extends AppModel
                         $result->data();
                         return $result;
                     }, '+7 day');
+                    //$result = $chain->next($self, $params, $chain);
+                    //$result->data();
+                    return $result;
                 }
             }
             if ($params['type'] === 'count') {
@@ -80,6 +88,7 @@ class Avatar extends AppModel
     {
         $imageUrl = $userRecord->vk_image_link;
         $data = json_decode(file_get_contents($imageUrl), true);
+        var_dump($data);
         $userPicFile = file_get_contents($data['response'][0]['photo_max_orig']);
         return self::__setImageAsAvatarForUser($userRecord, $userPicFile);
     }
@@ -123,11 +132,11 @@ class Avatar extends AppModel
      */
     public static function removeAllAvatarsOfUser($userId)
     {
-        $avatars = self::all(['conditions' => ['model_id' => $userId]]);
         $cacheKey = 'avatars_' . $userId;
         if (Rcache::exists($cacheKey)) {
             Rcache::delete($cacheKey);
         }
+        $avatars = self::all(['conditions' => ['model_id' => $userId]]);
         foreach ($avatars as $avatar) {
             if (file_exists($avatar->filename)) {
                 unlink($avatar->filename);
