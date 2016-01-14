@@ -50,6 +50,17 @@ class ProjectSearchResultsTableRow extends React.Component{
             title = 'Возврат';
             dateAfterTitle = <span style={dateAfterTitleStyle}>({row.formattedDate})</span>;
         }
+        function formatMoney(value) {
+            value = value.toString().replace(/(.*)\.00/g, "$1");
+            let counter = 1;
+            while(value.match(/\w\w\w\w/)) {
+                value = value.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
+                counter ++;
+                if(counter > 6) break;
+            }
+            return value;
+        }
+        const formattedMoney = formatMoney(this.props.subtotal);
         return (
             <tr className={row.tableClass}
                 data-id={row.id}
@@ -59,7 +70,7 @@ class ProjectSearchResultsTableRow extends React.Component{
                 </td>
                 <td className="idea">{ideas}</td>
                 <td className="pitches-time">{status}</td>
-                <td className="price">{row.formattedMoney}</td>
+                <td className="price">{row.formattedMoney}<br/><span style={dateAfterTitleStyle}>({formattedMoney} р.-)</span></td>
             </tr>
         );
     }

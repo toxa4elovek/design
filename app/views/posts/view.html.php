@@ -4,7 +4,7 @@
 
     <div class="middle">
         <div class="middle_inner" style="padding-top: 42px;">
-            <div class="content group">
+            <div class="content group" style="width: 100%;">
                 <div id="content_help" style="width: 605px" onload="clearData();" onblur="clearData();">
                     <section class="howitworks">
                         <h1 class="h2link"><a href="/posts">Наш блог</a></h1>
@@ -66,7 +66,7 @@
     <?php $i++;endforeach?>
                             </div><?php endif?>
                         <!-- START: Livefyre Embed -->
-                        <div id="livefyre-comments" style="margin-top: 20px"></div>
+                        <!--div id="livefyre-comments" style="margin-top: 20px"></div>
                         <script type="text/javascript" src="http://zor.livefyre.com/wjs/v3.0/javascripts/livefyre.js"></script>
                         <script type="text/javascript">
                             (function () {
@@ -83,7 +83,7 @@
                                     }
                                 }], function() {});
                             }());
-                        </script>
+                        </script-->
                         <!-- END: Livefyre Embed -->
                     </section>
                 </div>

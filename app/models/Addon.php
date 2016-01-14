@@ -2,10 +2,19 @@
 
 namespace app\models;
 
-use \app\models\Pitch;
-use \app\models\User;
+use app\models\Pitch;
+use app\models\User;
+use lithium\data\collection\RecordSet;
+use lithium\data\entity\Record;
 
-class Addon extends \app\models\AppModel {
+/**
+ * Class User
+ * @package app\models
+ * @method Record|null first(array $conditions) static
+ * @method int count(array $conditions) static
+ * @method RecordSet|null all(array $conditions = []) static
+ */
+class Addon extends AppModel {
 
     public $belongsTo = array('Pitch');
 
