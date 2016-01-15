@@ -22,4 +22,4 @@
     <div id="popup-social-nest"></div>
     <div class="true-close"></div>
 </div>
-<script type="text/javascript" id="share-vk" src="http://vk.com/js/api/share.js?90"></script>
+<script type="text/javascript" id="share-vk" src="https://vk.com/js/api/share.js"></script>

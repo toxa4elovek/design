@@ -461,7 +461,9 @@ class UsersController extends \app\controllers\AppController
                     'created' => $dateString,
                     'touch' => '0000-00-00 00:00:00'
                 );
-                Wincomment::create($data)->save();
+                $comment = Wincomment::create($data);
+                $comment->save();
+                User::sendSpamWincomment($comment, $client->id);
 
                 if (($solution->pitch->isCopyrighting()) && (!User::isSubscriptionActive($client->id, $client))) {
                     $nameInflector = new NameInflector();
@@ -475,7 +477,9 @@ class UsersController extends \app\controllers\AppController
                         'created' => date('Y-m-d H:i:s'),
                         'touch' => '0000-00-00 00:00:00'
                     );
-                    Wincomment::create($data)->save();
+                    $comment = Wincomment::create($data);
+                    $comment->save();
+                    User::sendSpamWincomment($comment, $client->id);
                     if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
@@ -570,7 +574,9 @@ class UsersController extends \app\controllers\AppController
                         'created' => date('Y-m-d H:i:s'),
                         'touch' => '0000-00-00 00:00:00'
                     );
-                    Wincomment::create($data)->save();
+                    $comment = Wincomment::create($data);
+                    $comment->save();
+                    User::sendSpamWincomment($comment, $client->id);
                     if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
