@@ -2834,6 +2834,38 @@ ul.social li#rss {
     min-width: 250px;
     margin-top: 10px;
 }
+#popup-hint-select-winner-container {
+    position: relative;
+    width: 430px;
+    height: 344px;
+    border: 1px solid #a7a7a9;
+    background-color: #e1e1e1;
+}
+#popup-hint-select-winner-container:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 10px;
+    bottom: -20px;
+    width: 409px;
+    height: 19px;
+    background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
+}
+#popup-hint-select-winner-container h2 {
+    font-family: RodeoC, serif;
+    color: #666;
+    text-align: center;
+    margin: 30px auto 0 auto;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 45px;
+    text-shadow: 0 1px 0 rgb(240, 240, 240);
+}
+#popup-hint-select-winner-container a {
+    display: block;
+    text-align: center;
+    margin-left: 10px;
+}
 #gotest-popup,
 #gotest-popup_gallery,
 #after-fb-popup {

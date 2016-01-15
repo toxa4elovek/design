@@ -84,3 +84,8 @@
     <p class="regular" id="mailsent" style="display:none;font-weight: bold;"><br>Письмо было отправлено вам на почту!</p>
     <div class="gotest-close"></div>
 </div>
+
+<div id="popup-hint-select-winner" style="display:none;">
+    <h2>Как выбрать победителя:</h2>
+    <a href="/answers/view/70" target="_blank"><img src="/img/gallery/how-select-winner.png" alt="Как выбрать победителя"></a>
+</div>

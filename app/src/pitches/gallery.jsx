@@ -73,6 +73,7 @@ $(document).ready(function() {
         tutorial.run();
     }
 
+    let expertTutorialShow = false;
     if(isOwner && projectPublished && !projectExpert && projectStatusChooseWinner && (typeof(getCookie('expert_tutorial')) == 'undefined')) {
         const tutorial = new EnjoyHint(
             {
@@ -96,6 +97,7 @@ $(document).ready(function() {
         ];
         tutorial.set(steps);
         tutorial.run();
+        expertTutorialShow = true;
     }
 
     if(!needConfirmation && isOwner && projectStatusActive && projectPublished && (typeof(getCookie('tutorial')) == 'undefined')) {
@@ -137,6 +139,14 @@ $(document).ready(function() {
         ];
         tutorial.set(steps);
         tutorial.run();
+    }
+    if(!projectStatusActive && isOwner && !expertTutorialShow && projectStatusChooseWinner && (typeof(getCookie('select_winner_tutorial')) == 'undefined')) {
+        writeCookie('select_winner_tutorial', true, 90);
+        $('#popup-hint-select-winner').modal({
+            containerId: 'popup-hint-select-winner-container',
+            opacity: 80,
+            closeClass: 'gotest-close'
+        });
     }
 
     $('.tooltip_hints').tooltip({
