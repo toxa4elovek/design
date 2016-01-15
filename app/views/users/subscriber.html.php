@@ -23,9 +23,9 @@
                     "plan": <?php echo json_encode($this->user->getCurrentPlanData()) ?>
                 };
                 var questions = [
-                    {title: 'Как наша компания может заключить с вами договор?', id: '82'},
-                    {title: 'Какие способы оплаты мы принимаем?', id: '6'},
-                    {title: 'Если я создаю проект от лица компании?', id: '89'}
+                    {title: 'FAQ по годовому обслуживанию', id: '104'},
+                    {title: 'Как работает годовое обслуживание?', id: '102'},
+                    {title: 'Финальные правки: завершительный этап', id: '63'}
                 ];
                 var settings = {
                     "isFilterListActive" : false
