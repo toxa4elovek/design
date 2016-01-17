@@ -463,8 +463,7 @@ class UsersController extends \app\controllers\AppController
                 );
                 $comment = Wincomment::create($data);
                 $comment->save();
-                User::sendSpamWincomment($comment, $client->id);
-
+                User::sendSpamWincomment($comment, $client);
                 if (($solution->pitch->isCopyrighting()) && (!User::isSubscriptionActive($client->id, $client))) {
                     $nameInflector = new NameInflector();
                     $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
@@ -479,7 +478,7 @@ class UsersController extends \app\controllers\AppController
                     );
                     $comment = Wincomment::create($data);
                     $comment->save();
-                    User::sendSpamWincomment($comment, $client->id);
+                    User::sendSpamWincomment($comment, $client);
                     if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
@@ -576,7 +575,7 @@ class UsersController extends \app\controllers\AppController
                     );
                     $comment = Wincomment::create($data);
                     $comment->save();
-                    User::sendSpamWincomment($comment, $client->id);
+                    User::sendSpamWincomment($comment, $client);
                     if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
