@@ -17,7 +17,7 @@ class AppController extends \lithium\action\Controller
 {
 
     /**
-     * @var null хелпер User
+     * @var \app\extensions\helper\User
      */
     public $userHelper = null;
 
