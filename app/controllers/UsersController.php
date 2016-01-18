@@ -50,7 +50,7 @@ class UsersController extends \app\controllers\AppController
      * @var array
      */
     public $publicActions = array(
-        'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed'
+        'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed', 'test'
     );
 
     public $nominatedCount = false;
@@ -423,16 +423,22 @@ class UsersController extends \app\controllers\AppController
                 $newComment->created = date('Y-m-d H:i:s');
                 $newComment->step = 2;
                 $newComment->save();
-                if ($type == 'designer') {
+                if ($type === 'designer') {
                     $recipient = User::first($solution->pitch->user_id);
-                } else {
+                    User::sendSpamWincomment($newComment, $recipient);
+                } elseif($type === 'client') {
                     $recipient = User::first($solution->user_id);
+                    User::sendSpamWincomment($newComment, $recipient);
+                }else {
+                    $recipient = User::first($solution->pitch->user_id);
+                    User::sendSpamWincomment($newComment, $recipient);
+                    $recipient = User::first($solution->user_id);
+                    User::sendSpamWincomment($newComment, $recipient);
                 }
                 if (preg_match('/@GoDesigner/', $newComment->text)) {
                     $admin = User::first(5);
                     User::sendSpamWincomment($newComment, $admin, true);
                 }
-                User::sendSpamWincomment($newComment, $recipient);
                 $user = User::first(Session::read('user.id'));
                 $avatarHelper = new AvatarHelper;
                 $userAvatar = $avatarHelper->show($user->data(), false, true);
@@ -661,16 +667,22 @@ class UsersController extends \app\controllers\AppController
                 $newComment->created = date('Y-m-d H:i:s');
                 $newComment->step = 3;
                 $newComment->save();
-                if ($type == 'designer') {
+                if ($type === 'designer') {
                     $recipient = User::first($solution->pitch->user_id);
-                } else {
+                    User::sendSpamWincomment($newComment, $recipient);
+                } elseif($type === 'client') {
                     $recipient = User::first($solution->user_id);
+                    User::sendSpamWincomment($newComment, $recipient);
+                }else {
+                    $recipient = User::first($solution->pitch->user_id);
+                    User::sendSpamWincomment($newComment, $recipient);
+                    $recipient = User::first($solution->user_id);
+                    User::sendSpamWincomment($newComment, $recipient);
                 }
                 if (preg_match('/@GoDesigner/', $newComment->text)) {
                     $admin = User::first(5);
                     User::sendSpamWincomment($newComment, $admin, true);
                 }
-                User::sendSpamWincomment($newComment, $recipient);
                 $user = User::first(Session::read('user.id'));
                 $avatarHelper = new AvatarHelper;
                 $userAvatar = $avatarHelper->show($user->data(), false, true);
@@ -2063,23 +2075,23 @@ class UsersController extends \app\controllers\AppController
                 }
             }
             $data['extraFunds'] = 0;
-            if(($data['type'] === 'company_project') && ($addons = Addon::all(['conditions' => [
+            if (($data['type'] === 'company_project') && ($addons = Addon::all(['conditions' => [
                 'pitch_id' => $row->id,
                 'billed' => 1
             ]]))) {
                 $reducePriceAmount = 0;
-                foreach($addons as $addon) {
-                    if($addon->prolong == 1) {
+                foreach ($addons as $addon) {
+                    if ($addon->prolong == 1) {
                         $reducePriceAmount = $addon->{'prolong-days'} * 1000;
                     }
                 }
                 $data['price'] -= $reducePriceAmount;
             }
-            if($data['expert'] == 1) {
+            if ($data['expert'] == 1) {
                 $reducedPriceAmount = 0;
                 $receipt = Receipt::exportToArray($data['id']);
-                foreach($receipt as $receiptRow) {
-                    if(($receiptRow['name'] === 'Экспертное мнение') || ($receiptRow['name'] === 'экспертное мнение')) {
+                foreach ($receipt as $receiptRow) {
+                    if (($receiptRow['name'] === 'Экспертное мнение') || ($receiptRow['name'] === 'экспертное мнение')) {
                         $reducedPriceAmount = $receiptRow['value'];
                     }
                 }
