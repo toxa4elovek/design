@@ -776,6 +776,9 @@
                 if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
                     work = result.solution.images.solution_solutionView;
+                }else if(typeof(result.solution.images.solution_solutionView != 'undefined')) {
+                    viewsize = result.solution.images.solution_solutionView;
+                    work = result.solution.images.solution_solutionView;
                 } else {
                     // case when we don't have gallerySiteSize image size
                     viewsize = result.solution.images.solution;
