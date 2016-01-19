@@ -4,7 +4,8 @@ namespace app\extensions\command;
 
 use app\extensions\smsfeedback\SmsFeedback;
 use app\models\Expert;
-use \app\models\Pitch;
+use app\models\Pitch;
+use app\models\TextMessage;
 
 class ExpertSmsReminder extends CronJob
 {
@@ -34,7 +35,17 @@ class ExpertSmsReminder extends CronJob
                         $this->out("Need to send sms to expert #$expert for project $project->id");
                         $expertRecord = Expert::first(['conditions' => ['Expert.id' => $expert], 'with' => ['User']]);
                         if (($expertRecord->user->phone != '') && ($expertRecord->user->phone_valid)) {
-                            SmsFeedback::send($expertRecord->phone, $message);
+                            $response = SmsFeedback::send($expertRecord->user->phone, $message);
+                            list($smsStatus, $smsId) = explode(';', $response);
+                            $data = [
+                                'user_id' => $expertRecord->user->id,
+                                'created' => date('Y-m-d H:i:s'),
+                                'phone' => $expertRecord->user->phone,
+                                'text' => $message,
+                                'status' => $smsStatus,
+                                'text_id' => $smsId
+                            ];
+                            TextMessage::create($data)->save();
                             $smsCount++;
                         }
                         break;

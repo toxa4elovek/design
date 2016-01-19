@@ -9,6 +9,7 @@ use app\models\Addon;
 use app\models\Bill;
 use app\models\Logreferal;
 use app\models\SubscriptionPlan;
+use app\models\TextMessage;
 use \app\models\User;
 use \app\models\Sendemail;
 use \app\models\Category;
@@ -426,10 +427,10 @@ class UsersController extends \app\controllers\AppController
                 if ($type === 'designer') {
                     $recipient = User::first($solution->pitch->user_id);
                     User::sendSpamWincomment($newComment, $recipient);
-                } elseif($type === 'client') {
+                } elseif ($type === 'client') {
                     $recipient = User::first($solution->user_id);
                     User::sendSpamWincomment($newComment, $recipient);
-                }else {
+                } else {
                     $recipient = User::first($solution->pitch->user_id);
                     User::sendSpamWincomment($newComment, $recipient);
                     $recipient = User::first($solution->user_id);
@@ -670,10 +671,10 @@ class UsersController extends \app\controllers\AppController
                 if ($type === 'designer') {
                     $recipient = User::first($solution->pitch->user_id);
                     User::sendSpamWincomment($newComment, $recipient);
-                } elseif($type === 'client') {
+                } elseif ($type === 'client') {
                     $recipient = User::first($solution->user_id);
                     User::sendSpamWincomment($newComment, $recipient);
-                }else {
+                } else {
                     $recipient = User::first($solution->pitch->user_id);
                     User::sendSpamWincomment($newComment, $recipient);
                     $recipient = User::first($solution->user_id);
@@ -1507,7 +1508,18 @@ class UsersController extends \app\controllers\AppController
                 }
                 Session::write('user.smsCount', $smsCount);
 
-                $respond = SmsFeedback::send($user->phone, $user->phone_code . ' - код для проверки');
+                $textMessage = $user->phone_code . ' - код для проверки';
+                $respond = SmsFeedback::send($user->phone, $textMessage);
+                list($smsStatus, $smsId) = explode(';', $respond);
+                $data = [
+                    'user_id' => $user->id,
+                    'created' => date('Y-m-d H:i:s'),
+                    'phone' => $user->phone,
+                    'text' => $textMessage,
+                    'status' => $smsStatus,
+                    'text_id' => $smsId
+                ];
+                TextMessage::create($data)->save();
                 $phone = $user->phone;
                 $phone_valid = $user->phone_valid;
                 return json_encode(compact('respond', 'phone', 'phone_valid'));

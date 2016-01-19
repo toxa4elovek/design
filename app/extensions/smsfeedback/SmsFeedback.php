@@ -42,4 +42,24 @@ class SmsFeedback
         list($varNotUsed, $responseBody) = explode("\r\n\r\n", $response, 2);
         return $responseBody;
     }
+
+    public static function status($id) {
+        $fp = fsockopen(static::$defaults['host'], static::$defaults['port'], $errno, $errstr);
+        fwrite($fp, "GET /messages/v2/status/" .
+            "?id=" . rawurlencode($id) .
+            "  HTTP/1.0\n");
+        fwrite($fp, "Host: " . static::$defaults['host'] . "\r\n");
+        if (static::$defaults['login'] != "") {
+            fwrite($fp, "Authorization: Basic " .
+                base64_encode(static::$defaults['login'] . ":" . static::$defaults['password']) . "\n");
+        }
+        fwrite($fp, "\n");
+        $response = "";
+        while (!feof($fp)) {
+            $response .= fread($fp, 1);
+        }
+        fclose($fp);
+        list($varNotUsed, $responseBody) = explode("\r\n\r\n", $response, 2);
+        return $responseBody;
+    }
 }
