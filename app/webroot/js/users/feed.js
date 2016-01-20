@@ -1598,11 +1598,12 @@ function OfficeStatusUpdater() {
                     }else {
                         var left = '50px';
                     }
+                    var fullUrl = 'https://www.godesigner.ru' + url;
                     html += '<div class="sharebar" style="position: absolute; display: none; top: 30px; left: ' + left + ';"> \
                         <div class="tooltip-block"> \
-                        <div class="social-likes" data-counters="no" data-url="' + url + '" data-title="' + shareTitle + '"> \
-                        <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + url + '">SHARE</div> \
-                        <div class="twitter" style="display: inline-block;" data-via="Go_Deer">TWITT</div> \
+                        <div class="social-likes" data-counters="no" data-url="' + fullUrl + '" data-title="' + shareTitle + '"> \
+                        <div class="facebook" style="display: inline-block;" title="Поделиться ссылкой на Фейсбуке" data-url="' + fullUrl + '">SHARE</div> \
+                        <div class="twitter" style="display: inline-block;" data-via="Go_Deer" >TWITT</div> \
                         <div class="vkontakte" style="display: inline-block;" title="Поделиться ссылкой во Вконтакте" data-image="' + object.news.imageurl + '" data-url="' + url + '">SHARE</div>';
                     if(validUrl) {
                         html += '<div class="pinterest" style="display: inline-block;" title="Поделиться картинкой на Пинтересте" data-url="' + url + '" data-media="' + object.news.imageurl + '">PIN</div>';
