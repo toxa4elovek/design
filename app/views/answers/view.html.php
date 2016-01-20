@@ -16,7 +16,7 @@
 
                 </div><!-- /right_sidebar_help -->
 
-                <div id="content_help" style="min-height: 600px;">
+                <div id="content_help">
 
                     <div class="answer regular">
                         <nav class="breadcrumbs">

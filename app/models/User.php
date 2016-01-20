@@ -106,8 +106,8 @@ class User extends AppModel
                 }
                 $params['data']['password'] = String::hash($password);
                 $params['data']['confirm_password'] = String::hash($comfirmPassword);
-            }else {
-                if(isset($params['data']['avatar'])) {
+            } else {
+                if (isset($params['data']['avatar'])) {
                     $cacheKey = 'avatars_' . $record->id;
                     Rcache::delete($cacheKey);
                 }
@@ -1162,6 +1162,14 @@ class User extends AppModel
         return false;
     }
 
+    /**
+     * Метод для начала процесса валидации телефонного номера
+     *
+     * @param $userId
+     * @param $phone string
+     * @param string $phoneOperator
+     * @return array|bool
+     */
     public static function phoneValidationStart($userId, $phone, $phoneOperator = '')
     {
         if (($user = self::first($userId)) && !empty($phone)) {
@@ -1170,7 +1178,18 @@ class User extends AppModel
             $user->phone_code = self::generatePhoneCode();
             $user->phone_valid = 0;
             $user->save(null, array('validate' => false));
-            $respond = SmsFeedback::send($user->phone, $user->phone_code . ' - код для проверки');
+            $text = $user->phone_code . ' - код для проверки';
+            $respond = SmsFeedback::send($user->phone, $text);
+            list($smsStatus, $smsId) = explode(';', $respond);
+            $data = [
+                'user_id' => $user->id,
+                'created' => date('Y-m-d H:i:s'),
+                'phone' => $user->phone,
+                'text' => $text,
+                'status' => $smsStatus,
+                'text_id' => $smsId
+            ];
+            TextMessage::create($data)->save();
             $phone_valid = 0;
             return compact('respond', 'phone', 'phone_valid');
         }

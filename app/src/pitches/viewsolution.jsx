@@ -202,7 +202,6 @@ $(document).ready(function() {
 	//$('.preview').fancybox();
 	//$('#rating').raty('click', 2);
 
-
     $('.solution-link, .number_img_gallery').click(function() {
         const newComment = $('#newComment');
         if((newComment.val().match(/^#\d/ig) == null) && (newComment.val().match(/@\W*\s\W\.,/) == null)){
@@ -484,6 +483,9 @@ $(document).ready(function() {
                 if(typeof(result.solution.images.solution_gallerySiteSize) != 'undefined') {
                     viewsize = result.solution.images.solution_gallerySiteSize;
                     work = result.solution.images.solution_solutionView;
+                }else if(typeof(result.solution.images.solution_solutionView != 'undefined')) {
+                    viewsize = result.solution.images.solution_solutionView;
+                    work = result.solution.images.solution_solutionView;
                 }else {
                     // case when we don't have gallerySiteSize image size
                     viewsize = result.solution.images.solution;
@@ -502,7 +504,13 @@ $(document).ready(function() {
                                 '</video>';
                             $('.solution-images').append('<a href="' + field.weburl + '" target="_blank">' + videoHtml + '</a>');
                         }else {
-                            $('.solution-images').append('<a href="' + viewsize[idx].weburl + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
+                            let sizeLink = '';
+                            if((typeof(viewsize[idx]) != 'undefined') && (viewsize[idx].hasOwnProperty('weburl'))) {
+                                sizeLink = viewsize[idx].weburl;
+                            }else {
+                                sizeLink = field.weburl;
+                            }
+                            $('.solution-images').append('<a href="' + sizeLink  + '" target="_blank"><img src="' + field.weburl + '" class="solution-image" /></a>');
                         }
                     });
                 }else {
