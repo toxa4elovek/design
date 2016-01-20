@@ -21,17 +21,18 @@ class Fasttasks extends CronJob {
     public function run() {
         $this->header('Welcome to the Fasttasks Command');
         set_time_limit(0);
-        $tasks = Task::all(array('conditions' => array(
+        $tasks = Task::all(['conditions' => [
             'completed' => 0,
-            'type' => array('!=' => 'newpitch'),
-        )));
-        $count = count($tasks);
+            'type' => ['!=' => 'newpitch'],
+        ]]);
+        $count = 0;
         foreach($tasks as $task) {
             $methodName = '__' . $task->type;
             if(method_exists('app\extensions\command\Fasttasks', $methodName)) {
                 if(strtotime($task->date) < time()) {
                     $task->markAsCompleted();
-                    Fasttasks::$methodName($task);
+                    $result = Fasttasks::$methodName($task);
+                    $count++;
                 }
             }
         }
@@ -48,6 +49,7 @@ class Fasttasks extends CronJob {
         }else {
             $this->out('User do not want to receive notification for solution ' . $task->model_id);
         }
+        return true;
     }
 
     private function __victoryNotification($task) {
@@ -56,6 +58,7 @@ class Fasttasks extends CronJob {
         }else {
             $this->out('Error sending victory notification');
         }
+        return true;
     }
 
     private function __victoryNotificationTwitter($task) {
@@ -74,6 +77,7 @@ class Fasttasks extends CronJob {
         }else {
             $this->out('no new comment from admin notifications sent');
         }
+        return true;
     }
 
     private function __newPersonalCommentNotification($task) {
@@ -82,11 +86,13 @@ class Fasttasks extends CronJob {
         }else {
             $this->out('User do not want to receive this notification');
         }
+        return true;
     }
 
     private function __dvaSpam($task) {
         $count = User::sendDvaSpam();
         $this->out('Emails has been set to ' . $count . ' users');
+        return true;
     }
 
     private function __postNewsToSocial($task) {
@@ -100,7 +106,6 @@ class Fasttasks extends CronJob {
                     'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
                 );
                 $id = $vkApi->postMessageToPage($data);
-var_dump($id);
                 $facebookApi = new FacebookAPI();
                 $data = array(
                     'message' => $news->title,
@@ -109,8 +114,12 @@ var_dump($id);
                 $facebookApi->postMessageToPage($data);
 
                 $twitterApi = new TwitterAPI();
+                $tweetBody = $news->title . ' — ' . $news->short;
+                if(mb_strlen($tweetBody, 'UTF-8') > 90) {
+                    $tweetBody = mb_strimwidth($tweetBody, 0, 87, '...', 'UTF-8');
+                }
                 $data = array(
-                    'message' => $news->title . ' — ' . $news->short . ' https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('twitter'),
+                    'message' => $tweetBody . ' https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('twitter'),
                     'picture' => '/var/godesigner/webroot/' . $news->imageurl
                 );
                 $twitterApi->postMessageToPage($data);
@@ -131,8 +140,7 @@ var_dump($id);
                     'owner_id' => '-26880133',
                     'picture' => 'https://www.godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
                 );
-                $vkApi->postMessageToPage($data);
-
+                $id = $vkApi->postMessageToPage($data);
                 $facebookApi = new FacebookAPI();
                 $data = array(
                     'message' => $news->title,
@@ -148,8 +156,12 @@ var_dump($id);
                     'user_secret' => '8qoejI0OTXHq56wp2QKPz16KoiB9w1sQQUncl6ilL20eh'
                 );
                 $twitterApi = new TwitterAPI($keys);
+                $tweetBody = $news->title . ' — ' . $news->short;
+                if(mb_strlen($tweetBody, 'UTF-8') > 90) {
+                    $tweetBody = mb_strimwidth($tweetBody, 0, 87, '...', 'UTF-8');
+                }
                 $data = array(
-                    'message' => $news->title . ' — ' . $news->short . ' https://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
+                    'message' => $tweetBody . ' https://www.godesigner.ru/news?event=' . $result->id  . $manager->getFeedSharingAnalyticsString('twitter'),
                     'picture' => '/var/godesigner/webroot/' . $news->imageurl
                 );
                 $twitterApi->postMessageToPage($data);

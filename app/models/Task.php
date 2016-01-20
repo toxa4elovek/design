@@ -2,14 +2,21 @@
 
 namespace app\models;
 
+use lithium\data\collection\RecordSet;
+use lithium\data\entity\Record;
+
 /**
  * Class Task
  *
  * Класс для взаимодействия с очередью задач
  *
  * @package app\models
+ * @method Record|null first(array $conditions) static
+ * @method int count(array $conditions) static
+ * @method RecordSet|null all(array $conditions = []) static
  */
-class Task extends AppModel {
+class Task extends AppModel
+{
 
     /**
      * Метод получения завершенных задач
@@ -17,9 +24,10 @@ class Task extends AppModel {
      * @param $limit integer
      * @return mixed
      */
-    public static function getCompletedTasks($limit = 100) {
+    public static function getCompletedTasks($limit = 100)
+    {
         return self::all(array(
-            'conditions' => array('completed' => 1, 'type' => array('!=' => 'victoryNotificationTwitter')),
+            'conditions' => array('completed' => 1),
             'limit' => $limit,
             'order' => array('id' => 'asc')
         ));
@@ -33,7 +41,8 @@ class Task extends AppModel {
      * @param $delay integer
      * @return integer
      */
-    public static function createNewTask($modelId, $type, $delay = 0) {
+    public static function createNewTask($modelId, $type, $delay = 0)
+    {
         $data = array(
             'model_id' => (int) $modelId,
             'type' => $type,
@@ -51,10 +60,11 @@ class Task extends AppModel {
      * @param $count integer
      * @return int
      */
-    public static function deleteCompleted($count = 100) {
+    public static function deleteCompleted($count = 100)
+    {
         $tasksToDelete = self::getCompletedTasks((int) $count);
         $deletedCount = 0;
-        foreach($tasksToDelete as $task) {
+        foreach ($tasksToDelete as $task) {
             $task->delete();
             $deletedCount++;
         }
@@ -67,12 +77,27 @@ class Task extends AppModel {
      * @param $record /lithium/data/entity/Record
      * @return bool
      */
-    public function markAsCompleted($record) {
-        if($record->completed != 1) {
+    public function markAsCompleted($record)
+    {
+        if ($record->completed != 1) {
             $record->completed = 1;
             return $record->save();
         }
         return false;
     }
 
+    /**
+     * Метод помечает задачу как невыполненную, вызывается для объекта задачи
+     *
+     * @param $record /lithium/data/entity/Record
+     * @return bool
+     */
+    public function markAsIncomplete($record)
+    {
+        if ($record->completed == 1) {
+            $record->completed = 0;
+            return $record->save();
+        }
+        return false;
+    }
 }
