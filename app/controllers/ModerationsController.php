@@ -5,16 +5,14 @@ namespace app\controllers;
 use \app\models\Moderation;
 use \app\models\Comment;
 use \app\models\Solution;
-use \app\models\User;
 use \lithium\storage\Session;
 
-class ModerationsController extends \app\controllers\AppController {
+class ModerationsController extends AppController {
 
     public function add() {
         $result = false;
-        $isAdmin = Session::read('user.isAdmin');
         $currentUser = Session::read('user.id');
-        if (isset($this->request->data) && (($isAdmin == 1) || User::checkRole('admin'))) {
+        if (isset($this->request->data) && ($this->userHelper->isAdmin())) {
             if ( ($this->request->data['model'] == 'comment') && ($comment = Comment::first($this->request->data['model_id'])) ) {
                 $data = array(
                     'model' => '\app\models\Comment',
@@ -38,6 +36,7 @@ class ModerationsController extends \app\controllers\AppController {
                 )));
                 $pitch_id = $solution->pitch_id;
             }
+
             $data['user_id'] = $currentUser;
             $data['reason'] = $this->request->data['reason'];
             $data['penalty'] = $this->request->data['penalty'];
@@ -48,12 +47,12 @@ class ModerationsController extends \app\controllers\AppController {
             $moderation->set($data);
             $moderation->save();
             $result = $moderation->id;
+            if ($this->request->is('json')) {
+                return json_encode($result);
+            }
+            return $this->redirect('/pitches/view/' . $pitch_id);
         }
-
-        if ($this->request->is('json')) {
-            return json_encode($result);
-        }
-        return $this->redirect('/pitches/view/' . $pitch_id);
+        return json_encode($result);
     }
 
     private static function getThumbnail($solution) {

@@ -1288,7 +1288,7 @@ class User extends AppModel
                             '(`Pitch`.`status` = 0)',
                             '(`Pitch`.`status` = 1 AND `Pitch`.`awarded` = 0)',
                         ),
-                    )
+                    ), 'with' => ['Pitch']
         ));
         foreach ($solutions as $solution) {
             $solution->delete();

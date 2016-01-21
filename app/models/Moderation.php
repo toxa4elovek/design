@@ -7,7 +7,7 @@ use app\models\Solution;
 use app\models\User;
 use app\extensions\mailers\UserMailer;
 
-class Moderation extends \app\models\AppModel {
+class Moderation extends AppModel {
 
     public static function __init() {
         parent::__init();
@@ -57,7 +57,7 @@ class Moderation extends \app\models\AppModel {
                             break;
                     }
                 }
-                UserMailer::$mailerTemplate($dataInfo);
+                //UserMailer::$mailerTemplate($dataInfo);
             }
             return $result;
         });

@@ -1,0 +1,8 @@
+{
+  "name": "GoDesigner",
+  "short_name": "GoDesigner",
+  "start_url": "/",
+  "display": "standalone",
+  "gcm_sender_id": "905135945671",
+  "gcm_user_visible_only": true
+}

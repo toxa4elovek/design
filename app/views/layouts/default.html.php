@@ -9,6 +9,7 @@
     <link rel="apple-touch-icon" sizes="72x72" href="/img/icon_72.png" />
     <link rel="apple-touch-icon" sizes="114x114" href="/img/icon_114.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="/img/icon_144.png" />
+    <link rel="manifest" href="/manifest.json">
     <?= $this->html->link('Icon', 'favicon.png', array('type' => 'icon')); ?>
     <!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
     <?= $this->html->style('/global', array('inline' => false, 'weight' => 10)); ?>
@@ -194,6 +195,16 @@ echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false)
         $this->debug->clearDebugInfo();
     }
 ?>
+</script>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+<script>
+    /*
+    var OneSignal = OneSignal || [];
+    OneSignal.push(["init", {
+        appId: "46001cba-49be-4cc5-945a-bac990a6d995",
+        autoRegister: true
+    }]);
+    */
 </script>
 </body>
 </html>
