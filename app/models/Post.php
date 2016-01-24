@@ -2,6 +2,12 @@
 
 namespace app\models;
 
+/**
+ * Class Post
+ *
+ * Класс для работы с СМС сообщениями
+ * @package app\models
+ */
 class Post extends AppModel {
 
     public $belongsTo = array('User');

@@ -3,12 +3,15 @@
 namespace app\extensions\command;
 
 use app\extensions\mailers\CommentsMailer;
+use app\models\Category;
 use \app\models\Task;
 use \app\models\Pitch;
 use \app\models\User;
 use app\extensions\mailers\SolutionsMailer;
+use OneSignal\Config;
+use OneSignal\OneSignal;
 
-class Tasks extends \app\extensions\command\CronJob {
+class Tasks extends CronJob {
 
     public function run() {
         $this->header('Welcome to the Task Command');
@@ -33,9 +36,37 @@ class Tasks extends \app\extensions\command\CronJob {
     }
 
     private function __newpitch($task) {
-        $pitch = Pitch::first($task->model_id);
-        $params = array('pitch' => $pitch);
-        User::sendSpamNewPitch($params);
+        $pitch = Pitch::first(['conditions' =>['id' => $task->model_id]]);
+        $category = Category::first($pitch->category_id);
+        $config = new Config();
+        $config->setApplicationId('46001cba-49be-4cc5-945a-bac990a6d995');
+        $config->setApplicationAuthKey('YTRkYWE2OWMtNjQ4OS00ZjI1LThiZjItZjVlMzdlMWM2Mzc2');
+        $config->setUserAuthKey('YmFjYWI1MTQtYjgzOS00NDFhLTg2YjAtY2IzZjc4OWFjNGVm');
+        $api = new OneSignal($config);
+        $api->notifications->add([
+            'contents' => [
+                'en' => $pitch->title,
+                'ru' => $pitch->title
+            ],
+            'headings' => [
+                'en' => "Новый проект! ($category->title)",
+                'ru' => "Новый проект! ($category->title)"
+            ],
+            'included_segments' => ['All'],
+            'url' => "https://www.godesigner.ru/pitches/details/$pitch->id",
+            'isChromeWeb' => true,
+        ]);
+        $api->notifications->add([
+            'contents' => [
+                'en' => "Новый проект! ($category->title) " . $pitch->title,
+                'ru' => "Новый проект! ($category->title) " . $pitch->title
+            ],
+            'included_segments' => ['All'],
+            'url' => "https://www.godesigner.ru/pitches/details/$pitch->id",
+            'isSafari' => true,
+        ]);
+        //$params = array('pitch' => $pitch);
+        //User::sendSpamNewPitch($params);
         $this->out('New pitch email has been sent');
     }
 

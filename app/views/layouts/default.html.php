@@ -198,13 +198,15 @@ echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false)
 </script>
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
 <script>
-    /*
     var OneSignal = OneSignal || [];
     OneSignal.push(["init", {
         appId: "46001cba-49be-4cc5-945a-bac990a6d995",
-        autoRegister: true
+        autoRegister: true,
+        safari_web_id: 'web.onesignal.auto.5a33fe23-ccc7-4feb-afe0-cf26b0b7b29c',
+        welcomeNotification: {
+            "disable": true
+        }
     }]);
-    */
 </script>
 </body>
 </html>

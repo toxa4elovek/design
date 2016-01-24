@@ -10,7 +10,8 @@
     "ps/image-optimizer": "^1.0",
     "symfony/stopwatch": "^2.8",
     "gabrielelana/byte-units": "^0.3.0",
-    "symfony/finder": "^2.8"
+    "symfony/finder": "^2.8",
+    "norkunas/onesignal-php-api": "^0.1.5"
   },
   "require-dev": {
   }

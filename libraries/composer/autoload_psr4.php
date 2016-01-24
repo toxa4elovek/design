@@ -10,5 +10,10 @@ return array(
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Symfony\\Component\\OptionsResolver\\' => array($vendorDir . '/symfony/options-resolver'),
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
+    'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
+    'OneSignal\\' => array($vendorDir . '/norkunas/onesignal-php-api/src'),
+    'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),
+    'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
+    'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'ByteUnits\\' => array($vendorDir . '/gabrielelana/byte-units/src/ByteUnits'),
 );
