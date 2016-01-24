@@ -549,7 +549,7 @@ var gallerySwitch = (function() {
                     if (response.indexOf('error') != -1) {
                         text = 'Произошел сбой доставки SMS-сообщения. Попробуйте позже.';
                     } else {
-                        text = 'Код подтверждения отправлен повторно на номер ваш номер.';
+                        text = 'Код подтверждения отправлен повторно на ваш номер.';
                     }
                 }
                 paragraph.text(text).show();
