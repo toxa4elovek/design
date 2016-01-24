@@ -192,8 +192,14 @@ class SubscriptionPlan extends Pitch
                     $finalResult = User::activateSubscription($paymentPlan->user_id, $plan);
                 }
             }
-            if ($fundBalance = self::getFundBalanceForPayment($id)) {
+            if (($fundBalance = self::getFundBalanceForPayment($id)) && ($paymentPlan !== 'fund-balance') && ($paymentPlan->getPlanForPaymentForRecord() !== 0)) {
                 $result = User::fillBalance($paymentPlan->user_id, $fundBalance);
+                Task::createNewTask($paymentPlan->id, 'emailFillBalanceSuccessNotification');
+                if (!$finalResult) {
+                    $finalResult = $result;
+                }
+            }elseif(($paymentPlan->type === 'fund-balance') || ($paymentPlan->getPlanForPaymentForRecord() === 0)) {
+                $result = User::fillBalance($paymentPlan->user_id, (int) $paymentPlan->total);
                 Task::createNewTask($paymentPlan->id, 'emailFillBalanceSuccessNotification');
                 if (!$finalResult) {
                     $finalResult = $result;

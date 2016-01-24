@@ -287,6 +287,7 @@ class SubscriptionPlanTest extends AppUnit
         $id = SubscriptionPlan::getNextSubscriptionPlanId(2);
         SubscriptionPlan::setPlanForPayment($id, 0);
         SubscriptionPlan::setFundBalanceForPayment($id, 15000);
+        SubscriptionPlan::setTotalOfPayment($id, 15000);
         $result = SubscriptionPlan::activatePlanPayment($id);
         $plan = SubscriptionPlan::first($id);
         $this->assertTrue($result);
