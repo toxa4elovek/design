@@ -64,7 +64,7 @@
         <p class="regular"><?=date('d.m.y', strtotime($moderation->created));?></p><br>
         <?php echo $text; ?>
         <?php if (!empty($moderation->explanation)): ?>
-            <?php echo '<br><p class="regular" style="font-style:italic;">Примечание: ' . $this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($moderation->explanation) . '</p>';?>
+            <?php echo '<br><p class="regular" style="font-style:italic; word-wrap: break-word;">Примечание: ' . $this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($moderation->explanation) . '</p>';?>
         <?php endif; ?>
     </div>
     <div class="clr">&nbsp;</div>
