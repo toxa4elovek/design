@@ -19,9 +19,7 @@ var ProjectTypesRadio = (function (_React$Component) {
 
     _createClass(ProjectTypesRadio, [{
         key: "onChange",
-        value: function onChange(e) {
-            console.log('change');
-        }
+        value: function onChange(e) {}
     }, {
         key: "render",
         value: function render() {

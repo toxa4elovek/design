@@ -2,8 +2,8 @@
     const experts = $('.experts');
     const Cart = new AdvancedCart();
     const types = [
-        {"id": 1,"value": "design", "label": "Проект на дизайн", "checked": true},
-        {"id": 2, "value": "copyrighting", "label": "Проект на копирайтинг", "checked": false}
+        {"id": 1,"value": "design", "label": "Проект на дизайн", "checked": !payload.isCopywriting},
+        {"id": 2, "value": "copyrighting", "label": "Проект на копирайтинг", "checked": payload.isCopywriting}
     ];
 
     let endStep1DatePicker = $('.first-datepick');

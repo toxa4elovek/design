@@ -35,7 +35,14 @@
         var projectId = <?php if(isset($pitch)): echo "$pitch->id"; else: echo "null"; endif;?>;
         var balance = <?php echo (int) $this->user->getBalance();?>;
         var payload = {
-            "receipt": <?php echo json_encode($receipt);?>
+            "receipt": <?php echo json_encode($receipt);?>,
+            "isCopywriting": <?php if(isset($pitch)):
+            if($pitch->isCopyrighting()):
+                echo 'true';
+            else:
+                echo 'false';
+            endif;
+            else: echo 'false'; endif;?>
         }
     </script>
 

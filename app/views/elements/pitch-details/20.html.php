@@ -11,7 +11,6 @@ $types = array(
 );
 ?>
 <input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["logo-properties"])); ?>">
-
 <?php if(!empty($details['qualities'])):?>
     <h2 class="blueheading">Какие 3 качества нужно донести через дизайн?</h2>
     <p class="regular"><?php echo nl2br($details['qualities'])?></p>

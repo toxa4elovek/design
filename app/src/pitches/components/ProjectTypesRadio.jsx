@@ -1,7 +1,5 @@
 class ProjectTypesRadio extends React.Component {
-    onChange (e) {
-        console.log('change');
-    }
+    onChange (e) {}
     render () {
         const info = this.props.data;
         let checked = false;
