@@ -12,12 +12,12 @@ $types = array(
 ?>
 <input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["logo-properties"])); ?>">
 <?php if(!empty($details['qualities'])):?>
-    <h2 class="blueheading">Какие 3 качества нужно донести через дизайн?</h2>
+    <h2 class="blueheading">Какие 3 качества нужно донести<?php if(!$pitch->isSubscriberProjectForCopyrighting()):?> через дизайн? <?php else: ?>?<?php endif; ?></h2>
     <p class="regular"><?php echo nl2br($details['qualities'])?></p>
 <?php endif?>
 
 <div class="group">
-    <h2 class="blueheading">Какими свойствами должен обладать ваш дизайн?</h2>
+    <h2 class="blueheading">Какими свойствами должен обладать <?php if(!$pitch->isSubscriberProjectForCopyrighting()):?> ваш дизайн?<?php else:?> копирайтинг?<?php endif; ?></h2>
 
     <ul class="logo-properties">
         <li>
