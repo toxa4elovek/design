@@ -16,7 +16,7 @@ class Og extends \lithium\template\Helper
         if (empty($imageUrl)) {
             $imageUrl = $defaultImageUrl;
         } else {
-            if (!preg_match('/http/', $imageUrl)) {
+            if (!preg_match('/^http/', $imageUrl)) {
                 $imageUrl = 'https://www.godesigner.ru' . $imageUrl;
             }
         }

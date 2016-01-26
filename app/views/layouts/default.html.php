@@ -27,23 +27,23 @@
 
     <?php echo $this->Og->getOgUrl(''); ?>
     <?php if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView']))):
-    if(!isset($solution->images['solution_galleryLargeSize'][0])):
-        $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
-    else:
-        $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
-    endif;
-    $description = isset($description) ? $description : '';
-    ?>
-    <?php echo $this->Og->getOgImage($url); ?>
-    <?php echo $this->Og->getOgTitle($this->HtmlExtended->title($this->_request->params, $vars, true));?>
-    <?php echo $this->Og->getOgDescription($description);?>
+        if(!isset($solution->images['solution_galleryLargeSize'][0])):
+            $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
+        else:
+            $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
+        endif;
+        $description = isset($description) ? $description : '';
+        ?>
+        <?php echo $this->Og->getOgImage($url); ?>
+        <?php echo $this->Og->getOgTitle($this->HtmlExtended->title($this->_request->params, $vars, true));?>
+        <?php echo $this->Og->getOgDescription($description);?>
     <?php elseif(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
         $first_img = $post->imageurl;
         preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->full, $matches);
         if (!empty($matches[1])) {
             $first_img = $matches[1][0];
         }
-        if (stripos($first_img, 'http://') === false) {
+        if (stripos($first_img, 'https://') === false) {
             $first_img = 'https://www.godesigner.ru' . $first_img;
         }
         echo '<meta content="article" property="og:type"/>';
