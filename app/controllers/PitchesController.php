@@ -646,6 +646,13 @@ class PitchesController extends AppController
                 $edit = true;
                 $pitch = Pitch::first($commonPitchData['id']);
                 if ($pitch->billed == 1) {
+                    if($pitch->category_id == 20) {
+                        if($pitch->isSubscriberProjectForCopyrighting()) {
+                            $specificPitchData['isCopyrighting'] = 'true';
+                        }else {
+                            $specificPitchData['isCopyrighting'] = 'false';
+                        }
+                    }
                     $data = array(
                         'title' => $commonPitchData['title'],
                         'industry' => serialize($commonPitchData['jobTypes']),
@@ -795,7 +802,7 @@ class PitchesController extends AppController
 
     public function edit()
     {
-        if (isset($this->request->id) && (is_numeric($this->request->id)) && ($pitch = Pitch::first($this->request->id)) && (($pitch->user_id == Session::read('user.id')) || (Session::read('user.isAdmin') == 1 || (in_array(Session::read('user.id'), User::$admins))))) {
+        if (isset($this->request->id) && (is_numeric($this->request->id)) && ($pitch = Pitch::first($this->request->id)) && (($this->userHelper->isPitchOwner($pitch->user_id)) || ($this->userHelper->isAdmin()))) {
             $category = Category::first($pitch->category_id);
             $files = array();
             if (count(unserialize($pitch->filesId)) > 0) {
