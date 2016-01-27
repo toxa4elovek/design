@@ -132,13 +132,15 @@
         return false;
     });
 
-    const ratingComment = $('.ratingcomment');
     $(document).on('click', '#rating-close', function () {
+        const ratingComment = $('.ratingcomment');
         $(this).closest(ratingComment).fadeOut(200, function () {
             $(this).remove();
         });
     });
+
     $(document).on('click', '#rating_comment_send', function (e) {
+        const ratingComment = $('.ratingcomment');
         e.preventDefault();
         $(this).closest(ratingComment).fadeOut(200, function () {
             $(this).remove();
