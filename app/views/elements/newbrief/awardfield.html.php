@@ -36,7 +36,7 @@ font-family: Arial;
 font-size: 14px;
 font-weight: 400;
 line-height: 22px;text-transform: none;">
-    Кейс «<a href="/pages/fastpitch" target="_blank">Логотип в один клик</a>» экономит<br/> 3530 руб. и час на заполнение брифа, включает самый популярный набор опций</br> и стоит всего 19600 руб.,<br/>
+    Кейс «<a href="/pages/fastpitch" target="_blank">Логотип в один клик</a>» экономит<br/> 4030 руб. и час на заполнение брифа, включает самый популярный набор опций</br> и стоит всего 19600 руб.,<br/>
     включая сборы. <a href="/pages/fastpitch" target="_blank">Подробнее</a>...
 </div>
     <?php endif;?>

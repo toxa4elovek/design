@@ -1776,7 +1776,6 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'guaranteed' => 1,
                 'pinned' => 1,
                 'brief' => 1,
-                'phone-brief' => $this->request->data['phone'],
                 'specifics' => 'a:2:{s:9:"qualities";s:64:"Прагматичный, надежный, элегантный";s:15:"logo-properties";a:7:{i:0;s:1:"5";i:1;s:1:"5";i:2;s:1:"5";i:3;s:1:"5";i:4;s:1:"5";i:5;s:1:"5";i:6;s:1:"5";}}',
                 'price' => 14000,
                 'total' => 19600, ));
@@ -1795,7 +1794,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $receiptData = array(
                     'features' => array(
                         'award' => $pitch->price,
-                        'discount' => -3530,
+                        'discount' => -4030,
                         'brief' => 2750,
                         'experts' => array(1),
                         'guaranteed' => 950,

@@ -12,7 +12,7 @@
                         <h1 class="fastpitch-main-header">Как это работает</h1>
                         <div class="fastpitch-step1">
                             <h2 class="fastpitch-secondary-header">Оставьте номер телефона <span>*</span></h2>
-                            <span class="plus">+</span> <input name="phone" value="" class="input-phone" placeholder="+7 911 123 45 67" />
+                            <span class="plus">+</span> <input name="phone" value="" class="input-phone" placeholder="7 911 123 45 67" />
                             <div class="clear" style="clear:both;"></div>
                             <p>Мы свяжемся с вами для интервью, на основе которого сами создадим тех. задание для дизайнеров.</p>
                         </div>
@@ -69,9 +69,9 @@
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/79" target="_blank">гарантировать проект</a></td><td>950</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/68" target="_blank">заполнить бриф</a></td><td>2750</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/67" target="_blank">прокачать проект</a></td><td>1000</td></tr>
-                                <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/66" target="_blank">экспертное мнение</a></td><td>1000</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/66" target="_blank">экспертное мнение</a></td><td>1500</td></tr>
                                 <tr height="22"><td>сбор сервиса</td><td>24,5%</td></tr>
-                                <tr height="22"><td>скидка</td><td><span class="table-left-price">-3530</span></td></tr>
+                                <tr height="22"><td>скидка</td><td><span class="table-left-price">-4030</span></td></tr>
                                 <tr height="31"><td colspan="2"></td></tr>
                                 <tr><td class="result">ИТОГО:</td><td class="result"><span class="table-left">19600р</span></td></tr>
                             </table>
@@ -81,16 +81,16 @@
 
                         <div class="fastpitch-bottom">
                             <h1 class="fastpitch-main-header second-part" style="margin-left: 0; margin-top: 20px; margin-bottom: 35px;">Что включено в 19600 р.-</h1>
-                            <p style="width: 640px; color: #666;">С нашим предложением вы экономите не только 2 часа на заполнение брифа,<br/>но и деньги.  Стоимость кейса «Логотип в один клик» — 19600 рублей, что на 2530  дешевле, как если бы вы создавали аналогичный проект обычным способом. </p>
+                            <p style="width: 640px; color: #666;">С нашим предложением вы экономите не только 2 часа на заполнение брифа,<br/>но и деньги.  Стоимость кейса «Логотип в один клик» — 19600 рублей, что на 4030  дешевле, как если бы вы создавали аналогичный проект обычным способом. </p>
                             <a class="fastpitch button third" style="margin-left: -2px;margin-top: 30px;color:#fff;cursor:pointer;">запустить проект на логотип в один клик</a>
                             <ul>
                                 <li>гонорар дизайнеру 14 000 р.</li>
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/68" target="_blank">«Заполнить бриф»</a> 2750 р.</li>
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/79" target="_blank">«Гарантировать проект»</a> 950 р.</li>
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/67" target="_blank">«Прокачать проект»</a> 1000 р.</li>
-                                <li><a class="" href="https://www.godesigner.ru/answers/view/66" target="_blank">«Экспертное мнение»</a> 1000 р.</li>
+                                <li><a class="" href="https://www.godesigner.ru/answers/view/66" target="_blank">«Экспертное мнение»</a> 1500 р.</li>
                                 <li>сбор GoDesigner 24,5%</li>
-                                <li>скидка 3530 р. !</li>
+                                <li>скидка 4030 р. !</li>
                             </ul>
                         </div>
                     </div>
