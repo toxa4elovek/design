@@ -83,7 +83,7 @@ class Comment extends AppModel {
 			    $cacheKey = 'commentsraw_' . $params['pitch_id'];
                 Rcache::delete($cacheKey);
             }
-            preg_match_all('@(#\d*).@', $params['text'], $matches);
+            preg_match_all('@(#\d*)@', $params['text'], $matches);
             $nums = array();
             foreach($matches[1] as $hashtag){
                 $nums[] = substr($hashtag, 1);
@@ -119,7 +119,7 @@ class Comment extends AppModel {
                 foreach($solutions as $solution) {
                     $emails[$solution->user->email] = $solution;
                 }
-                foreach($emails as $solution) {
+                foreach($emails as $email => $solution) {
                     $data = $params;
                     $data['solution_id'] = $solution->id;
                     User::sendSpamNewcomment($data);
