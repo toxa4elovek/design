@@ -309,9 +309,11 @@ class User extends AppModel
         $pitches = Pitch::find('all', array('conditions' =>
                     array('user_id' => $userId, 'blank' => 0, 'status' => array('<' => 2)),
         ));
-        $pitchesIds = array();
+        $pitchesIds = [];
         foreach ($pitches as $pitch) {
-            $pitchesIds[$pitch->id . ''] = $pitch->started;
+            if(!$pitch->isCopyrighting()) {
+                $pitchesIds[$pitch->id . ''] = $pitch->started;
+            }
         }
         $fav = Favourite::find('all', array('conditions' => array('Favourite.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
         foreach ($fav as $f) {
