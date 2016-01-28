@@ -986,7 +986,7 @@ class PitchesController extends AppController
                                 'pitch_id' => $pitch->id,
                                 'question_id' => 0,
                             ),
-                            'order' => array('Comment.id' => 'desc'),
+                            'order' => array('Comment.created' => 'desc'),
                             'with' => array('User'), ));
                 Rcache::write($cacheKey, $commentsRaw, array(), '+4 hours');
             }
