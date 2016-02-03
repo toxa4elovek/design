@@ -57,7 +57,7 @@ class Moderation extends AppModel {
                             break;
                     }
                 }
-                //UserMailer::$mailerTemplate($dataInfo);
+                UserMailer::$mailerTemplate($dataInfo);
             }
             return $result;
         });
