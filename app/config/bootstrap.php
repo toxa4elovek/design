@@ -120,6 +120,7 @@ Logger::config(array(
 
 require __DIR__ . '/bootstrap/logs.php';
 require __DIR__ . '/bootstrap/debug.php';
+require __DIR__ . '/bootstrap/sms.php';
 
 /*
 Dispatcher::applyFilter('_call', function($self, $params, $chain) {

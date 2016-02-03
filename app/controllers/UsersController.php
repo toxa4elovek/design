@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\extensions\helper\MoneyFormatter;
 use app\extensions\smsfeedback\SmsFeedback;
+use app\extensions\smsfeedback\SmsUslugi;
 use app\extensions\social\TwitterAPI;
 use app\models\Addon;
 use app\models\Bill;
@@ -1509,6 +1510,18 @@ class UsersController extends \app\controllers\AppController
                 Session::write('user.smsCount', $smsCount);
 
                 $textMessage = $user->phone_code . ' - код для проверки';
+                /*$params = array(
+                    "text" => $textMessage
+                );
+                $phones = array($user->phone);
+                $smsService = new SmsUslugi();
+                $respond = $smsService->send($params, $phones);
+                if(!isset($respond['smsid'])) {
+                    $smsId = 0;
+                }else {
+                    $smsId = $respond['smsid'];
+                }
+                */
                 $respond = SmsFeedback::send($user->phone, $textMessage);
                 list($smsStatus, $smsId) = explode(';', $respond);
                 $data = [
@@ -1517,6 +1530,7 @@ class UsersController extends \app\controllers\AppController
                     'phone' => $user->phone,
                     'text' => $textMessage,
                     'status' => $smsStatus,
+                    //'status' => $respond['descr'],
                     'text_id' => $smsId
                 ];
                 TextMessage::create($data)->save();
