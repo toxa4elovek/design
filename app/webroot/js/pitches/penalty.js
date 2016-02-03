@@ -8,11 +8,13 @@
         "node": React.createElement(PaymentSeparator, { key: "2" })
     }, {
         "node": React.createElement(PaymentPaymaster, { key: "3", payload: payload, selected: false })
-    }, {
-        "node": React.createElement(PaymentSeparator, { key: "4" })
-    }, {
-        "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: false })
     } /*,
+      {
+         "node": <PaymentSeparator key="4" />
+      },
+      {
+         "node": <PaymentWire key="5" payload={payload} selected={false} />
+      },
       {
       "node": <PaymentSeparator key="6" />
       },
@@ -49,11 +51,13 @@
                     "node": React.createElement(PaymentSeparator, { key: "2" })
                 }, {
                     "node": React.createElement(PaymentPaymaster, { key: "3", payload: payload, selected: false })
-                }, {
-                    "node": React.createElement(PaymentSeparator, { key: "4" })
-                }, {
-                    "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: false })
                 } /*,
+                  {
+                     "node": <PaymentSeparator key="4" />
+                  },
+                  {
+                     "node": <PaymentWire key="5" payload={payload} selected={false} />
+                  },
                   {
                      "node": <PaymentSeparator key="6" />
                   },
@@ -69,11 +73,13 @@
                     "node": React.createElement(PaymentSeparator, { key: "2" })
                 }, {
                     "node": React.createElement(PaymentPaymaster, { key: "3", payload: payload, selected: true })
-                }, {
-                    "node": React.createElement(PaymentSeparator, { key: "4" })
-                }, {
-                    "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: false })
                 } /*,
+                  {
+                     "node": <PaymentSeparator key="4" />
+                  },
+                  {
+                     "node": <PaymentWire key="5" payload={payload} selected={false} />
+                  },
                   {
                      "node": <PaymentSeparator key="6" />
                   },
@@ -89,11 +95,13 @@
                     "node": React.createElement(PaymentSeparator, { key: "2" })
                 }, {
                     "node": React.createElement(PaymentPaymaster, { key: "3", payload: payload, selected: false })
-                }, {
-                    "node": React.createElement(PaymentSeparator, { key: "4" })
-                }, {
-                    "node": React.createElement(PaymentWire, { key: "5", payload: payload, selected: true })
                 } /*,
+                  {
+                     "node": <PaymentSeparator key="4" />
+                  },
+                  {
+                     "node": <PaymentWire key="5" payload={payload} selected={true} />
+                  },
                   {
                      "node": <PaymentSeparator key="6" />
                   },

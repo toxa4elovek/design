@@ -9,13 +9,13 @@
         },
         {
             "node": <PaymentPaymaster key="3" payload={payload} selected={false} />
-        },
+        }/*,
         {
             "node": <PaymentSeparator key="4" />
         },
         {
             "node": <PaymentWire key="5" payload={payload} selected={false} />
-        }/*,
+        },
          {
          "node": <PaymentSeparator key="6" />
          },
@@ -67,13 +67,13 @@
                     },
                     {
                         "node": <PaymentPaymaster key="3" payload={payload} selected={false} />
-                    },
+                    }/*,
                     {
                         "node": <PaymentSeparator key="4" />
                     },
                     {
                         "node": <PaymentWire key="5" payload={payload} selected={false} />
-                    }/*,
+                    },
                     {
                         "node": <PaymentSeparator key="6" />
                     },
@@ -92,13 +92,13 @@
                     },
                     {
                         "node": <PaymentPaymaster key="3" payload={payload} selected={true} />
-                    },
+                    }/*,
                     {
                         "node": <PaymentSeparator key="4" />
                     },
                     {
                         "node": <PaymentWire key="5" payload={payload} selected={false} />
-                    }/*,
+                    },
                     {
                         "node": <PaymentSeparator key="6" />
                     },
@@ -117,13 +117,13 @@
                     },
                     {
                         "node": <PaymentPaymaster key="3" payload={payload} selected={false} />
-                    },
+                    }/*,
                     {
                         "node": <PaymentSeparator key="4" />
                     },
                     {
                         "node": <PaymentWire key="5" payload={payload} selected={true} />
-                    }/*,
+                    },
                     {
                         "node": <PaymentSeparator key="6" />
                     },
