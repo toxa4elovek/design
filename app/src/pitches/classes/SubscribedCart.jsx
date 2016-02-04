@@ -1,11 +1,11 @@
 class AdvancedCart {
-    data = {};
-    fileIds = [];
-    projectId = null;
-    receiptAccessor = null;
     constructor() {
         this.receiptAccessor = new ReceiptAccessor();
         this.projectId = projectId;
+        this.receiptAccessor = null;
+        this.projectId = null;
+        this.fileIds = {};
+        this.data = {};
         $.each($('li', '#filezone'), function (index, object) {
             this.fileIds.push($(object).data('id'));
         }.bind(this));

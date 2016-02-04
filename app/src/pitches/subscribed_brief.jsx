@@ -53,7 +53,7 @@
 
     if(finishChooseOfWinnerPicker.length > 0) {
         const chooseWinnerFinishDateMoment = moment($('input[name=chooseWinnerFinishDate]').val());
-        finishChooseOfWinnerPicker.datetimepicker({ locale: 'ru', defaultDate: chooseWinnerFinishDateMoment, debug: true, widgetPositioning: {
+        finishChooseOfWinnerPicker.datetimepicker({ locale: 'ru', defaultDate: chooseWinnerFinishDateMoment, widgetPositioning: {
             horizontal: 'left',
             vertical: 'bottom'
         }});

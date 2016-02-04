@@ -1,6 +1,9 @@
 class ProjectRewardInput extends React.Component {
-    walletKey = 'Награда Дизайнеру';
-    minimalPrice = 500;
+    constructor(props) {
+        super(props);
+        this.walletKey = 'Награда Дизайнеру';
+        this.minimalPrice = 500;
+    }
     componentDidMount() {
         const input = $(this.refs.input);
         input.numeric(

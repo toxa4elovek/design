@@ -196,6 +196,8 @@ echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false)
     }
 ?>
 </script>
+<?php
+if($env !== 'development'):?>
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
 <script>
     var OneSignal = OneSignal || [];
@@ -208,5 +210,6 @@ echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false)
         }
     }]);
 </script>
+<?php endif?>
 </body>
 </html>
