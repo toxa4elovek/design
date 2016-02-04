@@ -1,5 +1,8 @@
 class PaymentPaymaster extends BasePaymentSystem{
-    paymentSystemName = 'payment-paymaster';
+    constructor(props) {
+        super(props);
+        this.paymentSystemName = 'payment-paymaster';
+    }
     paymentSystemClick(id) {
         const amount = $("#pmOpenAmount");
         if((0 < amount.length) && (!amount.val().match(/^\s*\d+.?\d*\s*$/))) {
@@ -20,6 +23,10 @@ class PaymentPaymaster extends BasePaymentSystem{
             widgetStyle = {"display": "block"};
             imageStyle = {"display": "none"};
         }
+        let title = 'Оплата абонентского обслуживания';
+        if(typeof(this.props.title) != 'undefined') {
+            title = this.props.title;
+        }
         return (
             <div className="payment paymaster">
                 <div onClick={this.onClickHandler}>
@@ -31,7 +38,7 @@ class PaymentPaymaster extends BasePaymentSystem{
                     <div className="pmwidget pmwidgetDone" style={{"width": "471px"}}>
                         <a onClick={this.paymentSystemClick.bind(this)} href="http://paymaster.ru/" className="pmlogo"></a>
                         <h1 className="pmheader"> Выберите способ оплаты</h1>
-                        <p className="pmdesc"><strong>Описание:</strong> Оплата абонентского обслуживания</p>
+                        <p className="pmdesc"><strong>Описание:</strong> {title}</p>
                         <p className="pmamount"><strong>Сумма:&nbsp;</strong>{total}&nbsp;RUB</p>
                         <label className="pmpaymenttype"> Способ оплаты:</label>
                         <div className="payList" style={{"height": "auto", "overflow": "hidden"}}>
