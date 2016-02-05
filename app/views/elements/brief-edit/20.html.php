@@ -5,7 +5,7 @@ if(!isset($specifics['logoType'])) {
 ?>
 <div class="groupc">
     <p>
-        <label>Какие 3 качества нужно донести<?php if(!$pitch->isSubscriberProjectForCopyrighting()):?> через дизайн? <?php else: ?>?<?php endif; ?> <a href="#" class="second tooltip" title="Прилагательные, ассоциации, которые должны возникнуть у потребителя."></a><a href="#" class="visibility-eye-tooltip tooltip private" title="Эта информация будет доступна вам и участникам, которые подписали соглашение о неразглашении"><img src="/img/private-comment-eye.png" alt="Информация скрыта"></a></label>
+        <label><span class="subscriber-qualities-title">Какие 3 качества нужно донести<?php if(!$pitch->isSubscriberProjectForCopyrighting()):?> через дизайн? <?php else: ?>?<?php endif; ?></span> <a href="#" class="second tooltip" title="Прилагательные, ассоциации, которые должны возникнуть у потребителя."></a><a href="#" class="visibility-eye-tooltip tooltip private" title="Эта информация будет доступна вам и участникам, которые подписали соглашение о неразглашении"><img src="/img/private-comment-eye.png" alt="Информация скрыта"></a></label>
         <input type="text" name="qualities" value="<?=$specifics['qualities']?>" placeholder="Прагматичный, надежный, элегантный" class="specific-prop">
     </p>
 </div><!-- .group -->
@@ -18,7 +18,7 @@ if(!isset($specifics['logoType'])) {
     <div class="extra_options" style="display: none">
 
         <div class="groupc">
-            <p><label>Какими свойствами должен обладать <?php if(!$pitch->isSubscriberProjectForCopyrighting()):?> ваш дизайн?<?php else:?> копирайтинг?<?php endif; ?></label></p>
+            <p><label class="subscriber-audience-title">Какими свойствами должен обладать <?php if(!$pitch->isSubscriberProjectForCopyrighting()):?> ваш дизайн?<?php else:?> копирайтинг?<?php endif; ?></label></p>
 
             <ul class="logo-properties sliderul" data-name="logo-properties">
                 <li>
