@@ -2,7 +2,6 @@ class AdvancedCart {
     constructor() {
         this.receiptAccessor = new ReceiptAccessor();
         this.projectId = projectId;
-        this.receiptAccessor = null;
         this.projectId = null;
         this.fileIds = {};
         this.data = {};
@@ -79,6 +78,7 @@ class AdvancedCart {
     saveData (pay) {
         if (this.data.features.award == 0) {
             alert('Укажите награду для дизайнера!');
+            SubscribedBriefActions.unlockButton();
         } else {
             if(pay) {
                 this.data.actionType = 'pay';
@@ -94,13 +94,13 @@ class AdvancedCart {
                         alert('При сохранении проекта возникла ошибка, пожалуйста, свяжитесь со службой поддержки.');
                     }
                 }
-                this.id = response.success;
+                this.projectId = response.success;
                 if(typeof(response.redirect) != 'undefined') {
                     window.location = `${response.redirect}`;
                 }
-                const viewUrl = `/pitches/view/${this.id}`;
-                const editUrl = `/pitches/edit/${this.id}`;
-                const deleteUrl = `/pitches/delete/${this.id}`;
+                const viewUrl = `/pitches/view/${this.projectId}`;
+                const editUrl = `/pitches/edit/${this.projectId}`;
+                const deleteUrl = `/pitches/delete/${this.projectId}`;
                 const title = this.data.commonPitchData.title;
                 const award = this._priceDecorator(this.data.features.award);
                 const pitchPanelSelector = '#pitch-panel';
@@ -111,7 +111,7 @@ class AdvancedCart {
                     evenClass = 'even';
                 }
                 const row =
-                    `<tr data-id="${this.id}" class="selection ${evenClass} coda">
+                    `<tr data-id="${this.projectId}" class="selection ${evenClass} coda">
                         <td></td>
                         <td class="pitches-name mypitches">
                             <a href="${viewUrl}">${title}</a>
@@ -123,13 +123,13 @@ class AdvancedCart {
                         <td class="pitches-edit mypitches">
                             <!--a href="${editUrl}#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a-->
                             <a href="${editUrl}" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
-                            <a data-id="${this.id}" href="${deleteUrl}" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
+                            <a data-id="${this.projectId}" href="${deleteUrl}" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                         </td>
                     </tr>`;
-                if((pitchPanel.length == 1) && ($('tr[data-id="' + this.id + '"]', '#pitch-panel').length == 0)) {
+                if((pitchPanel.length == 1) && ($('tr[data-id="' + this.projectId + '"]', '#pitch-panel').length == 0)) {
                     $('#header-table').append(row);
                     scroll = true;
-                }else if ($('tr[data-id="' + this.id + '"]', '#pitch-panel').length == 0) {
+                }else if ($('tr[data-id="' + this.projectId + '"]', '#pitch-panel').length == 0) {
                     const panel =
                         `<div id="pitch-panel">
                             <div class="conteiner">
@@ -153,6 +153,7 @@ class AdvancedCart {
                 if(scroll) {
                     $.scrollTo($(pitchPanelSelector), {duration: 600});
                 }
+                SubscribedBriefActions.unlockButton();
             }.bind(this));
         }
     }

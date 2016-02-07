@@ -79,7 +79,7 @@ class Pitch extends AppModel
                     // Send messages for Public Pitch only
                     if ($params['pitch']->private != 1) {
                         $mediaManager = new SocialMediaManager;
-                        $mediaManager->postNewProjectMessage($params['pitch']);
+                        //$mediaManager->postNewProjectMessage($params['pitch']);
                     }
                     Task::createNewTask($params['pitch']->id, 'newpitch');
                 } elseif (($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {
@@ -1951,8 +1951,24 @@ class Pitch extends AppModel
             'title' => $commonPitchData['title'],
             'industry' => serialize($commonPitchData['jobTypes']),
             'started' => date('Y-m-d H:i:s'),
+            'totalFinishDate' => '0000-00-00 00:00:00',
+            'awardedDate' => '0000-00-00 00:00:00',
             'ideas_count' => 0,
             'price' => $featuresData['award'],
+            'total' => 0,
+            'fee' => 0,
+            'awarded' => 0,
+            'free' => 0,
+            'fileDesc' => '',
+            'moderated' => 0,
+            'promocode' => '',
+            'referal' => '',
+            'referal_sum' => '',
+            'last_solution' => 0,
+            'multiwinner' => 0,
+            'blank' => 0,
+            'blank_id' => 0,
+            'business-description' => '',
             'description' => $commonPitchData['description'],
             'status' => 0,
             'pinned' => (bool) $featuresData['pinned'],
@@ -1964,6 +1980,7 @@ class Pitch extends AppModel
             'finishDate' => $commonPitchData['finishDate'],
             'chooseWinnerFinishDate' => $commonPitchData['chooseWinnerFinishDate'],
             'timelimit' => 0,
+            'billed' => 0,
             'brief' => (bool) $featuresData['brief'],
             'phone-brief' => $commonPitchData['phone-brief'],
             'guaranteed' => 0,

@@ -206,6 +206,8 @@ class Event extends \app\models\AppModel {
         $newEvent->comment_id = $commentId;
         $newEvent->type = $type;
         $newEvent->news_id = $news_id;
+        $newEvent->fav_user_id = 0;
+        $newEvent->tweet_id = 0;
         return $newEvent->save();
     }
 

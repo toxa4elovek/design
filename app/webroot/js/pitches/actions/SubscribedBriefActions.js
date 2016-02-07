@@ -12,5 +12,15 @@ var SubscribedBriefActions = {
         SubscribedBriefDispatcher.dispatch({
             actionType: 'update-receipt'
         });
+    },
+    lockButton: function lockButton() {
+        SubscribedBriefDispatcher.dispatch({
+            actionType: 'lock-pay-button'
+        });
+    },
+    unlockButton: function unlockButton() {
+        SubscribedBriefDispatcher.dispatch({
+            actionType: 'unlock-pay-button'
+        });
     }
 };

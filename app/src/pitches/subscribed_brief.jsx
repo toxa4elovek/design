@@ -273,10 +273,12 @@
     });
 
     const tosCheckBox = $('input[name=tos]');
-
+    let busy = false;
     $('#save').click(function () {
+        SubscribedBriefActions.lockButton();
         if (false === tosCheckBox.prop('checked')) {
             appendTosCheck();
+            SubscribedBriefActions.unlockButton();
         } else {
             if (Cart.prepareData(endStep1DatePicker, finishChooseOfWinnerPicker)) {
                 if (uploader.damnUploader('itemsCount') > 0) {
@@ -286,6 +288,8 @@
                         close: false
                     });
                     uploader.damnUploader('startUpload');
+                    SubscribedBriefActions.unlockButton();
+
                 } else {
                     Cart.saveData(false);
                     _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик']);
@@ -293,12 +297,17 @@
             } else {
                 const offset = $('.wrong-input').parent().offset();
                 $.scrollTo(offset.top - 10, {duration: 600});
+                SubscribedBriefActions.unlockButton();
             }
         }
         return false;
     });
 
-    $('#save-and-pay').click(function() {
+    $('#save-and-pay').on('click', function(event) {
+        if(busy === true) {
+            return false;
+        }
+        $( this ).off(event);
         if (false === tosCheckBox.prop('checked')) {
             appendTosCheck();
         } else {
@@ -449,6 +458,12 @@
                 <Receipt data={payload.receipt}/>,
                 document.getElementById('receipt-container')
             );
+        }
+        if (eventPayload.actionType === 'lock-pay-button') {
+            busy = true;
+        }
+        if (eventPayload.actionType === 'unlock-pay-button') {
+            busy = false;
         }
     });
 
