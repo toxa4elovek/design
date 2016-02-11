@@ -23,14 +23,20 @@ class Addon extends AppModel {
         self::applyFilter('activate', function($self, $params, $chain) {
             $result = $chain->next($self, $params, $chain);
             if ($result) {
-                User::sendAdminNewAddon($params['addon']);
+                if($params['sendEmail']) {
+                    User::sendAdminNewAddon($params['addon']);
+                }
                 if ($params['addon']->brief == 1) {
                     Pitch::addBrief($params['addon']);
-                    User::sendAdminNewAddonBrief($params['addon']);
+                    if($params['sendEmail']) {
+                        User::sendAdminNewAddonBrief($params['addon']);
+                    }
                 }
                 if ($params['addon']->experts == 1) {
                     Pitch::addExpert($params['addon']);
-                    User::sendExpertMail($params['addon']);
+                    if($params['sendEmail']) {
+                        User::sendExpertMail($params['addon']);
+                    }
                 }
                 if ($params['addon']->guaranteed == 1) {
                     Pitch::addGuaranteed($params['addon']);
@@ -49,8 +55,8 @@ class Addon extends AppModel {
         });
     }
 
-    public static function activate($addon) {
-        $params = compact('addon');
+    public static function activate($addon, $sendEmail = true) {
+        $params = compact('addon', 'sendEmail');
         return static::_filter(__FUNCTION__, $params, function($self, $params) {
             extract($params);
             $addon->billed = 1;
