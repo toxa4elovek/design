@@ -2,7 +2,6 @@ class AdvancedCart {
     constructor() {
         this.receiptAccessor = new ReceiptAccessor();
         this.projectId = projectId;
-        this.projectId = null;
         this.fileIds = {};
         this.data = {};
         $.each($('li', '#filezone'), function (index, object) {
