@@ -2,7 +2,7 @@
 
 namespace app\extensions\command;
 
-use app\extensions\smsfeedback\SmsFeedback;
+use app\extensions\smsfeedback\SmsUslugi;
 use app\models\Expert;
 use app\models\Pitch;
 use app\models\TextMessage;
@@ -35,14 +35,25 @@ class ExpertSmsReminder extends CronJob
                         $this->out("Need to send sms to expert #$expert for project $project->id");
                         $expertRecord = Expert::first(['conditions' => ['Expert.id' => $expert], 'with' => ['User']]);
                         if (($expertRecord->user->phone != '') && ($expertRecord->user->phone_valid)) {
-                            $response = SmsFeedback::send($expertRecord->user->phone, $message);
-                            list($smsStatus, $smsId) = explode(';', $response);
+                            $smsService = new SmsUslugi();
+                            $params = array(
+                                "text" => $message
+                            );
+                            $phones = array($expertRecord->user->phone);
+                            //$response = SmsFeedback::send($expertRecord->user->phone, $message);
+                            //list($smsStatus, $smsId) = explode(';', $response);
+                            $respond = $smsService->send($params, $phones);
+                            if(!isset($respond['smsid'])) {
+                                $smsId = 0;
+                            }else {
+                                $smsId = $respond['smsid'];
+                            }
                             $data = [
                                 'user_id' => $expertRecord->user->id,
                                 'created' => date('Y-m-d H:i:s'),
                                 'phone' => $expertRecord->user->phone,
                                 'text' => $message,
-                                'status' => $smsStatus,
+                                'status' => $respond['descr'],
                                 'text_id' => $smsId
                             ];
                             TextMessage::create($data)->save();

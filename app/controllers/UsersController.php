@@ -1510,7 +1510,7 @@ class UsersController extends \app\controllers\AppController
                 Session::write('user.smsCount', $smsCount);
 
                 $textMessage = $user->phone_code . ' - код для проверки';
-                /*$params = array(
+                $params = array(
                     "text" => $textMessage
                 );
                 $phones = array($user->phone);
@@ -1521,16 +1521,13 @@ class UsersController extends \app\controllers\AppController
                 }else {
                     $smsId = $respond['smsid'];
                 }
-                */
-                $respond = SmsFeedback::send($user->phone, $textMessage);
-                list($smsStatus, $smsId) = explode(';', $respond);
                 $data = [
                     'user_id' => $user->id,
                     'created' => date('Y-m-d H:i:s'),
                     'phone' => $user->phone,
                     'text' => $textMessage,
-                    'status' => $smsStatus,
-                    //'status' => $respond['descr'],
+                    //'status' => $smsStatus,
+                    'status' => $respond['descr'],
                     'text_id' => $smsId
                 ];
                 TextMessage::create($data)->save();

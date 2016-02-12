@@ -2,7 +2,7 @@
 
 namespace app\extensions\command;
 
-use app\extensions\smsfeedback\SmsFeedback;
+use app\extensions\smsfeedback\SmsUslugi;
 use app\models\TextMessage;
 
 /**
@@ -20,13 +20,15 @@ class UpdateSmsStatus extends CronJob
     public function run()
     {
         $this->_renderHeader();
-        $waitingForUpdateStatuses = ['queued', 'accepted'];
+        $waitingForUpdateStatuses = ['Успешно обработано'];
         $messages = TextMessage::all(['conditions' => ['status' => $waitingForUpdateStatuses]]);
+        $smsService = new SmsUslugi();
+        //$reports = $smsService->reports(date('Y-m-d', time() - 10 * MINUTE), date('Y-m-d'));
         foreach($messages as $message) {
-            $response = SmsFeedback::status($message->text_id);
-            list($smsId, $smsStatus) = explode(';', $response);
-            $message->status = $smsStatus;
+            $details = $smsService->detailReport($message->text_id);
+            $message->status = $details['descr'];
             $message->save();
+            sleep(1);
         }
         $count = count($messages);
         $this->_renderFooter("$count messages updated.");

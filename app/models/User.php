@@ -19,6 +19,7 @@ use \app\extensions\mailers\SpamMailer;
 use \app\extensions\helper\NameInflector;
 use \app\extensions\helper\PitchTitleFormatter;
 use \app\extensions\smsfeedback\SmsFeedback;
+use app\extensions\smsfeedback\SmsUslugi;
 use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
 use \DirectoryIterator;
@@ -1181,14 +1182,23 @@ class User extends AppModel
             $user->phone_valid = 0;
             $user->save(null, array('validate' => false));
             $text = $user->phone_code . ' - код для проверки';
-            $respond = SmsFeedback::send($user->phone, $text);
-            list($smsStatus, $smsId) = explode(';', $respond);
+            $params = array(
+                "text" => $text
+            );
+            $phones = array($user->phone);
+            $smsService = new SmsUslugi();
+            $respond = $smsService->send($params, $phones);
+            if(!isset($respond['smsid'])) {
+                $smsId = 0;
+            }else {
+                $smsId = $respond['smsid'];
+            }
             $data = [
                 'user_id' => $user->id,
                 'created' => date('Y-m-d H:i:s'),
                 'phone' => $user->phone,
                 'text' => $text,
-                'status' => $smsStatus,
+                'status' => $respond['descr'],
                 'text_id' => $smsId
             ];
             TextMessage::create($data)->save();
