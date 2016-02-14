@@ -9,34 +9,30 @@ use \app\models\User;
 use app\models\Tag;
 use app\models\Searchtag;
 use app\models\Pitch;
-use app\models\Solutiontag;
 use \app\extensions\helper\User as UserHelper;
 use \app\extensions\mailers\UserMailer;
-use \app\extensions\mailers\SolutionsMailer;
 use \lithium\analysis\Logger;
 
-class SolutionsController extends \app\controllers\AppController
+class SolutionsController extends AppController
 {
 
     public $publicActions = array('like', 'unlike', 'logosale', 'search_logo', 'testmail');
 
     public function hide()
     {
-        $result = $this->request;
-        $result = Solution::hideimage($this->request->id, Session::read('user.id'));
+        $result = Solution::hideimage($this->request->id, $this->userHelper->getId());
         return compact('result');
     }
 
     public function unhide()
     {
-        $result = true;
-        $result = Solution::unhideimage($this->request->id, Session::read('user.id'));
+        $result = Solution::unhideimage($this->request->id, $this->userHelper->getId());
         return compact('result');
     }
 
     public function like()
     {
-        $likes = Solution::increaseLike($this->request->id, Session::read('user.id'));
+        $likes = Solution::increaseLike($this->request->id, $this->userHelper->getId());
         $result = $likes['result'];
         $likes = $likes['likes'];
         return compact('likes', 'result');
@@ -44,15 +40,20 @@ class SolutionsController extends \app\controllers\AppController
 
     public function unlike()
     {
-        $likes = Solution::decreaseLike($this->request->id, Session::read('user.id'));
+        $likes = Solution::decreaseLike($this->request->id, $this->userHelper->getId());
         $result = $likes['result'];
         $likes = $likes['likes'];
         return compact('likes', 'result');
     }
 
+    /**
+     * Метод пробует установить рейтинг $this->request->data['rating'] для решения $this->request->data['id']
+     *
+     * @return array
+     */
     public function rating()
     {
-        $rating = Solution::setRating($this->request->data['id'], $this->request->data['rating'], Session::read('user.id'));
+        $rating = Solution::setRating($this->request->data['id'], $this->request->data['rating'], $this->userHelper->getId());
         return compact('rating');
     }
 
@@ -131,7 +132,7 @@ class SolutionsController extends \app\controllers\AppController
     public function saveSelected()
     {
         if (isset($this->request->data['selectedSolutions'])) {
-            if (($solution = Solution::first($this->request->data['selectedSolutions'])) && ($solution->user_id == Session::read('user.id'))) {
+            if (($solution = Solution::first($this->request->data['selectedSolutions'])) && ($solution->user_id == $this->userHelper->getId())) {
                 if ($solution->selected == 1) {
                     $solution->selected = 0;
                 } else {
@@ -342,7 +343,7 @@ class SolutionsController extends \app\controllers\AppController
 
     public function add_tag()
     {
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
+        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && ($this->userHelper->getId() == $solution->user_id)) {
             $result = Tag::saveSolutionTag($this->request->data['tag'], $solution->id);
             return compact($result);
         }
@@ -351,7 +352,7 @@ class SolutionsController extends \app\controllers\AppController
 
     public function remove_tag()
     {
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
+        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && ($this->userHelper->getId() == $solution->user_id)) {
             $result = Tag::removeTag($this->request->data['tag'], $solution->id);
             return compact($result);
         }
@@ -360,7 +361,7 @@ class SolutionsController extends \app\controllers\AppController
 
     public function update_description()
     {
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && (Session::read('user.id') == $solution->user_id)) {
+        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && ($this->userHelper->getId() == $solution->user_id)) {
             $solution->description = $this->request->data['updatedText'];
             $solution->save();
         }

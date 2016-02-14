@@ -66,6 +66,10 @@ class AppController extends \lithium\action\Controller
                 }
                 // updates avatars
                 $this->userHelper->write('user.images', $userRecord->images);
+                $ids = $this->userHelper->getId();
+                if($this->userHelper->isAdmin() && $ids != '108') {
+                    $ids .= ' OR Pitch.user_id = 108';
+                }
                 $topPanel = Pitch::all(
                     [
                         'with' => ['Category'],
@@ -74,8 +78,8 @@ class AppController extends \lithium\action\Controller
                                 ["Pitch.type != 'fund-balance'"],
                             ]],
                             ['OR' => [
-                                ['Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.blank = 0'],
-                                ['Pitch.user_id = ' . $this->userHelper->getId() . ' AND Pitch.status < 2 AND Pitch.billed = 1 AND Pitch.blank = 1'],
+                                ['(Pitch.user_id = ' . $ids . ') AND (Pitch.status < 2 AND Pitch.blank = 0)'],
+                                ['(Pitch.user_id = ' . $ids . ') AND (Pitch.status < 2 AND Pitch.billed = 1 AND Pitch.blank = 1)'],
                             ]],
                         ]
                     ]

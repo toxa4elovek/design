@@ -576,7 +576,7 @@ $(document).ready(function() {
             }
 
             var firstImage = $('.solution-image').first().parent();
-            if (currentUserId == result.pitch.user_id) { // isClient
+            if ((currentUserId == result.pitch.user_id) || isCurrentAdmin) { // isClient
                 var ratingWidget = $('<div class="separator-rating"> \
                     <div class="separator-left"></div> \
                     <div class="rating-widget"><span class="left">выставьте</span> \
