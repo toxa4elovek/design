@@ -2086,6 +2086,7 @@ class UsersController extends \app\controllers\AppController
         $defaultFinishDate = date('Y-m-d H:i:s', time() + (5 * DAY));
         $moneyFormatter = new MoneyFormatter();
         $client = User::first($this->userHelper->getId());
+        $plan = User::getCurrentPlanData($client->id);
         foreach ($paymentsObj as $row) {
             $data = $row->data();
             $data['hasBill'] = false;
@@ -2115,6 +2116,17 @@ class UsersController extends \app\controllers\AppController
                 $receipt = Receipt::exportToArray($data['id']);
                 foreach ($receipt as $receiptRow) {
                     if (($receiptRow['name'] === 'Экспертное мнение') || ($receiptRow['name'] === 'экспертное мнение')) {
+                        $reducedPriceAmount = $receiptRow['value'];
+                    }
+                }
+                $data['price'] += $reducedPriceAmount;
+                $data['extraFunds'] += $reducedPriceAmount;
+            }
+            if (($data['pinned'] == 1) && (!in_array('pinproject', $plan['free']))) {
+                $reducedPriceAmount = 0;
+                $receipt = Receipt::exportToArray($data['id']);
+                foreach ($receipt as $receiptRow) {
+                    if ($receiptRow['name'] === '«Прокачать» проект') {
                         $reducedPriceAmount = $receiptRow['value'];
                     }
                 }
