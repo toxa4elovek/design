@@ -27,7 +27,7 @@ class Brief extends \lithium\template\Helper {
      * @return bool
      */
     public function isUsingPlainText($projectRecord) {
-        return strtotime($projectRecord->started) < strtotime('2013-07-25 16:30:00');
+        return strtotime(($projectRecord->started) < strtotime('2013-07-25 16:30:00') && ($projectRecord->published == 1));
     }
 
     /**
