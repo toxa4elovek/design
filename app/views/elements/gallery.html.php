@@ -145,7 +145,7 @@ foreach($solutions as $solution):
             <div class="" style="display: block; float:left;">
                 <span class="rating_block">
                     <div class="ratingcont" data-default="<?=$solution->rating?>" data-solutionid="<?=$solution->id?>" style="float: left; height: 9px; background: url(/img/<?=$solution->rating?>-rating.png) repeat scroll 0% 0% transparent; width: 56px;">
-                        <?php if($this->user->isPitchOwner($pitch->user_id)):?>
+                        <?php if($this->user->isPitchOwner($pitch->user_id) || $this->user->isAdmin()):?>
                         <a data-rating="1" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
                         <a data-rating="2" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
                         <a data-rating="3" class="ratingchange" href="#" style="width:11px;height:9px;float:left;display:block"></a>
