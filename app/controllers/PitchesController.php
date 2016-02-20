@@ -1375,6 +1375,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                     return $this->redirect('/pitches/view/'.$pitch->id);
                 }
             }
+            $pitch->isCopywriting = $pitch->isCopyrighting();
             // Forbid Private
             if ($pitch->private == 1) {
                 $canViewPrivate = false;

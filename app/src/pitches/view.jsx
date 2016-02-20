@@ -767,7 +767,7 @@
                 $('.solution-left-panel .solution-title').css('background', 'linear-gradient(#F0EFED, #DFDFDC) repeat scroll 0 0 rgba(0, 0, 0, 0)');
                 $('.solution-left-panel .solution-title').children('h1').html('<a style="color: #606060;" href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>');
             }
-            if ((result.solution.images.solution_solutionView) && (result.pitch.category_id != 7)) {
+            if (result.pitch.isCopywriting === false) {
                 // Main Images
                 if(typeof(result.solution.images.solution) == 'undefined') {
                     var storage = result.solution.images.solution_solutionView;
@@ -953,7 +953,7 @@
                 $('.author-from').text('');
             }
 
-            if (result.pitch.category_id != 7) {
+            if (result.pitch.isCopywriting === false) {
                 var desc = result.solution.description;
                 var viewLength = 100; // Description string cut length parameter
                 const solutionDescription = $('.solution-description');
@@ -1035,7 +1035,7 @@
             $('.value-likes', '.solution-stat').text(result.solution.likes || 0);
             $('.value-comments', '.solution-stat').text(result.comments.length || 0);
 
-            if (result.pitch.category_id != 7) {
+            if (result.pitch.isCopywriting === false) {
 
                 var media = 'https://www.godesigner.ru';
                 if ($.isArray(result.solution.images.solution_solutionView)) {

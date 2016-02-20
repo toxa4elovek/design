@@ -14,7 +14,7 @@ function microTimeFloat()
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
 }
-
+/*
 if ($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 'true') || ($_SERVER['SERVER_ADDR'] == '127.0.0.1')) {
     $sessionHelper = new \lithium\storage\Session();
     if (preg_match('@^/test/@', $_SERVER['REQUEST_URI'])) {
@@ -40,7 +40,7 @@ if ($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 't
         $sessionHelper->write('debug.queries', $currentQueryLog);
         return $result;
     });
-/*
+
     $actions = ['read', 'write', 'delete', 'ttl', 'exists'];
     Rcache::applyFilter($actions, function ($self, $params, $chain) use ($sessionHelper) {
         if (!$currentQueryLog = $sessionHelper->read('debug.queries')) {
@@ -60,5 +60,6 @@ if ($userHelper->isAdmin() || (isset($_GET['profile']) && $_GET['profile'] == 't
         $sessionHelper->write('debug.queries', $currentQueryLog);
         return $result;
     });
-*/
+
 }
+*/
