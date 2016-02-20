@@ -440,10 +440,13 @@ class PitchesController extends AppController
         }
         if (!empty($id) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $id), 'with' => array('Category'))))) {
             $res = $pitch->pitchData();
-            $res['needRatingPopup'] = $pitch->ratingPopup($res['avgArray']);
+            $needRatingPopup = false;
+            if($pitch->category_id != 20) {
+                $needRatingPopup = $pitch->ratingPopup($res['avgArray']);
+            }
+            $res['needRatingPopup'] = $needRatingPopup;
             $res['needWinnerPopup'] = $pitch->winnerPopup();
             $res['type'] = $pitch->type;
-
             return $res;
         }
 

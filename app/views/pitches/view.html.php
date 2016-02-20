@@ -162,9 +162,11 @@
                     <!-- Rating Pancake -->
                 <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
                     <div class="bubble">
-                        <span>Возврат денег недоступен:</span><br>
-                        <span class="lowReason"></span><br><br>
-                        <a href="/answers/view/71">Как это исправить?</a>
+                        <div class="bubble-content">
+                            <span>Возврат денег недоступен:</span><br>
+                            <span class="lowReason"></span><br><br>
+                            <a href="/answers/view/71">Как это исправить?</a>
+                        </div>
                     <div id="bubble-close"></div>
                     </div>
                     <div style="width:150px;height:190px;text-align;center">

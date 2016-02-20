@@ -264,7 +264,12 @@ function renderFloatingBlock() {
             if ((response.percentages.comment < 20) && (response.percentages.rating < 20)) {
                 lowReason = 'недостаточно комментариев и звезд.';
             }
-            $('.lowReason', '#dinamic').append(lowReason);
+            if(response.type === 'company_project') {
+                lowReason = '<span>Вашей активности недостаточно, пожалуйста, помогите исполнителям вас понять.</span>';
+                $('.bubble-content').html(lowReason);
+            }else {
+                $('.lowReason', '#dinamic').append(lowReason);
+            }
             $('.bubble').show();
             $('#bubble-close', '#dinamic').on('click', function() {
                 $(this).parent().hide();
