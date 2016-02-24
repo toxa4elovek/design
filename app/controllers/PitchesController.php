@@ -1783,6 +1783,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'title' => 'Логотип в один клик ('.$this->request->data['phone'].')',
                 'category_id' => 1,
                 'phone-brief' => $this->request->data['phone'],
+                'expert' => 1,
                 'expert-ids' => serialize(array(1)),
                 'guaranteed' => 1,
                 'pinned' => 1,
