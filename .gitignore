@@ -59,3 +59,4 @@ app/webroot/js/pitches/gallery.js
 app/webroot/js/users/mypitches_loader.js
 app/webroot/js/pages/main.js
 app/webroot/dist/*
+app/webroot/js/common/solutions/CopywritingSolution.js
