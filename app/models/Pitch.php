@@ -1263,7 +1263,7 @@ class Pitch extends AppModel
     {
         $cacheKey = 'calc_firstSolutionTime_' . $pitch->id;
         $time = null;
-        if (!$time = Rcache::read($cacheKey)) {
+        //if (!$time = Rcache::read($cacheKey)) {
             $pitch->firstSolution = Historysolution::first(array(
                 'conditions' => array(
                     'pitch_id' => $pitch->id),
@@ -1272,9 +1272,9 @@ class Pitch extends AppModel
             ));
             if ($pitch->firstSolution) {
                 $time = strtotime($pitch->firstSolution->created);
-                Rcache::write($cacheKey, $time);
+                //Rcache::write($cacheKey, $time);
             }
-        }
+        //}
         return $time;
     }
 
@@ -1291,7 +1291,7 @@ class Pitch extends AppModel
     public function calcRating($ids, $pitch, $plusDay, $dt)
     {
         $cacheKey = 'calc_rating_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
-        if (!$rating = Rcache::read($cacheKey)) {
+        //if (!$rating = Rcache::read($cacheKey)) {
             if (!empty($ids)) {
                 $ratingsNum = Ratingchange::all(array('conditions' => array('solution_id' => $ids, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
             } else {
@@ -1327,16 +1327,16 @@ class Pitch extends AppModel
                 $rating = 3;
             }
             if (strtotime($plusDay) < time()) {
-                Rcache::write($cacheKey, $rating, [], '+2 hours');
+                //Rcache::write($cacheKey, $rating, [], '+2 hours');
             }
-        }
+        //}
         return $rating;
     }
 
     public function calcComments($ids, $pitch, $plusDay, $dt)
     {
         $cacheKey = 'calc_comments_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
-        if (!$comments = Rcache::read($cacheKey)) {
+        //if (!$comments = Rcache::read($cacheKey)) {
             if (!empty($ids)) {
                 if (strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
                     $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
@@ -1373,9 +1373,9 @@ class Pitch extends AppModel
                 $comments = 3;
             }
             if (strtotime($plusDay) < time()) {
-                Rcache::write($cacheKey, $comments, [], '+2 hours');
+                //Rcache::write($cacheKey, $comments, [], '+2 hours');
             }
-        }
+        //}
         return $comments;
     }
 

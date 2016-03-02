@@ -473,7 +473,8 @@ $(document).ready(function() {
             $('.solution-next-area').attr('href', '/pitches/viewsolution/' + result.next); // @todo ¿Sorting?
             $('.solution-images').html('');
             // Left Panel
-            if ((result.solution.images.solution_solutionView) && (result.pitch.category_id != 7)) {
+            if (result.pitch.isCopywriting === false) {
+                console.log('design branch');
                 // Main Images
                 if(typeof(result.solution.images.solution) == 'undefined') {
                     var storage = result.solution.images.solution_solutionView;
@@ -541,6 +542,8 @@ $(document).ready(function() {
                     solutionThumbnail = viewsize.weburl;
                 }
             }else {
+                console.log('copywriting branch');
+                // Копирайтинг блок
                 var filesHTML = '';
                 var downloadUrl ='';
                 if ((typeof (result.solution.images) != 'undefined') && (result.solution.images.length != 0)) {
@@ -576,7 +579,7 @@ $(document).ready(function() {
             }
 
             var firstImage = $('.solution-image').first().parent();
-            if (currentUserId == result.pitch.user_id) { // isClient
+            if ((currentUserId == result.pitch.user_id) || isCurrentAdmin) { // isClient
                 var ratingWidget = $('<div class="separator-rating"> \
                     <div class="separator-left"></div> \
                     <div class="rating-widget"><span class="left">выставьте</span> \
@@ -660,7 +663,7 @@ $(document).ready(function() {
                 $('.author-from').text('');
             }
 
-            if (result.pitch.category_id != 7) {
+            if (result.pitch.isCopywriting === false) {
                 var desc = result.solution.description;
                 var viewLength = 100; // Description string cut length parameter
                 if (desc.length > viewLength) {

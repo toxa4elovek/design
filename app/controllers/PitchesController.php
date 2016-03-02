@@ -440,10 +440,13 @@ class PitchesController extends AppController
         }
         if (!empty($id) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $id), 'with' => array('Category'))))) {
             $res = $pitch->pitchData();
-            $res['needRatingPopup'] = $pitch->ratingPopup($res['avgArray']);
+            $needRatingPopup = false;
+            if($pitch->category_id != 20) {
+                $needRatingPopup = $pitch->ratingPopup($res['avgArray']);
+            }
+            $res['needRatingPopup'] = $needRatingPopup;
             $res['needWinnerPopup'] = $pitch->winnerPopup();
             $res['type'] = $pitch->type;
-
             return $res;
         }
 
@@ -1372,6 +1375,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                     return $this->redirect('/pitches/view/'.$pitch->id);
                 }
             }
+            $pitch->isCopywriting = $pitch->isCopyrighting();
             // Forbid Private
             if ($pitch->private == 1) {
                 $canViewPrivate = false;
@@ -1779,6 +1783,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'title' => 'Логотип в один клик ('.$this->request->data['phone'].')',
                 'category_id' => 1,
                 'phone-brief' => $this->request->data['phone'],
+                'expert' => 1,
                 'expert-ids' => serialize(array(1)),
                 'guaranteed' => 1,
                 'pinned' => 1,

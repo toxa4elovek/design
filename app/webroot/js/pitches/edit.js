@@ -86,12 +86,11 @@ $(function () {
         $(this).parent().addClass('expanded');
         return false;
     });
-
     /*sliders*/
+
     $(".slider").each(function (index, object) {
         var value = 5;
-        if (typeof slidersValue != "undefined") {
-
+        if (typeof slidersValue != "undefined" && slidersValue != null) {
             value = slidersValue[index];
         }
         $(object).slider({
@@ -234,11 +233,9 @@ $(function () {
     });
 
     /**/
-    Cart = new FeatureCart();
+    var Cart = new FeatureCart();
     Cart.init();
 });
-//$('input[name=category_id]').val()
-
 /* Class */
 
 function FeatureCart() {

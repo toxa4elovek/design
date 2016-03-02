@@ -8,6 +8,7 @@ use lithium\analysis\Logger;
 use lithium\storage\Session;
 use lithium\data\collection\RecordSet;
 use lithium\data\entity\Record;
+use app\models\User;
 use OneSignal\Config;
 use OneSignal\OneSignal;
 
@@ -312,6 +313,9 @@ http://godesigner.ru/answers/view/73');
     {
         $solution = Solution::first($solutionId);
         $pitch = Pitch::first($solution->pitch_id);
+        if(in_array($userId, User::$admins)) {
+            $userId = $pitch->user_id;
+        }
         $history = Ratingchange::create();
         Ratingchange::remove(array('user_id' => $userId, 'solution_id' => $solutionId));
         $history->set(array('user_id' => $userId, 'solution_id' => $solutionId, 'created' => date('Y-m-d H:i:s')));
