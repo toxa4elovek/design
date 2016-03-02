@@ -2066,6 +2066,7 @@ class UsersController extends \app\controllers\AppController
                 array('type' => 'fund-balance'),
                 array('type' => 'plan-payment'),
                 array('type' => 'company_project'),
+                array('type' => 'multiwinner', 'category_id' => 20)
             )
         );
         if ((isset($this->request->query['query']))

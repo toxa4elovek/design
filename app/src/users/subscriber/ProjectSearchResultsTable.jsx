@@ -32,7 +32,7 @@ class ProjectSearchResultsTable extends React.Component{
         let operations = [0];
         copyForCalculations.forEach(function (row) {
             let result = 0;
-            if(row.type === 'company_project') {
+            if((row.type === 'company_project') || (row.type === 'multiwinner')) {
                 result -= parseInt(row.price);
             }else if((row.type === 'fund-balance') || (row.type === 'refund')) {
                 result += parseInt(row.total);
