@@ -10,7 +10,7 @@
                       </section>
                         <div id="ap_content_top">
                         	<div id="ap_content_top_l">
-                            	<h2 class="largest-header" style="color: #ccc;text-shadow: -1px 0 0 #c0c0c0, 1px 1px 0 #efefef;">Go Designer — это виртуальная площадка, объединяющая дизайнеров и&nbsp;тех, кому нужны творческие решения</h2>
+                            	<h2 class="largest-header" style="text-transform:uppercase;font: normal 28px/34px RodeoC, sans-serif; color: #666666; text-shadow: -1px 0 0 #FFFFFF;">Go Designer — это виртуальная площадка, объединяющая дизайнеров и&nbsp;тех, кому нужны творческие решения</h2>
                                 <div id="ap_content_top_l_img"><img src="/img/ap_c_t_d_1.jpg" alt=""></div>
                                 <p class="regular">Мы — команда креативщиков, бизнесменов и&nbsp;менеджеров из мира рекламы. Мы как никто другой знакомы с проблемой, когда прямо сейчас нужны свободные дизайнеры или интересные заказы. Поэтому мы решили приложить все усилия и&nbsp;соединить представителей творческих профессий и&nbsp;заказчиков воедино, создав платформу для эффективной работы.</p>
                                 <img src="/img/ap_c_i_d_2.png" alt="">
