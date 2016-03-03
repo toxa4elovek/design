@@ -16,7 +16,7 @@
                 </div></td><td>
                 <a style="margin-left:15px;margin-top:4px" href="#" id="goSearch" class="button second">Поиск</a>
                 </td></tr></table>
-                <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:25px;width: 617px;height:347px;background-color: white;z-index:10;position:absolute;">
+                <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:25px;width: 617px;height:380px;background-color: white;z-index:10;position:absolute;">
                     <ul class="filterlist" style="float:left;width:105px;margin-left:25px;text-transform: none">
                         <li class="first">проекты</li>
                         <li style="width:85px"><a data-group="type" data-value="all" href="#">все</a></li>
