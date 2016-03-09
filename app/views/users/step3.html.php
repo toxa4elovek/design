@@ -83,11 +83,7 @@
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
                         <div class="message_text2">
-                            <?php if($comment->user->isAdmin):?>
-                                <span class="regular comment-container"><?=$this->brief->linkEmail($comment->originalText)?></span>
-                            <?php else: ?>
-                                <span class="regular comment-container"><?=$this->brief->linkEmail($this->brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->originalText))?></span>
-                            <?php endif?>
+                            <span class="regular comment-container"><?=$this->brief->linkEmail($this->brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->originalText))?></span>
                         </div>
                     </div>
 

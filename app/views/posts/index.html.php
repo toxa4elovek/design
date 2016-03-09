@@ -30,7 +30,7 @@
                     </form>
                     <?=$this->view()->render(array('element' => 'posts/categories_menu'))?>
                     <div id="current_pitch">
-                    <?php echo $this->stream->renderStream(10, false);?>
+                    <?php echo $this->stream->renderStream(8, false);?>
                     </div>
                 </div>
             </div><!-- /content -->
