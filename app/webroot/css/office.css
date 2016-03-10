@@ -930,6 +930,7 @@
 .twitter-typeahead {
     margin-top: -2px;
     float: left;
+    margin-bottom: 12px;
 }
 #news-add #news-add-photo:before {
     background: url(/img/photo-icon.png) no-repeat;
