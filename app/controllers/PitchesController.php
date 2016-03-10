@@ -510,7 +510,7 @@ class PitchesController extends AppController
                 if (isset($this->request->query['title'])) {
                     $defaultTitle = $this->request->query['title'];
                 }
-                $defaultFinishDate = date('Y-m-d H:i:s', time() + (5 * DAY));
+                $defaultFinishDate = date('Y-m-d H:i:s', time() + (10 * DAY));
                 if ((isset($this->request->query['date'])) && (!empty($this->request->query['date']))) {
                     $defaultFinishDate = $this->request->query['date'];
                 }

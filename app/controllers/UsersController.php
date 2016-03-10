@@ -2084,7 +2084,7 @@ class UsersController extends \app\controllers\AppController
             'order' => array('started' => 'desc')
         ));
         $payments = array();
-        $defaultFinishDate = date('Y-m-d H:i:s', time() + (5 * DAY));
+        $defaultFinishDate = date('Y-m-d H:i:s', time() + (10 * DAY));
         $moneyFormatter = new MoneyFormatter();
         $client = User::first($this->userHelper->getId());
         $plan = User::getCurrentPlanData($client->id);
