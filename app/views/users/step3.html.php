@@ -83,7 +83,13 @@
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
                         <div class="message_text2">
-                            <span class="regular comment-container"><?=$this->brief->linkEmail($this->brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->originalText))?></span>
+                            <?php
+                            $commentText = $this->brief->linkEmail($this->brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->originalText));
+                            if($this->user->isAdmin() && (preg_match('/хотим продолжить наше партнерство/', $comment->originalText))):
+                                $commentText = $this->brief->linkEmail($this->brief->showRawComment($comment->originalText));
+                            endif;
+                            ?>
+                            <span class="regular comment-container"><?php echo $commentText?></span>
                         </div>
                     </div>
 
