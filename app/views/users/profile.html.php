@@ -191,6 +191,7 @@
                                             <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>дайджест новостей (1 раз в 3 недели)
                                         </label>
                                     </li>
+                                    <li id="push-notifications-status"></li>
                                 </ul>
                                 <div class="clr"></div>
                             </div>
@@ -371,6 +372,7 @@
     'fileuploader',
     '/js/jquery.tooltip.js',
     '/js/jquery-plugins/jquery.scrollto.min.js',
+    '/js/users/office/PushNotificationsStatus.js',
     '/js/users/office/ProfRadioList.js',
     '/js/users/office/ProfSelectBox.js',
     'users/office.js'), array('inline' => false))?>

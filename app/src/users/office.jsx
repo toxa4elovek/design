@@ -879,6 +879,19 @@ function FavesTableLoader() {
 
 $(function(){
 
+    OneSignal.push(["isPushNotificationsEnabled", function(enabled) {
+        let status = false;
+        if (enabled) {
+            status = true;
+        }
+        ReactDOM.render(
+            <PushNotificationsStatus checked={status}/>,
+            document.getElementById('push-notifications-status')
+        );
+    }]);
+
+
+
     $('.changeStatus').live('click', function() {
         const name = $(this).attr('name');
         const input = $('#' + name);
