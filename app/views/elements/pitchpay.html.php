@@ -53,7 +53,7 @@
                 </tr>
             <?php endif;?>
 
-            <tr>
+            <!--tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
             </tr>
 
@@ -116,7 +116,7 @@
                         </div>
                     </div>
                 </td>
-            </tr>
+            </tr-->
 
             <!--tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
