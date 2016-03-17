@@ -7,7 +7,7 @@
         <div class="main">
 
             <section class="howitworks" style="margin-top: 15px; margin-bottom: 30px;">
-                <h1>выберите категорию</h1>
+                <h1 style="margin-top: 30px;">выберите категорию</h1>
             </section>
 
             <!--p class="intro_text">Мы не допускаем создания единого проекта<br /> на логотип и фирменный стиль. <a href="http://www.godesigner.ru/answers/view/95" target="_blank">Подробнее...</a>

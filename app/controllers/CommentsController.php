@@ -15,8 +15,6 @@ use app\extensions\storage\Rcache;
 class CommentsController extends \lithium\action\Controller {
 
 	public function add() {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
         $allowedAction = array('view', 'viewsolution');
         if((!isset($this->request->data['action'])) || (!in_array($this->request->data['action'], $allowedAction))) {
             $this->request->redirectAction = 'view';
