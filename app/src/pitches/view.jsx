@@ -340,8 +340,6 @@
             $.post(form.attr('action') + '.json', data).done(function (result) {
                 if ($('input[name=penalty]:checked', '#delete-solution-form').val() == '1') {
                     softSolutionDelete(link);
-                } else {
-                    solutionDelete(link);
                 }
                 $spinner.removeClass('active');
                 $('.popup-close').click();

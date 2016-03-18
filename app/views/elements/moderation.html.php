@@ -60,6 +60,7 @@
         <textarea id="explanation" name="explanation" form="delete-solution-form" class="placeholder" placeholder="ссылка на первоисточник или комментарий"></textarea>
         <input type="hidden" name="model" id="model" value="solution" />
         <input type="hidden" name="model_id" id="model_id" value="" />
+        <input type="hidden" name="project_id" id="project_id" value="" />
         <div class="final-step-nav wrapper" style="margin-top:20px;">
             <input type="submit" class="button" id="sendDeleteSolution" value="Отправить">
             <div class="moderation-spinner"></div>

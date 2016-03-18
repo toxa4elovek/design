@@ -282,7 +282,8 @@ $(document).ready(function() {
             $(document).off('click', '#sendDeleteSolution');
             var data = form.serialize();
             $.post(form.attr('action') + '.json', data).done(function() {
-                link.click();
+                console.log($('input[name="pitch_id"]').val());
+                window.location = '/pitches/view/' + $('input[name="pitch_id"]').val();
             });
             return false;
         });
@@ -295,11 +296,6 @@ $(document).ready(function() {
         var word = formatString(newSolutionCount, {'string':'решен', 'first':'ие', 'second':'ия', 'third':'ий'});
         var newString = newSolutionCount + ' ' + word;
         $.get($(this).attr('href'), function(response) {
-            /*if(response.result != false) {
-                link.parent().parent().parent().parent().remove();
-                $('#solutions', 'ul').html(newString);
-                $('#hidden-solutions-count').val(newSolutionCount);
-            }*/
             window.location = '/pitches/view/' + $('input[name="pitch_id"]').val();
         });
         return false;
@@ -492,6 +488,8 @@ $(document).ready(function() {
                     viewsize = result.solution.images.solution;
                     work = result.solution.images.solution;
                 }
+                console.log(result.solution);
+                console.log(work);
                 if ($.isArray(work)) {
                     $.each(work, function(idx, field) {
                         if (field.weburl.match(/.mp4$/)) {

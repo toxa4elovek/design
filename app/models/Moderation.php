@@ -6,6 +6,7 @@ use app\models\Comment;
 use app\models\Solution;
 use app\models\User;
 use app\extensions\mailers\UserMailer;
+use lithium\analysis\Logger;
 
 class Moderation extends AppModel {
 
@@ -35,6 +36,17 @@ class Moderation extends AppModel {
                     $dataInfo['text'] = null;
                     $dataInfo['image'] = $self::fetchModelImage($modelData);
                     $mailerTemplate = 'removesolution';
+                    $userHelper = new \app\extensions\helper\User();
+                    $data = array(
+                        'id' => $solution->id,
+                        'num' => $solution->num,
+                        'user_who_deletes' => $userHelper->getId(),
+                        'user_id' => $solution->user_id,
+                        'date' => date('Y-m-d H:i:s'),
+                        'isAdmin' => $userHelper->isAdmin()
+                    );
+                    Logger::write('info', serialize($data), array('name' => 'deleted_solutions'));
+                    $result = $solution->delete();
                 }
                 if ($user) {
                     switch ($penalty) {

@@ -107,7 +107,7 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior
             $record->images = [];
             if ($fileModel === 'app\models\Solutionfile') {
                 $cacheKey = "solutionfiles_$record->id";
-                if(!$images = Rcache::read($cacheKey)) {
+                //if(!$images = Rcache::read($cacheKey)) {
                     $images = $fileModel::all([
                         'conditions' => [
                             'model_id' => $record->id,
@@ -116,8 +116,8 @@ class UploadableFile extends \app\models\behaviors\ModelBehavior
                         'order' => ['position' => 'asc']
                     ]);
                     $images->data();
-                    Rcache::write($cacheKey, $images, null, '+1 hour');
-                }
+                    //Rcache::write($cacheKey, $images, null, '+1 hour');
+                //}
             } else {
                 $images = $fileModel::all(array('conditions' => array('model_id' => $record->id, 'model' => '\\' . $record->model())));
             }
