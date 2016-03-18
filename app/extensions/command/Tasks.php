@@ -65,8 +65,8 @@ class Tasks extends CronJob {
             'url' => "https://www.godesigner.ru/pitches/details/$pitch->id",
             'isSafari' => true,
         ]);
-        //$params = array('pitch' => $pitch);
-        //User::sendSpamNewPitch($params);
+        $params = array('pitch' => $pitch);
+        User::sendSpamNewPitch($params);
         $this->out('New pitch email has been sent');
     }
 
