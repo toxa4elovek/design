@@ -55,6 +55,8 @@
                 <h2>&nbsp;</h2>
                 <label><input type="radio" name="penalty" value="0">Без штрафа</label><br>
                 <label><input type="radio" name="penalty" value="1">Заблокировать</label><br>
+                <label><input type="radio" name="penalty" value="2">Заблокировать на 30 дней</label><br>
+                <label><input type="radio" name="penalty" value="3">Заблокировать в данном проекте</label><br>
             </li>
         </ul>
         <textarea id="explanation" name="explanation" form="delete-solution-form" class="placeholder" placeholder="ссылка на первоисточник или комментарий"></textarea>

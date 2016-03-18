@@ -59,6 +59,10 @@ class AppController extends \lithium\action\Controller
                     Auth::clear('user');
                     return $this->redirect('/users/banned');
                 }
+                if(($userRecord->banned_until) && ($userRecord->banned_until != '0000-00-00 00:00:00') && (time() < strtotime($userRecord->banned_until))) {
+                    Auth::clear('user');
+                    return $this->redirect('/users/banned');
+                }
                 // Проверяем, не удалил ли себя пользователь
                 if ($userRecord->email === '') {
                     Auth::clear('user');

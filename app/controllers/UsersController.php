@@ -1230,6 +1230,11 @@ class UsersController extends \app\controllers\AppController
 
     public function banned()
     {
+        $shortTerm = false;
+        if($this->request->query['temp']) {
+            $shortTerm = true;
+        }
+        return compact('shortTerm');
     }
 
     public function need_activation()

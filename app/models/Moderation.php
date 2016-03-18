@@ -59,6 +59,17 @@ class Moderation extends AppModel {
                             $user->block();
                             $mailerTemplate = 'removeandblock';
                             break;
+                        case 2:
+                            // 30 days block user
+                            $user->blockUntil();
+                            $mailerTemplate = 'removeandblock30';
+                            break;
+                        case 3:
+                            // Block User for project
+                            $params['entity']->pitch_id = $dataInfo['pitch']->id;
+                            $params['entity']->save();
+                            $mailerTemplate = 'removeandblockforproject';
+                            break;
                         default:
                             // Ban User Until
                             $term = ((int) $penalty) * DAY;

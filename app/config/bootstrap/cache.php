@@ -64,6 +64,7 @@ if ($apcEnabled) {
 /**
  * Caches paths for auto-loaded and service-located classes.
  */
+/*
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
 	if (!Environment::get('production')) {
 		return $chain->next($self, $params, $chain);
@@ -102,4 +103,4 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 		});
 	}
 	return $chain->next($self, $params, $chain);
-});
+});*/

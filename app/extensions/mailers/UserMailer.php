@@ -89,4 +89,34 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function removeandblock30($data) {
+        return self::_mail(array(
+            'to' => $data['user']['email'],
+            'subject' => 'Ваш аккаунт заблокирован на 30 дней',
+            'use-smtp' => true,
+            'data' => array(
+                'user' => $data['user'],
+                'reason' => $data['reason'],
+                'text' => $data['text'],
+                'image' => $data['image'],
+                'explanation' => $data['explanation'],
+            ),
+        ));
+    }
+
+    public static function removeandblockforproject($data) {
+        return self::_mail(array(
+            'to' => $data['user']['email'],
+            'subject' => 'Ваш запрещено участие в проекте',
+            'use-smtp' => true,
+            'data' => array(
+                'user' => $data['user'],
+                'reason' => $data['reason'],
+                'text' => $data['text'],
+                'image' => $data['image'],
+                'explanation' => $data['explanation'],
+            ),
+        ));
+    }
+
 }

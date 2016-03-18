@@ -1287,6 +1287,11 @@ class User extends AppModel
         }
     }
 
+    public function blockUntil($user) {
+        $user->banned_until = date('Y-m-d H:i:s', time() + 30 * DAY);
+        $user->save(null, array('validate' => false));
+    }
+
     public function block($user)
     {
         $user->banned = 1;
@@ -1779,9 +1784,12 @@ class User extends AppModel
      */
     public function hasActiveSubscriptionDiscountForRecord(Record $userRecord)
     {
-        $discountEndDate = new \DateTime($userRecord->subscription_discount_end_date);
-        $currentDateTime = new \DateTime;
-        return $discountEndDate > $currentDateTime;
+        if(strtotime($userRecord->subscription_discount_end_date)) {
+            $discountEndDate = new \DateTime($userRecord->subscription_discount_end_date);
+            $currentDateTime = new \DateTime;
+            return $discountEndDate > $currentDateTime;
+        }
+        return false;
     }
 
     /**
