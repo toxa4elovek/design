@@ -1219,9 +1219,11 @@ $(document).on('click', '#save', function() {
 });
 
 $(document).on('change', '.rb1', function() {
-    if($(this).data('pay') == 'cards') {
+    if($(this).data('pay') === 'cards') {
+        console.log('select cards');
         $('#cards').show();
         $('#wmr').hide();
+        $('#yandex').hide();
         $('.tooltip_plugin').tooltip({
             tooltipID: 'tooltip3',
             width: '205px',
@@ -1232,9 +1234,18 @@ $(document).on('change', '.rb1', function() {
             titleAttributeContent: '12 цифр без пробелов',
             tooltipBGColor: 'transparent'
         });
-    }else {
+    }else if($(this).data('pay') === 'wmr') {
+        console.log('select wmr');
+
         $('#cards').hide();
         $('#wmr').show();
+        $('#yandex').hide();
+    }else if($(this).data('pay') === 'yandex') {
+        console.log('select yandex');
+
+        $('#cards').hide();
+        $('#wmr').hide();
+        $('#yandex').show();
     }
 });
 
@@ -1260,6 +1271,14 @@ $(document).on('blur', 'input[data-validate=numeric]', function() {
 
 $(document).on('blur', 'input[data-validate=wmr]', function() {
     if (! /^R\d{12}$/.test($(this).val()) ) {
+        $(this).addClass('wrong-input');
+        required = true;
+        return true;
+    }
+});
+
+$(document).on('blur', 'input[data-validate=yandex]', function() {
+    if (! /^(41001\d{10})$/.test($(this).val()) ) {
         $(this).addClass('wrong-input');
         required = true;
         return true;

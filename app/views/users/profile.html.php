@@ -218,7 +218,13 @@
                             'wmr-fio' => '',
                             'passseries' => '',
                             'passnum' => '',
-                            'issuedby' => ''
+                            'issuedby' => '',
+                            'yandex-phone' => '',
+                            'yandex-account' => '',
+                            'yandex-fio' => '',
+                            'passseriesyandex' => '',
+                            'passnumyandex' => '',
+                            'issuedbyyandex' => ''
                         );
                     }
                     ?>
@@ -278,13 +284,14 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" data-pay="wmr" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'wmr') echo 'checked' ?> value="wmr">
+                                    <input type="radio" disabled data-pay="wmr" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'wmr') echo 'checked' ?> value="wmr">
                                 </td>
                                 <td class="s3_h">
                                     <img alt="Webmoney WMR" src="/img/wmr.png">
                                 </td>
                                 <td class="s3_text" style="margin-top: 14px;">
-                                    Получить вознаграждение в wmr (webmoney.ru)
+                                    Выплата на WMR временно недоступна
+                                    <!--Получить вознаграждение в wmr (webmoney.ru)-->
                                 </td>
                                 <td></td>
                             </tr>
@@ -310,6 +317,47 @@
                                         </tr>
                                         <tr><td class="tableheader" colspan="3">Примечание</td></tr>
                                         <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if(isset($paydata['extradatawmr'])) echo $paydata['extradatawmr']?>" name="extradatawmr" /></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr style="height: 80px;">
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" data-pay="yandex" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'yandex') echo 'checked' ?> value="yandex">
+                                </td>
+                                <td class="s3_h">
+                                    <img alt="Yandex Деньги" style="width:120px; margin-left: 10px;" src="/img/yd.png">
+                                </td>
+                                <td class="s3_text" style="margin-top: 14px;">
+                                    Получить вознаграждение в Yandex деньгах
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr id="yandex" <?php if($paydata['cashintype'] != 'yandex'):?> style="display:none;"<?php endif;?> >
+                                <td colspan="4">
+                                    <table id="step2table">
+                                        <tr style="height: 40px;">
+                                            <td></td>
+                                        </tr>
+                                        <tr><td class="tableheader" colspan="3">Кошелек</td></tr>
+                                        <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['yandex-account']?>" name="yandex-account" data-validate="yandex" /></td></tr>
+                                        <tr><td class="tableheader" colspan="3">ФИО</td></tr>
+                                        <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['yandex-fio']?>" name="yandex-fio" data-validate="fio" /></td></tr>
+                                        <tr><td class="tableheader" colspan="3">Телефон для связи</td></tr>
+                                        <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['yandex-phone']?>" name="yandex-phone" /></td></tr>
+                                        <tr>
+                                            <td colspan="2" width="304" class="tableheader" style="padding-right:10px">Номер и серия паспорта</td>
+                                            <td width="304" class="tableheader" style="padding-left:10px">Кем и когда выдан</td></tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" style="padding-right:10px;width: 60px" width="60"><input style="width:60px;" type="text" value="<?=$paydata['passseriesyandex']?>" name="passseriesyandex" /></td>
+                                            <td class="" style="padding-right:10px;width: 100px"><input style="width:100px;" type="text" value="<?=$paydata['passnumyandex']?>" name="passnumyandex" /></td>
+                                            <td class="" style="padding-left:10px"><input style="width:272px" type="text" value="<?=$paydata['issuedbyyandex']?>" name="issuedbyyandex" /></td>
+                                        </tr>
+                                        <tr><td class="tableheader" colspan="3">Примечание</td></tr>
+                                        <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if(isset($paydata['extradatayandex'])) echo $paydata['extradatayandex']?>" name="extradatayandex" /></td></tr>
                                     </table>
                                 </td>
                             </tr>
