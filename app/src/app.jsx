@@ -1469,12 +1469,49 @@ function commentDeleteHandler(link) {
         $(document).off('click', '#sendDeleteComment');
         var data = form.serialize();
         $.post(form.attr('action') + '.json', data).done(function (result) {
-            commentDelete(link, section, id);
+            softCommentDelete(link, section, id);
             $spinner.removeClass('active');
             $('.popup-close').click();
         });
         return false;
     });
+}
+
+function softCommentDelete(link, section, id) {
+    if ($('.solution-overlay').is(':visible')) {
+        var sectionPitch = $('.messages_gallery section[data-id=' + id + ']');
+        // Enable Answer Link in Parent
+        if (section.hasClass('is-child')) {
+            var parentSection = section.prev();
+            var parentSectionPitch = sectionPitch.prev();
+            parentSection.find('.reply-link-in-comment').css('display', 'block');
+            parentSectionPitch.find('.reply-link-in-comment').css('display', 'block');
+        }
+        // Detect and Remove Child Section
+        var childSection = section.next('section.is-child');
+        var childSectionPitch = sectionPitch.next('section.is-child');
+        if (childSection.length > 0) {
+            childSection.remove();
+        }
+        if (childSectionPitch.length > 0) {
+            childSectionPitch.remove();
+        }
+        section.remove();
+        sectionPitch.remove();
+    } else {
+        // Enable Answer Link in Parent
+        if (section.hasClass('is-child')) {
+            var parentSection = section.prev();
+            parentSection.find('.reply-link-in-comment').css('display', 'block');
+        }
+        // Detect and Remove Child Section
+        var childSection = section.next('section.is-child');
+        if (childSection.length > 0) {
+            childSection.remove();
+        }
+        section.remove();
+    }
+    $('.separator', '.pitch-comments section:first').remove();
 }
 
 // Instant Delete Comment

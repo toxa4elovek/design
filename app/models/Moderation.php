@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\Comment;
 use app\models\Solution;
 use app\models\User;
+use app\extensions\storage\Rcache;
 use app\extensions\mailers\UserMailer;
 use lithium\analysis\Logger;
 
@@ -28,6 +29,9 @@ class Moderation extends AppModel {
                     $dataInfo['pitch'] = $comment->pitch;
                     $dataInfo['text'] = $self::fetchModelText($modelData);
                     $dataInfo['image'] = null;
+                    $cacheKey = 'commentsraw_' . $comment->pitch_id;
+                    $comment->delete();
+                    Rcache::delete($cacheKey);
                     $mailerTemplate = 'removecomment';
                 } else {
                     $solution = Solution::first(array('conditions' => array('Solution.id' => $params['entity']->model_id), 'with' => array('Pitch')));

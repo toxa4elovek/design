@@ -33,7 +33,7 @@
 </div>
 
 <!-- Solution Delete Moderation -->
-<div id="popup-delete-solution" class="popup-warn generic-window" style="display:none">
+<div id="popup-delete-solution" class="popup-warn generic-window" style="display:none; padding-left: 50px; padding-right: 42px; ">
     <br>
     <form id="delete-solution-form" action="/moderations/add" method="post">
         <h1 class="largest-header regular">Удалить решение</h1>
@@ -51,15 +51,15 @@
                 <label><input type="radio" name="penalty" value="30">30 дней</label><br>
                 <label><input type="radio" name="penalty" value="90">90 дней</label>
             </li>
-            <li>
+            <li style="margin-right: 0;">
                 <h2>&nbsp;</h2>
                 <label><input type="radio" name="penalty" value="0">Без штрафа</label><br>
-                <label><input type="radio" name="penalty" value="1">Заблокировать</label><br>
-                <label><input type="radio" name="penalty" value="2">Заблокировать на 30 дней</label><br>
-                <label><input type="radio" name="penalty" value="3">Заблокировать в данном проекте</label><br>
+                <label><input type="radio" name="penalty" value="1">Блокировать</label><br>
+                <label><input type="radio" name="penalty" value="2">Блокировать на 30 дней</label><br>
+                <label><input type="radio" name="penalty" value="3">Блокировать в данном проекте</label><br>
             </li>
         </ul>
-        <textarea id="explanation" name="explanation" form="delete-solution-form" class="placeholder" placeholder="ссылка на первоисточник или комментарий"></textarea>
+        <textarea id="explanation" name="explanation" form="delete-solution-form" class="placeholder" placeholder="ссылка на первоисточник или комментарий" style="margin-top: 30px;"></textarea>
         <input type="hidden" name="model" id="model" value="solution" />
         <input type="hidden" name="model_id" id="model_id" value="" />
         <input type="hidden" name="project_id" id="project_id" value="" />
