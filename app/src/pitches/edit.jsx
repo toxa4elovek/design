@@ -13,6 +13,7 @@ $(function () {
         menubar: false,
         plugins: ["link,lists,charmap,paste"],
         toolbar: "styleselect,link,bullist,numlist,charmap",
+        default_link_target:"_blank",
         style_formats: [
             {title: 'Основной текст', inline: 'span', classes: "regular"},
             {title: 'Заголовок', inline: 'span', classes: "greyboldheader"},
