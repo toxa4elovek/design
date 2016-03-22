@@ -50,7 +50,9 @@ class Moderation extends AppModel {
                         'isAdmin' => $userHelper->isAdmin()
                     );
                     Logger::write('info', serialize($data), array('name' => 'deleted_solutions'));
-                    $result = $solution->delete();
+                    if($solution) {
+                        $result = $solution->delete();
+                    }
                 }
                 if ($user) {
                     switch ($penalty) {

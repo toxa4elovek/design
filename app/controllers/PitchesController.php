@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\extensions\helper\NameInflector;
 use app\models\Bill;
+use app\models\Moderation;
 use app\models\Pitch;
 use app\models\Pitchrating;
 use app\models\Pitchfile;
@@ -950,17 +951,24 @@ class PitchesController extends AppController
                 }
             }
 
+            $disableUpload = false;
+            /*if($moderation = Moderation::first(['conditions' => [
+                'model_user' => $userHelper->getId(),
+                'pitch_id' => $pitch->id
+            ]])) {
+                $disableUpload = true;
+            }*/
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
                 $freePitch = Pitch::getFreePitch();
-                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount', 'winnersUserIds', 'data', 'autosuggestUsers');
+                return compact('pitch', 'solutions', 'selectedsolution', 'sort', 'order', 'experts', 'canViewPrivate', 'solutionsCount', 'limitSolutions', 'freePitch', 'pitchesCount', 'winnersUserIds', 'data', 'autosuggestUsers', 'disableUpload');
             } else {
                 if (isset($this->request->query['count'])) {
-                    return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds', 'autosuggestUsers')));
+                    return $this->render(array('layout' => false, 'template' => '../elements/gallery', 'data' => compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds', 'autosuggestUsers', 'disableUpload')));
                 }
 
-                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds', 'autosuggestUsers'));
+                return $this->render(array('layout' => false), compact('pitch', 'solutions', 'selectedsolution', 'sort', 'experts', 'canViewPrivate', 'solutionsCount', 'winnersUserIds', 'autosuggestUsers', 'disableUpload'));
             }
         }
         throw new Exception('Public:Такого проекта не существует.', 404);

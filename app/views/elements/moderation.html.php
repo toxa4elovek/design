@@ -22,7 +22,7 @@
                 <label><input type="radio" name="penalty" value="1">Заблокировать</label><br>
             </li>
         </ul>
-        <textarea id="explanation" name="explanation" form="delete-comment-form" class="placeholder" placeholder="Комментарий"></textarea>
+        <textarea id="explanation" name="explanation" form="delete-comment-form" class="placeholder" placeholder="Комментарий" style="height: 70px;"></textarea>
         <input type="hidden" name="model" id="model" value="comment" />
         <input type="hidden" name="model_id" id="model_id" value="" />
         <div class="final-step-nav wrapper" style="margin-top:20px;">
