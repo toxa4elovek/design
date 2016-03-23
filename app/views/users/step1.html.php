@@ -148,15 +148,15 @@
                                 <img alt=""  style="width:120px; margin-left: 10px;" src="/img/yd.png">
                             </td>
                             <td class="s3_text" style="margin-top: 14px;">
-                                Получить вознаграждение в Yandex Деньги
+                                Получить вознаграждение в Yandex Деньгах  (<a href="https://money.yandex.ru/doc.xml?id=526543" target="_blank">только на идентифицированные кошельки</a>)
                             </td>
                             <td></td>
                         </tr>
                         <tr id="yandex" <?php if($paydata['cashintype'] != 'yandex'):?> style="display:none;"<?php endif;?> >
                             <td colspan="4">
-                                <table id="step2table">
+                                <table id="step2table" style="margin-top: 30px;">
                                     <tr><td class="tableheader" colspan="3">Кошелек</td></tr>
-                                    <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['yandex-account']?>" name="yandex-account" data-validate="wmr" /></td></tr>
+                                    <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['yandex-account']?>" name="yandex-account" data-validate="yandex" /></td></tr>
                                     <tr><td class="tableheader" colspan="3">ФИО</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['yandex-fio']?>" name="yandex-fio" /></td></tr>
                                     <tr><td class="tableheader" colspan="3">Телефон для связи</td></tr>

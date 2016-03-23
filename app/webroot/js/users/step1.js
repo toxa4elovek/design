@@ -79,9 +79,10 @@ $(document).ready(function() {
             return true;
         }
     });
-
     $(document).on('blur', 'input[data-validate=yandex]', function() {
-        if (! /^(41001\d{10})$/.test($(this).val()) ) {
+        console.log($(this).val().length);
+        console.log(/^(41001\d{7,10})$/.test($(this).val()))
+        if (! /^(41001\d{7,10})$/.test($(this).val()) ) {
             $(this).addClass('wrong-input');
             required = true;
             return true;

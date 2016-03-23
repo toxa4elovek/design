@@ -1278,7 +1278,7 @@ $(document).on('blur', 'input[data-validate=wmr]', function() {
 });
 
 $(document).on('blur', 'input[data-validate=yandex]', function() {
-    if (! /^(41001\d{10})$/.test($(this).val()) ) {
+    if (! /^(41001\d{7,10})$/.test($(this).val()) ) {
         $(this).addClass('wrong-input');
         required = true;
         return true;
