@@ -30,13 +30,12 @@
 
             <?php if ($pitch->category_id != 10):?>
 
-                <tr class="paymaster-section">
+                <!--tr class="paymaster-section">
                     <td>
                         <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
                     </td>
                     <td colspan="3" class="s3_text" style="padding-left: 20px;">
                         Оплата электронным деньгами<br><br>
-                        <!--p style="font-size:11px; text-transform: ">Всвязи с временным ограничением платежной системы PayMaster,<br> максимально возможная сумма платежа может составлять от 15000-35000. <br>Подробнее <a href="/answers/view/91">тут</a>. В случае, если ваш платеж превышает лимит, пожалуйста, воспользуйтесь переводом на рассчетный счет (ниже).<br> Спасибо за понимание!</p-->
                     </td>
                 </tr>
                 <tr id="paymaster-images" class="paymaster-section">
@@ -50,12 +49,12 @@
                         <?php echo $this->html->script(array('jquery-1.8.3.min.js'));?>
                         <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=1&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата проекта')?>&LMI_CURRENCY=RUB'></script>
                     </td>
-                </tr>
+                </tr-->
             <?php endif;?>
 
             <!--tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
-            </tr>
+            </tr-->
 
             <tr>
                 <td>
@@ -116,7 +115,7 @@
                         </div>
                     </div>
                 </td>
-            </tr-->
+            </tr>
 
             <!--tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
