@@ -35,6 +35,9 @@ class ModerationsController extends AppController {
                         'image' => self::getThumbnail($solution),
                 )));
                 $pitch_id = $solution->pitch_id;
+                if($this->request->data['penalty'] == 3) {
+                    $data['pitch_id'] = $pitch_id;
+                }
             }
 
             $data['user_id'] = $currentUser;
@@ -42,7 +45,6 @@ class ModerationsController extends AppController {
             $data['penalty'] = $this->request->data['penalty'];
             $data['explanation'] = $this->request->data['explanation'];
             $data['created'] = date('Y-m-d H:i:s');
-
             $moderation = Moderation::create();
             $moderation->set($data);
             $moderation->save();

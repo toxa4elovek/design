@@ -952,12 +952,12 @@ class PitchesController extends AppController
             }
 
             $disableUpload = false;
-            /*if($moderation = Moderation::first(['conditions' => [
-                'model_user' => $userHelper->getId(),
+            if(($this->userHelper->isLoggedIn()) && ($moderation = Moderation::first(['conditions' => [
+                'model_user' => $this->userHelper->getId(),
                 'pitch_id' => $pitch->id
-            ]])) {
+            ]]))) {
                 $disableUpload = true;
-            }*/
+            }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {

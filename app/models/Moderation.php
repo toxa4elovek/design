@@ -51,7 +51,7 @@ class Moderation extends AppModel {
                     );
                     Logger::write('info', serialize($data), array('name' => 'deleted_solutions'));
                     if($solution) {
-                        $result = $solution->delete();
+                        $solution->delete();
                     }
                 }
                 if ($user) {
@@ -72,8 +72,6 @@ class Moderation extends AppModel {
                             break;
                         case 3:
                             // Block User for project
-                            $params['entity']->pitch_id = $dataInfo['pitch']->id;
-                            $params['entity']->save();
                             $mailerTemplate = 'removeandblockforproject';
                             break;
                         default:
