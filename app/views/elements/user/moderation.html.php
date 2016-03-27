@@ -26,6 +26,12 @@
         case 1:
             $penalty = 'заблокирован';
             break;
+        case 2:
+            $penalty = 'заблокирован на 30 дней';
+            break;
+        case 3:
+            $penalty = "заблокирован в проекте <a href=\"/pitches/view/$moderation->pitch_id\" target='_blank'>$moderation->pitch_id</a>";
+            break;
         default:
             $penalty = 'бан ' . (int) $moderation->penalty . ' дней';
             break;
@@ -60,7 +66,7 @@
     } ?>
     <?php echo $panel;?>
     <div style="float: right; width: 360px;">
-        <h2 class="regular" style="font-size: 15px; font-weight: bold;"><?=$model . ' за ' . $reason . ', ' . $penalty;?></h2>
+        <h2 class="regular" style="font-size: 15px; font-weight: bold;"><?php echo $model . ' за ' . $reason . ', ' . $penalty;?></h2>
         <p class="regular"><?=date('d.m.y', strtotime($moderation->created));?></p><br>
         <?php echo $text; ?>
         <?php if (!empty($moderation->explanation)): ?>

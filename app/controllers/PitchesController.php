@@ -1485,6 +1485,13 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 return $this->redirect('/pitches');
             }
 
+            if(($this->userHelper->isLoggedIn()) && ($moderation = Moderation::first(['conditions' => [
+                    'model_user' => $this->userHelper->getId(),
+                    'pitch_id' => $pitch->id
+                ]]))) {
+                $this->redirect(array('Pitches::view', 'id' => $pitch->id));
+            }
+
             $userHelper = new UserHelper(array());
             if (($userHelper->designerTimeRemain($pitch)) or (Session::read('user.confirmed_email') == '0')) {
                 return $this->redirect(array('Pitches::view', 'id' => $pitch->id));
@@ -1573,6 +1580,12 @@ Disallow: /pitches/upload/'.$pitch['id'];
     {
         if (($this->request->id > 0) && ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) && ($pitch->status == 0)) {
             if (($pitch->status != 0) || ($pitch->published != 1)) {
+                $this->redirect(array('Pitches::view', 'id' => $pitch->id));
+            }
+            if(($this->userHelper->isLoggedIn()) && ($moderation = Moderation::first(['conditions' => [
+                    'model_user' => $this->userHelper->getId(),
+                    'pitch_id' => $pitch->id
+                ]]))) {
                 $this->redirect(array('Pitches::view', 'id' => $pitch->id));
             }
             $currentUser = Session::read('user.id');
