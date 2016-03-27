@@ -23,11 +23,16 @@
                     <img src="/img/s3_master.png" alt="Дебетовые и кредитные карты">
                 </td>
             </tr>
-
+            <?php
+            $showBill = true;
+            if((date('N') > 5) && ($category->discountPrice != $category->minAward)):
+                $showBill = false;
+            endif;
+            if($showBill):?>
             <tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
             </tr>
-
+            <?php endif?>
             <?php if ($pitch->category_id != 10):?>
 
                 <!--tr class="paymaster-section">
@@ -55,7 +60,8 @@
             <!--tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
             </tr-->
-
+            <?php
+            if($showBill):?>
             <tr>
                 <td>
                     <input type="radio" name="1" class="rb1" data-pay="offline">
@@ -116,7 +122,7 @@
                     </div>
                 </td>
             </tr>
-
+            <?php endif?>
             <!--tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>
             </tr-->
