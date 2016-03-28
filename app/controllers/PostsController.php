@@ -69,11 +69,34 @@ class PostsController extends AppController
     public function search()
     {
         if (isset($this->request->query['search'])) {
+            require_once LITHIUM_APP_PATH . '/libraries/sphinxapi.php';
+            $client = new \SphinxClient();
+            $client->open();
+            error_reporting(0);
+
+            //ini_set('display_errors', 1);
+            //$conn = new Connection();
+            //$conn->setParams(array('host' => 'localhost', 'port' => 9306));
+            $client->SetMatchMode( SPH_MATCH_ANY  );
+
+            $result = $client->Query($this->request->query['search']);
+            //var_dump($result);
+            /*$query = SphinxQL::create($conn)->select(['id'])
+                ->from('blog')
+                ->match(['title', 'full'], $this->request->query['search'])
+                ->orderBy('weight() DESC');
+
+            $result = $query->execute();*/
+            //var_dump($result);
+            //$total = $result['total_found'];
+            //die();
             $limit = $this->postsOnIndexPage;
             $page = 1;
             if (isset($this->request->query['page'])) {
                 $page = abs(intval($this->request->query['page']));
             }
+            $client->SetLimits($page - 1, $limit);
+            $client->SetFilter('published', array(1));
             $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
             $tempWords = explode(' ', $searchCondition);
             foreach ($tempWords as $index => &$searchWord) {
@@ -90,7 +113,7 @@ class PostsController extends AppController
             }
             $posts = new \lithium\util\Collection();
             foreach ($words as $word) {
-                $result = Post::all(array('conditions' => array(
+                /*$result = Post::all(array('conditions' => array(
                     'OR' => array(
                         'title' => array('LIKE' => '%' . $word . '%'),
                         'short' => array('LIKE' => '%' . $word . '%'),
@@ -103,10 +126,15 @@ class PostsController extends AppController
                     'limit' => $limit,
                     'order' => array('created' => 'desc'),
                     'with' => array('User'),
-                ));
-                foreach ($result as $post) {
+                ));*/
+                $searchQuery = $client->Query($word);
+                //var_dump(array_keys($searchQuery['matches']));
+                $postIds = array_keys($searchQuery['matches']);
+                foreach ($postIds as $postId) {
+                    $post = Post::first(['conditions' => ['Post.id' => $postId], 'with' => ['User']]);
                     $posts[$post->id] = $post;
                 }
+                continue;
             }
             $search = implode(' ', $words);
 
