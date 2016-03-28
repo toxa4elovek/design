@@ -1,14 +1,15 @@
 class NewProjectBox extends React.Component{
-    minimalPrice = 500;
-    defaultText = 'Бланк для письма';
-    wrongInputClassName = 'wrong-input';
     componentDidMount() {
         const input = $(this.refs.price);
         input.numeric(
             {
                 "negative": false,
                 "decimal": false
-            });
+            }
+        );
+        this.minimalPrice = 500;
+        this.defaultText = 'Бланк для письма';
+        this.wrongInputClassName = 'wrong-input';
     }
     onBlurHandler(e) {
         if(e.target.value < this.minimalPrice) {
@@ -72,7 +73,7 @@ class NewProjectBox extends React.Component{
                 <div className="clear"></div>
 
                 <div style={{"position": "relative"}}>
-                    <input ref="date" type="text" className="hidden-date-input" style={{"position": "absolute", "top": "0", "height": "50px","opacity": "0"}}/>
+                    <input ref="date" type="text" className="hidden-date-input" style={{"position": "absolute", "top": "0", "height": "50px","opacity": "0", "paddingBottom": "10px"}}/>
                     <input type="text" data-field="day" className="date-input" />
                     <input type="text" data-field="month" className="date-input" />
                     <input type="text" data-field="year" className="date-input year" />

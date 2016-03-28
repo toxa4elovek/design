@@ -2,14 +2,19 @@
     <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
     <?php
     $total = 0;
+    $startValue = 9000;
     foreach($receipt as $row) {
         $total += $row['value'];
+        if($row['name'] === 'Пополнение счёта') {
+            $startValue = $row['value'];
+        }
     }
     ?>
     <script>
         var payload = {
             "total": <?= (int) $total?>,
             "projectId": <?= $planRecordId ?>,
+            "startValue": <?= $startValue ?>,
             "receipt": <?php echo json_encode($receipt) ?>,
             "userData": <?php echo json_encode($this->user->getCompanyData())?>,
             "paySystems": [
@@ -61,7 +66,7 @@
 
     <div class="middle">
         <div class="main">
-            <h3 class="page-title-with-flag">Оплата</h3>
+            <h3 class="page-title-with-flag" style="margin-top: 10px;">Оплата</h3>
             <?php if(isset($plan)):
                 if($discount == 0) {
                     $value = $plan['price'];

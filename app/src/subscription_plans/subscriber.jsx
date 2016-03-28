@@ -47,6 +47,10 @@
             });
             payload.total = total;
             ReactDOM.render(
+                <FundBalanceInput payload={payload}/>,
+                document.getElementById('fund-balance-container')
+            );
+            ReactDOM.render(
                 <Receipt data={payload.receipt}/>,
                 document.getElementById('receipt-container')
             );
@@ -72,6 +76,11 @@
             $.post('/subscription_plans/updateReceipt.json', data, function(response) {
                 if(response.fundBalance != eventPayload.currentValue) {
                     PaymentActions.updateFundBalanceInput(parseInt(response.fundBalance));
+                    ReactDOM.render(
+                        <FundBalanceInput payload={payload}/>,
+                        document.getElementById('fund-balance-container')
+                    );
+                }else {
                     ReactDOM.render(
                         <FundBalanceInput payload={payload}/>,
                         document.getElementById('fund-balance-container')

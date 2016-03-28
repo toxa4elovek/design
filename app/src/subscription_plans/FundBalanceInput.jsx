@@ -1,7 +1,8 @@
 class FundBalanceInput extends React.Component {
-    constructor() {
+    constructor(props) {
         super();
         this.walletKey = 'Пополнение счёта';
+        this.placeholderValue = props.payload.startValue;
     }
     componentDidMount() {
         const input = $(this.refs.input);
@@ -20,8 +21,17 @@ class FundBalanceInput extends React.Component {
         PaymentActions.updateFundBalanceInput(parseInt(newValue));
     }
     onBlur(e) {
+        if(e.target.value === '') {
+            e.target.value = this.placeholderValue;
+        }
         const currentValue = e.target.value;
         PaymentActions.submitNewReceipt(parseInt(currentValue));
+    }
+    onFocus(e) {
+        if(e.target.value == this.placeholderValue) {
+            e.target.value = '';
+            PaymentActions.updateFundBalanceInput(0);
+        }
     }
     __getReceiptValue(receipt) {
         let value = 0;
@@ -34,9 +44,13 @@ class FundBalanceInput extends React.Component {
     }
     render() {
         const initialValue = this.__getReceiptValue(this.props.payload.receipt);
+        let styles = {'color': '#4f5159'};
+        if(initialValue == this.placeholderValue) {
+           styles = {'color': '#ccc'};
+        }
         return(
             <div>
-                <input ref="input" type="text" onChange={this.onChangeHandle} onBlur={this.onBlur} onKeyDown={this.onKeydownHandle} defaultValue={initialValue} className="fund-balance-input"/>
+                <input style={styles} ref="input" type="text" onChange={this.onChangeHandle} onBlur={this.onBlur.bind(this)} onFocus={this.onFocus.bind(this)} onKeyDown={this.onKeydownHandle} defaultValue={initialValue} className="fund-balance-input"/>
             </div>
         );
     }
