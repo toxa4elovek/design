@@ -837,10 +837,7 @@ $(document).ready(function () {
                         $('#news-add input[name="news-link"]').val('');
                         $('#news-add textarea[name="news-description"]').val('');
                         $('#news-add #news-add-tag').val('');
-                        fd.delete('file');
-                        fd = new FormData();
-                        $('#previewImage').empty();
-                        html = Updater.addNews(result.result);
+                        var html = Updater.addNews(result.result);
                         var $prependEl = $(html);
                         $prependEl.css('margin-top', '0');
                         $prependEl.hide();
@@ -858,6 +855,8 @@ $(document).ready(function () {
                         $('time.timeago').timeago();
                         $('#news-add').toggle('fast');
                         $('#news-add-separator').toggle('fast');
+                        fd = new FormData();
+                        $('#previewImage').empty();
                         reader = new FileReader();
                     }
 
