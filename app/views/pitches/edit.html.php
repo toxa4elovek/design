@@ -468,7 +468,7 @@ $word2 = 'Опишите вид деятельности. Что отличае�
                 <li class="last current"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
             </ol><!-- .steps -->
         </form>
-        <?=$this->view()->render(array('element' => 'pitchpay'), array('pitch' => $pitch));?>
+        <?=$this->view()->render(array('element' => 'pitchpay'), array('pitch' => $pitch, 'category' => $category));?>
     </div><!-- .main -->
 
 </div><!-- .middle -->
