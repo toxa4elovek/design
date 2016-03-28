@@ -6,8 +6,10 @@
                 startedWatchingTextarea = false;
                 const textarea = eventPayload.person.selector;
                 let text = textarea.val();
-                const replacement = `@${eventPayload.person.name}, `;
-                const regExp = new RegExp(`(${enteredNameQuery})`, 'ig');
+                let enteredQueryLength = Math.abs(enteredNameQuery.length) * -1;
+                let textForRegExp =  text.slice(0, enteredQueryLength);
+                const replacement = `$1@${eventPayload.person.name}, `;
+                const regExp = new RegExp(`^(${textForRegExp})(${enteredNameQuery})`, 'ig');
                 const updatedText = text.replace(regExp, replacement);
                 textarea.val(updatedText);
                 textarea.focus();
