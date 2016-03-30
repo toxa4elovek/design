@@ -57,104 +57,6 @@
         ]
     },
     {
-        "name": "verot/class.upload.php",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/verot/class.upload.php.git",
-            "reference": "407d1ff5410de6b09759768d4decf33df78b89a0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/verot/class.upload.php/zipball/ce536ab21a76c7e1995fceb7d705db500ee74da5",
-            "reference": "407d1ff5410de6b09759768d4decf33df78b89a0",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=4"
-        },
-        "time": "2015-08-09 12:07:30",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "classmap": [
-                "src/class.upload.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPLv2"
-        ],
-        "authors": [
-            {
-                "name": "Colin Verot",
-                "email": "colin@verot.net"
-            }
-        ],
-        "description": "This PHP class uploads files and manipulates images very easily.",
-        "homepage": "http://www.verot.net/php_class_upload.htm",
-        "keywords": [
-            "gd",
-            "upload"
-        ]
-    },
-    {
-        "name": "ins0/google-measurement-php-client",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ins0/google-measurement-php-client.git",
-            "reference": "7019640145fd86a9758efad64dc1eb84e4499112"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/4587b1bb0e54e0cacca771d7b7e7d1058fef6c0b",
-            "reference": "7019640145fd86a9758efad64dc1eb84e4499112",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "phpmd/phpmd": "~2.1",
-            "phpunit/phpunit": "4.0.*",
-            "squizlabs/php_codesniffer": "~2.0.0@RC"
-        },
-        "time": "2015-11-16 14:01:12",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.1.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Racecore\\GATracking": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Marco Rieger",
-                "email": "rieger@racecore.de"
-            }
-        ],
-        "description": "Server-Side PHP Client to communicate to Google Analytics over the Google Measurement Protocol",
-        "homepage": "http://www.racecore.de/",
-        "keywords": [
-            "analytics",
-            "client",
-            "google",
-            "measurement"
-        ]
-    },
-    {
         "name": "swiftmailer/swiftmailer",
         "version": "v5.4.1",
         "version_normalized": "5.4.1.0",
@@ -771,23 +673,23 @@
     },
     {
         "name": "symfony/stopwatch",
-        "version": "v2.8.3",
-        "version_normalized": "2.8.3.0",
+        "version": "v2.8.4",
+        "version_normalized": "2.8.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/stopwatch.git",
-            "reference": "e3bc8e2a984f4382690a438c8bb650f3ffd71e73"
+            "reference": "9e24824b2a9a16e17ab997f61d70bc03948e434e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/stopwatch/zipball/e3bc8e2a984f4382690a438c8bb650f3ffd71e73",
-            "reference": "e3bc8e2a984f4382690a438c8bb650f3ffd71e73",
+            "url": "https://api.github.com/repos/symfony/stopwatch/zipball/9e24824b2a9a16e17ab997f61d70bc03948e434e",
+            "reference": "9e24824b2a9a16e17ab997f61d70bc03948e434e",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.9"
         },
-        "time": "2016-01-03 15:33:41",
+        "time": "2016-03-04 07:54:35",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -822,23 +724,23 @@
     },
     {
         "name": "symfony/finder",
-        "version": "v2.8.3",
-        "version_normalized": "2.8.3.0",
+        "version": "v2.8.4",
+        "version_normalized": "2.8.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/finder.git",
-            "reference": "877bb4b16ea573cc8c024e9590888fcf7eb7e0f7"
+            "reference": "ca24cf2cd4e3826f571e0067e535758e73807aa1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/finder/zipball/877bb4b16ea573cc8c024e9590888fcf7eb7e0f7",
-            "reference": "877bb4b16ea573cc8c024e9590888fcf7eb7e0f7",
+            "url": "https://api.github.com/repos/symfony/finder/zipball/ca24cf2cd4e3826f571e0067e535758e73807aa1",
+            "reference": "ca24cf2cd4e3826f571e0067e535758e73807aa1",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.9"
         },
-        "time": "2016-02-22 16:12:45",
+        "time": "2016-03-10 10:53:53",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -873,23 +775,23 @@
     },
     {
         "name": "react/promise",
-        "version": "v2.2.2",
-        "version_normalized": "2.2.2.0",
+        "version": "v2.3.0",
+        "version_normalized": "2.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/reactphp/promise.git",
-            "reference": "3aacad8bf10c7d83e6fa2089d413529888c2bedf"
+            "reference": "8ffacee1171e33a1c129f424bf1ec36e062eba82"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/reactphp/promise/zipball/3aacad8bf10c7d83e6fa2089d413529888c2bedf",
-            "reference": "3aacad8bf10c7d83e6fa2089d413529888c2bedf",
+            "url": "https://api.github.com/repos/reactphp/promise/zipball/8ffacee1171e33a1c129f424bf1ec36e062eba82",
+            "reference": "8ffacee1171e33a1c129f424bf1ec36e062eba82",
             "shasum": ""
         },
         "require": {
             "php": ">=5.4.0"
         },
-        "time": "2016-02-26 19:09:02",
+        "time": "2016-03-24 21:20:22",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -916,6 +818,59 @@
             }
         ],
         "description": "A lightweight implementation of CommonJS Promises/A for PHP"
+    },
+    {
+        "name": "foolz/sphinxql-query-builder",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/FoolCode/SphinxQL-Query-Builder.git",
+            "reference": "36bec6b37b8fddf5165f96cad14c544912a6f3ba"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/FoolCode/SphinxQL-Query-Builder/zipball/36bec6b37b8fddf5165f96cad14c544912a6f3ba",
+            "reference": "36bec6b37b8fddf5165f96cad14c544912a6f3ba",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "replace": {
+            "foolz/sphinxql": "self.version"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.4.*"
+        },
+        "time": "2016-02-27 02:55:09",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Foolz\\SphinxQL\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "foolz",
+                "email": "support@foolz.us"
+            }
+        ],
+        "description": "A PHP query builder for SphinxQL. Uses MySQLi to connect to the Sphinx server.",
+        "homepage": "http://www.foolz.us",
+        "keywords": [
+            "database",
+            "query builder",
+            "search",
+            "sphinx",
+            "sphinxql",
+            "sql"
+        ]
     },
     {
         "name": "sebastian/resource-operations",
@@ -1657,17 +1612,17 @@
     },
     {
         "name": "phpunit/phpunit-mock-objects",
-        "version": "3.0.6",
-        "version_normalized": "3.0.6.0",
+        "version": "3.1.2",
+        "version_normalized": "3.1.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-            "reference": "49bc700750196c04dd6bc2c4c99cb632b893836b"
+            "reference": "7c34c9bdde4131b824086457a3145e27dba10ca1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/49bc700750196c04dd6bc2c4c99cb632b893836b",
-            "reference": "49bc700750196c04dd6bc2c4c99cb632b893836b",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/7c34c9bdde4131b824086457a3145e27dba10ca1",
+            "reference": "7c34c9bdde4131b824086457a3145e27dba10ca1",
             "shasum": ""
         },
         "require": {
@@ -1682,11 +1637,11 @@
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2015-12-08 08:47:06",
+        "time": "2016-03-24 05:58:25",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.0.x-dev"
+                "dev-master": "3.1.x-dev"
             }
         },
         "installation-source": "dist",
@@ -1905,17 +1860,17 @@
     },
     {
         "name": "phpunit/php-code-coverage",
-        "version": "3.2.1",
-        "version_normalized": "3.2.1.0",
+        "version": "3.3.0",
+        "version_normalized": "3.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-            "reference": "a58f95ae76fe201b571fad3e8370a50c4368678c"
+            "reference": "fe33716763b604ade4cb442c0794f5bd5ad73004"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/a58f95ae76fe201b571fad3e8370a50c4368678c",
-            "reference": "a58f95ae76fe201b571fad3e8370a50c4368678c",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/fe33716763b604ade4cb442c0794f5bd5ad73004",
+            "reference": "fe33716763b604ade4cb442c0794f5bd5ad73004",
             "shasum": ""
         },
         "require": {
@@ -1936,11 +1891,11 @@
             "ext-xdebug": ">=2.2.1",
             "ext-xmlwriter": "*"
         },
-        "time": "2016-02-18 07:31:12",
+        "time": "2016-03-03 08:49:08",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.2.x-dev"
+                "dev-master": "3.3.x-dev"
             }
         },
         "installation-source": "dist",
@@ -2099,6 +2054,104 @@
             "database",
             "testing",
             "xunit"
+        ]
+    },
+    {
+        "name": "ins0/google-measurement-php-client",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ins0/google-measurement-php-client.git",
+            "reference": "e3d89481d1fa29a7fa53aaca8b8fceec897fcebb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/e3d89481d1fa29a7fa53aaca8b8fceec897fcebb",
+            "reference": "e3d89481d1fa29a7fa53aaca8b8fceec897fcebb",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpmd/phpmd": "~2.1",
+            "phpunit/phpunit": "4.0.*",
+            "squizlabs/php_codesniffer": "~2.0.0@RC"
+        },
+        "time": "2016-03-23 09:03:11",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.1.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Racecore\\GATracking": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Marco Rieger",
+                "email": "rieger@racecore.de"
+            }
+        ],
+        "description": "Server-Side PHP Client to communicate to Google Analytics over the Google Measurement Protocol",
+        "homepage": "http://www.racecore.de/",
+        "keywords": [
+            "analytics",
+            "client",
+            "google",
+            "measurement"
+        ]
+    },
+    {
+        "name": "verot/class.upload.php",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/verot/class.upload.php.git",
+            "reference": "f1c6e3c3d54b42171c4fdb67c8087c553a9e8d07"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/verot/class.upload.php/zipball/f1c6e3c3d54b42171c4fdb67c8087c553a9e8d07",
+            "reference": "f1c6e3c3d54b42171c4fdb67c8087c553a9e8d07",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=4"
+        },
+        "time": "2016-02-14 22:52:12",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/class.upload.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPLv2"
+        ],
+        "authors": [
+            {
+                "name": "Colin Verot",
+                "email": "colin@verot.net"
+            }
+        ],
+        "description": "This PHP class uploads files and manipulates images very easily.",
+        "homepage": "http://www.verot.net/php_class_upload.htm",
+        "keywords": [
+            "gd",
+            "upload"
         ]
     }
 ]

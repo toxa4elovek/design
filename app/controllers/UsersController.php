@@ -154,8 +154,8 @@ class UsersController extends \app\controllers\AppController
     {
         $date = date('Y-m-d H:i:s');
         if (!$this->userHelper->isLoggedIn()) {
-            //error_reporting(E_ALL);
-            //ini_set('display_errors', 1);
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
         }
         if ((Session::read('user')) && (Session::read('user.id' > 0)) && (Session::read('user.events') != null)) {
             $date = Session::read('user.events.date');

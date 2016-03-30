@@ -1,11 +1,11 @@
 class BlogPostEntryBox extends React.Component{
-    displayName = 'BlogPostEntryBox';
-    postsViewLink = '/posts/view/';
-    postsEditLink = '/posts/edit/';
-    postsDeleteLink = '/posts/delete/';
     constructor(props) {
         super(props);
         this.state = {isEditor: props.isEditor, isAuthor: props.isAuthor};
+        this.displayName = 'BlogPostEntryBox';
+        this.postsViewLink = '/posts/view/';
+        this.postsEditLink = '/posts/edit/';
+        this.postsDeleteLink = '/posts/delete/';
     }
 
     /**
