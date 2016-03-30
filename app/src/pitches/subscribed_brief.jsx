@@ -452,6 +452,10 @@
                 <Receipt data={payload.receipt}/>,
                 document.getElementById('receipt-container')
             );
+            ReactDOM.render(
+                <ProjectRewardInput payload={payload}/>,
+                document.getElementById('project-reward')
+            );
         }
         if (eventPayload.actionType === 'update-receipt') {
             ReactDOM.render(

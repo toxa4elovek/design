@@ -30,12 +30,15 @@
     <?php else:?>
         <script type="text/javascript">var slidersValue = <?php echo json_encode($specifics["logo-properties"])?>;</script>
     <?php endif;?>
-    <?php endif;?>
+    <?php endif;
+    $startValue = 9000;
+    ?>
     <script>
         var projectId = <?php if(isset($pitch)): echo "$pitch->id"; else: echo "null"; endif;?>;
         var balance = <?php echo (int) $this->user->getBalance();?>;
         var payload = {
             "receipt": <?php echo json_encode($receipt);?>,
+            "startValue": <?= $startValue ?>,
             "isCopywriting": <?php if(isset($pitch)):
             if($pitch->isCopyrighting()):
                 echo 'true';
