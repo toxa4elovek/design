@@ -69,13 +69,15 @@ class Addon extends AppModel {
         $addons = self::all(array(
             'conditions' => array(
                 'YEAR(created) = YEAR(' . $range . ') AND MONTH(created) = MONTH( ' . $range . ')',
-                'billed' => 1,
-            ),
+                'Addon.billed' => 1,
+            ), 'with' => ['Pitch']
         ));
         $countArray = array();
         $addonsCount = 0;
         $addonsTotal = 0;
         $addonsProlong = 0;
+        $addonsCountSub = 0;
+        $addonsTotalSub = 0;
         foreach ($addons as $addon) {
             $day = date('j', strtotime($addon->created));
             if (isset($countArray[$day])) {
@@ -87,6 +89,10 @@ class Addon extends AppModel {
             $addonsTotal += $addon->total;
             if ($addon->prolong == 1) {
                 $addonsProlong += 1000 * $addon->{'prolong-days'};
+            }
+            if($addon->pitch->category_id == 20) {
+                $addonsCountSub++;
+                $addonsTotalSub += $addon->total;
             }
         }
         $values = array();
@@ -113,6 +119,8 @@ class Addon extends AppModel {
             'highestValue' => $highestValue,
             'addonsCount' => $addonsCount,
             'addonsTotal' => $addonsTotal,
+            'addonsCountSub' => $addonsCountSub,
+            'addonsTotalSub' => $addonsTotalSub,
             'addonsProlong' => $addonsProlong,
         );
     }
