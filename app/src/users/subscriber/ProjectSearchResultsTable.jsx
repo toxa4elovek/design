@@ -21,7 +21,7 @@ class ProjectSearchResultsTable extends React.Component{
                 const refundObject = {
                     "type": "refund",
                     "total": row.price - parseInt(row.extraFunds),
-                    "formattedMoney": `+ ${formattedRefund} р-`,
+                    "formattedMoney": `+ ${formattedRefund}`,
                     "formattedDate": momentDate.format('DD.MM.YYYY')
                 };
                 rows.push(refundObject);

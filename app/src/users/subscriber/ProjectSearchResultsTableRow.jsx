@@ -1,13 +1,36 @@
 class ProjectSearchResultsTableRow extends React.Component{
     render () {
         const row = this.props.row;
+        console.log(row);
         const viewLink = '/pitches/view/' + row.id;
         let ideas = '';
         let status = '';
+        const dateAfterTitleStyle = {
+            "fontSize": "12px",
+            "fontWeight": "bold"
+        };
+        let balanceBefore = {
+            "fontSize": "15px",
+            "fontWeight": "normal",
+            "color": "#999"
+        };
+        let statusStyle = {
+            "fontWeight": "bold",
+            "color": "#fff"
+        };
         if(row.status == 0) {
             status = row.startedHuman;
+            statusStyle = {
+                "fontSize": "15px",
+                "textTransform": "none",
+                "fontWeight": "bold",
+                "color": "#fff"
+            };
         }
         if((row.type !== 'plan-payment') && (row.status == 2) && (row.awarded == 0) && (row.type !== 'fund-balance')) {
+            statusStyle = {
+
+            };
             status = 'оформлен возврат';
         }
         if(((row.status == 2) && (row.awarded != 0)) || ((row.status == 2) && (row.type == 'plan-payment'))) {
@@ -16,16 +39,16 @@ class ProjectSearchResultsTableRow extends React.Component{
 
             if ((row.hasBill == 'fiz') || (row.hasBill == 'yur')) {
                 const docsUrl = '/pitches/getpdfreport/' + row.id;
-                downloadDocs = <a style={{'color': '#4f8b5c'}} class="pitches-finish" href={docsUrl} target="_blank">СКАЧАТЬ ОТЧЁТ</a>;
+                downloadDocs = <a class="pitches-finish" href={docsUrl} target="_blank">СКАЧАТЬ ОТЧЁТ</a>;
             }
             if (row.hasBill == 'yur') {
                 const actUrl = '/pitches/getpdfact/' + row.id;
-                downloadAct = <a style={{'color': '#4f8b5c'}} class="pitches-finish" href={actUrl} target="_blank">СКАЧАТЬ акт</a>;
+                downloadAct = <a class="pitches-finish" href={actUrl} target="_blank">СКАЧАТЬ акт</a>;
             }
             const closingUrl = '/users/step3/' + row.awarded;
             let linkToClosing = '';
             if(row.type != 'plan-payment') {
-                linkToClosing = <a style={{'color': '#4f8b5c'}} href={closingUrl} target="_blank">Скачать исходники</a>;
+                linkToClosing = <a href={closingUrl} target="_blank">Перейти на заверш. этап</a>;
             }
             status = <div className="table-link-container">{linkToClosing}<br/>{downloadDocs}<br/>{downloadAct}</div>;
         }
@@ -34,19 +57,25 @@ class ProjectSearchResultsTableRow extends React.Component{
         }
         let title = row.title;
         let dateAfterTitle = '';
-        const dateAfterTitleStyle = {
-            "fontSize": "12px",
-            "fontWeight": "bold"
-        };
         if(row.type == 'company_project') {
             ideas = row.ideas_count;
             title = <a href={viewLink} target="_blank">{title}</a>;
         }else if(row.type == 'fund-balance'){
-            row.tableClass = 'light';
+            balanceBefore = {
+                "fontSize": "15px",
+                "fontWeight": "normal",
+                "color": "#cdcbcc"
+            };
+            row.tableClass = 'newpitch';
             dateAfterTitle = <span style={dateAfterTitleStyle}>({row.formattedDate})</span>;
         }
         if(row.type === 'refund') {
-            row.tableClass = 'light';
+            balanceBefore = {
+                "fontSize": "15px",
+                "fontWeight": "normal",
+                "color": "#cdcbcc"
+            };
+            row.tableClass = 'newpitch';
             title = 'Возврат';
             dateAfterTitle = <span style={dateAfterTitleStyle}>({row.formattedDate})</span>;
         }
@@ -68,9 +97,8 @@ class ProjectSearchResultsTableRow extends React.Component{
                 <td className="td-title">
                     <span className="newpitchfont">{title}</span> {dateAfterTitle}
                 </td>
-                <td className="idea">{ideas}</td>
-                <td className="pitches-time">{status}</td>
-                <td className="price">{row.formattedMoney}<br/><span style={dateAfterTitleStyle}>({formattedMoney} р.-)</span></td>
+                <td className="pitches-time" style={statusStyle}>{status}</td>
+                <td className="price" style={{"textAlign": "left", "paddingLeft": "48px"}}><span style={{"opacity": "0"}}>- </span><span style={balanceBefore}>{formattedMoney}</span><br/>{row.formattedMoney}</td>
             </tr>
         );
     }

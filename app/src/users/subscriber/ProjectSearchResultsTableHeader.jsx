@@ -18,13 +18,10 @@ class ProjectSearchResultsTableHeader extends React.Component{
                 <td style={{"textAlign": "left", "paddingLeft": "45px"}}>
                     <a href="#" onClick={this.onClickHandler.bind(this)} className="sort-link" data-dir="asc">название</a>
                 </td>
-                <td>
-                    <a href="#" onClick={this.onClickHandler.bind(this)} className="sort-link" data-dir="asc">идей</a>
-                </td>
-                <td>
+                <td style={{"width": '275px'}}>
                     <a href="#" onClick={this.onClickHandler.bind(this)} className="sort-link" data-dir="asc">срок/статус</a>
                 </td>
-                <td>
+                <td style={{"width": '170px'}}>
                     <a href="#" onClick={this.onClickHandler.bind(this)} className="sort-link" data-dir="asc">Цена</a>
                 </td>
             </tr>

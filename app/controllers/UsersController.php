@@ -2141,14 +2141,14 @@ class UsersController extends \app\controllers\AppController
             }
             if ($data['type'] != 'fund-balance') {
                 if ($data['type'] != 'plan-payment') {
-                    $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['price'], array('suffix' => 'Р.-'));
+                    $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['price'], array('suffix' => ''));
                 } else {
-                    $data['formattedMoney'] = $moneyFormatter->formatMoney($data['price'], array('suffix' => 'Р.-'));
+                    $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['price'], array('suffix' => ''));
                 }
             }
             if ($data['type'] == 'fund-balance') {
                 $data['formattedDate'] = date('d.m.Y', strtotime($row->totalFinishDate));
-                $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => 'Р.-'));
+                $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
             }
             $payments[] = $data;
         }

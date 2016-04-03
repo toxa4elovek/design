@@ -26,7 +26,7 @@
 .project-search-table td.td-title {
     padding-left: 45px;
     padding-right: 12px;
-    padding-top: 32px;
+    padding-top: 18px;
     text-align: left;
     vertical-align: top;
     color: #ffffff;
@@ -68,6 +68,8 @@ td.pitches-time {
     line-height: 14px;
     width: 178px;
     text-transform: uppercase;
+    text-align: left;
+    padding-left: 67px;
 }
 .table-link-container a {
     color: #999;
