@@ -32,6 +32,9 @@ class Avatar extends \lithium\template\Helper {
         if((isset($data['images'])) && (isset($data['images']['avatar']))) {
             $src = $this->__getNormalAvatarSource($data, $large);
         }
+        if(!$src) {
+            $src = $this->__getDefaultAvatarSource($large);
+        }
         if($srcOnly == false) {
             if($large) {
                 $src = '<img src="' . $src . '" alt="Портрет пользователя" width="180" height="180" id="photoselectpic"/>';

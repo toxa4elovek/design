@@ -21,16 +21,17 @@ class Avatar extends AppModel
     public static function __init()
     {
         parent::__init();
+        /*
         self::applyFilter('find', function ($self, $params, $chain) {
             if ($params['type'] === 'all') {
                 $conditions = $params['options']['conditions'];
                 if (isset($conditions['model_id'])) {
                     $cacheKey = 'avatars_' . $conditions['model_id'];
-                    $result = Rcache::read($cacheKey, function () use ($self, $params, $chain) {
+                    //$result = Rcache::read($cacheKey, function () use ($self, $params, $chain) {
                         $result = $chain->next($self, $params, $chain);
                         $result->data();
                         return $result;
-                    }, '+7 day');
+                    //}, '+7 day');
                     //$result = $chain->next($self, $params, $chain);
                     //$result->data();
                     return $result;
@@ -40,11 +41,11 @@ class Avatar extends AppModel
                 $conditions = $params['options']['conditions'];
                 if (isset($conditions['model_id'])) {
                     $cacheKey = 'avatars_' . $conditions['model_id'];
-                    if (!$result = Rcache::read($cacheKey)) {
+                    //if (!$result = Rcache::read($cacheKey)) {
                         $result = $chain->next($self, $params, $chain);
-                    } else {
-                        $result = count($result);
-                    }
+                    //} else {
+                        //$result = count($result);
+                    //}
                 }
             }
             if (!isset($result)) {
@@ -52,7 +53,7 @@ class Avatar extends AppModel
             }
             return $result;
         });
-
+*/
         self::applyFilter('delete', function ($self, $params, $chain) {
             if (isset($params['entity'])) {
                 $record = $params['entity'];
