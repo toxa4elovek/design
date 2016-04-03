@@ -314,6 +314,7 @@ class Pitch extends AppModel
                         } else {
                             $pitch->billed = 1;
                         }
+                        $pitch->billed_date = date('Y-m-d H:i:s');
                         return $pitch->save();
                     });
         }
