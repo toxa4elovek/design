@@ -52,27 +52,27 @@ $(document).ready(function() {
     $('#sub-prolong').numeric({ "negative" : false, "decimal": false }, function(){
 
     });
-
+    var prolongCoeff = $('#prolong-checkbox').data('optionValue');
     $('#sub-prolong').change(function() {
         if(($(this).val() == '') || ($(this).val() == 0)) {
             $(this).val('1');
         }
         $(this).css('color', '#4F5159');
-        newValue = $(this).val() * 1950;
+        newValue = $(this).val() * prolongCoeff;
         $('#prolong-label').html('+' + newValue + '.-');
         Cart.updateOption($(this).data('optionTitle'), newValue);
-    })
+    });
 
     $('#sub-prolong').keyup(function() {
         $(this).css('color', '#4F5159');
-        newValue = $(this).val() * 1950;
+        newValue = $(this).val() * prolongCoeff;
         $('#prolong-label').html('+' + newValue + '.-');
         Cart.updateOption($(this).data('optionTitle'), newValue);
-    })
+    });
 
     $('#sub-prolong').focus(function(){
         $(this).removeClass('initial-price');
-    })
+    });
 
     // simple options
     $('.single-check').change(function() {
@@ -204,7 +204,9 @@ function FeatureCart() {
     this.transferFeeKey = 'Сбор GoDesigner';
     this.transferFeeFlag = 0;
     this.mode = 'add';
+    this.prolongCoeff = 1950;
     this.init = function() {
+        this.prolongCoeff = $('#prolong-checkbox').data('optionValue');
         if(typeof($('#pitch_id').val()) != 'undefined') {
             self.id = $('#pitch_id').val();
             this.mode = 'edit';
@@ -238,7 +240,7 @@ function FeatureCart() {
                     self.addOption('Заполнение брифа', 3200)
                 }
                 if($('#prolong-checkbox').attr('checked')) {
-                    self.addOption('продлить срок', 1950)
+                    self.addOption('продлить срок', self.prolongCoeff)
                 }
                 if($('#experts-checkbox').attr('checked')) {
                     self.addOption('экспертное мнение', 1500)
@@ -369,33 +371,38 @@ function FeatureCart() {
             alert('Укажите награду для дизайнера!');
         }else{
             $.post('/addons/add.json', self.data, function(response) {
-                self.addonid = response
-
-
-                $('#addon-id').val(response);
-
-                $.get('/transactions/getaddondata/' + response + '.json', function(response) {
-                    $('.middle').not('#step3').hide();
-                    $('#step3').show();
-                    // Paymaster
-                    $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
-                    if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
-                        $('input[name=LMI_PAYMENT_NO]').val(response.id);
-                    } else {
-                        $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
+                if(typeof(response.status) != 'undefined') {
+                    if(response.status === 'no_money') {
+                        alert('На вашем счёте не хватает средств, вы будете перенаправлены на страницу пополения');
+                    }else if(response.status === 'success') {
+                        alert('Опция успешно оплачена!');
                     }
-                    $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
-                    $('.pmwidget').addClass('mod');
-                    $('h1.pmheader', '.pmwidget').addClass('mod');
-                    // Payanyway
-                    $('input[name=MNT_AMOUNT]').val(response.total)
-                    $('input[name=MNT_TRANSACTION_ID]').val(response.id)
-                })
+                    window.location.replace(response.redirect);
+                }else {
+                    self.addonid = response;
+                    $('#addon-id').val(response);
 
-
+                    $.get('/transactions/getaddondata/' + response + '.json', function(response) {
+                        $('.middle').not('#step3').hide();
+                        $('#step3').show();
+                        // Paymaster
+                        $('input[name=LMI_PAYMENT_AMOUNT]').val(response.total);
+                        if ($('input[name=LMI_PAYMENT_NO]').length > 0) {
+                            $('input[name=LMI_PAYMENT_NO]').val(response.id);
+                        } else {
+                            $('div', '#pmwidgetForm').append('<input type="hidden" name="LMI_PAYMENT_NO" value="' + response.id + '">');
+                        }
+                        $('.pmamount').html('<strong>Сумма:&nbsp;</strong> ' + response.total + '&nbsp;RUB');
+                        $('.pmwidget').addClass('mod');
+                        $('h1.pmheader', '.pmwidget').addClass('mod');
+                        // Payanyway
+                        $('input[name=MNT_AMOUNT]').val(response.total)
+                        $('input[name=MNT_TRANSACTION_ID]').val(response.id)
+                    })
+                }
             });
         }
-    }
+    };
     this.getSpecificData = function() {
         var specificPitchData = {};
         $('input.specific-prop, textarea.specific-prop').each(function(index, object){

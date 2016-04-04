@@ -31,10 +31,10 @@
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
 
         <div class="ribbon">
-            <p class="option"><label><input type="checkbox" name="" class="single-check" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'checked'; endif?> data-option-title="продлить срок" data-option-value="1950" id="prolong-checkbox">Продлить срок</label></p>
+            <p class="option"><label><input type="checkbox" name="" class="single-check" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'checked'; endif?> data-option-title="продлить срок" data-option-value="<?= $prolongCoeff?>" id="prolong-checkbox">Продлить срок</label></p>
             <p class="description">Укажите количество дней, на которое вы хотите продлить проект. Каждый день стоит 1 950 Р.-, из которых<br> 1 000Р.- добавляется в счет гонорара для дизайнера.
                 <a href="#" class="second tooltip" title="">(?)</a></p>
-            <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'unfold'; endif?>" id="prolong-label" style="font:16px/68px "RodeoC",sans-serif">+1950.-</p>
+            <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'unfold'; endif?>" id="prolong-label" style="font:16px/68px "RodeoC",sans-serif">+<?= $prolongCoeff?>.-</p>
         </div>
 
         <div>
@@ -122,7 +122,11 @@
         <?php endif ?>
 
         <p class="submit">
-            <input type="submit" value="Продолжить" id="next" class="button steps-link" data-step="3">
+            <?php if($pitch->category_id == 20):?>
+                <input type="submit" value="Оплатить со счёта" id="activate" class="button steps-link" data-step="3">
+            <?php else: ?>
+                <input type="submit" value="Продолжить" id="next" class="button steps-link" data-step="3">
+            <?php endif?>
         </p><!-- .submit -->
 
     </div><!-- .main -->

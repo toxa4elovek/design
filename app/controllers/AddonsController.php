@@ -5,6 +5,7 @@ namespace app\controllers;
 use \app\models\Addon;
 use \app\models\Pitch;
 use \app\extensions\helper\MoneyFormatter;
+use app\models\User;
 
 class AddonsController extends AppController {
 
@@ -13,6 +14,13 @@ class AddonsController extends AppController {
         if(isset($this->request->data) && ($pitch = Pitch::first($this->request->data['commonPitchData']['id']))) {
             $featuresData = $this->request->data['features'];
             $total = 0;
+            if($pitch->category_id == 20) {
+                $subscriber = true;
+                $prolongCoeff = 1000;
+            }else {
+                $subscriber = false;
+                $prolongCoeff = 1950;
+            }
             if(!isset($featuresData['experts'])) {
                 $expert = 0;
                 $expertId = serialize(array());
@@ -30,7 +38,7 @@ class AddonsController extends AppController {
                 $prolong = 0;
             }else {
                 $prolong = $featuresData['prolong'];
-                $total += $featuresData['prolong'] * 1950;
+                $total += $featuresData['prolong'] * $prolongCoeff;
             }
             $brief = 0;
             $phonebrief = '';
@@ -76,7 +84,21 @@ class AddonsController extends AppController {
             }
             $addon->set($data);
             $addon->save();
-            return $addon->id;
+            if($subscriber) {
+                $paymentResult = User::reduceBalance($addon->user_id, (int) $total);
+                if (!$paymentResult) {
+                    $status = 'no_money';
+                    $needToFillAmount = ($total - User::getBalance($addon->user_id));
+                    $url = '/subscription_plans/subscriber?amount=' . $needToFillAmount;
+                }else {
+                    $status = 'success';
+                    $url = '/pitches/view/' . $addon->pitch_id;
+                    Addon::activate($addon);
+                }
+                return ['status' => $status, 'redirect' => $url];
+            }else {
+                return $addon->id;
+            }
         }
         return false;
     }

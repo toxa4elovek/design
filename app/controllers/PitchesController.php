@@ -1698,8 +1698,12 @@ Disallow: /pitches/upload/'.$pitch['id'];
     {
         $pitch = Pitch::first($this->request->id);
         $experts = Expert::all(array('order' => array('id' => 'asc')));
-
-        return compact('pitch', 'experts');
+        if($pitch->category_id == 20) {
+            $prolongCoeff = 1000;
+        }else {
+            $prolongCoeff = 1950;
+        }
+        return compact('pitch', 'experts', 'prolongCoeff');
     }
 
     public function penalty()
