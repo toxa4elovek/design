@@ -1511,7 +1511,7 @@ class User extends AppModel
         $res = null;
         $currentUserId = Session::read('user.id');
         if ((false != $currentUserId) && ($user = self::first(array('conditions' => array('User.id' => $currentUserId))))) {
-            $user->pitches = Pitch::all(['conditions' => ['user_id' => $user->id]]);
+            $user->pitches = Pitch::all(['conditions' => ['user_id' => $user->id, 'blank' => 0]]);
             $res = array(
                 'id' => $user->id,
                 'firstName' => $user->first_name,
