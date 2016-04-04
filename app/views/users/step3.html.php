@@ -82,13 +82,22 @@
                         </div>
                     </div>
                     <div class="message_inf2" style="margin-bottom: 10px;">
-                        <div class="message_text2">
+                        <div class="message_text2" style="position: relative;">
                             <?php
+                            $hiddenComment = false;
                             $commentText = $this->brief->linkEmail($this->brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->originalText));
                             if($this->user->isAdmin() && (preg_match('/хотим продолжить наше партнерство/', $comment->originalText))):
                                 $commentText = $this->brief->linkEmail($this->brief->showRawComment($comment->originalText));
+                                $hiddenComment = true;
                             endif;
+                            if($hiddenComment):
                             ?>
+                                <img src="/img/private-comment-eye.png" alt="Этот комментарий приватный" style="
+    position: absolute;
+    top: -20px;
+    right: -20px;
+">
+                            <?php endif?>
                             <span class="regular comment-container"><?php echo $commentText?></span>
                         </div>
                     </div>
