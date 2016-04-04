@@ -19,6 +19,9 @@
                     </div>
                     <div class="info_profile_about">
                         <span class="nickname"><?= $this->user->getFormattedName($user->first_name, $user->last_name) ?></span>
+                        <?php if((bool) $user->subscription_status):?>
+                            <br/><span style="position: relative; top: 6px; left: 2px; font-size: 13px; font-family: OfficinaSansBookC; text-decoration: none; text-transform:  none; color: #666666;">абонент тарифа <a href="/pages/subscribe#plans" target="_blank">«<?= $this->user->getCurrentPlanData($user->id)['title']?>»</a></span>
+                        <?php endif ?>
                         <ul class="profile-list-info"></ul>
                         <div class="pitches">
                             <ul class="profile-list">

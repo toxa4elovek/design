@@ -9,12 +9,12 @@
         <div class="middle_inner user_view" style="min-height:330px;">
 
             <?php if ($this->user->isAdmin()): ?>
-                <div class="right-sidebar-user">
+                <div class="right-sidebar-user" style="<?php if((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
                     <a id="enter-name" class="order-button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://www.godesigner.ru/users/loginasuser/<?= $user->id ?>">Войти под именем</a>
-                    <p style="margin-top:41px"><a class="email-profile" href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
+                    <p style="<?php if((bool) $user->subscription_status): echo 'margin-top:32px'; else: echo 'margin-top:41px';endif;?>"><a class="email-profile" href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
                     <div class="g_line" style="margin-top: 8px;"></div>
                     <p class="regular-small-grey">Online: <span class="date-profile"><?= date('d.m.Y H:i', strtotime($user->lastTimeOnline)) ?></span></p>
-                    <div class="g_line" style="margin-top: 5px;"></div>
+                    <div class="g_line" style="margin-top: 5px; <?php if((bool) $user->subscription_status): echo 'padding-bottom:0'; else: echo 'padding-bottom:4px;';endif;?>"></div>
                     <?php if ($user->silenceCount > 0): ?>
                         <p class="regular-small-grey">Запретов на общение: <?= $user->silenceCount ?></p>
                         <div class="g_line" style="margin-top: 7px;"></div>
@@ -25,10 +25,10 @@
                         <?php endif ?>
                     <?php endif ?>
                     <input type="hidden" value="<?= $user->id ?>" id="user_id"/>
-                    <button class="order-button banhammer" data-term="10" />Бан на 10 дней</button>
-                    <button class="order-button banhammer" data-term="30" />Бан на 1 месяц</button>
-                    <button class="order-button block" data-term="" <?php if ($user->banned == 1): ?>style="display: none;"<?php else: ?>style="display: inline;"<?php endif ?>/>Навсегда</button>
-                    <button class="order-button unblock" data-term="" <?php if ($user->banned == 1): ?>style="display: inline;"<?php else: ?>style="display: none;"<?php endif ?>/>Разблокировать</button>
+                    <button class="order-button banhammer" data-term="10" style="<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 10 дней</button>
+                    <button class="order-button banhammer" data-term="30" style="<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 1 месяц</button>
+                    <button class="order-button block" data-term="" <?php if ($user->banned == 1): ?>style="display: none;"<?php else: ?>style="display: inline;<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php endif ?>/>Навсегда</button>
+                    <button class="order-button unblock" data-term="" <?php if ($user->banned == 1): ?>style="display: inline;<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php else: ?>style="display: none;"<?php endif ?>/>Разблокировать</button>
                     <div class="g_line"></div>
                 </div>
             <?php endif ?>
