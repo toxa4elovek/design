@@ -53,7 +53,7 @@
                         <li><a class="prepTag" href="#">Охрана / Безопасность</a></li>
                         <li><a class="prepTag" href="#">Медицина / Здоровье</a></li>
                     </ul>
-                    <ul class="activityType twoCollumn filterlist">
+                    <ul class="activityType twoCollumn filterlist" style="margin-left: 48px;">
                         <li class="first">Популярные теги</li>
                         <?php foreach ($sort_tags as $k => $v):
                             if($k == '') continue;
@@ -61,9 +61,13 @@
                             <li><a class="prepTag" href="#"><?= $k ?></a></li>
                         <?php endforeach; ?>
                     </ul>
-                    <ul class="filterlist">
+                    <ul class="filterlist" style="margin-left: 0;">
                         <li class="first">Популярные запросы</li>
-                        <?php foreach ($search_tags as $v):?>
+                        <?php foreach ($search_tags as $v):
+                            if(preg_match('/\s/', $v->name)) {
+                                continue;
+                            }
+                            ?>
                             <li><a class="prepTag" href="#"><?= $v->name ?></a></li>
                         <?php endforeach; ?>
                     </ul>
