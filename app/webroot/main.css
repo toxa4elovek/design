@@ -2359,7 +2359,7 @@ table.all-pitches{
 .highlighted td.pitches-name, .highlighted td.pitches-cat, .highlighted td.idea, .highlighted td.pitches-time, .highlighted td.price{
     border-top: 1px solid #575864;
 }
-.newpitch td.pitches-name, .newpitch td.pitches-cat, .newpitch td.idea, .newpitch td.pitches-time, .newpitch td.price{
+.newpitch td.pitches-name, .newpitch td.td-title, .newpitch td.pitches-cat, .newpitch td.idea, .newpitch td.pitches-time, .newpitch td.price{
     border-top: 1px solid #575864;
 }
 
