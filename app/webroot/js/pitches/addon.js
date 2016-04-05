@@ -205,8 +205,12 @@ function FeatureCart() {
     this.transferFeeFlag = 0;
     this.mode = 'add';
     this.prolongCoeff = 1950;
+    this.pinnedValue = 1450;
+    this.briefValue = 3200;
     this.init = function() {
         this.prolongCoeff = $('#prolong-checkbox').data('optionValue');
+        this.pinnedValue = $('#pinned').data('optionValue');
+        this.briefValue = $('#phonebrief').data('optionValue');
         if(typeof($('#pitch_id').val()) != 'undefined') {
             self.id = $('#pitch_id').val();
             this.mode = 'edit';
@@ -237,7 +241,7 @@ function FeatureCart() {
                 });
                 */
                 if($('#phonebrief').attr('checked')) {
-                    self.addOption('Заполнение брифа', 3200)
+                    self.addOption('Заполнение брифа', self.briefValue)
                 }
                 if($('#prolong-checkbox').attr('checked')) {
                     self.addOption('продлить срок', self.prolongCoeff)
@@ -249,7 +253,7 @@ function FeatureCart() {
                     self.addOption('Гарантировать проект', 1400)
                 }
                 if($('#pinned').attr('checked')) {
-                    self.addOption('“Прокачать” бриф', 1450)
+                    self.addOption('“Прокачать” бриф', self.pinnedValue)
                 }
                 if($('#private').attr('checked')) {
                     self.addOption('Скрыть проект', 3500)

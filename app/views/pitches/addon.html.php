@@ -32,7 +32,11 @@
 
         <div class="ribbon">
             <p class="option"><label><input type="checkbox" name="" class="single-check" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'checked'; endif?> data-option-title="продлить срок" data-option-value="<?= $prolongCoeff?>" id="prolong-checkbox">Продлить срок</label></p>
+            <?php if($pitch->category_id == 20):?>
+            <p class="description">Укажите количество дней, на которое вы хотите продлить проект. каждый день стоит 1 000 Р.-, которая будет добавлена на увеличение гонорара.
+            <?php else:?>
             <p class="description">Укажите количество дней, на которое вы хотите продлить проект. Каждый день стоит 1 950 Р.-, из которых<br> 1 000Р.- добавляется в счет гонорара для дизайнера.
+            <?php endif; ?>
                 <a href="#" class="second tooltip" title="">(?)</a></p>
             <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'unfold'; endif?>" id="prolong-label" style="font:16px/68px "RodeoC",sans-serif">+<?= $prolongCoeff?>.-</p>
         </div>
@@ -40,13 +44,22 @@
         <div>
             <input type="prolong-num" data-option-title="продлить срок" id="sub-prolong" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'):?>placeholder="1"<?php endif;?> class="placeholder initial-price" style="display:none;<?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'display:block;'; endif?>height: 78px; width: 268px; font-size: 48px; margin-bottom: 15px; margin-top: 2px; margin-left: 24px; border: medium none; box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2) inset; padding-left: 15px;"/>
         </div>
-        <?php if($pitch->brief == '0'): ?>
+        <?php
+        $briefValue = 3200;
+        if($this->user->isSubscriptionActive()):
+            foreach($this->user->getCurrentPlanData($pitch->user_id)['free'] as $index => $value):
+                if('phonebrief' === $value):
+                    $briefValue = 0;
+                endif;
+            endforeach;
+        endif;
+        if($pitch->brief == '0'): ?>
         <div class="ribbon complete-brief">
-            <p class="option"><label><input  type="checkbox" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'phonebrief'): echo 'checked'; endif?> class="single-check" data-option-title="Заполнение брифа" data-option-value="3200" id="phonebrief">Заполнить бриф</label></p>
+            <p class="option"><label><input  type="checkbox" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'phonebrief'): echo 'checked'; endif?> class="single-check" data-option-title="Заполнение брифа" data-option-value="<?=$briefValue?>" id="phonebrief">Заполнить бриф</label></p>
             <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/docs/<?=$briefExamples[$category->id]?>" target="_blank">тут</a>, или мы заполним его за вас. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
             <!--p class="description">Опция недоступна до 13.08.2013</p-->
             <p><input type="text"  id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" class="phone" value=""></p>
-            <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'phonebrief'): echo 'unfold'; endif?>">3200.-</p>
+            <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'phonebrief'): echo 'unfold'; endif?>"><?=$briefValue?>.-</p>
         </div>
         <?php endif ?>
         <div class="ribbon">
@@ -97,19 +110,28 @@
             endforeach?>
         </ul><!-- .experts -->
 
-        <?php if($pitch->guaranteed == '0'): ?>
+        <?php /*if($pitch->guaranteed == '0'): ?>
             <div class="ribbon" id="guaranteed-block">
                 <p class="option"><label><input type="checkbox" id="guaranteed" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'checked'; endif?> class="single-check" data-option-title="Гарантировать проект" data-option-value="1400">Гарантировать проект</label></p>
                 <p class="description">Гарантировать выбор победителя <a href="#" class="second tooltip" title="Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. Дизайнеры увидят, что проект не останется без победителя, и вы получите больший выбор идей.">(?)</a></p>
                 <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'unfold'; endif?>">+1400.-</p>
             </div>
-        <?php endif ?>
+        <?php endif */?>
 
-        <?php if($pitch->pinned == '0'): ?>
+        <?php
+        $pinnedValue = 1450;
+        if($this->user->isSubscriptionActive()):
+            foreach($this->user->getCurrentPlanData($pitch->user_id)['free'] as $index => $value):
+                if('pinproject' === $value):
+                    $pinnedValue = 0;
+                endif;
+            endforeach;
+        endif;
+        if($pitch->pinned == '0'): ?>
             <div class="ribbon" id="pinned-block">
-                <p class="option"><label><input type="checkbox" id="pinned" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'pinned'): echo 'checked'; endif?> class="single-check" data-option-title="“Прокачать” бриф" data-option-value="1450">“Прокачать” бриф</label></p>
+                <p class="option"><label><input type="checkbox" id="pinned" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'pinned'): echo 'checked'; endif?> class="single-check" data-option-title="“Прокачать” бриф" data-option-value="<?=$pinnedValue?>">“Прокачать” бриф</label></p>
                 <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения дизайнеров мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>
-                <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'pinned'): echo 'unfold'; endif?>">+1450.-</p>
+                <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'pinned'): echo 'unfold'; endif?>">+<?=$pinnedValue?>-</p>
             </div>
         <?php endif ?>
 
