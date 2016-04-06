@@ -143,35 +143,37 @@ http://godesigner.ru/answers/view/73');
             if ($result != false) {
                 $solution = $params['solution'];
                 User::sendWinnerComment($solution);
-                Task::createNewTask($solution->id, 'victoryNotificationTwitter');
                 Task::createNewTask($solution->id, 'victoryNotification');
-                $config = new Config();
-                $config->setApplicationId('46001cba-49be-4cc5-945a-bac990a6d995');
-                $config->setApplicationAuthKey('YTRkYWE2OWMtNjQ4OS00ZjI1LThiZjItZjVlMzdlMWM2Mzc2');
-                $config->setUserAuthKey('YmFjYWI1MTQtYjgzOS00NDFhLTg2YjAtY2IzZjc4OWFjNGVm');
-                $api = new OneSignal($config);
-                $api->notifications->add([
-                    'contents' => [
-                        'en' => $solution->pitch->title,
-                        'ru' => $solution->pitch->title
-                    ],
-                    'headings' => [
-                        'en' => 'Выбран победитель!',
-                        'ru' => 'Выбран победитель!'
-                    ],
-                    'included_segments' => ['All'],
-                    'url' => "https://www.godesigner.ru/pitches/viewsolution/$solution->id",
-                    'isChromeWeb' => true,
-                ]);
-                $api->notifications->add([
-                    'contents' => [
-                        'en' => 'Выбран победитель! ' . $solution->pitch->title,
-                        'ru' => 'Выбран победитель! ' . $solution->pitch->title
-                    ],
-                    'included_segments' => ['All'],
-                    'url' => "https://www.godesigner.ru/pitches/viewsolution/$solution->id",
-                    'isSafari' => true,
-                ]);
+                if(!$solution->pitch->private) {
+                    Task::createNewTask($solution->id, 'victoryNotificationTwitter');
+                    $config = new Config();
+                    $config->setApplicationId('46001cba-49be-4cc5-945a-bac990a6d995');
+                    $config->setApplicationAuthKey('YTRkYWE2OWMtNjQ4OS00ZjI1LThiZjItZjVlMzdlMWM2Mzc2');
+                    $config->setUserAuthKey('YmFjYWI1MTQtYjgzOS00NDFhLTg2YjAtY2IzZjc4OWFjNGVm');
+                    $api = new OneSignal($config);
+                    $api->notifications->add([
+                        'contents' => [
+                            'en' => $solution->pitch->title,
+                            'ru' => $solution->pitch->title
+                        ],
+                        'headings' => [
+                            'en' => 'Выбран победитель!',
+                            'ru' => 'Выбран победитель!'
+                        ],
+                        'included_segments' => ['All'],
+                        'url' => "https://www.godesigner.ru/pitches/viewsolution/$solution->id",
+                        'isChromeWeb' => true,
+                    ]);
+                    $api->notifications->add([
+                        'contents' => [
+                            'en' => 'Выбран победитель! ' . $solution->pitch->title,
+                            'ru' => 'Выбран победитель! ' . $solution->pitch->title
+                        ],
+                        'included_segments' => ['All'],
+                        'url' => "https://www.godesigner.ru/pitches/viewsolution/$solution->id",
+                        'isSafari' => true,
+                    ]);
+                }
             }
             return $result;
         });
