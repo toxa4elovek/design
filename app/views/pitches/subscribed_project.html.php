@@ -208,7 +208,7 @@
             </div>
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->expert): echo "checked"; endif;?> class="multi-check" data-option-title="экспертное мнение" data-option-value="1000" id="experts-checkbox">Экспертное мнение</label></p>
+                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->expert): echo "checked"; endif;?> class="multi-check" data-option-title="экспертное мнение" data-option-value="1500" id="experts-checkbox">Экспертное мнение</label></p>
                 <p class="label <?php if($pitch->expert): echo "unfold"; endif;?>" style="text-transform: none;" id="expert-label">1000р.</p>
             </div>
 
