@@ -85,7 +85,8 @@ class AddonsController extends AppController {
             $addon->set($data);
             $addon->save();
             if($subscriber) {
-                $paymentResult = User::reduceBalance($addon->user_id, (int) $total);
+                $paymentResult = User::reduceBalance($this->userHelper->getId(), (int) $total);
+                //$paymentResult = true;
                 if (!$paymentResult) {
                     $status = 'no_money';
                     $needToFillAmount = ($total - User::getBalance($addon->user_id));
@@ -93,7 +94,8 @@ class AddonsController extends AppController {
                 }else {
                     $status = 'success';
                     $url = '/pitches/view/' . $addon->pitch_id;
-                    Addon::activate($addon);
+                    $newAddon = Addon::first($addon->id);
+                    Addon::activate($newAddon);
                 }
                 return ['status' => $status, 'redirect' => $url];
             }else {

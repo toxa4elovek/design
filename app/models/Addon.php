@@ -56,6 +56,9 @@ class Addon extends AppModel {
     }
 
     public static function activate($addon, $sendEmail = true) {
+        error_reporting(E_ALL);
+        ini_set('log_errors','0');
+        ini_set('display_errors','1');
         $params = compact('addon', 'sendEmail');
         return static::_filter(__FUNCTION__, $params, function($self, $params) {
             extract($params);
