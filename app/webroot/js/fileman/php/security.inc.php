@@ -23,7 +23,7 @@
 function checkAccess($action){
     session_name('godesigner');
     session_start();
-    if((isset($_SESSION['user'])) && (isset($_SESSION['user']['id'])) && (in_array($_SESSION['user']['id'], array(32, 4, 5, 108, 81, 17865, 30454)))) {
+    if((isset($_SESSION['user'])) && (isset($_SESSION['user']['id'])) && (in_array($_SESSION['user']['id'], array(32, 4, 5, 108, 81, 17865, 30454, 34461)))) {
         return true;
     }
     die();

@@ -66,7 +66,7 @@ class User extends AppModel
      *
      * @var array
      */
-    public static $authors = array(8472, 18856, 25252, 30454);
+    public static $authors = array(8472, 18856, 25252, 30454, 34461);
 
     /**
      * Массив хранящий айдишнки авторов ленты новостей
