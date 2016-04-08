@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\extensions\helper\MoneyFormatter;
+use app\extensions\helper\NumInflector;
 use app\extensions\smsfeedback\SmsFeedback;
 use app\extensions\smsfeedback\SmsUslugi;
 use app\extensions\social\TwitterAPI;
@@ -2093,7 +2094,9 @@ class UsersController extends \app\controllers\AppController
         $moneyFormatter = new MoneyFormatter();
         $client = User::first($this->userHelper->getId());
         $plan = User::getCurrentPlanData($client->id);
+        $idsForAddons = [];
         foreach ($paymentsObj as $row) {
+            $idsForAddons[] = $row->id;
             $data = $row->data();
             $data['hasBill'] = false;
             if ($row->type == 'plan-payment') {
@@ -2152,6 +2155,54 @@ class UsersController extends \app\controllers\AppController
             }
             $payments[] = $data;
         }
+        $addons = Addon::all(['conditions' => [
+            'Addon.pitch_id' => $idsForAddons,
+            'billed' => 1
+        ]]);
+        $numInflector = new NumInflector();
+        foreach($addons as $addon) {
+            $data = $addon->data();
+            $data['type'] = 'addon';
+            $data['formattedDate'] = date('d.m.Y', strtotime($row->created));
+            $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
+            $data['title'] = 'Оплата дополнительной опции';
+            $title = [];
+            if($data['experts']) {
+                $title[] = 'экспертное мнение';
+            }
+            if($data['prolong']) {
+                $days = $numInflector->formatString($data['prolong-days'], array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')));
+                $title[] = 'продление ' . $data['prolong-days'] . ' ' . $days  ;
+            }
+            if($data['brief']) {
+                $title[] = 'заполнение брифа';
+            }
+            if($data['guaranteed']) {
+                $title[] = 'гарантированный проект';
+            }
+            if($data['pinned']) {
+                $title[] = 'прокачать бриф';
+            }
+            if($data['private']) {
+                $title[] = 'скрыть проект';
+            }
+            $data['title'] .= " \n\r(" . implode(', ', $title) . ')';
+            $payments[] = $data;
+        }
+
+        usort($payments, function($a, $b) {
+            if($a['type'] === 'addon') {
+                $firstDate = strtotime($a['created']);
+            }else {
+                $firstDate = strtotime($a['started']);
+            }
+            if($b['type'] === 'addon') {
+                $secondDate = strtotime($b['created']);
+            }else {
+                $secondDate = strtotime($b['started']);
+            }
+            return ($firstDate > $secondDate) ? -1 : 1;
+        });
         if ($this->request->is('json')) {
             $data = array(
                 'balance' => $this->userHelper->getBalance(),
