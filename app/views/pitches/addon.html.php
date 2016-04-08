@@ -63,7 +63,7 @@
         </div>
         <?php endif ?>
         <div class="ribbon">
-            <p class="option"><label><input type="checkbox" name="" class="multi-check" data-option-title="экспертное мнение" data-option-value="1500" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'checked'; endif?> id="experts-checkbox">Экспертное мнение</label></p>
+            <p class="option"><label><input type="checkbox" name="" class="multi-check" data-option-title="экспертное мнение" data-option-value="2000" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'checked'; endif?> id="experts-checkbox">Экспертное мнение</label></p>
             <p class="description"><a href="/experts" id="expert-trigger">Наши эксперты</a> с опытом работы в ведущих рекламных агентствах помогут вам с выбором варианта <a href="#" class="second tooltip" title="Эксперт укажет   и прокомментирует 3 лучших решения, которые максимально отвечают на вашу задачу. Вы можете выбрать несколько экспертов и заручиться надёжной поддержкой.">(?)</a></p>
             <?php
             foreach($experts as $expert):
@@ -102,7 +102,7 @@
                     <p class="select"><input type="checkbox" name="" <?php if($i == 0 && isset($this->_request->query['click']) && $this->_request->query['click'] == 'experts-checkbox'): echo 'checked'; endif?> class="expert-check" data-id="<?=$expert->id?>" data-option-title="экспертное мнение" data-option-value="<?=($expert->price + 500)?>"></p><!-- .select -->
                     <dl>
                         <dt><strong><a href="/experts/view/<?=$expert->id?>" target="_blank"><?=$expert->name?></a></strong></dt>
-                        <dd><a href="/experts/view/<?=$expert->id?>" target="_blank"><?=$expert->spec?></a></dd>
+                        <dd><a href="/experts/view/<?=$expert->id?>" target="_blank"><?=$expert->spec?> <?= $expert->price + 500 ?>&nbsp;р.-</a></dd>
                     </dl>
                 </li>
                 <?php

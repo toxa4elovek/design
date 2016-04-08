@@ -247,7 +247,7 @@ function FeatureCart() {
                     self.addOption('продлить срок', self.prolongCoeff)
                 }
                 if($('#experts-checkbox').attr('checked')) {
-                    self.addOption('экспертное мнение', 1500)
+                    self.addOption('экспертное мнение', 2000)
                 }
                 if($('#guaranteed').attr('checked')) {
                     self.addOption('Гарантировать проект', 1400)

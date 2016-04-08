@@ -229,7 +229,7 @@ endif?>
                     <p class="select"><input type="checkbox" name="" <?php if(in_array($expert->id, unserialize($pitch->{'expert-ids'}))): echo "checked"; endif;?> class="expert-check" data-id="<?=$expert->id?>" data-option-title="Экспертное мнение" data-option-value="<?=$expert->price?>"></p><!-- .select -->
                     <dl>
                         <dt><strong><a style="font-family:OfficinaSansC Bold,serif;" href="/experts/view/<?=$expert->id?>" target="_blank"><?=$expert->name?></a></strong></dt>
-                        <dd><a style="font-family:OfficinaSansC Book,serif; color:#666666;font-size: 14px" href="/experts/view/<?=$expert->id?>" target="_blank"><?=$expert->spec?></a></dd>
+                        <dd><a style="font-family:OfficinaSansC Book,serif; color:#666666;font-size: 14px" href="/experts/view/<?=$expert->id?>" target="_blank"><?=$expert->spec?> <?= $expert->price ?>&nbsp;р.-</a></dd>
                     </dl>
                 </li>
             <?php endforeach?>
