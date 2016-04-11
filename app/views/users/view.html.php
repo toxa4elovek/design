@@ -43,7 +43,7 @@
                     <div class="info_profile_about">
                         <span class="nickname"><?= $this->user->getFormattedName($user->first_name, $user->last_name, true) ?></span>
                         <?php if((bool) $user->subscription_status):?>
-                        <br/><span style="position: relative; top: 6px; left: 2px; font-size: 13px; font-family: OfficinaSansBookC; text-decoration: none; text-transform:  none; color: #666666;">абонент тарифа <a href="/pages/subscribe#plans" target="_blank">«<?= $this->user->getCurrentPlanData($user->id)['title']?>»</a></span>
+                        <br/><span style="position: relative; top: 6px; left: 2px; font-size: 13px; font-family: OfficinaSansBookC; text-decoration: none; text-transform:  none; color: #666666;">тариф <a href="/pages/subscribe#plans" target="_blank">«<?= $this->user->getCurrentPlanData($user->id)['title']?>»</a></span>
                         <?php endif ?>
                         <?php if ($this->user->isLoggedIn()): ?>
                             <a id="fav-user" data-id="<?= $user->id ?>" class="order-button rss-img-profile <?= $isFav ? 'unfav-user' : 'fav-user' ?>" href="#"><?= $isFav ? 'Отписаться' : 'Подписаться' ?></a>
