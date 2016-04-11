@@ -45,7 +45,7 @@ class AddonsController extends AppController {
             if(($featuresData['brief'] > 0) && $pitch->brief == 0) {
                 $brief = 1;
                 $phonebrief = $this->request->data['commonPitchData']['phone-brief'];
-                $total += 2750;
+                $total += 3200;
             }
             $guaranteed = 0;
             if(($featuresData['guaranteed'] > 0) && $pitch->guaranteed == 0) {
