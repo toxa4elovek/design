@@ -58,7 +58,7 @@ class PitchesController extends AppController
     {
         $categories = Category::all();
         $hasOwnHiddenPitches = false;
-        if (Session::read('user.id')) {
+        if ($this->userHelper->getId()) {
             $usersPitches = Pitch::all(['conditions' => [
                             'type' => '',
                             'user_id' => Session::read('user.id'),
@@ -129,8 +129,9 @@ class PitchesController extends AppController
         );
         $query = $this->request->query;
         $debug = $this->debug->dumpDebugInfo();
+        $totalCount = Pitch::getNumOfCompletedProjects();
 
-        return compact('data', 'categories', 'query', 'selectedCategory', 'debug');
+        return compact('data', 'categories', 'query', 'selectedCategory', 'debug', 'totalCount');
     }
 
     /**

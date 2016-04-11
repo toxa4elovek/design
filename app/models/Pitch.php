@@ -250,6 +250,22 @@ class Pitch extends AppModel
         return count($result);
     }
 
+    /**
+     * Метод возвращяет количество завершенных проектов
+     * @return integer
+     */
+    public static function getNumOfCompletedProjects() {
+        return self::count(array(
+            'conditions' => array(
+                'published' => 1,
+                'blank' => '0',
+                'multiwinner' => '0',
+                'status' => 2,
+            ),
+            'fields' => array('id'),
+        ));
+    }
+
     public static function getTotalAwards()
     {
         $result = self::find('all', array(

@@ -229,11 +229,26 @@
                 endforeach;?>
 				</tbody>
 			</table>
-			<div class="foot-content">
+			<div class="foot-content" style="text-align: center;">
                 <div class="pitches-ajax-wrapper no-separator">
                     <div class="pitches-ajax-loader">&nbsp;</div>
                 </div>
-				<div class="page-nambe-nav">
+                <span style="
+                margin-top: 30px;
+                width: 235px;
+                height: 10px;
+                color: #6590a3;
+                font-family: Arial;
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 26px;
+                text-transform: uppercase;
+                display: inline-block;
+                text-align: center;">
+                    <a href="/pitches?page=1&type=finished&category=&order%5Bprice%5D=desc&priceFilter=all&searchTerm=" target="_blank">
+                        <?= $this->moneyFormatter->formatMoney($totalCount, array('suffix' => '')) ?> <?=$this->numInflector->formatString($totalCount, array('first' => 'завершенный проект', 'second' => 'завершенных проекта', 'third' => 'завершенных проектов'))?></a>
+                </span>
+				<div class="page-nambe-nav" style="float: none; margin-right: 0;">
                     <?php
                     if($data['info']['total'] > 1):
                     $navBar = $prepend = $append = '';
@@ -294,17 +309,20 @@
                     endif ?>
 					<!--a href="#">&#60;</a><a href="#" class="this-page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a> ... <a href="#">7</a><a href="#">&#62;</a-->
 				</div>
+                <div style="clear: both;"></div>
+                <div style="text-align: left;">
 				<ul class="icons-infomation">
 					<li class="icons-infomation-one supplement3"><a href="/answers/view/66" target="_blank">Мнение экспертов</a><br> важно для этого клиента</li>
 					<li class="icons-infomation-two supplement3"><a href="/answers/view/64" target="_blank">Закрытый проект</a></li>
 					<li class="icons-infomation-three supplement3">Идеи больше не принимаются, идет выбор победителя</li>
 					<li class="icons-infomation-four supplement3">Проект завершен,<br> победитель выбран</li>
 				</ul>
-				<div style="margin-top:70px;height:40px;background: url('/img/guarantee2.png') no-repeat scroll 0 0 transparent" class="you-profile supplement3">
+				<div style="margin-top:52px;height:40px;background: url('/img/guarantee2.png') no-repeat scroll 0 0 transparent" class="you-profile supplement3">
                     <a href="/answers/view/80" target="_blank">Гарантированный проект</a>,<br>1 участник будет награждён, что бы ни случилось <a style="color:#6891a2" href="/answers/view/80">(?)</a>
 				</div>
-                <div style="margin-top:20px;height:40px;margin-right: 128px;" class="you-profile supplement3">
+                <div style="margin-top:20px;height:40px;margin-right: 117px;" class="you-profile supplement3">
                     Хотите узнать о добавлении новых проектов?<br>Измените <a href="/users/profile">настройки своего профиля</a>
+                </div>
                 </div>
 			</div>
 			<div class="no-result">
