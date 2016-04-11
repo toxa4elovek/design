@@ -14,4 +14,5 @@ use lithium\data\entity\Record;
  */
 class Schedule extends AppModel
 {
+    public $belongsTo = ['Pitch'];
 }
