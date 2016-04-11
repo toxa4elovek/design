@@ -21,6 +21,10 @@ class ParsingSites extends \app\extensions\command\CronJob
 
         $this->header('Welcome to the ParsingSites command!');
 
+        $this->out("Starting parsing wtpack.ru");
+        self::ParsingWTPack('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        $this->out('Finished parsing wtpack.ru [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing lookatme.ru");
         self::ParsingLookatme();
         $this->out('Finished parsing lookatme.ru [' . (time() - $startTimeStamp) . ' sec]');
@@ -44,19 +48,19 @@ class ParsingSites extends \app\extensions\command\CronJob
         $this->out("Starting parsing http://www.theartnewspaper.ru/");
         self::ParsingSimpleRss('http://www.theartnewspaper.ru/rss/');
         $this->out('Finished parsing http://www.theartnewspaper.ru/ [' . (time() - $startTimeStamp) . ' sec]');
-/*
-        $this->out("Starting parsing interviewrussia.ru");
-        self::ParsingInterview('http://www.interviewrussia.ru/export/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
-        $this->out('Finished parsing interviewrussia.ru [' . (time() - $startTimeStamp) . ' sec]');
-*/
+
+        //$this->out("Starting parsing interviewrussia.ru");
+        //self::ParsingInterview('http://www.interviewrussia.ru/export/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        //$this->out('Finished parsing interviewrussia.ru [' . (time() - $startTimeStamp) . ' sec]');
+
         $this->out("Starting parsing desnews.ru");
         self::ParsingDesnewsru('http://desnews.ru/?feed=rss2', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing desnews.ru [' . (time() - $startTimeStamp) . ' sec]');
-/*
-        /*$this->out("Starting parsing buro247.ru");
-        self::ParsingWordpress('http://www.buro247.ru/xml/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
-        $this->out('Finished parsing buro247.ru [' . (time() - $startTimeStamp) . ' sec]');
-*/
+
+        //$this->out("Starting parsing buro247.ru");
+        //self::ParsingWordpress('http://www.buro247.ru/xml/rss.xml', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
+        //$this->out('Finished parsing buro247.ru [' . (time() - $startTimeStamp) . ' sec]');
+
 
         #$this->out("Starting parsing russiangap.com");
         #self::ParsingWordpress('http://www.russiangap.com/feed/', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
@@ -77,10 +81,6 @@ class ParsingSites extends \app\extensions\command\CronJob
         $this->out("Starting parsing vice.com/ru");
         self::ParsingVice();
         $this->out('Finished parsing vice.com/ru [' . (time() - $startTimeStamp) . ' sec]');
-
-        $this->out("Starting parsing wtpack.ru");
-        self::ParsingWordpress('http://wtpack.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
-        $this->out('Finished parsing wtpack.ru [' . (time() - $startTimeStamp) . ' sec]');
 
         $this->out("Starting parsing royalcheese.ru");
         self::ParsingRoyalcheese();
@@ -322,12 +322,66 @@ class ParsingSites extends \app\extensions\command\CronJob
         if(($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
             foreach ($xml->channel->item as $item) {
                 $trigger = News::doesNewsExists((string) $item->title, $item->link);
-                if (!$trigger) {
+                if ($trigger) {
                     $this->out('Saving - ' . $item->title);
                     preg_match($regexp, $item->asXML(), $matches);
                     $image = '';
                     if (isset($matches[1])) {
                         $image = $matches[1];
+                    }
+                    if((!isset($item->category)) || ($item->category == '')) {
+                        $item->category = 'Дизайн';
+                    }
+                    if ($lang == 'ru') {
+                        $news = News::create(array(
+                            'title' => $item->title,
+                            'short' => strip_tags($item->description),
+                            'tags' => $item->category,
+                            'created' => date('Y-m-d H:i:s', (time() - (HOUR))),
+                            'link' => $item->link,
+                            'imageurl' => $image,
+                            'lang' => $lang
+                        ));
+                    } else {
+                        $news = News::create(array(
+                            'title' => $this->translate($item->title),
+                            'original_title' => $item->title,
+                            'short' => $this->translate(strip_tags($item->description)),
+                            'original_short' => strip_tags($item->description),
+                            'tags' => $item->category,
+                            'created' => date('Y-m-d H:i:s', (time() - (HOUR))),
+                            'link' => $item->link,
+                            'imageurl' => $image,
+                            'lang' => $lang
+                        ));
+                    }
+                    if (self::$debug == false) {
+                        $news->save();
+                        if ($event) {
+                            Event::createEventNewsAdded($news->id, 0, date('Y-m-d H:i:s', (time())));
+                        }
+                    } else {
+                        var_dump($news->data());
+                    }
+                }
+            }
+        }
+    }
+
+    private function ParsingWTPack($url, $regexp = '/< *img[^>]*src *= *["\']?([^"\']*)/i', $event = true, $lang = 'en')
+    {
+        $temp = file_get_contents($url);
+        $xml = simplexml_load_string($temp);
+        if(($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
+            foreach ($xml->channel->item as $item) {
+                $trigger = News::doesNewsExists((string) $item->title, $item->link);
+                if ($trigger) {
+                    $this->out('Saving - ' . $item->title);
+                    $content = file_get_contents($item->link);
+                    preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+                    $image = '';
+                    if (isset($matches[1][1])) {
+                        $image = $matches[1][1];
                     }
                     if((!isset($item->category)) || ($item->category == '')) {
                         $item->category = 'Дизайн';
