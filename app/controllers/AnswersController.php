@@ -26,6 +26,12 @@ class AnswersController extends AppController {
     public function index() {
         $search = '';
         if(isset($this->request->query['search'])) {
+            require_once LITHIUM_APP_PATH . '/libraries/sphinxapi.php';
+            $client = new \SphinxClient();
+            $client->open();
+            error_reporting(0);
+            $client->SetMatchMode( SPH_MATCH_ANY  );
+
             $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
             $words = explode(' ', $searchCondition);
             foreach($words as $index => &$searchWord) {
@@ -39,8 +45,15 @@ class AnswersController extends AppController {
             $search = implode(' ', $words);
             $answers = array();
             foreach($words as $word) {
-                $result = Answer::searchForWord($word);
-                $answers += $result->data();
+                $searchQuery = $client->Query($word, 'help');
+                $answersIds = array_keys($searchQuery['matches']);
+                foreach ($answersIds as $answerId) {
+                    //var_dump($answerId);
+                    $answer = Answer::first(['conditions' => ['Answer.id' => $answerId]]);
+                    $answers[] = $answer->data();
+                }
+                //$result = Answer::searchForWord($word);
+                //$answers += $result->data();
             }
         }else {
             $category = null;

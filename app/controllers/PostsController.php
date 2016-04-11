@@ -73,23 +73,7 @@ class PostsController extends AppController
             $client = new \SphinxClient();
             $client->open();
             error_reporting(0);
-
-            //ini_set('display_errors', 1);
-            //$conn = new Connection();
-            //$conn->setParams(array('host' => 'localhost', 'port' => 9306));
             $client->SetMatchMode( SPH_MATCH_ANY  );
-
-            $result = $client->Query($this->request->query['search']);
-            //var_dump($result);
-            /*$query = SphinxQL::create($conn)->select(['id'])
-                ->from('blog')
-                ->match(['title', 'full'], $this->request->query['search'])
-                ->orderBy('weight() DESC');
-
-            $result = $query->execute();*/
-            //var_dump($result);
-            //$total = $result['total_found'];
-            //die();
             $limit = $this->postsOnIndexPage;
             $page = 1;
             if (isset($this->request->query['page'])) {
