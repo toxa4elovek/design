@@ -1,7 +1,6 @@
 class ProjectSearchResultsTableRow extends React.Component{
     render () {
         const row = this.props.row;
-        console.log(row);
         const viewLink = '/pitches/view/' + row.id;
         let ideas = '';
         let status = '';
@@ -28,9 +27,7 @@ class ProjectSearchResultsTableRow extends React.Component{
             };
         }
         if((row.type !== 'plan-payment') && (row.status == 2) && (row.awarded == 0) && (row.type !== 'fund-balance')) {
-            statusStyle = {
-
-            };
+            statusStyle = {};
             status = 'оформлен возврат';
         }
         if(((row.status == 2) && (row.awarded != 0)) || ((row.status == 2) && (row.type == 'plan-payment'))) {
@@ -57,17 +54,23 @@ class ProjectSearchResultsTableRow extends React.Component{
         }
         let title = row.title;
         let dateAfterTitle = '';
-        if(row.type == 'company_project') {
-            ideas = row.ideas_count;
+        if(row.type === 'company_project') {
             title = <a href={viewLink} target="_blank">{title}</a>;
-        }else if(row.type == 'fund-balance'){
+        }else if(row.type === 'fund-balance'){
             balanceBefore = {
                 "fontSize": "15px",
                 "fontWeight": "normal",
                 "color": "#cdcbcc"
             };
+            statusStyle = {
+                "fontSize": "15px",
+                "textTransform": "none",
+                "fontWeight": "bold",
+                "color": "#fff"
+            };
             row.tableClass = 'newpitch';
-            dateAfterTitle = <span style={dateAfterTitleStyle}>({row.formattedDate})</span>;
+            dateAfterTitle = <span style={statusStyle}>{row.formattedDate}</span>;
+            status = dateAfterTitle;
         }
         if(row.type === 'refund') {
             balanceBefore = {
@@ -90,6 +93,9 @@ class ProjectSearchResultsTableRow extends React.Component{
             return value;
         }
         const formattedMoney = formatMoney(this.props.subtotal);
+        if(row.type === 'fund-balance') {
+        console.log(statusStyle);
+        }
         return (
             <tr className={row.tableClass}
                 data-id={row.id}

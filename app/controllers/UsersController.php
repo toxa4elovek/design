@@ -2154,7 +2154,7 @@ class UsersController extends \app\controllers\AppController
                 }
             }
             if ($data['type'] == 'fund-balance') {
-                $data['formattedDate'] = date('d.m.Y', strtotime($row->totalFinishDate));
+                $data['formattedDate'] = date('d.m.Y', strtotime($row->billed_date));
                 $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
             }
             $payments[] = $data;
