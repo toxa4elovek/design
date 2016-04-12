@@ -991,8 +991,8 @@ class PitchesController extends AppController
             $experts = Expert::getExpertUserIds();
 
             // Fetch Top Level Comments
-            $cacheKey = 'commentsraw_'.$pitch->id;
-            if (!$commentsRaw = Rcache::read($cacheKey)) {
+            //$cacheKey = 'commentsraw_'.$pitch->id;
+            //if (!$commentsRaw = Rcache::read($cacheKey)) {
                 $commentsRaw = Comment::all(array(
                             'conditions' => array(
                                 'pitch_id' => $pitch->id,
@@ -1000,8 +1000,8 @@ class PitchesController extends AppController
                             ),
                             'order' => array('Comment.created' => 'desc'),
                             'with' => array('User'), ));
-                Rcache::write($cacheKey, $commentsRaw, array(), '+4 hours');
-            }
+                //Rcache::write($cacheKey, $commentsRaw, array(), '+4 hours');
+            //}
             $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
             foreach ($comments as $comment) {
                 $comment->user = User::removeExtraFields($comment->user);
