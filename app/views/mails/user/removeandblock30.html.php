@@ -9,17 +9,17 @@
 
 <table width="800">
     <tr><td width="5"></td><td width="30"></td><td>
-            <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user['first_name'], 'utf-8')?>!</span><br>
+            <!--span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"></span><br-->
         </td></tr>
     <tr><td colspan="3" height="40"></td></tr>
     <tr><td width="5"></td><td valign="top"></td>
         <td>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
-                Мы блокировали ваш аккаунт на 30 дней и удалили решени #<?= $solution_num ?> из-за несоблюдения правил платформы: <br>
-                <a href="http://godesigner.ru/answers/view/37" target="_blank">http://godesigner.ru/answers/view/37</a>
+                Здравствуйте <?=$user['first_name']?>! Мы блокировали ваш аккаунт на 30 дней и удалили решение #<?= $solution_num ?> из-за несоблюдения правил платформы: <br>
+                <a href="http://godesigner.ru/answers/view/37" target="_blank">http://godesigner.ru/answers/view/37</a><br><br>
 
                 <?php if (!empty($explanation)):?>
-                    <?=$explanation;?>
+                    <?=$this->brief->insertHtmlLinkInText($explanation);?>
                     <br><br>
                 <?php endif;?>
                 <?php if (!is_null($text)):?>

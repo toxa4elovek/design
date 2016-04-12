@@ -28,7 +28,7 @@
                     <button class="order-button banhammer" data-term="10" style="<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 10 дней</button>
                     <button class="order-button banhammer" data-term="30" style="<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 1 месяц</button>
                     <button class="order-button block" data-term="" <?php if ($user->banned == 1): ?>style="display: none;"<?php else: ?>style="display: inline;<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php endif ?>/>Навсегда</button>
-                    <button class="order-button unblock" data-term="" <?php if ($user->banned == 1): ?>style="display: inline;<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php else: ?>style="display: none;"<?php endif ?>/>Разблокировать</button>
+                    <button class="order-button unblock" data-term="" <?php if(($user->banned_until != '0000-00-00 00:00:00') || ($user->banned == 1)): ?>style="display: inline;<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php else: ?>style="display: none;"<?php endif ?>/>Разблокировать</button>
                     <div class="g_line"></div>
                 </div>
             <?php endif ?>

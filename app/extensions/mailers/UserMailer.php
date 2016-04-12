@@ -81,6 +81,7 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
                     'use-smtp' => true,
                     'data' => array(
                         'user' => $data['user'],
+                        'pitch' => $data['pitch'],
                         'reason' => $data['reason'],
                         'text' => $data['text'],
                         'image' => $data['image'],
@@ -96,6 +97,7 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
             'use-smtp' => true,
             'data' => array(
                 'user' => $data['user'],
+                'pitch' => $data['pitch'],
                 'reason' => $data['reason'],
                 'solution_num' => $data['solution_num'],
                 'text' => $data['text'],
@@ -112,6 +114,7 @@ class UserMailer extends \li3_mailer\extensions\Mailer {
             'use-smtp' => true,
             'data' => array(
                 'user' => $data['user'],
+                'pitch' => $data['pitch'],
                 'reason' => $data['reason'],
                 'solution_num' => $data['solution_num'],
                 'text' => $data['text'],

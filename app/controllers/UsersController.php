@@ -1838,10 +1838,10 @@ class UsersController extends \app\controllers\AppController
 
     public function unblock()
     {
-        if (($user = User::first($this->request->data['id'])) && (Session::read('user.isAdmin') == 1 || (in_array(Session::read('user.id'), User::$admins)))) {
+        if (($user = User::first($this->request->data['id'])) && ($this->userHelper->isAdmin())) {
             $user->banned = 0;
+            $user->banned_until = '0000-00-00 00:00:00';
             $user->save(null, array('validate' => false));
-            UserMailer::block(array('user' => $user->data()));
             return $this->request->data;
         }
     }

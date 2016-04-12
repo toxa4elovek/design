@@ -9,13 +9,13 @@
 
 <table width="800">
     <tr><td width="5"></td><td width="30"></td><td>
-        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user['first_name'], 'utf-8')?>!</span><br>
+        <!--span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user['first_name'], 'utf-8')?>!</span><br-->
     </td></tr>
     <tr><td colspan="3" height="40"></td></tr>
     <tr><td width="5"></td><td valign="top"></td>
         <td>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
-                Мы были вынуждены ликвидировать ваш аккаунт в связи с многократным нарушением правил: <a href="http://godesigner.ru/answers/view/37" target="_blank">http://godesigner.ru/answers/view/37</a><br><br>
+                Здравствуйте <?=$user['first_name']?>! Мы были вынуждены ликвидировать ваш аккаунт в связи с многократным нарушением правил: <a href="http://godesigner.ru/answers/view/37" target="_blank">http://godesigner.ru/answers/view/37</a><br><br>
 
                 К сожалению, мы больше не хотим продолжать с вами сотрудничество, но желаем успехов на другом поприще!<br><br>
 
