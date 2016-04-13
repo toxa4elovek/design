@@ -111,7 +111,7 @@ class PostsController extends AppController
                     'order' => array('created' => 'desc'),
                     'with' => array('User'),
                 ));*/
-                $searchQuery = $client->Query($word);
+                $searchQuery = $client->Query($word, 'blog');
                 //var_dump(array_keys($searchQuery['matches']));
                 $postIds = array_keys($searchQuery['matches']);
                 foreach ($postIds as $postId) {
