@@ -77,18 +77,24 @@ a.back:hover {
 	}
 
 .expert-personal .about h2 {
-	margin: 30px 0 5px 0;
+	margin: 30px 0 8px 0;
 }
 
 .expert-personal p {
 	font: 14px/20px "Arial", sans-serif;
 	color: #666;
-	padding: 0 0 30px;     
+	padding: 0 0 17px 0;
 	}
 
 
 .expert-personal .about h2 {
-        color: #FF585D;
+	/* Text style for "Альберт Федчен" */
+	width: 162px;
+	height: 16px;
+	color: #648fa4;
+	font-family: RodeoC;
+	font-size: 17px;
+	font-weight: 700;
 	}
 
 
@@ -111,6 +117,18 @@ a.back:hover {
 .faq .more {
     padding-left: 30px;
 }
-
+#tooltip2 {
+	padding: 4px 0 0 0 !important;
+	background: url(/img/tooltip-bg2-top-stripe.png) 0 0 no-repeat !important;
+}
+#tooltip2 .tooltip-wrap {
+	padding: 10px 10px 22px 10px;
+	background: url(/img/tooltip-bottom-bg2.png) 0 100% no-repeat !important;
+}
+#tooltip2 .tooltip-wrap #tooltipContent {
+	width: 180px;
+	height: 145px;
+	padding-left: 4px;
+}
 
 

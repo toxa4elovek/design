@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use app\models\Comment;
 use \app\models\Expert;
 
 /**
@@ -53,7 +54,16 @@ class ExpertsController extends AppController {
                 //$expert->text = preg_replace("/$pattern/im", '$1$2&nbsp;', $expert->text);
             }
 
-            return compact('expert', 'questions');
+            $comments = Comment::all([
+                'conditions' => [
+                    'Comment.user_id' => $expert->user_id,
+                ],
+                'order' => ['Comment.id' => 'desc'],
+                'limit' => 3,
+                'with' => ['Pitch']
+            ]);
+
+            return compact('expert', 'questions', 'comments');
         }else {
             return $this->redirect('/experts');
         }
