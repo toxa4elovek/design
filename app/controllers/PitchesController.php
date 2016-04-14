@@ -1463,7 +1463,14 @@ Disallow: /pitches/upload/'.$pitch['id'];
             ];
             return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady', 'experts', 'autosuggestUsers');
         } else {
-            throw new Exception('Public:Такого решения не существует.', 404);
+            if($moderation = Moderation::first(['conditions' => [
+                'model_id' => $this->request->id,
+                'model' => '\app\models\Solution'
+            ]])) {
+                return $this->redirect('/users/view/' . $moderation->model_user);
+            }else {
+                throw new Exception('Public:Такого решения не существует.', 404);
+            }
         }
     }
 
