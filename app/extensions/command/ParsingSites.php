@@ -322,7 +322,7 @@ class ParsingSites extends \app\extensions\command\CronJob
         if(($xml) && (isset($xml->channel)) && (isset($xml->channel->item))) {
             foreach ($xml->channel->item as $item) {
                 $trigger = News::doesNewsExists((string) $item->title, $item->link);
-                if ($trigger) {
+                if (!$trigger) {
                     $this->out('Saving - ' . $item->title);
                     preg_match($regexp, $item->asXML(), $matches);
                     $image = '';
