@@ -885,7 +885,7 @@ function prepareCommentData(comment, result) {
         comment.user.last_name = splitted[1];
     }
     commentData.commentAuthor = comment.user.first_name + (((comment.user.last_name == null) || (comment.user.last_name.length == 0)) ? '' : (' ' + comment.user.last_name.substring(0, 1) + '.'));
-    if((comment.user.is_company == 1) && (comment.user.short_company_name != '') && (comment.user.isAdmin == 0)) {
+    if((comment.user.is_company == 1) && (comment.user.short_company_name != null) && (comment.user.short_company_name != '') && (comment.user.isAdmin == 0)) {
         commentData.commentAuthor = comment.user.short_company_name;
     }
     commentData.isCommentAuthor = (currentUserId == comment.user_id) ? true : false;
