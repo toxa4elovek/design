@@ -73,32 +73,55 @@ class PitchesController extends AppController
 
         $limit = 70;
         $page = Pitch::getQueryPageNum($this->request->query['page']);
-        $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
-        $order = Pitch::getQueryOrder($this->request->query['order'], $this->request->query['type']);
-        $timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
-        $type = Pitch::getQueryType($this->request->query['type']);
-        $category = Pitch::getQueryCategory($this->request->query['category']);
-        $conditions = array('published' => 1, 'multiwinner' => 0, 'blank' => 0);
-        $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
+        if ((is_string($this->request->query['searchTerm']) && !empty($this->request->query['searchTerm'])) && $this->request->query['searchTerm'] != 'НАЙТИ ПРОЕКТ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ') {
+            require_once LITHIUM_APP_PATH . '/libraries/sphinxapi.php';
+            $client = new \SphinxClient();
+            $client->open();
+            error_reporting(0);
+            $client->SetMatchMode( SPH_MATCH_ANY  );
+            $searchQuery = $client->Query(urldecode(filter_var($this->request->query['searchTerm'], FILTER_SANITIZE_STRING)), 'projects');
+            $pitchesIds = array_keys($searchQuery['matches']);
+            $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
+            $order = Pitch::getQueryOrder($this->request->query['order'], $this->request->query['type']);
+            $timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
+            $type = Pitch::getQueryType($this->request->query['type']);
+            $category = Pitch::getQueryCategory($this->request->query['category']);
+            $conditions = array('published' => 1, 'multiwinner' => 0, 'blank' => 0);
 
-        $conditions += $type;
-        $conditions += $category;
-        $conditions += $priceFilter;
-        $conditions += $timeleftFilter;
-        $conditions += $search;
+            $conditions += $type;
+            $conditions += $category;
+            $conditions += $priceFilter;
+            $conditions += $timeleftFilter;
+            $conditions += ['Pitch.id' => $pitchesIds];
+        }else {
+            $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
+            $order = Pitch::getQueryOrder($this->request->query['order'], $this->request->query['type']);
+            $timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
+            $type = Pitch::getQueryType($this->request->query['type']);
+            $category = Pitch::getQueryCategory($this->request->query['category']);
+            $conditions = array('published' => 1, 'multiwinner' => 0, 'blank' => 0);
+            $search = Pitch::getQuerySearchTerm($this->request->query['searchTerm']);
+
+            $conditions += $type;
+            $conditions += $category;
+            $conditions += $priceFilter;
+            $conditions += $timeleftFilter;
+            $conditions += $search;
+        }
         /*         * **** */
         $total = ceil(Pitch::count(array(
-                    'with' => 'Category',
-                    'conditions' => $conditions,
-                    'order' => $order,
-                )) / $limit);
+                'with' => 'Category',
+                'conditions' => $conditions,
+                'order' => $order,
+            )) / $limit);
         $pitches = Pitch::all(array(
-                    'with' => 'Category',
-                    'conditions' => $conditions,
-                    'order' => $order,
-                    'limit' => $limit,
-                    'page' => $page,
+            'with' => 'Category',
+            'conditions' => $conditions,
+            'order' => $order,
+            'limit' => $limit,
+            'page' => $page,
         ));
+
         $i = 1;
         $tempPitchList = array();
         if ($pitches) {
