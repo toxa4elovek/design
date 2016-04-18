@@ -30,4 +30,14 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function penaltyNotification($project, $penalty) {
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => 'm.elenevskaya@godesigner.ru',
+            //'to' => 'nyudmitriy@gmail.com',
+            'subject' => 'Штраф более 4500 рублей',
+            'data' => compact('project', 'penalty')
+        ));
+    }
+
 }
