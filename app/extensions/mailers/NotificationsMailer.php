@@ -40,4 +40,24 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function penaltyClientNotificationNonGuarantee($user, $project, $time) {
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => $user->email,
+            //'to' => 'nyudmitriy@gmail.com',
+            'subject' => 'Срок выбора победителя подходит к концу!',
+            'data' => compact('user', 'project', 'time')
+        ));
+    }
+
+    public static function penaltyClientNotificationGuarantee($user, $project, $time) {
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => $user->email,
+            //'to' => 'nyudmitriy@gmail.com',
+            'subject' => 'Срок выбора победителя подходит к концу!',
+            'data' => compact('user', 'project', 'time')
+        ));
+    }
+
 }
