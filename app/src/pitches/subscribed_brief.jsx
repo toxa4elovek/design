@@ -1,4 +1,5 @@
 ;(function() {
+    moment.locale('ru');
     const experts = $('.experts');
     const Cart = new AdvancedCart();
     const types = [
@@ -307,28 +308,33 @@
         if(busy === true) {
             return false;
         }
-        $( this ).off(event);
+        //$( this ).off(event);
         if (false === tosCheckBox.prop('checked')) {
             appendTosCheck();
         } else {
-            if (Cart.prepareData(endStep1DatePicker, finishChooseOfWinnerPicker)) {
-                if (uploader.damnUploader('itemsCount') > 0) {
-                    $('#loading-overlay').modal({
-                        containerId: 'spinner',
-                        opacity: 80,
-                        close: false
-                    });
-                    uploader.damnUploader('startUpload');
-                } else {
-                    Cart.saveData(true);
-                    _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик']);
-                }
-            } else {
-                const offset = $('.wrong-input').parent().offset();
-                $.scrollTo(offset.top - 10, {duration: 600});
-            }
+            showDateConfirmation(endStep1DatePicker, finishChooseOfWinnerPicker);
         }
         return false;
+    });
+
+    $('#date-confirmation-approve').on('click', function() {
+        $('.date-confirmation-close').click();
+        if (Cart.prepareData(endStep1DatePicker, finishChooseOfWinnerPicker)) {
+            if (uploader.damnUploader('itemsCount') > 0) {
+                $('#loading-overlay').modal({
+                    containerId: 'spinner',
+                    opacity: 80,
+                    close: false
+                });
+                uploader.damnUploader('startUpload');
+            } else {
+                Cart.saveData(true);
+                _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик']);
+            }
+        } else {
+            const offset = $('.wrong-input').parent().offset();
+            $.scrollTo(offset.top - 10, {duration: 600});
+        }
     });
 
     /**
@@ -485,4 +491,19 @@
         });
     }
 
+    function showDateConfirmation(finishDatePicker, chooseWinnerDatePicker) {
+        $('#date-confirmation').modal({
+            containerId: 'spinner',
+            opacity: 80,
+            closeClass: 'date-confirmation-close',
+            onShow: function () {
+                const finishDateMoment = finishDatePicker.data("DateTimePicker").date();
+                const chooseWinnerFinishDateMoment = chooseWinnerDatePicker.data("DateTimePicker").date();
+                $('#finishDate').text(finishDateMoment.format('DD.MM.YYYY, dddd'));
+                $('#finishChooseWinner').text(chooseWinnerFinishDateMoment.format('DD.MM.YYYY, dddd'));
+                $('#date-confirmation').fadeTo(600, 1);
+            }
+        });
+    }
+    //showDateConfirmation(endStep1DatePicker, finishChooseOfWinnerPicker);
 })();
