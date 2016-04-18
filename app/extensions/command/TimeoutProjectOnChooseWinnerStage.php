@@ -44,7 +44,11 @@ class TimeoutProjectOnChooseWinnerStage extends CronJob
                     $updatedWinner->nominated = 0;
                     $updatedWinner->save();
                     $project->awarded = $updatedWinner->id;
-                    $project->split = 1;
+                    if($project->pitchData()['avgNum'] >= 3.0) {
+                        $project->split = 1;
+                    }else {
+                        $project->split = 0;
+                    }
                     $project->status = 2;
                     $project->totalFinishDate = date('Y-m-d H:i:s');
                     $project->save();
