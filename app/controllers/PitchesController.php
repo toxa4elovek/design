@@ -560,6 +560,9 @@ class PitchesController extends AppController
             $userId = $this->userHelper->getId();
             $actionType = $this->request->data['actionType'];
             $this->request->data['commonPitchData']['user_id'] = $userId;
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
+            $this->request->data['commonPitchData']['ga_id'] = $gaId;
             $result = Pitch::saveDraft($this->request->data);
             if (is_null($result)) {
                 $result = array('error' => 'save error');
@@ -750,6 +753,9 @@ class PitchesController extends AppController
                     $referalSum = 0;
                 }
 
+                $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+                $gaId = $gatracking->getClientId();
+
                 $data = array(
                     'user_id' => $userId,
                     'category_id' => $commonPitchData['category_id'],
@@ -779,6 +785,7 @@ class PitchesController extends AppController
                     'promocode' => $promocode,
                     'referal' => $referalId,
                     'referal_sum' => $referalSum,
+                    'ga_id' => $gaId
                 );
             }
             if (!$pitch = Pitch::first(array('conditions' => array('id' => $commonPitchData['id'])))) {
