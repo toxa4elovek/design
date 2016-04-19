@@ -45,7 +45,7 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer {
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
-            'subject' => 'Срок выбора победителя подходит к концу!',
+            'subject' => 'Примите решение: конкурс на GoDesigner',
             'data' => compact('user', 'project', 'time')
         ));
     }
@@ -55,7 +55,7 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer {
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
-            'subject' => 'Срок выбора победителя подходит к концу!',
+            'subject' => 'Выберите победителя: конкурс на GoDesigner',
             'data' => compact('user', 'project', 'time')
         ));
     }
