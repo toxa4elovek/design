@@ -61,12 +61,12 @@ class TwitterAPI extends AbstractAPI {
         }
         if ($code == 200) {
             $data = json_decode($this->apiObject->response['response'], true);
-            var_dump($this->apiObject);
-            var_dump($data['id_str']);
+            //var_dump($this->apiObject);
+            //var_dump($data['id_str']);
             return $data['id_str'];
         } else {
-            echo '<pre>';
-            var_dump($this->apiObject);
+            //echo '<pre>';
+            //var_dump($this->apiObject);
             return false;
         }
     }
