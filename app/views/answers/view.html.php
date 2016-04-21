@@ -53,4 +53,5 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
+<?=$this->html->script(array('help/view'), array('inline' => false))?>
 <?=$this->html->style(array('/help', '/howitworks', '/answer'), array('inline' => false))?>

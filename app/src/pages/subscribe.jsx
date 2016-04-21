@@ -14,4 +14,8 @@
             document.getElementById('timerMount')
         );
     }
+    setTimeout(function() {
+        Chatra('show');
+        Chatra('openChat');
+    }, 30000);
 })();

@@ -10,4 +10,8 @@
         var discountEndDate = $(discountEndDateInput).val();
         ReactDOM.render(React.createElement(CountdownTimer, { data: discountEndDate }), document.getElementById('timerMount'));
     }
+    setTimeout(function () {
+        Chatra('show');
+        Chatra('openChat');
+    }, 30000);
 })();

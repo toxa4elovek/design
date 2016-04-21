@@ -6,6 +6,10 @@ $(document).ready(function() {
         isOwner = true;
     }
 
+    if(isOwner) {
+        Chatra('show');
+    }
+
     let projectPublished = false;
     const projectPublishedInput = $('input[name=project_published]');
     if((projectPublishedInput.length == 1) && (projectPublishedInput.val() == 1)) {
