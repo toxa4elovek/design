@@ -161,8 +161,10 @@ foreach($solutions as $solution):
             <ul style="margin-left: 78px;" class="right">
                 <?php if (!isset($fromDesignersTab)):?>
                 <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
+                    <?php if(!$pitch->isCopyrighting()):?>
                     <a href="#" data-status="<?= $pitch->status ?>" style="float:left" class="like-small-icon" data-id="<?=$solution->id?>"><img src="/img/like.png" alt="количество лайков" /></a>
                     <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="https://www.godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
+                    <?php endif ?>
                     <?php if((($pitch->private != 1) && (!$pitch->isCopyrighting()))):
                         if (rand(1, 100) <= 50) {
                                 $tweetLike = 'Мне нравится этот дизайн! А вам?';
