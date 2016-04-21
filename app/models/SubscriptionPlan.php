@@ -181,6 +181,7 @@ class SubscriptionPlan extends Pitch
             $paymentPlan->billed = 1;
             $paymentPlan->started = date('Y-m-d H:i:s');
             $paymentPlan->totalFinishDate = date('Y-m-d H:i:s');
+            $paymentPlan->billed_date = date('Y-m-d H:i:s');
             $companyName = User::getFullCompanyName($paymentPlan->user_id);
             if ($companyName != '') {
                 $paymentPlan->title = $paymentPlan->title . ' (' . $companyName . ')';
