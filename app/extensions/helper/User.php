@@ -311,6 +311,20 @@ class User extends \lithium\storage\Session {
             return $this->read('user.email');
         });
     }
+
+    /**
+     * Метод возвращает phone или false, если он не залогинен
+     *
+     * @return bool|mixed
+     */
+    public function getPhone() {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return $this->_filter(__FUNCTION__, [], function($self, $params) {
+            return $this->read('user.phone');
+        });
+    }
     
     /**
      * Метод возвращает дату создания аккаунта или false, если он не залогинен

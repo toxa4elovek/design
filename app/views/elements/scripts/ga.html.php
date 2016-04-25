@@ -47,10 +47,42 @@
 </script>
 <!-- Chatra {literal} -->
 <script>
-    window.ChatraSetup = {
-        startHidden: true,
-        disabledOnMobile: true
-    };
+    <?php
+        $chatraSetup = [
+            'startHidden' => true,
+            'disabledOnMobile' => true
+        ];
+        $chatraIntegration = [];
+
+        if($this->user->isLoggedIn()):
+            $chatraIntegration['name'] = $this->user->getFullname();
+            $chatraIntegration['email'] = $this->user->getEmail();
+            $chatraIntegration['phone'] = $this->user->getPhone();
+
+            $companyName = $this->user->getFullCompanyName();
+            if(!empty($companyName)):
+                $chatraIntegration['Название компании'] = $companyName;
+            endif;
+
+            $projectsArray = [];
+            foreach($this->user->getCurrentPitches() as $project):
+                if(($project->type == 'plan-payment') && ($project->billed == 1)):
+                    continue;
+                endif;
+                if(($project->blank == 1) && ($project->billed == 0)):
+                    continue;
+                endif;
+                if(($project->type == 'penalty') or ($project->type == 'fund-balance')):
+                    continue;
+                endif;
+                $projectsArray[] = "$project->title ($project->id)\n\r";
+            endforeach;
+            $projectsString = implode(' ', $projectsArray);
+            $chatraIntegration['Проекты'] = $projectsString;
+        ?>
+    <?php endif?>
+    window.ChatraIntegration  = <?php echo json_encode($chatraIntegration);?>;
+    window.ChatraSetup = <?php echo json_encode($chatraSetup);?>;
     ChatraID = 'c8KhbzjEvaNsKDeWD';
     (function(d, w, c) {
         var n = d.getElementsByTagName('script')[0],
