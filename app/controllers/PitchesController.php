@@ -270,6 +270,22 @@ class PitchesController extends AppController
             $pitchList = array();
             $pitchTitleHelper = new PitchTitleFormatter();
             foreach ($tempPitchList as &$pitch) {
+                $pitch['showAct'] = true;
+                if($pitch['category_id'] == 20) {
+                    $receipt = Receipt::first(['conditions' => ['pitch_id' => $pitch['id']]]);
+                    $initialActs = 0;
+                    foreach($receipt as $item):
+                        if($item->name === 'Награда Дизайнеру'):
+                            continue;
+                        endif;
+                        $initialActs += $item->value;
+                    endforeach;
+                    if($initialActs > 0) {
+                        $pitch['showAct'] = true;
+                    }else {
+                        $pitch['showAct'] = false;
+                    }
+                }
                 $pitch['sort'] = $i;
                 $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title'], 80);
                 $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
@@ -1709,7 +1725,8 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'billed' => 1,
                 'prolong' => ['>' => 0],
             ]));
-            $options = compact('pitch', 'bill', 'addons', 'destination');
+            $receipt = Receipt::first(['conditions' => ['pitch_id' => $pitch->id]]);
+            $options = compact('pitch', 'bill', 'addons', 'destination', 'receipt');
             Pitch::generatePdfAct($options);
             die();
         } else {

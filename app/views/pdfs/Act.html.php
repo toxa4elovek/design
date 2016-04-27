@@ -4,6 +4,16 @@
     }else {
         $moneyInAct = $pitch->total;
     }
+if($pitch->category_id == 20) {
+    $initialActs = 0;
+    foreach($receipt as $item):
+        if($item->name === 'Награда Дизайнеру'):
+            continue;
+        endif;
+        $initialActs += $item->value;
+    endforeach;
+    $moneyInAct = $initialActs;
+}
 $addonData = $addons->data();
 $tableAddonData = array();
 $finalSum = $moneyInAct;
