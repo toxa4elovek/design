@@ -904,6 +904,15 @@ class PitchesController extends AppController
     public function view()
     {
         if ($pitch = Pitch::first(array('conditions' => array('Pitch.id' => $this->request->id), 'with' => array('User')))) {
+            if(($pitch->status == 1) && ($pitch->awarded != 0) && ($this->userHelper->isPitchOwner($pitch->user_id))) {
+                $winningSolution = Solution::first($pitch->awarded);
+                if($winningSolution->step > 2) {
+                    $closingStep = $winningSolution->step;
+                }else{
+                    $closingStep = 2;
+                }
+                return $this->redirect("/users/step$closingStep/$winningSolution->id");
+            }
             $nameInflector = new NameInflector();
             $avatarHelper = new AvatarHelper();
             $autosuggestUsers = [];
