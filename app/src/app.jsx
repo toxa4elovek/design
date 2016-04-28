@@ -872,6 +872,9 @@ function prepareCommentData(comment, result) {
     }
 
     commentData.userAvatar = comment.avatar;
+    if(typeof(comment.expertAvatar) != 'undefined') {
+        commentData.userAvatar = comment.expertAvatar;
+    }
     if(comment.user.first_name.trim().match(/\s/)) {
         var splitted = comment.user.first_name.trim().split(' ');
         comment.user.first_name = splitted[0];

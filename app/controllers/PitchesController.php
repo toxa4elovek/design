@@ -1043,6 +1043,20 @@ class PitchesController extends AppController
             //}
             $comments = Comment::filterCommentsTree($commentsRaw, $pitch->user_id);
             foreach ($comments as $comment) {
+                if(in_array($comment->user_id, $experts)) {
+                    $expert = Expert::first(['conditions' => ['user_id' => $comment->user_id]]);
+                    switch($expert->id):
+                        case 1: $image = '/img/experts/fedchenko.jpg'; break;
+                        case 3: $image = '/img/experts/kojara.jpg'; break;
+                        case 2: $image = '/img/experts/pavlov.jpg'; break;
+                        case 4: $image = '/img/experts/chern.jpg'; break;
+                        case 5: $image = '/img/experts/nesterenko218.jpg'; break;
+                        case 6: $image = '/img/experts/efremov218.jpg'; break;
+                        case 7: $image = '/img/experts/percia_218.png'; break;
+                        case 8: $image = '/img/experts/makarov_dmitry.png'; break;
+                    endswitch;
+                    $comment->expertAvatar = $image;
+                }
                 $comment->user = User::removeExtraFields($comment->user);
             }
 
