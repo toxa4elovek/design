@@ -21,11 +21,17 @@
     function highlight($text, $search) {
 
         if($search != '') {
-            $words = explode(' ', $search);
+            $words = array_unique(explode(' ', $search));
             $splitted = explode(' ', $text);
             foreach($splitted as &$textword) {
+                $found = false;
                 foreach($words as $word) {
-                    $textword = preg_replace('@('.$word.')@', '<span style="color: #ff585d;text-underline: none;">$1</span>', $textword);
+                    if((!$found) & (preg_match('@(.?' . $word . '.?)@u', $textword, $matches))) {
+                        //var_dump($word);
+                        //var_dump($textword);
+                        $textword = preg_replace('@('.$matches[0].')@', '<span style="color: #ff585d;text-underline: none;">$1</span>', $textword);
+                        $found = true;
+                    }
                 }
             }
             $text = implode(' ', $splitted);

@@ -30,8 +30,12 @@ class AnswersController extends AppController {
             $client = new \SphinxClient();
             $client->open();
             error_reporting(0);
-            $client->SetMatchMode( SPH_MATCH_ANY  );
-
+            $client->SetMatchMode( SPH_MATCH_EXTENDED2  );
+            $client->SetSortMode(SPH_SORT_RELEVANCE);
+            $client->SetFieldWeights(array (
+                'title' => 10000,
+                'text' => 1,
+            ));
             $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
             $words = explode(' ', $searchCondition);
             foreach($words as $index => &$searchWord) {
@@ -46,9 +50,12 @@ class AnswersController extends AppController {
             $answers = array();
             foreach($words as $word) {
                 $searchQuery = $client->Query($word, 'help');
+                foreach($searchQuery['words'] as $sphinxWord => $data) {
+                    $cleanedWord = preg_replace("/[^[:alnum:][:space:]]/u", '', $sphinxWord);
+                    $search .= ' ' . $cleanedWord;
+                }
                 $answersIds = array_keys($searchQuery['matches']);
                 foreach ($answersIds as $answerId) {
-                    //var_dump($answerId);
                     $answer = Answer::first(['conditions' => ['Answer.id' => $answerId]]);
                     $answers[] = $answer->data();
                 }
