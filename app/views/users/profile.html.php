@@ -284,14 +284,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" disabled data-pay="wmr" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'wmr') echo 'checked' ?> value="wmr">
+                                    <input type="radio" data-pay="wmr" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'wmr') echo 'checked' ?> value="wmr">
                                 </td>
                                 <td class="s3_h">
                                     <img alt="Webmoney WMR" src="/img/wmr.png">
                                 </td>
                                 <td class="s3_text" style="margin-top: 14px;">
-                                    Выплата на WMR временно недоступна
-                                    <!--Получить вознаграждение в wmr (webmoney.ru)-->
+                                    Получить вознаграждение в wmr (webmoney.ru)
                                 </td>
                                 <td></td>
                             </tr>
@@ -326,13 +325,14 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" data-pay="yandex" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'yandex') echo 'checked' ?> value="yandex">
+                                    <input type="radio" disabled data-pay="yandex" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'yandex') echo 'checked' ?> value="yandex">
                                 </td>
                                 <td class="s3_h">
                                     <img alt="Yandex Деньги" style="width:120px; margin-left: 10px;" src="/img/yd.png">
                                 </td>
                                 <td class="s3_text" style="margin-top: 14px;">
-                                    Получить вознаграждение в Yandex деньгах (<a href="https://money.yandex.ru/doc.xml?id=526543" target="_blank">только на идентифицированные кошельки</a>)
+                                    Выплата на Yandex-деньги временно недоступна
+                                    <!-- Получить вознаграждение в Yandex деньгах (<a href="https://money.yandex.ru/doc.xml?id=526543" target="_blank">только на идентифицированные кошельки</a>) -->
                                 </td>
                                 <td></td>
                             </tr>
