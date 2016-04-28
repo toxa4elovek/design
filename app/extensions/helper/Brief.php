@@ -97,7 +97,7 @@ class Brief extends \lithium\template\Helper {
      */
     private function __autoReplaceHtmlLinks($text) {
         $checkRegExp = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
-        $replacementRegExp = '!(^|\s|\()([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
+        $replacementRegExp = '!(^|\s|\(|>)([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
         if(preg_match($checkRegExp, $text)) {
             $text = preg_replace($replacementRegExp, '$1<a href="$2" target="_blank">$2</a>', $text);
         }
