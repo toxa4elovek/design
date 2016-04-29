@@ -51,7 +51,7 @@
                     </section>
                     <div id="content_help_seach" style="background: none repeat scroll 0 0 #F3F3F3;box-shadow: 3px 3px #D2D2D2;margin:20px 0;padding:20px 30px;">
                         <form action="/answers" method="get">
-                            <input type="text" name="search" value="<?=$search?>" class="text">
+                            <input type="text" name="search" value="<?=$originalSearch?>" class="text">
                             <input type="submit" class="button second" style="margin-left: 30px" value="Поиск">
                         </form>
                     </div>

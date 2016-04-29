@@ -47,6 +47,7 @@ class AnswersController extends AppController {
                 $searchWord = trim($searchWord);
             }
             $search = implode(' ', $words);
+            $originalSearch = $search;
             $answers = array();
             foreach($words as $word) {
                 $searchQuery = $client->Query($word, 'help');
@@ -71,9 +72,9 @@ class AnswersController extends AppController {
             $answers = $answers->data();
         }
         if((isset($this->request->query['ajax'])) && ($this->request->query['ajax'] == 'true')) {
-            return $this->render(array('layout' => false, 'data' => compact('answers', 'search')));
+            return $this->render(array('layout' => false, 'data' => compact('answers', 'search', 'originalSearch')));
         }else {
-            return compact('answers', 'search', 'category');
+            return compact('answers', 'search', 'category', 'originalSearch');
         }
     }
 

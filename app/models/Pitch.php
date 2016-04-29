@@ -1339,14 +1339,16 @@ class Pitch extends AppModel
                     $rating = 5;
                     break;
             }
-            $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-            if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
-                $rating = 3;
-            }
-            if (strtotime($plusDay) < time()) {
-                //Rcache::write($cacheKey, $rating, [], '+2 hours');
-            }
-        //}
+            //$diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+        if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
+            $wasSolutionPostedOnThisDateOrBefore = true;
+        }else {
+            $wasSolutionPostedOnThisDateOrBefore = false;
+        }
+        if((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
+        //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+            $rating = 3;
+        }
         return $rating;
     }
 
@@ -1385,8 +1387,14 @@ class Pitch extends AppModel
                 case $percents <= 100: $comments = 5;
                     break;
             }
-            $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-            if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+            if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
+                $wasSolutionPostedOnThisDateOrBefore = true;
+            }else {
+                $wasSolutionPostedOnThisDateOrBefore = false;
+            }
+            //$diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+            if((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
+            //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
                 $comments = 3;
             }
             if (strtotime($plusDay) < time()) {
