@@ -1362,11 +1362,13 @@ input.wrong-input {
     z-index: 2147483647; 
 }
 div.message_text.private-comment {
+	position: relative;
 	/*background-image: url(/img/private-comment-eye.png);
 	background-repeat: no-repeat;
 	background-position: right top;*/
 }
 div.message_text.public-comment {
+	position: relative;
 	/*background-image: url(/img/public-comment-eye.png);
 	background-repeat: no-repeat;
 	background-position: right top;*/
