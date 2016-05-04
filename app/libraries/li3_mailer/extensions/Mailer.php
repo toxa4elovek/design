@@ -102,13 +102,13 @@ class Mailer extends \lithium\core\StaticObject
                     $message->attach(\Swift_Attachment::fromPath($file));
                 }
             }
-            /*if (isset($options['use-smtp']) && true == $options['use-smtp']) {
+            if (isset($options['use-smtp']) && true == $options['use-smtp']) {
                 $transport = \Swift_SmtpTransport::newInstance(self::$smtpMandrill['host'], self::$smtpMandrill['port']);
                 $transport->setUsername(self::$smtpMandrill['username']);
                 $transport->setPassword(self::$smtpMandrill['password']);
-            } else {*/
+            } else {
                 $transport = \Swift_MailTransport::newInstance();
-            /*}*/
+            }
             $mailer = new \Swift_Mailer($transport);
             $result = $mailer->send($message);
             return (bool) $result;
