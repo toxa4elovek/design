@@ -1667,6 +1667,7 @@ class Pitch extends AppModel
             $pitch->finished = date('Y-m-d H:i:s');
             $pitch->totalFinishDate = '0000-00-00 00:00:00';
             $pitch->awardedDate = date('Y-m-d H:i:s');
+            $pitch->billed_date = date('Y-m-d H:i:s');
             Solution::awardCopy($pitch->awarded);
             $count = self::getCountBilledMultiwinner($pitch->multiwinner);
             if ($count == 0) {
