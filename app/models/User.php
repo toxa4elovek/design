@@ -611,7 +611,7 @@ class User extends AppModel
 
     public static function sendAdminNewAddon($addon)
     {
-        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $users = self::all(array('conditions' => array('id' => User::$admins)));
         $pitch = Pitch::first($addon->pitch_id);
         foreach ($users as $user) {
             $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
@@ -621,7 +621,7 @@ class User extends AppModel
 
     public static function sendAdminNewAddonBrief($addon)
     {
-        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $users = self::all(array('conditions' => array('id' => User::$admins)));
         $pitch = Pitch::first($addon->pitch_id);
         foreach ($users as $user) {
             $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);

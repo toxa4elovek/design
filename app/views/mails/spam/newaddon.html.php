@@ -9,8 +9,14 @@
 
 <table width="800">
     <tr><td width="5"></td><td width="30"></td><td>
-        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user->first_name, 'utf-8')?>!</span><br>
-        <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?php echo $stringAddons; ?></span>
+        <span style="width: 560px;
+height: 33px;
+font-family: Georgia;
+font-size: 14px;
+font-weight: 400;
+line-height: 20px;">Здравствуйте, <?=$user->first_name?>,<br>
+в проекте «<a style="color: #6590a3;
+text-decoration: underline;" href="http://cp.godesigner.ru/pitches/edit/<?=$addon->pitch_id?>"><?=$pitchName?></a>» <?=$stringAction?>: <?=$stringAddons?>.</span><br>
     </td></tr>
     <tr><td colspan="3" height="40"></td></tr>
     <tr><td width="5"></td><td valign="top">
@@ -19,8 +25,8 @@
 
     </td>
         <td>
-            <a style="color: #648fa4; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="http://cp.godesigner.ru/pitches/edit/<?=$addon->pitch_id?>"><?=$pitchName?></a><br/>
-        </td></tr>
+        </td>
+    </tr>
     <tr>
         <td colspan="3" height="40"></td>
     </tr>
