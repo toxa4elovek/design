@@ -152,6 +152,7 @@
                     </ul>
                 </div>
             <?php endif ?>
+            <?php if($userPitches):?>
             <div class="g_line" style="width: 835px;"></div>
             <div class="middle_inner conteiners" style="text-transform: uppercase; margin-top: 0;padding-left: 0; padding-top: 45px;">
                 <section>
@@ -241,6 +242,7 @@
                     </table>
                 </section>
             </div>
+            <?php endif?>
             <!--div class="send_message">
                 <a href=""><img src="/img/send-message.png" /></a>
             </div-->
