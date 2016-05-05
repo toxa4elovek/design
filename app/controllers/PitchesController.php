@@ -78,9 +78,19 @@ class PitchesController extends AppController
             $client = new \SphinxClient();
             $client->open();
             error_reporting(0);
-            $client->SetMatchMode( SPH_MATCH_ANY  );
+            $client->SetFieldWeights([
+                'title' => 1000,
+                'description' => 1]);
+            $client->SetMatchMode( SPH_MATCH_EXTENDED2  );
+            $client->SetSortMode(SPH_SORT_RELEVANCE);
             $searchQuery = $client->Query(urldecode(filter_var($this->request->query['searchTerm'], FILTER_SANITIZE_STRING)), 'projects');
             $pitchesIds = array_keys($searchQuery['matches']);
+            $weightMap = [];
+            $k = 0;
+            foreach($searchQuery['matches'] as $id => $attrs) {
+                $weightMap[$id] = ['weight' => $attrs['weight'], 'index' => $k];
+                $k++;
+            }
             $priceFilter = Pitch::getQueryPriceFilter($this->request->query['priceFilter']);
             $order = Pitch::getQueryOrder($this->request->query['order'], $this->request->query['type']);
             $timeleftFilter = Pitch::getQueryTimeframe($this->request->query['timeframe']);
@@ -140,8 +150,29 @@ class PitchesController extends AppController
             $pitch['sort'] = $i;
             $pitch['title'] = $pitchTitleHelper->renderTitle($pitch['title'], 80);
             $pitch['multiple'] = Pitch::getMultiple($pitch['category_id'], $pitch['specifics']);
+            if((isset($weightMap)) && (isset($weightMap[$pitch['id']]))) {
+                $pitch['weight'] = $weightMap[$pitch['id']]['weight'];
+                $pitch['index'] = $weightMap[$pitch['id']]['index'];
+            }
             $pitchList[] = $pitch;
             ++$i;
+
+        }
+        if(isset($weightMap)) {
+            usort($pitchList, function($a, $b) {
+                if($a['weight'] < $b['weight']) return 1;
+                if($a['weight'] > $b['weight']) return -1;
+                if($a['weight'] == $b['weight']) {
+                    if($a['index'] < $b['index']) return 1;
+                    if($a['index'] > $b['index']) return -1;
+                }
+                return 0;
+            });
+            $i = 1;
+            foreach($pitchList as &$pitch) {
+                $pitch['sort'] = $i;
+                ++$i;
+            }
         }
         $data = array(
             'pitches' => $pitchList,

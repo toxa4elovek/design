@@ -2370,6 +2370,13 @@ table.all-pitches{
     border-right:#575864 1px solid;
     cursor:pointer;
 }
+.all-pitches thead td{
+    vertical-align:middle;
+    text-align:center;
+    height:38px;
+    border-right:#575864 1px solid;
+    cursor:pointer;
+}
 .all-pitches a{
     text-decoration:none;
     color:#999;
