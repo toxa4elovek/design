@@ -26,10 +26,10 @@
             foreach($splitted as &$textword) {
                 $found = false;
                 foreach($words as $word) {
-                    if((!$found) & (preg_match('@(.?' . $word . '.?)@u', $textword, $matches))) {
+                    if((!$found) & (preg_match('@(.?' . $word . '.?)@ui', $textword, $matches))) {
                         //var_dump($word);
                         //var_dump($textword);
-                        $textword = preg_replace('@('.$matches[0].')@', '<span style="color: #ff585d;text-underline: none;">$1</span>', $textword);
+                        $textword = preg_replace('@('.$matches[0].')@ui', '<span style="color: #ff585d;text-underline: none;">$1</span>', $textword);
                         $found = true;
                     }
                 }
