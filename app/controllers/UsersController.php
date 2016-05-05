@@ -1751,7 +1751,7 @@ class UsersController extends \app\controllers\AppController
                 $moderations = Moderation::all(array('conditions' => array('model_user' => $user->id)));
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('conditions' => array('billed' => 1, 'user_id' => $user->id)));
+            $userPitches = Pitch::all(array('order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => array('OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1,'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0)));
             if (count($userPitches) > 0) {
                 $isClient = true;
                 $ids = array();
@@ -1765,7 +1765,8 @@ class UsersController extends \app\controllers\AppController
                             'with' => array('Pitch')
                 ));
             }
-            return compact('user', 'pitchCount', 'totalUserFavorite', 'isFav', 'totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
+            $userPitches = $userPitches->data();
+            return compact('user', 'pitchCount', 'totalUserFavorite', 'isFav', 'totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations', 'userPitches');
         }
         throw new Exception('Public:Такого пользователя не существует.', 404);
     }

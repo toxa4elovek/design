@@ -2414,6 +2414,9 @@ thead .pitches-name{
 .pitch-end td a:hover {
     color: #666666;
 }
+.pitch-title a:hover {
+    color: #fff !important;
+}
 .close-and-expert .icons{
     /*background:#e0e0e0 url(/img/icon-3.png) no-repeat 1px 5px;*/
 }

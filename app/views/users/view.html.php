@@ -152,7 +152,95 @@
                     </ul>
                 </div>
             <?php endif ?>
+            <div class="g_line" style="width: 835px;"></div>
+            <div class="middle_inner conteiners" style="text-transform: uppercase; margin-top: 0;padding-left: 0; padding-top: 45px;">
+                <section>
+                    <table id="primary" style="margin-left: 0; width: 835px;" class="all-pitches">
+                        <thead>
+                        <tr>
+                            <td class="" style="height: 38px !important; text-align: left; padding:0 10px 0 34px; width: 255px; font-family: OfficinaSansC Book, serif"><a id="sort-title" class="sort-link" style="background-image: none;padding: 0;">название</a></td>
+                            <td class="pitches-cat" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a id="sort-category" class="sort-link"  style="background-image: none;padding: 0;">Категории</a></td>
+                            <td class="idea" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a  id="sort-ideas_count" class="sort-link"  style="background-image: none;padding: 0;">Идеи</a></td>
+                            <td class="pitches-time" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a  id="sort-finishDate" class="sort-link"  style="background-image: none;padding: 0;">Статус</a></td>
+                            <td style=" font-family: OfficinaSansC Book, serif;text-align: center; padding:0 10px 0 10px; height: 38px !important;"><a id="sort-price" class="sort-link" style="background-image: none;padding: 0;">Цена</a></td>
+                        </tr>
+                        </thead>
+                        <tbody id="table-content">
+                            <?php
+                            $i = 1;
+                            foreach($userPitches as $pitch):
+                                $rowClass = 'odd';
+                                if(($i % 2 == 0)) {
+                                    $rowClass = 'even';
+                                }
+                                if((strtotime($pitch['started']) + DAY) > time())  {
+                                    $rowClass .= ' newpitch';
+                                }else {
+                                    if(($pitch['pinned'] == 1) && ($pitch['status'] == 0)) {
+                                        $rowClass .= ' highlighted';
+                                    }
+                                }
 
+                                if($pitch['status'] == 0) {
+
+                                    if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] != 1)) {
+                                        $timeleft = '<a href="/pitches/edit/' . $pitch['id'] . '#step3">Ожидание оплаты</a>';
+                                    } else if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] == 1)) {
+                                        $timeleft = 'Ожидание<br />модерации';
+                                    } else if (($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
+                                        $timeleft = 'Ожидайте звонка';
+                                    } else {
+                                        $timeleft = $pitch['startedHuman'];
+                                    }
+                                } else if (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
+                                    $rowClass .= ' selection';
+                                    $timeleft = 'Выбор победителя';
+                                } else if (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))) {
+                                    $rowClass .= ' pitch-end';
+                                    if ($pitch['status'] == 2) {
+                                        $timeleft = 'Проект завершен';
+                                    }else if(($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
+                                        $timeleft = 'Победитель выбран';
+                                    }else if(($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
+                                        $timeleft = 'Выбор победителя';
+                                    }else {
+                                        $timeleft = $pitch['startedHuman'];
+                                    }
+                                }
+                                $textGuarantee = '';
+                                if($pitch['guaranteed'] == 1) {
+                                    $textGuarantee = '<br><span style="font-size: 11px; font-weight: normal; font-family: Arial;text-transform:uppercase">гарантированы</span>';
+                                }
+                                $categoryLinkHref = '#';
+                                if($pitch['category_id'] == 20) {
+                                    $categoryLinkHref = '/pages/subscribe';
+                                }
+                                $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
+                            ?>
+                            <tr class="selection <?=$rowClass?>">
+                                <td class="pitches-name pitch-title" style="width: 255px;">
+                                    <a href="#">
+                                        <img class="pitches-name-td-img expand-link" src="/img/arrow.png" style="display: none;">
+                                    </a>
+                                    <div style="padding-left: 34px; padding-right: 12px;">
+                                        <a href="/pitches/view/<?=$pitch['id']?>" class="" style="color: #fff;"><?=$pitch['title']?></a>
+                                    </div>
+                                </td>
+                                <td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">
+                                    <a href="<?=$categoryLinkHref?>" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?=$pitch['category']['title'] . $multiple?></a>
+                                </td>
+                                <td class="idea" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?= $pitch['ideas_count'] ?></td>
+                                <td class="pitches-status mypitches" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?=$timeleft?></td>
+                                <td class="price"><?= $this->moneyFormatter->formatMoney($pitch['price'], array('suffix' => ' Р.-')) .
+                                    $textGuarantee ?></td>
+                            </tr>
+                        <?php
+                            $i++;
+                            endforeach;?>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
             <!--div class="send_message">
                 <a href=""><img src="/img/send-message.png" /></a>
             </div-->
