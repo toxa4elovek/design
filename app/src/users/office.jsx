@@ -1474,20 +1474,39 @@ $(document).ready(function() {
 
 function accountCheck() {
     $('.account-check').remove();
+    let accountNum = $('input[name=accountnum]').val();
     var resultCor = 1; //var resultCor = (fn_checkKS($('input[name=coraccount]').val())) ? 1 : 0;
-    var resultAcc = (fn_checkRS($('input[name=accountnum]').val(), $('input[name=bik]').val())) ? 2 : 0;
+    var resultAcc = (fn_checkRS(accountNum, $('input[name=bik]').val())) ? 2 : 0;
     var result = resultCor + resultAcc;
     var message = '';
+    if(accountNum.length != 20) {
+        result = 3;
+    }
     switch (result) {
     case 0:
-        message = 'Неверно указан Счёт.<br>Неверно указан Корсчёт.<br>'
+        message = 'Неверно указан Счёт.<br>Неверно указан Корсчёт.<br>';
+        $('input[name=accountnum]').addClass('wrong-input');
+        $('input[name=coraccount]').addClass('wrong-input');
+        $('input[name=bik]').removeClass('wrong-input');
         break;
     case 1:
-        message = 'Неверно указан Счёт или БИК.<br>'
-            break;
+        message = 'Неверно указан Счёт или БИК.<br>';
+        $('input[name=accountnum]').addClass('wrong-input');
+        $('input[name=bik]').addClass('wrong-input');
+        $('input[name=coraccount]').removeClass('wrong-input');
+        break;
     case 2:
-        message = 'Неверно указан Корсчёт.<br>'
-            break;
+        message = 'Неверно указан Корсчёт.<br>';
+        $('input[name=coraccount]').addClass('wrong-input');
+        $('input[name=accountnum]').removeClass('wrong-input');
+        $('input[name=bik]').removeClass('wrong-input');
+        break;
+    case 3:
+        message = 'Номер счёта должен состоять из 20 цифр.<br>';
+        $('input[name=accountnum]').addClass('wrong-input');
+        $('input[name=bik]').removeClass('wrong-input');
+        $('input[name=coraccount]').removeClass('wrong-input');
+        break;
     default:
         break;
     }
@@ -1497,6 +1516,10 @@ function accountCheck() {
     if (message) {
         var el = $('<tr class="account-check"><td colspan="2">' + message + '</td></tr>');
         el.appendTo($('#step1table')).animate({'opacity': 1}, 200, function() { $(this).addClass('active'); });
+    }else {
+        $('input[name=accountnum]').removeClass('wrong-input');
+        $('input[name=bik]').removeClass('wrong-input');
+        $('input[name=coraccount]').removeClass('wrong-input');
     }
 }
 
