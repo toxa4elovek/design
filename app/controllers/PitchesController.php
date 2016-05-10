@@ -1553,7 +1553,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
             ]])) {
                 return $this->redirect('/users/view/' . $moderation->model_user);
             }else {
-                throw new Exception('Public:Такого решения не существует.', 404);
+                throw new Exception('Public:Решение было удалено автором', 404);
             }
         }
     }
