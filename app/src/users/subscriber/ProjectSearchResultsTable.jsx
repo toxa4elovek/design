@@ -36,6 +36,8 @@ class ProjectSearchResultsTable extends React.Component{
                 result -= parseInt(row.price);
             }else if((row.type === 'fund-balance') || (row.type === 'refund')) {
                 result += parseInt(row.total);
+            }else if(row.type === 'addon') {
+                result -= parseInt(row.total);
             }
             const lastResult = operations[operations.length - 1];
             operations.push(lastResult + result);

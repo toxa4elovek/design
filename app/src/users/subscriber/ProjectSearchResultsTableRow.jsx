@@ -69,8 +69,7 @@ class ProjectSearchResultsTableRow extends React.Component{
                 "color": "#fff"
             };
             row.tableClass = 'newpitch';
-            dateAfterTitle = <span style={statusStyle}>{row.formattedDate}</span>;
-            status = dateAfterTitle;
+            status = <span style={statusStyle}>{row.formattedDate}</span>;
         }
         if(row.type === 'refund') {
             balanceBefore = {
@@ -78,24 +77,43 @@ class ProjectSearchResultsTableRow extends React.Component{
                 "fontWeight": "normal",
                 "color": "#cdcbcc"
             };
+            statusStyle = {
+                "fontSize": "15px",
+                "textTransform": "none",
+                "fontWeight": "bold",
+                "color": "#fff"
+            };
             row.tableClass = 'newpitch';
             title = 'Возврат';
-            dateAfterTitle = <span style={dateAfterTitleStyle}>({row.formattedDate})</span>;
+            status = <span style={statusStyle}>{row.formattedDate}</span>;
+        }
+        if(row.type === 'addon') {
+            balanceBefore = {
+                "fontSize": "15px",
+                "fontWeight": "normal",
+                "color": "#cdcbcc"
+            };
+            statusStyle = {
+                "fontSize": "15px",
+                "textTransform": "none",
+                "fontWeight": "bold",
+                "color": "#fff"
+            };
+            row.tableClass = 'newpitch';
+            status = <span style={statusStyle}>{row.formattedDate}</span>;
         }
         function formatMoney(value) {
             value = value.toString().replace(/(.*)\.00/g, "$1");
             let counter = 1;
+            console.log(value.match(/\w\w\w\w/));
             while(value.match(/\w\w\w\w/)) {
-                value = value.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
+                value = value.replace(/(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
                 counter ++;
                 if(counter > 6) break;
             }
             return value;
         }
         const formattedMoney = formatMoney(this.props.subtotal);
-        if(row.type === 'fund-balance') {
-        console.log(statusStyle);
-        }
         return (
             <tr className={row.tableClass}
                 data-id={row.id}

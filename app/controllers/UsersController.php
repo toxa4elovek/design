@@ -2169,7 +2169,7 @@ class UsersController extends \app\controllers\AppController
         foreach($addons as $addon) {
             $data = $addon->data();
             $data['type'] = 'addon';
-            $data['formattedDate'] = date('d.m.Y', strtotime($row->created));
+            $data['formattedDate'] = date('d.m.Y', strtotime($addon->created));
             $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
             $data['title'] = 'Оплата дополнительной опции';
             $title = [];
