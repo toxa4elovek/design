@@ -761,7 +761,7 @@
                 });
                 solution_tags.append(html);
             }
-            if ($('input[name="isReadyForLogoale"]').val() == 1) {
+            if (($('input[name="isReadyForLogoale"]').val() == 1) && (result.isSolutionReady == true)) {
                 $('.solution-left-panel .solution-title').css('background', 'linear-gradient(#F0EFED, #DFDFDC) repeat scroll 0 0 rgba(0, 0, 0, 0)');
                 $('.solution-left-panel .solution-title').children('h1').html('<a style="color: #606060;" href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>');
             }
