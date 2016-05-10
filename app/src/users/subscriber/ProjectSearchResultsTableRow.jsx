@@ -93,9 +93,6 @@ class ProjectSearchResultsTableRow extends React.Component{
             return value;
         }
         const formattedMoney = formatMoney(this.props.subtotal);
-        if(row.type === 'fund-balance') {
-        console.log(statusStyle);
-        }
         return (
             <tr className={row.tableClass}
                 data-id={row.id}
