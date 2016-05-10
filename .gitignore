@@ -54,6 +54,7 @@ app/webroot/js/pitches/penalty.js
 app/webroot/js/users/mypitches_loader.js
 app/webroot/js/pitches/actions/CommentsActions.js
 app/webroot/js/pitches/components/UserAutosuggest.js
+app/webroot/js/users/step1.js
 app/webroot/js/users/step2.js
 app/webroot/js/pitches/gallery.js
 app/webroot/js/users/mypitches_loader.js
