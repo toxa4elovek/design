@@ -43,7 +43,7 @@
                     <div class="info_profile_about">
                         <span class="nickname"><?= $this->user->getFormattedName($user->first_name, $user->last_name, true) ?></span>
                         <?php if((bool) $user->subscription_status):?>
-                        <br/><span style="position: relative; top: 6px; left: 2px; font-size: 13px; font-family: OfficinaSansBookC; text-decoration: none; text-transform:  none; color: #666666;">тариф <a href="/pages/subscribe#plans" target="_blank">«<?= $this->user->getCurrentPlanData($user->id)['title']?>»</a></span>
+                        <br/><span style="position: relative; top: 6px; left: 2px; font-size: 13px; font-family: 'OfficinaSansC Book', serif; text-decoration: none; text-transform:  none; color: #666666;">тариф <a href="/pages/subscribe#plans" target="_blank">«<?= $this->user->getCurrentPlanData($user->id)['title']?>»</a></span>
                         <?php endif ?>
                         <?php if ($this->user->isLoggedIn()): ?>
                             <a id="fav-user" data-id="<?= $user->id ?>" class="order-button rss-img-profile <?= $isFav ? 'unfav-user' : 'fav-user' ?>" href="#"><?= $isFav ? 'Отписаться' : 'Подписаться' ?></a>
@@ -111,62 +111,20 @@
                 <?php endif ?>
             </div>
 
-            <?php
-            if (count($selectedSolutions) > 0): ?>
-                <div class="portfolio">
-                    <ul class="list_portfolio" style="margin-left:-25px;">
-                        <?php
-                        foreach ($selectedSolutions as $solution):
-                            if ((($solution->pitch->private == 1) || ($solution->pitch->isCopyrighting())) && !$this->user->isAdmin()):
-                                continue;
-                            endif
-                            ?>
-                            <li style="margin-bottom: 35px;">
-                                <div class="photo_block">
-                                    <?php if ($solution->pitch->category_id == 7): ?>
-                                        <a href="/pitches/viewsolution/<?= $solution->id ?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:normal;padding-top:16px;padding: 16px;">
-                                            <?php if (mb_strlen(trim($solution->description)) > 100): ?>
-                                                <?= mb_substr(trim($solution->description), 0, 100, 'UTF-8') ?>
-                                            <?php else: ?>
-                                                <?= trim($solution->description) ?>
-                                            <?php endif ?>
-                                        </a>
-                                    <?php else: ?>
-                                        <a href="/pitches/viewsolution/<?= $solution->id ?>"><img width="180"  height="135" src="<?= $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize']) ?>" alt=""></a>
-                                    <?php endif ?>
-                                    <?php if ($solution->awarded == 1): ?>
-                                        <span class="medal"></span>
-                                    <?php endif; ?>
-                                    <div class="photo_opt">
-                                        <span class="rating_block"><img src="/img/<?= $solution->rating ?>-rating.png" alt="" /></span>
-                                        <span class="like_view"><img src="/img/looked.png" alt="" class="icon_looked" /><span><?= $solution->views ?></span>
-                                            <img src="/img/like.png" alt="" /><span><?= $solution->likes ?></span></span>
-                            <!--span class="bottom_arrow"><a href="#"><img src="/img/marker5_2.png" alt=""></a></span-->
-                                    </div>
-                                </div>
-                                <div class="selecting_numb">
-                                    <span class="number_img">#<?= $solution->num ?></span>
-                                    <?= $this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false)) ?>   </div>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif ?>
             <?php if($userPitches):?>
-            <div class="g_line" style="width: 835px;"></div>
-            <div class="middle_inner conteiners" style="text-transform: uppercase; margin-top: 0;padding-left: 0; padding-top: 45px;">
-                <section>
-                    <table id="primary" style="margin-left: 0; width: 835px;" class="all-pitches">
-                        <thead>
-                        <tr>
-                            <td class="" style="height: 38px !important; text-align: left; padding:0 10px 0 34px; width: 255px; font-family: OfficinaSansC Book, serif"><a id="sort-title" class="sort-link" style="background-image: none;padding: 0;">название</a></td>
-                            <td class="pitches-cat" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a id="sort-category" class="sort-link"  style="background-image: none;padding: 0;">Категории</a></td>
-                            <td class="idea" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a  id="sort-ideas_count" class="sort-link"  style="background-image: none;padding: 0;">Идеи</a></td>
-                            <td class="pitches-time" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a  id="sort-finishDate" class="sort-link"  style="background-image: none;padding: 0;">Статус</a></td>
-                            <td style=" font-family: OfficinaSansC Book, serif;text-align: center; padding:0 10px 0 10px; height: 38px !important;"><a id="sort-price" class="sort-link" style="background-image: none;padding: 0;">Цена</a></td>
-                        </tr>
-                        </thead>
-                        <tbody id="table-content">
+                <div class="middle_inner conteiners" style="text-transform: uppercase; margin-top: 0;padding-left: 0; padding-top: 45px;">
+                    <section>
+                        <table id="primary" style="margin-left: 0; width: 835px;" class="all-pitches">
+                            <thead>
+                            <tr>
+                                <td class="" style="height: 38px !important; text-align: left; padding:0 10px 0 34px; width: 255px; font-family: OfficinaSansC Book, serif"><a id="sort-title" class="sort-link" style="background-image: none;padding: 0;">название</a></td>
+                                <td class="pitches-cat" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a id="sort-category" class="sort-link"  style="background-image: none;padding: 0;">Категории</a></td>
+                                <td class="idea" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a  id="sort-ideas_count" class="sort-link"  style="background-image: none;padding: 0;">Идеи</a></td>
+                                <td class="pitches-time" style="text-align: center; font-family: OfficinaSansC Book, serif;height: 38px !important;"><a  id="sort-finishDate" class="sort-link"  style="background-image: none;padding: 0;">Статус</a></td>
+                                <td style=" font-family: OfficinaSansC Book, serif;text-align: center; padding:0 10px 0 10px; height: 38px !important;"><a id="sort-price" class="sort-link" style="background-image: none;padding: 0;">Цена</a></td>
+                            </tr>
+                            </thead>
+                            <tbody id="table-content">
                             <?php
                             $i = 1;
                             foreach($userPitches as $pitch):
@@ -217,32 +175,76 @@
                                     $categoryLinkHref = '/pages/subscribe';
                                 }
                                 $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
-                            ?>
-                            <tr class="selection <?=$rowClass?>">
-                                <td class="pitches-name pitch-title" style="width: 255px;">
-                                    <a href="#">
-                                        <img class="pitches-name-td-img expand-link" src="/img/arrow.png" style="display: none;">
-                                    </a>
-                                    <div style="padding-left: 34px; padding-right: 12px;">
-                                        <a href="/pitches/view/<?=$pitch['id']?>" class="" style="color: #fff;"><?=$pitch['title']?></a>
-                                    </div>
-                                </td>
-                                <td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">
-                                    <a href="<?=$categoryLinkHref?>" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?=$pitch['category']['title'] . $multiple?></a>
-                                </td>
-                                <td class="idea" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?= $pitch['ideas_count'] ?></td>
-                                <td class="pitches-status mypitches" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?=$timeleft?></td>
-                                <td class="price"><?= $this->moneyFormatter->formatMoney($pitch['price'], array('suffix' => ' Р.-')) .
-                                    $textGuarantee ?></td>
-                            </tr>
-                        <?php
-                            $i++;
+                                ?>
+                                <tr class="selection <?=$rowClass?>">
+                                    <td class="pitches-name pitch-title" style="width: 255px;">
+                                        <a href="#">
+                                            <img class="pitches-name-td-img expand-link" src="/img/arrow.png" style="display: none;">
+                                        </a>
+                                        <div style="padding-left: 34px; padding-right: 12px;">
+                                            <a href="/pitches/view/<?=$pitch['id']?>" class="" style="color: #fff;"><?=$pitch['title']?></a>
+                                        </div>
+                                    </td>
+                                    <td class="pitches-cat" style="padding-left: 10px; width: 102px; padding-right: 10px;">
+                                        <a href="<?=$categoryLinkHref?>" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?=$pitch['category']['title'] . $multiple?></a>
+                                    </td>
+                                    <td class="idea" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?= $pitch['ideas_count'] ?></td>
+                                    <td class="pitches-status mypitches" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?=$timeleft?></td>
+                                    <td class="price"><?= $this->moneyFormatter->formatMoney($pitch['price'], array('suffix' => ' Р.-')) .
+                                        $textGuarantee ?></td>
+                                </tr>
+                                <?php
+                                $i++;
                             endforeach;?>
-                        </tbody>
-                    </table>
-                </section>
-            </div>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <div class="g_line" style="width: 835px;margin-bottom: 40px;margin-top: 10px;"></div>
             <?php endif?>
+
+            <?php
+            if (count($selectedSolutions) > 0): ?>
+                <div class="portfolio">
+                    <ul class="list_portfolio" style="margin-left:-25px;">
+                        <?php
+                        foreach ($selectedSolutions as $solution):
+                            if ((($solution->pitch->private == 1) || ($solution->pitch->isCopyrighting())) && !$this->user->isAdmin()):
+                                continue;
+                            endif
+                            ?>
+                            <li style="margin-bottom: 35px;">
+                                <div class="photo_block">
+                                    <?php if ($solution->pitch->category_id == 7): ?>
+                                        <a href="/pitches/viewsolution/<?= $solution->id ?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:normal;padding-top:16px;padding: 16px;">
+                                            <?php if (mb_strlen(trim($solution->description)) > 100): ?>
+                                                <?= mb_substr(trim($solution->description), 0, 100, 'UTF-8') ?>
+                                            <?php else: ?>
+                                                <?= trim($solution->description) ?>
+                                            <?php endif ?>
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="/pitches/viewsolution/<?= $solution->id ?>"><img width="180"  height="135" src="<?= $this->solution->renderImageUrl($solution->images['solution_galleryLargeSize']) ?>" alt=""></a>
+                                    <?php endif ?>
+                                    <?php if ($solution->awarded == 1): ?>
+                                        <span class="medal"></span>
+                                    <?php endif; ?>
+                                    <div class="photo_opt">
+                                        <span class="rating_block"><img src="/img/<?= $solution->rating ?>-rating.png" alt="" /></span>
+                                        <span class="like_view"><img src="/img/looked.png" alt="" class="icon_looked" /><span><?= $solution->views ?></span>
+                                            <img src="/img/like.png" alt="" /><span><?= $solution->likes ?></span></span>
+                            <!--span class="bottom_arrow"><a href="#"><img src="/img/marker5_2.png" alt=""></a></span-->
+                                    </div>
+                                </div>
+                                <div class="selecting_numb">
+                                    <span class="number_img">#<?= $solution->num ?></span>
+                                    <?= $this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false)) ?>   </div>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif ?>
+
             <!--div class="send_message">
                 <a href=""><img src="/img/send-message.png" /></a>
             </div-->
