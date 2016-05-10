@@ -79,10 +79,8 @@ $(document).ready(function() {
             return true;
         }
     });
-    console.log('test');
+
     $(document).on('blur', 'input[data-validate=yandex]', function() {
-        console.log($(this).val().length);
-        console.log(/^(41001\d{7,10})$/.test($(this).val()))
         if (! /^(41001\d{7,10})$/.test($(this).val()) ) {
             $(this).addClass('wrong-input');
             required = true;
@@ -206,7 +204,7 @@ function accountCheck() {
     var result = resultCor + resultAcc;
     var message = '';
     if(accountNum.length != 20) {
-        result = 3;
+        result = 4;
     }
     switch (result) {
         case 0:
@@ -227,7 +225,7 @@ function accountCheck() {
             $('input[name=accountnum]').removeClass('wrong-input');
             $('input[name=bik]').removeClass('wrong-input');
             break;
-        case 3:
+        case 4:
             message = 'Номер счёта должен состоять из 20 цифр.<br>';
             $('input[name=accountnum]').addClass('wrong-input');
             $('input[name=bik]').removeClass('wrong-input');
