@@ -237,6 +237,18 @@ function accountCheck() {
     var messageBik = (/^\d{9}$/.test($('input[name=bik]').val())) ? '' : 'Неверно указан БИК.<br>';
     var messageInn = (/^\d{12}$/.test($('input[name="inn"]').val()) ) ? '' : 'Неверно указан ИНН.<br>';
     message = messageBik + messageInn + message;
+    if((message == '') && (accountNum.match(/^302/))) {
+        const extraData = $('input[name=extradata]');
+        if(extraData.val().match(/^\d{12,19}$/)) {
+            extraData.removeClass('wrong-input');
+        }else {
+            message = 'Введите номер карты получателя без пробелов в поле "Примечание"';
+            extraData.addClass('wrong-input');
+            extraData.one('blur', function() {
+                accountCheck();
+            });
+        }
+    }
     if (message) {
         var el = $('<tr class="account-check"><td colspan="2">' + message + '</td></tr>');
         el.appendTo($('#step1table')).animate({'opacity': 1}, 200, function() { $(this).addClass('active'); });
