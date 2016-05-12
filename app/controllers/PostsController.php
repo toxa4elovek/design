@@ -6,6 +6,7 @@ use app\models\BlogAd;
 use \app\models\Post;
 use \lithium\storage\Session;
 use app\models\User;
+use PHPHtmlParser\Dom;
 
 class PostsController extends AppController
 {
@@ -225,6 +226,15 @@ class PostsController extends AppController
                 $snippet = BlogAd::first($post->blog_ad_id);
                 $paragraph = getFirstParagraph($post->full);
                 $post->full = str_replace($paragraph, $paragraph . $snippet->text, $post->full);
+            }
+            $postNonBreakList = array('и', 'в', 'для', 'не', 'на', 'с', '&mdash;', 'по');
+            foreach($postNonBreakList as $word) {
+                $postNonBreakList[] = Post::mb_ucfirst($word);
+            }
+            foreach($postNonBreakList as $word) {
+                $pattern = "(\s)($word)\s";
+                $post->full = preg_replace("/$pattern/im", '$1$2&nbsp;', $post->full);
+                $post->short = preg_replace("/$pattern/im", '$1$2&nbsp;', $post->short);
             }
             return compact('post', 'related');
         } else {

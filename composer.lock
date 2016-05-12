@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e4b9f3993ad16d327c077907612518eb",
-    "content-hash": "d4cc8b728188fa91519043c5fd1a47e7",
+    "hash": "93ca9ae0347a637c02012ab425fd9145",
+    "content-hash": "d43a7e0efff112d764cd2b3693a2813a",
     "packages": [
         {
             "name": "composer/installers",
-            "version": "v1.0.23",
+            "version": "v1.0.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "6213d900e92647831f7a406d5c530ea1f3d4360e"
+                "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/6213d900e92647831f7a406d5c530ea1f3d4360e",
-                "reference": "6213d900e92647831f7a406d5c530ea1f3d4360e",
+                "url": "https://api.github.com/repos/composer/installers/zipball/36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
+                "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
                 "shasum": ""
             },
             "require": {
@@ -40,8 +40,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Composer\\Installers\\": "src/"
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -56,12 +56,14 @@
                 }
             ],
             "description": "A multi-framework Composer library installer",
-            "homepage": "http://composer.github.com/installers/",
+            "homepage": "https://composer.github.io/installers/",
             "keywords": [
                 "Craft",
                 "Dolibarr",
                 "Hurad",
+                "ImageCMS",
                 "MODX Evo",
+                "Mautic",
                 "OXID",
                 "SMF",
                 "Thelia",
@@ -103,58 +105,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-01-27 12:54:22"
-        },
-        {
-            "name": "foolz/sphinxql-query-builder",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FoolCode/SphinxQL-Query-Builder.git",
-                "reference": "36bec6b37b8fddf5165f96cad14c544912a6f3ba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FoolCode/SphinxQL-Query-Builder/zipball/36bec6b37b8fddf5165f96cad14c544912a6f3ba",
-                "reference": "36bec6b37b8fddf5165f96cad14c544912a6f3ba",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "replace": {
-                "foolz/sphinxql": "self.version"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.4.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Foolz\\SphinxQL\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "foolz",
-                    "email": "support@foolz.us"
-                }
-            ],
-            "description": "A PHP query builder for SphinxQL. Uses MySQLi to connect to the Sphinx server.",
-            "homepage": "http://www.foolz.us",
-            "keywords": [
-                "database",
-                "query builder",
-                "search",
-                "sphinx",
-                "sphinxql",
-                "sql"
-            ],
-            "time": "2016-02-27 02:55:09"
+            "time": "2016-04-13 19:46:30"
         },
         {
             "name": "gabrielelana/byte-units",
@@ -465,6 +416,101 @@
             "time": "2016-01-13 18:57:04"
         },
         {
+            "name": "paquettg/php-html-parser",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paquettg/php-html-parser.git",
+                "reference": "96634727ec973ee0a57c5060139bfd747f079b67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paquettg/php-html-parser/zipball/96634727ec973ee0a57c5060139bfd747f079b67",
+                "reference": "96634727ec973ee0a57c5060139bfd747f079b67",
+                "shasum": ""
+            },
+            "require": {
+                "paquettg/string-encode": "~0.1.0",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.0",
+                "phpunit/phpunit": "~5.3.0",
+                "satooshi/php-coveralls": "~1.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPHtmlParser": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gilles Paquette",
+                    "email": "paquettg@gmail.com",
+                    "homepage": "http://gillespaquette.ca"
+                }
+            ],
+            "description": "An HTML DOM parser. It allows you to manipulate HTML. Find tags on an HTML page with selectors just like jQuery.",
+            "homepage": "https://github.com/paquettg/php-html-parser",
+            "keywords": [
+                "dom",
+                "html",
+                "parser"
+            ],
+            "time": "2016-04-06 16:42:15"
+        },
+        {
+            "name": "paquettg/string-encode",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paquettg/string-encoder.git",
+                "reference": "cf08343649701979f581c1601d01247fa3782439"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paquettg/string-encoder/zipball/cf08343649701979f581c1601d01247fa3782439",
+                "reference": "cf08343649701979f581c1601d01247fa3782439",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "stringEncode": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gilles Paquette",
+                    "email": "paquettg@gmail.com",
+                    "homepage": "http://gillespaquette.ca"
+                }
+            ],
+            "description": "Facilitating the process of altering string encoding in PHP.",
+            "homepage": "https://github.com/paquettg/string-encoder",
+            "keywords": [
+                "charset",
+                "encoding",
+                "string"
+            ],
+            "time": "2014-05-29 18:38:09"
+        },
+        {
             "name": "ps/image-optimizer",
             "version": "1.0.6",
             "source": {
@@ -550,16 +596,16 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.3.0",
+            "version": "v2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "8ffacee1171e33a1c129f424bf1ec36e062eba82"
+                "reference": "8025426794f1944de806618671d4fa476dc7626f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/8ffacee1171e33a1c129f424bf1ec36e062eba82",
-                "reference": "8ffacee1171e33a1c129f424bf1ec36e062eba82",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/8025426794f1944de806618671d4fa476dc7626f",
+                "reference": "8025426794f1944de806618671d4fa476dc7626f",
                 "shasum": ""
             },
             "require": {
@@ -590,20 +636,20 @@
                 }
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
-            "time": "2016-03-24 21:20:22"
+            "time": "2016-05-03 17:50:52"
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.1",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421"
+                "reference": "d8db871a54619458a805229a057ea2af33c753e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/0697e6aa65c83edf97bb0f23d8763f94e3f11421",
-                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/d8db871a54619458a805229a057ea2af33c753e8",
+                "reference": "d8db871a54619458a805229a057ea2af33c753e8",
                 "shasum": ""
             },
             "require": {
@@ -643,11 +689,11 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-06 14:19:39"
+            "time": "2016-05-01 08:45:47"
         },
         {
             "name": "symfony/finder",
-            "version": "v2.8.4",
+            "version": "v2.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -696,16 +742,16 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v3.0.3",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "bc7ee3ef3905f7c21fbed4e921cb39d6518b1300"
+                "reference": "77f7252e377e1dc021ba74defe12a19a45bb1212"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/bc7ee3ef3905f7c21fbed4e921cb39d6518b1300",
-                "reference": "bc7ee3ef3905f7c21fbed4e921cb39d6518b1300",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/77f7252e377e1dc021ba74defe12a19a45bb1212",
+                "reference": "77f7252e377e1dc021ba74defe12a19a45bb1212",
                 "shasum": ""
             },
             "require": {
@@ -746,20 +792,20 @@
                 "configuration",
                 "options"
             ],
-            "time": "2016-01-21 09:38:31"
+            "time": "2016-05-09 18:14:44"
         },
         {
             "name": "symfony/process",
-            "version": "v3.0.3",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "dfecef47506179db2501430e732adbf3793099c8"
+                "reference": "53f9407c0bb1c5a79127db8f7bfe12f0f6f3dcdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/dfecef47506179db2501430e732adbf3793099c8",
-                "reference": "dfecef47506179db2501430e732adbf3793099c8",
+                "url": "https://api.github.com/repos/symfony/process/zipball/53f9407c0bb1c5a79127db8f7bfe12f0f6f3dcdb",
+                "reference": "53f9407c0bb1c5a79127db8f7bfe12f0f6f3dcdb",
                 "shasum": ""
             },
             "require": {
@@ -795,11 +841,11 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2016-02-02 13:44:19"
+            "time": "2016-04-14 15:30:28"
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v2.8.4",
+            "version": "v2.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
@@ -907,12 +953,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/verot/class.upload.php.git",
-                "reference": "f1c6e3c3d54b42171c4fdb67c8087c553a9e8d07"
+                "reference": "62bc7ec3b18f2a3eb7eb99e4feca843b2481a41b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/f1c6e3c3d54b42171c4fdb67c8087c553a9e8d07",
-                "reference": "f1c6e3c3d54b42171c4fdb67c8087c553a9e8d07",
+                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/62bc7ec3b18f2a3eb7eb99e4feca843b2481a41b",
+                "reference": "62bc7ec3b18f2a3eb7eb99e4feca843b2481a41b",
                 "shasum": ""
             },
             "require": {
@@ -940,7 +986,7 @@
                 "gd",
                 "upload"
             ],
-            "time": "2016-02-14 22:52:12"
+            "time": "2016-04-11 21:46:02"
         }
     ],
     "packages-dev": [
@@ -1000,16 +1046,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "e3abefcd7f106677fd352cd7c187d6c969aa9ddc"
+                "reference": "a8773992b362b58498eed24bf85005f363c34771"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/e3abefcd7f106677fd352cd7c187d6c969aa9ddc",
-                "reference": "e3abefcd7f106677fd352cd7c187d6c969aa9ddc",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/a8773992b362b58498eed24bf85005f363c34771",
+                "reference": "a8773992b362b58498eed24bf85005f363c34771",
                 "shasum": ""
             },
             "require": {
@@ -1038,7 +1084,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2015-11-07 22:20:37"
+            "time": "2015-11-20 12:04:31"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -1208,16 +1254,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "fe33716763b604ade4cb442c0794f5bd5ad73004"
+                "reference": "2431befdd451fac43fbcde94d1a92fb3b8b68f86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/fe33716763b604ade4cb442c0794f5bd5ad73004",
-                "reference": "fe33716763b604ade4cb442c0794f5bd5ad73004",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/2431befdd451fac43fbcde94d1a92fb3b8b68f86",
+                "reference": "2431befdd451fac43fbcde94d1a92fb3b8b68f86",
                 "shasum": ""
             },
             "require": {
@@ -1235,7 +1281,7 @@
             },
             "suggest": {
                 "ext-dom": "*",
-                "ext-xdebug": ">=2.2.1",
+                "ext-xdebug": ">=2.4.0",
                 "ext-xmlwriter": "*"
             },
             "type": "library",
@@ -1267,7 +1313,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-03-03 08:49:08"
+            "time": "2016-04-08 08:14:53"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1523,16 +1569,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "3.1.2",
+            "version": "3.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "7c34c9bdde4131b824086457a3145e27dba10ca1"
+                "reference": "151c96874bff6fe61a25039df60e776613a61489"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/7c34c9bdde4131b824086457a3145e27dba10ca1",
-                "reference": "7c34c9bdde4131b824086457a3145e27dba10ca1",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/151c96874bff6fe61a25039df60e776613a61489",
+                "reference": "151c96874bff6fe61a25039df60e776613a61489",
                 "shasum": ""
             },
             "require": {
@@ -1575,7 +1621,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2016-03-24 05:58:25"
+            "time": "2016-04-20 14:39:26"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1740,16 +1786,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "1.3.5",
+            "version": "1.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf"
+                "reference": "2292b116f43c272ff4328083096114f84ea46a56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf",
-                "reference": "dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/2292b116f43c272ff4328083096114f84ea46a56",
+                "reference": "2292b116f43c272ff4328083096114f84ea46a56",
                 "shasum": ""
             },
             "require": {
@@ -1786,7 +1832,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-02-26 18:40:46"
+            "time": "2016-05-04 07:59:13"
         },
         {
             "name": "sebastian/exporter",
@@ -2037,16 +2083,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.0.3",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "b5ba64cd67ecd6887f63868fa781ca094bd1377c"
+                "reference": "0047c8366744a16de7516622c5b7355336afae96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/b5ba64cd67ecd6887f63868fa781ca094bd1377c",
-                "reference": "b5ba64cd67ecd6887f63868fa781ca094bd1377c",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/0047c8366744a16de7516622c5b7355336afae96",
+                "reference": "0047c8366744a16de7516622c5b7355336afae96",
                 "shasum": ""
             },
             "require": {
@@ -2082,7 +2128,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-02-23 15:16:06"
+            "time": "2016-03-04 07:55:57"
         }
     ],
     "aliases": [],
@@ -2090,7 +2136,7 @@
     "stability-flags": {
         "ins0/google-measurement-php-client": 20,
         "verot/class.upload.php": 20,
-        "foolz/sphinxql-query-builder": 20
+        "paquettg/php-html-parser": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
