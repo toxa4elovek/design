@@ -2121,9 +2121,10 @@ class UsersController extends \app\controllers\AppController
                 $reducePriceAmount = 0;
                 foreach ($addons as $addon) {
                     if ($addon->prolong == 1) {
-                        $reducePriceAmount = $addon->{'prolong-days'} * 1000;
+                        $reducePriceAmount += $addon->{'prolong-days'} * 1000;
                     }
                 }
+                $data['finalPrice'] = (int) $data['price'];
                 $data['price'] -= $reducePriceAmount;
             }
             if ($data['expert'] == 1) {

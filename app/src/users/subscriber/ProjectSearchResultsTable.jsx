@@ -17,10 +17,10 @@ class ProjectSearchResultsTable extends React.Component{
                     }
                     return value;
                 }
-                const formattedRefund = formatMoney(row.price - parseInt(row.extraFunds));
+                const formattedRefund = formatMoney(row.finalPrice - parseInt(row.extraFunds));
                 const refundObject = {
                     "type": "refund",
-                    "total": row.price - parseInt(row.extraFunds),
+                    "total": row.finalPrice - parseInt(row.extraFunds),
                     "formattedMoney": `+ ${formattedRefund}`,
                     "formattedDate": momentDate.format('DD.MM.YYYY')
                 };

@@ -2,12 +2,7 @@ class ProjectSearchResultsTableRow extends React.Component{
     render () {
         const row = this.props.row;
         const viewLink = '/pitches/view/' + row.id;
-        let ideas = '';
         let status = '';
-        const dateAfterTitleStyle = {
-            "fontSize": "12px",
-            "fontWeight": "bold"
-        };
         let balanceBefore = {
             "fontSize": "15px",
             "fontWeight": "normal",
@@ -105,7 +100,6 @@ class ProjectSearchResultsTableRow extends React.Component{
         function formatMoney(value) {
             value = value.toString().replace(/(.*)\.00/g, "$1");
             let counter = 1;
-            console.log(value.match(/\w\w\w\w/));
             while(value.match(/\w\w\w\w/)) {
                 value = value.replace(/(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
                 counter ++;
