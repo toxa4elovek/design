@@ -2373,7 +2373,7 @@ table.all-pitches{
 .all-pitches thead td{
     vertical-align:middle;
     text-align:center;
-    height:38px;
+    height:38px !important;
     border-right:#575864 1px solid;
     cursor:pointer;
 }
