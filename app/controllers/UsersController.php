@@ -460,8 +460,12 @@ class UsersController extends \app\controllers\AppController
             );
             if (0 == $commentCount) {
                 $timelimit = $solution->pitch->category->default_timelimit;
-                if(($solution->pitch->category_id == 20) && ($timelimit < 5)) {
-                    $timelimit = 5;
+                if($solution->pitch->category_id == 20) {
+                    $diff = ceil((strtotime($solution->pitch->finishDate) - strtotime($solution->pitch->started)) / DAY);
+                    $timelimit = $diff;
+                    if($timelimit < 5) {
+                        $timelimit = 5;
+                    }
                 }
                 $text = sprintf('Вся переписка до запроса исходников должна быть проведена в рамках этого кабинета. Мы не допускаем обмена контактами до момента одобрения исходников, т.о. в спорной ситуации мы сможем разрешить конфликт. Мы убедительно просим вас соблюдать правила платформы. Срок завершительного этапа %d дней. Предупреждайте, если правки или комментарии займут более 24 часов.', $timelimit);
                 $date = new \DateTime();
