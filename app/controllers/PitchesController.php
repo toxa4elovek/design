@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\extensions\helper\Brief;
 use app\extensions\helper\NameInflector;
 use app\models\Bill;
 use app\models\Pitch;
@@ -1296,8 +1297,8 @@ Disallow: /pitches/upload/'.$pitch['id'];
             $solution->tags = Solution::getTagsArrayForSolution($solution);
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getSolutionsSortingOrder($this->request->query);
-
-            $solution->description = nl2br($solution->description);
+            $briefHelper = new Brief();
+            $solution->description = nl2br(trim($briefHelper->stripUrl($solution->description)));
 
             function getArrayNeighborsByKey($array, $findKey)
             {
