@@ -71,7 +71,7 @@
                 if($discount == 0) {
                     $value = $plan['price'];
                 }else {
-                    $value = $plan['price'] - $this->MoneyFormatter->applyDiscount($plan['price'], $discount);
+                    $value = $this->MoneyFormatter->applyDiscount($plan['price'], $discount);
                 }
                 ?>
                 <h4 style="line-height: 30px;">Тариф «<?=$plan['title']?>» <?=$this->MoneyFormatter->formatMoney($value, array('suffix' => ' р.-'))?>
