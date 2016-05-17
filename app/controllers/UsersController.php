@@ -2109,6 +2109,7 @@ class UsersController extends \app\controllers\AppController
             $idsForAddons[] = $row->id;
             $data = $row->data();
             $data['hasBill'] = false;
+            $data['timestamp'] = strtotime($data['billed_date']);
             if ($row->type == 'plan-payment') {
                 $amount = SubscriptionPlan::extractFundBalanceAmount($row->id);
                 if ($amount > 0) {
@@ -2165,6 +2166,17 @@ class UsersController extends \app\controllers\AppController
                 $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
             }
             $payments[] = $data;
+            if(($data['type'] === 'company_project') && ($data['status'] == 2) && ($data['awarded'] == 0)) {
+                $formattedRefund = $moneyFormatter->formatMoney((int) $data['finalPrice'] - (int) $data['extraFunds'], array('suffix' => ''));
+                $refundedObject = [
+                    "type" => "refund",
+                    "total" => $data['finalPrice'] - (int) $data['extraFunds'],
+                    "formattedMoney" => "+ $formattedRefund",
+                    "formattedDate" => date('d.m.Y', strtotime($data['finishDate'])),
+                    "timestamp" => strtotime($data['finishDate'])
+                ];
+                $payments[] = $refundedObject;
+            }
         }
         $addons = Addon::all(['conditions' => [
             'Addon.pitch_id' => $idsForAddons,
@@ -2174,6 +2186,7 @@ class UsersController extends \app\controllers\AppController
         foreach($addons as $addon) {
             $data = $addon->data();
             $data['type'] = 'addon';
+            $data['timestamp'] = strtotime($addon->created);
             $data['formattedDate'] = date('d.m.Y', strtotime($addon->created));
             $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
             $data['title'] = 'Оплата дополнительной опции';
@@ -2200,18 +2213,9 @@ class UsersController extends \app\controllers\AppController
             $data['title'] .= " \n\r(" . implode(', ', $title) . ')';
             $payments[] = $data;
         }
-
         usort($payments, function($a, $b) {
-            if($a['type'] === 'addon') {
-                $firstDate = strtotime($a['created']);
-            }else {
-                $firstDate = strtotime($a['started']);
-            }
-            if($b['type'] === 'addon') {
-                $secondDate = strtotime($b['created']);
-            }else {
-                $secondDate = strtotime($b['started']);
-            }
+            $firstDate = $a['timestamp'];
+            $secondDate = $b['timestamp'];
             return ($firstDate > $secondDate) ? -1 : 1;
         });
         if ($this->request->is('json')) {

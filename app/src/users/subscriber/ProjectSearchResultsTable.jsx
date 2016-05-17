@@ -5,27 +5,6 @@ class ProjectSearchResultsTable extends React.Component{
         }
         let rows = [];
         this.props.payload.forEach(function (row) {
-            if((row.type === 'company_project') && (row.status == 2) && (row.awarded == 0)) {
-                const momentDate = moment(row.finishDate, 'YYYY-MM-DD HH:mm:ss');
-                function formatMoney(value) {
-                    value = value.toString().replace(/(.*)\.00/g, "$1");
-                    let counter = 1;
-                    while(value.match(/\w\w\w\w/)) {
-                        value = value.replace(/^(\w*)(\w\w\w)(\W.*)?$/, "$1 $2$3");
-                        counter ++;
-                        if(counter > 6) break;
-                    }
-                    return value;
-                }
-                const formattedRefund = formatMoney(row.finalPrice - parseInt(row.extraFunds));
-                const refundObject = {
-                    "type": "refund",
-                    "total": row.finalPrice - parseInt(row.extraFunds),
-                    "formattedMoney": `+ ${formattedRefund}`,
-                    "formattedDate": momentDate.format('DD.MM.YYYY')
-                };
-                rows.push(refundObject);
-            }
             rows.push(row);
         });
         const copyForCalculations = rows.slice().reverse();
