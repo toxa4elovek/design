@@ -689,7 +689,7 @@ class User extends AppModel
 
     public static function sendAdminNotification($params)
     {
-        $admin = 'fedchenko@godesigner.ru';
+        $admin = 'm.elenevskaya@godesigner.ru';
         $pitch = Pitch::first($params['pitch_id']);
         $data = array('admin' => $admin, 'pitch' => $pitch, 'comment' => $params);
         SpamMailer::newadminnotification($data);
