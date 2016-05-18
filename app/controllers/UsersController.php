@@ -2169,19 +2169,21 @@ class UsersController extends \app\controllers\AppController
             if(($data['type'] === 'company_project') && ($data['status'] == 2) && ($data['awarded'] == 0)) {
                 $formattedRefund = $moneyFormatter->formatMoney((int) $data['finalPrice'] - (int) $data['extraFunds'], array('suffix' => ''));
                 $refundedObject = [
+                    "id" => $data['id'],
                     "type" => "refund",
                     "total" => $data['finalPrice'] - (int) $data['extraFunds'],
                     "formattedMoney" => "+ $formattedRefund",
                     "formattedDate" => date('d.m.Y', strtotime($data['finishDate'])),
-                    "timestamp" => strtotime($data['finishDate'])
+                    "timestamp" => strtotime($data['finishDate']),
+                    "projectTitle" => $data['title']
                 ];
                 $payments[] = $refundedObject;
             }
         }
         $addons = Addon::all(['conditions' => [
             'Addon.pitch_id' => $idsForAddons,
-            'billed' => 1
-        ]]);
+            'Addon.billed' => 1
+        ], 'with' => ['Pitch']]);
         $numInflector = new NumInflector();
         foreach($addons as $addon) {
             $data = $addon->data();

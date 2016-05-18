@@ -79,7 +79,7 @@ class ProjectSearchResultsTableRow extends React.Component{
                 "color": "#fff"
             };
             row.tableClass = 'newpitch';
-            title = 'Возврат';
+            title = <a href={viewLink} target="_blank">«{row.projectTitle}» — возврат</a>;
             status = <span style={statusStyle}>{row.formattedDate}</span>;
         }
         if(row.type === 'addon') {
