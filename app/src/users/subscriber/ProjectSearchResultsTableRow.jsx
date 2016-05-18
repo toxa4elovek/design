@@ -96,6 +96,7 @@ class ProjectSearchResultsTableRow extends React.Component{
             };
             row.tableClass = 'newpitch';
             status = <span style={statusStyle}>{row.formattedDate}</span>;
+            title = <a href={viewLink} target="_blank">{row.title}</a>;
         }
         function formatMoney(value) {
             value = value.toString().replace(/(.*)\.00/g, "$1");

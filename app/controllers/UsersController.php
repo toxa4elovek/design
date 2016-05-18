@@ -2191,7 +2191,7 @@ class UsersController extends \app\controllers\AppController
             $data['timestamp'] = strtotime($addon->created);
             $data['formattedDate'] = date('d.m.Y', strtotime($addon->created));
             $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
-            $data['title'] = 'Оплата дополнительной опции';
+            $data['title'] = 'Оплата доп. опции';
             $title = [];
             if($data['experts']) {
                 $title[] = 'экспертное мнение';
@@ -2212,7 +2212,7 @@ class UsersController extends \app\controllers\AppController
             if($data['private']) {
                 $title[] = 'скрыть проект';
             }
-            $data['title'] .= " \n\r(" . implode(', ', $title) . ')';
+            $data['title'] .= " \n\r(" . implode(', ', $title) . ') в проекте «' . $data['pitch']['title'] . '»';
             $payments[] = $data;
         }
         usort($payments, function($a, $b) {
