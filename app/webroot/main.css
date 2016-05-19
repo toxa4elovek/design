@@ -4114,7 +4114,7 @@ div.no-result p {
     color:#999999;
     font:11px Arial;
 }
-.odd{background:#454650;height: 70px;}
+.odd{background:#454650 !important;height: 70px;}
 .event{height: 70px;}
 
 .spec_table tr:hover{background:#54555d}
