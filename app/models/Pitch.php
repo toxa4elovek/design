@@ -89,6 +89,27 @@ class Pitch extends AppModel
                 if ($params['pitch']->expert == 1) {
                     Pitch::sendExpertMail($params);
                 }
+                $project = $params['pitch'];
+                if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                    $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                    $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                    $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                    $transaction->setID($project->id);
+                    $transaction->setRevenue($project->total);
+                    $transaction->setCurrency('RUB');
+                    $result = $tracking->sendTracking($transaction);
+
+                    $item = $tracking->createTracking('Ecommerce\Item');
+                    $item->setTransactionID($project->id);
+                    $item->setName($project->title);
+                    $item->setPrice($project->total);
+                    $item->setQuantity(1);
+                    $item->setSku($project->id . '_1');
+                    $item->setCategory('Проект');
+                    $item->setCurrency('RUB');
+                    $result = $tracking->sendTracking($item);
+                }
             }
             return $result;
         });
@@ -1686,6 +1707,27 @@ class Pitch extends AppModel
                 //User::sendTweetWinner($solution);
                 Task::createNewTask($solution->id, 'victoryNotificationTwitter');
                 Task::createNewTask($solution->id, 'victoryNotification');
+                $project = $pitch;
+                if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                    $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                    $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                    $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                    $transaction->setID($project->id);
+                    $transaction->setRevenue($project->total);
+                    $transaction->setCurrency('RUB');
+                    $result = $tracking->sendTracking($transaction);
+
+                    $item = $tracking->createTracking('Ecommerce\Item');
+                    $item->setTransactionID($project->id);
+                    $item->setName($project->title);
+                    $item->setPrice($project->total);
+                    $item->setQuantity(1);
+                    $item->setSku($project->id . '_1');
+                    $item->setCategory('Дополнительный победитель');
+                    $item->setCurrency('RUB');
+                    $result = $tracking->sendTracking($item);
+                }
                 return true;
             }
         } else {
@@ -1720,6 +1762,27 @@ class Pitch extends AppModel
                     $pitch->save();
                     SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
                     SpamMailer::sendNewLogosaleProject($pitch);
+                    $project = $pitch;
+                    if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                        $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                        $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                        $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                        $transaction->setID($project->id);
+                        $transaction->setRevenue($project->total);
+                        $transaction->setCurrency('RUB');
+                        $result = $tracking->sendTracking($transaction);
+
+                        $item = $tracking->createTracking('Ecommerce\Item');
+                        $item->setTransactionID($project->id);
+                        $item->setName($project->title);
+                        $item->setPrice($project->total);
+                        $item->setQuantity(1);
+                        $item->setSku($project->id . '_1');
+                        $item->setCategory('Распродажа логотипов');
+                        $item->setCurrency('RUB');
+                        $result = $tracking->sendTracking($item);
+                    }
                     return true;
                 }
             }
@@ -1745,6 +1808,27 @@ class Pitch extends AppModel
             'started' => date('Y-m-d H:i:s'),
             'finishDate' => date('Y-m-d H:i:s')
         );
+        $project = $penalty;
+        if (($project->category_id != 20) && (!empty($project->ga_id))) {
+            $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+            $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+            $transaction = $tracking->createTracking('Ecommerce\Transaction');
+            $transaction->setID($project->id);
+            $transaction->setRevenue($project->total);
+            $transaction->setCurrency('RUB');
+            $result = $tracking->sendTracking($transaction);
+
+            $item = $tracking->createTracking('Ecommerce\Item');
+            $item->setTransactionID($project->id);
+            $item->setName($project->title);
+            $item->setPrice($project->total);
+            $item->setQuantity(1);
+            $item->setSku($project->id . '_1');
+            $item->setCategory('Штраф');
+            $item->setCurrency('RUB');
+            $result = $tracking->sendTracking($item);
+        }
         return $penalty->save($data);
     }
 
@@ -2199,12 +2283,15 @@ class Pitch extends AppModel
                 'type' => 'penalty',
             )
         ))) {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $data = array(
                 'user_id' => $userId,
                 'type' => 'penalty',
                 'category' => 98,
                 'title' => 'Оплата штрафа',
-                'awarded' => $solutionId
+                'awarded' => $solutionId,
+                'ga_id' => $gaId
             );
             $payment = self::create($data);
             $payment->save();

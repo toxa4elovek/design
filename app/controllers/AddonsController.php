@@ -62,6 +62,8 @@ class AddonsController extends AppController {
                 $private = 1;
                 $total += 3500;
             }
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $data = array(
                 'pitch_id' => $this->request->data['commonPitchData']['id'],
                 'billed' => 0,
@@ -75,7 +77,8 @@ class AddonsController extends AppController {
                 'pinned' => $pinned,
                 'private' => $private,
                 'created' => date('Y-m-d H:i:s'),
-                'total' => $total
+                'total' => $total,
+                'ga_id' => $gaId
             );
             if(isset($this->request->data['commonPitchData']['addonid']) && $this->request->data['commonPitchData']['addonid'] > 0) {
                 $addon = Addon::first($this->request->data['commonPitchData']['addonid']);

@@ -1897,6 +1897,8 @@ Disallow: /pitches/upload/'.$pitch['id'];
     {
         if ($this->request->is('json')) {
             $pitch = Pitch::create();
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $pitch->set(array(
                 'title' => 'Логотип в один клик ('.$this->request->data['phone'].')',
                 'category_id' => 1,
@@ -1908,7 +1910,9 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'brief' => 1,
                 'specifics' => 'a:2:{s:9:"qualities";s:64:"Прагматичный, надежный, элегантный";s:15:"logo-properties";a:7:{i:0;s:1:"5";i:1;s:1:"5";i:2;s:1:"5";i:3;s:1:"5";i:4;s:1:"5";i:5;s:1:"5";i:6;s:1:"5";}}',
                 'price' => 14000,
-                'total' => 19600, ));
+                'total' => 19600,
+                'ga_id' => $gaId
+                ));
             if (Session::read('user.id')) {
                 $pitch->user_id = Session::read('user.id');
             }
