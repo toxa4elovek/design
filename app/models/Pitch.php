@@ -454,8 +454,12 @@ class Pitch extends AppModel
         if ($pitch = self::first($addon->pitch_id)) {
             $sumProlong = 1000 * $addon->{'prolong-days'};
             $pitch->price += $sumProlong;
-            $timeProlong = strtotime($pitch->finishDate) + ($addon->{'prolong-days'} * DAY);
+            $daysAdded = $addon->{'prolong-days'} * DAY;
+            $timeProlong = strtotime($pitch->finishDate) + ($daysAdded);
             $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
+            if($pitch->category_id == 20) {
+                $pitch->chooseWinnerFinishDate = date('Y-m-d H:i:s', (strtotime($pitch->chooseWinnerFinishDate) + $daysAdded));
+            }
             if ($pitch->save()) {
                 Comment::createComment(array(
                     'pitch_id' => $pitch->id,
