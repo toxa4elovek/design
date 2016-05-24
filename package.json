@@ -3,8 +3,7 @@
     "autoprefixer": "^6.2.1",
     "babel-es6-polyfill": "^1.0.1",
     "cssnano": "^3.4.0",
-    "eslint": "^1.5.1",
-    "eslint-plugin-react": "^3.4.2",
+    "eslint": "^2.10.2",
     "extract-text-webpack-plugin": "^0.9.1",
     "postcss-autoreset": "^1.1.1",
     "postcss-discard-comments": "^2.0.3",
@@ -30,5 +29,8 @@
     "script-loader": "0.6.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.9"
+  },
+  "eslintConfig": {
+    "extends": ["standard"]
   }
 }
