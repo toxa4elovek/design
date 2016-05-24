@@ -61,3 +61,5 @@ app/webroot/js/users/mypitches_loader.js
 app/webroot/js/pages/main.js
 app/webroot/dist/*
 app/webroot/js/common/solutions/CopywritingSolution.js
+app/webroot/js/common/pushWidget/PushWidget.js
+app/webroot/js/common/pushWidget/PushWidgetActions.js
