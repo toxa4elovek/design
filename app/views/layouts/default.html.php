@@ -12,6 +12,7 @@
     <link rel="manifest" href="/manifest.json">
     <?= $this->html->link('Icon', 'favicon.png', array('type' => 'icon')); ?>
     <!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
+    <?= $this->html->style('/dist/components.css', array('inline' => false, 'weight' => 9)); ?>
     <?= $this->html->style('/global', array('inline' => false, 'weight' => 10)); ?>
     <?= $this->html->style('/main', array('inline' => false, 'weight' => 11)); ?>
     <?= $this->html->style('/css/common/fonts', array('inline' => false, 'weight' => 12)); ?>
@@ -136,17 +137,17 @@
 <a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
 <?php endif?>
 <?php echo $this->content() ?>
-
+<div id="push-notifications"></div>
 <?=$this->view()->render(array('element' => 'footer'))?>
 <?php
 $env = lithium\core\Environment::get();
-echo $this->html->script('https://vk.com/js/api/openapi.js');
-if($env == 'development') {
-    echo $this->html->script('/js/react/0.14.0-dev/react-0.14.0.js', array('inline' => false, 'weight' => 8));
-    echo $this->html->script('/js/react/0.14.0-dev/react-dom-0.14.0.js', array('inline' => false, 'weight' => 9));
+echo $this->html->script('https://vk.com/js/api/openapi.js');?>
+<?php if($env == 'development') {
+    echo $this->html->script('/js/react/react-15.1.0.js', array('inline' => false, 'weight' => 8));
+    echo $this->html->script('/js/react/react-dom-15.1.0.js', array('inline' => false, 'weight' => 9));
 }else {
-    echo $this->html->script('/js/react/0.14.0/react-0.14.0.min.js', array('inline' => false, 'weight' => 8));
-    echo $this->html->script('/js/react/0.14.0/react-dom-0.14.0.min.js', array('inline' => false, 'weight' => 9));
+    echo $this->html->script('/js/react/react-15.1.0.min.js', array('inline' => false, 'weight' => 8));
+    echo $this->html->script('/js/react/react-dom-15.1.0.min.js', array('inline' => false, 'weight' => 9));
 }
 if(($this->_request->params['controller'] == 'users') && ($this->_request->params['action'] == 'subscriber')) {
     echo $this->html->script('/js/jquery/jquery-1.9.1.min.js', array('inline' => false, 'weight' => 10));
@@ -154,6 +155,8 @@ if(($this->_request->params['controller'] == 'users') && ($this->_request->param
 } else {
     echo $this->html->script('jquery-1.8.3.min.js', array('inline' => false, 'weight' => 10));
 }
+?>
+<?php
 echo $this->html->script('jquery.validate.min', array('inline' => false, 'weight' => 12));
 echo $this->html->script('jquery.simplemodal-1.4.2.js', array('inline' => false, 'weight' => 13));
 echo $this->html->script('jquery.detectmobilebrowser.min.js', array('inline' => false, 'weight' => 14));
@@ -172,6 +175,17 @@ echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false)
 <?=$this->view()->render(array('element' => 'scripts/ga'))?>
 <?=$this->view()->render(array('element' => 'scripts/ua'))?>
 <?=$this->view()->render(array('element' => 'newrelic/newrelic_footer'))?>
+
+<?php
+if($env !== 'development'):?>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
+    <script>
+        var OneSignal = OneSignal || [];
+    </script>
+<?php endif;
+echo $this->html->script('/dist/components.js', []);
+?>
+
 <script>
 <?php
     if($this->debug->isDebugInfoExists()) {
@@ -196,20 +210,5 @@ echo $this->html->script('/js/common/BaseComponent.js', array('inline' => false)
     }
 ?>
 </script>
-<?php
-if($env !== 'development'):?>
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
-<script>
-    var OneSignal = OneSignal || [];
-    OneSignal.push(["init", {
-        appId: "46001cba-49be-4cc5-945a-bac990a6d995",
-        autoRegister: true,
-        safari_web_id: 'web.onesignal.auto.5a33fe23-ccc7-4feb-afe0-cf26b0b7b29c',
-        welcomeNotification: {
-            "disable": true
-        }
-    }]);
-</script>
-<?php endif?>
 </body>
 </html>

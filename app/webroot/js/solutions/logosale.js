@@ -812,6 +812,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 if (scroll) {}
                 //$('.scrolldown').click();
 
+
                 // Copyrighted Materials
                 var copyrightedHtml = '<div class="solution-copyrighted"><!--  --></div>';
                 if (result.solution.copyrightedMaterial == 1 && (currentUserId == result.pitch.user_id || currentUserId == result.solution.user_id || isCurrentAdmin)) {
