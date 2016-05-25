@@ -18,7 +18,7 @@
 $params = getopt("", array("app::"));
 $working = $params ? array_pop($params) : getcwd();
 $app = null;
-
+$working = "C:\\server\\www\\godesigner\\app";
 /**
  * If we're not running inside an application (i.e. a self-bootstrapping library), bootstrap the
  * core automatically with the default settings.
@@ -26,7 +26,6 @@ $app = null;
 $bootstrap = function() use ($working) {
 	define('LITHIUM_LIBRARY_PATH', dirname(dirname(__DIR__)));
 	define('LITHIUM_APP_PATH', $working);
-
 	if (!include LITHIUM_LIBRARY_PATH . '/lithium/core/Libraries.php') {
 		$message  = "Lithium core could not be found.  Check the value of LITHIUM_LIBRARY_PATH in ";
 		$message .= __FILE__ . ".  It should point to the directory containing your ";
