@@ -25,4 +25,3 @@ if(($('#push-notifications').length == 1) && (typeof(getCookie('push-widget-hide
         });
     });
 }
-
