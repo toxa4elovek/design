@@ -60,8 +60,6 @@ class AnswersController extends AppController {
                     $answer = Answer::first(['conditions' => ['Answer.id' => $answerId]]);
                     $answers[] = $answer->data();
                 }
-                //$result = Answer::searchForWord($word);
-                //$answers += $result->data();
             }
         }else {
             $category = null;
@@ -72,9 +70,33 @@ class AnswersController extends AppController {
             $answers = $answers->data();
         }
         if((isset($this->request->query['ajax'])) && ($this->request->query['ajax'] == 'true')) {
-            return $this->render(array('layout' => false, 'data' => compact('answers', 'search', 'originalSearch')));
+            if($search != '') {
+                return $this->render(
+                    [
+                        'layout' => false,
+                        'template' => '../answers/search_results',
+                        'data' => compact('answers', 'search', 'category', 'originalSearch')
+                    ]
+                );
+            }else{
+                return $this->render(
+                    [
+                        'layout' => false,
+                        'data' => compact('answers', 'search', 'originalSearch')
+                    ]
+                );
+            }
         }else {
-            return compact('answers', 'search', 'category', 'originalSearch');
+            if($search != '') {
+                return $this->render(
+                    [
+                        'template' => '../answers/search_results',
+                        'data' => compact('answers', 'search', 'category', 'originalSearch')
+                    ]
+                );
+            }else{
+                return compact('answers', 'search', 'category', 'originalSearch');
+            }
         }
     }
 
