@@ -270,6 +270,12 @@ class UsersController extends \app\controllers\AppController
         }
         $filteredSolutions = array();
         foreach ($unfilteredSolutions as $solution) {
+            if (($solution->pitch->multiwinner != 0) && ($solution->pitch->awarded != $solution->id)) {
+                continue;
+            }
+            if (($solution->pitch->multiwinner != 0) && ($solution->pitch->billed == 0)) {
+                continue;
+            }
             if (!in_array($solution->id, $multiWinnerOriginals)) {
                 $solution->tags = Solution::getTagsArrayForSolution($solution);
                 $filteredSolutions[] = $solution;
