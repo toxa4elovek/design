@@ -17,7 +17,7 @@
     ?>
 
     <label><?=$labelText?> (от <span id="labelPrice"><?= $this->moneyFormatter->formatMoney($low, array('suffix' => 'Р.')) ?></span>) <?= $this->view()->render(array('element' => 'newbrief/required_star')) ?></label>
-    <input type="text" name="" id="award" data-low="<?= $defaultLow ?>" data-normal="<?= $category->normalAward ?>" data-high="<?= $category->goodAward ?>" data-low-def="<?= $defaultLow ?>" data-normal-def="<?= $category->normalAward ?>" data-high-def="<?= $category->goodAward ?>" data-option-title="<?php echo ($category->id == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру' ?>" data-minimal-award="<?= $low ?>" class="<?php if(!$pitch):?>nitial-price placeholder<?php endif; ?> " placeholder="<?= (date('N') > 5) ? $category->discountPrice : round(($category->goodAward + $category->normalAward) / 2) ?>" value="<?php
+    <input type="text" name="" id="award" data-low="<?= $defaultLow ?>" data-normal="<?= $category->normalAward ?>" data-high="<?= $category->goodAward ?>" data-low-def="<?= $defaultLow ?>" data-normal-def="<?= $category->normalAward ?>" data-high-def="<?= $category->goodAward ?>" data-option-title="<?php echo ($category->id == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру' ?>" data-minimal-award="<?= $low ?>" class="<?php if(!$pitch):?>initial-price placeholder<?php endif; ?> " <?php if(date('N') > 5): echo 'data-discount="true"'; else: echo 'data-discount="false"'; endif;?> placeholder="<?= (date('N') > 5) ? $category->discountPrice : round(($category->goodAward + $category->normalAward) / 2) ?>" value="<?php
 
     if($pitch):
         echo (int) $pitch->price;
