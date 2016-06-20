@@ -10,6 +10,8 @@ use app\extensions\social\TwitterAPI;
 use app\models\Addon;
 use app\models\Bill;
 use app\models\Logreferal;
+use app\models\Paymaster;
+use app\models\Payment;
 use app\models\SubscriptionPlan;
 use app\models\TextMessage;
 use \app\models\User;
@@ -2192,6 +2194,12 @@ class UsersController extends \app\controllers\AppController
         ], 'with' => ['Pitch']]);
         $numInflector = new NumInflector();
         foreach($addons as $addon) {
+            if($cardData = Paymaster::first(['conditions' => ['LMI_PAYMENT_NO' => $addon->id]])) {
+                continue;
+            }
+            if($cardData = Payment::first(['conditions' => ['OrderId' => $addon->payture_id, 'Success' => 'True']])) {
+                continue;
+            }
             $data = $addon->data();
             $data['type'] = 'addon';
             $data['timestamp'] = strtotime($addon->created);
