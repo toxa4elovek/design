@@ -55,7 +55,7 @@
 
                 <div class="comment" style="margin-left:0px;">
                     <h4>Комментарии</h4>
-                    <?php if(($solution->step < 3) && ($solution->pitch->status < 2)):?>
+                    <?php if(($solution->pitch->category_id == 7) && ($solution->step >= 0) || ($solution->pitch->category_id != 7 && ($solution->step < 3) && ($solution->pitch->status < 2))):?>
                     <form id="wincomment" method="post" action="/users/step2/<?=$solution->id?>.json" enctype="multipart/form-data">
                         <textarea id="newComment" data-user-autosuggest="true" name="text" style="margin:10px 0 0 0;">@<?=$this->user->getFormattedName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
                         <div></div>
@@ -148,12 +148,22 @@
                         <div class="toolbar">
                         <?php if ($this->user->isAdmin()):?>
                             <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
-                            <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
+                            <?php
+                            $originalText = $comment->originalText;
+                            $originalText = strip_tags($originalText, '<a>');
+                            $originalText = htmlentities($originalText, ENT_COMPAT, 'utf-8');
+                            ?>
+                            <a href="#" style="float:right;" data-user-admin="true" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=$originalText?>">Редактировать</a>
                         <?php else: ?>
                             <?php if (($solution->step <= 2) && ($solution->pitch->status < 2)):?>
                                 <?php if($this->user->isCommentAuthor($comment->user_id)):?>
                                     <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
-                                    <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
+                                    <?php
+                                    $originalText = $comment->originalText;
+                                    $originalText = strip_tags($originalText, '<a>');
+                                    $originalText = htmlentities($originalText, ENT_COMPAT, 'utf-8');
+                                    ?>
+                                    <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=$originalText?>">Редактировать</a>
                                 <?php endif; ?>
 
                                 <?php if(($this->user->isLoggedIn()) && ((!$this->user->isCommentAuthor($comment->user_id)))):?>

@@ -195,6 +195,7 @@
                                 </ul>
                                 <div class="clr"></div>
                             </div>
+                            <input type="hidden" name="notification-settings" value="1" />
                             <input type="submit" id="save-notifications" class="button" value="Сохранить настройки уведомлений" />
                         </form>
                     </section>

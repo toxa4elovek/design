@@ -147,7 +147,7 @@
                                 <img alt=""  style="width:120px; margin-left: 10px;" src="/img/yd.png">
                             </td>
                             <td class="s3_text" style="margin-top: 14px;">
-                                Выплата на WMR временно недоступна
+                                Выплата на YANDEX-ДЕНЬГИ временно недоступна
                                 <!-- Получить вознаграждение в Yandex Деньгах  (<a href="https://money.yandex.ru/doc.xml?id=526543" target="_blank">только на идентифицированные кошельки</a>) -->
                             </td>
                             <td></td>

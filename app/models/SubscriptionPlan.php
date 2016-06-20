@@ -81,11 +81,14 @@ class SubscriptionPlan extends Pitch
                 'type' => 'plan-payment'
             )
         ))) {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $data = array(
                 'user_id' => $userId,
                 'type' => 'plan-payment',
                 'category' => 100,
-                'title' => 'Оплата абонентского обслуживания'
+                'title' => 'Оплата абонентского обслуживания',
+                'ga_id' => $gaId
             );
             $payment = self::create($data);
             $payment->save();
@@ -119,11 +122,14 @@ class SubscriptionPlan extends Pitch
                 'type' => 'fund-balance'
             )
         ))) {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $data = array(
                 'user_id' => $userId,
                 'type' => 'fund-balance',
                 'category' => 99,
-                'title' => 'Пополнение счёта'
+                'title' => 'Пополнение счёта',
+                'ga_id' => $gaId
             );
             $payment = self::create($data);
             $payment->save();

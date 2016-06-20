@@ -39,14 +39,14 @@
             ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));
         }
         if (eventPayload.actionType === 'submit-news-receipt') {
-            var total = 0;
+            var _total = 0;
             payload.receipt.forEach(function (row) {
                 if (row.name == "Пополнение счёта") {
                     row.value = eventPayload.currentValue;
                 }
-                total += row.value;
+                _total += row.value;
             });
-            payload.total = total;
+            payload.total = _total;
             var data = {
                 "newFundValue": eventPayload.currentValue,
                 "projectId": payload.projectId,

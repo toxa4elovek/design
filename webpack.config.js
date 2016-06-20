@@ -3,10 +3,10 @@ var path = require('path');
 ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: "/Users/dima/www/godesigner/app/src/pages/main.jsx",
+    entry: "C:\\server\\www\\godesigner\\app\\src\\components.jsx",
     output: {
-        path: "/Users/dima/www/godesigner/app/webroot/dist/",
-        filename: "main.js"
+        path: "C:\\server\\www\\godesigner\\app\\webroot\\dist\\",
+        filename: "components.js"
     },
     module: {
         loaders: [
@@ -18,6 +18,13 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel?presets[]=react,presets[]=es2015'
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loaders: [
+                    'url-loader?limit=10000&hash=sha512&digest=hex&name=[hash].[ext]',
+                    'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+                ]
             }
         ]
     },
@@ -29,10 +36,15 @@ module.exports = {
         ];
     },
     plugins: [
-        new ExtractTextPlugin('build.css', {
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': '"production"'
+            }
+        }),
+        new ExtractTextPlugin('components.css', {
             allChunks: true
-        })
-        //new webpack.optimize.UglifyJsPlugin({minimize: true})
+        }),
+        new webpack.optimize.UglifyJsPlugin({minimize: true})
         /*new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"

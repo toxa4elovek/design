@@ -10,6 +10,8 @@ use app\extensions\social\TwitterAPI;
 use app\models\Addon;
 use app\models\Bill;
 use app\models\Logreferal;
+use app\models\Paymaster;
+use app\models\Payment;
 use app\models\SubscriptionPlan;
 use app\models\TextMessage;
 use \app\models\User;
@@ -264,12 +266,18 @@ class UsersController extends \app\controllers\AppController
         }
         $multiWinnerOriginals = array();
         foreach ($unfilteredSolutions as $solution) {
-            if ($solution->multiwinner != 0) {
+            if (($solution->multiwinner != 0) && ($solution->awarded != 0)) {
                 $multiWinnerOriginals[] = $solution->multiwinner;
             }
         }
         $filteredSolutions = array();
         foreach ($unfilteredSolutions as $solution) {
+            if (($solution->pitch->multiwinner != 0) && ($solution->pitch->awarded != $solution->id)) {
+                continue;
+            }
+            if (($solution->pitch->multiwinner != 0) && ($solution->pitch->billed == 0)) {
+                continue;
+            }
             if (!in_array($solution->id, $multiWinnerOriginals)) {
                 $solution->tags = Solution::getTagsArrayForSolution($solution);
                 $filteredSolutions[] = $solution;
@@ -2169,27 +2177,35 @@ class UsersController extends \app\controllers\AppController
             if(($data['type'] === 'company_project') && ($data['status'] == 2) && ($data['awarded'] == 0)) {
                 $formattedRefund = $moneyFormatter->formatMoney((int) $data['finalPrice'] - (int) $data['extraFunds'], array('suffix' => ''));
                 $refundedObject = [
+                    "id" => $data['id'],
                     "type" => "refund",
                     "total" => $data['finalPrice'] - (int) $data['extraFunds'],
                     "formattedMoney" => "+ $formattedRefund",
                     "formattedDate" => date('d.m.Y', strtotime($data['finishDate'])),
-                    "timestamp" => strtotime($data['finishDate'])
+                    "timestamp" => strtotime($data['finishDate']),
+                    "projectTitle" => $data['title']
                 ];
                 $payments[] = $refundedObject;
             }
         }
         $addons = Addon::all(['conditions' => [
             'Addon.pitch_id' => $idsForAddons,
-            'billed' => 1
-        ]]);
+            'Addon.billed' => 1
+        ], 'with' => ['Pitch']]);
         $numInflector = new NumInflector();
         foreach($addons as $addon) {
+            if($cardData = Paymaster::first(['conditions' => ['LMI_PAYMENT_NO' => $addon->id]])) {
+                continue;
+            }
+            if($cardData = Payment::first(['conditions' => ['OrderId' => $addon->payture_id, 'Success' => 'True']])) {
+                continue;
+            }
             $data = $addon->data();
             $data['type'] = 'addon';
             $data['timestamp'] = strtotime($addon->created);
             $data['formattedDate'] = date('d.m.Y', strtotime($addon->created));
             $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
-            $data['title'] = 'Оплата дополнительной опции';
+            $data['title'] = 'Оплата доп. опции';
             $title = [];
             if($data['experts']) {
                 $title[] = 'экспертное мнение';
@@ -2210,7 +2226,7 @@ class UsersController extends \app\controllers\AppController
             if($data['private']) {
                 $title[] = 'скрыть проект';
             }
-            $data['title'] .= " \n\r(" . implode(', ', $title) . ')';
+            $data['title'] .= " \n\r(" . implode(', ', $title) . ') в проекте «' . $data['pitch']['title'] . '»';
             $payments[] = $data;
         }
         usort($payments, function($a, $b) {

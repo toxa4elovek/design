@@ -586,6 +586,8 @@ http://godesigner.ru/answers/view/73');
             $pitch->save();
             $result['receipt'] = Receipt::all(array('conditions' => array('pitch_id' => $pitch->id)))->data();
         } else {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $pitch = Pitch::create(array(
                         'category_id' => 1,
                         'title' => 'Logosale Pitch',
@@ -593,7 +595,8 @@ http://godesigner.ru/answers/view/73');
                         'total' => $total,
                         'user_id' => $user_id,
                         'awarded' => $solution_id,
-                        'blank' => 1
+                        'blank' => 1,
+                        'ga_id' => $gaId
             ));
             if ($pitch->save()) {
                 $data = array(
