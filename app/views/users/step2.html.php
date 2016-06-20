@@ -55,7 +55,7 @@
 
                 <div class="comment" style="margin-left:0px;">
                     <h4>Комментарии</h4>
-                    <?php if(($solution->pitch->category_id == 7) && ($solution->step >= 2) || ($solution->pitch->category_id != 7 && ($solution->step < 3) && ($solution->pitch->status < 2))):?>
+                    <?php if(($solution->pitch->category_id == 7) && ($solution->step >= 0) || ($solution->pitch->category_id != 7 && ($solution->step < 3) && ($solution->pitch->status < 2))):?>
                     <form id="wincomment" method="post" action="/users/step2/<?=$solution->id?>.json" enctype="multipart/form-data">
                         <textarea id="newComment" data-user-autosuggest="true" name="text" style="margin:10px 0 0 0;">@<?=$this->user->getFormattedName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
                         <div></div>
