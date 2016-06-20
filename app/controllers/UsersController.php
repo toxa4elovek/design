@@ -266,7 +266,7 @@ class UsersController extends \app\controllers\AppController
         }
         $multiWinnerOriginals = array();
         foreach ($unfilteredSolutions as $solution) {
-            if ($solution->multiwinner != 0) {
+            if (($solution->multiwinner != 0) && ($solution->awarded != 0)) {
                 $multiWinnerOriginals[] = $solution->multiwinner;
             }
         }
