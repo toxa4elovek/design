@@ -1001,18 +1001,20 @@ class PitchesController extends AppController
             $solutionsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id)));
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
             $selectedsolution = false;
-            $nominatedSolutionOfThisPitch = Solution::first(array(
+            $nominatedSolutionsOfThisPitch = Solution::all(array(
                         'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id),
             ));
             $winnersUserIds = array();
-            if ($nominatedSolutionOfThisPitch) {
+            if ($nominatedSolutionsOfThisPitch) {
                 $selectedsolution = true;
-                if (!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
-                    $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
+                foreach($nominatedSolutionsOfThisPitch as $nominatedSolutionOfThisPitch) {
+                    if (!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
+                        $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
+                    }
                 }
             }
 
-            if ((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
+            if ((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && !in_array($currentUser['id'], $winnersUserIds)))) {
                 return $this->redirect('/pitches');
             }
 
