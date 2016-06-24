@@ -482,6 +482,9 @@ $(document).ready(function () {
           viewsize = result.solution.images.solution
           work = result.solution.images.solution
         }
+        if(result.canViewFullImage === true) {
+          viewsize = result.solution.images.solution
+        }
         console.log(result.solution)
         console.log(work)
         if ((typeof (work) !== 'undefined') && ($.isArray(work))) {

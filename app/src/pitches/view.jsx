@@ -779,6 +779,9 @@
           viewsize = result.solution.images.solution
           work = result.solution.images.solution
         }
+        if(result.canViewFullImage === true) {
+          viewsize = result.solution.images.solution
+        }
         if ((typeof (work) !== 'undefined') && ($.isArray(work))) {
           $.each(work, function (idx, field) {
             if (field.weburl.match(/.mp4$/)) {

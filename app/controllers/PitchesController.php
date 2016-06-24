@@ -1548,7 +1548,16 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'avatar' => $avatarHelper->show($solution->user->data(), false, true),
                 'name' => $nameInflector->renderName($solution->user->first_name, $solution->user->last_name, false),
             ];
-            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady', 'experts', 'autosuggestUsers');
+            $canViewFullImage = false;
+            if(
+                ($this->userHelper->isPitchOwner($pitch->user_id)) &&
+                ($this->userHelper->isSubscriptionActive()) &&
+                ($pitch->category_id == 20) &&
+                (in_array($this->userHelper->read('user.subscription_status'), [2, 3]))
+            ) {
+                $canViewFullImage = true;
+            }
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady', 'experts', 'autosuggestUsers', 'canViewFullImage');
         } else {
             if($moderation = Moderation::first(['conditions' => [
                 'model_id' => $this->request->id,
