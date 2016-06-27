@@ -367,4 +367,20 @@ class SolutionsController extends AppController
         }
         return $this->request->data;
     }
+
+    public function get_logosale_status() {
+        if(isset($this->request->query['solutionsIds'])) {
+            $response = [];
+            foreach($this->request->query['solutionsIds'] as $id) {
+                $solution = Solution::first([
+                    'conditions' => ['Solution.id' => (int) $id],
+                    'with' => ['Pitch']
+                ]);
+                $readyForSale = Solution::isReadyForLogosale($solution, $solution->pitch);
+                $response[] = ['id' => $id, 'ready' => $readyForSale];
+            }
+            return ['status' => 200, 'data' => $response];
+        }
+        return ['status' => 500, 'error' => 'No solution ids provided'];
+    }
 }
