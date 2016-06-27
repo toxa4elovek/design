@@ -1005,7 +1005,7 @@ class PitchesController extends AppController
                         'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id),
             ));
             $winnersUserIds = array();
-            if ($nominatedSolutionsOfThisPitch) {
+            if (($nominatedSolutionsOfThisPitch) && (count($nominatedSolutionsOfThisPitch) > 0)) {
                 $selectedsolution = true;
                 foreach($nominatedSolutionsOfThisPitch as $nominatedSolutionOfThisPitch) {
                     if (!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {

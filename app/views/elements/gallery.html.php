@@ -222,7 +222,12 @@ foreach($solutions as $solution):
     <?php if(!$pitch->multiwinner):?>
 
     <div class="solution_menu" style="display: none;">
-        <ul class="solution_menu_list <?php if($this->pitch->isReadyForLogosale($pitch)):?>green_background<?php endif?>" style="position:absolute;z-index:6;">
+        <ul
+            data-selectedsolution="<?=$selectedsolution?>"
+            data-pitch-status="<?=$pitch->status?>"
+            data-pitches-count="<?= $pitchesCount ?>"
+            data-is-admin="<?= $this->user->isAdmin() ?>"
+            data-is-owner="<?= $this->user->isPitchOwner($pitch->user_id)?>" class="solution_menu_list <?php if($this->pitch->isReadyForLogosale($pitch)):?>green_background<?php endif?>" style="position:absolute;z-index:6;">
 
             <?php if($this->pitch->isReadyForLogosale($pitch) && ($pitch->awarded != $solution->id) && !in_array($solution->user_id, $winnersUserIds)):?>
             <li class="sol_hov"><a data-solutionid="<?= $solution->id ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution->id ?>" class="imagecontainer">Купить</a></li>
