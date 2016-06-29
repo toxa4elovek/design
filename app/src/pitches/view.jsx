@@ -1083,7 +1083,7 @@
         }
         html += '<a class="client-comment" href="#">Комментировать</a>'
         html += '<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a>'
-        if ((result.selectedsolution != true) && (result.pitch.status != 0)) {
+        if ((result.selectedsolution != true) && (result.pitch.status == 1)) {
           html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>'
         }
         $('.solution-abuse').html(html)
