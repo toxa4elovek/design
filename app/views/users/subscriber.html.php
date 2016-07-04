@@ -56,6 +56,7 @@
     '/js/polyfills/browser-polyfill.min.js',
     '/js/polyfills/fetch.js',
     '/js/bootstrap/bootstrap-datetimepicker.min.js',
+    '/js/users/office/PushNotificationsStatus.js',
     '/js/users/subscriber/SubscriberPage.js',
     "/js/users/subscriber/BalanceBox.js",
     "/js/users/subscriber/FundBalanceButton.js",

@@ -885,6 +885,14 @@ $(function () {
     )
   }])
 
+  if (document.getElementById('sms-notifications-status')) {
+    let smsStatus = document.getElementById('sms-notifications-status').getAttribute('data-value')
+    ReactDOM.render(
+      <SmsNotificationsStatus checked={smsStatus} />,
+      document.getElementById('sms-notifications-status')
+    )
+  }
+
   $('.changeStatus').live('click', function () {
     const name = $(this).attr('name')
     const input = $('#' + name)
