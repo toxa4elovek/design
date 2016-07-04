@@ -318,7 +318,7 @@ class PitchTest extends AppUnit {
                     $this->assertEqual(0,$pitch->multiwinner);
                 }
             }*/
-
+/*
             public function testCreateNewWinner() {
                 $this->assertFalse(Pitch::createNewWinner(0));
                 $this->assertTrue(Pitch::createNewWinner(2));
@@ -728,7 +728,7 @@ class PitchTest extends AppUnit {
         $project->save();
         $this->assertFalse(Pitch::isPenaltyNeededForProject(7));
     }
-
+*/
     public function testActivatePenalty() {
         $project = Pitch::first(7);
         $project->category_id = 1;
