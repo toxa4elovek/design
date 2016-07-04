@@ -101,6 +101,7 @@
 </div><!-- .wrapper -->
 <?= $this->view()->render(array('element' => 'popups/mypitches_popup')); ?>
 <?= $this->html->script(array(
+    '/js/users/office/PushNotificationsStatus.js',
     'jcarousellite_1.0.1.js',
     'jquery.timers.js',
     'jquery.simplemodal-1.4.2.js',

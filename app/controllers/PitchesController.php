@@ -1001,18 +1001,20 @@ class PitchesController extends AppController
             $solutionsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id)));
             $pitch->applicantsCount = Solution::find('count', array('conditions' => array('pitch_id' => $this->request->id), 'fields' => array('distinct(user_id)')));
             $selectedsolution = false;
-            $nominatedSolutionOfThisPitch = Solution::first(array(
+            $nominatedSolutionsOfThisPitch = Solution::all(array(
                         'conditions' => array('OR' => array('awarded' => 1, 'nominated' => 1), 'pitch_id' => $pitch->id),
             ));
             $winnersUserIds = array();
-            if ($nominatedSolutionOfThisPitch) {
+            if (($nominatedSolutionsOfThisPitch) && (count($nominatedSolutionsOfThisPitch) > 0)) {
                 $selectedsolution = true;
-                if (!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
-                    $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
+                foreach($nominatedSolutionsOfThisPitch as $nominatedSolutionOfThisPitch) {
+                    if (!in_array($nominatedSolutionOfThisPitch->user_id, $winnersUserIds)) {
+                        $winnersUserIds[] = $nominatedSolutionOfThisPitch->user_id;
+                    }
                 }
             }
 
-            if ((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && $currentUser['id'] != $nominatedSolutionOfThisPitch->user_id))) {
+            if ((!$currentUser['id'] && ($pitch->blank == 1)) || (($pitch->blank == 1) && ($currentUser['id'] != $pitch->user_id && !in_array($currentUser['id'], $winnersUserIds)))) {
                 return $this->redirect('/pitches');
             }
 
@@ -1546,7 +1548,16 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'avatar' => $avatarHelper->show($solution->user->data(), false, true),
                 'name' => $nameInflector->renderName($solution->user->first_name, $solution->user->last_name, false),
             ];
-            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady', 'experts', 'autosuggestUsers');
+            $canViewFullImage = false;
+            if(
+                ($this->userHelper->isPitchOwner($pitch->user_id)) &&
+                ($this->userHelper->isSubscriptionActive()) &&
+                ($pitch->category_id == 20) &&
+                (in_array($this->userHelper->read('user.subscription_status'), [2, 3]))
+            ) {
+                $canViewFullImage = true;
+            }
+            return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady', 'experts', 'autosuggestUsers', 'canViewFullImage');
         } else {
             if($moderation = Moderation::first(['conditions' => [
                 'model_id' => $this->request->id,

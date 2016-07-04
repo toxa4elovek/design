@@ -8,36 +8,36 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PushNotificationsStatus = function (_React$Component) {
-  _inherits(PushNotificationsStatus, _React$Component);
+var SmsNotificationsStatus = function (_React$Component) {
+  _inherits(SmsNotificationsStatus, _React$Component);
 
-  function PushNotificationsStatus() {
-    _classCallCheck(this, PushNotificationsStatus);
+  function SmsNotificationsStatus() {
+    _classCallCheck(this, SmsNotificationsStatus);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(PushNotificationsStatus).apply(this, arguments));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(SmsNotificationsStatus).apply(this, arguments));
   }
 
-  _createClass(PushNotificationsStatus, [{
-    key: 'onChange',
-    value: function onChange(event) {
-      if (event.target.checked) {
-        OneSignal.push(['registerForPushNotifications']);
-      } else {
-        OneSignal.push(['setSubscription', false]);
-      }
-      return true;
-    }
-  }, {
+  _createClass(SmsNotificationsStatus, [{
     key: 'render',
     value: function render() {
+      var checked = false;
+      if (this.props.checked === 'true') {
+        checked = true;
+      }
       return React.createElement(
         'label',
         { className: 'regular', style: { 'fontWeight': 'normal' } },
-        React.createElement('input', { defaultChecked: this.props.checked, onChange: this.onChange.bind(this), style: { 'marginTop': 0, 'marginBottom': '2px' }, type: 'checkbox' }),
-        'получать push-уведомления'
+        React.createElement('input', { type: 'hidden', value: '0', name: 'accept_sms' }),
+        React.createElement('input', {
+          defaultChecked: checked,
+          style: { 'marginTop': 0, 'marginBottom': '2px' },
+          type: 'checkbox',
+          value: '1',
+          name: 'accept_sms' }),
+        'получать sms уведомления'
       );
     }
   }]);
 
-  return PushNotificationsStatus;
+  return SmsNotificationsStatus;
 }(React.Component);

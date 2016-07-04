@@ -4,6 +4,9 @@
     <?php
     $userdata = unserialize($user->userdata);
     $company = unserialize($user->companydata);
+    if(!isset($userdata['accept_sms'])) {
+        $userdata['accept_sms'] = false;
+    }
     ?>
     <div class="middle">
         <div class="main">
@@ -174,6 +177,7 @@
                                             <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>><?= $email_newcomments?>
                                         </label>
                                     </li>
+                                    <li data-value="<?php echo $smsStatus = ($userdata['accept_sms']) ? 'true' : 'false'; ?>" id="sms-notifications-status"></li>
                                 </ul>
                                 <ul>
                                     <li>
@@ -422,6 +426,7 @@
     '/js/jquery.tooltip.js',
     '/js/jquery-plugins/jquery.scrollto.min.js',
     '/js/users/office/PushNotificationsStatus.js',
+    '/js/users/office/SmsNotificationsStatus.js',
     '/js/users/office/ProfRadioList.js',
     '/js/users/office/ProfSelectBox.js',
     'users/office.js'), array('inline' => false))?>

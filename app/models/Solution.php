@@ -895,7 +895,7 @@ http://godesigner.ru/answers/view/73');
         if (!Pitch::isReadyForLogosale($pitch)) {
             return false;
         }
-        if (($solution->rating >= 3) && ($pitch->awarded != $solution->id)) {
+        if ((($solution->rating >= 3) && ($pitch->awarded != $solution->id)) && ($solution->awarded == 0)) {
             return true;
         }
         return false;

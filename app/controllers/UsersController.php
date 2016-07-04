@@ -1480,6 +1480,20 @@ class UsersController extends \app\controllers\AppController
                     'city' => $unserialized['city'],
                     'profession' => $unserialized['profession'],
                     'about' => $unserialized['about'],
+                    'accept_sms' => $unserialized['accept_sms']
+                ));
+            }
+            if (isset($this->request->data['accept_sms'])) {
+                $shortUpdate = true;
+                $unserialized = unserialize($user->userdata);
+                $smsValue = (int) $this->request->data['accept_sms'];
+                $smsValue = (bool) $smsValue;
+                $user->userdata = serialize(array(
+                    'birthdate' => $unserialized['birthdate'],
+                    'city' => $unserialized['city'],
+                    'profession' => $unserialized['profession'],
+                    'about' => $unserialized['about'],
+                    'accept_sms' => $smsValue
                 ));
             }
             if (isset($this->request->data['city'])) {
@@ -1490,6 +1504,7 @@ class UsersController extends \app\controllers\AppController
                     'city' => $this->request->data['city'],
                     'profession' => $unserialized['profession'],
                     'about' => $unserialized['about'],
+                    'accept_sms' => $unserialized['accept_sms']
                 ));
             }
             if ($shortUpdate) {
