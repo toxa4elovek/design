@@ -7,10 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'stringEncode' => array($vendorDir . '/paquettg/string-encode/src'),
-    'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
     'Racecore\\GATracking' => array($vendorDir . '/ins0/google-measurement-php-client/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
-    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'PHPHtmlParser' => array($vendorDir . '/paquettg/php-html-parser/src'),
     'ImageOptimizer' => array($vendorDir . '/ps/image-optimizer/src'),
 );
