@@ -135,7 +135,7 @@ class Pitch extends AppModel
             $client = User::first($params['pitch']->user_id);
             $nameInflector = new nameInflector();
             if ($params['pitch']->expert == 0):
-                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть 4 дня на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.';
+                $message = Comment::getWinnerSelectionCommentForClient($nameInflector->renderName($client->first_name, $client->last_name), Pitch::getDaysForWinnerSelection($params['pitch']->id));
             else:
                 $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', проект завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
             endif;
@@ -275,7 +275,8 @@ class Pitch extends AppModel
      * Метод возвращяет количество завершенных проектов
      * @return integer
      */
-    public static function getNumOfCompletedProjects() {
+    public static function getNumOfCompletedProjects()
+    {
         return self::count(array(
             'conditions' => array(
                 'published' => 1,
@@ -457,7 +458,7 @@ class Pitch extends AppModel
             $daysAdded = $addon->{'prolong-days'} * DAY;
             $timeProlong = strtotime($pitch->finishDate) + ($daysAdded);
             $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
-            if($pitch->category_id == 20) {
+            if ($pitch->category_id == 20) {
                 $pitch->chooseWinnerFinishDate = date('Y-m-d H:i:s', (strtotime($pitch->chooseWinnerFinishDate) + $daysAdded));
             }
             if ($pitch->save()) {
@@ -1312,10 +1313,10 @@ class Pitch extends AppModel
                 'order' => array(
                     'created' => 'asc')
             ));
-            if ($pitch->firstSolution) {
-                $time = strtotime($pitch->firstSolution->created);
+        if ($pitch->firstSolution) {
+            $time = strtotime($pitch->firstSolution->created);
                 //Rcache::write($cacheKey, $time);
-            }
+        }
         //}
         return $time;
     }
@@ -1339,15 +1340,15 @@ class Pitch extends AppModel
             } else {
                 $ratingsNum = array();
             }
-            $rating = 0;
-            $percents = 0;
-            if (count($ids) > 0) {
-                $percents = (count($ratingsNum) / count($ids)) * 100;
-            }
-            if ($percents > 100) {
-                $percents = 100;
-            }
-            switch ($percents) {
+        $rating = 0;
+        $percents = 0;
+        if (count($ids) > 0) {
+            $percents = (count($ratingsNum) / count($ids)) * 100;
+        }
+        if ($percents > 100) {
+            $percents = 100;
+        }
+        switch ($percents) {
                 case $percents < 50:
                     $rating = 1;
                     break;
@@ -1367,11 +1368,11 @@ class Pitch extends AppModel
             //$diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
         if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
             $wasSolutionPostedOnThisDateOrBefore = true;
-        }else {
+        } else {
             $wasSolutionPostedOnThisDateOrBefore = false;
         }
-        if((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
-        //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+        if ((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
+            //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
             $rating = 3;
         }
         return $rating;
@@ -1391,16 +1392,16 @@ class Pitch extends AppModel
                 $commentsNum = array();
             }
 
-            $comments = 0;
-            $percents = 0;
-            if (count($ids) > 0) {
-                $percents = (count($commentsNum) / count($ids)) * 100;
-            }
+        $comments = 0;
+        $percents = 0;
+        if (count($ids) > 0) {
+            $percents = (count($commentsNum) / count($ids)) * 100;
+        }
 
-            if ($percents > 100) {
-                $percents = 100;
-            }
-            switch ($percents) {
+        if ($percents > 100) {
+            $percents = 100;
+        }
+        switch ($percents) {
                 case $percents < 50: $comments = 1;
                     break;
                 case $percents < 63: $comments = 2;
@@ -1412,19 +1413,19 @@ class Pitch extends AppModel
                 case $percents <= 100: $comments = 5;
                     break;
             }
-            if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
-                $wasSolutionPostedOnThisDateOrBefore = true;
-            }else {
-                $wasSolutionPostedOnThisDateOrBefore = false;
-            }
+        if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
+            $wasSolutionPostedOnThisDateOrBefore = true;
+        } else {
+            $wasSolutionPostedOnThisDateOrBefore = false;
+        }
             //$diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-            if((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
-            //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+            if ((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
+                //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
                 $comments = 3;
             }
-            if (strtotime($plusDay) < time()) {
-                //Rcache::write($cacheKey, $comments, [], '+2 hours');
-            }
+        if (strtotime($plusDay) < time()) {
+            //Rcache::write($cacheKey, $comments, [], '+2 hours');
+        }
         //}
         return $comments;
     }
@@ -2337,5 +2338,24 @@ class Pitch extends AppModel
             return true;
         }
         return false;
+    }
+
+    /**
+     * Метод возвращает целое количество дней (округлённое вниз), отведенное на выбор победителей
+     * нужно для отображения в уведомлениях для заказчиков
+     *
+     * @param $projectId
+     * @return int
+     */
+    public static function getDaysForWinnerSelection($projectId)
+    {
+        $project = self::first($projectId);
+        if ((int) $project->category_id === 20) {
+            $finishDate = new \DateTime($project->finishDate);
+            $chooseWinnerFinishDate = new \DateTime($project->chooseWinnerFinishDate);
+            $interval = $finishDate->diff($chooseWinnerFinishDate);
+            return (int) $interval->format('%a');
+        }
+        return 4;
     }
 }

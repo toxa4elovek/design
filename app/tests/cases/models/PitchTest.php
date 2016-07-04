@@ -14,16 +14,19 @@ use app\models\User;
 use app\extensions\storage\Rcache;
 use app\extensions\helper\NameInflector;
 
-class PitchTest extends AppUnit {
+class PitchTest extends AppUnit
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         Rcache::init();
-        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
+        $this->rollUp(array('Pitch', 'User', 'Solution', 'Comment', 'Transaction', 'Paymaster', 'Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Rcache::flushdb();
-        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
+        $this->rollDown(array('Pitch', 'User', 'Solution', 'Comment', 'Transaction', 'Paymaster', 'Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
         Session::clear();
     }
 /*
@@ -728,7 +731,7 @@ class PitchTest extends AppUnit {
         $project->save();
         $this->assertFalse(Pitch::isPenaltyNeededForProject(7));
     }
-*/
+
     public function testActivatePenalty() {
         $project = Pitch::first(7);
         $project->category_id = 1;
@@ -760,5 +763,30 @@ class PitchTest extends AppUnit {
         $this->assertEqual(1, $penalty->billed);
         $this->assertEqual(2, $penalty->status);
     }
+*/
+    public function testGetDaysForWinnerSelection()
+    {
+        $days = Pitch::getDaysForWinnerSelection(1);
+        $this->assertEqual(4, $days);
 
+        $project = Pitch::first(1);
+        $project->category_id = 20;
+        $finishDate = '2016-01-01 00:00:00';
+        $endOfWinnerSelection = '2016-01-11 00:00:00';
+        $project->finishDate = $finishDate;
+        $project->chooseWinnerFinishDate = $endOfWinnerSelection;
+        $project->save();
+        $days = Pitch::getDaysForWinnerSelection(1);
+        $this->assertEqual(10, $days);
+
+        $project = Pitch::first(1);
+        $project->category_id = 20;
+        $finishDate = '2016-01-01 00:00:00';
+        $endOfWinnerSelection = '2016-01-16 00:00:00';
+        $project->finishDate = $finishDate;
+        $project->chooseWinnerFinishDate = $endOfWinnerSelection;
+        $project->save();
+        $days = Pitch::getDaysForWinnerSelection(1);
+        $this->assertEqual(15, $days);
+    }
 }
