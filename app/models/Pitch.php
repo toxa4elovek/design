@@ -992,7 +992,7 @@ class Pitch extends AppModel
             'conditions' => array(
                 'status' => 2,
                 'totalFinishDate' => array(
-                    '>=' => date('Y-m-d H:i:s', time() - 5 * MINUTE),
+                    '>=' => date('Y-m-d H:i:s', time() - 1 * DAY),
                 ),
             ),
         );
