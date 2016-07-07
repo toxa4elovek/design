@@ -79,7 +79,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     }
 
     if (($mobileDetect->isMobile() && !$mobileDetect->isTablet()) && (!$bypass)) {
-        $goMobile = 'http://m.godesigner.ru';
+        $goMobile = 'https://m.godesigner.ru';
         $routes = array(
             'pages' => array(
                 'home' => '',
