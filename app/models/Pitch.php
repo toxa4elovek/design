@@ -2358,4 +2358,37 @@ class Pitch extends AppModel
         }
         return 4;
     }
+
+    /**
+     * Метод возвращает дату, когда у заказчика заканчивается время на выбор победителя
+     *
+     * @param $record
+     * @return \DateTime
+     */
+    public function getEndOfWinnerSelectionDateTime($record)
+    {
+        if ((int) $record->category_id === 20) {
+            $finishDateTimeFormattedString = $record->chooseWinnerFinishDate;
+        } else {
+            $finishDateTimeFormattedString = date('Y-m-d H:i:s', strtotime($record->finishDate) + 4 * DAY);
+        }
+        return new \DateTime($finishDateTimeFormattedString);
+    }
+
+    /**
+     * Метод определяет, допустимо ли отправлять смс клиенту с учетом сдвига в 4-5 часов.
+     * Запретные часы 23-07
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isOkToSendSmsForFinishWinnerSelectionWarning($record)
+    {
+        $date = $record->getEndOfWinnerSelectionDateTime();
+        $hour = $date->format('G');
+        if (($hour >= 3) && ($hour < 11)) {
+            return false;
+        }
+        return true;
+    }
 }

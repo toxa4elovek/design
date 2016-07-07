@@ -108,6 +108,8 @@ require __DIR__ . '/bootstrap/validation.php';
 
 	define('WINS_FOR_VIEW', 1); // Designer`s wins for allow private pitches view
 
+	define('MYSQL_DATETIME_FORMAT', 'Y-m-d H:i:s');
+
 date_default_timezone_set('Europe/Minsk');
 
 /*

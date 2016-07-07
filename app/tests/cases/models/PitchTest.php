@@ -789,4 +789,71 @@ class PitchTest extends AppUnit
         $days = Pitch::getDaysForWinnerSelection(1);
         $this->assertEqual(15, $days);
     }
+
+    public function testGetEndOfWinnerSelectionDateTime()
+    {
+        // Проверяем обычный проект
+        $project = Pitch::first(1);
+        $finishDate = '2016-01-01 00:00:00';
+        $project->finishDate = $finishDate;
+        $project->category_id = 1;
+        $project->save();
+
+        $project = Pitch::first(1);
+        $expected = new \DateTime('2016-01-05 00:00:00');
+        $result = $project->getEndOfWinnerSelectionDateTime();
+        $this->assertTrue(is_object($result));
+        $this->assertTrue($result instanceof \DateTime);
+        $this->assertEqual($result->format('Y-m-d H:i:s'), $expected->format('Y-m-d H:i:s'));
+
+        // Проверяем абонентский проект
+        $project = Pitch::first(1);
+        $finishDate = '2016-01-01 00:00:00';
+        $endOfWinnerSelection = '2016-01-20 00:00:00';
+        $project->finishDate = $finishDate;
+        $project->chooseWinnerFinishDate = $endOfWinnerSelection;
+        $project->category_id = 20;
+        $project->save();
+
+        $project = Pitch::first(1);
+        $expected = new \DateTime('2016-01-20 00:00:00');
+        $result = $project->getEndOfWinnerSelectionDateTime();
+        $this->assertTrue(is_object($result));
+        $this->assertTrue($result instanceof \DateTime);
+        $this->assertEqual($result->format('Y-m-d H:i:s'), $expected->format('Y-m-d H:i:s'));
+    }
+
+    public function testIsOkToSendSmsForFinishWinnerSelectionWarning()
+    {
+        $project = Pitch::first(1);
+        $finishDate = '2016-01-01 12:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertTrue($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 15:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertTrue($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 02:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertTrue($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 05:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertFalse($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 07:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertFalse($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 10:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertFalse($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+    }
 }
