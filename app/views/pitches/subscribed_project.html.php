@@ -410,6 +410,7 @@
 
 <?= $this->view()->render(array('element' => 'popups/brief_tos')); ?>
 <?= $this->view()->render(array('element' => 'popups/date_confirmation')); ?>
+<?= $this->view()->render(array('element' => 'popups/brief_saved')); ?>
 <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
 <?= $this->html->script(array(
