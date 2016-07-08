@@ -373,7 +373,7 @@
   })
 
   $(document).on('click', '.edit-description-link', function () {
-    var descriptionElement = $('.solution-description:visible')
+    var descriptionElement = $('.solution-description')
     $(this).after('<a data-solutionid="' + $(this).data('solutionid') + '" class="button update-description-button" href="#">сохранить</a>').hide()
     $('.description-more').click()
     var descriptionText = descriptionElement.text()
