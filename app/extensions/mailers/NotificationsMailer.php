@@ -4,6 +4,7 @@ namespace app\extensions\mailers;
 
 use app\models\SubscriptionPlan;
 use app\models\Pitch;
+use app\models\User;
 
 class NotificationsMailer extends \li3_mailer\extensions\Mailer {
 
@@ -57,6 +58,17 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer {
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Выберите победителя: конкурс на GoDesigner',
             'data' => compact('user', 'project', 'time')
+        ));
+    }
+
+    public static function sendSubscriberChooseWinnerWarning($project) {
+        $user = User::first($project->user_id);
+        return self::_mail(array(
+            'use-smtp' => true,
+            //'to' => $user->email,
+            'to' => 'nyudmitriy@gmail.com',
+            'subject' => 'Время на выбор победителя истекает!',
+            'data' => compact('user', 'project')
         ));
     }
 
