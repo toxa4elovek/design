@@ -1,6 +1,11 @@
 $(document).ready(function () {
   const awardInput = $('#award')
 
+  $(document).on('click', '#brief-saved-ok', function() {
+    $('.gotest-close').click()
+    return false
+  })
+
   tinymce.init({
     selector: '.enable-editor',
     content_css: '/css/brief_wysiwyg.css',
@@ -1258,6 +1263,14 @@ function FeatureCart () {
             $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf')
           })
         } else {
+          $('#popup-brief-saved').modal({
+            containerId: 'spinner',
+            opacity: 80,
+            closeClass: 'gotest-close',
+            onShow: function () {
+              $('#popup-brief-saved').fadeTo(600, 1)
+            }
+          })
           var title = Cart.data.commonPitchData.title
           var award = Cart._priceDecorator(Cart.data.features.award)
           var id = response
