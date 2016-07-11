@@ -180,4 +180,23 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
             'data' => compact('user', 'project')
         ));
     }
+
+    /**
+     * Метод отправляет почтовое уведомление заказчику о том, что у него начался штрафной период (в первый час после
+     * наступления периода)
+     *
+     * @param $project
+     * @return bool|mixed
+     */
+    public static function sendStartPenaltyNotification($project)
+    {
+        $user = User::first($project->user_id);
+        return self::_mail(array(
+            'use-smtp' => true,
+            //'to' => $user->email,
+            'to' => 'nyudmitriy@gmail.com',
+            'subject' => 'Проект на GoDesigner: время на выбор истекло',
+            'data' => compact('user', 'project')
+        ));
+    }
 }
