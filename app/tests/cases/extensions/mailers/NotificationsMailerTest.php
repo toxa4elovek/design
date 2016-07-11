@@ -69,4 +69,24 @@ class NotificationsMailerTest extends  AppUnit
         $this->assertPattern("/Пожалуйста, активизируйтесь на сайте и выберите победителя/", $html);
         $this->assertPattern("@https://www\.godesigner\.ru/answers/view/102@", $html);
     }
+
+    public function testSendChooseWinnerNotificationForNonGuarantee()
+    {
+        $project = Pitch::first(1);
+        $html = NotificationsMailer::sendChooseWinnerNotificationForNonGuarantee($project);
+        $this->assertPattern("@Приём работ в проекте <a href=\"https://www.godesigner.ru/pitches/view/$project->id\">&laquo;$project->title&raquo;</a>@", $html, "Не найдена строчка по регулярке: @Приём работ в проекте <a href=\"https://www.godesigner.ru/pitches/view/$project->id\">&laquo;$project->title&raquo;</a>@");
+        $this->assertPattern("/ЗДРАВСТВУЙТЕ ДМИТРИЙ/", $html);
+        $this->assertPattern("/У вас есть 4 дня на выбор лучшего решения, либо на отказ от всех решений./", $html);
+        $this->assertPattern("@https://www\.godesigner\.ru/answers/view/71@", $html);
+    }
+
+    public function testSendChooseWinnerNotificationForGuarantee()
+    {
+        $project = Pitch::first(1);
+        $html = NotificationsMailer::sendChooseWinnerNotificationForGuarantee($project);
+        $this->assertPattern("@Приём работ в проекте <a href=\"https://www.godesigner.ru/pitches/view/$project->id\">&laquo;$project->title&raquo;</a>@", $html, "Не найдена строчка по регулярке: @Приём работ в проекте <a href=\"https://www.godesigner.ru/pitches/view/$project->id\">&laquo;$project->title&raquo;</a>@");
+        $this->assertPattern("/ЗДРАВСТВУЙТЕ ДМИТРИЙ/", $html);
+        $this->assertPattern("/У вас есть 4 дня на выбор лучшего решения\./", $html);
+        $this->assertNoPattern("@https://www\.godesigner\.ru/answers/view/71@", $html);
+    }
 }

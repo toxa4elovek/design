@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\extensions\mailers\NotificationsMailer;
 use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
@@ -143,6 +144,13 @@ class Pitch extends AppModel
             Comment::createComment($data);
             if ($params['pitch']->expert == 1) {
                 Pitch::sendExpertTimeoutMail($params);
+            } elseif ($params['pitch']->category_id != 20) {
+                $project = $params['pitch'];
+                if (($project->guaranteed == 0) && ($project->pitchData()['avgNum'] >= 3.0)) {
+                    NotificationsMailer::sendChooseWinnerNotificationForNonGuarantee($project);
+                } else {
+                    NotificationsMailer::sendChooseWinnerNotificationForGuarantee($project);
+                }
             }
             $result = $chain->next($self, $params, $chain);
             return $result;
@@ -359,16 +367,22 @@ class Pitch extends AppModel
         return false;
     }
 
+    /**
+     * Метод находит все проекты, где приём работ должен быть окончен,
+     * завершает их и отправляет письма заказчикам
+     *
+     * @return int
+     */
     public static function timeoutPitches()
     {
-        $pitches = self::all(array('conditions' => array(
+        $projects = self::all(array('conditions' => array(
                         'status' => 0,
                         'finishDate' => array('<' => date('Y-m-d H:i:s')),
                         'published' => 1
         )));
         $count = 0;
-        foreach ($pitches as $pitch) {
-            self::timeoutPitch($pitch);
+        foreach ($projects as $project) {
+            self::timeoutPitch($project);
             $count++;
         }
         return $count;

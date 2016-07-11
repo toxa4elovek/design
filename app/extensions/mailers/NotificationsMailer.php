@@ -9,6 +9,13 @@ use app\models\User;
 class NotificationsMailer extends \li3_mailer\extensions\Mailer
 {
 
+    /**
+     * Метод отправляет почтовое уведомление об успешном пополнении баланса
+     *
+     * @param $user
+     * @param $plan
+     * @return bool|mixed
+     */
     public static function sendFillBalanceSuccess($user, $plan)
     {
         $value = SubscriptionPlan::extractFundBalanceAmount($plan->id);
@@ -20,6 +27,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
         ));
     }
 
+    /**
+     * Метод отправляет почтовое уведомление о долгом завершении администраторам
+     *
+     * @param $user
+     * @param $project
+     * @return bool|mixed
+     */
     public static function sendLongFinishNotification($user, $project)
     {
         $step = Pitch::getCurrentClosingStep($project->id);
@@ -34,6 +48,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
         ));
     }
 
+    /**
+     * Метод отправляет почтовое уведомление о большом штрафе администратору
+     *
+     * @param $project
+     * @param $penalty
+     * @return bool|mixed
+     */
     public static function penaltyNotification($project, $penalty)
     {
         return self::_mail(array(
@@ -45,6 +66,15 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
         ));
     }
 
+    /**
+     * Метод отправляет почтовое уведомление о наступающем штрафном периоде для негарантированного проекта,
+     * где можно вернуть деньги
+     *
+     * @param $user
+     * @param $project
+     * @param $time
+     * @return bool|mixed
+     */
     public static function penaltyClientNotificationNonGuarantee($user, $project, $time)
     {
         return self::_mail(array(
@@ -56,17 +86,32 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
         ));
     }
 
+    /**
+     * Метод отправляет почтовое уведомление о скором наступлении штрафного периода для гарантированного проекта,
+     * или для проекта, где плохая активность
+     *
+     * @param $user
+     * @param $project
+     * @param $time
+     * @return bool|mixed
+     */
     public static function penaltyClientNotificationGuarantee($user, $project, $time)
     {
         return self::_mail(array(
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
-            'subject' => 'Выберите победителя: конкурс на GoDesigner',
+            'subject' => 'Проект на GoDesigner: примите решение',
             'data' => compact('user', 'project', 'time')
         ));
     }
 
+    /**
+     * Метод отправляет почтовое уведомление абоненту, у которого скоро закончится срок выбора победителя
+     *
+     * @param $project
+     * @return bool|mixed
+     */
     public static function sendSubscriberChooseWinnerWarning($project)
     {
         $user = User::first($project->user_id);
@@ -75,6 +120,44 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Время на выбор победителя истекает!',
+            'data' => compact('user', 'project')
+        ));
+    }
+
+    /**
+     * Метод отправляет почтовое уведомление заказчику о том, что у него начала этап выбора победителя,
+     * проект негарантированный, можно вернуть деньги
+     *
+     * @param $project
+     * @return bool|mixed
+     */
+    public static function sendChooseWinnerNotificationForNonGuarantee($project)
+    {
+        $user = User::first($project->user_id);
+        return self::_mail(array(
+                'use-smtp' => true,
+                'to' => $user->email,
+                //'to' => 'nyudmitriy@gmail.com',
+                'subject' => 'Проект на GoDesigner: 4 дня на выбор лучшего решения',
+                'data' => compact('user', 'project')
+            ));
+    }
+
+    /**
+     * Метод отправляет почтовое уведомление заказчику о том, что у него начался этап выбора победителя,
+     * проект гарантированный или низкая активность
+     *
+     * @param $project
+     * @return bool|mixed
+     */
+    public static function sendChooseWinnerNotificationForGuarantee($project)
+    {
+        $user = User::first($project->user_id);
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => $user->email,
+            //'to' => 'nyudmitriy@gmail.com',
+            'subject' => 'Проект на GoDesigner: 4 дня на выбор лучшего решения',
             'data' => compact('user', 'project')
         ));
     }
