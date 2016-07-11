@@ -5,18 +5,18 @@ namespace app\extensions\command;
 use app\extensions\mailers\NotificationsMailer;
 use app\models\Pitch;
 
-class SendStartPenaltyNotification extends CronJob
+class SendPenaltyEndsSoonReminder extends CronJob
 {
 
     /**
-     * Команда отправляет уведомление заказчикам, у которых в прошедший час начался штрафной период
+     * Команда отправляет уведомление заказчикам, у которых в периоде через +24-+25 часов начнётся штрафной период
      */
     public function run()
     {
         $this->_renderHeader();
         $arrayOfProjects = [];
-        $finishDateDeltaStart = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() - HOUR));
-        $finishDateDeltaEnd = new \DateTime(date(MYSQL_DATETIME_FORMAT, time()));
+        $finishDateDeltaStart = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() + 24 * HOUR));
+        $finishDateDeltaEnd = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() + 25 * HOUR));
         $projects = Pitch::all([
             'conditions' => [
                 'status' => 1,
@@ -34,7 +34,7 @@ class SendStartPenaltyNotification extends CronJob
         }
 
         array_walk($arrayOfProjects, function ($project) {
-            NotificationsMailer::sendStartPenaltyNotification($project);
+            NotificationsMailer::sendPenaltyEndsSoonReminder($project);
         });
 
         $this->_renderFooter(sprintf('%d email sent', count($arrayOfProjects)));

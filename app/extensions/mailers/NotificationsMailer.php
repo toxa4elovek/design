@@ -199,4 +199,23 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
             'data' => compact('user', 'project')
         ));
     }
+
+    /**
+     * Метод отправляет почтовое уведомление заказчику о том, что через сутки у него окончится штрафной период
+     *
+     * @param $project
+     * @return bool|mixed
+     */
+    public static function sendPenaltyEndsSoonReminder($project)
+    {
+        $user = User::first($project->user_id);
+        $time = (strtotime($project->finishDate) + 10 * DAY);
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => $user->email,
+            //'to' => 'nyudmitriy@gmail.com',
+            'subject' => sprintf('Проект на GoDesigner будет закрыт %s', date('d.m.Y H:i:s', $time)),
+            'data' => compact('user', 'project', 'time')
+        ));
+    }
 }

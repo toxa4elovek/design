@@ -109,4 +109,18 @@ class NotificationsMailerTest extends  AppUnit
         $this->assertPattern("@Вы можете номинировать работу, перейти к завершительному этапу и вносить правки после оплаты штрафа из расчёта 25 руб\./час@", $html);
         $this->assertPattern("@https://www\.godesigner\.ru/answers/view/53@", $html);
     }
+
+    public function testSendPenaltyEndsSoonReminder()
+    {
+        $project = Pitch::first(1);
+        $project->finishDate = date(MYSQL_DATETIME_FORMAT, time() - 9 * DAY);
+        $project->save();
+        $html = NotificationsMailer::sendPenaltyEndsSoonReminder($project);
+        $this->assertPattern(sprintf('@%s истекает штрафной период для выбора победителя\.@', date('d.m.Y H:i:s', time() + DAY)), $html);
+        $this->assertPattern("@Пожалуйста, активизируйтесь на сайте и примите решение в проекте <a href=\"https://www.godesigner.ru/pitches/view/$project->id\">&laquo;$project->title&raquo;</a>\.@", $html);
+        $this->assertPattern("/ЗДРАВСТВУЙТЕ ДМИТРИЙ/", $html);
+        $this->assertPattern("@Вы можете номинировать работу, перейти к завершительному этапу и вносить правки после оплаты штрафа из расчёта 25 руб\./час@", $html);
+        $this->assertPattern('/В случае вашей неактивности победитель в проекте будет назначен автоматически\. Подробнее/', $html);
+        $this->assertPattern("@https://www\.godesigner\.ru/answers/view/53@", $html);
+    }
 }
