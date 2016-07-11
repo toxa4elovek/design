@@ -9,14 +9,14 @@ class SendPenaltyEndsSoonReminder extends CronJob
 {
 
     /**
-     * Команда отправляет уведомление заказчикам, у которых в периоде через +24-+25 часов начнётся штрафной период
+     * Команда отправляет уведомление заказчикам, у которых в периоде через +12-+13 часов начнётся штрафной период
      */
     public function run()
     {
         $this->_renderHeader();
         $arrayOfProjects = [];
-        $finishDateDeltaStart = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() + 24 * HOUR));
-        $finishDateDeltaEnd = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() + 25 * HOUR));
+        $finishDateDeltaStart = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() + 12 * HOUR));
+        $finishDateDeltaEnd = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() + 13 * HOUR));
         $projects = Pitch::all([
             'conditions' => [
                 'status' => 1,
