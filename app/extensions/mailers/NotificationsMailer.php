@@ -161,4 +161,23 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
             'data' => compact('user', 'project')
         ));
     }
+
+    /**
+     * Метод отправляет почтовое уведомление заказчику о том, что у него активен штраф
+     *
+     * @param $project
+     * @param $penalty
+     * @return bool|mixed
+     */
+    public static function sendPenaltyActiveReminder($project, $penalty)
+    {
+        $user = User::first($project->user_id);
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => $user->email,
+            //'to' => 'nyudmitriy@gmail.com',
+            'subject' => sprintf('Напоминание про штраф: %d рублей', $penalty),
+            'data' => compact('user', 'project')
+        ));
+    }
 }

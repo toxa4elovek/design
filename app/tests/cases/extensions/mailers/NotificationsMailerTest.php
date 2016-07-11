@@ -89,4 +89,14 @@ class NotificationsMailerTest extends  AppUnit
         $this->assertPattern("/У вас есть 4 дня на выбор лучшего решения\./", $html);
         $this->assertNoPattern("@https://www\.godesigner\.ru/answers/view/71@", $html);
     }
+
+    public function testSendPenaltyActiveReminder()
+    {
+        $project = Pitch::first(1);
+        $html = NotificationsMailer::sendPenaltyActiveReminder($project, 1000);
+        $this->assertPattern("@В проекте <a href=\"https://www.godesigner.ru/pitches/view/$project->id\">&laquo;$project->title&raquo;</a>@", $html);
+        $this->assertPattern("/ЗДРАВСТВУЙТЕ ДМИТРИЙ/", $html);
+        $this->assertPattern("@Вы можете номинировать работу, перейти к завершительному этапу и вносить правки после оплаты штрафа из расчёта 25 руб\./час@", $html);
+        $this->assertPattern("@https://www\.godesigner\.ru/answers/view/53@", $html);
+    }
 }
