@@ -16,7 +16,7 @@ class PenaltyNotification extends CronJob
 {
 
     /**
-     * Обновляем статус смс-сообщениям со статусом ожидания
+     * Отправляем почтовые уведомления заказчикам о том, что будет штраф
      */
     public function run()
     {
@@ -24,25 +24,24 @@ class PenaltyNotification extends CronJob
         $helper = new \app\extensions\helper\Pitch();
         $projects = Pitch::all(['conditions' => ['category_id' => ['!=' => 20], 'status' => 1, 'awarded' => 0]]);
         $count = 0;
-        foreach($projects as $project) {
+        foreach ($projects as $project) {
             $lowestDelta = ($helper->getChooseWinnerTime($project) - 12 * HOUR);
             $highDelta = ($helper->getChooseWinnerTime($project) - 11 * HOUR);
-
-            if($lowestDelta >= time() && $highDelta <= time()) {
+            if ($lowestDelta <= time() && $highDelta >= time()) {
+                $count++;
                 $user = User::first($project->user_id);
-                if(($project->guaranteed == 0) && ($project->pitchData()['avgNum'] >= 3.0)) {
+                if (($project->guaranteed == 0) && ($project->pitchData()['avgNum'] >= 3.0)) {
                     NotificationsMailer::penaltyClientNotificationNonGuarantee($user, $project, $helper->getChooseWinnerTime($project));
-                }else {
+                } else {
                     NotificationsMailer::penaltyClientNotificationGuarantee($user, $project, $helper->getChooseWinnerTime($project));
                 }
             }
 
             $penalty = $helper->getPenalty($project);
-            if(($penalty > 4500) && ($penalty < 4550)) {
+            if (($penalty > 4500) && ($penalty < 4550)) {
                 NotificationsMailer::penaltyNotification($project, $penalty);
             }
-
         }
-        $this->_renderFooter("$count messages updated.");
+        $this->_renderFooter("$count messages send.");
     }
 }
