@@ -3,6 +3,7 @@
 namespace app\tests\cases\models;
 
 use app\extensions\tests\AppUnit;
+use app\models\Category;
 use app\models\Pitch;
 use lithium\storage\Session;
 use app\models\Grade;
@@ -856,4 +857,35 @@ class PitchTest extends AppUnit
         $project->save();
         $this->assertFalse($project->isOkToSendSmsForFinishWinnerSelectionWarning());
     }
+
+    public function testGetMinimalAwardForCategoryForDate() {
+        $result = Pitch::getMinimalAwardForCategoryForDate(1, new \DateTime('2016-07-12 12:00:00'));
+        $this->assertEqual((int) Category::first(1)->minAward, $result);
+
+        $result = Pitch::getMinimalAwardForCategoryForDate(3, new \DateTime('2016-07-12 12:00:00'));
+        $this->assertEqual((int) Category::first(3)->minAward, $result);
+
+        $result = Pitch::getMinimalAwardForCategoryForDate(1, new \DateTime('2016-07-09 12:00:00'));
+        $this->assertEqual((int) Category::first(1)->discountPrice, $result);
+
+        $result = Pitch::getMinimalAwardForCategoryForDate(3, new \DateTime('2016-07-10 12:00:00'));
+        $this->assertEqual((int) Category::first(3)->discountPrice, $result);
+    }
+
+    public function testIsAwardValidForDate() {
+        $project = Pitch::first(1);
+        $this->assertFalse($project->isAwardValidForDate(new \DateTime('2016-07-12 12:00:00')));
+        $project->price = 10000;
+        $project->save();
+        $this->assertTrue($project->isAwardValidForDate(new \DateTime('2016-07-12 12:00:00')));
+
+        $project = Pitch::first(1);
+        $project->price = 6000;
+        $project->save();
+        $this->assertTrue($project->isAwardValidForDate(new \DateTime('2016-07-10 09:00:00')));
+        $project->price = 10000;
+        $project->save();
+        $this->assertTrue($project->isAwardValidForDate(new \DateTime('2016-07-12 12:00:00')));
+    }
+
 }

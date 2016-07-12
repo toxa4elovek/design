@@ -2405,4 +2405,28 @@ class Pitch extends AppModel
         }
         return true;
     }
+
+    /**
+     * Метод возвращяет минимальную награду на указанную дату с учётом скидки на выходных
+     *
+     * @param $categoryId
+     * @param \DateTime $dateTime
+     * @return int
+     */
+    public static function getMinimalAwardForCategoryForDate($categoryId, \DateTime $dateTime) {
+        $category = Category::first($categoryId);
+        $defaultLow = ((int) $dateTime->format('N') > 5) ? $category->discountPrice : $category->minAward;
+        return (int) $defaultLow;
+    }
+
+    /**
+     * Метод определяет, выше или равна ли награда минимальной на указанной день (с учётом возможных скидок по выходным)
+     *
+     * @param $record
+     * @param \DateTime $dateTime
+     * @return bool
+     */
+    public function isAwardValidForDate($record, \DateTime $dateTime) {
+        return $record->price >= self::getMinimalAwardForCategoryForDate($record->category_id, $dateTime);
+    }
 }
