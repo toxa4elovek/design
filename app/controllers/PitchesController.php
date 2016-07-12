@@ -630,6 +630,9 @@ class PitchesController extends AppController
             if ((int) $featuresData['award'] == 0) {
                 return 'noaward';
             }
+            if((int) $featuresData['award'] < Pitch::getMinimalAwardForCategoryForDate($commonPitchData['category_id'], new \DateTime())) {
+                return 'lowaward';
+            }
             if (!isset($commonPitchData['id'])) {
                 $commonPitchData['id'] = 0;
             }

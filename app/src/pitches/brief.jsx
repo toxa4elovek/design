@@ -1229,6 +1229,10 @@ function FeatureCart () {
             alert('Укажите награду для дизайнера!')
             return false
           }
+          if (response == 'lowaward') {
+            alert('Награда слишком низкая!')
+            return false
+          }
           self.id = response
           $('#pitch-id').val(self.id)
           $('#fiz-id').val(self.id)

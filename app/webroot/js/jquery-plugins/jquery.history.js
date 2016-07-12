@@ -1,8 +1,8 @@
 "use strict";
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
-(typeof JSON === "undefined" ? "undefined" : _typeof(JSON)) != "object" && (JSON = {}), function () {
+(typeof JSON === "undefined" ? "undefined" : _typeof(JSON)) != "object" && (JSON = {}), (function () {
   "use strict";
   function f(e) {
     return e < 10 ? "0" + e : e;
@@ -56,7 +56,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       return "\\u" + ("0000" + e.charCodeAt(0).toString(16)).slice(-4);
     }));if (/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]").replace(/(?:^|:|,)(?:\s*\[)+/g, ""))) return j = eval("(" + text + ")"), typeof reviver == "function" ? walk({ "": j }, "") : j;throw new SyntaxError("JSON.parse");
   });
-}(), function (e, t) {
+})(), (function (e, t) {
   "use strict";
   var n = e.History = e.History || {},
       r = e.jQuery;if (typeof n.Adapter != "undefined") throw new Error("History.js Adapter has already been loaded...");n.Adapter = { bind: function bind(e, t, n) {
@@ -68,7 +68,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }, onDomLoad: function onDomLoad(e) {
       r(e);
     } }, typeof n.init != "undefined" && n.init();
-}(window), function (e, t) {
+})(window), (function (e, t) {
   "use strict";
   var n = e.document,
       r = e.setTimeout || r,
@@ -132,7 +132,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       o.Adapter.trigger(e, "hashchange");
     });
   }, typeof o.init != "undefined" && o.init();
-}(window), function (e, t) {
+})(window), (function (e, t) {
   "use strict";
   var n = e.console || t,
       r = e.document,
@@ -174,11 +174,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         } catch (f) {}i += "\n" + a + "\n";
       }return t ? (t.value += i + "\n-----\n", t.scrollTop = t.scrollHeight - t.clientHeight) : e || c(i), !0;
     }, h.getInternetExplorerMajorVersion = function () {
-      var e = h.getInternetExplorerMajorVersion.cached = typeof h.getInternetExplorerMajorVersion.cached != "undefined" ? h.getInternetExplorerMajorVersion.cached : function () {
+      var e = h.getInternetExplorerMajorVersion.cached = typeof h.getInternetExplorerMajorVersion.cached != "undefined" ? h.getInternetExplorerMajorVersion.cached : (function () {
         var e = 3,
             t = r.createElement("div"),
             n = t.getElementsByTagName("i");while ((t.innerHTML = "<!--[if gt IE " + ++e + "]><i></i><![endif]-->") && n[0]) {}return e > 4 ? e : !1;
-      }();return e;
+      })();return e;
     }, h.isInternetExplorer = function () {
       var e = h.isInternetExplorer.cached = typeof h.isInternetExplorer.cached != "undefined" ? h.isInternetExplorer.cached : Boolean(h.getInternetExplorerMajorVersion());return e;
     }, h.options.html4Mode ? h.emulated = { pushState: !0, hashChange: !0 } : h.emulated = { pushState: !Boolean(e.history && e.history.pushState && e.history.replaceState && !/ Mobile\/([1-7][a-z]|(8([abcde]|f(1[0-8]))))/i.test(i.userAgent) && !/AppleWebKit\/5([0-2]|3[0-2])/i.test(i.userAgent)), hashChange: Boolean(!("onhashchange" in e || "onhashchange" in r) || h.isInternetExplorer() && h.getInternetExplorerMajorVersion() < 8) }, h.enabled = !h.emulated.pushState, h.bugs = { setHash: Boolean(!h.emulated.pushState && i.vendor === "Apple Computer, Inc." && /AppleWebKit\/5([0-2]|3[0-3])/.test(i.userAgent)), safariPoll: Boolean(!h.emulated.pushState && i.vendor === "Apple Computer, Inc." && /AppleWebKit\/5([0-2]|3[0-3])/.test(i.userAgent)), ieDoubleCheck: Boolean(h.isInternetExplorer() && h.getInternetExplorerMajorVersion() < 8), hashEscape: Boolean(h.isInternetExplorer() && h.getInternetExplorerMajorVersion() < 7) }, h.isEmptyObject = function (e) {
@@ -373,4 +373,4 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       });
     }
   }, (!h.options || !h.options.delayInit) && h.init();
-}(window);
+})(window);
