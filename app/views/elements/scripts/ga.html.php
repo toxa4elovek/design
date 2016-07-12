@@ -65,18 +65,20 @@
             endif;
 
             $projectsArray = [];
-            foreach($this->user->getCurrentPitches() as $project):
-                if(($project->type == 'plan-payment') && ($project->billed == 1)):
-                    continue;
-                endif;
-                if(($project->blank == 1) && ($project->billed == 0)):
-                    continue;
-                endif;
-                if(($project->type == 'penalty') or ($project->type == 'fund-balance')):
-                    continue;
-                endif;
-                $projectsArray[] = "$project->title ($project->id)\n\r";
-            endforeach;
+            if($this->user->getCurrentPitches()):
+                foreach($this->user->getCurrentPitches() as $project):
+                    if(($project->type == 'plan-payment') && ($project->billed == 1)):
+                        continue;
+                    endif;
+                    if(($project->blank == 1) && ($project->billed == 0)):
+                        continue;
+                    endif;
+                    if(($project->type == 'penalty') or ($project->type == 'fund-balance')):
+                        continue;
+                    endif;
+                    $projectsArray[] = "$project->title ($project->id)\n\r";
+                endforeach;
+            endif;
             $projectsString = implode(' ', $projectsArray);
             $chatraIntegration['Проекты'] = $projectsString;
         ?>
