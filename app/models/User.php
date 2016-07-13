@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\Pitch;
 use lithium\net\http\Service;
+use lithium\storage\session\adapter\Cookie;
 use \lithium\util\Validator;
 use \lithium\util\String;
 use \lithium\storage\Session;
@@ -1944,5 +1945,31 @@ class User extends AppModel
             return $data;
         }
         return null;
+    }
+
+    /**
+     * Метод определяет, является ли указанная строчка реальным реферальным кодом или нет
+     *
+     * @param $code
+     * @return bool
+     */
+    public static function isValidReferalCodeForSubscribers($code) {
+        if(((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
+            return (bool) self::count(['conditions' => ['subscriber_referal_token' => (string) $code]]);
+        }
+        return false;
+    }
+
+    /**
+     * Метод устанавливает куки для отслеживания перехода по реферальной ссылке на год
+     *
+     * @param $code
+     * @return bool
+     */
+    public static function setReferalForSubscriberCookie($code) {
+        if(((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
+            return setcookie('sref', $code, strtotime('+1 year'), '/');
+        }
+        return false;
     }
 }

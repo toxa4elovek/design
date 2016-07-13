@@ -170,6 +170,10 @@ class AppController extends \lithium\action\Controller
             User::setReferalCookie($this->request->query['ref']);
         }
 
+        if ((!empty($this->request->query['sref'])) && (User::isValidReferalCodeForSubscribers($this->request->query['sref']))) {
+            User::setReferalForSubscriberCookie($this->request->query['sref']);
+        }
+
         if (($this->userHelper->isLoggedIn()) && (isset($userRecord))) {
             $this->userRecord = $userRecord;
         }
