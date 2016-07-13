@@ -144,13 +144,13 @@ $(function () {
             alert('Вы должны принять правила и условия');
         } else {
             if (Cart.prepareData()) {
-                if (uploader.damnUploader('itemsCount') > 0) {
+                if (uploader.duCount() > 0) {
                     $('#loading-overlay').modal({
                         containerId: 'spinner',
                         opacity: 80,
                         close: false
                     });
-                    uploader.damnUploader('startUpload');
+                    uploader.duStart()
                 } else {
                     Cart.saveData();
                     _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа']);
@@ -163,12 +163,13 @@ $(function () {
     });
 
     var fileIds = [];
-    var uploader = $("#fileupload").damnUploader({
-        url: '/pitchfiles/add.json',
-        onSelect: function (file) {
-            onSelectHandler.call(this, file, fileIds, Cart);
-        } // See app.js
-    });
+    var uploader = $('#fileupload').damnUploader({
+        url: '/pitchfiles/add.json'
+    })
+
+    uploader.on('du.add', function(e) {
+        return onSelectHandler.call(this, uploader, e, fileIds, Cart)
+    })
 
     $('input[name="phone-brief"]').change(function () {
         var phone = $(this).val();
@@ -188,12 +189,12 @@ $(function () {
                     Cart.saveFileIds();
                 });
             } else {
-                uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
+                uploader.duCancel($(this).attr('data-delete-id'))
             }
             $(this).parent().remove();
             return false;
         } else {
-            uploader.damnUploader('cancel', $(this).attr('data-delete-id'));
+            uploader.duCancel($(this).attr('data-delete-id'))
             $(this).parent().remove();
             return false;
         }

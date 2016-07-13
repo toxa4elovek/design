@@ -1,131 +1,26 @@
-/**
- * jQuery-плагин, облегчающий загрузку файлов на сервер.
- *
- * Принцип работы: инициируется для input type="file", либо для контейнера, куда можно будет
- * перетаскивать файлы, однако и в первом случае можно указать контейнер, который также
- * будет принимать перетаскиваемые файлы помимо стандартного поля выбора.
- * Если загрузка файлов через file API невозможна, то при вызове метода начала загрузки, просто
- * будет инициирована отправка формы, содержащей поле выбора.
- *
- * Данное расширение также добавляет свойства в стандартный jQuery-объект $.support,
- * позволяющие проверить степень поддержки браузером File API:
- * $.support.fileSelecting - возможность выбора и загрузки файлов через File API
- * $.support.fileReading   - возможность прочитать содержимое файла на стороне клиента
- * $.support.fileSending   - возможность отправки файла при помощи FormData (как рекомендует W3C),
- *                           однако, если содержит false, загрузка будет выполнена при помощи
- *                           ручной формировки тела запроса
- * $.support.uploadControl - возможность следить за процессом загрузки (индикация выполнения)
- *
- *
- * **********************
- * ПРИМЕР ИСПОЛЬЗОВАНИЯ:
- * $("input[type='file']").damnUploader({
- *     url: './serverLogic.php',
- *     dropBox: $("#drop-files-here"),
- *     onAllComplete :function() {
- *         alert('ready!');
- *     }
- * });
- *
- * **********************
- * ПРИНИМАЕМЫЕ ПАРАМЕТРЫ (в скобках - значения по умолч.):
- *
- * url       - адрес, куда будут отправляться файлы ('upload.php')
- * multiple  - возможность выбора нескольких файлов (true)
- * fieldName - имитация имени поля с файлом, кторое будет ключом в $_FILES, если используется PHP ('file')
- * dropping  - вкл./выключить drag'n'drop файлов. Имеет смысл, если передается параметр dropBox (false)
- * dropBox   - jQuery-набор или селектор, содержащий контейнер, на который можно перетаскивать файлы (null)
- * limit     - максимальное допустимое кол-во файлов в очереди, если параметр multiple включен (false - неограниченно)
- *
- * **********************
- * ОБРАБОТЧИКИ СОБЫТИЙ (в скобках - параметры, передаваемые в функцию обратного вызова):
- *
- * onSelect(file - встроенный объект File)
- * вызывается при выборе файла, если выбирается сразу несколько,
- * то для каждого вызывается отдельно. Если функция возвращает false, то файл не добавляется в очередь
- * автоматически, благодаря чему можно получить контроль над добавлением файлов, назначая каждому
- * свои обработчики событий onComplete и onProgress (см. метод addItem)
- *
- * onLimitExceeded ()
- * вызывается, если превышен лимит, установленный параметром limit
- *
- * onAllComplete ()
- * вызывается, когда вся очередь загружена
- *
- * **********************
- * МЕТОДЫ.
- *
- * // Пример вызова:
- * var myUploader = $("input[type='file']").damnUploader({
- *     url: './serverLogic.php'
- * });
- * myUploader.damnUploader('addItem', uploadItem);
- * // здесь вызывается метод addItem, который добавляет в очередь специально подготовленный объект для загрузки
- *
- * ОПИСАНИЕ МЕТОДОВ:
- *
- * damnUploader('addItem', uploadItem)
- * добавляет в очередь специально подготовленный объект для загрузки,
- * содержащий встроенный объект File и функции обратного вызова (необязательно).
- * Метод возвращает уникальный id, присвоенный данному объекту (по которому можно,
- * например, отменить загрузку конкретного файла).
- * В следующем примере перехватывается стандартное добавление файла в очередь и создается собственный объект загрузки:
- * $("input[type='file']").damnUploader({
- *     onSelect: function(file) {
- *         var uploadId = this.damnUploader('addItem', {
- *             file: file,
- *             onProgress: function(percents) { .. Some code, updating progress info .. },
- *             onComplete: function(successfully, data, errorCode) {
- *                 if (successfully) {
- *                     alert('Файл '+file.name+' загружен, полученные данные: '+data);
- *                 } else {
- *                     alert('Ошибка при загрузке. Код ошибки: '+errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
- *                 }
- *             }
- *         });
- *         return false; // отменить стандартную обработку выбора файла
- *     }
- * });
- *
- * damnUploader('startUpload')
- * начать загрузку файлов
- *
- * damnUploader('itemsCount')
- * возвращает кол-во файлов в очереди
- *
- * damnUploader('cancelAll')
- * остановить все текущие загрузки и удалить все файлы из очереди
- *
- * damnUploader('cancel', queueId)
- * отменяет загрузку для файла queueId (queueId возвращается методом addItem)
- *
- * damnUploader('setParam', paramsArray)
- * изменить один, или несколько параметров. Например:
- * myUploader.setParam({
- *     url: 'anotherWay.php'
- * });
- */
+(function(window, $) {
 
-(function($) {
+    var isDefined = function(item) {
+        return (item !== undefined) && (item != null);
+    };
 
     // defining compatibility of upload control object
     var xhrUploadFlag = false;
     if (window.XMLHttpRequest) {
         var testXHR = new XMLHttpRequest();
-        xhrUploadFlag = (testXHR.upload != null);
+        xhrUploadFlag = isDefined(testXHR.upload);
     }
 
     // utility object for checking browser compatibility
     $.extend($.support, {
-        fileSelecting: (window.File != null) && (window.FileList != null),
-        fileReading: (window.FileReader != null),
-        fileSending: (window.FormData != null),
+        fileSelecting: isDefined(window.File) && isDefined(window.FileList),
+        fileReading: isDefined(window.FileReader),
+        fileSending: isDefined(window.FormData),
         uploadControl: xhrUploadFlag
     });
 
-
-    // generating uniq id
-    function uniq(length, prefix) {
+    // generates uniq id
+    var uniq = function(length, prefix) {
         length = parseInt(length);
         prefix = prefix || '';
         if ((length == 0) || isNaN(length)) {
@@ -133,338 +28,340 @@
         }
         var ch = String.fromCharCode(Math.floor(Math.random() * 26) + 97);
         return prefix + ch + uniq(--length);
-    }
+    };
 
-    function checkIsFile(item) {
+    // checks that item is File instance or Blob [that have File compatible API]
+    var checkIsFile = function(item) {
         return (item instanceof File) || (item instanceof Blob);
-    }
+    };
+
+    // makes blob object with data of defined mime-type
+    var makeBlob = function(data, mimeType) {
+        if (window.Blob) {
+            return new Blob([data], {type: mimeType});
+        }
+        var BlobBuilder = (window.MSBlobBuilder || window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder);
+        return BlobBuilder ? (new BlobBuilder()).append(ab).getBlob(mimeType) : null;
+    };
+
+    // checks that given argument is dataURI-string
+    var isDataURI = function(data) {
+        return data.substr(0, 5) == 'data:';
+    };
+
+    // trying to convert custom data (or dataURI) to Blob
+    var dataToBlob = function(data) {
+        data = isDefined(data.toString) ? data.toString() : ("" + data);
+        var mimeString = "text/plain";
+        if (isDataURI(data)) {
+            var pieces = data.split(',');
+            var byteString = (pieces[0].indexOf('base64') >= 0) ? atob(pieces[1]) : unescape(pieces[1]);
+            // separate out the mime component
+            mimeString = pieces[0].split(':')[1].split(';')[0];
+            // write the bytes of the string to an ArrayBuffer
+            data = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(data);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+        }
+        return makeBlob(data, mimeString);
+    };
 
     ////////////////////////////////////////////////////////////////////////////
     // plugin code
-    $.fn.damnUploader = function(params, data) {
+    $.fn.damnUploader = function(params) {
 
         if (this.length == 0) {
             return this;
+        } else if (this.length > 1) {
+            return this.each(function() {
+                $(this).damnUploader(params);
+            });
         }
 
         // context
-        var self = this;
-
-        // locals
-        var queue = self._damnUploaderQueue;
-        var set = self._damnUploaderSettings || {};
+        var $this = this;
 
         ////////////////////////////////////////////////////////////////////////
-        // initialization (on first call)
-        if (!params || $.isPlainObject(params)) {
+        // initialization
 
-            /* default settings */
-            self._damnUploaderSettings = $.extend({
-                url: '/upload.php',
-                multiple: true,
-                fieldName: 'file',
-                dropping: true,
-                dropBox: false,
-                limit: false,
-                onSelect: false,
-                onLimitExceeded: false,
-                onAllComplete: false
-            }, params || {});
+        /* default settings */
+        $this._duSettings = $.extend({
+            url: '/upload.php',
+            multiple: true,
+            fieldName: 'file',
+            dropping: true,
+            dropBox: false,
+            limit: false,
+            dataType: 'text'
+        }, params || {});
 
-            /* private properties */
-            self._damnUploaderQueue = {};
-            self._damnUploaderItemsCount = 0;
-            queue = self._damnUploaderQueue;
-            set = self._damnUploaderSettings;
-
-            /* private items-adding method */
-            self._damnUploaderFilesAddMap = function(files, callback) {
-                var callbackDefined = $.isFunction(callback);
-                if (!$.support.fileSelecting) {
-                    if (self._damnUploaderItemsCount === set.limit) {
-                        return $.isFunction(set.onLimitExceeded) ? set.onLimitExceeded.call(self) : false;
-                    }
-                    var file = {
-                        fake: true,
-                        name: files.value,
-                        inputElement: files
-                    };
-                    if (callbackDefined) {
-                        if (!callback.call(self, file)) {
-                            return true;
-                        }
-                    }
-                    self.damnUploader('addItem', file);
-                    return true;
-                }
-                if (files instanceof FileList) {
-                    $.each(files, function(i, file) {
-                        if (self._damnUploaderItemsCount === set.limit) {
-                            if (self._damnUploaderItemsCount === set.limit) {
-                                return $.isFunction(set.onLimitExceeded) ? set.onLimitExceeded.call(self) : false;
-                            }
-                        }
-                        if (callbackDefined) {
-                            if (!callback.call(self, file)) {
-                                return true;
-                            }
-                        }
-                        self.damnUploader('addItem', {
-                            file: file
-                        });
+        // upload item object
+        var UploadItem = function(file, completeCallback, progressCallback) {
+            this.file = file;
+            this.fieldName = null;
+            this.replaceName = null;
+            this.progressCallback = progressCallback;
+            this.completeCallback = completeCallback;
+            this.xhr = null;
+            this.cancelled = false;
+            this.started = false;
+            this.completed = false;
+            this._id = uniq(7);
+            this._post = [];
+        };
+        $.extend(UploadItem.prototype, {
+            id : function() {
+                return this._id;
+            },
+            addPostData: function(fieldNameOrFieldsArray, value) {
+                var self = this;
+                if ($.isArray(fieldNameOrFieldsArray)) {
+                    $.each(fieldNameOrFieldsArray, function(i, item) {
+                        self.addPostData(item.name, item.value);
                     });
+                    return ;
                 }
-                return true;
+                this._post.push({"name" : fieldNameOrFieldsArray, "value" : value});
+            },
+            upload: function() {
+                $this._duUploadItem(this);
+            },
+            cancel: function() {
+                $this.duCancel(this._id);
+            },
+            getReaderCallback: function(callback) {
+                var reader;
+                if ($.support.fileReading) {
+                    reader = new FileReader();
+                    reader.onload = callback;
+                }
+                return reader;
+            },
+            readAs: function(as, callback) {
+                var methodName = 'readAs' + as;
+                var reader = this.getReaderCallback(callback);
+                reader && reader[methodName] && reader[methodName].call(reader, this.file);
+            }
+        });
+
+        // private properties
+        $this._duQueue = {};
+        $this._duItemsCount = 0;
+
+        // locals
+        var queue = $this._duQueue;
+        var set = $this._duSettings;
+
+        // private method for items ading
+        $this._duAddItemsToQueue = function(item) {
+            var addingEvent = $.Event("du.add");
+            var limitEvent = $.Event("du.limit");
+            var ui;
+            if ($this._duItemsCount === set.limit) {
+                $this.trigger(limitEvent);
+                return false;
+            }
+            if (item instanceof FileList) {
+                var ret = [];
+                $.each(item, function(i, file) {
+                    ret.push($this._duAddItemsToQueue(file));
+                });
+                return ret;
+            } else if ((ui = $this.duNewUploadItem(item)) === false) {
+                return false;
+            }
+            addingEvent.uploadItem = ui;
+            $this.trigger(addingEvent);
+            if (addingEvent.isDefaultPrevented()) {
+                return false;
+            }
+            var queueId = ui.id();
+            $this._duItemsCount++;
+            queue[queueId] = ui;
+            return ui;
+        };
+
+        // private file-uploading method
+        $this._duUploadItem = function(item) {
+            if (!$.support.fileSending || !checkIsFile(item.file)) {
+                return false;
+            }
+            if (item.started) {
+                return ;
+            }
+            item.started = true;
+            var xhr = new XMLHttpRequest();
+            var progress = 0;
+            var uploaded = false;
+            var prCall = $.isFunction(item.progressCallback);
+
+            if (xhr.upload) {
+                xhr.upload.addEventListener("progress", function(e) {
+                    if (e.lengthComputable) {
+                        progress = (e.loaded * 100) / e.total;
+                        prCall && item.progressCallback.call(item, Math.round(progress));
+                    }
+                }, false);
+                xhr.upload.addEventListener("load", function(e) {
+                    progress = 100;
+                    uploaded = true;
+                }, false);
+            } else {
+                uploaded = true;
+            }
+
+            xhr.onreadystatechange = function() {
+                var callbackDefined = $.isFunction(item.completeCallback);
+                if (this.readyState == 4) {
+                    item.completed = true;
+                    if (this.status < 400) {
+                        if (!uploaded) {
+                            callbackDefined && item.completeCallback.call(item, false, null, 0);
+                        } else {
+                            $.isFunction(item.progressCallback) && item.progressCallback.call(item, 100);
+                            var response = set.dataType == 'json' ? $.parseJSON(this.responseText) : this.responseText;
+                            callbackDefined && item.completeCallback.call(item, true, response);
+                        }
+                    } else {
+                        callbackDefined && item.completeCallback.call(item, false, null, this.status);
+                    }
+                }
             };
 
+            var filename = item.replaceName || item.file.name;
+            xhr.open("POST", set.url);
 
-            /* private file-uploading method */
-            self._damnUploaderUploadItem = function(url, item) {
-                if (!checkIsFile(item.file)) {
-                    return false;
-                }
-                var xhr = new XMLHttpRequest();
-                var progress = 0;
-                var uploaded = false;
-
-                if (xhr.upload) {
-                    xhr.upload.addEventListener("progress", function(e) {
-                        if (e.lengthComputable) {
-                            progress = (e.loaded * 100) / e.total;
-                            if ($.isFunction(item.onProgress)) {
-                                item.onProgress.call(item, Math.round(progress));
-                            }
-                        }
-                    }, false);
-
-                    xhr.upload.addEventListener("load", function(e){
-                        progress = 100;
-                        uploaded = true;
-                    }, false);
-
-                } else {
-                    uploaded = true;
-                }
-
-                xhr.onreadystatechange = function () {
-                    var callbackDefined = $.isFunction(item.onComplete);
-                    if (this.readyState == 4) {
-                        item.cancelled = item.cancelled || false;
-                        if (this.status < 400) {
-                            if (!uploaded) {
-                                if (callbackDefined) {
-                                    item.onComplete.call(item, false, null, 0);
-                                }
-                            } else {
-                                if ($.isFunction(item.onProgress)) {
-                                    item.onProgress.call(item, 100);
-                                }
-                                if (callbackDefined) {
-                                    item.onComplete.call(item, true, this.responseText);
-                                }
-                            }
-                        } else {
-                            if (callbackDefined) {
-                                item.onComplete.call(item, false, null, this.status);
-                            }
-                        }
-                    }
-                };
-
-                var filename = item.replaceName || item.file.name;
-                xhr.open("POST", url);
-
-                if ($.support.fileSending) {
-                    // W3C (Chrome, Safari, Firefox 4+)
-                    var formData = new FormData();
-                    formData.append((item.fieldName || 'file'), item.file);
-                    xhr.send(formData);
-                } else if ($.support.fileReading && xhr.sendAsBinary) {
-                    // firefox < 4
-                    var boundary = "xxxxxxxxx";
-                    xhr.setRequestHeader("Content-Type", "multipart/form-data, boundary="+boundary);
-                    xhr.setRequestHeader("Cache-Control", "no-cache");
-                    var body = "--" + boundary + "\r\n";
-                    filename = unescape(encodeURIComponent(filename));
-                    body += "Content-Disposition: form-data; name='"+(item.fieldName || 'file')+"'; filename='" + filename + "'\r\n";
-                    body += "Content-Type: application/octet-stream\r\n\r\n";
-                    body += (item.file.getAsBinary ? item.file.getAsBinary() : item.file.readAsBinary()) + "\r\n";
-                    body += "--" + boundary + "--";
-                    xhr.sendAsBinary(body);
-                } else {
-                    // Other
-                    xhr.setRequestHeader('Upload-Filename', item.file.name);
-                    xhr.setRequestHeader('Upload-Size', item.file.size);
-                    xhr.setRequestHeader('Upload-Type', item.file.type);
-                    xhr.send(item.file);
-                }
-                item.xhr = xhr;
-            }
-
-
-
-            /* binding callbacks */
-            var isFileField = ((self.get(0).tagName == 'INPUT') && (this.attr('type') == 'file'));
-
-            if (isFileField) {
-                var myName = self.eq(0).attr('name');
-                if (!$.support.fileSelecting) {
-                    if (myName.charAt(myName.length-1) != ']') {
-                        myName += '[]';
-                    }
-                    self.attr('name', myName);
-                    self.attr('multiple', false);
-                    var action = self.parents('form').attr('action');
-                    self._damnUploaderFakeForm = $('<form/>').attr({
-                        method: 'post',
-                        enctype: 'multipart/form-data',
-                        action: action
-                    }).hide().appendTo('body');
-                } else {
-                    self.attr('multiple', true);
-                }
-
-                self._damnUploaderChangeCallback = function() {
-                    self._damnUploaderFilesAddMap($.support.fileSelecting ? this.files : this, set.onSelect);
-                };
-
-                self.on({
-                    change: self._damnUploaderChangeCallback
+            // W3C (IE9, Chrome, Safari, Firefox 4+)
+            var formData = new FormData();
+            formData.append((item.fieldName || set.fieldName || 'file'), item.file, filename);
+            if (item._post.length > 0) {
+                $.each(item._post, function(i, field) {
+                    formData.append(field.name, field.value);
                 });
             }
-
-            if (set.dropping) {
-                self.on({
-                    drop: function(e) {
-                        self._damnUploaderFilesAddMap(e.originalEvent.dataTransfer.files, set.onSelect);
-                        return false;
-                    }
-                });
-                if (set.dropBox) {
-                    $(set.dropBox).on({
-                        drop: function(e) {
-                            self._damnUploaderFilesAddMap(e.originalEvent.dataTransfer.files, set.onSelect);
-                            return false;
-                        }
-                    });
-                }
-            }
-            return self;
+            xhr.send(formData);
+            item.xhr = xhr;
         }
 
 
-        ////////////////////////////////////////////////////////////////////
-        // controls
-        switch(params) {
+        ////////////////////////////////////////////////////////////////////////
+        // interface elements event handling
+        var isFileField = (($this.get(0).tagName == 'INPUT') && (this.attr('type') == 'file'));
 
-            case 'addItem':
-                if (!data) {
-                    return false;
-                }
-                var queueId = uniq(5);
+        if (isFileField) {
+            $this.prop('multiple', true).on('change', function() {
+                $this._duAddItemsToQueue(this.files);
+            });
+        }
 
-                if (data.file.fake) {
-                    var input = $(data.file.inputElement);
-                    var cloned = $(input).clone();
-                    $(input).before(cloned);
-                    $(input).attr('id', queueId);
-                    $(input).appendTo(self._damnUploaderFakeForm);
-                    cloned.on({
-                        change: self._damnUploaderChangeCallback
-                    });
-                    self._damnUploaderItemsCount++;
-                    return queueId;
-                }
-                if (!checkIsFile(data.file)) {
-                    return false;
-                }
-                queue[queueId] = data;
-                self._damnUploaderItemsCount++;
-                return queueId;
-                break;
+        if (set.dropping) {
+            //TODO: need to review
+            $this.on('drop',  function(e) {
+                $this._duAddItemsToQueue(e.originalEvent.dataTransfer.files);
+                return false;
+            });
+            set.dropBox && $(set.dropBox).on('drop', function(e) {
+                $this._duAddItemsToQueue(e.originalEvent.dataTransfer.files);
+                return false;
+            });
+        }
 
 
-            case 'startUpload':
-                if (!set.url) {
-                    return self;
-                }
-                if (!$.support.fileSelecting) {
-                    self._damnUploaderFakeForm.submit();
-                    return self;
-                }
-                $.each(queue, function(queueId, item) {
-                    var compl = item.onComplete;
-                    item.fieldName = item.fieldName || set.fieldName;
-                    item.onComplete = function(successful, data, error) {
-                        if (!this.cancelled) {
-                            delete queue[queueId];
-                            self._damnUploaderItemsCount--;
-                        }
-                        if ($.isFunction(compl)) {
-                            compl.call(this, successful, data, error);
-                        }
-                        if ((self._damnUploaderItemsCount == 0) && ($.isFunction(set.onAllComplete))) {
-                            set.onAllComplete.call(self);
-                        }
-                    };
-                    self._damnUploaderUploadItem(set.url, item);
-                });
-                break;
+        ////////////////////////////////////////////////////////////////////////
+        // API control methods
 
-
-            case 'itemsCount':
-                return self._damnUploaderItemsCount;
-                break;
-
-
-            case 'cancelAll':
-                if (!$.support.fileSelecting) {
-                    self._damnUploaderItemsCount = 0;
-                    self._damnUploaderFakeForm.empty();
-                    return self;
-                }
-                $.each(queue, function(key, item) {
-                    self.damnUploader('cancel', key);
-                });
-                break;
-
-
-            case 'cancel':
-                var queueId = data.toString();
-                if (self._damnUploaderItemsCount > 0) {
-
-                    if (!$.support.fileSelecting) {
-                        var removingItem = $('#'+queueId);
-                        if (removingItem.length > 0) {
-                            removingItem.remove();
-                            self._damnUploaderItemsCount--;
-                        }
-                        return self;
-                    }
-
-                    if (queue[queueId] !== undefined) {
-                        if (queue[queueId].xhr) {
-                            queue[queueId].cancelled = true;
-                            queue[queueId].xhr.abort();
-                        }
+        // Start all uploads
+        $this.duStart = function() {
+            if (!set.url) {
+                return $this;
+            }
+            $.each(queue, function(queueId, item) {
+                var compl = item.completeCallback;
+                item.completeCallback = function(successful, data, error) {
+                    if (!this.cancelled) {
                         delete queue[queueId];
-                        self._damnUploaderItemsCount--;
+                        $this._duItemsCount--;
                     }
+                    if ($.isFunction(compl)) {
+                        compl.call(this, successful, data, error);
+                    }
+                    if ($this._duItemsCount == 0) {
+                        $this.trigger('du.completed');
+                    }
+                };
+                $this._duUploadItem(item);
+            });
+            return $this;
+        };
+
+        // Dequeue upload item by it's id
+        $this.duCancel = function(queueId) {
+            if (queueId && $this._duItemsCount > 0) {
+                if (isDefined(queue[queueId])) {
+                    if (queue[queueId].xhr) {
+                        queue[queueId].cancelled = true;
+                        queue[queueId].xhr.abort();
+                    }
+                    delete queue[queueId];
+                    $this._duItemsCount--;
                 }
-                break;
+            }
+            return $this;
+        };
 
+        // Cancel all uploads & clear queue
+        $this.duCancelAll = function() {
+            $.each(queue, function(key, item) {
+                $this.duCancel(key);
+            });
+            return $this;
+        };
 
-            case 'setParam':
-                var acceptParams = ['url', 'multiple', 'fieldName', 'limit'];
-                $.each(data, function(key, val) {
-                    if ($.inArray(key, acceptParams)) {
-                        self._damnUploaderSettings[key] = val;
-                    }
+        // Creates UploadItem object from File object or from custom data
+        $this.duNewUploadItem = function(fileOrData) {
+            switch(true) {
+                case fileOrData instanceof UploadItem:
+                    return fileOrData;
+                case checkIsFile(fileOrData):
+                    return new UploadItem(fileOrData);
+                default:
+                    var blob = dataToBlob(fileOrData);
+                    return (blob !== false) ? $this.duNewUploadItem(blob) : false;
+            }
+        };
+
+        // Enqueue upload item
+        $this.duEnqueue = function(item) {
+            return $this._duAddItemsToQueue(item);
+        };
+
+        // Returns all upload queue
+        $this.duGetQueue = function() {
+            return $this._duQueue;
+        };
+
+        // Returns queued items count
+        $this.duCount = function() {
+            return $this._duItemsCount;
+        };
+
+        // Change plugin option (url, mutliple, fieldName, limit, dataType are changeable), or get it value by name
+        $this.duOption = function(name, value) {
+            var acceptParams = ['url', 'multiple', 'fieldName', 'limit', 'dataType'];
+            if ($.isPlainObject(name)) {
+                $.each(name, function(key, val) {
+                    $this.duOption(key, val);
                 });
-                break;
-        }
+            } else if (value === undefined) {
+                return $this._duSettings[name];
+            } else {
+                $.inArray(name, acceptParams) && ($this._duSettings[name] = value);
+            }
+            return $this;
+        };
 
-        return self;
+        return $this;
     };
-
-})(window.jQuery);
+})(window, window.jQuery);

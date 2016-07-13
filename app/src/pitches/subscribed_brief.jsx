@@ -290,13 +290,13 @@
       SubscribedBriefActions.unlockButton()
     } else {
       if (Cart.prepareData(endStep1DatePicker, finishChooseOfWinnerPicker)) {
-        if (uploader.damnUploader('itemsCount') > 0) {
+        if (uploader.duCount() > 0) {
           $('#loading-overlay').modal({
             containerId: 'spinner',
             opacity: 80,
             close: false
           })
-          uploader.damnUploader('startUpload')
+          uploader.duStart()
           SubscribedBriefActions.unlockButton()
         } else {
           Cart.saveData(false)
@@ -327,13 +327,13 @@
   $('#date-confirmation-approve').on('click', function () {
     $('.date-confirmation-close').click()
     if (Cart.prepareData(endStep1DatePicker, finishChooseOfWinnerPicker)) {
-      if (uploader.damnUploader('itemsCount') > 0) {
+      if (uploader.duCount() > 0) {
         $('#loading-overlay').modal({
           containerId: 'spinner',
           opacity: 80,
           close: false
         })
-        uploader.damnUploader('startUpload')
+        uploader.duStart()
       } else {
         Cart.saveData(true)
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик'])
@@ -384,7 +384,7 @@
           Cart.saveFileIds()
         })
       } else {
-        uploader.damnUploader('cancel', $(this).attr('data-delete-id'))
+        uploader.duCancel($(this).attr('data-delete-id'))
       }
       $(this).parent().remove()
       return false
@@ -399,7 +399,7 @@
       $(this).parent().remove()
       return false
     } else {
-      uploader.damnUploader('cancel', $(this).attr('data-delete-id'))
+      uploader.duCancel($(this).attr('data-delete-id'))
       $(this).parent().remove()
       return false
     }
@@ -410,11 +410,12 @@
    * @type {Array}
    */
   let fileIds = []
-  const uploader = $('#fileupload').damnUploader({
-    url: '/pitchfiles/add.json',
-    onSelect: function onSelect (file) {
-      onSelectHandler.call(this, file, fileIds, Cart)
-    }
+  var uploader = $('#fileupload').damnUploader({
+    url: '/pitchfiles/add.json'
+  })
+
+  uploader.on('du.add', function(e) {
+    return onSelectHandler.call(this, uploader, e, fileIds, Cart)
   })
 
   /**

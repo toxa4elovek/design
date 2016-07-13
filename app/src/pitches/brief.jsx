@@ -352,13 +352,14 @@ $(document).ready(function () {
       appendTosCheck()
     } else {
       if (Cart.prepareData()) {
-        if (uploader.damnUploader('itemsCount') > 0) {
+        console.info('Количество файлов - ' + uploader.duCount())
+        if (uploader.duCount() > 0) {
           $('#loading-overlay').modal({
             containerId: 'spinner',
             opacity: 80,
             close: false
           })
-          uploader.damnUploader('startUpload')
+          uploader.duStart()
         } else {
           Cart.saveData(false)
           _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик'])
@@ -376,13 +377,13 @@ $(document).ready(function () {
       alert('Вы должны принять правила и условия')
     } else {
       if (Cart.prepareData()) {
-        if (uploader.damnUploader('itemsCount') > 0) {
+        if (uploader.duCount() > 0) {
           $('#loading-overlay').modal({
             containerId: 'gotest-popup_gallery',
             opacity: 80,
             close: false
           })
-          uploader.damnUploader('startUpload')
+          uploader.duStart()
         } else {
           Cart.saveData()
         }
@@ -397,10 +398,11 @@ $(document).ready(function () {
 
   var fileIds = []
   var uploader = $('#fileupload').damnUploader({
-    url: '/pitchfiles/add.json',
-    onSelect: function (file) {
-      onSelectHandler.call(this, file, fileIds, Cart)
-    } // See app.js
+    url: '/pitchfiles/add.json'
+  })
+
+  uploader.on('du.add', function(e) {
+    return onSelectHandler.call(this, uploader, e, fileIds, Cart)
   })
 
   $('input[name="phone-brief"]').change(function () {
@@ -421,7 +423,7 @@ $(document).ready(function () {
           Cart.saveFileIds()
         })
       } else {
-        uploader.damnUploader('cancel', $(this).attr('data-delete-id'))
+        uploader.duCancel($(this).attr('data-delete-id'))
       }
       $(this).parent().remove()
       return false
@@ -436,7 +438,7 @@ $(document).ready(function () {
       $(this).parent().remove()
       return false
     } else {
-      uploader.damnUploader('cancel', $(this).attr('data-delete-id'))
+      uploader.duCancel($(this).attr('data-delete-id'))
       $(this).parent().remove()
       return false
     }

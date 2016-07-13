@@ -697,49 +697,48 @@ function preload (arrayOfImages) {
 /*
  * Pitch files upload/delete handler
  */
-function onSelectHandler (file, fileIds, Cart) {
-  if ($('#filename').html() != 'Файл не выбран') {
-    $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:200px" class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div></li>')
+function onSelectHandler (uploader, e, fileIds, Cart) {
+  const file = e.uploadItem.file
+  const fileZone = $('#filezone')
+  const fileZoneHtml = fileZone.html()
+  if (fileZoneHtml != 'Файл не выбран') {
+    fileZone.html(fileZoneHtml + '<li data-id=""><a style="float:left;width:200px" class="filezone-filename" href="#">' + file.name + '</a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both"></div></li>')
   } else {
-    $('#filezone').html($('#filezone').html() + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div></li>')
+    fileZone.html(fileZoneHtml + '<li data-id=""><a style="float:left;width:100px" class="filezone-filename" href="#">' + file.name + '</a><a style="float:right;width:100px;margin-left:0" class="filezone-delete-link" href="#">удалить</a><div style="clear:both"></div></li>')
   }
 
-  var self = this
-  var uploadId = this.damnUploader('addItem', {
-    file: file,
-    onProgress: function (percents) {
-      $('#progressbar').text(percents + '%')
-      var progresspx = Math.round(3.4 * percents)
-      if (progresspx > 330) {
-        progresspx = 330
-      }
-      $('#filler').css('width', progresspx)
-      if (percents > 95) {
-        $('#progressbarimage').css('background', 'url(/img/indicator_full.png)')
-      } else {
-        $('#progressbarimage').css('background', 'url(/img/indicator_empty.png)')
-      }
-    },
-    onComplete: function (successfully, data, errorCode) {
-      var dataObj = $.parseJSON(data)
-      fileIds.push(dataObj.id)
-      if ((successfully) && (data.match(/(\d*)/))) {
-        // alert('Файл '+file.name+' загружен, полученные данные: '+data)
-      } else {
-        alert('Ошибка при загрузке. Код ошибки: ' + errorCode); // errorCode содержит код HTTP-ответа, либо 0 при проблеме с соединением
-      }
-      if (self.damnUploader('itemsCount') == 0) {
-        $.merge(Cart.fileIds, fileIds)
-        Cart.saveData()
-        $.modal.close()
-      }
+  const self = uploader
+  e.uploadItem.progressCallback = function (percents) {
+    $('#progressbar').text(percents + '%')
+    let progresspx = Math.round(3.4 * percents)
+    if (progresspx > 330) {
+      progresspx = 330
     }
-  })
+    $('#filler').css('width', progresspx)
+    let indicatorImage = 'url(/img/indicator_empty.png)'
+    if (percents > 95) {
+      indicatorImage = 'url(/img/indicator_full.png)'
+    }
+    $('#progressbarimage').css('background', indicatorImage)
+  }
+  e.uploadItem.completeCallback = function (successfully, data, errorCode) {
+    if ((successfully) && (data.match(/(\d*)/))) {
+      const dataObj = $.parseJSON(data)
+      fileIds.push(dataObj.id)
+    } else {
+      alert(`Ошибка при загрузке одного из файлов! 
+Обратитесь в службу поддержки (код ошибки ${errorCode}) или попробуйте загрузить файл в другом браузере ещё раз.`)
+    }
+    if (self.duCount() === 0) {
+      $.merge(Cart.fileIds, fileIds)
+      Cart.saveData()
+      $.modal.close()
+    }
+  }
 
   var lastChild = $('#filezone').children(':last')
-  var link = $('.filezone-delete-link', lastChild).attr('data-delete-id', uploadId)
-
-  return false; // отменить стандартную обработку выбора файла
+  var link = $('.filezone-delete-link', lastChild).attr('data-delete-id', e.uploadItem.id())
+  return true
 }
 
 /*
