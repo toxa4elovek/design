@@ -114,6 +114,7 @@ class SubscriptionPlansController extends AppController
             'ga_id' => $gaTracking->getClientId()
         ]])) {
             $draftPlan->{'phone-brief'} = $this->request->data['newPhone'];
+            $draftPlan->save();
         }
         return $this->request->data;
     }
