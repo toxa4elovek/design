@@ -193,8 +193,8 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
         $user = User::first($project->user_id);
         return self::_mail(array(
             'use-smtp' => true,
-            //'to' => $user->email,
-            'to' => 'nyudmitriy@gmail.com',
+            'to' => $user->email,
+            //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Проект на GoDesigner: время на выбор истекло',
             'data' => compact('user', 'project')
         ));
