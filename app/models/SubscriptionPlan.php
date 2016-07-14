@@ -96,6 +96,33 @@ class SubscriptionPlan extends Pitch
         return $payment->id;
     }
 
+    /**
+     * Метод возвращяет следующий зарезервированный айди для платежа за тарифный план для анонимных пользователей
+     *
+     * @param $googleAnalyticsId
+     * @return mixed
+     */
+    public static function getNextSubscriptionPlanIdByGAId($googleAnalyticsId)
+    {
+        if (!$payment = self::first(array(
+            'conditions' => array(
+                'ga_id' => $googleAnalyticsId,
+                'billed' => 0,
+                'type' => 'plan-payment'
+            )
+        ))) {
+            $data = array(
+                'type' => 'plan-payment',
+                'category' => 100,
+                'title' => 'Оплата абонентского обслуживания',
+                'ga_id' => $googleAnalyticsId
+            );
+            $payment = self::create($data);
+            $payment->save();
+        }
+        return $payment->id;
+    }
+
     public static function hasSubscriptionPlanDraft($userId)
     {
         return (bool) self::first(array(
@@ -205,7 +232,7 @@ class SubscriptionPlan extends Pitch
                 if (!$finalResult) {
                     $finalResult = $result;
                 }
-            }elseif(($paymentPlan->type === 'fund-balance') || ($paymentPlan->getPlanForPaymentForRecord() === 0)) {
+            } elseif (($paymentPlan->type === 'fund-balance') || ($paymentPlan->getPlanForPaymentForRecord() === 0)) {
                 $result = User::fillBalance($paymentPlan->user_id, (int) $paymentPlan->total);
                 Task::createNewTask($paymentPlan->id, 'emailFillBalanceSuccessNotification');
                 if (!$finalResult) {

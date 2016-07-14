@@ -17,5 +17,17 @@ const PaymentActions = {
             actionType: 'submit-news-receipt',
             currentValue: value
         });
+    },
+    updatePhoneNumberInput: function(value) {
+        PaymentDispatcher.dispatch({
+            actionType: 'phone-number-input-updated',
+            newValue: value
+        });
+    },
+    submitNewPhoneNumber: function(value) {
+        PaymentDispatcher.dispatch({
+            actionType: 'submit-new-phone',
+            value: value
+        })
     }
 };

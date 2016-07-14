@@ -9,6 +9,12 @@ use app\models\User;
 
 class SubscriptionPlansController extends AppController
 {
+    /**
+     * @var array публичные методы
+     */
+    public $publicActions = [
+        'subscriber', 'updatePhone'
+    ];
 
     /**
      * Метод для отображения страницы пополнения баланса личного кабинета и
@@ -17,6 +23,9 @@ class SubscriptionPlansController extends AppController
     public function subscriber()
     {
         if (is_null($this->request->params['id'])) {
+            if (!$this->userHelper->isLoggedIn()) {
+                $this->redirect('/users/login');
+            }
             $planRecordId = SubscriptionPlan::getNextFundBalanceId($this->userHelper->getId());
             $value = 9000;
             if ((isset($this->request->query['amount'])) && (!empty($this->request->query['amount']))) {
@@ -36,7 +45,13 @@ class SubscriptionPlansController extends AppController
             return compact('receipt', 'planRecordId', 'predefined');
         } else {
             if ($plan = SubscriptionPlan::getPlan((int)$this->request->params['id'])) {
-                $planRecordId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
+                if ($this->userHelper->getId()) {
+                    $planRecordId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
+                } else {
+                    $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+                    $planRecordId = SubscriptionPlan::getNextSubscriptionPlanIdByGAId($gatracking->getClientId());
+                }
+
                 $value = 9000;
                 if (($savedValue = SubscriptionPlan::getFundBalanceForPayment($planRecordId)) && ($savedValue !== null)) {
                     $value = $savedValue;
@@ -84,5 +99,22 @@ class SubscriptionPlansController extends AppController
                 return compact('fundBalance');
             }
         }
+    }
+
+    /**
+     * Метод обновляет номер телефона для проекта определенного пользователя $gaId
+     *
+     * @return mixed
+     */
+    public function updatePhone()
+    {
+        $gaTracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+        if ($draftPlan = SubscriptionPlan::first(['conditions' => [
+            'id' => $this->request->data['projectId'],
+            'ga_id' => $gaTracking->getClientId()
+        ]])) {
+            $draftPlan->{'phone-brief'} = $this->request->data['newPhone'];
+        }
+        return $this->request->data;
     }
 }

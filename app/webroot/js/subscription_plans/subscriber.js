@@ -20,11 +20,32 @@
          "node": <PaymentAdmin key="7" payload={payload} />
       }*/
     ];
+
     ReactDOM.render(React.createElement(Receipt, { data: payload.receipt }), document.getElementById('receipt-container'));
     ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));
     ReactDOM.render(React.createElement(FundBalanceInput, { payload: payload }), document.getElementById('fund-balance-container'));
+    if (document.getElementById('phone-number-container')) {
+        ReactDOM.render(React.createElement(PhoneNumberInput, { phoneNumber: "7 911 123 45 67" }), document.getElementById('phone-number-container'));
+
+        $(document).on('click', '#payments-container .button, #payments-container .pm-item', function () {
+            var phoneInput = $('.phone-number-input');
+            var value = phoneInput.val();
+            if (value.trim() === '' || value.trim() === '7 911 123 45 67') {
+                alert('Пожалуйста, укажите свой телефон для связи!');
+                return false;
+            }
+            return true;
+        });
+    }
 
     PaymentDispatcher.register(function (eventPayload) {
+        if (eventPayload.actionType === 'submit-new-phone') {
+            var data = {
+                'newPhone': eventPayload.value,
+                'projectId': payload.projectId
+            };
+            $.post('/subscription_plans/updatePhone.json', data);
+        }
         if (eventPayload.actionType === 'fund-balance-input-updated') {
             var total = 0;
             payload.receipt.forEach(function (row) {
@@ -37,6 +58,9 @@
             ReactDOM.render(React.createElement(FundBalanceInput, { payload: payload }), document.getElementById('fund-balance-container'));
             ReactDOM.render(React.createElement(Receipt, { data: payload.receipt }), document.getElementById('receipt-container'));
             ReactDOM.render(React.createElement(PaymentTypesList, { payload: payload, settings: settings }), document.getElementById('payments-container'));
+        }
+        if (eventPayload.actionType === 'phone-number-input-updated') {
+            ReactDOM.render(React.createElement(PhoneNumberInput, { phoneNumber: eventPayload.value }), document.getElementById('phone-number-container'));
         }
         if (eventPayload.actionType === 'submit-news-receipt') {
             var total = 0;

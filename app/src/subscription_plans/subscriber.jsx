@@ -23,6 +23,7 @@
             "node": <PaymentAdmin key="7" payload={payload} />
         }*/
     ];
+
     ReactDOM.render(
         <Receipt data={payload.receipt}/>,
         document.getElementById('receipt-container')
@@ -35,8 +36,31 @@
         <FundBalanceInput payload={payload}/>,
         document.getElementById('fund-balance-container')
     );
+    if(document.getElementById('phone-number-container')) {
+      ReactDOM.render(
+          <PhoneNumberInput phoneNumber='7 911 123 45 67'/>,
+          document.getElementById('phone-number-container')
+      );
+
+        $(document).on('click', '#payments-container .button, #payments-container .pm-item', function() {
+            const phoneInput = $('.phone-number-input')
+            const value = phoneInput.val();
+            if((value.trim() === '') || (value.trim() === '7 911 123 45 67')) {
+                alert('Пожалуйста, укажите свой телефон для связи!')
+                return false
+            }
+            return true
+        })
+    }
 
     PaymentDispatcher.register(function(eventPayload) {
+        if (eventPayload.actionType === 'submit-new-phone') {
+            const data = {
+                'newPhone': eventPayload.value,
+                'projectId': payload.projectId
+            }
+            $.post('/subscription_plans/updatePhone.json', data)
+        }
         if (eventPayload.actionType === 'fund-balance-input-updated') {
             let total = 0;
             payload.receipt.forEach(function (row) {
@@ -57,6 +81,12 @@
             ReactDOM.render(
                 <PaymentTypesList payload={payload} settings={settings}/>,
                 document.getElementById('payments-container')
+            );
+        }
+        if (eventPayload.actionType === 'phone-number-input-updated') {
+            ReactDOM.render(
+                <PhoneNumberInput phoneNumber={eventPayload.value}/>,
+                document.getElementById('phone-number-container')
             );
         }
         if (eventPayload.actionType === 'submit-news-receipt') {
