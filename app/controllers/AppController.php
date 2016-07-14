@@ -37,6 +37,11 @@ class AppController extends \lithium\action\Controller
     public $userRecord = null;
 
     /**
+     * @var int текущий размер скидки для абонентного плана
+     */
+    public $discountForSubscriberReferal = 0;
+
+    /**
      * @return object инициализация каждого запроса
      */
     public function _init()
@@ -173,7 +178,10 @@ class AppController extends \lithium\action\Controller
         if ((!empty($this->request->query['sref'])) && (User::isValidReferalCodeForSubscribers($this->request->query['sref']))) {
             User::setReferalForSubscriberCookie($this->request->query['sref']);
         }
-
+        $this->discountForSubscriberReferal = 0;
+        if ((isset($_COOKIE['sref'])) && (User::isValidReferalCodeForSubscribers($_COOKIE['sref']))) {
+            $this->discountForSubscriberReferal = 20;
+        }
         if (($this->userHelper->isLoggedIn()) && (isset($userRecord))) {
             $this->userRecord = $userRecord;
         }

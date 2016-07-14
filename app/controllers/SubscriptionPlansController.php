@@ -13,7 +13,7 @@ class SubscriptionPlansController extends AppController
      * @var array публичные методы
      */
     public $publicActions = [
-        'subscriber', 'updatePhone'
+        'subscriber', 'updatePhone', 'updateReceipt'
     ];
 
     /**
@@ -72,6 +72,15 @@ class SubscriptionPlansController extends AppController
                     $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
                     $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
                 }
+                if(($this->discountForSubscriberReferal > 0) && (isset($_COOKIE['sreftime']))) {
+                    $startTime = strtotime(date(MYSQL_DATETIME_FORMAT, $_COOKIE['sreftime']));
+                    $delta = (time() - $startTime);
+                    if(floor($delta / DAY) < 10) {
+                        $discount = $this->discountForSubscriberReferal;
+                        $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
+                        $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
+                    }
+                }
                 Receipt::updateOrCreateReceiptForProject($planRecordId, $receipt);
                 SubscriptionPlan::setTotalOfPayment($planRecordId, Receipt::getTotalForProject($planRecordId));
                 SubscriptionPlan::setPlanForPayment($planRecordId, $plan['id']);
@@ -91,13 +100,14 @@ class SubscriptionPlansController extends AppController
     public function updateReceipt()
     {
         if ($plan = SubscriptionPlan::first($this->request->data['projectId'])) {
-            if ($this->userHelper->isPitchOwner($plan->user_id)) {
+            $gaTracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            if (($this->userHelper->isPitchOwner($plan->user_id)) || ($plan->ga_id === $gaTracking->getClientId())) {
                 Receipt::updateOrCreateReceiptForProject($plan->id, $this->request->data['updatedReceipt']);
                 SubscriptionPlan::setTotalOfPayment($plan->id, Receipt::getTotalForProject($plan->id));
                 SubscriptionPlan::setFundBalanceForPayment($plan->id, (int) $this->request->data['newFundValue']);
-                $fundBalance = SubscriptionPlan::getFundBalanceForPayment((int) $this->request->data['projectId']);
-                return compact('fundBalance');
             }
+            $fundBalance = SubscriptionPlan::getFundBalanceForPayment((int) $this->request->data['projectId']);
+            return compact('fundBalance');
         }
     }
 

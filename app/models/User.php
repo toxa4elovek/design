@@ -1968,6 +1968,7 @@ class User extends AppModel
      */
     public static function setReferalForSubscriberCookie($code) {
         if(((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
+            setcookie('sreftime', time(), strtotime('+1 year'), '/');
             return setcookie('sref', $code, strtotime('+1 year'), '/');
         }
         return false;
