@@ -49,7 +49,7 @@ class SubscriptionPlansController extends AppController
                     $planRecordId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
                 } else {
                     $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
-                    $planRecordId = SubscriptionPlan::getNextSubscriptionPlanIdByGAId($gatracking->getClientId());
+                    $planRecordId = SubscriptionPlan::getNextSubscriptionPlanIdByGAId($gatracking->getClientId(), $_COOKIE['sref']);
                 }
 
                 $value = 9000;
@@ -72,10 +72,10 @@ class SubscriptionPlansController extends AppController
                     $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
                     $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
                 }
-                if(($this->discountForSubscriberReferal > 0) && (isset($_COOKIE['sreftime']))) {
+                if (($this->discountForSubscriberReferal > 0) && (isset($_COOKIE['sreftime']))) {
                     $startTime = strtotime(date(MYSQL_DATETIME_FORMAT, $_COOKIE['sreftime']));
                     $delta = (time() - $startTime);
-                    if(floor($delta / DAY) < 10) {
+                    if (floor($delta / DAY) < 10) {
                         $discount = $this->discountForSubscriberReferal;
                         $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
                         $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);

@@ -100,9 +100,10 @@ class SubscriptionPlan extends Pitch
      * Метод возвращяет следующий зарезервированный айди для платежа за тарифный план для анонимных пользователей
      *
      * @param $googleAnalyticsId
+     * @param $promocode
      * @return mixed
      */
-    public static function getNextSubscriptionPlanIdByGAId($googleAnalyticsId)
+    public static function getNextSubscriptionPlanIdByGAId($googleAnalyticsId, $promocode)
     {
         if (!$payment = self::first(array(
             'conditions' => array(
@@ -115,6 +116,7 @@ class SubscriptionPlan extends Pitch
                 'type' => 'plan-payment',
                 'category' => 100,
                 'title' => 'Оплата абонентского обслуживания',
+                'promocode' => $promocode,
                 'ga_id' => $googleAnalyticsId
             );
             $payment = self::create($data);

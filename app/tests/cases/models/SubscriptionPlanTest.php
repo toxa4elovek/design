@@ -66,23 +66,25 @@ class SubscriptionPlanTest extends AppUnit
 
     public function testGetNextSubscriptionPlanIdByGAId()
     {
-        $result = SubscriptionPlan::getNextSubscriptionPlanIdByGAId('ga-id');
+        $result = SubscriptionPlan::getNextSubscriptionPlanIdByGAId('ga-id', '1234');
         $expected = 8;
         $this->assertEqual($expected, $result);
-        $result = SubscriptionPlan::getNextSubscriptionPlanIdByGAId('ga-id');
+        $result = SubscriptionPlan::getNextSubscriptionPlanIdByGAId('ga-id', '1234');
         $expected = 8;
         $this->assertEqual($expected, $result);
         $payment = SubscriptionPlan::first(8);
         $this->assertEqual(0, $payment->user_id);
         $this->assertEqual('ga-id', $payment->ga_id);
+        $this->assertEqual('1234', $payment->promocode);
         $payment->billed = 1;
         $payment->save();
-        $result = SubscriptionPlan::getNextSubscriptionPlanIdByGAId('ga-id');
+        $result = SubscriptionPlan::getNextSubscriptionPlanIdByGAId('ga-id', '4321');
         $expected = 9;
         $this->assertEqual($expected, $result);
         $payment = SubscriptionPlan::first(9);
         $this->assertEqual(0, $payment->user_id);
         $this->assertEqual('ga-id', $payment->ga_id);
+        $this->assertEqual('4321', $payment->promocode);
     }
 
     public function testHasSubscriptionPlanDraft()
