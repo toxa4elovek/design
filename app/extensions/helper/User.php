@@ -673,4 +673,17 @@ class User extends \lithium\storage\Session {
         });
     }
 
+    /**
+     * Метод-обёртка, возвращяет количество побед
+     *
+     * @return int
+     */
+    public function getAwardedSolutionNum() {
+        if($this->isLoggedIn()) {
+            $userModel = $this->_options['userModel'];
+            return $userModel::getAwardedSolutionNum($this->getId());
+        }
+        return 0;
+    }
+
 }

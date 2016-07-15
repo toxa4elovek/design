@@ -303,7 +303,12 @@
                 <?php if(!$this->user->isSubscriptionActive()):?>
                 <li class="header-menu-item"><a href="/questions">Тест</a></li>
                 <?php endif?>
-                <li class="header-menu-item"><a href="/users/referal">Пригласи друга</a></li>
+                <?php
+                $referalUrl = '/users/referal';
+                if($this->user->getAwardedSolutionNum() > 3) {
+                    $referalUrl = '/users/subscribers_referal';
+                }?>
+                <li class="header-menu-item"><a href="<?= $referalUrl ?>">Пригласи друга</a></li>
                 <li class="header-menu-item"><a href="/users/logout">Выйти</a></li>
             </ul>
 	</nav><!-- .nav -->
