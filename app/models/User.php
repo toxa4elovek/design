@@ -300,6 +300,18 @@ class User extends AppModel
         return $token;
     }
 
+    public static function generateSubscriberReferalToken($length = 4)
+    {
+        $exists = true;
+        while ($exists == true) {
+            $token = substr(md5(rand() . rand()), 0, $length);
+            if (!self::first(array('conditions' => array('subscriber_referal_token' => $token)))) {
+                $exists = false;
+            }
+        }
+        return $token;
+    }
+
     public function activateUser($entity)
     {
         $entity->token = '';

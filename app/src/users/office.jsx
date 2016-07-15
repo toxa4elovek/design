@@ -1335,6 +1335,9 @@ $('.ajaxoffice').live('click', function () {
   return false
 })
 
+if($('.copy-link').length) {
+  const clipboardLink = new Clipboard('.copy-link');
+}
 /*
  * Referal Tab
  */

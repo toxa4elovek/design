@@ -1,6 +1,6 @@
 'use strict';
 
-function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 ;(function () {
     $(function () {
@@ -811,6 +811,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
                 }
                 if (scroll) {}
                 //$('.scrolldown').click();
+
 
                 // Copyrighted Materials
                 var copyrightedHtml = '<div class="solution-copyrighted"><!--  --></div>';

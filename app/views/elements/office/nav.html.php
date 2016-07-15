@@ -11,4 +11,4 @@ if($this->user->isSubscriptionActive()):?>
     <?=$this->html->link('<span>Тест</span>', '/questions', array('escape' => false, 'class' => ($this->_request->action == 'questions') ? 'active' : '')) ?>
     <?php
 endif;?>
-<?=$this->html->link('<span>Пригласи друга</span>', '/users/referal', array('escape' => false, 'class' => ($this->_request->action == 'referal') ? 'active' : '')) ?>
+<?=$this->html->link('<span>Пригласи друга</span>', '/users/referal', array('escape' => false, 'class' => (in_array($this->_request->action, ['referal', 'subscribers_referal'])) ? 'active' : '')) ?>

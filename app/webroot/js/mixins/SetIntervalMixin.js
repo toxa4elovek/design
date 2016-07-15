@@ -4,7 +4,7 @@ var SetIntervalMixin = {
     componentWillMount: function componentWillMount() {
         this.intervals = [];
     },
-    setInterval: (function (_setInterval) {
+    setInterval: function (_setInterval) {
         function setInterval(_x, _x2) {
             return _setInterval.apply(this, arguments);
         }
@@ -14,7 +14,7 @@ var SetIntervalMixin = {
         };
 
         return setInterval;
-    })(function (fn, ms) {
+    }(function (fn, ms) {
         this.intervals.push(setInterval(fn, ms));
     }),
     componentWillUnmount: function componentWillUnmount() {

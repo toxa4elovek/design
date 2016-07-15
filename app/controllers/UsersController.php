@@ -14,6 +14,7 @@ use app\models\Paymaster;
 use app\models\Payment;
 use app\models\SubscriptionPlan;
 use app\models\TextMessage;
+use app\models\Url;
 use \app\models\User;
 use \app\models\Sendemail;
 use \app\models\Category;
@@ -212,6 +213,20 @@ class UsersController extends \app\controllers\AppController
         } else {
             return $this->render(array('layout' => false, 'data' => compact('user', 'refPitches', 'completePaymentCount')));
         }
+    }
+
+    /**
+     * Метод показывает страницу реферальной программы 10000 рублей за абонента,
+     * при необходимости, создает реферальный токен и сокращеннуюю ссылку
+     */
+    public function subscribers_referal() {
+        if (empty($this->userRecord->subscriber_referal_token)) {
+            $this->userRecord->subscriber_referal_token = User::generateSubscriberReferalToken();
+            $this->userRecord->save(null, array('validate' => false));
+        }
+        $fullUrl = 'https://godesigner.ru/pages/subscribe?sref=' . $this->userRecord->subscriber_referal_token;
+        $shortUrl = 'https://godesigner.ru/urls/' . Url::getShortUrlFor($fullUrl);
+        return compact('shortUrl');
     }
 
     public function deletePhone()
