@@ -163,6 +163,11 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    /**
+     * @deprecated
+     * @param $data
+     * @return bool
+     */
     public static function choosewinner($data) {
         return self::_mail(array(
                     'use-smtp' => true,

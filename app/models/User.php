@@ -973,6 +973,12 @@ class User extends AppModel
         return $count;
     }
 
+    /**
+     * Метод отправки уведомлений о об окончании уведомлений о необходиомсти выбрать победителя
+     *
+     * @deprecated
+     * @return array
+     */
     public static function sendChooseWinnerSpam()
     {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'multiwinner' => 0, 'blank' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - (4 * DAY))))));
