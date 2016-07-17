@@ -1954,7 +1954,7 @@ class Pitch extends AppModel
                 return false;
             }
             if (($pitch['status'] == 2) && ($pitch['category_id'] == 1) &&
-                ($pitch['private'] == 0) && ($pitch['totalFinishDate'] < date('Y-m-d H:i:s', time() - 30 * DAY))) {
+                ($pitch['private'] == 0) && ($pitch['totalFinishDate'] !== '0000-00-00 00:00:00') && (strtotime($pitch['totalFinishDate']) < (time() - (30 * DAY)))) {
                 return true;
             } else {
                 return false;
