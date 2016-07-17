@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\extensions\helper\Pitch as PitchHekper;
 use app\extensions\storage\Rcache;
 use app\extensions\helper\NameInflector;
 use lithium\analysis\Logger;
@@ -255,7 +256,8 @@ http://godesigner.ru/answers/view/73');
         if ($userId && (!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId))))) {
             $allowUser = true;
         }
-        if (($allowUser || $allowAnon) && ($pitch->status == 0)) {
+        $pitchHelper = new PitchHekper();
+        if (($allowUser || $allowAnon) && ($pitch->status == 0) && ($pitchHelper->getChooseWinnerTime($pitch) > time())) {
             $solution->likes += 1;
             $solution->save();
             $like = Like::create();
