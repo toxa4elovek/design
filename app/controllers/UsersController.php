@@ -9,6 +9,7 @@ use app\extensions\smsfeedback\SmsUslugi;
 use app\extensions\social\TwitterAPI;
 use app\models\Addon;
 use app\models\Bill;
+use app\models\Lead;
 use app\models\Logreferal;
 use app\models\Paymaster;
 use app\models\Payment;
@@ -521,6 +522,7 @@ class UsersController extends \app\controllers\AppController
                     User::sendSpamWincomment($comment, $client);
                     if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
+                        Lead::resetLeadForUser($client->id);
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
                             $plan = SubscriptionPlan::getPlan(1);
                             $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
@@ -618,6 +620,7 @@ class UsersController extends \app\controllers\AppController
                     User::sendSpamWincomment($comment, $client);
                     if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
+                        Lead::resetLeadForUser($client->id);
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
                             $plan = SubscriptionPlan::getPlan(1);
                             $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
@@ -1013,6 +1016,7 @@ class UsersController extends \app\controllers\AppController
                                 SubscriptionPlan::setFundBalanceForPayment($paymentId, 0);
                             }
                             User::setSubscriptionDiscount($userToLog->id, 10, date('Y-m-d H:i:s', time() + (MONTH)));
+                            Lead::resetLeadForUser($userToLog->id);
                             $userToLog->subscription_discount = 10;
                             $userToLog->subscription_discount_end_date = User::getSubscriptionDiscountEndTime($userToLog->id);
                         }

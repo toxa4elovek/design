@@ -55,20 +55,20 @@
       ReactDOM.render(React.createElement(PhoneNumberInput, { phoneNumber: eventPayload.value }), document.getElementById('phone-number-container'));
     }
     if (eventPayload.actionType === 'submit-news-receipt') {
-      var _total = 0;
+      var total = 0;
       payload.receipt.forEach(function (row) {
         if (row.name == 'Пополнение счёта') {
           row.value = eventPayload.currentValue;
         }
-        _total += row.value;
+        total += row.value;
       });
-      payload.total = _total;
-      var _data = {
+      payload.total = total;
+      var data = {
         'newFundValue': eventPayload.currentValue,
         'projectId': payload.projectId,
         'updatedReceipt': payload.receipt
       };
-      $.post('/subscription_plans/updateReceipt.json', _data, function (response) {
+      $.post('/subscription_plans/updateReceipt.json', data, function (response) {
         if (response.fundBalance != eventPayload.currentValue) {
           PaymentActions.updateFundBalanceInput(parseInt(response.fundBalance));
           ReactDOM.render(React.createElement(FundBalanceInput, { payload: payload }), document.getElementById('fund-balance-container'));

@@ -1,7 +1,5 @@
 'use strict';
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 $(document).ready(function () {
   $('.time').timeago();
 
@@ -139,12 +137,15 @@ $(document).ready(function () {
     };
 
     $.fn.disableSelection = function () {
-      var _attr$css;
-
       this.ctrlCmd(['a', 'c']);
 
-      return this.attr('unselectable', 'on').css((_attr$css = { '-moz-user-select': '-moz-none'
-      }, _defineProperty(_attr$css, '-moz-user-select', 'none'), _defineProperty(_attr$css, '-o-user-select', 'none'), _defineProperty(_attr$css, '-khtml-user-select', 'none'), _defineProperty(_attr$css, '-webkit-user-select', 'none'), _defineProperty(_attr$css, '-ms-user-select', 'none'), _defineProperty(_attr$css, 'user-select', 'none'), _attr$css)).bind('selectstart', false);
+      return this.attr('unselectable', 'on').css({ '-moz-user-select': '-moz-none',
+        '-moz-user-select': 'none',
+        '-o-user-select': 'none',
+        '-khtml-user-select': 'none',
+        '-webkit-user-select': 'none',
+        '-ms-user-select': 'none',
+        'user-select': 'none' }).bind('selectstart', false);
     };
   })(jQuery);
 

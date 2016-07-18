@@ -90,6 +90,9 @@ class Pitch extends AppModel
                 if ($params['pitch']->expert == 1) {
                     Pitch::sendExpertMail($params);
                 }
+                if ($params['pitch']->type === '') {
+                    Lead::resetLeadForUser($params['pitch']->user_id);
+                }
                 $project = $params['pitch'];
                 if (($project->category_id != 20) && (!empty($project->ga_id))) {
                     $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];

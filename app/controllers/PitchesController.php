@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\extensions\helper\Brief;
 use app\extensions\helper\NameInflector;
 use app\models\Bill;
+use app\models\Lead;
 use app\models\Moderation;
 use app\models\Pitch;
 use app\models\Pitchrating;
@@ -825,6 +826,7 @@ class PitchesController extends AppController
             }
             if (!$pitch = Pitch::first(array('conditions' => array('id' => $commonPitchData['id'])))) {
                 $pitch = Pitch::create();
+                Lead::resetLeadForUser($userId);
             }
             $pitch->set($data);
             if ($pitch->save()) {
