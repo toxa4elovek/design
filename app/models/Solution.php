@@ -257,7 +257,7 @@ http://godesigner.ru/answers/view/73');
             $allowUser = true;
         }
         $pitchHelper = new PitchHekper();
-        if (($allowUser || $allowAnon) && ($pitch->status == 0) && ($pitchHelper->getChooseWinnerTime($pitch) > time())) {
+        if (($allowUser || $allowAnon) && ($pitch->status == 0)) {
             $solution->likes += 1;
             $solution->save();
             $like = Like::create();
