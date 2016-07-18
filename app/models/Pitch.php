@@ -2234,12 +2234,12 @@ class Pitch extends AppModel
      */
     public static function getAutoClosingWarningComment($projectId)
     {
-        $project = Pitch::first($projectId);
+        $project = Pitch::first(['conditions' => ['id' => $projectId], 'with' => ['Category']]);
         $projectOwner = User::first($project->user_id);
         $solution = Solution::first($project->awarded);
         $designer = User::first($solution->user_id);
         $nameInflector = new NameInflector();
-        $planDaysDefault = 10;
+        $planDaysDefault = $project->category->default_timelimit;
         if (in_array($project->category_id, array(3, 4))) {
             $planDaysDefault = 17;
         }
