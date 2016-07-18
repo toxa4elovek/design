@@ -15,8 +15,8 @@ class SendStartPenaltyNotification extends CronJob
     {
         $this->_renderHeader();
         $arrayOfProjects = [];
-        $finishDateDeltaStart = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() - HOUR));
-        $finishDateDeltaEnd = new \DateTime(date(MYSQL_DATETIME_FORMAT, time()));
+        $finishDateDeltaStart = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() - (4 * DAY) - HOUR));
+        $finishDateDeltaEnd = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() - (4 * DAY)));
         $projects = Pitch::all([
             'conditions' => [
                 'status' => 1,
