@@ -32,6 +32,10 @@
 	margin: 0 0 20px;
 }
 
+.answer p strong {
+	font-weight: bold;
+}
+
 .answer ul {
     list-style-type: disc;
 	list-style-position: inside;
