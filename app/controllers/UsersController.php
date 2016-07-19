@@ -11,6 +11,7 @@ use app\models\Addon;
 use app\models\Bill;
 use app\models\Lead;
 use app\models\Logreferal;
+use app\models\Manager;
 use app\models\Paymaster;
 use app\models\Payment;
 use app\models\SubscriptionPlan;
@@ -220,7 +221,8 @@ class UsersController extends \app\controllers\AppController
      * Метод показывает страницу реферальной программы 10000 рублей за абонента,
      * при необходимости, создает реферальный токен и сокращеннуюю ссылку
      */
-    public function subscribers_referal() {
+    public function subscribers_referal()
+    {
         if (empty($this->userRecord->subscriber_referal_token)) {
             $this->userRecord->subscriber_referal_token = User::generateSubscriberReferalToken();
             $this->userRecord->save(null, array('validate' => false));
@@ -400,9 +402,23 @@ class UsersController extends \app\controllers\AppController
 
     public function step2()
     {
-        \lithium\net\http\Media::type('json', array('text/html'));
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
-            if ((!$this->userHelper->isSolutionAuthor($solution->user_id)) && (!$this->userHelper->isAdmin()) && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))) {
+        \lithium\net\http\Media::type('json', ['text/html']);
+        if (($solution = Solution::first([
+            'conditions' => ['Solution.id' => $this->request->id],
+                'with' => ['Pitch', 'User']]))
+            && ($solution->nominated == 1 || $solution->awarded == 1)) {
+
+            $canManageClosing = false;
+            if (((int) $solution->pitch->category_id === 20)
+                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
+                && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $solution->pitch->id))) {
+                $canManageClosing = true;
+            }
+
+            if ((!$this->userHelper->isSolutionAuthor($solution->user_id))
+                && (!$this->userHelper->isAdmin())
+                && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))
+                && (!$canManageClosing)) {
                 return $this->redirect('Users::feed');
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
@@ -417,7 +433,7 @@ class UsersController extends \app\controllers\AppController
                 $type = 'client';
                 $messageTo = $designer = User::first($solution->user_id);
             }
-            if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
+            if ($this->userHelper->isAdmin()) {
                 $type = 'admin';
                 $messageTo = User::first($solution->pitch->user_id);
             }
@@ -484,10 +500,10 @@ class UsersController extends \app\controllers\AppController
             );
             if (0 == $commentCount) {
                 $timelimit = $solution->pitch->category->default_timelimit;
-                if($solution->pitch->category_id == 20) {
+                if ($solution->pitch->category_id == 20) {
                     $diff = ceil((strtotime($solution->pitch->finishDate) - strtotime($solution->pitch->started)) / DAY);
                     $timelimit = $diff;
-                    if($timelimit < 5) {
+                    if ($timelimit < 5) {
                         $timelimit = 5;
                     }
                 }
@@ -650,9 +666,20 @@ class UsersController extends \app\controllers\AppController
                 return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id));
             }
 
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            $canManageClosing = false;
+            if (((int) $solution->pitch->category_id === 20)
+                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
+                && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $solution->pitch->id))) {
+                $canManageClosing = true;
+            }
+
+            if ((!$this->userHelper->isSolutionAuthor($solution->user_id))
+                && (!$this->userHelper->isAdmin())
+                && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))
+                && (!$canManageClosing)) {
                 return $this->redirect('Users::feed');
             }
+
             if ($solution->step < 3) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $this->request->id));
             }
@@ -807,9 +834,20 @@ class UsersController extends \app\controllers\AppController
                 return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
             }
 
-            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isAdmin() && !$this->userHelper->isSolutionAuthor($solution->user_id)) {
+            $canManageClosing = false;
+            if (((int) $solution->pitch->category_id === 20)
+                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
+                && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $solution->pitch->id))) {
+                $canManageClosing = true;
+            }
+
+            if ((!$this->userHelper->isSolutionAuthor($solution->user_id))
+                && (!$this->userHelper->isAdmin())
+                && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))
+                && (!$canManageClosing)) {
                 return $this->redirect('Users::feed');
             }
+
             if ($solution->step < 4) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $this->request->id));
             }
@@ -1267,7 +1305,7 @@ class UsersController extends \app\controllers\AppController
     public function banned()
     {
         $shortTerm = false;
-        if($this->request->query['temp']) {
+        if ($this->request->query['temp']) {
             $shortTerm = true;
         }
         return compact('shortTerm');
@@ -1572,9 +1610,9 @@ class UsersController extends \app\controllers\AppController
                 $phones = array($user->phone);
                 $smsService = new SmsUslugi();
                 $respond = $smsService->send($params, $phones);
-                if(!isset($respond['smsid'])) {
+                if (!isset($respond['smsid'])) {
                     $smsId = 0;
-                }else {
+                } else {
                     $smsId = $respond['smsid'];
                 }
                 $data = [
@@ -2208,7 +2246,7 @@ class UsersController extends \app\controllers\AppController
                 $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
             }
             $payments[] = $data;
-            if(($data['type'] === 'company_project') && ($data['status'] == 2) && ($data['awarded'] == 0)) {
+            if (($data['type'] === 'company_project') && ($data['status'] == 2) && ($data['awarded'] == 0)) {
                 $formattedRefund = $moneyFormatter->formatMoney((int) $data['finalPrice'] - (int) $data['extraFunds'], array('suffix' => ''));
                 $refundedObject = [
                     "id" => $data['id'],
@@ -2227,11 +2265,11 @@ class UsersController extends \app\controllers\AppController
             'Addon.billed' => 1
         ], 'with' => ['Pitch']]);
         $numInflector = new NumInflector();
-        foreach($addons as $addon) {
-            if($cardData = Paymaster::first(['conditions' => ['LMI_PAYMENT_NO' => $addon->id]])) {
+        foreach ($addons as $addon) {
+            if ($cardData = Paymaster::first(['conditions' => ['LMI_PAYMENT_NO' => $addon->id]])) {
                 continue;
             }
-            if($cardData = Payment::first(['conditions' => ['OrderId' => $addon->payture_id, 'Success' => 'True']])) {
+            if ($cardData = Payment::first(['conditions' => ['OrderId' => $addon->payture_id, 'Success' => 'True']])) {
                 continue;
             }
             $data = $addon->data();
@@ -2241,29 +2279,29 @@ class UsersController extends \app\controllers\AppController
             $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
             $data['title'] = 'Оплата доп. опции';
             $title = [];
-            if($data['experts']) {
+            if ($data['experts']) {
                 $title[] = 'экспертное мнение';
             }
-            if($data['prolong']) {
+            if ($data['prolong']) {
                 $days = $numInflector->formatString($data['prolong-days'], array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')));
                 $title[] = 'продление ' . $data['prolong-days'] . ' ' . $days  ;
             }
-            if($data['brief']) {
+            if ($data['brief']) {
                 $title[] = 'заполнение брифа';
             }
-            if($data['guaranteed']) {
+            if ($data['guaranteed']) {
                 $title[] = 'гарантированный проект';
             }
-            if($data['pinned']) {
+            if ($data['pinned']) {
                 $title[] = 'прокачать бриф';
             }
-            if($data['private']) {
+            if ($data['private']) {
                 $title[] = 'скрыть проект';
             }
             $data['title'] .= " \n\r(" . implode(', ', $title) . ') в проекте «' . $data['pitch']['title'] . '»';
             $payments[] = $data;
         }
-        usort($payments, function($a, $b) {
+        usort($payments, function ($a, $b) {
             $firstDate = $a['timestamp'];
             $secondDate = $b['timestamp'];
             return ($firstDate > $secondDate) ? -1 : 1;
