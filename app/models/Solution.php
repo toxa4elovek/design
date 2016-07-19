@@ -12,6 +12,7 @@ use lithium\data\entity\Record;
 use app\models\User;
 use OneSignal\Config;
 use OneSignal\OneSignal;
+use app\models\Manager;
 
 /**
  * Class Solution
@@ -317,7 +318,13 @@ http://godesigner.ru/answers/view/73');
     {
         $solution = Solution::first($solutionId);
         $pitch = Pitch::first($solution->pitch_id);
-        if(in_array($userId, User::$admins)) {
+        $canManageRating = false;
+        if (((int) $pitch->category_id === 20)
+            && (Manager::getTeamLeaderOfManager($userId) === (int) $pitch->user_id)
+            && (Manager::isManagerAssignedToProject((int) $userId, (int) $pitch->id))) {
+            $canManageRating = true;
+        }
+        if((in_array($userId, User::$admins)) || ($canManageRating)) {
             $userId = $pitch->user_id;
         }
         $history = Ratingchange::create();

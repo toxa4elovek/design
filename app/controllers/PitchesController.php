@@ -6,6 +6,7 @@ use app\extensions\helper\Brief;
 use app\extensions\helper\NameInflector;
 use app\models\Bill;
 use app\models\Lead;
+use app\models\Manager;
 use app\models\Moderation;
 use app\models\Pitch;
 use app\models\Pitchrating;
@@ -1037,6 +1038,12 @@ class PitchesController extends AppController
             ]]))) {
                 $disableUpload = true;
             }
+            $pitch->canManageRating = false;
+            if (((int) $pitch->category_id === 20)
+                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $pitch->user_id)
+                && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $pitch->id))) {
+                $pitch->canManageRating = true;
+            }
             $experts = Expert::all(array('conditions' => array('Expert.user_id' => array('>' => 0))));
             $pitchesCount = Pitch::getCountBilledMultiwinner($pitch->id);
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
@@ -1561,6 +1568,12 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 (in_array($this->userHelper->read('user.subscription_status'), [2, 3]))
             ) {
                 $canViewFullImage = true;
+            }
+            $pitch->canManageRating = false;
+            if (((int) $pitch->category_id === 20)
+                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
+                && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $solution->pitch->id))) {
+                $pitch->canManageRating = true;
             }
             return compact('pitch', 'solution', 'solutions', 'comments', 'prev', 'next', 'current', 'sort', 'selectedsolution', 'experts', 'userData', 'userAvatar', 'copyrightedInfo', 'likes', 'description', 'date', 'pitchesCount', 'data', 'isSolutionReady', 'experts', 'autosuggestUsers', 'canViewFullImage');
         } else {
