@@ -1140,7 +1140,7 @@ class User extends AppModel
     public static function sendFinishReports($pitch)
     {
         $user = self::first($pitch->user_id);
-        $path = LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/';
+        $path = LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/';
         $files = array();
         foreach (new DirectoryIterator($path) as $fileInfo) {
             if ($fileInfo->isDot() || !$fileInfo->isFile() || (false == strpos($fileInfo->getFilename(), $pitch->id))) {

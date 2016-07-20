@@ -870,7 +870,7 @@ class Pitch extends AppModel
     public static function generatePdfAct($options)
     {
         $destination = PdfGetter::findPdfDestination($options['destination']);
-        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/' : '';
         $options['pitch']->moneyback = self::isMoneyBack($options['pitch']->id);
         if ($options['pitch']->type == 'plan-payment') {
             $planId = SubscriptionPlan::getPlanForPayment($options['pitch']->id);
@@ -923,7 +923,7 @@ class Pitch extends AppModel
     public static function generatePdfReport($options)
     {
         $destination = PdfGetter::findPdfDestination($options['destination']);
-        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/' : '';
         $layout = ($options['bill']->individual == 1) ? 'Report-fiz' : 'Report-yur';
         $options['transaction_id'] = self::getPaymentId($options['pitch']->id);
         $receipt = Receipt::all(array(
@@ -1018,7 +1018,12 @@ class Pitch extends AppModel
             foreach ($pitches as $pitch) {
                 if ($bill = Bill::first($pitch->id)) {
                     $destination = 'File';
-                    $options = compact('pitch', 'bill', 'destination');
+                    $addons = Addon::all(array('conditions' => [
+                        'pitch_id' => $pitch->id,
+                        'billed' => 1,
+                        'prolong' => ['>' => 0],
+                    ]));
+                    $options = compact('pitch', 'bill', 'addons', 'destination');
                     self::generatePdfReport($options);
                     if ($bill->individual != 1) {
                         self::generatePdfAct($options);
