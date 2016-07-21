@@ -726,7 +726,7 @@ $(document).ready(function () {
       $('.value-likes', '.solution-stat').text(result.solution.likes || 0)
       $('.value-comments', '.solution-stat').text(result.comments.length || 0)
 
-      if (currentUserId == result.pitch.user_id) {
+      if ((currentUserId == result.pitch.user_id) || (result.pitch.canManageRating)) {
         var html = ''
         if (result.solution.hidden == 1) {
           html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Сделать видимой</a>'

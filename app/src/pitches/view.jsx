@@ -1074,7 +1074,7 @@
         $('.social-likes').socialLikes()
       }
 
-      if (currentUserId == result.pitch.user_id) {
+      if ((currentUserId == result.pitch.user_id) || (result.pitch.canManageRating)) {
         var html = ''
         if (result.solution.hidden == 1) {
           html += '<a class="client-show" href="#" data-id="' + result.solution.id + '">Сделать видимой</a>'

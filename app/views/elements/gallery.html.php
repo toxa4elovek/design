@@ -251,7 +251,7 @@ foreach($solutions as $solution):
             <?php if($this->user->isLoggedIn()):?>
             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/warn/<?=$solution->id?>.json" class="warning" data-solution-id="<?=$solution->id?>">Пожаловаться</a></li>
             <?php endif;?>
-            <?php if($this->user->isPitchOwner($pitch->user_id) || $this->user->isAdmin()):?>
+            <?php if($this->user->isPitchOwner($pitch->user_id) || $this->user->isManagerOfProject($pitch->id) || $this->user->isAdmin()):?>
                 <?php if (($pitchesCount < 1) and ($pitch->status == 1) and (!$selectedsolution)): ?>
                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
                         <?php

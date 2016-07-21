@@ -65,7 +65,7 @@ class SolutionsController extends AppController
     public function select()
     {
         if ($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch']])) {
-            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isAdmin()) {
+            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isManagerOfProject($solution->pitch->user_id) && !$this->userHelper->isAdmin()) {
                 $result = false;
                 return compact('result');
             }

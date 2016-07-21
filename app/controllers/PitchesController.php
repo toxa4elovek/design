@@ -1573,8 +1573,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $canViewFullImage = true;
             }
             $pitch->canManageRating = false;
-            if (((int) $pitch->category_id === 20)
-                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
+            if ((Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
                 && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $solution->pitch->id))) {
                 $pitch->canManageRating = true;
             }
