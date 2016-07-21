@@ -109,14 +109,14 @@
   }
 
   var support = {
-    blob: 'FileReader' in self && 'Blob' in self && function () {
+    blob: 'FileReader' in self && 'Blob' in self && (function () {
       try {
         new Blob();
         return true;
       } catch (e) {
         return false;
       }
-    }(),
+    })(),
     formData: 'FormData' in self
   };
 

@@ -1,5 +1,6 @@
 <?php
 namespace app\extensions\helper;
+use app\models\Manager;
 use lithium\core\Environment;
 
 /**
@@ -147,6 +148,19 @@ class User extends \lithium\storage\Session {
         return $this->_filter(__FUNCTION__, [], function($self, $params) use ($pitchUserId) {
             return $this->__detectOwnership($pitchUserId);
         });
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь менеджером для проекта
+     *
+     * @param $projectId
+     * @return bool
+     */
+    public function isManagerOfProject($projectId) {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return Manager::isManagerAssignedToProject($this->getId(), $projectId);
     }
 
     /**

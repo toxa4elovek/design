@@ -3,7 +3,7 @@
 	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
 
     <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
-	<?php if((($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
+	<?php if((($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || $this->user->isManagerOfProject($pitch->id) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
         (($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment())) && ($this->user->isLoggedIn())):?>
         <script>allowComments = true;</script>
     <?php endif?>
@@ -123,7 +123,7 @@
                     <input type="hidden" value="<?=$pitch->category_id?>" name="category_id" id="category_id">
                     <input type="hidden" value="<?=$solution->id?>" name="solution_id">
                     <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
-                    <?php if ($this->user->isPitchOwner($pitch->user->id) || $this->user->isAdmin()): ?>
+                    <?php if ($this->user->isPitchOwner($pitch->user->id) || $this->user->isManagerOfProject($pitch->id) ||  $this->user->isAdmin()): ?>
                     <div class="separator full"></div>
                     <form class="createCommentForm" method="post" action="/comments/add">
                     	<textarea id="newComment" data-user-autosuggest="true" name="text"></textarea>
@@ -181,7 +181,7 @@
                 //
             ?>
             <?php else:?>
-                <?php if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):?>
+                <?php if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):?>
                     <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
                         <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
                     <?php else:?>

@@ -1072,7 +1072,10 @@ class PitchesController extends AppController
             if (($pitch->published == 0) && (false == $isUserClient) && (false == $isUserAdmin)) {
                 return false;
             }
-
+            $pitch->manager_id = 0;
+            if(Manager::isManagerAssignedToProject($this->userHelper->getId(), $pitch->id)) {
+                $pitch->manager_id = $this->userHelper->getId();
+            }
             $experts = Expert::getExpertUserIds();
 
             // Fetch Top Level Comments

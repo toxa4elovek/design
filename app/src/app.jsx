@@ -848,10 +848,11 @@ function prepareCommentData (comment, result) {
   commentData.commentText = comment.text
   commentData.commentPlainText = comment.originalText.replace(/"/g, "'")
   commentData.commentType = (comment.user_id == result.pitch.user_id) ? 'client' : 'designer'
+  commentData.commentType = (comment.user_id == result.pitch.manager_id) ? 'client' : 'designer'
   commentData.isExpert = isExpertFromList(comment.user_id, expertsObj)
   commentData.isClosedPitch = (result.pitch.status != 0) ? 1 : 0
   commentData.publicClass = (comment.public == 1) ? ' public-comment' : ' private-comment'
-  if (result.pitch.user_id == comment.user_id) {
+  if ((result.pitch.user_id == comment.user_id) || (result.pitch.manager_id == comment.user_id)) {
     commentData.messageInfo = 'message_info2'
   } else if (comment.user.isAdmin == '1') {
     commentData.messageInfo = 'message_info4'
