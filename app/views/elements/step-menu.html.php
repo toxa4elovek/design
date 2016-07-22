@@ -7,7 +7,7 @@
     <li>
         <?php
         $referalUrl = '/users/referal';
-        if($this->user->getAwardedSolutionNum() > 3) {
+        if($this->user->getAwardedSolutionNum() > 0) {
             $referalUrl = '/users/subscribers_referal';
         }?>
         <?=$this->html->link('<span>Пригласи друга</span>', 'https://www.godesigner.ru' . $referalUrl, array('escape' => false, 'class' => (in_array($this->_request->action, ['referal', 'subscribers_referal'])) ? 'active' : '')) ?></li>

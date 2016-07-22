@@ -305,7 +305,7 @@
                 <?php endif?>
                 <?php
                 $referalUrl = '/users/referal';
-                if($this->user->getAwardedSolutionNum() > 3) {
+                if($this->user->getAwardedSolutionNum() > 0) {
                     $referalUrl = '/users/subscribers_referal';
                 }?>
                 <li class="header-menu-item"><a href="<?= $referalUrl ?>">Пригласи друга</a></li>
