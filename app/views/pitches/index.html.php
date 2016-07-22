@@ -5,6 +5,21 @@
         <div class="pitches-ajax-wrapper">
             <div class="pitches-ajax-loader">&nbsp;</div>
         </div>
+        <a href="/answers/view/110" style="
+            position: absolute;
+            top: 27px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block; text-transform: none;
+            width: 265px;
+            height: 13px;
+            color: #648fa4;
+            font-family: Arial, 'serif';
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 32px;">Приведи клиента и заработай 10 000 руб.</a>
 		<section>
             <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 786px; margin-left: 79px;">
                 <table><tr><td>
