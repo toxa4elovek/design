@@ -164,6 +164,19 @@ class User extends \lithium\storage\Session {
     }
 
     /**
+     * Метод определяет, является ли пользователь с айди менеджером текущего пользователя
+     *
+     * @param $possibleManagerId
+     * @return bool
+     */
+    public function isUserManagerOfCurrentUser($possibleManagerId) {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return Manager::isManagerInTeamOfSubscriber($possibleManagerId, $this->getId());
+    }
+
+    /**
      * Метод определяет, является ли текущий пользователь автором решения с айди $solutionUserId
      *
      * @param $solutionUserId

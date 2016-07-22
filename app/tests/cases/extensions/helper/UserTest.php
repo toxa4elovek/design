@@ -84,6 +84,16 @@ class UserTest extends AppUnit {
         $this->assertFalse($this->user->isManagerOfProject($managerId, $projectId));
     }
 
+    public function testIsUserManagerOfCurrentUser() {
+        $managerId = 1;
+        $subscriberId = 2;
+        $this->assertFalse($this->user->isUserManagerOfCurrentUser($managerId));
+        $this->user->write('user.id', $subscriberId);
+        $this->assertFalse($this->user->isUserManagerOfCurrentUser($managerId));
+        Manager::addManagerForSubscriber($managerId, $subscriberId);
+        $this->assertTrue($this->user->isUserManagerOfCurrentUser($managerId));
+    }
+
     public function testIsSolutionAuthor() {
         $solutionOwnerId = 1;
         $randomUserId = 4;

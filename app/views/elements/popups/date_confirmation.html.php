@@ -31,7 +31,7 @@ margin-left: 54px;
 margin-top: 20px;
 margin-bottom: 36px;
 ">
-        Окончание приема работ <span id="finishDate" style="font-weight: bold;">10.03.2016, четверг</span>
+        Окончание приема работ <span id="finishDate" style="font-weight: bold;">10.03.2016, четверг</span><br/>
         Выбор победителя до <span id="finishChooseWinner" style="font-weight: bold;">14.03.2016, понедельник</span>
 
     </p>

@@ -348,7 +348,7 @@ class PitchesController extends AppController
     public function delete()
     {
         if ($pitch = Pitch::first($this->request->id)) {
-            if (($pitch->user_id == Session::read('user.id')) && ($pitch->published == 0) && ($pitch->billed == 0) && ($pitch->ideas_count == 0)) {
+            if ((($pitch->user_id == Session::read('user.id')) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id))) && ($pitch->published == 0) && ($pitch->billed == 0) && ($pitch->ideas_count == 0)) {
                 $pitch->delete();
             }
             if (!$this->request->is('json')) {
@@ -478,7 +478,7 @@ class PitchesController extends AppController
      */
     public function create()
     {
-        if ($this->userHelper->isSubscriptionActive()) {
+        if (($this->userHelper->isSubscriptionActive()) || (Manager::isUserManager($this->userHelper->getId()))) {
             return $this->redirect('/pitches/brief/20');
         }
         $categories = Category::all();
@@ -592,8 +592,14 @@ class PitchesController extends AppController
         $result = array('error' => 'no data provided');
         if ($this->request->data) {
             $userId = $this->userHelper->getId();
+            if(!isset($this->request->data['commonPitchData']['id'])) {
+                $this->request->data['commonPitchData']['user_id'] = $userId;
+            }else {
+                if($project = Pitch::first($this->request->data['commonPitchData']['id'])) {
+                    $this->request->data['commonPitchData']['user_id'] = $project->user_id;
+                }
+            }
             $actionType = $this->request->data['actionType'];
-            $this->request->data['commonPitchData']['user_id'] = $userId;
             $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
             $gaId = $gatracking->getClientId();
             $this->request->data['commonPitchData']['ga_id'] = $gaId;
@@ -875,7 +881,7 @@ class PitchesController extends AppController
 
     public function edit()
     {
-        if (isset($this->request->id) && (is_numeric($this->request->id)) && ($pitch = Pitch::first($this->request->id)) && (($this->userHelper->isPitchOwner($pitch->user_id)) || ($this->userHelper->isAdmin()))) {
+        if (isset($this->request->id) && (is_numeric($this->request->id)) && ($pitch = Pitch::first($this->request->id)) && (($this->userHelper->isPitchOwner($pitch->user_id)) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) || ($this->userHelper->isAdmin()))) {
             $category = Category::first($pitch->category_id);
             $files = array();
             if (count(unserialize($pitch->filesId)) > 0) {
@@ -977,11 +983,11 @@ class PitchesController extends AppController
                 $limit = (isset($this->request->query['rest'])) ? 9999 : $limitSolutions;
             }
             $currentUser = Session::read('user');
-            if (($pitch->published == 0) && (($currentUser['id'] != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
+            if (($pitch->published == 0) && ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isAdmin()) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)))) {
                 return $this->redirect('/pitches');
             }
             if ($pitch->private == 1) {
-                if (($pitch->user_id != $currentUser['id']) && (!in_array($currentUser['id'], User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => $currentUser['id'], 'pitch_id' => $pitch->id))))) {
+                if ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!$this->userHelper->isManagerOfProject($pitch->user_id)) && (!$this->userHelper->isAdmin()) && (!$isExists = Request::first(array('conditions' => array('user_id' => $currentUser['id'], 'pitch_id' => $pitch->id))))) {
                     return $this->redirect('/requests/sign/'.$pitch->id);
                 }
             }
@@ -1180,11 +1186,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
             ];
 
             $currentUser = Session::read('user.id');
-            if (($pitch->published == 0) && ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isAdmin()))) {
+            if (($pitch->published == 0) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isAdmin()))) {
                 return $this->redirect('/pitches');
             }
             if ($pitch->private == 1) {
-                if (($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
+                if (($pitch->user_id != Session::read('user.id')) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
                     return $this->redirect('/requests/sign/'.$pitch->id);
                 }
             }
@@ -1242,11 +1248,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
             }
 
             $currentUser = Session::read('user.id');
-            if (($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
+            if (($pitch->published == 0) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
                 return $this->redirect('/pitches');
             }
             if ($pitch->private == 1) {
-                if (($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
+                if (($pitch->user_id != Session::read('user.id')) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(array('conditions' => array('user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id))))) {
                     return $this->redirect('/requests/sign/'.$pitch->id);
                 }
             }
